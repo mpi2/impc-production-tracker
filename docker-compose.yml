@@ -1,0 +1,18 @@
+version: '3.7'
+services:
+
+  prod_tracker:
+    #image: rwilsonebi/impc_prod_tracker:1.0
+    build: ./impc_prod_tracker
+    environment:
+      - TRACKER_PORT=8901
+    restart: always
+    expose:
+      - 8901
+    ports:
+      - "127.0.0.1:8901:8901"
+    networks:
+      production:
+
+networks:
+  production:
