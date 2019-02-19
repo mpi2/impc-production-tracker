@@ -34,10 +34,10 @@ script:
     
 after_success:
   - if [ "$TRAVIS_BRANCH" == "master" ]; then
-        cd ../
-        docker-compose build
+        cd ../;
+        docker-compose build;
         docker tag impc-production-tracker_prod_tracker:latest "$DOCKER_USERNAME"/"$DOCKER_REPO":$(git rev-parse --short HEAD);
         docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD";
         docker push rwilsonebi/production-tracker:$(git rev-parse --short HEAD);
-        docker logout
+        docker logout;
     fi
