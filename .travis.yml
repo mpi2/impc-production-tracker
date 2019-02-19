@@ -27,7 +27,6 @@ services:
   - docker
 
 script: 
-  -   echo "TRAVIS_SECURE_ENV_VARS: $TRAVIS_SECURE_ENV_VARS"
   -   cd impc_prod_tracker
   -   mvn clean package
 
