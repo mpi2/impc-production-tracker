@@ -1,3 +1,5 @@
+language: java
+
 dist: xenial
 
 env:
@@ -13,8 +15,14 @@ before_install:
   - curl -L https://github.com/docker/compose/releases/download/${DOCKER_COMPOSE_VERSION}/docker-compose-`uname -s`-`uname -m` > docker-compose
   - chmod +x docker-compose
   - sudo mv docker-compose /usr/local/bin  
+
+jdk: oraclejdk11
       
 services:
   - docker
 
-script: docker-compose up -d --build
+script: 
+    -   mvn clean package
+    -   mvn test
+    -   docker-compose build
+    -   docker-compose up -d
