@@ -28,16 +28,17 @@ services:
   - docker
 
 script: 
-    -   cd impc_prod_tracker
-    -   mvn clean test
+  -   echo "TRAVIS_SECURE_ENV_VARS: $TRAVIS_SECURE_ENV_VARS"
+  -   cd impc_prod_tracker
+  -   mvn clean package
 
-    
+
 after_success:
   - if [ "$TRAVIS_BRANCH" == "master" ]; then
-        cd ../;
+        cd $TRAVIS_BUILD_DIR;
         docker-compose build;
         docker tag impc-production-tracker_prod_tracker:latest "$DOCKER_USERNAME"/"$DOCKER_REPO":$(git rev-parse --short HEAD);
         docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD";
-        docker push rwilsonebi/production-tracker:$(git rev-parse --short HEAD);
+        docker push "$DOCKER_USERNAME"/"$DOCKER_REPO":$(git rev-parse --short HEAD);
         docker logout;
     fi
