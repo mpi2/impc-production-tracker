@@ -13,24 +13,24 @@
  * language governing permissions and limitations under the
  * License.
  *******************************************************************************/
-package uk.ac.ebi.impc_prod_tracker.domain.login;
+package uk.ac.ebi.impc_prod_tracker.conf;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import java.io.Serializable;
+import org.springframework.boot.web.client.RestTemplateBuilder;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.web.client.RestTemplate;
 
 /**
- * Payload structure for an authentication request.
+ * Configure needed beans for handling REST calls
  *
  * @author Mauricio Martinez
  */
-@Data
-@Builder
-@NoArgsConstructor
-@AllArgsConstructor
-public class AuthenticationRequest implements Serializable {
-    private String username;
-    private String password;
+@Configuration
+public class RestConfiguration
+{
+    @Bean
+    public RestTemplate restTemplate(RestTemplateBuilder builder)
+    {
+        return builder.build();
+    }
 }

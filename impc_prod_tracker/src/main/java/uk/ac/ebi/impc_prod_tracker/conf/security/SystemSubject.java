@@ -13,24 +13,28 @@
  * language governing permissions and limitations under the
  * License.
  *******************************************************************************/
-package uk.ac.ebi.impc_prod_tracker.domain.login;
+package uk.ac.ebi.impc_prod_tracker.conf.security;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import java.io.Serializable;
+import uk.ac.ebi.impc_prod_tracker.domain.ProductionCentre;
+import uk.ac.ebi.impc_prod_tracker.domain.UserRole;
 
 /**
- * Payload structure for an authentication request.
- *
+ * Information a subject in the system should have.
  * @author Mauricio Martinez
  */
-@Data
-@Builder
-@NoArgsConstructor
-@AllArgsConstructor
-public class AuthenticationRequest implements Serializable {
-    private String username;
-    private String password;
+public interface SystemSubject
+{
+    String getLogin();
+
+    String getName();
+
+    String getUserRefId();
+
+    String getEmail();
+
+    UserRole getRole();
+
+    ProductionCentre getProductionCentre();
+
+    ProductionCentre loadProductionCentre(String login);
 }

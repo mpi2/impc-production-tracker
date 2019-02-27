@@ -17,7 +17,6 @@ package uk.ac.ebi.impc_prod_tracker.conf.security.abac.spring;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.PermissionEvaluator;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
@@ -32,8 +31,12 @@ public class AbacPermissionEvaluator implements PermissionEvaluator
 {
     private static Logger logger = LoggerFactory.getLogger(AbacPermissionEvaluator.class);
 
-    @Autowired
-    PolicyEnforcement policy;
+    private PolicyEnforcement policy;
+
+    public AbacPermissionEvaluator(PolicyEnforcement policy)
+    {
+        this.policy = policy;
+    }
 
     @Override
     public boolean hasPermission(Authentication authentication , Object targetDomainObject, Object permission)

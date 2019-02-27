@@ -15,7 +15,6 @@
  *******************************************************************************/
 package uk.ac.ebi.impc_prod_tracker.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import uk.ac.ebi.impc_prod_tracker.conf.security.abac.spring.ContextAwarePolicyEnforcement;
 import uk.ac.ebi.impc_prod_tracker.domain.Plan;
@@ -27,8 +26,12 @@ import java.util.stream.Collectors;
 @Component
 public class InMemoryPlanService implements PlanService
 {
-    @Autowired
     private ContextAwarePolicyEnforcement policy;
+
+    public InMemoryPlanService(ContextAwarePolicyEnforcement policy)
+    {
+        this.policy = policy;
+    }
 
     @Override
     public List<Plan> getPlans()

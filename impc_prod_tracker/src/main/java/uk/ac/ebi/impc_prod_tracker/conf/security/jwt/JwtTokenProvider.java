@@ -17,24 +17,21 @@ package uk.ac.ebi.impc_prod_tracker.conf.security.jwt;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
+import io.jsonwebtoken.JwsHeader;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.beans.factory.annotation.Value;
+import io.jsonwebtoken.SigningKeyResolver;
+import io.jsonwebtoken.SigningKeyResolverAdapter;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Component;
-import javax.annotation.PostConstruct;
-import javax.servlet.http.Cookie;
+import uk.ac.ebi.impc_prod_tracker.conf.security.AapSystemSubject;
+import uk.ac.ebi.impc_prod_tracker.conf.security.PublicKeyProvider;
+import uk.ac.ebi.impc_prod_tracker.conf.security.SystemSubject;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.util.Base64;
+import java.security.Key;
+import java.security.PublicKey;
 import java.util.Date;
-import java.util.List;
 
 /**
  * This class manages the creation and validation of JWT.
@@ -43,66 +40,35 @@ import java.util.List;
 @Component
 public class JwtTokenProvider
 {
-    @Value("${security.jwt.token.secret-key:secret}")
-    private String secretKey = "secret";
-
-    @Value("${security.jwt.token.expire-length:3600000}")
-    private long validityInMilliseconds = 3600000; // 1h
-
     private static final String AUTHORIZATION_HEADER = "Authorization";
     private static final String AUTHORIZATION_SCHEMA_NAME = "Bearer ";
 
-    @Qualifier("InMemoryUserDetailsService")
-    @Autowired
-    private UserDetailsService userDetailsService;
+    private PublicKeyProvider publicKeyProvider;
+    private AapSystemSubject aapSystemSubject;
 
-    @PostConstruct
-    protected void init()
+    public JwtTokenProvider(PublicKeyProvider publicKeyProvider, AapSystemSubject aapSystemSubject)
     {
-        secretKey = Base64.getEncoder().encodeToString(secretKey.getBytes());
-    }
-
-    /**
-     * Creates a JWT.
-     * @param username Name of the user to be used in the creation of the token.
-     * @param roles List of roles to be used in the claim.
-     * @return The signed token.
-     */
-    public String createToken(String username, List<String> roles)
-    {
-        Claims claims = Jwts.claims().setSubject(username);
-        claims.put("roles", roles);
-
-        Date now = new Date();
-        Date validity = new Date(now.getTime() + validityInMilliseconds);
-
-        return Jwts.builder()
-            .setClaims(claims)
-            .setIssuedAt(now)
-            .setExpiration(validity)
-            .signWith(SignatureAlgorithm.HS256, secretKey)
-            .compact();
-    }
-
-    void saveToken(HttpServletResponse response, String token)
-    {
-        Authentication authentication = getAuthentication(token);
-        if (authentication.isAuthenticated())
-        {
-            Cookie cookie = new Cookie("access_token", token);
-            response.addCookie(cookie);
-        }
+        this.publicKeyProvider = publicKeyProvider;
+        this.aapSystemSubject = aapSystemSubject;
     }
 
     Authentication getAuthentication(String token)
     {
-        UserDetails userDetails = this.userDetailsService.loadUserByUsername(getUsername(token));
-        return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
+        SystemSubject systemSubject = aapSystemSubject.buildSystemSubjectByTokenInfo(getClaims(token));
+        return new UsernamePasswordAuthenticationToken(systemSubject, "", null);
+    }
+
+    Claims getClaims(String token)
+    {
+        return Jwts.parser()
+            .setSigningKeyResolver(getSigningKeyResolver())
+            .parseClaimsJws(token)
+            .getBody();
     }
 
     String getUsername(String token)
     {
-        return Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token).getBody().getSubject();
+        return getClaims(token).getSubject();
     }
 
     /**
@@ -110,7 +76,8 @@ public class JwtTokenProvider
      * @param req Request.
      * @return String with the token.
      */
-    String resolveToken(HttpServletRequest req) {
+    String resolveToken(HttpServletRequest req)
+    {
         String bearerToken = req.getHeader(AUTHORIZATION_HEADER);
         if (bearerToken != null && bearerToken.startsWith(AUTHORIZATION_SCHEMA_NAME))
         {
@@ -128,7 +95,9 @@ public class JwtTokenProvider
     {
         try
         {
-            Jws<Claims> claims = Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token);
+            Jws<Claims> claims = Jwts.parser()
+                .setSigningKeyResolver(getSigningKeyResolver())
+                .parseClaimsJws(token);
 
             if (claims.getBody().getExpiration().before(new Date()))
             {
@@ -141,6 +110,20 @@ public class JwtTokenProvider
         {
             throw new InvalidJwtAuthenticationException("Expired or invalid JWT token");
         }
+    }
+
+    private SigningKeyResolver signingKeyResolver = new SigningKeyResolverAdapter()
+    {
+        @Override
+        public Key resolveSigningKey(JwsHeader header, Claims claims) {
+            String issuer = claims.getIssuer();
+            PublicKey publicKey = publicKeyProvider.getPublicKey(issuer);
+            return publicKey;
+        }
+    };
+    public SigningKeyResolver getSigningKeyResolver()
+    {
+        return signingKeyResolver;
     }
 
 }

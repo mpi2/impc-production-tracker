@@ -15,13 +15,11 @@
  *******************************************************************************/
 package uk.ac.ebi.impc_prod_tracker.conf.security.abac.spring;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import uk.ac.ebi.impc_prod_tracker.conf.security.abac.policy.PolicyEnforcement;
-
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -29,8 +27,12 @@ import java.util.Map;
 @Component
 public class ContextAwarePolicyEnforcement
 {
-    @Autowired
     protected PolicyEnforcement policy;
+
+    public ContextAwarePolicyEnforcement(PolicyEnforcement policy)
+    {
+        this.policy = policy;
+    }
 
     public void checkPermission(Object resource, String permission)
     {
@@ -51,7 +53,6 @@ public class ContextAwarePolicyEnforcement
         Map<String, Object> environment = new HashMap<>();
 
         environment.put("time", new Date());
-        System.out.println("Checking permissions for " + auth.getPrincipal());
         return policy.check(auth.getPrincipal(), resource, permission, environment);
     }
 
