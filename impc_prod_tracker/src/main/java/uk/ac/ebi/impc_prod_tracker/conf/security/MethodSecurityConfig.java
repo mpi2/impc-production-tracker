@@ -15,7 +15,6 @@
  *******************************************************************************/
 package uk.ac.ebi.impc_prod_tracker.conf.security;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.expression.method.DefaultMethodSecurityExpressionHandler;
 import org.springframework.security.access.expression.method.MethodSecurityExpressionHandler;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -25,11 +24,15 @@ import uk.ac.ebi.impc_prod_tracker.conf.security.abac.spring.AbacPermissionEvalu
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class MethodSecurityConfig extends GlobalMethodSecurityConfiguration
 {
-    @Autowired
     AbacPermissionEvaluator permissionEvaluator;
+    public MethodSecurityConfig(AbacPermissionEvaluator permissionEvaluator)
+    {
+        this.permissionEvaluator = permissionEvaluator;
+    }
 
     @Override
-    protected MethodSecurityExpressionHandler createExpressionHandler() {
+    protected MethodSecurityExpressionHandler createExpressionHandler()
+    {
         DefaultMethodSecurityExpressionHandler result = new DefaultMethodSecurityExpressionHandler();
         result.setPermissionEvaluator(permissionEvaluator);
         return result;

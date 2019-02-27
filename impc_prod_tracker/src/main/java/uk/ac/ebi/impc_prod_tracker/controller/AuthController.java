@@ -15,7 +15,6 @@
  *******************************************************************************/
 package uk.ac.ebi.impc_prod_tracker.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -40,11 +39,14 @@ import static org.springframework.http.ResponseEntity.ok;
 @RequestMapping("/auth")
 public class AuthController
 {
-    @Autowired
-    AuthenticationManager authenticationManager;
+    private AuthenticationManager authenticationManager;
+    private AuthService authService;
 
-    @Autowired
-    AuthService authService;
+    public AuthController(AuthenticationManager authenticationManager, AuthService authService)
+    {
+        this.authenticationManager = authenticationManager;
+        this.authService = authService;
+    }
 
     /**
      * @api {post} /signin Signin a user to obtain a token.

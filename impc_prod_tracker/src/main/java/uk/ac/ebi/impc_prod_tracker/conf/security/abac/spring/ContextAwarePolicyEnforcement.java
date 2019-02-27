@@ -15,7 +15,6 @@
  *******************************************************************************/
 package uk.ac.ebi.impc_prod_tracker.conf.security.abac.spring;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -28,8 +27,12 @@ import java.util.Map;
 @Component
 public class ContextAwarePolicyEnforcement
 {
-    @Autowired
     protected PolicyEnforcement policy;
+
+    public ContextAwarePolicyEnforcement(PolicyEnforcement policy)
+    {
+        this.policy = policy;
+    }
 
     public void checkPermission(Object resource, String permission)
     {

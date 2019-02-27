@@ -15,8 +15,6 @@
  *******************************************************************************/
 package uk.ac.ebi.impc_prod_tracker.conf.security;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -25,7 +23,6 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.web.client.RestTemplate;
 import uk.ac.ebi.impc_prod_tracker.conf.security.jwt.JwtTokenFilter;
 
 /**
@@ -37,8 +34,12 @@ import uk.ac.ebi.impc_prod_tracker.conf.security.jwt.JwtTokenFilter;
 @EnableWebSecurity
 public class RootConfiguration extends WebSecurityConfigurerAdapter
 {
-    @Autowired
-    JwtTokenFilter jwtTokenFilter;
+    private JwtTokenFilter jwtTokenFilter;
+
+    public RootConfiguration(JwtTokenFilter jwtTokenFilter)
+    {
+        this.jwtTokenFilter = jwtTokenFilter;
+    }
 
     @Bean
     @Override
@@ -46,12 +47,6 @@ public class RootConfiguration extends WebSecurityConfigurerAdapter
     throws Exception
     {
         return super.authenticationManagerBean();
-    }
-
-    @Bean
-    public RestTemplate restTemplate(RestTemplateBuilder builder)
-    {
-        return builder.build();
     }
 
     @Override

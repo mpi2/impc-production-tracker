@@ -22,7 +22,6 @@ import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SigningKeyResolver;
 import io.jsonwebtoken.SigningKeyResolverAdapter;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
@@ -44,11 +43,14 @@ public class JwtTokenProvider
     private static final String AUTHORIZATION_HEADER = "Authorization";
     private static final String AUTHORIZATION_SCHEMA_NAME = "Bearer ";
 
-    @Autowired
     private PublicKeyProvider publicKeyProvider;
-
-    @Autowired
     private AapSystemSubject aapSystemSubject;
+
+    public JwtTokenProvider(PublicKeyProvider publicKeyProvider, AapSystemSubject aapSystemSubject)
+    {
+        this.publicKeyProvider = publicKeyProvider;
+        this.aapSystemSubject = aapSystemSubject;
+    }
 
     Authentication getAuthentication(String token)
     {

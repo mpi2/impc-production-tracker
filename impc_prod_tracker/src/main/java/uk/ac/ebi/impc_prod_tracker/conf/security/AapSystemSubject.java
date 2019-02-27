@@ -24,14 +24,14 @@ import uk.ac.ebi.impc_prod_tracker.domain.UserRole;
 import java.util.HashMap;
 import java.util.Map;
 
-@Component
-@Data
-@NoArgsConstructor
 /**
  * Implementation of SystemSubject where most of the user information is taken from a token (jwt). Additional
  * information needs to be loaded from the database.
  * @author Mauricio Martinez
  */
+@Component
+@Data
+@NoArgsConstructor
 public class AapSystemSubject implements SystemSubject
 {
     private Map<String, ProductionCentre> productionCentres = new HashMap<>();
@@ -56,6 +56,11 @@ public class AapSystemSubject implements SystemSubject
         productionCentres.put("newimitsuser3", pc3);
     }
 
+    /**
+     * Builds a AapSystemSubject object using the information in the claims of an already validated token (jwt).
+     * @param claims Claims in the token with information about the user.
+     * @return
+     */
     public AapSystemSubject buildSystemSubjectByTokenInfo(Claims claims)
     {
         init();
@@ -70,6 +75,10 @@ public class AapSystemSubject implements SystemSubject
         return systemSubject;
     }
 
+    /**
+     * Simple constructor that sets the minimal information for a user.
+     * @param login
+     */
     public AapSystemSubject(String login)
     {
         this.login = login;

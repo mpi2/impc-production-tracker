@@ -15,7 +15,6 @@
  *******************************************************************************/
 package uk.ac.ebi.impc_prod_tracker.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -36,10 +35,14 @@ import uk.ac.ebi.impc_prod_tracker.domain.login.AuthenticationRequest;
 public class AuthService
 {
     @Value("${local_authentication_url}")
-    private String LOCAL_AUTHENTICATION_URL = "https://explore.api.aai.ebi.ac.uk/auth";
+    private static final String LOCAL_AUTHENTICATION_URL = "https://explore.api.aai.ebi.ac.uk/auth";
 
-    @Autowired
-    RestTemplate restTemplate;
+    private RestTemplate restTemplate;
+
+    public AuthService(RestTemplate restTemplate)
+    {
+        this.restTemplate = restTemplate;
+    }
 
     /**
      * Return an authentication token if the user can be successfully logged into the local account at EBI AAP.

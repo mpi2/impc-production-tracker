@@ -15,7 +15,6 @@
  *******************************************************************************/
 package uk.ac.ebi.impc_prod_tracker.conf.security;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
@@ -34,11 +33,16 @@ import java.util.Base64;
 @Component
 public class PublicKeyProvider
 {
-    @Autowired
     private RestTemplate restTemplate;
     private PublicKey publicKey;
     private static final String BEGIN_CERT = "-----BEGIN CERTIFICATE-----";
     private static final String END_CERT = "-----END CERTIFICATE-----";
+
+    public PublicKeyProvider(RestTemplate restTemplate)
+    {
+        this.restTemplate = restTemplate;
+    }
+
     /**
      * Get the public key from an authentication service.
      * @param authenticationServiceUrl Url to get the public key.
