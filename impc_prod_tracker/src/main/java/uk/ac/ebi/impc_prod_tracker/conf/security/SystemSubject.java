@@ -13,26 +13,28 @@
  * language governing permissions and limitations under the
  * License.
  *******************************************************************************/
-package uk.ac.ebi.impc_prod_tracker.controller;
+package uk.ac.ebi.impc_prod_tracker.conf.security;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-import uk.ac.ebi.impc_prod_tracker.domain.Plan;
-import uk.ac.ebi.impc_prod_tracker.service.PlanService;
-import java.util.List;
+import uk.ac.ebi.impc_prod_tracker.domain.ProductionCentre;
+import uk.ac.ebi.impc_prod_tracker.domain.UserRole;
 
-@RestController
-@RequestMapping("/api")
-public class PlanController
+/**
+ * Information a subject in the system should have.
+ * @author Mauricio Martinez
+ */
+public interface SystemSubject
 {
-    @Autowired
-    private PlanService planService;
+    String getLogin();
 
-    @GetMapping(value = {"/plans"})
-    public List<Plan> getPlans()
-    {
-        return planService.getPlans();
-    }
+    String getName();
+
+    String getUserRefId();
+
+    String getEmail();
+
+    UserRole getRole();
+
+    ProductionCentre getProductionCentre();
+
+    ProductionCentre loadProductionCentre(String login);
 }

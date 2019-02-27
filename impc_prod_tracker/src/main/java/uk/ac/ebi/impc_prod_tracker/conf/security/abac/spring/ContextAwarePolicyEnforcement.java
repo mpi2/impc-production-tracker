@@ -21,7 +21,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import uk.ac.ebi.impc_prod_tracker.conf.security.abac.policy.PolicyEnforcement;
-
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -51,7 +50,6 @@ public class ContextAwarePolicyEnforcement
         Map<String, Object> environment = new HashMap<>();
 
         environment.put("time", new Date());
-        System.out.println("Checking permissions for " + auth.getPrincipal());
         return policy.check(auth.getPrincipal(), resource, permission, environment);
     }
 

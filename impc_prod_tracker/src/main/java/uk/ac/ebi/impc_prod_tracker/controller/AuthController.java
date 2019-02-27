@@ -19,16 +19,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import uk.ac.ebi.impc_prod_tracker.conf.security.jwt.JwtTokenProvider;
 import uk.ac.ebi.impc_prod_tracker.domain.login.AuthenticationRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.util.Arrays;
+import uk.ac.ebi.impc_prod_tracker.service.AuthService;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -47,7 +44,7 @@ public class AuthController
     AuthenticationManager authenticationManager;
 
     @Autowired
-    JwtTokenProvider jwtTokenProvider;
+    AuthService authService;
 
     /**
      * @api {post} /signin Signin a user to obtain a token.
@@ -55,13 +52,12 @@ public class AuthController
      * @apiGroup User
      */
     @PostMapping(value = {"/signin"})
-    public ResponseEntity signinReturningCookie(@RequestBody AuthenticationRequest data, HttpServletResponse response)
+    public ResponseEntity signinReturningCookie(@RequestBody AuthenticationRequest authenticationRequest)
     {
         try
         {
-            String username = data.getUsername();
-            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, data.getPassword()));
-            String token = jwtTokenProvider.createToken(username, Arrays.asList());
+            String username = authenticationRequest.getUsername();
+            String token = authService.getAuthenticationToken(authenticationRequest);
 
             Map<Object, Object> model = new HashMap<>();
             model.put("username", username);

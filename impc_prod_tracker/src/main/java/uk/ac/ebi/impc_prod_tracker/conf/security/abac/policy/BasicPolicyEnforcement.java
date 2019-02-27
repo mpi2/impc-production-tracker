@@ -21,7 +21,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.expression.EvaluationException;
 import org.springframework.stereotype.Component;
+import uk.ac.ebi.impc_prod_tracker.conf.security.AapSystemSubject;
 import uk.ac.ebi.impc_prod_tracker.conf.security.SecurityUser;
+import uk.ac.ebi.impc_prod_tracker.conf.security.SystemSubject;
 import uk.ac.ebi.impc_prod_tracker.domain.ImitsUser;
 import uk.ac.ebi.impc_prod_tracker.domain.UserRole;
 import java.util.ArrayList;
@@ -91,10 +93,8 @@ public class BasicPolicyEnforcement implements PolicyEnforcement
         return false;
     }
 
-    private SecurityUser getAnonymousSecurityUser()
+    private SystemSubject getAnonymousSecurityUser()
     {
-        SecurityUser securityUser =
-            new SecurityUser("anonymousUser", "", new ImitsUser("anonymousUser", UserRole.N0_ADMIN, null));
-        return  securityUser;
+        return new AapSystemSubject("anonymousUser");
     }
 }
