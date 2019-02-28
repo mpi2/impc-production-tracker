@@ -13,12 +13,23 @@
  * language governing permissions and limitations under the
  * License.
  *******************************************************************************/
-package uk.ac.ebi.impc_prod_tracker.service;
+package uk.ac.ebi.impc_prod_tracker.domain;
 
-import uk.ac.ebi.impc_prod_tracker.domain.Plan;
-import java.util.List;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NonNull;
 
-public interface PlanService
+/**
+ * PlanTest information
+ *
+ * @author Mauricio Martinez
+ */
+@Data
+@AllArgsConstructor
+public class PlanTest
 {
-    List<Plan> getPlans();
+    @NonNull private Integer id;
+    @NonNull private String gene;
+    @NonNull private ProductionCentre productionCentre;
+    @NonNull private String privacy;
 }
