@@ -4,8 +4,6 @@ import org.springframework.stereotype.Component;
 import uk.ac.ebi.impc_prod_tracker.data.entity.Centre;
 import uk.ac.ebi.impc_prod_tracker.data.repository.CentreRepository;
 
-import java.util.List;
-
 @Component
 public class CentreService {
 
