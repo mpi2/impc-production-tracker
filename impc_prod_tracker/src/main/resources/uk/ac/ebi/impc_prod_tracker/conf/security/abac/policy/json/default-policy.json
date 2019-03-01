@@ -6,6 +6,18 @@
     "condition": "true"
   },
   {
+    "name": "TEST access plan",
+    "description": "Test.",
+    "target": "action == 'READ_PLAN'",
+    "condition": "true"
+  },
+  {
+    "name": "TEST access plan",
+    "description": "Test.",
+    "target": "action == 'FILTER_PLAN'",
+    "condition": "resource.is_current"
+  },
+  {
     "name": "...",
     "description": "...",
     "target": "action == 'VIEW_NON_PUBLIC_DATA'",
