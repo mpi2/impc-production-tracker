@@ -25,5 +25,9 @@ hs_err_pid*
 # OSX
 .DS_Store
 
+# IntelliJ
+.idea/
+
 # Build folders to ignore
 /target/
+impc_prod_tracker/target/

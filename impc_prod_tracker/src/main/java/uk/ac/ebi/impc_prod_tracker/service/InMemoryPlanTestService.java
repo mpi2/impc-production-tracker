@@ -17,60 +17,60 @@ package uk.ac.ebi.impc_prod_tracker.service;
 
 import org.springframework.stereotype.Component;
 import uk.ac.ebi.impc_prod_tracker.conf.security.abac.spring.ContextAwarePolicyEnforcement;
-import uk.ac.ebi.impc_prod_tracker.domain.Plan;
+import uk.ac.ebi.impc_prod_tracker.domain.PlanTest;
 import uk.ac.ebi.impc_prod_tracker.domain.ProductionCentre;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Component
-public class InMemoryPlanService implements PlanService
+public class InMemoryPlanTestService implements PlanTestService
 {
     private ContextAwarePolicyEnforcement policy;
 
-    public InMemoryPlanService(ContextAwarePolicyEnforcement policy)
+    public InMemoryPlanTestService(ContextAwarePolicyEnforcement policy)
     {
         this.policy = policy;
     }
 
     @Override
-    public List<Plan> getPlans()
+    public List<PlanTest> getPlans()
     {
-        List<Plan> plans = getAllPlans();
-        return filterPlansWithPermissions(plans);
+        List<PlanTest> planTests = getAllPlans();
+        return filterPlansWithPermissions(planTests);
     }
 
-    private List<Plan> getAllPlans()
+    private List<PlanTest> getAllPlans()
     {
         ProductionCentre pc1 = new ProductionCentre(1, "PC1");
         ProductionCentre pc2 = new ProductionCentre(2, "PC2");
         ProductionCentre pc3 = new ProductionCentre(3, "PC3");
-        List<Plan> plans = new ArrayList<>();
-        plans.add(new Plan(1, "gene1", pc1,"public"));
-        plans.add(new Plan(2, "gene2", pc2,"private"));
-        plans.add(new Plan(3, "gene3", pc3,"protected"));
+        List<PlanTest> planTests = new ArrayList<>();
+        planTests.add(new PlanTest(1, "gene1", pc1,"public"));
+        planTests.add(new PlanTest(2, "gene2", pc2,"private"));
+        planTests.add(new PlanTest(3, "gene3", pc3,"protected"));
 
-        return plans;
+        return planTests;
     }
 
-    private List<Plan> getPublicPlans(List<Plan> plans)
+    private List<PlanTest> getPublicPlans(List<PlanTest> planTests)
     {
-        List<Plan> publicPlans = plans.stream()
+        List<PlanTest> publicPlanTests = planTests.stream()
             .filter(p -> p.getPrivacy().equals("public")).collect(Collectors.toList());
-        return publicPlans;
+        return publicPlanTests;
     }
 
-    private List<Plan> filterPlansWithPermissions(List<Plan> plans)
+    private List<PlanTest> filterPlansWithPermissions(List<PlanTest> planTests)
     {
-        List<Plan> filteredPlans = plans;
+        List<PlanTest> filteredPlanTests = planTests;
         boolean isUserAnonymous = policy.isUserAnonymous();
         if (isUserAnonymous)
         {
-            filteredPlans = getPublicPlans(plans);
+            filteredPlanTests = getPublicPlans(planTests);
         }
         else
         {
-            for (Plan p : plans)
+            for (PlanTest p : planTests)
             {
                 if (!policy.hasPermission(p, "PLAN_LIST"))
                 {
@@ -78,6 +78,6 @@ public class InMemoryPlanService implements PlanService
                 }
             }
         }
-        return filteredPlans;
+        return filteredPlanTests;
     }
 }
