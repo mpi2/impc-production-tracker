@@ -15,7 +15,7 @@
     "name": "TEST access plan",
     "description": "Test.",
     "target": "action == 'FILTER_PLAN'",
-    "condition": "resource.is_current"
+    "condition": "resource.isActive"
   },
   {
     "name": "...",
