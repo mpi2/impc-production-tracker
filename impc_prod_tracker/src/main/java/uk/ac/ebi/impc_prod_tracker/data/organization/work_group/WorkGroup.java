@@ -30,6 +30,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.SequenceGenerator;
 import java.util.Set;
 
 @NoArgsConstructor(access= AccessLevel.PRIVATE, force=true)
@@ -39,7 +40,8 @@ import java.util.Set;
 public class WorkGroup extends BaseEntity
 {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @SequenceGenerator(name = "workGroupSeq", sequenceName = "WORK_GROUP_SEQ")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "workGroupSeq")
     private Long id;
 
     private String name;

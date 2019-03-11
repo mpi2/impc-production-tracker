@@ -20,6 +20,12 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import uk.ac.ebi.impc_prod_tracker.data.BaseEntity;
+import uk.ac.ebi.impc_prod_tracker.data.project.plan.flag.PlanFlag;
+import uk.ac.ebi.impc_prod_tracker.data.project.plan.privacy.PlanPrivacy;
+import uk.ac.ebi.impc_prod_tracker.data.project.plan.protocol.Protocol;
+import uk.ac.ebi.impc_prod_tracker.data.project.plan.status.PlanStatus;
+import uk.ac.ebi.impc_prod_tracker.data.project.plan.type.PlanType;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.Set;
@@ -31,7 +37,8 @@ import java.util.Set;
 public class Plan extends BaseEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @SequenceGenerator(name = "planSeq", sequenceName = "PLAN_SEQ")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "planSeq")
     private Long id;
 
     @NotNull
@@ -40,11 +47,11 @@ public class Plan extends BaseEntity {
     private Long parentPlanId;
 
     @NotNull
-    @ManyToOne(targetEntity=PlanType.class)
+    @ManyToOne(targetEntity= PlanType.class)
     private PlanType planType;
 
     @NotNull
-    @ManyToOne(targetEntity=PlanPrivacy.class)
+    @ManyToOne(targetEntity= PlanPrivacy.class)
     private PlanPrivacy planPrivacy;
 
     @ManyToMany
@@ -53,5 +60,16 @@ public class Plan extends BaseEntity {
         joinColumns = @JoinColumn(name = "plan_id"),
         inverseJoinColumns = @JoinColumn(name = "plan_flag_id"))
     private Set<PlanFlag> planFlags;
+
+    @ManyToMany
+    @JoinTable(
+        name = "plan_protocol",
+        joinColumns = @JoinColumn(name = "plan_id"),
+        inverseJoinColumns = @JoinColumn(name = "protocol_id"))
+    private Set<Protocol> protocols;
+
+    @NotNull
+    @ManyToOne(targetEntity= PlanStatus.class)
+    private PlanStatus status;
 
 }

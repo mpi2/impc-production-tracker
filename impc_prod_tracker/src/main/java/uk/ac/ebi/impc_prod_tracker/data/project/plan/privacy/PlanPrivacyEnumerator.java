@@ -13,8 +13,11 @@
  * language governing permissions and limitations under the
  * License.
  *******************************************************************************/
-package uk.ac.ebi.impc_prod_tracker.data.project.plan;
+package uk.ac.ebi.impc_prod_tracker.data.project.plan.privacy;
 
-public enum PlanFlagEnumerator
-{
+public enum PlanPrivacyEnumerator {
+    PUBLIC,
+    PROTECTED,
+    RESTRICTED,
+    PRIVATE
 }

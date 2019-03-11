@@ -13,33 +13,34 @@
  * language governing permissions and limitations under the
  * License.
  *******************************************************************************/
-package uk.ac.ebi.impc_prod_tracker.data.organization.role;
+package uk.ac.ebi.impc_prod_tracker.data.project.plan.type;
 
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.envers.Audited;
 import uk.ac.ebi.impc_prod_tracker.data.BaseEntity;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.SequenceGenerator;
+import javax.validation.constraints.NotNull;
 
 @NoArgsConstructor(access= AccessLevel.PRIVATE, force=true)
 @Getter
 @Setter
 @Entity
-@Audited
-public class Role extends BaseEntity
+public class PlanType extends BaseEntity
 {
     @Id
-    @SequenceGenerator(name = "roleSeq", sequenceName = "ROLE_SEQ")
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "roleSeq")
+    @SequenceGenerator(name = "planTypeSeq", sequenceName = "PLAN_TYPE_SEQ")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "planTypeSeq")
     private Long id;
 
-    private String name;
-
-    private String description;
+    @NotNull
+    @Enumerated(EnumType.STRING)
+    private PlanTypeEnumerator name;
 }

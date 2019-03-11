@@ -31,6 +31,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.SequenceGenerator;
 import javax.validation.constraints.NotNull;
 import java.util.Set;
 
@@ -42,7 +43,8 @@ import java.util.Set;
 public class Person extends BaseEntity
 {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @SequenceGenerator(name = "personSeq", sequenceName = "PERSON_SEQ")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "personSeq")
     private Long id;
 
     private String authId;
