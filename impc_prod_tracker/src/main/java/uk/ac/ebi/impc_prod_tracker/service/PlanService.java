@@ -1,8 +1,8 @@
 package uk.ac.ebi.impc_prod_tracker.service;
 
 import org.springframework.stereotype.Component;
-import uk.ac.ebi.impc_prod_tracker.data.entity.Plan;
-import uk.ac.ebi.impc_prod_tracker.data.repository.PlanRepository;
+import uk.ac.ebi.impc_prod_tracker.data.project.plan.Plan;
+import uk.ac.ebi.impc_prod_tracker.data.project.plan.PlanRepository;
 
 @Component
 public class PlanService {

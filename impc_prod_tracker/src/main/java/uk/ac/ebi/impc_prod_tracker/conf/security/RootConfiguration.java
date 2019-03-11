@@ -17,6 +17,7 @@ package uk.ac.ebi.impc_prod_tracker.conf.security;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -32,6 +33,7 @@ import uk.ac.ebi.impc_prod_tracker.conf.security.jwt.JwtTokenFilter;
  */
 @Configuration
 @EnableWebSecurity
+@EnableJpaAuditing
 public class RootConfiguration extends WebSecurityConfigurerAdapter
 {
     private JwtTokenFilter jwtTokenFilter;
