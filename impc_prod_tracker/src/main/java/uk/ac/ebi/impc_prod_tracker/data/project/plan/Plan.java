@@ -25,7 +25,6 @@ import uk.ac.ebi.impc_prod_tracker.data.project.plan.privacy.PlanPrivacy;
 import uk.ac.ebi.impc_prod_tracker.data.project.plan.protocol.Protocol;
 import uk.ac.ebi.impc_prod_tracker.data.project.plan.status.PlanStatus;
 import uk.ac.ebi.impc_prod_tracker.data.project.plan.type.PlanType;
-
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.Set;
