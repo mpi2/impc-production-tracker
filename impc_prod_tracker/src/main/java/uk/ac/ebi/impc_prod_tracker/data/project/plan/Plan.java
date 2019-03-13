@@ -20,11 +20,18 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import uk.ac.ebi.impc_prod_tracker.data.BaseEntity;
+import uk.ac.ebi.impc_prod_tracker.data.biology.plan_reagent.PlanReagent;
+import uk.ac.ebi.impc_prod_tracker.data.organization.consortium.Consortium;
+import uk.ac.ebi.impc_prod_tracker.data.organization.funder.Funder;
+import uk.ac.ebi.impc_prod_tracker.data.organization.work_group.WorkGroup;
+import uk.ac.ebi.impc_prod_tracker.data.organization.work_unit.WorkUnit;
 import uk.ac.ebi.impc_prod_tracker.data.project.plan.flag.PlanFlag;
 import uk.ac.ebi.impc_prod_tracker.data.project.plan.privacy.PlanPrivacy;
 import uk.ac.ebi.impc_prod_tracker.data.project.plan.protocol.Protocol;
 import uk.ac.ebi.impc_prod_tracker.data.project.plan.status.PlanStatus;
 import uk.ac.ebi.impc_prod_tracker.data.project.plan.type.PlanType;
+import uk.ac.ebi.impc_prod_tracker.data.project.plan_location.PlanLocation;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.Set;
@@ -53,6 +60,18 @@ public class Plan extends BaseEntity {
     @ManyToOne(targetEntity= PlanPrivacy.class)
     private PlanPrivacy planPrivacy;
 
+    @ManyToOne(targetEntity = WorkUnit.class)
+    private WorkUnit workUnit;
+
+    @ManyToOne(targetEntity = WorkGroup.class)
+    private WorkGroup workGroup;
+
+    @ManyToOne(targetEntity = Consortium.class)
+    private Consortium consortium;
+
+    @ManyToOne(targetEntity = Funder.class)
+    private Funder funder;
+
     @ManyToMany
     @JoinTable(
         name = "plan_flag_relation",
@@ -71,4 +90,9 @@ public class Plan extends BaseEntity {
     @ManyToOne(targetEntity= PlanStatus.class)
     private PlanStatus status;
 
+    @OneToMany(mappedBy = "plan")
+    private Set<PlanLocation> planLocations;
+
+    @OneToMany(mappedBy = "plan")
+    private Set<PlanReagent> planReagents;
 }

@@ -8,6 +8,8 @@ import lombok.Setter;
 import uk.ac.ebi.impc_prod_tracker.data.BaseEntity;
 import uk.ac.ebi.impc_prod_tracker.data.biology.location.Location;
 import uk.ac.ebi.impc_prod_tracker.data.project.plan.Plan;
+import uk.ac.ebi.impc_prod_tracker.data.project.plan_location.plan_location_type.PlanLocationType;
+
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.IdClass;
@@ -16,8 +18,6 @@ import javax.persistence.ManyToOne;
 import java.io.Serializable;
 
 @NoArgsConstructor(access= AccessLevel.PRIVATE, force=true)
-@Getter
-@Setter
 @Data
 @Entity
 @IdClass(PlanLocation.class)
@@ -35,5 +35,6 @@ public class PlanLocation extends BaseEntity implements Serializable
 
     private int orderNumber;
 
-    private Boolean targetedSequence;
+    @ManyToOne(targetEntity = PlanLocationType.class)
+    private PlanLocationType planLocationType;
 }
