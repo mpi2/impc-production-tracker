@@ -13,11 +13,9 @@
  * language governing permissions and limitations under the
  * License.
  *******************************************************************************/
-package uk.ac.ebi.impc_prod_tracker.data.project.plan;
+package uk.ac.ebi.impc_prod_tracker.data.project.plan.privacy;
 
-public enum PlanPrivacyEnumerator {
-    PUBLIC,
-    PROTECTED,
-    RESTRICTED,
-    PRIVATE
+import org.springframework.data.repository.CrudRepository;
+
+public interface PlanPrivacyRepository extends CrudRepository<PlanPrivacy, Long> {
 }

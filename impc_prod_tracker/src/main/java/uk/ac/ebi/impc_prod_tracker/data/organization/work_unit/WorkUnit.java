@@ -31,6 +31,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.SequenceGenerator;
 import java.util.Set;
 
 @NoArgsConstructor(access= AccessLevel.PRIVATE, force=true)
@@ -40,7 +41,8 @@ import java.util.Set;
 public class WorkUnit extends BaseEntity
 {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @SequenceGenerator(name = "workUnitSeq", sequenceName = "WORK_UNIT_SEQ")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "workUnitSeq")
     private Long id;
 
     private String name;

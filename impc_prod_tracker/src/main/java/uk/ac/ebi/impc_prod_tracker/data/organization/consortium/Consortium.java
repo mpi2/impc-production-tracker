@@ -31,6 +31,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.SequenceGenerator;
 import java.util.Set;
 
 @NoArgsConstructor(access= AccessLevel.PRIVATE, force=true)
@@ -41,7 +42,8 @@ import java.util.Set;
 public class Consortium extends BaseEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @SequenceGenerator(name = "consortiumSeq", sequenceName = "CONSORTIUM_SEQ")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "consortiumSeq")
     private Long id;
 
     private String name;

@@ -31,6 +31,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.SequenceGenerator;
 import java.util.Set;
 
 @NoArgsConstructor(access= AccessLevel.PRIVATE, force=true)
@@ -40,7 +41,8 @@ import java.util.Set;
 public class Funder extends BaseEntity
 {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @SequenceGenerator(name = "funderSeq", sequenceName = "FUNDER_SEQ")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "funderSeq")
     private Long id;
 
     @Column(unique = true)

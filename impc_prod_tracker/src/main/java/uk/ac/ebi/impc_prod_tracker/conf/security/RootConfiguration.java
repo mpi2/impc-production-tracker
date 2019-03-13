@@ -33,6 +33,7 @@ import uk.ac.ebi.impc_prod_tracker.conf.security.jwt.JwtTokenFilter;
  */
 @Configuration
 @EnableWebSecurity
+//@EnableJpaAuditing(auditorAwareRef = "auditorProvider")
 @EnableJpaAuditing
 public class RootConfiguration extends WebSecurityConfigurerAdapter
 {
@@ -60,10 +61,12 @@ public class RootConfiguration extends WebSecurityConfigurerAdapter
             .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
             .and()
             .authorizeRequests()
+            //.antMatchers("*tracking*").permitAll()
             .antMatchers("/auth/signin").permitAll()
             .antMatchers("/api/plans").permitAll()
             .anyRequest().authenticated()
             .and()
-            .addFilterBefore(jwtTokenFilter, UsernamePasswordAuthenticationFilter.class);
+            .addFilterBefore(jwtTokenFilter, UsernamePasswordAuthenticationFilter.class)
+        ;
     }
 }

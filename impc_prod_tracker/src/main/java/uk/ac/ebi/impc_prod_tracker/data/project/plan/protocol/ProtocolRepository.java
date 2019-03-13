@@ -13,32 +13,10 @@
  * language governing permissions and limitations under the
  * License.
  *******************************************************************************/
-package uk.ac.ebi.impc_prod_tracker.data.project.plan;
+package uk.ac.ebi.impc_prod_tracker.data.project.plan.protocol;
 
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import uk.ac.ebi.impc_prod_tracker.data.BaseEntity;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.validation.constraints.NotNull;
+import org.springframework.data.repository.CrudRepository;
 
-@NoArgsConstructor(access= AccessLevel.PRIVATE, force=true)
-@Getter
-@Setter
-@Entity
-public class PlanPrivacy extends BaseEntity
+public interface ProtocolRepository extends CrudRepository<Protocol, Long>
 {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
-
-    @NotNull
-    @Enumerated(EnumType.STRING)
-    private PlanPrivacyEnumerator name;
 }

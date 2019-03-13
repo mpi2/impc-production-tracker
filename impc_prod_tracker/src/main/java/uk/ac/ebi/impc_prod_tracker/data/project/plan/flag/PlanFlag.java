@@ -13,20 +13,20 @@
  * language governing permissions and limitations under the
  * License.
  *******************************************************************************/
-package uk.ac.ebi.impc_prod_tracker.data.project.plan;
+package uk.ac.ebi.impc_prod_tracker.data.project.plan.flag;
 
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import uk.ac.ebi.impc_prod_tracker.data.BaseEntity;
+import uk.ac.ebi.impc_prod_tracker.data.project.plan.Plan;
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
+import javax.persistence.SequenceGenerator;
 import javax.validation.constraints.NotNull;
 import java.util.Set;
 
@@ -36,12 +36,12 @@ import java.util.Set;
 @Entity
 public class PlanFlag extends BaseEntity {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @SequenceGenerator(name = "planFlagSeq", sequenceName = "PLAN_FLAG_SEQ")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "planFlagSeq")
     private Long id;
 
     @NotNull
-    @Enumerated(EnumType.STRING)
-    private PlanFlagEnumerator name;
+    private String name;
 
     @ManyToMany(mappedBy = "planFlags")
     private Set<Plan> plans;

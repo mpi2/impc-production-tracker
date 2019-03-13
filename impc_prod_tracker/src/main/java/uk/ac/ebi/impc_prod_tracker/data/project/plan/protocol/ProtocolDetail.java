@@ -13,33 +13,35 @@
  * language governing permissions and limitations under the
  * License.
  *******************************************************************************/
-package uk.ac.ebi.impc_prod_tracker.data.organization.role;
+package uk.ac.ebi.impc_prod_tracker.data.project.plan.protocol;
 
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.envers.Audited;
 import uk.ac.ebi.impc_prod_tracker.data.BaseEntity;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
+import javax.validation.constraints.NotNull;
 
 @NoArgsConstructor(access= AccessLevel.PRIVATE, force=true)
 @Getter
 @Setter
 @Entity
-@Audited
-public class Role extends BaseEntity
+public class ProtocolDetail extends BaseEntity
 {
     @Id
-    @SequenceGenerator(name = "roleSeq", sequenceName = "ROLE_SEQ")
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "roleSeq")
+    @SequenceGenerator(name = "protocolDetailSeq", sequenceName = "PROTOCOL_DETAIL_SEQ")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "protocolDetailSeq")
     private Long id;
 
-    private String name;
+    @NotNull
+    @ManyToOne(targetEntity = Protocol.class)
+    private Protocol protocol;
 
-    private String description;
+    private String protocolUrl;
 }
