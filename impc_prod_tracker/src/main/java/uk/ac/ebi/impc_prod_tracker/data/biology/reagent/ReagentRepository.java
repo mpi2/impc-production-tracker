@@ -13,9 +13,9 @@
  * language governing permissions and limitations under the
  * License.
  *******************************************************************************/
-package uk.ac.ebi.impc_prod_tracker.data.biology.human_disease_synonym;
+package uk.ac.ebi.impc_prod_tracker.data.biology.reagent;
 
 import org.springframework.data.repository.CrudRepository;
 
-public interface HumanDiseaseSynonymRepository extends CrudRepository<HumanDiseaseSynonym, Long> {
+public interface ReagentRepository extends CrudRepository<Reagent, Long> {
 }

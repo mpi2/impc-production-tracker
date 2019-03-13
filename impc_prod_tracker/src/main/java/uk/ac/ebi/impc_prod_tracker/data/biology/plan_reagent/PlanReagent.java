@@ -13,37 +13,36 @@
  * language governing permissions and limitations under the
  * License.
  *******************************************************************************/
-package uk.ac.ebi.impc_prod_tracker.data.biology.mouse_gene_synomym;
+package uk.ac.ebi.impc_prod_tracker.data.biology.plan_reagent;
 
 import lombok.AccessLevel;
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 import uk.ac.ebi.impc_prod_tracker.data.BaseEntity;
-import uk.ac.ebi.impc_prod_tracker.data.biology.mouse_gene.MouseGene;
+import uk.ac.ebi.impc_prod_tracker.data.biology.reagent.Reagent;
+import uk.ac.ebi.impc_prod_tracker.data.project.plan.Plan;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToMany;
-import javax.persistence.SequenceGenerator;
-import java.util.Set;
+import javax.persistence.IdClass;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import java.io.Serializable;
 
 @NoArgsConstructor(access= AccessLevel.PRIVATE, force=true)
-@Getter
-@Setter
+@Data
 @Entity
-public class MouseGeneSynonym extends BaseEntity
+@IdClass(PlanReagent.class)
+public class PlanReagent extends BaseEntity implements Serializable
 {
     @Id
-    @SequenceGenerator(name = "mouseGeneSynonymSeq", sequenceName = "MOUSE_GENE_SYNONYM_SEQ")
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "mouseGeneSynonymSeq")
-    private Long id;
+    @ManyToOne
+    @JoinColumn
+    private Plan plan;
 
-    private String synonym;
+    @Id
+    @ManyToOne
+    @JoinColumn
+    private Reagent reagent;
 
-    private String name;
-
-    @ManyToMany(mappedBy = "mouseGeneSynonyms")
-    private Set<MouseGene> mouseGenes;
+    private Integer concentration;
 }
