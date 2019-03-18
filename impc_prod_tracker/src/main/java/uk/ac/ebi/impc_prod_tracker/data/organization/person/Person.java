@@ -56,8 +56,8 @@ public class Person extends BaseEntity
 
     private Boolean isActive;
 
-    @ManyToMany(mappedBy = "people")
-    private Set<WorkUnit> workUnits;
+    @ManyToOne(targetEntity = WorkUnit.class)
+    private WorkUnit workUnit;
 
     @ManyToMany(mappedBy = "people")
     private Set<Institute> institutes;

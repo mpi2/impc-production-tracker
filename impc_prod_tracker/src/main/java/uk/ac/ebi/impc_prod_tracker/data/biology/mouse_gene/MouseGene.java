@@ -31,7 +31,6 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
-import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
@@ -67,13 +66,6 @@ public class MouseGene extends BaseEntity
     private String strand;
 
     private String genomeBuild;
-
-    @ManyToMany
-    @JoinTable(
-        name = "mouse_gene_allele",
-        joinColumns = @JoinColumn(name = "mouse_gene_id"),
-        inverseJoinColumns = @JoinColumn(name = "mouse_allele_id"))
-    private Set<MouseAllele> mouseAlleles;
 
     @ManyToMany
     @JoinTable(

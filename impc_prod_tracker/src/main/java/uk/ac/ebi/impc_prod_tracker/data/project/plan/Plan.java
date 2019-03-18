@@ -47,6 +47,8 @@ public class Plan extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "planSeq")
     private Long id;
 
+    private String pin;
+
     @NotNull
     private Boolean isActive;
 
