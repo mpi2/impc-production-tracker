@@ -23,7 +23,6 @@ import uk.ac.ebi.impc_prod_tracker.data.BaseEntity;
 import uk.ac.ebi.impc_prod_tracker.data.biology.allele_type.AlleleType;
 import uk.ac.ebi.impc_prod_tracker.data.biology.location.Location;
 import uk.ac.ebi.impc_prod_tracker.data.biology.mouse_allele_synonym.MouseAlleleSynonym;
-import uk.ac.ebi.impc_prod_tracker.data.biology.mouse_gene.MouseGene;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -59,9 +58,6 @@ public class MouseAllele extends BaseEntity
 
     @ManyToOne(targetEntity = Location.class)
     private Location location;
-
-    @ManyToMany(mappedBy = "mouseAlleles")
-    private Set<MouseGene> mouseGenes;
 
     @ManyToMany
     @JoinTable(

@@ -28,9 +28,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import java.util.Set;
 
@@ -50,11 +49,7 @@ public class WorkUnit extends BaseEntity
     @Column(unique = true)
     private String code;
 
-    @ManyToMany
-    @JoinTable(
-        name = "production_unit_person",
-        joinColumns = @JoinColumn(name = "production_unit_id"),
-        inverseJoinColumns = @JoinColumn(name = "person_id"))
+    @OneToMany(mappedBy = "workUnit")
     private Set<Person> people;
 
     @ManyToMany(mappedBy = "workUnits")
