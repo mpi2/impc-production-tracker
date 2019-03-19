@@ -25,6 +25,7 @@ import io.jsonwebtoken.SigningKeyResolverAdapter;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
+import uk.ac.ebi.impc_prod_tracker.conf.exeption_management.OperationFailedException;
 import uk.ac.ebi.impc_prod_tracker.conf.security.AapSystemSubject;
 import uk.ac.ebi.impc_prod_tracker.conf.security.PublicKeyProvider;
 import uk.ac.ebi.impc_prod_tracker.conf.security.SystemSubject;
@@ -42,6 +43,11 @@ public class JwtTokenProvider
 {
     private static final String AUTHORIZATION_HEADER = "Authorization";
     private static final String AUTHORIZATION_SCHEMA_NAME = "Bearer ";
+    private static final String INVALID_TOKEN_MESSAGE = "Expired or invalid JWT token.";
+    private static final String INVALID_TOKEN_DEBUG_MESSAGE =
+        "Tokens expire after a while (usually 1 hour), please create a new one. Also check that you are using the " +
+            "whole token in the authentication header. Contact your administrator if after checking this " +
+            "you keep receiving the same error.";
 
     private PublicKeyProvider publicKeyProvider;
     private AapSystemSubject aapSystemSubject;
@@ -108,7 +114,7 @@ public class JwtTokenProvider
         }
         catch (JwtException | IllegalArgumentException e)
         {
-            throw new InvalidJwtAuthenticationException("Expired or invalid JWT token");
+            throw new OperationFailedException(INVALID_TOKEN_MESSAGE, INVALID_TOKEN_DEBUG_MESSAGE);
         }
     }
 

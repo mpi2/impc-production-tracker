@@ -23,7 +23,9 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import uk.ac.ebi.impc_prod_tracker.conf.exeption_management.ExceptionHandlerFilter;
 import uk.ac.ebi.impc_prod_tracker.conf.security.jwt.JwtTokenFilter;
 
 /**
@@ -33,23 +35,30 @@ import uk.ac.ebi.impc_prod_tracker.conf.security.jwt.JwtTokenFilter;
  */
 @Configuration
 @EnableWebSecurity
-//@EnableJpaAuditing(auditorAwareRef = "auditorProvider")
 @EnableJpaAuditing
 public class RootConfiguration extends WebSecurityConfigurerAdapter
 {
     private JwtTokenFilter jwtTokenFilter;
+    private ExceptionHandlerFilter exceptionHandlerFilter;
 
-    public RootConfiguration(JwtTokenFilter jwtTokenFilter)
+
+    public RootConfiguration(
+        JwtTokenFilter jwtTokenFilter, ExceptionHandlerFilter exceptionHandlerFilter)
     {
         this.jwtTokenFilter = jwtTokenFilter;
+        this.exceptionHandlerFilter = exceptionHandlerFilter;
+
     }
 
     @Bean
     @Override
-    public AuthenticationManager authenticationManagerBean()
-    throws Exception
-    {
-        return super.authenticationManagerBean();
+    protected AuthenticationManager authenticationManager() throws Exception {
+        return super.authenticationManager();
+    }
+
+    @Bean
+    public BCryptPasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
     }
 
     @Override
@@ -67,6 +76,7 @@ public class RootConfiguration extends WebSecurityConfigurerAdapter
             .anyRequest().authenticated()
             .and()
             .addFilterBefore(jwtTokenFilter, UsernamePasswordAuthenticationFilter.class)
+            .addFilterBefore(exceptionHandlerFilter, JwtTokenFilter.class)
         ;
     }
 }

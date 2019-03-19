@@ -16,13 +16,12 @@
 package uk.ac.ebi.impc_prod_tracker.controller;
 
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import uk.ac.ebi.impc_prod_tracker.conf.exeption_management.OperationFailedException;
 import uk.ac.ebi.impc_prod_tracker.domain.login.AuthenticationRequest;
 import uk.ac.ebi.impc_prod_tracker.service.AuthService;
 import java.util.HashMap;
@@ -39,12 +38,11 @@ import static org.springframework.http.ResponseEntity.ok;
 @RequestMapping("/auth")
 public class AuthController
 {
-    private AuthenticationManager authenticationManager;
+    private static final String AUTHENTICATION_ERROR = "Invalid User/Password provided.";
     private AuthService authService;
 
-    public AuthController(AuthenticationManager authenticationManager, AuthService authService)
+    public AuthController( AuthService authService)
     {
-        this.authenticationManager = authenticationManager;
         this.authService = authService;
     }
 
@@ -69,7 +67,7 @@ public class AuthController
         }
         catch (AuthenticationException e)
         {
-            throw new BadCredentialsException("Invalid username/password supplied");
+            throw new OperationFailedException(AUTHENTICATION_ERROR);
         }
     }
 }
