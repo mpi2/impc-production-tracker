@@ -13,26 +13,29 @@
  * language governing permissions and limitations under the
  * License.
  *******************************************************************************/
-package uk.ac.ebi.impc_prod_tracker.conf.security;
+package uk.ac.ebi.impc_prod_tracker.conf.exeption_management;
 
-import uk.ac.ebi.impc_prod_tracker.data.organization.role.Role;
-import uk.ac.ebi.impc_prod_tracker.data.organization.work_unit.WorkUnit;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 /**
- * Information a subject in the system should have.
- * @author Mauricio Martinez
+ * Class to keep details for Validation Errors.
+ * Taken from https://github.com/brunocleite/spring-boot-exception-handling.
  */
-public interface SystemSubject
+@Data
+@EqualsAndHashCode(callSuper = false)
+@AllArgsConstructor
+public class ApiValidationException extends ApiSubException
 {
-    String getLogin();
+    private String object;
+    private String field;
+    private Object rejectedValue;
+    private String message;
 
-    String getName();
-
-    String getUserRefId();
-
-    String getEmail();
-
-    Role getRole();
-
-    WorkUnit getWorkUnit();
+    ApiValidationException(String object, String message)
+    {
+        this.object = object;
+        this.message = message;
+    }
 }

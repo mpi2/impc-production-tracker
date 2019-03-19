@@ -18,11 +18,13 @@ package uk.ac.ebi.impc_prod_tracker.conf.security;
 import io.jsonwebtoken.Claims;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import uk.ac.ebi.impc_prod_tracker.domain.ProductionCentre;
-import uk.ac.ebi.impc_prod_tracker.domain.UserRole;
-import java.util.HashMap;
-import java.util.Map;
+import uk.ac.ebi.impc_prod_tracker.conf.exeption_management.OperationFailedException;
+import uk.ac.ebi.impc_prod_tracker.data.organization.person.Person;
+import uk.ac.ebi.impc_prod_tracker.data.organization.person.PersonRepository;
+import uk.ac.ebi.impc_prod_tracker.data.organization.role.Role;
+import uk.ac.ebi.impc_prod_tracker.data.organization.work_unit.WorkUnit;
 
 /**
  * Implementation of SystemSubject where most of the user information is taken from a token (jwt). Additional
@@ -34,45 +36,41 @@ import java.util.Map;
 @NoArgsConstructor
 public class AapSystemSubject implements SystemSubject
 {
-    private Map<String, ProductionCentre> productionCentres = new HashMap<>();
-
     private String login;
     private String name;
     private String userRefId;
     private String email;
-    private UserRole role;
-    private ProductionCentre productionCentre;
+    private Role role;
+    private WorkUnit workUnit;
+    private PersonRepository personRepository;
+    private Person person;
+    private final static String NOT_USER_INFORMATION_MESSAGE = "There is not associated information in the system for " +
+        "the user [%s].";
+    private final static String NOT_USER_INFORMATION_DEBUG_MESSAGE =
+        "The user [%s] with reference id [%s] was successfully logged in but there is no related information for them " +
+            "in the system. Please contact an administrator.";
 
-    private void init()
+    @Autowired
+    public AapSystemSubject(PersonRepository personRepository)
     {
-        ProductionCentre pc1 = new ProductionCentre(1, "PC1");
-        ProductionCentre pc2 = new ProductionCentre(2, "PC2");
-        ProductionCentre pc3 = new ProductionCentre(3, "PC3");
-        productionCentres = new HashMap<>();
-
-        productionCentres.put("newimitsadmin", pc1);
-        productionCentres.put("newimitsuser1", pc1);
-        productionCentres.put("newimitsuser2", pc2);
-        productionCentres.put("newimitsuser3", pc3);
+        this.personRepository = personRepository;
     }
 
     /**
      * Builds a AapSystemSubject object using the information in the claims of an already validated token (jwt).
+     * Then complements the information with additional data taken from the database.
      * @param claims Claims in the token with information about the user.
-     * @return
+     * @return SystemSubject with the information.
      */
     public AapSystemSubject buildSystemSubjectByTokenInfo(Claims claims)
     {
-        init();
-        AapSystemSubject systemSubject = new AapSystemSubject();
-        systemSubject.setLogin(claims.get("nickname", String.class));
-        systemSubject.setName(claims.get("name", String.class));
-        systemSubject.setUserRefId(claims.getSubject());
-        systemSubject.setEmail(claims.get("email", String.class));
-        systemSubject.setRole(UserRole.N0_ADMIN);
-        systemSubject.setProductionCentre(loadProductionCentre(systemSubject.getLogin()));
+        login = claims.get("nickname", String.class);
+        name = claims.get("name", String.class);
+        userRefId = claims.getSubject();
+        email = claims.get("email", String.class);
+        loadPersonInformation(userRefId);
 
-        return systemSubject;
+        return this;
     }
 
     /**
@@ -82,12 +80,18 @@ public class AapSystemSubject implements SystemSubject
     public AapSystemSubject(String login)
     {
         this.login = login;
-        this.role = UserRole.N0_ADMIN;
     }
 
-    @Override
-    public ProductionCentre loadProductionCentre(String login)
+    private void loadPersonInformation(String authId)
     {
-        return productionCentres.get(login);
+        this.person = personRepository.findPersonByAuthIdEquals(authId);
+        if (person == null)
+        {
+            throw new OperationFailedException(
+                String.format(NOT_USER_INFORMATION_MESSAGE, login),
+                String.format(NOT_USER_INFORMATION_DEBUG_MESSAGE, login, authId));
+        }
+        role = person.getRole();
+        workUnit = person.getWorkUnit();
     }
 }

@@ -13,26 +13,23 @@
  * language governing permissions and limitations under the
  * License.
  *******************************************************************************/
-package uk.ac.ebi.impc_prod_tracker.conf.security;
-
-import uk.ac.ebi.impc_prod_tracker.data.organization.role.Role;
-import uk.ac.ebi.impc_prod_tracker.data.organization.work_unit.WorkUnit;
+package uk.ac.ebi.impc_prod_tracker.conf.exeption_management;
 
 /**
- * Information a subject in the system should have.
- * @author Mauricio Martinez
+ * Classes implementing this interface should receive an exception and provide an error and debug message from it,
+ * ignoring unnecessary details.
  */
-public interface SystemSubject
+public interface ExceptionFormatter
 {
-    String getLogin();
+    /**
+     * Gets a formatted exception message.
+     * @return String with formatted exception message.
+     */
+    String getMessage();
 
-    String getName();
-
-    String getUserRefId();
-
-    String getEmail();
-
-    Role getRole();
-
-    WorkUnit getWorkUnit();
+    /**
+     * Gets a formatted exception debug message.
+     * @return String with formatted exception debug message.
+     */
+    String getDebugMessage();
 }

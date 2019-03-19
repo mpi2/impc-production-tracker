@@ -13,18 +13,36 @@
  * language governing permissions and limitations under the
  * License.
  *******************************************************************************/
-package uk.ac.ebi.impc_prod_tracker.conf.security.jwt;
+package uk.ac.ebi.impc_prod_tracker.conf.exeption_management;
 
-import org.springframework.security.core.AuthenticationException;
+import lombok.Getter;
 
 /**
- * Exception for invalid JWT.
+ * Class to manage the Exceptions in the application
+ *
  * @author Mauricio Martinez
  */
-public class InvalidJwtAuthenticationException extends AuthenticationException
+@Getter
+public class OperationFailedException extends RuntimeException
 {
-    public InvalidJwtAuthenticationException(String e)
+    private String debugMessage;
+    private Throwable cause;
+
+    public OperationFailedException(String message)
     {
-        super(e);
+        super(message);
+    }
+
+    public OperationFailedException(String message, Throwable cause)
+    {
+        this(message);
+        this.cause = cause;
+        this.debugMessage = cause.getLocalizedMessage();
+    }
+
+    public OperationFailedException(String message, String debugMessage)
+    {
+        this(message);
+        this.debugMessage = debugMessage;
     }
 }

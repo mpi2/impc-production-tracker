@@ -13,26 +13,12 @@
  * language governing permissions and limitations under the
  * License.
  *******************************************************************************/
-package uk.ac.ebi.impc_prod_tracker.conf.security;
-
-import uk.ac.ebi.impc_prod_tracker.data.organization.role.Role;
-import uk.ac.ebi.impc_prod_tracker.data.organization.work_unit.WorkUnit;
+package uk.ac.ebi.impc_prod_tracker.conf.exeption_management;
 
 /**
- * Information a subject in the system should have.
- * @author Mauricio Martinez
+ * Class to keep information to errors that will be grouped in a parent object.
+ * Taken from https://github.com/brunocleite/spring-boot-exception-handling.
  */
-public interface SystemSubject
+abstract class ApiSubException
 {
-    String getLogin();
-
-    String getName();
-
-    String getUserRefId();
-
-    String getEmail();
-
-    Role getRole();
-
-    WorkUnit getWorkUnit();
 }
