@@ -16,11 +16,13 @@
 package uk.ac.ebi.impc_prod_tracker.data.organization.role;
 
 import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.envers.Audited;
 import uk.ac.ebi.impc_prod_tracker.data.BaseEntity;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -28,6 +30,7 @@ import javax.persistence.Id;
 import javax.persistence.SequenceGenerator;
 
 @NoArgsConstructor(access= AccessLevel.PRIVATE, force=true)
+@AllArgsConstructor
 @Getter
 @Setter
 @Entity
@@ -39,6 +42,7 @@ public class Role extends BaseEntity
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "roleSeq")
     private Long id;
 
+    @Column(unique = true)
     private String name;
 
     private String description;

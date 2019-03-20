@@ -15,7 +15,8 @@
  *******************************************************************************/
 package uk.ac.ebi.impc_prod_tracker.data.project.plan.privacy;
 
-public enum PlanPrivacyEnumerator {
+public enum PlanPrivacyEnumerator
+{
     PUBLIC,
     PROTECTED,
     RESTRICTED,

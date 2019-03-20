@@ -30,24 +30,25 @@ import java.util.Map;
 public class AbacPermissionEvaluator implements PermissionEvaluator
 {
     private static Logger logger = LoggerFactory.getLogger(AbacPermissionEvaluator.class);
+    private SubjectRetriever subjectRetriever;
 
     private PolicyEnforcement policy;
 
-    public AbacPermissionEvaluator(PolicyEnforcement policy)
+    public AbacPermissionEvaluator(PolicyEnforcement policy, SubjectRetriever subjectRetriever)
     {
         this.policy = policy;
+        this.subjectRetriever = subjectRetriever;
     }
 
     @Override
     public boolean hasPermission(Authentication authentication , Object targetDomainObject, Object permission)
     {
-        Object user = authentication.getPrincipal();
         Map<String, Object> environment = new HashMap<>();
 
         environment.put("time", new Date());
 
-        logger.debug("hasPersmission({}, {}, {})", user, targetDomainObject, permission);
-        return policy.check(user, targetDomainObject, permission, environment);
+        logger.debug("hasPersmission({}, {}, {})", subjectRetriever.getSubject(), targetDomainObject, permission);
+        return policy.check(subjectRetriever.getSubject(), targetDomainObject, permission, environment);
     }
 
     @Override

@@ -16,6 +16,7 @@
 package uk.ac.ebi.impc_prod_tracker.data;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
 import org.hibernate.envers.Audited;
 import org.springframework.data.annotation.CreatedBy;
@@ -33,6 +34,7 @@ import java.time.LocalDateTime;
  * this information.
  *
  */
+@JsonInclude(JsonInclude.Include.NON_NULL)
 @Data
 @MappedSuperclass
 @EntityListeners(AuditingEntityListener.class)

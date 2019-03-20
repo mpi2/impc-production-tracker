@@ -27,37 +27,35 @@ import java.util.Map;
 @Component
 public class ContextAwarePolicyEnforcement
 {
-    protected PolicyEnforcement policy;
+    private PolicyEnforcement policy;
+    private SubjectRetriever subjectRetriever;
 
-    public ContextAwarePolicyEnforcement(PolicyEnforcement policy)
+    public ContextAwarePolicyEnforcement(PolicyEnforcement policy, SubjectRetriever subjectRetriever)
     {
         this.policy = policy;
+        this.subjectRetriever = subjectRetriever;
     }
 
     public void checkPermission(Object resource, String permission)
     {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-
         Map<String, Object> environment = new HashMap<>();
 
         environment.put("time", new Date());
 
-        if(!policy.check(auth.getPrincipal(), resource, permission, environment))
+        if(!policy.check(subjectRetriever.getSubject(), resource, permission, environment))
             throw new AccessDeniedException("Access is denied");
     }
 
     public boolean hasPermission(Object resource, String permission)
     {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-
         Map<String, Object> environment = new HashMap<>();
 
         environment.put("time", new Date());
-        return policy.check(auth.getPrincipal(), resource, permission, environment);
+        return policy.check(subjectRetriever, resource, permission, environment);
     }
 
     public boolean isUserAnonymous()
     {
-        return "anonymousUser".equals(SecurityContextHolder.getContext().getAuthentication().getPrincipal());
+        return subjectRetriever.isUserAnonymous();
     }
 }
