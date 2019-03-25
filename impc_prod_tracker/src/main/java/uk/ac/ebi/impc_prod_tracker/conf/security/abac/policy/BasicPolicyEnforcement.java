@@ -41,15 +41,10 @@ public class BasicPolicyEnforcement implements PolicyEnforcement
     @Override
     public boolean check(Object subject, Object resource, Object action, Object environment)
     {
-        Object subjectToValidate = subject;
         //Get all policy rules
         List<PolicyRule> allRules = policyDefinition.getAllPolicyRules();
         //Wrap the context
-        if (subject.toString().equals("anonymousUser"))
-        {
-            subjectToValidate = getAnonymousSecurityUser();
-        }
-        SecurityAccessContext cxt = new SecurityAccessContext(subjectToValidate, resource, action, environment);
+        SecurityAccessContext cxt = new SecurityAccessContext(subject, resource, action, environment);
         //Filter the rules according to context.
         List<PolicyRule> matchedRules = filterRules(allRules, cxt);
         //finally, check if any of the rules are satisfied, otherwise return false.
@@ -91,10 +86,5 @@ public class BasicPolicyEnforcement implements PolicyEnforcement
             }
         }
         return false;
-    }
-
-    private SystemSubject getAnonymousSecurityUser()
-    {
-        return new AapSystemSubject("anonymousUser");
     }
 }

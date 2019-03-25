@@ -2,7 +2,7 @@
   {
     "name": "Admin Full Access",
     "description": "Admin can do all.",
-    "target": "subject.role.name() == 'ADMIN'",
+    "target": "subject.role.name == 'ADMIN'",
     "condition": "true"
   },
   {
@@ -21,12 +21,12 @@
     "name": "...",
     "description": "...",
     "target": "action == 'VIEW_NON_PUBLIC_DATA'",
-    "condition": "subject.name != 'anonymousUser'"
+    "condition": "subject.login != 'anonymousUser'"
   },
   {
     "name": "Access own plans",
     "description": "User can see all but protected if not in his/her centre",
-    "target": "subject.role.name() == 'N0_ADMIN' AND action == 'PLAN_LIST'",
+    "target": "subject.role.name == 'N0_ADMIN' AND action == 'PLAN_LIST'",
     "condition": "subject.productionCentre.id == resource.productionCentre.id or resource.privacy == 'public'"
   }
 ]

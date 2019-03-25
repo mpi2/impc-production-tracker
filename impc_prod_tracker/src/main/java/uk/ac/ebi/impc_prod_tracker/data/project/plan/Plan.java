@@ -31,7 +31,6 @@ import uk.ac.ebi.impc_prod_tracker.data.project.plan.protocol.Protocol;
 import uk.ac.ebi.impc_prod_tracker.data.project.plan.status.PlanStatus;
 import uk.ac.ebi.impc_prod_tracker.data.project.plan.type.PlanType;
 import uk.ac.ebi.impc_prod_tracker.data.project.plan_location.PlanLocation;
-
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.Set;
@@ -40,8 +39,8 @@ import java.util.Set;
 @Getter
 @Setter
 @Entity
-public class Plan extends BaseEntity {
-
+public class Plan extends BaseEntity
+{
     @Id
     @SequenceGenerator(name = "planSeq", sequenceName = "PLAN_SEQ")
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "planSeq")
