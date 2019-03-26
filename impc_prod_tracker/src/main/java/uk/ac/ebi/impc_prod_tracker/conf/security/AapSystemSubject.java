@@ -62,7 +62,7 @@ public class AapSystemSubject implements SystemSubject
      * @param claims Claims in the token with information about the user.
      * @return SystemSubject with the information.
      */
-    public AapSystemSubject buildSystemSubjectByTokenInfo(Claims claims)
+    public AapSystemSubject buildSystemSubjectByClaims(Claims claims)
     {
         login = claims.get("nickname", String.class);
         name = claims.get("name", String.class);

@@ -41,6 +41,5 @@ public class PlanType extends BaseEntity
     private Long id;
 
     @NotNull
-    @Enumerated(EnumType.STRING)
-    private PlanTypeEnumerator name;
+    private String name;
 }
