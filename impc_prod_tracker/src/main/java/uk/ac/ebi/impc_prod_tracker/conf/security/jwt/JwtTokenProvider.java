@@ -45,9 +45,9 @@ public class JwtTokenProvider
     private static final String AUTHORIZATION_SCHEMA_NAME = "Bearer ";
     private static final String INVALID_TOKEN_MESSAGE = "Expired or invalid JWT token.";
     private static final String INVALID_TOKEN_DEBUG_MESSAGE =
-        "Tokens expire after a while (usually 1 hour), please create a new one. Also check that you are using the " +
-            "whole token in the authentication header. Contact your administrator if after checking this " +
-            "you keep receiving the same error.";
+        "Tokens expire after a while (usually 1 hour), please create a new one. Also check that you"
+            + " are using the whole token in the authentication header. Contact your administrator"
+            + "if after checking this you keep receiving the same error.";
 
     private PublicKeyProvider publicKeyProvider;
     private AapSystemSubject aapSystemSubject;
@@ -60,7 +60,7 @@ public class JwtTokenProvider
 
     Authentication getAuthentication(String token)
     {
-        SystemSubject systemSubject = aapSystemSubject.buildSystemSubjectByTokenInfo(getClaims(token));
+        SystemSubject systemSubject = aapSystemSubject.buildSystemSubjectByClaims(getClaims(token));
         return new UsernamePasswordAuthenticationToken(systemSubject, "", null);
     }
 
@@ -70,11 +70,6 @@ public class JwtTokenProvider
             .setSigningKeyResolver(getSigningKeyResolver())
             .parseClaimsJws(token)
             .getBody();
-    }
-
-    String getUsername(String token)
-    {
-        return getClaims(token).getSubject();
     }
 
     /**
@@ -121,15 +116,16 @@ public class JwtTokenProvider
     private SigningKeyResolver signingKeyResolver = new SigningKeyResolverAdapter()
     {
         @Override
-        public Key resolveSigningKey(JwsHeader header, Claims claims) {
+        public Key resolveSigningKey(JwsHeader header, Claims claims)
+        {
             String issuer = claims.getIssuer();
             PublicKey publicKey = publicKeyProvider.getPublicKey(issuer);
             return publicKey;
         }
     };
+
     public SigningKeyResolver getSigningKeyResolver()
     {
         return signingKeyResolver;
     }
-
 }

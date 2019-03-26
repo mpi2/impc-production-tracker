@@ -41,6 +41,5 @@ public class PlanPrivacy extends BaseEntity
     private Long id;
 
     @NotNull
-    @Enumerated(EnumType.STRING)
-    private PlanPrivacyEnumerator name;
+    private String name;
 }
