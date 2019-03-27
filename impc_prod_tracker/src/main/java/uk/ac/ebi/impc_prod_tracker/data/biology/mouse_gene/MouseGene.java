@@ -53,19 +53,31 @@ public class MouseGene extends BaseEntity
 
     private String mgiId;
 
-    @NotNull
-    private String chromosome;
-
-    @NotNull
-    private Long start;
-
-    @NotNull
-    private Long stop;
-
-    @Pattern(regexp = "^[\\+-\\?]{1}$", message = "The values allowed for the strand are: '+', '-', or if the value es unknown enter '?'.")
-    private String strand;
+    private String type;
 
     private String genomeBuild;
+
+    private Long entrezGeneId;
+
+    private String ncbiChromosome;
+
+    private Long ncbiStart;
+
+    private Long ncbiStop;
+
+    @Pattern(regexp = "^[\\+-\\?]{1}$", message = "The values allowed for the strand are: '+', '-', or if the value es unknown enter '?'.")
+    private String ncbiStrand;
+
+    private String ensemblGeneId;
+
+    private String ensemblChromosome;
+
+    private Long ensemblStart;
+
+    private Long ensemblStop;
+
+    @Pattern(regexp = "^[\\+-\\?]{1}$", message = "The values allowed for the strand are: '+', '-', or if the value es unknown enter '?'.")
+    private String ensemblStrand;
 
     @ManyToMany
     @JoinTable(
