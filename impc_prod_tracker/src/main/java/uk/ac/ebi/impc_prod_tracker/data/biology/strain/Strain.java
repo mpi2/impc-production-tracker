@@ -42,4 +42,6 @@ public class Strain extends BaseEntity
     private String name;
 
     private String mgiStrainId;
+
+    private String type;
 }
