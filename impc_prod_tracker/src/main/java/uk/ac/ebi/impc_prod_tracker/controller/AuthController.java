@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import uk.ac.ebi.impc_prod_tracker.conf.exeption_management.OperationFailedException;
 import uk.ac.ebi.impc_prod_tracker.domain.login.AuthenticationRequest;
+import uk.ac.ebi.impc_prod_tracker.domain.login.UserRegisterRequest;
 import uk.ac.ebi.impc_prod_tracker.service.AuthService;
 import java.util.HashMap;
 import java.util.Map;
@@ -64,6 +65,25 @@ public class AuthController
             model.put("access_token", token);
 
             return ok(model);
+        }
+        catch (AuthenticationException e)
+        {
+            throw new OperationFailedException(AUTHENTICATION_ERROR);
+        }
+    }
+
+    /**
+     * @api {post} /signin Signin a user to obtain a token.
+     * @apiName Signin
+     * @apiGroup User
+     */
+    @PostMapping(value = {"/signup"})
+    public ResponseEntity signup(@RequestBody UserRegisterRequest userRegisterRequest)
+    {
+        try
+        {
+            System.out.println("User created! Welcome! "+ userRegisterRequest);
+            return ok("signup");
         }
         catch (AuthenticationException e)
         {
