@@ -21,11 +21,11 @@ import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import uk.ac.ebi.impc_prod_tracker.conf.exeption_management.OperationFailedException;
+import uk.ac.ebi.impc_prod_tracker.conf.security.constants.PersonManagementConstants;
 import uk.ac.ebi.impc_prod_tracker.data.organization.person.Person;
 import uk.ac.ebi.impc_prod_tracker.data.organization.person.PersonRepository;
 import uk.ac.ebi.impc_prod_tracker.data.organization.role.Role;
 import uk.ac.ebi.impc_prod_tracker.data.organization.work_unit.WorkUnit;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -47,11 +47,13 @@ public class AapSystemSubject implements SystemSubject
     private WorkUnit workUnit;
     private PersonRepository personRepository;
     private Person person;
+    private List<String> domains = new ArrayList<>();
     private final static String NOT_USER_INFORMATION_MESSAGE = "There is not associated information in the system for " +
         "the user [%s].";
     private final static String NOT_USER_INFORMATION_DEBUG_MESSAGE =
         "The user [%s] with reference id [%s] was successfully logged in but there is no related information for them " +
             "in the system. Please contact an administrator.";
+    private static final String TRACKER_MAINTAINER_DOMAIN_NAME = "self.tracker-maintainer";
 
     @Autowired
     public AapSystemSubject(PersonRepository personRepository)
@@ -71,14 +73,21 @@ public class AapSystemSubject implements SystemSubject
         name = claims.get("name", String.class);
         userRefId = claims.getSubject();
         email = claims.get("email", String.class);
-        List<String> domains = claims.get("domains", List.class);
+        domains = claims.get("domains", List.class);
 
-        if (!domains.contains("self.tracker-maintainer")){
-            loadPersonInformation(userRefId);
-        }
-
+        loadPersonInformation(userRefId);
 
         return this;
+    }
+
+    private boolean isMaintainerUser()
+    {
+        return domains.contains(TRACKER_MAINTAINER_DOMAIN_NAME);
+    }
+
+    private Role getAdminRole()
+    {
+        return new Role(PersonManagementConstants.ADMIN_ROLE);
     }
 
     /**
@@ -95,11 +104,21 @@ public class AapSystemSubject implements SystemSubject
         this.person = personRepository.findPersonByAuthIdEquals(authId);
         if (person == null)
         {
-            throw new OperationFailedException(
-                String.format(NOT_USER_INFORMATION_MESSAGE, login),
-                String.format(NOT_USER_INFORMATION_DEBUG_MESSAGE, login, authId));
+            if (isMaintainerUser())
+            {
+                role = getAdminRole();
+            }
+            else
+            {
+                throw new OperationFailedException(
+                    String.format(NOT_USER_INFORMATION_MESSAGE, login),
+                    String.format(NOT_USER_INFORMATION_DEBUG_MESSAGE, login, authId));
+            }
         }
-        role = person.getRole();
-        workUnit = person.getWorkUnit();
+        else
+        {
+            role = person.getRole();
+            workUnit = person.getWorkUnit();
+        }
     }
 }

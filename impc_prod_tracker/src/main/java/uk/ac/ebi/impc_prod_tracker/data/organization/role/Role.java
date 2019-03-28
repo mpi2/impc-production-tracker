@@ -46,4 +46,9 @@ public class Role extends BaseEntity
     private String name;
 
     private String description;
+
+    public Role(String name)
+    {
+        this.name = name;
+    }
 }
