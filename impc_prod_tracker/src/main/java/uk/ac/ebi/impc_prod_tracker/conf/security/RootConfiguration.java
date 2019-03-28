@@ -24,6 +24,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.access.channel.ChannelProcessingFilter;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import uk.ac.ebi.impc_prod_tracker.conf.exeption_management.ExceptionHandlerFilter;
 import uk.ac.ebi.impc_prod_tracker.conf.security.jwt.JwtTokenFilter;
@@ -66,6 +67,7 @@ public class RootConfiguration extends WebSecurityConfigurerAdapter
     {
         http
             .httpBasic().disable()
+            .cors().and()
             .csrf().disable()
             .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
             .and()
@@ -73,10 +75,12 @@ public class RootConfiguration extends WebSecurityConfigurerAdapter
             //.antMatchers("*tracking*").permitAll()
             .antMatchers("/auth/signin").permitAll()
             .antMatchers("/api/plans").permitAll()
+            .antMatchers("/auth/signup").permitAll()
             .anyRequest().authenticated()
             .and()
             .addFilterBefore(jwtTokenFilter, UsernamePasswordAuthenticationFilter.class)
             .addFilterBefore(exceptionHandlerFilter, JwtTokenFilter.class)
+            .addFilterBefore(new CORSFilter(), ChannelProcessingFilter.class)
         ;
     }
 }

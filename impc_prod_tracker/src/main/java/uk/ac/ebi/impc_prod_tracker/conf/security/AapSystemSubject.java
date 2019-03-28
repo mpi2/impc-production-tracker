@@ -26,6 +26,9 @@ import uk.ac.ebi.impc_prod_tracker.data.organization.person.PersonRepository;
 import uk.ac.ebi.impc_prod_tracker.data.organization.role.Role;
 import uk.ac.ebi.impc_prod_tracker.data.organization.work_unit.WorkUnit;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Implementation of SystemSubject where most of the user information is taken from a token (jwt). Additional
  * information needs to be loaded from the database.
@@ -68,7 +71,12 @@ public class AapSystemSubject implements SystemSubject
         name = claims.get("name", String.class);
         userRefId = claims.getSubject();
         email = claims.get("email", String.class);
-        loadPersonInformation(userRefId);
+        List<String> domains = claims.get("domains", List.class);
+
+        if (!domains.contains("self.tracker-maintainer")){
+            loadPersonInformation(userRefId);
+        }
+
 
         return this;
     }
