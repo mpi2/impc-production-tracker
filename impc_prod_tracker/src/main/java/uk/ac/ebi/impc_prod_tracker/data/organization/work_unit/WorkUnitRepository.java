@@ -18,4 +18,5 @@ package uk.ac.ebi.impc_prod_tracker.data.organization.work_unit;
 import org.springframework.data.repository.CrudRepository;
 
 public interface WorkUnitRepository extends CrudRepository<WorkUnit, Long> {
+    WorkUnit findWorkUnitByName(String name);
 }

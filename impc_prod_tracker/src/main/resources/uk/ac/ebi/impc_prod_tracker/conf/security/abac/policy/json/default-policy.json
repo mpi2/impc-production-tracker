@@ -2,8 +2,20 @@
   {
     "name": "Admin Full Access",
     "description": "Admin can do all.",
-    "target": "subject.role.name == 'ADMIN'",
+    "target": "subject.role.name == 'admin'",
     "condition": "true"
+  },
+  {
+    "name": "Create new users",
+    "description": "Admin and Manager can create new users.",
+    "target": "action == 'CREATE_USER'",
+    "condition": "{'admin', 'manager'}.contains(subject.role.name)"
+  },
+  {
+    "name": "Filter roles",
+    "description": "Managers can create new users with equal roles or lower permissions.",
+    "target": "action == 'FILTER_ROLE'",
+    "condition": "subject.role.name == 'admin' OR (subject.role.name == 'manager' AND {'manager', 'general'}.contains(resource.name))"
   },
   {
     "name": "TEST access plan",
