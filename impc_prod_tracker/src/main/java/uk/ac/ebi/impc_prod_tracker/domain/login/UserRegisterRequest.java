@@ -17,4 +17,5 @@ public class UserRegisterRequest implements Serializable {
     private String email;
     private String workUnitName;
     private String instituteName;
+    private String roleName;
 }

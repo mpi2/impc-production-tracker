@@ -21,5 +21,5 @@ public class PersonManagementConstants
     {
         // Prevent instantiation
     }
-    public static final String ADMIN_ROLE = "ADMIN";
+    public static final String ADMIN_ROLE = "admin";
 }

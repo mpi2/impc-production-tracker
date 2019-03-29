@@ -15,24 +15,16 @@
  *******************************************************************************/
 package uk.ac.ebi.impc_prod_tracker.data.organization.person;
 
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.springframework.data.rest.core.annotation.RestResource;
 import uk.ac.ebi.impc_prod_tracker.data.BaseEntity;
 import uk.ac.ebi.impc_prod_tracker.data.organization.institute.Institute;
 import uk.ac.ebi.impc_prod_tracker.data.organization.work_unit.WorkUnit;
 import uk.ac.ebi.impc_prod_tracker.data.organization.role.Role;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
-import javax.persistence.SequenceGenerator;
+
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 import java.util.Set;
 
 @NoArgsConstructor(access= AccessLevel.PRIVATE, force=true)
@@ -56,9 +48,19 @@ public class Person extends BaseEntity
 
     private Boolean isActive;
 
+    @NotNull
+    @Column(unique = true)
+    @Pattern(regexp = "^(.+)@(.+)$", message = "Invalid email format")
+    private String email;
+
     @ManyToOne(targetEntity = WorkUnit.class)
     private WorkUnit workUnit;
 
     @ManyToMany(mappedBy = "people")
     private Set<Institute> institutes;
+
+    public Person(String email)
+    {
+        this.email = email;
+    }
 }

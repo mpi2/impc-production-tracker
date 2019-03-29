@@ -16,15 +16,19 @@
 package uk.ac.ebi.impc_prod_tracker.controller;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import uk.ac.ebi.impc_prod_tracker.conf.exeption_management.OperationFailedException;
+import uk.ac.ebi.impc_prod_tracker.data.organization.person.Person;
 import uk.ac.ebi.impc_prod_tracker.domain.login.AuthenticationRequest;
 import uk.ac.ebi.impc_prod_tracker.domain.login.UserRegisterRequest;
 import uk.ac.ebi.impc_prod_tracker.service.AuthService;
+import uk.ac.ebi.impc_prod_tracker.service.PersonService;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -41,10 +45,12 @@ public class AuthController
 {
     private static final String AUTHENTICATION_ERROR = "Invalid User/Password provided.";
     private AuthService authService;
+    private PersonService personService;
 
-    public AuthController( AuthService authService)
+    public AuthController(AuthService authService, PersonService personService)
     {
         this.authService = authService;
+        this.personService = personService;
     }
 
     /**
@@ -78,12 +84,14 @@ public class AuthController
      * @apiGroup User
      */
     @PostMapping(value = {"/signup"})
+    @PreAuthorize("hasPermission(null, 'CREATE_USER')")
     public ResponseEntity signup(@RequestBody UserRegisterRequest userRegisterRequest)
     {
         try
         {
-            System.out.println("User created! Welcome! "+ userRegisterRequest);
-            return ok("signup");
+            Person person = personService.createPerson(userRegisterRequest);
+            System.out.println("User created! Welcome! "+ person);
+                                          return ok(person);
         }
         catch (AuthenticationException e)
         {
