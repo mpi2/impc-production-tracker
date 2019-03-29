@@ -24,14 +24,8 @@ import uk.ac.ebi.impc_prod_tracker.data.biology.gene_flag.GeneFlag;
 import uk.ac.ebi.impc_prod_tracker.data.biology.human_gene.HumanGene;
 import uk.ac.ebi.impc_prod_tracker.data.biology.mouse_allele.MouseAllele;
 import uk.ac.ebi.impc_prod_tracker.data.biology.mouse_gene_synomym.MouseGeneSynonym;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.SequenceGenerator;
+
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import java.util.Set;
@@ -43,8 +37,9 @@ import java.util.Set;
 public class MouseGene extends BaseEntity
 {
     @Id
-    @SequenceGenerator(name = "mouseGeneSeq", sequenceName = "MOUSE_GENE_SEQ")
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "mouseGeneSeq")
+    //@SequenceGenerator(name = "mouse_gene_id_seq", sequenceName = "mouse_gene_id_seq",allocationSize=1)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id", updatable=false)
     private Long id;
 
     private String name;
@@ -65,7 +60,7 @@ public class MouseGene extends BaseEntity
 
     private Long ncbiStop;
 
-    @Pattern(regexp = "^[\\+-\\?]{1}$", message = "The values allowed for the strand are: '+', '-', or if the value es unknown enter '?'.")
+    @Pattern(regexp = "^([\\+-\\?]{1}|)$", message = "The values allowed for the strand are: '+', '-', or if the value es unknown enter '?'.")
     private String ncbiStrand;
 
     private String ensemblGeneId;
@@ -76,7 +71,7 @@ public class MouseGene extends BaseEntity
 
     private Long ensemblStop;
 
-    @Pattern(regexp = "^[\\+-\\?]{1}$", message = "The values allowed for the strand are: '+', '-', or if the value es unknown enter '?'.")
+    @Pattern(regexp = "^([\\+-\\?]{1}|)$", message = "The values allowed for the strand are: '+', '-', or if the value es unknown enter '?'.")
     private String ensemblStrand;
 
     @ManyToMany
