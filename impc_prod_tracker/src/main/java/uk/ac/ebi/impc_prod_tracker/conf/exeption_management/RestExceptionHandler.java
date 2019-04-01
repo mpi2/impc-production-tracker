@@ -25,6 +25,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.http.converter.HttpMessageNotWritableException;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.transaction.TransactionSystemException;
 import org.springframework.web.HttpMediaTypeNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -41,6 +42,7 @@ import javax.validation.ConstraintViolationException;
 
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
 import static org.springframework.http.HttpStatus.NOT_FOUND;
+import static org.springframework.http.HttpStatus.FORBIDDEN;
 
 /**
  * Central Exception handling. Taken from https://github.com/brunocleite/spring-boot-exception-handling.
@@ -50,6 +52,13 @@ import static org.springframework.http.HttpStatus.NOT_FOUND;
 @Slf4j
 public class RestExceptionHandler extends ResponseEntityExceptionHandler
 {
+    @ExceptionHandler(AccessDeniedException.class)
+    public final ResponseEntity<Object> handleAccessDeniedException(
+        AccessDeniedException ex, WebRequest request)
+    {
+        return buildResponseEntity(
+            new ApiException(FORBIDDEN, ex.getMessage(), "Check the permissions with your admin."));
+    }
     /**
      * Handle MissingServletRequestParameterException. Triggered when a 'required' request parameter is missing.
      *
