@@ -15,6 +15,7 @@
  *******************************************************************************/
 package uk.ac.ebi.impc_prod_tracker.data.organization.person;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.*;
 import org.springframework.data.rest.core.annotation.RestResource;
 import uk.ac.ebi.impc_prod_tracker.data.BaseEntity;
@@ -53,7 +54,8 @@ public class Person extends BaseEntity
     @Pattern(regexp = "^(.+)@(.+)$", message = "Invalid email format")
     private String email;
 
-    @ManyToOne(targetEntity = WorkUnit.class)
+    @ManyToOne
+    @JoinColumn
     private WorkUnit workUnit;
 
     @ManyToMany(mappedBy = "people")

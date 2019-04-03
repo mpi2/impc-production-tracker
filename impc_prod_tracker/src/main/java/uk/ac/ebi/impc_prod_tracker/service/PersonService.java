@@ -26,6 +26,9 @@ import uk.ac.ebi.impc_prod_tracker.data.organization.role.RoleRepository;
 import uk.ac.ebi.impc_prod_tracker.data.organization.work_unit.WorkUnit;
 import uk.ac.ebi.impc_prod_tracker.data.organization.work_unit.WorkUnitRepository;
 import uk.ac.ebi.impc_prod_tracker.domain.login.UserRegisterRequest;
+
+import java.util.HashSet;
+import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -61,9 +64,12 @@ public class PersonService
         String email = userRegisterRequest.getEmail();
 
         Person person = personRepository.findPersonByEmail(email);
-        Role role = roleRepository.findRoleByName(userRegisterRequest.getRoleName());
-        WorkUnit workUnit = workUnitRepository.findWorkUnitByName(userRegisterRequest.getWorkUnitName());
-        Institute institute = instituteRepository.findInstituteByName(userRegisterRequest.getInstituteName());
+        Role role = roleRepository.findRoleByName(userRegisterRequest.getRoleName().toArray()[0].toString());
+        WorkUnit workUnit = workUnitRepository.findWorkUnitByCode(userRegisterRequest.getWorkUnitName().toArray()[0].toString());
+//        Institute institute = instituteRepository.findInstituteByName(userRegisterRequest.getInstituteName().toArray()[0].toString());
+
+
+
 
         if (person == null)
         {
@@ -71,9 +77,26 @@ public class PersonService
             person.setIsActive(true);
             person.setRole(role);
             person.setWorkUnit(workUnit);
-            person.setInstitutes(Stream.of(institute).collect(Collectors.toSet()));
-
             personRepository.save(person);
+
+            for (String institute : userRegisterRequest.getInstituteName())
+            {
+                Institute ins = instituteRepository.findInstituteByName(institute);
+                ins.getPeople().addAll(Stream.of(person).collect(Collectors.toSet()));
+                instituteRepository.save(ins);
+
+                if (person.getInstitutes() == null)
+                {
+                    person.setInstitutes(Stream.of(ins).collect(Collectors.toSet()));
+                }
+                else
+                {
+                    person.getInstitutes().add(ins);
+                }
+
+            }
+
+
         }
         else
         {
