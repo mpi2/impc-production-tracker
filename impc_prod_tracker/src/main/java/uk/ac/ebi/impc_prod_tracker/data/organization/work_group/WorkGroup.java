@@ -15,6 +15,8 @@
  *******************************************************************************/
 package uk.ac.ebi.impc_prod_tracker.data.organization.work_group;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -37,6 +39,7 @@ import java.util.Set;
 @Getter
 @Setter
 @Entity
+@JsonIdentityInfo(generator= ObjectIdGenerators.IntSequenceGenerator.class)
 public class WorkGroup extends BaseEntity
 {
     @Id
