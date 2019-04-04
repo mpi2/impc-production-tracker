@@ -39,7 +39,7 @@ import java.util.Set;
 @Getter
 @Setter
 @Entity
-@JsonIdentityInfo(generator=ObjectIdGenerators.IntSequenceGenerator.class)
+//@JsonIdentityInfo(generator=ObjectIdGenerators.IntSequenceGenerator.class)
 public class Institute extends BaseEntity {
 
     @Id
@@ -56,6 +56,7 @@ public class Institute extends BaseEntity {
         name = "institute_person",
         joinColumns = @JoinColumn(name = "institute_id"),
         inverseJoinColumns = @JoinColumn(name = "person_id"))
+    @JsonManagedReference
     private Set<Person> people;
 
     @ManyToMany(mappedBy = "institutes")

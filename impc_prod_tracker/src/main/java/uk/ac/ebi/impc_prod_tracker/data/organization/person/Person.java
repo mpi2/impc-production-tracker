@@ -59,6 +59,7 @@ public class Person extends BaseEntity
     private WorkUnit workUnit;
 
     @ManyToMany(mappedBy = "people")
+    @JsonBackReference
     private Set<Institute> institutes;
 
     public Person(String email)
