@@ -15,6 +15,7 @@
  *******************************************************************************/
 package uk.ac.ebi.impc_prod_tracker.data.organization.work_unit;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -55,6 +56,7 @@ public class WorkUnit extends BaseEntity
 //    private Set<Person> people;
 
     @ManyToMany(mappedBy = "workUnits")
+    @JsonBackReference
     private Set<WorkGroup> workGroups;
 
     @ManyToMany(mappedBy = "workUnits")
