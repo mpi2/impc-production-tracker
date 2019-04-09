@@ -24,17 +24,10 @@ import uk.ac.ebi.impc_prod_tracker.data.biology.gene_flag.GeneFlag;
 import uk.ac.ebi.impc_prod_tracker.data.biology.human_allele.HumanAllele;
 import uk.ac.ebi.impc_prod_tracker.data.biology.human_disease.HumanDisease;
 import uk.ac.ebi.impc_prod_tracker.data.biology.human_gene_synonym.HumanGeneSynonym;
-import uk.ac.ebi.impc_prod_tracker.data.biology.mouse_gene.MouseGene;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.SequenceGenerator;
+import uk.ac.ebi.impc_prod_tracker.data.biology.ortholog.Ortholog;
+
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
 import java.util.Set;
 
 @NoArgsConstructor(access= AccessLevel.PRIVATE, force=true)
@@ -44,8 +37,8 @@ import java.util.Set;
 public class HumanGene extends BaseEntity
 {
     @Id
-    @SequenceGenerator(name = "humanGeneSeq", sequenceName = "HUMAN_GENE_SEQ")
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "humanGeneSeq")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id", updatable=false)
     private Long id;
 
     @NotNull
@@ -54,21 +47,8 @@ public class HumanGene extends BaseEntity
     @NotNull
     private String name;
 
-    private String omimGeneId;
-
     @NotNull
-    private String chromosome;
-
-    @NotNull
-    private Long start;
-
-    @NotNull
-    private Long stop;
-
-    @Pattern(regexp = "^[\\+-\\?]{1}$", message = "The values allowed for the strand are: '+', '-', or if the value es unknown enter '?'.")
-    private String strand;
-
-    private String genomeBuild;
+    private String hgncId;
 
     @ManyToMany
     @JoinTable(
@@ -98,11 +78,7 @@ public class HumanGene extends BaseEntity
         inverseJoinColumns = @JoinColumn(name = "human_disease_id"))
     private Set<HumanDisease> humanDiseases;
 
-    @ManyToMany
-    @JoinTable(
-        name = "ortholog",
-        joinColumns = @JoinColumn(name = "human_gene_id"),
-        inverseJoinColumns = @JoinColumn(name = "mouse_gene_id"))
-    private Set<MouseGene> mouseOrthologs;
+    @OneToMany(mappedBy = "humanGene")
+    private Set<Ortholog> orthologs;
 
 }

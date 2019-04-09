@@ -13,33 +13,9 @@
  * language governing permissions and limitations under the
  * License.
  *******************************************************************************/
-package uk.ac.ebi.impc_prod_tracker.data.biology.human_gene_synonym;
+package uk.ac.ebi.impc_prod_tracker.data.biology.plan_mouse_gene;
 
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import uk.ac.ebi.impc_prod_tracker.data.BaseEntity;
-import uk.ac.ebi.impc_prod_tracker.data.biology.human_gene.HumanGene;
+import org.springframework.data.repository.CrudRepository;
 
-import javax.persistence.*;
-import java.util.Set;
-
-@NoArgsConstructor(access= AccessLevel.PRIVATE, force=true)
-@Getter
-@Setter
-@Entity
-public class HumanGeneSynonym extends BaseEntity
-{
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", updatable=false)
-    private Long id;
-
-    private String synonym;
-
-    private String hgncId;
-
-    @ManyToMany(mappedBy = "humanGeneSynonyms")
-    private Set<HumanGene> humanGenes;
+public interface PlanMouseGeneRepository extends CrudRepository<PlanMouseGene, Long> {
 }

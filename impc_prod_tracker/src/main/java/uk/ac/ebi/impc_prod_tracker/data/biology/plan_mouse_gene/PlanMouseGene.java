@@ -1,5 +1,3 @@
-package uk.ac.ebi.impc_prod_tracker.data.biology.mouse_gene;
-
 /*******************************************************************************
  * Copyright 2019 EMBL - European Bioinformatics Institute
  *
@@ -15,25 +13,23 @@ package uk.ac.ebi.impc_prod_tracker.data.biology.mouse_gene;
  * language governing permissions and limitations under the
  * License.
  *******************************************************************************/
+package uk.ac.ebi.impc_prod_tracker.data.biology.plan_mouse_gene;
 
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import uk.ac.ebi.impc_prod_tracker.data.BaseEntity;
-import uk.ac.ebi.impc_prod_tracker.data.biology.gene_flag.GeneFlag;
-import uk.ac.ebi.impc_prod_tracker.data.biology.mouse_gene_synomym.MouseGeneSynonym;
-import uk.ac.ebi.impc_prod_tracker.data.biology.ortholog.Ortholog;
 
 import javax.persistence.*;
 import javax.validation.constraints.Pattern;
-import java.util.Set;
+
 
 @NoArgsConstructor(access= AccessLevel.PRIVATE, force=true)
 @Getter
 @Setter
 @Entity
-public class MouseGene extends BaseEntity
+public class PlanMouseGene extends BaseEntity
 {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -72,20 +68,4 @@ public class MouseGene extends BaseEntity
     @Pattern(regexp = "^([\\+-\\?]{1}|)$", message = "The values allowed for the strand are: '+', '-', or if the value es unknown enter '?'.")
     private String ensemblStrand;
 
-    @ManyToMany
-    @JoinTable(
-            name = "mouse_gene_synonym_relation",
-            joinColumns = @JoinColumn(name = "mouse_gene_id"),
-            inverseJoinColumns = @JoinColumn(name = "mouse_gene_synonym_id"))
-    private Set<MouseGeneSynonym> mouseGeneSynonyms;
-
-    @ManyToMany
-    @JoinTable(
-            name = "mouse_gene_flag",
-            joinColumns = @JoinColumn(name = "mouse_gene_id"),
-            inverseJoinColumns = @JoinColumn(name = "gene_flag_id"))
-    private Set<GeneFlag> mouseGeneFlags;
-
-    @OneToMany(mappedBy = "mouseGene")
-    private Set<Ortholog> orthologs;
 }
