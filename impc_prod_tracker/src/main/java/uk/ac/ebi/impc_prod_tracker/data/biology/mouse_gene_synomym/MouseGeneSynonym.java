@@ -21,12 +21,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import uk.ac.ebi.impc_prod_tracker.data.BaseEntity;
 import uk.ac.ebi.impc_prod_tracker.data.biology.mouse_gene.MouseGene;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.ManyToMany;
-import javax.persistence.SequenceGenerator;
+
+import javax.persistence.*;
 import java.util.Set;
 
 @NoArgsConstructor(access= AccessLevel.PRIVATE, force=true)
@@ -36,13 +32,13 @@ import java.util.Set;
 public class MouseGeneSynonym extends BaseEntity
 {
     @Id
-    @SequenceGenerator(name = "mouseGeneSynonymSeq", sequenceName = "MOUSE_GENE_SYNONYM_SEQ")
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "mouseGeneSynonymSeq")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id", updatable=false)
     private Long id;
 
     private String synonym;
 
-    private String name;
+    private String mgi_id;
 
     @ManyToMany(mappedBy = "mouseGeneSynonyms")
     private Set<MouseGene> mouseGenes;
