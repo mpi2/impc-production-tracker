@@ -2,7 +2,7 @@ package uk.ac.ebi.impc_prod_tracker.controller;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-import uk.ac.ebi.impc_prod_tracker.data.project.plan.Plan;
+import uk.ac.ebi.impc_prod_tracker.data.experiment.plan.Plan;
 import uk.ac.ebi.impc_prod_tracker.service.PlanService;
 
 @RestController

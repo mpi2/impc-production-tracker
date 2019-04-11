@@ -1,4 +1,4 @@
-package uk.ac.ebi.impc_prod_tracker.data.project.plan_location.plan_location_type;
+package uk.ac.ebi.impc_prod_tracker.data.biology.attempt.mutagenesis_attempt.nuclease;
 
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -9,21 +9,18 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
-import javax.validation.constraints.NotNull;
 
 @NoArgsConstructor(access= AccessLevel.PRIVATE, force=true)
 @Getter
 @Setter
 @Entity
-public class PlanLocationType extends BaseEntity
+public class NucleaseType extends BaseEntity
 {
     @Id
-    @SequenceGenerator(name = "planLocationTypeSeq", sequenceName = "PLAN_LOCATION_TYPE_SEQ")
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "planLocationTypeSeq")
+    @SequenceGenerator(name = "nucleaseTypeSeq", sequenceName = "NUCLEASE_TYPE_SEQ")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "nucleaseTypeSeq")
     private Long id;
 
-    @NotNull
     private String name;
 }

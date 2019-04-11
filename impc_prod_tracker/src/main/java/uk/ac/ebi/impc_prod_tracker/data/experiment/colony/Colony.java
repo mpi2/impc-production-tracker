@@ -13,37 +13,60 @@
  * language governing permissions and limitations under the
  * License.
  *******************************************************************************/
-package uk.ac.ebi.impc_prod_tracker.data.biology.human_allele_synonym;
+package uk.ac.ebi.impc_prod_tracker.data.experiment.colony;
 
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import uk.ac.ebi.impc_prod_tracker.data.BaseEntity;
-import uk.ac.ebi.impc_prod_tracker.data.biology.human_allele.HumanAllele;
+import uk.ac.ebi.impc_prod_tracker.data.experiment.colony.colony_comment.ColonyComment;
+import uk.ac.ebi.impc_prod_tracker.data.biology.strain.Strain;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
+import javax.validation.constraints.NotNull;
 import java.util.Set;
 
 @NoArgsConstructor(access= AccessLevel.PRIVATE, force=true)
 @Getter
 @Setter
 @Entity
-public class HumanAlleleSynonym extends BaseEntity
-{
+public class Colony extends BaseEntity {
     @Id
-    @SequenceGenerator(name = "humanAlleleSynonymSeq", sequenceName = "HUMAN_ALLELE_SYNONYM_SEQ")
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "humanAlleleSynonymSeq")
+    @SequenceGenerator(name = "colonySeq", sequenceName = "COLONY_SEQ")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "colonySeq")
     private Long id;
 
-    private String synonym;
-
+    @NotNull
     private String name;
 
-    @ManyToMany(mappedBy = "humanAlleleSynonyms")
-    private Set<HumanAllele> humanAlleles;
+    @NotNull
+    @ManyToOne(targetEntity = Strain.class)
+    private Strain strain;
+
+    @OneToMany(
+        cascade = CascadeType.ALL,
+        orphanRemoval = true
+    )
+    private Set<ColonyComment> colonyComments;
+
+    @ManyToMany
+    @JoinTable(
+        name = "colony_relationship",
+        joinColumns = @JoinColumn(name = "colony_id"),
+        inverseJoinColumns = @JoinColumn(name = "parent_colony_id"))
+    private Set<Colony> parentColonies;
+
+    @ManyToMany(mappedBy = "parentColonies")
+    private Set<Colony> childColonies;
+
 }

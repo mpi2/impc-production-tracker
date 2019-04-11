@@ -13,58 +13,57 @@
  * language governing permissions and limitations under the
  * License.
  *******************************************************************************/
-package uk.ac.ebi.impc_prod_tracker.data.biology.mouse_allele;
+package uk.ac.ebi.impc_prod_tracker.data.biology.IntentedLocation;
 
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import uk.ac.ebi.impc_prod_tracker.data.BaseEntity;
-import uk.ac.ebi.impc_prod_tracker.data.biology.allele_type.AlleleType;
-import uk.ac.ebi.impc_prod_tracker.data.biology.IntentedLocation.IntendedLocation;
-import uk.ac.ebi.impc_prod_tracker.data.biology.mouse_allele_synonym.MouseAlleleSynonym;
-import uk.ac.ebi.impc_prod_tracker.data.biology.tracked_location.TrackedLocation;
-
+import uk.ac.ebi.impc_prod_tracker.data.biology.species.Species;
+import uk.ac.ebi.impc_prod_tracker.data.biology.strain.Strain;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.validation.constraints.NotNull;
-import java.util.Set;
+import javax.validation.constraints.Pattern;
 
 @NoArgsConstructor(access= AccessLevel.PRIVATE, force=true)
 @Getter
 @Setter
 @Entity
-public class MouseAllele extends BaseEntity
+public class IntendedLocation extends BaseEntity
 {
     @Id
-    @SequenceGenerator(name = "mouseAlleleSeq", sequenceName = "MOUSE_ALLELE_SEQ")
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "mouseAlleleSeq")
+    @SequenceGenerator(name = "intendedLocationSeq", sequenceName = "INTENDED_LOCATION_SEQ")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "intendedLocationSeq")
     private Long id;
 
     @NotNull
-    private String name;
+    private String chromosome;
 
-    private String alleleSymbol;
+    @NotNull
+    private Long start;
 
-    private String mgiAlleleId;
+    @NotNull
+    private Long stop;
 
-    @ManyToOne(targetEntity = AlleleType.class)
-    private AlleleType alleleType;
+    @Pattern(regexp = "^[\\+-\\?]{1}$", message = "The values allowed for the strand are: '+', '-', or if the value es unknown enter '?'.")
+    private String strand;
 
-    @ManyToOne
-    private TrackedLocation location;
+    private String genomeBuild;
 
-    @ManyToMany
-    @JoinTable(
-        name = "mouse_allele_synonym_rel",
-        joinColumns = @JoinColumn(name = "mouse_allele_id"),
-        inverseJoinColumns = @JoinColumn(name = "mouse_allele_synonym_id"))
-    private Set<MouseAlleleSynonym> mouseAlleleSynonyms;
+    @ManyToOne(targetEntity = Strain.class)
+    private Strain strain;
+
+    @ManyToOne(targetEntity = Species.class)
+    private Species species;
+
+    //@OneToMany(mappedBy = "location")
+    //private Set<ProjectLocation> projectLocations;
+
+    private String sequence;
 }

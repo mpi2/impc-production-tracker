@@ -13,9 +13,16 @@
  * language governing permissions and limitations under the
  * License.
  *******************************************************************************/
-package uk.ac.ebi.impc_prod_tracker.data.biology.human_allele_synonym;
+package uk.ac.ebi.impc_prod_tracker.data.experiment.plan;
 
 import org.springframework.data.repository.CrudRepository;
+import org.springframework.security.access.prepost.PostFilter;
+import org.springframework.security.access.prepost.PreAuthorize;
 
-public interface HumanAlleleSynonymRepository extends CrudRepository<HumanAlleleSynonym, Long> {
+public interface PlanRepository extends CrudRepository<Plan, Long> {
+
+    @Override
+    @PreAuthorize("hasPermission(null, 'READ_PLAN')")
+    @PostFilter("hasPermission(filterObject, 'FILTER_PLAN')")
+    Iterable<Plan> findAll();
 }

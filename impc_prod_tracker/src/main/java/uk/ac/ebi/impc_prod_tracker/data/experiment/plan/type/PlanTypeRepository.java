@@ -13,9 +13,9 @@
  * language governing permissions and limitations under the
  * License.
  *******************************************************************************/
-package uk.ac.ebi.impc_prod_tracker.data.biology.human_allele;
+package uk.ac.ebi.impc_prod_tracker.data.experiment.plan.type;
 
 import org.springframework.data.repository.CrudRepository;
 
-public interface HumanAlleleRepository extends CrudRepository<HumanAllele, Long> {
+public interface PlanTypeRepository extends CrudRepository<PlanType, Long> {
 }

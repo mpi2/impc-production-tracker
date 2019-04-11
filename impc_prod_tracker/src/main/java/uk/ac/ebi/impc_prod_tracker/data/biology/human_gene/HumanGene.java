@@ -21,11 +21,9 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import uk.ac.ebi.impc_prod_tracker.data.BaseEntity;
 import uk.ac.ebi.impc_prod_tracker.data.biology.gene_flag.GeneFlag;
-import uk.ac.ebi.impc_prod_tracker.data.biology.human_allele.HumanAllele;
 import uk.ac.ebi.impc_prod_tracker.data.biology.human_disease.HumanDisease;
 import uk.ac.ebi.impc_prod_tracker.data.biology.human_gene_synonym.HumanGeneSynonym;
 import uk.ac.ebi.impc_prod_tracker.data.biology.ortholog.Ortholog;
-
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.Set;
@@ -63,13 +61,6 @@ public class HumanGene extends BaseEntity
         joinColumns = @JoinColumn(name = "human_gene_id"),
         inverseJoinColumns = @JoinColumn(name = "human_gene_synonym_id"))
     private Set<HumanGeneSynonym> humanGeneSynonyms;
-
-    @ManyToMany
-    @JoinTable(
-        name = "human_gene_allele",
-        joinColumns = @JoinColumn(name = "human_gene_id"),
-        inverseJoinColumns = @JoinColumn(name = "human_allele_id"))
-    private Set<HumanAllele> humanAlleles;
 
     @ManyToMany
     @JoinTable(
