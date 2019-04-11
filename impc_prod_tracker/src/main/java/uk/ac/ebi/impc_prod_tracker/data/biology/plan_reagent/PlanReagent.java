@@ -20,7 +20,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import uk.ac.ebi.impc_prod_tracker.data.BaseEntity;
 import uk.ac.ebi.impc_prod_tracker.data.biology.reagent.Reagent;
-import uk.ac.ebi.impc_prod_tracker.data.project.plan.Plan;
+import uk.ac.ebi.impc_prod_tracker.data.experiment.plan.Plan;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.IdClass;

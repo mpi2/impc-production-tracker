@@ -5,16 +5,20 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import uk.ac.ebi.impc_prod_tracker.data.BaseEntity;
-import uk.ac.ebi.impc_prod_tracker.data.biology.mutagenesis_attempt.MutagenesisAttempt;
+import uk.ac.ebi.impc_prod_tracker.data.biology.mouse_allele.MouseAllele;
+import uk.ac.ebi.impc_prod_tracker.data.biology.attempt.mutagenesis_attempt.MutagenesisAttempt;
+import uk.ac.ebi.impc_prod_tracker.data.experiment.colony.Colony;
+import uk.ac.ebi.impc_prod_tracker.data.experiment.privacy.Privacy;
+import uk.ac.ebi.impc_prod_tracker.data.experiment.status.Status;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.MapsId;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
+import javax.persistence.SequenceGenerator;
 
 @NoArgsConstructor(access= AccessLevel.PRIVATE, force=true)
 @Getter
@@ -23,31 +27,23 @@ import javax.persistence.OneToOne;
 public class MutagenesisOutcome extends BaseEntity
 {
     @Id
+    @SequenceGenerator(name = "mutagenesisOutcomeSeq", sequenceName = "MUTAGENESIS_OUTCOME_SEQ")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "mutagenesisOutcomeSeq")
     private Long id;
 
-    @OneToOne
-    @JoinColumn
-    @MapsId
+    @ManyToOne
     private MutagenesisAttempt mutagenesisAttempt;
 
-    @Column(name = "no_g0_where_mutation_detected")
-    private Integer noG0WhereMutationDetected;
+    @ManyToOne
+    private Colony colony;
 
-    @Column(name = "no_nhej_g0_mutants")
-    private Integer noNhejG0Mutants;
+    @ManyToOne
+    private Privacy privacy;
 
-    @Column(name = "no_deletion_g0_mutants")
-    private Integer noDeletionG0Mutants;
+    @ManyToOne
+    private Status status;
 
-    @Column(name = "no_hr_g0_mutants")
-    private Integer noHrG0Mutants;
-
-    @Column(name = "no_hdr_g0_mutants")
-    private Integer noHdrG0Mutants;
-
-    @Column(name = "no_hdr_g0_mutants_all_donors_inserted")
-    private Integer noHdrG0MutantsAllDonorsInserted;
-
-    @Column(name = "no_hdr_g0_mutants_subset_donors_inserted")
-    private Integer noHdrG0MutantsSubsetDonorsInserted;
+    @OneToOne
+    @JoinColumn(unique = true)
+    private MouseAllele allele;
 }
