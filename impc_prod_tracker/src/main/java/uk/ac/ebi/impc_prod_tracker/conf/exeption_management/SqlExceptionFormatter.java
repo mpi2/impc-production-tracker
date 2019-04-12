@@ -30,7 +30,7 @@ public class SqlExceptionFormatter extends BaseExceptionFormatter
     private void init()
     {
         String rootCauseMessage = exception.getMessage();
-        if (exception instanceof org.springframework.dao.DataIntegrityViolationException)
+        if (exception instanceof DataIntegrityViolationException)
         {
             rootCauseMessage = ((DataIntegrityViolationException) exception).getRootCause().getMessage();
             if (rootCauseMessage.contains(UNIQUE_CONSTRAINT_MESSAGE))

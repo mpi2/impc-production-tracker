@@ -20,8 +20,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.expression.EvaluationException;
 import org.springframework.stereotype.Component;
-import uk.ac.ebi.impc_prod_tracker.conf.security.AapSystemSubject;
-import uk.ac.ebi.impc_prod_tracker.conf.security.SystemSubject;
 import java.util.ArrayList;
 import java.util.List;
 

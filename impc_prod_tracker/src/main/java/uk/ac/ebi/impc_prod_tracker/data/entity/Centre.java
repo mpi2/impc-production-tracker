@@ -6,14 +6,10 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
-import javax.persistence.GenerationType;
 import javax.validation.constraints.NotNull;
-
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
-
 import java.time.LocalDateTime;
 
 @Data
@@ -36,7 +32,6 @@ public class Centre {
     private String contactName;
 
     private String contactEmail;
-
 
     private LocalDateTime createdAt;
 

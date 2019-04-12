@@ -21,10 +21,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import uk.ac.ebi.impc_prod_tracker.data.BaseEntity;
 import uk.ac.ebi.impc_prod_tracker.data.biology.allele_type.AlleleType;
-import uk.ac.ebi.impc_prod_tracker.data.biology.IntentedLocation.IntendedLocation;
 import uk.ac.ebi.impc_prod_tracker.data.biology.mouse_allele_synonym.MouseAlleleSynonym;
 import uk.ac.ebi.impc_prod_tracker.data.biology.tracked_location.TrackedLocation;
-
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;

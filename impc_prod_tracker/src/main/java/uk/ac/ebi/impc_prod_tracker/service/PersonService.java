@@ -26,8 +26,6 @@ import uk.ac.ebi.impc_prod_tracker.data.organization.role.RoleRepository;
 import uk.ac.ebi.impc_prod_tracker.data.organization.work_unit.WorkUnit;
 import uk.ac.ebi.impc_prod_tracker.data.organization.work_unit.WorkUnitRepository;
 import uk.ac.ebi.impc_prod_tracker.domain.login.UserRegisterRequest;
-
-import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -59,17 +57,13 @@ public class PersonService
         this.instituteRepository = instituteRepository;
     }
 
-    public Person createPerson (UserRegisterRequest userRegisterRequest)
+    public Person createPerson(UserRegisterRequest userRegisterRequest)
     {
         String email = userRegisterRequest.getEmail();
 
         Person person = personRepository.findPersonByEmail(email);
-        Role role = roleRepository.findRoleByName(userRegisterRequest.getRoleName().toArray()[0].toString());
-        WorkUnit workUnit = workUnitRepository.findWorkUnitByCode(userRegisterRequest.getWorkUnitName().toArray()[0].toString());
-//        Institute institute = instituteRepository.findInstituteByName(userRegisterRequest.getInstituteName().toArray()[0].toString());
-
-
-
+        Role role = getRoleFromRequest(userRegisterRequest);
+        WorkUnit workUnit = getWorkUnitFromRequest(userRegisterRequest);
 
         if (person == null)
         {
@@ -95,8 +89,6 @@ public class PersonService
                 }
 
             }
-
-
         }
         else
         {
@@ -104,5 +96,27 @@ public class PersonService
         }
 
         return person;
+    }
+
+    private WorkUnit getWorkUnitFromRequest(UserRegisterRequest userRegisterRequest)
+    {
+        Set<String> workUnitInRequest = userRegisterRequest.getWorkUnitName();
+        WorkUnit workUnit =  null;
+        if (!workUnitInRequest.isEmpty())
+        {
+            workUnit = workUnitRepository.findWorkUnitByCode(workUnitInRequest.toArray()[0].toString());
+        }
+        return workUnit;
+    }
+
+    private Role getRoleFromRequest(UserRegisterRequest userRegisterRequest)
+    {
+        Set<String> rolesInRequest = userRegisterRequest.getRoleName();
+        Role role =  null;
+        if (!rolesInRequest.isEmpty())
+        {
+            role = roleRepository.findRoleByName(rolesInRequest.toArray()[0].toString());
+        }
+        return role;
     }
 }

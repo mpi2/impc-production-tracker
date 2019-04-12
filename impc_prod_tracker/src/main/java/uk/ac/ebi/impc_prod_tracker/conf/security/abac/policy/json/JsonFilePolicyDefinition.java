@@ -34,6 +34,7 @@ import java.util.Arrays;
 import java.util.List;
 
 @Component("jsonFilePolicyDefinition")
+@SuppressWarnings("unused")
 public class JsonFilePolicyDefinition implements PolicyDefinition
 {
     private static Logger logger = LoggerFactory.getLogger(JsonFilePolicyDefinition.class);
@@ -68,7 +69,7 @@ public class JsonFilePolicyDefinition implements PolicyDefinition
                 rulesArray = mapper.readValue(getClass().getResourceAsStream(DEFAULT_POLICY_FILE_NAME), PolicyRule[].class);
 
             }
-            this.rules = (rulesArray != null? Arrays.asList(rulesArray) : null);
+            this.rules = rulesArray != null ? Arrays.asList(rulesArray) : null;
             logger.info("[init] Policy loaded successfully.");
         }
         catch (JsonMappingException e)

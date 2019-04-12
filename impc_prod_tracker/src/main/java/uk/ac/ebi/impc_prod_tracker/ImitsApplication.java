@@ -17,7 +17,6 @@ package uk.ac.ebi.impc_prod_tracker;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.hateoas.config.EnableHypermediaSupport;
 
 /**
  * Starting point in the application.
@@ -25,7 +24,6 @@ import org.springframework.hateoas.config.EnableHypermediaSupport;
  * @author Mauricio Martinez
  */
 @SpringBootApplication
-//@EnableHypermediaSupport(type = EnableHypermediaSupport.HypermediaType.HAL)
 public class ImitsApplication
 {
 
