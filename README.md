@@ -30,3 +30,7 @@ docker-compose ps
 To stop the server
 
 docker-compose down
+
+
+#### Running tests locally
+mvn surefire-report:report
