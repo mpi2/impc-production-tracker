@@ -16,8 +16,6 @@
 package uk.ac.ebi.impc_prod_tracker.conf.security.abac.spring;
 
 import org.springframework.security.access.AccessDeniedException;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import uk.ac.ebi.impc_prod_tracker.conf.security.abac.policy.PolicyEnforcement;
 import java.util.Date;

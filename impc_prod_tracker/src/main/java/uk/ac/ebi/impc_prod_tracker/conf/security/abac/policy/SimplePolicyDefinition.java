@@ -18,18 +18,19 @@ package uk.ac.ebi.impc_prod_tracker.conf.security.abac.policy;
 import org.springframework.expression.ExpressionParser;
 import org.springframework.expression.spel.standard.SpelExpressionParser;
 import org.springframework.stereotype.Component;
-
 import javax.annotation.PostConstruct;
 import java.util.ArrayList;
 import java.util.List;
 
 @Component("simplePolicyDefinition")
+@SuppressWarnings("unused")
 public class SimplePolicyDefinition
 {
     private List<PolicyRule> rules;
 
     @PostConstruct
-    private void init(){
+    private void init()
+    {
         ExpressionParser exp = new SpelExpressionParser();
         rules = new ArrayList<>();
 
