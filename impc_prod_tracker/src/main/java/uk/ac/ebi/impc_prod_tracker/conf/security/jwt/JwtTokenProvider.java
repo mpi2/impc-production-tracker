@@ -43,11 +43,12 @@ public class JwtTokenProvider
 {
     private static final String AUTHORIZATION_HEADER = "Authorization";
     private static final String AUTHORIZATION_SCHEMA_NAME = "Bearer ";
-    private static final String INVALID_TOKEN_MESSAGE = "Expired or invalid JWT token.";
+    static final String INVALID_TOKEN_MESSAGE = "Expired or invalid JWT token.";
     private static final String INVALID_TOKEN_DEBUG_MESSAGE =
         "Tokens expire after a while (usually 1 hour), please create a new one. Also check that you"
             + " are using the whole token in the authentication header. Contact your administrator"
             + "if after checking this you keep receiving the same error.";
+    static final String NULL_EMPTY_TOKEN_MESSAGE = "The token cannot be null or empty.";
 
     private PublicKeyProvider publicKeyProvider;
     private AapSystemSubject aapSystemSubject;
@@ -60,6 +61,10 @@ public class JwtTokenProvider
 
     Authentication getAuthentication(String token)
     {
+        if (token == null || token.isEmpty())
+        {
+            throw new OperationFailedException(NULL_EMPTY_TOKEN_MESSAGE);
+        }
         SystemSubject systemSubject = aapSystemSubject.buildSystemSubjectByClaims(getClaims(token));
         return new UsernamePasswordAuthenticationToken(systemSubject, "", null);
     }
@@ -109,7 +114,10 @@ public class JwtTokenProvider
         }
         catch (JwtException | IllegalArgumentException e)
         {
-            throw new OperationFailedException(INVALID_TOKEN_MESSAGE, INVALID_TOKEN_DEBUG_MESSAGE);
+            System.out.println(e.getMessage());
+            throw new OperationFailedException(
+                INVALID_TOKEN_MESSAGE,
+                INVALID_TOKEN_DEBUG_MESSAGE + ": " + e.getMessage());
         }
     }
 
