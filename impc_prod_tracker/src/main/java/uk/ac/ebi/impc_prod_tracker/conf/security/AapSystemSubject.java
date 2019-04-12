@@ -50,6 +50,8 @@ public class AapSystemSubject implements SystemSubject
     private List<String> domains = new ArrayList<>();
     private final static String NOT_USER_INFORMATION_MESSAGE = "There is not associated information in the system for " +
         "the user [%s].";
+    private final static String NULL_AUTH_ID_MESSAGE = "AuthId cannot be null. The jwt token may not have" +
+        "all the needed information.";
     private final static String NOT_USER_INFORMATION_DEBUG_MESSAGE =
         "The user [%s] with reference id [%s] was successfully logged in but there is no related information for them " +
             "in the system. Please contact an administrator.";
@@ -101,6 +103,10 @@ public class AapSystemSubject implements SystemSubject
 
     private void loadPersonInformation(String authId)
     {
+        if (authId == null)
+        {
+            throw new OperationFailedException(NULL_AUTH_ID_MESSAGE);
+        }
         this.person = personRepository.findPersonByAuthIdEquals(authId);
         if (person == null)
         {
