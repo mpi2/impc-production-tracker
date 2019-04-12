@@ -102,7 +102,7 @@ public class JwtTokenProviderTest
         assertEquals("Unexpected subject", SUBJECT_NAME, claims.getSubject());
         assertEquals("Unexpected nickname", LOGIN, claims.get("nickname"));
         assertEquals("Unexpected email", EMAIL, claims.get("email"));
-        assertEquals("Unexpected number of domains", 2, domains.size());
+        assertEquals("Unexpected number of domains", 3, domains.size());
         assertEquals("Unexpected domains", DOMAINS.get(0), domains.get(0));
         assertEquals("Unexpected domains", DOMAINS.get(1), domains.get(1));
     }
