@@ -17,9 +17,9 @@ package uk.ac.ebi.impc_prod_tracker.data.organization.institute;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.AccessLevel;
-import lombok.Getter;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 import uk.ac.ebi.impc_prod_tracker.data.BaseEntity;
 import uk.ac.ebi.impc_prod_tracker.data.organization.consortium.Consortium;
 import uk.ac.ebi.impc_prod_tracker.data.organization.person.Person;
@@ -31,11 +31,12 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.SequenceGenerator;
+import java.util.HashSet;
 import java.util.Set;
 
-@NoArgsConstructor(access= AccessLevel.PRIVATE, force=true)
-@Getter
-@Setter
+@NoArgsConstructor(access= AccessLevel.PUBLIC, force=true)
+@Data
+@EqualsAndHashCode( exclude = {"people"}, callSuper = false)
 @Entity
 public class Institute extends BaseEntity {
 
@@ -54,8 +55,25 @@ public class Institute extends BaseEntity {
         joinColumns = @JoinColumn(name = "institute_id"),
         inverseJoinColumns = @JoinColumn(name = "person_id"))
     @JsonManagedReference
-    private Set<Person> people;
+    private Set<Person> people = new HashSet<>();
 
     @ManyToMany(mappedBy = "institutes")
     private Set<Consortium> consortia;
+
+    public void addPerson(Person person)
+    {
+        this.people.add(person);
+        person.getInstitutes().add(this);
+    }
+
+    public void removePerson(Person person)
+    {
+        this.people.remove(person);
+        person.getInstitutes().remove(this);
+    }
+
+    public String toString()
+    {
+        return String.format("id: {%d}. Name: {%s}", id, name);
+    }
 }
