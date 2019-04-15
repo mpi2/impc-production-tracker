@@ -43,6 +43,7 @@ import javax.validation.ConstraintViolationException;
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
 import static org.springframework.http.HttpStatus.NOT_FOUND;
 import static org.springframework.http.HttpStatus.FORBIDDEN;
+import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
 
 /**
  * Central Exception handling. Taken from https://github.com/brunocleite/spring-boot-exception-handling.
@@ -52,6 +53,14 @@ import static org.springframework.http.HttpStatus.FORBIDDEN;
 @Slf4j
 public class RestExceptionHandler extends ResponseEntityExceptionHandler
 {
+    @ExceptionHandler(OperationFailedException.class)
+    public final ResponseEntity<Object> handleAccessDeniedException(
+        OperationFailedException ex, WebRequest request)
+    {
+        return buildResponseEntity(
+            new ApiException(INTERNAL_SERVER_ERROR, ex.getMessage(), ex.getDebugMessage()));
+    }
+
     @ExceptionHandler(AccessDeniedException.class)
     public final ResponseEntity<Object> handleAccessDeniedException(
         AccessDeniedException ex, WebRequest request)
@@ -137,7 +146,8 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler
      */
     @ExceptionHandler(ConstraintViolationException.class)
     protected ResponseEntity<Object> handleConstraintViolation(
-        ConstraintViolationException ex) {
+        ConstraintViolationException ex)
+    {
         ApiException apiException = new ApiException(BAD_REQUEST);
         apiException.setMessage("Validation error");
         apiException.addValidationErrors(ex.getConstraintViolations());
@@ -220,7 +230,7 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler
         HttpMessageNotWritableException ex, HttpHeaders headers, HttpStatus status, WebRequest request)
     {
         String error = "Error writing JSON output";
-        return buildResponseEntity(new ApiException(HttpStatus.INTERNAL_SERVER_ERROR, error, ex));
+        return buildResponseEntity(new ApiException(INTERNAL_SERVER_ERROR, error, ex));
     }
 
     /**

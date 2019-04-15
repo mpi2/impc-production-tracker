@@ -26,9 +26,6 @@ import uk.ac.ebi.impc_prod_tracker.data.organization.role.RoleRepository;
 import uk.ac.ebi.impc_prod_tracker.data.organization.work_unit.WorkUnit;
 import uk.ac.ebi.impc_prod_tracker.data.organization.work_unit.WorkUnitRepository;
 import uk.ac.ebi.impc_prod_tracker.domain.login.UserRegisterRequest;
-import java.util.Set;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 /**
  * Service to manage the creation of an user in the system.
@@ -73,22 +70,18 @@ public class PersonService
             person.setWorkUnit(workUnit);
             personRepository.save(person);
 
-            for (String institute : userRegisterRequest.getInstituteName())
+            for (String instituteName : userRegisterRequest.getInstituteName())
             {
-                Institute ins = instituteRepository.findInstituteByName(institute);
-                ins.getPeople().addAll(Stream.of(person).collect(Collectors.toSet()));
-                instituteRepository.save(ins);
-
-                if (person.getInstitutes() == null)
+                Institute institute = instituteRepository.findInstituteByName(instituteName);
+                if (!instituteName.isEmpty() && institute == null)
                 {
-                    person.setInstitutes(Stream.of(ins).collect(Collectors.toSet()));
+                    throw new OperationFailedException(
+                        String.format("Institute [%s] does not exist in the system.", instituteName));
                 }
-                else
-                {
-                    person.getInstitutes().add(ins);
-                }
-
+                institute.addPerson(person);
+                instituteRepository.save(institute);
             }
+            personRepository.save(person);
         }
         else
         {
@@ -100,23 +93,26 @@ public class PersonService
 
     private WorkUnit getWorkUnitFromRequest(UserRegisterRequest userRegisterRequest)
     {
-        Set<String> workUnitInRequest = userRegisterRequest.getWorkUnitName();
-        WorkUnit workUnit =  null;
-        if (!workUnitInRequest.isEmpty())
+        String workUnitInRequest = userRegisterRequest.getWorkUnitName();
+        WorkUnit workUnit = workUnitRepository.findWorkUnitByCode(workUnitInRequest);
+        if (!workUnitInRequest.isEmpty() && workUnit == null)
         {
-            workUnit = workUnitRepository.findWorkUnitByCode(workUnitInRequest.toArray()[0].toString());
+            throw new OperationFailedException(
+                String.format("Work Unit [%s] does not exist in the system.", workUnitInRequest));
         }
         return workUnit;
     }
 
     private Role getRoleFromRequest(UserRegisterRequest userRegisterRequest)
     {
-        Set<String> rolesInRequest = userRegisterRequest.getRoleName();
-        Role role =  null;
-        if (!rolesInRequest.isEmpty())
+        String roleInRequest = userRegisterRequest.getRoleName();
+        Role role = roleRepository.findRoleByName(roleInRequest);
+        if (!roleInRequest.isEmpty() && role == null)
         {
-            role = roleRepository.findRoleByName(rolesInRequest.toArray()[0].toString());
+            throw new OperationFailedException(
+                String.format("Role [%s] does not exist in the system.", roleInRequest));
         }
         return role;
     }
+
 }

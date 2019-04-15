@@ -22,15 +22,15 @@ import uk.ac.ebi.impc_prod_tracker.data.BaseEntity;
 import uk.ac.ebi.impc_prod_tracker.data.organization.institute.Institute;
 import uk.ac.ebi.impc_prod_tracker.data.organization.work_unit.WorkUnit;
 import uk.ac.ebi.impc_prod_tracker.data.organization.role.Role;
-
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
+import java.util.HashSet;
 import java.util.Set;
 
 @NoArgsConstructor(access= AccessLevel.PRIVATE, force=true)
-@Getter
-@Setter
+@Data
+@EqualsAndHashCode( exclude = {"institutes"}, callSuper = false)
 @Entity
 @RestResource(rel = "people", path = "people")
 public class Person extends BaseEntity
@@ -60,10 +60,28 @@ public class Person extends BaseEntity
 
     @ManyToMany(mappedBy = "people")
     @JsonBackReference
-    private Set<Institute> institutes;
+    private Set<Institute> institutes = new HashSet<>();
 
     public Person(String email)
     {
         this.email = email;
+    }
+
+    public void addInstitute(Institute institute)
+    {
+        this.institutes.add(institute);
+        institute.getPeople().add(this);
+    }
+
+    public void removeInstitute(Institute institute)
+    {
+        this.institutes.remove(institute);
+        institute.getPeople().remove(this);
+    }
+
+    @Override
+    public String toString()
+    {
+        return String.format("id: {%s}, email: {%s}", id, email);
     }
 }
