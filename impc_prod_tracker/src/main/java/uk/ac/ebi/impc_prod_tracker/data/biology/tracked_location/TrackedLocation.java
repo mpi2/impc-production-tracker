@@ -5,17 +5,21 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import uk.ac.ebi.impc_prod_tracker.data.BaseEntity;
+import uk.ac.ebi.impc_prod_tracker.data.biology.allele_type.AlleleType;
 import uk.ac.ebi.impc_prod_tracker.data.biology.species.Species;
-import uk.ac.ebi.impc_prod_tracker.data.biology.strain.Strain;
-
+import uk.ac.ebi.impc_prod_tracker.data.biology.tracked_mouse_allele.TrackedMouseAllele;
+import uk.ac.ebi.impc_prod_tracker.data.biology.tracked_strain.TrackedStrain;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
+import java.util.Set;
 
 @NoArgsConstructor(access= AccessLevel.PRIVATE, force=true)
 @Getter
@@ -42,14 +46,24 @@ public class TrackedLocation extends BaseEntity
 
     private String genomeBuild;
 
-    @ManyToOne(targetEntity = Strain.class)
-    private Strain strain;
+    @ManyToOne
+    private TrackedStrain strain;
 
     @ManyToOne(targetEntity = Species.class)
     private Species species;
 
-    //@OneToMany(mappedBy = "location")
-    //private Set<ProjectLocation> projectLocations;
-
     private String sequence;
+
+    private String mgiId;
+
+    @Column(columnDefinition = "TEXT")
+    private String name;
+
+    private String symbol;
+
+    @ManyToOne
+    private AlleleType type;
+
+    @ManyToMany(mappedBy = "trackedLocations")
+    private Set<TrackedMouseAllele> trackedMouseAlleles;
 }

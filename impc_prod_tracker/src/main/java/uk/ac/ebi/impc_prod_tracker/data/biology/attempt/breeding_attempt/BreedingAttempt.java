@@ -6,7 +6,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import uk.ac.ebi.impc_prod_tracker.data.BaseEntity;
 import uk.ac.ebi.impc_prod_tracker.data.biology.attempt.breeding_attempt.breeding_type.BreedingType;
-import uk.ac.ebi.impc_prod_tracker.data.biology.attempt.breeding_attempt.deleter_strain.DeleterStrain;
 import uk.ac.ebi.impc_prod_tracker.data.experiment.colony.Colony;
 import uk.ac.ebi.impc_prod_tracker.data.experiment.plan.Plan;
 import javax.persistence.Column;
@@ -43,11 +42,8 @@ public class BreedingAttempt extends BaseEntity
     @Column(name = "number_of_cre_matings_started")
     private Integer numberOfCreMatingsStarted;
 
-    @Column(name = "number_of_cre_matings_sucessfull")
-    private Integer numberOfCreMatingsSucessful;
-
-    @ManyToOne
-    private DeleterStrain deleterStain;
+    @Column(name = "number_of_cre_matings_successfull")
+    private Integer numberOfCareMatingsSuccessful;
 
     @ManyToOne
     private BreedingType type;

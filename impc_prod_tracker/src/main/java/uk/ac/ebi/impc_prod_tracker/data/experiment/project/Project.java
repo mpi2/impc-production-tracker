@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import uk.ac.ebi.impc_prod_tracker.data.BaseEntity;
+import uk.ac.ebi.impc_prod_tracker.data.biology.intented_mouse_gene.IntendedMouseGene;
 import uk.ac.ebi.impc_prod_tracker.data.experiment.project_intention.ProjectIntention;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -35,4 +36,14 @@ public class Project extends BaseEntity
         inverseJoinColumns = @JoinColumn(name = "intention_id"))
     @JsonManagedReference
     private Set<ProjectIntention> projectIntentions;
+
+    @ManyToMany
+    @JoinTable(
+        name = "project_mouse_gene",
+        joinColumns = @JoinColumn(name = "project_id"),
+        inverseJoinColumns = @JoinColumn(name = "mouse_gene_id"))
+    @JsonManagedReference
+    private Set<IntendedMouseGene> intendedMouseGenes;
 }
+
+
