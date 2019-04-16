@@ -20,8 +20,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import uk.ac.ebi.impc_prod_tracker.data.BaseEntity;
+import uk.ac.ebi.impc_prod_tracker.data.biology.tracked_strain.TrackedStrain;
 import uk.ac.ebi.impc_prod_tracker.data.experiment.colony.colony_comment.ColonyComment;
-import uk.ac.ebi.impc_prod_tracker.data.biology.strain.Strain;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -50,14 +50,8 @@ public class Colony extends BaseEntity {
     private String name;
 
     @NotNull
-    @ManyToOne(targetEntity = Strain.class)
-    private Strain strain;
-
-    @OneToMany(
-        cascade = CascadeType.ALL,
-        orphanRemoval = true
-    )
-    private Set<ColonyComment> colonyComments;
+    @ManyToOne
+    private TrackedStrain strain;
 
     @ManyToMany
     @JoinTable(

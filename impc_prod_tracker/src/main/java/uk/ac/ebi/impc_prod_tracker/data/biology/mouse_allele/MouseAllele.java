@@ -20,18 +20,13 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import uk.ac.ebi.impc_prod_tracker.data.BaseEntity;
-import uk.ac.ebi.impc_prod_tracker.data.biology.allele_type.AlleleType;
-import uk.ac.ebi.impc_prod_tracker.data.biology.mouse_allele_synonym.MouseAlleleSynonym;
-import uk.ac.ebi.impc_prod_tracker.data.biology.tracked_location.TrackedLocation;
+import uk.ac.ebi.impc_prod_tracker.data.biology.mouse_gene.MouseGene;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
-import javax.persistence.SequenceGenerator;
 import javax.validation.constraints.NotNull;
 import java.util.Set;
 
@@ -42,27 +37,19 @@ import java.util.Set;
 public class MouseAllele extends BaseEntity
 {
     @Id
-    @SequenceGenerator(name = "mouseAlleleSeq", sequenceName = "MOUSE_ALLELE_SEQ")
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "mouseAlleleSeq")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id", updatable=false)
     private Long id;
 
-    @NotNull
+    @Column(columnDefinition = "TEXT")
     private String name;
 
+    @NotNull
     private String alleleSymbol;
 
     private String mgiAlleleId;
 
-    @ManyToOne(targetEntity = AlleleType.class)
-    private AlleleType alleleType;
+    @ManyToMany(mappedBy = "mouseAlleles")
+    private Set<MouseGene> mouseGenes;
 
-    @ManyToOne
-    private TrackedLocation location;
-
-    @ManyToMany
-    @JoinTable(
-        name = "mouse_allele_synonym_rel",
-        joinColumns = @JoinColumn(name = "mouse_allele_id"),
-        inverseJoinColumns = @JoinColumn(name = "mouse_allele_synonym_id"))
-    private Set<MouseAlleleSynonym> mouseAlleleSynonyms;
 }

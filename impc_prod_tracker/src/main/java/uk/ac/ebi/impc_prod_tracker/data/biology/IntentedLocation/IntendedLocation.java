@@ -22,6 +22,8 @@ import lombok.Setter;
 import uk.ac.ebi.impc_prod_tracker.data.BaseEntity;
 import uk.ac.ebi.impc_prod_tracker.data.biology.species.Species;
 import uk.ac.ebi.impc_prod_tracker.data.biology.strain.Strain;
+import uk.ac.ebi.impc_prod_tracker.data.biology.tracked_strain.TrackedStrain;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -56,8 +58,8 @@ public class IntendedLocation extends BaseEntity
 
     private String genomeBuild;
 
-    @ManyToOne(targetEntity = Strain.class)
-    private Strain strain;
+    @ManyToOne
+    private TrackedStrain strain;
 
     @ManyToOne(targetEntity = Species.class)
     private Species species;

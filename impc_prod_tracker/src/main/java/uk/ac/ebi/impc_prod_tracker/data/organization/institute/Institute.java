@@ -15,7 +15,6 @@
  *******************************************************************************/
 package uk.ac.ebi.impc_prod_tracker.data.organization.institute;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -23,6 +22,7 @@ import lombok.NoArgsConstructor;
 import uk.ac.ebi.impc_prod_tracker.data.BaseEntity;
 import uk.ac.ebi.impc_prod_tracker.data.organization.consortium.Consortium;
 import uk.ac.ebi.impc_prod_tracker.data.organization.person.Person;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -45,6 +45,7 @@ public class Institute extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "instituteSeq")
     private Long id;
 
+    @Column(unique = true)
     private String name;
 
     private String description;
@@ -54,7 +55,6 @@ public class Institute extends BaseEntity {
         name = "institute_person",
         joinColumns = @JoinColumn(name = "institute_id"),
         inverseJoinColumns = @JoinColumn(name = "person_id"))
-    @JsonManagedReference
     private Set<Person> people = new HashSet<>();
 
     @ManyToMany(mappedBy = "institutes")

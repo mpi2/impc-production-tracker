@@ -15,7 +15,6 @@
  *******************************************************************************/
 package uk.ac.ebi.impc_prod_tracker.data.organization.work_group;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -57,7 +56,6 @@ public class WorkGroup extends BaseEntity
         name = "work_group_unit",
         joinColumns = @JoinColumn(name = "work_group_id"),
         inverseJoinColumns = @JoinColumn(name = "work_unit_id"))
-    @JsonManagedReference
     private Set<WorkUnit> workUnits;
 
     @ManyToMany(mappedBy = "workGroups")
