@@ -8,7 +8,6 @@ import uk.ac.ebi.impc_prod_tracker.data.BaseEntity;
 import uk.ac.ebi.impc_prod_tracker.data.biology.attempt.mutagenesis_attempt.MutagenesisAttempt;
 import uk.ac.ebi.impc_prod_tracker.data.biology.tracked_mouse_allele.TrackedMouseAllele;
 import uk.ac.ebi.impc_prod_tracker.data.experiment.colony.Colony;
-import uk.ac.ebi.impc_prod_tracker.data.experiment.privacy.Privacy;
 import uk.ac.ebi.impc_prod_tracker.data.experiment.status.Status;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -35,9 +34,6 @@ public class MutagenesisOutcome extends BaseEntity
 
     @ManyToOne
     private Colony colony;
-
-    @ManyToOne
-    private Privacy privacy;
 
     @ManyToOne
     private Status status;

@@ -30,7 +30,7 @@ public class TrackedStrain extends BaseEntity
     @Column(columnDefinition = "TEXT")
     private String name;
 
-    private String mgiStrainId;
+    private String mgiId;
 
     @ManyToOne
     private TrackedStrainType type;

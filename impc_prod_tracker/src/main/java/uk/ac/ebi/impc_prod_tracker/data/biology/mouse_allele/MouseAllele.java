@@ -47,7 +47,7 @@ public class MouseAllele extends BaseEntity
     @NotNull
     private String alleleSymbol;
 
-    private String mgiAlleleId;
+    private String mgiId;
 
     @ManyToMany(mappedBy = "mouseAlleles")
     private Set<MouseGene> mouseGenes;
