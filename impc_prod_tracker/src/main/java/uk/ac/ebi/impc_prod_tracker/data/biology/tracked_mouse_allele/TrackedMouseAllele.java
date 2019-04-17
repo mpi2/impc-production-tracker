@@ -38,7 +38,7 @@ public class TrackedMouseAllele extends BaseEntity
     @NotNull
     private String alleleSymbol;
 
-    private String mgiAlleleId;
+    private String mgiId;
 
     @ManyToOne
     private AlleleType alleleType;

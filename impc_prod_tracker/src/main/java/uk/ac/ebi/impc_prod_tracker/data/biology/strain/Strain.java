@@ -42,7 +42,7 @@ public class Strain extends BaseEntity
     @Column(columnDefinition = "TEXT")
     private String name;
 
-    private String mgiStrainId;
+    private String mgiId;
 
     private String type;
 }

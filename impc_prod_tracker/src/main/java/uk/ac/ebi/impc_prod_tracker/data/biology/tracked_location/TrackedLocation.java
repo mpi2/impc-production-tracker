@@ -57,9 +57,9 @@ public class TrackedLocation extends BaseEntity
     private String mgiId;
 
     @Column(columnDefinition = "TEXT")
-    private String name;
+    private String variantName;
 
-    private String symbol;
+    private String variantSymbol;
 
     @ManyToOne
     private AlleleType type;
