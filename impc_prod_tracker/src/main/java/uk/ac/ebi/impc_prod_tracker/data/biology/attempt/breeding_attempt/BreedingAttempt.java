@@ -6,6 +6,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import uk.ac.ebi.impc_prod_tracker.data.BaseEntity;
 import uk.ac.ebi.impc_prod_tracker.data.biology.attempt.breeding_attempt.breeding_type.BreedingType;
+import uk.ac.ebi.impc_prod_tracker.data.biology.breeding_outcome.BreedingOutcome;
+import uk.ac.ebi.impc_prod_tracker.data.biology.tracked_strain_type.TrackedStrainType;
 import uk.ac.ebi.impc_prod_tracker.data.experiment.colony.Colony;
 import uk.ac.ebi.impc_prod_tracker.data.experiment.plan.Plan;
 import javax.persistence.Column;
@@ -30,10 +32,10 @@ public class BreedingAttempt extends BaseEntity
     @MapsId
     private Plan plan;
 
-    // TODO
-    //@ManyToOne
-    //@JoinColumn(name = "previous_breeding_outcome_id")
-   // private BreedingOutcome previousBreedingOutcome;
+
+    @ManyToOne
+    @JoinColumn(name = "previous_breeding_outcome_id")
+    private BreedingOutcome previousBreedingOutcome;
 
     @ManyToOne
     @JoinColumn(name = "previous_breeding_colony_id")
@@ -44,6 +46,9 @@ public class BreedingAttempt extends BaseEntity
 
     @Column(name = "number_of_cre_matings_successfull")
     private Integer numberOfCareMatingsSuccessful;
+
+    @ManyToOne
+    private TrackedStrainType deleterStrain;
 
     @ManyToOne
     private BreedingType type;
