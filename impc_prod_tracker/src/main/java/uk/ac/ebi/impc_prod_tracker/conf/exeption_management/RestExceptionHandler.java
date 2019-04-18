@@ -161,11 +161,17 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler
         ApiException apiException = new ApiException(BAD_REQUEST);
         apiException.setMessage("Validation error");
 
-        if (ex.getOriginalException().getCause() instanceof ConstraintViolationException)
+        Throwable originalException = ex.getOriginalException();
+        if (originalException != null)
         {
-            ConstraintViolationException constraintViolationException =
-                (ConstraintViolationException)ex.getOriginalException().getCause();
-            apiException.addValidationErrors(constraintViolationException.getConstraintViolations());
+            Throwable cause = originalException.getCause();
+            if (cause != null && cause instanceof ConstraintViolationException)
+            {
+                ConstraintViolationException constraintViolationException =
+                    (ConstraintViolationException)cause;
+                apiException.addValidationErrors(
+                    constraintViolationException.getConstraintViolations());
+            }
         }
         return buildResponseEntity(apiException);
     }
