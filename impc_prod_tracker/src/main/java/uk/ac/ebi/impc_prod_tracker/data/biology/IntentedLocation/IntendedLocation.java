@@ -21,9 +21,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import uk.ac.ebi.impc_prod_tracker.data.BaseEntity;
 import uk.ac.ebi.impc_prod_tracker.data.biology.species.Species;
-import uk.ac.ebi.impc_prod_tracker.data.biology.strain.Strain;
 import uk.ac.ebi.impc_prod_tracker.data.biology.tracked_strain.TrackedStrain;
-
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -63,9 +61,6 @@ public class IntendedLocation extends BaseEntity
 
     @ManyToOne(targetEntity = Species.class)
     private Species species;
-
-    //@OneToMany(mappedBy = "location")
-    //private Set<ProjectLocation> projectLocations;
 
     private String sequence;
 }

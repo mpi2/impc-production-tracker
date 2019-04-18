@@ -15,8 +15,17 @@
  *******************************************************************************/
 package uk.ac.ebi.impc_prod_tracker.service;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
+import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.web.client.RestTemplate;
 import uk.ac.ebi.impc_prod_tracker.conf.exeption_management.OperationFailedException;
+import uk.ac.ebi.impc_prod_tracker.conf.security.constants.PersonManagementConstants;
 import uk.ac.ebi.impc_prod_tracker.data.organization.institute.Institute;
 import uk.ac.ebi.impc_prod_tracker.data.organization.institute.InstituteRepository;
 import uk.ac.ebi.impc_prod_tracker.data.organization.person.Person;
@@ -38,20 +47,25 @@ public class PersonService
     private RoleRepository roleRepository;
     private WorkUnitRepository workUnitRepository;
     private InstituteRepository instituteRepository;
+    private RestTemplate restTemplate;
 
     private static final String PERSON_ALREADY_EXISTS_ERROR =
-        "The user with email {%s} already exists in the system.";
+        "The user with email [%s] already exists in the system.";
+    private static final String PERSON_ALREADY_IN_AAP_ERROR = "The user [%s] already exists in the "
+        + "Authentication System. Please try with another user name.";
 
     public PersonService(
         PersonRepository personRepository,
         RoleRepository roleRepository,
         WorkUnitRepository workUnitRepository,
-        InstituteRepository instituteRepository)
+        InstituteRepository instituteRepository,
+        RestTemplate restTemplate)
     {
         this.personRepository = personRepository;
         this.roleRepository = roleRepository;
         this.workUnitRepository = workUnitRepository;
         this.instituteRepository = instituteRepository;
+        this.restTemplate = restTemplate;
     }
 
     public Person createPerson(UserRegisterRequest userRegisterRequest)
@@ -68,6 +82,8 @@ public class PersonService
             person.setIsActive(true);
             person.setRole(role);
             person.setWorkUnit(workUnit);
+            String authId = createUserInAuthenticationSystem(userRegisterRequest);
+            person.setAuthId(authId);
             personRepository.save(person);
 
             for (String instituteName : userRegisterRequest.getInstituteName())
@@ -113,6 +129,74 @@ public class PersonService
                 String.format("Role [%s] does not exist in the system.", roleInRequest));
         }
         return role;
+    }
+
+    /**
+     * Creates a user in the AAP
+     * @param userRegisterRequest
+     * @return The UID generated for the system.
+     */
+    private String createUserInAuthenticationSystem(UserRegisterRequest userRegisterRequest)
+    {
+        LocalAccountInfo localAccountInfo =
+            new LocalAccountInfo(
+                userRegisterRequest.getName(),
+                userRegisterRequest.getPassword(),
+                userRegisterRequest.getEmail());
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+
+        HttpEntity<LocalAccountInfo> requestEntity = new HttpEntity<>(localAccountInfo, headers);
+        ResponseEntity<String> response;
+        try
+        {
+            response =
+                restTemplate.postForEntity(
+                    PersonManagementConstants.LOCAL_AUTHENTICATION_URL,
+                    requestEntity,
+                    String.class);
+        }
+        catch(HttpClientErrorException e)
+        {
+            String message = e.getMessage();
+            if (e.getStatusCode().equals(HttpStatus.CONFLICT))
+            {
+                message = String.format(PERSON_ALREADY_IN_AAP_ERROR, userRegisterRequest.getName());
+            }
+            throw new OperationFailedException(message);
+        }
+        return response.getBody();
+
+    }
+
+    /**
+     * Internal class to represent the payload needed to create the user in the AAP local account.
+     * The "name" field is just for display purposes and can be changed in any moment. "username"
+     * is the one is used to log into the system, so it cannot be changed and will be assigned with
+     * the email, meaning the way to log into the system is using the email and the password.
+     */
+    private static class LocalAccountInfo
+    {
+        @JsonProperty("username")
+        String userName;
+
+        @JsonProperty("name")
+        String name;
+
+        @JsonProperty("password")
+        String password;
+
+        @JsonProperty("email")
+        String email;
+
+        LocalAccountInfo(String name, String password, String email)
+        {
+            this.name = name;
+            this.password = password;
+            this.email = email;
+            this.userName = email;
+        }
     }
 
 }

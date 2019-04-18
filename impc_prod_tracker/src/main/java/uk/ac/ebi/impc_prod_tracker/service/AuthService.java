@@ -15,7 +15,6 @@
  *******************************************************************************/
 package uk.ac.ebi.impc_prod_tracker.service;
 
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -24,6 +23,7 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
+import uk.ac.ebi.impc_prod_tracker.conf.security.constants.PersonManagementConstants;
 import uk.ac.ebi.impc_prod_tracker.domain.login.AuthenticationRequest;
 
 /**
@@ -34,9 +34,6 @@ import uk.ac.ebi.impc_prod_tracker.domain.login.AuthenticationRequest;
 @Service
 public class AuthService
 {
-    @Value("${local_authentication_url}")
-    private static final String LOCAL_AUTHENTICATION_URL = "https://explore.api.aai.ebi.ac.uk/auth";
-
     private RestTemplate restTemplate;
 
     public AuthService(RestTemplate restTemplate)
@@ -57,7 +54,7 @@ public class AuthService
         HttpEntity<String> entity = new HttpEntity<>("parameters", headers);
         try
         {
-            response = restTemplate.exchange(LOCAL_AUTHENTICATION_URL, HttpMethod.GET, entity, String.class);
+            response = restTemplate.exchange(PersonManagementConstants.LOCAL_AUTHENTICATION_URL, HttpMethod.GET, entity, String.class);
         }
         catch (HttpClientErrorException e)
         {
