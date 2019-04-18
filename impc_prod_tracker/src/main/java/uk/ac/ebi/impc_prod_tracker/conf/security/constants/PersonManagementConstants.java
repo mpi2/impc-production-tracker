@@ -15,8 +15,13 @@
  *******************************************************************************/
 package uk.ac.ebi.impc_prod_tracker.conf.security.constants;
 
+import org.springframework.beans.factory.annotation.Value;
+
 public class PersonManagementConstants
 {
+    @Value("${local_authentication_url}")
+    public static final String LOCAL_AUTHENTICATION_URL = "https://explore.api.aai.ebi.ac.uk/auth";
+
     private PersonManagementConstants()
     {
         // Prevent instantiation

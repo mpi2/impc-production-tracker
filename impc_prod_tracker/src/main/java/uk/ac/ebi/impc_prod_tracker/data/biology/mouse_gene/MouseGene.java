@@ -25,8 +25,6 @@ import uk.ac.ebi.impc_prod_tracker.data.biology.gene_flag.GeneFlag;
 import uk.ac.ebi.impc_prod_tracker.data.biology.mouse_allele.MouseAllele;
 import uk.ac.ebi.impc_prod_tracker.data.biology.mouse_gene_synomym.MouseGeneSynonym;
 import uk.ac.ebi.impc_prod_tracker.data.biology.ortholog.Ortholog;
-import uk.ac.ebi.impc_prod_tracker.data.organization.institute.Institute;
-
 import javax.persistence.*;
 import javax.validation.constraints.Pattern;
 import java.util.Set;
