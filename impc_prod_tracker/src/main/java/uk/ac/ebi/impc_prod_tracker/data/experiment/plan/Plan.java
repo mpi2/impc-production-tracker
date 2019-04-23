@@ -82,7 +82,7 @@ public class Plan extends BaseEntity
     private Colony colony;
 
     @ManyToOne
-    private AttemptType attempType;
+    private AttemptType attemptType;
 
     @ManyToMany()
     @JoinTable(
