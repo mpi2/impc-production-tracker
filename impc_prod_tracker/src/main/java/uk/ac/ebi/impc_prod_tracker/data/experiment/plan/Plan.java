@@ -21,7 +21,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import uk.ac.ebi.impc_prod_tracker.data.BaseEntity;
 import uk.ac.ebi.impc_prod_tracker.data.biology.plan_reagent.PlanReagent;
-import uk.ac.ebi.impc_prod_tracker.data.experiment.attemp_type.AttempType;
+import uk.ac.ebi.impc_prod_tracker.data.experiment.attempt_type.AttemptType;
 import uk.ac.ebi.impc_prod_tracker.data.experiment.colony.Colony;
 import uk.ac.ebi.impc_prod_tracker.data.experiment.project.Project;
 import uk.ac.ebi.impc_prod_tracker.data.organization.consortium.Consortium;
@@ -82,7 +82,7 @@ public class Plan extends BaseEntity
     private Colony colony;
 
     @ManyToOne
-    private AttempType attempType;
+    private AttemptType attempType;
 
     @ManyToMany()
     @JoinTable(

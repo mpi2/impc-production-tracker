@@ -1,4 +1,4 @@
-package uk.ac.ebi.impc_prod_tracker.data.experiment.attemp_type;
+package uk.ac.ebi.impc_prod_tracker.data.experiment.attempt_type;
 
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -15,7 +15,7 @@ import javax.persistence.SequenceGenerator;
 @Getter
 @Setter
 @Entity
-public class AttempType extends BaseEntity
+public class AttemptType extends BaseEntity
 {
     @Id
     @SequenceGenerator(name = "attemptTypeSeq", sequenceName = "ATTEMPT_TYPE_SEQ")
