@@ -32,7 +32,11 @@ public class SqlExceptionFormatter extends BaseExceptionFormatter
         String rootCauseMessage = exception.getMessage();
         if (exception instanceof DataIntegrityViolationException)
         {
-            rootCauseMessage = ((DataIntegrityViolationException) exception).getRootCause().getMessage();
+            Throwable rootCause = ((DataIntegrityViolationException) exception).getRootCause();
+            if (rootCause != null)
+            {
+                rootCauseMessage = rootCause.getMessage();
+            }
             if (rootCauseMessage.contains(UNIQUE_CONSTRAINT_MESSAGE))
             {
                 processDuplicateKeyException(rootCauseMessage);
