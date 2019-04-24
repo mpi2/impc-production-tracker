@@ -60,6 +60,11 @@ public class Institute extends BaseEntity {
     @ManyToMany(mappedBy = "institutes")
     private Set<Consortium> consortia;
 
+    public Institute(String name)
+    {
+        this.name = name;
+    }
+
     public void addPerson(Person person)
     {
         this.people.add(person);

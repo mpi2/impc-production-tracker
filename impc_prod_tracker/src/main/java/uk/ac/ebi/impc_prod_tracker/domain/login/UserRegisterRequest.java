@@ -4,7 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.Set;
 
@@ -13,10 +13,10 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 public class UserRegisterRequest implements Serializable {
-    private String name;
-    private String password;
-    private String email;
-    private String workUnitName;
-    private Set<String> instituteName;
-    private String roleName;
+    @NotNull private String name;
+    @NotNull private String password;
+    @NotNull private String email;
+    @NotNull private String workUnitName;
+    @NotNull private Set<String> instituteName;
+    @NotNull private String roleName;
 }

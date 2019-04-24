@@ -49,10 +49,15 @@ public class PersonService
     private InstituteRepository instituteRepository;
     private RestTemplate restTemplate;
 
-    private static final String PERSON_ALREADY_EXISTS_ERROR =
+    static final String PERSON_ALREADY_EXISTS_ERROR =
         "The user with email [%s] already exists in the system.";
-    private static final String PERSON_ALREADY_IN_AAP_ERROR = "The user [%s] already exists in the "
+    static final String PERSON_ALREADY_IN_AAP_ERROR = "The user [%s] already exists in the "
         + "Authentication System. Please try with another user name.";
+    public static final String WORK_UNIT_NOT_EXIST_IN_THE_SYSTEM
+        = "Work Unit [%s] does not exist in the system.";
+    static final String INSTITUTE_NOT_EXIST_IN_THE_SYSTEM
+        = "Institute [%s] does not exist in the system.";
+    static final String ROLE_NOT_EXIST_IN_THE_SYSTEM = "Role [%s] does not exist in the system.";
 
     public PersonService(
         PersonRepository personRepository,
@@ -68,16 +73,21 @@ public class PersonService
         this.restTemplate = restTemplate;
     }
 
+    /**
+     *
+     * @param userRegisterRequest Information with the user to be created.
+     * @return {@link Person} object with the created person.
+     */
     public Person createPerson(UserRegisterRequest userRegisterRequest)
     {
         String email = userRegisterRequest.getEmail();
 
         Person person = personRepository.findPersonByEmail(email);
-        Role role = getRoleFromRequest(userRegisterRequest);
-        WorkUnit workUnit = getWorkUnitFromRequest(userRegisterRequest);
-
         if (person == null)
         {
+            Role role = getRoleFromRequest(userRegisterRequest);
+            WorkUnit workUnit = getWorkUnitFromRequest(userRegisterRequest);
+
             person = new Person(email);
             person.setIsActive(true);
             person.setRole(role);
@@ -92,7 +102,7 @@ public class PersonService
                 if (!instituteName.isEmpty() && institute == null)
                 {
                     throw new OperationFailedException(
-                        String.format("Institute [%s] does not exist in the system.", instituteName));
+                        String.format(INSTITUTE_NOT_EXIST_IN_THE_SYSTEM, instituteName));
                 }
                 institute.addPerson(person);
                 instituteRepository.save(institute);
@@ -114,7 +124,7 @@ public class PersonService
         if (!workUnitInRequest.isEmpty() && workUnit == null)
         {
             throw new OperationFailedException(
-                String.format("Work Unit [%s] does not exist in the system.", workUnitInRequest));
+                String.format(WORK_UNIT_NOT_EXIST_IN_THE_SYSTEM, workUnitInRequest));
         }
         return workUnit;
     }
@@ -126,7 +136,7 @@ public class PersonService
         if (!roleInRequest.isEmpty() && role == null)
         {
             throw new OperationFailedException(
-                String.format("Role [%s] does not exist in the system.", roleInRequest));
+                String.format(ROLE_NOT_EXIST_IN_THE_SYSTEM, roleInRequest));
         }
         return role;
     }
@@ -167,7 +177,6 @@ public class PersonService
             throw new OperationFailedException(message);
         }
         return response.getBody();
-
     }
 
     /**
@@ -176,7 +185,7 @@ public class PersonService
      * is the one is used to log into the system, so it cannot be changed and will be assigned with
      * the email, meaning the way to log into the system is using the email and the password.
      */
-    private static class LocalAccountInfo
+    static class LocalAccountInfo
     {
         @JsonProperty("username")
         String userName;
