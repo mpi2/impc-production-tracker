@@ -54,4 +54,9 @@ public class WorkUnit extends BaseEntity
 
     @ManyToMany(mappedBy = "workUnits")
     private Set<Funder> funders;
+
+    public WorkUnit(String name)
+    {
+        this.name = name;
+    }
 }
