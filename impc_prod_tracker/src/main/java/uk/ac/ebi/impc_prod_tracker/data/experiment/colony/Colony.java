@@ -20,6 +20,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import uk.ac.ebi.impc_prod_tracker.data.BaseEntity;
+import uk.ac.ebi.impc_prod_tracker.data.biology.attempt.breeding_attempt.BreedingAttempt;
 import uk.ac.ebi.impc_prod_tracker.data.biology.tracked_strain.TrackedStrain;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -59,4 +60,7 @@ public class Colony extends BaseEntity {
 
     @ManyToMany(mappedBy = "parentColonies")
     private Set<Colony> childColonies;
+
+    @ManyToMany(mappedBy = "colonies")
+    private Set<BreedingAttempt> breedingAttempts;
 }
