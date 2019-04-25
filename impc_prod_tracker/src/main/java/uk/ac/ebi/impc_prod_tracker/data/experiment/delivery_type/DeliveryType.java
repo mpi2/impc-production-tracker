@@ -1,4 +1,4 @@
-package uk.ac.ebi.impc_prod_tracker.data.experiment.attempt_type;
+package uk.ac.ebi.impc_prod_tracker.data.experiment.delivery_type;
 
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -15,11 +15,11 @@ import javax.persistence.SequenceGenerator;
 @Getter
 @Setter
 @Entity
-public class AttemptType extends BaseEntity
+public class DeliveryType extends BaseEntity
 {
     @Id
-    @SequenceGenerator(name = "attemptTypeSeq", sequenceName = "ATTEMPT_TYPE_SEQ")
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "attemptTypeSeq")
+    @SequenceGenerator(name = "deliveryTypeSeq", sequenceName = "DELIVERY_TYPE_SEQ")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "deliveryTypeSeq")
     private Long id;
 
     private String name;

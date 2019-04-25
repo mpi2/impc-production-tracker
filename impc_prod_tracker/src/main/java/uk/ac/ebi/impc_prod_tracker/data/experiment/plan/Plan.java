@@ -21,7 +21,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import uk.ac.ebi.impc_prod_tracker.data.BaseEntity;
 import uk.ac.ebi.impc_prod_tracker.data.biology.plan_reagent.PlanReagent;
-import uk.ac.ebi.impc_prod_tracker.data.experiment.attempt_type.AttemptType;
 import uk.ac.ebi.impc_prod_tracker.data.experiment.colony.Colony;
 import uk.ac.ebi.impc_prod_tracker.data.experiment.project.Project;
 import uk.ac.ebi.impc_prod_tracker.data.organization.consortium.Consortium;
@@ -33,7 +32,6 @@ import uk.ac.ebi.impc_prod_tracker.data.experiment.privacy.Privacy;
 import uk.ac.ebi.impc_prod_tracker.data.experiment.plan.protocol.Protocol;
 import uk.ac.ebi.impc_prod_tracker.data.experiment.status.Status;
 import uk.ac.ebi.impc_prod_tracker.data.experiment.plan.type.PlanType;
-
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.Set;
@@ -80,9 +78,6 @@ public class Plan extends BaseEntity
     @ManyToOne
     @JoinColumn(name = "parent_colony_id")
     private Colony colony;
-
-    @ManyToOne
-    private AttemptType attemptType;
 
     @ManyToMany()
     @JoinTable(
