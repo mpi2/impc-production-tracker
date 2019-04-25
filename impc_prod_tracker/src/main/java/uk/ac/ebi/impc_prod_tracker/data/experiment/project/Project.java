@@ -8,6 +8,8 @@ import lombok.Setter;
 import uk.ac.ebi.impc_prod_tracker.data.BaseEntity;
 import uk.ac.ebi.impc_prod_tracker.data.biology.allele_type.AlleleType;
 import uk.ac.ebi.impc_prod_tracker.data.biology.intented_mouse_gene.IntendedMouseGene;
+import uk.ac.ebi.impc_prod_tracker.data.experiment.assigment_status.AssigmentStatus;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -15,6 +17,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import java.util.Set;
 
@@ -28,6 +31,11 @@ public class Project extends BaseEntity
     @SequenceGenerator(name = "projectSeq", sequenceName = "PROJECT_SEQ")
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "projectSeq")
     private Long id;
+
+    private String tpn;
+
+    @ManyToOne
+    private AssigmentStatus assigmentStatus;
 
     @ManyToMany
     @JoinTable(
