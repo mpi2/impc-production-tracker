@@ -20,12 +20,14 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import uk.ac.ebi.impc_prod_tracker.data.BaseEntity;
-import uk.ac.ebi.impc_prod_tracker.data.biology.mutagenesis_outcome.MutagenesisOutcome;
+import uk.ac.ebi.impc_prod_tracker.data.biology.attempt.Attempt;
+import uk.ac.ebi.impc_prod_tracker.data.experiment.assay_type.AssayType;
+import uk.ac.ebi.impc_prod_tracker.data.experiment.delivery_type.DeliveryType;
 import uk.ac.ebi.impc_prod_tracker.data.experiment.plan.Plan;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.MapsId;
 import javax.persistence.OneToOne;
@@ -43,10 +45,6 @@ public class MutagenesisAttempt extends BaseEntity
     @OneToOne
     @MapsId
     private Plan plan;
-
-    @ManyToOne
-    @JoinColumn(name = "previous_mutagenesis_outcome_id")
-    private MutagenesisOutcome previousMutagenesisOutcome;
 
     private String externalRef;
 
@@ -76,4 +74,33 @@ public class MutagenesisAttempt extends BaseEntity
 
     @Column(name = "no_hdr_g0_mutants_subset_donors_inserted")
     private Integer noHdrG0MutantsSubsetDonorsInserted;
+
+    private Integer totalEmbryosInjected;
+
+    private Integer totalEmbryosSurvived;
+
+    private Integer totalTransferred;
+
+    private Integer noFounderPups;
+
+    private Integer noFounderSelectedForBreeding;
+
+    private Integer founderNumAssays;
+
+    @ManyToOne
+    private AssayType assayType;
+
+    private Boolean experimental;
+
+    @ManyToOne
+    private DeliveryType deliveryType;
+
+    private Double voltage;
+
+    private Integer noOfPulses;
+
+    private String embryoTransferDay;
+
+    @Column(name = "embryo_2_Cell")
+    private String embryo2Cell;
 }

@@ -6,7 +6,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import uk.ac.ebi.impc_prod_tracker.data.BaseEntity;
 import uk.ac.ebi.impc_prod_tracker.data.biology.attempt.breeding_attempt.breeding_type.BreedingType;
-import uk.ac.ebi.impc_prod_tracker.data.biology.breeding_outcome.BreedingOutcome;
 import uk.ac.ebi.impc_prod_tracker.data.biology.tracked_strain_type.TrackedStrainType;
 import uk.ac.ebi.impc_prod_tracker.data.experiment.colony.Colony;
 import uk.ac.ebi.impc_prod_tracker.data.experiment.plan.Plan;
@@ -14,9 +13,12 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.MapsId;
 import javax.persistence.OneToOne;
+import java.util.Set;
 
 @NoArgsConstructor(access= AccessLevel.PRIVATE, force=true)
 @Getter
@@ -32,15 +34,6 @@ public class BreedingAttempt extends BaseEntity
     @MapsId
     private Plan plan;
 
-
-    @ManyToOne
-    @JoinColumn(name = "previous_breeding_outcome_id")
-    private BreedingOutcome previousBreedingOutcome;
-
-    @ManyToOne
-    @JoinColumn(name = "previous_breeding_colony_id")
-    private Colony previousBreedingColony;
-
     @Column(name = "number_of_cre_matings_started")
     private Integer numberOfCreMatingsStarted;
 
@@ -52,4 +45,11 @@ public class BreedingAttempt extends BaseEntity
 
     @ManyToOne
     private BreedingType type;
+
+    @ManyToMany
+    @JoinTable(
+        name = "breeding_attempt_colony",
+        joinColumns = @JoinColumn(name = "breeding_attempt_id"),
+        inverseJoinColumns = @JoinColumn(name = "colony_id"))
+    private Set<Colony> colonies;
 }
