@@ -90,7 +90,7 @@ public class PersonServiceTest
 
         when(personRepository.findPersonByEmail(EMAIL)).thenReturn(null);
         when(roleRepository.findRoleByName(ROLE_NAME)).thenReturn(ROLE_TEST);
-        when(workUnitRepository.findWorkUnitByCode(WORK_UNIT_NAME)).thenReturn(WORK_UNIT_TEST);
+        when(workUnitRepository.findWorkUnitByIlarCode(WORK_UNIT_NAME)).thenReturn(WORK_UNIT_TEST);
         when(restTemplate.postForEntity(
             eq(PersonManagementConstants.LOCAL_AUTHENTICATION_URL), any(), eq(String.class)))
             .thenReturn(USER_CREATED_IN_AAP_RESPONSE);
@@ -143,7 +143,7 @@ public class PersonServiceTest
         exceptionRule.expect(OperationFailedException.class);
         exceptionRule.expectMessage(
             String.format(PersonService.WORK_UNIT_NOT_EXIST_IN_THE_SYSTEM, WORK_UNIT_NAME));
-        when(workUnitRepository.findWorkUnitByCode(WORK_UNIT_NAME)).thenReturn(null);
+        when(workUnitRepository.findWorkUnitByIlarCode(WORK_UNIT_NAME)).thenReturn(null);
 
         testInstance.createPerson(userRegisterRequest);
     }

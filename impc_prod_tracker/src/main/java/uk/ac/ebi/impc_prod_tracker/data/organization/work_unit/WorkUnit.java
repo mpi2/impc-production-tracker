@@ -43,10 +43,13 @@ public class WorkUnit extends BaseEntity
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "workUnitSeq")
     private Long id;
 
+    @Column(unique = true)
     private String name;
 
+    private String fullName;
+
     @Column(unique = true)
-    private String code;
+    private String ilarCode;
 
     @ManyToMany(mappedBy = "workUnits")
     @JsonBackReference
