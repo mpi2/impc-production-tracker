@@ -13,7 +13,7 @@
  * language governing permissions and limitations under the
  * License.
  *******************************************************************************/
-package uk.ac.ebi.impc_prod_tracker.service;
+package uk.ac.ebi.impc_prod_tracker.service.authentication;
 
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;

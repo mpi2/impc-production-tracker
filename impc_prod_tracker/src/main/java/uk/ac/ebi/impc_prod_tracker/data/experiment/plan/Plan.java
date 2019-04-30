@@ -61,6 +61,7 @@ public class Plan extends BaseEntity
 
     @NotNull
     @ManyToOne(targetEntity= Privacy.class)
+
     private Privacy privacy;
 
     @ManyToOne(targetEntity = WorkUnit.class)
