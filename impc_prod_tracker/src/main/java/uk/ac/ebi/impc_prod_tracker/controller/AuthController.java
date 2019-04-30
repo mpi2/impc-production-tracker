@@ -26,7 +26,7 @@ import uk.ac.ebi.impc_prod_tracker.conf.exeption_management.OperationFailedExcep
 import uk.ac.ebi.impc_prod_tracker.data.organization.person.Person;
 import uk.ac.ebi.impc_prod_tracker.domain.login.AuthenticationRequest;
 import uk.ac.ebi.impc_prod_tracker.domain.login.UserRegisterRequest;
-import uk.ac.ebi.impc_prod_tracker.service.AuthService;
+import uk.ac.ebi.impc_prod_tracker.service.authentication.AuthService;
 import uk.ac.ebi.impc_prod_tracker.service.PersonService;
 
 import java.util.HashMap;

@@ -13,19 +13,31 @@
  * language governing permissions and limitations under the
  * License.
  *******************************************************************************/
-package uk.ac.ebi.impc_prod_tracker.data.experiment.plan;
+package uk.ac.ebi.impc_prod_tracker.service.plan;
 
-import org.springframework.data.repository.CrudRepository;
-import org.springframework.security.access.prepost.PostFilter;
-import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.stereotype.Component;
+import uk.ac.ebi.impc_prod_tracker.data.experiment.plan.Plan;
+import uk.ac.ebi.impc_prod_tracker.data.experiment.plan.PlanRepository;
 import uk.ac.ebi.impc_prod_tracker.data.experiment.project.Project;
+import java.util.ArrayList;
+import java.util.List;
 
-public interface PlanRepository extends CrudRepository<Plan, Long> {
+@Component
+public class PlanServiceImpl implements PlanService
+{
+    private PlanRepository planRepository;
+
+    PlanServiceImpl(PlanRepository planRepository)
+    {
+        this.planRepository = planRepository;
+    }
 
     @Override
-    @PreAuthorize("hasPermission(null, 'READ_PLAN')")
-    @PostFilter("hasPermission(filterObject, 'FILTER_PLAN')")
-    Iterable<Plan> findAll();
-
-    Iterable<Plan> findAllByProject(Project project);
+    public List<Plan> getPlansByProject(Project project)
+    {
+        Iterable<Plan> plans = planRepository.findAllByProject(project);
+        List<Plan> planList = new ArrayList<>();
+        plans.forEach(planList::add);
+        return planList;
+    }
 }

@@ -13,19 +13,14 @@
  * language governing permissions and limitations under the
  * License.
  *******************************************************************************/
-package uk.ac.ebi.impc_prod_tracker.data.experiment.plan;
+package uk.ac.ebi.impc_prod_tracker.controller.project.plan.phenotype_plan.mouse_allele_modification_details;
 
-import org.springframework.data.repository.CrudRepository;
-import org.springframework.security.access.prepost.PostFilter;
-import org.springframework.security.access.prepost.PreAuthorize;
-import uk.ac.ebi.impc_prod_tracker.data.experiment.project.Project;
+public class MouseAlleleModificationDetailsDTO
+{
+    private String colonyName;
+    private String alleleOutput;
+    private String alleleName;
+    private String colonyBackgtoundStrain;
+    private String deleterStrain;
 
-public interface PlanRepository extends CrudRepository<Plan, Long> {
-
-    @Override
-    @PreAuthorize("hasPermission(null, 'READ_PLAN')")
-    @PostFilter("hasPermission(filterObject, 'FILTER_PLAN')")
-    Iterable<Plan> findAll();
-
-    Iterable<Plan> findAllByProject(Project project);
 }

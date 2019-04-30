@@ -13,19 +13,20 @@
  * language governing permissions and limitations under the
  * License.
  *******************************************************************************/
-package uk.ac.ebi.impc_prod_tracker.data.experiment.plan;
+package uk.ac.ebi.impc_prod_tracker.controller.project.plan.phenotype_plan;
 
-import org.springframework.data.repository.CrudRepository;
-import org.springframework.security.access.prepost.PostFilter;
-import org.springframework.security.access.prepost.PreAuthorize;
-import uk.ac.ebi.impc_prod_tracker.data.experiment.project.Project;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Data;
+import lombok.RequiredArgsConstructor;
+import uk.ac.ebi.impc_prod_tracker.controller.project.plan.PlanDetailsDTO;
 
-public interface PlanRepository extends CrudRepository<Plan, Long> {
-
-    @Override
-    @PreAuthorize("hasPermission(null, 'READ_PLAN')")
-    @PostFilter("hasPermission(filterObject, 'FILTER_PLAN')")
-    Iterable<Plan> findAll();
-
-    Iterable<Plan> findAllByProject(Project project);
+@Data
+@RequiredArgsConstructor
+public class PhenotypePlanSummaryDTO
+{
+    @JsonProperty("planDetails")
+    private PlanDetailsDTO planDetailsDTO;
+    private String phenotypingPlanInfo1;
+    private String phenotypingPlanInfo2;
+    private String phenotypingPlanInfo3;
 }
