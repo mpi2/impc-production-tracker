@@ -32,6 +32,8 @@ public class TrackedStrain extends BaseEntity
 
     private String mgiId;
 
+    private String mgiName;
+
     @ManyToOne
     private TrackedStrainType type;
 }

@@ -20,5 +20,5 @@ import org.springframework.data.repository.CrudRepository;
 public interface WorkUnitRepository extends CrudRepository<WorkUnit, Long> {
     WorkUnit findWorkUnitByName(String name);
 
-    WorkUnit findWorkUnitByCode(String code);
+    WorkUnit findWorkUnitByIlarCode(String code);
 }

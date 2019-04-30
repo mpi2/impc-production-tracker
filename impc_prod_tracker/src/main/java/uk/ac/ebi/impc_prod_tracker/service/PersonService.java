@@ -120,7 +120,7 @@ public class PersonService
     private WorkUnit getWorkUnitFromRequest(UserRegisterRequest userRegisterRequest)
     {
         String workUnitInRequest = userRegisterRequest.getWorkUnitName();
-        WorkUnit workUnit = workUnitRepository.findWorkUnitByCode(workUnitInRequest);
+        WorkUnit workUnit = workUnitRepository.findWorkUnitByIlarCode(workUnitInRequest);
         if (!workUnitInRequest.isEmpty() && workUnit == null)
         {
             throw new OperationFailedException(
