@@ -25,12 +25,13 @@ import uk.ac.ebi.impc_prod_tracker.controller.project.plan.phenotype_plan.Phenot
 import uk.ac.ebi.impc_prod_tracker.controller.project.plan.PlanDetailsDTO;
 import uk.ac.ebi.impc_prod_tracker.controller.project.plan.PlanMapper;
 import uk.ac.ebi.impc_prod_tracker.controller.project.plan.production_plan.ProductionPlanSummaryDTO;
+import uk.ac.ebi.impc_prod_tracker.controller.project.plan.production_plan.f1_colony.F1ColonyDetailsDTO;
+import uk.ac.ebi.impc_prod_tracker.controller.project.plan.production_plan.micro_injection.MicroInjectionDetailsDTO;
 import uk.ac.ebi.impc_prod_tracker.data.experiment.plan.Plan;
 import uk.ac.ebi.impc_prod_tracker.data.experiment.project.Project;
 import uk.ac.ebi.impc_prod_tracker.service.plan.PlanService;
 import uk.ac.ebi.impc_prod_tracker.service.project.ProjectService;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -102,6 +103,10 @@ public class ProjectController
                     planMapper.convertToProductionPlanSummaryDto(p);
                 productionPlanSummaryDTO.setPlanDetailsDTO(planDetailsDTO);
                 productionPlanSummaryDTOList.add(productionPlanSummaryDTO);
+                MicroInjectionDetailsDTO microInjectionDetailsDTO = new MicroInjectionDetailsDTO();
+                F1ColonyDetailsDTO f1ColonyDetailsDTO = new F1ColonyDetailsDTO();
+                productionPlanSummaryDTO.setMicroInjectionDetailsDTO(microInjectionDetailsDTO);
+                productionPlanSummaryDTO.setF1ColonyDetailsDTO(f1ColonyDetailsDTO);
             }
             else
             {
@@ -113,7 +118,7 @@ public class ProjectController
         }
 
         projectDTO.setProductionPlanSummaries(productionPlanSummaryDTOList);
-        projectDTO.setPhenotypingPlanSummaries(phenotypePlanSummaryDTOS);
+        projectDTO.setPhenotypePlanSummaries(phenotypePlanSummaryDTOS);
 
         return projectDTO;
 

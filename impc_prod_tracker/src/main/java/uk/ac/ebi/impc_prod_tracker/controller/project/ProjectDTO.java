@@ -35,5 +35,5 @@ public class ProjectDTO
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private List<ProductionPlanSummaryDTO> productionPlanSummaries;
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    private List<PhenotypePlanSummaryDTO> phenotypingPlanSummaries;
+    private List<PhenotypePlanSummaryDTO> phenotypePlanSummaries;
 }
