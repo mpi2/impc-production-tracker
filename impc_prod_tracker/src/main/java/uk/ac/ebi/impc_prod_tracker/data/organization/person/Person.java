@@ -49,6 +49,8 @@ public class Person extends BaseEntity
 
     private Boolean isActive;
 
+    private Boolean contactable;
+
     @NotNull
     @Column(unique = true)
     @Pattern(regexp = "^(.+)@(.+)$", message = "Invalid email format")
