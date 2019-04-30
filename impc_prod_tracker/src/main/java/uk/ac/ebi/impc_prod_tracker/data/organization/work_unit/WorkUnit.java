@@ -48,7 +48,6 @@ public class WorkUnit extends BaseEntity
 
     private String fullName;
 
-    @Column(unique = true)
     private String ilarCode;
 
     @ManyToMany(mappedBy = "workUnits")
