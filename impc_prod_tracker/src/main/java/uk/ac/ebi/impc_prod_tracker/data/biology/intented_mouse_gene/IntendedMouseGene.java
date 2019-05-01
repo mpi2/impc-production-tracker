@@ -1,5 +1,6 @@
 package uk.ac.ebi.impc_prod_tracker.data.biology.intented_mouse_gene;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -61,5 +62,6 @@ public class IntendedMouseGene extends BaseEntity
     private String ensemblStrand;
 
     @ManyToMany(mappedBy = "intendedMouseGenes")
+    @JsonBackReference
     private Set<Project> projects;
 }

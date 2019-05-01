@@ -1,4 +1,4 @@
-package uk.ac.ebi.impc_prod_tracker.data.experiment.assigment_status;
+package uk.ac.ebi.impc_prod_tracker.data.experiment.assignment_status;
 
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -15,11 +15,11 @@ import javax.persistence.SequenceGenerator;
 @Getter
 @Setter
 @Entity
-public class AssigmentStatus extends BaseEntity
+public class AssignmentStatus extends BaseEntity
 {
     @Id
-    @SequenceGenerator(name = "assigmentStatusSeq", sequenceName = "ASSIGMENT_STATUS_SEQ")
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "assigmentStatusSeq")
+    @SequenceGenerator(name = "assignmentStatusSeq", sequenceName = "ASSIGNMENT_STATUS_SEQ")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "assignmentStatusSeq")
     private Long id;
 
     private String name;
