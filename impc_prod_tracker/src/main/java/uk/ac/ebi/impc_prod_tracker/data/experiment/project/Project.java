@@ -7,7 +7,7 @@ import lombok.Setter;
 import uk.ac.ebi.impc_prod_tracker.data.BaseEntity;
 import uk.ac.ebi.impc_prod_tracker.data.biology.allele_type.AlleleType;
 import uk.ac.ebi.impc_prod_tracker.data.biology.intented_mouse_gene.IntendedMouseGene;
-import uk.ac.ebi.impc_prod_tracker.data.experiment.assigment_status.AssigmentStatus;
+import uk.ac.ebi.impc_prod_tracker.data.experiment.assignment_status.AssignmentStatus;
 import uk.ac.ebi.impc_prod_tracker.data.experiment.project_priority.ProjectPriority;
 
 import javax.persistence.*;
@@ -30,7 +30,7 @@ public class Project extends BaseEntity
     private String tpn;
 
     @ManyToOne
-    private AssigmentStatus assigmentStatus;
+    private AssignmentStatus assignmentStatus;
 
     @ManyToOne
     private ProjectPriority projectPriority;

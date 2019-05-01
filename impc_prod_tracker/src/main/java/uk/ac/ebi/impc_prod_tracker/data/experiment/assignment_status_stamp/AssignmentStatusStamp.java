@@ -1,12 +1,11 @@
-package uk.ac.ebi.impc_prod_tracker.data.experiment.assigment_status_stamp;
+package uk.ac.ebi.impc_prod_tracker.data.experiment.assignment_status_stamp;
 
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import uk.ac.ebi.impc_prod_tracker.data.BaseEntity;
-import uk.ac.ebi.impc_prod_tracker.data.biology.ortholog.Ortholog;
-import uk.ac.ebi.impc_prod_tracker.data.experiment.assigment_status.AssigmentStatus;
+import uk.ac.ebi.impc_prod_tracker.data.experiment.assignment_status.AssignmentStatus;
 import uk.ac.ebi.impc_prod_tracker.data.experiment.project.Project;
 
 import javax.persistence.Entity;
@@ -21,8 +20,8 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @Entity
-@IdClass(AssigmentStatusStamp.class)
-public class AssigmentStatusStamp extends BaseEntity implements Serializable
+@IdClass(AssignmentStatusStamp.class)
+public class  AssignmentStatusStamp extends BaseEntity implements Serializable
 {
     @Id
     @ManyToOne
@@ -32,7 +31,7 @@ public class AssigmentStatusStamp extends BaseEntity implements Serializable
     @Id
     @ManyToOne
     @JoinColumn
-    private AssigmentStatus assigmentStatus;
+    private AssignmentStatus assignmentStatus;
 
     private LocalDateTime date;
 }
