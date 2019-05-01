@@ -76,6 +76,8 @@ public class Plan extends BaseEntity
     @ManyToOne(targetEntity = Funder.class)
     private Funder funder;
 
+    private Long imitsMiPlanId;
+
     @ManyToOne
     @JoinColumn(name = "parent_colony_id")
     private Colony colony;

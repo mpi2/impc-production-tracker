@@ -46,6 +46,8 @@ public class BreedingAttempt extends BaseEntity
     @ManyToOne
     private BreedingType type;
 
+    private Long imitsMouseAlleleModId;
+
     @ManyToMany
     @JoinTable(
         name = "breeding_attempt_colony",
