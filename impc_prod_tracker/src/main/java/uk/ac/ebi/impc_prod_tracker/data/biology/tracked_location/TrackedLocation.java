@@ -63,7 +63,7 @@ public class TrackedLocation extends BaseEntity
     private String variantSymbol;
 
     @ManyToOne
-    private AlleleType type;
+    private AlleleType alleleType;
 
     @ManyToOne
     private AlleleSubtype alleleSubtype;

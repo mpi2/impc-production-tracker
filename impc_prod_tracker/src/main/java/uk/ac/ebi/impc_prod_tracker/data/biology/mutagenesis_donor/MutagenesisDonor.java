@@ -5,7 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import uk.ac.ebi.impc_prod_tracker.data.BaseEntity;
-import uk.ac.ebi.impc_prod_tracker.data.biology.attempt.mutagenesis_attempt.MutagenesisAttempt;
+import uk.ac.ebi.impc_prod_tracker.data.biology.attempt.crispr_attempt.CrisprAttempt;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -25,8 +25,8 @@ public class MutagenesisDonor extends BaseEntity
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "mutagenesisDonorSeq")
     private Long id;
 
-    @ManyToOne(targetEntity = MutagenesisAttempt.class)
-    private MutagenesisAttempt mutagenesisAttempt;
+    @ManyToOne(targetEntity = CrisprAttempt.class)
+    private CrisprAttempt crisprAttempt;
 
     private Integer concentration;
 

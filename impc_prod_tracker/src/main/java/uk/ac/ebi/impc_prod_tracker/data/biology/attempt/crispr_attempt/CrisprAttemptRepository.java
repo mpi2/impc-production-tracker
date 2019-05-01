@@ -13,9 +13,9 @@
  * language governing permissions and limitations under the
  * License.
  *******************************************************************************/
-package uk.ac.ebi.impc_prod_tracker.data.biology.attempt.mutagenesis_attempt;
+package uk.ac.ebi.impc_prod_tracker.data.biology.attempt.crispr_attempt;
 
 import org.springframework.data.repository.CrudRepository;
 
-public interface MutagenesisAttemptRepository extends CrudRepository<MutagenesisAttempt, Long> {
+public interface CrisprAttemptRepository extends CrudRepository<CrisprAttempt, Long> {
 }

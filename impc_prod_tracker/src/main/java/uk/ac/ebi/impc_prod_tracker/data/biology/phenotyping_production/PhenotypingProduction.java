@@ -44,4 +44,6 @@ public class PhenotypingProduction extends BaseEntity
 
     private Boolean doNotCountTowardsCompleteness;
 
+    private Long imitsPhenotypingProductionId;
+
 }
