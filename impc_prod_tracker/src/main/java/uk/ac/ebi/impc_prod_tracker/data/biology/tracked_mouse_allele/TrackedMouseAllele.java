@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import uk.ac.ebi.impc_prod_tracker.data.BaseEntity;
+import uk.ac.ebi.impc_prod_tracker.data.biology.allele_subtype.AlleleSubtype;
 import uk.ac.ebi.impc_prod_tracker.data.biology.allele_type.AlleleType;
 import uk.ac.ebi.impc_prod_tracker.data.biology.tracked_location.TrackedLocation;
 import uk.ac.ebi.impc_prod_tracker.data.biology.tracked_mouse_gene.TrackedMouseGene;
@@ -44,7 +45,7 @@ public class TrackedMouseAllele extends BaseEntity
     private AlleleType alleleType;
 
     @ManyToOne
-    private AlleleType alleleSubtype;
+    private AlleleSubtype alleleSubtype;
 
     @ManyToMany
     @JoinTable(
