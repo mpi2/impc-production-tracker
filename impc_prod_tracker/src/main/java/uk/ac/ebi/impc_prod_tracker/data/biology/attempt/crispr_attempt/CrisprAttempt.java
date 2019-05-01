@@ -49,7 +49,9 @@ public class CrisprAttempt extends BaseEntity
 
     private Long imitsMiAttemptId;
 
-    private String externalRef;
+    private String miExternalRef;
+
+    private String mutagenesisExternalRef;
 
     private Boolean individuallySetGrnaConcentrations;
 
@@ -106,4 +108,6 @@ public class CrisprAttempt extends BaseEntity
 
     @Column(name = "embryo_2_Cell")
     private String embryo2Cell;
+
+    private String comment;
 }

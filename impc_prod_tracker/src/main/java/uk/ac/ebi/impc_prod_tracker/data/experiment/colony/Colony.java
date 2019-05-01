@@ -51,6 +51,8 @@ public class Colony extends BaseEntity {
     @ManyToOne
     private TrackedStrain strain;
 
+    private String comment;
+
     @ManyToMany
     @JoinTable(
         name = "colony_relationship",
