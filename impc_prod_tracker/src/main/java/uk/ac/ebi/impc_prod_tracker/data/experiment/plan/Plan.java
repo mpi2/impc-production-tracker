@@ -78,6 +78,8 @@ public class Plan extends BaseEntity
 
     private Long imitsMiPlanId;
 
+    private String comment;
+
     @ManyToOne
     @JoinColumn(name = "parent_colony_id")
     private Colony colony;
