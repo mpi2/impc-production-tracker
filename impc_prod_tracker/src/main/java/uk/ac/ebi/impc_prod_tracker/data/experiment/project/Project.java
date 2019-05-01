@@ -1,6 +1,5 @@
 package uk.ac.ebi.impc_prod_tracker.data.experiment.project;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -45,7 +44,6 @@ public class Project extends BaseEntity
         name = "project_intention_rel",
         joinColumns = @JoinColumn(name = "project_id"),
         inverseJoinColumns = @JoinColumn(name = "allele_type_id"))
-    @JsonManagedReference
     private Set<AlleleType> projectIntentions;
 
     @ManyToMany
@@ -53,7 +51,6 @@ public class Project extends BaseEntity
         name = "project_mouse_gene",
         joinColumns = @JoinColumn(name = "project_id"),
         inverseJoinColumns = @JoinColumn(name = "mouse_gene_id"))
-    @JsonManagedReference
     private Set<IntendedMouseGene> intendedMouseGenes;
 }
 

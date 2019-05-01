@@ -15,6 +15,7 @@
  *******************************************************************************/
 package uk.ac.ebi.impc_prod_tracker.data.biology.allele_type;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -45,5 +46,6 @@ public class AlleleType extends BaseEntity
     private String name;
 
     @ManyToMany(mappedBy = "projectIntentions")
+    @JsonBackReference
     private Set<Project> projects;
 }
