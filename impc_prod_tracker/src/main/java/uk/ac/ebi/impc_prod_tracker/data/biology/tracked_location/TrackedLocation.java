@@ -64,6 +64,9 @@ public class TrackedLocation extends BaseEntity
     @ManyToOne
     private AlleleType type;
 
+    @ManyToOne
+    private AlleleType alleleSubtype;
+
     @ManyToMany(mappedBy = "trackedLocations")
     private Set<TrackedMouseAllele> trackedMouseAlleles;
 }
