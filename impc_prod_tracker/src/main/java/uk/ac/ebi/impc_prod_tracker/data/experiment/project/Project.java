@@ -9,15 +9,9 @@ import uk.ac.ebi.impc_prod_tracker.data.biology.allele_type.AlleleType;
 import uk.ac.ebi.impc_prod_tracker.data.biology.intented_mouse_gene.IntendedMouseGene;
 import uk.ac.ebi.impc_prod_tracker.data.experiment.assigment_status.AssigmentStatus;
 import uk.ac.ebi.impc_prod_tracker.data.experiment.project_priority.ProjectPriority;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
-import javax.persistence.SequenceGenerator;
+
+import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.util.Set;
 
 @NoArgsConstructor(access= AccessLevel.PUBLIC, force=true)
@@ -31,6 +25,8 @@ public class Project extends BaseEntity
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "projectSeq")
     private Long id;
 
+    @Column(unique = true)
+    @NotNull
     private String tpn;
 
     @ManyToOne
