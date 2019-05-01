@@ -43,6 +43,9 @@ public class TrackedMouseAllele extends BaseEntity
     @ManyToOne
     private AlleleType alleleType;
 
+    @ManyToOne
+    private AlleleType alleleSubtype;
+
     @ManyToMany
     @JoinTable(
         name = "tracked_allele_location",
