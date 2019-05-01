@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import uk.ac.ebi.impc_prod_tracker.data.BaseEntity;
+import uk.ac.ebi.impc_prod_tracker.data.biology.allele_subtype.AlleleSubtype;
 import uk.ac.ebi.impc_prod_tracker.data.biology.allele_type.AlleleType;
 import uk.ac.ebi.impc_prod_tracker.data.biology.species.Species;
 import uk.ac.ebi.impc_prod_tracker.data.biology.tracked_mouse_allele.TrackedMouseAllele;
@@ -65,7 +66,7 @@ public class TrackedLocation extends BaseEntity
     private AlleleType type;
 
     @ManyToOne
-    private AlleleType alleleSubtype;
+    private AlleleSubtype alleleSubtype;
 
     @ManyToMany(mappedBy = "trackedLocations")
     private Set<TrackedMouseAllele> trackedMouseAlleles;
