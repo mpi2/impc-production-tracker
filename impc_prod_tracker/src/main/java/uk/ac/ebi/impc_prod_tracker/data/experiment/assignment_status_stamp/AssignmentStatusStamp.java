@@ -5,14 +5,12 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import uk.ac.ebi.impc_prod_tracker.data.BaseEntity;
+import uk.ac.ebi.impc_prod_tracker.data.biology.human_disease.HumanDisease;
 import uk.ac.ebi.impc_prod_tracker.data.experiment.assignment_status.AssignmentStatus;
 import uk.ac.ebi.impc_prod_tracker.data.experiment.project.Project;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.IdClass;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
@@ -20,18 +18,21 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @Entity
-@IdClass(AssignmentStatusStamp.class)
 public class  AssignmentStatusStamp extends BaseEntity implements Serializable
 {
     @Id
-    @ManyToOne
-    @JoinColumn
+    @SequenceGenerator(name = "assignmentStatusStampSeq", sequenceName = "ASSIGNMENT_STATUS_STAMP_SEQ")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "assignmentStatusStampSeq")
+    private Long id;
+
+    @NotNull
+    @ManyToOne(targetEntity = Project.class)
     private Project project;
 
-    @Id
-    @ManyToOne
-    @JoinColumn
+    @NotNull
+    @ManyToOne(targetEntity = AssignmentStatus.class)
     private AssignmentStatus assignmentStatus;
 
+    @NotNull
     private LocalDateTime date;
 }
