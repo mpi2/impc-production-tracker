@@ -76,8 +76,6 @@ public class Plan extends BaseEntity
     @ManyToOne(targetEntity = Funder.class)
     private Funder funder;
 
-    private Long imitsMiPlanId;
-
     private String comment;
 
     @ManyToOne
