@@ -29,6 +29,9 @@ public class Project extends BaseEntity
     @NotNull
     private String tpn;
 
+    @Column(unique = true)
+    private Long imitsMiPlanId;
+
     @ManyToOne
     private AssignmentStatus assignmentStatus;
 

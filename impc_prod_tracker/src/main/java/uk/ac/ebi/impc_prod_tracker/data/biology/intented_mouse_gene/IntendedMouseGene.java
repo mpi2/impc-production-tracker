@@ -3,18 +3,12 @@ package uk.ac.ebi.impc_prod_tracker.data.biology.intented_mouse_gene;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.AccessLevel;
 import lombok.Data;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 import uk.ac.ebi.impc_prod_tracker.data.BaseEntity;
+import uk.ac.ebi.impc_prod_tracker.data.biology.gene_flag.GeneFlag;
 import uk.ac.ebi.impc_prod_tracker.data.experiment.project.Project;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.ManyToMany;
-import javax.persistence.SequenceGenerator;
+
+import javax.persistence.*;
 import javax.validation.constraints.Pattern;
 import java.util.Set;
 
@@ -64,4 +58,11 @@ public class IntendedMouseGene extends BaseEntity
     @ManyToMany(mappedBy = "intendedMouseGenes")
     @JsonBackReference
     private Set<Project> projects;
+
+    @ManyToMany
+    @JoinTable(
+            name = "intended_mouse_gene_flag",
+            joinColumns = @JoinColumn(name = "mouse_gene_id"),
+            inverseJoinColumns = @JoinColumn(name = "gene_flag_id"))
+    private Set<GeneFlag> geneFlags;
 }
