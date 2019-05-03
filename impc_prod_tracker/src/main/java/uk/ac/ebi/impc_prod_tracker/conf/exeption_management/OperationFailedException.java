@@ -16,6 +16,7 @@
 package uk.ac.ebi.impc_prod_tracker.conf.exeption_management;
 
 import lombok.Getter;
+import org.springframework.http.HttpStatus;
 
 /**
  * Class to manage the Exceptions in the application
@@ -27,10 +28,17 @@ public class OperationFailedException extends RuntimeException
 {
     private String debugMessage;
     private Throwable cause;
+    private HttpStatus httpStatus;
 
     public OperationFailedException(String message)
     {
         super(message);
+    }
+
+    public OperationFailedException(String message, HttpStatus httpStatus)
+    {
+        super(message);
+        this.httpStatus = httpStatus;
     }
 
     public OperationFailedException(String message, Throwable cause)

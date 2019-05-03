@@ -15,6 +15,8 @@
  *******************************************************************************/
 package uk.ac.ebi.impc_prod_tracker.controller.project;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
@@ -25,10 +27,11 @@ import java.util.List;
 @Data
 @RequiredArgsConstructor
 @NoArgsConstructor
+@JsonPropertyOrder({ "projectDetailsDTO", "plans" })
 public class ProjectDTO
 {
     @NonNull
-    private String tpn;
-    private String assigmentStatusName;
+    @JsonProperty("projectDetails")
+    private ProjectDetailsDTO projectDetailsDTO;
     private List<PlanDTO> plans;
 }
