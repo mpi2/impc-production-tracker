@@ -28,4 +28,6 @@ public interface PlanRepository extends CrudRepository<Plan, Long> {
     Iterable<Plan> findAll();
 
     Iterable<Plan> findAllByProject(Project project);
+
+    Plan findPlanByPin(String pin);
 }

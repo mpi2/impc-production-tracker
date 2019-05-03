@@ -17,27 +17,36 @@ package uk.ac.ebi.impc_prod_tracker.controller.project.plan;
 
 import lombok.Data;
 import org.springframework.stereotype.Component;
-import uk.ac.ebi.impc_prod_tracker.controller.project.ProjectDTO;
+import uk.ac.ebi.impc_prod_tracker.conf.exeption_management.OperationFailedException;
 import uk.ac.ebi.impc_prod_tracker.controller.project.plan.phenotype_plan.PhenotypePlanSummaryDTO;
 import uk.ac.ebi.impc_prod_tracker.controller.project.plan.production_plan.ProductionPlanSummaryDTO;
 import uk.ac.ebi.impc_prod_tracker.controller.project.plan.production_plan.f1_colony.F1ColonyDetailsDTO;
 import uk.ac.ebi.impc_prod_tracker.controller.project.plan.production_plan.micro_injection.MicroInjectionDetailsDTO;
-import uk.ac.ebi.impc_prod_tracker.data.biology.intented_mouse_gene.IntendedMouseGene;
 import uk.ac.ebi.impc_prod_tracker.data.experiment.plan.Plan;
-import uk.ac.ebi.impc_prod_tracker.data.experiment.project.Project;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
+import uk.ac.ebi.impc_prod_tracker.service.plan.PlanService;
 
 @Component
 @Data
 public class PlanDTOBuilder
 {
     private PlanMapper planMapper;
+    private PlanService planService;
 
-    public PlanDTOBuilder(PlanMapper planMapper)
+    public PlanDTOBuilder(PlanMapper planMapper, PlanService planService)
     {
         this.planMapper = planMapper;
+        this.planService = planService;
+    }
+
+    public PlanDTO buildPlanDTOFromPlanPid(String pin)
+    {
+        Plan plan = planService.getPlanByPin(pin);
+        if (plan == null)
+        {
+            throw new OperationFailedException(
+                String.format("The plan %s does not exist", pin));
+        }
+        return buildPlanDTOFromPlan(plan);
     }
 
     public PlanDTO buildPlanDTOFromPlan(Plan plan)

@@ -22,4 +22,6 @@ import java.util.List;
 public interface PlanService
 {
     List<Plan> getPlansByProject(Project project);
+
+    Plan getPlanByPin(String pin);
 }
