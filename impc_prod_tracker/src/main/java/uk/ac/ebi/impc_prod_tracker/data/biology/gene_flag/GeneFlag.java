@@ -15,6 +15,7 @@
  *******************************************************************************/
 package uk.ac.ebi.impc_prod_tracker.data.biology.gene_flag;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -43,5 +44,6 @@ public class GeneFlag extends BaseEntity
     private String name;
 
     @ManyToMany(mappedBy = "geneFlags")
+    @JsonBackReference
     private Set<IntendedMouseGene> intendedMouseGenes;
 }

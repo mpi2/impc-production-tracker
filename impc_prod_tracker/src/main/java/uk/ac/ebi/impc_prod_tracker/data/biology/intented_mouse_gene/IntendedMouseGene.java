@@ -64,7 +64,7 @@ public class IntendedMouseGene extends BaseEntity
     @ManyToMany
     @JoinTable(
             name = "intended_mouse_gene_flag",
-            joinColumns = @JoinColumn(name = "mouse_gene_id"),
+            joinColumns = @JoinColumn(name = "intended_mouse_gene_id"),
             inverseJoinColumns = @JoinColumn(name = "gene_flag_id"))
     private Set<GeneFlag> geneFlags;
 }
