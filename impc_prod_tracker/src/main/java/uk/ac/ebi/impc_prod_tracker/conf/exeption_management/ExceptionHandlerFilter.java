@@ -68,8 +68,22 @@ public class ExceptionHandlerFilter extends OncePerRequestFilter
             if (e.getCause() instanceof OperationFailedException)
             {
                 OperationFailedException ofe = (OperationFailedException) e.getCause();
-                apiException =
-                    new ApiException(HttpStatus.INTERNAL_SERVER_ERROR, ofe.getMessage(), ofe.getDebugMessage());
+                if (ofe.getHttpStatus() == null)
+                {
+                    apiException =
+                        new ApiException(
+                            HttpStatus.INTERNAL_SERVER_ERROR,
+                            ofe.getMessage(),
+                            ofe.getDebugMessage());
+                }
+                else
+                {
+                    apiException =
+                        new ApiException(
+                            ofe.getHttpStatus(),
+                            ofe.getMessage(),
+                            ofe.getDebugMessage());
+                }
             }
             else
             {

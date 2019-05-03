@@ -2,6 +2,7 @@ package uk.ac.ebi.impc_prod_tracker.data.biology.intented_mouse_gene;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.AccessLevel;
+import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -14,8 +15,7 @@ import javax.validation.constraints.Pattern;
 import java.util.Set;
 
 @NoArgsConstructor(access= AccessLevel.PRIVATE, force=true)
-@Getter
-@Setter
+@Data
 @Entity
 public class IntendedMouseGene extends BaseEntity
 {

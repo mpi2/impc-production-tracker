@@ -15,25 +15,23 @@
  *******************************************************************************/
 package uk.ac.ebi.impc_prod_tracker.controller.project;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
-import uk.ac.ebi.impc_prod_tracker.controller.project.plan.phenotype_plan.PhenotypePlanSummaryDTO;
-import uk.ac.ebi.impc_prod_tracker.controller.project.plan.production_plan.ProductionPlanSummaryDTO;
+import uk.ac.ebi.impc_prod_tracker.controller.project.plan.PlanDTO;
 import java.util.List;
 
 @Data
 @RequiredArgsConstructor
 @NoArgsConstructor
+@JsonPropertyOrder({ "projectDetailsDTO", "plans" })
 public class ProjectDTO
 {
     @NonNull
-    private String tpn;
-    private String assigmentStatusName;
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    private List<ProductionPlanSummaryDTO> productionPlanSummaries;
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    private List<PhenotypePlanSummaryDTO> phenotypePlanSummaries;
+    @JsonProperty("projectDetails")
+    private ProjectDetailsDTO projectDetailsDTO;
+    private List<PlanDTO> plans;
 }

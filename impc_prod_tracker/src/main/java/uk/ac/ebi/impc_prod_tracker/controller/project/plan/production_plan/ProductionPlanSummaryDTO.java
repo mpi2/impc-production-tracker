@@ -18,7 +18,6 @@ package uk.ac.ebi.impc_prod_tracker.controller.project.plan.production_plan;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
-import uk.ac.ebi.impc_prod_tracker.controller.project.plan.PlanDetailsDTO;
 import uk.ac.ebi.impc_prod_tracker.controller.project.plan.production_plan.f1_colony.F1ColonyDetailsDTO;
 import uk.ac.ebi.impc_prod_tracker.controller.project.plan.production_plan.micro_injection.MicroInjectionDetailsDTO;
 
@@ -26,8 +25,6 @@ import uk.ac.ebi.impc_prod_tracker.controller.project.plan.production_plan.micro
 @RequiredArgsConstructor
 public class ProductionPlanSummaryDTO
 {
-    @JsonProperty("planDetails")
-    private PlanDetailsDTO planDetailsDTO;
     @JsonProperty("microInjectionDetails")
     private MicroInjectionDetailsDTO microInjectionDetailsDTO;
     @JsonProperty("f1ColonyDetails")

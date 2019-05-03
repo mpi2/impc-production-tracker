@@ -13,29 +13,26 @@
  * language governing permissions and limitations under the
  * License.
  *******************************************************************************/
-package uk.ac.ebi.impc_prod_tracker.controller;
+package uk.ac.ebi.impc_prod_tracker.controller.project;
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-import uk.ac.ebi.impc_prod_tracker.domain.PlanTest;
-import uk.ac.ebi.impc_prod_tracker.service.PlanTestService;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
+
 import java.util.List;
 
-@RestController
-@RequestMapping("/api")
-public class PlanTestController
+@Data
+@RequiredArgsConstructor
+@NoArgsConstructor
+public class ProjectDetailsDTO
 {
-    private PlanTestService planTestService;
-
-    public PlanTestController(PlanTestService planTestService)
-    {
-        this.planTestService = planTestService;
-    }
-
-    @GetMapping(value = {"/testplans"})
-    public List<PlanTest> getPlans()
-    {
-        return planTestService.getPlans();
-    }
+    @NonNull
+    private String tpn;
+    @NonNull
+    private String assigmentStatusName;
+    private String priorityName;
+    private List<String> locations;
+    private List<String> alleleIntentions;
+    private List<String> markerSymbols;
 }

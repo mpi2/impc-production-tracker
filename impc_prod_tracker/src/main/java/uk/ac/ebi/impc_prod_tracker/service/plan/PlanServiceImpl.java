@@ -40,4 +40,10 @@ public class PlanServiceImpl implements PlanService
         plans.forEach(planList::add);
         return planList;
     }
+
+    @Override
+    public Plan getPlanByPin(String pin)
+    {
+        return planRepository.findPlanByPin(pin);
+    }
 }

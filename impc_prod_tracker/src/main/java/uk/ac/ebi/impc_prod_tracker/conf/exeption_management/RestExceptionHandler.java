@@ -57,8 +57,16 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler
     public final ResponseEntity<Object> handleAccessDeniedException(
         OperationFailedException ex, WebRequest request)
     {
-        return buildResponseEntity(
-            new ApiException(INTERNAL_SERVER_ERROR, ex.getMessage(), ex.getDebugMessage()));
+        if (ex.getHttpStatus() == null)
+        {
+            return buildResponseEntity(
+                new ApiException(INTERNAL_SERVER_ERROR, ex.getMessage(), ex.getDebugMessage()));
+        }
+        else
+        {
+            return buildResponseEntity(
+                new ApiException(ex.getHttpStatus(), ex.getMessage(), ex.getDebugMessage()));
+        }
     }
 
     @ExceptionHandler(AccessDeniedException.class)

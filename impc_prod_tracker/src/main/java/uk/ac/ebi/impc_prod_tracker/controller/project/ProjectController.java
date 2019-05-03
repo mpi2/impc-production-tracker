@@ -15,23 +15,21 @@
  *******************************************************************************/
 package uk.ac.ebi.impc_prod_tracker.controller.project;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import uk.ac.ebi.impc_prod_tracker.conf.exeption_management.OperationFailedException;
-import uk.ac.ebi.impc_prod_tracker.controller.project.plan.phenotype_plan.PhenotypePlanSummaryDTO;
-import uk.ac.ebi.impc_prod_tracker.controller.project.plan.PlanDetailsDTO;
-import uk.ac.ebi.impc_prod_tracker.controller.project.plan.PlanMapper;
-import uk.ac.ebi.impc_prod_tracker.controller.project.plan.production_plan.ProductionPlanSummaryDTO;
-import uk.ac.ebi.impc_prod_tracker.controller.project.plan.production_plan.f1_colony.F1ColonyDetailsDTO;
-import uk.ac.ebi.impc_prod_tracker.controller.project.plan.production_plan.micro_injection.MicroInjectionDetailsDTO;
+import uk.ac.ebi.impc_prod_tracker.controller.project.plan.PlanDTO;
+import uk.ac.ebi.impc_prod_tracker.controller.project.plan.PlanDTOBuilder;
 import uk.ac.ebi.impc_prod_tracker.data.experiment.plan.Plan;
 import uk.ac.ebi.impc_prod_tracker.data.experiment.project.Project;
 import uk.ac.ebi.impc_prod_tracker.service.plan.PlanService;
 import uk.ac.ebi.impc_prod_tracker.service.project.ProjectService;
-import java.util.ArrayList;
+
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -44,19 +42,19 @@ public class ProjectController
 {
     private ProjectService projectService;
     private PlanService planService;
-    private ProjectMapper projectMapper;
-    private PlanMapper planMapper;
+    private PlanDTOBuilder planDTOBuilder;
+    private ProjectDTOBuilder projectDTOBuilder;
 
     ProjectController(
         ProjectService projectService,
-        PlanService planService,
-        ProjectMapper projectMapper,
-        PlanMapper planMapper)
+        ProjectDTOBuilder projectDTOBuilder,
+        PlanDTOBuilder planDTOBuilder,
+        PlanService planService)
     {
         this.projectService = projectService;
+        this.projectDTOBuilder = projectDTOBuilder;
+        this.planDTOBuilder = planDTOBuilder;
         this.planService = planService;
-        this.projectMapper = projectMapper;
-        this.planMapper = planMapper;
     }
 
     @GetMapping(value = {"/projects"})
@@ -65,7 +63,7 @@ public class ProjectController
         List<Project> projects = projectService.getProjects();
 
         List<ProjectDTO> projectDTOList = projects.stream()
-            .map(project -> buildProjectDtoAggregation(project))
+            .map(project -> projectDTOBuilder.buildProjectDTOFromProject(project))
             .collect(Collectors.toList());
         Map<String, List<ProjectDTO>> map = new HashMap<>();
         map.put("projects", projectDTOList);
@@ -74,7 +72,7 @@ public class ProjectController
     }
 
     @GetMapping(value = {"/projects/{tpn}"})
-    public ProjectDTO getPlansMap(@PathVariable String tpn)
+    public ProjectDTO getProjects(@PathVariable String tpn)
     {
         Project project = projectService.getProjectByTpn(tpn);
         if (project == null)
@@ -82,45 +80,40 @@ public class ProjectController
             throw new OperationFailedException(
                 String.format("The project %s does not exist", tpn));
         }
-        return buildProjectDtoAggregation(project);
+        return projectDTOBuilder.buildProjectDTOFromProject(project);
     }
 
-    private ProjectDTO buildProjectDtoAggregation(Project project)
+    @GetMapping(value = {"/projects/{tpn}/plans/{pin}"})
+    public ProjectPlanDTO getProjectPlan(@PathVariable String tpn, @PathVariable String pin)
     {
-        ProjectDTO projectDTO = projectMapper.convertToDto(project);
-        List<Plan> plans = planService.getPlansByProject(project);
-
-        List<ProductionPlanSummaryDTO> productionPlanSummaryDTOList = new ArrayList<>();
-        List<PhenotypePlanSummaryDTO> phenotypePlanSummaryDTOS = new ArrayList<>();
-
-        for (Plan p : plans)
+        Project project = projectService.getProjectByTpn(tpn);
+        if (project == null)
         {
-            PlanDetailsDTO planDetailsDTO = planMapper.convertToPlanDetailsDto(p);
-
-            if ("Production".equals(p.getPlanType().getName()))
+            throw new OperationFailedException(
+                String.format("The project %s does not exist", tpn));
+        }
+        List<Plan> plans = planService.getPlansByProject(project);
+        PlanDTO planDTO = null;
+        for (Plan plan : plans)
+        {
+            if (plan.getPin().equals(pin))
             {
-                ProductionPlanSummaryDTO productionPlanSummaryDTO =
-                    planMapper.convertToProductionPlanSummaryDto(p);
-                productionPlanSummaryDTO.setPlanDetailsDTO(planDetailsDTO);
-                productionPlanSummaryDTOList.add(productionPlanSummaryDTO);
-                MicroInjectionDetailsDTO microInjectionDetailsDTO = new MicroInjectionDetailsDTO();
-                F1ColonyDetailsDTO f1ColonyDetailsDTO = new F1ColonyDetailsDTO();
-                productionPlanSummaryDTO.setMicroInjectionDetailsDTO(microInjectionDetailsDTO);
-                productionPlanSummaryDTO.setF1ColonyDetailsDTO(f1ColonyDetailsDTO);
-            }
-            else
-            {
-                PhenotypePlanSummaryDTO phenotypePlanSummaryDTO =
-                    planMapper.convertToPhenotypePlanSummaryDto(p);
-                phenotypePlanSummaryDTO.setPlanDetailsDTO(planDetailsDTO);
-                phenotypePlanSummaryDTOS.add(phenotypePlanSummaryDTO);
+                planDTO = planDTOBuilder.buildPlanDTOFromPlan(plan);
+                break;
             }
         }
+        if (planDTO == null)
+        {
+            throw new OperationFailedException(
+                String.format("Project %s does not have any plan %s associated", tpn, pin),
+                HttpStatus.NOT_FOUND);
+        }
+        Map<String, List<Object>> map = new HashMap<>();
+        map.put("res", Arrays.asList(project, planDTO));
 
-        projectDTO.setProductionPlanSummaries(productionPlanSummaryDTOList);
-        projectDTO.setPhenotypePlanSummaries(phenotypePlanSummaryDTOS);
-
-        return projectDTO;
-
+        ProjectPlanDTO projectPlanDTO = new ProjectPlanDTO();
+        projectPlanDTO.setProjectDetailsDTO(projectDTOBuilder.convertToProjectDetailsDTO(project));
+        projectPlanDTO.setPlanDTO(planDTO);
+        return projectPlanDTO;
     }
 }
