@@ -30,7 +30,6 @@ public class PlanDetailsDTO
     @NonNull private String pin;
     @NonNull private String privacyName;
     private String planTypeName;
-
     private String consortiumName;
     private String workUnitName;
     private String statusName;
