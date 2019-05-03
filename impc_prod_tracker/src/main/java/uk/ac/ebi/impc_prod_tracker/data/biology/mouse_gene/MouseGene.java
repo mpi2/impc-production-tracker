@@ -21,7 +21,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import uk.ac.ebi.impc_prod_tracker.data.BaseEntity;
-import uk.ac.ebi.impc_prod_tracker.data.biology.gene_flag.GeneFlag;
 import uk.ac.ebi.impc_prod_tracker.data.biology.mouse_allele.MouseAllele;
 import uk.ac.ebi.impc_prod_tracker.data.biology.mouse_gene_synomym.MouseGeneSynonym;
 import uk.ac.ebi.impc_prod_tracker.data.biology.ortholog.Ortholog;
@@ -79,13 +78,6 @@ public class MouseGene extends BaseEntity
             joinColumns = @JoinColumn(name = "mouse_gene_id"),
             inverseJoinColumns = @JoinColumn(name = "mouse_gene_synonym_id"))
     private Set<MouseGeneSynonym> mouseGeneSynonyms;
-
-    @ManyToMany
-    @JoinTable(
-            name = "mouse_gene_flag",
-            joinColumns = @JoinColumn(name = "mouse_gene_id"),
-            inverseJoinColumns = @JoinColumn(name = "gene_flag_id"))
-    private Set<GeneFlag> mouseGeneFlags;
 
     @ManyToMany
     @JoinTable(

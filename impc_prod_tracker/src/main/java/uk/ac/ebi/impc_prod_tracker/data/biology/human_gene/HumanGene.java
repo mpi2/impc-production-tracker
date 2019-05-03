@@ -20,7 +20,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import uk.ac.ebi.impc_prod_tracker.data.BaseEntity;
-import uk.ac.ebi.impc_prod_tracker.data.biology.gene_flag.GeneFlag;
 import uk.ac.ebi.impc_prod_tracker.data.biology.human_disease.HumanDisease;
 import uk.ac.ebi.impc_prod_tracker.data.biology.human_gene_synonym.HumanGeneSynonym;
 import uk.ac.ebi.impc_prod_tracker.data.biology.ortholog.Ortholog;
@@ -47,13 +46,6 @@ public class HumanGene extends BaseEntity
 
     @NotNull
     private String hgncId;
-
-    @ManyToMany
-    @JoinTable(
-        name = "human_gene_flag",
-        joinColumns = @JoinColumn(name = "human_gene_id"),
-        inverseJoinColumns = @JoinColumn(name = "gene_flag_id"))
-    private Set<GeneFlag> humanGeneFlags;
 
     @ManyToMany
     @JoinTable(

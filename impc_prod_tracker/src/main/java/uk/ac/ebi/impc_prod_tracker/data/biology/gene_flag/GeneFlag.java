@@ -20,8 +20,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import uk.ac.ebi.impc_prod_tracker.data.BaseEntity;
-import uk.ac.ebi.impc_prod_tracker.data.biology.human_gene.HumanGene;
-import uk.ac.ebi.impc_prod_tracker.data.biology.mouse_gene.MouseGene;
+import uk.ac.ebi.impc_prod_tracker.data.biology.intented_mouse_gene.IntendedMouseGene;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -43,9 +42,6 @@ public class GeneFlag extends BaseEntity
 
     private String name;
 
-    @ManyToMany(mappedBy = "mouseGeneFlags")
-    private Set<MouseGene> mouseGenes;
-
-    @ManyToMany(mappedBy = "humanGeneFlags")
-    private Set<HumanGene> humanGenes;
+    @ManyToMany(mappedBy = "geneFlags")
+    private Set<IntendedMouseGene> intendedMouseGenes;
 }
