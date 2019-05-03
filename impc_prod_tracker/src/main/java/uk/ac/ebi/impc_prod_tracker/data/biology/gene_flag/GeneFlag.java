@@ -15,10 +15,10 @@
  *******************************************************************************/
 package uk.ac.ebi.impc_prod_tracker.data.biology.gene_flag;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.AccessLevel;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import uk.ac.ebi.impc_prod_tracker.data.BaseEntity;
 import uk.ac.ebi.impc_prod_tracker.data.biology.intented_mouse_gene.IntendedMouseGene;
 import javax.persistence.Entity;
@@ -30,7 +30,11 @@ import javax.persistence.SequenceGenerator;
 import java.util.Set;
 
 @NoArgsConstructor(access= AccessLevel.PRIVATE, force=true)
-@Data
+// DO NOT CHANGE THE LINES BELOW TO @Data
+// - This caused the HHH000100: Fail-safe cleanup (collections) Hibernate error
+// - when entering data into intended_mouse_gene_flag
+@Getter
+@Setter
 @Entity
 public class GeneFlag extends BaseEntity
 {
@@ -42,6 +46,5 @@ public class GeneFlag extends BaseEntity
     private String name;
 
     @ManyToMany(mappedBy = "geneFlags")
-    @JsonBackReference
     private Set<IntendedMouseGene> intendedMouseGenes;
 }
