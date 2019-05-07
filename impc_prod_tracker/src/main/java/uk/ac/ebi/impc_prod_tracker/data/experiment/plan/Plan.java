@@ -47,6 +47,7 @@ public class Plan extends BaseEntity
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "planSeq")
     private Long id;
 
+    @NotNull
     private String pin;
 
     @NotNull
@@ -55,13 +56,11 @@ public class Plan extends BaseEntity
     @ManyToOne
     private Project project;
 
-    @NotNull
+
     @ManyToOne(targetEntity= PlanType.class)
     private PlanType planType;
 
-    @NotNull
     @ManyToOne(targetEntity= Privacy.class)
-
     private Privacy privacy;
 
     @ManyToOne(targetEntity = WorkUnit.class)
