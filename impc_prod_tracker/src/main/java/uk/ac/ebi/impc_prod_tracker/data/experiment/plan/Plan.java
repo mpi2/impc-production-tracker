@@ -96,7 +96,6 @@ public class Plan extends BaseEntity
         inverseJoinColumns = @JoinColumn(name = "protocol_id"))
     private Set<Protocol> protocols;
 
-    @NotNull
     @ManyToOne(targetEntity= Status.class)
     private Status status;
 
