@@ -15,7 +15,6 @@
  *******************************************************************************/
 package uk.ac.ebi.impc_prod_tracker.conf.security;
 
-import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
@@ -61,11 +60,6 @@ public class RootConfiguration extends WebSecurityConfigurerAdapter
     @Bean
     public BCryptPasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
-    }
-
-    @Bean
-    public ModelMapper modelMapper() {
-        return new ModelMapper();
     }
 
     @Override

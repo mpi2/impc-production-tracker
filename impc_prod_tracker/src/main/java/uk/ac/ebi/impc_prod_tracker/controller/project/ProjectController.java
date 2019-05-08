@@ -112,7 +112,7 @@ public class ProjectController
         map.put("res", Arrays.asList(project, planDTO));
 
         ProjectPlanDTO projectPlanDTO = new ProjectPlanDTO();
-        projectPlanDTO.setProjectDetailsDTO(projectDTOBuilder.convertToProjectDetailsDTO(project));
+        projectPlanDTO.setProjectDetailsDTO(projectDTOBuilder.buildProjectDetailsDTOFromProject(project));
         projectPlanDTO.setPlanDTO(planDTO);
         return projectPlanDTO;
     }

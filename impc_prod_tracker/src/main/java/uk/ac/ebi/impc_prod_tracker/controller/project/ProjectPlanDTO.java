@@ -5,6 +5,7 @@ import lombok.Data;
 import uk.ac.ebi.impc_prod_tracker.controller.project.plan.PlanDTO;
 
 @Data
+//TODO check if obsolete
 public class ProjectPlanDTO
 {
     @JsonProperty("projectDetails")

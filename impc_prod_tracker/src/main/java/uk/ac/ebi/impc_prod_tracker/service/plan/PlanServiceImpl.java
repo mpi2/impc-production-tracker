@@ -46,4 +46,13 @@ public class PlanServiceImpl implements PlanService
     {
         return planRepository.findPlanByPin(pin);
     }
+
+    @Override
+    public List<Plan> getPlans()
+    {
+        List<Plan> planList = new ArrayList<>();
+        Iterable<Plan> plans = planRepository.findAll();
+        plans.forEach(planList::add);
+        return planList;
+    }
 }
