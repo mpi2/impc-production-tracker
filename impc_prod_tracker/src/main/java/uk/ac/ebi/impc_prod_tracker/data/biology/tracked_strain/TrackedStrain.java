@@ -6,14 +6,10 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import uk.ac.ebi.impc_prod_tracker.data.BaseEntity;
 import uk.ac.ebi.impc_prod_tracker.data.biology.tracked_strain_type.TrackedStrainType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
-import javax.persistence.SequenceGenerator;
+
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.util.Set;
 
 @NoArgsConstructor(access= AccessLevel.PRIVATE, force=true)
 @Getter
@@ -34,6 +30,10 @@ public class TrackedStrain extends BaseEntity
 
     private String mgiName;
 
-    @ManyToOne
-    private TrackedStrainType type;
+    @ManyToMany
+    @JoinTable(
+            name = "strain_type_relationship",
+            joinColumns = @JoinColumn(name = "strain_id"),
+            inverseJoinColumns = @JoinColumn(name = "strain_type_id"))
+    private Set<TrackedStrainType> types;
 }

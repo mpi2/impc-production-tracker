@@ -4,13 +4,11 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import uk.ac.ebi.impc_prod_tracker.data.biology.tracked_strain.TrackedStrain;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.SequenceGenerator;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.util.Set;
 
 @NoArgsConstructor(access= AccessLevel.PRIVATE, force=true)
 @Getter
@@ -25,4 +23,7 @@ public class TrackedStrainType
 
     @NotNull
     private String name;
+
+    @ManyToMany(mappedBy = "types")
+    private Set<TrackedStrain> trackedStrains;
 }
