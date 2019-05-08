@@ -33,14 +33,12 @@ import java.util.Set;
 @Data
 public class ProjectDTOBuilder
 {
-    private ProjectMapper projectMapper;
     private PlanService planService;
     private PlanDTOBuilder planDTOBuilder;
 
     public ProjectDTOBuilder(
-        ProjectMapper projectMapper, PlanService planService, PlanDTOBuilder planDTOBuilder)
+        PlanService planService, PlanDTOBuilder planDTOBuilder)
     {
-        this.projectMapper = projectMapper;
         this.planService = planService;
         this.planDTOBuilder = planDTOBuilder;
     }
@@ -66,7 +64,7 @@ public class ProjectDTOBuilder
     {
         Objects.requireNonNull(project, "The project is null");
         ProjectDTO projectDTO = new ProjectDTO();
-        ProjectDetailsDTO projectDetailsDTO = convertToProjectDetailsDTO(project);
+        ProjectDetailsDTO projectDetailsDTO = buildProjectDetailsDTOFromProject(project);
         projectDetailsDTO.setAssigmentStatusName(project.getAssignmentStatus().getName());
         projectDetailsDTO.setTpn(project.getTpn());
         projectDTO.setProjectDetailsDTO(projectDetailsDTO);
@@ -74,12 +72,13 @@ public class ProjectDTOBuilder
         return projectDTO;
     }
 
-    public ProjectDetailsDTO convertToProjectDetailsDTO(Project project)
+    public ProjectDetailsDTO buildProjectDetailsDTOFromProject(Project project)
     {
         Objects.requireNonNull(project, "The project is null");
         ProjectDetailsDTO projectDetailsDTO = new ProjectDetailsDTO();
         projectDetailsDTO.setAssigmentStatusName(project.getAssignmentStatus().getName());
         projectDetailsDTO.setTpn(project.getTpn());
+
         if (project.getProjectPriority() != null)
         {
             projectDetailsDTO.setPriorityName(project.getProjectPriority().getName());
