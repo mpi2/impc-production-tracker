@@ -21,13 +21,13 @@
     "name": "TEST access plan",
     "description": "Test.",
     "target": "action == 'READ_PLAN'",
-    "condition": "true"
+    "condition": "subject.workUnit.id == resource.workUnit.id"
   },
   {
     "name": "TEST access plan",
     "description": "Test.",
     "target": "action == 'FILTER_PLAN'",
-    "condition": "subject.login != 'anonymousUser' OR resource.planPrivacy.name == 'PUBLIC'"
+    "condition": "subject.login != 'anonymousUser' OR resource.resourcePrivacy.name() == 'PUBLIC'"
   },
   {
     "name": "...",

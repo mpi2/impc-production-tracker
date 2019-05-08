@@ -76,7 +76,11 @@ public class ProjectDTOBuilder
     {
         Objects.requireNonNull(project, "The project is null");
         ProjectDetailsDTO projectDetailsDTO = new ProjectDetailsDTO();
-        projectDetailsDTO.setAssigmentStatusName(project.getAssignmentStatus().getName());
+        if (project.getAssignmentStatus() != null)
+        {
+            projectDetailsDTO.setAssigmentStatusName(project.getAssignmentStatus().getName());
+        }
+
         projectDetailsDTO.setTpn(project.getTpn());
 
         if (project.getProjectPriority() != null)
@@ -93,9 +97,12 @@ public class ProjectDTOBuilder
     {
         Set<IntendedMouseGene> intendedMouseGenes = project.getIntendedMouseGenes();
         List<String> markerSymbolNames = new ArrayList<>();
-        for (IntendedMouseGene intendedMouseGene : intendedMouseGenes)
+        if (intendedMouseGenes != null)
         {
-            markerSymbolNames.add(intendedMouseGene.getSymbol());
+            for (IntendedMouseGene intendedMouseGene : intendedMouseGenes)
+            {
+                markerSymbolNames.add(intendedMouseGene.getSymbol());
+            }
         }
         projectDetailsDTO.setMarkerSymbols(markerSymbolNames);
     }
@@ -104,9 +111,12 @@ public class ProjectDTOBuilder
     {
         Set<AlleleType> alleleTypes = project.getProjectIntentions();
         List<String> intentions = new ArrayList<>();
-        for (AlleleType alleleType : alleleTypes)
+        if (alleleTypes != null)
         {
-            intentions.add(alleleType.getName());
+            for (AlleleType alleleType : alleleTypes)
+            {
+                intentions.add(alleleType.getName());
+            }
         }
         projectDetailsDTO.setAlleleIntentions(intentions);
     }

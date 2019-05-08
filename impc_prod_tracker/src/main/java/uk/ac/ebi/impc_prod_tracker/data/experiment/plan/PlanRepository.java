@@ -22,9 +22,9 @@ import uk.ac.ebi.impc_prod_tracker.data.experiment.project.Project;
 
 public interface PlanRepository extends CrudRepository<Plan, Long> {
 
-    @Override
-    @PreAuthorize("hasPermission(null, 'READ_PLAN')")
-    @PostFilter("hasPermission(filterObject, 'FILTER_PLAN')")
+    //@Override
+    //@PreAuthorize("hasPermission(null, 'READ_PLAN')")
+    //@PostFilter("hasPermission(filterObject, 'FILTER_PLAN')")
     Iterable<Plan> findAll();
 
     Iterable<Plan> findAllByProject(Project project);
