@@ -18,8 +18,9 @@ package uk.ac.ebi.impc_prod_tracker.conf.security.abac.policy;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.expression.EvaluationException;
+import org.springframework.expression.Expression;
 import org.springframework.stereotype.Component;
+import uk.ac.ebi.impc_prod_tracker.conf.error_management.OperationFailedException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -52,16 +53,11 @@ public class BasicPolicyEnforcement implements PolicyEnforcement
     private List<PolicyRule> filterRules(List<PolicyRule> allRules, SecurityAccessContext cxt)
     {
         List<PolicyRule> matchedRules = new ArrayList<>();
-        for(PolicyRule rule : allRules) {
-            try {
-                if (rule.getTarget().getValue(cxt, Boolean.class))
-                {
-                    matchedRules.add(rule);
-                }
-            }
-            catch(EvaluationException ex)
+        for(PolicyRule rule : allRules)
+        {
+            if (evaluateRuleExpression(rule.getTarget(), cxt))
             {
-                logger.info("An error occurred while evaluating PolicyRule.", ex);
+                matchedRules.add(rule);
             }
         }
         return matchedRules;
@@ -69,20 +65,28 @@ public class BasicPolicyEnforcement implements PolicyEnforcement
 
     private boolean checkRules(List<PolicyRule> matchedRules, SecurityAccessContext cxt)
     {
-        for(PolicyRule rule : matchedRules)
+        boolean result = false;
+
+        for (PolicyRule rule : matchedRules)
         {
-            try
+            if (evaluateRuleExpression(rule.getCondition(), cxt))
             {
-                if (rule.getCondition().getValue(cxt, Boolean.class))
-                {
-                    return true;
-                }
-            }
-            catch(EvaluationException ex)
-            {
-                logger.info("An error occurred while evaluating PolicyRule.", ex);
+                result = true;
+                logger.info("Found rule that evaluated true: [{}]", rule.getDescription());
+                break;
             }
         }
-        return false;
+        return result;
+    }
+
+    private boolean evaluateRuleExpression(Expression ruleExpression, SecurityAccessContext cxt)
+    {
+        Boolean result = ruleExpression.getValue(cxt, Boolean.class);
+        if (result == null)
+        {
+            logger.info("Error evaluating policy");
+            throw new OperationFailedException("Error evaluating policy");
+        }
+        return result;
     }
 }

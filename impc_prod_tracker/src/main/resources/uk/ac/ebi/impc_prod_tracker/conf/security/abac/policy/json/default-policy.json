@@ -18,27 +18,15 @@
     "condition": "subject.role.name == 'admin' OR (subject.role.name == 'manager' AND {'manager', 'general'}.contains(resource.name))"
   },
   {
-    "name": "TEST access plan",
-    "description": "Test.",
-    "target": "action == 'READ_PLAN'",
+    "name": "Access to public resources",
+    "description": "Allows access to any public resources",
+    "target": "true",
+    "condition": "resource.resourcePrivacy.name() == 'PUBLIC'"
+  },
+  {
+    "name": "Read Plans",
+    "description": "Permission to read plans in same work unit",
+    "target": "action == 'READ_PLAN' AND resource.resourcePrivacy.name() == 'RESTRICTED'",
     "condition": "subject.workUnit.id == resource.workUnit.id"
-  },
-  {
-    "name": "TEST access plan",
-    "description": "Test.",
-    "target": "action == 'FILTER_PLAN'",
-    "condition": "subject.login != 'anonymousUser' OR resource.resourcePrivacy.name() == 'PUBLIC'"
-  },
-  {
-    "name": "...",
-    "description": "...",
-    "target": "action == 'VIEW_NON_PUBLIC_DATA'",
-    "condition": "subject.login != 'anonymousUser'"
-  },
-  {
-    "name": "Access own plans",
-    "description": "User can see all but protected if not in his/her centre",
-    "target": "subject.role.name == 'N0_ADMIN' AND action == 'PLAN_LIST'",
-    "condition": "subject.productionCentre.id == resource.productionCentre.id or resource.privacy == 'public'"
   }
 ]

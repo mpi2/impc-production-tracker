@@ -21,15 +21,13 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import uk.ac.ebi.impc_prod_tracker.conf.exeption_management.OperationFailedException;
+import uk.ac.ebi.impc_prod_tracker.conf.error_management.OperationFailedException;
 import uk.ac.ebi.impc_prod_tracker.controller.project.plan.PlanDTO;
 import uk.ac.ebi.impc_prod_tracker.controller.project.plan.PlanDTOBuilder;
 import uk.ac.ebi.impc_prod_tracker.data.experiment.plan.Plan;
 import uk.ac.ebi.impc_prod_tracker.data.experiment.project.Project;
 import uk.ac.ebi.impc_prod_tracker.service.plan.PlanService;
 import uk.ac.ebi.impc_prod_tracker.service.project.ProjectService;
-
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -108,8 +106,6 @@ public class ProjectController
                 String.format("Project %s does not have any plan %s associated", tpn, pin),
                 HttpStatus.NOT_FOUND);
         }
-        Map<String, List<Object>> map = new HashMap<>();
-        map.put("res", Arrays.asList(project, planDTO));
 
         ProjectPlanDTO projectPlanDTO = new ProjectPlanDTO();
         projectPlanDTO.setProjectDetailsDTO(projectDTOBuilder.buildProjectDetailsDTOFromProject(project));

@@ -13,7 +13,7 @@
  * language governing permissions and limitations under the
  * License.
  *******************************************************************************/
-package uk.ac.ebi.impc_prod_tracker.conf.exeption_management;
+package uk.ac.ebi.impc_prod_tracker.conf.error_management;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -48,20 +48,20 @@ public class ExceptionHandlerFilter extends OncePerRequestFilter
         HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
     throws IOException
     {
-        ApiException apiException;
+        ApiError apiError;
         try
         {
             filterChain.doFilter(request, response);
         }
         catch (OperationFailedException ofe)
         {
-            apiException = new ApiException(HttpStatus.INTERNAL_SERVER_ERROR, ofe.getMessage(), ofe.getDebugMessage());
-            addExceptionInfoToResponse(response, apiException);
+            apiError = new ApiError(HttpStatus.INTERNAL_SERVER_ERROR, ofe.getMessage(), ofe.getDebugMessage());
+            addExceptionInfoToResponse(response, apiError);
         }
         catch (RuntimeException e)
         {
-            apiException = new ApiException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage(), e);
-            addExceptionInfoToResponse(response, apiException);
+            apiError = new ApiError(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage(), e);
+            addExceptionInfoToResponse(response, apiError);
         }
         catch (Exception e)
         {
@@ -70,16 +70,16 @@ public class ExceptionHandlerFilter extends OncePerRequestFilter
                 OperationFailedException ofe = (OperationFailedException) e.getCause();
                 if (ofe.getHttpStatus() == null)
                 {
-                    apiException =
-                        new ApiException(
+                    apiError =
+                        new ApiError(
                             HttpStatus.INTERNAL_SERVER_ERROR,
                             ofe.getMessage(),
                             ofe.getDebugMessage());
                 }
                 else
                 {
-                    apiException =
-                        new ApiException(
+                    apiError =
+                        new ApiError(
                             ofe.getHttpStatus(),
                             ofe.getMessage(),
                             ofe.getDebugMessage());
@@ -87,18 +87,18 @@ public class ExceptionHandlerFilter extends OncePerRequestFilter
             }
             else
             {
-                apiException = new ApiException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage(), "");
+                apiError = new ApiError(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage(), "");
             }
-            addExceptionInfoToResponse(response, apiException);
+            addExceptionInfoToResponse(response, apiError);
         }
     }
 
-    private void addExceptionInfoToResponse(HttpServletResponse response, ApiException apiException)
+    private void addExceptionInfoToResponse(HttpServletResponse response, ApiError apiError)
     throws IOException
     {
-        response.setStatus(apiException.getStatus().value());
+        response.setStatus(apiError.getStatus().value());
         response.setContentType(MediaType.APPLICATION_JSON.toString());
-        response.getWriter().write(convertObjectToJson(apiException));
+        response.getWriter().write(convertObjectToJson(apiError));
     }
 
     public String convertObjectToJson(Object object)
