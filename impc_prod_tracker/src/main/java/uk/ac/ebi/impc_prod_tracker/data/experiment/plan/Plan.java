@@ -75,6 +75,7 @@ public class Plan extends BaseEntity
     @ManyToOne(targetEntity = Funder.class)
     private Funder funder;
 
+    @Column(columnDefinition = "TEXT")
     private String comment;
 
     @ManyToOne

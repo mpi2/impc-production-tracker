@@ -109,5 +109,6 @@ public class CrisprAttempt extends BaseEntity
     @Column(name = "embryo_2_Cell")
     private String embryo2Cell;
 
+    @Column(columnDefinition = "TEXT")
     private String comment;
 }
