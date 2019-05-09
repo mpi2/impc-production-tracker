@@ -22,7 +22,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import uk.ac.ebi.impc_prod_tracker.conf.exeption_management.OperationFailedException;
+import uk.ac.ebi.impc_prod_tracker.conf.error_management.OperationFailedException;
 import uk.ac.ebi.impc_prod_tracker.data.organization.person.Person;
 import uk.ac.ebi.impc_prod_tracker.domain.login.AuthenticationRequest;
 import uk.ac.ebi.impc_prod_tracker.domain.login.UserRegisterRequest;

@@ -59,8 +59,17 @@ public class PublicKeyProvider
 
     private String requestPublicKeyText(String authenticationServiceUrl)
     {
-        ResponseEntity<String> response = restTemplate.getForEntity(authenticationServiceUrl, String.class);
-        return response.getBody().replaceAll(BEGIN_CERT, "").replaceAll(END_CERT, "").replaceAll("\n","");
+        ResponseEntity<String> response =
+            restTemplate.getForEntity(authenticationServiceUrl, String.class);
+        String text = response.getBody();
+        if (text != null)
+        {
+            text = text
+                .replaceAll(BEGIN_CERT, "")
+                .replaceAll(END_CERT, "")
+                .replaceAll("\n","");
+        }
+        return text;
     }
 
     private PublicKey buildPublicKeyFromText(String publicKeyText)

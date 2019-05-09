@@ -13,15 +13,12 @@
  * language governing permissions and limitations under the
  * License.
  *******************************************************************************/
-package uk.ac.ebi.impc_prod_tracker.domain;
+package uk.ac.ebi.impc_prod_tracker.conf.error_management;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-
-@AllArgsConstructor
-@Data
-public class ProductionCentre
+/**
+ * Class to keep information to errors that will be grouped in a parent object.
+ * Taken from https://github.com/brunocleite/spring-boot-exception-handling.
+ */
+abstract class ApiSubError
 {
-    private int id;
-    private String name;
 }

@@ -25,7 +25,7 @@ import io.jsonwebtoken.SigningKeyResolverAdapter;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
-import uk.ac.ebi.impc_prod_tracker.conf.exeption_management.OperationFailedException;
+import uk.ac.ebi.impc_prod_tracker.conf.error_management.OperationFailedException;
 import uk.ac.ebi.impc_prod_tracker.conf.security.AapSystemSubject;
 import uk.ac.ebi.impc_prod_tracker.conf.security.PublicKeyProvider;
 import uk.ac.ebi.impc_prod_tracker.conf.security.SystemSubject;
