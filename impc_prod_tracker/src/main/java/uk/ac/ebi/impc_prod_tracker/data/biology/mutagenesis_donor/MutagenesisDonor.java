@@ -23,7 +23,7 @@ public class MutagenesisDonor extends BaseEntity
     @ManyToOne(targetEntity = CrisprAttempt.class)
     private CrisprAttempt crisprAttempt;
 
-    private Integer concentration;
+    private Double concentration;
 
     private String preparation;
 
