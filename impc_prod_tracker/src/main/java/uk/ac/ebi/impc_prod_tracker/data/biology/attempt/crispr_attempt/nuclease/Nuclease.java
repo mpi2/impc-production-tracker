@@ -31,7 +31,4 @@ public class Nuclease extends BaseEntity
 
     @ManyToOne
     private NucleaseType nucleaseType;
-
-    @ManyToOne
-    private NucleaseClass nucleaseClass;
 }
