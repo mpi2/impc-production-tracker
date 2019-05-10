@@ -117,7 +117,7 @@ public class Plan extends BaseEntity implements Resource<Plan>
             case "protected":
                 resourcePrivacy = ResourcePrivacy.PROTECTED;
                 break;
-            case "private":
+            case "restricted":
                 resourcePrivacy = ResourcePrivacy.RESTRICTED;
                 break;
             default:

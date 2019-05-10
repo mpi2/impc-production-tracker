@@ -18,6 +18,7 @@ package uk.ac.ebi.impc_prod_tracker.controller.project.plan.production_plan;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
+import uk.ac.ebi.impc_prod_tracker.controller.project.plan.production_plan.crispr_attempt_details.CrisprAttemptDetailsDTO;
 import uk.ac.ebi.impc_prod_tracker.controller.project.plan.production_plan.f1_colony.F1ColonyDetailsDTO;
 import uk.ac.ebi.impc_prod_tracker.controller.project.plan.production_plan.micro_injection.MicroInjectionDetailsDTO;
 
@@ -29,4 +30,6 @@ public class ProductionPlanSummaryDTO
     private MicroInjectionDetailsDTO microInjectionDetailsDTO;
     @JsonProperty("f1ColonyDetails")
     private F1ColonyDetailsDTO f1ColonyDetailsDTO;
+    @JsonProperty("crisprAttemptDetails")
+    private CrisprAttemptDetailsDTO crisprAttemptDetailsDTO;
 }
