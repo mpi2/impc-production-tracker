@@ -13,7 +13,7 @@
  * language governing permissions and limitations under the
  * License.
  *******************************************************************************/
-package uk.ac.ebi.impc_prod_tracker.conf.exeption_management;
+package uk.ac.ebi.impc_prod_tracker.conf.error_management;
 
 import com.fasterxml.jackson.core.JsonParseException;
 

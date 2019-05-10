@@ -13,7 +13,7 @@
  * language governing permissions and limitations under the
  * License.
  *******************************************************************************/
-package uk.ac.ebi.impc_prod_tracker.conf.exeption_management;
+package uk.ac.ebi.impc_prod_tracker.conf.error_management;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -40,27 +40,27 @@ import java.util.Set;
 @JsonTypeInfo(
     include = JsonTypeInfo.As.WRAPPER_OBJECT, use = JsonTypeInfo.Id.CUSTOM, property = "error", visible = true)
 @JsonTypeIdResolver(LowerCaseClassNameResolver.class)
-public class ApiException
+public class ApiError
 {
     private HttpStatus status;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy hh:mm:ss")
     private LocalDateTime timestamp;
     private String message;
     private String debugMessage;
-    private List<ApiSubException> subErrors;
+    private List<ApiSubError> subErrors;
 
-    private ApiException()
+    private ApiError()
     {
         timestamp = LocalDateTime.now();
     }
 
-    public ApiException(HttpStatus status)
+    public ApiError(HttpStatus status)
     {
         this();
         this.status = status;
     }
 
-    public ApiException(HttpStatus status, Throwable ex)
+    public ApiError(HttpStatus status, Throwable ex)
     {
         this();
         this.status = status;
@@ -68,7 +68,7 @@ public class ApiException
         this.debugMessage = ex.getLocalizedMessage();
     }
 
-    public ApiException(HttpStatus status, String message, Throwable ex)
+    public ApiError(HttpStatus status, String message, Throwable ex)
     {
         this();
         this.status = status;
@@ -76,7 +76,7 @@ public class ApiException
         this.debugMessage = ex.getLocalizedMessage();
     }
 
-    public ApiException(HttpStatus status, String message, String debugMessage)
+    public ApiError(HttpStatus status, String message, String debugMessage)
     {
         this();
         this.status = status;
@@ -84,7 +84,7 @@ public class ApiException
         this.debugMessage = debugMessage;
     }
 
-    public ApiException(HttpStatus status, ExceptionFormatter exceptionFormatter)
+    public ApiError(HttpStatus status, ExceptionFormatter exceptionFormatter)
     {
         this();
         this.status = status;
@@ -92,7 +92,7 @@ public class ApiException
         this.debugMessage = exceptionFormatter.getDebugMessage();
     }
 
-    private void addSubError(ApiSubException subError)
+    private void addSubError(ApiSubError subError)
     {
         if (subErrors == null)
         {
@@ -103,12 +103,12 @@ public class ApiException
 
     private void addValidationError(String object, String field, Object rejectedValue, String message)
     {
-        addSubError(new ApiValidationException(object, field, rejectedValue, message));
+        addSubError(new ApiValidationError(object, field, rejectedValue, message));
     }
 
     private void addValidationError(String object, String message)
     {
-        addSubError(new ApiValidationException(object, message));
+        addSubError(new ApiValidationError(object, message));
     }
 
     private void addValidationError(FieldError fieldError)

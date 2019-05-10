@@ -19,6 +19,9 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import uk.ac.ebi.impc_prod_tracker.conf.error_management.OperationFailedException;
+import uk.ac.ebi.impc_prod_tracker.conf.security.Resource;
+import uk.ac.ebi.impc_prod_tracker.conf.security.ResourcePrivacy;
 import uk.ac.ebi.impc_prod_tracker.data.BaseEntity;
 import uk.ac.ebi.impc_prod_tracker.data.biology.plan_reagent.PlanReagent;
 import uk.ac.ebi.impc_prod_tracker.data.experiment.colony.Colony;
@@ -40,7 +43,7 @@ import java.util.Set;
 @Getter
 @Setter
 @Entity
-public class Plan extends BaseEntity
+public class Plan extends BaseEntity implements Resource<Plan>
 {
     @Id
     @SequenceGenerator(name = "planSeq", sequenceName = "PLAN_SEQ")
@@ -101,4 +104,39 @@ public class Plan extends BaseEntity
 
     @OneToMany(mappedBy = "plan")
     private Set<PlanReagent> planReagents;
+
+    @Override
+    public ResourcePrivacy getResourcePrivacy()
+    {
+        ResourcePrivacy resourcePrivacy;
+        switch (privacy.getName().toLowerCase())
+        {
+            case "public":
+                resourcePrivacy = ResourcePrivacy.PUBLIC;
+                break;
+            case "protected":
+                resourcePrivacy = ResourcePrivacy.PROTECTED;
+                break;
+            case "private":
+                resourcePrivacy = ResourcePrivacy.RESTRICTED;
+                break;
+            default:
+                throw new OperationFailedException("Invalid privacy");
+        }
+        return resourcePrivacy;
+    }
+
+    @Override
+    public Plan getRestrictedObject()
+    {
+        Plan plan = new Plan();
+        plan.setPrivacy(this.privacy);
+        plan.setPin(this.pin);
+        plan.setPlanType(this.planType);
+        Project restrictedProject = new Project();
+        restrictedProject.setTpn(this.project.getTpn());
+        plan.setProject(restrictedProject);
+
+        return plan;
+    }
 }

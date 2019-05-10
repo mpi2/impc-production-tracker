@@ -17,7 +17,7 @@ package uk.ac.ebi.impc_prod_tracker.controller.project.plan;
 
 import lombok.Data;
 import org.springframework.stereotype.Component;
-import uk.ac.ebi.impc_prod_tracker.conf.exeption_management.OperationFailedException;
+import uk.ac.ebi.impc_prod_tracker.conf.error_management.OperationFailedException;
 import uk.ac.ebi.impc_prod_tracker.controller.project.plan.phenotype_plan.PhenotypePlanSummaryDTO;
 import uk.ac.ebi.impc_prod_tracker.controller.project.plan.production_plan.ProductionPlanSummaryDTO;
 import uk.ac.ebi.impc_prod_tracker.controller.project.plan.production_plan.f1_colony.F1ColonyDetailsDTO;
@@ -29,12 +29,10 @@ import uk.ac.ebi.impc_prod_tracker.service.plan.PlanService;
 @Data
 public class PlanDTOBuilder
 {
-    private PlanMapper planMapper;
     private PlanService planService;
 
-    public PlanDTOBuilder(PlanMapper planMapper, PlanService planService)
+    public PlanDTOBuilder(PlanService planService)
     {
-        this.planMapper = planMapper;
         this.planService = planService;
     }
 
@@ -52,28 +50,71 @@ public class PlanDTOBuilder
     public PlanDTO buildPlanDTOFromPlan(Plan plan)
     {
         PlanDTO planDTO = new PlanDTO();
-        PlanDetailsDTO planDetailsDTO = planMapper.convertToPlanDetailsDto(plan);
+        PlanDetailsDTO planDetailsDTO = buildPlanDetailsDTOFromPlan(plan);
         planDTO.setPlanDetailsDTO(planDetailsDTO);
 
         if ("Production".equals(plan.getPlanType().getName()))
         {
             ProductionPlanSummaryDTO productionPlanSummaryDTO =
-                planMapper.convertToProductionPlanSummaryDto(plan);
-            MicroInjectionDetailsDTO microInjectionDetailsDTO = new MicroInjectionDetailsDTO();
-            F1ColonyDetailsDTO f1ColonyDetailsDTO = new F1ColonyDetailsDTO();
-            productionPlanSummaryDTO.setMicroInjectionDetailsDTO(microInjectionDetailsDTO);
-            productionPlanSummaryDTO.setF1ColonyDetailsDTO(f1ColonyDetailsDTO);
+                buildProductionPlanSummaryDTOFromPlan(plan);
 
             planDTO.setProductionPlanSummaryDTO(productionPlanSummaryDTO);
         }
         else
         {
             PhenotypePlanSummaryDTO phenotypePlanSummaryDTO =
-                planMapper.convertToPhenotypePlanSummaryDto(plan);
+                buildPhenotypePlanSummaryDTOFromPlan(plan);
 
             planDTO.setPhenotypePlanSummaryDTO(phenotypePlanSummaryDTO);
         }
 
         return planDTO;
+    }
+
+    public PlanDetailsDTO buildPlanDetailsDTOFromPlan(Plan plan)
+    {
+        PlanDetailsDTO planDetailsDTO = new PlanDetailsDTO();
+        planDetailsDTO.setPin(plan.getPin());
+
+        if (plan.getPlanType() != null)
+        {
+            planDetailsDTO.setPlanTypeName(plan.getPlanType().getName());
+        }
+        if (plan.getStatus() != null)
+        {
+            planDetailsDTO.setStatusName(plan.getStatus().getName());
+        }
+        if (plan.getWorkUnit() != null)
+        {
+            planDetailsDTO.setWorkUnitName(plan.getWorkUnit().getName());
+        }
+        if (plan.getPrivacy() != null)
+        {
+            planDetailsDTO.setPrivacyName(plan.getPrivacy().getName());
+        }
+        if (plan.getConsortium() != null)
+        {
+            planDetailsDTO.setConsortiumName(plan.getConsortium().getName());
+        }
+
+        return planDetailsDTO;
+    }
+
+    private ProductionPlanSummaryDTO buildProductionPlanSummaryDTOFromPlan(final Plan plan)
+    {
+
+        ProductionPlanSummaryDTO productionPlanSummaryDTO = new ProductionPlanSummaryDTO();
+        MicroInjectionDetailsDTO microInjectionDetailsDTO = new MicroInjectionDetailsDTO();
+        F1ColonyDetailsDTO f1ColonyDetailsDTO = new F1ColonyDetailsDTO();
+
+        productionPlanSummaryDTO.setMicroInjectionDetailsDTO(microInjectionDetailsDTO);
+        productionPlanSummaryDTO.setF1ColonyDetailsDTO(f1ColonyDetailsDTO);
+        return productionPlanSummaryDTO;
+    }
+
+    private PhenotypePlanSummaryDTO buildPhenotypePlanSummaryDTOFromPlan(final Plan plan)
+    {
+        PhenotypePlanSummaryDTO phenotypePlanSummaryDTO = new PhenotypePlanSummaryDTO();
+        return phenotypePlanSummaryDTO;
     }
 }

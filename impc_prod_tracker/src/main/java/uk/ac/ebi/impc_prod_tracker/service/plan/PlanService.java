@@ -24,4 +24,6 @@ public interface PlanService
     List<Plan> getPlansByProject(Project project);
 
     Plan getPlanByPin(String pin);
+
+    List<Plan> getPlans();
 }

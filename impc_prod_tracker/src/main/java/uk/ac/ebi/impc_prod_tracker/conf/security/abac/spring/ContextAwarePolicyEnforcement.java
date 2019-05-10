@@ -49,7 +49,7 @@ public class ContextAwarePolicyEnforcement
         Map<String, Object> environment = new HashMap<>();
 
         environment.put("time", new Date());
-        return policy.check(subjectRetriever, resource, permission, environment);
+        return policy.check(subjectRetriever.getSubject(), resource, permission, environment);
     }
 
     public boolean isUserAnonymous()

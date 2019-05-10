@@ -13,7 +13,7 @@
  * language governing permissions and limitations under the
  * License.
  *******************************************************************************/
-package uk.ac.ebi.impc_prod_tracker.conf.exeption_management;
+package uk.ac.ebi.impc_prod_tracker.conf.error_management;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -26,14 +26,14 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode(callSuper = false)
 @AllArgsConstructor
-public class ApiValidationException extends ApiSubException
+public class ApiValidationError extends ApiSubError
 {
     private String object;
     private String field;
     private Object rejectedValue;
     private String message;
 
-    ApiValidationException(String object, String message)
+    ApiValidationError(String object, String message)
     {
         this.object = object;
         this.message = message;

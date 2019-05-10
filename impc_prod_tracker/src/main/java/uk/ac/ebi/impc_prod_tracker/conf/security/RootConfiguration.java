@@ -15,7 +15,6 @@
  *******************************************************************************/
 package uk.ac.ebi.impc_prod_tracker.conf.security;
 
-import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
@@ -27,7 +26,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.access.channel.ChannelProcessingFilter;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import uk.ac.ebi.impc_prod_tracker.conf.exeption_management.ExceptionHandlerFilter;
+import uk.ac.ebi.impc_prod_tracker.conf.error_management.ExceptionHandlerFilter;
 import uk.ac.ebi.impc_prod_tracker.conf.security.jwt.JwtTokenFilter;
 
 /**
@@ -63,11 +62,6 @@ public class RootConfiguration extends WebSecurityConfigurerAdapter
         return new BCryptPasswordEncoder();
     }
 
-    @Bean
-    public ModelMapper modelMapper() {
-        return new ModelMapper();
-    }
-
     @Override
     protected void configure(HttpSecurity http) throws Exception
     {
@@ -80,6 +74,9 @@ public class RootConfiguration extends WebSecurityConfigurerAdapter
             .authorizeRequests()
             .antMatchers("/auth/signin").permitAll()
             .antMatchers("/api/plans").permitAll()
+            //.antMatchers("/api/planSummaries").permitAll()
+            .antMatchers("/api/planSummaries/**").permitAll()
+            .antMatchers("/api/projects/**").permitAll()
             .anyRequest().authenticated()
             .and()
             .addFilterBefore(jwtTokenFilter, UsernamePasswordAuthenticationFilter.class)
