@@ -57,7 +57,7 @@ public class CrisprAttempt extends BaseEntity
 
     private Boolean guidesGeneratedInPlasmid;
 
-    private Float grnaConcentration;
+    private Double grnaConcentration;
 
     @Column(name = "no_g0_where_mutation_detected")
     private Integer noG0WhereMutationDetected;
@@ -109,5 +109,6 @@ public class CrisprAttempt extends BaseEntity
     @Column(name = "embryo_2_Cell")
     private String embryo2Cell;
 
+    @Column(columnDefinition = "TEXT")
     private String comment;
 }

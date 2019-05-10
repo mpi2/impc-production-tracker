@@ -5,7 +5,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import uk.ac.ebi.impc_prod_tracker.data.BaseEntity;
-import uk.ac.ebi.impc_prod_tracker.data.biology.human_disease.HumanDisease;
 import uk.ac.ebi.impc_prod_tracker.data.experiment.assignment_status.AssignmentStatus;
 import uk.ac.ebi.impc_prod_tracker.data.experiment.project.Project;
 

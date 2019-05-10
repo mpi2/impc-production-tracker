@@ -41,7 +41,7 @@ public class Guide extends BaseEntity
 
     private Boolean truncatedGuide;
 
-    private Integer grnaConcentration;
+    private Double grnaConcentration;
 
     private String pam3;
 

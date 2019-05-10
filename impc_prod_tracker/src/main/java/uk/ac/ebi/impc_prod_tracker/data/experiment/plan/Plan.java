@@ -50,6 +50,7 @@ public class Plan extends BaseEntity implements Resource<Plan>
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "planSeq")
     private Long id;
 
+    @NotNull
     private String pin;
 
     @NotNull
@@ -58,13 +59,11 @@ public class Plan extends BaseEntity implements Resource<Plan>
     @ManyToOne
     private Project project;
 
-    @NotNull
+
     @ManyToOne(targetEntity= PlanType.class)
     private PlanType planType;
 
-    @NotNull
     @ManyToOne(targetEntity= Privacy.class)
-
     private Privacy privacy;
 
     @ManyToOne(targetEntity = WorkUnit.class)
@@ -79,6 +78,7 @@ public class Plan extends BaseEntity implements Resource<Plan>
     @ManyToOne(targetEntity = Funder.class)
     private Funder funder;
 
+    @Column(columnDefinition = "TEXT")
     private String comment;
 
     @ManyToOne
@@ -99,7 +99,6 @@ public class Plan extends BaseEntity implements Resource<Plan>
         inverseJoinColumns = @JoinColumn(name = "protocol_id"))
     private Set<Protocol> protocols;
 
-    @NotNull
     @ManyToOne(targetEntity= Status.class)
     private Status status;
 
