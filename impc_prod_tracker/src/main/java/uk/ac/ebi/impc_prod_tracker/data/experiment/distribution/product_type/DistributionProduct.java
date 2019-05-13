@@ -10,6 +10,7 @@ import uk.ac.ebi.impc_prod_tracker.data.experiment.distribution.distribution_net
 import uk.ac.ebi.impc_prod_tracker.data.organization.work_unit.WorkUnit;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 
 @NoArgsConstructor(access= AccessLevel.PRIVATE, force=true)
@@ -27,25 +28,19 @@ public class DistributionProduct extends BaseEntity
 
     private LocalDateTime end_date;
 
-    @PrePersist
-    void preReconciledInsert() {
-        if (this.reconciled == null)
-            this.reconciled = 'not checked';
-    }
+    @Column(name="reconciled", columnDefinition="varchar(255) default 'not checked'", nullable = false)
     private String reconciled;
 
     private LocalDateTime reconciled_at;
 
-    @PrePersist
-    void preInsert() {
-        if (this.available == null)
-            this.available = Boolean.FALSE;
-    }
+    @Column(name="available", columnDefinition="Boolean default false", nullable = false)
     private Boolean available;
 
+    @NotNull
     @ManyToOne
     private WorkUnit distributionCentre;
 
+    @NotNull
     @ManyToOne
     private ProductType productType;
 
