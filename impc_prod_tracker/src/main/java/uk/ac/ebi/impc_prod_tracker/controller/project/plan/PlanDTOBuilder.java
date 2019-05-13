@@ -19,21 +19,27 @@ import lombok.Data;
 import org.springframework.stereotype.Component;
 import uk.ac.ebi.impc_prod_tracker.conf.error_management.OperationFailedException;
 import uk.ac.ebi.impc_prod_tracker.controller.project.plan.phenotype_plan.PhenotypePlanSummaryDTO;
+import uk.ac.ebi.impc_prod_tracker.controller.project.plan.production_plan.ProductionPlanDTOBuilder;
 import uk.ac.ebi.impc_prod_tracker.controller.project.plan.production_plan.ProductionPlanSummaryDTO;
+import uk.ac.ebi.impc_prod_tracker.controller.project.plan.production_plan.crispr_attempt_details.CrisprAttemptDetailsDTO;
 import uk.ac.ebi.impc_prod_tracker.controller.project.plan.production_plan.f1_colony.F1ColonyDetailsDTO;
 import uk.ac.ebi.impc_prod_tracker.controller.project.plan.production_plan.micro_injection.MicroInjectionDetailsDTO;
 import uk.ac.ebi.impc_prod_tracker.data.experiment.plan.Plan;
 import uk.ac.ebi.impc_prod_tracker.service.plan.PlanService;
+
+import java.time.LocalDateTime;
 
 @Component
 @Data
 public class PlanDTOBuilder
 {
     private PlanService planService;
+    private ProductionPlanDTOBuilder productionPlanDTOBuilder;
 
-    public PlanDTOBuilder(PlanService planService)
+    public PlanDTOBuilder(PlanService planService, ProductionPlanDTOBuilder productionPlanDTOBuilder)
     {
         this.planService = planService;
+        this.productionPlanDTOBuilder = productionPlanDTOBuilder;
     }
 
     public PlanDTO buildPlanDTOFromPlanPid(String pin)
@@ -53,7 +59,7 @@ public class PlanDTOBuilder
         PlanDetailsDTO planDetailsDTO = buildPlanDetailsDTOFromPlan(plan);
         planDTO.setPlanDetailsDTO(planDetailsDTO);
 
-        if ("Production".equals(plan.getPlanType().getName()))
+        if ("production".equals(plan.getPlanType().getName().toLowerCase()))
         {
             ProductionPlanSummaryDTO productionPlanSummaryDTO =
                 buildProductionPlanSummaryDTOFromPlan(plan);
@@ -102,13 +108,8 @@ public class PlanDTOBuilder
 
     private ProductionPlanSummaryDTO buildProductionPlanSummaryDTOFromPlan(final Plan plan)
     {
-
-        ProductionPlanSummaryDTO productionPlanSummaryDTO = new ProductionPlanSummaryDTO();
-        MicroInjectionDetailsDTO microInjectionDetailsDTO = new MicroInjectionDetailsDTO();
-        F1ColonyDetailsDTO f1ColonyDetailsDTO = new F1ColonyDetailsDTO();
-
-        productionPlanSummaryDTO.setMicroInjectionDetailsDTO(microInjectionDetailsDTO);
-        productionPlanSummaryDTO.setF1ColonyDetailsDTO(f1ColonyDetailsDTO);
+        ProductionPlanSummaryDTO productionPlanSummaryDTO =
+            productionPlanDTOBuilder.buildProductionPlanSummaryDTOFromPlan(plan);
         return productionPlanSummaryDTO;
     }
 
@@ -117,4 +118,6 @@ public class PlanDTOBuilder
         PhenotypePlanSummaryDTO phenotypePlanSummaryDTO = new PhenotypePlanSummaryDTO();
         return phenotypePlanSummaryDTO;
     }
+
+   // private
 }
