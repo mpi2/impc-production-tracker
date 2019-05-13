@@ -15,6 +15,8 @@
  *******************************************************************************/
 package uk.ac.ebi.impc_prod_tracker.service.plan;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 import uk.ac.ebi.impc_prod_tracker.conf.security.ResourcePrivacy;
 import uk.ac.ebi.impc_prod_tracker.conf.security.abac.spring.ContextAwarePolicyEnforcement;
@@ -61,6 +63,15 @@ public class PlanServiceImpl implements PlanService
         plans.forEach(planList::add);
         return checkVisibilityForList(planList);
     }
+
+    @Override
+    public Page<Plan> getPaginatedPlans(Pageable pageable)
+    {
+        // TODO: Is the check working?
+        Page<Plan> plans = planRepository.findAll(pageable);
+        return plans.map(this::checkVisibility);
+    }
+
     private List<Plan> checkVisibilityForList(List<Plan> plans)
     {
         return plans.stream()

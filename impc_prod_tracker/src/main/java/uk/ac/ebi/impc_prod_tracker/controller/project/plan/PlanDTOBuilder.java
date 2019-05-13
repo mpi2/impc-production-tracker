@@ -21,13 +21,9 @@ import uk.ac.ebi.impc_prod_tracker.conf.error_management.OperationFailedExceptio
 import uk.ac.ebi.impc_prod_tracker.controller.project.plan.phenotype_plan.PhenotypePlanSummaryDTO;
 import uk.ac.ebi.impc_prod_tracker.controller.project.plan.production_plan.ProductionPlanDTOBuilder;
 import uk.ac.ebi.impc_prod_tracker.controller.project.plan.production_plan.ProductionPlanSummaryDTO;
-import uk.ac.ebi.impc_prod_tracker.controller.project.plan.production_plan.crispr_attempt_details.CrisprAttemptDetailsDTO;
-import uk.ac.ebi.impc_prod_tracker.controller.project.plan.production_plan.f1_colony.F1ColonyDetailsDTO;
-import uk.ac.ebi.impc_prod_tracker.controller.project.plan.production_plan.micro_injection.MicroInjectionDetailsDTO;
 import uk.ac.ebi.impc_prod_tracker.data.experiment.plan.Plan;
 import uk.ac.ebi.impc_prod_tracker.service.plan.PlanService;
 
-import java.time.LocalDateTime;
 
 @Component
 @Data
@@ -36,7 +32,9 @@ public class PlanDTOBuilder
     private PlanService planService;
     private ProductionPlanDTOBuilder productionPlanDTOBuilder;
 
-    public PlanDTOBuilder(PlanService planService, ProductionPlanDTOBuilder productionPlanDTOBuilder)
+    public PlanDTOBuilder(
+        PlanService planService,
+        ProductionPlanDTOBuilder productionPlanDTOBuilder)
     {
         this.planService = planService;
         this.productionPlanDTOBuilder = productionPlanDTOBuilder;
@@ -118,6 +116,4 @@ public class PlanDTOBuilder
         PhenotypePlanSummaryDTO phenotypePlanSummaryDTO = new PhenotypePlanSummaryDTO();
         return phenotypePlanSummaryDTO;
     }
-
-   // private
 }

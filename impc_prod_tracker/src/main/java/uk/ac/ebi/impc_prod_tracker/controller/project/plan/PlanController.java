@@ -15,7 +15,13 @@
  *******************************************************************************/
 package uk.ac.ebi.impc_prod_tracker.controller.project.plan;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PagedResourcesAssembler;
+import org.springframework.hateoas.PagedResources;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -29,9 +35,11 @@ import uk.ac.ebi.impc_prod_tracker.data.experiment.plan.Plan;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
+
 @RestController
 @RequestMapping("/api")
-@CrossOrigin(origins = {"http://localhost:4200"})
+@CrossOrigin(origins="*")
 public class PlanController
 {
     private PlanDTOBuilder planDTOBuilder;
@@ -79,36 +87,28 @@ public class PlanController
     }
 
     @GetMapping(value = {"/planSummaries"})
-    public List<PlanSummaryDTO> getPlanSummaries()
+    public ResponseEntity<PagedResources<PlanSummaryDTO>> getPlanSummariesPaginated(
+        Pageable pageable, PagedResourcesAssembler assembler)
     {
-        List<Plan> plans = projectDTOBuilder.getPlanService().getPlans();
+        Page<Plan> plans = projectDTOBuilder.getPlanService().getPaginatedPlans(pageable);
+        Page<PlanSummaryDTO> planSummaryDTOPage = plans.map(this::convertToPlanSummaryDTO);
+        PagedResources pr =
+            assembler.toResource(
+                planSummaryDTOPage,
+                linkTo(PlanController.class).slash("/planSummaries").withSelfRel());
 
-        List<PlanSummaryDTO> planSummaryDTOS = new ArrayList<>();
-        for (Plan plan : plans)
-        {
-            PlanSummaryDTO planSummaryDTO = new PlanSummaryDTO();
-            PlanDetailsDTO planDetailsDTO = planDTOBuilder.buildPlanDetailsDTOFromPlan(plan);
+        HttpHeaders responseHeaders = new HttpHeaders();
+        responseHeaders.add("Link",createLinkHeader(pr));
 
-            planSummaryDTO.setPlanDetailsDTO(planDetailsDTO);
-            planSummaryDTO.setProjectDetailsDTO(
-                projectDTOBuilder.buildProjectDetailsDTOFromProject(plan.getProject()));
-            planSummaryDTOS.add(planSummaryDTO);
-        }
+        return new ResponseEntity<>(pr,responseHeaders,HttpStatus.OK);
 
-        return planSummaryDTOS;
     }
 
     @GetMapping(value = {"/planSummaries/{pin}"})
     public PlanSummaryDTO getPlanSummary(@PathVariable String pin)
     {
         Plan plan = getNotNullPlanByPin(pin);
-        PlanSummaryDTO planSummaryDTO = new PlanSummaryDTO();
-
-        ProjectDetailsDTO projectDetailsDTO =
-            projectDTOBuilder.buildProjectDetailsDTOFromProject(plan.getProject());
-        PlanDetailsDTO planDetailsDTO = planDTOBuilder.buildPlanDetailsDTOFromPlan(plan);
-        planSummaryDTO.setPlanDetailsDTO(planDetailsDTO);
-        planSummaryDTO.setProjectDetailsDTO(projectDetailsDTO);
+        PlanSummaryDTO planSummaryDTO = convertToPlanSummaryDTO(plan);
 
         return planSummaryDTO;
     }
@@ -122,5 +122,30 @@ public class PlanController
                 String.format("Plan %s does not exist.", pin), HttpStatus.NOT_FOUND);
         }
         return plan;
+    }
+
+
+    private String createLinkHeader(PagedResources<PlanSummaryDTO> pr){
+        final StringBuilder linkHeader = new StringBuilder();
+        linkHeader.append(buildLinkHeader(  pr.getLinks("first").get(0).getHref(),"first"));
+        linkHeader.append(", ");
+        linkHeader.append(buildLinkHeader( pr.getLinks("next").get(0).getHref(),"next"));
+        return linkHeader.toString();
+    }
+
+    public static String buildLinkHeader(final String uri, final String rel) {
+        return "<" + uri + ">; rel=\"" + rel + "\"";
+    }
+
+    private PlanSummaryDTO convertToPlanSummaryDTO(final Plan plan)
+    {
+        PlanSummaryDTO planSummaryDTO = new PlanSummaryDTO();
+
+        PlanDetailsDTO planDetailsDTO = planDTOBuilder.buildPlanDetailsDTOFromPlan(plan);
+
+        planSummaryDTO.setPlanDetailsDTO(planDetailsDTO);
+        planSummaryDTO.setProjectDetailsDTO(
+            projectDTOBuilder.buildProjectDetailsDTOFromProject(plan.getProject()));
+        return planSummaryDTO;
     }
 }
