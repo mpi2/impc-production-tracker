@@ -6,15 +6,12 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import uk.ac.ebi.impc_prod_tracker.data.BaseEntity;
 import uk.ac.ebi.impc_prod_tracker.data.experiment.colony.Colony;
-import uk.ac.ebi.impc_prod_tracker.data.experiment.distribution.distribution_centre.DistributionCentre;
 import uk.ac.ebi.impc_prod_tracker.data.experiment.distribution.distribution_network.DistributionNetwork;
+import uk.ac.ebi.impc_prod_tracker.data.organization.work_unit.WorkUnit;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
-import javax.persistence.SequenceGenerator;
+import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import java.time.LocalDateTime;
 
 @NoArgsConstructor(access= AccessLevel.PRIVATE, force=true)
 @Getter
@@ -27,9 +24,23 @@ public class DistributionProduct extends BaseEntity
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "distributionProductSeq")
     private Long id;
 
-    @ManyToOne
-    private DistributionCentre distributionCentre;
+    private LocalDateTime start_date;
 
+    private LocalDateTime end_date;
+
+    @Column(name="reconciled", columnDefinition="varchar(255) default 'not checked'", nullable = false)
+    private String reconciled;
+
+    private LocalDateTime reconciled_at;
+
+    @Column(name="available", columnDefinition="Boolean default false", nullable = false)
+    private Boolean available;
+
+    @NotNull
+    @ManyToOne
+    private WorkUnit distributionCentre;
+
+    @NotNull
     @ManyToOne
     private ProductType productType;
 

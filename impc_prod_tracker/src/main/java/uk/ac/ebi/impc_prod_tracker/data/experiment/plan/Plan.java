@@ -64,6 +64,7 @@ public class Plan extends BaseEntity implements Resource<Plan>
     @ManyToOne(targetEntity= PlanType.class)
     private PlanType planType;
 
+    @NotNull
     @ManyToOne(targetEntity= Privacy.class)
     private Privacy privacy;
 
@@ -100,6 +101,7 @@ public class Plan extends BaseEntity implements Resource<Plan>
         inverseJoinColumns = @JoinColumn(name = "protocol_id"))
     private Set<Protocol> protocols;
 
+    @NotNull
     @ManyToOne(targetEntity= Status.class)
     private Status status;
 
@@ -107,6 +109,7 @@ public class Plan extends BaseEntity implements Resource<Plan>
     private Set<PlanReagent> planReagents;
 
     @Override
+    @JsonIgnore
     public ResourcePrivacy getResourcePrivacy()
     {
         ResourcePrivacy resourcePrivacy;

@@ -14,6 +14,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
+import javax.validation.constraints.NotNull;
 
 @NoArgsConstructor(access= AccessLevel.PRIVATE, force=true)
 @Getter
@@ -26,6 +27,7 @@ public class Outcome extends BaseEntity
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "outcomeSeq")
     private Long id;
 
+    @NotNull
     private String tpo;
 
     @ManyToOne
