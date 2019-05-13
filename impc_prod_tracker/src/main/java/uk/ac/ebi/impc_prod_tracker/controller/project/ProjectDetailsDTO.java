@@ -19,8 +19,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
-
 import java.util.List;
+import java.util.Map;
 
 @Data
 @RequiredArgsConstructor
@@ -34,5 +34,5 @@ public class ProjectDetailsDTO
     private String priorityName;
     private List<String> locations;
     private List<String> alleleIntentions;
-    private List<String> markerSymbols;
+    private Map<String, String> markerSymbols;
 }

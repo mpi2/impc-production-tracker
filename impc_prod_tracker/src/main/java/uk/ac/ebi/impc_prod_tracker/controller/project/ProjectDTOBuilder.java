@@ -25,7 +25,9 @@ import uk.ac.ebi.impc_prod_tracker.data.experiment.plan.Plan;
 import uk.ac.ebi.impc_prod_tracker.data.experiment.project.Project;
 import uk.ac.ebi.impc_prod_tracker.service.plan.PlanService;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 
@@ -35,6 +37,7 @@ public class ProjectDTOBuilder
 {
     private PlanService planService;
     private PlanDTOBuilder planDTOBuilder;
+    private static final String MGI_URL = "http://www.informatics.jax.org/marker/";
 
     public ProjectDTOBuilder(
         PlanService planService, PlanDTOBuilder planDTOBuilder)
@@ -97,14 +100,17 @@ public class ProjectDTOBuilder
     {
         Set<IntendedMouseGene> intendedMouseGenes = project.getIntendedMouseGenes();
         List<String> markerSymbolNames = new ArrayList<>();
+        Map<String, String> symbolNamesAndLinks =  new HashMap<>();
         if (intendedMouseGenes != null)
         {
             for (IntendedMouseGene intendedMouseGene : intendedMouseGenes)
             {
                 markerSymbolNames.add(intendedMouseGene.getSymbol());
+                symbolNamesAndLinks.put(
+                    intendedMouseGene.getSymbol(), MGI_URL + intendedMouseGene.getMgiId());
             }
         }
-        projectDetailsDTO.setMarkerSymbols(markerSymbolNames);
+        projectDetailsDTO.setMarkerSymbols(symbolNamesAndLinks);
     }
 
     private void addIntentions(ProjectDetailsDTO projectDetailsDTO, final Project project)
