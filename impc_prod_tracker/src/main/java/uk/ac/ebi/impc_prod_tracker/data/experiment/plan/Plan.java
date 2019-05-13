@@ -15,6 +15,7 @@
  *******************************************************************************/
 package uk.ac.ebi.impc_prod_tracker.data.experiment.plan;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -127,6 +128,7 @@ public class Plan extends BaseEntity implements Resource<Plan>
     }
 
     @Override
+    @JsonIgnore
     public Plan getRestrictedObject()
     {
         Plan plan = new Plan();

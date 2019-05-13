@@ -15,16 +15,12 @@
  *******************************************************************************/
 package uk.ac.ebi.impc_prod_tracker.data.experiment.plan;
 
-import org.springframework.data.repository.CrudRepository;
-import org.springframework.security.access.prepost.PostFilter;
-import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.data.repository.PagingAndSortingRepository;
 import uk.ac.ebi.impc_prod_tracker.data.experiment.project.Project;
 
-public interface PlanRepository extends CrudRepository<Plan, Long> {
+public interface PlanRepository extends PagingAndSortingRepository<Plan, Long>
+{
 
-    //@Override
-    //@PreAuthorize("hasPermission(null, 'READ_PLAN')")
-    //@PostFilter("hasPermission(filterObject, 'FILTER_PLAN')")
     Iterable<Plan> findAll();
 
     Iterable<Plan> findAllByProject(Project project);

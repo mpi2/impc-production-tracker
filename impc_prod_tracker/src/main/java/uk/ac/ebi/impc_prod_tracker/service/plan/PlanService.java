@@ -15,6 +15,9 @@
  *******************************************************************************/
 package uk.ac.ebi.impc_prod_tracker.service.plan;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import uk.ac.ebi.impc_prod_tracker.data.experiment.plan.Plan;
 import uk.ac.ebi.impc_prod_tracker.data.experiment.project.Project;
 import java.util.List;
@@ -26,4 +29,6 @@ public interface PlanService
     Plan getPlanByPin(String pin);
 
     List<Plan> getPlans();
+
+    Page<Plan> getPaginatedPlans(Pageable pageable);
 }
