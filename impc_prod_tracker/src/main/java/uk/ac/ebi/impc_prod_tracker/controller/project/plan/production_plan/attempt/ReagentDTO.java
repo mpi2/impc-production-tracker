@@ -13,27 +13,15 @@
  * language governing permissions and limitations under the
  * License.
  *******************************************************************************/
-package uk.ac.ebi.impc_prod_tracker.controller.project.plan;
+package uk.ac.ebi.impc_prod_tracker.controller.project.plan.production_plan.attempt;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.RequiredArgsConstructor;
-import uk.ac.ebi.impc_prod_tracker.controller.project.plan.phenotype_plan.PhenotypePlanSummaryDTO;
-import uk.ac.ebi.impc_prod_tracker.controller.project.plan.production_plan.ProductionPlanDTO;
 
 @Data
-@RequiredArgsConstructor
-public class PlanDTO
+@AllArgsConstructor
+public class ReagentDTO
 {
-    @JsonProperty("planDetails")
-    private PlanDetailsDTO planDetailsDTO;
-
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    @JsonProperty("productionPlan")
-    private ProductionPlanDTO productionPlanDTO;
-
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    @JsonProperty("phenotypePlanSummary")
-    private PhenotypePlanSummaryDTO phenotypePlanSummaryDTO;
+    private String name;
+    private Integer concentration;
 }

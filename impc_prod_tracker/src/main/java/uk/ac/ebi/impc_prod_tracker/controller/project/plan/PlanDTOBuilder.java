@@ -20,7 +20,7 @@ import org.springframework.stereotype.Component;
 import uk.ac.ebi.impc_prod_tracker.conf.error_management.OperationFailedException;
 import uk.ac.ebi.impc_prod_tracker.controller.project.plan.phenotype_plan.PhenotypePlanSummaryDTO;
 import uk.ac.ebi.impc_prod_tracker.controller.project.plan.production_plan.ProductionPlanDTOBuilder;
-import uk.ac.ebi.impc_prod_tracker.controller.project.plan.production_plan.ProductionPlanSummaryDTO;
+import uk.ac.ebi.impc_prod_tracker.controller.project.plan.production_plan.ProductionPlanDTO;
 import uk.ac.ebi.impc_prod_tracker.data.experiment.plan.Plan;
 import uk.ac.ebi.impc_prod_tracker.service.plan.PlanService;
 
@@ -59,10 +59,10 @@ public class PlanDTOBuilder
 
         if ("production".equals(plan.getPlanType().getName().toLowerCase()))
         {
-            ProductionPlanSummaryDTO productionPlanSummaryDTO =
-                buildProductionPlanSummaryDTOFromPlan(plan);
+            ProductionPlanDTO productionPlanDTO =
+                buildProductionPlanDTOFromPlan(plan);
 
-            planDTO.setProductionPlanSummaryDTO(productionPlanSummaryDTO);
+            planDTO.setProductionPlanDTO(productionPlanDTO);
         }
         else
         {
@@ -104,11 +104,11 @@ public class PlanDTOBuilder
         return planDetailsDTO;
     }
 
-    private ProductionPlanSummaryDTO buildProductionPlanSummaryDTOFromPlan(final Plan plan)
+    private ProductionPlanDTO buildProductionPlanDTOFromPlan(final Plan plan)
     {
-        ProductionPlanSummaryDTO productionPlanSummaryDTO =
-            productionPlanDTOBuilder.buildProductionPlanSummaryDTOFromPlan(plan);
-        return productionPlanSummaryDTO;
+        ProductionPlanDTO productionPlanDTO =
+            productionPlanDTOBuilder.buildProductionPlanDTOFromPlan(plan);
+        return productionPlanDTO;
     }
 
     private PhenotypePlanSummaryDTO buildPhenotypePlanSummaryDTOFromPlan(final Plan plan)

@@ -13,19 +13,16 @@
  * language governing permissions and limitations under the
  * License.
  *******************************************************************************/
-package uk.ac.ebi.impc_prod_tracker.controller.project.plan.production_plan.f1_colony;
+package uk.ac.ebi.impc_prod_tracker.controller.project.plan.production_plan.attempt;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.RequiredArgsConstructor;
 
 @Data
-@RequiredArgsConstructor
-public class F1ColonyDetailsDTO
+@AllArgsConstructor
+public class NucleaseDTO
 {
-    private String colonyName;
-    private String alleleOutput;
-    private String alleleName;
-    private String colonyBackgroundStrain;
-    private String distributionCentres;
-
+    private String type;
+    private String typeClass;
+    private Double concentration;
 }
