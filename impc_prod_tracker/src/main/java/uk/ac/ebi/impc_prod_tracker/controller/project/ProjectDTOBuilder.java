@@ -37,7 +37,7 @@ public class ProjectDTOBuilder
 {
     private PlanService planService;
     private PlanDTOBuilder planDTOBuilder;
-    private static final String MGI_URL = "http://www.informatics.jax.org/marker/";
+    private static final String MGI_URL = "http://www.mousephenotype.org/data/genes/";
 
     public ProjectDTOBuilder(
         PlanService planService, PlanDTOBuilder planDTOBuilder)

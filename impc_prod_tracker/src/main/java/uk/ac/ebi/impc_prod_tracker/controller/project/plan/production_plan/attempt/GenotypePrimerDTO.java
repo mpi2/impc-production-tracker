@@ -13,23 +13,20 @@
  * language governing permissions and limitations under the
  * License.
  *******************************************************************************/
-package uk.ac.ebi.impc_prod_tracker.controller.project.plan.production_plan;
+package uk.ac.ebi.impc_prod_tracker.controller.project.plan.production_plan.attempt;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
-import uk.ac.ebi.impc_prod_tracker.controller.project.plan.production_plan.crispr_attempt_details.CrisprAttemptDetailsDTO;
-import uk.ac.ebi.impc_prod_tracker.controller.project.plan.production_plan.f1_colony.F1ColonyDetailsDTO;
-import uk.ac.ebi.impc_prod_tracker.controller.project.plan.production_plan.micro_injection.MicroInjectionDetailsDTO;
 
 @Data
 @RequiredArgsConstructor
-public class ProductionPlanSummaryDTO
+@AllArgsConstructor
+public class GenotypePrimerDTO
 {
-    @JsonProperty("microInjectionDetails")
-    private MicroInjectionDetailsDTO microInjectionDetailsDTO;
-    @JsonProperty("f1ColonyDetails")
-    private F1ColonyDetailsDTO f1ColonyDetailsDTO;
-    @JsonProperty("crisprAttemptDetails")
-    private CrisprAttemptDetailsDTO crisprAttemptDetailsDTO;
+    private String sequence;
+    private String name;
+    private String chromosome;
+    private Integer startCoordinate;
+    private Integer endCoordinate;
 }

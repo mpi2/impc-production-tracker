@@ -127,9 +127,15 @@ public class PlanController
 
     private String createLinkHeader(PagedResources<PlanSummaryDTO> pr){
         final StringBuilder linkHeader = new StringBuilder();
-        linkHeader.append(buildLinkHeader(  pr.getLinks("first").get(0).getHref(),"first"));
-        linkHeader.append(", ");
-        linkHeader.append(buildLinkHeader( pr.getLinks("next").get(0).getHref(),"next"));
+        if (!pr.getLinks("first").isEmpty())
+        {
+            linkHeader.append(buildLinkHeader( pr.getLinks("first").get(0).getHref(),"first"));
+            linkHeader.append(", ");
+        }
+        if (!pr.getLinks("next").isEmpty())
+        {
+            linkHeader.append(buildLinkHeader(pr.getLinks("next").get(0).getHref(),"next"));
+        }
         return linkHeader.toString();
     }
 
