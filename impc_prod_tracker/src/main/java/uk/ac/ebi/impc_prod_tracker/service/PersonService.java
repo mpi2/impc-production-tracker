@@ -73,6 +73,17 @@ public class PersonService
         this.restTemplate = restTemplate;
     }
 
+    public Person getPersonByUserName(String userName)
+    {
+        // UserName is the same as email.
+        Person person = personRepository.findPersonByEmail(userName);
+        if (person == null)
+        {
+            throw new OperationFailedException(String.format( "User %s does not exist", userName));
+        }
+        return person;
+    }
+
     /**
      *
      * @param userRegisterRequest Information with the user to be created.
