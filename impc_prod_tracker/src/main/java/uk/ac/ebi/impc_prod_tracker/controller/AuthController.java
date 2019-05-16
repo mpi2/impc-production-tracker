@@ -65,10 +65,12 @@ public class AuthController
         {
             String username = authenticationRequest.getUsername();
             String token = authService.getAuthenticationToken(authenticationRequest);
+            String roleName = personService.getPersonByUserName(username).getRole().getName();
 
             Map<Object, Object> model = new HashMap<>();
             model.put("username", username);
             model.put("access_token", token);
+            model.put("role", roleName);
 
             return ok(model);
         }
