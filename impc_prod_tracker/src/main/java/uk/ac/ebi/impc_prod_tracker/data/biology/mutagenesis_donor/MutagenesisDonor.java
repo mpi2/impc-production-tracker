@@ -6,7 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import uk.ac.ebi.impc_prod_tracker.data.BaseEntity;
 import uk.ac.ebi.impc_prod_tracker.data.biology.attempt.crispr_attempt.CrisprAttempt;
-
+import uk.ac.ebi.impc_prod_tracker.data.biology.preparation_type.PreparationType;
 import javax.persistence.*;
 
 @NoArgsConstructor(access= AccessLevel.PRIVATE, force=true)
@@ -25,7 +25,8 @@ public class MutagenesisDonor extends BaseEntity
 
     private Double concentration;
 
-    private String preparation;
+    @ManyToOne
+    private PreparationType preparationType;
 
     @Column(columnDefinition = "TEXT")
     private String oligoSequenceFasta;
