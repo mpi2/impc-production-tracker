@@ -65,8 +65,13 @@ public class JwtTokenProvider
         {
             throw new OperationFailedException(NULL_EMPTY_TOKEN_MESSAGE);
         }
-        SystemSubject systemSubject = aapSystemSubject.buildSystemSubjectByClaims(getClaims(token));
+        SystemSubject systemSubject = getSystemSubject(token);
         return new UsernamePasswordAuthenticationToken(systemSubject, "", null);
+    }
+
+    public SystemSubject getSystemSubject(String token)
+    {
+        return aapSystemSubject.buildSystemSubjectByClaims(getClaims(token));
     }
 
     Claims getClaims(String token)

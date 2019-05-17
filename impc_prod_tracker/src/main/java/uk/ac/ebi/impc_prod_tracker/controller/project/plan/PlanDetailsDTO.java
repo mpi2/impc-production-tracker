@@ -15,7 +15,6 @@
  *******************************************************************************/
 package uk.ac.ebi.impc_prod_tracker.controller.project.plan;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
@@ -24,7 +23,6 @@ import lombok.RequiredArgsConstructor;
 @Data
 @RequiredArgsConstructor
 @NoArgsConstructor
-@JsonInclude(JsonInclude.Include.NON_NULL)
 public class PlanDetailsDTO
 {
     @NonNull private String pin;
@@ -33,6 +31,5 @@ public class PlanDetailsDTO
     private String consortiumName;
     private String workUnitName;
     private String statusName;
-    //TODO private String assignmentName;
-    //TODO private String alleleIntentionName;
+    private String comments;
 }

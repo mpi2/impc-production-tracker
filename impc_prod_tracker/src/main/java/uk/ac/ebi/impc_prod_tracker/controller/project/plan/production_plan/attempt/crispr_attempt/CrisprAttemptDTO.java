@@ -16,14 +16,16 @@
 package uk.ac.ebi.impc_prod_tracker.controller.project.plan.production_plan.attempt.crispr_attempt;
 
 import lombok.Data;
+import org.springframework.hateoas.RepresentationModel;
 import uk.ac.ebi.impc_prod_tracker.controller.project.plan.production_plan.attempt.GenotypePrimerDTO;
+import uk.ac.ebi.impc_prod_tracker.controller.project.plan.production_plan.attempt.MutagenesisDonorDTO;
 import uk.ac.ebi.impc_prod_tracker.controller.project.plan.production_plan.attempt.NucleaseDTO;
 import uk.ac.ebi.impc_prod_tracker.controller.project.plan.production_plan.attempt.ReagentDTO;
 import java.time.LocalDateTime;
 import java.util.List;
 
 @Data
-public class CrisprAttemptDTO
+public class CrisprAttemptDTO extends RepresentationModel
 {
     private LocalDateTime miDate;
     private String miExternalRef;
@@ -54,6 +56,7 @@ public class CrisprAttemptDTO
     private List<NucleaseDTO> nucleases;
     private List<ReagentDTO> reagents;
     private List<GenotypePrimerDTO> primers;
+    private List<MutagenesisDonorDTO> mutagenesisDonors;
     private Integer embryoSurvived2Cell;
     private String comment;
 }

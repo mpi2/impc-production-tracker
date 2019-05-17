@@ -25,7 +25,9 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 import uk.ac.ebi.impc_prod_tracker.conf.error_management.OperationFailedException;
+import uk.ac.ebi.impc_prod_tracker.conf.security.SystemSubject;
 import uk.ac.ebi.impc_prod_tracker.conf.security.constants.PersonManagementConstants;
+import uk.ac.ebi.impc_prod_tracker.conf.security.jwt.JwtTokenProvider;
 import uk.ac.ebi.impc_prod_tracker.data.organization.institute.Institute;
 import uk.ac.ebi.impc_prod_tracker.data.organization.institute.InstituteRepository;
 import uk.ac.ebi.impc_prod_tracker.data.organization.person.Person;
@@ -48,6 +50,7 @@ public class PersonService
     private WorkUnitRepository workUnitRepository;
     private InstituteRepository instituteRepository;
     private RestTemplate restTemplate;
+    private JwtTokenProvider jwtTokenProvider;
 
     static final String PERSON_ALREADY_EXISTS_ERROR =
         "The user with email [%s] already exists in the system.";
@@ -64,24 +67,25 @@ public class PersonService
         RoleRepository roleRepository,
         WorkUnitRepository workUnitRepository,
         InstituteRepository instituteRepository,
-        RestTemplate restTemplate)
+        RestTemplate restTemplate, JwtTokenProvider jwtTokenProvider)
     {
         this.personRepository = personRepository;
         this.roleRepository = roleRepository;
         this.workUnitRepository = workUnitRepository;
         this.instituteRepository = instituteRepository;
         this.restTemplate = restTemplate;
+        this.jwtTokenProvider = jwtTokenProvider;
     }
 
-    public Person getPersonByUserName(String userName)
+    public SystemSubject getPersonByToken(String token)
     {
         // UserName is the same as email.
-        Person person = personRepository.findPersonByEmail(userName);
-        if (person == null)
+        SystemSubject systemSubject = jwtTokenProvider.getSystemSubject(token);
+        if (systemSubject == null)
         {
-            throw new OperationFailedException(String.format( "User %s does not exist", userName));
+            throw new OperationFailedException("User does not exist");
         }
-        return person;
+        return systemSubject;
     }
 
     /**

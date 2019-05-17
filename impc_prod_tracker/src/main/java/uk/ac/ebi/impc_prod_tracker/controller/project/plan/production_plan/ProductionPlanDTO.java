@@ -17,11 +17,12 @@ package uk.ac.ebi.impc_prod_tracker.controller.project.plan.production_plan;
 
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
+import org.springframework.hateoas.RepresentationModel;
 import uk.ac.ebi.impc_prod_tracker.controller.project.plan.production_plan.attempt.AttemptDTO;
 
 @Data
 @RequiredArgsConstructor
-public class ProductionPlanDTO
+public class ProductionPlanDTO extends RepresentationModel
 {
     private AttemptDTO attempt;
 }

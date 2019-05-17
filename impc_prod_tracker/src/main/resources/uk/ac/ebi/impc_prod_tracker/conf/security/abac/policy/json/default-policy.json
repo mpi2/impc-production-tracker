@@ -28,5 +28,11 @@
     "description": "Permission to read plans in same work unit",
     "target": "action == 'READ_PLAN' AND resource.resourcePrivacy.name() == 'RESTRICTED'",
     "condition": "subject.workUnit.id == resource.workUnit.id"
+  },
+  {
+    "name": "Admin can delete resources",
+    "description": "Permission to delete any resource for admins",
+    "target": "action == 'DELETE_RESOURCE'",
+    "condition": "subject.role.name == 'admin'"
   }
 ]

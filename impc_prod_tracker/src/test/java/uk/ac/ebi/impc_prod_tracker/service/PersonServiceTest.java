@@ -15,6 +15,7 @@ import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 import uk.ac.ebi.impc_prod_tracker.conf.error_management.OperationFailedException;
 import uk.ac.ebi.impc_prod_tracker.conf.security.constants.PersonManagementConstants;
+import uk.ac.ebi.impc_prod_tracker.conf.security.jwt.JwtTokenProvider;
 import uk.ac.ebi.impc_prod_tracker.data.organization.institute.Institute;
 import uk.ac.ebi.impc_prod_tracker.data.organization.institute.InstituteRepository;
 import uk.ac.ebi.impc_prod_tracker.data.organization.person.Person;
@@ -47,6 +48,8 @@ public class PersonServiceTest
     private InstituteRepository instituteRepository;
     @Mock
     private RestTemplate restTemplate;
+    @Mock
+    private JwtTokenProvider jwtTokenProvider;
 
     @Rule
     public ExpectedException exceptionRule = ExpectedException.none();
@@ -77,7 +80,7 @@ public class PersonServiceTest
             roleRepository,
             workUnitRepository,
             instituteRepository,
-            restTemplate);
+            restTemplate, jwtTokenProvider);
 
         userRegisterRequest =
             new UserRegisterRequest(
