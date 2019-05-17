@@ -21,6 +21,7 @@ import uk.ac.ebi.impc_prod_tracker.conf.error_management.OperationFailedExceptio
 import uk.ac.ebi.impc_prod_tracker.controller.project.plan.phenotype_plan.PhenotypePlanSummaryDTO;
 import uk.ac.ebi.impc_prod_tracker.controller.project.plan.production_plan.ProductionPlanDTOBuilder;
 import uk.ac.ebi.impc_prod_tracker.controller.project.plan.production_plan.ProductionPlanDTO;
+import uk.ac.ebi.impc_prod_tracker.controller.project.plan.production_plan.ProductionPlanDTOLinkManager;
 import uk.ac.ebi.impc_prod_tracker.data.experiment.plan.Plan;
 import uk.ac.ebi.impc_prod_tracker.service.plan.PlanService;
 
@@ -100,6 +101,7 @@ public class PlanDTOBuilder
         {
             planDetailsDTO.setConsortiumName(plan.getConsortium().getName());
         }
+        planDetailsDTO.setComments(plan.getComment());
 
         return planDetailsDTO;
     }

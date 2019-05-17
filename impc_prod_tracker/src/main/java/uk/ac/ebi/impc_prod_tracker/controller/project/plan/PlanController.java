@@ -18,7 +18,7 @@ package uk.ac.ebi.impc_prod_tracker.controller.project.plan;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PagedResourcesAssembler;
-import org.springframework.hateoas.PagedResources;
+import org.springframework.hateoas.PagedModel;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -35,7 +35,7 @@ import uk.ac.ebi.impc_prod_tracker.data.experiment.plan.Plan;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 
 @RestController
 @RequestMapping("/api")
@@ -87,13 +87,14 @@ public class PlanController
     }
 
     @GetMapping(value = {"/planSummaries"})
-    public ResponseEntity<PagedResources<PlanSummaryDTO>> getPlanSummariesPaginated(
+    public ResponseEntity<PagedModel<PlanSummaryDTO>> getPlanSummariesPaginated(
         Pageable pageable, PagedResourcesAssembler assembler)
     {
         Page<Plan> plans = projectDTOBuilder.getPlanService().getPaginatedPlans(pageable);
         Page<PlanSummaryDTO> planSummaryDTOPage = plans.map(this::convertToPlanSummaryDTO);
-        PagedResources pr =
-            assembler.toResource(
+
+        PagedModel pr =
+            assembler.toModel(
                 planSummaryDTOPage,
                 linkTo(PlanController.class).slash("/planSummaries").withSelfRel());
 
@@ -125,7 +126,7 @@ public class PlanController
     }
 
 
-    private String createLinkHeader(PagedResources<PlanSummaryDTO> pr){
+    private String createLinkHeader(PagedModel<PlanSummaryDTO> pr){
         final StringBuilder linkHeader = new StringBuilder();
         if (!pr.getLinks("first").isEmpty())
         {
