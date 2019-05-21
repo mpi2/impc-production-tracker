@@ -16,7 +16,6 @@ import java.io.Serializable;
 @Getter
 @Setter
 @Entity
-@IdClass(OutcomeLocation.class)
 public class OutcomeLocation extends BaseEntity implements Serializable
 {
 
