@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import uk.ac.ebi.impc_prod_tracker.data.BaseEntity;
+import uk.ac.ebi.impc_prod_tracker.data.biology.tracked_strain.TrackedStrain;
 import uk.ac.ebi.impc_prod_tracker.data.experiment.colony.Colony;
 import uk.ac.ebi.impc_prod_tracker.data.experiment.plan.Plan;
 import javax.persistence.Column;
@@ -29,8 +30,10 @@ public class PhenotypingProduction extends BaseEntity
     @MapsId
     private Plan plan;
 
+    private String phenotypingColonyName;
+
     @ManyToOne
-    private Colony colony;
+    private TrackedStrain phenotypingColonyStrain;
 
     private LocalDateTime phenotypingExperimentsStarted;
 
