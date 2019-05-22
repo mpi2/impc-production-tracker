@@ -15,6 +15,8 @@
  *******************************************************************************/
 package uk.ac.ebi.impc_prod_tracker.controller.project;
 
+import org.springframework.hateoas.CollectionModel;
+import org.springframework.hateoas.EntityModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -24,13 +26,12 @@ import org.springframework.web.bind.annotation.RestController;
 import uk.ac.ebi.impc_prod_tracker.conf.error_management.OperationFailedException;
 import uk.ac.ebi.impc_prod_tracker.controller.project.plan.PlanDTO;
 import uk.ac.ebi.impc_prod_tracker.controller.project.plan.PlanDTOBuilder;
+import uk.ac.ebi.impc_prod_tracker.controller.project.plan.PlanDTOLinkManager;
 import uk.ac.ebi.impc_prod_tracker.data.experiment.plan.Plan;
 import uk.ac.ebi.impc_prod_tracker.data.experiment.project.Project;
 import uk.ac.ebi.impc_prod_tracker.service.plan.PlanService;
 import uk.ac.ebi.impc_prod_tracker.service.project.ProjectService;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 @RestController
@@ -42,35 +43,41 @@ public class ProjectController
     private PlanService planService;
     private PlanDTOBuilder planDTOBuilder;
     private ProjectDTOBuilder projectDTOBuilder;
+    private ProjectDTOLinkManager projectDTOLinkManager;
+    private PlanDTOLinkManager planDTOLinkManager;
 
     ProjectController(
         ProjectService projectService,
         ProjectDTOBuilder projectDTOBuilder,
         PlanDTOBuilder planDTOBuilder,
-        PlanService planService)
+        PlanService planService,
+        ProjectDTOLinkManager projectDTOLinkManager,
+        PlanDTOLinkManager planDTOLinkManager)
     {
         this.projectService = projectService;
         this.projectDTOBuilder = projectDTOBuilder;
         this.planDTOBuilder = planDTOBuilder;
         this.planService = planService;
+        this.projectDTOLinkManager = projectDTOLinkManager;
+        this.planDTOLinkManager = planDTOLinkManager;
     }
 
     @GetMapping(value = {"/projects"})
-    public Map<String, List<ProjectDTO>> getPlansMap()
+    public CollectionModel<ProjectDTO> getPlansMapNew()
     {
         List<Project> projects = projectService.getProjects();
 
         List<ProjectDTO> projectDTOList = projects.stream()
-            .map(project -> projectDTOBuilder.buildProjectDTOFromProject(project))
+            .map(
+                project -> projectDTOLinkManager.addLinks(
+                    projectDTOBuilder.buildProjectDTOFromProject(project)))
             .collect(Collectors.toList());
-        Map<String, List<ProjectDTO>> map = new HashMap<>();
-        map.put("projects", projectDTOList);
 
-        return map;
+        return new CollectionModel<>(projectDTOList);
     }
 
     @GetMapping(value = {"/projects/{tpn}"})
-    public ProjectDTO getProjects(@PathVariable String tpn)
+    public EntityModel<ProjectDTO> getProjectsY(@PathVariable String tpn)
     {
         Project project = projectService.getProjectByTpn(tpn);
         if (project == null)
@@ -78,11 +85,14 @@ public class ProjectController
             throw new OperationFailedException(
                 String.format("The project %s does not exist", tpn));
         }
-        return projectDTOBuilder.buildProjectDTOFromProject(project);
+        ProjectDTO projectDTO = projectDTOBuilder.buildProjectDTOFromProject(project);
+        projectDTOLinkManager.addLinks(projectDTO);
+
+        return new EntityModel<>(projectDTO);
     }
 
     @GetMapping(value = {"/projects/{tpn}/plans/{pin}"})
-    public ProjectPlanDTO getProjectPlan(@PathVariable String tpn, @PathVariable String pin)
+    public EntityModel<ProjectPlanDTO> getProjectPlan(@PathVariable String tpn, @PathVariable String pin)
     {
         Project project = projectService.getProjectByTpn(tpn);
         if (project == null)
@@ -107,9 +117,11 @@ public class ProjectController
                 HttpStatus.NOT_FOUND);
         }
 
+        planDTOLinkManager.addLinks(planDTO);
+
         ProjectPlanDTO projectPlanDTO = new ProjectPlanDTO();
         projectPlanDTO.setProjectDetailsDTO(projectDTOBuilder.buildProjectDetailsDTOFromProject(project));
         projectPlanDTO.setPlanDTO(planDTO);
-        return projectPlanDTO;
+        return new EntityModel<>(projectPlanDTO);
     }
 }

@@ -17,6 +17,7 @@ package uk.ac.ebi.impc_prod_tracker.controller.project.plan.production_plan.atte
 
 import org.springframework.stereotype.Component;
 import uk.ac.ebi.impc_prod_tracker.controller.project.plan.production_plan.attempt.GenotypePrimerDTO;
+import uk.ac.ebi.impc_prod_tracker.controller.project.plan.production_plan.attempt.MutagenesisDonorDTO;
 import uk.ac.ebi.impc_prod_tracker.controller.project.plan.production_plan.attempt.NucleaseDTO;
 import uk.ac.ebi.impc_prod_tracker.controller.project.plan.production_plan.attempt.ReagentDTO;
 import uk.ac.ebi.impc_prod_tracker.data.biology.attempt.crispr_attempt.CrisprAttempt;
@@ -25,7 +26,10 @@ import uk.ac.ebi.impc_prod_tracker.data.biology.attempt.crispr_attempt.nuclease.
 import uk.ac.ebi.impc_prod_tracker.data.biology.attempt.crispr_attempt.nuclease.NucleaseRepository;
 import uk.ac.ebi.impc_prod_tracker.data.biology.genotype_primer.GenotypePrimer;
 import uk.ac.ebi.impc_prod_tracker.data.biology.genotype_primer.GenotypePrimerRepository;
+import uk.ac.ebi.impc_prod_tracker.data.biology.mutagenesis_donor.MutagenesisDonor;
+import uk.ac.ebi.impc_prod_tracker.data.biology.mutagenesis_donor.MutagenesisDonorRepository;
 import uk.ac.ebi.impc_prod_tracker.data.biology.plan_reagent.PlanReagent;
+import uk.ac.ebi.impc_prod_tracker.data.biology.preparation_type.PreparationType;
 import uk.ac.ebi.impc_prod_tracker.data.experiment.assay_type.AssayType;
 import uk.ac.ebi.impc_prod_tracker.data.experiment.delivery_type.DeliveryType;
 import uk.ac.ebi.impc_prod_tracker.data.experiment.plan.Plan;
@@ -39,16 +43,20 @@ public class CrisprAttemptDTOBuilder
     private CrisprAttemptRepository crisprAttemptRepository;
     private GenotypePrimerRepository genotypePrimerRepository;
     private NucleaseRepository nucleaseRepository;
+    private MutagenesisDonorRepository mutagenesisDonorRepository;
+
     private static final String ELECTROPORATION_METHOD = "Electroporation";
 
     public CrisprAttemptDTOBuilder(
         CrisprAttemptRepository crisprAttemptRepository,
         GenotypePrimerRepository genotypePrimerRepository,
-        NucleaseRepository nucleaseRepository)
+        NucleaseRepository nucleaseRepository,
+        MutagenesisDonorRepository mutagenesisDonorRepository)
     {
         this.crisprAttemptRepository = crisprAttemptRepository;
         this.genotypePrimerRepository = genotypePrimerRepository;
         this.nucleaseRepository = nucleaseRepository;
+        this.mutagenesisDonorRepository = mutagenesisDonorRepository;
     }
 
     public CrisprAttemptDTO buildFromPlan(final Plan plan)
@@ -96,6 +104,7 @@ public class CrisprAttemptDTOBuilder
             setReagentNames(crisprAttemptDTO, plan);
             setPrimers(crisprAttemptDTO, crisprAttempt);
             setNucleases(crisprAttemptDTO, crisprAttempt);
+            setMutagenesisDonors(crisprAttemptDTO, crisprAttempt);
         }
         return crisprAttemptDTO;
     }
@@ -166,5 +175,27 @@ public class CrisprAttemptDTOBuilder
                     p.getConcentration()));
         });
         crisprAttemptDTO.setNucleases(nucleaseList);
+    }
+
+    private void setMutagenesisDonors(
+        CrisprAttemptDTO crisprAttemptDTO, final CrisprAttempt crisprAttempt)
+    {
+        List<MutagenesisDonorDTO> mutagenesisDonorDTOS = new ArrayList<>();
+        Iterable<MutagenesisDonor> mutagenesisDonors =
+            mutagenesisDonorRepository.findAllByCrisprAttempt(crisprAttempt);
+        mutagenesisDonors.forEach(p ->
+            {
+                String preparationTypeName = null;
+                PreparationType preparationType = p.getPreparationType();
+                if (preparationType != null)
+                {
+                    preparationTypeName = preparationType.getName();
+                }
+                MutagenesisDonorDTO mutagenesisDonorDTO = new MutagenesisDonorDTO(
+                    p.getId(), p.getConcentration(), preparationTypeName, p.getOligoSequenceFasta());
+                mutagenesisDonorDTOS.add(mutagenesisDonorDTO);
+            }
+        );
+        crisprAttemptDTO.setMutagenesisDonors(mutagenesisDonorDTOS);
     }
 }

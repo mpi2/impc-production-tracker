@@ -21,6 +21,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
+import org.springframework.hateoas.RepresentationModel;
 import uk.ac.ebi.impc_prod_tracker.controller.project.plan.PlanDTO;
 import java.util.List;
 
@@ -28,7 +29,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @NoArgsConstructor
 @JsonPropertyOrder({ "projectDetailsDTO", "plans" })
-public class ProjectDTO
+public class ProjectDTO extends RepresentationModel
 {
     @NonNull
     @JsonProperty("projectDetails")

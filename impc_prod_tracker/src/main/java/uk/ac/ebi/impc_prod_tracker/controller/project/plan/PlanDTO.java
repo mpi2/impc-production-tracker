@@ -19,12 +19,13 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
+import org.springframework.hateoas.RepresentationModel;
 import uk.ac.ebi.impc_prod_tracker.controller.project.plan.phenotype_plan.PhenotypePlanSummaryDTO;
 import uk.ac.ebi.impc_prod_tracker.controller.project.plan.production_plan.ProductionPlanDTO;
 
 @Data
 @RequiredArgsConstructor
-public class PlanDTO
+public class PlanDTO extends RepresentationModel
 {
     @JsonProperty("planDetails")
     private PlanDetailsDTO planDetailsDTO;

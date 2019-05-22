@@ -19,13 +19,15 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
+import org.springframework.hateoas.RepresentationModel;
+
 import java.util.List;
 import java.util.Map;
 
 @Data
 @RequiredArgsConstructor
 @NoArgsConstructor
-public class ProjectDetailsDTO
+public class ProjectDetailsDTO extends RepresentationModel
 {
     @NonNull
     private String tpn;

@@ -54,7 +54,8 @@ public class AuthService
         HttpEntity<String> entity = new HttpEntity<>("parameters", headers);
         try
         {
-            response = restTemplate.exchange(PersonManagementConstants.LOCAL_AUTHENTICATION_URL, HttpMethod.GET, entity, String.class);
+            response = restTemplate.exchange(
+                PersonManagementConstants.LOCAL_AUTHENTICATION_URL, HttpMethod.GET, entity, String.class);
         }
         catch (HttpClientErrorException e)
         {

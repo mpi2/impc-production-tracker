@@ -65,7 +65,7 @@ public class AuthController
         {
             String username = authenticationRequest.getUsername();
             String token = authService.getAuthenticationToken(authenticationRequest);
-            String roleName = personService.getPersonByUserName(username).getRole().getName();
+            String roleName = personService.getPersonByToken(token).getRole().getName();
 
             Map<Object, Object> model = new HashMap<>();
             model.put("username", username);
