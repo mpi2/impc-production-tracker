@@ -5,31 +5,35 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import uk.ac.ebi.impc_prod_tracker.data.BaseEntity;
-import uk.ac.ebi.impc_prod_tracker.data.biology.IntentedLocation.IntendedLocation;
 import uk.ac.ebi.impc_prod_tracker.data.biology.outcome.Outcome;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.IdClass;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import uk.ac.ebi.impc_prod_tracker.data.biology.tracked_location.TrackedLocation;
+
+import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 
 @NoArgsConstructor(access= AccessLevel.PRIVATE, force=true)
 @Getter
 @Setter
 @Entity
-@IdClass(OutcomeLocation.class)
 public class OutcomeLocation extends BaseEntity implements Serializable
 {
+
     @Id
-    @ManyToOne
-    @JoinColumn
+    @SequenceGenerator(name = "outcomeLocationSeq", sequenceName = "OUTCOME_LOCATION_SEQ")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "outcomeLocationSeq")
+    private Long id;
+
+    @NotNull
+    @ManyToOne(targetEntity = Outcome.class)
     private Outcome outcome;
 
-    @Id
-    @ManyToOne
-    @JoinColumn
-    private IntendedLocation location;
+    @NotNull
+    @ManyToOne(targetEntity = TrackedLocation.class)
+    private TrackedLocation location;
 
+    @NotNull
     private Integer index;
+
+
 }

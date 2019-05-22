@@ -36,10 +36,17 @@ public class TrackedMouseAllele extends BaseEntity
     @Column(columnDefinition = "TEXT")
     private String name;
 
-    @NotNull
     private String alleleSymbol;
 
     private String mgiId;
+
+    @Column(columnDefinition = "TEXT")
+    private String description;
+
+    @Column(columnDefinition = "TEXT")
+    private String autoDescription;
+
+    private Long imitsAlleleId;
 
     @ManyToOne
     private AlleleType alleleType;
