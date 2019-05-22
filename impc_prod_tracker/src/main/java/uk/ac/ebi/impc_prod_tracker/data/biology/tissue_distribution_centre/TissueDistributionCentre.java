@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import uk.ac.ebi.impc_prod_tracker.data.BaseEntity;
 import uk.ac.ebi.impc_prod_tracker.data.biology.phenotyping_production.PhenotypingProduction;
+import uk.ac.ebi.impc_prod_tracker.data.biology.material_type.MaterialType;
 import uk.ac.ebi.impc_prod_tracker.data.organization.work_unit.WorkUnit;
 
 import javax.persistence.*;
@@ -30,7 +31,8 @@ public class TissueDistributionCentre extends BaseEntity {
 
     private LocalDateTime endDate;
 
-    private String deposited_material;
+    @ManyToOne
+    private MaterialType materialType;
 
     @NotNull
     @ManyToOne
