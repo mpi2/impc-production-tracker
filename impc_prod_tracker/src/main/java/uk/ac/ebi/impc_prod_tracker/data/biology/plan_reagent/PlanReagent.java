@@ -21,28 +21,29 @@ import lombok.NoArgsConstructor;
 import uk.ac.ebi.impc_prod_tracker.data.BaseEntity;
 import uk.ac.ebi.impc_prod_tracker.data.biology.reagent.Reagent;
 import uk.ac.ebi.impc_prod_tracker.data.experiment.plan.Plan;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.IdClass;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+
+import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 
 @NoArgsConstructor(access= AccessLevel.PRIVATE, force=true)
 @Data
 @Entity
-@IdClass(PlanReagent.class)
 public class PlanReagent extends BaseEntity implements Serializable
 {
     @Id
-    @ManyToOne
-    @JoinColumn
+    @SequenceGenerator(name = "planReagentSeq", sequenceName = "PLAN_REAGENT_SEQ")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "planReagentSeq")
+    private Long id;
+
+    @NotNull
+    @ManyToOne(targetEntity = Plan.class)
     private Plan plan;
 
-    @Id
-    @ManyToOne
-    @JoinColumn
+    @NotNull
+    @ManyToOne(targetEntity = Reagent.class)
     private Reagent reagent;
 
+    @NotNull
     private Integer concentration;
 }
