@@ -20,8 +20,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import uk.ac.ebi.impc_prod_tracker.data.BaseEntity;
-import uk.ac.ebi.impc_prod_tracker.data.biology.human_disease_synonym.HumanDiseaseSynonym;
 import uk.ac.ebi.impc_prod_tracker.data.biology.human_gene.HumanGene;
+import uk.ac.ebi.impc_prod_tracker.data.biology.omim_table.OmimTable;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -44,9 +45,7 @@ public class HumanDisease extends BaseEntity {
 
     private String name;
 
-    private String omimDiseaseId;
-
-    private String notes;
+    private String doId;
 
     @ManyToMany(mappedBy = "humanDiseases")
     private Set<HumanGene> humanGenes;
@@ -54,10 +53,10 @@ public class HumanDisease extends BaseEntity {
 
     @ManyToMany
     @JoinTable(
-        name = "human_disease_synonym_rel",
+        name = "human_disease_omim",
         joinColumns = @JoinColumn(name = "human_disease_id"),
-        inverseJoinColumns = @JoinColumn(name = "human_disease_synonym_id"))
-    private Set<HumanDiseaseSynonym> humanDiseaseSynonyms;
+        inverseJoinColumns = @JoinColumn(name = "omim_table_id"))
+    private Set<OmimTable> omimTable;
 
 
 }
