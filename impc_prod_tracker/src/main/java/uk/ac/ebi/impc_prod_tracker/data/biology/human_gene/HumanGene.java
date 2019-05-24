@@ -54,13 +54,6 @@ public class HumanGene extends BaseEntity
         inverseJoinColumns = @JoinColumn(name = "human_gene_synonym_id"))
     private Set<HumanGeneSynonym> humanGeneSynonyms;
 
-    @ManyToMany
-    @JoinTable(
-        name = "human_gene_disease",
-        joinColumns = @JoinColumn(name = "human_gene_id"),
-        inverseJoinColumns = @JoinColumn(name = "human_disease_id"))
-    private Set<HumanDisease> humanDiseases;
-
     @OneToMany(mappedBy = "humanGene")
     private Set<Ortholog> orthologs;
 

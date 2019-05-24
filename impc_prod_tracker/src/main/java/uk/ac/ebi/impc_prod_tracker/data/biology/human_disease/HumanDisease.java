@@ -23,32 +23,22 @@ import uk.ac.ebi.impc_prod_tracker.data.BaseEntity;
 import uk.ac.ebi.impc_prod_tracker.data.biology.human_gene.HumanGene;
 import uk.ac.ebi.impc_prod_tracker.data.biology.omim_table.OmimTable;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.SequenceGenerator;
+import javax.persistence.*;
 import java.util.Set;
 
 @NoArgsConstructor(access= AccessLevel.PRIVATE, force=true)
 @Getter
 @Setter
 @Entity
-public class HumanDisease extends BaseEntity {
+public class HumanDisease {
     @Id
-    @SequenceGenerator(name = "humanDiseaseSeq", sequenceName = "HUMAN_DISEASE_SEQ")
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "humanDiseaseSeq")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id", updatable=false)
     private Long id;
 
     private String name;
 
     private String doId;
-
-    @ManyToMany(mappedBy = "humanDiseases")
-    private Set<HumanGene> humanGenes;
 
 
     @ManyToMany
