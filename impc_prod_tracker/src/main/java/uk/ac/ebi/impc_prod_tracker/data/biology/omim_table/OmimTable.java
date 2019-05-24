@@ -15,11 +15,11 @@ import java.util.Set;
 @Getter
 @Setter
 @Entity
-public class OmimTable extends BaseEntity {
+public class OmimTable {
 
     @Id
-    @SequenceGenerator(name = "OmimTableSeq", sequenceName = "OMIM_TABLE_SEQ")
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "OmimTableSeq")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id", updatable=false)
     private Long id;
 
     private String omimId;
