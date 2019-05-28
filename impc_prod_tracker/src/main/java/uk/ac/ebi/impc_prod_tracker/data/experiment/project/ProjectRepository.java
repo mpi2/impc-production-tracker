@@ -15,9 +15,11 @@
  *******************************************************************************/
 package uk.ac.ebi.impc_prod_tracker.data.experiment.project;
 
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.repository.PagingAndSortingRepository;
 
-public interface ProjectRepository extends CrudRepository<Project, Long>
+public interface ProjectRepository extends PagingAndSortingRepository<Project, Long>
 {
+    Iterable<Project> findAll();
+
     Project findProjectByTpn(String tpn);
 }
