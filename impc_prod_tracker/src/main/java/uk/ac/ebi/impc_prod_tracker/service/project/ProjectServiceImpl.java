@@ -15,9 +15,12 @@
  *******************************************************************************/
 package uk.ac.ebi.impc_prod_tracker.service.project;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 import uk.ac.ebi.impc_prod_tracker.data.experiment.project.Project;
 import uk.ac.ebi.impc_prod_tracker.data.experiment.project.ProjectRepository;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -46,5 +49,11 @@ public class ProjectServiceImpl implements ProjectService
     {
         Project project = projectRepository.findProjectByTpn(tpn);
         return project;
+    }
+
+    @Override
+    public Page<Project> getPaginatedProjects(Pageable pageable) {
+        Page<Project> projects = projectRepository.findAll(pageable);
+        return projects;
     }
 }

@@ -15,24 +15,28 @@
  *******************************************************************************/
 package uk.ac.ebi.impc_prod_tracker.controller.project;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PagedResourcesAssembler;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
+import org.springframework.hateoas.PagedModel;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 import uk.ac.ebi.impc_prod_tracker.conf.error_management.OperationFailedException;
-import uk.ac.ebi.impc_prod_tracker.controller.project.plan.PlanDTO;
-import uk.ac.ebi.impc_prod_tracker.controller.project.plan.PlanDTOBuilder;
-import uk.ac.ebi.impc_prod_tracker.controller.project.plan.PlanDTOLinkManager;
+import uk.ac.ebi.impc_prod_tracker.controller.project.plan.*;
 import uk.ac.ebi.impc_prod_tracker.data.experiment.plan.Plan;
 import uk.ac.ebi.impc_prod_tracker.data.experiment.project.Project;
 import uk.ac.ebi.impc_prod_tracker.service.plan.PlanService;
 import uk.ac.ebi.impc_prod_tracker.service.project.ProjectService;
+
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 
 @RestController
 @RequestMapping("/api")
@@ -123,5 +127,85 @@ public class ProjectController
         projectPlanDTO.setProjectDetailsDTO(projectDTOBuilder.buildProjectDetailsDTOFromProject(project));
         projectPlanDTO.setPlanDTO(planDTO);
         return new EntityModel<>(projectPlanDTO);
+    }
+
+    @GetMapping(value = {"/projectSummaries"})
+    public ResponseEntity<PagedModel<ProjectSummaryDTO>> getPlanSummariesPaginated(
+            Pageable pageable, PagedResourcesAssembler assembler)
+    {
+        Page<Project> projects = projectService.getPaginatedProjects(pageable);
+        Page<ProjectSummaryDTO> planSummaryDTOPage = projects.map(this::convertToProjectSummaryDTO);
+
+        PagedModel pr =
+                assembler.toModel(
+                        planSummaryDTOPage,
+                        linkTo(PlanController.class).slash("/planSummaries").withSelfRel());
+
+        HttpHeaders responseHeaders = new HttpHeaders();
+        responseHeaders.add("Link",createLinkHeader(pr));
+
+        return new ResponseEntity<>(pr,responseHeaders,HttpStatus.OK);
+
+    }
+
+//    @GetMapping(value = {"/projectSummaries/{pin}"})
+//    public ProjectSummaryDTO getProjectSummary(@PathVariable String pin)
+//    {
+//        Plan plan = getNotNullPlanByPin(pin);
+//        ProjectSummaryDTO projectSummaryDTO = convertToProjectSummaryDTO(plan);
+//
+//        return projectSummaryDTO;
+//    }
+
+    private Plan getNotNullPlanByPin(String pin)
+    {
+        Plan plan = projectDTOBuilder.getPlanService().getPlanByPin(pin);
+        if (plan == null)
+        {
+            throw new OperationFailedException(
+                    String.format("Plan %s does not exist.", pin), HttpStatus.NOT_FOUND);
+        }
+        return plan;
+    }
+
+    private ProjectSummaryDTO convertToProjectSummaryDTO(final Project project)
+    {
+        ProjectSummaryDTO projectSummaryDTO = new ProjectSummaryDTO();
+        addPlans(projectSummaryDTO, project);
+
+        projectSummaryDTO.setProjectDetailsDTO(
+                projectDTOBuilder.buildProjectDetailsDTOFromProject(project));
+        return projectSummaryDTO;
+    }
+
+    private String createLinkHeader(PagedModel<ProjectSummaryDTO> pr){
+        final StringBuilder linkHeader = new StringBuilder();
+        if (!pr.getLinks("first").isEmpty())
+        {
+            linkHeader.append(buildLinkHeader( pr.getLinks("first").get(0).getHref(),"first"));
+            linkHeader.append(", ");
+        }
+        if (!pr.getLinks("next").isEmpty())
+        {
+            linkHeader.append(buildLinkHeader(pr.getLinks("next").get(0).getHref(),"next"));
+        }
+        return linkHeader.toString();
+    }
+
+    public static String buildLinkHeader(final String uri, final String rel) {
+        return "<" + uri + ">; rel=\"" + rel + "\"";
+    }
+
+    private void addPlans(ProjectSummaryDTO projectSummaryDTO, final Project project)
+    {
+        List<Plan> plans = planService.getPlansByProject(project);
+
+        List<PlanDetailsDTO> plansDTO = new ArrayList<PlanDetailsDTO>();
+
+        for (Plan p: plans) {
+            PlanDetailsDTO planDTO = planDTOBuilder.buildPlanDetailsDTOFromPlan(p);
+            plansDTO.add(planDTO);
+        }
+        projectSummaryDTO.setPlanDetailsDTO(plansDTO);
     }
 }

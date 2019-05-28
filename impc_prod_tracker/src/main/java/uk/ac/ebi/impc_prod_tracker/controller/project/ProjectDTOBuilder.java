@@ -24,12 +24,8 @@ import uk.ac.ebi.impc_prod_tracker.data.biology.intented_mouse_gene.IntendedMous
 import uk.ac.ebi.impc_prod_tracker.data.experiment.plan.Plan;
 import uk.ac.ebi.impc_prod_tracker.data.experiment.project.Project;
 import uk.ac.ebi.impc_prod_tracker.service.plan.PlanService;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Set;
+
+import java.util.*;
 
 @Component
 @Data
@@ -92,6 +88,7 @@ public class ProjectDTOBuilder
         }
         addMarkerSymbols(projectDetailsDTO, project);
         addIntentions(projectDetailsDTO, project);
+        // addPlans(projectDetailsDTO, project);
 
         return projectDetailsDTO;
     }
@@ -126,4 +123,17 @@ public class ProjectDTOBuilder
         }
         projectDetailsDTO.setAlleleIntentions(intentions);
     }
+
+//    private void addPlans(ProjectDetailsDTO projectDetailsDTO, final Project project)
+//    {
+//        List<Plan> plans = planService.getPlansByProject(project);
+//
+//        List<PlanDetailsDTO> plansDTO = new ArrayList<PlanDetailsDTO>();
+//
+//        for (Plan p: plans) {
+//            PlanDetailsDTO planDTO = planDTOBuilder.buildPlanDetailsDTOFromPlan(p);
+//            plansDTO.add(planDTO);
+//        }
+//        projectDetailsDTO.setPlansDetails(plansDTO);
+//    }
 }

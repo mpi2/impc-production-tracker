@@ -15,6 +15,8 @@
  *******************************************************************************/
 package uk.ac.ebi.impc_prod_tracker.service.project;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import uk.ac.ebi.impc_prod_tracker.data.experiment.project.Project;
 
 import java.util.List;
@@ -24,4 +26,6 @@ public interface ProjectService
     List<Project> getProjects();
 
     Project getProjectByTpn(String tpn);
+
+    Page<Project> getPaginatedProjects(Pageable pageable);
 }
