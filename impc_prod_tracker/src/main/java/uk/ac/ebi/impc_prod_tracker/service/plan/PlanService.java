@@ -15,7 +15,6 @@
  *******************************************************************************/
 package uk.ac.ebi.impc_prod_tracker.service.plan;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import uk.ac.ebi.impc_prod_tracker.data.experiment.plan.Plan;

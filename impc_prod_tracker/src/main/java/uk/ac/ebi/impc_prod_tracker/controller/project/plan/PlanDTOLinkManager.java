@@ -1,6 +1,7 @@
 package uk.ac.ebi.impc_prod_tracker.controller.project.plan;
 
 import org.springframework.stereotype.Component;
+import uk.ac.ebi.impc_prod_tracker.common.Constants;
 import uk.ac.ebi.impc_prod_tracker.controller.project.plan.production_plan.ProductionPlanDTOLinkManager;
 
 @Component
@@ -15,7 +16,10 @@ public class PlanDTOLinkManager
 
     public PlanDTO addLinks(PlanDTO planDTO)
     {
-        productionPlanDTOLinkManager.addLinks(planDTO.getProductionPlanDTO());
+        if (Constants.PRODUCTION_TYPE.equals(planDTO.getPlanDetailsDTO().getPlanTypeName()))
+        {
+            productionPlanDTOLinkManager.addLinks(planDTO.getProductionPlanDTO());
+        }
 
         return planDTO;
     }

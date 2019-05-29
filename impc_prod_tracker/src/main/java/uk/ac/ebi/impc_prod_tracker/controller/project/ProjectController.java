@@ -31,7 +31,6 @@ import uk.ac.ebi.impc_prod_tracker.data.experiment.plan.Plan;
 import uk.ac.ebi.impc_prod_tracker.data.experiment.project.Project;
 import uk.ac.ebi.impc_prod_tracker.service.plan.PlanService;
 import uk.ac.ebi.impc_prod_tracker.service.project.ProjectService;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -40,7 +39,7 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 
 @RestController
 @RequestMapping("/api")
-@CrossOrigin(origins = {"http://localhost:4200"})
+@CrossOrigin(origins="*")
 public class ProjectController
 {
     private ProjectService projectService;
@@ -96,7 +95,8 @@ public class ProjectController
     }
 
     @GetMapping(value = {"/projects/{tpn}/plans/{pin}"})
-    public EntityModel<ProjectPlanDTO> getProjectPlan(@PathVariable String tpn, @PathVariable String pin)
+    public EntityModel<ProjectPlanDTO> getProjectPlan(
+        @PathVariable String tpn, @PathVariable String pin)
     {
         Project project = projectService.getProjectByTpn(tpn);
         if (project == null)
@@ -148,33 +148,34 @@ public class ProjectController
 
     }
 
-//    @GetMapping(value = {"/projectSummaries/{pin}"})
-//    public ProjectSummaryDTO getProjectSummary(@PathVariable String pin)
-//    {
-//        Plan plan = getNotNullPlanByPin(pin);
-//        ProjectSummaryDTO projectSummaryDTO = convertToProjectSummaryDTO(plan);
-//
-//        return projectSummaryDTO;
-//    }
-
-    private Plan getNotNullPlanByPin(String pin)
+    @GetMapping(value = {"/projectSummaries/{tpn}"})
+    public EntityModel<ProjectSummaryDTO> getProjectSummary(@PathVariable String tpn)
     {
-        Plan plan = projectDTOBuilder.getPlanService().getPlanByPin(pin);
-        if (plan == null)
+        Project project = getNotNullProjectByTpn(tpn);
+        ProjectSummaryDTO projectSummaryDTO = convertToProjectSummaryDTO(project);
+
+        return new EntityModel<>(projectSummaryDTO);
+    }
+
+    private Project getNotNullProjectByTpn(String tpn)
+    {
+        Project project = projectService.getProjectByTpn(tpn);
+        if (project == null)
         {
             throw new OperationFailedException(
-                    String.format("Plan %s does not exist.", pin), HttpStatus.NOT_FOUND);
+                String.format("Project %s does not exist.", tpn), HttpStatus.NOT_FOUND);
         }
-        return plan;
+        return project;
     }
 
     private ProjectSummaryDTO convertToProjectSummaryDTO(final Project project)
     {
         ProjectSummaryDTO projectSummaryDTO = new ProjectSummaryDTO();
-        addPlans(projectSummaryDTO, project);
 
         projectSummaryDTO.setProjectDetailsDTO(
-                projectDTOBuilder.buildProjectDetailsDTOFromProject(project));
+            projectDTOBuilder.buildProjectDetailsDTOFromProject(project));
+        addPlans(projectSummaryDTO, project);
+
         return projectSummaryDTO;
     }
 

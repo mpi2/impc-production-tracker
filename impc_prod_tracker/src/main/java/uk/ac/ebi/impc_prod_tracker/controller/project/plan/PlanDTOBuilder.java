@@ -17,11 +17,11 @@ package uk.ac.ebi.impc_prod_tracker.controller.project.plan;
 
 import lombok.Data;
 import org.springframework.stereotype.Component;
+import uk.ac.ebi.impc_prod_tracker.common.Constants;
 import uk.ac.ebi.impc_prod_tracker.conf.error_management.OperationFailedException;
 import uk.ac.ebi.impc_prod_tracker.controller.project.plan.phenotype_plan.PhenotypePlanSummaryDTO;
 import uk.ac.ebi.impc_prod_tracker.controller.project.plan.production_plan.ProductionPlanDTOBuilder;
 import uk.ac.ebi.impc_prod_tracker.controller.project.plan.production_plan.ProductionPlanDTO;
-import uk.ac.ebi.impc_prod_tracker.controller.project.plan.production_plan.ProductionPlanDTOLinkManager;
 import uk.ac.ebi.impc_prod_tracker.data.experiment.plan.Plan;
 import uk.ac.ebi.impc_prod_tracker.service.plan.PlanService;
 
@@ -58,7 +58,7 @@ public class PlanDTOBuilder
         PlanDetailsDTO planDetailsDTO = buildPlanDetailsDTOFromPlan(plan);
         planDTO.setPlanDetailsDTO(planDetailsDTO);
 
-        if ("production".equals(plan.getPlanType().getName().toLowerCase()))
+        if (Constants.PRODUCTION_TYPE.equals(plan.getPlanType().getName().toLowerCase()))
         {
             ProductionPlanDTO productionPlanDTO =
                 buildProductionPlanDTOFromPlan(plan);

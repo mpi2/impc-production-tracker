@@ -33,7 +33,8 @@ public class PlanServiceImpl implements PlanService
     private PlanRepository planRepository;
     private ContextAwarePolicyEnforcement policyEnforcement;
 
-    PlanServiceImpl(PlanRepository planRepository, ContextAwarePolicyEnforcement policyEnforcement)
+    PlanServiceImpl(
+        PlanRepository planRepository, ContextAwarePolicyEnforcement policyEnforcement)
     {
         this.planRepository = planRepository;
         this.policyEnforcement = policyEnforcement;
