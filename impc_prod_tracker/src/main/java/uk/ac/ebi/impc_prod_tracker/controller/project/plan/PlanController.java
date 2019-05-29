@@ -22,13 +22,13 @@ import uk.ac.ebi.impc_prod_tracker.controller.project.ProjectDTOBuilder;
 import uk.ac.ebi.impc_prod_tracker.controller.project.ProjectDetailsDTO;
 import uk.ac.ebi.impc_prod_tracker.controller.project.ProjectPlanDTO;
 import uk.ac.ebi.impc_prod_tracker.data.experiment.plan.Plan;
-
 import java.util.ArrayList;
 import java.util.List;
 
 @RestController
 @RequestMapping("/api")
 @CrossOrigin(origins="*")
+//TODO This class could be obsolete if the endpoint for projects is more used...
 public class PlanController
 {
     private PlanDTOBuilder planDTOBuilder;
@@ -75,34 +75,6 @@ public class PlanController
         return projectPlanDTO;
     }
 
-//    @GetMapping(value = {"/projectSummaries"})
-//    public ResponseEntity<PagedModel<ProjectSummaryDTO>> getPlanSummariesPaginated(
-//        Pageable pageable, PagedResourcesAssembler assembler)
-//    {
-//        Page<Plan> plans = projectDTOBuilder.getPlanService().getPaginatedPlans(pageable);
-//        Page<ProjectSummaryDTO> planSummaryDTOPage = plans.map(this::convertToPlanSummaryDTO);
-//
-//        PagedModel pr =
-//            assembler.toModel(
-//                planSummaryDTOPage,
-//                linkTo(PlanController.class).slash("/planSummaries").withSelfRel());
-//
-//        HttpHeaders responseHeaders = new HttpHeaders();
-//        responseHeaders.add("Link",createLinkHeader(pr));
-//
-//        return new ResponseEntity<>(pr,responseHeaders,HttpStatus.OK);
-//
-//    }
-//
-//    @GetMapping(value = {"/planSummaries/{pin}"})
-//    public ProjectSummaryDTO getPlanSummary(@PathVariable String pin)
-//    {
-//        Plan plan = getNotNullPlanByPin(pin);
-//        ProjectSummaryDTO projectSummaryDTO = convertToPlanSummaryDTO(plan);
-//
-//        return projectSummaryDTO;
-//    }
-
     private Plan getNotNullPlanByPin(String pin)
     {
         Plan plan = projectDTOBuilder.getPlanService().getPlanByPin(pin);
@@ -113,35 +85,4 @@ public class PlanController
         }
         return plan;
     }
-
-
-//    private String createLinkHeader(PagedModel<ProjectSummaryDTO> pr){
-//        final StringBuilder linkHeader = new StringBuilder();
-//        if (!pr.getLinks("first").isEmpty())
-//        {
-//            linkHeader.append(buildLinkHeader( pr.getLinks("first").get(0).getHref(),"first"));
-//            linkHeader.append(", ");
-//        }
-//        if (!pr.getLinks("next").isEmpty())
-//        {
-//            linkHeader.append(buildLinkHeader(pr.getLinks("next").get(0).getHref(),"next"));
-//        }
-//        return linkHeader.toString();
-//    }
-//
-//    public static String buildLinkHeader(final String uri, final String rel) {
-//        return "<" + uri + ">; rel=\"" + rel + "\"";
-//    }
-//
-//    private ProjectSummaryDTO convertToPlanSummaryDTO(final Plan plan)
-//    {
-//        ProjectSummaryDTO projectSummaryDTO = new ProjectSummaryDTO();
-//
-//        PlanDetailsDTO planDetailsDTO = planDTOBuilder.buildPlanDetailsDTOFromPlan(plan);
-//
-//        projectSummaryDTO.setPlanDetailsDTO(planDetailsDTO);
-//        projectSummaryDTO.setProjectDetailsDTO(
-//            projectDTOBuilder.buildProjectDetailsDTOFromProject(plan.getProject()));
-//        return projectSummaryDTO;
-//    }
 }
