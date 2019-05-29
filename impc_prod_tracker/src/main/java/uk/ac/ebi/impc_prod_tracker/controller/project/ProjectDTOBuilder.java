@@ -19,10 +19,10 @@ import lombok.Data;
 import org.springframework.stereotype.Component;
 import uk.ac.ebi.impc_prod_tracker.controller.project.plan.PlanDTO;
 import uk.ac.ebi.impc_prod_tracker.controller.project.plan.PlanDTOBuilder;
-import uk.ac.ebi.impc_prod_tracker.data.biology.allele_type.AlleleType;
 import uk.ac.ebi.impc_prod_tracker.data.biology.intented_mouse_gene.IntendedMouseGene;
 import uk.ac.ebi.impc_prod_tracker.data.experiment.plan.Plan;
 import uk.ac.ebi.impc_prod_tracker.data.experiment.project.Project;
+import uk.ac.ebi.impc_prod_tracker.data.experiment.project_mouse_gene.ProjectMouseGene;
 import uk.ac.ebi.impc_prod_tracker.service.plan.PlanService;
 
 import java.util.*;
@@ -86,54 +86,25 @@ public class ProjectDTOBuilder
         {
             projectDetailsDTO.setPriorityName(project.getProjectPriority().getName());
         }
-        addMarkerSymbols(projectDetailsDTO, project);
         addIntentions(projectDetailsDTO, project);
-        // addPlans(projectDetailsDTO, project);
 
         return projectDetailsDTO;
     }
 
-    private void addMarkerSymbols(ProjectDetailsDTO projectDetailsDTO, final Project project)
-    {
-        Set<IntendedMouseGene> intendedMouseGenes = project.getIntendedMouseGenes();
-        List<String> markerSymbolNames = new ArrayList<>();
-        Map<String, String> symbolNamesAndLinks =  new HashMap<>();
-        if (intendedMouseGenes != null)
-        {
-            for (IntendedMouseGene intendedMouseGene : intendedMouseGenes)
-            {
-                markerSymbolNames.add(intendedMouseGene.getSymbol());
-                symbolNamesAndLinks.put(
-                    intendedMouseGene.getSymbol(), MGI_URL + intendedMouseGene.getMgiId());
-            }
-        }
-        projectDetailsDTO.setMarkerSymbols(symbolNamesAndLinks);
-    }
-
     private void addIntentions(ProjectDetailsDTO projectDetailsDTO, final Project project)
     {
-        Set<AlleleType> alleleTypes = project.getProjectIntentions();
-        List<String> intentions = new ArrayList<>();
-        if (alleleTypes != null)
+        Set<IntendedMouseGene> intendedMouseGenes = new HashSet<>();
+        List<ProjectDetailsDTO.IntentionDTO> intentionDTOList = new ArrayList<>();
+        for (ProjectMouseGene projectMouseGene : project.getProjectMouseGenes())
         {
-            for (AlleleType alleleType : alleleTypes)
-            {
-                intentions.add(alleleType.getName());
-            }
-        }
-        projectDetailsDTO.setAlleleIntentions(intentions);
-    }
+            ProjectDetailsDTO.IntentionDTO intentionDTO = new ProjectDetailsDTO.IntentionDTO();
+            intentionDTO.setMarkerSymbol(projectMouseGene.getMouseGene().getSymbol());
+            intentionDTO.setAlleleType(projectMouseGene.getAlleleType().getName());
+            intentionDTO.setMgiLink(MGI_URL + projectMouseGene.getMouseGene().getMgiId());
+            intendedMouseGenes.add(projectMouseGene.getMouseGene());
 
-//    private void addPlans(ProjectDetailsDTO projectDetailsDTO, final Project project)
-//    {
-//        List<Plan> plans = planService.getPlansByProject(project);
-//
-//        List<PlanDetailsDTO> plansDTO = new ArrayList<PlanDetailsDTO>();
-//
-//        for (Plan p: plans) {
-//            PlanDetailsDTO planDTO = planDTOBuilder.buildPlanDetailsDTOFromPlan(p);
-//            plansDTO.add(planDTO);
-//        }
-//        projectDetailsDTO.setPlansDetails(plansDTO);
-//    }
+            intentionDTOList.add(intentionDTO);
+        }
+        projectDetailsDTO.setIntentions(intentionDTOList);
+    }
 }

@@ -1,11 +1,13 @@
-package uk.ac.ebi.impc_prod_tracker.data.experiment.project_location;
+package uk.ac.ebi.impc_prod_tracker.data.experiment.project_mouse_gene;
 
 import lombok.AccessLevel;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import uk.ac.ebi.impc_prod_tracker.data.BaseEntity;
-import uk.ac.ebi.impc_prod_tracker.data.biology.IntentedLocation.IntendedLocation;
 import uk.ac.ebi.impc_prod_tracker.data.biology.allele_type.AlleleType;
+import uk.ac.ebi.impc_prod_tracker.data.biology.intented_mouse_gene.IntendedMouseGene;
+import uk.ac.ebi.impc_prod_tracker.data.biology.mouse_gene.MouseGene;
 import uk.ac.ebi.impc_prod_tracker.data.experiment.project.Project;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -18,21 +20,22 @@ import java.io.Serializable;
 @NoArgsConstructor(access= AccessLevel.PRIVATE, force=true)
 @Data
 @Entity
-public class ProjectLocation extends BaseEntity implements Serializable
+public class ProjectMouseGene extends BaseEntity implements Serializable
 {
     @Id
-    @SequenceGenerator(name = "projectLocationSeq", sequenceName = "PROJECT_LOCATION_SEQ")
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "projectLocationSeq")
+    @SequenceGenerator(name = "projectMouseGeneSeq", sequenceName = "PROJECT_MOUSE_GENE_SEQ")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "projectMouseGeneSeq")
     private Long id;
 
+    @EqualsAndHashCode.Exclude
     @ManyToOne
     private Project project;
 
+    @EqualsAndHashCode.Exclude
     @ManyToOne
-    private IntendedLocation location;
+    private IntendedMouseGene mouseGene;
 
-    private int index;
-
+    @EqualsAndHashCode.Exclude
     @ManyToOne
     private AlleleType alleleType;
 }

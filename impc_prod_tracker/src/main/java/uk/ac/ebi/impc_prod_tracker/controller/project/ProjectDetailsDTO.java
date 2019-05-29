@@ -20,9 +20,7 @@ import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.hateoas.RepresentationModel;
-
 import java.util.List;
-import java.util.Map;
 
 @Data
 @RequiredArgsConstructor
@@ -35,6 +33,13 @@ public class ProjectDetailsDTO extends RepresentationModel
     private String assigmentStatusName;
     private String priorityName;
     private List<String> locations;
-    private List<String> alleleIntentions;
-    private Map<String, String> markerSymbols;
+    private List<IntentionDTO> intentions;
+
+    @Data
+    public static class IntentionDTO
+    {
+        String markerSymbol;
+        String alleleType;
+        String mgiLink;
+    }
 }
