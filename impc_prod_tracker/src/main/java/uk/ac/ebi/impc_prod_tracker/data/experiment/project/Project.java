@@ -5,12 +5,12 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import uk.ac.ebi.impc_prod_tracker.data.BaseEntity;
-import uk.ac.ebi.impc_prod_tracker.data.biology.allele_type.AlleleType;
-import uk.ac.ebi.impc_prod_tracker.data.biology.intented_mouse_gene.IntendedMouseGene;
 import uk.ac.ebi.impc_prod_tracker.data.experiment.assignment_status.AssignmentStatus;
+import uk.ac.ebi.impc_prod_tracker.data.experiment.project_mouse_gene.ProjectMouseGene;
 import uk.ac.ebi.impc_prod_tracker.data.experiment.project_priority.ProjectPriority;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.util.HashSet;
 import java.util.Set;
 
 @NoArgsConstructor(access= AccessLevel.PUBLIC, force=true)
@@ -37,20 +37,8 @@ public class Project extends BaseEntity
     private ProjectPriority projectPriority;
 
     @EqualsAndHashCode.Exclude
-    @ManyToMany
-    @JoinTable(
-        name = "project_intention_rel",
-        joinColumns = @JoinColumn(name = "project_id"),
-        inverseJoinColumns = @JoinColumn(name = "allele_type_id"))
-    private Set<AlleleType> projectIntentions;
-
-    @EqualsAndHashCode.Exclude
-    @ManyToMany
-    @JoinTable(
-        name = "project_mouse_gene",
-        joinColumns = @JoinColumn(name = "project_id"),
-        inverseJoinColumns = @JoinColumn(name = "mouse_gene_id"))
-    private Set<IntendedMouseGene> intendedMouseGenes;
+    @OneToMany(mappedBy = "project", cascade = CascadeType.ALL)
+    private Set<ProjectMouseGene> projectMouseGenes = new HashSet<>();
 }
 
 
