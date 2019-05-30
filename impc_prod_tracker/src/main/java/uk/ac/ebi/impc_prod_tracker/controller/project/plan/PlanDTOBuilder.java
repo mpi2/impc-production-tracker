@@ -80,7 +80,10 @@ public class PlanDTOBuilder
     {
         PlanDetailsDTO planDetailsDTO = new PlanDetailsDTO();
         planDetailsDTO.setPin(plan.getPin());
-
+        if (plan.getWorkGroup() != null)
+        {
+            planDetailsDTO.setWorkGroupName(plan.getWorkGroup().getName());
+        }
         if (plan.getPlanType() != null)
         {
             planDetailsDTO.setPlanTypeName(plan.getPlanType().getName());

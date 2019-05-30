@@ -30,6 +30,7 @@ public class PlanDetailsDTO
     private String planTypeName;
     private String consortiumName;
     private String workUnitName;
+    private String workGroupName;
     private String statusName;
     private String comments;
 }
