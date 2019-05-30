@@ -20,7 +20,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.springframework.hateoas.RepresentationModel;
-import uk.ac.ebi.impc_prod_tracker.controller.project.plan.phenotype_plan.PhenotypePlanSummaryDTO;
+import uk.ac.ebi.impc_prod_tracker.controller.project.plan.phenotype_plan.PhenotypePlanDTO;
 import uk.ac.ebi.impc_prod_tracker.controller.project.plan.production_plan.ProductionPlanDTO;
 
 @Data
@@ -35,6 +35,6 @@ public class PlanDTO extends RepresentationModel
     private ProductionPlanDTO productionPlanDTO;
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    @JsonProperty("phenotypePlanSummary")
-    private PhenotypePlanSummaryDTO phenotypePlanSummaryDTO;
+    @JsonProperty("phenotypePlan")
+    private PhenotypePlanDTO phenotypePlanDTO;
 }

@@ -18,8 +18,12 @@ package uk.ac.ebi.impc_prod_tracker.service.plan;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
+import uk.ac.ebi.impc_prod_tracker.common.Constants;
 import uk.ac.ebi.impc_prod_tracker.conf.security.ResourcePrivacy;
 import uk.ac.ebi.impc_prod_tracker.conf.security.abac.spring.ContextAwarePolicyEnforcement;
+import uk.ac.ebi.impc_prod_tracker.data.biology.outcome.Outcome;
+import uk.ac.ebi.impc_prod_tracker.data.biology.outcome.OutcomeRepository;
+import uk.ac.ebi.impc_prod_tracker.data.experiment.colony.Colony;
 import uk.ac.ebi.impc_prod_tracker.data.experiment.plan.Plan;
 import uk.ac.ebi.impc_prod_tracker.data.experiment.plan.PlanRepository;
 import uk.ac.ebi.impc_prod_tracker.data.experiment.project.Project;
@@ -31,13 +35,35 @@ import java.util.stream.Collectors;
 public class PlanServiceImpl implements PlanService
 {
     private PlanRepository planRepository;
+    private OutcomeRepository outcomeRepository;
     private ContextAwarePolicyEnforcement policyEnforcement;
 
     PlanServiceImpl(
-        PlanRepository planRepository, ContextAwarePolicyEnforcement policyEnforcement)
+        PlanRepository planRepository,
+        OutcomeRepository outcome,
+        ContextAwarePolicyEnforcement policyEnforcement)
     {
         this.planRepository = planRepository;
+        this.outcomeRepository = outcome;
         this.policyEnforcement = policyEnforcement;
+    }
+
+    @Override
+    public Plan getProductionPlanRefByPhenotypePlan(Plan phenotypePlan)
+    {
+        Plan plan = null;
+        if (Constants.PHENOTYPE_TYPE.equals(phenotypePlan.getPlanType().getName()))
+        {
+            Colony parentColony = phenotypePlan.getColony();
+            Iterable<Outcome> outcomesByColony = outcomeRepository.findAllByColony(parentColony);
+            for (Outcome outcome : outcomesByColony)
+            {
+                plan = planRepository.findPlanById(outcome.getAttempt().getId());
+                break;
+            }
+        }
+
+        return plan;
     }
 
     @Override

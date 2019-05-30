@@ -17,9 +17,11 @@ package uk.ac.ebi.impc_prod_tracker.data.experiment.plan;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AccessLevel;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 import uk.ac.ebi.impc_prod_tracker.conf.error_management.OperationFailedException;
 import uk.ac.ebi.impc_prod_tracker.conf.security.Resource;
 import uk.ac.ebi.impc_prod_tracker.conf.security.ResourcePrivacy;
@@ -57,6 +59,7 @@ public class Plan extends BaseEntity implements Resource<Plan>
     @NotNull
     private Boolean isActive;
 
+    @ToString.Exclude
     @ManyToOne
     private Project project;
 

@@ -17,12 +17,11 @@ package uk.ac.ebi.impc_prod_tracker.controller.project.plan.phenotype_plan;
 
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
+import org.springframework.hateoas.RepresentationModel;
 
 @Data
 @RequiredArgsConstructor
-public class PhenotypePlanSummaryDTO
+public class PhenotypePlanDTO extends RepresentationModel
 {
-    private String phenotypingPlanInfo1;
-    private String phenotypingPlanInfo2;
-    private String phenotypingPlanInfo3;
+    private String productionPlanReference;
 }

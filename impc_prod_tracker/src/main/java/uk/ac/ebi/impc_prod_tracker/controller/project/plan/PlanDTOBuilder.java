@@ -19,7 +19,8 @@ import lombok.Data;
 import org.springframework.stereotype.Component;
 import uk.ac.ebi.impc_prod_tracker.common.Constants;
 import uk.ac.ebi.impc_prod_tracker.conf.error_management.OperationFailedException;
-import uk.ac.ebi.impc_prod_tracker.controller.project.plan.phenotype_plan.PhenotypePlanSummaryDTO;
+import uk.ac.ebi.impc_prod_tracker.controller.project.plan.phenotype_plan.PhenotypePlanDTO;
+import uk.ac.ebi.impc_prod_tracker.controller.project.plan.phenotype_plan.PhenotypePlanDTOBuilder;
 import uk.ac.ebi.impc_prod_tracker.controller.project.plan.production_plan.ProductionPlanDTOBuilder;
 import uk.ac.ebi.impc_prod_tracker.controller.project.plan.production_plan.ProductionPlanDTO;
 import uk.ac.ebi.impc_prod_tracker.data.experiment.plan.Plan;
@@ -32,13 +33,16 @@ public class PlanDTOBuilder
 {
     private PlanService planService;
     private ProductionPlanDTOBuilder productionPlanDTOBuilder;
+    private PhenotypePlanDTOBuilder phenotypePlanDTOBuilder;
 
     public PlanDTOBuilder(
         PlanService planService,
-        ProductionPlanDTOBuilder productionPlanDTOBuilder)
+        ProductionPlanDTOBuilder productionPlanDTOBuilder,
+        PhenotypePlanDTOBuilder phenotypePlanDTOBuilder)
     {
         this.planService = planService;
         this.productionPlanDTOBuilder = productionPlanDTOBuilder;
+        this.phenotypePlanDTOBuilder = phenotypePlanDTOBuilder;
     }
 
     public PlanDTO buildPlanDTOFromPlanPid(String pin)
@@ -67,10 +71,10 @@ public class PlanDTOBuilder
         }
         else
         {
-            PhenotypePlanSummaryDTO phenotypePlanSummaryDTO =
+            PhenotypePlanDTO phenotypePlanDTO =
                 buildPhenotypePlanSummaryDTOFromPlan(plan);
 
-            planDTO.setPhenotypePlanSummaryDTO(phenotypePlanSummaryDTO);
+            planDTO.setPhenotypePlanDTO(phenotypePlanDTO);
         }
 
         return planDTO;
@@ -116,9 +120,10 @@ public class PlanDTOBuilder
         return productionPlanDTO;
     }
 
-    private PhenotypePlanSummaryDTO buildPhenotypePlanSummaryDTOFromPlan(final Plan plan)
+    private PhenotypePlanDTO buildPhenotypePlanSummaryDTOFromPlan(final Plan plan)
     {
-        PhenotypePlanSummaryDTO phenotypePlanSummaryDTO = new PhenotypePlanSummaryDTO();
-        return phenotypePlanSummaryDTO;
+        PhenotypePlanDTO phenotypePlanDTO =
+            phenotypePlanDTOBuilder.buildPhenotypePlanDTOFromPlan(plan);
+        return phenotypePlanDTO;
     }
 }

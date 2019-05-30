@@ -26,4 +26,6 @@ public interface PlanRepository extends PagingAndSortingRepository<Plan, Long>
     Iterable<Plan> findAllByProject(Project project);
 
     Plan findPlanByPin(String pin);
+
+    Plan findPlanById(Long id);
 }

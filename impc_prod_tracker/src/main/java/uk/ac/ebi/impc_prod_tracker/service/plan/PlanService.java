@@ -30,4 +30,13 @@ public interface PlanService
     List<Plan> getPlans();
 
     Page<Plan> getPaginatedPlans(Pageable pageable);
+
+    /**
+     * Get the production plan that is related with a phenotype plan. The relation is given by the
+     * parent colony of the phenotype plan which should be the colony of one of the outcomes of the
+     * production plan.
+     * @param phenotypePlan The phenotype plan.
+     * @return The related production plan.
+     */
+    Plan getProductionPlanRefByPhenotypePlan(Plan phenotypePlan);
 }
