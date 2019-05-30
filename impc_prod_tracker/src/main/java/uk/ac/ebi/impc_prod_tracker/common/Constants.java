@@ -18,4 +18,5 @@ package uk.ac.ebi.impc_prod_tracker.common;
 public class Constants
 {
     public static final String PRODUCTION_TYPE = "production";
+    public static final String PHENOTYPE_TYPE = "phenotyping";
 }
