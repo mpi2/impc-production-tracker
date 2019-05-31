@@ -32,6 +32,7 @@ import uk.ac.ebi.impc_prod_tracker.data.experiment.project.Project;
 import uk.ac.ebi.impc_prod_tracker.service.plan.PlanService;
 import uk.ac.ebi.impc_prod_tracker.service.project.ProjectService;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -129,11 +130,30 @@ public class ProjectController
         return new EntityModel<>(projectPlanDTO);
     }
 
+    /**
+     * Returns Information about the projects with pagination.
+     * @param markerSymbols Optional filters with specific marker symbols
+     * @param pageable Pagination options
+     * @param assembler Assembler to add links to the resources
+     * @return List of ProjectSummaryDTO
+     */
     @GetMapping(value = {"/projectSummaries"})
-    public ResponseEntity<PagedModel<ProjectSummaryDTO>> getPlanSummariesPaginated(
-            Pageable pageable, PagedResourcesAssembler assembler)
+    public ResponseEntity getPlanSummariesPaginated(
+        @RequestParam(value="markerSymbol", required = false) String[] markerSymbols,
+        Pageable pageable,
+        PagedResourcesAssembler assembler)
     {
-        Page<Project> projects = projectService.getPaginatedProjects(pageable);
+        Page<Project> projects;
+        if (markerSymbols != null)
+        {
+            projects =
+                projectService.getProjectsByMarkerSymbols(Arrays.asList(markerSymbols), pageable);
+        }
+        else
+        {
+            projects = projectService.getPaginatedProjects(pageable);
+        }
+
         Page<ProjectSummaryDTO> planSummaryDTOPage = projects.map(this::convertToProjectSummaryDTO);
 
         PagedModel pr =
@@ -145,7 +165,6 @@ public class ProjectController
         responseHeaders.add("Link",createLinkHeader(pr));
 
         return new ResponseEntity<>(pr,responseHeaders,HttpStatus.OK);
-
     }
 
     @GetMapping(value = {"/projectSummaries/{tpn}"})

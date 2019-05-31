@@ -5,6 +5,7 @@ import lombok.AccessLevel;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 import uk.ac.ebi.impc_prod_tracker.data.BaseEntity;
 import uk.ac.ebi.impc_prod_tracker.data.biology.gene_flag.GeneFlag;
 import uk.ac.ebi.impc_prod_tracker.data.experiment.project.Project;
@@ -59,9 +60,12 @@ public class IntendedMouseGene extends BaseEntity
     private String ensemblStrand;
 
     @EqualsAndHashCode.Exclude
+    @ToString.Exclude
     @OneToMany(mappedBy = "mouseGene", cascade = CascadeType.ALL)
     private Set<ProjectMouseGene> projectMouseGenes = new HashSet<>();
 
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
     @ManyToMany
     @JoinTable(
             name = "intended_mouse_gene_flag",
