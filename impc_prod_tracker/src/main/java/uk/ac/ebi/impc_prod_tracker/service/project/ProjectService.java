@@ -28,4 +28,6 @@ public interface ProjectService
     Project getProjectByTpn(String tpn);
 
     Page<Project> getPaginatedProjects(Pageable pageable);
+
+    Page<Project> getProjectsByMarkerSymbols(List<String> markerSymbols, Pageable pageable);
 }
