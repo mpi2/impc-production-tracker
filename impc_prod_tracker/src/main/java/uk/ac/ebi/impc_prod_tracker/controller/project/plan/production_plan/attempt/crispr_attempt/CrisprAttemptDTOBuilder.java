@@ -21,18 +21,15 @@ import uk.ac.ebi.impc_prod_tracker.controller.project.plan.production_plan.attem
 import uk.ac.ebi.impc_prod_tracker.controller.project.plan.production_plan.attempt.NucleaseDTO;
 import uk.ac.ebi.impc_prod_tracker.controller.project.plan.production_plan.attempt.ReagentDTO;
 import uk.ac.ebi.impc_prod_tracker.data.biology.attempt.crispr_attempt.CrisprAttempt;
-import uk.ac.ebi.impc_prod_tracker.data.biology.attempt.crispr_attempt.CrisprAttemptRepository;
 import uk.ac.ebi.impc_prod_tracker.data.biology.attempt.crispr_attempt.nuclease.Nuclease;
-import uk.ac.ebi.impc_prod_tracker.data.biology.attempt.crispr_attempt.nuclease.NucleaseRepository;
 import uk.ac.ebi.impc_prod_tracker.data.biology.genotype_primer.GenotypePrimer;
-import uk.ac.ebi.impc_prod_tracker.data.biology.genotype_primer.GenotypePrimerRepository;
 import uk.ac.ebi.impc_prod_tracker.data.biology.mutagenesis_donor.MutagenesisDonor;
-import uk.ac.ebi.impc_prod_tracker.data.biology.mutagenesis_donor.MutagenesisDonorRepository;
 import uk.ac.ebi.impc_prod_tracker.data.biology.plan_reagent.PlanReagent;
 import uk.ac.ebi.impc_prod_tracker.data.biology.preparation_type.PreparationType;
 import uk.ac.ebi.impc_prod_tracker.data.experiment.assay_type.AssayType;
 import uk.ac.ebi.impc_prod_tracker.data.experiment.delivery_type.DeliveryType;
 import uk.ac.ebi.impc_prod_tracker.data.experiment.plan.Plan;
+import uk.ac.ebi.impc_prod_tracker.service.plan.CrisprAttempService;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -40,29 +37,20 @@ import java.util.Optional;
 @Component
 public class CrisprAttemptDTOBuilder
 {
-    private CrisprAttemptRepository crisprAttemptRepository;
-    private GenotypePrimerRepository genotypePrimerRepository;
-    private NucleaseRepository nucleaseRepository;
-    private MutagenesisDonorRepository mutagenesisDonorRepository;
+    private CrisprAttempService crisprAttempService;
 
     private static final String ELECTROPORATION_METHOD = "Electroporation";
 
-    public CrisprAttemptDTOBuilder(
-        CrisprAttemptRepository crisprAttemptRepository,
-        GenotypePrimerRepository genotypePrimerRepository,
-        NucleaseRepository nucleaseRepository,
-        MutagenesisDonorRepository mutagenesisDonorRepository)
+    public CrisprAttemptDTOBuilder(CrisprAttempService crisprAttempService)
     {
-        this.crisprAttemptRepository = crisprAttemptRepository;
-        this.genotypePrimerRepository = genotypePrimerRepository;
-        this.nucleaseRepository = nucleaseRepository;
-        this.mutagenesisDonorRepository = mutagenesisDonorRepository;
+        this.crisprAttempService = crisprAttempService;
     }
 
     public CrisprAttemptDTO buildFromPlan(final Plan plan)
     {
         CrisprAttemptDTO crisprAttemptDTO = new CrisprAttemptDTO();
-        Optional<CrisprAttempt> crisprAttemptOpt = crisprAttemptRepository.findById(plan.getId());
+        Optional<CrisprAttempt> crisprAttemptOpt =
+            crisprAttempService.getCrisprAttemptByPlanId(plan.getId());
         if (crisprAttemptOpt.isPresent())
         {
             CrisprAttempt crisprAttempt = crisprAttemptOpt.get();
@@ -140,7 +128,7 @@ public class CrisprAttemptDTOBuilder
     {
         List<GenotypePrimerDTO> genotypePrimerList = new ArrayList<>();
         Iterable<GenotypePrimer> genotypePrimers =
-            genotypePrimerRepository.findAllByCrisprAttempt(crisprAttempt);
+            crisprAttempService.getGenotypePrimersByCrisprAttempt(crisprAttempt);
         genotypePrimers.forEach(p -> genotypePrimerList.add(
             new GenotypePrimerDTO(
                 p.getSequence(),
@@ -155,7 +143,7 @@ public class CrisprAttemptDTOBuilder
     {
         List<NucleaseDTO> nucleaseList = new ArrayList<>();
         Iterable<Nuclease> nucleases =
-            nucleaseRepository.findAllByCrisprAttempt(crisprAttempt);
+            crisprAttempService.getNucleasesByCrisprAttempt(crisprAttempt);
         nucleases.forEach(p ->
         {
             String typeName = null;
@@ -182,7 +170,7 @@ public class CrisprAttemptDTOBuilder
     {
         List<MutagenesisDonorDTO> mutagenesisDonorDTOS = new ArrayList<>();
         Iterable<MutagenesisDonor> mutagenesisDonors =
-            mutagenesisDonorRepository.findAllByCrisprAttempt(crisprAttempt);
+            crisprAttempService.getMutagenesisDonorsByCrisprAttempt(crisprAttempt);
         mutagenesisDonors.forEach(p ->
             {
                 String preparationTypeName = null;
