@@ -2,9 +2,9 @@ package uk.ac.ebi.impc_prod_tracker.data.biology.intented_mouse_gene;
 
 import org.springframework.data.repository.CrudRepository;
 
-import java.util.List;
+import java.util.Collection;
 
 public interface IntendedMouseGeneRepository extends CrudRepository<IntendedMouseGene, Long>
 {
-    Iterable<IntendedMouseGene> findAllBySymbolIn(List<String> symbols);
+    Iterable<IntendedMouseGene> findAllBySymbolIn(Collection<String> symbols);
 }

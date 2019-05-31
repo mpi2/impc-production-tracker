@@ -25,6 +25,7 @@ import uk.ac.ebi.impc_prod_tracker.data.experiment.project.ProjectRepository;
 import uk.ac.ebi.impc_prod_tracker.data.experiment.project_mouse_gene.ProjectMouseGene;
 import uk.ac.ebi.impc_prod_tracker.data.experiment.project_mouse_gene.ProjectMouseGeneRepository;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 @Component
@@ -72,8 +73,11 @@ public class ProjectServiceImpl implements ProjectService
         Iterable<IntendedMouseGene> intendedMouseGenes =
             intendedMouseGeneRepository.findAllBySymbolIn(markerSymbols);
         Iterable<ProjectMouseGene> projectMouseGenes =
-            projectMouseGeneRepository.findAllByMouseGeneIn(intendedMouseGenes);
-        Page<Project> projects = projectRepository.findAllByProjectMouseGenesIn(projectMouseGenes, pageable);
+            projectMouseGeneRepository.findAllByMouseGeneIn(
+                (Collection<IntendedMouseGene>) intendedMouseGenes);
+        Page<Project> projects =
+            projectRepository.findAllByProjectMouseGenesIn(
+                (Collection<ProjectMouseGene>) projectMouseGenes, pageable);
         return projects;
 
     }

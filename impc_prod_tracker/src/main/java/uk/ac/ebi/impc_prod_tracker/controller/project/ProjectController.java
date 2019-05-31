@@ -143,17 +143,17 @@ public class ProjectController
         Pageable pageable,
         PagedResourcesAssembler assembler)
     {
-        Page<Project> projects = null;
+        Page<Project> projects;
         if (markerSymbols != null)
         {
-            projects = projectService.getProjectsByMarkerSymbols(Arrays.asList(markerSymbols), pageable);
+            projects =
+                projectService.getProjectsByMarkerSymbols(Arrays.asList(markerSymbols), pageable);
         }
         else
         {
             projects = projectService.getPaginatedProjects(pageable);
         }
-       // List<Project> p = projectService.getProjectsByMarkerSymbols(Arrays.asList(markerSymbols) );
-       // Page<Project> projects = projectService.getPaginatedProjects(pageable);
+
         Page<ProjectSummaryDTO> planSummaryDTOPage = projects.map(this::convertToProjectSummaryDTO);
 
         PagedModel pr =
