@@ -1,6 +1,8 @@
 package uk.ac.ebi.impc_prod_tracker.controller.project.plan.phenotype_plan;
 
 import org.springframework.stereotype.Component;
+import uk.ac.ebi.impc_prod_tracker.controller.project.plan.phenotype_plan.phenotyping_production.PhenotypingProductionDTO;
+import uk.ac.ebi.impc_prod_tracker.controller.project.plan.phenotype_plan.phenotyping_production.PhenotypingProductionDTOBuilder;
 import uk.ac.ebi.impc_prod_tracker.data.experiment.plan.Plan;
 import uk.ac.ebi.impc_prod_tracker.service.plan.PlanService;
 
@@ -8,10 +10,13 @@ import uk.ac.ebi.impc_prod_tracker.service.plan.PlanService;
 public class PhenotypePlanDTOBuilder
 {
     private PlanService planService;
+    private PhenotypingProductionDTOBuilder phenotypingProductionDTOBuilder;
 
-    public PhenotypePlanDTOBuilder(PlanService planService)
+    public PhenotypePlanDTOBuilder(
+        PlanService planService, PhenotypingProductionDTOBuilder phenotypingProductionDTOBuilder)
     {
         this.planService = planService;
+        this.phenotypingProductionDTOBuilder = phenotypingProductionDTOBuilder;
     }
 
     public PhenotypePlanDTO buildPhenotypePlanDTOFromPlan(final Plan plan)
@@ -22,6 +27,9 @@ public class PhenotypePlanDTOBuilder
         {
             phenotypePlanDTO.setProductionPlanReference(relatedProductionPlan.getPin());
         }
+        PhenotypingProductionDTO phenotypingProductionDTO =
+            phenotypingProductionDTOBuilder.buildFromPlan(plan);
+        phenotypePlanDTO.setPhenotypingProduction(phenotypingProductionDTO);
 
         return phenotypePlanDTO;
     }
