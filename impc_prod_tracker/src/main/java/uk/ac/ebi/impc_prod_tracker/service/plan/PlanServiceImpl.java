@@ -19,33 +19,32 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 import uk.ac.ebi.impc_prod_tracker.common.Constants;
-import uk.ac.ebi.impc_prod_tracker.conf.security.ResourcePrivacy;
-import uk.ac.ebi.impc_prod_tracker.conf.security.abac.spring.ContextAwarePolicyEnforcement;
+import uk.ac.ebi.impc_prod_tracker.conf.security.abac.ResourceAccessChecker;
 import uk.ac.ebi.impc_prod_tracker.data.biology.outcome.Outcome;
 import uk.ac.ebi.impc_prod_tracker.data.biology.outcome.OutcomeRepository;
 import uk.ac.ebi.impc_prod_tracker.data.experiment.colony.Colony;
 import uk.ac.ebi.impc_prod_tracker.data.experiment.plan.Plan;
 import uk.ac.ebi.impc_prod_tracker.data.experiment.plan.PlanRepository;
 import uk.ac.ebi.impc_prod_tracker.data.experiment.project.Project;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Component
 public class PlanServiceImpl implements PlanService
 {
     private PlanRepository planRepository;
     private OutcomeRepository outcomeRepository;
-    private ContextAwarePolicyEnforcement policyEnforcement;
+    private ResourceAccessChecker<Plan> resourceAccessChecker;
+
+    private static final String READ_PLAN_ACTION = "READ_PLAN";
 
     PlanServiceImpl(
         PlanRepository planRepository,
         OutcomeRepository outcome,
-        ContextAwarePolicyEnforcement policyEnforcement)
+        ResourceAccessChecker<Plan> resourceAccessChecker)
     {
         this.planRepository = planRepository;
         this.outcomeRepository = outcome;
-        this.policyEnforcement = policyEnforcement;
+        this.resourceAccessChecker = resourceAccessChecker;
     }
 
     @Override
@@ -55,7 +54,7 @@ public class PlanServiceImpl implements PlanService
         if (Constants.PHENOTYPE_TYPE.equals(phenotypePlan.getPlanType().getName()))
         {
             Colony parentColony = phenotypePlan.getColony();
-            Iterable<Outcome> outcomesByColony = outcomeRepository.findAllByColony(parentColony);
+            List<Outcome> outcomesByColony = outcomeRepository.findAllByColony(parentColony);
             for (Outcome outcome : outcomesByColony)
             {
                 plan = planRepository.findPlanById(outcome.getAttempt().getId());
@@ -69,72 +68,38 @@ public class PlanServiceImpl implements PlanService
     @Override
     public List<Plan> getPlansByProject(Project project)
     {
-        Iterable<Plan> plans = planRepository.findAllByProject(project);
-        List<Plan> planList = new ArrayList<>();
-        plans.forEach(planList::add);
-        return checkVisibilityForList(planList);
+        List<Plan> plans = planRepository.findAllByProject(project);
+        return getAccessCheckedPlans(plans);
     }
 
     @Override
     public Plan getPlanByPin(String pin)
     {
         Plan plan = planRepository.findPlanByPin(pin);
-        return checkVisibility(plan);
+        return getAccessCheckedPlan(plan);
     }
 
     @Override
     public List<Plan> getPlans()
     {
-        List<Plan> planList = new ArrayList<>();
-        Iterable<Plan> plans = planRepository.findAll();
-        plans.forEach(planList::add);
-        return checkVisibilityForList(planList);
+        List<Plan> plans = planRepository.findAll();
+        return getAccessCheckedPlans(plans);
     }
 
     @Override
     public Page<Plan> getPaginatedPlans(Pageable pageable)
     {
-        // TODO: Is the check working?
         Page<Plan> plans = planRepository.findAll(pageable);
-        return plans.map(this::checkVisibility);
+        return plans.map(this::getAccessCheckedPlan);
     }
 
-    private List<Plan> checkVisibilityForList(List<Plan> plans)
+    private Plan getAccessCheckedPlan(Plan plan)
     {
-        return plans.stream()
-            .map(p -> checkVisibility(p))
-            .filter(p -> p != null)
-            .collect(Collectors.toList());
+        return (Plan) resourceAccessChecker.checkAccess(plan, READ_PLAN_ACTION);
     }
 
-    private Plan checkVisibility(Plan plan)
+    private List<Plan> getAccessCheckedPlans(List<Plan> plans)
     {
-        if (plan == null)
-        {
-            return null;
-        }
-
-        Plan planResult = plan;
-
-        if (policyEnforcement.isUserAnonymous())
-        {
-            if (!plan.getResourcePrivacy().equals(ResourcePrivacy.PUBLIC))
-            {
-                planResult = null;
-            }
-        }
-        else
-        {
-            if (policyEnforcement.hasPermission(plan, "READ_PLAN"))
-            {
-                planResult = plan;
-            }
-            else
-            {
-                planResult = plan.getRestrictedObject();
-            }
-        }
-
-        return planResult;
+       return (List<Plan>) resourceAccessChecker.checkAccessForCollection(plans, READ_PLAN_ACTION);
     }
 }

@@ -19,12 +19,12 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import uk.ac.ebi.impc_prod_tracker.data.experiment.project_mouse_gene.ProjectMouseGene;
-
 import java.util.Collection;
+import java.util.List;
 
 public interface ProjectRepository extends PagingAndSortingRepository<Project, Long>
 {
-    Iterable<Project> findAll();
+    List<Project> findAll();
 
     Project findProjectByTpn(String tpn);
 

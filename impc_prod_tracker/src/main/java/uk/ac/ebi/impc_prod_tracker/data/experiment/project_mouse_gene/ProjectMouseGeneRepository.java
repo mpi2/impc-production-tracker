@@ -4,8 +4,9 @@ import org.springframework.data.repository.CrudRepository;
 import uk.ac.ebi.impc_prod_tracker.data.biology.intented_mouse_gene.IntendedMouseGene;
 
 import java.util.Collection;
+import java.util.List;
 
 public interface ProjectMouseGeneRepository extends CrudRepository<ProjectMouseGene, Long>
 {
-    Iterable<ProjectMouseGene> findAllByMouseGeneIn(Collection<IntendedMouseGene> mouseGeneList);
+    List<ProjectMouseGene> findAllByMouseGeneIn(Collection<IntendedMouseGene> mouseGeneList);
 }

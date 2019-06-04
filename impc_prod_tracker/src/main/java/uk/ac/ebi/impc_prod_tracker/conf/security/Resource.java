@@ -4,5 +4,5 @@ public interface Resource<T>
 {
     ResourcePrivacy getResourcePrivacy();
 
-    T getRestrictedObject();
+    Resource<T> getRestrictedObject();
 }

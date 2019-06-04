@@ -17,7 +17,8 @@ package uk.ac.ebi.impc_prod_tracker.data.biology.genotype_primer;
 
 import org.springframework.data.repository.CrudRepository;
 import uk.ac.ebi.impc_prod_tracker.data.biology.attempt.crispr_attempt.CrisprAttempt;
+import java.util.List;
 
 public interface GenotypePrimerRepository extends CrudRepository<GenotypePrimer, Long> {
-    Iterable<GenotypePrimer> findAllByCrisprAttempt(CrisprAttempt crisprAttempt);
+    List<GenotypePrimer> findAllByCrisprAttempt(CrisprAttempt crisprAttempt);
 }

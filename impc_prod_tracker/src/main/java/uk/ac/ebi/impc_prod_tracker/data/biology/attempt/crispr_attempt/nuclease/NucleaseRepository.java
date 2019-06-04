@@ -18,7 +18,9 @@ package uk.ac.ebi.impc_prod_tracker.data.biology.attempt.crispr_attempt.nuclease
 import org.springframework.data.repository.CrudRepository;
 import uk.ac.ebi.impc_prod_tracker.data.biology.attempt.crispr_attempt.CrisprAttempt;
 
+import java.util.List;
+
 public interface NucleaseRepository extends CrudRepository<Nuclease, Long>
 {
-    Iterable<Nuclease> findAllByCrisprAttempt(CrisprAttempt crisprAttempt);
+    List<Nuclease> findAllByCrisprAttempt(CrisprAttempt crisprAttempt);
 }
