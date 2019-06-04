@@ -17,12 +17,13 @@ package uk.ac.ebi.impc_prod_tracker.data.organization.role;
 
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.security.access.prepost.PostFilter;
+import java.util.List;
 
 public interface RoleRepository extends CrudRepository<Role, Long> {
 
     @Override
     @PostFilter("hasPermission(filterObject, 'FILTER_ROLE')")
-    Iterable<Role> findAll();
+    List<Role> findAll();
 
     Role findRoleByName(String name);
 }

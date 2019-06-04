@@ -9,6 +9,7 @@ import uk.ac.ebi.impc_prod_tracker.data.biology.genotype_primer.GenotypePrimer;
 import uk.ac.ebi.impc_prod_tracker.data.biology.genotype_primer.GenotypePrimerRepository;
 import uk.ac.ebi.impc_prod_tracker.data.biology.mutagenesis_donor.MutagenesisDonor;
 import uk.ac.ebi.impc_prod_tracker.data.biology.mutagenesis_donor.MutagenesisDonorRepository;
+import java.util.List;
 import java.util.Optional;
 
 @Component
@@ -37,17 +38,17 @@ public class CrisprAttempServiceImpl implements CrisprAttempService
         return crisprAttemptRepository.findById(planId);
     }
 
-    public Iterable<GenotypePrimer> getGenotypePrimersByCrisprAttempt(CrisprAttempt crisprAttempt)
+    public List<GenotypePrimer> getGenotypePrimersByCrisprAttempt(CrisprAttempt crisprAttempt)
     {
         return genotypePrimerRepository.findAllByCrisprAttempt(crisprAttempt);
     }
 
-    public Iterable<Nuclease> getNucleasesByCrisprAttempt(CrisprAttempt crisprAttempt)
+    public List<Nuclease> getNucleasesByCrisprAttempt(CrisprAttempt crisprAttempt)
     {
         return nucleaseRepository.findAllByCrisprAttempt(crisprAttempt);
     }
 
-    public Iterable<MutagenesisDonor> getMutagenesisDonorsByCrisprAttempt(CrisprAttempt crisprAttempt)
+    public List<MutagenesisDonor> getMutagenesisDonorsByCrisprAttempt(CrisprAttempt crisprAttempt)
     {
         return mutagenesisDonorRepository.findAllByCrisprAttempt(crisprAttempt);
     }

@@ -18,12 +18,14 @@ package uk.ac.ebi.impc_prod_tracker.data.experiment.plan;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import uk.ac.ebi.impc_prod_tracker.data.experiment.project.Project;
 
+import java.util.List;
+
 public interface PlanRepository extends PagingAndSortingRepository<Plan, Long>
 {
 
-    Iterable<Plan> findAll();
+    List<Plan> findAll();
 
-    Iterable<Plan> findAllByProject(Project project);
+    List<Plan> findAllByProject(Project project);
 
     Plan findPlanByPin(String pin);
 

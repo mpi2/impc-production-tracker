@@ -6,9 +6,6 @@ import uk.ac.ebi.impc_prod_tracker.data.biology.phenotyping_production.Phenotypi
 import uk.ac.ebi.impc_prod_tracker.data.biology.tissue_distribution_centre.TissueDistributionCentre;
 import uk.ac.ebi.impc_prod_tracker.data.biology.tissue_distribution_centre.TissueDistributionCentreRepository;
 import uk.ac.ebi.impc_prod_tracker.data.experiment.plan.Plan;
-
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -36,10 +33,7 @@ public class PhenotypingProductionServiceImpl implements PhenotypingProductionSe
     public List<TissueDistributionCentre> getTissueDistributionCentresByPhenotypingProduction(
         PhenotypingProduction phenotypingProduction)
     {
-        Iterable<TissueDistributionCentre> tissueDistributionCentres =
+        return
             tissueDistributionCentreRepository.findAllByPhenotypingProduction(phenotypingProduction);
-        List<TissueDistributionCentre> tissueDistributionCentreList = new ArrayList<>();
-        tissueDistributionCentres.forEach(tissueDistributionCentreList::add);
-        return tissueDistributionCentreList;
     }
 }

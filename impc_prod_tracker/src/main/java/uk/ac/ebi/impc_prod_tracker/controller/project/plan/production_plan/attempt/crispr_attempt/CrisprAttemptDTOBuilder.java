@@ -127,7 +127,7 @@ public class CrisprAttemptDTOBuilder
     private void setPrimers(CrisprAttemptDTO crisprAttemptDTO, final CrisprAttempt crisprAttempt)
     {
         List<GenotypePrimerDTO> genotypePrimerList = new ArrayList<>();
-        Iterable<GenotypePrimer> genotypePrimers =
+        List<GenotypePrimer> genotypePrimers =
             crisprAttempService.getGenotypePrimersByCrisprAttempt(crisprAttempt);
         genotypePrimers.forEach(p -> genotypePrimerList.add(
             new GenotypePrimerDTO(
@@ -142,7 +142,7 @@ public class CrisprAttemptDTOBuilder
     private void setNucleases(CrisprAttemptDTO crisprAttemptDTO, final CrisprAttempt crisprAttempt)
     {
         List<NucleaseDTO> nucleaseList = new ArrayList<>();
-        Iterable<Nuclease> nucleases =
+        List<Nuclease> nucleases =
             crisprAttempService.getNucleasesByCrisprAttempt(crisprAttempt);
         nucleases.forEach(p ->
         {
@@ -169,7 +169,7 @@ public class CrisprAttemptDTOBuilder
         CrisprAttemptDTO crisprAttemptDTO, final CrisprAttempt crisprAttempt)
     {
         List<MutagenesisDonorDTO> mutagenesisDonorDTOS = new ArrayList<>();
-        Iterable<MutagenesisDonor> mutagenesisDonors =
+        List<MutagenesisDonor> mutagenesisDonors =
             crisprAttempService.getMutagenesisDonorsByCrisprAttempt(crisprAttempt);
         mutagenesisDonors.forEach(p ->
             {

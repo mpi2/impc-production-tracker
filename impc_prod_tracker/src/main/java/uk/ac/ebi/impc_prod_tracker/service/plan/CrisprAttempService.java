@@ -5,15 +5,16 @@ import uk.ac.ebi.impc_prod_tracker.data.biology.attempt.crispr_attempt.nuclease.
 import uk.ac.ebi.impc_prod_tracker.data.biology.genotype_primer.GenotypePrimer;
 import uk.ac.ebi.impc_prod_tracker.data.biology.mutagenesis_donor.MutagenesisDonor;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface CrisprAttempService
 {
     Optional<CrisprAttempt> getCrisprAttemptByPlanId(Long planId);
 
-    Iterable<GenotypePrimer> getGenotypePrimersByCrisprAttempt(CrisprAttempt crisprAttempt);
+    List<GenotypePrimer> getGenotypePrimersByCrisprAttempt(CrisprAttempt crisprAttempt);
 
-    Iterable<Nuclease> getNucleasesByCrisprAttempt(CrisprAttempt crisprAttempt);
+    List<Nuclease> getNucleasesByCrisprAttempt(CrisprAttempt crisprAttempt);
 
-    Iterable<MutagenesisDonor> getMutagenesisDonorsByCrisprAttempt(CrisprAttempt crisprAttempt);
+    List<MutagenesisDonor> getMutagenesisDonorsByCrisprAttempt(CrisprAttempt crisprAttempt);
 }
