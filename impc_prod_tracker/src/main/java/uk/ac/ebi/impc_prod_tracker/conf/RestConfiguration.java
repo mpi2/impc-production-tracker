@@ -18,10 +18,7 @@ package uk.ac.ebi.impc_prod_tracker.conf;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.hateoas.server.RepresentationModelProcessor;
-import org.springframework.hateoas.server.mvc.RepresentationModelProcessorInvoker;
 import org.springframework.web.client.RestTemplate;
-import java.util.List;
 
 /**
  * Configure needed beans for handling REST calls
@@ -37,9 +34,16 @@ public class RestConfiguration
         return builder.build();
     }
 
-    @Bean
-    RepresentationModelProcessorInvoker representationModelProcessorInvoker(
-        List<RepresentationModelProcessor<?>> processors) {
-        return new RepresentationModelProcessorInvoker(processors);
-    }
+    // This method was added as a workaround for an error asking for a missing
+    // RepresentationModelProcessorInvoker bean. Refreshing the cache seems to solve the problem
+    // but the code will remain here for reference.
+    // Adding this method can raise another error because an attempt to override a bean when
+    // it has been already provided. If so, adding the following line in application.properties
+    // fixes the error:
+    // spring.main.allow-bean-definition-overriding=true
+//    @Bean
+//    RepresentationModelProcessorInvoker representationModelProcessorInvoker(
+//        List<RepresentationModelProcessor<?>> processors) {
+//        return new RepresentationModelProcessorInvoker(processors);
+//    }
 }
