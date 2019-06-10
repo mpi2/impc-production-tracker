@@ -33,13 +33,13 @@ public class ProjectDetailsDTO extends RepresentationModel
     private String assigmentStatusName;
     private String priorityName;
     private List<String> locations;
-    private List<IntentionDTO> intentions;
+    private List<String> alleleIntentions;
+    private List<MarkerSymbolDTO> markerSymbols;
 
     @Data
-    public static class IntentionDTO
+    public static class MarkerSymbolDTO
     {
         String markerSymbol;
-        String alleleType;
         String mgiLink;
     }
 }

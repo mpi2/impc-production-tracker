@@ -22,8 +22,6 @@ import uk.ac.ebi.impc_prod_tracker.data.biology.intented_mouse_gene.IntendedMous
 import uk.ac.ebi.impc_prod_tracker.data.biology.intented_mouse_gene.IntendedMouseGeneRepository;
 import uk.ac.ebi.impc_prod_tracker.data.experiment.project.Project;
 import uk.ac.ebi.impc_prod_tracker.data.experiment.project.ProjectRepository;
-import uk.ac.ebi.impc_prod_tracker.data.experiment.project_mouse_gene.ProjectMouseGene;
-import uk.ac.ebi.impc_prod_tracker.data.experiment.project_mouse_gene.ProjectMouseGeneRepository;
 import java.util.List;
 
 @Component
@@ -31,16 +29,13 @@ public class ProjectServiceImpl implements ProjectService
 {
     private ProjectRepository projectRepository;
     private IntendedMouseGeneRepository intendedMouseGeneRepository;
-    private ProjectMouseGeneRepository projectMouseGeneRepository;
 
     ProjectServiceImpl(
         ProjectRepository projectRepository,
-        IntendedMouseGeneRepository intendedMouseGeneRepository,
-        ProjectMouseGeneRepository projectMouseGeneRepository)
+        IntendedMouseGeneRepository intendedMouseGeneRepository)
     {
         this.projectRepository = projectRepository;
         this.intendedMouseGeneRepository = intendedMouseGeneRepository;
-        this.projectMouseGeneRepository = projectMouseGeneRepository;
     }
 
     @Override
@@ -66,10 +61,8 @@ public class ProjectServiceImpl implements ProjectService
     {
         List<IntendedMouseGene> intendedMouseGenes =
             intendedMouseGeneRepository.findAllBySymbolIn(markerSymbols);
-        List<ProjectMouseGene> projectMouseGenes =
-            projectMouseGeneRepository.findAllByMouseGeneIn(intendedMouseGenes);
         Page<Project> projects =
-            projectRepository.findAllByProjectMouseGenesIn(projectMouseGenes, pageable);
+            projectRepository.findAllByIntendedMouseGenesIn(intendedMouseGenes, pageable);
         return projects;
 
     }
