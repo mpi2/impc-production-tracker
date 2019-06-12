@@ -17,6 +17,7 @@ package uk.ac.ebi.impc_prod_tracker.service.plan;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Component;
 import uk.ac.ebi.impc_prod_tracker.common.Constants;
 import uk.ac.ebi.impc_prod_tracker.conf.security.abac.ResourceAccessChecker;
@@ -63,6 +64,18 @@ public class PlanServiceImpl implements PlanService
         }
 
         return plan;
+    }
+
+    @Override
+    public Page<Plan> getPlansBySpec(Specification<Plan> specification, Pageable pageable)
+    {
+        return planRepository.findAll(specification, pageable);
+    }
+
+    @Override
+    public Page<Plan> getPlansBySpecPro(Specification<Project> specification, Pageable pageable)
+    {
+        return null;
     }
 
     @Override

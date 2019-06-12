@@ -63,7 +63,6 @@ public class Plan extends BaseEntity implements Resource<Plan>
     @ManyToOne
     private Project project;
 
-
     @ManyToOne(targetEntity= PlanType.class)
     private PlanType planType;
 

@@ -17,17 +17,30 @@ package uk.ac.ebi.impc_prod_tracker.service.project;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import uk.ac.ebi.impc_prod_tracker.data.experiment.project.Project;
-
 import java.util.List;
 
 public interface ProjectService
 {
+    /**
+     * Get all projects.
+     * @return
+     */
     List<Project> getProjects();
 
+    /**
+     * Get the project identified by a specific tpn.
+     * @param tpn Project identifier.
+     * @return A project with the specific identifier (tpn).
+     */
     Project getProjectByTpn(String tpn);
 
-    Page<Project> getPaginatedProjects(Pageable pageable);
-
-    Page<Project> getProjectsByMarkerSymbols(List<String> markerSymbols, Pageable pageable);
+    /**
+     * Get paginated projects filtering with the criteria defined in specification.
+     * @param specification Filters to apply to the projects to return.
+     * @param pageable Pagination information.
+     * @return Paginated Projects filtered with criteria defined in specification.
+     */
+    Page<Project> getProjectsBySpecPro(Specification<Project> specification, Pageable pageable);
 }

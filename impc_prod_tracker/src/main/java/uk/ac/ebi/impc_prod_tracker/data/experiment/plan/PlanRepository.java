@@ -15,12 +15,13 @@
  *******************************************************************************/
 package uk.ac.ebi.impc_prod_tracker.data.experiment.plan;
 
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import uk.ac.ebi.impc_prod_tracker.data.experiment.project.Project;
 
 import java.util.List;
 
-public interface PlanRepository extends PagingAndSortingRepository<Plan, Long>
+public interface PlanRepository extends PagingAndSortingRepository<Plan, Long>, JpaSpecificationExecutor<Plan>
 {
 
     List<Plan> findAll();
