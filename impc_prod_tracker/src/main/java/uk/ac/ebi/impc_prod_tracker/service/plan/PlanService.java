@@ -17,6 +17,7 @@ package uk.ac.ebi.impc_prod_tracker.service.plan;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import uk.ac.ebi.impc_prod_tracker.data.experiment.plan.Plan;
 import uk.ac.ebi.impc_prod_tracker.data.experiment.project.Project;
 import java.util.List;
@@ -39,4 +40,8 @@ public interface PlanService
      * @return The related production plan.
      */
     Plan getProductionPlanRefByPhenotypePlan(Plan phenotypePlan);
+
+    Page<Plan> getPlansBySpec(Specification<Plan> specification, Pageable pageable);
+    Page<Plan> getPlansBySpecPro(Specification<Project> specification, Pageable pageable);
+
 }

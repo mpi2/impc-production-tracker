@@ -9,9 +9,11 @@ import uk.ac.ebi.impc_prod_tracker.data.BaseEntity;
 import uk.ac.ebi.impc_prod_tracker.data.biology.allele_type.AlleleType;
 import uk.ac.ebi.impc_prod_tracker.data.biology.intented_mouse_gene.IntendedMouseGene;
 import uk.ac.ebi.impc_prod_tracker.data.experiment.assignment_status.AssignmentStatus;
+import uk.ac.ebi.impc_prod_tracker.data.experiment.plan.Plan;
 import uk.ac.ebi.impc_prod_tracker.data.experiment.project_priority.ProjectPriority;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.util.HashSet;
 import java.util.Set;
 
 @NoArgsConstructor(access= AccessLevel.PUBLIC, force=true)
@@ -30,6 +32,12 @@ public class Project extends BaseEntity
 
     @Column(unique = true)
     private Long imitsMiPlanId;
+
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
+    @OneToMany
+    @JoinColumn(name = "project_id")
+    private Set<Plan> plans = new HashSet<>();
 
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
