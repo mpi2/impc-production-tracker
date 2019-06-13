@@ -17,7 +17,6 @@ package uk.ac.ebi.impc_prod_tracker.data.experiment.plan;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AccessLevel;
-import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;

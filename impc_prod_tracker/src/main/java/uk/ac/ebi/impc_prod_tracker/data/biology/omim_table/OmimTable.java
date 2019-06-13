@@ -4,12 +4,9 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import uk.ac.ebi.impc_prod_tracker.data.BaseEntity;
 import uk.ac.ebi.impc_prod_tracker.data.biology.human_disease.HumanDisease;
-
 import javax.persistence.*;
 import java.util.Set;
-
 
 @NoArgsConstructor(access= AccessLevel.PRIVATE, force=true)
 @Getter
