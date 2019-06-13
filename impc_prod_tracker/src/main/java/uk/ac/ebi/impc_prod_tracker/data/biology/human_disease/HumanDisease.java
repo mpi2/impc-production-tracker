@@ -19,10 +19,7 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import uk.ac.ebi.impc_prod_tracker.data.BaseEntity;
-import uk.ac.ebi.impc_prod_tracker.data.biology.human_gene.HumanGene;
 import uk.ac.ebi.impc_prod_tracker.data.biology.omim_table.OmimTable;
-
 import javax.persistence.*;
 import java.util.Set;
 

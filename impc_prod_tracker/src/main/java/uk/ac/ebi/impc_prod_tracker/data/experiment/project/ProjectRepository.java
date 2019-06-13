@@ -15,20 +15,14 @@
  *******************************************************************************/
 package uk.ac.ebi.impc_prod_tracker.data.experiment.project;
 
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.repository.PagingAndSortingRepository;
-import uk.ac.ebi.impc_prod_tracker.data.biology.intented_mouse_gene.IntendedMouseGene;
-import java.util.Collection;
 import java.util.List;
 
-public interface ProjectRepository extends PagingAndSortingRepository<Project, Long>, JpaSpecificationExecutor<Project>
+public interface ProjectRepository extends PagingAndSortingRepository<Project, Long>,
+    JpaSpecificationExecutor<Project>
 {
     List<Project> findAll();
 
     Project findProjectByTpn(String tpn);
-
-    Page<Project> findAllByIntendedMouseGenesIn(
-        Collection<IntendedMouseGene> intendedMouseGenes, Pageable pageable);
 }
