@@ -50,6 +50,7 @@ public class Project extends BaseEntity
     private ProjectPriority projectPriority;
 
     @EqualsAndHashCode.Exclude
+    @ToString.Exclude
     @ManyToMany
     @JoinTable(
         name = "project_intention_rel",
@@ -58,6 +59,7 @@ public class Project extends BaseEntity
     private Set<AlleleType> projectIntentions;
 
     @EqualsAndHashCode.Exclude
+    @ToString.Exclude
     @ManyToMany
     @JoinTable(
         name = "project_mouse_gene",
