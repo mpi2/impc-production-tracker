@@ -43,4 +43,22 @@ public interface ProjectService
      * @return Paginated Projects filtered with criteria defined in specification.
      */
     Page<Project> getProjectsBySpecPro(Specification<Project> specification, Pageable pageable);
+
+    /**
+     * 
+     * @param project
+     * @param workUnits
+     * @param workGroups
+     * @param planTypes
+     * @param statuses
+     * @param privacies
+     * @return
+     */
+    Project getProjectFilteredByPlanAttributes(
+        Project project,
+        List<String> workUnits,
+        List<String> workGroups,
+        List<String> planTypes,
+        List<String> statuses,
+        List<String> privacies);
 }

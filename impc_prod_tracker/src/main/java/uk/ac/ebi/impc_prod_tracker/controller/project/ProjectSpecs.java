@@ -20,8 +20,16 @@ import uk.ac.ebi.impc_prod_tracker.data.biology.intented_mouse_gene.IntendedMous
 import uk.ac.ebi.impc_prod_tracker.data.biology.intented_mouse_gene.IntendedMouseGene_;
 import uk.ac.ebi.impc_prod_tracker.data.experiment.plan.Plan;
 import uk.ac.ebi.impc_prod_tracker.data.experiment.plan.Plan_;
+import uk.ac.ebi.impc_prod_tracker.data.experiment.plan.type.PlanType;
+import uk.ac.ebi.impc_prod_tracker.data.experiment.plan.type.PlanType_;
+import uk.ac.ebi.impc_prod_tracker.data.experiment.privacy.Privacy;
+import uk.ac.ebi.impc_prod_tracker.data.experiment.privacy.Privacy_;
 import uk.ac.ebi.impc_prod_tracker.data.experiment.project.Project;
 import uk.ac.ebi.impc_prod_tracker.data.experiment.project.Project_;
+import uk.ac.ebi.impc_prod_tracker.data.experiment.project_priority.ProjectPriority;
+import uk.ac.ebi.impc_prod_tracker.data.experiment.project_priority.ProjectPriority_;
+import uk.ac.ebi.impc_prod_tracker.data.experiment.status.Status;
+import uk.ac.ebi.impc_prod_tracker.data.experiment.status.Status_;
 import uk.ac.ebi.impc_prod_tracker.data.organization.work_group.WorkGroup;
 import uk.ac.ebi.impc_prod_tracker.data.organization.work_group.WorkGroup_;
 import uk.ac.ebi.impc_prod_tracker.data.organization.work_unit.WorkUnit;
@@ -56,6 +64,7 @@ public class ProjectSpecs
             Path<WorkUnit> workUnitPath = plansJoin.get(Plan_.workUnit);
             Path<String> workUnitName = workUnitPath.get(WorkUnit_.name);
             predicates.add(workUnitName.in(workUnitNames));
+            query.distinct(true);
 
             return criteriaBuilder.and(predicates.toArray(new Predicate[predicates.size()]));
         };
@@ -81,6 +90,7 @@ public class ProjectSpecs
                 root.join(Project_.intendedMouseGenes);
             Path<String> symbolName = intendedMouseGeneSetJoin.get(IntendedMouseGene_.symbol);
             predicates.add(symbolName.in(markerSymbols));
+            query.distinct(true);
 
             return criteriaBuilder.and(predicates.toArray(new Predicate[predicates.size()]));
         };
@@ -105,6 +115,106 @@ public class ProjectSpecs
             Path<WorkGroup> workGroupPath = plansJoin.get(Plan_.workGroup);
             Path<String> workGroupName = workGroupPath.get(WorkGroup_.name);
             predicates.add(workGroupName.in(workGroupsNames));
+            query.distinct(true);
+
+            return criteriaBuilder.and(predicates.toArray(new Predicate[predicates.size()]));
+        };
+    }
+
+    /**
+     * Get all the projects which plans of the specified type in planTypes.
+     * @param planTypes List of plan types.
+     * @return The found projects. If planTypes is null then not filter is applied.
+     */
+    public static Specification<Project> getProjectsByPlanType(List<String> planTypes)
+    {
+        return (Specification<Project>) (root, query, criteriaBuilder) -> {
+            if (planTypes == null)
+            {
+                return criteriaBuilder.isTrue(criteriaBuilder.literal(true));
+            }
+
+            List<Predicate> predicates = new ArrayList<>();
+
+            SetJoin<Project, Plan> plansJoin = root.join(Project_.plans);
+            Path<PlanType> planType = plansJoin.get(Plan_.planType);
+            Path<String> planTypeName = planType.get(PlanType_.name);
+            predicates.add(planTypeName.in(planTypes));
+            query.distinct(true);
+
+            return criteriaBuilder.and(predicates.toArray(new Predicate[predicates.size()]));
+        };
+    }
+
+    /**
+     * Get all the projects which plans with the status in statuses.
+     * @param statuses List of names of statuses.
+     * @return The found projects. If statuses is null then not filter is applied.
+     */
+    public static Specification<Project> getProjectsByStatus(List<String> statuses)
+    {
+        return (Specification<Project>) (root, query, criteriaBuilder) -> {
+            if (statuses == null)
+            {
+                return criteriaBuilder.isTrue(criteriaBuilder.literal(true));
+            }
+
+            List<Predicate> predicates = new ArrayList<>();
+
+            SetJoin<Project, Plan> plansJoin = root.join(Project_.plans);
+            Path<Status> status = plansJoin.get(Plan_.status);
+            Path<String> statusName = status.get(Status_.name);
+            predicates.add(statusName.in(statuses));
+            query.distinct(true);
+
+            return criteriaBuilder.and(predicates.toArray(new Predicate[predicates.size()]));
+        };
+    }
+
+    /**
+     * Get all the projects which plans with the priority in priorities.
+     * @param priorities List of names of priorities.
+     * @return The found projects. If statuses is null then not filter is applied.
+     */
+    public static Specification<Project> getProjectsByPriority(List<String> priorities)
+    {
+        return (Specification<Project>) (root, query, criteriaBuilder) -> {
+            if (priorities == null)
+            {
+                return criteriaBuilder.isTrue(criteriaBuilder.literal(true));
+            }
+
+            List<Predicate> predicates = new ArrayList<>();
+
+            Path<ProjectPriority> projectPriority = root.get(Project_.projectPriority);
+            Path<String> projectPriorityName = projectPriority.get(ProjectPriority_.name);
+            predicates.add(projectPriorityName.in(priorities));
+            query.distinct(true);
+
+            return criteriaBuilder.and(predicates.toArray(new Predicate[predicates.size()]));
+        };
+    }
+
+    /**
+     * Get all the projects which plans have privacy in privacies.
+     * @param privacies List of names of statuses.
+     * @return The found projects. If privacies is null then not filter is applied.
+     */
+    public static Specification<Project> getProjectsByPrivacy(List<String> privacies)
+    {
+        return (Specification<Project>) (root, query, criteriaBuilder) -> {
+            if (privacies == null)
+            {
+                return criteriaBuilder.isTrue(criteriaBuilder.literal(true));
+            }
+
+            List<Predicate> predicates = new ArrayList<>();
+
+            SetJoin<Project, Plan> plansJoin = root.join(Project_.plans);
+            Path<Privacy> privacy = plansJoin.get(Plan_.privacy);
+            Path<String> privacyName = privacy.get(Privacy_.name);
+            predicates.add(privacyName.in(privacies));
+            query.distinct(true);
 
             return criteriaBuilder.and(predicates.toArray(new Predicate[predicates.size()]));
         };

@@ -27,6 +27,8 @@ import uk.ac.ebi.impc_prod_tracker.data.experiment.colony.Colony;
 import uk.ac.ebi.impc_prod_tracker.data.experiment.plan.Plan;
 import uk.ac.ebi.impc_prod_tracker.data.experiment.plan.PlanRepository;
 import uk.ac.ebi.impc_prod_tracker.data.experiment.project.Project;
+
+import java.util.ArrayList;
 import java.util.List;
 
 @Component
@@ -81,7 +83,8 @@ public class PlanServiceImpl implements PlanService
     @Override
     public List<Plan> getPlansByProject(Project project)
     {
-        List<Plan> plans = planRepository.findAllByProject(project);
+        List<Plan> plans = new ArrayList<>();
+        project.getPlans().forEach(plans::add);
         return getAccessCheckedPlans(plans);
     }
 

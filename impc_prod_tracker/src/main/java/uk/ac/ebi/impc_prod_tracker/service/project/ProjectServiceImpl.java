@@ -19,9 +19,14 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Component;
+import org.springframework.util.CollectionUtils;
+import uk.ac.ebi.impc_prod_tracker.data.experiment.plan.Plan;
 import uk.ac.ebi.impc_prod_tracker.data.experiment.project.Project;
 import uk.ac.ebi.impc_prod_tracker.data.experiment.project.ProjectRepository;
+
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Component
 public class ProjectServiceImpl implements ProjectService
@@ -51,5 +56,56 @@ public class ProjectServiceImpl implements ProjectService
         Specification<Project> specification, Pageable pageable)
     {
         return projectRepository.findAll(specification, pageable);
+    }
+
+    @Override
+    public Project getProjectFilteredByPlanAttributes(
+        Project project,
+        List<String> workUnits,
+        List<String> workGroups,
+        List<String> planTypes,
+        List<String> statuses,
+        List<String> privacies)
+    {
+        Set<Plan> plans = project.getPlans();
+        if (!CollectionUtils.isEmpty(workUnits))
+        {
+            plans = plans.stream()
+                .filter(plan -> plan.getWorkUnit() != null
+                    && workUnits.contains(plan.getWorkUnit().getName()))
+                .collect(Collectors.toSet());
+        }
+        if (!CollectionUtils.isEmpty(workGroups))
+        {
+            plans = plans.stream()
+                .filter(plan -> plan.getWorkGroup() != null
+                    && workGroups.contains(plan.getWorkGroup().getName()))
+                .collect(Collectors.toSet());
+        }
+        if (!CollectionUtils.isEmpty(planTypes))
+        {
+            plans = plans.stream()
+                .filter(plan -> plan.getPlanType() != null
+                    && planTypes.contains(plan.getPlanType().getName()))
+                .collect(Collectors.toSet());
+        }
+        if (!CollectionUtils.isEmpty(statuses))
+        {
+            plans = plans.stream()
+                .filter(plan -> plan.getStatus() != null
+                    && statuses.contains(plan.getStatus().getName()))
+                .collect(Collectors.toSet());
+        }
+
+        if (!CollectionUtils.isEmpty(privacies))
+        {
+            plans = plans.stream()
+                .filter(plan -> plan.getPrivacy() != null
+                    && privacies.contains(plan.getPrivacy().getName()))
+                .collect(Collectors.toSet());
+        }
+
+        project.setPlans(plans);
+        return project;
     }
 }
