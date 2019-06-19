@@ -16,10 +16,8 @@ package uk.ac.ebi.impc_prod_tracker.data.biology.mouse_gene;
  * License.
  *******************************************************************************/
 
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.*;
 import uk.ac.ebi.impc_prod_tracker.data.BaseEntity;
 import uk.ac.ebi.impc_prod_tracker.data.biology.mouse_allele.MouseAllele;
 import uk.ac.ebi.impc_prod_tracker.data.biology.mouse_gene_synomym.MouseGeneSynonym;
@@ -72,6 +70,8 @@ public class MouseGene extends BaseEntity
     @Pattern(regexp = "^([\\+-\\?]{1}|)$", message = "The values allowed for the strand are: '+', '-', or if the value es unknown enter '?'.")
     private String ensemblStrand;
 
+    @ToString.Exclude
+    @JsonIgnore
     @ManyToMany
     @JoinTable(
             name = "mouse_gene_synonym_relation",
@@ -79,6 +79,8 @@ public class MouseGene extends BaseEntity
             inverseJoinColumns = @JoinColumn(name = "mouse_gene_synonym_id"))
     private Set<MouseGeneSynonym> mouseGeneSynonyms;
 
+    @ToString.Exclude
+    @JsonIgnore
     @ManyToMany
     @JoinTable(
         name = "mouse_gene_allele",
@@ -86,6 +88,8 @@ public class MouseGene extends BaseEntity
         inverseJoinColumns = @JoinColumn(name = "allele_id"))
     private Set<MouseAllele> mouseAlleles;
 
+    @ToString.Exclude
+    @JsonIgnore
     @OneToMany(mappedBy = "mouseGene")
     private Set<Ortholog> orthologs;
 }

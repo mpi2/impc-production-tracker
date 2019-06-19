@@ -15,13 +15,12 @@
  *******************************************************************************/
 package uk.ac.ebi.impc_prod_tracker.data.biology.human_gene;
 
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.*;
 import uk.ac.ebi.impc_prod_tracker.data.BaseEntity;
 import uk.ac.ebi.impc_prod_tracker.data.biology.human_gene_synonym.HumanGeneSynonym;
 import uk.ac.ebi.impc_prod_tracker.data.biology.ortholog.Ortholog;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.Set;
@@ -46,6 +45,8 @@ public class HumanGene extends BaseEntity
     @NotNull
     private String hgncId;
 
+    @ToString.Exclude
+    @JsonIgnore
     @ManyToMany
     @JoinTable(
         name = "human_gene_synonym_rel",
@@ -53,6 +54,8 @@ public class HumanGene extends BaseEntity
         inverseJoinColumns = @JoinColumn(name = "human_gene_synonym_id"))
     private Set<HumanGeneSynonym> humanGeneSynonyms;
 
+    @ToString.Exclude
+    @JsonIgnore
     @OneToMany(mappedBy = "humanGene")
     private Set<Ortholog> orthologs;
 

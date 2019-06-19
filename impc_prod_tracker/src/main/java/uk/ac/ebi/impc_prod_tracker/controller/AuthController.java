@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import uk.ac.ebi.impc_prod_tracker.conf.error_management.OperationFailedException;
+import uk.ac.ebi.impc_prod_tracker.conf.security.SystemSubject;
 import uk.ac.ebi.impc_prod_tracker.data.organization.person.Person;
 import uk.ac.ebi.impc_prod_tracker.domain.login.AuthenticationRequest;
 import uk.ac.ebi.impc_prod_tracker.domain.login.UserRegisterRequest;
@@ -65,12 +66,24 @@ public class AuthController
         {
             String username = authenticationRequest.getUsername();
             String token = authService.getAuthenticationToken(authenticationRequest);
-            String roleName = personService.getPersonByToken(token).getRole().getName();
+
+            SystemSubject person = personService.getPersonByToken(token);
+            String roleName = "";
+            String workUnitName = "";
+            if (person.getRole() != null)
+            {
+                roleName = person.getRole().getName();
+            }
+            if (person.getWorkUnit() != null)
+            {
+                workUnitName = person.getWorkUnit().getName();
+            }
 
             Map<Object, Object> model = new HashMap<>();
             model.put("username", username);
             model.put("access_token", token);
             model.put("role", roleName);
+            model.put("workUnitName", workUnitName);
 
             return ok(model);
         }

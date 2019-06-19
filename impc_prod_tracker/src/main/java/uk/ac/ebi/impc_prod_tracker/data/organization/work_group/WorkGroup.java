@@ -15,10 +15,8 @@
  *******************************************************************************/
 package uk.ac.ebi.impc_prod_tracker.data.organization.work_group;
 
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.*;
 import uk.ac.ebi.impc_prod_tracker.data.BaseEntity;
 import uk.ac.ebi.impc_prod_tracker.data.organization.consortium.Consortium;
 import uk.ac.ebi.impc_prod_tracker.data.organization.funder.Funder;
@@ -37,6 +35,7 @@ import java.util.Set;
 @Getter
 @Setter
 @Entity
+//@EqualsAndHashCode( exclude = {"workUnits"}, callSuper = false)
 public class WorkGroup extends BaseEntity
 {
     @Id
@@ -48,9 +47,15 @@ public class WorkGroup extends BaseEntity
 
     private String description;
 
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
+    @JsonIgnore
     @ManyToMany(mappedBy = "workGroups")
     private Set<Consortium> consortia;
 
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
+    @JsonIgnore
     @ManyToMany
     @JoinTable(
         name = "work_group_unit",
@@ -58,6 +63,9 @@ public class WorkGroup extends BaseEntity
         inverseJoinColumns = @JoinColumn(name = "work_unit_id"))
     private Set<WorkUnit> workUnits;
 
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
+    @JsonIgnore
     @ManyToMany(mappedBy = "workGroups")
     private Set<Funder> funders;
 }
