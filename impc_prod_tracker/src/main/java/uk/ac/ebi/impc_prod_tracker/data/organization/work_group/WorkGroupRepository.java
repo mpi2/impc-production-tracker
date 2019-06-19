@@ -18,4 +18,7 @@ package uk.ac.ebi.impc_prod_tracker.data.organization.work_group;
 import org.springframework.data.repository.CrudRepository;
 
 public interface WorkGroupRepository extends CrudRepository<WorkGroup, Long> {
+//    WorkGroup findWorkGroupByName(String name);
+//
+//    WorkGroup findWorkGroupByIlarCode(String code);
 }

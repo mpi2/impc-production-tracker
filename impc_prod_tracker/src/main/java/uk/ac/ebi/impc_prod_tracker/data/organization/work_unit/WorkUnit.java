@@ -16,10 +16,7 @@
 package uk.ac.ebi.impc_prod_tracker.data.organization.work_unit;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import uk.ac.ebi.impc_prod_tracker.data.BaseEntity;
 import uk.ac.ebi.impc_prod_tracker.data.organization.funder.Funder;
 import uk.ac.ebi.impc_prod_tracker.data.organization.work_group.WorkGroup;
@@ -36,6 +33,7 @@ import java.util.Set;
 @Getter
 @Setter
 @Entity
+//@EqualsAndHashCode( exclude = {"workGroups"}, callSuper = false)
 public class WorkUnit extends BaseEntity
 {
     @Id
@@ -50,6 +48,8 @@ public class WorkUnit extends BaseEntity
 
     private String ilarCode;
 
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
     @ManyToMany(mappedBy = "workUnits")
     @JsonBackReference
     private Set<WorkGroup> workGroups;
