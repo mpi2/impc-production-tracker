@@ -8,6 +8,8 @@ import uk.ac.ebi.impc_prod_tracker.data.experiment.plan.type.PlanTypeRepository;
 import uk.ac.ebi.impc_prod_tracker.data.experiment.privacy.PrivacyRepository;
 import uk.ac.ebi.impc_prod_tracker.data.experiment.project_priority.ProjectPriorityRepository;
 import uk.ac.ebi.impc_prod_tracker.data.experiment.status.StatusRepository;
+import uk.ac.ebi.impc_prod_tracker.data.organization.institute.InstituteRepository;
+import uk.ac.ebi.impc_prod_tracker.data.organization.role.RoleRepository;
 import uk.ac.ebi.impc_prod_tracker.data.organization.work_group.WorkGroupRepository;
 import uk.ac.ebi.impc_prod_tracker.data.organization.work_unit.WorkUnitRepository;
 import java.util.ArrayList;
@@ -26,6 +28,8 @@ public class ConfigurationServiceImpl implements ConfigurationService
     private ProjectPriorityRepository projectPriorityRepository;
     private StatusRepository statusRepository;
     private AlleleTypeRepository alleleTypeRepository;
+    private InstituteRepository instituteRepository;
+    private RoleRepository roleRepository;
 
     public ConfigurationServiceImpl(
         SubjectRetriever subjectRetriever,
@@ -35,7 +39,9 @@ public class ConfigurationServiceImpl implements ConfigurationService
         PrivacyRepository privacyRepository,
         ProjectPriorityRepository projectPriorityRepository,
         StatusRepository statusRepository,
-        AlleleTypeRepository alleleTypeRepository)
+        AlleleTypeRepository alleleTypeRepository,
+        InstituteRepository instituteRepository,
+        RoleRepository roleRepository)
     {
 
         this.subjectRetriever = subjectRetriever;
@@ -46,6 +52,8 @@ public class ConfigurationServiceImpl implements ConfigurationService
         this.projectPriorityRepository = projectPriorityRepository;
         this.statusRepository = statusRepository;
         this.alleleTypeRepository = alleleTypeRepository;
+        this.instituteRepository = instituteRepository;
+        this.roleRepository = roleRepository;
     }
 
     @Override
@@ -76,6 +84,12 @@ public class ConfigurationServiceImpl implements ConfigurationService
             List<String> alleleTypes = new ArrayList<>();
             alleleTypeRepository.findAll().forEach(p -> alleleTypes.add(p.getName()));
 
+            List<String> institutes = new ArrayList<>();
+            instituteRepository.findAll().forEach(p -> institutes.add(p.getName()));
+
+            List<String> roles = new ArrayList<>();
+            roleRepository.findAll().forEach(p -> roles.add(p.getName()));
+
             conf.put("workUnits", workUnits);
             conf.put("workGroups", workGroups);
             conf.put("planTypes", planTypes);
@@ -83,6 +97,8 @@ public class ConfigurationServiceImpl implements ConfigurationService
             conf.put("priorities", priorities);
             conf.put("statuses", statuses);
             conf.put("alleleTypes", alleleTypes);
+            conf.put("institutes", institutes);
+            conf.put("roles", roles);
         }
 
         return conf;
