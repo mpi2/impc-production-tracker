@@ -3,6 +3,7 @@ package uk.ac.ebi.impc_prod_tracker.service.conf;
 import org.springframework.stereotype.Component;
 import uk.ac.ebi.impc_prod_tracker.conf.security.SystemSubject;
 import uk.ac.ebi.impc_prod_tracker.conf.security.abac.spring.SubjectRetriever;
+import uk.ac.ebi.impc_prod_tracker.data.biology.allele_type.AlleleTypeRepository;
 import uk.ac.ebi.impc_prod_tracker.data.experiment.plan.type.PlanTypeRepository;
 import uk.ac.ebi.impc_prod_tracker.data.experiment.privacy.PrivacyRepository;
 import uk.ac.ebi.impc_prod_tracker.data.experiment.project_priority.ProjectPriorityRepository;
@@ -24,6 +25,7 @@ public class ConfigurationServiceImpl implements ConfigurationService
     private PrivacyRepository privacyRepository;
     private ProjectPriorityRepository projectPriorityRepository;
     private StatusRepository statusRepository;
+    private AlleleTypeRepository alleleTypeRepository;
 
     public ConfigurationServiceImpl(
         SubjectRetriever subjectRetriever,
@@ -32,7 +34,8 @@ public class ConfigurationServiceImpl implements ConfigurationService
         PlanTypeRepository planTypeRepository,
         PrivacyRepository privacyRepository,
         ProjectPriorityRepository projectPriorityRepository,
-        StatusRepository statusRepository)
+        StatusRepository statusRepository,
+        AlleleTypeRepository alleleTypeRepository)
     {
 
         this.subjectRetriever = subjectRetriever;
@@ -42,6 +45,7 @@ public class ConfigurationServiceImpl implements ConfigurationService
         this.privacyRepository = privacyRepository;
         this.projectPriorityRepository = projectPriorityRepository;
         this.statusRepository = statusRepository;
+        this.alleleTypeRepository = alleleTypeRepository;
     }
 
     @Override
@@ -69,12 +73,16 @@ public class ConfigurationServiceImpl implements ConfigurationService
             List<String> statuses = new ArrayList<>();
             statusRepository.findAll().forEach(p -> statuses.add(p.getName()));
 
+            List<String> alleleTypes = new ArrayList<>();
+            alleleTypeRepository.findAll().forEach(p -> alleleTypes.add(p.getName()));
+
             conf.put("workUnits", workUnits);
             conf.put("workGroups", workGroups);
             conf.put("planTypes", planTypes);
             conf.put("privacies", privacies);
             conf.put("priorities", priorities);
             conf.put("statuses", statuses);
+            conf.put("alleleTypes", alleleTypes);
         }
 
         return conf;

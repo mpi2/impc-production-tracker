@@ -12,6 +12,12 @@
     "condition": "{'admin', 'manager'}.contains(subject.role.name)"
   },
   {
+    "name": "General permission to execute manager related tasks",
+    "description": "General permission to execute manager related tasks",
+    "target": "action == 'EXECUTE_MANAGER_TASKS'",
+    "condition": "{'admin', 'manager'}.contains(subject.role.name)"
+  },
+  {
     "name": "Filter roles",
     "description": "Managers can create new users with equal roles or lower permissions.",
     "target": "action == 'FILTER_ROLE'",
@@ -20,7 +26,7 @@
   {
     "name": "Access to public resources",
     "description": "Allows access to any public resources",
-    "target": "true",
+    "target": "resource != null",
     "condition": "resource.resourcePrivacy.name() == 'PUBLIC'"
   },
   {
