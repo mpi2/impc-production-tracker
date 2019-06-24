@@ -24,12 +24,6 @@
     "condition": "subject.role.name == 'admin' OR (subject.role.name == 'manager' AND {'manager', 'general'}.contains(resource.name))"
   },
   {
-    "name": "Access to public resources",
-    "description": "Allows access to any public resources",
-    "target": "resource != null",
-    "condition": "resource.resourcePrivacy.name() == 'PUBLIC'"
-  },
-  {
     "name": "Read Plans",
     "description": "Permission to read plans in same work unit",
     "target": "action == 'READ_PLAN' AND resource.resourcePrivacy.name() == 'RESTRICTED'",
