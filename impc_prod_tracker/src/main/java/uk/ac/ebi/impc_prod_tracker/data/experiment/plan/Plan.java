@@ -25,6 +25,8 @@ import uk.ac.ebi.impc_prod_tracker.conf.error_management.OperationFailedExceptio
 import uk.ac.ebi.impc_prod_tracker.conf.security.Resource;
 import uk.ac.ebi.impc_prod_tracker.conf.security.ResourcePrivacy;
 import uk.ac.ebi.impc_prod_tracker.data.BaseEntity;
+import uk.ac.ebi.impc_prod_tracker.data.biology.attempt.Attempt;
+import uk.ac.ebi.impc_prod_tracker.data.biology.attempt.crispr_attempt.CrisprAttempt;
 import uk.ac.ebi.impc_prod_tracker.data.biology.plan_reagent.PlanReagent;
 import uk.ac.ebi.impc_prod_tracker.data.experiment.colony.Colony;
 import uk.ac.ebi.impc_prod_tracker.data.experiment.project.Project;
@@ -39,6 +41,7 @@ import uk.ac.ebi.impc_prod_tracker.data.experiment.status.Status;
 import uk.ac.ebi.impc_prod_tracker.data.experiment.plan.type.PlanType;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.util.HashSet;
 import java.util.Set;
 
 @NoArgsConstructor(access= AccessLevel.PRIVATE, force=true)
@@ -87,6 +90,35 @@ public class Plan extends BaseEntity implements Resource<Plan>
     @ManyToOne
     @JoinColumn(name = "parent_colony_id")
     private Colony colony;
+
+    @OneToOne(mappedBy = "plan")
+    private Attempt attempt;
+
+    @OneToOne(mappedBy = "plan")
+    private CrisprAttempt crisprAttempt;
+
+    // Copy Constructor
+    public Plan(Plan plan)
+    {
+        this.id = plan.id;
+        this.pin = plan.pin;
+        this.isActive = plan.isActive;
+        this.project = plan.project;
+        this.planType = plan.planType;
+        this.privacy = plan.privacy;
+        this.workUnit = plan.workUnit;
+        this.workGroup = plan.workGroup;
+        this.consortium = plan.consortium;
+        this.funder = plan.funder;
+        this.comment = plan.comment;
+        this.colony = plan.colony;
+        this.attempt = plan.attempt;
+        this.crisprAttempt = plan.crisprAttempt;
+        this.planFlags = new HashSet<>(plan.planFlags);
+        this.protocols = new HashSet<>(plan.protocols);
+        this.status = plan.status;
+        this.planReagents = new HashSet<>(plan.planReagents);
+    }
 
     @ManyToMany()
     @JoinTable(

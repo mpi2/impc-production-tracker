@@ -20,13 +20,20 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Component;
 import uk.ac.ebi.impc_prod_tracker.common.Constants;
+import uk.ac.ebi.impc_prod_tracker.conf.error_management.OperationFailedException;
 import uk.ac.ebi.impc_prod_tracker.conf.security.abac.ResourceAccessChecker;
+import uk.ac.ebi.impc_prod_tracker.controller.project.plan.UpdatePlanRequestDTO;
 import uk.ac.ebi.impc_prod_tracker.data.biology.outcome.Outcome;
 import uk.ac.ebi.impc_prod_tracker.data.biology.outcome.OutcomeRepository;
 import uk.ac.ebi.impc_prod_tracker.data.experiment.colony.Colony;
 import uk.ac.ebi.impc_prod_tracker.data.experiment.plan.Plan;
 import uk.ac.ebi.impc_prod_tracker.data.experiment.plan.PlanRepository;
+import uk.ac.ebi.impc_prod_tracker.data.experiment.privacy.Privacy;
+import uk.ac.ebi.impc_prod_tracker.data.experiment.privacy.PrivacyRepository;
 import uk.ac.ebi.impc_prod_tracker.data.experiment.project.Project;
+import uk.ac.ebi.impc_prod_tracker.data.experiment.status.StatusRepository;
+import uk.ac.ebi.impc_prod_tracker.service.plan.engine.PlanUpdater;
+import uk.ac.ebi.impc_prod_tracker.service.plan.engine.UpdatePlanRequestProcessor;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,17 +44,31 @@ public class PlanServiceImpl implements PlanService
     private PlanRepository planRepository;
     private OutcomeRepository outcomeRepository;
     private ResourceAccessChecker<Plan> resourceAccessChecker;
+    private PrivacyRepository privacyRepository;
+    private StatusRepository statusRepository;
+    private PlanUpdater planUpdater;
+    private UpdatePlanRequestProcessor updatePlanRequestProcessor;
 
     private static final String READ_PLAN_ACTION = "READ_PLAN";
+    private static final String PLAN_TO_UPDATE_NOT_EXISTS_ERROR =
+        "The plan %s that you are trying to update does not exist.";
 
     PlanServiceImpl(
         PlanRepository planRepository,
         OutcomeRepository outcome,
-        ResourceAccessChecker<Plan> resourceAccessChecker)
+        PrivacyRepository privacyRepository,
+        StatusRepository statusRepository,
+        ResourceAccessChecker<Plan> resourceAccessChecker,
+        PlanUpdater planUpdater,
+        UpdatePlanRequestProcessor updatePlanRequestProcessor)
     {
         this.planRepository = planRepository;
         this.outcomeRepository = outcome;
+        this.privacyRepository = privacyRepository;
+        this.statusRepository = statusRepository;
         this.resourceAccessChecker = resourceAccessChecker;
+        this.planUpdater = planUpdater;
+        this.updatePlanRequestProcessor = updatePlanRequestProcessor;
     }
 
     @Override
@@ -79,6 +100,7 @@ public class PlanServiceImpl implements PlanService
     {
         return null;
     }
+
 
     @Override
     public List<Plan> getPlansByProject(Project project)
@@ -116,6 +138,22 @@ public class PlanServiceImpl implements PlanService
 
     private List<Plan> getAccessCheckedPlans(List<Plan> plans)
     {
-       return (List<Plan>) resourceAccessChecker.checkAccessForCollection(plans, READ_PLAN_ACTION);
+        return (List<Plan>) resourceAccessChecker.checkAccessForCollection(plans, READ_PLAN_ACTION);
+    }
+
+    @Override
+    public void updatePlan(String pin, UpdatePlanRequestDTO updatePlanRequestDTO)
+    {
+        Plan existingPlan = planRepository.findPlanByPin(pin);
+        Plan newPlan = new Plan(existingPlan);
+        Plan originalPlan  = new Plan(existingPlan);
+        if (originalPlan == null)
+        {
+            throw new OperationFailedException(
+                String.format(PLAN_TO_UPDATE_NOT_EXISTS_ERROR, pin));
+        }
+        newPlan = updatePlanRequestProcessor.getPlanToUpdate(newPlan, updatePlanRequestDTO);
+
+        planUpdater.updatePlan(originalPlan, newPlan);
     }
 }

@@ -18,7 +18,10 @@ public class PlanDTOLinkManager
     {
         if (Constants.PRODUCTION_TYPE.equals(planDTO.getPlanDetailsDTO().getPlanTypeName()))
         {
-            productionPlanDTOLinkManager.addLinks(planDTO.getProductionPlanDTO());
+            if (planDTO.getProductionPlanDTO() != null)
+            {
+                productionPlanDTOLinkManager.addLinks(planDTO.getProductionPlanDTO());
+            }
         }
 
         return planDTO;
