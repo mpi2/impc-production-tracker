@@ -28,7 +28,6 @@ import java.util.List;
 @RestController
 @RequestMapping("/api")
 @CrossOrigin(origins="*")
-//TODO This class could be obsolete if the endpoint for projects is more used...
 public class PlanController
 {
     private PlanDTOBuilder planDTOBuilder;
@@ -84,5 +83,12 @@ public class PlanController
                 String.format("Plan %s does not exist.", pin), HttpStatus.NOT_FOUND);
         }
         return plan;
+    }
+
+    @PutMapping(value = {"/plans/{pin}"})
+    public void updatePlan(
+        @PathVariable String pin, @RequestBody UpdatePlanRequestDTO updatePlanRequestDTO)
+    {
+        projectDTOBuilder.getPlanService().updatePlan(pin, updatePlanRequestDTO);
     }
 }

@@ -19,30 +19,37 @@ import lombok.Data;
 import org.springframework.stereotype.Component;
 import uk.ac.ebi.impc_prod_tracker.common.Constants;
 import uk.ac.ebi.impc_prod_tracker.conf.error_management.OperationFailedException;
+import uk.ac.ebi.impc_prod_tracker.controller.project.plan.history.HistoryDTOBuilder;
 import uk.ac.ebi.impc_prod_tracker.controller.project.plan.phenotype_plan.PhenotypePlanDTO;
 import uk.ac.ebi.impc_prod_tracker.controller.project.plan.phenotype_plan.PhenotypePlanDTOBuilder;
 import uk.ac.ebi.impc_prod_tracker.controller.project.plan.production_plan.ProductionPlanDTOBuilder;
 import uk.ac.ebi.impc_prod_tracker.controller.project.plan.production_plan.ProductionPlanDTO;
 import uk.ac.ebi.impc_prod_tracker.data.experiment.plan.Plan;
 import uk.ac.ebi.impc_prod_tracker.service.plan.PlanService;
-
+import uk.ac.ebi.impc_prod_tracker.service.plan.engine.HistoryService;
 
 @Component
 @Data
 public class PlanDTOBuilder
 {
     private PlanService planService;
+    private HistoryService historyService;
     private ProductionPlanDTOBuilder productionPlanDTOBuilder;
     private PhenotypePlanDTOBuilder phenotypePlanDTOBuilder;
+    private HistoryDTOBuilder historyDTOBuilder;
 
     public PlanDTOBuilder(
         PlanService planService,
+        HistoryService historyService,
         ProductionPlanDTOBuilder productionPlanDTOBuilder,
-        PhenotypePlanDTOBuilder phenotypePlanDTOBuilder)
+        PhenotypePlanDTOBuilder phenotypePlanDTOBuilder,
+        HistoryDTOBuilder historyDTOBuilder)
     {
         this.planService = planService;
+        this.historyService = historyService;
         this.productionPlanDTOBuilder = productionPlanDTOBuilder;
         this.phenotypePlanDTOBuilder = phenotypePlanDTOBuilder;
+        this.historyDTOBuilder = historyDTOBuilder;
     }
 
     public PlanDTO buildPlanDTOFromPlanPid(String pin)
@@ -62,19 +69,23 @@ public class PlanDTOBuilder
         PlanDetailsDTO planDetailsDTO = buildPlanDetailsDTOFromPlan(plan);
         planDTO.setPlanDetailsDTO(planDetailsDTO);
 
-        if (Constants.PRODUCTION_TYPE.equals(plan.getPlanType().getName().toLowerCase()))
+        if (plan.getId() != null)
         {
-            ProductionPlanDTO productionPlanDTO =
-                buildProductionPlanDTOFromPlan(plan);
+            if (Constants.PRODUCTION_TYPE.equals(plan.getPlanType().getName().toLowerCase()))
+            {
+                ProductionPlanDTO productionPlanDTO =
+                    productionPlanDTOBuilder.buildProductionPlanDTOFromPlan(plan);
 
-            planDTO.setProductionPlanDTO(productionPlanDTO);
-        }
-        else
-        {
-            PhenotypePlanDTO phenotypePlanDTO =
-                buildPhenotypePlanSummaryDTOFromPlan(plan);
+                planDTO.setProductionPlanDTO(productionPlanDTO);
+            }
+            else
+            {
+                PhenotypePlanDTO phenotypePlanDTO =
+                    phenotypePlanDTOBuilder.buildPhenotypePlanDTOFromPlan(plan);
 
-            planDTO.setPhenotypePlanDTO(phenotypePlanDTO);
+                planDTO.setPhenotypePlanDTO(phenotypePlanDTO);
+            }
+            planDTO.setHistory(historyDTOBuilder.buildHistoryDTOBuilderFromPlan(plan));
         }
 
         return planDTO;
@@ -111,19 +122,5 @@ public class PlanDTOBuilder
         planDetailsDTO.setComments(plan.getComment());
 
         return planDetailsDTO;
-    }
-
-    private ProductionPlanDTO buildProductionPlanDTOFromPlan(final Plan plan)
-    {
-        ProductionPlanDTO productionPlanDTO =
-            productionPlanDTOBuilder.buildProductionPlanDTOFromPlan(plan);
-        return productionPlanDTO;
-    }
-
-    private PhenotypePlanDTO buildPhenotypePlanSummaryDTOFromPlan(final Plan plan)
-    {
-        PhenotypePlanDTO phenotypePlanDTO =
-            phenotypePlanDTOBuilder.buildPhenotypePlanDTOFromPlan(plan);
-        return phenotypePlanDTO;
     }
 }

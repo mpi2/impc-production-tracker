@@ -30,9 +30,21 @@
     "condition": "subject.workUnit.id == resource.workUnit.id"
   },
   {
+    "name": "Read Plans in the subject's work unit",
+    "description": "Permission to read plans in same work unit",
+    "target": "action == 'READ_PLAN'",
+    "condition": "subject.workUnit.id == resource.workUnit.id"
+  },
+  {
     "name": "Admin can delete resources",
     "description": "Permission to delete any resource for admins",
     "target": "action == 'DELETE_RESOURCE'",
     "condition": "subject.role.name == 'admin'"
+  },
+  {
+    "name": "Update a plan that is in the same subject's work unit",
+    "description": "Permission to Update a plan",
+    "target": "action == 'UPDATE_PLAN'",
+    "condition": "subject.workUnit.id == resource.workUnit.id"
   }
 ]

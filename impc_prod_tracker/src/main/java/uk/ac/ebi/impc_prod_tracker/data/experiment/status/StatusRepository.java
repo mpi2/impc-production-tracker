@@ -18,4 +18,5 @@ package uk.ac.ebi.impc_prod_tracker.data.experiment.status;
 import org.springframework.data.repository.CrudRepository;
 
 public interface StatusRepository extends CrudRepository<Status, Long> {
+    Status findByName(String name);
 }
