@@ -13,14 +13,14 @@
  * language governing permissions and limitations under the
  * License.
  *******************************************************************************/
-package uk.ac.ebi.impc_prod_tracker.data.biology.plan_reagent;
+package uk.ac.ebi.impc_prod_tracker.data.biology.crispr_attempt_reagent;
 
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import uk.ac.ebi.impc_prod_tracker.data.BaseEntity;
+import uk.ac.ebi.impc_prod_tracker.data.biology.attempt.crispr_attempt.CrisprAttempt;
 import uk.ac.ebi.impc_prod_tracker.data.biology.reagent.Reagent;
-import uk.ac.ebi.impc_prod_tracker.data.experiment.plan.Plan;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -29,16 +29,16 @@ import java.io.Serializable;
 @NoArgsConstructor(access= AccessLevel.PRIVATE, force=true)
 @Data
 @Entity
-public class PlanReagent extends BaseEntity implements Serializable
+public class CrisprAttemptReagent extends BaseEntity implements Serializable
 {
     @Id
-    @SequenceGenerator(name = "planReagentSeq", sequenceName = "PLAN_REAGENT_SEQ")
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "planReagentSeq")
+    @SequenceGenerator(name = "crisprAttemptReagentSeq", sequenceName = "CRISPR_ATTEMPT_REAGENT_SEQ")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "crisprAttemptReagentSeq")
     private Long id;
 
     @NotNull
-    @ManyToOne(targetEntity = Plan.class)
-    private Plan plan;
+    @ManyToOne
+    private CrisprAttempt crisprAttempt;
 
     @NotNull
     @ManyToOne(targetEntity = Reagent.class)

@@ -27,7 +27,7 @@ import uk.ac.ebi.impc_prod_tracker.conf.security.ResourcePrivacy;
 import uk.ac.ebi.impc_prod_tracker.data.BaseEntity;
 import uk.ac.ebi.impc_prod_tracker.data.biology.attempt.Attempt;
 import uk.ac.ebi.impc_prod_tracker.data.biology.attempt.crispr_attempt.CrisprAttempt;
-import uk.ac.ebi.impc_prod_tracker.data.biology.plan_reagent.PlanReagent;
+import uk.ac.ebi.impc_prod_tracker.data.biology.crispr_attempt_reagent.CrisprAttemptReagent;
 import uk.ac.ebi.impc_prod_tracker.data.experiment.colony.Colony;
 import uk.ac.ebi.impc_prod_tracker.data.experiment.project.Project;
 import uk.ac.ebi.impc_prod_tracker.data.organization.consortium.Consortium;
@@ -117,7 +117,7 @@ public class Plan extends BaseEntity implements Resource<Plan>
         this.planFlags = new HashSet<>(plan.planFlags);
         this.protocols = new HashSet<>(plan.protocols);
         this.status = plan.status;
-        this.planReagents = new HashSet<>(plan.planReagents);
+        //this.planReagents = new HashSet<>(plan.planReagents);
     }
 
     @ManyToMany()
@@ -137,9 +137,6 @@ public class Plan extends BaseEntity implements Resource<Plan>
     @NotNull
     @ManyToOne(targetEntity= Status.class)
     private Status status;
-
-    @OneToMany(mappedBy = "plan")
-    private Set<PlanReagent> planReagents;
 
     @Override
     @JsonIgnore

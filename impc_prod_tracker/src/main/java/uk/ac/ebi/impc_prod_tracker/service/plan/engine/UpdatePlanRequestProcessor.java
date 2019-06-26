@@ -6,16 +6,13 @@ import uk.ac.ebi.impc_prod_tracker.controller.project.plan.UpdatePlanRequestDTO;
 import uk.ac.ebi.impc_prod_tracker.controller.project.plan.production_plan.ProductionPlanDTO;
 import uk.ac.ebi.impc_prod_tracker.controller.project.plan.production_plan.attempt.AttemptDTO;
 import uk.ac.ebi.impc_prod_tracker.controller.project.plan.production_plan.attempt.crispr_attempt.CrisprAttemptDTO;
+import uk.ac.ebi.impc_prod_tracker.controller.project.plan.production_plan.attempt.crispr_attempt.CrisprAttemptDTOBuilder;
 import uk.ac.ebi.impc_prod_tracker.data.biology.attempt.crispr_attempt.CrisprAttempt;
-import uk.ac.ebi.impc_prod_tracker.data.experiment.assay_type.AssayType;
-import uk.ac.ebi.impc_prod_tracker.data.experiment.assay_type.AssayTypeRepository;
 import uk.ac.ebi.impc_prod_tracker.data.experiment.plan.Plan;
 import uk.ac.ebi.impc_prod_tracker.data.experiment.privacy.Privacy;
 import uk.ac.ebi.impc_prod_tracker.data.experiment.privacy.PrivacyRepository;
 import uk.ac.ebi.impc_prod_tracker.data.organization.work_group.WorkGroup;
 import uk.ac.ebi.impc_prod_tracker.data.organization.work_group.WorkGroupRepository;
-
-import java.time.LocalDateTime;
 
 /**
  * Class in charge of analising a UpdatePlanRequestDTO object and retrieve the Plan object
@@ -26,14 +23,16 @@ public class UpdatePlanRequestProcessor
 {
     private PrivacyRepository privacyRepository;
     private WorkGroupRepository workGroupRepository;
-    private AssayTypeRepository assayTypeRepository;
+    private CrisprAttemptDTOBuilder crisprAttemptDTOBuilder;
 
     public UpdatePlanRequestProcessor(
-        PrivacyRepository privacyRepository, WorkGroupRepository workGroupRepository, AssayTypeRepository assayTypeRepository)
+        PrivacyRepository privacyRepository,
+        WorkGroupRepository workGroupRepository,
+        CrisprAttemptDTOBuilder crisprAttemptDTOBuilder)
     {
         this.privacyRepository = privacyRepository;
         this.workGroupRepository = workGroupRepository;
-        this.assayTypeRepository = assayTypeRepository;
+        this.crisprAttemptDTOBuilder = crisprAttemptDTOBuilder;
     }
 
     /**
@@ -94,43 +93,11 @@ public class UpdatePlanRequestProcessor
 
     private void updatePlanWithCrisprAttemptDTO(Plan plan, CrisprAttemptDTO crisprAttemptDTO)
     {
-        CrisprAttempt newCrisprAttempt = plan.getCrisprAttempt();
-        LocalDateTime newMiDate = crisprAttemptDTO.getMiDate();
-        newCrisprAttempt.setMiDate(newMiDate);
-        newCrisprAttempt.setMiExternalRef(crisprAttemptDTO.getMiExternalRef());
-        newCrisprAttempt.setMutagenesisExternalRef(crisprAttemptDTO.getMutagenesisExternalRef());
-        newCrisprAttempt.setIndividuallySetGrnaConcentrations(
-            crisprAttemptDTO.getIndividuallySetGrnaConcentrations());
-        newCrisprAttempt.setGuidesGeneratedInPlasmid(crisprAttemptDTO.getGuidesGeneratedInPlasmid());
-        newCrisprAttempt.setNoG0WhereMutationDetected(crisprAttemptDTO.getNoG0WhereMutationDetected());
-        newCrisprAttempt.setNoNhejG0Mutants(crisprAttemptDTO.getNoNhejG0Mutants());
-        newCrisprAttempt.setNoDeletionG0Mutants(crisprAttemptDTO.getNoDeletionG0Mutants());
-        newCrisprAttempt.setNoHrG0Mutants(crisprAttemptDTO.getNoHrG0Mutants());
-        newCrisprAttempt.setNoHdrG0Mutants(crisprAttemptDTO.getNoHdrG0Mutants());
-        newCrisprAttempt.setNoHdrG0MutantsAllDonorsInserted(
-            crisprAttemptDTO.getNoHdrG0MutantsAllDonorsInserted());
-        newCrisprAttempt.setNoHdrG0MutantsSubsetDonorsInserted(
-            crisprAttemptDTO.getNoHdrG0MutantsSubsetDonorsInserted());
-        newCrisprAttempt.setTotalEmbryosInjected(crisprAttemptDTO.getTotalEmbryosInjected());
-        newCrisprAttempt.setTotalEmbryosSurvived(crisprAttemptDTO.getTotalEmbryosSurvived());
-        newCrisprAttempt.setTotalTransferred(crisprAttemptDTO.getTotalTransferred());
-        newCrisprAttempt.setNoFounderPups(crisprAttemptDTO.getNoFounderPups());
-        newCrisprAttempt.setNoFounderSelectedForBreeding(
-            crisprAttemptDTO.getNoFounderSelectedForBreeding());
-        newCrisprAttempt.setFounderNumAssays(crisprAttemptDTO.getFounderNumAssays());
+        CrisprAttempt crisprAttempt = crisprAttemptDTOBuilder.convertToEntity(crisprAttemptDTO);
+        crisprAttempt.setImitsMiAttemptId(plan.getCrisprAttempt().getImitsMiAttemptId());
+        crisprAttempt.setPlan(plan);
+        crisprAttempt.setId(plan.getCrisprAttempt().getId());
 
-        AssayType assayType = null;
-        if (crisprAttemptDTO.getAssayType() != null)
-        {
-            assayType = assayTypeRepository.findByName(crisprAttemptDTO.getAssayType());
-            if (assayType != null)
-            {
-                newCrisprAttempt.setAssayType(assayType);
-            }
-        }
-        newCrisprAttempt.setExperimental(crisprAttemptDTO.getExperimental());
-        newCrisprAttempt.setEmbryoTransferDay(crisprAttemptDTO.getEmbryoTransferDay());
-        newCrisprAttempt.setEmbryo2Cell(crisprAttemptDTO.getEmbryo2Cell());
-
+        plan.setCrisprAttempt(crisprAttempt);
     }
 }

@@ -20,7 +20,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import uk.ac.ebi.impc_prod_tracker.data.BaseEntity;
-import uk.ac.ebi.impc_prod_tracker.data.biology.plan_reagent.PlanReagent;
+import uk.ac.ebi.impc_prod_tracker.data.biology.crispr_attempt_reagent.CrisprAttemptReagent;
 
 import javax.persistence.*;
 import java.util.Set;
@@ -42,6 +42,6 @@ public class Reagent extends BaseEntity
     private String description;
 
     @OneToMany(mappedBy = "reagent")
-    private Set<PlanReagent> planReagents;
+    private Set<CrisprAttemptReagent> planReagents;
 
 }

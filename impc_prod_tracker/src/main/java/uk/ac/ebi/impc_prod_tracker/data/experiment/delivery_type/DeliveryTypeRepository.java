@@ -4,4 +4,5 @@ import org.springframework.data.repository.CrudRepository;
 
 public interface DeliveryTypeRepository extends CrudRepository<DeliveryType, Long>
 {
+    DeliveryType findByName(String deliveryTypeName);
 }

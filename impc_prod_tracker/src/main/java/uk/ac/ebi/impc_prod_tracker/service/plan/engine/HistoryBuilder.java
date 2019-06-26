@@ -1,12 +1,19 @@
 package uk.ac.ebi.impc_prod_tracker.service.plan.engine;
 
 import org.springframework.stereotype.Component;
+import uk.ac.ebi.impc_prod_tracker.common.diff.ChangeEntry;
+import uk.ac.ebi.impc_prod_tracker.common.diff.ChangesDetector;
 import uk.ac.ebi.impc_prod_tracker.conf.security.abac.spring.SubjectRetriever;
 import uk.ac.ebi.impc_prod_tracker.data.experiment.plan.Plan;
 import uk.ac.ebi.impc_prod_tracker.data.experiment.plan.history.History;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+
+/**
+ * Class that creates a History entry detecting the changes in an plan.
+ */
 
 @Component
 public class HistoryBuilder
@@ -41,7 +48,8 @@ public class HistoryBuilder
 
     private String buildActionMessage(Plan originalPlan, Plan newPlan)
     {
-        List<String> changes = getChanges(originalPlan, newPlan);
+        List<String> changes = null;
+        changes = getChanges(originalPlan, newPlan);
         StringBuilder changesSb = new StringBuilder();
         for (String change : changes)
         {
@@ -52,26 +60,16 @@ public class HistoryBuilder
 
     private List<String> getChanges(final Plan originalPlan, final Plan newPlan)
     {
-        List<String> changes =  new ArrayList<>();
+        List<String> fieldsToExclude = Arrays.asList("resourcePrivacy");
+        ChangesDetector<Plan> changesDetector =
+            new ChangesDetector<>(fieldsToExclude, originalPlan, newPlan);
+        List<ChangeEntry> changeEntries = changesDetector.getChanges();
 
-        if (originalPlan.getPrivacy() != newPlan.getPrivacy())
-        {
-            String originalPrivacy = "";
-            String newPrivacy = "";
-            if (originalPlan.getPrivacy() != null)
-            {
-                originalPrivacy = originalPlan.getPrivacy().getName();
-            }
-            if (newPlan.getPrivacy() != null)
-            {
-                newPrivacy = newPlan.getPrivacy().getName();
-            }
-            if (!originalPrivacy.equals(newPrivacy))
-            {
-                changes.add(
-                    String.format(TRANSITION_TEMPLATE, "Privacy", originalPrivacy, newPrivacy));
-            }
-        }
+        List<String> changes =  new ArrayList<>();
+        changeEntries.forEach(x -> {
+            changes.add(
+                String.format(TRANSITION_TEMPLATE, x.getProperty(), x.getOldValue(), x.getNewValue()));
+        });
 
         return changes;
     }
