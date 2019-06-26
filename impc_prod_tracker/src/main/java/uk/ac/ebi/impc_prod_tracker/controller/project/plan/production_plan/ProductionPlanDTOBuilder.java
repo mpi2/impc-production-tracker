@@ -46,7 +46,8 @@ public class ProductionPlanDTOBuilder
             }
             if (CRISPR_MUTAGENESIS_TYPE_NAME.equals(attemptTypeName))
             {
-                CrisprAttemptDTO crisprAttemptDTO = crisprAttemptDTOBuilder.buildFromPlan(plan);
+                CrisprAttemptDTO crisprAttemptDTO =
+                    crisprAttemptDTOBuilder.convertToDto(plan.getCrisprAttempt());
                 attemptDTO.setCrisprAttempt(crisprAttemptDTO);
             }
         }

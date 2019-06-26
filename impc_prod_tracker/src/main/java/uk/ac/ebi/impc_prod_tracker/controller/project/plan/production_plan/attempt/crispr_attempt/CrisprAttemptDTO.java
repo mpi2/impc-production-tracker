@@ -15,6 +15,7 @@
  *******************************************************************************/
 package uk.ac.ebi.impc_prod_tracker.controller.project.plan.production_plan.attempt.crispr_attempt;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 import org.springframework.hateoas.RepresentationModel;
 import uk.ac.ebi.impc_prod_tracker.controller.project.plan.production_plan.attempt.GenotypePrimerDTO;
@@ -46,13 +47,15 @@ public class CrisprAttemptDTO extends RepresentationModel
     private Integer noFounderPups;
     private Integer noFounderSelectedForBreeding;
     private Integer founderNumAssays;
-    private String assayType;
+    @JsonProperty("assayType")
+    private String assayTypeName;
     private Boolean experimental;
     private String embryoTransferDay;
     private String embryo2Cell;
     private String deliveryMethod;
     private Double voltage;
-    private Integer numberOfPulses;
+    @JsonProperty("numberOfPulses")
+    private Integer noOfPulses;
     private List<NucleaseDTO> nucleases;
     private List<ReagentDTO> reagents;
     private List<GenotypePrimerDTO> primers;

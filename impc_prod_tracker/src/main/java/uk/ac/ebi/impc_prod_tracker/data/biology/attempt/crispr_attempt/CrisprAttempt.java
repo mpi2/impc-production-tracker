@@ -16,10 +16,13 @@
 package uk.ac.ebi.impc_prod_tracker.data.biology.attempt.crispr_attempt;
 
 import lombok.AccessLevel;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 import uk.ac.ebi.impc_prod_tracker.data.BaseEntity;
+import uk.ac.ebi.impc_prod_tracker.data.biology.crispr_attempt_reagent.CrisprAttemptReagent;
 import uk.ac.ebi.impc_prod_tracker.data.experiment.assay_type.AssayType;
 import uk.ac.ebi.impc_prod_tracker.data.experiment.delivery_type.DeliveryType;
 import uk.ac.ebi.impc_prod_tracker.data.experiment.plan.Plan;
@@ -28,8 +31,10 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.MapsId;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import java.time.LocalDateTime;
+import java.util.Set;
 
 @NoArgsConstructor(access= AccessLevel.PRIVATE, force=true)
 @Getter
@@ -111,4 +116,9 @@ public class CrisprAttempt extends BaseEntity
 
     @Column(columnDefinition = "TEXT")
     private String comment;
+
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
+    @OneToMany(mappedBy = "crisprAttempt")
+    private Set<CrisprAttemptReagent> crisprAttemptReagents;
 }
