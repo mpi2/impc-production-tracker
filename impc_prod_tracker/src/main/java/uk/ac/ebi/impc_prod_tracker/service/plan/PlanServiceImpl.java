@@ -28,13 +28,9 @@ import uk.ac.ebi.impc_prod_tracker.data.biology.outcome.OutcomeRepository;
 import uk.ac.ebi.impc_prod_tracker.data.experiment.colony.Colony;
 import uk.ac.ebi.impc_prod_tracker.data.experiment.plan.Plan;
 import uk.ac.ebi.impc_prod_tracker.data.experiment.plan.PlanRepository;
-import uk.ac.ebi.impc_prod_tracker.data.experiment.privacy.Privacy;
-import uk.ac.ebi.impc_prod_tracker.data.experiment.privacy.PrivacyRepository;
 import uk.ac.ebi.impc_prod_tracker.data.experiment.project.Project;
-import uk.ac.ebi.impc_prod_tracker.data.experiment.status.StatusRepository;
 import uk.ac.ebi.impc_prod_tracker.service.plan.engine.PlanUpdater;
 import uk.ac.ebi.impc_prod_tracker.service.plan.engine.UpdatePlanRequestProcessor;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -44,8 +40,6 @@ public class PlanServiceImpl implements PlanService
     private PlanRepository planRepository;
     private OutcomeRepository outcomeRepository;
     private ResourceAccessChecker<Plan> resourceAccessChecker;
-    private PrivacyRepository privacyRepository;
-    private StatusRepository statusRepository;
     private PlanUpdater planUpdater;
     private UpdatePlanRequestProcessor updatePlanRequestProcessor;
 
@@ -56,16 +50,12 @@ public class PlanServiceImpl implements PlanService
     PlanServiceImpl(
         PlanRepository planRepository,
         OutcomeRepository outcome,
-        PrivacyRepository privacyRepository,
-        StatusRepository statusRepository,
         ResourceAccessChecker<Plan> resourceAccessChecker,
         PlanUpdater planUpdater,
         UpdatePlanRequestProcessor updatePlanRequestProcessor)
     {
         this.planRepository = planRepository;
         this.outcomeRepository = outcome;
-        this.privacyRepository = privacyRepository;
-        this.statusRepository = statusRepository;
         this.resourceAccessChecker = resourceAccessChecker;
         this.planUpdater = planUpdater;
         this.updatePlanRequestProcessor = updatePlanRequestProcessor;

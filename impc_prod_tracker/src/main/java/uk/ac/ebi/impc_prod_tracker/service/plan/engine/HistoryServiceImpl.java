@@ -4,7 +4,6 @@ import org.springframework.stereotype.Component;
 import uk.ac.ebi.impc_prod_tracker.data.experiment.plan.Plan;
 import uk.ac.ebi.impc_prod_tracker.data.experiment.plan.history.History;
 import uk.ac.ebi.impc_prod_tracker.data.experiment.plan.history.HistoryRepository;
-
 import java.util.List;
 
 @Component
@@ -12,6 +11,7 @@ public class HistoryServiceImpl implements HistoryService
 {
     private HistoryBuilder historyBuilder;
     private HistoryRepository historyRepository;
+    private History historyEntry;
 
     public HistoryServiceImpl(HistoryBuilder historyBuilder, HistoryRepository historyRepository)
     {
@@ -20,9 +20,14 @@ public class HistoryServiceImpl implements HistoryService
     }
 
     @Override
-    public void traceChanges(Plan originalPlan, Plan newPlan)
+    public void detectTrackOfChanges(Plan originalPlan, Plan newPlan)
     {
-        History historyEntry = historyBuilder.buildHistoryEntry(originalPlan, newPlan);
+        historyEntry = historyBuilder.buildHistoryEntry(originalPlan, newPlan);
+    }
+
+    @Override
+    public void saveTrackOfChanges()
+    {
         if (historyEntry != null)
         {
             historyRepository.save(historyEntry);
@@ -34,5 +39,4 @@ public class HistoryServiceImpl implements HistoryService
     {
         return historyRepository.findAllByPlanIdOrderByDate(planId);
     }
-
 }

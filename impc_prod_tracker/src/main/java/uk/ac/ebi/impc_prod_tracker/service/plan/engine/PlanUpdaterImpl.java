@@ -5,6 +5,7 @@ import uk.ac.ebi.impc_prod_tracker.conf.security.abac.spring.ContextAwarePolicyE
 import uk.ac.ebi.impc_prod_tracker.data.experiment.plan.Plan;
 import uk.ac.ebi.impc_prod_tracker.data.experiment.plan.PlanRepository;
 
+
 @Component
 public class PlanUpdaterImpl implements PlanUpdater
 {
@@ -27,8 +28,10 @@ public class PlanUpdaterImpl implements PlanUpdater
     {
         validatePermissionToUpdatePlan(newPlan);
         changeStatusIfNeeded(newPlan);
+        validateData(newPlan);
+        detectTrackOfChanges(originalPlan, newPlan);
         saveChanges(newPlan);
-        traceChanges(originalPlan, newPlan);
+        saveTrackOfChanges();
     }
 
     /**
@@ -50,6 +53,14 @@ public class PlanUpdaterImpl implements PlanUpdater
     }
 
     /**
+     * Validates that the changes are valid.
+     */
+    private void validateData(Plan newPlan)
+    {
+        System.out.println("Validating data");
+    }
+
+    /**
      * Save the changes into the database for the specific plan.
      * @param plan Plan being updated.
      */
@@ -60,12 +71,20 @@ public class PlanUpdaterImpl implements PlanUpdater
     }
 
     /**
-     * Stores the changes in an audit table to keep track of the changes in the plan.
-     * @param originalPlan
-     * @param newPlan Plan being updated.
+     * Detects the track of the changes between originalPlan and newPlan.
+     * @param originalPlan The plan before the update.
+     * @param newPlan The updated plan.
      */
-    private void traceChanges(Plan originalPlan, Plan newPlan)
+    private void detectTrackOfChanges(Plan originalPlan, Plan newPlan)
     {
-        historyService.traceChanges(originalPlan, newPlan);
+        historyService.detectTrackOfChanges(originalPlan, newPlan);
+    }
+
+    /**
+     * Stores the track of the changes.
+     */
+    private void saveTrackOfChanges()
+    {
+        historyService.saveTrackOfChanges();
     }
 }
