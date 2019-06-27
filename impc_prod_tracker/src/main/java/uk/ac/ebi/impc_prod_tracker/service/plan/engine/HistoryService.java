@@ -2,7 +2,6 @@ package uk.ac.ebi.impc_prod_tracker.service.plan.engine;
 
 import uk.ac.ebi.impc_prod_tracker.data.experiment.plan.Plan;
 import uk.ac.ebi.impc_prod_tracker.data.experiment.plan.history.History;
-
 import java.util.List;
 
 /**
@@ -10,7 +9,7 @@ import java.util.List;
  */
 public interface HistoryService
 {
-    void traceChanges(Plan originalPlan, Plan newPlan);
-
+    void detectTrackOfChanges(Plan originalPlan, Plan newPlan);
+    void saveTrackOfChanges();
     List<History> getHistoryByPlanId(Long planId);
 }

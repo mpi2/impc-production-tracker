@@ -94,7 +94,7 @@ public class Plan extends BaseEntity implements Resource<Plan>
     @OneToOne(mappedBy = "plan")
     private Attempt attempt;
 
-    @OneToOne(mappedBy = "plan")
+    @OneToOne(cascade=CascadeType.ALL, mappedBy = "plan")
     private CrisprAttempt crisprAttempt;
 
     // Copy Constructor
@@ -117,7 +117,6 @@ public class Plan extends BaseEntity implements Resource<Plan>
         this.planFlags = new HashSet<>(plan.planFlags);
         this.protocols = new HashSet<>(plan.protocols);
         this.status = plan.status;
-        //this.planReagents = new HashSet<>(plan.planReagents);
     }
 
     @ManyToMany()
