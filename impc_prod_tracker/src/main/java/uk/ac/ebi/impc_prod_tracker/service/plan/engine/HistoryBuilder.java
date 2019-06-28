@@ -19,7 +19,7 @@ import java.util.List;
 @Component
 public class HistoryBuilder
 {
-    private static final String TRANSITION_TEMPLATE = "%s from [%s] to [%s]";
+    private static final String TRANSITION_TEMPLATE = "field:%s|old:%s|new:%s";
     private SubjectRetriever subjectRetriever;
     private static final String RESOURCE_PRIVACY_PROPERTY_NAME = "resourcePrivacy";
 
