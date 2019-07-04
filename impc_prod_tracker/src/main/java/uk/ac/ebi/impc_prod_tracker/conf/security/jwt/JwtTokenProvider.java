@@ -130,8 +130,7 @@ public class JwtTokenProvider
         public Key resolveSigningKey(JwsHeader header, Claims claims)
         {
             String issuer = claims.getIssuer();
-            PublicKey publicKey = publicKeyProvider.getPublicKey(issuer);
-            return publicKey;
+            return publicKeyProvider.getPublicKey(issuer);
         }
     };
 

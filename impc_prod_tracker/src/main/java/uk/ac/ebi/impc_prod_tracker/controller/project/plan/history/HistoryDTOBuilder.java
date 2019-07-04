@@ -27,9 +27,11 @@ public class HistoryDTOBuilder
     {
         List<History> historyEntries = historyService.getHistoryByPlanId(plan.getId());
         List<HistoryDTO> historyEntryDTOs = new ArrayList<>();
+        int counter = 1;
         for (History historyEntry : historyEntries)
         {
             HistoryDTO historyDTO = new HistoryDTO();
+            historyDTO.setId(counter++);
             historyDTO.setAction(historyEntry.getAction());
             historyDTO.setDate(historyEntry.getDate());
             historyDTO.setUser(historyEntry.getUser());

@@ -34,7 +34,7 @@ import javax.persistence.SequenceGenerator;
 @Getter
 @Setter
 @Entity
-@Audited
+//@Audited
 public class Role extends BaseEntity
 {
     @Id

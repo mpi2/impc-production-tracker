@@ -17,8 +17,12 @@ package uk.ac.ebi.impc_prod_tracker.data.organization.person;
 
 import org.springframework.data.repository.CrudRepository;
 
+import java.util.List;
+
 public interface PersonRepository extends CrudRepository<Person, Long> {
     Person findPersonByAuthIdEquals(String authId);
 
     Person findPersonByEmail(String email);
+
+    List<Person> findAll();
 }
