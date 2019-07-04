@@ -12,18 +12,18 @@ public class PlanUpdaterImpl implements PlanUpdater
     private HistoryService historyService;
     private ContextAwarePolicyEnforcement policyEnforcement;
     private PlanRepository planRepository;
-    private UpdatePlanValidator updatePlanValidator;
+    private PlanValidator planValidator;
 
     public PlanUpdaterImpl(
         HistoryService historyService,
         ContextAwarePolicyEnforcement policyEnforcement,
         PlanRepository planRepository,
-        UpdatePlanValidator updatePlanValidator)
+        PlanValidator planValidator)
     {
         this.historyService = historyService;
         this.policyEnforcement = policyEnforcement;
         this.planRepository = planRepository;
-        this.updatePlanValidator = updatePlanValidator;
+        this.planValidator = planValidator;
     }
 
     @Override
@@ -60,7 +60,7 @@ public class PlanUpdaterImpl implements PlanUpdater
      */
     private void validateData(Plan newPlan)
     {
-        updatePlanValidator.validatePlan(newPlan);
+        planValidator.validatePlan(newPlan);
     }
 
     /**

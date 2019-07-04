@@ -2,10 +2,12 @@ package uk.ac.ebi.impc_prod_tracker.controller.conf;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import uk.ac.ebi.impc_prod_tracker.conf.security.jwt.JwtTokenProvider;
 import uk.ac.ebi.impc_prod_tracker.service.conf.PermissionService;
 
-import java.util.List;
+import javax.servlet.http.HttpServletRequest;
 import java.util.Map;
 
 @RestController
@@ -24,5 +26,12 @@ public class PermissionController
     public Map<String, Boolean> getConfiguration()
     {
         return permissionService.getPermissions();
+    }
+
+    @GetMapping(value = {"/permissionByActionOnResource"})
+    public boolean getConfiguration(
+        @RequestParam String action, @RequestParam String resourceId)
+    {
+        return permissionService.getPermissionByActionOnResource(action, resourceId);
     }
 }
