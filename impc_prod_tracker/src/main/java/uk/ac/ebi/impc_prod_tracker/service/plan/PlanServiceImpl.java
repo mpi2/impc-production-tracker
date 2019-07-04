@@ -108,6 +108,12 @@ public class PlanServiceImpl implements PlanService
     }
 
     @Override
+    public Plan getPlanByPinWithoutCheckPermissions(String pin)
+    {
+        return planRepository.findPlanByPin(pin);
+    }
+
+    @Override
     public List<Plan> getPlans()
     {
         List<Plan> plans = planRepository.findAll();

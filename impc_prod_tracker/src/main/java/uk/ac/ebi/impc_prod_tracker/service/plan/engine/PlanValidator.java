@@ -5,10 +5,10 @@ import uk.ac.ebi.impc_prod_tracker.data.biology.attempt.crispr_attempt.CrisprAtt
 import uk.ac.ebi.impc_prod_tracker.data.experiment.plan.Plan;
 
 /**
- * Class that validates the changes in a {@link Plan}  being update.
+ * Class that validates the date in a  {@link Plan}.
  */
 @Component
-public class UpdatePlanValidator
+public class PlanValidator
 {
     /**
      * Validates the data in a plan

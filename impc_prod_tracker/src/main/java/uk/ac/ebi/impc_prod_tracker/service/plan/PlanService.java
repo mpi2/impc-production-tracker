@@ -29,6 +29,8 @@ public interface PlanService
 
     Plan getPlanByPin(String pin);
 
+    Plan getPlanByPinWithoutCheckPermissions(String pin);
+
     List<Plan> getPlans();
 
     Page<Plan> getPaginatedPlans(Pageable pageable);
