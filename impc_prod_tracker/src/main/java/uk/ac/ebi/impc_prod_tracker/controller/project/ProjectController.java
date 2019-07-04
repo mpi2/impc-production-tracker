@@ -68,7 +68,7 @@ public class ProjectController
 
 
     @GetMapping(value = {"/projects"})
-    public CollectionModel<ProjectDTO> getPlansMapNew()
+    public CollectionModel<ProjectDTO> getAllProjects()
     {
         List<Project> projects = projectService.getProjects();
 
@@ -79,6 +79,12 @@ public class ProjectController
             .collect(Collectors.toList());
 
         return new CollectionModel<>(projectDTOList);
+    }
+
+    @GetMapping(value = {"/hello"})
+    public String test(@RequestParam String mje)
+    {
+        return "Hello "+ mje;
     }
 
     @GetMapping(value = {"/projects/{tpn}"})
@@ -142,7 +148,7 @@ public class ProjectController
      * @return List of ProjectSummaryDTO.
      */
     @GetMapping(value = {"/projectSummaries"})
-    public ResponseEntity getPlanSummariesPaginated(
+    public ResponseEntity getProjectSummariesPaginated(
         @RequestParam(value = "markerSymbol", required = false) List<String> markerSymbols,
         @RequestParam(value = "workUnit", required = false) List<String> workUnits,
         @RequestParam(value = "workGroup", required = false) List<String> workGroups,
@@ -166,7 +172,8 @@ public class ProjectController
         Page<Project> filteredProjects = projects.map(p ->
             projectService.getProjectFilteredByPlanAttributes(
                 p, workUnits, workGroups, planTypes, statuses, privacies));
-        Page<ProjectSummaryDTO> planSummaryDTOPage = filteredProjects.map(this::convertToProjectSummaryDTO);
+        Page<ProjectSummaryDTO> planSummaryDTOPage =
+            filteredProjects.map(this::convertToProjectSummaryDTO);
 
         PagedModel pr =
             assembler.toModel(

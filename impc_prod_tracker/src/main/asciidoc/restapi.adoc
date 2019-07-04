@@ -1,0 +1,138 @@
+= iMITS2 REST API
+v{version}, {date}
+:doctype: book
+:icons: font
+:source-highlighter: highlightjs
+:highlightjs-theme: github
+:toc: left
+:toclevels: 3
+:sectlinks:
+:sectnums:
+
+[introduction]
+== Introduction
+
+iMITS2 is designed to coordinate the production of transgenic mice between high-throughput
+mouse production facilities and consortia of clinicians and human geneticists
+while minimizing the overlap	and	maximizing	efficiencies. iMITS2 captures the intention	of
+a particular consortium	to produce mutant mice on a	particular	gene, the	progress	of
+mouse	production	and	modified	allele	creation	on	the	original	mouse,	and	the	capture
+of	phenotype	data	on	the	mouse.
+
+This is a secure resource that can house various types of alleles linked to genes,
+and will provide different data access policies to users.
+
+
+This guide is aimed at developers of such applications.
+
+=== Usage of HTTP Verbs
+
+The following table describes how the coderadar API interprets the HTTP verbs.
+
+.HTTP Verbs
+|===
+|HTTP Verb | Usage
+
+|GET
+|GET is used to retrieve information.
+
+|POST
+|POST is used to create and update resources.
+
+|DELETE
+|DELETE is used to delete resources.
+
+|PUT
+|PUT is not used at this time.
+
+|PATCH
+|PATCH is not used at this time.
+|===
+
+
+
+== Authentication
+anchor:login[]
+A user has to log in to use other endpoints.
+If the log in is successful, user obtains two JSON Web Tokens https://jwt.io
+
+* an access token
+* a refresh token.
+
+How to use the tokens is described in <<authentication, Authentication>>
+
+===== Login Data Structure
+include::{snippets}/auth/signin/request-fields.adoc[]
+
+===== Example Request
+include::{snippets}/auth/signin/http-request.adoc[]
+
+===== Example Response
+include::{snippets}/auth/signin/http-response.adoc[]
+===== Response Structure
+include::{snippets}/auth/signin/response-fields.adoc[]
+
+==== Errors
+===== Error when user/password is incorrect:
+When trying to sign in with an incorrect user/password the system will inform about it returning
+an error message.
+
+.request
+include::{snippets}/auth/signin/no-valid-user-password/http-request.adoc[]
+
+.response
+include::{snippets}/auth/signin/no-valid-user-password/http-response.adoc[]
+
+===== Error when there is not information in the system for the logged user:
+If the user could be logged into the application but there is not further information related to
+them (like the role or organisation information), a error is shown:
+
+Request
+include::{snippets}/auth/signin/no-info-for-user/http-request.adoc[]
+
+Response
+include::{snippets}/auth/signin/no-info-for-user/http-response.adoc[]
+
+==== Authentication
+After a user registered, he or she can start working with iMits2.
+The first step is login. To log in in iMits2 use the <<login, Login>> endpoint. The user must use the username and the password
+specified at registration. If the login was successful user gets a JSON Web Token (see https://jwt.io):
+
+After that the user has to use the access token for authentication with each request to a protected route or resource.
+The tokens are signed by the server so the server can validate the signature of the token to grant the access to resources.
+The access token is a Base64 encoded String, that must be added to Authorization HTTP header like this:
+
+ Authorization: Bearer eyJhbGciOiJSUzI1NiJIUzI1NiJ9.eyJpc3MiOiJjb2RlcmFkYXIiLCJleHAiOjE0ODQ1MTUzOTUsInR5cGUiOiJSRUZSRVNIIiwiaWF0IjoxNDg0NTE1NDU1LCJ1c2VySWQiOiIxIiwidXNlcm5hbWUiOiJyYWRhciJ9.zfkyc5jkPiAUEt7nU25SJxKprcPiXaiq0Q6bCJ_RrQo
+
+The access token is short-lived and by default expires after 30 minutes.
+
+A typical work flow looks like this:
+
+. Client logs in with username and password and gets one token
+. Client requires resources using the access token in each request
+. After 30 minutes client gets a 401-Response
+. Clients logs in again and gets a new token
+
+See more: https://auth0.com/docs/tokens/refresh-token and https://auth0.com/blog/refresh-tokens-what-are-they-and-when-to-use-them/
+
+
+
+
+
+== Projects Management
+anchor:chapter-configure[]
+This section describes the REST endpoints for projects in the system.
+
+=== Project
+
+A project defines some metadata about the project you want coderadar to analyze. With a project resource
+and its sub-resources you provide coderadar with the information it needs to analyze the source code.
+
+
+===== Example Request
+
+include::{snippets}/projectSummaries/http-request.adoc[]
+
+===== Example Response
+
+include::{snippets}/projectSummaries/http-response.adoc[]
