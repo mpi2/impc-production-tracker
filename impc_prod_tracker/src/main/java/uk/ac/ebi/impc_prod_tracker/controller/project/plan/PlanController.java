@@ -21,6 +21,8 @@ import uk.ac.ebi.impc_prod_tracker.conf.error_management.OperationFailedExceptio
 import uk.ac.ebi.impc_prod_tracker.controller.project.ProjectDTOBuilder;
 import uk.ac.ebi.impc_prod_tracker.controller.project.ProjectDetailsDTO;
 import uk.ac.ebi.impc_prod_tracker.controller.project.ProjectPlanDTO;
+import uk.ac.ebi.impc_prod_tracker.controller.project.plan.history.HistoryDTO;
+import uk.ac.ebi.impc_prod_tracker.controller.project.plan.history.HistoryDTOBuilder;
 import uk.ac.ebi.impc_prod_tracker.data.experiment.plan.Plan;
 import java.util.ArrayList;
 import java.util.List;
@@ -32,11 +34,16 @@ public class PlanController
 {
     private PlanDTOBuilder planDTOBuilder;
     private ProjectDTOBuilder projectDTOBuilder;
+    private HistoryDTOBuilder historyDTOBuilder;
 
-    public PlanController(PlanDTOBuilder planDTOBuilder, ProjectDTOBuilder projectDTOBuilder)
+    public PlanController(
+        PlanDTOBuilder planDTOBuilder,
+        ProjectDTOBuilder projectDTOBuilder,
+        HistoryDTOBuilder historyDTOBuilder)
     {
         this.planDTOBuilder = planDTOBuilder;
         this.projectDTOBuilder = projectDTOBuilder;
+        this.historyDTOBuilder = historyDTOBuilder;
     }
 
     @GetMapping(value = {"/plans"})
@@ -72,6 +79,14 @@ public class PlanController
         projectPlanDTO.setPlanDTO(planDTOBuilder.buildPlanDTOFromPlan(plan));
 
         return projectPlanDTO;
+    }
+
+    @GetMapping(value = {"/plans/{pin}/history"})
+    public List<HistoryDTO> getPlanHistory(@PathVariable String pin)
+    {
+        Plan plan = getNotNullPlanByPin(pin);
+
+        return historyDTOBuilder.buildHistoryDTOBuilderFromPlan(plan);
     }
 
     private Plan getNotNullPlanByPin(String pin)
