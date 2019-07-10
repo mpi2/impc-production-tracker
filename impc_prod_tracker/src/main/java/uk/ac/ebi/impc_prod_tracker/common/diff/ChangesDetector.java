@@ -5,7 +5,7 @@ import org.apache.commons.beanutils.PropertyUtilsBean;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
-import java.lang.reflect.InvocationTargetException;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -26,6 +26,10 @@ public class ChangesDetector<T>
     private static final String NAME_PROPERTY = "name";
     private static final Logger LOGGER = LoggerFactory.getLogger(ChangesDetector.class);
 
+    private String currentPropertyName = null;
+
+    private List<ChangeEntry> changeEntries = new ArrayList<>();
+
     /**
      * Detects the changes between 2 versions of an object.
      * @param fieldsToIgnore Some properties can be ignored in the process.
@@ -37,8 +41,8 @@ public class ChangesDetector<T>
     public ChangesDetector(
         List<String> fieldsToIgnore, List<String> fieldsToCheckRecursively, T oldObject, T newObject)
     {
-        this.fieldsToIgnore = fieldsToIgnore;
-        this.fieldsToCheckRecursively = fieldsToCheckRecursively;
+        this.fieldsToIgnore = new ArrayList<>(fieldsToIgnore);
+        this.fieldsToCheckRecursively = new ArrayList<>(fieldsToCheckRecursively);
         this.oldObject = oldObject;
         this.newObject = newObject;
     }
@@ -49,92 +53,115 @@ public class ChangesDetector<T>
      */
     public List<ChangeEntry> getChanges()
     {
-        return getChanges(fieldsToIgnore, fieldsToCheckRecursively, oldObject, newObject);
-    }
-
-    private List<ChangeEntry> getChanges(
-        List<String> fieldsToIgnore,
-        List<String> fieldsToCheckRecursively,
-        Object oldObject,
-        Object newObject)
-    {
-        List<ChangeEntry> changeEntries = new ArrayList<>();
-        String propertyName = "";
         BeanMap beanMap = new BeanMap(oldObject);
-        try
+
+        for (Object propertyNameObject : beanMap.keySet())
         {
-            for (Object propertyNameObject : beanMap.keySet())
-            {
-                propertyName = (String) propertyNameObject;
-                if (fieldsToIgnore.contains(propertyName))
-                {
-                    continue;
-                }
-                {
-                    Object oldObjPropertyValue = propertyUtils.getProperty(oldObject, propertyName);
-                    Object newObjPropertyValue = propertyUtils.getProperty(newObject, propertyName);
-                    Class<?> type = propertyUtils.getPropertyType(oldObject, propertyName);
-
-                    if (oldObjPropertyValue == null && newObjPropertyValue == null)
-                    {
-                        continue;
-                    }
-
-                    ChangeEntry changeEntry;
-
-                    if (isASimpleValue(type))
-                    {
-                        changeEntry = checkDiffBetweenSimpleValues(
-                            propertyName, oldObjPropertyValue, newObjPropertyValue);
-                    }
-                    else
-                    {
-                        changeEntry = checkDiffBetweenComplexValues(
-                            propertyName, oldObjPropertyValue, newObjPropertyValue);
-                        if (fieldsToCheckRecursively.contains(propertyName))
-                        {
-                            List<ChangeEntry> innerChangeEntries =
-                                getChanges(fieldsToIgnore,
-                                    fieldsToCheckRecursively,
-                                    oldObjPropertyValue,
-                                    newObjPropertyValue);
-                            changeEntries.addAll(innerChangeEntries);
-                            fieldsToCheckRecursively.remove(propertyName);
-                        }
-                    }
-                    if (changeEntry != null)
-                    {
-                        changeEntries.add(changeEntry);
-                    }
-                }
-            }
-        } catch (Exception e)
-        {
-            LOGGER.error("Error analising differences between entities: " + e.getMessage()
-                + ". Entity: "+ propertyName);
+            currentPropertyName = (String) propertyNameObject;
+            checkChangesInCurrentProperty(currentPropertyName);
         }
         return changeEntries;
     }
 
+    private void checkChangesInCurrentProperty(String property)
+    {
+        Object oldValue = getCurrentValue(property, oldObject);
+        Object newValue = getCurrentValue(property, newObject);
 
-    /**
-     * Checks if a value is a simple value that can be compared with others using "equals"
-     *
-     * @param propertyType property type.
-     * @return True if the value is simple.
-     */
+        if (shouldSkipCurrentProperty(property, oldValue, newValue))
+        {
+            LOGGER.info("Property " + property + " skipped");
+        }
+        else
+        {
+            ChangeEntry changeEntry;
+            Class<?> type = getTypeCurrentProperty();
+
+            if (isASimpleValue(type))
+            {
+                changeEntry = checkDiffBetweenSimpleValues(property, oldValue, newValue);
+            }
+            else
+            {
+                changeEntry = checkDiffBetweenComplexValues(property, oldValue, newValue);
+
+                if (isPropertyMaskedAsRecursive(property))
+                {
+                    searchChangesInInnerProperty(oldValue, newValue);
+                }
+            }
+            if (changeEntry != null)
+            {
+                changeEntries.add(changeEntry);
+            }
+        }
+    }
+
+    private void searchChangesInInnerProperty(Object oldValue, Object newValue)
+    {
+        ChangesDetector innerPropertyChangesDetector =
+            new ChangesDetector<>(
+                fieldsToIgnore,
+                fieldsToCheckRecursively,
+                oldValue,
+                newValue);
+        List<ChangeEntry> innerChangeEntries = innerPropertyChangesDetector.getChanges();
+        changeEntries.addAll(innerChangeEntries);
+    }
+
+    private Class<?> getTypeCurrentProperty()
+    {
+        Class<?> type = null;
+        try
+        {
+            type = propertyUtils.getPropertyType(oldObject, currentPropertyName);
+        }
+        catch(Exception e)
+        {
+
+        }
+        return type;
+    }
+
+    private Object getCurrentValue(String property, Object currentObject)
+    {
+        Object currentValue = null;
+        try
+        {
+            currentValue = propertyUtils.getProperty(currentObject, property);
+        }
+        catch (Exception e)
+        {
+            LOGGER.error("Error setting current value for property: " + e.getMessage()
+                + ". Property: "+ property);
+        }
+        return currentValue;
+    }
+
+    private boolean shouldSkipCurrentProperty(String property, Object oldValue, Object newValue)
+    {
+        return isPropertyMaskedAsIgnored(property) || oldAndNewValuesAreSameObject(oldValue, newValue);
+    }
+
+    private boolean isPropertyMaskedAsIgnored(String property)
+    {
+        return fieldsToIgnore.contains(property);
+    }
+    private boolean isPropertyMaskedAsRecursive(String property)
+    {
+        return fieldsToCheckRecursively.contains(property);
+    }
+
+    private boolean oldAndNewValuesAreSameObject(Object oldValue, Object newValue)
+    {
+        return oldValue == newValue;
+    }
+
     private boolean isASimpleValue(Class<?> propertyType)
     {
         return BeanUtils.isSimpleValueType(propertyType);
     }
 
-    /***
-     * Evaluates if two values are different and if so, creates a ChangeEntry with the information.
-     * @param propertyName Property name.
-     * @param oldValue First value to compare.
-     * @param newValue Second value to compare.
-     * @return {@link ChangeEntry} object if there is change.
-     */
     private ChangeEntry checkDiffBetweenSimpleValues(
         String propertyName, Object oldValue, Object newValue)
     {
@@ -153,41 +180,27 @@ public class ChangesDetector<T>
             || !Objects.equals(value1, value2);
     }
 
-    /**
-     * Evaluates if two objects are different and if so, creates a ChangeEntry with the information.
-     *
-     * @param propertyName Property name.
-     * @param oldValue     First value to compare.
-     * @param newValue     Second value to compare.
-     * @return {@link ChangeEntry} object if there is change.
-     */
     private ChangeEntry checkDiffBetweenComplexValues(
         String propertyName, Object oldValue, Object newValue)
-        throws IllegalAccessException, NoSuchMethodException, InvocationTargetException
     {
         ChangeEntry changeEntry = null;
+
         if (objectContainsIdAndNameProp(oldValue) && objectContainsIdAndNameProp(newValue))
         {
-            Long oldId = (Long) propertyUtils.getProperty(oldValue, ID_PROPERTY);
-            Long newId = (Long) propertyUtils.getProperty(newValue, ID_PROPERTY);
+            Long oldId = (Long) getCurrentValue(ID_PROPERTY, oldValue);
+            Long newId = (Long) getCurrentValue(ID_PROPERTY, newValue);
             if (!oldId.equals(newId))
             {
-                String oldName = (String) propertyUtils.getProperty(oldValue, NAME_PROPERTY);
-                String newName = (String) propertyUtils.getProperty(newValue, NAME_PROPERTY);
+                String oldName = (String) getCurrentValue(NAME_PROPERTY, oldValue);
+                String newName = (String) getCurrentValue(NAME_PROPERTY, newValue);
 
                 changeEntry = buildChangeEntry(propertyName, oldName, newName);
             }
         }
+
         return changeEntry;
     }
 
-    /**
-     * Checks if the object contains both an id and name properties. Those properties can be used
-     * to check if two objects are the same.
-     *
-     * @param object Object to evaluate.
-     * @return True if the object contains the properties id and name.
-     */
     private boolean objectContainsIdAndNameProp(Object object)
     {
         return propertyUtils.isReadable(object, ID_PROPERTY)
