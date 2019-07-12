@@ -4,6 +4,7 @@ import lombok.Data;
 import org.junit.Test;
 import java.time.LocalDateTime;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -25,8 +26,11 @@ public class ObjectInspectorTest
         ClassB classB = new ClassB();
         classB.b1 = 2.0;
         classA.a4 = classB;
+        classA.a5 = Arrays.asList(classB);
         objectInspector = new ObjectInspector(classA, Arrays.asList("id"));
         Map<String, PropertyValueData> propertyValueMap = objectInspector.getSimpleValues();
+        System.out.println("propertyValueMap.size " + propertyValueMap.size());
+        System.out.println("propertyValueMap " + propertyValueMap);
 
         PropertyValueData expectedResult1 = new PropertyValueData("a1", String.class, "a1", true);
         PropertyValueData expectedResult2 = new PropertyValueData(1, Integer.class, "a2", true);
@@ -84,6 +88,7 @@ public class ObjectInspectorTest
         private Integer a2;
         private LocalDateTime a3;
         private ClassB a4;
+        private List<ClassB> a5;
     }
 
     @Data

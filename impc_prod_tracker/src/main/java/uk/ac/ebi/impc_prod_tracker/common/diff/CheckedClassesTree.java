@@ -40,16 +40,19 @@ public class CheckedClassesTree
 
         boolean relationWasAdded = false;
 
-        boolean relationAlreadyExists = relationExists(childClass, parentClass);
-
-        if (!relationAlreadyExists)
+        // Not allow self references
+        if (!childClass.equals(parentClass))
         {
-            Node<Class<?>> parentNode = getNode(parentClass);
-            Node<Class<?>> newNode = new Node<>(childClass);
-            parentNode.addChild(newNode);
-            relationWasAdded = true;
-        }
+            boolean relationAlreadyExists = relationExists(childClass, parentClass);
 
+            if (!relationAlreadyExists)
+            {
+                Node<Class<?>> parentNode = getNode(parentClass);
+                Node<Class<?>> newNode = new Node<>(childClass);
+                parentNode.addChild(newNode);
+                relationWasAdded = true;
+            }
+        }
         return relationWasAdded;
     }
 

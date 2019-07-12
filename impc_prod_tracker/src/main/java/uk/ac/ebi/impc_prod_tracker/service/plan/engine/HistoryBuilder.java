@@ -22,6 +22,8 @@ public class HistoryBuilder
     private static final String TRANSITION_TEMPLATE = "field:%s|old:%s|new:%s";
     private SubjectRetriever subjectRetriever;
     private static final String RESOURCE_PRIVACY_PROPERTY_NAME = "resourcePrivacy";
+    private static final String RESTRICTED_OBJECT_PROPERTY_NAME = "restrictedObject";
+
 
     public HistoryBuilder(SubjectRetriever subjectRetriever)
     {
@@ -81,6 +83,7 @@ public class HistoryBuilder
         fieldsToExclude.add(BaseEntity_.LAST_MODIFIED);
         fieldsToExclude.add(BaseEntity_.LAST_MODIFIED_BY);
         fieldsToExclude.add(RESOURCE_PRIVACY_PROPERTY_NAME);
+        fieldsToExclude.add(RESTRICTED_OBJECT_PROPERTY_NAME);
         List<String> fieldsToCheckRecursively = new ArrayList<>();
         fieldsToCheckRecursively.add(Plan_.CRISPR_ATTEMPT);
 
