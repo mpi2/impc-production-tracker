@@ -15,16 +15,15 @@ public class ChangesDetectorTest
     private final ClassTest class1NoNestedData = new ClassTest("a", "b");
     private final ClassTest class2NoNestedData = new ClassTest("a", "b");
     private final ClassTest class3NoNestedDataDifferent = new ClassTest("a", "c");
-    private final ClassTest class1NestedData = new ClassTest("a", "b", 1, 2);
-    private final ClassTest class2NestedData = new ClassTest("a", "b", 1, 2);
-    private final ClassTest class3NestedDataDifferent = new ClassTest("a", "b", 1, 4);
+    private final ClassTest class1NestedData = new ClassTest("a", "b", 1, 2, 5);
+    private final ClassTest class2NestedData = new ClassTest("a", "b", 1, 2, 5);
+    private final ClassTest class3NestedDataDifferent = new ClassTest("a", "b", 1, 4, 20);
 
     @Test
     public void testGetChangesWhenSameSimpleProperties()
     {
         ChangesDetector<ClassTest> changesDetector =
             new ChangesDetector<>(
-                new ArrayList<>(),
                 new ArrayList<>(),
                 class1NoNestedData,
                 class2NoNestedData);
@@ -39,7 +38,6 @@ public class ChangesDetectorTest
     {
         ChangesDetector<ClassTest> changesDetector =
             new ChangesDetector<>(
-                new ArrayList<>(),
                 new ArrayList<>(),
                 class1NoNestedData,
                 class3NoNestedDataDifferent);
@@ -62,14 +60,10 @@ public class ChangesDetectorTest
         ChangesDetector<ClassTest> changesDetector =
             new ChangesDetector<>(
                 Arrays.asList("property2"),
-                new ArrayList<>(),
                 class1NoNestedData,
                 class3NoNestedDataDifferent);
 
         List<ChangeEntry> changeEntryList = changesDetector.getChanges();
-        System.out.println("changeEntryList: "+changeEntryList);
-
-        ChangeEntry expectedChangeEntry = getChangeEntry("property2", "b", "c");
 
         assertThat("Unexpected number of changes:", changeEntryList.size(), is(0));
     }
@@ -80,7 +74,6 @@ public class ChangesDetectorTest
         ChangesDetector<ClassTest> changesDetector =
             new ChangesDetector<>(
                 new ArrayList<>(),
-                Arrays.asList("property3"),
                 class1NestedData,
                 class2NestedData);
 
@@ -95,36 +88,23 @@ public class ChangesDetectorTest
         ChangesDetector<ClassTest> changesDetector =
             new ChangesDetector<>(
                 new ArrayList<>(),
-                Arrays.asList("property3"),
                 class1NestedData,
                 class3NestedDataDifferent);
 
         List<ChangeEntry> changeEntryList = changesDetector.getChanges();
         System.out.println("changeEntryList: "+changeEntryList);
 
-        ChangeEntry expectedChangeEntry = getChangeEntry("innerProperty2", "2", "4");
+        ChangeEntry expectedChangeEntry1 =
+            getChangeEntry("property3.innerProperty3.innerInnerProperty1", "5", "20");
+        ChangeEntry expectedChangeEntry2 = getChangeEntry("property3.innerProperty2", "2", "4");
 
-        assertThat("Unexpected number of changes:", changeEntryList.size(), is(1));
+        assertThat("Unexpected number of changes:", changeEntryList.size(), is(2));
 
-        ChangeEntry obtainedChangeEntry = changeEntryList.get(0);
+        ChangeEntry obtainedChangeEntry1 = changeEntryList.get(0);
+        ChangeEntry obtainedChangeEntry2 = changeEntryList.get(1);
 
-        validateObtainedChangeEntryIsExpected(expectedChangeEntry, obtainedChangeEntry);
-    }
-
-    @Test
-    public void testGetChangesWhenDiffComplexPropertiesIgnoringChangedField()
-    {
-        ChangesDetector<ClassTest> changesDetector =
-            new ChangesDetector<>(
-                Arrays.asList("innerProperty2"),
-                Arrays.asList("property3"),
-                class1NestedData,
-                class3NestedDataDifferent);
-
-        List<ChangeEntry> changeEntryList = changesDetector.getChanges();
-        System.out.println("changeEntryList: "+changeEntryList);
-
-        assertThat("Unexpected number of changes:", changeEntryList.size(), is(0));
+        validateObtainedChangeEntryIsExpected(expectedChangeEntry1, obtainedChangeEntry1);
+        validateObtainedChangeEntryIsExpected(expectedChangeEntry2, obtainedChangeEntry2);
     }
 
     private ChangeEntry getChangeEntry(String property, String oldValue, String newValue)
@@ -141,14 +121,11 @@ public class ChangesDetectorTest
         ChangeEntry expectedChangeEntry, ChangeEntry obtainedChangeEntry)
     {
         assertThat(
-            "Property",
-            expectedChangeEntry.getProperty().equals(obtainedChangeEntry.getProperty()));
+            "Property:", obtainedChangeEntry.getProperty(), is(expectedChangeEntry.getProperty()));
         assertThat(
-            "Old Value",
-            expectedChangeEntry.getOldValue().equals(obtainedChangeEntry.getOldValue()));
+            "Old Value", obtainedChangeEntry.getOldValue(), is(expectedChangeEntry.getOldValue()));
         assertThat(
-            "New Value",
-            expectedChangeEntry.getNewValue().equals(obtainedChangeEntry.getNewValue()));
+            "New Value", obtainedChangeEntry.getNewValue(), is(expectedChangeEntry.getNewValue()));
     }
 
     @Data
@@ -159,17 +136,29 @@ public class ChangesDetectorTest
         private String property2;
         private InnerClassTest property3;
 
-        ClassTest(String property1, String property2)
+        public ClassTest(String property1, String property2)
         {
             this.property1 = property1;
             this.property2 = property2;
         }
 
-        ClassTest(String property1, String property2, Integer innerProperty1, Integer innedProperty2)
+        public ClassTest(String property1, String property2, Integer innerProperty1, Integer innerProperty2)
         {
             this.property1 = property1;
             this.property2 = property2;
-            this.property3 = new InnerClassTest(innerProperty1, innedProperty2);
+            this.property3 = new InnerClassTest(innerProperty1, innerProperty2);
+        }
+
+        ClassTest(
+            String property1,
+            String property2,
+            Integer innerProperty1,
+            Integer innerProperty2,
+            Integer innerInnerProperty1)
+        {
+            this.property1 = property1;
+            this.property2 = property2;
+            this.property3 = new InnerClassTest(innerProperty1, innerProperty2, innerInnerProperty1);
         }
 
         @Data
@@ -177,11 +166,31 @@ public class ChangesDetectorTest
         {
             private Integer innerProperty1;
             private Integer innerProperty2;
+            private InnerInnerClassTest innerProperty3;
 
-            InnerClassTest(Integer innerProperty1, Integer innerProperty2)
+            public InnerClassTest(Integer innerProperty1, Integer innerProperty2)
             {
                 this.innerProperty1 = innerProperty1;
                 this.innerProperty2 = innerProperty2;
+            }
+
+            public InnerClassTest(
+                Integer innerProperty1, Integer innerProperty2, Integer innerInnerProperty1)
+            {
+                this.innerProperty1 = innerProperty1;
+                this.innerProperty2 = innerProperty2;
+                this.innerProperty3 = new InnerInnerClassTest(innerInnerProperty1);
+            }
+
+            @Data
+            public class InnerInnerClassTest
+            {
+                private Integer innerInnerProperty1;
+
+                public InnerInnerClassTest(Integer innerInnerProperty1)
+                {
+                    this.innerInnerProperty1 = innerInnerProperty1;
+                }
             }
         }
     }

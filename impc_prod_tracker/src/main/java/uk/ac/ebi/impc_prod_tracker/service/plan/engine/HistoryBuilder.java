@@ -85,7 +85,7 @@ public class HistoryBuilder
         fieldsToCheckRecursively.add(Plan_.CRISPR_ATTEMPT);
 
         ChangesDetector<Plan> changesDetector =
-            new ChangesDetector<>(fieldsToExclude, fieldsToCheckRecursively, originalPlan, newPlan);
+            new ChangesDetector<>(fieldsToExclude, originalPlan, newPlan);
         List<ChangeEntry> changeEntries = changesDetector.getChanges();
 
         List<String> changes =  new ArrayList<>();
