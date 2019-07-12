@@ -4,6 +4,8 @@ import org.apache.commons.beanutils.BeanMap;
 import org.springframework.beans.BeanUtils;
 import org.springframework.util.Assert;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -27,7 +29,7 @@ class ObjectInspector
         Assert.notNull(object, "object is null");
         this.object = object;
         this.fieldsToIgnore = new ArrayList<>(fieldsToIgnore);
-        this.fieldsToIgnore.add("class");
+        this.fieldsToIgnore.addAll(Arrays.asList("class", "empty"));
         propValMap = new HashMap<>();
         init();
     }
@@ -44,72 +46,95 @@ class ObjectInspector
             .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
     }
 
+    void printSimple()
+    {
+        getSimpleValues().forEach((k,v) -> {
+            System.out.println(k + ": " + v.getValue());
+        });
+    }
+
     private void init()
     {
         checkedClassesTree.setRootClass(object.getClass());
-        propValMap = buildPropsMap(object, null);
+        buildPropsMap(propValMap, object, null);
     }
 
-    private boolean isASimpleValue(Class<?> type)
-    {
-        return BeanUtils.isSimpleValueType(type);
-    }
-
-    private PropertyValueData buildPropertyValueDataByProperty(
+    private PropertyValueData buildPropertyValueData(
         String propertyName, Object object, PropertyValueData parentPropertyValueData)
     {
         PropertyValueData propertyValueData = new PropertyValueData();
-        Object value = PropertyChecker.getValue(propertyName, object);
-        String name = propertyName;
-
-        if (parentPropertyValueData != null)
-        {
-            name = parentPropertyValueData.getName() + "." + name;
-        }
-        propertyValueData.setName(name);
         Class<?> type = PropertyChecker.getPropertyType(object, propertyName);
-        propertyValueData.setType(type);
-        propertyValueData.setValue(value);
-        propertyValueData.setSimpleValue(isASimpleValue(type));
+        boolean mustSkip = mustSkipValueByType(type);
+        if (mustSkip)
+        {
+            propertyValueData = null;
+        }
+        else
+        {
+            Object value = PropertyChecker.getValue(propertyName, object);
+            String name = propertyName;
+
+            if (parentPropertyValueData != null)
+            {
+                name = parentPropertyValueData.getName() + "." + name;
+            }
+            propertyValueData.setName(name);
+
+            propertyValueData.setType(type);
+            propertyValueData.setValue(value);
+            propertyValueData.setSimpleValue(PropertyChecker.isASimpleValue(type));
+        }
 
         return propertyValueData;
     }
 
-    private Map<String, PropertyValueData> buildPropsMap(
-        Object object, PropertyValueData parentData)
+    private void buildPropsMap(
+        Map<String, PropertyValueData> map, Object object, PropertyValueData parentData)
     {
-        Map<String, PropertyValueData> map = new HashMap<>();
-
         BeanMap beanMap = new BeanMap(object);
 
         for (Object propertyNameObject : beanMap.keySet())
         {
-            String propertyName = (String) propertyNameObject;
-
-            if (!fieldsToIgnore.contains(propertyName))
+            String property = (String) propertyNameObject;
+            if (!mustIgnoredProperty(property))
             {
-                evaluateProperty(object, parentData, map, propertyName);
+                checkProperty(object, parentData, map, (String) propertyNameObject);
             }
         }
-        return map;
     }
 
-    private void evaluateProperty(
+    private void checkProperty(
         Object object,
         PropertyValueData parentData,
         Map<String, PropertyValueData> map,
         String propertyName)
     {
-        PropertyValueData propertyValueData =
-            buildPropertyValueDataByProperty(propertyName, object, parentData);
+        PropertyValueData propertyValueData = buildPropertyValueData(propertyName, object, parentData);
 
+        if (propertyValueData != null)
+        {
+            evaluateProperty(object, propertyValueData, map);
+        }
+    }
+
+    private boolean mustIgnoredProperty(String property)
+    {
+        return fieldsToIgnore.contains(property);
+    }
+
+    private boolean mustSkipValueByType(Class<?> type)
+    {
+        return PropertyChecker.isCollection(type);
+    }
+
+    private void evaluateProperty(
+        Object object, PropertyValueData propertyValueData, Map<String, PropertyValueData> map)
+    {
         map.put(propertyValueData.getName(), propertyValueData);
 
         if (shouldSearchRecursively(propertyValueData, object))
         {
-            Map<String, PropertyValueData> innerMap =
-                buildPropsMap(propertyValueData.getValue(), propertyValueData);
-            map.putAll(innerMap);
+            buildPropsMap(map, propertyValueData.getValue(), propertyValueData);
         }
     }
 
@@ -127,4 +152,5 @@ class ObjectInspector
     {
         return checkedClassesTree.addRelation(propertyValueData.getType(), object.getClass());
     }
+
 }
