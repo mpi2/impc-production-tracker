@@ -84,6 +84,7 @@ public class AuthControllerTest extends ControllerTestTemplate
     }
 
     @Test
+    @DatabaseSetup("/dbunit/auth/emptyUser.xml")
     public void testSignInWhenUserNotInDataBase()
         throws Exception
     {
