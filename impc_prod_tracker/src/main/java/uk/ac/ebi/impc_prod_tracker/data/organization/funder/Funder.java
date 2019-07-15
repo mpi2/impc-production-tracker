@@ -22,16 +22,8 @@ import lombok.Setter;
 import uk.ac.ebi.impc_prod_tracker.data.BaseEntity;
 import uk.ac.ebi.impc_prod_tracker.data.organization.consortium.Consortium;
 import uk.ac.ebi.impc_prod_tracker.data.organization.work_group.WorkGroup;
-import uk.ac.ebi.impc_prod_tracker.data.organization.work_unit.WorkUnit;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.SequenceGenerator;
+
+import javax.persistence.*;
 import java.util.Set;
 
 @NoArgsConstructor(access= AccessLevel.PRIVATE, force=true)
@@ -64,10 +56,10 @@ public class Funder extends BaseEntity
         inverseJoinColumns = @JoinColumn(name = "work_group_id"))
     private Set<WorkGroup> workGroups;
 
-    @ManyToMany
-    @JoinTable(
-        name = "funder_work_unit",
-        joinColumns = @JoinColumn(name = "funder_id"),
-        inverseJoinColumns = @JoinColumn(name = "work_unit_id"))
-    private Set<WorkUnit> workUnits;
+//    @ManyToMany
+//    @JoinTable(
+//        name = "funder_work_unit",
+//        joinColumns = @JoinColumn(name = "funder_id"),
+//        inverseJoinColumns = @JoinColumn(name = "work_unit_id"))
+//    private Set<WorkUnit> workUnits;
 }

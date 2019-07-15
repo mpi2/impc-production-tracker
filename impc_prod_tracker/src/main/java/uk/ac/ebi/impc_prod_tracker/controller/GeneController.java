@@ -24,17 +24,17 @@ public class GeneController {
     }
 
     @GetMapping(value = {"/genes"})
-    public List<?> getGeneSymbols (@RequestParam String symbol, @RequestParam String specie)
+    public List<?> getMouseGeneSymbols (@RequestParam String symbol)
     {
-        if (specie.equals("mouse"))
-        {
-            return mouseGeneService.getMouseGenesBySymbol(StringUtils.capitalize(symbol));
-        }
-        else if (specie.equals("human"))
-        {
-            return humanGeneService.getHumanGenesBySymbol(symbol.toUpperCase());
-        }
+//        if (specie.equals("mouse"))
+//        {
+//            return mouseGeneService.getMouseGenesBySymbol(StringUtils.capitalize(symbol));
+//        }
+//        else if (specie.equals("human"))
+//        {
+//            return humanGeneService.getHumanGenesBySymbol(symbol.toUpperCase());
+//        }
 
-        return null;
+        return mouseGeneService.getMouseGenesBySymbol(StringUtils.capitalize(symbol));
     }
 }

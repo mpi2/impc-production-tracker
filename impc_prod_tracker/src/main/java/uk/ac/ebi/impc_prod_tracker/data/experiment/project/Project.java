@@ -1,16 +1,10 @@
 package uk.ac.ebi.impc_prod_tracker.data.experiment.project;
 
-import lombok.AccessLevel;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 import uk.ac.ebi.impc_prod_tracker.data.BaseEntity;
-import uk.ac.ebi.impc_prod_tracker.data.biology.allele_type.AlleleType;
-import uk.ac.ebi.impc_prod_tracker.data.biology.intented_mouse_gene.IntendedMouseGene;
 import uk.ac.ebi.impc_prod_tracker.data.experiment.assignment_status.AssignmentStatus;
 import uk.ac.ebi.impc_prod_tracker.data.experiment.plan.Plan;
-import uk.ac.ebi.impc_prod_tracker.data.experiment.project_priority.ProjectPriority;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.HashSet;
@@ -30,6 +24,12 @@ public class Project extends BaseEntity
     @NotNull
     private String tpn;
 
+    @PostPersist
+    public void postPersist()
+    {
+        tpn = "TPN:" + String.format("%0" + 9 + "d", id);
+    }
+
     @Column(unique = true)
     private Long imitsMiPlanId;
 
@@ -44,28 +44,28 @@ public class Project extends BaseEntity
     @ManyToOne
     private AssignmentStatus assignmentStatus;
 
-    @EqualsAndHashCode.Exclude
-    @ToString.Exclude
-    @ManyToOne
-    private ProjectPriority projectPriority;
+//    @EqualsAndHashCode.Exclude
+//    @ToString.Exclude
+//    @ManyToOne
+//    private ProjectPriority projectPriority;
 
-    @EqualsAndHashCode.Exclude
-    @ToString.Exclude
-    @ManyToMany
-    @JoinTable(
-        name = "project_intention_rel",
-        joinColumns = @JoinColumn(name = "project_id"),
-        inverseJoinColumns = @JoinColumn(name = "allele_type_id"))
-    private Set<AlleleType> projectIntentions;
-
-    @EqualsAndHashCode.Exclude
-    @ToString.Exclude
-    @ManyToMany
-    @JoinTable(
-        name = "project_mouse_gene",
-        joinColumns = @JoinColumn(name = "project_id"),
-        inverseJoinColumns = @JoinColumn(name = "mouse_gene_id"))
-    private Set<IntendedMouseGene> intendedMouseGenes;
+//    @EqualsAndHashCode.Exclude
+//    @ToString.Exclude
+//    @ManyToMany
+//    @JoinTable(
+//        name = "project_intention_rel",
+//        joinColumns = @JoinColumn(name = "project_id"),
+//        inverseJoinColumns = @JoinColumn(name = "allele_type_id"))
+//    private Set<AlleleType> projectIntentions;
+//
+//    @EqualsAndHashCode.Exclude
+//    @ToString.Exclude
+//    @ManyToMany
+//    @JoinTable(
+//        name = "project_mouse_gene",
+//        joinColumns = @JoinColumn(name = "project_id"),
+//        inverseJoinColumns = @JoinColumn(name = "mouse_gene_id"))
+//    private Set<IntendedMouseGene> intendedMouseGenes;
 }
 
 

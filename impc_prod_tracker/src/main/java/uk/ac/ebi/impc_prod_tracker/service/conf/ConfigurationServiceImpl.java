@@ -4,6 +4,7 @@ import org.springframework.stereotype.Component;
 import uk.ac.ebi.impc_prod_tracker.conf.security.SystemSubject;
 import uk.ac.ebi.impc_prod_tracker.conf.security.abac.spring.SubjectRetriever;
 import uk.ac.ebi.impc_prod_tracker.data.biology.allele_type.AlleleTypeRepository;
+import uk.ac.ebi.impc_prod_tracker.data.biology.tracked_strain.TrackedStrainRepository;
 import uk.ac.ebi.impc_prod_tracker.data.experiment.plan.type.PlanTypeRepository;
 import uk.ac.ebi.impc_prod_tracker.data.experiment.privacy.PrivacyRepository;
 import uk.ac.ebi.impc_prod_tracker.data.experiment.project_priority.ProjectPriorityRepository;
@@ -30,18 +31,19 @@ public class ConfigurationServiceImpl implements ConfigurationService
     private AlleleTypeRepository alleleTypeRepository;
     private InstituteRepository instituteRepository;
     private RoleRepository roleRepository;
+    private TrackedStrainRepository trackedStrainRepository;
 
     public ConfigurationServiceImpl(
-        SubjectRetriever subjectRetriever,
-        WorkUnitRepository workUnitRepository,
-        WorkGroupRepository workGroupRepository,
-        PlanTypeRepository planTypeRepository,
-        PrivacyRepository privacyRepository,
-        ProjectPriorityRepository projectPriorityRepository,
-        StatusRepository statusRepository,
-        AlleleTypeRepository alleleTypeRepository,
-        InstituteRepository instituteRepository,
-        RoleRepository roleRepository)
+            SubjectRetriever subjectRetriever,
+            WorkUnitRepository workUnitRepository,
+            WorkGroupRepository workGroupRepository,
+            PlanTypeRepository planTypeRepository,
+            PrivacyRepository privacyRepository,
+            ProjectPriorityRepository projectPriorityRepository,
+            StatusRepository statusRepository,
+            AlleleTypeRepository alleleTypeRepository,
+            InstituteRepository instituteRepository,
+            RoleRepository roleRepository, TrackedStrainRepository trackedStrainRepository)
     {
 
         this.subjectRetriever = subjectRetriever;
@@ -54,6 +56,7 @@ public class ConfigurationServiceImpl implements ConfigurationService
         this.alleleTypeRepository = alleleTypeRepository;
         this.instituteRepository = instituteRepository;
         this.roleRepository = roleRepository;
+        this.trackedStrainRepository = trackedStrainRepository;
     }
 
     @Override
@@ -90,6 +93,9 @@ public class ConfigurationServiceImpl implements ConfigurationService
             List<String> roles = new ArrayList<>();
             roleRepository.findAll().forEach(p -> roles.add(p.getName()));
 
+            List<String> trackedStrains = new ArrayList<>();
+            trackedStrainRepository.findAll().forEach(p -> trackedStrains.add(p.getName()));
+
             conf.put("workUnits", workUnits);
             conf.put("workGroups", workGroups);
             conf.put("planTypes", planTypes);
@@ -99,6 +105,7 @@ public class ConfigurationServiceImpl implements ConfigurationService
             conf.put("alleleTypes", alleleTypes);
             conf.put("institutes", institutes);
             conf.put("roles", roles);
+            conf.put("trackedStrains", trackedStrains);
         }
 
         return conf;

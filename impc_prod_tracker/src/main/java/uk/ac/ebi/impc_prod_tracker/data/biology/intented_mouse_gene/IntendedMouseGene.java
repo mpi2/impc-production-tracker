@@ -1,14 +1,9 @@
 package uk.ac.ebi.impc_prod_tracker.data.biology.intented_mouse_gene;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import lombok.AccessLevel;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 import uk.ac.ebi.impc_prod_tracker.data.BaseEntity;
 import uk.ac.ebi.impc_prod_tracker.data.biology.gene_flag.GeneFlag;
-import uk.ac.ebi.impc_prod_tracker.data.experiment.project.Project;
+
 import javax.persistence.*;
 import javax.validation.constraints.Pattern;
 import java.util.Set;
@@ -56,9 +51,9 @@ public class IntendedMouseGene extends BaseEntity
     @Pattern(regexp = "^([\\+-\\?]{1}|)$", message = "The values allowed for the strand are: '+', '-', or if the value es unknown enter '?'.")
     private String ensemblStrand;
 
-    @ManyToMany(mappedBy = "intendedMouseGenes")
-    @JsonBackReference
-    private Set<Project> projects;
+//    @ManyToMany(mappedBy = "intendedMouseGenes")
+//    @JsonBackReference
+//    private Set<Project> projects;
 
     @EqualsAndHashCode.Exclude
     @ToString.Exclude

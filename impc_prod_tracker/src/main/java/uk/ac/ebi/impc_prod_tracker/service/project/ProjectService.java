@@ -18,7 +18,9 @@ package uk.ac.ebi.impc_prod_tracker.service.project;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
+import uk.ac.ebi.impc_prod_tracker.controller.project.NewProjectRequestDTO;
 import uk.ac.ebi.impc_prod_tracker.data.experiment.project.Project;
+
 import java.util.List;
 
 public interface ProjectService
@@ -60,5 +62,8 @@ public interface ProjectService
         List<String> workGroups,
         List<String> planTypes,
         List<String> statuses,
-        List<String> privacies);
+        List<String> privacies
+    );
+
+    Project createProject(NewProjectRequestDTO newProjectRequestDTO);
 }
