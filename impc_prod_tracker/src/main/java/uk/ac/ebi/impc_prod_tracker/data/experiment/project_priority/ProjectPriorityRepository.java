@@ -4,4 +4,5 @@ import org.springframework.data.repository.CrudRepository;
 
 public interface ProjectPriorityRepository extends CrudRepository<ProjectPriority, Long>
 {
+    ProjectPriority findProjectPriorityByName(String name);
 }

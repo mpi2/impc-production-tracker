@@ -94,7 +94,7 @@ public class AuthController
     }
 
     /**
-     * @api {post} /signin Signin a user to obtain a token.
+     *      * @api {post} /signin Signin a user to obtain a token.
      * @apiName Signin
      * @apiGroup User
      */
@@ -106,7 +106,7 @@ public class AuthController
         {
             Person person = personService.createPerson(userRegisterRequest);
             System.out.println("User created! Welcome! "+ person);
-                                          return ok(person);
+            return ok(person);
         }
         catch (AuthenticationException e)
         {

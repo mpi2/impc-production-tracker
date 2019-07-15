@@ -16,8 +16,6 @@
 package uk.ac.ebi.impc_prod_tracker.controller.project;
 
 import org.springframework.data.jpa.domain.Specification;
-import uk.ac.ebi.impc_prod_tracker.data.biology.intented_mouse_gene.IntendedMouseGene;
-import uk.ac.ebi.impc_prod_tracker.data.biology.intented_mouse_gene.IntendedMouseGene_;
 import uk.ac.ebi.impc_prod_tracker.data.experiment.plan.Plan;
 import uk.ac.ebi.impc_prod_tracker.data.experiment.plan.Plan_;
 import uk.ac.ebi.impc_prod_tracker.data.experiment.plan.type.PlanType;
@@ -26,14 +24,13 @@ import uk.ac.ebi.impc_prod_tracker.data.experiment.privacy.Privacy;
 import uk.ac.ebi.impc_prod_tracker.data.experiment.privacy.Privacy_;
 import uk.ac.ebi.impc_prod_tracker.data.experiment.project.Project;
 import uk.ac.ebi.impc_prod_tracker.data.experiment.project.Project_;
-import uk.ac.ebi.impc_prod_tracker.data.experiment.project_priority.ProjectPriority;
-import uk.ac.ebi.impc_prod_tracker.data.experiment.project_priority.ProjectPriority_;
 import uk.ac.ebi.impc_prod_tracker.data.experiment.status.Status;
 import uk.ac.ebi.impc_prod_tracker.data.experiment.status.Status_;
 import uk.ac.ebi.impc_prod_tracker.data.organization.work_group.WorkGroup;
 import uk.ac.ebi.impc_prod_tracker.data.organization.work_group.WorkGroup_;
 import uk.ac.ebi.impc_prod_tracker.data.organization.work_unit.WorkUnit;
 import uk.ac.ebi.impc_prod_tracker.data.organization.work_unit.WorkUnit_;
+
 import javax.persistence.criteria.Path;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.SetJoin;
@@ -76,25 +73,25 @@ public class ProjectSpecs
      * @param markerSymbols List of names of the marker symbols
      * @return The found projects. If markerSymbols is null then not filter is applied.
      */
-    public static Specification<Project> getProjectsByMarkerSymbol(List<String> markerSymbols)
-    {
-        return (Specification<Project>) (root, query, criteriaBuilder) -> {
-            if (markerSymbols == null)
-            {
-                return criteriaBuilder.isTrue(criteriaBuilder.literal(true));
-            }
-
-            List<Predicate> predicates = new ArrayList<>();
-
-            SetJoin<Project, IntendedMouseGene> intendedMouseGeneSetJoin =
-                root.join(Project_.intendedMouseGenes);
-            Path<String> symbolName = intendedMouseGeneSetJoin.get(IntendedMouseGene_.symbol);
-            predicates.add(symbolName.in(markerSymbols));
-            query.distinct(true);
-
-            return criteriaBuilder.and(predicates.toArray(new Predicate[predicates.size()]));
-        };
-    }
+//    public static Specification<Project> getProjectsByMarkerSymbol(List<String> markerSymbols)
+//    {
+//        return (Specification<Project>) (root, query, criteriaBuilder) -> {
+//            if (markerSymbols == null)
+//            {
+//                return criteriaBuilder.isTrue(criteriaBuilder.literal(true));
+//            }
+//
+//            List<Predicate> predicates = new ArrayList<>();
+//
+//            SetJoin<Project, IntendedMouseGene> intendedMouseGeneSetJoin =
+//                root.join(Project_.intendedMouseGenes);
+//            Path<String> symbolName = intendedMouseGeneSetJoin.get(IntendedMouseGene_.symbol);
+//             predicates.add(symbolName.in(markerSymbols));
+//            query.distinct(true);
+//
+//            return criteriaBuilder.and(predicates.toArray(new Predicate[predicates.size()]));
+//        };
+//    }
 
     /**
      * Get all the projects which plans are related with the work units specified in workGroupNames
@@ -176,24 +173,24 @@ public class ProjectSpecs
      * @param priorities List of names of priorities.
      * @return The found projects. If statuses is null then not filter is applied.
      */
-    public static Specification<Project> getProjectsByPriority(List<String> priorities)
-    {
-        return (Specification<Project>) (root, query, criteriaBuilder) -> {
-            if (priorities == null)
-            {
-                return criteriaBuilder.isTrue(criteriaBuilder.literal(true));
-            }
-
-            List<Predicate> predicates = new ArrayList<>();
-
-            Path<ProjectPriority> projectPriority = root.get(Project_.projectPriority);
-            Path<String> projectPriorityName = projectPriority.get(ProjectPriority_.name);
-            predicates.add(projectPriorityName.in(priorities));
-            query.distinct(true);
-
-            return criteriaBuilder.and(predicates.toArray(new Predicate[predicates.size()]));
-        };
-    }
+//    public static Specification<Project> getProjectsByPriority(List<String> priorities)
+//    {
+//        return (Specification<Project>) (root, query, criteriaBuilder) -> {
+//            if (priorities == null)
+//            {
+//                return criteriaBuilder.isTrue(criteriaBuilder.literal(true));
+//            }
+//
+//            List<Predicate> predicates = new ArrayList<>();
+//
+//            Path<ProjectPriority> projectPriority = root.get(Project_.projectPriority);
+//            Path<String> projectPriorityName = projectPriority.get(ProjectPriority_.name);
+//            predicates.add(projectPriorityName.in(priorities));
+//            query.distinct(true);
+//
+//            return criteriaBuilder.and(predicates.toArray(new Predicate[predicates.size()]));
+//        };
+//    }
 
     /**
      * Get all the projects which plans have privacy in privacies.

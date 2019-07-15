@@ -19,4 +19,7 @@ import org.springframework.data.repository.CrudRepository;
 
 public interface WorkGroupRepository extends CrudRepository<WorkGroup, Long> {
     WorkGroup findWorkGroupByName(String name);
+
+//    WorkGroup findWorkGroupByIlarCode(String code);
+
 }
