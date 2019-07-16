@@ -18,15 +18,9 @@ package uk.ac.ebi.impc_prod_tracker.data.organization.work_unit;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.*;
 import uk.ac.ebi.impc_prod_tracker.data.BaseEntity;
-import uk.ac.ebi.impc_prod_tracker.data.organization.funder.Funder;
 import uk.ac.ebi.impc_prod_tracker.data.organization.work_group.WorkGroup;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.ManyToMany;
-import javax.persistence.SequenceGenerator;
+
+import javax.persistence.*;
 import java.util.Set;
 
 @NoArgsConstructor(access= AccessLevel.PRIVATE, force=true)
@@ -54,8 +48,8 @@ public class WorkUnit extends BaseEntity
     @JsonBackReference
     private Set<WorkGroup> workGroups;
 
-    @ManyToMany(mappedBy = "workUnits")
-    private Set<Funder> funders;
+//    @ManyToMany(mappedBy = "workUnits")
+//    private Set<Funder> funders;
 
     public WorkUnit(String name)
     {

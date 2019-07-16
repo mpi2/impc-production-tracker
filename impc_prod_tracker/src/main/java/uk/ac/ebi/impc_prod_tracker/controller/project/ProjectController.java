@@ -32,11 +32,13 @@ import uk.ac.ebi.impc_prod_tracker.data.experiment.plan.Plan;
 import uk.ac.ebi.impc_prod_tracker.data.experiment.project.Project;
 import uk.ac.ebi.impc_prod_tracker.service.plan.PlanService;
 import uk.ac.ebi.impc_prod_tracker.service.project.ProjectService;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+import static org.springframework.http.ResponseEntity.ok;
 
 @RestController
 @RequestMapping("/api")
@@ -149,24 +151,31 @@ public class ProjectController
      */
     @GetMapping(value = {"/projectSummaries"})
     public ResponseEntity getProjectSummariesPaginated(
-        @RequestParam(value = "markerSymbol", required = false) List<String> markerSymbols,
+//        @RequestParam(value = "markerSymbol", required = false) List<String> markerSymbols,
         @RequestParam(value = "workUnit", required = false) List<String> workUnits,
         @RequestParam(value = "workGroup", required = false) List<String> workGroups,
         @RequestParam(value = "planType", required = false) List<String> planTypes,
         @RequestParam(value = "status", required = false) List<String> statuses,
         @RequestParam(value = "privacy", required = false) List<String> privacies,
-        @RequestParam(value = "priority", required = false) List<String> priorities,
+//        @RequestParam(value = "priority", required = false) List<String> priorities,
         Pageable pageable,
         PagedResourcesAssembler assembler)
     {
+//        Specification<Project> projectSpecification =
+//            Specification.where(ProjectSpecs.getProjectsByMarkerSymbol(markerSymbols)
+//                .and(ProjectSpecs.getProjectsByWorkUnitNames(workUnits)
+//                .and(ProjectSpecs.getProjectsByWorkGroup(workGroups)
+//                .and(ProjectSpecs.getProjectsByPlanType(planTypes)
+//                .and(ProjectSpecs.getProjectsByStatus(statuses)
+//                .and(ProjectSpecs.getProjectsByPrivacy(privacies)
+//                .and(ProjectSpecs.getProjectsByPriority(priorities))))))));
+
         Specification<Project> projectSpecification =
-            Specification.where(ProjectSpecs.getProjectsByMarkerSymbol(markerSymbols)
-                .and(ProjectSpecs.getProjectsByWorkUnitNames(workUnits)
-                .and(ProjectSpecs.getProjectsByWorkGroup(workGroups)
-                .and(ProjectSpecs.getProjectsByPlanType(planTypes)
-                .and(ProjectSpecs.getProjectsByStatus(statuses)
-                .and(ProjectSpecs.getProjectsByPrivacy(privacies)
-                .and(ProjectSpecs.getProjectsByPriority(priorities))))))));
+                Specification.where(ProjectSpecs.getProjectsByWorkUnitNames(workUnits)
+                        .and(ProjectSpecs.getProjectsByWorkGroup(workGroups)
+                        .and(ProjectSpecs.getProjectsByPlanType(planTypes)
+                        .and(ProjectSpecs.getProjectsByStatus(statuses)
+                        .and(ProjectSpecs.getProjectsByPrivacy(privacies))))));
 
         Page<Project> projects = projectService.getProjectsBySpecPro(projectSpecification, pageable);
         Page<Project> filteredProjects = projects.map(p ->
@@ -249,5 +258,16 @@ public class ProjectController
             plansDTO.add(planDTO);
         }
         projectSummaryDTO.setPlanDetailsDTO(plansDTO);
+    }
+
+    /**
+     *      * @api {post} / create a new project.
+     */
+    @PostMapping(value = {"/createProject"})
+    private ResponseEntity createProject(@RequestBody NewProjectRequestDTO newProjectRequestDTO) {
+        Project newProject = projectService.createProject(newProjectRequestDTO);
+        System.out.println("Project created => "+ newProject);
+        return ok("Project created!");
+
     }
 }

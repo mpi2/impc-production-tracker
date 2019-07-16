@@ -20,23 +20,33 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
+import uk.ac.ebi.impc_prod_tracker.controller.project.NewProjectRequestDTO;
+import uk.ac.ebi.impc_prod_tracker.data.experiment.assignment_status.AssignmentStatus;
 import uk.ac.ebi.impc_prod_tracker.data.experiment.plan.Plan;
 import uk.ac.ebi.impc_prod_tracker.data.experiment.project.Project;
 import uk.ac.ebi.impc_prod_tracker.data.experiment.project.ProjectRepository;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
 @Component
+@Transactional
 public class ProjectServiceImpl implements ProjectService
 {
     private ProjectRepository projectRepository;
 
-    ProjectServiceImpl(ProjectRepository projectRepository)
-    {
+    public ProjectServiceImpl(ProjectRepository projectRepository) {
         this.projectRepository = projectRepository;
     }
+
+    @PersistenceContext
+    private EntityManager em;
+
+
 
     @Override
     public List<Project> getProjects()
@@ -68,6 +78,9 @@ public class ProjectServiceImpl implements ProjectService
         List<String> privacies)
     {
         Set<Plan> plans = project.getPlans();
+
+//        plans = checkCollention(plans, workUnits);
+
         if (!CollectionUtils.isEmpty(workUnits))
         {
             plans = plans.stream()
@@ -107,5 +120,45 @@ public class ProjectServiceImpl implements ProjectService
 
         project.setPlans(plans);
         return project;
+    }
+
+//    public Set<Plan> checkCollention(Set<Plan> plans, List<String> list) {
+//        if (!CollectionUtils.isEmpty(list))
+//        {
+//            plans = plans.stream()
+//                    .filter(plan -> plan.getWorkUnit() != null
+//                            && list.contains(plan.getWorkUnit().getName()))
+//                    .collect(Collectors.toSet());
+//        }
+//        return plans;
+//    }
+
+    @Override
+    public Project createProject(NewProjectRequestDTO newProjectRequestDTO)
+    {
+        Project p = new Project();
+
+
+        p.setTpn("TPN:");
+        em.persist(p);
+        String tpn = createIdentifier(p.getId(), p.getTpn(), 9);
+        p.setTpn(tpn);
+        em.close();
+//        projectRepository.save(p);
+
+
+        return p;
+    }
+
+    private String createIdentifier(Long id, String name, int length){
+        String identifier = String.format("%0" + length + "d", id);
+        identifier = name + identifier;
+        return identifier;
+    }
+
+    private AssignmentStatus checkIfAnyProjectAlreadyCreated()
+    {
+
+        return null;
     }
 }
