@@ -3,9 +3,11 @@ package uk.ac.ebi.impc_prod_tracker.data.biology.intented_mouse_gene;
 import lombok.*;
 import uk.ac.ebi.impc_prod_tracker.data.BaseEntity;
 import uk.ac.ebi.impc_prod_tracker.data.biology.gene_flag.GeneFlag;
+import uk.ac.ebi.impc_prod_tracker.data.experiment.project_mouse_gene.ProjectMouseGene;
 
 import javax.persistence.*;
 import javax.validation.constraints.Pattern;
+import java.util.HashSet;
 import java.util.Set;
 
 @NoArgsConstructor(access= AccessLevel.PRIVATE, force=true)
@@ -51,9 +53,11 @@ public class IntendedMouseGene extends BaseEntity
     @Pattern(regexp = "^([\\+-\\?]{1}|)$", message = "The values allowed for the strand are: '+', '-', or if the value es unknown enter '?'.")
     private String ensemblStrand;
 
-//    @ManyToMany(mappedBy = "intendedMouseGenes")
-//    @JsonBackReference
-//    private Set<Project> projects;
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
+    @OneToMany
+    @JoinColumn(name = "gene_id")
+    private Set<ProjectMouseGene> projectMouseGenes = new HashSet<>();
 
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
