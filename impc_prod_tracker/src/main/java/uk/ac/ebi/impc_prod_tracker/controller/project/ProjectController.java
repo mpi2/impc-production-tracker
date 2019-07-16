@@ -151,7 +151,7 @@ public class ProjectController
      */
     @GetMapping(value = {"/projectSummaries"})
     public ResponseEntity getProjectSummariesPaginated(
-//        @RequestParam(value = "markerSymbol", required = false) List<String> markerSymbols,
+        @RequestParam(value = "markerSymbols", required = false) List<String> markerSymbols,
         @RequestParam(value = "workUnit", required = false) List<String> workUnits,
         @RequestParam(value = "workGroup", required = false) List<String> workGroups,
         @RequestParam(value = "planType", required = false) List<String> planTypes,
@@ -170,12 +170,15 @@ public class ProjectController
 //                .and(ProjectSpecs.getProjectsByPrivacy(privacies)
 //                .and(ProjectSpecs.getProjectsByPriority(priorities))))))));
 
+        System.out.println("/n/n marker_symbol => " + markerSymbols);
+
         Specification<Project> projectSpecification =
-                Specification.where(ProjectSpecs.getProjectsByWorkUnitNames(workUnits)
+                Specification.where(ProjectSpecs.getProjectsByMarkerSymbol(markerSymbols)
+                        .and(ProjectSpecs.getProjectsByWorkUnitNames(workUnits)
                         .and(ProjectSpecs.getProjectsByWorkGroup(workGroups)
                         .and(ProjectSpecs.getProjectsByPlanType(planTypes)
                         .and(ProjectSpecs.getProjectsByStatus(statuses)
-                        .and(ProjectSpecs.getProjectsByPrivacy(privacies))))));
+                        .and(ProjectSpecs.getProjectsByPrivacy(privacies)))))));
 
         Page<Project> projects = projectService.getProjectsBySpecPro(projectSpecification, pageable);
         Page<Project> filteredProjects = projects.map(p ->

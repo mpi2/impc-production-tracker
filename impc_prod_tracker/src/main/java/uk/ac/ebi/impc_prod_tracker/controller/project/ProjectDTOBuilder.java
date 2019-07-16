@@ -21,11 +21,13 @@ import uk.ac.ebi.impc_prod_tracker.controller.project.plan.PlanDTO;
 import uk.ac.ebi.impc_prod_tracker.controller.project.plan.PlanDTOBuilder;
 import uk.ac.ebi.impc_prod_tracker.data.experiment.plan.Plan;
 import uk.ac.ebi.impc_prod_tracker.data.experiment.project.Project;
+import uk.ac.ebi.impc_prod_tracker.data.experiment.project_mouse_gene.ProjectMouseGene;
 import uk.ac.ebi.impc_prod_tracker.service.plan.PlanService;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
 @Component
 @Data
@@ -35,8 +37,7 @@ public class ProjectDTOBuilder
     private PlanDTOBuilder planDTOBuilder;
     private static final String MGI_URL = "http://www.mousephenotype.org/data/genes/";
 
-    public ProjectDTOBuilder(
-        PlanService planService, PlanDTOBuilder planDTOBuilder)
+    public ProjectDTOBuilder(PlanService planService, PlanDTOBuilder planDTOBuilder)
     {
         this.planService = planService;
         this.planDTOBuilder = planDTOBuilder;
@@ -82,45 +83,36 @@ public class ProjectDTOBuilder
 
         projectDetailsDTO.setTpn(project.getTpn());
 
-//        if (project.getProjectPriority() != null)
-//        {
-//            projectDetailsDTO.setPriorityName(project.getProjectPriority().getName());
-//        }
-        // addMarkerSymbols(projectDetailsDTO, project);
-        // addIntentions(projectDetailsDTO, project);
+         addMarkerSymbols(projectDetailsDTO, project);
+         addIntentions(projectDetailsDTO, project);
 
         return projectDetailsDTO;
     }
 
-//    private void addMarkerSymbols(ProjectDetailsDTO projectDetailsDTO, final Project project)
-//    {
-//        Set<IntendedMouseGene> intendedMouseGenes = project.getIntendedMouseGenes();
-//        List<ProjectDetailsDTO.MarkerSymbolDTO> markerSymbolDTOS = new ArrayList<>();
-//        if (intendedMouseGenes != null)
-//        {
-//            for (IntendedMouseGene intendedMouseGene : intendedMouseGenes)
-//            {
-//                ProjectDetailsDTO.MarkerSymbolDTO markerSymbolDTO =
-//                    new ProjectDetailsDTO.MarkerSymbolDTO();
-//                markerSymbolDTO.setMarkerSymbol(intendedMouseGene.getSymbol());
-//                markerSymbolDTO.setMgiLink(MGI_URL + intendedMouseGene.getMgiId());
-//                markerSymbolDTOS.add(markerSymbolDTO);
-//            }
-//        }
-//        projectDetailsDTO.setMarkerSymbols(markerSymbolDTOS);
-//    }
-//
-//    private void addIntentions(ProjectDetailsDTO projectDetailsDTO, final Project project)
-//    {
-//        Set<AlleleType> alleleTypes = project.getProjectIntentions();
-//        List<String> intentions = new ArrayList<>();
-//        if (alleleTypes != null)
-//        {
-//            for (AlleleType alleleType : alleleTypes)
-//            {
-//                intentions.add(alleleType.getName());
-//            }
-//        }
-//        projectDetailsDTO.setAlleleIntentions(intentions);
-//    }
+    private void addMarkerSymbols(ProjectDetailsDTO projectDetailsDTO, final Project project)
+    {
+        Set<ProjectMouseGene> projectMouseGeneSet = project.getProjectMouseGenes();
+
+        List<ProjectDetailsDTO.MarkerSymbolDTO> markerSymbolDTOS = new ArrayList<>();
+
+        projectMouseGeneSet.forEach(x -> {
+            ProjectDetailsDTO.MarkerSymbolDTO markerSymbolDTO = new ProjectDetailsDTO.MarkerSymbolDTO();
+            markerSymbolDTO.setMarkerSymbol(x.getGene().getSymbol());
+            markerSymbolDTO.setMgiLink(MGI_URL + x.getGene().getMgiId());
+            markerSymbolDTOS.add(markerSymbolDTO);
+        });
+
+        projectDetailsDTO.setMarkerSymbols(markerSymbolDTOS);
+    }
+
+    private void addIntentions(ProjectDetailsDTO projectDetailsDTO, final Project project)
+    {
+        Set<ProjectMouseGene> projectMouseGeneSet = project.getProjectMouseGenes();
+
+        List<String> intentions = new ArrayList<>();
+
+        projectMouseGeneSet.forEach(x -> { intentions.add(x.getAlleleType().getName()); });
+
+        projectDetailsDTO.setAlleleIntentions(intentions);
+    }
 }

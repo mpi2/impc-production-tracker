@@ -31,7 +31,6 @@ public class ProjectDetailsDTO extends RepresentationModel
     private String tpn;
     @NonNull
     private String assigmentStatusName;
-    private String priorityName;
     private List<String> locations;
     private List<String> alleleIntentions;
     private List<MarkerSymbolDTO> markerSymbols;
