@@ -16,4 +16,10 @@ class PropertyValueData
     private Class<?> type;
     private String name;
     private boolean isSimpleValue;
+
+    public String toString()
+    {
+        return "[name: " + name + ", type: " + type.getSimpleName()
+            + ", value: " + value + ", isSimpleValue:" +isSimpleValue +"]";
+    }
 }
