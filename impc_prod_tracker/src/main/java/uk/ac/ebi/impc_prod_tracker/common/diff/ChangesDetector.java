@@ -18,8 +18,8 @@ public class ChangesDetector<T>
 
     private ObjectInspector oldObjectInspector;
     private ObjectInspector newObjectInspector;
-    private Map<String, PropertyValueData> oldObjectPropsValues;
-    private Map<String, PropertyValueData> newObjectPropsValues;
+    private Map<String, Object> oldObjectPropsValues;
+    private Map<String, Object> newObjectPropsValues;
 
     private List<ChangeEntry> changeEntries;
 
@@ -43,10 +43,10 @@ public class ChangesDetector<T>
     private void initObjectInspectors()
     {
         oldObjectInspector = new ObjectInspector(oldObject, fieldsToIgnore);
-        oldObjectPropsValues = oldObjectInspector.getSimpleValues();
+        oldObjectPropsValues = oldObjectInspector.getValuesForSimpleProperties();
 
         newObjectInspector = new ObjectInspector(newObject, fieldsToIgnore);
-        newObjectPropsValues = newObjectInspector.getSimpleValues();
+        newObjectPropsValues = newObjectInspector.getValuesForSimpleProperties();
     }
 
     /**
@@ -76,11 +76,9 @@ public class ChangesDetector<T>
     }
 
     private ChangeEntry evaluateProperty(
-        String property, PropertyValueData oldValueData, PropertyValueData newValueData)
+        String property, Object oldValue, Object newValue)
     {
         ChangeEntry changeEntry = null;
-        Object oldValue = oldValueData.getValue();
-        Object newValue = newValueData.getValue();
 
         if (areValuesDifferent(oldValue, newValue))
         {

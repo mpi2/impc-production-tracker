@@ -84,6 +84,7 @@ public class HistoryBuilder
         fieldsToExclude.add(BaseEntity_.LAST_MODIFIED_BY);
         fieldsToExclude.add(RESOURCE_PRIVACY_PROPERTY_NAME);
         fieldsToExclude.add(RESTRICTED_OBJECT_PROPERTY_NAME);
+        fieldsToExclude.add("id");
         List<String> fieldsToCheckRecursively = new ArrayList<>();
         fieldsToCheckRecursively.add(Plan_.CRISPR_ATTEMPT);
 

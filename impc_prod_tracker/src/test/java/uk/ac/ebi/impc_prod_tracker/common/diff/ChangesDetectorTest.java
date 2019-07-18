@@ -96,12 +96,13 @@ public class ChangesDetectorTest
 
         ChangeEntry expectedChangeEntry1 =
             getChangeEntry("property3.innerProperty3.innerInnerProperty1", "5", "20");
-        ChangeEntry expectedChangeEntry2 = getChangeEntry("property3.innerProperty2", "2", "4");
+        ChangeEntry expectedChangeEntry2 =
+            getChangeEntry("property3.innerProperty2", "2", "4");
 
         assertThat("Unexpected number of changes:", changeEntryList.size(), is(2));
 
-        ChangeEntry obtainedChangeEntry1 = changeEntryList.get(0);
-        ChangeEntry obtainedChangeEntry2 = changeEntryList.get(1);
+        ChangeEntry obtainedChangeEntry1 = changeEntryList.get(1);
+        ChangeEntry obtainedChangeEntry2 = changeEntryList.get(0);
 
         validateObtainedChangeEntryIsExpected(expectedChangeEntry1, obtainedChangeEntry1);
         validateObtainedChangeEntryIsExpected(expectedChangeEntry2, obtainedChangeEntry2);
