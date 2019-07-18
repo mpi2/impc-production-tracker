@@ -17,16 +17,13 @@ package uk.ac.ebi.impc_prod_tracker.controller.project.plan;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
 
 @Data
-@RequiredArgsConstructor
 @NoArgsConstructor
 public class PlanDetailsDTO
 {
-    @NonNull private String pin;
-    @NonNull private String privacyName;
+    private String pin;
+    private String privacyName;
     private String planTypeName;
     private String consortiumName;
     private String workUnitName;
