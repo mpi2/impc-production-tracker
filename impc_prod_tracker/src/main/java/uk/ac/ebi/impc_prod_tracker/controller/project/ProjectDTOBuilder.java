@@ -19,15 +19,14 @@ import lombok.Data;
 import org.springframework.stereotype.Component;
 import uk.ac.ebi.impc_prod_tracker.controller.project.plan.PlanDTO;
 import uk.ac.ebi.impc_prod_tracker.controller.project.plan.PlanDTOBuilder;
+import uk.ac.ebi.impc_prod_tracker.data.biology.ortholog.Ortholog;
 import uk.ac.ebi.impc_prod_tracker.data.experiment.plan.Plan;
 import uk.ac.ebi.impc_prod_tracker.data.experiment.project.Project;
 import uk.ac.ebi.impc_prod_tracker.data.experiment.project_mouse_gene.ProjectMouseGene;
+import uk.ac.ebi.impc_prod_tracker.service.MouseGeneService;
 import uk.ac.ebi.impc_prod_tracker.service.plan.PlanService;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 
 @Component
 @Data
@@ -35,12 +34,14 @@ public class ProjectDTOBuilder
 {
     private PlanService planService;
     private PlanDTOBuilder planDTOBuilder;
+    private MouseGeneService mouseGeneService;
     private static final String MGI_URL = "http://www.mousephenotype.org/data/genes/";
 
-    public ProjectDTOBuilder(PlanService planService, PlanDTOBuilder planDTOBuilder)
+    public ProjectDTOBuilder(PlanService planService, PlanDTOBuilder planDTOBuilder, MouseGeneService mouseGeneService)
     {
         this.planService = planService;
         this.planDTOBuilder = planDTOBuilder;
+        this.mouseGeneService = mouseGeneService;
     }
 
     public ProjectDTO buildProjectDTOFromProject(Project project)
@@ -86,6 +87,8 @@ public class ProjectDTOBuilder
          addMarkerSymbols(projectDetailsDTO, project);
          addIntentions(projectDetailsDTO, project);
 
+         addHumanGenes(projectDetailsDTO, project);
+
         return projectDetailsDTO;
     }
 
@@ -111,8 +114,34 @@ public class ProjectDTOBuilder
 
         List<String> intentions = new ArrayList<>();
 
-        projectMouseGeneSet.forEach(x -> { intentions.add(x.getAlleleType().getName()); });
+        projectMouseGeneSet.forEach(x -> intentions.add(x.getAlleleType().getName()) );
 
         projectDetailsDTO.setAlleleIntentions(intentions);
     }
+
+    private void addHumanGenes(ProjectDetailsDTO projectDetailsDTO, final Project project)
+    {
+        Set<ProjectMouseGene> projectMouseGeneSet = project.getProjectMouseGenes();
+
+        List<String> mouseMgiIds = new ArrayList<>();
+
+        projectMouseGeneSet.forEach(x -> mouseMgiIds.add(x.getGene().getMgiId()) );
+
+        List<ProjectDetailsDTO.HumanGeneSymbolDTO> humanGeneSymbolDTOS = new ArrayList<>();
+
+        mouseMgiIds.forEach(x -> {
+            Set<Ortholog> orthologs = mouseGeneService.getMouseGenesByMgiId(x).getOrthologs();
+            orthologs.forEach(o -> {
+                ProjectDetailsDTO.HumanGeneSymbolDTO humanGeneSymbolDTO = new ProjectDetailsDTO.HumanGeneSymbolDTO();
+                humanGeneSymbolDTO.setSymbol(o.getHumanGene().getSymbol());
+                humanGeneSymbolDTO.setSupport(o.getSupport());
+                humanGeneSymbolDTO.setSupport_count(o.getSupportCount());
+                humanGeneSymbolDTOS.add(humanGeneSymbolDTO);
+            });
+
+        });
+
+        projectDetailsDTO.setHumanGenes(humanGeneSymbolDTOS);
+    }
 }
+

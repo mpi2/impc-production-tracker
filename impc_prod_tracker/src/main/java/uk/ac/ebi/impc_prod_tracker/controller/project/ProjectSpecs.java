@@ -77,7 +77,7 @@ public class ProjectSpecs
      * @param markerSymbols List of names of the marker symbols
      * @return The found projects. If markerSymbols is null then not filter is applied.
      */
-    public static Specification<Project> getProjectsByMarkerSymbol(List<String> markerSymbols)
+    public static Specification<Project> getProjectsByMarkerSymbolAndSpecie(List<String> markerSymbols)
     {
         return (Specification<Project>) (root, query, criteriaBuilder) -> {
             if (markerSymbols == null) {
@@ -85,13 +85,6 @@ public class ProjectSpecs
             }
 
             List<Predicate> predicates = new ArrayList<>();
-//
-//            SetJoin<Project, IntendedMouseGene> intendedMouseGeneSetJoin =
-//                root.join(Project_.intendedMouseGenes);
-//            Path<String> symbolName = intendedMouseGeneSetJoin.get(IntendedMouseGene_.symbol);
-//             predicates.add(symbolName.in(markerSymbols));
-//            query.distinct(true);
-
 
             SetJoin<Project, ProjectMouseGene> projectSetJoin = root.join(Project_.projectMouseGenes);
             Path<IntendedMouseGene> intendedMouseGenePath = projectSetJoin.get(ProjectMouseGene_.gene);
@@ -178,30 +171,6 @@ public class ProjectSpecs
             return criteriaBuilder.and(predicates.toArray(new Predicate[predicates.size()]));
         };
     }
-
-    /**
-     * Get all the projects which plans with the priority in priorities.
-     * @param priorities List of names of priorities.
-     * @return The found projects. If statuses is null then not filter is applied.
-     */
-//    public static Specification<Project> getProjectsByPriority(List<String> priorities)
-//    {
-//        return (Specification<Project>) (root, query, criteriaBuilder) -> {
-//            if (priorities == null)
-//            {
-//                return criteriaBuilder.isTrue(criteriaBuilder.literal(true));
-//            }
-//
-//            List<Predicate> predicates = new ArrayList<>();
-//
-//            Path<ProjectPriority> projectPriority = root.get(Project_.projectPriority);
-//            Path<String> projectPriorityName = projectPriority.get(ProjectPriority_.name);
-//            predicates.add(projectPriorityName.in(priorities));
-//            query.distinct(true);
-//
-//            return criteriaBuilder.and(predicates.toArray(new Predicate[predicates.size()]));
-//        };
-//    }
 
     /**
      * Get all the projects which plans have privacy in privacies.

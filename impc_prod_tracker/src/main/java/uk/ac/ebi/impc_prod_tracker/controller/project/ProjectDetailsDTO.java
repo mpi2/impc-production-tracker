@@ -20,6 +20,7 @@ import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.hateoas.RepresentationModel;
+
 import java.util.List;
 
 @Data
@@ -34,11 +35,20 @@ public class ProjectDetailsDTO extends RepresentationModel
     private List<String> locations;
     private List<String> alleleIntentions;
     private List<MarkerSymbolDTO> markerSymbols;
+    private List<HumanGeneSymbolDTO> humanGenes;
 
     @Data
     public static class MarkerSymbolDTO
     {
         String markerSymbol;
         String mgiLink;
+    }
+
+    @Data
+    public static class HumanGeneSymbolDTO
+    {
+        String symbol;
+        String support;
+        Long support_count;
     }
 }
