@@ -76,8 +76,14 @@ public class ObjectInspectorTest
     @Test
     public void testNested()
     {
-        Plan object = new Plan();
+        ClassC object = new ClassC();
         objectInspector = new ObjectInspector(object, Arrays.asList(""));
+        Map<String, PropertyValueData> map = objectInspector.getMap();
+
+        assertThat("Size:", map.size(), is(3));
+        assertThat("Size:", map.get("c1"), is(notNullValue()));
+        assertThat("Size:", map.get("c1.d1"), is(notNullValue()));
+        assertThat("Size:", map.get("c1.d1.e1"), is(notNullValue()));
         objectInspector.printSimple();
     }
 
@@ -107,6 +113,12 @@ public class ObjectInspectorTest
     @Data
     public class ClassD
     {
-        private String d1;
+        private ClassE d1;
+    }
+
+    @Data
+    public class ClassE
+    {
+        private String e1;
     }
 }

@@ -35,9 +35,9 @@ class ObjectInspector
         for (PropertyDefinition prop : properties)
         {
             PropertyValueData data = getPropertyData(prop, object, parentName);
-
             if (data != null)
             {
+                prop.setName(data.getName());
                 map.put(data.getName(), data);
                 if (mustCheckInternalProperties(data, parentData))
                 {
@@ -105,7 +105,6 @@ class ObjectInspector
 
     private boolean isCircularReference(PropertyValueData data, PropertyDefinition parentData)
     {
-        PropertyDefinition curr = getCurrentParent(parentData);
         return !checkedClassesTree.canRelationBeAdded(
             data.getType(), getCurrentParent(parentData).getType());
     }
