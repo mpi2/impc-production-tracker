@@ -32,7 +32,6 @@ import uk.ac.ebi.impc_prod_tracker.data.experiment.plan.Plan;
 import uk.ac.ebi.impc_prod_tracker.data.experiment.project.Project;
 import uk.ac.ebi.impc_prod_tracker.service.plan.PlanService;
 import uk.ac.ebi.impc_prod_tracker.service.project.ProjectService;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;

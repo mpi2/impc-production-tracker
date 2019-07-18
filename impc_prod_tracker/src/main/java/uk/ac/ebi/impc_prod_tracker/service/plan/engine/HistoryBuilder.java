@@ -6,8 +6,8 @@ import uk.ac.ebi.impc_prod_tracker.common.diff.ChangesDetector;
 import uk.ac.ebi.impc_prod_tracker.conf.security.abac.spring.SubjectRetriever;
 import uk.ac.ebi.impc_prod_tracker.data.BaseEntity_;
 import uk.ac.ebi.impc_prod_tracker.data.experiment.plan.Plan;
-import uk.ac.ebi.impc_prod_tracker.data.experiment.plan.Plan_;
 import uk.ac.ebi.impc_prod_tracker.data.experiment.plan.history.History;
+import uk.ac.ebi.impc_prod_tracker.data.experiment.plan.history.detail.HistoryDetail;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -19,7 +19,6 @@ import java.util.List;
 @Component
 public class HistoryBuilder
 {
-    private static final String TRANSITION_TEMPLATE = "field:%s|old:%s|new:%s";
     private SubjectRetriever subjectRetriever;
     private static final String RESOURCE_PRIVACY_PROPERTY_NAME = "resourcePrivacy";
     private static final String RESTRICTED_OBJECT_PROPERTY_NAME = "restrictedObject";
@@ -40,8 +39,8 @@ public class HistoryBuilder
     public History buildHistoryEntry(Plan originalPlan, Plan newPlan)
     {
         History history = new History();
-        String actionsMessage = buildActionMessage(originalPlan, newPlan);
-        if (actionsMessage.isEmpty())
+        List<HistoryDetail> historyDetails = getDetails(originalPlan, newPlan);
+        if (historyDetails.isEmpty())
         {
             history = null;
         }
@@ -50,23 +49,11 @@ public class HistoryBuilder
             history.setPlan(newPlan);
             history.setDate(LocalDateTime.now());
 
-            history.setAction(actionsMessage);
+            history.setHistoryDetailSet(historyDetails);
             history.setUser(subjectRetriever.getSubject().getLogin());
         }
 
         return history;
-    }
-
-    /**
-     * Builds the action text for the changes. Separates each change with the symbol for lineSeparator.
-     * @param originalPlan The plan before the update.
-     * @param newPlan The updated plan.
-     * @return Text describing the changes.
-     */
-    private String buildActionMessage(Plan originalPlan, Plan newPlan)
-    {
-        List<String> changes = getChanges(originalPlan, newPlan);
-        return String.join(System.lineSeparator(), changes);
     }
 
     /**
@@ -75,7 +62,7 @@ public class HistoryBuilder
      * @param newPlan The updated plan.
      * @return List of strings with the detected changes.
      */
-    private List<String> getChanges(final Plan originalPlan, final Plan newPlan)
+    private List<HistoryDetail> getDetails(final Plan originalPlan, final Plan newPlan)
     {
         List<String> fieldsToExclude = new ArrayList<>();
         fieldsToExclude.add(BaseEntity_.CREATED_AT);
@@ -85,18 +72,22 @@ public class HistoryBuilder
         fieldsToExclude.add(RESOURCE_PRIVACY_PROPERTY_NAME);
         fieldsToExclude.add(RESTRICTED_OBJECT_PROPERTY_NAME);
         fieldsToExclude.add("id");
-        List<String> fieldsToCheckRecursively = new ArrayList<>();
-        fieldsToCheckRecursively.add(Plan_.CRISPR_ATTEMPT);
 
         ChangesDetector<Plan> changesDetector =
             new ChangesDetector<>(fieldsToExclude, originalPlan, newPlan);
         List<ChangeEntry> changeEntries = changesDetector.getChanges();
 
-        List<String> changes =  new ArrayList<>();
+        List<HistoryDetail> details =  new ArrayList<>();
         changeEntries.forEach(x ->
-            changes.add(
-                String.format(TRANSITION_TEMPLATE, x.getProperty(), x.getOldValue(), x.getNewValue())));
+            {
+                HistoryDetail historyDetail = new HistoryDetail();
+                historyDetail.setField(x.getProperty());
+                historyDetail.setOldValue(x.getOldValue());
+                historyDetail.setNewValue(x.getNewValue());
 
-        return changes;
+                details.add(historyDetail);
+            });
+
+        return details;
     }
 }
