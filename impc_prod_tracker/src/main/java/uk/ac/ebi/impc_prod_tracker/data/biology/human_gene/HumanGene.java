@@ -23,6 +23,7 @@ import uk.ac.ebi.impc_prod_tracker.data.biology.ortholog.Ortholog;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.util.HashSet;
 import java.util.Set;
 
 @NoArgsConstructor(access= AccessLevel.PRIVATE, force=true)
@@ -52,11 +53,11 @@ public class HumanGene extends BaseEntity
         name = "human_gene_synonym_rel",
         joinColumns = @JoinColumn(name = "human_gene_id"),
         inverseJoinColumns = @JoinColumn(name = "human_gene_synonym_id"))
-    private Set<HumanGeneSynonym> humanGeneSynonyms;
+    private Set<HumanGeneSynonym> humanGeneSynonyms = new HashSet<>();
 
     @ToString.Exclude
     @JsonIgnore
     @OneToMany(mappedBy = "humanGene")
-    private Set<Ortholog> orthologs;
+    private Set<Ortholog> orthologs = new HashSet<>();
 
 }
