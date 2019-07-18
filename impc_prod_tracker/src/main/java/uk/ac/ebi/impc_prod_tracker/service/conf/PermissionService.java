@@ -14,10 +14,10 @@ public interface PermissionService
     Map<String, Boolean> getPermissions();
 
     /**
-     * Returns if the current use can execute an action on a specific resource.
-     * @param action The action to evaluate.
+     * Returns if the current use can execute an comment on a specific resource.
+     * @param action The comment to evaluate.
      * @param resourceId The resource identifier.
-     * @return True if the use has permission to execute the action.
+     * @return True if the use has permission to execute the comment.
      */
     boolean getPermissionByActionOnResource(String action, String resourceId);
 }
