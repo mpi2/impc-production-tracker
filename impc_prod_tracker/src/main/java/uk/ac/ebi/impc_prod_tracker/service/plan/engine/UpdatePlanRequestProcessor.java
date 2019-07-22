@@ -1,12 +1,12 @@
 package uk.ac.ebi.impc_prod_tracker.service.plan.engine;
 
 import org.springframework.stereotype.Component;
-import uk.ac.ebi.impc_prod_tracker.controller.project.plan.PlanDetailsDTO;
-import uk.ac.ebi.impc_prod_tracker.controller.project.plan.UpdatePlanRequestDTO;
-import uk.ac.ebi.impc_prod_tracker.controller.project.plan.production_plan.ProductionPlanDTO;
-import uk.ac.ebi.impc_prod_tracker.controller.project.plan.production_plan.attempt.AttemptDTO;
-import uk.ac.ebi.impc_prod_tracker.controller.project.plan.production_plan.attempt.crispr_attempt.CrisprAttemptDTO;
-import uk.ac.ebi.impc_prod_tracker.controller.project.plan.production_plan.attempt.crispr_attempt.CrisprAttemptDTOBuilder;
+import uk.ac.ebi.impc_prod_tracker.web.dto.plan.PlanDetailsDTO;
+import uk.ac.ebi.impc_prod_tracker.web.dto.plan.UpdatePlanRequestDTO;
+import uk.ac.ebi.impc_prod_tracker.web.dto.plan.production_plan.ProductionPlanDTO;
+import uk.ac.ebi.impc_prod_tracker.web.dto.plan.production_plan.attempt.AttemptDTO;
+import uk.ac.ebi.impc_prod_tracker.web.dto.plan.production_plan.attempt.crispr_attempt.CrisprAttemptDTO;
+import uk.ac.ebi.impc_prod_tracker.web.mapping.plan.production_plan.attempt.crispr_attempt.CrisprAttemptDTOBuilder;
 import uk.ac.ebi.impc_prod_tracker.data.biology.attempt.crispr_attempt.CrisprAttempt;
 import uk.ac.ebi.impc_prod_tracker.data.experiment.plan.Plan;
 import uk.ac.ebi.impc_prod_tracker.data.experiment.privacy.Privacy;

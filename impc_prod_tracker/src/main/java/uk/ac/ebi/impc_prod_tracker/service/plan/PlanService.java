@@ -18,7 +18,7 @@ package uk.ac.ebi.impc_prod_tracker.service.plan;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
-import uk.ac.ebi.impc_prod_tracker.controller.project.plan.UpdatePlanRequestDTO;
+import uk.ac.ebi.impc_prod_tracker.web.dto.plan.UpdatePlanRequestDTO;
 import uk.ac.ebi.impc_prod_tracker.data.experiment.plan.Plan;
 import uk.ac.ebi.impc_prod_tracker.data.experiment.project.Project;
 import java.util.List;
