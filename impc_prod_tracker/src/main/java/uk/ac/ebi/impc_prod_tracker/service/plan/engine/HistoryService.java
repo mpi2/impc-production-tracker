@@ -9,7 +9,7 @@ import java.util.List;
  */
 public interface HistoryService
 {
-    void detectTrackOfChanges(Plan originalPlan, Plan newPlan);
-    void saveTrackOfChanges();
+    History detectTrackOfChanges(Plan originalPlan, Plan newPlan);
+    void saveTrackOfChanges(History historyEntry);
     List<History> getHistoryByPlanId(Long planId);
 }

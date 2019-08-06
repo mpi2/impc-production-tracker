@@ -4,6 +4,7 @@ import org.springframework.stereotype.Component;
 import uk.ac.ebi.impc_prod_tracker.conf.security.abac.spring.ContextAwarePolicyEnforcement;
 import uk.ac.ebi.impc_prod_tracker.data.experiment.plan.Plan;
 import uk.ac.ebi.impc_prod_tracker.data.experiment.plan.PlanRepository;
+import uk.ac.ebi.impc_prod_tracker.data.experiment.plan.history.History;
 
 
 @Component
@@ -27,14 +28,15 @@ public class PlanUpdaterImpl implements PlanUpdater
     }
 
     @Override
-    public void updatePlan(Plan originalPlan, Plan newPlan)
+    public History updatePlan(Plan originalPlan, Plan newPlan)
     {
         validatePermissionToUpdatePlan(newPlan);
         validateData(newPlan);
-        detectTrackOfChanges(originalPlan, newPlan);
+        History history = detectTrackOfChanges(originalPlan, newPlan);
         changeStatusIfNeeded(newPlan);
         saveChanges(newPlan);
-        saveTrackOfChanges();
+        saveTrackOfChanges(history);
+        return history;
     }
 
     /**
@@ -78,16 +80,18 @@ public class PlanUpdaterImpl implements PlanUpdater
      * @param originalPlan The plan before the update.
      * @param newPlan The updated plan.
      */
-    private void detectTrackOfChanges(Plan originalPlan, Plan newPlan)
+    private History detectTrackOfChanges(Plan originalPlan, Plan newPlan)
     {
-        historyService.detectTrackOfChanges(originalPlan, newPlan);
+        History historyEntry = historyService.detectTrackOfChanges(originalPlan, newPlan);
+        return historyEntry;
     }
 
     /**
      * Stores the track of the changes.
+     * @param history
      */
-    private void saveTrackOfChanges()
+    private void saveTrackOfChanges(History history)
     {
-        historyService.saveTrackOfChanges();
+        historyService.saveTrackOfChanges(history);
     }
 }

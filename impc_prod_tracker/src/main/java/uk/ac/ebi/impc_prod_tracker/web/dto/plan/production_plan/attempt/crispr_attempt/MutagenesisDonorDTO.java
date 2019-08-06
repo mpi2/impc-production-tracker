@@ -1,4 +1,4 @@
-package uk.ac.ebi.impc_prod_tracker.web.dto.plan.production_plan.attempt;
+package uk.ac.ebi.impc_prod_tracker.web.dto.plan.production_plan.attempt.crispr_attempt;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
