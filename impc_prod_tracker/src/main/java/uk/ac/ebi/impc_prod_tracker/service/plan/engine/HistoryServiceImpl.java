@@ -20,13 +20,13 @@ public class HistoryServiceImpl implements HistoryService
     }
 
     @Override
-    public void detectTrackOfChanges(Plan originalPlan, Plan newPlan)
+    public History detectTrackOfChanges(Plan originalPlan, Plan newPlan)
     {
-        historyEntry = historyBuilder.buildHistoryEntry(originalPlan, newPlan);
+        return historyBuilder.buildHistoryEntry(originalPlan, newPlan);
     }
 
     @Override
-    public void saveTrackOfChanges()
+    public void saveTrackOfChanges(History historyEntry)
     {
         if (historyEntry != null)
         {

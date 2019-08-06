@@ -39,7 +39,10 @@ public class ProjectDTOBuilder
     private MouseGeneService mouseGeneService;
     private static final String MGI_URL = "http://www.mousephenotype.org/data/genes/";
 
-    public ProjectDTOBuilder(PlanService planService, PlanDTOBuilder planDTOBuilder, MouseGeneService mouseGeneService)
+    public ProjectDTOBuilder(
+        PlanService planService,
+        PlanDTOBuilder planDTOBuilder,
+        MouseGeneService mouseGeneService)
     {
         this.planService = planService;
         this.planDTOBuilder = planDTOBuilder;

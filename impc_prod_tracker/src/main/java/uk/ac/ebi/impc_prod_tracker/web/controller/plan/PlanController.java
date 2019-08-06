@@ -18,8 +18,10 @@ package uk.ac.ebi.impc_prod_tracker.web.controller.plan;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import uk.ac.ebi.impc_prod_tracker.conf.error_management.OperationFailedException;
+import uk.ac.ebi.impc_prod_tracker.data.experiment.plan.history.History;
 import uk.ac.ebi.impc_prod_tracker.web.dto.plan.UpdatePlanRequestDTO;
 import uk.ac.ebi.impc_prod_tracker.web.mapping.plan.PlanDTOBuilder;
+import uk.ac.ebi.impc_prod_tracker.web.mapping.plan.history.HistoryMapper;
 import uk.ac.ebi.impc_prod_tracker.web.mapping.project.ProjectDTOBuilder;
 import uk.ac.ebi.impc_prod_tracker.web.dto.plan.PlanDTO;
 import uk.ac.ebi.impc_prod_tracker.web.dto.project.ProjectDetailsDTO;
@@ -38,15 +40,17 @@ public class PlanController
     private PlanDTOBuilder planDTOBuilder;
     private ProjectDTOBuilder projectDTOBuilder;
     private HistoryDTOBuilder historyDTOBuilder;
+    private HistoryMapper historyMapper;
 
     public PlanController(
         PlanDTOBuilder planDTOBuilder,
         ProjectDTOBuilder projectDTOBuilder,
-        HistoryDTOBuilder historyDTOBuilder)
+        HistoryDTOBuilder historyDTOBuilder, HistoryMapper historyMapper)
     {
         this.planDTOBuilder = planDTOBuilder;
         this.projectDTOBuilder = projectDTOBuilder;
         this.historyDTOBuilder = historyDTOBuilder;
+        this.historyMapper = historyMapper;
     }
 
     @GetMapping(value = {"/plans"})
@@ -104,9 +108,14 @@ public class PlanController
     }
 
     @PutMapping(value = {"/plans/{pin}"})
-    public void updatePlan(
+    public HistoryDTO updatePlan(
         @PathVariable String pin, @RequestBody UpdatePlanRequestDTO updatePlanRequestDTO)
     {
-        projectDTOBuilder.getPlanService().updatePlan(pin, updatePlanRequestDTO);
+        History history = projectDTOBuilder.getPlanService().updatePlan(pin, updatePlanRequestDTO);
+        if (history != null)
+        {
+            return  historyMapper.toDto(history);
+        }
+        return null;
     }
 }
