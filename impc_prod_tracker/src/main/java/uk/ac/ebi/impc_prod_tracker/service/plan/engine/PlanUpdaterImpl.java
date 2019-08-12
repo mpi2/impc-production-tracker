@@ -1,22 +1,22 @@
 package uk.ac.ebi.impc_prod_tracker.service.plan.engine;
 
 import org.springframework.stereotype.Component;
+import uk.ac.ebi.impc_prod_tracker.common.history.HistoryService;
 import uk.ac.ebi.impc_prod_tracker.conf.security.abac.spring.ContextAwarePolicyEnforcement;
 import uk.ac.ebi.impc_prod_tracker.data.experiment.plan.Plan;
 import uk.ac.ebi.impc_prod_tracker.data.experiment.plan.PlanRepository;
-import uk.ac.ebi.impc_prod_tracker.data.experiment.plan.history.History;
-
+import uk.ac.ebi.impc_prod_tracker.data.common.history.History;
 
 @Component
 public class PlanUpdaterImpl implements PlanUpdater
 {
-    private HistoryService historyService;
+    private HistoryService<Plan> historyService;
     private ContextAwarePolicyEnforcement policyEnforcement;
     private PlanRepository planRepository;
     private PlanValidator planValidator;
 
     public PlanUpdaterImpl(
-        HistoryService historyService,
+        HistoryService<Plan> historyService,
         ContextAwarePolicyEnforcement policyEnforcement,
         PlanRepository planRepository,
         PlanValidator planValidator)
@@ -30,6 +30,7 @@ public class PlanUpdaterImpl implements PlanUpdater
     @Override
     public History updatePlan(Plan originalPlan, Plan newPlan)
     {
+        historyService.setEntityData("plan", originalPlan.getId());
         validatePermissionToUpdatePlan(newPlan);
         validateData(newPlan);
         History history = detectTrackOfChanges(originalPlan, newPlan);

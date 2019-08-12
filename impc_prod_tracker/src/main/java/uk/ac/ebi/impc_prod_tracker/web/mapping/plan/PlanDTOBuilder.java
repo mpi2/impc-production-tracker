@@ -19,7 +19,7 @@ import lombok.Data;
 import org.springframework.stereotype.Component;
 import uk.ac.ebi.impc_prod_tracker.common.Constants;
 import uk.ac.ebi.impc_prod_tracker.conf.error_management.OperationFailedException;
-import uk.ac.ebi.impc_prod_tracker.web.mapping.plan.history.HistoryDTOBuilder;
+import uk.ac.ebi.impc_prod_tracker.web.mapping.common.history.HistoryDTOBuilder;
 import uk.ac.ebi.impc_prod_tracker.web.dto.plan.PlanDetailsDTO;
 import uk.ac.ebi.impc_prod_tracker.web.dto.plan.phenotype_plan.PhenotypePlanDTO;
 import uk.ac.ebi.impc_prod_tracker.web.mapping.plan.phenotype_plan.PhenotypePlanDTOBuilder;
@@ -27,7 +27,7 @@ import uk.ac.ebi.impc_prod_tracker.web.mapping.plan.production_plan.ProductionPl
 import uk.ac.ebi.impc_prod_tracker.web.dto.plan.production_plan.ProductionPlanDTO;
 import uk.ac.ebi.impc_prod_tracker.data.experiment.plan.Plan;
 import uk.ac.ebi.impc_prod_tracker.service.plan.PlanService;
-import uk.ac.ebi.impc_prod_tracker.service.plan.engine.HistoryService;
+import uk.ac.ebi.impc_prod_tracker.common.history.HistoryService;
 import uk.ac.ebi.impc_prod_tracker.web.dto.plan.PlanDTO;
 
 @Component
