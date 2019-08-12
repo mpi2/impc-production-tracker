@@ -18,6 +18,7 @@ package uk.ac.ebi.impc_prod_tracker.service.project;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
+import uk.ac.ebi.impc_prod_tracker.data.common.history.History;
 import uk.ac.ebi.impc_prod_tracker.web.dto.project.NewProjectRequestDTO;
 import uk.ac.ebi.impc_prod_tracker.data.experiment.project.Project;
 
@@ -66,4 +67,11 @@ public interface ProjectService
     );
 
     Project createProject(NewProjectRequestDTO newProjectRequestDTO);
+
+    /**
+     * Gets the history for a project
+     * @param project The project.
+     * @return List of {@link History} with the trace of the changes for a project.
+     */
+    List<History> getProjectHistory(Project project);
 }

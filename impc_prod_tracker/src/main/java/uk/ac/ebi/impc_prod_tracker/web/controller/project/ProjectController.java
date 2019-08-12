@@ -17,15 +17,19 @@ package uk.ac.ebi.impc_prod_tracker.web.controller.project;
 
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import uk.ac.ebi.impc_prod_tracker.conf.error_management.OperationFailedException;
 import uk.ac.ebi.impc_prod_tracker.data.experiment.plan.Plan;
 import uk.ac.ebi.impc_prod_tracker.data.experiment.project.Project;
 import uk.ac.ebi.impc_prod_tracker.service.plan.PlanService;
 import uk.ac.ebi.impc_prod_tracker.service.project.ProjectService;
+import uk.ac.ebi.impc_prod_tracker.web.dto.common.history.HistoryDTO;
 import uk.ac.ebi.impc_prod_tracker.web.dto.project.NewProjectRequestDTO;
 import uk.ac.ebi.impc_prod_tracker.web.dto.project.ProjectDTO;
 import uk.ac.ebi.impc_prod_tracker.web.dto.project.ProjectPlanDTO;
+import uk.ac.ebi.impc_prod_tracker.web.mapping.common.history.HistoryMapper;
 import uk.ac.ebi.impc_prod_tracker.web.mapping.plan.PlanMapper;
 import uk.ac.ebi.impc_prod_tracker.web.mapping.project.ProjectMapper;
 import java.util.List;
@@ -42,17 +46,20 @@ class ProjectController
     private PlanService planService;
     private ProjectMapper projectMapper;
     private PlanMapper planMapper;
+    private HistoryMapper historyMapper;
 
     ProjectController(
         ProjectService projectService,
         PlanService planService,
         ProjectMapper projectMapper,
-        PlanMapper planMapper)
+        PlanMapper planMapper,
+        HistoryMapper historyMapper)
     {
         this.projectService = projectService;
         this.planService = planService;
         this.projectMapper = projectMapper;
         this.planMapper = planMapper;
+        this.historyMapper = historyMapper;
     }
 
     /**
@@ -110,5 +117,13 @@ class ProjectController
         Project newProject = projectService.createProject(newProjectRequestDTO);
         System.out.println("Project created => "+ newProject);
         return ok("Project created!");
+    }
+
+    @GetMapping(value = {"/projects/{tpn}/history"})
+    public List<HistoryDTO> getProjectHistory(@PathVariable String tpn)
+    {
+        Project project = ProjectUtilities.getNotNullProjectByTpn(tpn);
+
+        return historyMapper.toDtos(projectService.getProjectHistory(project));
     }
 }

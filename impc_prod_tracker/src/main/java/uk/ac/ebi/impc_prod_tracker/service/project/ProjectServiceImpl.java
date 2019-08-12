@@ -20,12 +20,13 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
+import uk.ac.ebi.impc_prod_tracker.common.history.HistoryService;
+import uk.ac.ebi.impc_prod_tracker.data.common.history.History;
 import uk.ac.ebi.impc_prod_tracker.web.dto.project.NewProjectRequestDTO;
 import uk.ac.ebi.impc_prod_tracker.data.experiment.assignment_status.AssignmentStatus;
 import uk.ac.ebi.impc_prod_tracker.data.experiment.plan.Plan;
 import uk.ac.ebi.impc_prod_tracker.data.experiment.project.Project;
 import uk.ac.ebi.impc_prod_tracker.data.experiment.project.ProjectRepository;
-
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.transaction.Transactional;
@@ -38,9 +39,13 @@ import java.util.stream.Collectors;
 public class ProjectServiceImpl implements ProjectService
 {
     private ProjectRepository projectRepository;
+    private HistoryService<Project> historyService;
 
-    public ProjectServiceImpl(ProjectRepository projectRepository) {
+    public ProjectServiceImpl(
+        ProjectRepository projectRepository, HistoryService<Project> historyService)
+    {
         this.projectRepository = projectRepository;
+        this.historyService = historyService;
     }
 
     @PersistenceContext
@@ -160,5 +165,11 @@ public class ProjectServiceImpl implements ProjectService
     {
 
         return null;
+    }
+
+    @Override
+    public List<History> getProjectHistory(Project project)
+    {
+        return historyService.getHistoryByEntityNameAndEntityId("project", project.getId());
     }
 }
