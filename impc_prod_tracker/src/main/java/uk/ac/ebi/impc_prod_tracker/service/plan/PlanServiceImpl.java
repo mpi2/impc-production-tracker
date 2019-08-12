@@ -22,7 +22,7 @@ import org.springframework.stereotype.Component;
 import uk.ac.ebi.impc_prod_tracker.common.Constants;
 import uk.ac.ebi.impc_prod_tracker.conf.error_management.OperationFailedException;
 import uk.ac.ebi.impc_prod_tracker.conf.security.abac.ResourceAccessChecker;
-import uk.ac.ebi.impc_prod_tracker.data.experiment.plan.history.History;
+import uk.ac.ebi.impc_prod_tracker.data.common.history.History;
 import uk.ac.ebi.impc_prod_tracker.web.dto.plan.UpdatePlanRequestDTO;
 import uk.ac.ebi.impc_prod_tracker.data.biology.outcome.Outcome;
 import uk.ac.ebi.impc_prod_tracker.data.biology.outcome.OutcomeRepository;

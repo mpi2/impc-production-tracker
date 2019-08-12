@@ -1,10 +1,10 @@
-package uk.ac.ebi.impc_prod_tracker.web.mapping.plan.history;
+package uk.ac.ebi.impc_prod_tracker.web.mapping.common.history;
 
 import org.springframework.stereotype.Component;
-import uk.ac.ebi.impc_prod_tracker.data.experiment.plan.history.History;
-import uk.ac.ebi.impc_prod_tracker.data.experiment.plan.history.detail.HistoryDetail;
-import uk.ac.ebi.impc_prod_tracker.web.dto.plan.history.HistoryDTO;
-import uk.ac.ebi.impc_prod_tracker.web.dto.plan.history.HistoryDetailDTO;
+import uk.ac.ebi.impc_prod_tracker.data.common.history.History;
+import uk.ac.ebi.impc_prod_tracker.data.common.history.detail.HistoryDetail;
+import uk.ac.ebi.impc_prod_tracker.web.dto.common.history.HistoryDTO;
+import uk.ac.ebi.impc_prod_tracker.web.dto.common.history.HistoryDetailDTO;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;

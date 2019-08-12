@@ -20,7 +20,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.springframework.hateoas.RepresentationModel;
-import uk.ac.ebi.impc_prod_tracker.web.dto.plan.history.HistoryDTO;
+import uk.ac.ebi.impc_prod_tracker.web.dto.common.history.HistoryDTO;
 import uk.ac.ebi.impc_prod_tracker.web.dto.plan.phenotype_plan.PhenotypePlanDTO;
 import uk.ac.ebi.impc_prod_tracker.web.dto.plan.production_plan.ProductionPlanDTO;
 import java.util.List;
