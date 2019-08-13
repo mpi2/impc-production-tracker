@@ -4,15 +4,12 @@ import lombok.AccessLevel;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import uk.ac.ebi.impc_prod_tracker.data.BaseEntity;
-import uk.ac.ebi.impc_prod_tracker.data.biology.IntentedLocation.IntendedLocation;
 import uk.ac.ebi.impc_prod_tracker.data.biology.allele_type.AlleleType;
+import uk.ac.ebi.impc_prod_tracker.data.biology.chromosome_feature_type.ChromosomeFeatureType;
+import uk.ac.ebi.impc_prod_tracker.data.biology.location.Location;
 import uk.ac.ebi.impc_prod_tracker.data.experiment.project.Project;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
-import javax.persistence.SequenceGenerator;
+
+import javax.persistence.*;
 import java.io.Serializable;
 
 @NoArgsConstructor(access= AccessLevel.PRIVATE, force=true)
@@ -29,10 +26,13 @@ public class ProjectLocation extends BaseEntity implements Serializable
     private Project project;
 
     @ManyToOne
-    private IntendedLocation location;
-
-    private int index;
+    private Location location;
 
     @ManyToOne
     private AlleleType alleleType;
+
+    private int index;
+
+    @ManyToOne(targetEntity= ChromosomeFeatureType.class)
+    private ChromosomeFeatureType chromosomeFeatureType;
 }

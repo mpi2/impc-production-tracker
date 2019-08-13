@@ -3,13 +3,9 @@ package uk.ac.ebi.impc_prod_tracker.data.experiment.project;
 import lombok.*;
 import uk.ac.ebi.impc_prod_tracker.data.BaseEntity;
 import uk.ac.ebi.impc_prod_tracker.data.experiment.assignment_status.AssignmentStatus;
-import uk.ac.ebi.impc_prod_tracker.data.experiment.plan.Plan;
-import uk.ac.ebi.impc_prod_tracker.data.experiment.project_mouse_gene.ProjectMouseGene;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import java.util.HashSet;
-import java.util.Set;
 
 @NoArgsConstructor(access= AccessLevel.PUBLIC, force=true)
 @Data
@@ -36,20 +32,23 @@ public class Project extends BaseEntity
 
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
-    @OneToMany
-    @JoinColumn(name = "project_id")
-    private Set<Plan> plans = new HashSet<>();
-
-    @EqualsAndHashCode.Exclude
-    @ToString.Exclude
     @ManyToOne
     private AssignmentStatus assignmentStatus;
 
-    @EqualsAndHashCode.Exclude
-    @ToString.Exclude
-    @OneToMany
-    @JoinColumn(name = "project_id")
-    private Set<ProjectMouseGene> projectMouseGenes = new HashSet<>();
+//    @EqualsAndHashCode.Exclude
+//    @ToString.Exclude
+//    @OneToMany
+//    @JoinColumn(name = "project_id")
+//    private Set<Plan> plans = new HashSet<>();
+
+    private Boolean withdrawn;
+
+    private Boolean recovery;
+
+    private Boolean isActive;
+
+    @Column(columnDefinition = "TEXT")
+    private String comment;
 }
 
 
