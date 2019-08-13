@@ -25,7 +25,7 @@ public class Location extends BaseEntity
 
     private Long start;
 
-    private Long end;
+    private Long stop;
 
     @Pattern(regexp = "^[\\+-\\?]{1}$", message = "The values allowed for the strand are: '+', '-', or if the value es unknown enter '?'.")
     private String strand;

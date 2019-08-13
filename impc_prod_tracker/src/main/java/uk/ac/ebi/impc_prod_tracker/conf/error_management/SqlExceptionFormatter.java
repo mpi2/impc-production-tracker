@@ -47,7 +47,7 @@ public class SqlExceptionFormatter extends BaseExceptionFormatter
     }
 
     /**
-     * Method expecting an error like this:
+     * DeliveryMethodType expecting an error like this:
      * ERROR: duplicate key value violates unique constraint "uk_2r45e34u6qbbksaobuopx32kh"
      *   Detail: Key (code)=(Code1) already exists.
      *   The message is of course jpa implementation (hibernate) specific, so this method will change if

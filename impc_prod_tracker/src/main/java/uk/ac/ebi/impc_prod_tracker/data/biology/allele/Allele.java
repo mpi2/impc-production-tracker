@@ -15,16 +15,15 @@
  *******************************************************************************/
 package uk.ac.ebi.impc_prod_tracker.data.biology.allele;
 
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.*;
 import org.hibernate.annotations.Type;
 import uk.ac.ebi.impc_prod_tracker.data.BaseEntity;
 import uk.ac.ebi.impc_prod_tracker.data.biology.allele_subtype.AlleleSubtype;
 import uk.ac.ebi.impc_prod_tracker.data.biology.allele_type.AlleleType;
 import uk.ac.ebi.impc_prod_tracker.data.biology.genbank_file.GenbankFile;
 import uk.ac.ebi.impc_prod_tracker.data.biology.gene.Gene;
+import uk.ac.ebi.impc_prod_tracker.data.biology.outcome.Outcome;
 
 import javax.persistence.*;
 import java.util.Set;
@@ -84,6 +83,21 @@ public class Allele extends BaseEntity
     @Column(columnDefinition = "TEXT")
     private String mutant_fa;
 
-    @ManyToMany(mappedBy = "alleles")
+    @ToString.Exclude
+    @JsonIgnore
+    @ManyToMany
+    @JoinTable(
+            name = "allele_gene",
+            joinColumns = @JoinColumn(name = "allele_id"),
+            inverseJoinColumns = @JoinColumn(name = "gene_id"))
     private Set<Gene> genes;
+
+    @ToString.Exclude
+    @JsonIgnore
+    @ManyToMany
+    @JoinTable(
+            name = "allele_outcome",
+            joinColumns = @JoinColumn(name = "allele_id"),
+            inverseJoinColumns = @JoinColumn(name = "outcome_id"))
+    private Set<Outcome> outcomes;
 }

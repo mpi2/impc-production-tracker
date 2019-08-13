@@ -16,9 +16,9 @@
 package uk.ac.ebi.impc_prod_tracker.web.mapping.plan.phenotype_plan.phenotype_production;
 
 import org.springframework.stereotype.Component;
-import uk.ac.ebi.impc_prod_tracker.data.biology.phenotyping_production.PhenotypingProduction;
-import uk.ac.ebi.impc_prod_tracker.data.biology.tissue_distribution_centre.TissueDistributionCentre;
-import uk.ac.ebi.impc_prod_tracker.data.experiment.plan.Plan;
+import uk.ac.ebi.impc_prod_tracker.data.biology.attempt.phenotyping_attempt.PhenotypingAttempt;
+import uk.ac.ebi.impc_prod_tracker.data.biology.attempt.phenotyping_attempt.tissue_distribution_centre.TissueDistributionCentre;
+import uk.ac.ebi.impc_prod_tracker.data.biology.plan.Plan;
 import uk.ac.ebi.impc_prod_tracker.service.plan.PhenotypingProductionService;
 import uk.ac.ebi.impc_prod_tracker.web.dto.plan.phenotype_plan.phenotyping_production.PhenotypingProductionDTO;
 import uk.ac.ebi.impc_prod_tracker.web.dto.plan.phenotype_plan.phenotyping_production.TissueDistributionCentreDTO;
@@ -42,18 +42,18 @@ public class PhenotypingProductionDTOBuilder
     public PhenotypingProductionDTO buildFromPlan(final Plan plan)
     {
         PhenotypingProductionDTO phenotypingProductionDTO = new PhenotypingProductionDTO();
-        Optional<PhenotypingProduction> phenotypingProductionOpt =
+        Optional<PhenotypingAttempt> phenotypingProductionOpt =
             phenotypingProductionService.getPhenotypingProductionByPlan(plan);
 
         if (phenotypingProductionOpt.isPresent())
         {
-            PhenotypingProduction phenotypingProduction = phenotypingProductionOpt.get();
-            phenotypingProductionDTO.setColonyName(phenotypingProduction.getPhenotypingColonyName());
-            if (phenotypingProduction.getPhenotypingColonyStrain() != null)
-            {
-                phenotypingProductionDTO.setColonyStrainName(
-                    phenotypingProduction.getPhenotypingColonyStrain().getName());
-            }
+            PhenotypingAttempt phenotypingProduction = phenotypingProductionOpt.get();
+//            phenotypingProductionDTO.setColonyName(phenotypingProduction.getPhenotypingColonyName());
+//            if (phenotypingProduction.getPhenotypingColonyStrain() != null)
+//            {
+//                phenotypingProductionDTO.setColonyStrainName(
+//                    phenotypingProduction.getPhenotypingColonyStrain().getName());
+//            }
             phenotypingProductionDTO.setExperimentStartedOn(
                 phenotypingProduction.getPhenotypingExperimentsStarted());
             phenotypingProductionDTO.setStarted(phenotypingProduction.getPhenotypingStarted());

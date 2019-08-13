@@ -16,10 +16,13 @@ package uk.ac.ebi.impc_prod_tracker.data.biology.gene;
  * License.
  *******************************************************************************/
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.*;
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import uk.ac.ebi.impc_prod_tracker.data.BaseEntity;
 import uk.ac.ebi.impc_prod_tracker.data.biology.allele.Allele;
+import uk.ac.ebi.impc_prod_tracker.data.biology.gene.flag.GeneFlag;
 import uk.ac.ebi.impc_prod_tracker.data.biology.specie.Specie;
 
 import javax.persistence.*;
@@ -70,15 +73,17 @@ public class Gene extends BaseEntity
     @Pattern(regexp = "^([\\+-\\?]{1}|)$", message = "The values allowed for the strand are: '+', '-', or if the value es unknown enter '?'.")
     private String ensemblStrand;
 
-    @ToString.Exclude
-    @JsonIgnore
-    @ManyToMany
-    @JoinTable(
-        name = "gene_allele",
-        joinColumns = @JoinColumn(name = "gene_id"),
-        inverseJoinColumns = @JoinColumn(name = "allele_id"))
+    @ManyToMany(mappedBy = "genes")
     private Set<Allele> alleles;
+
 
     @ManyToOne(targetEntity= Specie.class)
     private Specie specie;
+
+    @ManyToMany()
+    @JoinTable(
+            name = "gene_flag_relation",
+            joinColumns = @JoinColumn(name = "gene_id"),
+            inverseJoinColumns = @JoinColumn(name = "gene_flag_id"))
+    private Set<GeneFlag> geneFlags;
 }

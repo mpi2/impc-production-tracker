@@ -46,7 +46,7 @@ public class AlleleAnnotation extends BaseEntity {
     private Long start;
 
     @NotNull
-    private Long end;
+    private Long stop;
 
     private String refSeq;
 

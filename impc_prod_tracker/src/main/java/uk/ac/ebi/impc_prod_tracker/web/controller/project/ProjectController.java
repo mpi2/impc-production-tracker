@@ -19,15 +19,15 @@ import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import uk.ac.ebi.impc_prod_tracker.data.experiment.plan.Plan;
-import uk.ac.ebi.impc_prod_tracker.data.experiment.project.Project;
+import uk.ac.ebi.impc_prod_tracker.data.biology.plan.Plan;
+import uk.ac.ebi.impc_prod_tracker.data.biology.project.Project;
 import uk.ac.ebi.impc_prod_tracker.service.plan.PlanService;
 import uk.ac.ebi.impc_prod_tracker.service.project.ProjectService;
 import uk.ac.ebi.impc_prod_tracker.web.dto.project.NewProjectRequestDTO;
 import uk.ac.ebi.impc_prod_tracker.web.dto.project.ProjectDTO;
-import uk.ac.ebi.impc_prod_tracker.web.dto.project.ProjectPlanDTO;
 import uk.ac.ebi.impc_prod_tracker.web.mapping.plan.PlanMapper;
 import uk.ac.ebi.impc_prod_tracker.web.mapping.project.ProjectMapper;
+
 import java.util.List;
 import java.util.Optional;
 
@@ -81,19 +81,19 @@ class ProjectController
         return new EntityModel<>(projectDTO);
     }
 
-    @GetMapping(value = {"/projects/{tpn}/plans/{pin}"})
-    EntityModel<ProjectPlanDTO> getProjectPlan(
-        @PathVariable String tpn, @PathVariable String pin)
-    {
-        Project project = ProjectUtilities.getNotNullProjectByTpn(tpn);
-        ProjectPlanDTO projectPlanDTO = new ProjectPlanDTO();
-        Optional<Plan> planOpt = findPlanInProject(project, pin);
-        if (planOpt.isPresent())
-        {
-            projectPlanDTO = planMapper.planToProjectPlanDTO(planOpt.get(), project);
-        }
-        return new EntityModel<>(projectPlanDTO);
-    }
+//    @GetMapping(value = {"/projects/{tpn}/plans/{pin}"})
+//    EntityModel<ProjectPlanDTO> getProjectPlan(
+//        @PathVariable String tpn, @PathVariable String pin)
+//    {
+//        Project project = ProjectUtilities.getNotNullProjectByTpn(tpn);
+//        ProjectPlanDTO projectPlanDTO = new ProjectPlanDTO();
+//        Optional<Plan> planOpt = findPlanInProject(project, pin);
+//        if (planOpt.isPresent())
+//        {
+//            projectPlanDTO = planMapper.planToProjectPlanDTO(planOpt.get(), project);
+//        }
+//        return new EntityModel<>(projectPlanDTO);
+//    }
 
     private Optional<Plan> findPlanInProject(Project project, String pin)
     {

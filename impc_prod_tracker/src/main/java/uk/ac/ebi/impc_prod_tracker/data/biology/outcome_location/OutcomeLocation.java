@@ -18,7 +18,6 @@ import java.io.Serializable;
 @Entity
 public class OutcomeLocation extends BaseEntity implements Serializable
 {
-
     @Id
     @SequenceGenerator(name = "outcomeLocationSeq", sequenceName = "OUTCOME_LOCATION_SEQ")
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "outcomeLocationSeq")

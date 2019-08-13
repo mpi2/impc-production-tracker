@@ -4,15 +4,14 @@ import org.springframework.stereotype.Component;
 import uk.ac.ebi.impc_prod_tracker.conf.security.SystemSubject;
 import uk.ac.ebi.impc_prod_tracker.conf.security.abac.spring.SubjectRetriever;
 import uk.ac.ebi.impc_prod_tracker.data.biology.allele_type.AlleleTypeRepository;
-import uk.ac.ebi.impc_prod_tracker.data.biology.tracked_strain.TrackedStrainRepository;
-import uk.ac.ebi.impc_prod_tracker.data.experiment.plan.type.PlanTypeRepository;
-import uk.ac.ebi.impc_prod_tracker.data.experiment.privacy.PrivacyRepository;
-import uk.ac.ebi.impc_prod_tracker.data.experiment.project_priority.ProjectPriorityRepository;
-import uk.ac.ebi.impc_prod_tracker.data.experiment.status.StatusRepository;
+import uk.ac.ebi.impc_prod_tracker.data.biology.plan.type.PlanTypeRepository;
+import uk.ac.ebi.impc_prod_tracker.data.biology.privacy.PrivacyRepository;
+import uk.ac.ebi.impc_prod_tracker.data.biology.status.StatusRepository;
 import uk.ac.ebi.impc_prod_tracker.data.organization.institute.InstituteRepository;
 import uk.ac.ebi.impc_prod_tracker.data.organization.role.RoleRepository;
 import uk.ac.ebi.impc_prod_tracker.data.organization.work_group.WorkGroupRepository;
 import uk.ac.ebi.impc_prod_tracker.data.organization.work_unit.WorkUnitRepository;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -26,12 +25,11 @@ public class ConfigurationServiceImpl implements ConfigurationService
     private WorkGroupRepository workGroupRepository;
     private PlanTypeRepository planTypeRepository;
     private PrivacyRepository privacyRepository;
-    private ProjectPriorityRepository projectPriorityRepository;
     private StatusRepository statusRepository;
     private AlleleTypeRepository alleleTypeRepository;
     private InstituteRepository instituteRepository;
     private RoleRepository roleRepository;
-    private TrackedStrainRepository trackedStrainRepository;
+//    private TrackedStrainRepository trackedStrainRepository;
 
     public ConfigurationServiceImpl(
             SubjectRetriever subjectRetriever,
@@ -39,24 +37,23 @@ public class ConfigurationServiceImpl implements ConfigurationService
             WorkGroupRepository workGroupRepository,
             PlanTypeRepository planTypeRepository,
             PrivacyRepository privacyRepository,
-            ProjectPriorityRepository projectPriorityRepository,
             StatusRepository statusRepository,
             AlleleTypeRepository alleleTypeRepository,
             InstituteRepository instituteRepository,
-            RoleRepository roleRepository, TrackedStrainRepository trackedStrainRepository)
+            RoleRepository roleRepository
+//            TrackedStrainRepository trackedStrainRepository
+    )
     {
-
         this.subjectRetriever = subjectRetriever;
         this.workUnitRepository = workUnitRepository;
         this.workGroupRepository = workGroupRepository;
         this.planTypeRepository = planTypeRepository;
         this.privacyRepository = privacyRepository;
-        this.projectPriorityRepository = projectPriorityRepository;
         this.statusRepository = statusRepository;
         this.alleleTypeRepository = alleleTypeRepository;
         this.instituteRepository = instituteRepository;
         this.roleRepository = roleRepository;
-        this.trackedStrainRepository = trackedStrainRepository;
+//        this.trackedStrainRepository = trackedStrainRepository;
     }
 
     @Override
@@ -78,9 +75,6 @@ public class ConfigurationServiceImpl implements ConfigurationService
             List<String> privacies = new ArrayList<>();
             privacyRepository.findAll().forEach(p -> privacies.add(p.getName()));
 
-            List<String> priorities = new ArrayList<>();
-            projectPriorityRepository.findAll().forEach(p -> priorities.add(p.getName()));
-
             List<String> statuses = new ArrayList<>();
             statusRepository.findAll().forEach(p -> statuses.add(p.getName()));
 
@@ -93,19 +87,18 @@ public class ConfigurationServiceImpl implements ConfigurationService
             List<String> roles = new ArrayList<>();
             roleRepository.findAll().forEach(p -> roles.add(p.getName()));
 
-            List<String> trackedStrains = new ArrayList<>();
-            trackedStrainRepository.findAll().forEach(p -> trackedStrains.add(p.getName()));
+//            List<String> strains = new ArrayList<>();
+//            strainRepository.findAll().forEach(p -> strains.add(p.getName()));
 
             conf.put("workUnits", workUnits);
             conf.put("workGroups", workGroups);
             conf.put("planTypes", planTypes);
             conf.put("privacies", privacies);
-            conf.put("priorities", priorities);
             conf.put("statuses", statuses);
             conf.put("alleleTypes", alleleTypes);
             conf.put("institutes", institutes);
             conf.put("roles", roles);
-            conf.put("trackedStrains", trackedStrains);
+//            conf.put("trackedStrains", trackedStrains);
         }
 
         return conf;

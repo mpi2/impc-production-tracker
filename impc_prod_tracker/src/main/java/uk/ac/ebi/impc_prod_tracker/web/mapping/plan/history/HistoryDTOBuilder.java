@@ -1,9 +1,9 @@
 package uk.ac.ebi.impc_prod_tracker.web.mapping.plan.history;
 
 import org.springframework.stereotype.Component;
-import uk.ac.ebi.impc_prod_tracker.data.experiment.plan.Plan;
-import uk.ac.ebi.impc_prod_tracker.data.experiment.plan.history.History;
-import uk.ac.ebi.impc_prod_tracker.data.experiment.plan.history.detail.HistoryDetail;
+import uk.ac.ebi.impc_prod_tracker.data.biology.plan.Plan;
+import uk.ac.ebi.impc_prod_tracker.data.biology.plan.history.History;
+import uk.ac.ebi.impc_prod_tracker.data.biology.plan.history.detail.HistoryDetail;
 import uk.ac.ebi.impc_prod_tracker.service.plan.engine.HistoryService;
 import uk.ac.ebi.impc_prod_tracker.web.dto.plan.history.HistoryDTO;
 import uk.ac.ebi.impc_prod_tracker.web.dto.plan.history.HistoryDetailDTO;

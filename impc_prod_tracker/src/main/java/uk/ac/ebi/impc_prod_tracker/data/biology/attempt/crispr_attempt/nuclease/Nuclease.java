@@ -6,6 +6,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import uk.ac.ebi.impc_prod_tracker.data.BaseEntity;
 import uk.ac.ebi.impc_prod_tracker.data.biology.attempt.crispr_attempt.CrisprAttempt;
+import uk.ac.ebi.impc_prod_tracker.data.biology.attempt.crispr_attempt.nuclease.nuclease_type.NucleaseType;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -24,11 +26,11 @@ public class Nuclease extends BaseEntity
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "nucleaseSeq")
     private Long id;
 
-    @ManyToOne
+    @ManyToOne(targetEntity = CrisprAttempt.class)
     private CrisprAttempt crisprAttempt;
 
     private Double concentration;
 
-    @ManyToOne
+    @ManyToOne(targetEntity = NucleaseType.class)
     private NucleaseType nucleaseType;
 }
