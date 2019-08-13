@@ -1,18 +1,13 @@
 package uk.ac.ebi.impc_prod_tracker.service.plan.engine;
 
 import org.springframework.stereotype.Component;
-import uk.ac.ebi.impc_prod_tracker.web.dto.plan.PlanDetailsDTO;
-import uk.ac.ebi.impc_prod_tracker.web.dto.plan.UpdatePlanRequestDTO;
-import uk.ac.ebi.impc_prod_tracker.web.dto.plan.production_plan.ProductionPlanDTO;
-import uk.ac.ebi.impc_prod_tracker.web.dto.plan.production_plan.attempt.AttemptDTO;
-import uk.ac.ebi.impc_prod_tracker.web.dto.plan.production_plan.attempt.crispr_attempt.CrisprAttemptDTO;
-import uk.ac.ebi.impc_prod_tracker.web.mapping.plan.production_plan.attempt.crispr_attempt.CrisprAttemptDTOBuilder;
-import uk.ac.ebi.impc_prod_tracker.data.biology.attempt.crispr_attempt.CrisprAttempt;
-import uk.ac.ebi.impc_prod_tracker.data.experiment.plan.Plan;
-import uk.ac.ebi.impc_prod_tracker.data.experiment.privacy.Privacy;
-import uk.ac.ebi.impc_prod_tracker.data.experiment.privacy.PrivacyRepository;
+import uk.ac.ebi.impc_prod_tracker.data.biology.plan.Plan;
+import uk.ac.ebi.impc_prod_tracker.data.biology.privacy.Privacy;
+import uk.ac.ebi.impc_prod_tracker.data.biology.privacy.PrivacyRepository;
 import uk.ac.ebi.impc_prod_tracker.data.organization.work_group.WorkGroup;
 import uk.ac.ebi.impc_prod_tracker.data.organization.work_group.WorkGroupRepository;
+import uk.ac.ebi.impc_prod_tracker.web.dto.plan.PlanDetailsDTO;
+import uk.ac.ebi.impc_prod_tracker.web.mapping.plan.production_plan.attempt.crispr_attempt.CrisprAttemptDTOBuilder;
 
 /**
  * Class in charge of analising a UpdatePlanRequestDTO object and retrieve the Plan object
@@ -42,26 +37,26 @@ public class UpdatePlanRequestProcessor
      * @return The plan object with the new information that is requested in updatePlanRequestDTO.
      * This is only modifications in the object. No database changes here.
      */
-    public Plan getPlanToUpdate(Plan plan, UpdatePlanRequestDTO updatePlanRequestDTO)
-    {
-        PlanDetailsDTO planDetailsDTO = updatePlanRequestDTO.getPlanDetailsDTO();
-        if (planDetailsDTO != null)
-        {
-            updatePlanWithPlanDetailDTO(plan, planDetailsDTO);
-        }
-        ProductionPlanDTO productionPlanDTO = updatePlanRequestDTO.getProductionPlanDTO();
-
-        if (productionPlanDTO != null)
-        {
-            AttemptDTO attemptDTO = productionPlanDTO.getAttempt();
-            if (attemptDTO != null)
-            {
-                CrisprAttemptDTO crisprAttemptDTO = attemptDTO.getCrisprAttempt();
-                updatePlanWithCrisprAttemptDTO(plan, crisprAttemptDTO);
-            }
-        }
-        return plan;
-    }
+//    public Plan getPlanToUpdate(Plan plan, UpdatePlanRequestDTO updatePlanRequestDTO)
+//    {
+//        PlanDetailsDTO planDetailsDTO = updatePlanRequestDTO.getPlanDetailsDTO();
+//        if (planDetailsDTO != null)
+//        {
+//            updatePlanWithPlanDetailDTO(plan, planDetailsDTO);
+//        }
+//        ProductionPlanDTO productionPlanDTO = updatePlanRequestDTO.getProductionPlanDTO();
+//
+//        if (productionPlanDTO != null)
+//        {
+//            AttemptDTO attemptDTO = productionPlanDTO.getAttempt();
+//            if (attemptDTO != null)
+//            {
+//                CrisprAttemptDTO crisprAttemptDTO = attemptDTO.getCrisprAttempt();
+//                updatePlanWithCrisprAttemptDTO(plan, crisprAttemptDTO);
+//            }
+//        }
+//        return plan;
+//    }
 
     private void updatePlanWithPlanDetailDTO(Plan plan, PlanDetailsDTO planDetailsDTO)
     {
@@ -91,13 +86,13 @@ public class UpdatePlanRequestProcessor
         }
     }
 
-    private void updatePlanWithCrisprAttemptDTO(Plan plan, CrisprAttemptDTO crisprAttemptDTO)
-    {
-        CrisprAttempt crisprAttempt = crisprAttemptDTOBuilder.convertToEntity(crisprAttemptDTO);
-        crisprAttempt.setImitsMiAttemptId(plan.getCrisprAttempt().getImitsMiAttemptId());
-        crisprAttempt.setPlan(plan);
-        crisprAttempt.setId(plan.getCrisprAttempt().getId());
-
-        plan.setCrisprAttempt(crisprAttempt);
-    }
+//    private void updatePlanWithCrisprAttemptDTO(Plan plan, CrisprAttemptDTO crisprAttemptDTO)
+//    {
+//        CrisprAttempt crisprAttempt = crisprAttemptDTOBuilder.convertToEntity(crisprAttemptDTO);
+//        crisprAttempt.setImitsMiAttemptId(plan.getCrisprAttempt().getImitsMiAttemptId());
+//        crisprAttempt.setPlan(plan);
+//        crisprAttempt.setId(plan.getCrisprAttempt().getId());
+//
+//        plan.setCrisprAttempt(crisprAttempt);
+//    }
 }

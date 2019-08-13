@@ -4,7 +4,7 @@ import org.springframework.stereotype.Component;
 import uk.ac.ebi.impc_prod_tracker.web.dto.plan.phenotype_plan.PhenotypePlanDTO;
 import uk.ac.ebi.impc_prod_tracker.web.dto.plan.phenotype_plan.phenotyping_production.PhenotypingProductionDTO;
 import uk.ac.ebi.impc_prod_tracker.web.mapping.plan.phenotype_plan.phenotype_production.PhenotypingProductionDTOBuilder;
-import uk.ac.ebi.impc_prod_tracker.data.experiment.plan.Plan;
+import uk.ac.ebi.impc_prod_tracker.data.biology.plan.Plan;
 import uk.ac.ebi.impc_prod_tracker.service.plan.PlanService;
 
 @Component

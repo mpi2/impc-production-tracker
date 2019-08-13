@@ -19,18 +19,15 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Component;
-import uk.ac.ebi.impc_prod_tracker.common.Constants;
-import uk.ac.ebi.impc_prod_tracker.conf.error_management.OperationFailedException;
 import uk.ac.ebi.impc_prod_tracker.conf.security.abac.ResourceAccessChecker;
-import uk.ac.ebi.impc_prod_tracker.web.dto.plan.UpdatePlanRequestDTO;
-import uk.ac.ebi.impc_prod_tracker.data.biology.outcome.Outcome;
 import uk.ac.ebi.impc_prod_tracker.data.biology.outcome.OutcomeRepository;
-import uk.ac.ebi.impc_prod_tracker.data.experiment.colony.Colony;
-import uk.ac.ebi.impc_prod_tracker.data.experiment.plan.Plan;
-import uk.ac.ebi.impc_prod_tracker.data.experiment.plan.PlanRepository;
-import uk.ac.ebi.impc_prod_tracker.data.experiment.project.Project;
+import uk.ac.ebi.impc_prod_tracker.data.biology.plan.Plan;
+import uk.ac.ebi.impc_prod_tracker.data.biology.plan.PlanRepository;
+import uk.ac.ebi.impc_prod_tracker.data.biology.project.Project;
 import uk.ac.ebi.impc_prod_tracker.service.plan.engine.PlanUpdater;
 import uk.ac.ebi.impc_prod_tracker.service.plan.engine.UpdatePlanRequestProcessor;
+import uk.ac.ebi.impc_prod_tracker.web.dto.plan.UpdatePlanRequestDTO;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -64,19 +61,20 @@ public class PlanServiceImpl implements PlanService
     @Override
     public Plan getProductionPlanRefByPhenotypePlan(Plan phenotypePlan)
     {
-        Plan plan = null;
-        if (Constants.PHENOTYPE_TYPE.equals(phenotypePlan.getPlanType().getName()))
-        {
-            Colony parentColony = phenotypePlan.getColony();
-            List<Outcome> outcomesByColony = outcomeRepository.findAllByColony(parentColony);
-            for (Outcome outcome : outcomesByColony)
-            {
-                plan = planRepository.findPlanById(outcome.getAttempt().getId());
-                break;
-            }
-        }
-
-        return plan;
+//        Plan plan = null;
+//        if (Constants.PHENOTYPE_TYPE.equals(phenotypePlan.getPlanType().getName()))
+//        {
+//            Colony parentColony = phenotypePlan.getColony();
+//            List<Outcome> outcomesByColony = outcomeRepository.findAllByColony(parentColony);
+//            for (Outcome outcome : outcomesByColony)
+//            {
+//                plan = planRepository.findPlanById(outcome.getAttempt().getId());
+//                break;
+//            }
+//        }
+//
+//        return plan;
+        return null;
     }
 
     @Override
@@ -140,16 +138,16 @@ public class PlanServiceImpl implements PlanService
     @Override
     public void updatePlan(String pin, UpdatePlanRequestDTO updatePlanRequestDTO)
     {
-        Plan existingPlan = planRepository.findPlanByPin(pin);
-        Plan newPlan = new Plan(existingPlan);
-        Plan originalPlan  = new Plan(existingPlan);
-        if (originalPlan == null)
-        {
-            throw new OperationFailedException(
-                String.format(PLAN_TO_UPDATE_NOT_EXISTS_ERROR, pin));
-        }
-        newPlan = updatePlanRequestProcessor.getPlanToUpdate(newPlan, updatePlanRequestDTO);
-
-        planUpdater.updatePlan(originalPlan, newPlan);
+//        Plan existingPlan = planRepository.findPlanByPin(pin);
+//        Plan newPlan = new Plan(existingPlan);
+//        Plan originalPlan  = new Plan(existingPlan);
+//        if (originalPlan == null)
+//        {
+//            throw new OperationFailedException(
+//                String.format(PLAN_TO_UPDATE_NOT_EXISTS_ERROR, pin));
+//        }
+//        newPlan = updatePlanRequestProcessor.getPlanToUpdate(newPlan, updatePlanRequestDTO);
+//
+//        planUpdater.updatePlan(originalPlan, newPlan);
     }
 }

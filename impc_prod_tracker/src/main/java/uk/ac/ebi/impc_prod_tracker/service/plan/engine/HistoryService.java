@@ -1,7 +1,7 @@
 package uk.ac.ebi.impc_prod_tracker.service.plan.engine;
 
-import uk.ac.ebi.impc_prod_tracker.data.experiment.plan.Plan;
-import uk.ac.ebi.impc_prod_tracker.data.experiment.plan.history.History;
+import uk.ac.ebi.impc_prod_tracker.data.biology.plan.Plan;
+import uk.ac.ebi.impc_prod_tracker.data.biology.plan.history.History;
 import java.util.List;
 
 /**

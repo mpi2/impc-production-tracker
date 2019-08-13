@@ -5,22 +5,20 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import uk.ac.ebi.impc_prod_tracker.data.BaseEntity;
+import uk.ac.ebi.impc_prod_tracker.data.biology.allele.Allele;
 import uk.ac.ebi.impc_prod_tracker.data.biology.attempt.Attempt;
-import uk.ac.ebi.impc_prod_tracker.data.experiment.colony.Colony;
-import uk.ac.ebi.impc_prod_tracker.data.experiment.status.Status;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
-import javax.persistence.SequenceGenerator;
+import uk.ac.ebi.impc_prod_tracker.data.biology.status.Status;
+
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.io.Serializable;
+import java.util.Set;
 
 @NoArgsConstructor(access= AccessLevel.PRIVATE, force=true)
 @Getter
 @Setter
 @Entity
-public class Outcome extends BaseEntity
+public class Outcome extends BaseEntity implements Serializable
 {
     @Id
     @SequenceGenerator(name = "outcomeSeq", sequenceName = "OUTCOME_SEQ")
@@ -33,9 +31,10 @@ public class Outcome extends BaseEntity
     @ManyToOne
     private Attempt attempt;
 
-    @ManyToOne
-    private Colony colony;
-
-    @ManyToOne
+    @NotNull
+    @ManyToOne(targetEntity= Status.class)
     private Status status;
+
+    @ManyToMany(mappedBy = "outcomes")
+    private Set<Allele> alleles;
 }

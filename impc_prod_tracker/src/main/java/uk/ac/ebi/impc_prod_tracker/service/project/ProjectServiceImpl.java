@@ -21,10 +21,10 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 import uk.ac.ebi.impc_prod_tracker.web.dto.project.NewProjectRequestDTO;
-import uk.ac.ebi.impc_prod_tracker.data.experiment.assignment_status.AssignmentStatus;
-import uk.ac.ebi.impc_prod_tracker.data.experiment.plan.Plan;
-import uk.ac.ebi.impc_prod_tracker.data.experiment.project.Project;
-import uk.ac.ebi.impc_prod_tracker.data.experiment.project.ProjectRepository;
+import uk.ac.ebi.impc_prod_tracker.data.biology.assignment_status.AssignmentStatus;
+import uk.ac.ebi.impc_prod_tracker.data.biology.plan.Plan;
+import uk.ac.ebi.impc_prod_tracker.data.biology.project.Project;
+import uk.ac.ebi.impc_prod_tracker.data.biology.project.ProjectRepository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;

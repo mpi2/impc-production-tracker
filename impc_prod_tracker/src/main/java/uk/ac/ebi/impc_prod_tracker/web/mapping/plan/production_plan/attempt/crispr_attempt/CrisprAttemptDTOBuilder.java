@@ -17,18 +17,15 @@ package uk.ac.ebi.impc_prod_tracker.web.mapping.plan.production_plan.attempt.cri
 
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
-import uk.ac.ebi.impc_prod_tracker.web.dto.plan.production_plan.attempt.GenotypePrimerDTO;
+import uk.ac.ebi.impc_prod_tracker.data.biology.attempt.crispr_attempt.CrisprAttempt;
+import uk.ac.ebi.impc_prod_tracker.data.biology.attempt.crispr_attempt.assay.assay_type.AssayType;
+import uk.ac.ebi.impc_prod_tracker.data.biology.attempt.crispr_attempt.delivery_type.DeliveryMethodType;
+import uk.ac.ebi.impc_prod_tracker.data.biology.attempt.crispr_attempt.mutagenesis_donor.MutagenesisDonor;
+import uk.ac.ebi.impc_prod_tracker.data.biology.attempt.crispr_attempt.mutagenesis_donor.preparation_type.PreparationType;
+import uk.ac.ebi.impc_prod_tracker.data.biology.attempt.crispr_attempt.nuclease.Nuclease;
+import uk.ac.ebi.impc_prod_tracker.service.plan.CrisprAttempService;
 import uk.ac.ebi.impc_prod_tracker.web.dto.plan.production_plan.attempt.MutagenesisDonorDTO;
 import uk.ac.ebi.impc_prod_tracker.web.dto.plan.production_plan.attempt.NucleaseDTO;
-import uk.ac.ebi.impc_prod_tracker.web.dto.plan.production_plan.attempt.ReagentDTO;
-import uk.ac.ebi.impc_prod_tracker.data.biology.attempt.crispr_attempt.CrisprAttempt;
-import uk.ac.ebi.impc_prod_tracker.data.biology.attempt.crispr_attempt.nuclease.Nuclease;
-import uk.ac.ebi.impc_prod_tracker.data.biology.genotype_primer.GenotypePrimer;
-import uk.ac.ebi.impc_prod_tracker.data.biology.mutagenesis_donor.MutagenesisDonor;
-import uk.ac.ebi.impc_prod_tracker.data.biology.preparation_type.PreparationType;
-import uk.ac.ebi.impc_prod_tracker.data.experiment.assay_type.AssayType;
-import uk.ac.ebi.impc_prod_tracker.data.experiment.delivery_type.DeliveryType;
-import uk.ac.ebi.impc_prod_tracker.service.plan.CrisprAttempService;
 import uk.ac.ebi.impc_prod_tracker.web.dto.plan.production_plan.attempt.crispr_attempt.CrisprAttemptDTO;
 
 import java.util.ArrayList;
@@ -84,58 +81,57 @@ public class CrisprAttemptDTOBuilder
         AssayType assayType = crisprAttempService.getAssayTypeByName(assayTypeName);
         if (assayType != null)
         {
-            crisprAttempt.setAssayType(assayType);
+//            crisprAttempt.setAssayType(assayType);
         }
     }
 
     private void setDeliveryTypeToEntity(CrisprAttempt crisprAttempt, String deliveryTypeName)
     {
-        DeliveryType deliveryType = crisprAttempService.getDeliveryTypeByName(deliveryTypeName);
+        DeliveryMethodType deliveryType = crisprAttempService.getDeliveryTypeByName(deliveryTypeName);
         if (deliveryType != null)
         {
-            crisprAttempt.setDeliveryType(deliveryType);
+//            crisprAttempt.setDeliveryType(deliveryType);
         }
     }
 
     private void setDeliveryTypeNameToDto(
         CrisprAttemptDTO crisprAttemptDTO, final CrisprAttempt crisprAttempt)
     {
-        DeliveryType deliveryType = crisprAttempt.getDeliveryType();
-        if (deliveryType != null)
-        {
-            crisprAttemptDTO.setDeliveryMethod(deliveryType.getName());
-            if (ELECTROPORATION_METHOD.equals(deliveryType.getName()))
-            {
-                crisprAttemptDTO.setVoltage(crisprAttempt.getVoltage());
-                crisprAttemptDTO.setNoOfPulses(crisprAttempt.getNoOfPulses());
-            }
-        }
+//        DeliveryMethodType deliveryType = crisprAttempt.getDeliveryType();
+//        if (deliveryType != null)
+//        {
+//            crisprAttemptDTO.setDeliveryMethod(deliveryType.getName());
+//            if (ELECTROPORATION_METHOD.equals(deliveryType.getName()))
+//            {
+//                crisprAttemptDTO.setVoltage(crisprAttempt.getVoltage());
+//                crisprAttemptDTO.setNoOfPulses(crisprAttempt.getNoOfPulses());
+//            }
+//        }
     }
 
-    private void setReagentNamesToDto(
-        CrisprAttemptDTO crisprAttemptDTO, final CrisprAttempt crisprAttempt)
+    private void setReagentNamesToDto(CrisprAttemptDTO crisprAttemptDTO, final CrisprAttempt crisprAttempt)
     {
-        List<ReagentDTO> reagents = new ArrayList<>();
-        crisprAttempt.getCrisprAttemptReagents().forEach(x ->
-            reagents.add(new ReagentDTO(
-                x.getReagent().getName(),
-                x.getConcentration())));
-        crisprAttemptDTO.setReagents(reagents);
+//        List<ReagentDTO> reagents = new ArrayList<>();
+//        crisprAttempt.getCrisprAttemptReagents().forEach(x ->
+//            reagents.add(new ReagentDTO(
+//                x.getReagent().getName(),
+//                x.getConcentration())));
+//        crisprAttemptDTO.setReagents(reagents);
     }
 
     private void setPrimersToDto(CrisprAttemptDTO crisprAttemptDTO, final CrisprAttempt crisprAttempt)
     {
-        List<GenotypePrimerDTO> genotypePrimerList = new ArrayList<>();
-        List<GenotypePrimer> genotypePrimers =
-            crisprAttempService.getGenotypePrimersByCrisprAttempt(crisprAttempt);
-        genotypePrimers.forEach(p -> genotypePrimerList.add(
-            new GenotypePrimerDTO(
-                p.getSequence(),
-                p.getName(),
-                p.getChromosome(),
-                p.getStart(),
-                p.getStop())));
-        crisprAttemptDTO.setPrimers(genotypePrimerList);
+//        List<GenotypePrimerDTO> genotypePrimerList = new ArrayList<>();
+//        List<GenotypePrimer> genotypePrimers =
+//            crisprAttempService.getGenotypePrimersByCrisprAttempt(crisprAttempt);
+//        genotypePrimers.forEach(p -> genotypePrimerList.add(
+//            new GenotypePrimerDTO(
+//                p.getSequence(),
+//                p.getName(),
+//                p.getChromosome(),
+//                p.getStart(),
+//                p.getStop())));
+//        crisprAttemptDTO.setPrimers(genotypePrimerList);
     }
 
     private void setNucleasesToDto(CrisprAttemptDTO crisprAttemptDTO, final CrisprAttempt crisprAttempt)

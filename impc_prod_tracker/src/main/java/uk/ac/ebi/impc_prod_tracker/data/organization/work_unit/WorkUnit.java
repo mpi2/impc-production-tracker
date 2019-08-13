@@ -18,6 +18,7 @@ package uk.ac.ebi.impc_prod_tracker.data.organization.work_unit;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.*;
 import uk.ac.ebi.impc_prod_tracker.data.BaseEntity;
+import uk.ac.ebi.impc_prod_tracker.data.organization.institute.Institute;
 import uk.ac.ebi.impc_prod_tracker.data.organization.work_group.WorkGroup;
 
 import javax.persistence.*;
@@ -48,8 +49,9 @@ public class WorkUnit extends BaseEntity
     @JsonBackReference
     private Set<WorkGroup> workGroups;
 
-//    @ManyToMany(mappedBy = "workUnits")
-//    private Set<Funder> funders;
+    @ManyToOne
+    @JoinColumn
+    private Institute institute;
 
     public WorkUnit(String name)
     {
