@@ -37,7 +37,8 @@ public class History
 
     private LocalDateTime date;
 
-    @Column(columnDefinition = "TEXT")
+    private String action;
+
     private String comment;
 
     @OneToMany(cascade= CascadeType.ALL, orphanRemoval = true)
