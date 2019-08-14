@@ -16,6 +16,7 @@ public class HistoryMapper
     {
         HistoryDTO historyDTO = new HistoryDTO();
         historyDTO.setId(1);
+        historyDTO.setAction(history.getAction());
         historyDTO.setComment(history.getComment());
         historyDTO.setDate(history.getDate());
         historyDTO.setUser(history.getUser());
