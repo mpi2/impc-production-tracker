@@ -32,6 +32,7 @@ public class ConfigurationServiceImpl implements ConfigurationService
     private InstituteRepository instituteRepository;
     private RoleRepository roleRepository;
     private StrainRepository strainRepository;
+
     private MaterialTypeRepository materialTypeRepository;
 
     private Map<String, List<String>> conf = new HashMap<>();
@@ -83,62 +84,73 @@ public class ConfigurationServiceImpl implements ConfigurationService
                 addMaterialTypes();
             }
         }
+
         return conf;
     }
+
     private void addWorkUnits()
     {
         List<String> workUnits = new ArrayList<>();
         workUnitRepository.findAll().forEach(p -> workUnits.add(p.getName()));
         conf.put("workUnits", workUnits);
     }
+
     private void addWorkGroups()
     {
         List<String> workGroups = new ArrayList<>();
         workGroupRepository.findAll().forEach(p -> workGroups.add(p.getName()));
         conf.put("workGroups", workGroups);
     }
+
     private void addPlanTypes()
     {
         List<String> planTypes = new ArrayList<>();
         planTypeRepository.findAll().forEach(p -> planTypes.add(p.getName()));
         conf.put("planTypes", planTypes);
     }
+
     private void addPrivacies()
     {
         List<String> privacies = new ArrayList<>();
         privacyRepository.findAll().forEach(p -> privacies.add(p.getName()));
         conf.put("privacies", privacies);
     }
+
     private void addStatuses()
     {
         List<String> statuses = new ArrayList<>();
         statusRepository.findAll().forEach(p -> statuses.add(p.getName()));
         conf.put("statuses", statuses);
     }
+
     private void addAlleleTypes()
     {
         List<String> alleleTypes = new ArrayList<>();
         alleleTypeRepository.findAll().forEach(p -> alleleTypes.add(p.getName()));
         conf.put("alleleTypes", alleleTypes);
     }
+
     private void addInstitutes()
     {
         List<String> institutes = new ArrayList<>();
         instituteRepository.findAll().forEach(p -> institutes.add(p.getName()));
         conf.put("institutes", institutes);
     }
+
     private void addRoles()
     {
         List<String> roles = new ArrayList<>();
         roleRepository.findAll().forEach(p -> roles.add(p.getName()));
         conf.put("roles", roles);
     }
+
     private void addStrains()
     {
-        List<String> strains = new ArrayList<>();
-        strainRepository.findAll().forEach(p -> strains.add(p.getName()));
-        conf.put("strains", strains);
+        List<String> trackedStrains = new ArrayList<>();
+        strainRepository.findAll().forEach(p -> trackedStrains.add(p.getName()));
+        conf.put("trackedStrains", trackedStrains);
     }
+
     private void addMaterialTypes()
     {
         List<String> materialTypes = new ArrayList<>();

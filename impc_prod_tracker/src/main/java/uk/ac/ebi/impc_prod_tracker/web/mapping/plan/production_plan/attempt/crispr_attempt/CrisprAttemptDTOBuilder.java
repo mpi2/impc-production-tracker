@@ -17,6 +17,9 @@ package uk.ac.ebi.impc_prod_tracker.web.mapping.plan.production_plan.attempt.cri
 
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
+
+import uk.ac.ebi.impc_prod_tracker.web.dto.plan.production_plan.attempt.crispr_attempt.MutagenesisDonorDTO;
+import uk.ac.ebi.impc_prod_tracker.web.dto.plan.production_plan.attempt.crispr_attempt.NucleaseDTO;
 import uk.ac.ebi.impc_prod_tracker.data.biology.attempt.crispr_attempt.CrisprAttempt;
 import uk.ac.ebi.impc_prod_tracker.data.biology.attempt.crispr_attempt.assay.assay_type.AssayType;
 import uk.ac.ebi.impc_prod_tracker.data.biology.attempt.crispr_attempt.delivery_type.DeliveryMethodType;
@@ -26,13 +29,12 @@ import uk.ac.ebi.impc_prod_tracker.data.biology.attempt.crispr_attempt.mutagenes
 import uk.ac.ebi.impc_prod_tracker.data.biology.attempt.crispr_attempt.nuclease.Nuclease;
 import uk.ac.ebi.impc_prod_tracker.service.plan.CrisprAttempService;
 import uk.ac.ebi.impc_prod_tracker.web.dto.plan.production_plan.attempt.crispr_attempt.CrisprAttemptDTO;
-import uk.ac.ebi.impc_prod_tracker.web.dto.plan.production_plan.attempt.crispr_attempt.MutagenesisDonorDTO;
-import uk.ac.ebi.impc_prod_tracker.web.dto.plan.production_plan.attempt.crispr_attempt.NucleaseDTO;
 
 import java.util.ArrayList;
 import java.util.List;
 //TODO create mappers for all the nested entities that requiere one instead of having
 // all the logic in this class.
+
 @Component
 public class CrisprAttemptDTOBuilder
 {
@@ -41,6 +43,7 @@ public class CrisprAttemptDTOBuilder
     private ReagentMapper reagentMapper;
     private GenotypePrimerMapper genotypePrimerMapper;
     private ModelMapper modelMapper;
+
     private static final String ELECTROPORATION_METHOD = "Electroporation";
     public CrisprAttemptDTOBuilder(
             CrisprAttempService crisprAttempService,
@@ -100,6 +103,7 @@ public class CrisprAttemptDTOBuilder
             crisprAttempt.setDeliveryMethodType(deliveryMethodType);
         }
     }
+
     private void setDeliveryTypeNameDto(
             CrisprAttemptDTO crisprAttemptDTO, final CrisprAttempt crisprAttempt)
     {
@@ -114,6 +118,7 @@ public class CrisprAttemptDTOBuilder
             }
         }
     }
+
     private void setReagentNamesDto(
             CrisprAttemptDTO crisprAttemptDTO, final CrisprAttempt crisprAttempt)
     {
@@ -125,6 +130,7 @@ public class CrisprAttemptDTOBuilder
                 crisprAttempService.getGenotypePrimersByCrisprAttempt(crisprAttempt);
         crisprAttemptDTO.setPrimers(genotypePrimerMapper.toDtos(genotypePrimers));
     }
+
     private void setNucleasesDto(CrisprAttemptDTO crisprAttemptDTO, final CrisprAttempt crisprAttempt)
     {
         List<NucleaseDTO> nucleaseList = new ArrayList<>();
@@ -150,6 +156,7 @@ public class CrisprAttemptDTOBuilder
         });
         crisprAttemptDTO.setNucleases(nucleaseList);
     }
+
     private void setMutagenesisDonorsDto(
             CrisprAttemptDTO crisprAttemptDTO, final CrisprAttempt crisprAttempt)
     {
@@ -171,8 +178,12 @@ public class CrisprAttemptDTOBuilder
         );
         crisprAttemptDTO.setMutagenesisDonors(mutagenesisDonorDTOS);
     }
+
+
     private void setGuidesDto(CrisprAttemptDTO crisprAttemptDTO, CrisprAttempt crisprAttempt)
     {
         crisprAttemptDTO.setGuides(guideMapper.toDtos(crisprAttempt.getGuides()));
     }
+
 }
+

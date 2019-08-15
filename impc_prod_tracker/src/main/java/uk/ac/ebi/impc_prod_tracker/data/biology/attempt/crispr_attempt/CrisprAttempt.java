@@ -24,7 +24,14 @@ import uk.ac.ebi.impc_prod_tracker.data.biology.attempt.crispr_attempt.delivery_
 import uk.ac.ebi.impc_prod_tracker.data.biology.attempt.crispr_attempt.guide.Guide;
 import uk.ac.ebi.impc_prod_tracker.data.biology.strain.Strain;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import javax.persistence.MapsId;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
+
 import java.time.LocalDateTime;
 import java.util.Set;
 
