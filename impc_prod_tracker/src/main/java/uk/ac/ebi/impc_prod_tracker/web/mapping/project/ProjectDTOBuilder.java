@@ -17,18 +17,20 @@ package uk.ac.ebi.impc_prod_tracker.web.mapping.project;
 
 import lombok.Data;
 import org.springframework.stereotype.Component;
-import uk.ac.ebi.impc_prod_tracker.web.dto.plan.PlanDTO;
-import uk.ac.ebi.impc_prod_tracker.web.mapping.plan.PlanDTOBuilder;
-import uk.ac.ebi.impc_prod_tracker.data.biology.ortholog.Ortholog;
-import uk.ac.ebi.impc_prod_tracker.data.experiment.plan.Plan;
-import uk.ac.ebi.impc_prod_tracker.data.experiment.project.Project;
-import uk.ac.ebi.impc_prod_tracker.data.experiment.project_mouse_gene.ProjectMouseGene;
+import uk.ac.ebi.impc_prod_tracker.data.biology.plan.Plan;
+import uk.ac.ebi.impc_prod_tracker.data.biology.project.Project;
+import uk.ac.ebi.impc_prod_tracker.data.biology.project_gene.ProjectGene;
 import uk.ac.ebi.impc_prod_tracker.service.MouseGeneService;
 import uk.ac.ebi.impc_prod_tracker.service.plan.PlanService;
+import uk.ac.ebi.impc_prod_tracker.web.dto.plan.PlanDTO;
 import uk.ac.ebi.impc_prod_tracker.web.dto.project.ProjectDTO;
 import uk.ac.ebi.impc_prod_tracker.web.dto.project.ProjectDetailsDTO;
+import uk.ac.ebi.impc_prod_tracker.web.mapping.plan.PlanDTOBuilder;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+import java.util.Set;
 
 @Component
 @Data
@@ -99,7 +101,7 @@ public class ProjectDTOBuilder
 
     private void addMarkerSymbols(ProjectDetailsDTO projectDetailsDTO, final Project project)
     {
-        Set<ProjectMouseGene> projectMouseGeneSet = project.getProjectMouseGenes();
+        Set<ProjectGene> projectMouseGeneSet = project.getProjectGenes();
 
         List<ProjectDetailsDTO.MarkerSymbolDTO> markerSymbolDTOS = new ArrayList<>();
 
@@ -115,7 +117,7 @@ public class ProjectDTOBuilder
 
     private void addIntentions(ProjectDetailsDTO projectDetailsDTO, final Project project)
     {
-        Set<ProjectMouseGene> projectMouseGeneSet = project.getProjectMouseGenes();
+        Set<ProjectGene> projectMouseGeneSet = project.getProjectGenes();
 
         List<String> intentions = new ArrayList<>();
 
@@ -126,7 +128,7 @@ public class ProjectDTOBuilder
 
     private void addHumanGenes(ProjectDetailsDTO projectDetailsDTO, final Project project)
     {
-        Set<ProjectMouseGene> projectMouseGeneSet = project.getProjectMouseGenes();
+        Set<ProjectGene> projectMouseGeneSet = project.getProjectGenes();
 
         List<String> mouseMgiIds = new ArrayList<>();
 
@@ -134,17 +136,21 @@ public class ProjectDTOBuilder
 
         List<ProjectDetailsDTO.HumanGeneSymbolDTO> humanGeneSymbolDTOS = new ArrayList<>();
 
-        mouseMgiIds.forEach(x -> {
-            Set<Ortholog> orthologs = mouseGeneService.getMouseGenesByMgiId(x).getOrthologs();
-            orthologs.forEach(o -> {
-                ProjectDetailsDTO.HumanGeneSymbolDTO humanGeneSymbolDTO = new ProjectDetailsDTO.HumanGeneSymbolDTO();
-                humanGeneSymbolDTO.setSymbol(o.getHumanGene().getSymbol());
-                humanGeneSymbolDTO.setSupport(o.getSupport());
-                humanGeneSymbolDTO.setSupport_count(o.getSupportCount());
-                humanGeneSymbolDTOS.add(humanGeneSymbolDTO);
-            });
 
-        });
+
+// TODO mapp with orthologues from external data
+
+//        mouseMgiIds.forEach(x -> {
+//            Set<Ortholog> orthologs = mouseGeneService.getMouseGenesByMgiId(x).getOrthologs();
+//            orthologs.forEach(o -> {
+//                ProjectDetailsDTO.HumanGeneSymbolDTO humanGeneSymbolDTO = new ProjectDetailsDTO.HumanGeneSymbolDTO();
+//                humanGeneSymbolDTO.setSymbol(o.getHumanGene().getSymbol());
+//                humanGeneSymbolDTO.setSupport(o.getSupport());
+//                humanGeneSymbolDTO.setSupport_count(o.getSupportCount());
+//                humanGeneSymbolDTOS.add(humanGeneSymbolDTO);
+//            });
+//
+//        });
 
         projectDetailsDTO.setHumanGenes(humanGeneSymbolDTOS);
     }

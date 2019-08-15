@@ -1,8 +1,8 @@
 package uk.ac.ebi.impc_prod_tracker.web.mapping.plan;
 
 import org.springframework.stereotype.Component;
-import uk.ac.ebi.impc_prod_tracker.data.experiment.plan.Plan;
-import uk.ac.ebi.impc_prod_tracker.data.experiment.project.Project;
+import uk.ac.ebi.impc_prod_tracker.data.biology.plan.Plan;
+import uk.ac.ebi.impc_prod_tracker.data.biology.project.Project;
 import uk.ac.ebi.impc_prod_tracker.web.dto.plan.PlanDTO;
 import uk.ac.ebi.impc_prod_tracker.web.dto.plan.PlanDetailsDTO;
 import uk.ac.ebi.impc_prod_tracker.web.dto.project.ProjectDetailsDTO;

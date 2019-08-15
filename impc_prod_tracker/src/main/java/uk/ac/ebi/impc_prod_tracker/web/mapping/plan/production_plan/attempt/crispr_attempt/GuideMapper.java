@@ -2,8 +2,10 @@ package uk.ac.ebi.impc_prod_tracker.web.mapping.plan.production_plan.attempt.cri
 
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
-import uk.ac.ebi.impc_prod_tracker.data.biology.guide.Guide;
+
+import uk.ac.ebi.impc_prod_tracker.data.biology.attempt.crispr_attempt.guide.Guide;
 import uk.ac.ebi.impc_prod_tracker.web.dto.plan.production_plan.attempt.crispr_attempt.GuideDTO;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;

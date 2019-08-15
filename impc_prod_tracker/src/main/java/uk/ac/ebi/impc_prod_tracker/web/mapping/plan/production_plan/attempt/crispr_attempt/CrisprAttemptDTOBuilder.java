@@ -17,20 +17,21 @@ package uk.ac.ebi.impc_prod_tracker.web.mapping.plan.production_plan.attempt.cri
 
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
+
 import uk.ac.ebi.impc_prod_tracker.web.dto.plan.production_plan.attempt.crispr_attempt.MutagenesisDonorDTO;
 import uk.ac.ebi.impc_prod_tracker.web.dto.plan.production_plan.attempt.crispr_attempt.NucleaseDTO;
 import uk.ac.ebi.impc_prod_tracker.data.biology.attempt.crispr_attempt.CrisprAttempt;
+import uk.ac.ebi.impc_prod_tracker.data.biology.attempt.crispr_attempt.assay.assay_type.AssayType;
+import uk.ac.ebi.impc_prod_tracker.data.biology.attempt.crispr_attempt.delivery_type.DeliveryMethodType;
+import uk.ac.ebi.impc_prod_tracker.data.biology.attempt.crispr_attempt.genotype_primer.GenotypePrimer;
+import uk.ac.ebi.impc_prod_tracker.data.biology.attempt.crispr_attempt.mutagenesis_donor.MutagenesisDonor;
+import uk.ac.ebi.impc_prod_tracker.data.biology.attempt.crispr_attempt.mutagenesis_donor.preparation_type.PreparationType;
 import uk.ac.ebi.impc_prod_tracker.data.biology.attempt.crispr_attempt.nuclease.Nuclease;
-import uk.ac.ebi.impc_prod_tracker.data.biology.genotype_primer.GenotypePrimer;
-import uk.ac.ebi.impc_prod_tracker.data.biology.mutagenesis_donor.MutagenesisDonor;
-import uk.ac.ebi.impc_prod_tracker.data.biology.preparation_type.PreparationType;
-import uk.ac.ebi.impc_prod_tracker.data.experiment.assay_type.AssayType;
-import uk.ac.ebi.impc_prod_tracker.data.experiment.delivery_type.DeliveryType;
 import uk.ac.ebi.impc_prod_tracker.service.plan.CrisprAttempService;
 import uk.ac.ebi.impc_prod_tracker.web.dto.plan.production_plan.attempt.crispr_attempt.CrisprAttemptDTO;
+
 import java.util.ArrayList;
 import java.util.List;
-
 //TODO create mappers for all the nested entities that requiere one instead of having
 // all the logic in this class.
 
@@ -43,14 +44,12 @@ public class CrisprAttemptDTOBuilder
     private GenotypePrimerMapper genotypePrimerMapper;
     private ModelMapper modelMapper;
 
-
     private static final String ELECTROPORATION_METHOD = "Electroporation";
-
     public CrisprAttemptDTOBuilder(
-        CrisprAttempService crisprAttempService,
-        GuideMapper guideMapper,
-        ReagentMapper reagentMapper,
-        GenotypePrimerMapper genotypePrimerMapper, ModelMapper modelMapper)
+            CrisprAttempService crisprAttempService,
+            GuideMapper guideMapper,
+            ReagentMapper reagentMapper,
+            GenotypePrimerMapper genotypePrimerMapper, ModelMapper modelMapper)
     {
         this.crisprAttempService = crisprAttempService;
         this.guideMapper = guideMapper;
@@ -58,7 +57,6 @@ public class CrisprAttemptDTOBuilder
         this.genotypePrimerMapper = genotypePrimerMapper;
         this.modelMapper = modelMapper;
     }
-
     /**
      * Maps a {@link CrisprAttempt} to a {@link CrisprAttemptDTO} object.
      *
@@ -76,7 +74,6 @@ public class CrisprAttemptDTOBuilder
         setGuidesDto(crisprAttemptDTO, crisprAttempt);
         return crisprAttemptDTO;
     }
-
     /**
      * Maps a {@link CrisprAttemptDTO} to a {@link CrisprAttempt} object.
      *
@@ -90,33 +87,31 @@ public class CrisprAttemptDTOBuilder
         setDeliveryTypeToEntity(crisprAttempt, crisprAttemptDTO.getDeliveryMethod());
         return crisprAttempt;
     }
-
     private void setAssayTypeToEntity(CrisprAttempt crisprAttempt, String assayTypeName)
     {
         AssayType assayType = crisprAttempService.getAssayTypeByName(assayTypeName);
         if (assayType != null)
         {
-            crisprAttempt.setAssayType(assayType);
+            crisprAttempt.getAssay().setAssayType(assayType);
         }
     }
-
     private void setDeliveryTypeToEntity(CrisprAttempt crisprAttempt, String deliveryTypeName)
     {
-        DeliveryType deliveryType = crisprAttempService.getDeliveryTypeByName(deliveryTypeName);
-        if (deliveryType != null)
+        DeliveryMethodType deliveryMethodType = crisprAttempService.getDeliveryTypeByName(deliveryTypeName);
+        if (deliveryMethodType != null)
         {
-            crisprAttempt.setDeliveryType(deliveryType);
+            crisprAttempt.setDeliveryMethodType(deliveryMethodType);
         }
     }
 
     private void setDeliveryTypeNameDto(
-        CrisprAttemptDTO crisprAttemptDTO, final CrisprAttempt crisprAttempt)
+            CrisprAttemptDTO crisprAttemptDTO, final CrisprAttempt crisprAttempt)
     {
-        DeliveryType deliveryType = crisprAttempt.getDeliveryType();
-        if (deliveryType != null)
+        DeliveryMethodType deliveryMethodType = crisprAttempt.getDeliveryMethodType();
+        if (deliveryMethodType != null)
         {
-            crisprAttemptDTO.setDeliveryMethod(deliveryType.getName());
-            if (ELECTROPORATION_METHOD.equals(deliveryType.getName()))
+            crisprAttemptDTO.setDeliveryMethod(deliveryMethodType.getName());
+            if (ELECTROPORATION_METHOD.equals(deliveryMethodType.getName()))
             {
                 crisprAttemptDTO.setVoltage(crisprAttempt.getVoltage());
                 crisprAttemptDTO.setNoOfPulses(crisprAttempt.getNoOfPulses());
@@ -125,15 +120,14 @@ public class CrisprAttemptDTOBuilder
     }
 
     private void setReagentNamesDto(
-        CrisprAttemptDTO crisprAttemptDTO, final CrisprAttempt crisprAttempt)
+            CrisprAttemptDTO crisprAttemptDTO, final CrisprAttempt crisprAttempt)
     {
         crisprAttemptDTO.setReagents(reagentMapper.toDtos(crisprAttempt.getCrisprAttemptReagents()));
     }
-
     private void setPrimersDto(CrisprAttemptDTO crisprAttemptDTO, final CrisprAttempt crisprAttempt)
     {
         List<GenotypePrimer> genotypePrimers =
-            crisprAttempService.getGenotypePrimersByCrisprAttempt(crisprAttempt);
+                crisprAttempService.getGenotypePrimersByCrisprAttempt(crisprAttempt);
         crisprAttemptDTO.setPrimers(genotypePrimerMapper.toDtos(genotypePrimers));
     }
 
@@ -141,7 +135,7 @@ public class CrisprAttemptDTOBuilder
     {
         List<NucleaseDTO> nucleaseList = new ArrayList<>();
         List<Nuclease> nucleases =
-            crisprAttempService.getNucleasesByCrisprAttempt(crisprAttempt);
+                crisprAttempService.getNucleasesByCrisprAttempt(crisprAttempt);
         nucleases.forEach(p ->
         {
             String typeName = null;
@@ -155,38 +149,41 @@ public class CrisprAttemptDTOBuilder
                 typeClassName = p.getNucleaseType().getNucleaseClass().getName();
             }
             nucleaseList.add(
-                new NucleaseDTO(
-                    typeName,
-                    typeClassName,
-                    p.getConcentration()));
+                    new NucleaseDTO(
+                            typeName,
+                            typeClassName,
+                            p.getConcentration()));
         });
         crisprAttemptDTO.setNucleases(nucleaseList);
     }
 
     private void setMutagenesisDonorsDto(
-        CrisprAttemptDTO crisprAttemptDTO, final CrisprAttempt crisprAttempt)
+            CrisprAttemptDTO crisprAttemptDTO, final CrisprAttempt crisprAttempt)
     {
         List<MutagenesisDonorDTO> mutagenesisDonorDTOS = new ArrayList<>();
         List<MutagenesisDonor> mutagenesisDonors =
-            crisprAttempService.getMutagenesisDonorsByCrisprAttempt(crisprAttempt);
+                crisprAttempService.getMutagenesisDonorsByCrisprAttempt(crisprAttempt);
         mutagenesisDonors.forEach(p ->
-            {
-                String preparationTypeName = null;
-                PreparationType preparationType = p.getPreparationType();
-                if (preparationType != null)
                 {
-                    preparationTypeName = preparationType.getName();
+                    String preparationTypeName = null;
+                    PreparationType preparationType = p.getPreparationType();
+                    if (preparationType != null)
+                    {
+                        preparationTypeName = preparationType.getName();
+                    }
+                    MutagenesisDonorDTO mutagenesisDonorDTO = new MutagenesisDonorDTO(
+                            p.getId(), p.getConcentration(), preparationTypeName, p.getOligoSequenceFasta());
+                    mutagenesisDonorDTOS.add(mutagenesisDonorDTO);
                 }
-                MutagenesisDonorDTO mutagenesisDonorDTO = new MutagenesisDonorDTO(
-                    p.getId(), p.getConcentration(), preparationTypeName, p.getOligoSequenceFasta());
-                mutagenesisDonorDTOS.add(mutagenesisDonorDTO);
-            }
         );
         crisprAttemptDTO.setMutagenesisDonors(mutagenesisDonorDTOS);
     }
+
 
     private void setGuidesDto(CrisprAttemptDTO crisprAttemptDTO, CrisprAttempt crisprAttempt)
     {
         crisprAttemptDTO.setGuides(guideMapper.toDtos(crisprAttempt.getGuides()));
     }
+
 }
+

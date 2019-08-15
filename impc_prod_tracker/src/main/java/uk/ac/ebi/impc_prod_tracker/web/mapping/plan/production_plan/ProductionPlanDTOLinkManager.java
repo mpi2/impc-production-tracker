@@ -22,7 +22,7 @@ import uk.ac.ebi.impc_prod_tracker.web.dto.plan.production_plan.ProductionPlanDT
 import uk.ac.ebi.impc_prod_tracker.web.dto.plan.production_plan.attempt.AttemptDTO;
 import uk.ac.ebi.impc_prod_tracker.web.dto.plan.production_plan.attempt.crispr_attempt.MutagenesisDonorDTO;
 import uk.ac.ebi.impc_prod_tracker.web.dto.plan.production_plan.attempt.crispr_attempt.CrisprAttemptDTO;
-import uk.ac.ebi.impc_prod_tracker.data.biology.mutagenesis_donor.MutagenesisDonor;
+import uk.ac.ebi.impc_prod_tracker.data.biology.attempt.crispr_attempt.mutagenesis_donor.MutagenesisDonor;
 import java.util.List;
 
 /**

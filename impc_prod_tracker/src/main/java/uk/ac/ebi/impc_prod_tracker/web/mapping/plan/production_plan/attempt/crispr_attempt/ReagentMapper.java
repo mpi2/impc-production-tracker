@@ -1,8 +1,9 @@
 package uk.ac.ebi.impc_prod_tracker.web.mapping.plan.production_plan.attempt.crispr_attempt;
 
 import org.springframework.stereotype.Component;
-import uk.ac.ebi.impc_prod_tracker.data.biology.crispr_attempt_reagent.CrisprAttemptReagent;
+import uk.ac.ebi.impc_prod_tracker.data.biology.attempt.crispr_attempt.crispr_attempt_reagent.CrisprAttemptReagent;
 import uk.ac.ebi.impc_prod_tracker.web.dto.plan.production_plan.attempt.crispr_attempt.ReagentDTO;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;

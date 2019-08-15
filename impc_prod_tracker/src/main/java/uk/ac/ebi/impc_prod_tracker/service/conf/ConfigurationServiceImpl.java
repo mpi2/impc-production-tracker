@@ -4,16 +4,16 @@ import org.springframework.stereotype.Component;
 import uk.ac.ebi.impc_prod_tracker.conf.security.SystemSubject;
 import uk.ac.ebi.impc_prod_tracker.conf.security.abac.spring.SubjectRetriever;
 import uk.ac.ebi.impc_prod_tracker.data.biology.allele_type.AlleleTypeRepository;
-import uk.ac.ebi.impc_prod_tracker.data.biology.material_type.MaterialTypeRepository;
-import uk.ac.ebi.impc_prod_tracker.data.biology.tracked_strain.TrackedStrainRepository;
-import uk.ac.ebi.impc_prod_tracker.data.experiment.plan.type.PlanTypeRepository;
-import uk.ac.ebi.impc_prod_tracker.data.experiment.privacy.PrivacyRepository;
-import uk.ac.ebi.impc_prod_tracker.data.experiment.project_priority.ProjectPriorityRepository;
-import uk.ac.ebi.impc_prod_tracker.data.experiment.status.StatusRepository;
+import uk.ac.ebi.impc_prod_tracker.data.biology.attempt.phenotyping_attempt.material_type.MaterialTypeRepository;
+import uk.ac.ebi.impc_prod_tracker.data.biology.plan.type.PlanTypeRepository;
+import uk.ac.ebi.impc_prod_tracker.data.biology.privacy.PrivacyRepository;
+import uk.ac.ebi.impc_prod_tracker.data.biology.status.StatusRepository;
+import uk.ac.ebi.impc_prod_tracker.data.biology.strain.StrainRepository;
 import uk.ac.ebi.impc_prod_tracker.data.organization.institute.InstituteRepository;
 import uk.ac.ebi.impc_prod_tracker.data.organization.role.RoleRepository;
 import uk.ac.ebi.impc_prod_tracker.data.organization.work_group.WorkGroupRepository;
 import uk.ac.ebi.impc_prod_tracker.data.organization.work_unit.WorkUnitRepository;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -27,42 +27,40 @@ public class ConfigurationServiceImpl implements ConfigurationService
     private WorkGroupRepository workGroupRepository;
     private PlanTypeRepository planTypeRepository;
     private PrivacyRepository privacyRepository;
-    private ProjectPriorityRepository projectPriorityRepository;
     private StatusRepository statusRepository;
     private AlleleTypeRepository alleleTypeRepository;
     private InstituteRepository instituteRepository;
     private RoleRepository roleRepository;
-    private TrackedStrainRepository trackedStrainRepository;
+    private StrainRepository strainRepository;
+
     private MaterialTypeRepository materialTypeRepository;
 
     private Map<String, List<String>> conf = new HashMap<>();
 
     public ConfigurationServiceImpl(
-        SubjectRetriever subjectRetriever,
-        WorkUnitRepository workUnitRepository,
-        WorkGroupRepository workGroupRepository,
-        PlanTypeRepository planTypeRepository,
-        PrivacyRepository privacyRepository,
-        ProjectPriorityRepository projectPriorityRepository,
-        StatusRepository statusRepository,
-        AlleleTypeRepository alleleTypeRepository,
-        InstituteRepository instituteRepository,
-        RoleRepository roleRepository,
-        TrackedStrainRepository trackedStrainRepository,
-        MaterialTypeRepository materialTypeRepository)
+            SubjectRetriever subjectRetriever,
+            WorkUnitRepository workUnitRepository,
+            WorkGroupRepository workGroupRepository,
+            PlanTypeRepository planTypeRepository,
+            PrivacyRepository privacyRepository,
+            StatusRepository statusRepository,
+            AlleleTypeRepository alleleTypeRepository,
+            InstituteRepository instituteRepository,
+            RoleRepository roleRepository,
+            StrainRepository strainRepository,
+            MaterialTypeRepository materialTypeRepository
+    )
     {
-
         this.subjectRetriever = subjectRetriever;
         this.workUnitRepository = workUnitRepository;
         this.workGroupRepository = workGroupRepository;
         this.planTypeRepository = planTypeRepository;
         this.privacyRepository = privacyRepository;
-        this.projectPriorityRepository = projectPriorityRepository;
         this.statusRepository = statusRepository;
         this.alleleTypeRepository = alleleTypeRepository;
         this.instituteRepository = instituteRepository;
         this.roleRepository = roleRepository;
-        this.trackedStrainRepository = trackedStrainRepository;
+        this.strainRepository = strainRepository;
         this.materialTypeRepository = materialTypeRepository;
     }
 
@@ -78,12 +76,11 @@ public class ConfigurationServiceImpl implements ConfigurationService
                 addWorkGroups();
                 addPlanTypes();
                 addPrivacies();
-                addPriorities();
                 addStatuses();
                 addAlleleTypes();
                 addInstitutes();
                 addRoles();
-                addTrackedStrains();
+                addStrains();
                 addMaterialTypes();
             }
         }
@@ -119,13 +116,6 @@ public class ConfigurationServiceImpl implements ConfigurationService
         conf.put("privacies", privacies);
     }
 
-    private void addPriorities()
-    {
-        List<String> priorities = new ArrayList<>();
-        projectPriorityRepository.findAll().forEach(p -> priorities.add(p.getName()));
-        conf.put("priorities", priorities);
-    }
-
     private void addStatuses()
     {
         List<String> statuses = new ArrayList<>();
@@ -154,10 +144,10 @@ public class ConfigurationServiceImpl implements ConfigurationService
         conf.put("roles", roles);
     }
 
-    private void addTrackedStrains()
+    private void addStrains()
     {
         List<String> trackedStrains = new ArrayList<>();
-        trackedStrainRepository.findAll().forEach(p -> trackedStrains.add(p.getName()));
+        strainRepository.findAll().forEach(p -> trackedStrains.add(p.getName()));
         conf.put("trackedStrains", trackedStrains);
     }
 

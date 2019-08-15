@@ -55,11 +55,4 @@ public class Funder extends BaseEntity
         joinColumns = @JoinColumn(name = "funder_id"),
         inverseJoinColumns = @JoinColumn(name = "work_group_id"))
     private Set<WorkGroup> workGroups;
-
-//    @ManyToMany
-//    @JoinTable(
-//        name = "funder_work_unit",
-//        joinColumns = @JoinColumn(name = "funder_id"),
-//        inverseJoinColumns = @JoinColumn(name = "work_unit_id"))
-//    private Set<WorkUnit> workUnits;
 }

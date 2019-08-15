@@ -15,23 +15,21 @@
  *******************************************************************************/
 package uk.ac.ebi.impc_prod_tracker.data.biology.strain;
 
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.*;
 import uk.ac.ebi.impc_prod_tracker.data.BaseEntity;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import uk.ac.ebi.impc_prod_tracker.data.biology.strain.strain_type.StrainType;
+
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.io.Serializable;
+import java.util.Set;
 
 @NoArgsConstructor(access= AccessLevel.PRIVATE, force=true)
 @Getter
 @Setter
 @Entity
-public class Strain extends BaseEntity
+public class Strain extends BaseEntity implements Serializable
 {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -44,5 +42,14 @@ public class Strain extends BaseEntity
 
     private String mgiId;
 
-    private String type;
+    private String mgiName;
+
+    @ToString.Exclude
+    @JsonIgnore
+    @ManyToMany
+    @JoinTable(
+            name = "strain_type_relationship",
+            joinColumns = @JoinColumn(name = "strain_id"),
+            inverseJoinColumns = @JoinColumn(name = "strain_type_id"))
+    private Set<StrainType> strainTypes;
 }

@@ -18,17 +18,18 @@ package uk.ac.ebi.impc_prod_tracker.web.controller.plan;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import uk.ac.ebi.impc_prod_tracker.conf.error_management.OperationFailedException;
+import uk.ac.ebi.impc_prod_tracker.data.biology.plan.Plan;
 import uk.ac.ebi.impc_prod_tracker.data.common.history.History;
-import uk.ac.ebi.impc_prod_tracker.web.dto.plan.UpdatePlanRequestDTO;
-import uk.ac.ebi.impc_prod_tracker.web.mapping.plan.PlanDTOBuilder;
-import uk.ac.ebi.impc_prod_tracker.web.mapping.common.history.HistoryMapper;
-import uk.ac.ebi.impc_prod_tracker.web.mapping.project.ProjectDTOBuilder;
+import uk.ac.ebi.impc_prod_tracker.web.dto.common.history.HistoryDTO;
 import uk.ac.ebi.impc_prod_tracker.web.dto.plan.PlanDTO;
+import uk.ac.ebi.impc_prod_tracker.web.dto.plan.UpdatePlanRequestDTO;
 import uk.ac.ebi.impc_prod_tracker.web.dto.project.ProjectDetailsDTO;
 import uk.ac.ebi.impc_prod_tracker.web.dto.project.ProjectPlanDTO;
-import uk.ac.ebi.impc_prod_tracker.web.dto.common.history.HistoryDTO;
 import uk.ac.ebi.impc_prod_tracker.web.mapping.common.history.HistoryDTOBuilder;
-import uk.ac.ebi.impc_prod_tracker.data.experiment.plan.Plan;
+import uk.ac.ebi.impc_prod_tracker.web.mapping.common.history.HistoryMapper;
+import uk.ac.ebi.impc_prod_tracker.web.mapping.plan.PlanDTOBuilder;
+import uk.ac.ebi.impc_prod_tracker.web.mapping.project.ProjectDTOBuilder;
+
 import java.util.ArrayList;
 import java.util.List;
 

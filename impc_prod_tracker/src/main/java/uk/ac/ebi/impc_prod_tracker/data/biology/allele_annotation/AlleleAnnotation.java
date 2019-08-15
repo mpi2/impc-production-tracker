@@ -20,15 +20,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import uk.ac.ebi.impc_prod_tracker.data.BaseEntity;
-import uk.ac.ebi.impc_prod_tracker.data.biology.allele_type.AlleleType;
-import uk.ac.ebi.impc_prod_tracker.data.biology.mouse_allele.MouseAllele;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
-import javax.persistence.SequenceGenerator;
+import uk.ac.ebi.impc_prod_tracker.data.biology.allele.Allele;
+
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
 @NoArgsConstructor(access= AccessLevel.PRIVATE, force=true)
@@ -42,15 +36,11 @@ public class AlleleAnnotation extends BaseEntity {
     private Long id;
 
     @NotNull
-    @OneToOne(targetEntity = MouseAllele.class)
-    private MouseAllele mouseAllele;
+    @OneToOne(targetEntity = Allele.class)
+    private Allele allele;
 
     @NotNull
-    @ManyToOne(targetEntity = AlleleType.class)
-    private AlleleType alleleType;
-
-    @NotNull
-    private String chromosome;
+    private String chr;
 
     @NotNull
     private Long start;

@@ -1,18 +1,18 @@
 package uk.ac.ebi.impc_prod_tracker.service.plan.engine;
 
 import org.springframework.stereotype.Component;
+import uk.ac.ebi.impc_prod_tracker.data.biology.attempt.crispr_attempt.CrisprAttempt;
+import uk.ac.ebi.impc_prod_tracker.data.biology.plan.Plan;
+import uk.ac.ebi.impc_prod_tracker.data.biology.privacy.Privacy;
+import uk.ac.ebi.impc_prod_tracker.data.biology.privacy.PrivacyRepository;
+import uk.ac.ebi.impc_prod_tracker.data.organization.work_group.WorkGroup;
+import uk.ac.ebi.impc_prod_tracker.data.organization.work_group.WorkGroupRepository;
 import uk.ac.ebi.impc_prod_tracker.web.dto.plan.PlanDetailsDTO;
 import uk.ac.ebi.impc_prod_tracker.web.dto.plan.UpdatePlanRequestDTO;
 import uk.ac.ebi.impc_prod_tracker.web.dto.plan.production_plan.ProductionPlanDTO;
 import uk.ac.ebi.impc_prod_tracker.web.dto.plan.production_plan.attempt.AttemptDTO;
 import uk.ac.ebi.impc_prod_tracker.web.dto.plan.production_plan.attempt.crispr_attempt.CrisprAttemptDTO;
 import uk.ac.ebi.impc_prod_tracker.web.mapping.plan.production_plan.attempt.crispr_attempt.CrisprAttemptDTOBuilder;
-import uk.ac.ebi.impc_prod_tracker.data.biology.attempt.crispr_attempt.CrisprAttempt;
-import uk.ac.ebi.impc_prod_tracker.data.experiment.plan.Plan;
-import uk.ac.ebi.impc_prod_tracker.data.experiment.privacy.Privacy;
-import uk.ac.ebi.impc_prod_tracker.data.experiment.privacy.PrivacyRepository;
-import uk.ac.ebi.impc_prod_tracker.data.organization.work_group.WorkGroup;
-import uk.ac.ebi.impc_prod_tracker.data.organization.work_group.WorkGroupRepository;
 
 /**
  * Class in charge of analising a UpdatePlanRequestDTO object and retrieve the Plan object
@@ -94,10 +94,10 @@ public class UpdatePlanRequestProcessor
     private void updatePlanWithCrisprAttemptDTO(Plan plan, CrisprAttemptDTO crisprAttemptDTO)
     {
         CrisprAttempt crisprAttempt = crisprAttemptDTOBuilder.convertToEntity(crisprAttemptDTO);
-        crisprAttempt.setImitsMiAttemptId(plan.getCrisprAttempt().getImitsMiAttemptId());
-        crisprAttempt.setPlan(plan);
-        crisprAttempt.setId(plan.getCrisprAttempt().getId());
+        crisprAttempt.setImitsMiAttemptId(plan.getAttempt().getCrisprAttempt().getImitsMiAttemptId());
+        crisprAttempt.getAttempt().setPlan(plan);
+        crisprAttempt.setId(plan.getId());
 
-        plan.setCrisprAttempt(crisprAttempt);
+        plan.getAttempt().setCrisprAttempt(crisprAttempt);
     }
 }

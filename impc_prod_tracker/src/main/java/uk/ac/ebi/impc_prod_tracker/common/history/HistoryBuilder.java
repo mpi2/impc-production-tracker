@@ -7,6 +7,7 @@ import uk.ac.ebi.impc_prod_tracker.conf.security.abac.spring.SubjectRetriever;
 import uk.ac.ebi.impc_prod_tracker.data.BaseEntity_;
 import uk.ac.ebi.impc_prod_tracker.data.common.history.History;
 import uk.ac.ebi.impc_prod_tracker.data.common.history.detail.HistoryDetail;
+
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;

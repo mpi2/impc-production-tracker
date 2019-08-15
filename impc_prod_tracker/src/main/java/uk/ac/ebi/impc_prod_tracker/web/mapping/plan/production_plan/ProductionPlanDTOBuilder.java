@@ -1,13 +1,14 @@
 package uk.ac.ebi.impc_prod_tracker.web.mapping.plan.production_plan;
 
 import org.springframework.stereotype.Component;
+import uk.ac.ebi.impc_prod_tracker.data.biology.attempt.Attempt;
+import uk.ac.ebi.impc_prod_tracker.data.biology.attempt.AttemptRepository;
+import uk.ac.ebi.impc_prod_tracker.data.biology.plan.Plan;
 import uk.ac.ebi.impc_prod_tracker.web.dto.plan.production_plan.ProductionPlanDTO;
 import uk.ac.ebi.impc_prod_tracker.web.dto.plan.production_plan.attempt.AttemptDTO;
 import uk.ac.ebi.impc_prod_tracker.web.dto.plan.production_plan.attempt.crispr_attempt.CrisprAttemptDTO;
 import uk.ac.ebi.impc_prod_tracker.web.mapping.plan.production_plan.attempt.crispr_attempt.CrisprAttemptDTOBuilder;
-import uk.ac.ebi.impc_prod_tracker.data.biology.attempt.Attempt;
-import uk.ac.ebi.impc_prod_tracker.data.biology.attempt.AttemptRepository;
-import uk.ac.ebi.impc_prod_tracker.data.experiment.plan.Plan;
+
 import java.util.Optional;
 
 @Component
@@ -48,7 +49,7 @@ public class ProductionPlanDTOBuilder
             if (CRISPR_MUTAGENESIS_TYPE_NAME.equals(attemptTypeName))
             {
                 CrisprAttemptDTO crisprAttemptDTO =
-                    crisprAttemptDTOBuilder.convertToDto(plan.getCrisprAttempt());
+                    crisprAttemptDTOBuilder.convertToDto(plan.getAttempt().getCrisprAttempt());
                 attemptDTO.setCrisprAttempt(crisprAttemptDTO);
             }
         }
