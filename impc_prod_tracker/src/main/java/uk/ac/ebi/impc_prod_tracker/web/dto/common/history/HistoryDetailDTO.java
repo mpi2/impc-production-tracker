@@ -1,4 +1,4 @@
-package uk.ac.ebi.impc_prod_tracker.web.dto.plan.history;
+package uk.ac.ebi.impc_prod_tracker.web.dto.common.history;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

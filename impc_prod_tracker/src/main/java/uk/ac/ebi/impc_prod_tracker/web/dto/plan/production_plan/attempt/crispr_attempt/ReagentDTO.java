@@ -13,20 +13,17 @@
  * language governing permissions and limitations under the
  * License.
  *******************************************************************************/
-package uk.ac.ebi.impc_prod_tracker.web.dto.plan.production_plan.attempt;
+package uk.ac.ebi.impc_prod_tracker.web.dto.plan.production_plan.attempt.crispr_attempt;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.RequiredArgsConstructor;
+import lombok.NoArgsConstructor;
 
 @Data
-@RequiredArgsConstructor
 @AllArgsConstructor
-public class GenotypePrimerDTO
+@NoArgsConstructor
+public class ReagentDTO
 {
-    private String sequence;
     private String name;
-    private String chromosome;
-    private Integer startCoordinate;
-    private Integer endCoordinate;
+    private Integer concentration;
 }

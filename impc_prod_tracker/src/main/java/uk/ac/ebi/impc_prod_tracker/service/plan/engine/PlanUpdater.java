@@ -1,6 +1,7 @@
 package uk.ac.ebi.impc_prod_tracker.service.plan.engine;
 
 import uk.ac.ebi.impc_prod_tracker.data.biology.plan.Plan;
+import uk.ac.ebi.impc_prod_tracker.data.common.history.History;
 
 /**
  * Contains the rules to update a plan and trace the changes
@@ -14,6 +15,7 @@ public interface PlanUpdater
      * Save the changes in an audit table to keep trace of the changes.
      * @param originalPlan
      * @param newPlan
+     * @return
      */
-    void updatePlan(Plan originalPlan, Plan newPlan);
+    History updatePlan(Plan originalPlan, Plan newPlan);
 }

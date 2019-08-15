@@ -3,6 +3,8 @@ package uk.ac.ebi.impc_prod_tracker.web.mapping.project;
 import org.springframework.stereotype.Component;
 import uk.ac.ebi.impc_prod_tracker.data.biology.project.Project;
 import uk.ac.ebi.impc_prod_tracker.web.dto.project.ProjectDTO;
+import uk.ac.ebi.impc_prod_tracker.web.dto.project.ProjectDetailsDTO;
+import uk.ac.ebi.impc_prod_tracker.web.dto.project.ProjectSummaryDTO;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,18 +35,18 @@ public class ProjectMapper
         return projectDTOList;
     }
 
-//    public ProjectDetailsDTO projectToProjectDetailsDTO(Project project)
-//    {
-//        return projectDTOBuilder.buildProjectDetailsDTOFromProject(project);
-//    }
-//
-//    public ProjectSummaryDTO projectToProjectSummaryDTO(Project project)
-//    {
-//        ProjectSummaryDTO projectSummaryDTO = new ProjectSummaryDTO();
-//
-//        projectSummaryDTO.setProjectDetailsDTO(
-//            projectDTOBuilder.buildProjectDetailsDTOFromProject(project));
-//
-//        return projectSummaryDTO;
-//    }
+    public ProjectDetailsDTO projectToProjectDetailsDTO(Project project)
+    {
+        return projectDTOBuilder.buildProjectDetailsDTOFromProject(project);
+    }
+
+    public ProjectSummaryDTO projectToProjectSummaryDTO(Project project)
+    {
+        ProjectSummaryDTO projectSummaryDTO = new ProjectSummaryDTO();
+
+        projectSummaryDTO.setProjectDetailsDTO(
+            projectDTOBuilder.buildProjectDetailsDTOFromProject(project));
+
+        return projectSummaryDTO;
+    }
 }

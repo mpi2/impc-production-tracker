@@ -4,6 +4,7 @@ import lombok.*;
 import uk.ac.ebi.impc_prod_tracker.data.BaseEntity;
 import uk.ac.ebi.impc_prod_tracker.data.biology.assignment_status.AssignmentStatus;
 import uk.ac.ebi.impc_prod_tracker.data.biology.plan.Plan;
+import uk.ac.ebi.impc_prod_tracker.data.biology.project_gene.ProjectGene;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -51,6 +52,11 @@ public class Project extends BaseEntity
 
     @Column(columnDefinition = "TEXT")
     private String comment;
+
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
+    @OneToMany(mappedBy = "project")
+    private Set<ProjectGene> projectGenes;
 }
 
 

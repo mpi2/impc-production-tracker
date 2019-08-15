@@ -23,8 +23,11 @@ import uk.ac.ebi.impc_prod_tracker.data.biology.plan.Plan;
 import uk.ac.ebi.impc_prod_tracker.data.biology.project.Project;
 import uk.ac.ebi.impc_prod_tracker.service.plan.PlanService;
 import uk.ac.ebi.impc_prod_tracker.service.project.ProjectService;
+import uk.ac.ebi.impc_prod_tracker.web.dto.common.history.HistoryDTO;
 import uk.ac.ebi.impc_prod_tracker.web.dto.project.NewProjectRequestDTO;
 import uk.ac.ebi.impc_prod_tracker.web.dto.project.ProjectDTO;
+import uk.ac.ebi.impc_prod_tracker.web.dto.project.ProjectPlanDTO;
+import uk.ac.ebi.impc_prod_tracker.web.mapping.common.history.HistoryMapper;
 import uk.ac.ebi.impc_prod_tracker.web.mapping.plan.PlanMapper;
 import uk.ac.ebi.impc_prod_tracker.web.mapping.project.ProjectMapper;
 
@@ -42,17 +45,20 @@ class ProjectController
     private PlanService planService;
     private ProjectMapper projectMapper;
     private PlanMapper planMapper;
+    private HistoryMapper historyMapper;
 
     ProjectController(
         ProjectService projectService,
         PlanService planService,
         ProjectMapper projectMapper,
-        PlanMapper planMapper)
+        PlanMapper planMapper,
+        HistoryMapper historyMapper)
     {
         this.projectService = projectService;
         this.planService = planService;
         this.projectMapper = projectMapper;
         this.planMapper = planMapper;
+        this.historyMapper = historyMapper;
     }
 
     /**
@@ -81,19 +87,19 @@ class ProjectController
         return new EntityModel<>(projectDTO);
     }
 
-//    @GetMapping(value = {"/projects/{tpn}/plans/{pin}"})
-//    EntityModel<ProjectPlanDTO> getProjectPlan(
-//        @PathVariable String tpn, @PathVariable String pin)
-//    {
-//        Project project = ProjectUtilities.getNotNullProjectByTpn(tpn);
-//        ProjectPlanDTO projectPlanDTO = new ProjectPlanDTO();
-//        Optional<Plan> planOpt = findPlanInProject(project, pin);
-//        if (planOpt.isPresent())
-//        {
-//            projectPlanDTO = planMapper.planToProjectPlanDTO(planOpt.get(), project);
-//        }
-//        return new EntityModel<>(projectPlanDTO);
-//    }
+    @GetMapping(value = {"/projects/{tpn}/plans/{pin}"})
+    EntityModel<ProjectPlanDTO> getProjectPlan(
+        @PathVariable String tpn, @PathVariable String pin)
+    {
+        Project project = ProjectUtilities.getNotNullProjectByTpn(tpn);
+        ProjectPlanDTO projectPlanDTO = new ProjectPlanDTO();
+        Optional<Plan> planOpt = findPlanInProject(project, pin);
+        if (planOpt.isPresent())
+        {
+            projectPlanDTO = planMapper.planToProjectPlanDTO(planOpt.get(), project);
+        }
+        return new EntityModel<>(projectPlanDTO);
+    }
 
     private Optional<Plan> findPlanInProject(Project project, String pin)
     {
@@ -110,5 +116,13 @@ class ProjectController
         Project newProject = projectService.createProject(newProjectRequestDTO);
         System.out.println("Project created => "+ newProject);
         return ok("Project created!");
+    }
+
+    @GetMapping(value = {"/projects/{tpn}/history"})
+    public List<HistoryDTO> getProjectHistory(@PathVariable String tpn)
+    {
+        Project project = ProjectUtilities.getNotNullProjectByTpn(tpn);
+
+        return historyMapper.toDtos(projectService.getProjectHistory(project));
     }
 }

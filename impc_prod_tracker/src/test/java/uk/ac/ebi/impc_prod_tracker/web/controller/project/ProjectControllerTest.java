@@ -9,6 +9,8 @@ import uk.ac.ebi.impc_prod_tracker.data.biology.project.ProjectRepository;
 import uk.ac.ebi.impc_prod_tracker.data.organization.person.PersonRepository;
 import uk.ac.ebi.impc_prod_tracker.framework.ControllerTestTemplate;
 import uk.ac.ebi.impc_prod_tracker.service.project.ProjectService;
+import uk.ac.ebi.impc_prod_tracker.web.db.Paths;
+
 import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -25,7 +27,7 @@ class ProjectControllerTest extends ControllerTestTemplate
     ProjectService projectService;
 
     @Test
-    @DatabaseSetup("/dbunit/projects/multipleProjects.xml")
+    @DatabaseSetup(Paths.MULTIPLE_PROJECTS)
     void testGetAllProjects() throws Exception
     {
         mvc().perform(get("/api/projectSummaries"))

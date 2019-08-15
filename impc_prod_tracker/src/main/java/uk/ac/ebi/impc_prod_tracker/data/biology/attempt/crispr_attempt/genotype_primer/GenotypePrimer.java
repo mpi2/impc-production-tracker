@@ -24,9 +24,9 @@ public class GenotypePrimer extends BaseEntity
 
     private String sequence;
 
-    private int genomic_start_coordinate;
+    private int genomicStartCoordinate;
 
-    private int genomic_end_coordinate;
+    private int genomicEndCoordinate;
 
     @ManyToOne(targetEntity = CrisprAttempt.class)
     private CrisprAttempt crisprAttempt;

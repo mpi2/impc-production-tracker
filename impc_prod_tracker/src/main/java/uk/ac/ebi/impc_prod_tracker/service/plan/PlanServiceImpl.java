@@ -19,11 +19,19 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Component;
+import uk.ac.ebi.impc_prod_tracker.common.Constants;
+import uk.ac.ebi.impc_prod_tracker.conf.error_management.OperationFailedException;
 import uk.ac.ebi.impc_prod_tracker.conf.security.abac.ResourceAccessChecker;
+import uk.ac.ebi.impc_prod_tracker.data.biology.attempt.Attempt;
+import uk.ac.ebi.impc_prod_tracker.data.biology.attempt_parent_outcome.AttemptParentOutcome;
+import uk.ac.ebi.impc_prod_tracker.data.biology.attempt_parent_outcome.AttemptParentOutcomeRepository;
+import uk.ac.ebi.impc_prod_tracker.data.biology.colony.Colony;
+import uk.ac.ebi.impc_prod_tracker.data.biology.outcome.Outcome;
 import uk.ac.ebi.impc_prod_tracker.data.biology.outcome.OutcomeRepository;
 import uk.ac.ebi.impc_prod_tracker.data.biology.plan.Plan;
 import uk.ac.ebi.impc_prod_tracker.data.biology.plan.PlanRepository;
 import uk.ac.ebi.impc_prod_tracker.data.biology.project.Project;
+import uk.ac.ebi.impc_prod_tracker.data.common.history.History;
 import uk.ac.ebi.impc_prod_tracker.service.plan.engine.PlanUpdater;
 import uk.ac.ebi.impc_prod_tracker.service.plan.engine.UpdatePlanRequestProcessor;
 import uk.ac.ebi.impc_prod_tracker.web.dto.plan.UpdatePlanRequestDTO;
@@ -39,42 +47,40 @@ public class PlanServiceImpl implements PlanService
     private ResourceAccessChecker<Plan> resourceAccessChecker;
     private PlanUpdater planUpdater;
     private UpdatePlanRequestProcessor updatePlanRequestProcessor;
+    private AttemptParentOutcomeRepository attemptParentOutcomeRepository;
 
     private static final String READ_PLAN_ACTION = "READ_PLAN";
     private static final String PLAN_TO_UPDATE_NOT_EXISTS_ERROR =
         "The plan %s that you are trying to update does not exist.";
 
     PlanServiceImpl(
-        PlanRepository planRepository,
-        OutcomeRepository outcome,
-        ResourceAccessChecker<Plan> resourceAccessChecker,
-        PlanUpdater planUpdater,
-        UpdatePlanRequestProcessor updatePlanRequestProcessor)
+            PlanRepository planRepository,
+            OutcomeRepository outcome,
+            ResourceAccessChecker<Plan> resourceAccessChecker,
+            PlanUpdater planUpdater,
+            UpdatePlanRequestProcessor updatePlanRequestProcessor, AttemptParentOutcomeRepository attemptParentOutcomeRepository)
     {
         this.planRepository = planRepository;
         this.outcomeRepository = outcome;
         this.resourceAccessChecker = resourceAccessChecker;
         this.planUpdater = planUpdater;
         this.updatePlanRequestProcessor = updatePlanRequestProcessor;
+        this.attemptParentOutcomeRepository = attemptParentOutcomeRepository;
     }
 
     @Override
     public Plan getProductionPlanRefByPhenotypePlan(Plan phenotypePlan)
     {
-//        Plan plan = null;
-//        if (Constants.PHENOTYPE_TYPE.equals(phenotypePlan.getPlanType().getName()))
-//        {
-//            Colony parentColony = phenotypePlan.getColony();
-//            List<Outcome> outcomesByColony = outcomeRepository.findAllByColony(parentColony);
-//            for (Outcome outcome : outcomesByColony)
-//            {
-//                plan = planRepository.findPlanById(outcome.getAttempt().getId());
-//                break;
-//            }
-//        }
-//
-//        return plan;
-        return null;
+        Plan plan = null;
+        if (Constants.PHENOTYPE_TYPE.equals(phenotypePlan.getPlanType().getName()))
+        {
+            Attempt attempt = phenotypePlan.getAttempt();
+            AttemptParentOutcome attemptParentOutcome = attemptParentOutcomeRepository.findByAttempt(attempt);
+            Long productionPlanId = attemptParentOutcome.getParentOutcome().getAttempt().getId();
+            plan = planRepository.findPlanById(productionPlanId);
+        }
+
+        return plan;
     }
 
     @Override
@@ -136,18 +142,18 @@ public class PlanServiceImpl implements PlanService
     }
 
     @Override
-    public void updatePlan(String pin, UpdatePlanRequestDTO updatePlanRequestDTO)
+    public History updatePlan(String pin, UpdatePlanRequestDTO updatePlanRequestDTO)
     {
-//        Plan existingPlan = planRepository.findPlanByPin(pin);
-//        Plan newPlan = new Plan(existingPlan);
-//        Plan originalPlan  = new Plan(existingPlan);
-//        if (originalPlan == null)
-//        {
-//            throw new OperationFailedException(
-//                String.format(PLAN_TO_UPDATE_NOT_EXISTS_ERROR, pin));
-//        }
-//        newPlan = updatePlanRequestProcessor.getPlanToUpdate(newPlan, updatePlanRequestDTO);
-//
-//        planUpdater.updatePlan(originalPlan, newPlan);
+        Plan existingPlan = planRepository.findPlanByPin(pin);
+        Plan newPlan = new Plan(existingPlan);
+        Plan originalPlan  = new Plan(existingPlan);
+        if (originalPlan == null)
+        {
+            throw new OperationFailedException(
+                String.format(PLAN_TO_UPDATE_NOT_EXISTS_ERROR, pin));
+        }
+        newPlan = updatePlanRequestProcessor.getPlanToUpdate(newPlan, updatePlanRequestDTO);
+
+        return planUpdater.updatePlan(originalPlan, newPlan);
     }
 }

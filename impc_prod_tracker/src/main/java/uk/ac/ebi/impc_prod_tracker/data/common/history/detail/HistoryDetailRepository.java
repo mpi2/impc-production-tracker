@@ -1,4 +1,4 @@
-package uk.ac.ebi.impc_prod_tracker.data.biology.plan.history.detail;
+package uk.ac.ebi.impc_prod_tracker.data.common.history.detail;
 
 import org.springframework.data.repository.CrudRepository;
 

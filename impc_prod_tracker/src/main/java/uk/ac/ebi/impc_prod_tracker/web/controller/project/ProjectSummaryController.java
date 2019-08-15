@@ -34,11 +34,11 @@ class ProjectSummaryController
      * Returns Information about the projects with pagination.
      *
      * @param markerSymbols Optional filters with specific marker symbols.
-     * @param workUnits Optional filters with specific workUnits names.
-     * @param workGroups Optional filters with specific marker names.
+     * @param workUnits     Optional filters with specific workUnits names.
+     * @param workGroups    Optional filters with specific marker names.
      * @param pageable      Pagination options.
      * @param assembler     Assembler to add links to the resources.
-     * @return List of ProjectSummaryDTO.
+     * @return              List of ProjectSummaryDTO.
      */
 //    @GetMapping(value = {"/projectSummaries"})
 //    ResponseEntity getProjectSummariesPaginated(

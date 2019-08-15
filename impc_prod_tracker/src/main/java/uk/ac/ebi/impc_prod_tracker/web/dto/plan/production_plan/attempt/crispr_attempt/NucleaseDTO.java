@@ -13,15 +13,16 @@
  * language governing permissions and limitations under the
  * License.
  *******************************************************************************/
-package uk.ac.ebi.impc_prod_tracker.web.dto.plan.production_plan.attempt;
+package uk.ac.ebi.impc_prod_tracker.web.dto.plan.production_plan.attempt.crispr_attempt;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
 @Data
 @AllArgsConstructor
-public class ReagentDTO
+public class NucleaseDTO
 {
-    private String name;
-    private Integer concentration;
+    private String type;
+    private String typeClass;
+    private Double concentration;
 }

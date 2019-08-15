@@ -19,7 +19,9 @@ import lombok.*;
 import uk.ac.ebi.impc_prod_tracker.data.BaseEntity;
 import uk.ac.ebi.impc_prod_tracker.data.biology.attempt.Attempt;
 import uk.ac.ebi.impc_prod_tracker.data.biology.attempt.crispr_attempt.assay.Assay;
+import uk.ac.ebi.impc_prod_tracker.data.biology.attempt.crispr_attempt.crispr_attempt_reagent.CrisprAttemptReagent;
 import uk.ac.ebi.impc_prod_tracker.data.biology.attempt.crispr_attempt.delivery_type.DeliveryMethodType;
+import uk.ac.ebi.impc_prod_tracker.data.biology.attempt.crispr_attempt.guide.Guide;
 import uk.ac.ebi.impc_prod_tracker.data.biology.strain.Strain;
 
 import javax.persistence.*;
@@ -78,11 +80,17 @@ public class CrisprAttempt extends BaseEntity
     @OneToOne
     private Assay assay;
 
-    @EqualsAndHashCode.Exclude
-    @ToString.Exclude
-    @OneToMany(mappedBy = "crisprAttempt")
-    private Set<CrisprAttempt> crisprAttempt;
 
     @ManyToOne
     private Strain strain;
+
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
+    @OneToMany(mappedBy = "crisprAttempt")
+    private Set<Guide> guides;
+
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
+    @OneToMany(mappedBy = "crisprAttempt")
+    private Set<CrisprAttemptReagent> crisprAttemptReagents;
 }

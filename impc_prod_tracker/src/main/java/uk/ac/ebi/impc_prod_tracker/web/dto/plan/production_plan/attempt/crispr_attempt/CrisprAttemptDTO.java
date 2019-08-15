@@ -18,10 +18,7 @@ package uk.ac.ebi.impc_prod_tracker.web.dto.plan.production_plan.attempt.crispr_
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 import org.springframework.hateoas.RepresentationModel;
-import uk.ac.ebi.impc_prod_tracker.web.dto.plan.production_plan.attempt.GenotypePrimerDTO;
-import uk.ac.ebi.impc_prod_tracker.web.dto.plan.production_plan.attempt.MutagenesisDonorDTO;
-import uk.ac.ebi.impc_prod_tracker.web.dto.plan.production_plan.attempt.NucleaseDTO;
-import uk.ac.ebi.impc_prod_tracker.web.dto.plan.production_plan.attempt.ReagentDTO;
+
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -60,6 +57,7 @@ public class CrisprAttemptDTO extends RepresentationModel
     private List<ReagentDTO> reagents;
     private List<GenotypePrimerDTO> primers;
     private List<MutagenesisDonorDTO> mutagenesisDonors;
+    private List<GuideDTO> guides;
     private Integer embryoSurvived2Cell;
     private String comment;
 }
