@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 /**
  * Class in charge of inspecting an object and retrieve its properties and the values of those
@@ -12,7 +11,7 @@ import java.util.stream.Collectors;
  */
 class ObjectInspector
 {
-    private Map<String, PropertyValueData> map;
+    private Map<String, PropertyDescription> map;
     private Object object;
     private CheckedClassesTree checkedClassesTree;
     private List<String> fieldsToIgnore;
@@ -34,7 +33,7 @@ class ObjectInspector
         String parentName = getParentName(parentData);
         for (PropertyDefinition prop : properties)
         {
-            PropertyValueData data = getPropertyData(prop, object, parentName);
+            PropertyDescription data = getPropertyData(prop, object, parentName);
             if (data != null)
             {
                 prop.setName(data.getName());
@@ -69,18 +68,18 @@ class ObjectInspector
         return parentName;
     }
 
-    private PropertyValueData getPropertyData(
+    private PropertyDescription getPropertyData(
         PropertyDefinition property, Object object, String parentName)
     {
-        PropertyValueData propertyValueData = null;
+        PropertyDescription propertyDescription = null;
         if (!mustIgnoreProperty(property.getName()))
         {
-            propertyValueData = buildProperty(property, object, parentName);
+            propertyDescription = buildProperty(property, object, parentName);
         }
-        return propertyValueData;
+        return propertyDescription;
     }
 
-    private PropertyValueData buildProperty(
+    private PropertyDescription buildProperty(
         PropertyDefinition property, Object object, String parentName)
     {
         PropertyEvaluator propertyEvaluator = new PropertyEvaluator(property, object, parentName);
@@ -88,7 +87,7 @@ class ObjectInspector
         return propertyEvaluator.getData();
     }
 
-    public Map<String, PropertyValueData> getMap()
+    public Map<String, PropertyDescription> getMap()
     {
         return map;
     }
@@ -98,12 +97,12 @@ class ObjectInspector
         return fieldsToIgnore.contains(property);
     }
 
-    private boolean mustCheckInternalProperties(PropertyValueData data, PropertyDefinition parentData)
+    private boolean mustCheckInternalProperties(PropertyDescription data, PropertyDefinition parentData)
     {
         return !data.isSimpleValue() && !isCircularReference(data, parentData);
     }
 
-    private boolean isCircularReference(PropertyValueData data, PropertyDefinition parentData)
+    private boolean isCircularReference(PropertyDescription data, PropertyDefinition parentData)
     {
         return !checkedClassesTree.canRelationBeAdded(
             data.getType(), getCurrentParent(parentData).getType());
@@ -113,7 +112,7 @@ class ObjectInspector
     Map<String, Object> getValuesForSimpleProperties()
     {
         Map<String, Object> simpleProps = new HashMap<>(map.size());
-        for (Map.Entry<String,PropertyValueData> entry : map.entrySet())
+        for (Map.Entry<String, PropertyDescription> entry : map.entrySet())
         {
             if (entry.getValue().isSimpleValue())
             {
