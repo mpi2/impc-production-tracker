@@ -22,4 +22,10 @@ public class HistoryDetail
     private String oldValue;
 
     private String newValue;
+
+    private String referenceEntity;
+
+    private String oldValueEntityId;
+
+    private String newValueEntityId;
 }

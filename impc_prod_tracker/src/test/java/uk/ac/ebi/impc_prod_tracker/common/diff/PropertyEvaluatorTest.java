@@ -2,11 +2,10 @@ package uk.ac.ebi.impc_prod_tracker.common.diff;
 
 import lombok.Data;
 import org.junit.Test;
-
 import java.util.List;
+
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.nullValue;
 import static org.hamcrest.core.IsNull.notNullValue;
 
 public class PropertyEvaluatorTest
@@ -22,7 +21,7 @@ public class PropertyEvaluatorTest
         dataInput.setType(String.class);
         propertyEvaluator = new PropertyEvaluator(dataInput, classA, null);
         propertyEvaluator.evaluate();
-        PropertyValueData dataOutput = propertyEvaluator.getData();
+        PropertyDescription dataOutput = propertyEvaluator.getData();
 
         assertThat("map:", dataOutput, is(notNullValue()));
         assertThat("map:", dataOutput.getName(), is("p1"));
@@ -42,7 +41,7 @@ public class PropertyEvaluatorTest
 
         propertyEvaluator = new PropertyEvaluator(dataInput, classA, "parentPropertyName");
         propertyEvaluator.evaluate();
-        PropertyValueData outputData = propertyEvaluator.getData();
+        PropertyDescription outputData = propertyEvaluator.getData();
 
 
         assertThat("map:", outputData, is(notNullValue()));
@@ -50,23 +49,6 @@ public class PropertyEvaluatorTest
         assertThat("map:", outputData.getType(), is(String.class));
         assertThat("map:", outputData.getValue(), is(notNullValue()));
         assertThat("map:", outputData.isSimpleValue(), is(true));
-    }
-
-    @Test
-    public void testSkipProperty()
-    {
-        ClassA classA = new ClassA("a", "b");
-
-        PropertyDefinition dataInput = new PropertyDefinition();
-        dataInput.setName("p3");
-        dataInput.setType(List.class);
-
-        propertyEvaluator = new PropertyEvaluator(dataInput, classA, null);
-        propertyEvaluator.evaluate();
-        PropertyValueData dataOutput = propertyEvaluator.getData();
-        System.out.println(dataOutput);
-
-        assertThat("map:", dataOutput, is(nullValue()));
     }
 
     @Data

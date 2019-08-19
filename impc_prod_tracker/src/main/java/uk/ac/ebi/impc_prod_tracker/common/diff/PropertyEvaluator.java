@@ -1,7 +1,7 @@
 package uk.ac.ebi.impc_prod_tracker.common.diff;
 
 /**
- * Class that takes a {@lonk PropertyValueData} value and completes its information with the value
+ * Class that takes a {@link PropertyDescription} value and completes its information with the value
  * that the object has for the property and also additional information like the correct name of the
  * property (appending the parent name) and whether or not the property holds a simple value.
  */
@@ -9,7 +9,7 @@ class PropertyEvaluator
 {
     private Object object;
     private String parentName;
-    private PropertyValueData data = new PropertyValueData();
+    private PropertyDescription data = new PropertyDescription();
 
     PropertyEvaluator(PropertyDefinition input, Object object, String parentName)
     {
@@ -21,26 +21,14 @@ class PropertyEvaluator
 
     void evaluate()
     {
-        if (mustSkip())
-        {
-            data = null;
-        }
-        else
-        {
-            buildData();
-        }
-    }
-
-    PropertyValueData getData()
-    {
-        return data;
-    }
-
-    private void buildData()
-    {
         data.setValue(PropertyChecker.getValue(data.getName(), object));
         data.setName(buildPropertyName());
         data.setSimpleValue(PropertyChecker.isASimpleValue(data.getType()));
+    }
+
+    PropertyDescription getData()
+    {
+        return data;
     }
 
     private String buildPropertyName()
@@ -51,10 +39,5 @@ class PropertyEvaluator
             name = parentName + "." + name;
         }
         return name;
-    }
-
-    private boolean mustSkip()
-    {
-        return PropertyChecker.isCollection(data.getType());
     }
 }

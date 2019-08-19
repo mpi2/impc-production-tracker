@@ -3,6 +3,7 @@ package uk.ac.ebi.impc_prod_tracker.common.diff;
 import lombok.Data;
 import org.junit.Test;
 import uk.ac.ebi.impc_prod_tracker.data.experiment.plan.Plan;
+import uk.ac.ebi.impc_prod_tracker.data.organization.work_unit.WorkUnit;
 
 import java.time.LocalDateTime;
 import java.util.Arrays;
@@ -53,17 +54,17 @@ public class ObjectInspectorTest
         classB.b1 = 2.0;
         classA.a4 = classB;
         objectInspector = new ObjectInspector(classA, Arrays.asList("id"));
-        Map<String, PropertyValueData> propertyValueMap = objectInspector.getMap();
+        Map<String, PropertyDescription> propertyValueMap = objectInspector.getMap();
 
 
-        PropertyValueData expectedResult1 = new PropertyValueData("a1", String.class, "a1", true);
-        PropertyValueData expectedResult2 = new PropertyValueData(1, Integer.class, "a2", true);
-        PropertyValueData expectedResult3 =
-            new PropertyValueData(classA.a3, LocalDateTime.class, "a3", true);
-        PropertyValueData expectedResult4 =
-            new PropertyValueData(classA.a4, ClassB.class, "a4", false);
-        PropertyValueData expectedResult5 =
-            new PropertyValueData(2.0, Double.class, "a4.b1", true);
+        PropertyDescription expectedResult1 = new PropertyDescription("a1", String.class, "a1", true);
+        PropertyDescription expectedResult2 = new PropertyDescription(1, Integer.class, "a2", true);
+        PropertyDescription expectedResult3 =
+            new PropertyDescription(classA.a3, LocalDateTime.class, "a3", true);
+        PropertyDescription expectedResult4 =
+            new PropertyDescription(classA.a4, ClassB.class, "a4", false);
+        PropertyDescription expectedResult5 =
+            new PropertyDescription(2.0, Double.class, "a4.b1", true);
 
         assertThat("propertyValueMap:", propertyValueMap, is(notNullValue()));
         assertThat("Incorrect value:", propertyValueMap.get("a1"), is(expectedResult1));
@@ -78,13 +79,49 @@ public class ObjectInspectorTest
     {
         ClassC object = new ClassC();
         objectInspector = new ObjectInspector(object, Arrays.asList(""));
-        Map<String, PropertyValueData> map = objectInspector.getMap();
+        Map<String, PropertyDescription> map = objectInspector.getMap();
 
         assertThat("Size:", map.size(), is(3));
         assertThat("Size:", map.get("c1"), is(notNullValue()));
         assertThat("Size:", map.get("c1.d1"), is(notNullValue()));
         assertThat("Size:", map.get("c1.d1.e1"), is(notNullValue()));
         objectInspector.printSimple();
+    }
+
+    @Test
+    public void testWithBusinessObject()
+    {
+        Plan plan = new Plan();
+        plan.setId(1L);
+        WorkUnit workUnit = new WorkUnit("workUnit_a");
+        workUnit.setId(10L);
+        plan.setWorkUnit(workUnit);
+        objectInspector = new ObjectInspector(plan, Arrays.asList(""));
+        Map<String, PropertyDescription> map = objectInspector.getMap();
+
+        for (Map.Entry<String, PropertyDescription> entry : map.entrySet())
+        {
+            System.out.println(entry.getKey() + " -> " + entry.getValue());
+        }
+    }
+
+    @Test
+    public void testObjectWithList()
+    {
+        ClassA a = new ClassA();
+        ClassB b = new ClassB();
+        b.setB1(1.0);
+        b.setB2(new ClassA());
+        List<ClassB> list = Arrays.asList(b);
+        a.setA5(list);
+        objectInspector = new ObjectInspector(a, Arrays.asList(""));
+        Map<String, PropertyDescription> map = objectInspector.getMap();
+
+        for (Map.Entry<String, PropertyDescription> entry : map.entrySet())
+        {
+            System.out.println(entry.getKey() + " -> " + entry.getValue());
+        }
+
     }
 
     @Data

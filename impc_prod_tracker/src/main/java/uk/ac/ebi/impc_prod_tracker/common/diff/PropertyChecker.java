@@ -15,7 +15,7 @@ import java.util.List;
 /**
  * Util class to check properties related information.
  */
-class PropertyChecker
+public class PropertyChecker
 {
     private static final PropertyUtilsBean PROPERTY_UTILS_BEAN = new PropertyUtilsBean();
     private static final Logger LOGGER = LoggerFactory.getLogger(PropertyChecker.class);
@@ -97,12 +97,12 @@ class PropertyChecker
         return value;
     }
 
-    static boolean isCollection(Class<?> type)
+    public static boolean isCollection(Class<?> type)
     {
         return Collection.class.isAssignableFrom(type);
     }
 
-    static boolean isASimpleValue(Class<?> type)
+    public static boolean isASimpleValue(Class<?> type)
     {
         return BeanUtils.isSimpleValueType(type);
     }

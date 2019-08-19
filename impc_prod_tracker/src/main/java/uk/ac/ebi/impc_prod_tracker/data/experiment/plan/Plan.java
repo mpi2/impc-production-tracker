@@ -17,6 +17,7 @@ package uk.ac.ebi.impc_prod_tracker.data.experiment.plan;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AccessLevel;
+import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -44,8 +45,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 @NoArgsConstructor(access= AccessLevel.PUBLIC, force=true)
-@Getter
-@Setter
+@Data
 @Entity
 public class Plan extends BaseEntity implements Resource<Plan>
 {
@@ -171,5 +171,12 @@ public class Plan extends BaseEntity implements Resource<Plan>
         plan.setProject(restrictedProject);
 
         return plan;
+    }
+
+    @Override
+    public String toString()
+    {
+        return "pin=" + pin + ", type: "+ (this.planType == null ? "Not defined" : planType.getName())
+            + ", privacy: " + (privacy == null ? "Not defined" : privacy.getName());
     }
 }

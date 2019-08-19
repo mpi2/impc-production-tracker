@@ -1,8 +1,6 @@
 package uk.ac.ebi.impc_prod_tracker.common.history;
 
 import org.springframework.stereotype.Component;
-import uk.ac.ebi.impc_prod_tracker.common.diff.ChangeEntry;
-import uk.ac.ebi.impc_prod_tracker.common.diff.ChangesDetector;
 import uk.ac.ebi.impc_prod_tracker.conf.security.abac.spring.SubjectRetriever;
 import uk.ac.ebi.impc_prod_tracker.data.BaseEntity_;
 import uk.ac.ebi.impc_prod_tracker.data.common.history.History;
@@ -82,19 +80,24 @@ public class HistoryBuilder<T>
         fieldsToExclude.add(BaseEntity_.LAST_MODIFIED_BY);
         fieldsToExclude.add(RESOURCE_PRIVACY_PROPERTY_NAME);
         fieldsToExclude.add(RESTRICTED_OBJECT_PROPERTY_NAME);
-        fieldsToExclude.add("id");
 
-        ChangesDetector<T> changesDetector =
-            new ChangesDetector<>(fieldsToExclude, originalEntity, newEntity);
-        List<ChangeEntry> changeEntries = changesDetector.getChanges();
+        HistoryChangesAdaptor<T> historyChangesAdaptor =
+            new HistoryChangesAdaptor<>(fieldsToExclude, originalEntity, newEntity);
 
-        List<HistoryDetail> details =  new ArrayList<>();
-        changeEntries.forEach(x ->
+        List<ChangeDescription> changeDescriptions = historyChangesAdaptor.getChanges();
+
+        List<HistoryDetail> details = new ArrayList<>();
+        changeDescriptions.forEach(x ->
             {
                 HistoryDetail historyDetail = new HistoryDetail();
                 historyDetail.setField(x.getProperty());
-                historyDetail.setOldValue(x.getOldValue());
-                historyDetail.setNewValue(x.getNewValue());
+                historyDetail.setOldValue(x.getOldValue().toString());
+                historyDetail.setNewValue(x.getNewValue().toString());
+                historyDetail.setReferenceEntity(x.getParentClass());
+                historyDetail.setOldValueEntityId(
+                    x.getOldValueId() == null ? null : x.getOldValueId().toString());
+                historyDetail.setNewValueEntityId(
+                    x.getNewValueId() == null ? null : x.getNewValueId().toString());
 
                 details.add(historyDetail);
             });
