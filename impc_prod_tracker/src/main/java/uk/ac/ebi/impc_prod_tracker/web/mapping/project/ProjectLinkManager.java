@@ -16,28 +16,23 @@
 package uk.ac.ebi.impc_prod_tracker.web.mapping.project;
 
 import org.springframework.stereotype.Component;
-import uk.ac.ebi.impc_prod_tracker.web.dto.plan.PlanDTO;
-import uk.ac.ebi.impc_prod_tracker.web.mapping.plan.PlanDTOLinkManager;
 import uk.ac.ebi.impc_prod_tracker.web.dto.project.ProjectDTO;
-
-import java.util.List;
 
 @Component
 public class ProjectLinkManager
 {
-    private PlanDTOLinkManager planDTOLinkManager;
-    public ProjectLinkManager(PlanDTOLinkManager planDTOLinkManager)
+    public ProjectLinkManager()
     {
-        this.planDTOLinkManager = planDTOLinkManager;
+
     }
 
     public ProjectDTO addLinks(ProjectDTO projectDTO)
     {
-        List<PlanDTO> planDTOList = projectDTO.getPlans();
-        for (PlanDTO planDTO : planDTOList)
-        {
-            planDTOLinkManager.addLinks(planDTO);
-        }
+//        List<PlanDTO> planDTOList = projectDTO.getPlans();
+//        for (PlanDTO planDTO : planDTOList)
+//        {
+//            planDTOLinkManager.addLinks(planDTO);
+//        }
 
         return projectDTO;
     }

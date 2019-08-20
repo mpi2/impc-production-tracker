@@ -36,6 +36,7 @@ public class DistributionProduct extends BaseEntity
     @ManyToOne
     private Colony colony;
 
+    @NotNull
     @OneToOne
     private DistributionNetwork distributionNetwork;
 

@@ -2,15 +2,16 @@ package uk.ac.ebi.impc_prod_tracker.web.dto.project;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
-import uk.ac.ebi.impc_prod_tracker.web.dto.plan.PlanDetailsDTO;
+import org.springframework.hateoas.RepresentationModel;
+import uk.ac.ebi.impc_prod_tracker.web.dto.plan.PlanDTO;
 
 import java.util.List;
 
 @Data
-public class ProjectSummaryDTO
+public class ProjectSummaryDTO extends RepresentationModel
 {
     @JsonProperty("projectDetails")
-    private ProjectDetailsDTO projectDetailsDTO;
+    private ProjectDTO projectDTO;
     @JsonProperty("planDetails")
-    private List<PlanDetailsDTO> planDetailsDTO;
+    private List<PlanDTO> planDTO;
 }

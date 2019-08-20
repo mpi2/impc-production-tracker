@@ -18,7 +18,8 @@ import javax.persistence.*;
 public class BreedingAttempt extends BaseEntity
 {
     @Id
-    @Column(name = "id")
+    @SequenceGenerator(name = "breedingAttemptSeq", sequenceName = "BREEDING_ATTEMPT_SEQ")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "breedingAttemptSeq")
     private Long id;
 
     @OneToOne

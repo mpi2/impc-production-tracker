@@ -2,11 +2,7 @@ package uk.ac.ebi.impc_prod_tracker.web.mapping.plan;
 
 import org.springframework.stereotype.Component;
 import uk.ac.ebi.impc_prod_tracker.data.biology.plan.Plan;
-import uk.ac.ebi.impc_prod_tracker.data.biology.project.Project;
 import uk.ac.ebi.impc_prod_tracker.web.dto.plan.PlanDTO;
-import uk.ac.ebi.impc_prod_tracker.web.dto.plan.PlanDetailsDTO;
-import uk.ac.ebi.impc_prod_tracker.web.dto.project.ProjectDetailsDTO;
-import uk.ac.ebi.impc_prod_tracker.web.dto.project.ProjectPlanDTO;
 import uk.ac.ebi.impc_prod_tracker.web.mapping.project.ProjectMapper;
 
 import java.util.ArrayList;
@@ -17,42 +13,29 @@ public class PlanMapper
 {
     private PlanDTOBuilder planDTOBuilder;
     private PlanDTOLinkManager planDTOLinkManager;
-    private ProjectMapper projectMapper;
 
     public PlanMapper(PlanDTOBuilder planDTOBuilder, PlanDTOLinkManager planDTOLinkManager, ProjectMapper projectMapper)
     {
         this.planDTOBuilder = planDTOBuilder;
         this.planDTOLinkManager = planDTOLinkManager;
-        this.projectMapper = projectMapper;
     }
 
     public PlanDTO planToDTO(Plan plan)
     {
         PlanDTO planDTO = planDTOBuilder.buildPlanDTOFromPlan(plan);
-        planDTOLinkManager.addLinks(planDTO);
+//        planDTOLinkManager.addLinks(planDTO);
         return planDTO;
     }
 
-    public ProjectPlanDTO planToProjectPlanDTO(Plan plan, Project project)
+    public PlanDTO planToPlanDTO(Plan plan)
     {
-        ProjectPlanDTO projectPlanDTO = new ProjectPlanDTO();
-        PlanDTO planDTO = planToDTO(plan);
-        ProjectDetailsDTO projectDetailsDTO = projectMapper.projectToProjectDetailsDTO(project);
-        projectPlanDTO.setProjectDetailsDTO(projectDetailsDTO);
-        projectPlanDTO.setPlanDTO(planDTO);
-
-        return projectPlanDTO;
+        return planDTOBuilder.buildPlanDTOFromPlan(plan);
     }
 
-    public PlanDetailsDTO planToPlanDetailsDTO(Plan plan)
+    public List<PlanDTO> plansToPlanDetailsDTOs(List<Plan> plans)
     {
-        return planDTOBuilder.buildPlanDetailsDTOFromPlan(plan);
-    }
-
-    public List<PlanDetailsDTO> plansToPlanDetailsDTOs(List<Plan> plans)
-    {
-        List<PlanDetailsDTO> planDetailsDTOs = new ArrayList<>();
-        plans.forEach(x -> planDetailsDTOs.add(planToPlanDetailsDTO(x)));
-        return planDetailsDTOs;
+        List<PlanDTO> planDTOs = new ArrayList<>();
+        plans.forEach(x -> planDTOs.add(planToPlanDTO(x)));
+        return planDTOs;
     }
 }

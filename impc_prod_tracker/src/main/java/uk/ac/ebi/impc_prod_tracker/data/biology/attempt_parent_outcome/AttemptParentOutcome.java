@@ -16,10 +16,11 @@ import java.io.Serializable;
 @Getter
 @Setter
 @Entity
-public class AttemptParentOutcome extends BaseEntity implements Serializable {
+public class AttemptParentOutcome extends BaseEntity implements Serializable
+{
     @Id
-    @SequenceGenerator(name = "projectLocationSeq", sequenceName = "PROJECT_LOCATION_SEQ")
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "projectLocationSeq")
+    @SequenceGenerator(name = "attemptParentOutcomeSeq", sequenceName = "ATTEMPT_PARENT_OUTCOME_SEQ")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "attemptParentOutcomeSeq")
     private Long id;
 
     @ManyToOne

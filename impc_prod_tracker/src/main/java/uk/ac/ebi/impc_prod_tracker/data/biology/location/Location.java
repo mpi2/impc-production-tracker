@@ -17,8 +17,8 @@ import javax.validation.constraints.Pattern;
 public class Location extends BaseEntity
 {
     @Id
-    @SequenceGenerator(name = "trackedLocationSeq", sequenceName = "TRACKED_LOCATION_SEQ")
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "trackedLocationSeq")
+    @SequenceGenerator(name = "locationSeq", sequenceName = "LOCATION_SEQ")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "locationSeq")
     private Long id;
 
     private String chr;

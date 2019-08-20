@@ -34,7 +34,8 @@ import java.util.Set;
 @Getter
 @Setter
 @Entity
-public class PlanFlag extends BaseEntity {
+public class PlanFlag extends BaseEntity
+{
     @Id
     @SequenceGenerator(name = "planFlagSeq", sequenceName = "PLAN_FLAG_SEQ")
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "planFlagSeq")

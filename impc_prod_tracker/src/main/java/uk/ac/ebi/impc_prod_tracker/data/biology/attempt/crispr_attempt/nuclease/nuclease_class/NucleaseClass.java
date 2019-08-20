@@ -15,7 +15,8 @@ import javax.persistence.SequenceGenerator;
 @Getter
 @Setter
 @Entity
-public class NucleaseClass extends BaseEntity {
+public class NucleaseClass extends BaseEntity
+{
     @Id
     @SequenceGenerator(name = "nucleaseClassSeq", sequenceName = "NUCLEASE_CLASS_SEQ")
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "nucleaseClassSeq")

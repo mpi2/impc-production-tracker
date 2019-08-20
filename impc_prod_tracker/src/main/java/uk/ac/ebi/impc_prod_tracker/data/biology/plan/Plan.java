@@ -56,6 +56,7 @@ public class Plan extends BaseEntity implements Resource<Plan>
 
     @ToString.Exclude
     @ManyToOne
+    @NotNull
     private Project project;
 
     @ManyToOne(targetEntity = Funder.class)

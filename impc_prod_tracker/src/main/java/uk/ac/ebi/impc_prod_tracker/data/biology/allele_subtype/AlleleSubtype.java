@@ -8,13 +8,13 @@ import uk.ac.ebi.impc_prod_tracker.data.BaseEntity;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import java.io.Serializable;
 
 @NoArgsConstructor(access= AccessLevel.PRIVATE, force=true)
 @Getter
 @Setter
 @Entity
-public class AlleleSubtype extends BaseEntity implements Serializable {
+public class AlleleSubtype extends BaseEntity
+{
 
     @Id
     @SequenceGenerator(name = "alleleSubtypeSeq", sequenceName = "ALLELE_SUBTYPE_SEQ")

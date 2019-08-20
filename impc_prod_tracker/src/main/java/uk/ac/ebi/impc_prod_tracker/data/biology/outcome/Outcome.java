@@ -11,14 +11,13 @@ import uk.ac.ebi.impc_prod_tracker.data.biology.status.Status;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import java.io.Serializable;
 import java.util.Set;
 
 @NoArgsConstructor(access= AccessLevel.PRIVATE, force=true)
 @Getter
 @Setter
 @Entity
-public class Outcome extends BaseEntity implements Serializable
+public class Outcome extends BaseEntity
 {
     @Id
     @SequenceGenerator(name = "outcomeSeq", sequenceName = "OUTCOME_SEQ")

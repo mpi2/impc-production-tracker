@@ -30,7 +30,8 @@ import javax.validation.constraints.NotNull;
 @Getter
 @Setter
 @Entity
-public class Colony extends BaseEntity {
+public class Colony extends BaseEntity
+{
     @Id
     @SequenceGenerator(name = "colonySeq", sequenceName = "COLONY_SEQ")
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "colonySeq")

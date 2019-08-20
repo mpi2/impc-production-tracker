@@ -34,8 +34,8 @@ import javax.validation.constraints.NotNull;
 public class Status extends BaseEntity
 {
     @Id
-    @SequenceGenerator(name = "planStatusSeq", sequenceName = "PLAN_STATUS_SEQ")
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "planStatusSeq")
+    @SequenceGenerator(name = "statusSeq", sequenceName = "STATUS_SEQ")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "statusSeq")
     private Long id;
 
     @NotNull

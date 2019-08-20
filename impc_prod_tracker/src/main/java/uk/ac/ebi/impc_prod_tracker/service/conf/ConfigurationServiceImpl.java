@@ -4,7 +4,7 @@ import org.springframework.stereotype.Component;
 import uk.ac.ebi.impc_prod_tracker.conf.security.SystemSubject;
 import uk.ac.ebi.impc_prod_tracker.conf.security.abac.spring.SubjectRetriever;
 import uk.ac.ebi.impc_prod_tracker.data.biology.allele_type.AlleleTypeRepository;
-import uk.ac.ebi.impc_prod_tracker.data.biology.attempt.phenotyping_attempt.material_type.MaterialTypeRepository;
+import uk.ac.ebi.impc_prod_tracker.data.biology.attempt.phenotyping_attempt.material_deposited_type.MaterialDepositedTypeRepository;
 import uk.ac.ebi.impc_prod_tracker.data.biology.plan.type.PlanTypeRepository;
 import uk.ac.ebi.impc_prod_tracker.data.biology.privacy.PrivacyRepository;
 import uk.ac.ebi.impc_prod_tracker.data.biology.status.StatusRepository;
@@ -33,7 +33,7 @@ public class ConfigurationServiceImpl implements ConfigurationService
     private RoleRepository roleRepository;
     private StrainRepository strainRepository;
 
-    private MaterialTypeRepository materialTypeRepository;
+    private MaterialDepositedTypeRepository materialDepositedTypeRepository;
 
     private Map<String, List<String>> conf = new HashMap<>();
 
@@ -48,7 +48,7 @@ public class ConfigurationServiceImpl implements ConfigurationService
             InstituteRepository instituteRepository,
             RoleRepository roleRepository,
             StrainRepository strainRepository,
-            MaterialTypeRepository materialTypeRepository
+            MaterialDepositedTypeRepository materialDepositedTypeRepository
     )
     {
         this.subjectRetriever = subjectRetriever;
@@ -61,7 +61,7 @@ public class ConfigurationServiceImpl implements ConfigurationService
         this.instituteRepository = instituteRepository;
         this.roleRepository = roleRepository;
         this.strainRepository = strainRepository;
-        this.materialTypeRepository = materialTypeRepository;
+        this.materialDepositedTypeRepository = materialDepositedTypeRepository;
     }
 
     @Override
@@ -154,7 +154,7 @@ public class ConfigurationServiceImpl implements ConfigurationService
     private void addMaterialTypes()
     {
         List<String> materialTypes = new ArrayList<>();
-        materialTypeRepository.findAll().forEach(p -> materialTypes.add(p.getName()));
+        materialDepositedTypeRepository.findAll().forEach(p -> materialTypes.add(p.getName()));
         conf.put("materialTypes", materialTypes);
     }
 }

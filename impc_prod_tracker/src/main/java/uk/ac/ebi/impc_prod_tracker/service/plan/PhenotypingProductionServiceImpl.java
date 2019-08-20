@@ -3,8 +3,8 @@ package uk.ac.ebi.impc_prod_tracker.service.plan;
 import org.springframework.stereotype.Component;
 import uk.ac.ebi.impc_prod_tracker.data.biology.attempt.phenotyping_attempt.PhenotypingAttempt;
 import uk.ac.ebi.impc_prod_tracker.data.biology.attempt.phenotyping_attempt.PhenotypingAttemptRepository;
-import uk.ac.ebi.impc_prod_tracker.data.biology.attempt.phenotyping_attempt.tissue_distribution_centre.TissueDistributionCentre;
-import uk.ac.ebi.impc_prod_tracker.data.biology.attempt.phenotyping_attempt.tissue_distribution_centre.TissueDistributionCentreRepository;
+import uk.ac.ebi.impc_prod_tracker.data.biology.attempt.phenotyping_attempt.tissue_distribution.TissueDistribution;
+import uk.ac.ebi.impc_prod_tracker.data.biology.attempt.phenotyping_attempt.tissue_distribution.TissueDistributionRepository;
 import uk.ac.ebi.impc_prod_tracker.data.biology.plan.Plan;
 import java.util.List;
 import java.util.Optional;
@@ -13,14 +13,14 @@ import java.util.Optional;
 public class PhenotypingProductionServiceImpl implements PhenotypingProductionService
 {
     private PhenotypingAttemptRepository phenotypingProductionRepository;
-    private TissueDistributionCentreRepository tissueDistributionCentreRepository;
+    private TissueDistributionRepository tissueDistributionRepository;
 
     public PhenotypingProductionServiceImpl(
         PhenotypingAttemptRepository phenotypingProductionRepository,
-        TissueDistributionCentreRepository tissueDistributionCentreRepository)
+        TissueDistributionRepository tissueDistributionRepository)
     {
         this.phenotypingProductionRepository = phenotypingProductionRepository;
-        this.tissueDistributionCentreRepository = tissueDistributionCentreRepository;
+        this.tissueDistributionRepository = tissueDistributionRepository;
     }
 
     public Optional<PhenotypingAttempt> getPhenotypingProductionByPlan(Plan plan)
@@ -30,11 +30,11 @@ public class PhenotypingProductionServiceImpl implements PhenotypingProductionSe
         return phenotypingProductionOpt;
     }
 
-    public List<TissueDistributionCentre> getTissueDistributionCentresByPhenotypingProduction(
+    public List<TissueDistribution> getTissueDistributionCentresByPhenotypingProduction(
         PhenotypingAttempt phenotypingProduction)
     {
 //        return
-//            tissueDistributionCentreRepository.findAllByPhenotypingProduction(phenotypingProduction);
+//            tissueDistributionRepository.findAllByPhenotypingProduction(phenotypingProduction);
         return null;
     }
 }

@@ -24,12 +24,11 @@ import uk.ac.ebi.impc_prod_tracker.data.biology.attempt.crispr_attempt.reagent.R
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import java.io.Serializable;
 
 @NoArgsConstructor(access= AccessLevel.PRIVATE, force=true)
 @Data
 @Entity
-public class CrisprAttemptReagent extends BaseEntity implements Serializable
+public class CrisprAttemptReagent extends BaseEntity
 {
     @Id
     @SequenceGenerator(name = "crisprAttemptReagentSeq", sequenceName = "CRISPR_ATTEMPT_REAGENT_SEQ")

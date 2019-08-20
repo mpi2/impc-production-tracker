@@ -8,17 +8,17 @@ import uk.ac.ebi.impc_prod_tracker.data.BaseEntity;
 import uk.ac.ebi.impc_prod_tracker.data.biology.strain.Strain;
 
 import javax.persistence.*;
-import java.io.Serializable;
 import java.util.Set;
 
 @NoArgsConstructor(access= AccessLevel.PRIVATE, force=true)
 @Getter
 @Setter
 @Entity
-public class StrainType extends BaseEntity implements Serializable {
+public class StrainType extends BaseEntity
+{
     @Id
-    @SequenceGenerator(name = "materialTypeSeq", sequenceName = "MATERIAL_TYPE_SEQ")
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "materialTypeSeq")
+    @SequenceGenerator(name = "strainTypeSeq", sequenceName = "STRAIN_TYPE_SEQ")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "strainTypeSeq")
     private Long id;
 
     private String name;
