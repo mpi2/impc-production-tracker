@@ -1,9 +1,6 @@
 package uk.ac.ebi.impc_prod_tracker.data.biology.allele_location;
 
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import uk.ac.ebi.impc_prod_tracker.data.BaseEntity;
 import uk.ac.ebi.impc_prod_tracker.data.biology.allele.Allele;
 import uk.ac.ebi.impc_prod_tracker.data.biology.chromosome_feature_type.ChromosomeFeatureType;
@@ -13,8 +10,7 @@ import javax.persistence.*;
 import java.io.Serializable;
 
 @NoArgsConstructor(access= AccessLevel.PRIVATE, force=true)
-@Getter
-@Setter
+@Data
 @Entity
 public class AlleleLocation extends BaseEntity implements Serializable
 {

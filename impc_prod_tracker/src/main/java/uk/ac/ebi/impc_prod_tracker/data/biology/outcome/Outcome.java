@@ -1,9 +1,6 @@
 package uk.ac.ebi.impc_prod_tracker.data.biology.outcome;
 
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import uk.ac.ebi.impc_prod_tracker.data.BaseEntity;
 import uk.ac.ebi.impc_prod_tracker.data.biology.allele.Allele;
 import uk.ac.ebi.impc_prod_tracker.data.biology.attempt.Attempt;
@@ -14,8 +11,7 @@ import javax.validation.constraints.NotNull;
 import java.util.Set;
 
 @NoArgsConstructor(access= AccessLevel.PRIVATE, force=true)
-@Getter
-@Setter
+@Data
 @Entity
 public class Outcome extends BaseEntity
 {

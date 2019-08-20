@@ -29,8 +29,7 @@ import javax.persistence.*;
 import java.util.Set;
 
 @NoArgsConstructor(access= AccessLevel.PRIVATE, force=true)
-@Getter
-@Setter
+@Data
 @Entity
 public class Allele extends BaseEntity
 {

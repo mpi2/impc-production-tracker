@@ -1,9 +1,6 @@
 package uk.ac.ebi.impc_prod_tracker.data.biology.colony.distribution;
 
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import uk.ac.ebi.impc_prod_tracker.data.BaseEntity;
 import uk.ac.ebi.impc_prod_tracker.data.biology.colony.Colony;
 import uk.ac.ebi.impc_prod_tracker.data.biology.colony.distribution.distribution_network.DistributionNetwork;
@@ -15,8 +12,7 @@ import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 
 @NoArgsConstructor(access= AccessLevel.PRIVATE, force=true)
-@Getter
-@Setter
+@Data
 @Entity
 public class DistributionProduct extends BaseEntity
 {

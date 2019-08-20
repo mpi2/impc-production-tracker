@@ -1,9 +1,6 @@
 package uk.ac.ebi.impc_prod_tracker.data.biology.assignment_status_stamp;
 
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import uk.ac.ebi.impc_prod_tracker.data.BaseEntity;
 import uk.ac.ebi.impc_prod_tracker.data.biology.assignment_status.AssignmentStatus;
 import uk.ac.ebi.impc_prod_tracker.data.biology.project.Project;
@@ -14,8 +11,7 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 
 @NoArgsConstructor(access= AccessLevel.PRIVATE, force=true)
-@Getter
-@Setter
+@Data
 @Entity
 public class  AssignmentStatusStamp extends BaseEntity implements Serializable
 {

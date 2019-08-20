@@ -25,8 +25,7 @@ import javax.persistence.*;
 import java.util.Set;
 
 @NoArgsConstructor(access= AccessLevel.PRIVATE, force=true)
-@Getter
-@Setter
+@Data
 @Entity
 //@EqualsAndHashCode( exclude = {"workGroups"}, callSuper = false)
 public class WorkUnit extends BaseEntity

@@ -1,9 +1,6 @@
 package uk.ac.ebi.impc_prod_tracker.data.biology.attempt.phenotyping_attempt;
 
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import uk.ac.ebi.impc_prod_tracker.data.BaseEntity;
 import uk.ac.ebi.impc_prod_tracker.data.biology.attempt.Attempt;
 
@@ -11,8 +8,7 @@ import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @NoArgsConstructor(access= AccessLevel.PRIVATE, force=true)
-@Getter
-@Setter
+@Data
 @Entity
 public class PhenotypingAttempt extends BaseEntity
 {
