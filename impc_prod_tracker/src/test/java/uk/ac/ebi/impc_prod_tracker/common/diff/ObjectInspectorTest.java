@@ -2,11 +2,8 @@ package uk.ac.ebi.impc_prod_tracker.common.diff;
 
 import lombok.Data;
 import org.junit.Test;
-<<<<<<< HEAD
-=======
-import uk.ac.ebi.impc_prod_tracker.data.experiment.plan.Plan;
+import uk.ac.ebi.impc_prod_tracker.data.biology.plan.Plan;
 import uk.ac.ebi.impc_prod_tracker.data.organization.work_unit.WorkUnit;
->>>>>>> upstream/master
 
 import java.time.LocalDateTime;
 import java.util.Arrays;

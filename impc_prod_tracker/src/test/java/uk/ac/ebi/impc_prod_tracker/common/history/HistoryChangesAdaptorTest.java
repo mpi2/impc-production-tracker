@@ -1,9 +1,9 @@
 package uk.ac.ebi.impc_prod_tracker.common.history;
 
 import org.junit.Test;
-import uk.ac.ebi.impc_prod_tracker.data.experiment.assignment_status.AssignmentStatus;
-import uk.ac.ebi.impc_prod_tracker.data.experiment.plan.Plan;
-import uk.ac.ebi.impc_prod_tracker.data.experiment.project.Project;
+import uk.ac.ebi.impc_prod_tracker.data.biology.assignment_status.AssignmentStatus;
+import uk.ac.ebi.impc_prod_tracker.data.biology.plan.Plan;
+import uk.ac.ebi.impc_prod_tracker.data.biology.project.Project;
 
 import java.util.Arrays;
 import java.util.HashSet;
