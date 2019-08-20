@@ -36,8 +36,7 @@ import java.time.LocalDateTime;
 import java.util.Set;
 
 @NoArgsConstructor(access= AccessLevel.PRIVATE, force=true)
-@Getter
-@Setter
+@Data
 @Entity
 public class CrisprAttempt extends BaseEntity
 {

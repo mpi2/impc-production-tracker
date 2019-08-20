@@ -15,10 +15,7 @@
  *******************************************************************************/
 package uk.ac.ebi.impc_prod_tracker.data.biology.gene.flag;
 
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import uk.ac.ebi.impc_prod_tracker.data.BaseEntity;
 import uk.ac.ebi.impc_prod_tracker.data.biology.gene.Gene;
 
@@ -28,9 +25,8 @@ import java.util.Set;
 @NoArgsConstructor(access= AccessLevel.PRIVATE, force=true)
 // DO NOT CHANGE THE LINES BELOW TO @Data
 // - This caused the HHH000100: Fail-safe cleanup (collections) Hibernate error
-// - when entering data into intended_mouse_gene_flag
-@Getter
-@Setter
+// - when entering data into gene_flag
+@Data
 @Entity
 public class GeneFlag extends BaseEntity
 {

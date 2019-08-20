@@ -26,8 +26,7 @@ import java.io.Serializable;
 import java.util.Set;
 
 @NoArgsConstructor(access= AccessLevel.PRIVATE, force=true)
-@Getter
-@Setter
+@Data
 @Entity
 public class Strain extends BaseEntity implements Serializable
 {

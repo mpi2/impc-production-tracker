@@ -1,9 +1,6 @@
 package uk.ac.ebi.impc_prod_tracker.data.biology.attempt.breeding_attempt;
 
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import uk.ac.ebi.impc_prod_tracker.data.BaseEntity;
 import uk.ac.ebi.impc_prod_tracker.data.biology.attempt.Attempt;
 import uk.ac.ebi.impc_prod_tracker.data.biology.attempt.breeding_attempt.breeding_type.BreedingType;
@@ -12,8 +9,7 @@ import uk.ac.ebi.impc_prod_tracker.data.biology.strain.Strain;
 import javax.persistence.*;
 
 @NoArgsConstructor(access= AccessLevel.PRIVATE, force=true)
-@Getter
-@Setter
+@Data
 @Entity
 public class BreedingAttempt extends BaseEntity
 {

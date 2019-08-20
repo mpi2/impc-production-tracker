@@ -1,9 +1,6 @@
 package uk.ac.ebi.impc_prod_tracker.data.biology.location;
 
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import uk.ac.ebi.impc_prod_tracker.data.BaseEntity;
 import uk.ac.ebi.impc_prod_tracker.data.biology.specie.Specie;
 
@@ -11,8 +8,7 @@ import javax.persistence.*;
 import javax.validation.constraints.Pattern;
 
 @NoArgsConstructor(access= AccessLevel.PRIVATE, force=true)
-@Getter
-@Setter
+@Data
 @Entity
 public class Location extends BaseEntity
 {
