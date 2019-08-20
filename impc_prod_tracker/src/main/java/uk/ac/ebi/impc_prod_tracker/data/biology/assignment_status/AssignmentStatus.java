@@ -1,6 +1,7 @@
 package uk.ac.ebi.impc_prod_tracker.data.biology.assignment_status;
 
 import lombok.AccessLevel;
+import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -12,8 +13,7 @@ import javax.persistence.Id;
 import javax.persistence.SequenceGenerator;
 
 @NoArgsConstructor(access= AccessLevel.PUBLIC, force=true)
-@Getter
-@Setter
+@Data
 @Entity
 public class AssignmentStatus extends BaseEntity
 {

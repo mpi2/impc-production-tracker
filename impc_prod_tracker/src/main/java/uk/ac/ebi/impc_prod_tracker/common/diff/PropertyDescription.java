@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-class PropertyValueData
+class PropertyDescription
 {
     private Object value;
     private Class<?> type;
