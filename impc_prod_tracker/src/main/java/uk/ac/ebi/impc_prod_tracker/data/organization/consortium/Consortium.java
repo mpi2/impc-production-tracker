@@ -39,8 +39,8 @@ import java.util.Set;
 @Setter
 @Entity
 @RestResource(rel = "consortia", path = "consortia")
-public class Consortium extends BaseEntity {
-
+public class Consortium extends BaseEntity
+{
     @Id
     @SequenceGenerator(name = "consortiumSeq", sequenceName = "CONSORTIUM_SEQ")
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "consortiumSeq")

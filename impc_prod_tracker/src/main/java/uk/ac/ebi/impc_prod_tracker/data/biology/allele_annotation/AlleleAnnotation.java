@@ -29,7 +29,8 @@ import javax.validation.constraints.NotNull;
 @Getter
 @Setter
 @Entity
-public class AlleleAnnotation extends BaseEntity {
+public class AlleleAnnotation extends BaseEntity
+{
     @Id
     @SequenceGenerator(name = "alleleAnnotationSeq", sequenceName = "ALLELE_ANNOTATION_SEQ")
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "alleleAnnotationSeq")

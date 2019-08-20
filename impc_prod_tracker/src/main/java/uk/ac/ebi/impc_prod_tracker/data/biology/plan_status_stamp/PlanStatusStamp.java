@@ -20,8 +20,8 @@ import java.time.LocalDateTime;
 public class PlanStatusStamp extends BaseEntity implements Serializable
 {
     @Id
-    @SequenceGenerator(name = "statusStampSeq", sequenceName = "STATUS_STAMP_SEQ")
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "statusStampSeq")
+    @SequenceGenerator(name = "planStatusStampSeq", sequenceName = "PLAN_STATUS_STAMP_SEQ")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "planStatusStampSeq")
     private Long id;
 
     @NotNull

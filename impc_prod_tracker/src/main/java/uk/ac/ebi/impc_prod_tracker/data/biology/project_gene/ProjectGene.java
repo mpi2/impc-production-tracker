@@ -4,20 +4,23 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import uk.ac.ebi.impc_prod_tracker.data.BaseEntity;
 import uk.ac.ebi.impc_prod_tracker.data.biology.allele_type.AlleleType;
 import uk.ac.ebi.impc_prod_tracker.data.biology.gene.Gene;
 import uk.ac.ebi.impc_prod_tracker.data.biology.project.Project;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 @NoArgsConstructor(access= AccessLevel.PRIVATE, force=true)
 @Getter
 @Setter
 @Entity
-public class ProjectGene {
+public class ProjectGene extends BaseEntity implements Serializable
+{
     @Id
-    @SequenceGenerator(name = "projectLocationSeq", sequenceName = "PROJECT_LOCATION_SEQ")
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "projectLocationSeq")
+    @SequenceGenerator(name = "projectGeneSeq", sequenceName = "PROJECT_GENE_SEQ")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "projectGeneSeq")
     private Long id;
 
     @ManyToOne

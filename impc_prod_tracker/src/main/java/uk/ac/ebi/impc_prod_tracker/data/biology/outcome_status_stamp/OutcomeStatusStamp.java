@@ -17,10 +17,11 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @Entity
-public class OutcomeStatusStamp extends BaseEntity implements Serializable {
+public class OutcomeStatusStamp extends BaseEntity implements Serializable
+{
     @Id
-    @SequenceGenerator(name = "statusStampSeq", sequenceName = "STATUS_STAMP_SEQ")
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "statusStampSeq")
+    @SequenceGenerator(name = "outcomeStatusStampSeq", sequenceName = "OUTCOME_STATUS_STAMP_SEQ")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "outcomeStatusStampSeq")
     private Long id;
 
     @NotNull

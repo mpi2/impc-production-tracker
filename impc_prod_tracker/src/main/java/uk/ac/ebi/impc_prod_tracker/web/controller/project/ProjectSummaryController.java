@@ -16,7 +16,7 @@ import uk.ac.ebi.impc_prod_tracker.service.plan.PlanService;
 import uk.ac.ebi.impc_prod_tracker.service.project.ProjectService;
 import uk.ac.ebi.impc_prod_tracker.web.controller.plan.PlanController;
 import uk.ac.ebi.impc_prod_tracker.web.controller.util.LinkUtil;
-import uk.ac.ebi.impc_prod_tracker.web.dto.plan.PlanDetailsDTO;
+import uk.ac.ebi.impc_prod_tracker.web.dto.plan.PlanDTO;
 import uk.ac.ebi.impc_prod_tracker.web.dto.project.ProjectSummaryDTO;
 import uk.ac.ebi.impc_prod_tracker.web.mapping.plan.PlanMapper;
 import uk.ac.ebi.impc_prod_tracker.web.mapping.project.ProjectMapper;
@@ -108,8 +108,8 @@ class ProjectSummaryController
     {
         ProjectSummaryDTO projectSummaryDTO = projectMapper.projectToProjectSummaryDTO(project);
         List<Plan> plans = planService.getPlansByProject(project);
-        List<PlanDetailsDTO> planDetailsDTOs = planMapper.plansToPlanDetailsDTOs(plans);
-        projectSummaryDTO.setPlanDetailsDTO(planDetailsDTOs);
+        List<PlanDTO> planDTOs = planMapper.plansToPlanDetailsDTOs(plans);
+        projectSummaryDTO.setPlanDTO(planDTOs);
 
         return projectSummaryDTO;
     }

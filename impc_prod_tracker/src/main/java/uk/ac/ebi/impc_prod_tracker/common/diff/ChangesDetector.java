@@ -16,10 +16,8 @@ public class ChangesDetector<T>
     private T oldObject;
     private T newObject;
 
-    private ObjectInspector oldObjectInspector;
-    private ObjectInspector newObjectInspector;
-    private Map<String, Object> oldObjectPropsValues;
-    private Map<String, Object> newObjectPropsValues;
+    private Map<String, PropertyDescription> oldObjectPropertyData;
+    private Map<String, PropertyDescription> newObjectPropertyData;
 
     private List<ChangeEntry> changeEntries;
 
@@ -42,11 +40,11 @@ public class ChangesDetector<T>
 
     private void initObjectInspectors()
     {
-        oldObjectInspector = new ObjectInspector(oldObject, fieldsToIgnore);
-        oldObjectPropsValues = oldObjectInspector.getValuesForSimpleProperties();
+        ObjectInspector oldObjectInspector = new ObjectInspector(oldObject, fieldsToIgnore);
+        oldObjectPropertyData = oldObjectInspector.getMap();
 
-        newObjectInspector = new ObjectInspector(newObject, fieldsToIgnore);
-        newObjectPropsValues = newObjectInspector.getValuesForSimpleProperties();
+        ObjectInspector newObjectInspector = new ObjectInspector(newObject, fieldsToIgnore);
+        newObjectPropertyData = newObjectInspector.getMap();
     }
 
     /**
@@ -62,10 +60,10 @@ public class ChangesDetector<T>
     {
         List<ChangeEntry> changeEntries = new ArrayList<>();
 
-        oldObjectPropsValues.forEach((k, v) ->
+        oldObjectPropertyData.forEach((k, v) ->
         {
             ChangeEntry changeEntry = evaluateProperty(
-                k, oldObjectPropsValues.get(k), newObjectPropsValues.get(k));
+                k, oldObjectPropertyData.get(k), newObjectPropertyData.get(k));
             if (changeEntry != null)
             {
                 changeEntries.add(changeEntry);
@@ -76,13 +74,13 @@ public class ChangesDetector<T>
     }
 
     private ChangeEntry evaluateProperty(
-        String property, Object oldValue, Object newValue)
+        String property, PropertyDescription oldPropertyData, PropertyDescription newPropertyData)
     {
         ChangeEntry changeEntry = null;
 
-        if (areValuesDifferent(oldValue, newValue))
+        if (areValuesDifferent(oldPropertyData.getValue(), newPropertyData.getValue()))
         {
-            changeEntry = buildChangeEntry(property, oldValue, newValue);
+            changeEntry = buildChangeEntry(property, oldPropertyData, newPropertyData);
         }
         return changeEntry;
     }
@@ -94,12 +92,14 @@ public class ChangesDetector<T>
             || !Objects.equals(value1, value2);
     }
 
-    private ChangeEntry buildChangeEntry(String propertyName, Object oldValue, Object newValue)
+    private ChangeEntry buildChangeEntry(
+        String propertyName, PropertyDescription oldPropertyData, PropertyDescription newPropertyData)
     {
         ChangeEntry changeEntry = new ChangeEntry();
         changeEntry.setProperty(propertyName);
-        changeEntry.setOldValue(String.valueOf(oldValue));
-        changeEntry.setNewValue(String.valueOf(newValue));
+        changeEntry.setOldValue(oldPropertyData.getValue());
+        changeEntry.setNewValue(newPropertyData.getValue());
+        changeEntry.setType(oldPropertyData.getType());
 
         return changeEntry;
     }

@@ -15,31 +15,47 @@
  *******************************************************************************/
 package uk.ac.ebi.impc_prod_tracker.web.dto.plan;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.hateoas.RepresentationModel;
-import uk.ac.ebi.impc_prod_tracker.web.dto.common.history.HistoryDTO;
-import uk.ac.ebi.impc_prod_tracker.web.dto.plan.phenotype_plan.PhenotypePlanDTO;
-import uk.ac.ebi.impc_prod_tracker.web.dto.plan.production_plan.ProductionPlanDTO;
+import uk.ac.ebi.impc_prod_tracker.web.dto.plan.attempt.AttemptDTO;
+import uk.ac.ebi.impc_prod_tracker.web.dto.status_dates.StatusDatesDTO;
+
 import java.util.List;
 
 @Data
 @RequiredArgsConstructor
+@NoArgsConstructor
 public class PlanDTO extends RepresentationModel
 {
-    @JsonProperty("planDetails")
-    private PlanDetailsDTO planDetailsDTO;
+    @JsonIgnore
+    private Long id;
+    @NonNull
+    private String pin;
+    @NonNull
+    private String tpn;
+    private String funderName;
+    private String consortiumName;
+    private String workGroupName;
+    private String workUnitName;
+    private Boolean isActive;
+    private String statusName;
+
+    @JsonProperty("statusDates")
+    private List<StatusDatesDTO> statusDatesDTOS;
+
+    private String planTypeName;
+    private String privacyName;
+    private String comments;
+    private Boolean productsAvailableForGeneralPublic;
+    private String typeName;
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    @JsonProperty("productionPlan")
-    private ProductionPlanDTO productionPlanDTO;
-
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    @JsonProperty("phenotypePlan")
-    private PhenotypePlanDTO phenotypePlanDTO;
-
-    private List<HistoryDTO> history;
-
+    @JsonProperty("attemptTypeName")
+    private AttemptDTO attemptDTO;
 }

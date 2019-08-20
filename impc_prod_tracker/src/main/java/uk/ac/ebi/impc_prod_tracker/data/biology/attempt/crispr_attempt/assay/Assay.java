@@ -4,6 +4,7 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import uk.ac.ebi.impc_prod_tracker.data.BaseEntity;
 import uk.ac.ebi.impc_prod_tracker.data.biology.attempt.crispr_attempt.assay.assay_type.AssayType;
 
 import javax.persistence.*;
@@ -12,10 +13,11 @@ import javax.persistence.*;
 @Getter
 @Setter
 @Entity
-public class Assay {
+public class Assay extends BaseEntity
+{
     @Id
-    @SequenceGenerator(name = "outcomeLocationSeq", sequenceName = "OUTCOME_LOCATION_SEQ")
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "outcomeLocationSeq")
+    @SequenceGenerator(name = "assaySeq", sequenceName = "ASSAY_SEQ")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "assaySeq")
     private Long id;
 
     @ManyToOne(targetEntity = AssayType.class)

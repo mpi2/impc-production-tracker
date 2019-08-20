@@ -17,14 +17,11 @@ package uk.ac.ebi.impc_prod_tracker.web.mapping.project;
 
 import lombok.Data;
 import org.springframework.stereotype.Component;
-import uk.ac.ebi.impc_prod_tracker.data.biology.plan.Plan;
 import uk.ac.ebi.impc_prod_tracker.data.biology.project.Project;
 import uk.ac.ebi.impc_prod_tracker.data.biology.project_gene.ProjectGene;
-import uk.ac.ebi.impc_prod_tracker.service.MouseGeneService;
+import uk.ac.ebi.impc_prod_tracker.service.GeneService;
 import uk.ac.ebi.impc_prod_tracker.service.plan.PlanService;
-import uk.ac.ebi.impc_prod_tracker.web.dto.plan.PlanDTO;
 import uk.ac.ebi.impc_prod_tracker.web.dto.project.ProjectDTO;
-import uk.ac.ebi.impc_prod_tracker.web.dto.project.ProjectDetailsDTO;
 import uk.ac.ebi.impc_prod_tracker.web.mapping.plan.PlanDTOBuilder;
 
 import java.util.ArrayList;
@@ -38,32 +35,34 @@ public class ProjectDTOBuilder
 {
     private PlanService planService;
     private PlanDTOBuilder planDTOBuilder;
-    private MouseGeneService mouseGeneService;
+    private GeneService geneService;
     private static final String MGI_URL = "http://www.mousephenotype.org/data/genes/";
 
     public ProjectDTOBuilder(
         PlanService planService,
         PlanDTOBuilder planDTOBuilder,
-        MouseGeneService mouseGeneService)
+        GeneService geneService)
     {
         this.planService = planService;
         this.planDTOBuilder = planDTOBuilder;
-        this.mouseGeneService = mouseGeneService;
+        this.geneService = geneService;
     }
 
     public ProjectDTO buildProjectDTOFromProject(Project project)
     {
-        ProjectDTO projectDTO = convertToDto(project);
-        List<Plan> plans = planService.getPlansByProject(project);
-        List<PlanDTO> planDTOS = new ArrayList<>();
-
-        for (Plan p : plans)
+        Objects.requireNonNull(project, "The project is null");
+        ProjectDTO projectDTO = new ProjectDTO();
+        if (project.getAssignmentStatus() != null)
         {
-            PlanDTO planDTO = planDTOBuilder.buildPlanDTOFromPlan(p);
-            planDTOS.add(planDTO);
-
+            projectDTO.setAssigmentStatusName(project.getAssignmentStatus().getName());
         }
-        projectDTO.setPlans(planDTOS);
+
+        projectDTO.setTpn(project.getTpn());
+
+//        addMarkerSymbols(projectDetailsDTO, project);
+//        addIntentions(projectDetailsDTO, project);
+//
+//        addHumanGenes(projectDetailsDTO, project);
 
         return projectDTO;
     }
@@ -71,77 +70,37 @@ public class ProjectDTOBuilder
     private ProjectDTO convertToDto(Project project)
     {
         Objects.requireNonNull(project, "The project is null");
-        ProjectDTO projectDTO = new ProjectDTO();
-        ProjectDetailsDTO projectDetailsDTO = buildProjectDetailsDTOFromProject(project);
-        projectDetailsDTO.setAssigmentStatusName(project.getAssignmentStatus().getName());
-        projectDetailsDTO.setTpn(project.getTpn());
-        projectDTO.setProjectDetailsDTO(projectDetailsDTO);
+        ProjectDTO projectDTO = buildProjectDTOFromProject(project);
+        projectDTO.setAssigmentStatusName(project.getAssignmentStatus().getName());
+        projectDTO.setTpn(project.getTpn());
 
         return projectDTO;
     }
 
-    public ProjectDetailsDTO buildProjectDetailsDTOFromProject(Project project)
+    private void addIntentions(ProjectDTO projectDTO, final Project project)
     {
-        Objects.requireNonNull(project, "The project is null");
-        ProjectDetailsDTO projectDetailsDTO = new ProjectDetailsDTO();
-        if (project.getAssignmentStatus() != null)
-        {
-            projectDetailsDTO.setAssigmentStatusName(project.getAssignmentStatus().getName());
-        }
-
-        projectDetailsDTO.setTpn(project.getTpn());
-
-         addMarkerSymbols(projectDetailsDTO, project);
-         addIntentions(projectDetailsDTO, project);
-
-         addHumanGenes(projectDetailsDTO, project);
-
-        return projectDetailsDTO;
-    }
-
-    private void addMarkerSymbols(ProjectDetailsDTO projectDetailsDTO, final Project project)
-    {
-        Set<ProjectGene> projectMouseGeneSet = project.getProjectGenes();
-
-        List<ProjectDetailsDTO.MarkerSymbolDTO> markerSymbolDTOS = new ArrayList<>();
-
-        projectMouseGeneSet.forEach(x -> {
-            ProjectDetailsDTO.MarkerSymbolDTO markerSymbolDTO = new ProjectDetailsDTO.MarkerSymbolDTO();
-            markerSymbolDTO.setMarkerSymbol(x.getGene().getSymbol());
-            markerSymbolDTO.setMgiLink(MGI_URL + x.getGene().getMgiId());
-            markerSymbolDTOS.add(markerSymbolDTO);
-        });
-
-        projectDetailsDTO.setMarkerSymbols(markerSymbolDTOS);
-    }
-
-    private void addIntentions(ProjectDetailsDTO projectDetailsDTO, final Project project)
-    {
-        Set<ProjectGene> projectMouseGeneSet = project.getProjectGenes();
+        Set<ProjectGene> projectGeneSet = project.getProjectGenes();
 
         List<String> intentions = new ArrayList<>();
 
-        projectMouseGeneSet.forEach(x -> intentions.add(x.getAlleleType().getName()) );
+        projectGeneSet.forEach(x -> intentions.add(x.getAlleleType().getName()) );
 
-        projectDetailsDTO.setAlleleIntentions(intentions);
+//        projectDTO.setAlleleIntentions(intentions);
     }
 
-    private void addHumanGenes(ProjectDetailsDTO projectDetailsDTO, final Project project)
+    private void addHumanGenes(ProjectDTO projectDTO, final Project project)
     {
-        Set<ProjectGene> projectMouseGeneSet = project.getProjectGenes();
-
-        List<String> mouseMgiIds = new ArrayList<>();
-
-        projectMouseGeneSet.forEach(x -> mouseMgiIds.add(x.getGene().getMgiId()) );
-
-        List<ProjectDetailsDTO.HumanGeneSymbolDTO> humanGeneSymbolDTOS = new ArrayList<>();
-
-
-
-// TODO mapp with orthologues from external data
+        // TODO mapp with orthologues from external data
+//        Set<ProjectGene> projectMouseGeneSet = project.getProjectGenes();
+//
+//        List<String> mouseMgiIds = new ArrayList<>();
+//
+//        projectMouseGeneSet.forEach(x -> mouseMgiIds.add(x.getGene().getMgiId()) );
+//
+//        List<ProjectDTO.HumanGeneSymbolDTO> humanGeneSymbolDTOS = new ArrayList<>();
 
 //        mouseMgiIds.forEach(x -> {
-//            Set<Ortholog> orthologs = mouseGeneService.getMouseGenesByMgiId(x).getOrthologs();
+//            Set<Ortholog> orthologs = geneService.getMouseGenesByMgiId(x).getOrthologs();
 //            orthologs.forEach(o -> {
 //                ProjectDetailsDTO.HumanGeneSymbolDTO humanGeneSymbolDTO = new ProjectDetailsDTO.HumanGeneSymbolDTO();
 //                humanGeneSymbolDTO.setSymbol(o.getHumanGene().getSymbol());
@@ -152,7 +111,7 @@ public class ProjectDTOBuilder
 //
 //        });
 
-        projectDetailsDTO.setHumanGenes(humanGeneSymbolDTOS);
+//        projectDetailsDTO.setHumanGenes(humanGeneSymbolDTOS);
     }
 }
 

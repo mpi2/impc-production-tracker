@@ -18,8 +18,8 @@ import javax.persistence.SequenceGenerator;
 public class DeliveryMethodType extends BaseEntity
 {
     @Id
-    @SequenceGenerator(name = "deliveryTypeSeq", sequenceName = "DELIVERY_TYPE_SEQ")
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "deliveryTypeSeq")
+    @SequenceGenerator(name = "deliveryMethodTypeSeq", sequenceName = "DELIVERY_METHOD_TYPE_SEQ")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "deliveryMethodTypeSeq")
     private Long id;
 
     private String name;

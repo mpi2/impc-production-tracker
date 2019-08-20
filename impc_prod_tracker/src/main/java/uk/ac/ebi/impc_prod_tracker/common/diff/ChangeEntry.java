@@ -6,6 +6,7 @@ import lombok.Data;
 public class ChangeEntry
 {
     private String property;
-    private String oldValue;
-    private String newValue;
+    private Object oldValue;
+    private Object newValue;
+    private Class<?> type;
 }

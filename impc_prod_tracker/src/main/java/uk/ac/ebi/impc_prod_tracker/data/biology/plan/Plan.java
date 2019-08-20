@@ -16,7 +16,10 @@
 package uk.ac.ebi.impc_prod_tracker.data.biology.plan;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.*;
+import lombok.AccessLevel;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
 import uk.ac.ebi.impc_prod_tracker.conf.error_management.OperationFailedException;
 import uk.ac.ebi.impc_prod_tracker.conf.security.Resource;
 import uk.ac.ebi.impc_prod_tracker.conf.security.ResourcePrivacy;
@@ -39,8 +42,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 @NoArgsConstructor(access= AccessLevel.PUBLIC, force=true)
-@Getter
-@Setter
+@Data
 @Entity
 public class Plan extends BaseEntity implements Resource<Plan>
 {
@@ -54,6 +56,7 @@ public class Plan extends BaseEntity implements Resource<Plan>
 
     @ToString.Exclude
     @ManyToOne
+    @NotNull
     private Project project;
 
     @ManyToOne(targetEntity = Funder.class)
@@ -116,7 +119,6 @@ public class Plan extends BaseEntity implements Resource<Plan>
         this.funder = plan.funder;
         this.comment = plan.comment;
         this.attempt = plan.attempt;
-        // this.crisprAttempt = plan.crisprAttempt;
         this.planFlags = new HashSet<>(plan.planFlags);
         this.protocols = new HashSet<>(plan.protocols);
         this.status = plan.status;
@@ -124,12 +126,6 @@ public class Plan extends BaseEntity implements Resource<Plan>
 
     @OneToOne(mappedBy = "plan")
     private Attempt attempt;
-
-
-
-
-//    @OneToOne(cascade=CascadeType.ALL, mappedBy = "plan")
-//    private CrisprAttempt crisprAttempt;
 
     @Override
     @JsonIgnore
@@ -166,5 +162,12 @@ public class Plan extends BaseEntity implements Resource<Plan>
         plan.setProject(restrictedProject);
 
         return plan;
+    }
+
+    @Override
+    public String toString()
+    {
+        return "pin=" + pin + ", type: "+ (this.planType == null ? "Not defined" : planType.getName())
+            + ", privacy: " + (privacy == null ? "Not defined" : privacy.getName());
     }
 }

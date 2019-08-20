@@ -23,8 +23,6 @@ import uk.ac.ebi.impc_prod_tracker.data.common.history.History;
 import uk.ac.ebi.impc_prod_tracker.web.dto.common.history.HistoryDTO;
 import uk.ac.ebi.impc_prod_tracker.web.dto.plan.PlanDTO;
 import uk.ac.ebi.impc_prod_tracker.web.dto.plan.UpdatePlanRequestDTO;
-import uk.ac.ebi.impc_prod_tracker.web.dto.project.ProjectDetailsDTO;
-import uk.ac.ebi.impc_prod_tracker.web.dto.project.ProjectPlanDTO;
 import uk.ac.ebi.impc_prod_tracker.web.mapping.common.history.HistoryDTOBuilder;
 import uk.ac.ebi.impc_prod_tracker.web.mapping.common.history.HistoryMapper;
 import uk.ac.ebi.impc_prod_tracker.web.mapping.plan.PlanDTOBuilder;
@@ -55,38 +53,28 @@ public class PlanController
     }
 
     @GetMapping(value = {"/plans"})
-    public List<ProjectPlanDTO> getPlans()
+    public List<PlanDTO> getPlans()
     {
-        List<Plan> plans = projectDTOBuilder.getPlanService().getPlans();
+        List<Plan> plans = planDTOBuilder.getPlanService().getPlans();
 
-        List<ProjectPlanDTO> projectPlanDTOS = new ArrayList<>();
+        List<PlanDTO> planDTOS = new ArrayList<>();
         for (Plan plan : plans)
         {
-            ProjectPlanDTO projectPlanDTO = new ProjectPlanDTO();
             PlanDTO planDTO = planDTOBuilder.buildPlanDTOFromPlan(plan);
-
-            projectPlanDTO.setPlanDTO(planDTO);
-            projectPlanDTO.setProjectDetailsDTO(
-                projectDTOBuilder.buildProjectDetailsDTOFromProject(plan.getProject()));
-            projectPlanDTOS.add(projectPlanDTO);
+            planDTOS.add(planDTO);
         }
 
-        return projectPlanDTOS;
+        return planDTOS;
     }
 
     @GetMapping(value = {"/plans/{pin}"})
-    public ProjectPlanDTO getPlan(@PathVariable String pin)
+    public PlanDTO getPlan(@PathVariable String pin)
     {
         Plan plan = getNotNullPlanByPin(pin);
 
-        ProjectDetailsDTO projectDetailsDTO =
-            projectDTOBuilder.buildProjectDetailsDTOFromProject(plan.getProject());
-        ProjectPlanDTO projectPlanDTO =  new ProjectPlanDTO();
+        PlanDTO planDTO = planDTOBuilder.buildPlanDTOFromPlan(plan);
 
-        projectPlanDTO.setProjectDetailsDTO(projectDetailsDTO);
-        projectPlanDTO.setPlanDTO(planDTOBuilder.buildPlanDTOFromPlan(plan));
-
-        return projectPlanDTO;
+        return planDTO;
     }
 
     @GetMapping(value = {"/plans/{pin}/history"})

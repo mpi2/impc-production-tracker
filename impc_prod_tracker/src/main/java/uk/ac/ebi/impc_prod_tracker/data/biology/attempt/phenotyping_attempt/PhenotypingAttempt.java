@@ -35,4 +35,6 @@ public class PhenotypingAttempt extends BaseEntity
     private Boolean phenotypingComplete;
 
     private Boolean doNotCountTowardsCompleteness;
+
+    private String phenotypingColonyName;
 }

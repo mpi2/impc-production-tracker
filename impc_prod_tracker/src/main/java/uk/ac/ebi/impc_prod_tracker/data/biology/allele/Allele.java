@@ -45,7 +45,7 @@ public class Allele extends BaseEntity
 //    @NotNull
     private String alleleSymbol;
 
-    private String mgiId;
+    private String mgiAlleleId;
 
     private String mgiAlleleSymbolSuperscript;
 

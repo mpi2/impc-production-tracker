@@ -48,6 +48,7 @@ public class Project extends BaseEntity
 
     private Boolean recovery;
 
+    @NotNull
     private Boolean isActive;
 
     @Column(columnDefinition = "TEXT")

@@ -38,8 +38,8 @@ import java.util.Set;
 @Data
 @EqualsAndHashCode( exclude = {"people"}, callSuper = false)
 @Entity
-public class Institute extends BaseEntity {
-
+public class Institute extends BaseEntity
+{
     @Id
     @SequenceGenerator(name = "instituteSeq", sequenceName = "INSTITUTE_SEQ")
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "instituteSeq")
