@@ -170,6 +170,6 @@ public class ProjectServiceImpl implements ProjectService
     @Override
     public List<History> getProjectHistory(Project project)
     {
-        return historyService.getHistoryByEntityNameAndEntityId("project", project.getId());
+        return historyService.getHistoryByEntityNameAndEntityId("Project", project.getId());
     }
 }

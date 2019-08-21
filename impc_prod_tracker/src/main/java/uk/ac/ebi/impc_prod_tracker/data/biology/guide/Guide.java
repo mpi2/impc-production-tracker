@@ -1,6 +1,9 @@
 package uk.ac.ebi.impc_prod_tracker.data.biology.guide;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AccessLevel;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -17,9 +20,9 @@ import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import java.util.Set;
 
-@NoArgsConstructor(access= AccessLevel.PRIVATE, force=true)
-@Getter
-@Setter
+@NoArgsConstructor(access= AccessLevel.PUBLIC, force=true)
+@Data
+@EqualsAndHashCode( exclude = {"id", "crisprAttempt"}, callSuper = false)
 @Entity
 public class Guide extends BaseEntity
 {
@@ -28,6 +31,7 @@ public class Guide extends BaseEntity
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "guideSeq")
     private Long id;
 
+    @JsonIgnore
     @ManyToOne(targetEntity = CrisprAttempt.class)
     private CrisprAttempt crisprAttempt;
 
@@ -52,4 +56,11 @@ public class Guide extends BaseEntity
     private String pam5;
 
     private String protospacerSequence;
+
+    public String toString()
+    {
+        return "(sequence=" + sequence + ", chromosome=" + chromosome + ", start=" + start
+            + ", stop=" + stop + ", truncatedGuide=" + truncatedGuide + ", grnaConcentration=" +
+            grnaConcentration +")";
+    }
 }

@@ -1,7 +1,5 @@
 package uk.ac.ebi.impc_prod_tracker.common.history;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import uk.ac.ebi.impc_prod_tracker.common.diff.ChangeEntry;
 import uk.ac.ebi.impc_prod_tracker.common.diff.PropertyChecker;
 import java.util.HashMap;
@@ -20,7 +18,6 @@ class PropertyMapGrouper
     static final String ROOT = "root";
     private Map<String, Map<String, ChangeEntry>> groupedProperties = new HashMap<>();
     private static final String PROPERTY_NAME_SEPARATOR = ".";
-    private static final Logger LOGGER = LoggerFactory.getLogger(PropertyMapGrouper.class);
 
     Map<String, Map<String, ChangeEntry>> getGroupedChanges(List<ChangeEntry> changes)
     {
@@ -28,17 +25,9 @@ class PropertyMapGrouper
             .filter(this::isARootExternalEntity).collect(Collectors.toList());
         List<ChangeEntry> childrenProperties = changes.stream()
             .filter(x -> !isARootExternalEntity(x)).collect(Collectors.toList());
-        try
-        {
-            createRootKeysInMap(externalEntities);
-            addValuesToMap(childrenProperties);
-        }
-        catch(IllegalArgumentException iae)
-        {
-            String errorMessage = iae.getMessage() + ". The current changes: " + changes;
-            LOGGER.error(errorMessage);
+        createRootKeysInMap(externalEntities);
+        addValuesToMap(childrenProperties);
 
-        }
         return groupedProperties;
     }
 
@@ -51,12 +40,14 @@ class PropertyMapGrouper
     private void createRootKeysInMap(List<ChangeEntry> externalEntities)
     {
         groupedProperties.put(ROOT, new HashMap<>());
+        externalEntities.forEach(this::addGroupKey);
+    }
 
-        externalEntities.forEach(x -> {
-            Map<String, ChangeEntry> rootKeyInfo = new HashMap<>();
-            rootKeyInfo.put(x.getProperty(), x);
-            groupedProperties.put(x.getProperty(), rootKeyInfo);
-        });
+    private void addGroupKey(ChangeEntry group)
+    {
+        Map<String, ChangeEntry> initialInfo = new HashMap<>();
+        initialInfo.put(group.getProperty(), group);
+        groupedProperties.put(group.getProperty(), initialInfo);
     }
 
     private void addValuesToMap(List<ChangeEntry> childrenProperties)
@@ -72,13 +63,9 @@ class PropertyMapGrouper
         {
             Map<String, ChangeEntry> entityGrouper = groupedProperties.get(key);
             entityGrouper.put(change.getProperty(), change);
-        }
-        else
+        } else
         {
-            String errorMessage = "Grouping property " + change.getProperty()
-                + ". No parent information was found (key " + key + "). " +
-                "It seems that the changes detector didn't detect all  the needed properties.";
-            throw new IllegalArgumentException(errorMessage);
+            addGroupKey(change);
         }
     }
 
@@ -89,8 +76,7 @@ class PropertyMapGrouper
         {
             int index = property.lastIndexOf(PROPERTY_NAME_SEPARATOR);
             key = property.substring(0, index);
-        }
-        else
+        } else
         {
             key = ROOT;
         }

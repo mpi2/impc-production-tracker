@@ -15,6 +15,7 @@
  *******************************************************************************/
 package uk.ac.ebi.impc_prod_tracker.data.organization.consortium;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -50,6 +51,7 @@ public class Consortium extends BaseEntity {
 
     private String description;
 
+    @JsonIgnore
     @ManyToMany
     @JoinTable(
         name = "consortium_institute",
@@ -57,6 +59,7 @@ public class Consortium extends BaseEntity {
         inverseJoinColumns = @JoinColumn(name = "institute_id"))
     private Set<Institute> institutes;
 
+    @JsonIgnore
     @ManyToMany
     @JoinTable(
         name = "consortium_work_group",
@@ -64,6 +67,7 @@ public class Consortium extends BaseEntity {
         inverseJoinColumns = @JoinColumn(name = "work_group_id"))
     private Set<WorkGroup> workGroups;
 
+    @JsonIgnore
     @ManyToMany(mappedBy = "consortia")
     private Set<Funder> funders;
 

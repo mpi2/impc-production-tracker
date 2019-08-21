@@ -2,6 +2,7 @@ package uk.ac.ebi.impc_prod_tracker.data.common.history.detail;
 
 import lombok.Data;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -19,8 +20,10 @@ public class HistoryDetail
 
     private String field;
 
+    @Column(columnDefinition = "TEXT")
     private String oldValue;
 
+    @Column(columnDefinition = "TEXT")
     private String newValue;
 
     private String referenceEntity;
@@ -28,4 +31,5 @@ public class HistoryDetail
     private String oldValueEntityId;
 
     private String newValueEntityId;
+
 }

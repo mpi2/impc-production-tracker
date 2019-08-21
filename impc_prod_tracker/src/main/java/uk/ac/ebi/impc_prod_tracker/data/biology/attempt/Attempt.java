@@ -1,5 +1,6 @@
 package uk.ac.ebi.impc_prod_tracker.data.biology.attempt;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -27,6 +28,7 @@ public class Attempt extends BaseEntity
 
     @OneToOne
     @MapsId
+    @JsonIgnore
     private Plan plan;
 
     @ManyToOne

@@ -4,8 +4,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import uk.ac.ebi.impc_prod_tracker.common.diff.ChangeEntry;
 import uk.ac.ebi.impc_prod_tracker.common.diff.ChangesDetector;
-
+import uk.ac.ebi.impc_prod_tracker.common.diff.PropertyChecker;
+import uk.ac.ebi.impc_prod_tracker.conf.error_management.OperationFailedException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
@@ -38,9 +40,43 @@ class HistoryChangesAdaptor<T>
     public List<ChangeDescription> getChanges()
     {
         List<ChangeEntry> changeEntries = getObjectsChanges();
+        changeEntries = filterUnwantedChanges(changeEntries);
+        System.out.println("changeEntries " + changeEntries);
         groupedChanges = propertyMapGrouper.getGroupedChanges(changeEntries);
         groupedChanges.forEach(this::convertGroupToChangesDescription);
         return changeDescriptions;
+    }
+
+    /**
+     * Remove unwanted changes.
+     * @param changeEntries Original list of changes.
+     * @return Filtered changes
+     */
+    private List<ChangeEntry> filterUnwantedChanges(List<ChangeEntry> changeEntries)
+    {
+        List<ChangeEntry> filteredData = new ArrayList<>();
+        for (ChangeEntry changeEntry : changeEntries)
+        {
+            if (!comparingNullAndEmptyCollections(changeEntry))
+            {
+                filteredData.add(changeEntry);
+            }
+        }
+        return filteredData;
+    }
+
+    private boolean comparingNullAndEmptyCollections(ChangeEntry changeEntry)
+    {
+        boolean result = false;
+        if (PropertyChecker.isCollection(changeEntry.getType()))
+        {
+            Collection newValue = (Collection)changeEntry.getNewValue();
+            Collection oldValue = (Collection)changeEntry.getOldValue();
+            result =
+                (newValue == null && oldValue != null && oldValue.isEmpty())
+                    || (newValue != null && newValue.isEmpty() && oldValue == null);
+        }
+        return result;
     }
 
 
@@ -71,15 +107,24 @@ class HistoryChangesAdaptor<T>
         {
             if (propertyNeedsEntityIdReference(groupName, k))
             {
-                ChangeEntry idProperty = propertyGroup.get(groupName + "." + ID_PROPERTY_NAME);
+                String idPropertyKey = groupName + "." + ID_PROPERTY_NAME;
+                ChangeEntry idProperty = propertyGroup.get(idPropertyKey);
                 if (idProperty == null)
                 {
                     LOGGER.error("There is not an id property in the group " + groupName + ". " +
                         "Probably the object evaluated does not have an id property that can be used."+
                         ". The evaluated properties are: " + propertyGroup);
+                    throw new OperationFailedException(
+                        "Exception building the history (key "+ idPropertyKey +" does not exist)." +
+                        " The log contains more details.");
                 }
                 ChangeDescription changeDescription = createChangeDescriptionWithReference(
                     groupRoot.getType().getSimpleName(), idProperty, v);
+                changeDescriptions.add(changeDescription);
+            }
+            else if (PropertyChecker.isCollection(v.getType()))
+            {
+                ChangeDescription changeDescription = createBasicChangeDescription(v);
                 changeDescriptions.add(changeDescription);
             }
         });

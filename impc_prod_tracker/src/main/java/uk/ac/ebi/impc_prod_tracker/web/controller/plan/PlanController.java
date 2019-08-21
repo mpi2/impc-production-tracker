@@ -39,17 +39,15 @@ public class PlanController
 {
     private PlanDTOBuilder planDTOBuilder;
     private ProjectDTOBuilder projectDTOBuilder;
-    private HistoryDTOBuilder historyDTOBuilder;
     private HistoryMapper historyMapper;
 
     public PlanController(
         PlanDTOBuilder planDTOBuilder,
         ProjectDTOBuilder projectDTOBuilder,
-        HistoryDTOBuilder historyDTOBuilder, HistoryMapper historyMapper)
+        HistoryMapper historyMapper)
     {
         this.planDTOBuilder = planDTOBuilder;
         this.projectDTOBuilder = projectDTOBuilder;
-        this.historyDTOBuilder = historyDTOBuilder;
         this.historyMapper = historyMapper;
     }
 
@@ -93,7 +91,7 @@ public class PlanController
     {
         Plan plan = getNotNullPlanByPin(pin);
 
-        return historyDTOBuilder.buildHistoryDTOBuilderFromPlan(plan);
+        return historyMapper.toDtos(projectDTOBuilder.getPlanService().getPlanHistory(plan));
     }
 
     private Plan getNotNullPlanByPin(String pin)
