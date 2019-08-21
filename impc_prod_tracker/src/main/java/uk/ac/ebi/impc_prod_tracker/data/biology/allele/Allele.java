@@ -21,6 +21,7 @@ import org.hibernate.annotations.Type;
 import uk.ac.ebi.impc_prod_tracker.data.BaseEntity;
 import uk.ac.ebi.impc_prod_tracker.data.biology.allele_subtype.AlleleSubtype;
 import uk.ac.ebi.impc_prod_tracker.data.biology.allele_type.AlleleType;
+import uk.ac.ebi.impc_prod_tracker.data.biology.colony.Colony;
 import uk.ac.ebi.impc_prod_tracker.data.biology.genbank_file.GenbankFile;
 import uk.ac.ebi.impc_prod_tracker.data.biology.gene.Gene;
 import uk.ac.ebi.impc_prod_tracker.data.biology.outcome.Outcome;
@@ -99,4 +100,13 @@ public class Allele extends BaseEntity
             joinColumns = @JoinColumn(name = "allele_id"),
             inverseJoinColumns = @JoinColumn(name = "outcome_id"))
     private Set<Outcome> outcomes;
+
+    @ToString.Exclude
+    @JsonIgnore
+    @ManyToMany
+    @JoinTable(
+            name = "allele_colony",
+            joinColumns = @JoinColumn(name = "allele_id"),
+            inverseJoinColumns = @JoinColumn(name = "colony_id"))
+    private Set<Colony> colonies;
 }
