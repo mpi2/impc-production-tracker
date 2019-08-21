@@ -21,7 +21,7 @@ public class GeneIdList extends BaseEntity implements Serializable
     private Long id;
 
     @NotNull
-    @ManyToOne(targetEntity = Gene.class)
+    @OneToOne(targetEntity = Gene.class)
     private Gene gene;
 
     @NotNull

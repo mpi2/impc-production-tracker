@@ -62,14 +62,4 @@ public class ProjectDTO extends RepresentationModel
 
     private String comment;
     private Boolean isActive;
-
-
-//    private List<HumanGeneSymbolDTO> humanGenes;
-//    @Data
-//    public static class HumanGeneSymbolDTO
-//    {
-//        String symbol;
-//        String support;
-//        Long support_count;
-//    }
 }
