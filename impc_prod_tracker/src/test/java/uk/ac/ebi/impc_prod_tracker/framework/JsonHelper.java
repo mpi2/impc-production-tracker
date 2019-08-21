@@ -5,6 +5,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.springframework.restdocs.hypermedia.Link;
 
 import java.io.IOException;
@@ -14,11 +15,12 @@ import java.util.List;
 public class JsonHelper
 {
 
-  private static ObjectMapper halMapper;
+  private static ObjectMapper objectMapper;
 
   static {
-    halMapper = new ObjectMapper();
-    halMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+    objectMapper = new ObjectMapper();
+    objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+    objectMapper.registerModule(new JavaTimeModule());
   }
 
   private JsonHelper() {}
@@ -34,9 +36,8 @@ public class JsonHelper
    *     type.
    */
   public static <T> T fromJson(String json, Class<T> toClass) throws IOException {
-    ObjectMapper mapper = new ObjectMapper();
-    mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-    return mapper.readValue(json, toClass);
+    objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+    return objectMapper.readValue(json, toClass);
   }
 
   /**
