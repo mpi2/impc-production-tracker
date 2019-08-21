@@ -3,8 +3,7 @@ package uk.ac.ebi.impc_prod_tracker.common.history;
 import org.junit.Test;
 import uk.ac.ebi.impc_prod_tracker.common.diff.ChangeEntry;
 import uk.ac.ebi.impc_prod_tracker.common.diff.ChangesDetector;
-import uk.ac.ebi.impc_prod_tracker.data.common.history.History;
-import uk.ac.ebi.impc_prod_tracker.data.experiment.plan.Plan;
+import uk.ac.ebi.impc_prod_tracker.data.biology.plan.Plan;
 import uk.ac.ebi.impc_prod_tracker.data.organization.work_unit.WorkUnit;
 
 import java.util.ArrayList;
