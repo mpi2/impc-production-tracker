@@ -18,6 +18,7 @@ package uk.ac.ebi.impc_prod_tracker.data.biology.plan;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AccessLevel;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 import uk.ac.ebi.impc_prod_tracker.conf.error_management.OperationFailedException;
@@ -44,6 +45,7 @@ import java.util.Set;
 @NoArgsConstructor(access= AccessLevel.PUBLIC, force=true)
 @Data
 @Entity
+@EqualsAndHashCode(onlyExplicitlyIncluded = true, callSuper = false)
 public class Plan extends BaseEntity implements Resource<Plan>
 {
     @Id
@@ -52,9 +54,11 @@ public class Plan extends BaseEntity implements Resource<Plan>
     private Long id;
 
     @NotNull
+    @EqualsAndHashCode.Include
     private String pin;
 
     @ToString.Exclude
+    @JsonIgnore
     @ManyToOne
     @NotNull
     private Project project;
@@ -167,7 +171,7 @@ public class Plan extends BaseEntity implements Resource<Plan>
     @Override
     public String toString()
     {
-        return "pin=" + pin + ", type: "+ (this.planType == null ? "Not defined" : planType.getName())
+        return "id:" +id + ", pin:" + pin + ", type: "+ (this.planType == null ? "Not defined" : planType.getName())
             + ", privacy: " + (privacy == null ? "Not defined" : privacy.getName());
     }
 }

@@ -24,7 +24,7 @@ import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.hateoas.RepresentationModel;
 import uk.ac.ebi.impc_prod_tracker.web.dto.plan.attempt.AttemptDTO;
-import uk.ac.ebi.impc_prod_tracker.web.dto.status_dates.StatusDatesDTO;
+import uk.ac.ebi.impc_prod_tracker.web.dto.status_stamps.StatusStampsDTO;
 
 import java.util.List;
 
@@ -47,7 +47,7 @@ public class PlanDTO extends RepresentationModel
     private String statusName;
 
     @JsonProperty("statusDates")
-    private List<StatusDatesDTO> statusDatesDTOS;
+    private List<StatusStampsDTO> statusStampsDTOS;
 
     private String planTypeName;
     private String privacyName;

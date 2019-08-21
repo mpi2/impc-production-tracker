@@ -1,6 +1,9 @@
 package uk.ac.ebi.impc_prod_tracker.data.biology.attempt;
 
 import lombok.*;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 import uk.ac.ebi.impc_prod_tracker.data.BaseEntity;
 import uk.ac.ebi.impc_prod_tracker.data.biology.attempt.attempt_type.AttemptType;
 import uk.ac.ebi.impc_prod_tracker.data.biology.attempt.breeding_attempt.BreedingAttempt;
@@ -10,7 +13,7 @@ import uk.ac.ebi.impc_prod_tracker.data.biology.plan.Plan;
 
 import javax.persistence.*;
 
-@NoArgsConstructor(access= AccessLevel.PRIVATE, force=true)
+@NoArgsConstructor(access= AccessLevel.PUBLIC, force=true)
 @Data
 @Entity
 public class Attempt extends BaseEntity
@@ -21,6 +24,7 @@ public class Attempt extends BaseEntity
 
     @OneToOne
     @MapsId
+    @JsonIgnore
     private Plan plan;
 
     @ManyToOne

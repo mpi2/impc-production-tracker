@@ -20,6 +20,8 @@ import lombok.*;
 import uk.ac.ebi.impc_prod_tracker.data.BaseEntity;
 import uk.ac.ebi.impc_prod_tracker.data.biology.allele.Allele;
 import uk.ac.ebi.impc_prod_tracker.data.biology.gene.flag.GeneFlag;
+import uk.ac.ebi.impc_prod_tracker.data.biology.gene.id_list.IdList;
+import uk.ac.ebi.impc_prod_tracker.data.biology.project_gene.ProjectGene;
 import uk.ac.ebi.impc_prod_tracker.data.biology.specie.Specie;
 
 import javax.persistence.*;
@@ -36,12 +38,7 @@ public class Gene extends BaseEntity
     @Column(name = "id", updatable=false)
     private Long id;
 
-    @Column(columnDefinition = "TEXT")
-    private String name;
-
     private String symbol;
-
-    private String mgiId;
 
     private String type;
 
@@ -72,7 +69,6 @@ public class Gene extends BaseEntity
     @ManyToMany(mappedBy = "genes")
     private Set<Allele> alleles;
 
-
     @ManyToOne(targetEntity= Specie.class)
     private Specie specie;
 
@@ -82,4 +78,15 @@ public class Gene extends BaseEntity
             joinColumns = @JoinColumn(name = "gene_id"),
             inverseJoinColumns = @JoinColumn(name = "gene_flag_id"))
     private Set<GeneFlag> geneFlags;
+
+    @ManyToOne
+    private IdList idList;
+
+    private String idListValue;
+
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
+    @OneToMany
+    @JoinColumn(name = "gene_id")
+    private Set<ProjectGene> projectGenes;
 }

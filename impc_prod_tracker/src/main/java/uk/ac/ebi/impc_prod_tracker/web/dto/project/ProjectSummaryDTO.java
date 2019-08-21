@@ -10,8 +10,8 @@ import java.util.List;
 @Data
 public class ProjectSummaryDTO extends RepresentationModel
 {
-    @JsonProperty("projectDetails")
+    @JsonProperty("projects")
     private ProjectDTO projectDTO;
-    @JsonProperty("planDetails")
+    @JsonProperty("plans")
     private List<PlanDTO> planDTO;
 }

@@ -15,15 +15,19 @@
  *******************************************************************************/
 package uk.ac.ebi.impc_prod_tracker.web.mapping.project;
 
+import org.springframework.hateoas.server.EntityLinks;
 import org.springframework.stereotype.Component;
 import uk.ac.ebi.impc_prod_tracker.web.dto.project.ProjectDTO;
 
 @Component
 public class ProjectLinkManager
 {
-    public ProjectLinkManager()
+    private final EntityLinks entityLinks;
+
+    public ProjectLinkManager(EntityLinks entityLinks)
     {
 
+        this.entityLinks = entityLinks;
     }
 
     public ProjectDTO addLinks(ProjectDTO projectDTO)

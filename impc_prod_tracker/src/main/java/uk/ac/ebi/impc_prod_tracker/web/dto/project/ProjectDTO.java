@@ -23,9 +23,9 @@ import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.hateoas.RepresentationModel;
-import uk.ac.ebi.impc_prod_tracker.web.dto.gene.GeneDTO;
-import uk.ac.ebi.impc_prod_tracker.web.dto.location.LocationDTO;
-import uk.ac.ebi.impc_prod_tracker.web.dto.status_dates.StatusDatesDTO;
+import uk.ac.ebi.impc_prod_tracker.web.dto.gene.ProjectGeneDTO;
+import uk.ac.ebi.impc_prod_tracker.web.dto.location.ProjectLocationDTO;
+import uk.ac.ebi.impc_prod_tracker.web.dto.status_stamps.StatusStampsDTO;
 
 import java.util.List;
 
@@ -34,28 +34,25 @@ import java.util.List;
 @NoArgsConstructor
 public class ProjectDTO extends RepresentationModel
 {
-    @JsonIgnore
-    private Long id;
-
     @NonNull
     private String tpn;
 
     @NonNull
     private String assigmentStatusName;
 
-    @JsonProperty("assignmentStatusDates")
-    private List<StatusDatesDTO> statusDatesDTOS;
+    @JsonProperty("assignmentStatusStamps")
+    private List<StatusStampsDTO> statusStampsDTOS;
 
     private Boolean withdrawn;
     private Boolean recovery;
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
     @JsonProperty("intentionByGeneAttributes")
-    private List<GeneDTO> geneDTOS;
+    private List<ProjectGeneDTO> projectGeneDTOS;
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
     @JsonProperty("intentionByLocationAttributes")
-    private List<LocationDTO> locationDTOS;
+    private List<ProjectLocationDTO> projectLocationDTOS;
 
     @JsonIgnore
     private Long imitsMiPlanId;

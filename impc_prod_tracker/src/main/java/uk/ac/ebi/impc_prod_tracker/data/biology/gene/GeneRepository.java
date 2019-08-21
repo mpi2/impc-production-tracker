@@ -9,6 +9,4 @@ public interface GeneRepository extends CrudRepository<Gene, Long> {
 
     List<Gene> findBySymbolStartingWith(String symbol);
 
-    Gene findByMgiId(String mgi_id);
-
 }

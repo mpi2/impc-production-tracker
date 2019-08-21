@@ -2,8 +2,12 @@ package uk.ac.ebi.impc_prod_tracker.common.history;
 
 import org.junit.Test;
 import uk.ac.ebi.impc_prod_tracker.common.diff.ChangeEntry;
+import uk.ac.ebi.impc_prod_tracker.common.diff.ChangesDetector;
+import uk.ac.ebi.impc_prod_tracker.data.biology.plan.Plan;
+import uk.ac.ebi.impc_prod_tracker.data.organization.work_unit.WorkUnit;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -13,12 +17,11 @@ import static org.hamcrest.Matchers.notNullValue;
 
 public class PropertyMapGrouperTest
 {
-    private PropertyMapGrouper testInstance;
+    private PropertyMapGrouper testInstance = new PropertyMapGrouper();
 
     @Test
     public void test()
     {
-        testInstance = new PropertyMapGrouper();
         List<ChangeEntry> changes = buildChangeList();
         Map<String, Map<String, ChangeEntry>> groupedProps = testInstance.getGroupedChanges(changes);
 
@@ -39,6 +42,31 @@ public class PropertyMapGrouperTest
         assertThat("Map content:", groupedProps.get("type.subtype").get("type.subtype"), is(notNullValue()));
         assertThat("Map content:", groupedProps.get("type.subtype").get("type.subtype.name"), is(notNullValue()));
         assertThat("Map content:", groupedProps.get("type.subtype").get("type.subtype.id"), is(notNullValue()));
+    }
+
+    @Test
+    public void testWithCalculatedData()
+    {
+        Plan plan1 = new Plan();
+        plan1.setId(1L);
+        plan1.setPin("pin1");
+        Plan plan2 = new Plan();
+        plan2.setId(1L);
+        plan2.setPin("pin2");
+
+        WorkUnit workUnit1 = new WorkUnit("name1");
+        workUnit1.setId(1L);
+        plan1.setWorkUnit(workUnit1);
+        WorkUnit workUnit2 = new WorkUnit("name2");
+        workUnit2.setId(1L);
+        plan2.setWorkUnit(workUnit2);
+        ChangesDetector<Plan> changesDetector = new ChangesDetector<>(Arrays.asList(), plan1, plan2);
+        List<ChangeEntry> changeEntries = changesDetector.getChanges();
+        changesDetector.print();
+        Map<String, Map<String, ChangeEntry>> groupedProps =
+            testInstance.getGroupedChanges(changeEntries);
+        System.out.println(groupedProps);
+        testInstance.print();
     }
 
     private List<ChangeEntry> buildChangeList()

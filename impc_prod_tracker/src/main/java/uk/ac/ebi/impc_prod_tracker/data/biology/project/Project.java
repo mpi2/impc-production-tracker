@@ -1,10 +1,13 @@
 package uk.ac.ebi.impc_prod_tracker.data.biology.project;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import uk.ac.ebi.impc_prod_tracker.data.BaseEntity;
 import uk.ac.ebi.impc_prod_tracker.data.biology.assignment_status.AssignmentStatus;
+import uk.ac.ebi.impc_prod_tracker.data.biology.assignment_status_stamp.AssignmentStatusStamp;
 import uk.ac.ebi.impc_prod_tracker.data.biology.plan.Plan;
 import uk.ac.ebi.impc_prod_tracker.data.biology.project_gene.ProjectGene;
+import uk.ac.ebi.impc_prod_tracker.data.biology.project_location.ProjectLocation;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -34,9 +37,16 @@ public class Project extends BaseEntity
     private Long imitsMiPlanId;
 
     @EqualsAndHashCode.Exclude
+    @JsonIgnore
     @ToString.Exclude
     @ManyToOne
     private AssignmentStatus assignmentStatus;
+
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
+    @OneToMany
+    @JoinColumn(name = "project_id")
+    private Set<AssignmentStatusStamp> assignmentStatusStamps;
 
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
@@ -57,7 +67,13 @@ public class Project extends BaseEntity
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
     @OneToMany(mappedBy = "project")
-    private Set<ProjectGene> projectGenes;
+    private Set<ProjectGene> genes;
+
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
+    @OneToMany
+    @JoinColumn(name = "project_id")
+    private Set<ProjectLocation> locations;
 }
 
 

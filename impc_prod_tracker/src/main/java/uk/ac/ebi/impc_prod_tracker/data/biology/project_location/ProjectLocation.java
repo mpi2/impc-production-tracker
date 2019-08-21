@@ -35,4 +35,6 @@ public class ProjectLocation extends BaseEntity implements Serializable
 
     @ManyToOne(targetEntity= ChromosomeFeatureType.class)
     private ChromosomeFeatureType chromosomeFeatureType;
+
+    private String sequence;
 }
