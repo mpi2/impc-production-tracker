@@ -10,7 +10,7 @@ public class StrainDTO
 {
     @JsonIgnore
     private Long id;
-    String name;
-    String mgiAccessionId;
-    String typeName;
+    private String name;
+    private String mgiAccessionId;
+    private String typeName;
 }

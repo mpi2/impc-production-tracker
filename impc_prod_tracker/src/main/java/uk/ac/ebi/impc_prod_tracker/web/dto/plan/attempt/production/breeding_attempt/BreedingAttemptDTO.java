@@ -17,5 +17,5 @@ public class BreedingAttemptDTO
     private Integer numberOfCreMatingsSuccessful;
     private Boolean creExcesion;
     private Boolean tatCre;
-    StrainDTO deleterStrainAttributes;
+    private StrainDTO deleterStrainAttributes;
 }

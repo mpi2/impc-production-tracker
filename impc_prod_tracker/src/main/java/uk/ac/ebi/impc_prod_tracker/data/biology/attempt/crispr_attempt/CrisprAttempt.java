@@ -90,7 +90,6 @@ public class CrisprAttempt extends BaseEntity
     @OneToOne
     private Assay assay;
 
-
     @ManyToOne
     private Strain strain;
 

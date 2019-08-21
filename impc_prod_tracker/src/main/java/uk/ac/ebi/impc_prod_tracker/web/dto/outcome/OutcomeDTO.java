@@ -7,7 +7,7 @@ import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import uk.ac.ebi.impc_prod_tracker.web.dto.allele.AlleleDTO;
 import uk.ac.ebi.impc_prod_tracker.web.dto.colony.ColonyDTO;
-import uk.ac.ebi.impc_prod_tracker.web.dto.status_dates.StatusDatesDTO;
+import uk.ac.ebi.impc_prod_tracker.web.dto.status_stamps.StatusStampsDTO;
 
 import java.util.List;
 
@@ -24,7 +24,7 @@ public class OutcomeDTO
     private String statusName;
 
     @JsonProperty("statusDates")
-    private List<StatusDatesDTO> statusDatesDTOS;
+    private List<StatusStampsDTO> statusStampsDTOS;
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
     @JsonProperty("allelesAttributes")

@@ -17,9 +17,9 @@ public class GeneService {
         return geneRepository.findBySymbolStartingWith(symbol);
     }
 
-    public Gene getGenesByMgiId (String mgi_id)
-    {
-        return geneRepository.findByMgiId(mgi_id);
-    }
+//    public Gene getGenesByMgiId (String mgi_id)
+//    {
+//        return geneRepository.findByMgiId(mgi_id);
+//    }
 
 }
