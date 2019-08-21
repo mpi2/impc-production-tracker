@@ -15,7 +15,11 @@
  *******************************************************************************/
 package uk.ac.ebi.impc_prod_tracker.data.biology.attempt.crispr_attempt;
 
-import lombok.*;
+import lombok.AccessLevel;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
 import uk.ac.ebi.impc_prod_tracker.data.BaseEntity;
 import uk.ac.ebi.impc_prod_tracker.data.biology.attempt.Attempt;
 import uk.ac.ebi.impc_prod_tracker.data.biology.attempt.crispr_attempt.assay.Assay;
@@ -35,7 +39,7 @@ import javax.persistence.OneToOne;
 import java.time.LocalDateTime;
 import java.util.Set;
 
-@NoArgsConstructor(access= AccessLevel.PRIVATE, force=true)
+@NoArgsConstructor(access= AccessLevel.PUBLIC, force=true)
 @Data
 @Entity
 public class CrisprAttempt extends BaseEntity

@@ -103,4 +103,14 @@ public class ChangesDetector<T>
 
         return changeEntry;
     }
+
+    public void print()
+    {
+        System.out.println("--- Changes detector props");
+        changeEntries.forEach(x ->
+        {
+            System.out.println(x.getProperty() + " old[" + x.getOldValue() + "] new[" + x.getNewValue() + "]");
+        });
+        System.out.println("---- end detection ----");
+    }
 }

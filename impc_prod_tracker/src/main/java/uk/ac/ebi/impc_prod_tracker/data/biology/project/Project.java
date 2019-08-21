@@ -1,5 +1,6 @@
 package uk.ac.ebi.impc_prod_tracker.data.biology.project;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import uk.ac.ebi.impc_prod_tracker.data.BaseEntity;
 import uk.ac.ebi.impc_prod_tracker.data.biology.assignment_status.AssignmentStatus;
@@ -34,6 +35,7 @@ public class Project extends BaseEntity
     private Long imitsMiPlanId;
 
     @EqualsAndHashCode.Exclude
+    @JsonIgnore
     @ToString.Exclude
     @ManyToOne
     private AssignmentStatus assignmentStatus;

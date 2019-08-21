@@ -15,17 +15,24 @@
  *******************************************************************************/
 package uk.ac.ebi.impc_prod_tracker.data.biology.privacy;
 
-import lombok.*;
+import lombok.AccessLevel;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
+import uk.ac.ebi.impc_prod_tracker.conf.AuditListener;
 import uk.ac.ebi.impc_prod_tracker.data.BaseEntity;
 import javax.persistence.Entity;
+import javax.persistence.EntityListeners;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.SequenceGenerator;
 import javax.validation.constraints.NotNull;
 
-@NoArgsConstructor(access= AccessLevel.PRIVATE, force=true)
+@EntityListeners(AuditListener.class)
+@NoArgsConstructor(access= AccessLevel.PUBLIC, force=true)
 @Data
+@EqualsAndHashCode(callSuper = false)
 @Entity
 public class Privacy extends BaseEntity
 {

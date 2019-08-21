@@ -58,7 +58,7 @@ public class HistoryBuilder<T>
             history.setEntityId(entityId);
             history.setEntityName(entityName);
             history.setDate(LocalDateTime.now());
-
+            history.setComment(originalEntity.getClass().getSimpleName() + " updated");
             history.setHistoryDetailSet(historyDetails);
             history.setUser(subjectRetriever.getSubject().getLogin());
         }
@@ -92,8 +92,8 @@ public class HistoryBuilder<T>
             {
                 HistoryDetail historyDetail = new HistoryDetail();
                 historyDetail.setField(x.getProperty());
-                historyDetail.setOldValue(x.getOldValue().toString());
-                historyDetail.setNewValue(x.getNewValue().toString());
+                historyDetail.setOldValue(x.getOldValue() == null ? null : x.getOldValue().toString());
+                historyDetail.setNewValue(x.getNewValue() == null ? null : x.getNewValue().toString());
                 historyDetail.setReferenceEntity(x.getParentClass());
                 historyDetail.setOldValueEntityId(
                     x.getOldValueId() == null ? null : x.getOldValueId().toString());

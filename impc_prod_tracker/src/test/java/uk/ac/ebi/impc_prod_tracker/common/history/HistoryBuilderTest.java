@@ -2,6 +2,7 @@ package uk.ac.ebi.impc_prod_tracker.common.history;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
@@ -10,7 +11,6 @@ import uk.ac.ebi.impc_prod_tracker.conf.security.SystemSubject;
 import uk.ac.ebi.impc_prod_tracker.conf.security.abac.spring.SubjectRetriever;
 import uk.ac.ebi.impc_prod_tracker.data.common.history.History;
 import uk.ac.ebi.impc_prod_tracker.data.common.history.detail.HistoryDetail;
-
 import java.util.Arrays;
 import java.util.List;
 
@@ -27,12 +27,16 @@ public class HistoryBuilderTest
     @Mock private SubjectRetriever subjectRetriever;
     @Mock private SystemSubject systemSubject;
 
-    @Test
-    public void testBuildHistoryEntry()
+    @Before
+    public void setUp()
     {
         when(subjectRetriever.getSubject()).thenReturn(systemSubject);
         when(systemSubject.getLogin()).thenReturn("test");
+    }
 
+    @Test
+    public void testBuildHistoryEntry()
+    {
         testInstance = new HistoryBuilder<>(subjectRetriever);
         testInstance.setEntityId(1L);
         testInstance.setEntityName(PlanMock.class.getSimpleName());

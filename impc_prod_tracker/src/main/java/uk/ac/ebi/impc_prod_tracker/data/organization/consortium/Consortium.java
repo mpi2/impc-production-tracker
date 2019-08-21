@@ -15,7 +15,11 @@
  *******************************************************************************/
 package uk.ac.ebi.impc_prod_tracker.data.organization.consortium;
 
+
 import lombok.*;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 import org.springframework.data.rest.core.annotation.RestResource;
 import uk.ac.ebi.impc_prod_tracker.data.BaseEntity;
 import uk.ac.ebi.impc_prod_tracker.data.organization.funder.Funder;
@@ -46,6 +50,7 @@ public class Consortium extends BaseEntity
 
     private String description;
 
+    @JsonIgnore
     @ManyToMany
     @JoinTable(
         name = "consortium_institute",
@@ -53,6 +58,7 @@ public class Consortium extends BaseEntity
         inverseJoinColumns = @JoinColumn(name = "institute_id"))
     private Set<Institute> institutes;
 
+    @JsonIgnore
     @ManyToMany
     @JoinTable(
         name = "consortium_work_group",
@@ -60,6 +66,7 @@ public class Consortium extends BaseEntity
         inverseJoinColumns = @JoinColumn(name = "work_group_id"))
     private Set<WorkGroup> workGroups;
 
+    @JsonIgnore
     @ManyToMany(mappedBy = "consortia")
     private Set<Funder> funders;
 
