@@ -55,4 +55,11 @@ public interface PlanService
      */
     History updatePlan(String pin, UpdatePlanRequestDTO updatePlanRequestDTO);
 
+    /**
+     * Gets the history for a plan
+     * @param plan The plan.
+     * @return List of {@link History} with the trace of the changes for a plan.
+     */
+    List<History> getPlanHistory(Plan plan);
+
 }

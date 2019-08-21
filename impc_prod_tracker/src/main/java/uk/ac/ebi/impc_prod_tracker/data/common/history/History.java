@@ -41,8 +41,8 @@ public class History
 
     private String comment;
 
-    @OneToMany(cascade= CascadeType.ALL, orphanRemoval = true)
-    @JoinColumn(name = "history_id")
+    @OneToMany(cascade= CascadeType.ALL)
+    @JoinColumn(name = "history_id", nullable=false)
     private List<HistoryDetail> historyDetailSet = new ArrayList<>();
 
 }

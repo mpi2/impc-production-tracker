@@ -1,5 +1,6 @@
 package uk.ac.ebi.impc_prod_tracker.data.experiment.project;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import uk.ac.ebi.impc_prod_tracker.data.BaseEntity;
 import uk.ac.ebi.impc_prod_tracker.data.experiment.assignment_status.AssignmentStatus;
@@ -35,6 +36,7 @@ public class Project extends BaseEntity
     private Long imitsMiPlanId;
 
     @EqualsAndHashCode.Exclude
+    @JsonIgnore
     @ToString.Exclude
     @OneToMany
     @JoinColumn(name = "project_id")
