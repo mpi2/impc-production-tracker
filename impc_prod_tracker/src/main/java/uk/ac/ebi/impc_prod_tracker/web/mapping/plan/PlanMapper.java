@@ -23,6 +23,7 @@ public class PlanMapper
     public PlanDTO toDto(Plan plan)
     {
         PlanDTO planDTO = modelMapper.map(plan, PlanDTO.class);
+        planDTO.setTpn(plan.getProject().getTpn());
         if (plan.getAttempt() != null)
         {
             planDTO.setAttemptDTO(attemptMapper.toDto(plan.getAttempt()));

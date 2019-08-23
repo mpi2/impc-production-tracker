@@ -7,11 +7,10 @@ import uk.ac.ebi.impc_prod_tracker.data.biology.privacy.PrivacyRepository;
 import uk.ac.ebi.impc_prod_tracker.data.organization.work_group.WorkGroup;
 import uk.ac.ebi.impc_prod_tracker.data.organization.work_group.WorkGroupRepository;
 import uk.ac.ebi.impc_prod_tracker.web.dto.plan.PlanDTO;
-import uk.ac.ebi.impc_prod_tracker.web.dto.plan.UpdatePlanRequestDTO;
 import uk.ac.ebi.impc_prod_tracker.web.dto.plan.attempt.production.crispr_attempt.CrisprAttemptDTO;
 
 /**
- * Class in charge of analising a UpdatePlanRequestDTO object and retrieve the Plan object
+ * Class in charge of analising a PlanDTO object and retrieve the Plan object
  * intended to be updated.
  */
 @Component
@@ -34,17 +33,16 @@ public class UpdatePlanRequestProcessor
     /**
      *
      * @param plan An Existing plan in the system.
-     * @param updatePlanRequestDTO New information for plan.
+     * @param planDTO New information for plan.
      * @return The plan object with the new information that is requested in updatePlanRequestDTO.
      * This is only modifications in the object. No database changes here.
      */
-    public Plan getPlanToUpdate(Plan plan, UpdatePlanRequestDTO updatePlanRequestDTO)
+    public Plan getPlanToUpdate(Plan plan, PlanDTO planDTO)
     {
-//        PlanDTO planDTO = updatePlanRequestDTO.getPlanDTO();
-//        if (planDTO != null)
-//        {
-//            updatePlanWithPlanDetailDTO(plan, planDTO);
-//        }
+        if (planDTO != null)
+        {
+            updateBasicInformation(plan, planDTO);
+        }
 //        ProductionPlanDTO productionPlanDTO = updatePlanRequestDTO.getProductionPlanDTO();
 //
 //        if (productionPlanDTO != null)
@@ -59,7 +57,7 @@ public class UpdatePlanRequestProcessor
         return plan;
     }
 
-    private void updatePlanWithPlanDetailDTO(Plan plan, PlanDTO planDTO)
+    private void updateBasicInformation(Plan plan, PlanDTO planDTO)
     {
         String newPrivacyName = planDTO.getPrivacyName();
         if (newPrivacyName != null)
@@ -80,10 +78,10 @@ public class UpdatePlanRequestProcessor
                 plan.setWorkGroup(newWorkGroup);
             }
         }
-        String newComments = planDTO.getComments();
-        if (newComments != null)
+        String newComment = planDTO.getComment();
+        if (newComment != null)
         {
-            plan.setComment(newComments);
+            plan.setComment(newComment);
         }
     }
 

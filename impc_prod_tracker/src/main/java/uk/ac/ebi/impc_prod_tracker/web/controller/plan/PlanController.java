@@ -23,7 +23,6 @@ import uk.ac.ebi.impc_prod_tracker.data.common.history.History;
 import uk.ac.ebi.impc_prod_tracker.service.plan.PlanService;
 import uk.ac.ebi.impc_prod_tracker.web.dto.common.history.HistoryDTO;
 import uk.ac.ebi.impc_prod_tracker.web.dto.plan.PlanDTO;
-import uk.ac.ebi.impc_prod_tracker.web.dto.plan.UpdatePlanRequestDTO;
 import uk.ac.ebi.impc_prod_tracker.web.mapping.common.history.HistoryMapper;
 import uk.ac.ebi.impc_prod_tracker.web.mapping.plan.PlanMapper;
 import java.util.List;
@@ -81,9 +80,9 @@ public class PlanController
 
     @PutMapping(value = {"/plans/{pin}"})
     public HistoryDTO updatePlan(
-        @PathVariable String pin, @RequestBody UpdatePlanRequestDTO updatePlanRequestDTO)
+        @PathVariable String pin, @RequestBody PlanDTO planDTO)
     {
-        History history = planService.updatePlan(pin, updatePlanRequestDTO);
+        History history = planService.updatePlan(pin, planDTO);
         if (history != null)
         {
             return  historyMapper.toDto(history);
