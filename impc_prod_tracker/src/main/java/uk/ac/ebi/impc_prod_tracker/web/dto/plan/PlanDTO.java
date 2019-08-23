@@ -66,7 +66,7 @@ public class PlanDTO extends RepresentationModel
     @JsonProperty("privacy_name")
     private String privacyName;
 
-    private String comments;
+    private String comment;
 
     @JsonProperty("products_available_for_general_public")
     private Boolean productsAvailableForGeneralPublic;

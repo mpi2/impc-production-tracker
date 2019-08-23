@@ -32,8 +32,7 @@ import uk.ac.ebi.impc_prod_tracker.data.biology.project.Project;
 import uk.ac.ebi.impc_prod_tracker.data.common.history.History;
 import uk.ac.ebi.impc_prod_tracker.service.plan.engine.PlanUpdater;
 import uk.ac.ebi.impc_prod_tracker.service.plan.engine.UpdatePlanRequestProcessor;
-import uk.ac.ebi.impc_prod_tracker.web.dto.plan.UpdatePlanRequestDTO;
-
+import uk.ac.ebi.impc_prod_tracker.web.dto.plan.PlanDTO;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -141,7 +140,7 @@ public class PlanServiceImpl implements PlanService
     }
 
     @Override
-    public History updatePlan(String pin, UpdatePlanRequestDTO updatePlanRequestDTO)
+    public History updatePlan(String pin, PlanDTO planDTO)
     {
         Plan existingPlan = planRepository.findPlanByPin(pin);
         Plan newPlan = new Plan(existingPlan);
@@ -151,7 +150,7 @@ public class PlanServiceImpl implements PlanService
             throw new OperationFailedException(
                 String.format(PLAN_TO_UPDATE_NOT_EXISTS_ERROR, pin));
         }
-        newPlan = updatePlanRequestProcessor.getPlanToUpdate(newPlan, updatePlanRequestDTO);
+        newPlan = updatePlanRequestProcessor.getPlanToUpdate(newPlan, planDTO);
 
         return planUpdater.updatePlan(originalPlan, newPlan);
     }
