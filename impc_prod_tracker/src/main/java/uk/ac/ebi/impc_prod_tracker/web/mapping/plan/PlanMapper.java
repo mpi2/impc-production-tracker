@@ -1,26 +1,33 @@
 package uk.ac.ebi.impc_prod_tracker.web.mapping.plan;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
 import uk.ac.ebi.impc_prod_tracker.data.biology.plan.Plan;
 import uk.ac.ebi.impc_prod_tracker.web.dto.plan.PlanDTO;
+import uk.ac.ebi.impc_prod_tracker.web.mapping.plan.attempt.AttemptMapper;
 import java.util.ArrayList;
 import java.util.List;
 
 @Component
 public class PlanMapper
 {
-    private PlanDTOBuilder planDTOBuilder;
-    private PlanDTOLinkManager planDTOLinkManager;
+    private ModelMapper modelMapper;
+    private AttemptMapper attemptMapper;
 
-    public PlanMapper(PlanDTOBuilder planDTOBuilder, PlanDTOLinkManager planDTOLinkManager)
+    public PlanMapper(ModelMapper modelMapper, AttemptMapper attemptMapper)
     {
-        this.planDTOBuilder = planDTOBuilder;
-        this.planDTOLinkManager = planDTOLinkManager;
+        this.modelMapper = modelMapper;
+        this.attemptMapper = attemptMapper;
     }
 
     public PlanDTO toDto(Plan plan)
     {
-        return planDTOBuilder.buildPlanDTOFromPlan(plan);
+        PlanDTO planDTO = modelMapper.map(plan, PlanDTO.class);
+        if (plan.getAttempt() != null)
+        {
+            planDTO.setAttemptDTO(attemptMapper.toDto(plan.getAttempt()));
+        }
+        return planDTO;
     }
 
     public List<PlanDTO> toDtos(List<Plan> plans)
