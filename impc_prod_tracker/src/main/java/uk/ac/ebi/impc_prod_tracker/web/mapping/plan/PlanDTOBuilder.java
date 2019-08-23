@@ -63,7 +63,7 @@ public class PlanDTOBuilder
         }
         if (plan.getPlanType() != null)
         {
-            planDTO.setPlanTypeName(plan.getPlanType().getName());
+            planDTO.setTypeName(plan.getPlanType().getName());
         }
         if (plan.getStatus() != null)
         {
@@ -84,7 +84,7 @@ public class PlanDTOBuilder
         planDTO.setComments(plan.getComment());
         if (plan.getAttempt() != null)
         {
-            planDTO.setPlanTypeName(plan.getAttempt().getAttemptType().getName());
+            planDTO.setAttemptTypeName(plan.getAttempt().getAttemptType().getName());
 
         }
         return planDTO;
