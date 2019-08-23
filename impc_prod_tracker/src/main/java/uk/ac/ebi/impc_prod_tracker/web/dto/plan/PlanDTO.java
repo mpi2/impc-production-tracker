@@ -35,25 +35,48 @@ public class PlanDTO extends RepresentationModel
 {
     @JsonIgnore
     private Long id;
+
     @NonNull
     private String pin;
+
     @NonNull
+    @JsonProperty("project_tpn")
     private String tpn;
+
+    @JsonProperty("funder_name")
     private String funderName;
+
+    @JsonProperty("consortium_name")
     private String consortiumName;
+
+    @JsonProperty("work_group_name")
     private String workGroupName;
+
+    @JsonProperty("work_unit_name")
     private String workUnitName;
+
+    @JsonProperty("is_active")
     private Boolean isActive;
+
+    @JsonProperty("status_name")
     private String statusName;
 
-    @JsonProperty("statusDates")
+    @JsonProperty("status_dates")
     private List<StatusStampsDTO> statusStampsDTOS;
 
-    private String planTypeName;
+    @JsonProperty("privacy_name")
     private String privacyName;
+
     private String comments;
+
+    @JsonProperty("products_available_for_general_public")
     private Boolean productsAvailableForGeneralPublic;
+
+    @JsonProperty("type_name")
     private String typeName;
+
+    @JsonProperty("attempt_type_name")
+    private String attemptTypeName;
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
     @JsonProperty("attemptTypeName")
