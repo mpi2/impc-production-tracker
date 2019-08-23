@@ -26,7 +26,6 @@ import uk.ac.ebi.impc_prod_tracker.web.dto.project.ProjectDTO;
 import uk.ac.ebi.impc_prod_tracker.web.dto.status_stamps.StatusStampsDTO;
 import uk.ac.ebi.impc_prod_tracker.web.mapping.gene.ProjectGeneMapper;
 import uk.ac.ebi.impc_prod_tracker.web.mapping.location.ProjectLocationMapper;
-import uk.ac.ebi.impc_prod_tracker.web.mapping.plan.PlanDTOBuilder;
 import uk.ac.ebi.impc_prod_tracker.web.mapping.statusStamp.StatusStampMapper;
 
 import java.util.List;
@@ -37,7 +36,6 @@ import java.util.Objects;
 public class ProjectDTOBuilder
 {
     private PlanService planService;
-    private PlanDTOBuilder planDTOBuilder;
     private GeneService geneService;
     private StatusStampMapper statusStampMapper;
     private ProjectGeneMapper projectGeneMapper;
@@ -47,14 +45,12 @@ public class ProjectDTOBuilder
 
     public ProjectDTOBuilder(
         PlanService planService,
-        PlanDTOBuilder planDTOBuilder,
         GeneService geneService,
         StatusStampMapper statusStampMapper,
         ProjectGeneMapper projectGeneMapper,
         ProjectLocationMapper projectLocationMapper)
     {
         this.planService = planService;
-        this.planDTOBuilder = planDTOBuilder;
         this.geneService = geneService;
         this.statusStampMapper = statusStampMapper;
         this.projectGeneMapper = projectGeneMapper;
