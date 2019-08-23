@@ -18,23 +18,31 @@ class PropertyMapGrouper
     static final String ROOT = "root";
     private Map<String, Map<String, ChangeEntry>> groupedProperties = new HashMap<>();
     private static final String PROPERTY_NAME_SEPARATOR = ".";
+    private static final String ELEMENT_IN_A_COLLECTION_IDENTIFIER = "#";
 
     Map<String, Map<String, ChangeEntry>> getGroupedChanges(List<ChangeEntry> changes)
     {
         List<ChangeEntry> externalEntities = changes.stream()
             .filter(this::isARootExternalEntity).collect(Collectors.toList());
+
         List<ChangeEntry> childrenProperties = changes.stream()
             .filter(x -> !isARootExternalEntity(x)).collect(Collectors.toList());
+
         createRootKeysInMap(externalEntities);
         addValuesToMap(childrenProperties);
 
         return groupedProperties;
     }
 
+    boolean isElementInAList(String propertyName)
+    {
+        return propertyName.contains(ELEMENT_IN_A_COLLECTION_IDENTIFIER);
+    }
+
     private boolean isARootExternalEntity(ChangeEntry changeEntry)
     {
         return !PropertyChecker.isASimpleValue(changeEntry.getType())
-            && !PropertyChecker.isCollection(changeEntry.getType());
+            && !isElementInAList(changeEntry.getProperty());
     }
 
     private void createRootKeysInMap(List<ChangeEntry> externalEntities)
@@ -72,11 +80,18 @@ class PropertyMapGrouper
     private String getKeyForProperty(String property)
     {
         String key;
-        if (property.contains(PROPERTY_NAME_SEPARATOR))
+
+        if (isElementInAList(property))
+        {
+            int index = property.lastIndexOf(ELEMENT_IN_A_COLLECTION_IDENTIFIER);
+            key = property.substring(0, index);
+        }
+        else if (property.contains(PROPERTY_NAME_SEPARATOR))
         {
             int index = property.lastIndexOf(PROPERTY_NAME_SEPARATOR);
             key = property.substring(0, index);
-        } else
+        }
+        else
         {
             key = ROOT;
         }

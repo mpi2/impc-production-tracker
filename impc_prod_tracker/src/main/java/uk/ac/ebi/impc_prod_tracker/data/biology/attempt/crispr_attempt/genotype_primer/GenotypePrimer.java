@@ -6,7 +6,7 @@ import uk.ac.ebi.impc_prod_tracker.data.biology.attempt.crispr_attempt.CrisprAtt
 
 import javax.persistence.*;
 
-@NoArgsConstructor(access= AccessLevel.PRIVATE, force=true)
+@NoArgsConstructor(access= AccessLevel.PUBLIC, force=true)
 @Data
 @Entity
 public class GenotypePrimer extends BaseEntity

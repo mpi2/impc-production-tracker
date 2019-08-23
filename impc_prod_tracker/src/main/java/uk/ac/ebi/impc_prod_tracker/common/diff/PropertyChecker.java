@@ -42,7 +42,6 @@ public class PropertyChecker
             .forEach(x ->
             {
                 propertyNamesList.add(x.getName());
-                System.out.println(x);
             });
 
         return propertyNamesList;
