@@ -171,7 +171,7 @@ public class Plan extends BaseEntity implements Resource<Plan>
     @Override
     public String toString()
     {
-        return "id:" +id + ", pin:" + pin + ", type: "+ (this.planType == null ? "Not defined" : planType.getName())
-            + ", privacy: " + (privacy == null ? "Not defined" : privacy.getName());
+        return "(id:" +id + ", pin:" + pin + ", type: "+ (this.planType == null ? "Not defined" : planType.getName())
+            + ", privacy: " + (privacy == null ? "Not defined" : privacy.getName()) + ")";
     }
 }

@@ -56,6 +56,6 @@ public class HistoryChangesAdaptorTest
         List<ChangeDescription> changeDescriptionList = testInstance.getChanges();
         System.out.println(changeDescriptionList);
 
-        assertThat("", changeDescriptionList.size(), is(3));
+        assertThat("", changeDescriptionList.size(), is(4));
     }
 }

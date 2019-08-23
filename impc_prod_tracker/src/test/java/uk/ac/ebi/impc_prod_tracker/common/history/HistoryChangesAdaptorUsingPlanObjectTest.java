@@ -4,7 +4,6 @@ import org.junit.Ignore;
 import org.junit.Test;
 import uk.ac.ebi.impc_prod_tracker.data.biology.attempt.Attempt;
 import uk.ac.ebi.impc_prod_tracker.data.biology.attempt.crispr_attempt.CrisprAttempt;
-import uk.ac.ebi.impc_prod_tracker.data.biology.attempt.crispr_attempt.genotype_primer.GenotypePrimer;
 import uk.ac.ebi.impc_prod_tracker.data.biology.attempt.crispr_attempt.guide.Guide;
 import uk.ac.ebi.impc_prod_tracker.data.biology.plan.Plan;
 import uk.ac.ebi.impc_prod_tracker.data.biology.privacy.Privacy;
@@ -171,14 +170,15 @@ public class HistoryChangesAdaptorUsingPlanObjectTest
         List<ChangeDescription> changeDescriptionList = historyChangesAdaptor.getChanges();
         System.out.println(changeDescriptionList);
         assertThat("Unexpected number of changes:", changeDescriptionList.size(), is(2));
+        System.out.println(changeDescriptionList);
 
-        ChangeDescription changeDescriptionElement1 = getChange("crisprAttempt.guides#1", changeDescriptionList);
-        assertThat("Unexpected property:", changeDescriptionElement1.getProperty(), is("crisprAttempt.guides#1"));
+        ChangeDescription changeDescriptionElement1 = getChange("attempt.crisprAttempt.guides#1", changeDescriptionList);
+        assertThat("Unexpected property:", changeDescriptionElement1.getProperty(), is("attempt.crisprAttempt.guides#1"));
         assertThat("Unexpected old value:", changeDescriptionElement1.getOldValue(), is(nullValue()));
         assertThat("Unexpected new value:", changeDescriptionElement1.getNewValue(), is(guide1));
 
-        ChangeDescription changeDescriptionElement2 = getChange("crisprAttempt.guides#2", changeDescriptionList);
-        assertThat("Unexpected property:", changeDescriptionElement2.getProperty(), is("crisprAttempt.guides#2"));
+        ChangeDescription changeDescriptionElement2 = getChange("attempt.crisprAttempt.guides#2", changeDescriptionList);
+        assertThat("Unexpected property:", changeDescriptionElement2.getProperty(), is("attempt.crisprAttempt.guides#2"));
         assertThat("Unexpected old value:", changeDescriptionElement2.getOldValue(), is(nullValue()));
         assertThat("Unexpected new value:", changeDescriptionElement2.getNewValue(), is(guide2));
     }
@@ -200,6 +200,7 @@ public class HistoryChangesAdaptorUsingPlanObjectTest
         CrisprAttempt crisprAttempt2 = new CrisprAttempt();
         Set<Guide> guides = new HashSet<>();
         Guide guide1 = new Guide();
+        guide1.setId(1L);
         guide1.setChr("X");
         guide1.setSequence("GCCTCAATCTGCACAGTATTGGG");
         guide1.setStart(105880383);
@@ -208,6 +209,7 @@ public class HistoryChangesAdaptorUsingPlanObjectTest
         guide1.setGrnaConcentration(null);
 
         Guide guide2 = new Guide();
+        guide2.setId(2L);
         guide2.setChr("X");
         guide2.setSequence("GCCTCAATCTGCACAGTATTGGG");
         guide2.setStart(105880383);
