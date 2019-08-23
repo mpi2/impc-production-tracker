@@ -1,6 +1,7 @@
 package uk.ac.ebi.impc_prod_tracker.common.diff;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -62,34 +63,39 @@ public class ChangesDetector<T>
 
         oldObjectPropertyData.forEach((k, v) ->
         {
-            ChangeEntry changeEntry = evaluateProperty(
+            List<ChangeEntry> changes = evaluateProperty(
                 k, oldObjectPropertyData.get(k), newObjectPropertyData.get(k));
-            if (changeEntry != null)
-            {
-                changeEntries.add(changeEntry);
-            }
+            changeEntries.addAll(changes);
         });
 
         return changeEntries;
     }
 
-    private ChangeEntry evaluateProperty(
+    private List<ChangeEntry> evaluateProperty(
         String property, PropertyDescription oldPropertyData, PropertyDescription newPropertyData)
     {
-        ChangeEntry changeEntry = null;
+        List<ChangeEntry> changes = new ArrayList<>();
 
-        if (areValuesDifferent(oldPropertyData.getValue(), newPropertyData.getValue()))
+        if (PropertyChecker.isCollection(oldPropertyData.getType()))
         {
-            changeEntry = buildChangeEntry(property, oldPropertyData, newPropertyData);
+            Collection oldCollection = (Collection) oldPropertyData.getValue();
+            Collection newCollection = (Collection) newPropertyData.getValue();
+            CollectionsComparator<?> collectionsComparator =
+                new CollectionsComparator(property, oldCollection, newCollection);
+            changes = collectionsComparator.getChanges();
+            if (!changes.isEmpty())
+            {
+                changes.add(buildChangeEntry(property, oldPropertyData, newPropertyData));
+            }
         }
-        return changeEntry;
-    }
-
-    private boolean areValuesDifferent(Object value1, Object value2)
-    {
-        return (value1 == null && value2 != null )
-            || (value1 != null && value2 == null)
-            || !Objects.equals(value1, value2);
+        else
+        {
+            if (!Objects.equals(oldPropertyData.getValue(), newPropertyData.getValue()))
+            {
+                changes.add(buildChangeEntry(property, oldPropertyData, newPropertyData));
+            }
+        }
+        return changes;
     }
 
     private ChangeEntry buildChangeEntry(

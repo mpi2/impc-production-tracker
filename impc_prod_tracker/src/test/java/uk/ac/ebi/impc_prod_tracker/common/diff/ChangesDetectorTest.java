@@ -117,8 +117,9 @@ public class ChangesDetectorTest
                 planMock2);
 
         List<ChangeEntry> changeEntryList = changesDetector.getChanges();
+        changesDetector.print();
 
-        assertThat("Unexpected number of changes:", changeEntryList.size(), is(12));
+        assertThat("Unexpected number of changes:", changeEntryList.size(), is(16));
 
 
         validateObtainedChangeEntryIsExpected(
@@ -173,6 +174,22 @@ public class ChangesDetectorTest
         validateObtainedChangeEntryIsExpected(
             getByPropertyName(changeEntryList, "workUnitList"),
             getChangeEntry("workUnitList", Arrays.asList(workUnitMock1A, workUnitMock1B), Arrays.asList(workUnitMock2A, workUnitMock2B)));
+
+        validateObtainedChangeEntryIsExpected(
+            getByPropertyName(changeEntryList, "workUnitList#1"),
+            getChangeEntry("workUnitList#1", workUnitMock1A, null));
+
+        validateObtainedChangeEntryIsExpected(
+            getByPropertyName(changeEntryList, "workUnitList#2"),
+            getChangeEntry("workUnitList#2", workUnitMock1B, null));
+
+        validateObtainedChangeEntryIsExpected(
+            getByPropertyName(changeEntryList, "workUnitList#3"),
+            getChangeEntry("workUnitList#3", null, workUnitMock2A));
+
+        validateObtainedChangeEntryIsExpected(
+            getByPropertyName(changeEntryList, "workUnitList#4"),
+            getChangeEntry("workUnitList#4", null, workUnitMock2B));
 
     }
 
@@ -262,8 +279,20 @@ public class ChangesDetectorTest
             getChangeEntry("status.subStatus.subStatusName", "subStatusMock1", "subStatusMock2"));
 
         validateObtainedChangeEntryIsExpected(
-            getByPropertyName(changeEntryList, "workUnitList"),
-            getChangeEntry("workUnitList", Arrays.asList(workUnitMock1A, workUnitMock1B), Arrays.asList(workUnitMock2A, workUnitMock2B)));
+            getByPropertyName(changeEntryList, "workUnitList#1"),
+            getChangeEntry("workUnitList#1", workUnitMock1A, null));
+
+        validateObtainedChangeEntryIsExpected(
+            getByPropertyName(changeEntryList, "workUnitList#2"),
+            getChangeEntry("workUnitList#2", workUnitMock1B, null));
+
+        validateObtainedChangeEntryIsExpected(
+            getByPropertyName(changeEntryList, "workUnitList#3"),
+            getChangeEntry("workUnitList#3", null, workUnitMock2A));
+
+        validateObtainedChangeEntryIsExpected(
+            getByPropertyName(changeEntryList, "workUnitList#4"),
+            getChangeEntry("workUnitList#4", null, workUnitMock2B));
 
     }
 
@@ -288,7 +317,7 @@ public class ChangesDetectorTest
     }
 
     private void validateObtainedChangeEntryIsExpected(
-        ChangeEntry expectedChangeEntry, ChangeEntry obtainedChangeEntry)
+        ChangeEntry obtainedChangeEntry, ChangeEntry expectedChangeEntry)
     {
         assertThat(
             "Property:", obtainedChangeEntry.getProperty(), is(expectedChangeEntry.getProperty()));

@@ -41,7 +41,6 @@ class HistoryChangesAdaptor<T>
     {
         List<ChangeEntry> changeEntries = getObjectsChanges();
         changeEntries = filterUnwantedChanges(changeEntries);
-        System.out.println("changeEntries " + changeEntries);
         groupedChanges = propertyMapGrouper.getGroupedChanges(changeEntries);
         groupedChanges.forEach(this::convertGroupToChangesDescription);
         return changeDescriptions;
@@ -122,7 +121,7 @@ class HistoryChangesAdaptor<T>
                     groupRoot.getType().getSimpleName(), idProperty, v);
                 changeDescriptions.add(changeDescription);
             }
-            else if (PropertyChecker.isCollection(v.getType()))
+            else if (propertyMapGrouper.isElementInAList(v.getProperty()))
             {
                 ChangeDescription changeDescription = createBasicChangeDescription(v);
                 changeDescriptions.add(changeDescription);
@@ -164,6 +163,8 @@ class HistoryChangesAdaptor<T>
 
     private boolean propertyNeedsEntityIdReference(String groupName, String property)
     {
-        return !property.equals(groupName) && !property.endsWith("." + ID_PROPERTY_NAME);
+        return !property.equals(groupName)
+            && !property.endsWith("." + ID_PROPERTY_NAME)
+            && !propertyMapGrouper.isElementInAList(property);
     }
 }

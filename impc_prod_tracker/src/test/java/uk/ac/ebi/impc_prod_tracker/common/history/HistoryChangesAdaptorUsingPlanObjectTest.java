@@ -1,7 +1,9 @@
 package uk.ac.ebi.impc_prod_tracker.common.history;
 
+import org.junit.Ignore;
 import org.junit.Test;
 import uk.ac.ebi.impc_prod_tracker.data.biology.attempt.crispr_attempt.CrisprAttempt;
+import uk.ac.ebi.impc_prod_tracker.data.biology.genotype_primer.GenotypePrimer;
 import uk.ac.ebi.impc_prod_tracker.data.biology.guide.Guide;
 import uk.ac.ebi.impc_prod_tracker.data.experiment.plan.Plan;
 import uk.ac.ebi.impc_prod_tracker.data.experiment.privacy.Privacy;
@@ -140,6 +142,7 @@ public class HistoryChangesAdaptorUsingPlanObjectTest
         CrisprAttempt crisprAttempt2 = new CrisprAttempt();
         Set<Guide> guides = new HashSet<>();
         Guide guide1 = new Guide();
+        guide1.setId(1L);
         guide1.setChromosome("X");
         guide1.setSequence("GCCTCAATCTGCACAGTATTGGG");
         guide1.setStart(105880383);
@@ -148,6 +151,7 @@ public class HistoryChangesAdaptorUsingPlanObjectTest
         guide1.setGrnaConcentration(null);
 
         Guide guide2 = new Guide();
+        guide2.setId(2L);
         guide2.setChromosome("X");
         guide2.setSequence("AAATCAATCTGCACAGTATTGGG");
         guide2.setStart(9999999);
@@ -162,11 +166,17 @@ public class HistoryChangesAdaptorUsingPlanObjectTest
 
         List<ChangeDescription> changeDescriptionList = historyChangesAdaptor.getChanges();
         System.out.println(changeDescriptionList);
-        assertThat("Unexpected number of changes:", changeDescriptionList.size(), is(1));
-        ChangeDescription changeDescription = changeDescriptionList.get(0);
-        assertThat("Unexpected property:", changeDescription.getProperty(), is("crisprAttempt.guides"));
-        assertThat("Unexpected old value:", changeDescription.getOldValue(), is(nullValue()));
-        assertThat("Unexpected new value:", changeDescription.getNewValue(), is(guides));
+        assertThat("Unexpected number of changes:", changeDescriptionList.size(), is(2));
+
+        ChangeDescription changeDescriptionElement1 = getChange("crisprAttempt.guides#1", changeDescriptionList);
+        assertThat("Unexpected property:", changeDescriptionElement1.getProperty(), is("crisprAttempt.guides#1"));
+        assertThat("Unexpected old value:", changeDescriptionElement1.getOldValue(), is(nullValue()));
+        assertThat("Unexpected new value:", changeDescriptionElement1.getNewValue(), is(guide1));
+
+        ChangeDescription changeDescriptionElement2 = getChange("crisprAttempt.guides#2", changeDescriptionList);
+        assertThat("Unexpected property:", changeDescriptionElement2.getProperty(), is("crisprAttempt.guides#2"));
+        assertThat("Unexpected old value:", changeDescriptionElement2.getOldValue(), is(nullValue()));
+        assertThat("Unexpected new value:", changeDescriptionElement2.getNewValue(), is(guide2));
     }
 
     @Test
@@ -206,6 +216,33 @@ public class HistoryChangesAdaptorUsingPlanObjectTest
 
         List<ChangeDescription> changeDescriptionList =  historyChangesAdaptor.getChanges();
         System.out.println(changeDescriptionList);
+    }
+
+    @Ignore
+    //TODO: This should work once the Primers are added as reference to the CrisprAttempt object.
+    @Test
+    public void testWhenAddedPrimer()
+    {
+        Plan originalPlan = buildBasicPlan();
+        Plan newPlan = buildBasicPlan();
+        HistoryChangesAdaptor<Plan> historyChangesAdaptor =
+            new HistoryChangesAdaptor<>(Arrays.asList(), originalPlan, newPlan);
+
+        CrisprAttempt crisprAttempt1 = new CrisprAttempt();
+
+        originalPlan.setCrisprAttempt(crisprAttempt1);
+
+        CrisprAttempt crisprAttempt2 = new CrisprAttempt();
+        GenotypePrimer primer1 = new GenotypePrimer();
+        primer1.setChromosome("X");
+        primer1.setSequence("ACACCCCTAGTCTTGTGTCTCA");
+        primer1.setName("Dnah10 KO F");
+        primer1.setCrisprAttempt(crisprAttempt2);
+        newPlan.setCrisprAttempt(crisprAttempt2);
+
+        List<ChangeDescription> changeDescriptionList = historyChangesAdaptor.getChanges();
+        System.out.println(changeDescriptionList);
+        assertThat("Unexpected number of changes:", changeDescriptionList.size(), is(1));
     }
 
     private Plan buildBasicPlan()
