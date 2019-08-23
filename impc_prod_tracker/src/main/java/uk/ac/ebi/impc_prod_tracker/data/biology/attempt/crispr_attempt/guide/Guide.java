@@ -8,10 +8,12 @@ import lombok.NoArgsConstructor;
 import uk.ac.ebi.impc_prod_tracker.data.BaseEntity;
 import uk.ac.ebi.impc_prod_tracker.data.biology.attempt.crispr_attempt.CrisprAttempt;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 
@@ -29,6 +31,7 @@ public class Guide extends BaseEntity
 
     @JsonIgnore
     @ManyToOne(targetEntity = CrisprAttempt.class)
+    @JoinColumn(name = "attempt_id")
     private CrisprAttempt crisprAttempt;
 
     private String sequence;

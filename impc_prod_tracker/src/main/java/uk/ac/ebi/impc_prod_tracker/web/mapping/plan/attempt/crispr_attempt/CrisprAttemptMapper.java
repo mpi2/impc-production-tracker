@@ -9,15 +9,18 @@ import uk.ac.ebi.impc_prod_tracker.web.dto.plan.attempt.production.crispr_attemp
 public class CrisprAttemptMapper
 {
     private ModelMapper modelMapper;
+    private GuideMapper guideMapper;
 
-    public CrisprAttemptMapper(ModelMapper modelMapper)
+    public CrisprAttemptMapper(ModelMapper modelMapper, GuideMapper guideMapper)
     {
         this.modelMapper = modelMapper;
+        this.guideMapper = guideMapper;
     }
 
     public CrisprAttemptDTO toDto (CrisprAttempt crisprAttempt)
     {
         CrisprAttemptDTO crisprAttemptDTO = modelMapper.map(crisprAttempt, CrisprAttemptDTO.class);
+        crisprAttemptDTO.setGuideDTOS(guideMapper.toDtos(crisprAttempt.getGuides()));
         return crisprAttemptDTO;
     }
 }
