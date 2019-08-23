@@ -13,8 +13,7 @@ import uk.ac.ebi.impc_prod_tracker.web.dto.plan.attempt.production.crispr_attemp
 @RequiredArgsConstructor
 public class AttemptDTO
 {
-    @JsonIgnore
-    private Long planId;
+    @JsonProperty("attempt_type_name")
     private String attemptTypeName;
 
     @JsonInclude(JsonInclude.Include.NON_NULL)

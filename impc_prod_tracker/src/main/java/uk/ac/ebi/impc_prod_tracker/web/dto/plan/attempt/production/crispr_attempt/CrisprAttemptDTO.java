@@ -14,31 +14,42 @@ import java.util.List;
 public class CrisprAttemptDTO
 {
     @JsonIgnore
-    private Long planId;
-    @JsonIgnore
     private Long imitsMiAttemptId;
+
+    @JsonProperty("mi_date")
     private LocalDateTime miDate;
-    private String attemptExternalRef;
+
+    @JsonProperty("attempt_external_ref")
+    private String miExternalRef;
+
     private Boolean experimental;
+
     private String comment;
+
+    @JsonProperty("mutagenesis_external_ref")
     private String mutagenesisExternalRef;
+
+    @JsonProperty("delivery_type_method_name")
     private String deliveryTypeMethodName;
+
     private Integer voltage;
+
+    @JsonProperty("number_of_pulses")
     private Integer numberOfPulses;
 
-    @JsonProperty("nucleasesAttributes")
+    @JsonProperty("nucleases_attributes")
     private List<NucleaseDTO> nucleaseDTOS;
 
-    @JsonProperty("guidesAttributes")
+    @JsonProperty("guides_attributes")
     private List<GuideDTO> guideDTOS;
 
-    @JsonProperty("mutagenesisDonorsAttributes")
+    @JsonProperty("mutagenesis_donors_attributes")
     private List<MutagenesisDonorDTO> mutagenesisDonorDTOS;
 
-    @JsonProperty("reagentsAttributes")
+    @JsonProperty("reagents_attributes")
     private List<ReagentDTO> reagentDTOS;
 
-    @JsonProperty("genotypePrimersAttributes")
+    @JsonProperty("genotype_primers_attributes")
     private List<GenotypePrimerDTO> genotypePrimerDTOS;
 
     private Integer total_embryos_injected;
@@ -48,11 +59,12 @@ public class CrisprAttemptDTO
     private Integer total_transferred;
     private Integer num_founder_pups;
 
-    @JsonProperty("assayAttributes")
+    @JsonProperty("assay_attributes")
     private AssayDTO assayDTO;
 
+    @JsonProperty("num_founders_selected_for_breeding")
     private Integer numFoundersSelectedForBreeding;
 
-    @JsonProperty("strainAttributes")
+    @JsonProperty("strain_injected_attributes")
     private StrainDTO strainDTO;
 }
