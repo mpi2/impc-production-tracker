@@ -16,7 +16,6 @@
 package uk.ac.ebi.impc_prod_tracker.web.dto.plan;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -75,10 +74,6 @@ public class PlanDTO extends RepresentationModel
     @JsonProperty("type_name")
     private String typeName;
 
-    @JsonProperty("attempt_type_name")
-    private String attemptTypeName;
-
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    @JsonProperty("attemptTypeName")
+    @JsonProperty("attempt")
     private AttemptDTO attemptDTO;
 }

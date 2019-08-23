@@ -108,7 +108,7 @@ class ProjectSummaryController
     {
         ProjectSummaryDTO projectSummaryDTO = projectMapper.projectToProjectSummaryDTO(project);
         List<Plan> plans = planService.getPlansByProject(project);
-        List<PlanDTO> planDTOs = planMapper.plansToPlanDetailsDTOs(plans);
+        List<PlanDTO> planDTOs = planMapper.toDtos(plans);
         projectSummaryDTO.setPlanDTO(planDTOs);
 
         return projectSummaryDTO;

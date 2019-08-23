@@ -17,40 +17,22 @@ package uk.ac.ebi.impc_prod_tracker.web.mapping.plan;
 
 import lombok.Data;
 import org.springframework.stereotype.Component;
-import uk.ac.ebi.impc_prod_tracker.common.history.HistoryService;
-import uk.ac.ebi.impc_prod_tracker.conf.error_management.OperationFailedException;
 import uk.ac.ebi.impc_prod_tracker.data.biology.plan.Plan;
 import uk.ac.ebi.impc_prod_tracker.service.plan.PlanService;
 import uk.ac.ebi.impc_prod_tracker.web.dto.plan.PlanDTO;
-import uk.ac.ebi.impc_prod_tracker.web.mapping.common.history.HistoryDTOBuilder;
+import uk.ac.ebi.impc_prod_tracker.web.mapping.plan.attempt.AttemptMapper;
 
 @Component
 @Data
 public class PlanDTOBuilder
 {
     private PlanService planService;
-    private HistoryService historyService;
-    private HistoryDTOBuilder historyDTOBuilder;
+    private AttemptMapper attemptMapper;
 
-    public PlanDTOBuilder(
-        PlanService planService,
-        HistoryService historyService,
-        HistoryDTOBuilder historyDTOBuilder)
+    public PlanDTOBuilder(PlanService planService, AttemptMapper attemptMapper)
     {
         this.planService = planService;
-        this.historyService = historyService;
-        this.historyDTOBuilder = historyDTOBuilder;
-    }
-
-    public PlanDTO buildPlanDTOFromPlanPid(String pin)
-    {
-        Plan plan = planService.getPlanByPin(pin);
-        if (plan == null)
-        {
-            throw new OperationFailedException(
-                String.format("The plan %s does not exist", pin));
-        }
-        return buildPlanDTOFromPlan(plan);
+        this.attemptMapper = attemptMapper;
     }
 
     public PlanDTO buildPlanDTOFromPlan(Plan plan)
@@ -84,8 +66,7 @@ public class PlanDTOBuilder
         planDTO.setComments(plan.getComment());
         if (plan.getAttempt() != null)
         {
-            planDTO.setAttemptTypeName(plan.getAttempt().getAttemptType().getName());
-
+            planDTO.setAttemptDTO(attemptMapper.toDto(plan.getAttempt()));
         }
         return planDTO;
     }

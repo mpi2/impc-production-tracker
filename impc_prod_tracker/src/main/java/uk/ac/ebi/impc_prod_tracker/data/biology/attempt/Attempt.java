@@ -30,12 +30,15 @@ public class Attempt extends BaseEntity
     @ManyToOne
     private AttemptType attemptType;
 
+    @ToString.Exclude
     @OneToOne(cascade=CascadeType.ALL, mappedBy = "attempt")
     private CrisprAttempt crisprAttempt;
 
+    @ToString.Exclude
     @OneToOne(cascade=CascadeType.ALL, mappedBy = "attempt")
     private PhenotypingAttempt phenotypingAttempt;
 
+    @ToString.Exclude
     @OneToOne(cascade=CascadeType.ALL, mappedBy = "attempt")
     private BreedingAttempt breedingAttempt;
 }
