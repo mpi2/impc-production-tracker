@@ -7,7 +7,6 @@ import uk.ac.ebi.impc_prod_tracker.data.common.history.detail.HistoryDetail;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 

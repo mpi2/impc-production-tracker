@@ -20,11 +20,19 @@ public class PlanMapper
         this.planDTOLinkManager = planDTOLinkManager;
     }
 
-    public PlanDTO planToDTO(Plan plan)
+    public PlanDTO toDto(Plan plan)
     {
-        PlanDTO planDTO = planDTOBuilder.buildPlanDTOFromPlan(plan);
-//        planDTOLinkManager.addLinks(planDTO);
-        return planDTO;
+        return planDTOBuilder.buildPlanDTOFromPlan(plan);
+    }
+
+    public List<PlanDTO> toDtos(List<Plan> plans)
+    {
+        List<PlanDTO> planDTOS = new ArrayList<>();
+        if (plans != null)
+        {
+            plans.forEach(plan -> planDTOS.add(toDto(plan)));
+        }
+        return planDTOS;
     }
 
     public PlanDTO planToPlanDTO(Plan plan)

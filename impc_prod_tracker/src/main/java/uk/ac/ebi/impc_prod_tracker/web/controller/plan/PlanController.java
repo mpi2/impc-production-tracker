@@ -20,15 +20,12 @@ import org.springframework.web.bind.annotation.*;
 import uk.ac.ebi.impc_prod_tracker.conf.error_management.OperationFailedException;
 import uk.ac.ebi.impc_prod_tracker.data.biology.plan.Plan;
 import uk.ac.ebi.impc_prod_tracker.data.common.history.History;
+import uk.ac.ebi.impc_prod_tracker.service.plan.PlanService;
 import uk.ac.ebi.impc_prod_tracker.web.dto.common.history.HistoryDTO;
 import uk.ac.ebi.impc_prod_tracker.web.dto.plan.PlanDTO;
 import uk.ac.ebi.impc_prod_tracker.web.dto.plan.UpdatePlanRequestDTO;
-import uk.ac.ebi.impc_prod_tracker.web.mapping.common.history.HistoryDTOBuilder;
 import uk.ac.ebi.impc_prod_tracker.web.mapping.common.history.HistoryMapper;
-import uk.ac.ebi.impc_prod_tracker.web.mapping.plan.PlanDTOBuilder;
-import uk.ac.ebi.impc_prod_tracker.web.mapping.project.ProjectDTOBuilder;
-
-import java.util.ArrayList;
+import uk.ac.ebi.impc_prod_tracker.web.mapping.plan.PlanMapper;
 import java.util.List;
 
 @RestController
@@ -36,33 +33,21 @@ import java.util.List;
 @CrossOrigin(origins="*")
 public class PlanController
 {
-    private PlanDTOBuilder planDTOBuilder;
-    private ProjectDTOBuilder projectDTOBuilder;
     private HistoryMapper historyMapper;
+    private PlanService planService;
+    private PlanMapper planMapper;
 
-    public PlanController(
-        PlanDTOBuilder planDTOBuilder,
-        ProjectDTOBuilder projectDTOBuilder,
-        HistoryMapper historyMapper)
+    public PlanController(HistoryMapper historyMapper, PlanService planService, PlanMapper planMapper)
     {
-        this.planDTOBuilder = planDTOBuilder;
-        this.projectDTOBuilder = projectDTOBuilder;
         this.historyMapper = historyMapper;
+        this.planService = planService;
+        this.planMapper = planMapper;
     }
 
     @GetMapping(value = {"/plans"})
     public List<PlanDTO> getPlans()
     {
-        List<Plan> plans = planDTOBuilder.getPlanService().getPlans();
-
-        List<PlanDTO> planDTOS = new ArrayList<>();
-        for (Plan plan : plans)
-        {
-            PlanDTO planDTO = planDTOBuilder.buildPlanDTOFromPlan(plan);
-            planDTOS.add(planDTO);
-        }
-
-        return planDTOS;
+        return planMapper.toDtos(planService.getPlans());
     }
 
     @GetMapping(value = {"/plans/{pin}"})
@@ -70,7 +55,7 @@ public class PlanController
     {
         Plan plan = getNotNullPlanByPin(pin);
 
-        PlanDTO planDTO = planDTOBuilder.buildPlanDTOFromPlan(plan);
+        PlanDTO planDTO = planMapper.toDto(plan);
 
         return planDTO;
     }
@@ -80,12 +65,12 @@ public class PlanController
     {
         Plan plan = getNotNullPlanByPin(pin);
 
-        return historyMapper.toDtos(projectDTOBuilder.getPlanService().getPlanHistory(plan));
+        return historyMapper.toDtos(planService.getPlanHistory(plan));
     }
 
     private Plan getNotNullPlanByPin(String pin)
     {
-        Plan plan = projectDTOBuilder.getPlanService().getPlanByPin(pin);
+        Plan plan = planService.getPlanByPin(pin);
         if (plan == null)
         {
             throw new OperationFailedException(
@@ -98,7 +83,7 @@ public class PlanController
     public HistoryDTO updatePlan(
         @PathVariable String pin, @RequestBody UpdatePlanRequestDTO updatePlanRequestDTO)
     {
-        History history = projectDTOBuilder.getPlanService().updatePlan(pin, updatePlanRequestDTO);
+        History history = planService.updatePlan(pin, updatePlanRequestDTO);
         if (history != null)
         {
             return  historyMapper.toDto(history);
