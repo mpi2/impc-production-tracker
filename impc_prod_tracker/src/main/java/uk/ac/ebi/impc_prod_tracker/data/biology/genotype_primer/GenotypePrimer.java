@@ -1,6 +1,7 @@
 package uk.ac.ebi.impc_prod_tracker.data.biology.genotype_primer;
 
 import lombok.AccessLevel;
+import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -14,9 +15,8 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 
-@NoArgsConstructor(access= AccessLevel.PRIVATE, force=true)
-@Getter
-@Setter
+@NoArgsConstructor(access= AccessLevel.PUBLIC, force=true)
+@Data
 @Entity
 public class GenotypePrimer extends BaseEntity
 {

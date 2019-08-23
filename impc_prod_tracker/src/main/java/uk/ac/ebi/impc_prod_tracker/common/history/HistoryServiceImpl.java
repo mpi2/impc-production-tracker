@@ -7,7 +7,9 @@ import uk.ac.ebi.impc_prod_tracker.data.common.history.detail.HistoryDetail;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Component
 public class HistoryServiceImpl<T> implements HistoryService<T>
@@ -42,6 +44,7 @@ public class HistoryServiceImpl<T> implements HistoryService<T>
         List<History> histories =
             historyRepository.findAllByEntityNameAndEntityIdOrderByDate(entityName, entityId);
         List<History> additionalHistories = getAdditionalRecordsForExternalReferences(histories);
+        additionalHistories = removeDuplicates(additionalHistories);
         histories.addAll(additionalHistories);
         return histories;
     }
@@ -75,6 +78,11 @@ public class HistoryServiceImpl<T> implements HistoryService<T>
             });
         });
         return additionalHistories;
+    }
+
+    private List<History> removeDuplicates(List<History> list)
+    {
+        return list.stream().distinct().collect(Collectors.toList());
     }
 
     private List<History> getOlderChangesForReferenceEntity(

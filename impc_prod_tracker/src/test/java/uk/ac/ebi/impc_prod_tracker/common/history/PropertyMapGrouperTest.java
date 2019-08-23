@@ -67,7 +67,6 @@ public class PropertyMapGrouperTest
         Map<String, Map<String, ChangeEntry>> groupedProps =
             testInstance.getGroupedChanges(changeEntries);
         System.out.println(groupedProps);
-        testInstance.print();
     }
 
     private List<ChangeEntry> buildChangeList()

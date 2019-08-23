@@ -59,8 +59,8 @@ public class Guide extends BaseEntity
 
     public String toString()
     {
-        return "(sequence=" + sequence + ", chromosome=" + chromosome + ", start=" + start
-            + ", stop=" + stop + ", truncatedGuide=" + truncatedGuide + ", grnaConcentration=" +
+        return "(seq=" + sequence + ", chr=" + chromosome + ", start=" + start
+            + ", stop=" + stop + ", truncated?=" + truncatedGuide + ", grnaConcentration=" +
             grnaConcentration +")";
     }
 }
