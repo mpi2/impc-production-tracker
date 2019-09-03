@@ -77,4 +77,7 @@ build_image:
               docker push "${DOCKER_HUB_USER}"/"${DOCKER_HUB_REPO}"  | tee ${MOUNT_POINT}/dockerhub-push-latest.log
               docker logout
           fi    
+    artifacts:
+        paths:
+            - "$MOUNT_POINT/"
 
