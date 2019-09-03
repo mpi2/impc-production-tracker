@@ -24,6 +24,7 @@ import uk.ac.ebi.impc_prod_tracker.data.biology.mouse_gene_synomym.MouseGeneSyno
 import uk.ac.ebi.impc_prod_tracker.data.biology.ortholog.Ortholog;
 import javax.persistence.*;
 import javax.validation.constraints.Pattern;
+import java.util.HashSet;
 import java.util.Set;
 
 @NoArgsConstructor(access= AccessLevel.PRIVATE, force=true)
@@ -77,7 +78,7 @@ public class MouseGene extends BaseEntity
             name = "mouse_gene_synonym_relation",
             joinColumns = @JoinColumn(name = "mouse_gene_id"),
             inverseJoinColumns = @JoinColumn(name = "mouse_gene_synonym_id"))
-    private Set<MouseGeneSynonym> mouseGeneSynonyms;
+    private Set<MouseGeneSynonym> mouseGeneSynonyms = new HashSet<>();
 
     @ToString.Exclude
     @JsonIgnore
@@ -86,10 +87,10 @@ public class MouseGene extends BaseEntity
         name = "mouse_gene_allele",
         joinColumns = @JoinColumn(name = "mouse_gene_id"),
         inverseJoinColumns = @JoinColumn(name = "allele_id"))
-    private Set<MouseAllele> mouseAlleles;
+    private Set<MouseAllele> mouseAlleles = new HashSet<>();
 
     @ToString.Exclude
     @JsonIgnore
     @OneToMany(mappedBy = "mouseGene")
-    private Set<Ortholog> orthologs;
+    private Set<Ortholog> orthologs = new HashSet<>();
 }

@@ -15,7 +15,9 @@
  *******************************************************************************/
 package uk.ac.ebi.impc_prod_tracker.data.biology.attempt.crispr_attempt;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AccessLevel;
+import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -23,6 +25,7 @@ import lombok.Setter;
 import lombok.ToString;
 import uk.ac.ebi.impc_prod_tracker.data.BaseEntity;
 import uk.ac.ebi.impc_prod_tracker.data.biology.crispr_attempt_reagent.CrisprAttemptReagent;
+import uk.ac.ebi.impc_prod_tracker.data.biology.guide.Guide;
 import uk.ac.ebi.impc_prod_tracker.data.experiment.assay_type.AssayType;
 import uk.ac.ebi.impc_prod_tracker.data.experiment.delivery_type.DeliveryType;
 import uk.ac.ebi.impc_prod_tracker.data.experiment.plan.Plan;
@@ -38,9 +41,8 @@ import javax.persistence.OneToOne;
 import java.time.LocalDateTime;
 import java.util.Set;
 
-@NoArgsConstructor(access= AccessLevel.PRIVATE, force=true)
-@Getter
-@Setter
+@NoArgsConstructor(access= AccessLevel.PUBLIC, force=true)
+@Data
 @Entity
 public class CrisprAttempt extends BaseEntity
 {
@@ -50,6 +52,7 @@ public class CrisprAttempt extends BaseEntity
 
     @OneToOne
     @MapsId
+    @JsonIgnore
     private Plan plan;
 
     private LocalDateTime miDate;
@@ -123,4 +126,9 @@ public class CrisprAttempt extends BaseEntity
     @ToString.Exclude
     @OneToMany(mappedBy = "crisprAttempt")
     private Set<CrisprAttemptReagent> crisprAttemptReagents;
+
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
+    @OneToMany(mappedBy = "crisprAttempt")
+    private Set<Guide> guides;
 }

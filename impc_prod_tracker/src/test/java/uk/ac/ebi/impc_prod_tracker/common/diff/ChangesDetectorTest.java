@@ -1,8 +1,8 @@
 package uk.ac.ebi.impc_prod_tracker.common.diff;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.junit.Test;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -17,7 +17,7 @@ public class ChangesDetectorTest
     private final ClassTest class3NoNestedDataDifferent = new ClassTest("a", "c");
     private final ClassTest class1NestedData = new ClassTest("a", "b", 1, 2, 5);
     private final ClassTest class2NestedData = new ClassTest("a", "b", 1, 2, 5);
-    private final ClassTest class3NestedDataDifferent = new ClassTest("a", "b", 1, 4, 20);
+
 
     @Test
     public void testGetChangesWhenSameSimpleProperties()
@@ -83,31 +83,230 @@ public class ChangesDetectorTest
     }
 
     @Test
-    public void testGetChangesWhenDiffComplexProperties()
+    public void testGetChangesWhenDiffComplexPropertiesDiffId()
     {
-        ChangesDetector<ClassTest> changesDetector =
+        SubStatusMock subStatusMock1 = new SubStatusMock(1L, "subStatusMock1");
+        StatusMock statusMock1 = new StatusMock(1L, "statusMock1", subStatusMock1);
+        PrivacyMock privacyMock1 = new PrivacyMock(1L, "privacyMock1");
+        WorkUnitMock workUnitMock1A = new WorkUnitMock(1L, "workUnitMock1A", "workUnitMockShort1A");
+        WorkUnitMock workUnitMock1B = new WorkUnitMock(2L, "workUnitMock1B", "workUnitMockShort1B");
+        PlanMock planMock1 = new PlanMock();
+        planMock1.setId(1L);
+        planMock1.setPlanName("planMock1");
+        planMock1.setStatus(statusMock1);
+        planMock1.setWorkUnitList(Arrays.asList(workUnitMock1A, workUnitMock1B));
+        planMock1.setPrivacy(privacyMock1);
+
+        SubStatusMock subStatusMock2 = new SubStatusMock(2L, "subStatusMock2");
+        StatusMock statusMock2 = new StatusMock(2L, "statusMock2", subStatusMock2);
+        PrivacyMock privacyMock2 = new PrivacyMock(2L, "privacyMock2");
+        WorkUnitMock workUnitMock2A = new WorkUnitMock(3L, "workUnitMock2A", "workUnitMockShort2A");
+        WorkUnitMock workUnitMock2B = new WorkUnitMock(4L, "workUnitMock2B", "workUnitMockShort2B");
+        PlanMock planMock2 = new PlanMock();
+        planMock2.setId(2L);
+        planMock2.setPlanName("planMock2");
+        planMock2.setStatus(statusMock2);
+        planMock2.setWorkUnitList(Arrays.asList(workUnitMock2A, workUnitMock2B));
+        planMock2.setPrivacy(privacyMock2);
+
+
+        ChangesDetector<PlanMock> changesDetector =
             new ChangesDetector<>(
                 new ArrayList<>(),
-                class1NestedData,
-                class3NestedDataDifferent);
+                planMock1,
+                planMock2);
 
         List<ChangeEntry> changeEntryList = changesDetector.getChanges();
-        System.out.println("changeEntryList: "+changeEntryList);
+        changesDetector.print();
 
-        ChangeEntry expectedChangeEntry1 =
-            getChangeEntry("property3.innerProperty3.innerInnerProperty1", "5", "20");
-        ChangeEntry expectedChangeEntry2 = getChangeEntry("property3.innerProperty2", "2", "4");
+        assertThat("Unexpected number of changes:", changeEntryList.size(), is(16));
 
-        assertThat("Unexpected number of changes:", changeEntryList.size(), is(2));
 
-        ChangeEntry obtainedChangeEntry1 = changeEntryList.get(0);
-        ChangeEntry obtainedChangeEntry2 = changeEntryList.get(1);
+        validateObtainedChangeEntryIsExpected(
+            getByPropertyName(changeEntryList, "id"), getChangeEntry("id", 1L, 2L));
 
-        validateObtainedChangeEntryIsExpected(expectedChangeEntry1, obtainedChangeEntry1);
-        validateObtainedChangeEntryIsExpected(expectedChangeEntry2, obtainedChangeEntry2);
+        validateObtainedChangeEntryIsExpected(
+            getByPropertyName(changeEntryList, "planName"),
+            getChangeEntry("planName", "planMock1", "planMock2"));
+
+        validateObtainedChangeEntryIsExpected(
+            getByPropertyName(
+                changeEntryList, "privacy.id"),
+            getChangeEntry("privacy.id",
+                1L, 2L));
+
+        validateObtainedChangeEntryIsExpected(
+            getByPropertyName(
+                changeEntryList, "privacy"),
+            getChangeEntry("privacy",
+                privacyMock1, privacyMock2));
+
+        validateObtainedChangeEntryIsExpected(
+            getByPropertyName(
+                changeEntryList, "privacy.privacyName"),
+            getChangeEntry("privacy.privacyName",
+                "privacyMock1", "privacyMock2"));
+
+        validateObtainedChangeEntryIsExpected(
+            getByPropertyName(changeEntryList, "status"),
+            getChangeEntry("status", statusMock1, statusMock2));
+
+        validateObtainedChangeEntryIsExpected(
+            getByPropertyName(changeEntryList, "status.id"),
+            getChangeEntry("status.id", 1L, 2L));
+
+        validateObtainedChangeEntryIsExpected(
+            getByPropertyName(changeEntryList, "status.statusName"),
+            getChangeEntry("status.statusName", "statusMock1", "statusMock2"));
+
+        validateObtainedChangeEntryIsExpected(
+            getByPropertyName(changeEntryList, "status.subStatus"),
+            getChangeEntry("status.subStatus", subStatusMock1, subStatusMock2));
+
+        validateObtainedChangeEntryIsExpected(
+            getByPropertyName(changeEntryList, "status.subStatus.id"),
+            getChangeEntry("status.subStatus.id", 1L, 2L));
+
+        validateObtainedChangeEntryIsExpected(
+            getByPropertyName(changeEntryList, "status.subStatus.subStatusName"),
+            getChangeEntry("status.subStatus.subStatusName", "subStatusMock1", "subStatusMock2"));
+
+        validateObtainedChangeEntryIsExpected(
+            getByPropertyName(changeEntryList, "workUnitList"),
+            getChangeEntry("workUnitList", Arrays.asList(workUnitMock1A, workUnitMock1B), Arrays.asList(workUnitMock2A, workUnitMock2B)));
+
+        validateObtainedChangeEntryIsExpected(
+            getByPropertyName(changeEntryList, "workUnitList#1"),
+            getChangeEntry("workUnitList#1", workUnitMock1A, null));
+
+        validateObtainedChangeEntryIsExpected(
+            getByPropertyName(changeEntryList, "workUnitList#2"),
+            getChangeEntry("workUnitList#2", workUnitMock1B, null));
+
+        validateObtainedChangeEntryIsExpected(
+            getByPropertyName(changeEntryList, "workUnitList#3"),
+            getChangeEntry("workUnitList#3", null, workUnitMock2A));
+
+        validateObtainedChangeEntryIsExpected(
+            getByPropertyName(changeEntryList, "workUnitList#4"),
+            getChangeEntry("workUnitList#4", null, workUnitMock2B));
+
     }
 
-    private ChangeEntry getChangeEntry(String property, String oldValue, String newValue)
+    @Test
+    public void testGetChangesWhenDiffComplexPropertiesSameId()
+    {
+        SubStatusMock subStatusMock1 = new SubStatusMock(1L, "subStatusMock1");
+        StatusMock statusMock1 = new StatusMock(1L, "statusMock1", subStatusMock1);
+        PrivacyMock privacyMock1 = new PrivacyMock(1L, "privacyMock1");
+        WorkUnitMock workUnitMock1A = new WorkUnitMock(1L, "workUnitMock1A", "workUnitMockShort1A");
+        WorkUnitMock workUnitMock1B = new WorkUnitMock(2L, "workUnitMock1B", "workUnitMockShort1B");
+        PlanMock planMock1 = new PlanMock();
+        planMock1.setId(1L);
+        planMock1.setPlanName("planMock1");
+        planMock1.setStatus(statusMock1);
+        planMock1.setWorkUnitList(Arrays.asList(workUnitMock1A, workUnitMock1B));
+        planMock1.setPrivacy(privacyMock1);
+
+        SubStatusMock subStatusMock2 = new SubStatusMock(2L, "subStatusMock2");
+        StatusMock statusMock2 = new StatusMock(2L, "statusMock2", subStatusMock2);
+        PrivacyMock privacyMock2 = new PrivacyMock(2L, "privacyMock2");
+        WorkUnitMock workUnitMock2A = new WorkUnitMock(3L, "workUnitMock2A", "workUnitMockShort2A");
+        WorkUnitMock workUnitMock2B = new WorkUnitMock(4L, "workUnitMock2B", "workUnitMockShort2B");
+        PlanMock planMock2 = new PlanMock();
+        planMock2.setId(1L);
+        planMock2.setPlanName("planMock2");
+        planMock2.setStatus(statusMock2);
+        planMock2.setWorkUnitList(Arrays.asList(workUnitMock2A, workUnitMock2B));
+        planMock2.setPrivacy(privacyMock2);
+
+
+        ChangesDetector<PlanMock> changesDetector =
+            new ChangesDetector<>(
+                new ArrayList<>(),
+                planMock1,
+                planMock2);
+
+        List<ChangeEntry> changeEntryList = changesDetector.getChanges();
+        System.out.println(changeEntryList);
+        System.out.println();
+        changeEntryList.forEach(x -> System.out.println(x.getProperty()));
+
+        validateObtainedChangeEntryIsExpected(
+            getByPropertyName(changeEntryList, "planName"),
+            getChangeEntry("planName", "planMock1", "planMock2"));
+
+        validateObtainedChangeEntryIsExpected(
+            getByPropertyName(
+                changeEntryList, "privacy.id"),
+            getChangeEntry("privacy.id",
+                1L, 2L));
+
+        validateObtainedChangeEntryIsExpected(
+            getByPropertyName(
+                changeEntryList, "privacy"),
+            getChangeEntry("privacy",
+                privacyMock1, privacyMock2));
+
+        validateObtainedChangeEntryIsExpected(
+            getByPropertyName(
+                changeEntryList, "privacy.privacyName"),
+            getChangeEntry("privacy.privacyName",
+                "privacyMock1", "privacyMock2"));
+
+        validateObtainedChangeEntryIsExpected(
+            getByPropertyName(changeEntryList, "status"),
+            getChangeEntry("status", statusMock1, statusMock2));
+
+        validateObtainedChangeEntryIsExpected(
+            getByPropertyName(changeEntryList, "status.id"),
+            getChangeEntry("status.id", 1L, 2L));
+
+        validateObtainedChangeEntryIsExpected(
+            getByPropertyName(changeEntryList, "status.statusName"),
+            getChangeEntry("status.statusName", "statusMock1", "statusMock2"));
+
+        validateObtainedChangeEntryIsExpected(
+            getByPropertyName(changeEntryList, "status.subStatus"),
+            getChangeEntry("status.subStatus", subStatusMock1, subStatusMock2));
+
+        validateObtainedChangeEntryIsExpected(
+            getByPropertyName(changeEntryList, "status.subStatus.id"),
+            getChangeEntry("status.subStatus.id", 1L, 2L));
+
+        validateObtainedChangeEntryIsExpected(
+            getByPropertyName(changeEntryList, "status.subStatus.subStatusName"),
+            getChangeEntry("status.subStatus.subStatusName", "subStatusMock1", "subStatusMock2"));
+
+        validateObtainedChangeEntryIsExpected(
+            getByPropertyName(changeEntryList, "workUnitList#1"),
+            getChangeEntry("workUnitList#1", workUnitMock1A, null));
+
+        validateObtainedChangeEntryIsExpected(
+            getByPropertyName(changeEntryList, "workUnitList#2"),
+            getChangeEntry("workUnitList#2", workUnitMock1B, null));
+
+        validateObtainedChangeEntryIsExpected(
+            getByPropertyName(changeEntryList, "workUnitList#3"),
+            getChangeEntry("workUnitList#3", null, workUnitMock2A));
+
+        validateObtainedChangeEntryIsExpected(
+            getByPropertyName(changeEntryList, "workUnitList#4"),
+            getChangeEntry("workUnitList#4", null, workUnitMock2B));
+
+    }
+
+    private ChangeEntry getByPropertyName(List<ChangeEntry> changeEntries, String propertyName)
+    {
+        for (ChangeEntry changeEntry : changeEntries)
+        {
+            if (changeEntry.getProperty().equals(propertyName))
+                return changeEntry;
+        }
+        return null;
+    }
+
+    private ChangeEntry getChangeEntry(String property, Object oldValue, Object newValue)
     {
         ChangeEntry expectedChangeEntry = new ChangeEntry();
         expectedChangeEntry.setProperty(property);
@@ -118,7 +317,7 @@ public class ChangesDetectorTest
     }
 
     private void validateObtainedChangeEntryIsExpected(
-        ChangeEntry expectedChangeEntry, ChangeEntry obtainedChangeEntry)
+        ChangeEntry obtainedChangeEntry, ChangeEntry expectedChangeEntry)
     {
         assertThat(
             "Property:", obtainedChangeEntry.getProperty(), is(expectedChangeEntry.getProperty()));
@@ -129,6 +328,56 @@ public class ChangesDetectorTest
     }
 
     @Data
+    public class PlanMock
+    {
+        Long id;
+        String planName;
+        List<WorkUnitMock> workUnitList;
+        StatusMock status;
+        PrivacyMock privacy;
+    }
+
+    @Data
+    @AllArgsConstructor
+    public class WorkUnitMock
+    {
+        Long id;
+        String workUnitName;
+        String shortName;
+
+        public String toString()
+        {
+            return workUnitName;
+        }
+    }
+
+    @Data
+    @AllArgsConstructor
+    public class PrivacyMock
+    {
+        Long id;
+        String privacyName;
+    }
+
+    @Data
+    @AllArgsConstructor
+    public class StatusMock
+    {
+        Long id;
+        String statusName;
+        SubStatusMock subStatus;
+    }
+
+    @Data
+    @AllArgsConstructor
+    public class SubStatusMock
+    {
+        Long id;
+        String subStatusName;
+    }
+
+    @Data
+    @AllArgsConstructor
     public class ClassTest
     {
 

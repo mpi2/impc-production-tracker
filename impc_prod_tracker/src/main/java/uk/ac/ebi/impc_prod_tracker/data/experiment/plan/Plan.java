@@ -17,6 +17,8 @@ package uk.ac.ebi.impc_prod_tracker.data.experiment.plan;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AccessLevel;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -27,7 +29,6 @@ import uk.ac.ebi.impc_prod_tracker.conf.security.ResourcePrivacy;
 import uk.ac.ebi.impc_prod_tracker.data.BaseEntity;
 import uk.ac.ebi.impc_prod_tracker.data.biology.attempt.Attempt;
 import uk.ac.ebi.impc_prod_tracker.data.biology.attempt.crispr_attempt.CrisprAttempt;
-import uk.ac.ebi.impc_prod_tracker.data.biology.crispr_attempt_reagent.CrisprAttemptReagent;
 import uk.ac.ebi.impc_prod_tracker.data.experiment.colony.Colony;
 import uk.ac.ebi.impc_prod_tracker.data.experiment.project.Project;
 import uk.ac.ebi.impc_prod_tracker.data.organization.consortium.Consortium;
@@ -44,10 +45,10 @@ import javax.validation.constraints.NotNull;
 import java.util.HashSet;
 import java.util.Set;
 
-@NoArgsConstructor(access= AccessLevel.PRIVATE, force=true)
-@Getter
-@Setter
+@NoArgsConstructor(access= AccessLevel.PUBLIC, force=true)
+@Data
 @Entity
+@EqualsAndHashCode(onlyExplicitlyIncluded = true, callSuper = false)
 public class Plan extends BaseEntity implements Resource<Plan>
 {
     @Id
@@ -56,19 +57,20 @@ public class Plan extends BaseEntity implements Resource<Plan>
     private Long id;
 
     @NotNull
+    @EqualsAndHashCode.Include
     private String pin;
 
     @NotNull
     private Boolean isActive;
 
     @ToString.Exclude
+    @JsonIgnore
     @ManyToOne
     private Project project;
 
     @ManyToOne(targetEntity= PlanType.class)
     private PlanType planType;
 
-//    @NotNull
     @ManyToOne(targetEntity= Privacy.class)
     private Privacy privacy;
 
@@ -172,5 +174,12 @@ public class Plan extends BaseEntity implements Resource<Plan>
         plan.setProject(restrictedProject);
 
         return plan;
+    }
+
+    @Override
+    public String toString()
+    {
+        return "id:" +id + ", pin:" + pin + ", type: "+ (this.planType == null ? "Not defined" : planType.getName())
+            + ", privacy: " + (privacy == null ? "Not defined" : privacy.getName());
     }
 }

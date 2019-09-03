@@ -9,4 +9,6 @@ public interface MouseGeneRepository extends CrudRepository<MouseGene, Long> {
 
     List<MouseGene> findBySymbolStartingWith(String symbol);
 
+    MouseGene findByMgiId(String mgi_id);
+
 }

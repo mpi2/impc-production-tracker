@@ -38,7 +38,7 @@ public class CheckedClassesTreeTest
     public void testAddRelation()
     {
         checkedClassesTree.setRootClass(ClassA.class);
-        checkedClassesTree.addRelation(ClassB.class, ClassA.class);
+        checkedClassesTree.addRelationIfNotExist(ClassB.class, ClassA.class);
 
         Node<Class<?>> root = checkedClassesTree.getTree().find(ClassA.class);
         Node<Class<?>> child = checkedClassesTree.getTree().find(ClassB.class);
@@ -54,8 +54,8 @@ public class CheckedClassesTreeTest
     public void testAddRelationWithGrandChildren()
     {
         checkedClassesTree.setRootClass(ClassA.class);
-        checkedClassesTree.addRelation(ClassB.class, ClassA.class);
-        checkedClassesTree.addRelation(ClassC.class, ClassB.class);
+        checkedClassesTree.addRelationIfNotExist(ClassB.class, ClassA.class);
+        checkedClassesTree.addRelationIfNotExist(ClassC.class, ClassB.class);
         checkedClassesTree.print();
 
         Node<Class<?>> root = checkedClassesTree.getTree().find(ClassA.class);
@@ -77,8 +77,8 @@ public class CheckedClassesTreeTest
     public void testAddRelationWhenCircularDependency()
     {
         checkedClassesTree.setRootClass(ClassA.class);
-        checkedClassesTree.addRelation(ClassB.class, ClassA.class);
-        checkedClassesTree.addRelation(ClassA.class, ClassB.class);
+        checkedClassesTree.addRelationIfNotExist(ClassB.class, ClassA.class);
+        checkedClassesTree.addRelationIfNotExist(ClassA.class, ClassB.class);
 
         Node<Class<?>> root = checkedClassesTree.getTree().find(ClassA.class);
         Node<Class<?>> child = checkedClassesTree.getTree().find(ClassB.class);
@@ -97,7 +97,7 @@ public class CheckedClassesTreeTest
        expectedEx.expect(IllegalArgumentException.class);
        expectedEx.expectMessage("Tree parent is null");
 
-        checkedClassesTree.addRelation(ClassA.class, ClassB.class);
+        checkedClassesTree.addRelationIfNotExist(ClassA.class, ClassB.class);
     }
 
     @Test
@@ -106,7 +106,7 @@ public class CheckedClassesTreeTest
         expectedEx.expect(IllegalArgumentException.class);
         expectedEx.expectMessage("childClass was null");
 
-        checkedClassesTree.addRelation(null, ClassA.class);
+        checkedClassesTree.addRelationIfNotExist(null, ClassA.class);
     }
 
     @Test
@@ -115,7 +115,7 @@ public class CheckedClassesTreeTest
         expectedEx.expect(IllegalArgumentException.class);
         expectedEx.expectMessage("parentClass was null");
 
-        checkedClassesTree.addRelation(ClassA.class, null);
+        checkedClassesTree.addRelationIfNotExist(ClassA.class, null);
     }
 
     class ClassA

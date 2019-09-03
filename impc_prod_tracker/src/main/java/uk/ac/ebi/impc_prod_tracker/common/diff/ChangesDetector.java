@@ -1,6 +1,7 @@
 package uk.ac.ebi.impc_prod_tracker.common.diff;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -16,10 +17,8 @@ public class ChangesDetector<T>
     private T oldObject;
     private T newObject;
 
-    private ObjectInspector oldObjectInspector;
-    private ObjectInspector newObjectInspector;
-    private Map<String, PropertyValueData> oldObjectPropsValues;
-    private Map<String, PropertyValueData> newObjectPropsValues;
+    private Map<String, PropertyDescription> oldObjectPropertyData;
+    private Map<String, PropertyDescription> newObjectPropertyData;
 
     private List<ChangeEntry> changeEntries;
 
@@ -42,11 +41,11 @@ public class ChangesDetector<T>
 
     private void initObjectInspectors()
     {
-        oldObjectInspector = new ObjectInspector(oldObject, fieldsToIgnore);
-        oldObjectPropsValues = oldObjectInspector.getSimpleValues();
+        ObjectInspector oldObjectInspector = new ObjectInspector(oldObject, fieldsToIgnore);
+        oldObjectPropertyData = oldObjectInspector.getMap();
 
-        newObjectInspector = new ObjectInspector(newObject, fieldsToIgnore);
-        newObjectPropsValues = newObjectInspector.getSimpleValues();
+        ObjectInspector newObjectInspector = new ObjectInspector(newObject, fieldsToIgnore);
+        newObjectPropertyData = newObjectInspector.getMap();
     }
 
     /**
@@ -62,47 +61,62 @@ public class ChangesDetector<T>
     {
         List<ChangeEntry> changeEntries = new ArrayList<>();
 
-        oldObjectPropsValues.forEach((k, v) ->
+        oldObjectPropertyData.forEach((k, v) ->
         {
-            ChangeEntry changeEntry = evaluateProperty(
-                k, oldObjectPropsValues.get(k), newObjectPropsValues.get(k));
-            if (changeEntry != null)
-            {
-                changeEntries.add(changeEntry);
-            }
+            List<ChangeEntry> changes = evaluateProperty(
+                k, oldObjectPropertyData.get(k), newObjectPropertyData.get(k));
+            changeEntries.addAll(changes);
         });
 
         return changeEntries;
     }
 
-    private ChangeEntry evaluateProperty(
-        String property, PropertyValueData oldValueData, PropertyValueData newValueData)
+    private List<ChangeEntry> evaluateProperty(
+        String property, PropertyDescription oldPropertyData, PropertyDescription newPropertyData)
     {
-        ChangeEntry changeEntry = null;
-        Object oldValue = oldValueData.getValue();
-        Object newValue = newValueData.getValue();
+        List<ChangeEntry> changes = new ArrayList<>();
 
-        if (areValuesDifferent(oldValue, newValue))
+        if (PropertyChecker.isCollection(oldPropertyData.getType()))
         {
-            changeEntry = buildChangeEntry(property, oldValue, newValue);
+            Collection oldCollection = (Collection) oldPropertyData.getValue();
+            Collection newCollection = (Collection) newPropertyData.getValue();
+            CollectionsComparator<?> collectionsComparator =
+                new CollectionsComparator(property, oldCollection, newCollection);
+            changes = collectionsComparator.getChanges();
+            if (!changes.isEmpty())
+            {
+                changes.add(buildChangeEntry(property, oldPropertyData, newPropertyData));
+            }
         }
-        return changeEntry;
+        else
+        {
+            if (!Objects.equals(oldPropertyData.getValue(), newPropertyData.getValue()))
+            {
+                changes.add(buildChangeEntry(property, oldPropertyData, newPropertyData));
+            }
+        }
+        return changes;
     }
 
-    private boolean areValuesDifferent(Object value1, Object value2)
-    {
-        return (value1 == null && value2 != null )
-            || (value1 != null && value2 == null)
-            || !Objects.equals(value1, value2);
-    }
-
-    private ChangeEntry buildChangeEntry(String propertyName, Object oldValue, Object newValue)
+    private ChangeEntry buildChangeEntry(
+        String propertyName, PropertyDescription oldPropertyData, PropertyDescription newPropertyData)
     {
         ChangeEntry changeEntry = new ChangeEntry();
         changeEntry.setProperty(propertyName);
-        changeEntry.setOldValue(String.valueOf(oldValue));
-        changeEntry.setNewValue(String.valueOf(newValue));
+        changeEntry.setOldValue(oldPropertyData.getValue());
+        changeEntry.setNewValue(newPropertyData.getValue());
+        changeEntry.setType(oldPropertyData.getType());
 
         return changeEntry;
+    }
+
+    public void print()
+    {
+        System.out.println("--- Changes detector props");
+        changeEntries.forEach(x ->
+        {
+            System.out.println(x.getProperty() + " old[" + x.getOldValue() + "] new[" + x.getNewValue() + "]");
+        });
+        System.out.println("---- end detection ----");
     }
 }

@@ -3,11 +3,15 @@ package uk.ac.ebi.impc_prod_tracker.common.diff;
 import org.springframework.util.Assert;
 import uk.ac.ebi.impc_prod_tracker.common.tree.Node;
 
-public class CheckedClassesTree
+/**
+ * Keeps a tree with the classes that have been examined in an object inspection process.
+ * The parent is a class and the children are classes used by that class.
+ */
+class CheckedClassesTree
 {
     private Node<Class<?>> tree;
 
-    public CheckedClassesTree()
+    CheckedClassesTree()
     {
         tree = new Node<>();
     }
@@ -17,18 +21,46 @@ public class CheckedClassesTree
         return tree;
     }
 
-    public void setRootClass(Class<?> rootClass)
+    /**
+     * Sets the root of the tree
+     * @param rootClass Root
+     */
+    void setRootClass(Class<?> rootClass)
     {
         tree.setData(rootClass);
     }
-
 
     private Node<Class<?>> getNode(Class<?> clazz)
     {
         return tree.find(clazz);
     }
 
-    public boolean addRelation(Class<?> childClass, Class<?> parentClass)
+    /**
+     * Checks it the relation children-parent can be registered in the tree.
+     * @param childClass Class being used (children class).
+     * @param parentClass Class that used the childClass (parent class).
+     * @return True if the relation is valid to be added. False if not.
+     */
+    boolean canRelationBeAdded(Class<?> childClass, Class<?> parentClass)
+    {
+        boolean relationAlreadyExists = true;
+        if (!childClass.equals(parentClass))
+        {
+            Node<Class<?>> parentNode = getNode(parentClass);
+            if (parentNode != null)
+            {
+                relationAlreadyExists = parentNode.anyParentContains(childClass);
+            }
+        }
+        return !relationAlreadyExists;
+    }
+
+    /**
+     * Adds the relation in the tree if it does not exists
+     * @param childClass Child class.
+     * @param parentClass Parent class.
+     */
+    void addRelationIfNotExist(Class<?> childClass, Class<?> parentClass)
     {
         Assert.notNull(childClass, "childClass was null");
         Assert.notNull(parentClass, "parentClass was null");
@@ -38,38 +70,16 @@ public class CheckedClassesTree
             throw new IllegalArgumentException("Tree parent is null");
         }
 
-        boolean relationWasAdded = false;
-
-        // Not allow self references
-        if (!childClass.equals(parentClass))
+        if (canRelationBeAdded(childClass, parentClass))
         {
-            boolean relationAlreadyExists = relationExists(childClass, parentClass);
-
-            if (!relationAlreadyExists)
-            {
-                Node<Class<?>> parentNode = getNode(parentClass);
-                Node<Class<?>> newNode = new Node<>(childClass);
-                parentNode.addChild(newNode);
-                relationWasAdded = true;
-            }
+            Node<Class<?>> parentNode = getNode(parentClass);
+            Node<Class<?>> newNode = new Node<>(childClass);
+            parentNode.addChild(newNode);
         }
-        return relationWasAdded;
     }
 
-    public void print()
+    void print()
     {
         tree.print();
-    }
-
-    private boolean relationExists( Class<?> childClass, Class<?> parentClass)
-    {
-        boolean relationExists = false;
-        Node<Class<?>> parentNode = getNode(parentClass);
-        if (parentNode != null)
-        {
-            relationExists = parentNode.anyParentContains(childClass);
-        }
-
-        return relationExists;
     }
 }

@@ -20,9 +20,11 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Component;
 import uk.ac.ebi.impc_prod_tracker.common.Constants;
+import uk.ac.ebi.impc_prod_tracker.common.history.HistoryService;
 import uk.ac.ebi.impc_prod_tracker.conf.error_management.OperationFailedException;
 import uk.ac.ebi.impc_prod_tracker.conf.security.abac.ResourceAccessChecker;
-import uk.ac.ebi.impc_prod_tracker.controller.project.plan.UpdatePlanRequestDTO;
+import uk.ac.ebi.impc_prod_tracker.data.common.history.History;
+import uk.ac.ebi.impc_prod_tracker.web.dto.plan.UpdatePlanRequestDTO;
 import uk.ac.ebi.impc_prod_tracker.data.biology.outcome.Outcome;
 import uk.ac.ebi.impc_prod_tracker.data.biology.outcome.OutcomeRepository;
 import uk.ac.ebi.impc_prod_tracker.data.experiment.colony.Colony;
@@ -42,6 +44,7 @@ public class PlanServiceImpl implements PlanService
     private ResourceAccessChecker<Plan> resourceAccessChecker;
     private PlanUpdater planUpdater;
     private UpdatePlanRequestProcessor updatePlanRequestProcessor;
+    private HistoryService historyService;
 
     private static final String READ_PLAN_ACTION = "READ_PLAN";
     private static final String PLAN_TO_UPDATE_NOT_EXISTS_ERROR =
@@ -52,13 +55,14 @@ public class PlanServiceImpl implements PlanService
         OutcomeRepository outcome,
         ResourceAccessChecker<Plan> resourceAccessChecker,
         PlanUpdater planUpdater,
-        UpdatePlanRequestProcessor updatePlanRequestProcessor)
+        UpdatePlanRequestProcessor updatePlanRequestProcessor, HistoryService historyService)
     {
         this.planRepository = planRepository;
         this.outcomeRepository = outcome;
         this.resourceAccessChecker = resourceAccessChecker;
         this.planUpdater = planUpdater;
         this.updatePlanRequestProcessor = updatePlanRequestProcessor;
+        this.historyService = historyService;
     }
 
     @Override
@@ -138,7 +142,7 @@ public class PlanServiceImpl implements PlanService
     }
 
     @Override
-    public void updatePlan(String pin, UpdatePlanRequestDTO updatePlanRequestDTO)
+    public History updatePlan(String pin, UpdatePlanRequestDTO updatePlanRequestDTO)
     {
         Plan existingPlan = planRepository.findPlanByPin(pin);
         Plan newPlan = new Plan(existingPlan);
@@ -150,6 +154,12 @@ public class PlanServiceImpl implements PlanService
         }
         newPlan = updatePlanRequestProcessor.getPlanToUpdate(newPlan, updatePlanRequestDTO);
 
-        planUpdater.updatePlan(originalPlan, newPlan);
+        return planUpdater.updatePlan(originalPlan, newPlan);
+    }
+
+    @Override
+    public List<History> getPlanHistory(Plan plan)
+    {
+        return historyService.getHistoryByEntityNameAndEntityId(Plan.class.getSimpleName(), plan.getId());
     }
 }

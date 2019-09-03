@@ -18,7 +18,8 @@ package uk.ac.ebi.impc_prod_tracker.service.plan;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
-import uk.ac.ebi.impc_prod_tracker.controller.project.plan.UpdatePlanRequestDTO;
+import uk.ac.ebi.impc_prod_tracker.data.common.history.History;
+import uk.ac.ebi.impc_prod_tracker.web.dto.plan.UpdatePlanRequestDTO;
 import uk.ac.ebi.impc_prod_tracker.data.experiment.plan.Plan;
 import uk.ac.ebi.impc_prod_tracker.data.experiment.project.Project;
 import java.util.List;
@@ -52,6 +53,13 @@ public interface PlanService
      * @param pin Identifier of the plan.
      * @param updatePlanRequestDTO Values to update.
      */
-    void updatePlan(String pin, UpdatePlanRequestDTO updatePlanRequestDTO);
+    History updatePlan(String pin, UpdatePlanRequestDTO updatePlanRequestDTO);
+
+    /**
+     * Gets the history for a plan
+     * @param plan The plan.
+     * @return List of {@link History} with the trace of the changes for a plan.
+     */
+    List<History> getPlanHistory(Plan plan);
 
 }

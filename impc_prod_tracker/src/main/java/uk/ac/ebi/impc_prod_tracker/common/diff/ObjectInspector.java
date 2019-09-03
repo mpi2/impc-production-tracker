@@ -1,156 +1,131 @@
 package uk.ac.ebi.impc_prod_tracker.common.diff;
 
-import org.apache.commons.beanutils.BeanMap;
-import org.springframework.beans.BeanUtils;
-import org.springframework.util.Assert;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 /**
- * Inspects an object and retrieves a map with each property (accessible with a get) as the key and
- * an {@link PropertyValueData} as value.
- * Properties that are part of a nested object take the parent property name and appends it to its
- * own name, allowing to know that the property is a nested one.
+ * Class in charge of inspecting an object and retrieve its properties and the values of those
+ * properties. It also
  */
 class ObjectInspector
 {
-    private Map<String, PropertyValueData> propValMap;
+    private Map<String, PropertyDescription> map;
     private Object object;
-    private CheckedClassesTree checkedClassesTree = new CheckedClassesTree();
+    private CheckedClassesTree checkedClassesTree;
     private List<String> fieldsToIgnore;
 
     ObjectInspector(Object object, List<String> fieldsToIgnore)
     {
-        Assert.notNull(object, "object is null");
         this.object = object;
         this.fieldsToIgnore = new ArrayList<>(fieldsToIgnore);
-        this.fieldsToIgnore.addAll(Arrays.asList("class", "empty"));
-        propValMap = new HashMap<>();
-        init();
-    }
-
-    Map<String, PropertyValueData> getPropertyValueMap()
-    {
-        return propValMap;
-    }
-
-    Map<String, PropertyValueData> getSimpleValues()
-    {
-        return propValMap.entrySet().stream()
-            .filter(map -> map.getValue().isSimpleValue())
-            .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
-    }
-
-    void printSimple()
-    {
-        getSimpleValues().forEach((k,v) -> {
-            System.out.println(k + ": " + v.getValue());
-        });
-    }
-
-    private void init()
-    {
+        this.checkedClassesTree = new CheckedClassesTree();
+        map = new HashMap<>();
         checkedClassesTree.setRootClass(object.getClass());
-        buildPropsMap(propValMap, object, null);
+
+        check(object.getClass(), object, null);
     }
 
-    private PropertyValueData buildPropertyValueData(
-        String propertyName, Object object, PropertyValueData parentPropertyValueData)
+    private void check(Class<?> type, Object object, PropertyDefinition parentData)
     {
-        PropertyValueData propertyValueData = new PropertyValueData();
-        Class<?> type = PropertyChecker.getPropertyType(object, propertyName);
-        boolean mustSkip = mustSkipValueByType(type);
-        if (mustSkip)
+        List<PropertyDefinition> properties = PropertyChecker.getPropertiesDataByType(type);
+        String parentName = getParentName(parentData);
+        for (PropertyDefinition prop : properties)
         {
-            propertyValueData = null;
-        }
-        else
-        {
-            Object value = PropertyChecker.getValue(propertyName, object);
-            String name = propertyName;
-
-            if (parentPropertyValueData != null)
+            PropertyDescription data = getPropertyData(prop, object, parentName);
+            if (data != null)
             {
-                name = parentPropertyValueData.getName() + "." + name;
-            }
-            propertyValueData.setName(name);
-
-            propertyValueData.setType(type);
-            propertyValueData.setValue(value);
-            propertyValueData.setSimpleValue(PropertyChecker.isASimpleValue(type));
-        }
-
-        return propertyValueData;
-    }
-
-    private void buildPropsMap(
-        Map<String, PropertyValueData> map, Object object, PropertyValueData parentData)
-    {
-        BeanMap beanMap = new BeanMap(object);
-
-        for (Object propertyNameObject : beanMap.keySet())
-        {
-            String property = (String) propertyNameObject;
-            if (!mustIgnoredProperty(property))
-            {
-                checkProperty(object, parentData, map, (String) propertyNameObject);
+                prop.setName(data.getName());
+                map.put(data.getName(), data);
+                if (mustCheckInternalProperties(data, parentData))
+                {
+                    PropertyDefinition currentParent = getCurrentParent(parentData);
+                    checkedClassesTree.addRelationIfNotExist(data.getType(), currentParent.getType());
+                    check(data.getType(), data.getValue(), prop);
+                }
             }
         }
     }
 
-    private void checkProperty(
-        Object object,
-        PropertyValueData parentData,
-        Map<String, PropertyValueData> map,
-        String propertyName)
+    private PropertyDefinition getCurrentParent(PropertyDefinition parentData)
     {
-        PropertyValueData propertyValueData = buildPropertyValueData(propertyName, object, parentData);
-
-        if (propertyValueData != null)
+        PropertyDefinition propertyDefinition = parentData;
+        if (parentData == null)
         {
-            evaluateProperty(object, propertyValueData, map);
+            propertyDefinition = new PropertyDefinition(null, object.getClass());
         }
+        return propertyDefinition;
     }
 
-    private boolean mustIgnoredProperty(String property)
+    private String getParentName(PropertyDefinition parentData)
+    {
+        String parentName = null;
+        if (parentData != null)
+        {
+            parentName = parentData.getName();
+        }
+        return parentName;
+    }
+
+    private PropertyDescription getPropertyData(
+        PropertyDefinition property, Object object, String parentName)
+    {
+        PropertyDescription propertyDescription = null;
+        if (!mustIgnoreProperty(property.getName()))
+        {
+            propertyDescription = buildProperty(property, object, parentName);
+        }
+        return propertyDescription;
+    }
+
+    private PropertyDescription buildProperty(
+        PropertyDefinition property, Object object, String parentName)
+    {
+        PropertyEvaluator propertyEvaluator = new PropertyEvaluator(property, object, parentName);
+        propertyEvaluator.evaluate();
+        return propertyEvaluator.getData();
+    }
+
+    public Map<String, PropertyDescription> getMap()
+    {
+        return map;
+    }
+
+    private boolean mustIgnoreProperty(String property)
     {
         return fieldsToIgnore.contains(property);
     }
 
-    private boolean mustSkipValueByType(Class<?> type)
+    private boolean mustCheckInternalProperties(PropertyDescription data, PropertyDefinition parentData)
     {
-        return PropertyChecker.isCollection(type);
+        return !data.isSimpleValue() && !isCircularReference(data, parentData);
     }
 
-    private void evaluateProperty(
-        Object object, PropertyValueData propertyValueData, Map<String, PropertyValueData> map)
+    private boolean isCircularReference(PropertyDescription data, PropertyDefinition parentData)
     {
-        map.put(propertyValueData.getName(), propertyValueData);
+        return !checkedClassesTree.canRelationBeAdded(
+            data.getType(), getCurrentParent(parentData).getType());
+    }
 
-        if (shouldSearchRecursively(propertyValueData, object))
+
+    Map<String, Object> getValuesForSimpleProperties()
+    {
+        Map<String, Object> simpleProps = new HashMap<>(map.size());
+        for (Map.Entry<String, PropertyDescription> entry : map.entrySet())
         {
-            buildPropsMap(map, propertyValueData.getValue(), propertyValueData);
+            if (entry.getValue().isSimpleValue())
+            {
+                simpleProps.put(entry.getKey(), entry.getValue().getValue());
+            }
         }
+        return simpleProps;
     }
 
-    private boolean shouldSearchRecursively(PropertyValueData propertyValueData, Object object)
+    void printSimple()
     {
-        boolean result = false;
-        if (!propertyValueData.isSimpleValue())
-        {
-            result = classNotCheckedYet(object, propertyValueData);
-        }
-        return result;
+        getValuesForSimpleProperties().forEach((k, v) -> {
+            System.out.println(k + ": " + v);
+        });
     }
-
-    private boolean classNotCheckedYet(Object object, PropertyValueData propertyValueData)
-    {
-        return checkedClassesTree.addRelation(propertyValueData.getType(), object.getClass());
-    }
-
 }

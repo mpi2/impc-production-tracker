@@ -17,4 +17,9 @@ public class MouseGeneService {
         return mouseGeneRepository.findBySymbolStartingWith(symbol);
     }
 
+    public MouseGene getMouseGenesByMgiId (String mgi_id)
+    {
+        return mouseGeneRepository.findByMgiId(mgi_id);
+    }
+
 }

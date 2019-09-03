@@ -24,6 +24,12 @@
     "condition": "subject.role.name == 'admin' OR (subject.role.name == 'manager' AND {'manager', 'general'}.contains(resource.name))"
   },
   {
+    "name": "Read Public plans",
+    "description": "Permission to read public plans",
+    "target": "action == 'READ_PLAN' AND resource.resourcePrivacy.name() == 'PUBLIC'",
+    "condition": "true"
+  },
+  {
     "name": "Read Plans",
     "description": "Permission to read plans in same work unit",
     "target": "action == 'READ_PLAN' AND resource.resourcePrivacy.name() == 'RESTRICTED'",
