@@ -1,0 +1,80 @@
+image: docker:stable
+
+variables:
+   # When using dind service we need to instruct docker, to talk with the
+   # daemon started inside of the service. The daemon is available with
+   # a network connection instead of the default /var/run/docker.sock socket.
+   #
+   # The 'docker' hostname is the alias of the service container as described at
+   # https://docs.gitlab.com/ee/ci/docker/using_docker_images.html#accessing-the-services
+   #
+   # Note that if you're using the Kubernetes executor, the variable should be set to
+   # tcp://localhost:2375/ because of how the Kubernetes executor connects services
+   # to the job container
+   # DOCKER_HOST: tcp://localhost:2375/
+   #
+   # For non-Kubernetes executors, we use tcp://docker:2375/
+   DOCKER_HOST: tcp://docker:2375/
+   # When using dind, it's wise to use the overlayfs driver for
+   # improved performance.
+   DOCKER_DRIVER: overlay2
+   
+   # Since the docker:dind container and the runner container don’t share their root
+   # filesystem, the job’s working directory can be used as a mount point for children
+   # containers. For example, if you have files you want to share with a child container,
+   # you may create a subdirectory under /builds/$CI_PROJECT_PATH and use it as your
+   # mount point.
+   MOUNT_POINT: /builds/$CI_PROJECT_PATH/mnt
+   
+   # For EBI you need to override the definition of CI_REGISTRY to remove the port number
+   CI_REGISTRY: dockerhub.ebi.ac.uk
+   CI_REGISTRY_IMAGE: $CI_REGISTRY/$CI_PROJECT_PATH
+
+   #NOW: $(date '+%Y-%m-%d-%H-%M-%S')
+   #NOW: $(date '+%Y-%m-%d')
+   
+   # To solve the issue with the Docker in Docker 19.03 service.
+   # Logged as: GitLab.com CI jobs failing if using docker:stable-dind image
+   # see: https://gitlab.com/gitlab-com/gl-infra/production/issues/982
+   DOCKER_TLS_CERTDIR: ""
+
+services:
+   - docker:dind
+
+# Use this command to look at your docker environment
+# Note: This step can be overwritten by before_script sections in specific jobs.
+#
+#before_script:
+#   - docker info
+
+
+stages:
+   - build
+
+
+
+build_image:
+    stage: build
+    before_script:
+        - echo "${CI_REGISTRY_PASSWORD}" | docker login -u "${CI_REGISTRY_USER}" --password-stdin  ${CI_REGISTRY}
+    script:
+        - cd impc_prod_tracker
+        
+        # Try to pull the image from the registry so that it can be used as a cache for the docker build command
+        - docker pull $CI_REGISTRY_IMAGE:latest || true
+        
+        - docker build --cache-from $CI_REGISTRY_IMAGE:latest -t "${CI_REGISTRY_IMAGE}":"${CI_COMMIT_SHA:0:12}" -t "${CI_REGISTRY_IMAGE}":latest .  | tee ${MOUNT_POINT}/build.log
+        - docker push "${CI_REGISTRY_IMAGE}"  | tee ${MOUNT_POINT}/push.log
+
+        - docker logout ${CI_REGISTRY}
+
+        - |
+          if [[ "${DOCKER_HUB_PUSH}" == "true" ]]; then
+              
+              echo "${DOCKER_HUB_PSWD}" | docker login -u "${DOCKER_HUB_USER}" --password-stdin
+              docker tag "${CI_REGISTRY_IMAGE}":"${CI_COMMIT_SHA:0:12}" "${DOCKER_HUB_USER}"/"${DOCKER_HUB_REPO}":"${CI_COMMIT_SHA:0:12}"
+              docker tag "${CI_REGISTRY_IMAGE}":"${CI_COMMIT_SHA:0:12}" "${DOCKER_HUB_USER}"/"${DOCKER_HUB_REPO}":latest
+              docker push "${DOCKER_HUB_USER}"/"${DOCKER_HUB_REPO}"  | tee ${MOUNT_POINT}/dockerhub-push-latest.log
+              docker logout
+          fi    
+
