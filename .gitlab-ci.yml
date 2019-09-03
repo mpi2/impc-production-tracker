@@ -44,8 +44,8 @@ services:
 # Use this command to look at your docker environment
 # Note: This step can be overwritten by before_script sections in specific jobs.
 #
-#before_script:
-#   - docker info
+before_script:
+   - docker info
 
 
 stages:
@@ -55,10 +55,13 @@ stages:
 
 build_image:
     stage: build
-    before_script:
-        - echo "${CI_REGISTRY_PASSWORD}" | docker login -u "${CI_REGISTRY_USER}" --password-stdin  ${CI_REGISTRY}
+    
     script:
+    
         - cd impc_prod_tracker
+    
+        - echo "${CI_REGISTRY_PASSWORD}" | docker login -u "${CI_REGISTRY_USER}" --password-stdin  ${CI_REGISTRY}
+        
         
         # Try to pull the image from the registry so that it can be used as a cache for the docker build command
         - docker pull $CI_REGISTRY_IMAGE:latest || true
