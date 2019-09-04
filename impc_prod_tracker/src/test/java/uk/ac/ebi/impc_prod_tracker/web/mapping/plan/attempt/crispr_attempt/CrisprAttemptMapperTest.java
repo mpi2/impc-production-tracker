@@ -14,12 +14,15 @@ import uk.ac.ebi.impc_prod_tracker.data.biology.attempt.crispr_attempt.guide.Gui
 import uk.ac.ebi.impc_prod_tracker.data.biology.strain.Strain;
 import uk.ac.ebi.impc_prod_tracker.data.biology.strain.strain_type.StrainType;
 import uk.ac.ebi.impc_prod_tracker.service.plan.CrisprAttempService;
+import uk.ac.ebi.impc_prod_tracker.web.dto.plan.attempt.production.crispr_attempt.AssayDTO;
 import uk.ac.ebi.impc_prod_tracker.web.dto.plan.attempt.production.crispr_attempt.CrisprAttemptDTO;
 import uk.ac.ebi.impc_prod_tracker.web.dto.plan.attempt.production.crispr_attempt.GenotypePrimerDTO;
 import uk.ac.ebi.impc_prod_tracker.web.dto.plan.attempt.production.crispr_attempt.GuideDTO;
 import uk.ac.ebi.impc_prod_tracker.web.dto.plan.attempt.production.crispr_attempt.MutagenesisDonorDTO;
 import uk.ac.ebi.impc_prod_tracker.web.dto.plan.attempt.production.crispr_attempt.NucleaseDTO;
 import uk.ac.ebi.impc_prod_tracker.web.dto.plan.attempt.production.crispr_attempt.ReagentDTO;
+import uk.ac.ebi.impc_prod_tracker.web.dto.strain.StrainDTO;
+
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -123,10 +126,10 @@ public class CrisprAttemptMapperTest
 
         CrisprAttemptDTO crisprAttemptDTO = crisprAttemptMapper.toDto(crisprAttempt);
 
-        validate(crisprAttemptDTO);
+        validateDto(crisprAttemptDTO);
     }
 
-    private void validate(CrisprAttemptDTO crisprAttemptDTO)
+    private void validateDto(CrisprAttemptDTO crisprAttemptDTO)
     {
         assertThat("ImitsMiAttemptId", crisprAttemptDTO.getImitsMiAttemptId(), is(IMITS_MI_ATTEMPT_ID));
         assertThat(
@@ -198,7 +201,7 @@ public class CrisprAttemptMapperTest
         assertThat("Strain Name", crisprAttemptDTO.getStrain().getName(), is(STRAIN_NAME));
         assertThat("Guides", crisprAttemptDTO.getGuideDTOS(), notNullValue());
 
-        GuideDTO guideDTO1 = findGuideById(crisprAttemptDTO.getGuideDTOS(), GUIDE_ID_1);
+        GuideDTO guideDTO1 = findGuideDtoById(crisprAttemptDTO.getGuideDTOS(), GUIDE_ID_1);
         assertThat("Guides 1 null", guideDTO1, notNullValue());
         assertThat("Guides 1 sequence", guideDTO1.getSequence(), is (GUIDE_SEQ + GUIDE_ID_1));
         assertThat("Guides 1 start ", guideDTO1.getStart(), is (GUIDE_START_1));
@@ -215,7 +218,7 @@ public class CrisprAttemptMapperTest
             guideDTO1.getProtospacerSequence(),
             is(GUIDE_PROTOSPACER_SEQUENCE + GUIDE_ID_1));
 
-        GuideDTO guideDTO2 = findGuideById(crisprAttemptDTO.getGuideDTOS(), GUIDE_ID_2);
+        GuideDTO guideDTO2 = findGuideDtoById(crisprAttemptDTO.getGuideDTOS(), GUIDE_ID_2);
         assertThat("Guides 2 null", guideDTO2, notNullValue());
         assertThat("Guides 2 sequence", guideDTO2.getSequence(), is (GUIDE_SEQ + GUIDE_ID_2));
         assertThat("Guides 2 start ", guideDTO2.getStart(), is (GUIDE_START_2));
@@ -234,9 +237,13 @@ public class CrisprAttemptMapperTest
 
     }
 
-    private GuideDTO findGuideById(Collection<GuideDTO> guides, Long id)
+    private GuideDTO findGuideDtoById(Collection<GuideDTO> guideDTOS, Long id)
     {
-         return guides.stream().filter(t -> id.equals(t.getId())).findFirst().orElse(null);
+         return guideDTOS.stream().filter(t -> id.equals(t.getId())).findFirst().orElse(null);
+    }
+    private Guide findGuideById(Collection<Guide> guides, Long id)
+    {
+        return guides.stream().filter(t -> id.equals(t.getId())).findFirst().orElse(null);
     }
 
     private void addGuides(CrisprAttempt crisprAttempt)
@@ -323,6 +330,7 @@ public class CrisprAttemptMapperTest
     public void testToEntity()
     {
         DeliveryMethodType deliveryMethodType = new DeliveryMethodType();
+        deliveryMethodType.setName(DELIVERY_METHOD_TYPE_NAME);
         when(crisprAttempService.getDeliveryTypeByName("deliveryMethodTypeName")).thenReturn(deliveryMethodType);
 
         CrisprAttemptDTO crisprAttemptDTO = buildCrisprAttemptDto();
@@ -335,7 +343,116 @@ public class CrisprAttemptMapperTest
         CrisprAttempt crisprAttempt = crisprAttemptMapper.toEntity(crisprAttemptDTO);
 
         System.out.println(crisprAttempt);
+
+        validateEntity(crisprAttempt);
+    }
+
+    private void validateEntity(CrisprAttempt crisprAttempt)
+    {
         assertThat("crisprAttempt", crisprAttempt, notNullValue());
+        assertThat("ImitsMiAttemptId", crisprAttempt.getImitsMiAttemptId(), is(IMITS_MI_ATTEMPT_ID));
+        assertThat(
+            "MiDate", crisprAttempt.getMiDate(), is(MI_DATE));
+        assertThat("MiExternalRef", crisprAttempt.getMiExternalRef(), is(MI_EXTERNAL_REF));
+        assertThat("Experimental", crisprAttempt.getExperimental(), is(true));
+        assertThat(
+            "MutagenesisExternalRef",
+            crisprAttempt.getMutagenesisExternalRef(),
+            is(MUTAGENESIS_EXTERNAL_REF));
+        assertThat("Voltage", crisprAttempt.getVoltage(), is(VOLTAGE));
+        assertThat("NoOfPulses", crisprAttempt.getNoOfPulses(), is(NO_OF_PULSES));
+        assertThat(
+            "TotalEmbryosInjected",
+            crisprAttempt.getTotalEmbryosInjected(),
+            is(TOTAL_EMBRYOS_INJECTED));
+        assertThat(
+            "TotalEmbryosSurvived",
+            crisprAttempt.getTotalEmbryosSurvived(),
+            is(TOTAL_EMBRYOS_SURVIVED));
+        assertThat(
+            "EmbryoTransferDay", crisprAttempt.getEmbryoTransferDay(), is(EMBRYO_TRANSFER_DAY));
+        assertThat("Embryo2Cell", crisprAttempt.getEmbryo2Cell(), is(EMBRYO2CELL));
+        assertThat("TotalTransferred", crisprAttempt.getTotalTransferred(), is(TOTAL_TRANSFERED));
+        assertThat("NumFounderPups", crisprAttempt.getNumFounderPups(), is(NUM_FOUNDER_PUPS));
+        assertThat(
+            "NumFoundersSelectedForBreeding",
+            crisprAttempt.getNumFounderSelectedForBreeding(),
+            is(NUM_FOUNDER_SELECTED_FOR_BREEDING));
+        assertThat(
+            "DeliveryTypeMethodName",
+            crisprAttempt.getDeliveryMethodType().getName(),
+            is(DELIVERY_METHOD_TYPE_NAME));
+        assertThat("Comment", crisprAttempt.getComment(), is(COMMENT));
+        assertThat("Assay", crisprAttempt.getAssay(), notNullValue());
+        assertThat(
+            "Assay TypeName", crisprAttempt.getAssay().getAssayType().getName(), is(ASSAY_TYPE_NAME));
+        assertThat(
+            "Assay FounderNumAssays",
+            crisprAttempt.getAssay().getFounderNumAssays(),
+            is(NUM_FOUNDER_NUM_ASSAYS));
+        assertThat(
+            "Assay NumHdrG0Mutants",
+            crisprAttempt.getAssay().getNumHdrG0Mutants(),
+            is(NUM_HDRG0_MUTANTS));
+        assertThat(
+            "Assay NumDeletionG0Mutants",
+            crisprAttempt.getAssay().getNumDeletionG0Mutants(),
+            is(NUM_DELETION_G0_MUTANTS));
+        assertThat(
+            "Assay NumG0WhereMutationDetected",
+            crisprAttempt.getAssay().getNumG0WhereMutationDetected(),
+            is(NUM_G0_WHERE_MUTATION_DETECTED));
+        assertThat(
+            "Assay NumHdrG0MutantsAllDonorsInserted",
+            crisprAttempt.getAssay().getNumHdrG0MutantsAllDonorsInserted(),
+            is(NUM_HDR_G0_MUTANTS_ALL_DONORS_INSERTED));
+        assertThat(
+            "Assay NumHdrG0MutantsSubsetDonorsInserted",
+            crisprAttempt.getAssay().getNumHdrG0MutantsSubsetDonorsInserted(),
+            is(NUM_HDR_G0_MUTANTS_SUBSET_DONORS_INSERTED));
+        assertThat(
+            "Assay NumNhejG0Mutants",
+            crisprAttempt.getAssay().getNumNhejG0Mutants(),
+            is(NUM_NHEJ_G0_MUTANTS));
+        assertThat("Strain", crisprAttempt.getStrain(), notNullValue());
+        assertThat("Strain MgiId", crisprAttempt.getStrain().getMgiId(), is(MGI_ID));
+        assertThat("Strain MgiName", crisprAttempt.getStrain().getMgiName(), is(MGI_NAME));
+        assertThat("Strain Name", crisprAttempt.getStrain().getName(), is(STRAIN_NAME));
+        assertThat("Guides", crisprAttempt.getGuides(), notNullValue());
+
+        Guide guide1 = findGuideById(crisprAttempt.getGuides(), GUIDE_ID_1);
+        assertThat("Guides 1 null", guide1, notNullValue());
+        assertThat("Guides 1 sequence", guide1.getSequence(), is (GUIDE_SEQ + GUIDE_ID_1));
+        assertThat("Guides 1 start ", guide1.getStart(), is (GUIDE_START_1));
+        assertThat("Guides 1 stop ", guide1.getStop(), is (GUIDE_STOP_1));
+        assertThat("Guides 1 chr ", guide1.getChr(), is (GUIDE_CHR + GUIDE_ID_1));
+        assertThat("Guides 1 truncated ", guide1.getTruncatedGuide(), is(GUIDE_TRUNCATED_TRUE));
+        assertThat("Guides 1 strand ", guide1.getStrand(), is(GUIDE_STRAND + GUIDE_ID_1));
+        assertThat(
+            "Guides 1 Genome Build ", guide1.getGenomeBuild(), is(GUIDE_GENOME_BUILD + GUIDE_ID_1));
+        assertThat("Guides 1 Pam3 ", guide1.getPam3(), is(GUIDE_PAM3 + GUIDE_ID_1));
+        assertThat("Guides 1 Pam5 ", guide1.getPam5(), is(GUIDE_PAM5 + GUIDE_ID_1));
+        assertThat(
+            "Guides 1 ProtospacerSequence ",
+            guide1.getProtospacerSequence(),
+            is(GUIDE_PROTOSPACER_SEQUENCE + GUIDE_ID_1));
+
+        Guide guide2 = findGuideById(crisprAttempt.getGuides(), GUIDE_ID_2);
+        assertThat("Guides 2 null", guide2, notNullValue());
+        assertThat("Guides 2 sequence", guide2.getSequence(), is (GUIDE_SEQ + GUIDE_ID_2));
+        assertThat("Guides 2 start ", guide2.getStart(), is (GUIDE_START_2));
+        assertThat("Guides 2 stop ", guide2.getStop(), is (GUIDE_STOP_2));
+        assertThat("Guides 2 chr ", guide2.getChr(), is (GUIDE_CHR + GUIDE_ID_2));
+        assertThat("Guides 2 truncated ", guide2.getTruncatedGuide(), is(GUIDE_TRUNCATED_FALSE));
+        assertThat("Guides 2 strand ", guide2.getStrand(), is(GUIDE_STRAND + GUIDE_ID_2));
+        assertThat(
+            "Guides 2 Genome Build ", guide2.getGenomeBuild(), is(GUIDE_GENOME_BUILD + GUIDE_ID_2));
+        assertThat("Guides 2 Pam3 ", guide2.getPam3(), is(GUIDE_PAM3 + GUIDE_ID_2));
+        assertThat("Guides 2 Pam5 ", guide2.getPam5(), is(GUIDE_PAM5 + GUIDE_ID_2));
+        assertThat(
+            "Guides 2 ProtospacerSequence ",
+            guide2.getProtospacerSequence(),
+            is(GUIDE_PROTOSPACER_SEQUENCE + GUIDE_ID_2));
     }
 
     private void addNucleaseDTOs(CrisprAttemptDTO crisprAttemptDTO)
@@ -460,6 +577,25 @@ public class CrisprAttemptMapperTest
         crisprAttemptDTO.setEmbryo2Cell(EMBRYO2CELL);
         crisprAttemptDTO.setTotalTransferred(TOTAL_TRANSFERED);
         crisprAttemptDTO.setNumFounderPups(NUM_FOUNDER_PUPS);
+        crisprAttemptDTO.setNumFounderSelectedForBreeding(NUM_FOUNDER_SELECTED_FOR_BREEDING);
+        crisprAttemptDTO.setComment(COMMENT);
+        AssayDTO assayDTO = new AssayDTO();
+        assayDTO.setId(ASSAY_ID);
+        assayDTO.setTypeName(ASSAY_TYPE_NAME);
+        assayDTO.setFounderNumAssays(NUM_FOUNDER_NUM_ASSAYS);
+        assayDTO.setNumHdrG0Mutants(NUM_HDRG0_MUTANTS);
+        assayDTO.setNumDeletionG0Mutants(NUM_DELETION_G0_MUTANTS);
+        assayDTO.setNumG0WhereMutationDetected(NUM_G0_WHERE_MUTATION_DETECTED);
+        assayDTO.setNumHdrG0MutantsAllDonorsInserted(NUM_HDR_G0_MUTANTS_ALL_DONORS_INSERTED);
+        assayDTO.setNumHdrG0MutantsSubsetDonorsInserted(NUM_HDR_G0_MUTANTS_SUBSET_DONORS_INSERTED);
+        assayDTO.setNumNhejG0Mutants(NUM_NHEJ_G0_MUTANTS);
+        crisprAttemptDTO.setAssay(assayDTO);
+        StrainDTO strainDTO = new StrainDTO();
+        strainDTO.setId(STRAIN_ID);
+        strainDTO.setMgiId(MGI_ID);
+        strainDTO.setMgiName(MGI_NAME);
+        strainDTO.setName(STRAIN_NAME);
+        crisprAttemptDTO.setStrain(strainDTO);
 
         return crisprAttemptDTO;
     }
