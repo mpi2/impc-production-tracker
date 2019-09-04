@@ -3,16 +3,16 @@ package uk.ac.ebi.impc_prod_tracker.service.plan;
 import org.springframework.stereotype.Component;
 import uk.ac.ebi.impc_prod_tracker.data.biology.attempt.crispr_attempt.CrisprAttempt;
 import uk.ac.ebi.impc_prod_tracker.data.biology.attempt.crispr_attempt.CrisprAttemptRepository;
+import uk.ac.ebi.impc_prod_tracker.data.biology.attempt.crispr_attempt.delivery_type.DeliveryMethodType;
 import uk.ac.ebi.impc_prod_tracker.data.biology.attempt.crispr_attempt.nuclease.Nuclease;
 import uk.ac.ebi.impc_prod_tracker.data.biology.attempt.crispr_attempt.nuclease.NucleaseRepository;
-import uk.ac.ebi.impc_prod_tracker.data.biology.genotype_primer.GenotypePrimer;
-import uk.ac.ebi.impc_prod_tracker.data.biology.genotype_primer.GenotypePrimerRepository;
-import uk.ac.ebi.impc_prod_tracker.data.biology.mutagenesis_donor.MutagenesisDonor;
-import uk.ac.ebi.impc_prod_tracker.data.biology.mutagenesis_donor.MutagenesisDonorRepository;
-import uk.ac.ebi.impc_prod_tracker.data.experiment.assay_type.AssayType;
-import uk.ac.ebi.impc_prod_tracker.data.experiment.assay_type.AssayTypeRepository;
-import uk.ac.ebi.impc_prod_tracker.data.experiment.delivery_type.DeliveryType;
-import uk.ac.ebi.impc_prod_tracker.data.experiment.delivery_type.DeliveryTypeRepository;
+import uk.ac.ebi.impc_prod_tracker.data.biology.attempt.crispr_attempt.genotype_primer.GenotypePrimer;
+import uk.ac.ebi.impc_prod_tracker.data.biology.attempt.crispr_attempt.genotype_primer.GenotypePrimerRepository;
+import uk.ac.ebi.impc_prod_tracker.data.biology.attempt.crispr_attempt.mutagenesis_donor.MutagenesisDonor;
+import uk.ac.ebi.impc_prod_tracker.data.biology.attempt.crispr_attempt.mutagenesis_donor.MutagenesisDonorRepository;
+import uk.ac.ebi.impc_prod_tracker.data.biology.attempt.crispr_attempt.assay.assay_type.AssayType;
+import uk.ac.ebi.impc_prod_tracker.data.biology.attempt.crispr_attempt.assay.assay_type.AssayTypeRepository;
+import uk.ac.ebi.impc_prod_tracker.data.biology.attempt.crispr_attempt.delivery_type.DeliveryMethodTypeRepository;
 import java.util.List;
 import java.util.Optional;
 
@@ -24,7 +24,7 @@ public class CrisprAttempServiceImpl implements CrisprAttempService
     private NucleaseRepository nucleaseRepository;
     private MutagenesisDonorRepository mutagenesisDonorRepository;
     private AssayTypeRepository assayTypeRepository;
-    private DeliveryTypeRepository deliveryTypeRepository;
+    private DeliveryMethodTypeRepository deliveryTypeRepository;
 
     public CrisprAttempServiceImpl(
         CrisprAttemptRepository crisprAttemptRepository,
@@ -32,7 +32,7 @@ public class CrisprAttempServiceImpl implements CrisprAttempService
         NucleaseRepository nucleaseRepository,
         MutagenesisDonorRepository mutagenesisDonorRepository,
         AssayTypeRepository assayTypeRepository,
-        DeliveryTypeRepository deliveryTypeRepository)
+        DeliveryMethodTypeRepository deliveryTypeRepository)
     {
         this.crisprAttemptRepository = crisprAttemptRepository;
         this.genotypePrimerRepository = genotypePrimerRepository;
@@ -43,7 +43,7 @@ public class CrisprAttempServiceImpl implements CrisprAttempService
     }
 
     @Override
-    public Optional<CrisprAttempt> getCrisprAttemptByPlanId(Long planId)
+    public Optional<CrisprAttempt> getCrisprAttemptById(Long planId)
     {
         return crisprAttemptRepository.findById(planId);
     }
@@ -70,7 +70,7 @@ public class CrisprAttempServiceImpl implements CrisprAttempService
     }
 
     @Override
-    public DeliveryType getDeliveryTypeByName(String deliveryTypeName)
+    public DeliveryMethodType getDeliveryTypeByName(String deliveryTypeName)
     {
         return deliveryTypeRepository.findByName(deliveryTypeName);
     }

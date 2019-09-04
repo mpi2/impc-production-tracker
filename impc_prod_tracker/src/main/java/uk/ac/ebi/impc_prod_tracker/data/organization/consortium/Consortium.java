@@ -15,11 +15,11 @@
  *******************************************************************************/
 package uk.ac.ebi.impc_prod_tracker.data.organization.consortium;
 
+
+import lombok.*;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AccessLevel;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 import org.springframework.data.rest.core.annotation.RestResource;
 import uk.ac.ebi.impc_prod_tracker.data.BaseEntity;
 import uk.ac.ebi.impc_prod_tracker.data.organization.funder.Funder;
@@ -36,12 +36,11 @@ import javax.persistence.SequenceGenerator;
 import java.util.Set;
 
 @NoArgsConstructor(access= AccessLevel.PRIVATE, force=true)
-@Getter
-@Setter
+@Data
 @Entity
 @RestResource(rel = "consortia", path = "consortia")
-public class Consortium extends BaseEntity {
-
+public class Consortium extends BaseEntity
+{
     @Id
     @SequenceGenerator(name = "consortiumSeq", sequenceName = "CONSORTIUM_SEQ")
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "consortiumSeq")

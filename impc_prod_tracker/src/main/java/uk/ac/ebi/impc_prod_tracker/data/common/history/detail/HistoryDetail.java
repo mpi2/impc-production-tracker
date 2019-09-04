@@ -1,6 +1,7 @@
 package uk.ac.ebi.impc_prod_tracker.data.common.history.detail;
 
 import lombok.Data;
+import uk.ac.ebi.impc_prod_tracker.data.BaseEntity;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -11,7 +12,7 @@ import javax.persistence.SequenceGenerator;
 
 @Data
 @Entity
-public class HistoryDetail
+public class HistoryDetail extends BaseEntity
 {
     @Id
     @SequenceGenerator(name = "historyDetailSeq", sequenceName = "HISTORY_DETAIL_SEQ")

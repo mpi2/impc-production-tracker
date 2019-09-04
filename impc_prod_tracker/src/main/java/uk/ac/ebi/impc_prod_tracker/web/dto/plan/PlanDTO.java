@@ -15,31 +15,81 @@
  *******************************************************************************/
 package uk.ac.ebi.impc_prod_tracker.web.dto.plan;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.hateoas.RepresentationModel;
-import uk.ac.ebi.impc_prod_tracker.web.dto.common.history.HistoryDTO;
-import uk.ac.ebi.impc_prod_tracker.web.dto.plan.phenotype_plan.PhenotypePlanDTO;
-import uk.ac.ebi.impc_prod_tracker.web.dto.plan.production_plan.ProductionPlanDTO;
+import uk.ac.ebi.impc_prod_tracker.web.dto.plan.attempt.AttemptDTO;
+import uk.ac.ebi.impc_prod_tracker.web.dto.plan.attempt.phenotyping.PhenotypingAttemptDTO;
+import uk.ac.ebi.impc_prod_tracker.web.dto.plan.attempt.production.breeding_attempt.BreedingAttemptDTO;
+import uk.ac.ebi.impc_prod_tracker.web.dto.plan.attempt.production.crispr_attempt.CrisprAttemptDTO;
+import uk.ac.ebi.impc_prod_tracker.web.dto.status_stamps.StatusStampsDTO;
+
 import java.util.List;
 
 @Data
 @RequiredArgsConstructor
+@NoArgsConstructor
 public class PlanDTO extends RepresentationModel
 {
-    @JsonProperty("planDetails")
-    private PlanDetailsDTO planDetailsDTO;
+    @JsonIgnore
+    private Long id;
+
+    @NonNull
+    private String pin;
+
+    @NonNull
+    @JsonProperty("project_tpn")
+    private String tpn;
+
+    @JsonProperty("funder_name")
+    private String funderName;
+
+    @JsonProperty("consortium_name")
+    private String consortiumName;
+
+    @JsonProperty("work_group_name")
+    private String workGroupName;
+
+    @JsonProperty("work_unit_name")
+    private String workUnitName;
+
+    @JsonProperty("is_active")
+    private Boolean isActive;
+
+    @JsonProperty("status_name")
+    private String statusName;
+
+    @JsonProperty("status_dates")
+    private List<StatusStampsDTO> statusStampsDTOS;
+
+    @JsonProperty("privacy_name")
+    private String privacyName;
+
+    private String comment;
+
+    @JsonProperty("products_available_for_general_public")
+    private Boolean productsAvailableForGeneralPublic;
+
+    @JsonProperty("type_name")
+    private String planTypeName;
+
+    @JsonProperty("attempt_type_name")
+    private String attemptTypeName;
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    @JsonProperty("productionPlan")
-    private ProductionPlanDTO productionPlanDTO;
+    @JsonProperty("crispr_attempt_attributes")
+    private CrisprAttemptDTO crisprAttemptDTO;
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    @JsonProperty("phenotypePlan")
-    private PhenotypePlanDTO phenotypePlanDTO;
+    @JsonProperty("breeding_attempt_attributes")
+    private BreedingAttemptDTO breedingAttemptDTO;
 
-    private List<HistoryDTO> history;
-
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    @JsonProperty("phenotyping_attempt_attributes")
+    private PhenotypingAttemptDTO phenotypingAttemptDTO;
 }

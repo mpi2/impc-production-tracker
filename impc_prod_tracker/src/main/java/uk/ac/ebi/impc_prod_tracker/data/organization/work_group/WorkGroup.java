@@ -32,8 +32,7 @@ import javax.persistence.SequenceGenerator;
 import java.util.Set;
 
 @NoArgsConstructor(access= AccessLevel.PRIVATE, force=true)
-@Getter
-@Setter
+@Data
 @Entity
 //@EqualsAndHashCode( exclude = {"workUnits"}, callSuper = false)
 public class WorkGroup extends BaseEntity

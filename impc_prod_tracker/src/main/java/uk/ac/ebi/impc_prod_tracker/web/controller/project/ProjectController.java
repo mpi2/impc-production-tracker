@@ -17,23 +17,17 @@ package uk.ac.ebi.impc_prod_tracker.web.controller.project;
 
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import uk.ac.ebi.impc_prod_tracker.conf.error_management.OperationFailedException;
-import uk.ac.ebi.impc_prod_tracker.data.experiment.plan.Plan;
-import uk.ac.ebi.impc_prod_tracker.data.experiment.project.Project;
-import uk.ac.ebi.impc_prod_tracker.service.plan.PlanService;
+import uk.ac.ebi.impc_prod_tracker.data.biology.project.Project;
 import uk.ac.ebi.impc_prod_tracker.service.project.ProjectService;
 import uk.ac.ebi.impc_prod_tracker.web.dto.common.history.HistoryDTO;
 import uk.ac.ebi.impc_prod_tracker.web.dto.project.NewProjectRequestDTO;
 import uk.ac.ebi.impc_prod_tracker.web.dto.project.ProjectDTO;
-import uk.ac.ebi.impc_prod_tracker.web.dto.project.ProjectPlanDTO;
 import uk.ac.ebi.impc_prod_tracker.web.mapping.common.history.HistoryMapper;
-import uk.ac.ebi.impc_prod_tracker.web.mapping.plan.PlanMapper;
 import uk.ac.ebi.impc_prod_tracker.web.mapping.project.ProjectMapper;
+
 import java.util.List;
-import java.util.Optional;
 
 import static org.springframework.http.ResponseEntity.ok;
 
@@ -43,22 +37,16 @@ import static org.springframework.http.ResponseEntity.ok;
 class ProjectController
 {
     private ProjectService projectService;
-    private PlanService planService;
     private ProjectMapper projectMapper;
-    private PlanMapper planMapper;
     private HistoryMapper historyMapper;
 
     ProjectController(
         ProjectService projectService,
-        PlanService planService,
         ProjectMapper projectMapper,
-        PlanMapper planMapper,
         HistoryMapper historyMapper)
     {
         this.projectService = projectService;
-        this.planService = planService;
         this.projectMapper = projectMapper;
-        this.planMapper = planMapper;
         this.historyMapper = historyMapper;
     }
 
@@ -83,35 +71,16 @@ class ProjectController
     EntityModel<ProjectDTO> getProject(@PathVariable String tpn)
     {
         Project project = ProjectUtilities.getNotNullProjectByTpn(tpn);
+        // List<Plan> plans = planService.getPlansByProject(project);
         ProjectDTO projectDTO = projectMapper.projectToDTO(project);
 
         return new EntityModel<>(projectDTO);
     }
 
-    @GetMapping(value = {"/projects/{tpn}/plans/{pin}"})
-    EntityModel<ProjectPlanDTO> getProjectPlan(
-        @PathVariable String tpn, @PathVariable String pin)
-    {
-        Project project = ProjectUtilities.getNotNullProjectByTpn(tpn);
-        ProjectPlanDTO projectPlanDTO = new ProjectPlanDTO();
-        Optional<Plan> planOpt = findPlanInProject(project, pin);
-        if (planOpt.isPresent())
-        {
-            projectPlanDTO = planMapper.planToProjectPlanDTO(planOpt.get(), project);
-        }
-        return new EntityModel<>(projectPlanDTO);
-    }
-
-    private Optional<Plan> findPlanInProject(Project project, String pin)
-    {
-        List<Plan> plans = planService.getPlansByProject(project);
-        return plans.stream().filter(x -> pin.equals(x.getPin())).findFirst();
-    }
-
     /**
      *      * @api {post} / create a new project.
      */
-    @PostMapping(value = {"/createProject"})
+    @PostMapping(value = {"/projects"})
     private ResponseEntity createProject(@RequestBody NewProjectRequestDTO newProjectRequestDTO)
     {
         Project newProject = projectService.createProject(newProjectRequestDTO);

@@ -15,10 +15,7 @@
  *******************************************************************************/
 package uk.ac.ebi.impc_prod_tracker.data.organization.funder;
 
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import uk.ac.ebi.impc_prod_tracker.data.BaseEntity;
 import uk.ac.ebi.impc_prod_tracker.data.organization.consortium.Consortium;
 import uk.ac.ebi.impc_prod_tracker.data.organization.work_group.WorkGroup;
@@ -27,8 +24,7 @@ import javax.persistence.*;
 import java.util.Set;
 
 @NoArgsConstructor(access= AccessLevel.PRIVATE, force=true)
-@Getter
-@Setter
+@Data
 @Entity
 public class Funder extends BaseEntity
 {
@@ -55,11 +51,4 @@ public class Funder extends BaseEntity
         joinColumns = @JoinColumn(name = "funder_id"),
         inverseJoinColumns = @JoinColumn(name = "work_group_id"))
     private Set<WorkGroup> workGroups;
-
-//    @ManyToMany
-//    @JoinTable(
-//        name = "funder_work_unit",
-//        joinColumns = @JoinColumn(name = "funder_id"),
-//        inverseJoinColumns = @JoinColumn(name = "work_unit_id"))
-//    private Set<WorkUnit> workUnits;
 }
