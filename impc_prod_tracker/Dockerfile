@@ -9,7 +9,7 @@ COPY src /usr/src/myapp/src
 
 WORKDIR /usr/src/myapp
 
-RUN mvn clean package -o
+RUN mvn clean package
 
 
 # The final image should have a minimal number of layers
