@@ -3,8 +3,10 @@ package uk.ac.ebi.impc_prod_tracker.service.plan.engine;
 import org.springframework.stereotype.Component;
 import uk.ac.ebi.impc_prod_tracker.common.history.HistoryService;
 import uk.ac.ebi.impc_prod_tracker.conf.security.abac.spring.ContextAwarePolicyEnforcement;
-import uk.ac.ebi.impc_prod_tracker.data.experiment.plan.Plan;
-import uk.ac.ebi.impc_prod_tracker.data.experiment.plan.PlanRepository;
+
+import uk.ac.ebi.impc_prod_tracker.data.biology.plan.Plan;
+import uk.ac.ebi.impc_prod_tracker.data.biology.plan.PlanRepository;
+
 import uk.ac.ebi.impc_prod_tracker.data.common.history.History;
 
 @Component
@@ -63,7 +65,7 @@ public class PlanUpdaterImpl implements PlanUpdater
      */
     private void validateData(Plan newPlan)
     {
-        planValidator.validatePlan(newPlan);
+        planValidator.validate(newPlan);
     }
 
     /**

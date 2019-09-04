@@ -1,17 +1,18 @@
 package uk.ac.ebi.impc_prod_tracker.service.plan;
 
 import uk.ac.ebi.impc_prod_tracker.data.biology.attempt.crispr_attempt.CrisprAttempt;
+import uk.ac.ebi.impc_prod_tracker.data.biology.attempt.crispr_attempt.delivery_type.DeliveryMethodType;
 import uk.ac.ebi.impc_prod_tracker.data.biology.attempt.crispr_attempt.nuclease.Nuclease;
-import uk.ac.ebi.impc_prod_tracker.data.biology.genotype_primer.GenotypePrimer;
-import uk.ac.ebi.impc_prod_tracker.data.biology.mutagenesis_donor.MutagenesisDonor;
-import uk.ac.ebi.impc_prod_tracker.data.experiment.assay_type.AssayType;
-import uk.ac.ebi.impc_prod_tracker.data.experiment.delivery_type.DeliveryType;
+import uk.ac.ebi.impc_prod_tracker.data.biology.attempt.crispr_attempt.genotype_primer.GenotypePrimer;
+import uk.ac.ebi.impc_prod_tracker.data.biology.attempt.crispr_attempt.mutagenesis_donor.MutagenesisDonor;
+import uk.ac.ebi.impc_prod_tracker.data.biology.attempt.crispr_attempt.assay.assay_type.AssayType;
+
 import java.util.List;
 import java.util.Optional;
 
 public interface CrisprAttempService
 {
-    Optional<CrisprAttempt> getCrisprAttemptByPlanId(Long planId);
+    Optional<CrisprAttempt> getCrisprAttemptById(Long planId);
 
     List<GenotypePrimer> getGenotypePrimersByCrisprAttempt(CrisprAttempt crisprAttempt);
 
@@ -21,5 +22,5 @@ public interface CrisprAttempService
 
     AssayType getAssayTypeByName(String assayTypeName);
 
-    DeliveryType getDeliveryTypeByName(String deliveryTypeName);
+    DeliveryMethodType getDeliveryTypeByName(String deliveryTypeName);
 }

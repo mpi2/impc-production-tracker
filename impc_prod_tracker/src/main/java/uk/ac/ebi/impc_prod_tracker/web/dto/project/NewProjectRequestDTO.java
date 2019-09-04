@@ -6,18 +6,22 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotNull;
-import java.io.Serializable;
 import java.util.Set;
 
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class NewProjectRequestDTO implements Serializable {
-    @NotNull private String workUnit;
-    @NotNull private String workGroup;
-    @NotNull private Set<LocationDTO> locations;
-    @NotNull private Set<GenesDTO> genes;
+public class NewProjectRequestDTO
+{
+    @NotNull
+    private String workUnit;
+    @NotNull
+    private String workGroup;
+    @NotNull
+    private Set<LocationDTO> locations;
+    @NotNull
+    private Set<GenesDTO> genes;
 
     @Data
     public static class LocationDTO

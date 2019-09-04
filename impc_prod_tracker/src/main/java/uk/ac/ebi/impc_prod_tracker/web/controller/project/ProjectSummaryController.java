@@ -9,22 +9,18 @@ import org.springframework.hateoas.PagedModel;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
-import uk.ac.ebi.impc_prod_tracker.data.experiment.plan.Plan;
-import uk.ac.ebi.impc_prod_tracker.data.experiment.project.Project;
+import org.springframework.web.bind.annotation.*;
+import uk.ac.ebi.impc_prod_tracker.data.biology.plan.Plan;
+import uk.ac.ebi.impc_prod_tracker.data.biology.project.Project;
 import uk.ac.ebi.impc_prod_tracker.service.plan.PlanService;
 import uk.ac.ebi.impc_prod_tracker.service.project.ProjectService;
 import uk.ac.ebi.impc_prod_tracker.web.controller.plan.PlanController;
 import uk.ac.ebi.impc_prod_tracker.web.controller.util.LinkUtil;
-import uk.ac.ebi.impc_prod_tracker.web.dto.plan.PlanDetailsDTO;
+import uk.ac.ebi.impc_prod_tracker.web.dto.plan.PlanDTO;
 import uk.ac.ebi.impc_prod_tracker.web.dto.project.ProjectSummaryDTO;
 import uk.ac.ebi.impc_prod_tracker.web.mapping.plan.PlanMapper;
 import uk.ac.ebi.impc_prod_tracker.web.mapping.project.ProjectMapper;
+
 import java.util.List;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
@@ -112,8 +108,8 @@ class ProjectSummaryController
     {
         ProjectSummaryDTO projectSummaryDTO = projectMapper.projectToProjectSummaryDTO(project);
         List<Plan> plans = planService.getPlansByProject(project);
-        List<PlanDetailsDTO> planDetailsDTOs = planMapper.plansToPlanDetailsDTOs(plans);
-        projectSummaryDTO.setPlanDetailsDTO(planDetailsDTOs);
+        List<PlanDTO> planDTOs = planMapper.toDtos(plans);
+        projectSummaryDTO.setPlanDTO(planDTOs);
 
         return projectSummaryDTO;
     }

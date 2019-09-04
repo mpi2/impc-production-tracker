@@ -2,22 +2,17 @@ package uk.ac.ebi.impc_prod_tracker.common.history;
 
 import org.junit.Ignore;
 import org.junit.Test;
+import uk.ac.ebi.impc_prod_tracker.data.biology.attempt.Attempt;
 import uk.ac.ebi.impc_prod_tracker.data.biology.attempt.crispr_attempt.CrisprAttempt;
-import uk.ac.ebi.impc_prod_tracker.data.biology.genotype_primer.GenotypePrimer;
-import uk.ac.ebi.impc_prod_tracker.data.biology.guide.Guide;
-import uk.ac.ebi.impc_prod_tracker.data.experiment.plan.Plan;
-import uk.ac.ebi.impc_prod_tracker.data.experiment.privacy.Privacy;
+import uk.ac.ebi.impc_prod_tracker.data.biology.attempt.crispr_attempt.guide.Guide;
+import uk.ac.ebi.impc_prod_tracker.data.biology.plan.Plan;
+import uk.ac.ebi.impc_prod_tracker.data.biology.privacy.Privacy;
 import uk.ac.ebi.impc_prod_tracker.data.organization.work_unit.WorkUnit;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+
+import java.util.*;
 
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.notNullValue;
-import static org.hamcrest.Matchers.nullValue;
+import static org.hamcrest.Matchers.*;
 
 /**
  * Class to test {@link HistoryChangesAdaptor} using Plan objects as example.
@@ -105,6 +100,30 @@ public class HistoryChangesAdaptorUsingPlanObjectTest
     }
 
     @Test
+    public void testWhenNestedElementDataChanges()
+    {
+        Plan originalPlan = buildBasicPlan();
+        Plan newPlan = buildBasicPlan();
+        HistoryChangesAdaptor<Plan> historyChangesAdaptor =
+            new HistoryChangesAdaptor<>(Arrays.asList(), originalPlan, newPlan);
+
+        CrisprAttempt crisprAttempt = new CrisprAttempt();
+        crisprAttempt.setId(1L);
+        crisprAttempt.setComment("a");
+        originalPlan.setCrisprAttempt(crisprAttempt);
+
+        CrisprAttempt crisprAttempt1Modified = new CrisprAttempt();
+        crisprAttempt1Modified.setId(1L);
+        crisprAttempt1Modified.setComment("b");
+        newPlan.setCrisprAttempt(crisprAttempt1Modified);
+
+        List<ChangeDescription> changeDescriptionList = historyChangesAdaptor.getChanges();
+        System.out.println(changeDescriptionList);
+        assertThat("Unexpected number of changes:", changeDescriptionList.size(), is(1));
+
+    }
+
+    @Test
     public void testWhenComparingNullGuidesWithEmptyGuides()
     {
         Plan originalPlan = buildBasicPlan();
@@ -143,7 +162,7 @@ public class HistoryChangesAdaptorUsingPlanObjectTest
         Set<Guide> guides = new HashSet<>();
         Guide guide1 = new Guide();
         guide1.setId(1L);
-        guide1.setChromosome("X");
+        guide1.setChr("X");
         guide1.setSequence("GCCTCAATCTGCACAGTATTGGG");
         guide1.setStart(105880383);
         guide1.setStop(105880405);
@@ -152,7 +171,7 @@ public class HistoryChangesAdaptorUsingPlanObjectTest
 
         Guide guide2 = new Guide();
         guide2.setId(2L);
-        guide2.setChromosome("X");
+        guide2.setChr("X");
         guide2.setSequence("AAATCAATCTGCACAGTATTGGG");
         guide2.setStart(9999999);
         guide2.setStop(999999999);
@@ -163,10 +182,10 @@ public class HistoryChangesAdaptorUsingPlanObjectTest
         guides.add(guide2);
         crisprAttempt2.setGuides(guides);
         newPlan.setCrisprAttempt(crisprAttempt2);
-
         List<ChangeDescription> changeDescriptionList = historyChangesAdaptor.getChanges();
         System.out.println(changeDescriptionList);
         assertThat("Unexpected number of changes:", changeDescriptionList.size(), is(2));
+        System.out.println(changeDescriptionList);
 
         ChangeDescription changeDescriptionElement1 = getChange("crisprAttempt.guides#1", changeDescriptionList);
         assertThat("Unexpected property:", changeDescriptionElement1.getProperty(), is("crisprAttempt.guides#1"));
@@ -189,12 +208,14 @@ public class HistoryChangesAdaptorUsingPlanObjectTest
 
         CrisprAttempt crisprAttempt1 = new CrisprAttempt();
         crisprAttempt1.setGuides(null);
+        Attempt newAttempt1 = new Attempt();
         originalPlan.setCrisprAttempt(crisprAttempt1);
 
         CrisprAttempt crisprAttempt2 = new CrisprAttempt();
         Set<Guide> guides = new HashSet<>();
         Guide guide1 = new Guide();
-        guide1.setChromosome("X");
+        guide1.setId(1L);
+        guide1.setChr("X");
         guide1.setSequence("GCCTCAATCTGCACAGTATTGGG");
         guide1.setStart(105880383);
         guide1.setStop(105880405);
@@ -202,7 +223,8 @@ public class HistoryChangesAdaptorUsingPlanObjectTest
         guide1.setGrnaConcentration(null);
 
         Guide guide2 = new Guide();
-        guide2.setChromosome("X");
+        guide2.setId(2L);
+        guide2.setChr("X");
         guide2.setSequence("GCCTCAATCTGCACAGTATTGGG");
         guide2.setStart(105880383);
         guide2.setStop(105880405);
@@ -212,6 +234,7 @@ public class HistoryChangesAdaptorUsingPlanObjectTest
         guides.add(guide1);
         guides.add(guide2);
         crisprAttempt2.setGuides(new HashSet<>());
+        Attempt newAttempt2 = new Attempt();
         newPlan.setCrisprAttempt(crisprAttempt2);
 
         List<ChangeDescription> changeDescriptionList =  historyChangesAdaptor.getChanges();
@@ -220,30 +243,32 @@ public class HistoryChangesAdaptorUsingPlanObjectTest
 
     @Ignore
     //TODO: This should work once the Primers are added as reference to the CrisprAttempt object.
-    @Test
-    public void testWhenAddedPrimer()
-    {
-        Plan originalPlan = buildBasicPlan();
-        Plan newPlan = buildBasicPlan();
-        HistoryChangesAdaptor<Plan> historyChangesAdaptor =
-            new HistoryChangesAdaptor<>(Arrays.asList(), originalPlan, newPlan);
-
-        CrisprAttempt crisprAttempt1 = new CrisprAttempt();
-
-        originalPlan.setCrisprAttempt(crisprAttempt1);
-
-        CrisprAttempt crisprAttempt2 = new CrisprAttempt();
-        GenotypePrimer primer1 = new GenotypePrimer();
-        primer1.setChromosome("X");
-        primer1.setSequence("ACACCCCTAGTCTTGTGTCTCA");
-        primer1.setName("Dnah10 KO F");
-        primer1.setCrisprAttempt(crisprAttempt2);
-        newPlan.setCrisprAttempt(crisprAttempt2);
-
-        List<ChangeDescription> changeDescriptionList = historyChangesAdaptor.getChanges();
-        System.out.println(changeDescriptionList);
-        assertThat("Unexpected number of changes:", changeDescriptionList.size(), is(1));
-    }
+//    @Test
+//    public void testWhenAddedPrimer()
+//    {
+//        Plan originalPlan = buildBasicPlan();
+//        Plan newPlan = buildBasicPlan();
+//        HistoryChangesAdaptor<Plan> historyChangesAdaptor =
+//            new HistoryChangesAdaptor<>(Arrays.asList(), originalPlan, newPlan);
+//
+//        CrisprAttempt crisprAttempt1 = new CrisprAttempt();
+//        Attempt attempt1 = new Attempt();
+//        attempt1.setCrisprAttempt(crisprAttempt1);
+//
+//        originalPlan.setAttempt(attempt1);
+//
+//        CrisprAttempt crisprAttempt2 = new CrisprAttempt();
+//        GenotypePrimer primer1 = new GenotypePrimer();
+//        primer1.set
+//        primer1.setSequence("ACACCCCTAGTCTTGTGTCTCA");
+//        primer1.setName("Dnah10 KO F");
+//        primer1.setCrisprAttempt(crisprAttempt2);
+//        newPlan.setCrisprAttempt(crisprAttempt2);
+//
+//        List<ChangeDescription> changeDescriptionList = historyChangesAdaptor.getChanges();
+//        System.out.println(changeDescriptionList);
+//        assertThat("Unexpected number of changes:", changeDescriptionList.size(), is(1));
+//    }
 
     private Plan buildBasicPlan()
     {

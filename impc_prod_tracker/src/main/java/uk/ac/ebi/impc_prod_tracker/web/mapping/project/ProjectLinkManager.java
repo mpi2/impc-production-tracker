@@ -15,29 +15,28 @@
  *******************************************************************************/
 package uk.ac.ebi.impc_prod_tracker.web.mapping.project;
 
+import org.springframework.hateoas.server.EntityLinks;
 import org.springframework.stereotype.Component;
-import uk.ac.ebi.impc_prod_tracker.web.dto.plan.PlanDTO;
-import uk.ac.ebi.impc_prod_tracker.web.mapping.plan.PlanDTOLinkManager;
 import uk.ac.ebi.impc_prod_tracker.web.dto.project.ProjectDTO;
-
-import java.util.List;
 
 @Component
 public class ProjectLinkManager
 {
-    private PlanDTOLinkManager planDTOLinkManager;
-    public ProjectLinkManager(PlanDTOLinkManager planDTOLinkManager)
+    private final EntityLinks entityLinks;
+
+    public ProjectLinkManager(EntityLinks entityLinks)
     {
-        this.planDTOLinkManager = planDTOLinkManager;
+
+        this.entityLinks = entityLinks;
     }
 
     public ProjectDTO addLinks(ProjectDTO projectDTO)
     {
-        List<PlanDTO> planDTOList = projectDTO.getPlans();
-        for (PlanDTO planDTO : planDTOList)
-        {
-            planDTOLinkManager.addLinks(planDTO);
-        }
+//        List<PlanDTO> planDTOList = projectDTO.getPlans();
+//        for (PlanDTO planDTO : planDTOList)
+//        {
+//            planDTOLinkManager.addLinks(planDTO);
+//        }
 
         return projectDTO;
     }

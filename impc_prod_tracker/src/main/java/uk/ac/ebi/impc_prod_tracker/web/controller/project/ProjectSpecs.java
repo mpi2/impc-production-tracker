@@ -16,20 +16,16 @@
 package uk.ac.ebi.impc_prod_tracker.web.controller.project;
 
 import org.springframework.data.jpa.domain.Specification;
-import uk.ac.ebi.impc_prod_tracker.data.biology.intented_mouse_gene.IntendedMouseGene;
-import uk.ac.ebi.impc_prod_tracker.data.biology.intented_mouse_gene.IntendedMouseGene_;
-import uk.ac.ebi.impc_prod_tracker.data.experiment.plan.Plan;
-import uk.ac.ebi.impc_prod_tracker.data.experiment.plan.Plan_;
-import uk.ac.ebi.impc_prod_tracker.data.experiment.plan.type.PlanType;
-import uk.ac.ebi.impc_prod_tracker.data.experiment.plan.type.PlanType_;
-import uk.ac.ebi.impc_prod_tracker.data.experiment.privacy.Privacy;
-import uk.ac.ebi.impc_prod_tracker.data.experiment.privacy.Privacy_;
-import uk.ac.ebi.impc_prod_tracker.data.experiment.project.Project;
-import uk.ac.ebi.impc_prod_tracker.data.experiment.project.Project_;
-import uk.ac.ebi.impc_prod_tracker.data.experiment.project_mouse_gene.ProjectMouseGene;
-import uk.ac.ebi.impc_prod_tracker.data.experiment.project_mouse_gene.ProjectMouseGene_;
-import uk.ac.ebi.impc_prod_tracker.data.experiment.status.Status;
-import uk.ac.ebi.impc_prod_tracker.data.experiment.status.Status_;
+import uk.ac.ebi.impc_prod_tracker.data.biology.plan.Plan;
+import uk.ac.ebi.impc_prod_tracker.data.biology.plan.Plan_;
+import uk.ac.ebi.impc_prod_tracker.data.biology.plan.type.PlanType;
+import uk.ac.ebi.impc_prod_tracker.data.biology.plan.type.PlanType_;
+import uk.ac.ebi.impc_prod_tracker.data.biology.privacy.Privacy;
+import uk.ac.ebi.impc_prod_tracker.data.biology.privacy.Privacy_;
+import uk.ac.ebi.impc_prod_tracker.data.biology.project.Project;
+import uk.ac.ebi.impc_prod_tracker.data.biology.project.Project_;
+import uk.ac.ebi.impc_prod_tracker.data.biology.status.Status;
+import uk.ac.ebi.impc_prod_tracker.data.biology.status.Status_;
 import uk.ac.ebi.impc_prod_tracker.data.organization.work_group.WorkGroup;
 import uk.ac.ebi.impc_prod_tracker.data.organization.work_group.WorkGroup_;
 import uk.ac.ebi.impc_prod_tracker.data.organization.work_unit.WorkUnit;
@@ -86,10 +82,10 @@ public class ProjectSpecs
 
             List<Predicate> predicates = new ArrayList<>();
 
-            SetJoin<Project, ProjectMouseGene> projectSetJoin = root.join(Project_.projectMouseGenes);
-            Path<IntendedMouseGene> intendedMouseGenePath = projectSetJoin.get(ProjectMouseGene_.gene);
-            Path<String> symbolName = intendedMouseGenePath.get(IntendedMouseGene_.symbol);
-            predicates.add(symbolName.in(markerSymbols));
+//            SetJoin<Project, ProjectMouseGene> projectSetJoin = root.join(Project_.projectMouseGenes);
+//            Path<IntendedMouseGene> intendedMouseGenePath = projectSetJoin.get(ProjectMouseGene_.gene);
+//            Path<String> symbolName = intendedMouseGenePath.get(IntendedMouseGene_.symbol);
+//            predicates.add(symbolName.in(markerSymbols));
             query.distinct(true);
 
 

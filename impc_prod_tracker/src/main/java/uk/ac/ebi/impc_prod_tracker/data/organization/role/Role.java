@@ -17,22 +17,15 @@ package uk.ac.ebi.impc_prod_tracker.data.organization.role;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
-import org.hibernate.envers.Audited;
 import uk.ac.ebi.impc_prod_tracker.data.BaseEntity;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.SequenceGenerator;
+
+import javax.persistence.*;
 
 @NoArgsConstructor(access= AccessLevel.PRIVATE, force=true)
 @AllArgsConstructor
-@Getter
-@Setter
+@Data
 @Entity
 //@Audited
 public class Role extends BaseEntity

@@ -5,7 +5,6 @@ import org.slf4j.LoggerFactory;
 import uk.ac.ebi.impc_prod_tracker.common.diff.ChangeEntry;
 import uk.ac.ebi.impc_prod_tracker.common.diff.ChangesDetector;
 import uk.ac.ebi.impc_prod_tracker.common.diff.PropertyChecker;
-import uk.ac.ebi.impc_prod_tracker.conf.error_management.OperationFailedException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -15,6 +14,7 @@ import java.util.Map;
  * Class that takes two objects and gets a list of {@link ChangeDescription} objects with the changes.
  * It detects the cases where a change report in a property needs to keep a reference to an external
  * entity so the values can always be checked in case of posterior updates on that external entity.
+ *
  * @param <T> The type of the objects being compared.
  */
 class HistoryChangesAdaptor<T>
@@ -48,6 +48,7 @@ class HistoryChangesAdaptor<T>
 
     /**
      * Remove unwanted changes.
+     *
      * @param changeEntries Original list of changes.
      * @return Filtered changes
      */
@@ -69,8 +70,8 @@ class HistoryChangesAdaptor<T>
         boolean result = false;
         if (PropertyChecker.isCollection(changeEntry.getType()))
         {
-            Collection newValue = (Collection)changeEntry.getNewValue();
-            Collection oldValue = (Collection)changeEntry.getOldValue();
+            Collection newValue = (Collection) changeEntry.getNewValue();
+            Collection oldValue = (Collection) changeEntry.getOldValue();
             result =
                 (newValue == null && oldValue != null && oldValue.isEmpty())
                     || (newValue != null && newValue.isEmpty() && oldValue == null);
@@ -83,6 +84,7 @@ class HistoryChangesAdaptor<T>
     {
         ChangesDetector<T> changesDetector =
             new ChangesDetector<>(fieldsToExclude, originalEntity, newEntity);
+        changesDetector.print();
         return changesDetector.getChanges();
     }
 
@@ -92,8 +94,7 @@ class HistoryChangesAdaptor<T>
         if (PropertyMapGrouper.ROOT.equals(groupName))
         {
             addPropertiesForRootObject(propertyGroup);
-        }
-        else
+        } else
         {
             addPropertiesForNestedObjects(groupName, propertyGroup);
         }
@@ -104,26 +105,31 @@ class HistoryChangesAdaptor<T>
         ChangeEntry groupRoot = propertyGroup.get(groupName);
         propertyGroup.forEach((k, v) ->
         {
+            ChangeDescription changeDescription = null;
             if (propertyNeedsEntityIdReference(groupName, k))
             {
                 String idPropertyKey = groupName + "." + ID_PROPERTY_NAME;
                 ChangeEntry idProperty = propertyGroup.get(idPropertyKey);
                 if (idProperty == null)
                 {
-                    LOGGER.error("There is not an id property in the group " + groupName + ". " +
-                        "Probably the object evaluated does not have an id property that can be used."+
+                    LOGGER.info("There is not an id property in the group " + groupName + ". " +
+                        "Probably the object evaluated does not have an id property that can be used." +
                         ". The evaluated properties are: " + propertyGroup);
-                    throw new OperationFailedException(
-                        "Exception building the history (key "+ idPropertyKey +" does not exist)." +
-                        " The log contains more details.");
+                    changeDescription = createBasicChangeDescription(v);
                 }
-                ChangeDescription changeDescription = createChangeDescriptionWithReference(
-                    groupRoot.getType().getSimpleName(), idProperty, v);
-                changeDescriptions.add(changeDescription);
-            }
-            else if (propertyMapGrouper.isElementInAList(v.getProperty()))
+                else
+                {
+                    changeDescription = createChangeDescriptionWithReference(
+                        groupRoot.getType().getSimpleName(), idProperty, v);
+                }
+
+            } else if (propertyMapGrouper.isElementInAList(v.getProperty()))
             {
-                ChangeDescription changeDescription = createBasicChangeDescription(v);
+                changeDescription = createBasicChangeDescription(v);
+
+            }
+            if (changeDescription != null)
+            {
                 changeDescriptions.add(changeDescription);
             }
         });

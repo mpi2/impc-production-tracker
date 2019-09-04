@@ -5,8 +5,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import uk.ac.ebi.impc_prod_tracker.service.HumanGeneService;
-import uk.ac.ebi.impc_prod_tracker.service.MouseGeneService;
+import uk.ac.ebi.impc_prod_tracker.service.GeneService;
 
 import java.util.List;
 
@@ -14,27 +13,25 @@ import java.util.List;
 @RequestMapping("/api")
 public class GeneController {
 
-    private MouseGeneService mouseGeneService;
-    private HumanGeneService humanGeneService;
+    private GeneService geneService;
 
-    public GeneController (MouseGeneService mouseGeneService, HumanGeneService humanGeneService)
+    public GeneController (GeneService geneService)
     {
-        this.mouseGeneService = mouseGeneService;
-        this.humanGeneService = humanGeneService;
+        this.geneService = geneService;
     }
 
     @GetMapping(value = {"/genes"})
-    public List<?> getMouseGeneSymbols (@RequestParam String symbol)
+    public List<?> getGeneSymbols (@RequestParam String symbol)
     {
 //        if (specie.equals("mouse"))
 //        {
-//            return mouseGeneService.getMouseGenesBySymbol(StringUtils.capitalize(symbol));
+//            return geneService.getMouseGenesBySymbol(StringUtils.capitalize(symbol));
 //        }
 //        else if (specie.equals("human"))
 //        {
 //            return humanGeneService.getHumanGenesBySymbol(symbol.toUpperCase());
 //        }
 
-        return mouseGeneService.getMouseGenesBySymbol(StringUtils.capitalize(symbol));
+        return geneService.getGenesBySymbol(StringUtils.capitalize(symbol));
     }
 }
