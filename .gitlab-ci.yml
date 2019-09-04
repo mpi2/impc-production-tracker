@@ -55,25 +55,21 @@ stages:
 
 build_image:
     stage: build
-    
+    before_script:
+        - mkdir -p "$MOUNT_POINT"
+        - echo "${CI_REGISTRY_PASSWORD}" | docker login -u "${CI_REGISTRY_USER}" --password-stdin  ${CI_REGISTRY}
     script:
     
         - cd impc_prod_tracker
     
          
         # Try to pull the image from the registry so that it can be used as a cache for the docker build command
-        #- docker pull $CI_REGISTRY_IMAGE:latest || true
+        - docker pull $CI_REGISTRY_IMAGE:latest || true
         
-        - docker build --cache-from $CI_REGISTRY_IMAGE:latest -t "${CI_REGISTRY_IMAGE}":"${CI_COMMIT_SHA:0:12}" -t "${CI_REGISTRY_IMAGE}":latest . 
-        - echo "Finished the docker build."
-        - docker ps
-        
-        # | tee ${MOUNT_POINT}/build.log
-        
-        - echo "${CI_REGISTRY_PASSWORD}" | docker login -u "${CI_REGISTRY_USER}" --password-stdin  ${CI_REGISTRY}
-        
-        - docker push "${CI_REGISTRY_IMAGE}":latest  | tee ${MOUNT_POINT}/push.log
-
+        - docker build --cache-from $CI_REGISTRY_IMAGE:latest -t "${CI_REGISTRY_IMAGE}":"${CI_COMMIT_SHA:0:12}" -t "${CI_REGISTRY_IMAGE}":latest .  | tee ${MOUNT_POINT}/build.log
+                
+        - docker push "${CI_REGISTRY_IMAGE}"  | tee ${MOUNT_POINT}/push.log
+       
         - docker logout ${CI_REGISTRY}
 
         - |
