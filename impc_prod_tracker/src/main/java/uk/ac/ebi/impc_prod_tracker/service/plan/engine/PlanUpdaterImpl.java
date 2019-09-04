@@ -65,7 +65,7 @@ public class PlanUpdaterImpl implements PlanUpdater
      */
     private void validateData(Plan newPlan)
     {
-        planValidator.validatePlan(newPlan);
+        planValidator.validate(newPlan);
     }
 
     /**

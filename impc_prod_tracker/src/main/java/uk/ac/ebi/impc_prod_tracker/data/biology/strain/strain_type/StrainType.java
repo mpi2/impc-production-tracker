@@ -7,7 +7,7 @@ import uk.ac.ebi.impc_prod_tracker.data.biology.strain.Strain;
 import javax.persistence.*;
 import java.util.Set;
 
-@NoArgsConstructor(access= AccessLevel.PRIVATE, force=true)
+@NoArgsConstructor(access= AccessLevel.PUBLIC, force=true)
 @Data
 @Entity
 public class StrainType extends BaseEntity

@@ -8,6 +8,7 @@ import java.lang.reflect.Method;
 public class ObjectIdExtractor
 {
     private static final Logger LOGGER = LoggerFactory.getLogger(ObjectIdExtractor.class);
+    private static final Long NOT_EXIST_ID = -1L;
     /**
      * This method works under the assumption that the audited object has a property called id and
      * a getter to obtain that value.
@@ -15,15 +16,14 @@ public class ObjectIdExtractor
      */
     public static Long getObjectId(Object object)
     {
-        Long id = 0l;
+        Long id = null;
         try
         {
             Method getId = object.getClass().getMethod("getId");
             id = Long.parseLong(getId.invoke(object).toString());
         } catch (Exception e)
         {
-            LOGGER.error("Error obtaining id for entity "+ object + ". Error: " + e.getMessage());
-            e.printStackTrace();
+            LOGGER.info("Error obtaining id for entity "+ object + ". Error: " + e.getMessage());
         }
         return id;
     }

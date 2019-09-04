@@ -76,6 +76,7 @@ public class ChangesDetector<T>
     {
         List<ChangeEntry> changes = new ArrayList<>();
 
+
         if (PropertyChecker.isCollection(oldPropertyData.getType()))
         {
             Collection oldCollection = (Collection) oldPropertyData.getValue();

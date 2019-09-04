@@ -2,8 +2,8 @@ package uk.ac.ebi.impc_prod_tracker.data.biology.attempt.breeding_attempt;
 
 import lombok.*;
 import uk.ac.ebi.impc_prod_tracker.data.BaseEntity;
-import uk.ac.ebi.impc_prod_tracker.data.biology.attempt.Attempt;
 import uk.ac.ebi.impc_prod_tracker.data.biology.attempt.breeding_attempt.breeding_type.BreedingType;
+import uk.ac.ebi.impc_prod_tracker.data.biology.plan.Plan;
 import uk.ac.ebi.impc_prod_tracker.data.biology.strain.Strain;
 
 import javax.persistence.*;
@@ -20,7 +20,7 @@ public class BreedingAttempt extends BaseEntity
 
     @OneToOne
     @MapsId
-    private Attempt attempt;
+    private Plan plan;
 
     private Long imitsMouseAlleleModId;
 
