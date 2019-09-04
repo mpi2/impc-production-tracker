@@ -6,7 +6,10 @@ RUN mvn -f /usr/src/myapp/pom.xml dependency:resolve dependency:resolve-plugins
 
 # Build the application - usually this is the only part that gets rebuilt locally - use offline mode and skip tests
 COPY src /usr/src/myapp/src
-RUN mvn -f /usr/src/myapp/pom.xml clean package -o
+
+WORKDIR /usr/src/myapp
+
+RUN mvn clean package -o
 
 
 # The final image should have a minimal number of layers
