@@ -1,6 +1,7 @@
 package uk.ac.ebi.impc_prod_tracker.service.plan.engine;
 
 import org.springframework.stereotype.Component;
+import uk.ac.ebi.impc_prod_tracker.data.biology.attempt.crispr_attempt.CrisprAttempt;
 import uk.ac.ebi.impc_prod_tracker.data.biology.plan.Plan;
 import uk.ac.ebi.impc_prod_tracker.data.biology.privacy.Privacy;
 import uk.ac.ebi.impc_prod_tracker.data.biology.privacy.PrivacyRepository;
@@ -8,9 +9,10 @@ import uk.ac.ebi.impc_prod_tracker.data.organization.work_group.WorkGroup;
 import uk.ac.ebi.impc_prod_tracker.data.organization.work_group.WorkGroupRepository;
 import uk.ac.ebi.impc_prod_tracker.web.dto.plan.PlanDTO;
 import uk.ac.ebi.impc_prod_tracker.web.dto.plan.attempt.production.crispr_attempt.CrisprAttemptDTO;
+import uk.ac.ebi.impc_prod_tracker.web.mapping.plan.attempt.crispr_attempt.CrisprAttemptMapper;
 
 /**
- * Class in charge of analising a PlanDTO object and retrieve the Plan object
+ * Class in charge of analysing a PlanDTO object and retrieve the Plan object
  * intended to be updated.
  */
 @Component
@@ -18,16 +20,16 @@ public class UpdatePlanRequestProcessor
 {
     private PrivacyRepository privacyRepository;
     private WorkGroupRepository workGroupRepository;
-//    private CrisprAttemptDTOBuilder crisprAttemptDTOBuilder;
+    private CrisprAttemptMapper crisprAttemptMapper;
 
     public UpdatePlanRequestProcessor(
         PrivacyRepository privacyRepository,
-        WorkGroupRepository workGroupRepository)
-//        CrisprAttemptDTOBuilder crisprAttemptDTOBuilder)
+        WorkGroupRepository workGroupRepository,
+        CrisprAttemptMapper crisprAttemptMapper)
     {
         this.privacyRepository = privacyRepository;
         this.workGroupRepository = workGroupRepository;
-//        this.crisprAttemptDTOBuilder = crisprAttemptDTOBuilder;
+        this.crisprAttemptMapper = crisprAttemptMapper;
     }
 
     /**
@@ -42,19 +44,23 @@ public class UpdatePlanRequestProcessor
         if (planDTO != null)
         {
             updateBasicInformation(plan, planDTO);
+
+            if (planDTO.getCrisprAttemptDTO() != null)
+            {
+                setNewCrisprAttempt(plan, planDTO.getCrisprAttemptDTO());
+            }
         }
-//        ProductionPlanDTO productionPlanDTO = updatePlanRequestDTO.getProductionPlanDTO();
-//
-//        if (productionPlanDTO != null)
-//        {
-//            AttemptDTO attemptDTO = productionPlanDTO.getAttempt();
-//            if (attemptDTO != null)
-//            {
-//                CrisprAttemptDTO crisprAttemptDTO = attemptDTO.getCrisprAttempt();
-//                updatePlanWithCrisprAttemptDTO(plan, crisprAttemptDTO);
-//            }
-//        }
         return plan;
+    }
+
+    private void setNewCrisprAttempt(Plan plan, CrisprAttemptDTO crisprAttemptDTO)
+    {
+        crisprAttemptDTO.setCrisprAttemptId(plan.getId());
+        CrisprAttempt crisprAttempt = crisprAttemptMapper.toEntity(crisprAttemptDTO);
+        crisprAttempt.setImitsMiAttemptId(plan.getCrisprAttempt().getImitsMiAttemptId());
+        crisprAttempt.setPlan(plan);
+        crisprAttempt.setId(plan.getId());
+        plan.setCrisprAttempt(crisprAttempt);
     }
 
     private void updateBasicInformation(Plan plan, PlanDTO planDTO)
@@ -83,15 +89,5 @@ public class UpdatePlanRequestProcessor
         {
             plan.setComment(newComment);
         }
-    }
-
-    private void updatePlanWithCrisprAttemptDTO(Plan plan, CrisprAttemptDTO crisprAttemptDTO)
-    {
-//        CrisprAttempt crisprAttempt = crisprAttemptDTOBuilder.convertToEntity(crisprAttemptDTO);
-//        crisprAttempt.setImitsMiAttemptId(plan.getAttempt().getCrisprAttempt().getImitsMiAttemptId());
-//        crisprAttempt.getAttempt().setPlan(plan);
-//        crisprAttempt.setId(plan.getId());
-//
-//        plan.getAttempt().setCrisprAttempt(crisprAttempt);
     }
 }

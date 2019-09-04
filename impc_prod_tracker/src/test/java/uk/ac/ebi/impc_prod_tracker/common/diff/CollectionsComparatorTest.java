@@ -1,6 +1,5 @@
 package uk.ac.ebi.impc_prod_tracker.common.diff;
 
-
 import lombok.Data;
 import org.junit.Before;
 import org.junit.Test;
@@ -15,6 +14,8 @@ import static org.hamcrest.Matchers.nullValue;
 
 public class CollectionsComparatorTest
 {
+    ClassA classJustCreated1;
+    ClassA classJustCreated2;
     ClassA class1;
     ClassA class2;
     ClassA class3;
@@ -23,6 +24,14 @@ public class CollectionsComparatorTest
     @Before
     public void setup()
     {
+        classJustCreated1 = new ClassA();
+        classJustCreated1.setId(null);
+        classJustCreated1.setName("justCreated1");
+
+        classJustCreated2 = new ClassA();
+        classJustCreated2.setId(null);
+        classJustCreated2.setName("justCreated2");
+
         class1 = new ClassA();
         class1.setId(1L);
         class1.setName("name1");
@@ -131,6 +140,85 @@ public class CollectionsComparatorTest
         assertThat("Unexpected property name", change2.getProperty(), is("collection#2"));
         assertThat("Unexpected old value", change2.getOldValue(), is(nullValue()));
         assertThat("Unexpected new value", change2.getNewValue(), is(class2));
+    }
+
+    @Test
+    public void testRemovedElementToSet()
+    {
+        Set<ClassA> set1 = new HashSet<>();
+        set1.add(class1);
+        set1.add(class2);
+        Set<ClassA> set2 = new HashSet<>();
+        set2.add(class1);
+
+        CollectionsComparator<ClassA> collectionsComparator =
+            new CollectionsComparator<>("collection", set1, set2);
+
+        List<ChangeEntry> changes = collectionsComparator.getChanges();
+
+        assertThat("Exactly 1 change is expected:", changes.size(), is(1));
+
+        ChangeEntry change1 = getChange("collection#2", changes);
+        assertThat("Unexpected property name", change1.getProperty(), is("collection#2"));
+        assertThat("Unexpected old value", change1.getOldValue(), is(class2));
+        assertThat("Unexpected new value", change1.getNewValue(), is(nullValue()));
+    }
+
+    @Test
+    public void testRemovedElementToSetAndAddingNewElement()
+    {
+        Set<ClassA> set1 = new HashSet<>();
+        set1.add(class1);
+        set1.add(class2);
+        Set<ClassA> set2 = new HashSet<>();
+        set2.add(classJustCreated1);
+        set2.add(class1);
+
+        CollectionsComparator<ClassA> collectionsComparator =
+            new CollectionsComparator<>("collection", set1, set2);
+
+        List<ChangeEntry> changes = collectionsComparator.getChanges();
+
+        assertThat("Exactly 1 change is expected:", changes.size(), is(2));
+
+        ChangeEntry change1 = getChange("collection#2", changes);
+        assertThat("Unexpected property name", change1.getProperty(), is("collection#2"));
+        assertThat("Unexpected old value", change1.getOldValue(), is(class2));
+        assertThat("Unexpected new value", change1.getNewValue(), is(nullValue()));
+
+        ChangeEntry change2 = getChange("collection#-1", changes);
+        assertThat("Unexpected property name", change2.getProperty(), is("collection#-1"));
+        assertThat("Unexpected old value", change2.getOldValue(), is(nullValue()));
+        assertThat("Unexpected new value", change2.getNewValue(), is(classJustCreated1));
+    }
+
+    @Test
+    public void testAddedNewElementToSet()
+    {
+        Set<ClassA> set1 = new HashSet<>();
+        set1.add(class1);
+        Set<ClassA> set2 = new HashSet<>();
+        set2.add(classJustCreated1);
+        set2.add(classJustCreated2);
+        set2.add(class1);
+
+        CollectionsComparator<ClassA> collectionsComparator =
+            new CollectionsComparator<>("collection", set1, set2);
+
+        List<ChangeEntry> changes = collectionsComparator.getChanges();
+        System.out.println(changes);
+
+        assertThat("Exactly 2 change is expected:", changes.size(), is(2));
+
+        ChangeEntry change1 = getChange("collection#-1", changes);
+        assertThat("Unexpected property name", change1.getProperty(), is("collection#-1"));
+        assertThat("Unexpected old value", change1.getOldValue(), is(nullValue()));
+        assertThat("Unexpected new value", change1.getNewValue(), is(classJustCreated1));
+
+        ChangeEntry change2 = getChange("collection#-2", changes);
+        assertThat("Unexpected property name", change2.getProperty(), is("collection#-2"));
+        assertThat("Unexpected old value", change2.getOldValue(), is(nullValue()));
+        assertThat("Unexpected new value", change2.getNewValue(), is(classJustCreated2));
     }
 
     @Test

@@ -26,6 +26,10 @@ import uk.ac.ebi.impc_prod_tracker.conf.security.Resource;
 import uk.ac.ebi.impc_prod_tracker.conf.security.ResourcePrivacy;
 import uk.ac.ebi.impc_prod_tracker.data.BaseEntity;
 import uk.ac.ebi.impc_prod_tracker.data.biology.attempt.Attempt;
+import uk.ac.ebi.impc_prod_tracker.data.biology.attempt.attempt_type.AttemptType;
+import uk.ac.ebi.impc_prod_tracker.data.biology.attempt.breeding_attempt.BreedingAttempt;
+import uk.ac.ebi.impc_prod_tracker.data.biology.attempt.crispr_attempt.CrisprAttempt;
+import uk.ac.ebi.impc_prod_tracker.data.biology.attempt.phenotyping_attempt.PhenotypingAttempt;
 import uk.ac.ebi.impc_prod_tracker.data.biology.plan.flag.PlanFlag;
 import uk.ac.ebi.impc_prod_tracker.data.biology.plan.protocol.Protocol;
 import uk.ac.ebi.impc_prod_tracker.data.biology.plan.type.PlanType;
@@ -122,14 +126,28 @@ public class Plan extends BaseEntity implements Resource<Plan>
         this.consortium = plan.consortium;
         this.funder = plan.funder;
         this.comment = plan.comment;
-        this.attempt = plan.attempt;
         this.planFlags = new HashSet<>(plan.planFlags);
         this.protocols = new HashSet<>(plan.protocols);
         this.status = plan.status;
+        this.attemptType = plan.attemptType;
+        this.crisprAttempt = plan.crisprAttempt;
+        this.breedingAttempt = plan.breedingAttempt;
+        this.phenotypingAttempt = plan.phenotypingAttempt;
     }
 
-    @OneToOne(mappedBy = "plan")
-    private Attempt attempt;
+    @ManyToOne
+    private AttemptType attemptType;
+
+    @OneToOne(cascade=CascadeType.ALL, mappedBy = "plan")
+    private CrisprAttempt crisprAttempt;
+
+    @ToString.Exclude
+    @OneToOne(cascade=CascadeType.ALL, mappedBy = "plan")
+    private PhenotypingAttempt phenotypingAttempt;
+
+    @ToString.Exclude
+    @OneToOne(cascade=CascadeType.ALL, mappedBy = "plan")
+    private BreedingAttempt breedingAttempt;
 
     @Override
     @JsonIgnore

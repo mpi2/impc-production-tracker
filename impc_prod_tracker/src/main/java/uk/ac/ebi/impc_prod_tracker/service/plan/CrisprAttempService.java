@@ -12,7 +12,7 @@ import java.util.Optional;
 
 public interface CrisprAttempService
 {
-    Optional<CrisprAttempt> getCrisprAttemptByPlanId(Long planId);
+    Optional<CrisprAttempt> getCrisprAttemptById(Long planId);
 
     List<GenotypePrimer> getGenotypePrimersByCrisprAttempt(CrisprAttempt crisprAttempt);
 

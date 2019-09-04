@@ -17,6 +17,7 @@ class CollectionsComparator<T>
     private Collection<? extends T> newCollection;
 
     private List<ChangeEntry> changes = new ArrayList<>();
+    private Long nextFakeIdWhenIdNull = -1L;
 
     CollectionsComparator(
         String collectionName, Collection<? extends T> oldCollection, Collection<? extends T> newCollection)
@@ -70,7 +71,7 @@ class CollectionsComparator<T>
             oldCollection.forEach(oldElement ->
             {
                 Long oldElementId = ObjectIdExtractor.getObjectId(oldElement);
-                if (!hasCollectionElementWithId(newCollection, oldElementId))
+                if (oldElementId == null || !hasCollectionElementWithId(newCollection, oldElementId))
                 {
                     markAsDeleted(oldElement);
                 }
@@ -92,7 +93,7 @@ class CollectionsComparator<T>
         {
             newCollection.forEach(newElement -> {
                 Long newElementId = ObjectIdExtractor.getObjectId(newElement);
-                if (!hasCollectionElementWithId(oldCollection, newElementId))
+                if (newElementId == null || !hasCollectionElementWithId(oldCollection, newElementId))
                 {
                     markAsNew(newElement);
                 }
@@ -116,14 +117,21 @@ class CollectionsComparator<T>
             result = false;
         } else
         {
-            result = collection.stream().anyMatch(t -> ObjectIdExtractor.getObjectId(t).equals(id));
+            result = collection.stream().anyMatch(t -> id.equals(ObjectIdExtractor.getObjectId(t)));
         }
         return result;
     }
 
     private Optional<? extends T> getElementWithId(Collection<? extends T> collection, Long id)
     {
-        return collection.stream().filter(t -> ObjectIdExtractor.getObjectId(t).equals(id)).findFirst();
+        Optional<? extends T> result = Optional.empty();
+        if (collection != null)
+        {
+            result = collection.stream().filter(
+                t -> id.equals(ObjectIdExtractor.getObjectId(t))).findFirst();
+
+        }
+        return result;
     }
 
     private ChangeEntry buildBasicChangeInfo(Object element)
@@ -134,8 +142,10 @@ class CollectionsComparator<T>
         return changeEntry;
     }
 
-    private String getPropertyNameForElement(Object oldElement)
+    private String getPropertyNameForElement(Object element)
     {
-        return collectionName + "#" + ObjectIdExtractor.getObjectId(oldElement);
+        Long objectId = ObjectIdExtractor.getObjectId(element);
+        Long id = objectId == null ? nextFakeIdWhenIdNull-- : objectId;
+        return collectionName + "#" + id;
     }
 }

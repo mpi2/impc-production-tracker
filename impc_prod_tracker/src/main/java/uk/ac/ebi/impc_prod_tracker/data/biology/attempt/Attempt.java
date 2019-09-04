@@ -28,17 +28,17 @@ public class Attempt extends BaseEntity
     private Plan plan;
 
     @ManyToOne
-    private AttemptType attemptType;
+    private AttemptType type;
 
-    @ToString.Exclude
-    @OneToOne(cascade=CascadeType.ALL, mappedBy = "attempt")
-    private CrisprAttempt crisprAttempt;
-
-    @ToString.Exclude
-    @OneToOne(cascade=CascadeType.ALL, mappedBy = "attempt")
-    private PhenotypingAttempt phenotypingAttempt;
-
-    @ToString.Exclude
-    @OneToOne(cascade=CascadeType.ALL, mappedBy = "attempt")
-    private BreedingAttempt breedingAttempt;
+//    @ToString.Exclude
+//    @OneToOne(cascade=CascadeType.ALL, mappedBy = "attempt")
+//    private CrisprAttempt crisprAttempt;
+//
+//    @ToString.Exclude
+//    @OneToOne(cascade=CascadeType.ALL, mappedBy = "attempt")
+//    private PhenotypingAttempt phenotypingAttempt;
+//
+//    @ToString.Exclude
+//    @OneToOne(cascade=CascadeType.ALL, mappedBy = "attempt")
+//    private BreedingAttempt breedingAttempt;
 }

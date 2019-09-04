@@ -48,6 +48,8 @@ public interface PlanService
     Page<Plan> getPlansBySpec(Specification<Plan> specification, Pageable pageable);
     Page<Plan> getPlansBySpecPro(Specification<Project> specification, Pageable pageable);
 
+    Plan getNotNullPlanByPin(String pin);
+
     /**
      * Updates a plan.
      * @param pin Identifier of the plan.

@@ -43,7 +43,7 @@ public class CrisprAttempServiceImpl implements CrisprAttempService
     }
 
     @Override
-    public Optional<CrisprAttempt> getCrisprAttemptByPlanId(Long planId)
+    public Optional<CrisprAttempt> getCrisprAttemptById(Long planId)
     {
         return crisprAttemptRepository.findById(planId);
     }

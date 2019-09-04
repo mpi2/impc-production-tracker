@@ -69,12 +69,7 @@ public class PlanController
 
     private Plan getNotNullPlanByPin(String pin)
     {
-        Plan plan = planService.getPlanByPin(pin);
-        if (plan == null)
-        {
-            throw new OperationFailedException(
-                String.format("Plan %s does not exist.", pin), HttpStatus.NOT_FOUND);
-        }
+        Plan plan = planService.getNotNullPlanByPin(pin);
         return plan;
     }
 

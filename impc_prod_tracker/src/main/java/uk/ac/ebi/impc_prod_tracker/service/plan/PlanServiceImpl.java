@@ -47,8 +47,8 @@ public class PlanServiceImpl implements PlanService
     private HistoryService historyService;
 
     private static final String READ_PLAN_ACTION = "READ_PLAN";
-    private static final String PLAN_TO_UPDATE_NOT_EXISTS_ERROR =
-        "The plan %s that you are trying to update does not exist.";
+    private static final String PLAN_NOT_EXISTS_ERROR =
+        "The plan[%s] does not exist.";
 
     PlanServiceImpl(
         PlanRepository planRepository,
@@ -67,16 +67,17 @@ public class PlanServiceImpl implements PlanService
     }
 
     @Override
+    //TODO
     public Plan getProductionPlanRefByPhenotypePlan(Plan phenotypePlan)
     {
         Plan plan = null;
-        if (Constants.PHENOTYPE_TYPE.equals(phenotypePlan.getPlanType().getName()))
-        {
-            Attempt attempt = phenotypePlan.getAttempt();
-            AttemptParentOutcome attemptParentOutcome = attemptParentOutcomeRepository.findByAttempt(attempt);
-            Long productionPlanId = attemptParentOutcome.getParentOutcome().getAttempt().getId();
-            plan = planRepository.findPlanById(productionPlanId);
-        }
+//        if (Constants.PHENOTYPE_TYPE.equals(phenotypePlan.getPlanType().getName()))
+//        {
+//            Attempt attempt = phenotypePlan.getAttempt();
+//            AttemptParentOutcome attemptParentOutcome = attemptParentOutcomeRepository.findByAttempt(attempt);
+//            Long productionPlanId = attemptParentOutcome.getParentOutcome().getAttempt().getId();
+//            plan = planRepository.findPlanById(productionPlanId);
+//        }
 
         return plan;
     }
@@ -91,6 +92,18 @@ public class PlanServiceImpl implements PlanService
     public Page<Plan> getPlansBySpecPro(Specification<Project> specification, Pageable pageable)
     {
         return null;
+    }
+
+    @Override
+    public Plan getNotNullPlanByPin(String pin)
+        throws OperationFailedException
+    {
+        Plan plan = planRepository.findPlanByPin(pin);
+        if (plan == null)
+        {
+            throw new OperationFailedException(String.format(PLAN_NOT_EXISTS_ERROR, pin));
+        }
+        return plan;
     }
 
 
@@ -142,14 +155,10 @@ public class PlanServiceImpl implements PlanService
     @Override
     public History updatePlan(String pin, PlanDTO planDTO)
     {
-        Plan existingPlan = planRepository.findPlanByPin(pin);
+        Plan existingPlan = getNotNullPlanByPin(pin);
         Plan newPlan = new Plan(existingPlan);
         Plan originalPlan  = new Plan(existingPlan);
-        if (originalPlan == null)
-        {
-            throw new OperationFailedException(
-                String.format(PLAN_TO_UPDATE_NOT_EXISTS_ERROR, pin));
-        }
+
         newPlan = updatePlanRequestProcessor.getPlanToUpdate(newPlan, planDTO);
 
         return planUpdater.updatePlan(originalPlan, newPlan);

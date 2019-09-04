@@ -7,7 +7,9 @@ import uk.ac.ebi.impc_prod_tracker.web.dto.plan.attempt.production.crispr_attemp
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Component
 public class GuideMapper
@@ -33,5 +35,21 @@ public class GuideMapper
             guides.forEach(guide -> guideDTOS.add(toDto(guide)));
         }
         return guideDTOS;
+    }
+
+    public Guide toEntity(GuideDTO guideDTO)
+    {
+        Guide guide = modelMapper.map(guideDTO, Guide.class);
+        return guide;
+    }
+
+    public Set<Guide> toEntities(Collection<GuideDTO> guideDTOs)
+    {
+        Set<Guide> guides = new HashSet<>();
+        if (guideDTOs != null)
+        {
+            guideDTOs.forEach(guideDTO -> guides.add(toEntity(guideDTO)));
+        }
+        return guides;
     }
 }

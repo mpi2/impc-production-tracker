@@ -14,6 +14,9 @@ import java.util.List;
 public class CrisprAttemptDTO
 {
     @JsonIgnore
+    private Long crisprAttemptId;
+
+    @JsonIgnore
     private Long imitsMiAttemptId;
 
     @JsonProperty("mi_date")
@@ -32,10 +35,10 @@ public class CrisprAttemptDTO
     @JsonProperty("delivery_type_method_name")
     private String deliveryTypeMethodName;
 
-    private Integer voltage;
+    private Double voltage;
 
     @JsonProperty("number_of_pulses")
-    private Integer numberOfPulses;
+    private Integer noOfPulses;
 
     @JsonProperty("nucleases_attributes")
     private List<NucleaseDTO> nucleaseDTOS;
@@ -52,19 +55,30 @@ public class CrisprAttemptDTO
     @JsonProperty("genotype_primers_attributes")
     private List<GenotypePrimerDTO> genotypePrimerDTOS;
 
-    private Integer total_embryos_injected;
-    private Integer total_embryos_survived;
-    private String embryo_transfer_day;
-    private Integer embryo_2_cell;
-    private Integer total_transferred;
-    private Integer num_founder_pups;
+    @JsonProperty("total_embryos_injected")
+    private Integer totalEmbryosInjected;
+
+    @JsonProperty("total_embryos_survived")
+    private Integer totalEmbryosSurvived;
+
+    @JsonProperty("embryo_transfer_day")
+    private String embryoTransferDay;
+
+    @JsonProperty("embryo_2_cell")
+    private String embryo2Cell;
+
+    @JsonProperty("total_transferred")
+    private Integer totalTransferred;
+
+    @JsonProperty("num_founder_pups")
+    private Integer numFounderPups;
 
     @JsonProperty("assay_attributes")
-    private AssayDTO assayDTO;
+    private AssayDTO assay;
 
     @JsonProperty("num_founders_selected_for_breeding")
-    private Integer numFoundersSelectedForBreeding;
+    private Integer numFounderSelectedForBreeding;
 
     @JsonProperty("strain_injected_attributes")
-    private StrainDTO strainDTO;
+    private StrainDTO strain;
 }
