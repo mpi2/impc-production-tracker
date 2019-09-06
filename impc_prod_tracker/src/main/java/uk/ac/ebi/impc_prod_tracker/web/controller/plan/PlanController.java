@@ -15,6 +15,7 @@
  *******************************************************************************/
 package uk.ac.ebi.impc_prod_tracker.web.controller.plan;
 
+import org.springframework.hateoas.server.ExposesResourceFor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import uk.ac.ebi.impc_prod_tracker.conf.error_management.OperationFailedException;
@@ -28,8 +29,9 @@ import uk.ac.ebi.impc_prod_tracker.web.mapping.plan.PlanMapper;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/plans")
 @CrossOrigin(origins="*")
+@ExposesResourceFor(PlanDTO.class)
 public class PlanController
 {
     private HistoryMapper historyMapper;
@@ -43,14 +45,14 @@ public class PlanController
         this.planMapper = planMapper;
     }
 
-    @GetMapping(value = {"/plans"})
-    public List<PlanDTO> getPlans()
+    @GetMapping
+    public List<PlanDTO> plans()
     {
         return planMapper.toDtos(planService.getPlans());
     }
 
-    @GetMapping(value = {"/plans/{pin}"})
-    public PlanDTO getPlan(@PathVariable String pin)
+    @GetMapping(value = {"/{id}"})
+    public PlanDTO plan(@PathVariable("id") String pin)
     {
         Plan plan = getNotNullPlanByPin(pin);
 

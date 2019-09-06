@@ -127,4 +127,10 @@ public class AapSystemSubject implements SystemSubject
             workUnit = person.getWorkUnit();
         }
     }
+
+    @Override
+    public Boolean isAdmin()
+    {
+        return "admin".equalsIgnoreCase(role.getName());
+    }
 }

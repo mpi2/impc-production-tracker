@@ -27,7 +27,6 @@ import uk.ac.ebi.impc_prod_tracker.data.biology.assignment_status.AssignmentStat
 import uk.ac.ebi.impc_prod_tracker.data.biology.plan.Plan;
 import uk.ac.ebi.impc_prod_tracker.data.biology.project.Project;
 import uk.ac.ebi.impc_prod_tracker.data.biology.project.ProjectRepository;
-
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.transaction.Transactional;
@@ -52,12 +51,16 @@ public class ProjectServiceImpl implements ProjectService
     @PersistenceContext
     private EntityManager em;
 
-
-
     @Override
     public List<Project> getProjects()
     {
         return projectRepository.findAll();
+    }
+
+    @Override
+    public Page<Project> getProjects(Pageable pageable)
+    {
+        return projectRepository.findAll(pageable);
     }
 
     @Override
@@ -68,7 +71,7 @@ public class ProjectServiceImpl implements ProjectService
     }
 
     @Override
-    public Page<Project> getProjectsBySpecPro(
+    public Page<Project> getProjects(
         Specification<Project> specification, Pageable pageable)
     {
         return projectRepository.findAll(specification, pageable);

@@ -23,7 +23,6 @@ import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.hateoas.RepresentationModel;
-import uk.ac.ebi.impc_prod_tracker.web.dto.plan.attempt.AttemptDTO;
 import uk.ac.ebi.impc_prod_tracker.web.dto.plan.attempt.phenotyping.PhenotypingAttemptDTO;
 import uk.ac.ebi.impc_prod_tracker.web.dto.plan.attempt.production.breeding_attempt.BreedingAttemptDTO;
 import uk.ac.ebi.impc_prod_tracker.web.dto.plan.attempt.production.crispr_attempt.CrisprAttemptDTO;

@@ -12,18 +12,15 @@ import java.util.List;
 public class ProjectMapper
 {
     private ProjectDTOBuilder projectDTOBuilder;
-    private ProjectLinkManager projectLinkManager;
 
-    public ProjectMapper(ProjectDTOBuilder projectDTOBuilder, ProjectLinkManager projectLinkManager)
+    public ProjectMapper(ProjectDTOBuilder projectDTOBuilder)
     {
         this.projectDTOBuilder = projectDTOBuilder;
-        this.projectLinkManager = projectLinkManager;
     }
 
     public ProjectDTO projectToDTO(Project project)
     {
         ProjectDTO projectDTO = projectDTOBuilder.buildProjectDTOFromProject(project);
-        projectLinkManager.addLinks(projectDTO);
         return projectDTO;
     }
 
@@ -32,20 +29,5 @@ public class ProjectMapper
         List<ProjectDTO> projectDTOList = new ArrayList<>();
         project.forEach(p -> projectDTOList.add(projectToDTO(p)));
         return projectDTOList;
-    }
-
-//    public ProjectDetailsDTO projectToProjectDetailsDTO(Project project)
-//    {
-//        return projectDTOBuilder.buildProjectDetailsDTOFromProject(project);
-//    }
-
-    public ProjectSummaryDTO projectToProjectSummaryDTO(Project project)
-    {
-        ProjectSummaryDTO projectSummaryDTO = new ProjectSummaryDTO();
-
-        projectSummaryDTO.setProjectDTO(
-            projectDTOBuilder.buildProjectDTOFromProject(project));
-
-        return projectSummaryDTO;
     }
 }

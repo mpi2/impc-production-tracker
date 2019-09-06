@@ -16,6 +16,8 @@
 package uk.ac.ebi.impc_prod_tracker.web.controller.project;
 
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.stereotype.Component;
+import uk.ac.ebi.impc_prod_tracker.conf.security.abac.spring.SubjectRetriever;
 import uk.ac.ebi.impc_prod_tracker.data.biology.plan.Plan;
 import uk.ac.ebi.impc_prod_tracker.data.biology.plan.Plan_;
 import uk.ac.ebi.impc_prod_tracker.data.biology.plan.type.PlanType;
@@ -30,7 +32,6 @@ import uk.ac.ebi.impc_prod_tracker.data.organization.work_group.WorkGroup;
 import uk.ac.ebi.impc_prod_tracker.data.organization.work_group.WorkGroup_;
 import uk.ac.ebi.impc_prod_tracker.data.organization.work_unit.WorkUnit;
 import uk.ac.ebi.impc_prod_tracker.data.organization.work_unit.WorkUnit_;
-
 import javax.persistence.criteria.Path;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.SetJoin;
@@ -40,8 +41,35 @@ import java.util.List;
 /**
  * This class creates the filters needed when searching projects.
  */
+@Component
 public class ProjectSpecs
 {
+    private SubjectRetriever subjectRetriever;
+
+    public ProjectSpecs(SubjectRetriever subjectRetriever)
+    {
+        this.subjectRetriever = subjectRetriever;
+    }
+
+    public Specification<Project> getProjectsWithPlansInMyWorkUnit()
+    {
+        if (subjectRetriever.getSubject().isAdmin())
+        {
+            return (Specification<Project>) (root, query, criteriaBuilder)
+                -> criteriaBuilder.isTrue(criteriaBuilder.literal(true));
+        }
+        else
+        {
+            WorkUnit workUnit = subjectRetriever.getSubject().getWorkUnit();
+            List<String> workUnitNames = new ArrayList<>();
+            if (workUnit != null)
+            {
+                workUnitNames.add(workUnit.getName());
+            }
+            return getProjectsByWorkUnitNames(workUnitNames);
+        }
+    }
+
     /**
      * Get all the projects which plans are related with the work units specified in workUnitNames
      * @param workUnitNames List of names of the Work Units

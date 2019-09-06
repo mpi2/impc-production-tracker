@@ -26,7 +26,6 @@ import uk.ac.ebi.impc_prod_tracker.web.dto.project.NewProjectRequestDTO;
 import uk.ac.ebi.impc_prod_tracker.web.dto.project.ProjectDTO;
 import uk.ac.ebi.impc_prod_tracker.web.mapping.common.history.HistoryMapper;
 import uk.ac.ebi.impc_prod_tracker.web.mapping.project.ProjectMapper;
-
 import java.util.List;
 
 import static org.springframework.http.ResponseEntity.ok;

@@ -47,11 +47,11 @@ public class ProjectDTO extends RepresentationModel
     private Boolean recovery;
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    @JsonProperty("intentionByGeneAttributes")
+    @JsonProperty("intention_by_gene_attributes")
     private List<ProjectGeneDTO> projectGeneDTOS;
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    @JsonProperty("intentionByLocationAttributes")
+    @JsonProperty("intention_by_location_attributes")
     private List<ProjectLocationDTO> projectLocationDTOS;
 
     @JsonIgnore
