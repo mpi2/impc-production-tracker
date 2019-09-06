@@ -34,8 +34,12 @@ public class CrisprAttemptMapper
 
     public CrisprAttemptDTO toDto(CrisprAttempt crisprAttempt)
     {
-        CrisprAttemptDTO crisprAttemptDTO = modelMapper.map(crisprAttempt, CrisprAttemptDTO.class);
-        crisprAttemptDTO.setGuideDTOS(guideMapper.toDtos(crisprAttempt.getGuides()));
+        CrisprAttemptDTO crisprAttemptDTO = null;
+        if (crisprAttempt != null)
+        {
+            crisprAttemptDTO = modelMapper.map(crisprAttempt, CrisprAttemptDTO.class);
+            crisprAttemptDTO.setGuideDTOS(guideMapper.toDtos(crisprAttempt.getGuides()));
+        }
         return crisprAttemptDTO;
     }
 

@@ -10,18 +10,15 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import uk.ac.ebi.impc_prod_tracker.data.biology.plan.Plan;
+import uk.ac.ebi.impc_prod_tracker.common.types.PlanTypes;
 import uk.ac.ebi.impc_prod_tracker.data.biology.project.Project;
-import uk.ac.ebi.impc_prod_tracker.service.plan.PlanService;
 import uk.ac.ebi.impc_prod_tracker.service.project.ProjectService;
-import uk.ac.ebi.impc_prod_tracker.web.controller.plan.PlanController;
+import uk.ac.ebi.impc_prod_tracker.web.controller.common.PlanLinkBuilder;
 import uk.ac.ebi.impc_prod_tracker.web.controller.util.LinkUtil;
-import uk.ac.ebi.impc_prod_tracker.web.dto.plan.PlanDTO;
+import uk.ac.ebi.impc_prod_tracker.web.dto.project.ProjectDTO;
 import uk.ac.ebi.impc_prod_tracker.web.dto.project.ProjectSummaryDTO;
-import uk.ac.ebi.impc_prod_tracker.web.mapping.plan.PlanMapper;
 import uk.ac.ebi.impc_prod_tracker.web.mapping.project.ProjectMapper;
-
-import java.util.List;
+import uk.ac.ebi.impc_prod_tracker.web.mapping.project.ProjectSummaryMapper;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 
@@ -31,63 +28,45 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 class ProjectSummaryController
 {
     private ProjectService projectService;
-    private PlanService planService;
     private ProjectMapper projectMapper;
-    private PlanMapper planMapper;
+    private ProjectSummaryMapper projectSummaryMapper;
+    private ProjectSpecs projectSpecs;
 
     ProjectSummaryController(
         ProjectService projectService,
-        PlanService planService,
         ProjectMapper projectMapper,
-        PlanMapper planMapper)
+        ProjectSummaryMapper projectSummaryMapper,
+        ProjectSpecs projectSpecs)
     {
         this.projectService = projectService;
-        this.planService = planService;
         this.projectMapper = projectMapper;
-        this.planMapper = planMapper;
+        this.projectSummaryMapper = projectSummaryMapper;
+        this.projectSpecs = projectSpecs;
     }
 
-    /**
-     * Returns Information about the projects with pagination.
-     *
-     * @param markerSymbols Optional filters with specific marker symbols.
-     * @param workUnits     Optional filters with specific workUnits names.
-     * @param workGroups    Optional filters with specific marker names.
-     * @param pageable      Pagination options.
-     * @param assembler     Assembler to add links to the resources.
-     * @return              List of ProjectSummaryDTO.
-     */
-    @GetMapping(value = {"/projectSummaries"})
-    ResponseEntity getProjectSummariesPaginated(
-        @RequestParam(value = "markerSymbol", required = false) List<String> markerSymbols,
-        @RequestParam(value = "workUnit", required = false) List<String> workUnits,
-        @RequestParam(value = "workGroup", required = false) List<String> workGroups,
-        @RequestParam(value = "planType", required = false) List<String> planTypes,
-        @RequestParam(value = "status", required = false) List<String> statuses,
-        @RequestParam(value = "privacy", required = false) List<String> privacies,
-
-        Pageable pageable,
-        PagedResourcesAssembler assembler)
+    @GetMapping(value = {"/projectSummaries/{tpn}"})
+    public EntityModel<ProjectSummaryDTO> getProjectSummary(@PathVariable String tpn)
     {
-        Specification<Project> projectSpecification =
-            Specification.where(ProjectSpecs.getProjectsByMarkerSymbolAndSpecie(markerSymbols)
-                .and(ProjectSpecs.getProjectsByWorkUnitNames(workUnits)
-                .and(ProjectSpecs.getProjectsByWorkGroup(workGroups)
-                .and(ProjectSpecs.getProjectsByPlanType(planTypes)
-                .and(ProjectSpecs.getProjectsByStatus(statuses)
-                .and(ProjectSpecs.getProjectsByPrivacy(privacies)))))));
+        Project project = ProjectUtilities.getNotNullProjectByTpn(tpn);
+        ProjectSummaryDTO projectSummaryDTO = getDTO(project);
 
-        Page<Project> projects = projectService.getProjectsBySpecPro(projectSpecification, pageable);
-        Page<Project> filteredProjects = projects.map(p ->
-            projectService.getProjectFilteredByPlanAttributes(
-                p, workUnits, workGroups, planTypes, statuses, privacies));
-        Page<ProjectSummaryDTO> planSummaryDTOPage =
-            filteredProjects.map(this::convertToProjectSummaryDTO);
+        return new EntityModel<>(projectSummaryDTO);
+    }
+
+    @GetMapping(value = {"/projectSummaries"})
+    public ResponseEntity findAll(Pageable pageable, PagedResourcesAssembler assembler)
+    {
+        Specification<Project> specification =
+            Specification.where(projectSpecs.getProjectsWithPlansInMyWorkUnit());
+
+        Page<Project> projects = projectService.getProjects(specification, pageable);
+        Page<ProjectSummaryDTO> summaries =
+            projects.map(this::getDTO);
 
         PagedModel pr =
             assembler.toModel(
-                planSummaryDTOPage,
-                linkTo(PlanController.class).slash("/projectSummaries").withSelfRel());
+                summaries,
+                linkTo(ProjectSummaryController.class).slash("projectSummaries").withSelfRel());
 
         HttpHeaders responseHeaders = new HttpHeaders();
         responseHeaders.add("Link", LinkUtil.createLinkHeader(pr));
@@ -95,22 +74,14 @@ class ProjectSummaryController
         return new ResponseEntity<>(pr, responseHeaders, HttpStatus.OK);
     }
 
-    @GetMapping(value = {"/projectSummaries/{tpn}"})
-    public EntityModel<ProjectSummaryDTO> getProjectSummary(@PathVariable String tpn)
+    private ProjectSummaryDTO getDTO(Project project)
     {
-        Project project = ProjectUtilities.getNotNullProjectByTpn(tpn);
-        ProjectSummaryDTO projectSummaryDTO = convertToProjectSummaryDTO(project);
-
-        return new EntityModel<>(projectSummaryDTO);
-    }
-
-    private ProjectSummaryDTO convertToProjectSummaryDTO(final Project project)
-    {
-        ProjectSummaryDTO projectSummaryDTO = projectMapper.projectToProjectSummaryDTO(project);
-        List<Plan> plans = planService.getPlansByProject(project);
-        List<PlanDTO> planDTOs = planMapper.toDtos(plans);
-        projectSummaryDTO.setPlanDTO(planDTOs);
-
+        ProjectDTO projectDTO = projectMapper.projectToDTO(project);
+        ProjectSummaryDTO projectSummaryDTO = projectSummaryMapper.toDto(projectDTO);
+        projectSummaryDTO.add(
+            PlanLinkBuilder.buildPlanLinks(project, PlanTypes.PRODUCTION, "production_plans"));
+        projectSummaryDTO.add(
+            PlanLinkBuilder.buildPlanLinks(project, PlanTypes.PHENOTYPING, "phenotyping_plans"));
         return projectSummaryDTO;
     }
 }

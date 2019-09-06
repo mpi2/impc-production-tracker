@@ -35,9 +35,8 @@ public class SubjectRetriever
     public SystemSubject getSubject()
     {
         SystemSubject systemSubject;
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 
-        Object principal = auth.getPrincipal();
+        Object principal = getPrincipal();
 
         if (ANONYMOUS_USER.equals(principal.toString()))
         {
@@ -54,6 +53,11 @@ public class SubjectRetriever
         return systemSubject;
     }
 
+    private Object getPrincipal()
+    {
+        return SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+    }
+
     private SystemSubject buildAnonymousUser()
     {
         Role emptyRole = new Role(-1L,"","");
@@ -64,6 +68,6 @@ public class SubjectRetriever
 
     public boolean isUserAnonymous()
     {
-        return ANONYMOUS_USER.equals(SecurityContextHolder.getContext().getAuthentication().getPrincipal());
+        return ANONYMOUS_USER.equals(getPrincipal());
     }
 }
