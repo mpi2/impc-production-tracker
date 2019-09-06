@@ -16,6 +16,7 @@
 package uk.ac.ebi.impc_prod_tracker.conf.security.abac.spring;
 
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import uk.ac.ebi.impc_prod_tracker.conf.error_management.OperationFailedException;
@@ -55,7 +56,17 @@ public class SubjectRetriever
 
     private Object getPrincipal()
     {
-        return SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Object principal = null;
+        SecurityContext securityContext = SecurityContextHolder.getContext();
+        if (securityContext != null)
+        {
+            Authentication authentication = securityContext.getAuthentication();
+            if (authentication != null)
+            {
+                principal = authentication.getPrincipal();
+            }
+        }
+        return principal;
     }
 
     private SystemSubject buildAnonymousUser()
