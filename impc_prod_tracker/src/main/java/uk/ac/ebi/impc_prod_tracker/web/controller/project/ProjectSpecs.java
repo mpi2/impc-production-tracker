@@ -89,6 +89,8 @@ public class ProjectSpecs
             SetJoin<Project, ProjectMouseGene> projectSetJoin = root.join(Project_.projectMouseGenes);
             Path<IntendedMouseGene> intendedMouseGenePath = projectSetJoin.get(ProjectMouseGene_.gene);
             Path<String> symbolName = intendedMouseGenePath.get(IntendedMouseGene_.symbol);
+//            Predicate titlePredicate = criteriaBuilder.like(intendedMouseGenePath.get(IntendedMouseGene_.symbol), "%" + symbolName + "%");
+//            //predicates.add(titlePredicate);
             predicates.add(symbolName.in(markerSymbols));
             query.distinct(true);
 
