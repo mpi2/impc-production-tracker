@@ -15,21 +15,16 @@
  *******************************************************************************/
 package uk.ac.ebi.impc_prod_tracker.data.biology.species;
 
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import uk.ac.ebi.impc_prod_tracker.data.BaseEntity;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.SequenceGenerator;
+import uk.ac.ebi.impc_prod_tracker.data.biology.project.Project;
+
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.util.Set;
 
 @NoArgsConstructor(access= AccessLevel.PRIVATE, force=true)
-@Getter
-@Setter
+@Data
 @Entity
 public class Species extends BaseEntity
 {
@@ -41,5 +36,8 @@ public class Species extends BaseEntity
     @NotNull
     private String name;
 
-    private String taxonId;
+    private Integer taxonId;
+
+    @ManyToMany(mappedBy = "species")
+    private Set<Project> projects;
 }

@@ -38,8 +38,8 @@ import java.util.Set;
 @Data
 @EqualsAndHashCode( exclude = {"people"}, callSuper = false)
 @Entity
-public class Institute extends BaseEntity {
-
+public class Institute extends BaseEntity
+{
     @Id
     @SequenceGenerator(name = "instituteSeq", sequenceName = "INSTITUTE_SEQ")
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "instituteSeq")
@@ -50,31 +50,9 @@ public class Institute extends BaseEntity {
 
     private String description;
 
-    @ManyToMany
-    @JoinTable(
-        name = "institute_person",
-        joinColumns = @JoinColumn(name = "institute_id"),
-        inverseJoinColumns = @JoinColumn(name = "person_id"))
-    private Set<Person> people = new HashSet<>();
-
-    @ManyToMany(mappedBy = "institutes")
-    private Set<Consortium> consortia;
-
     public Institute(String name)
     {
         this.name = name;
-    }
-
-    public void addPerson(Person person)
-    {
-        this.people.add(person);
-        person.getInstitutes().add(this);
-    }
-
-    public void removePerson(Person person)
-    {
-        this.people.remove(person);
-        person.getInstitutes().remove(this);
     }
 
     public String toString()

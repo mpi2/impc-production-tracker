@@ -16,6 +16,7 @@
 package uk.ac.ebi.impc_prod_tracker.conf.security.abac.spring;
 
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import uk.ac.ebi.impc_prod_tracker.conf.error_management.OperationFailedException;
@@ -35,9 +36,8 @@ public class SubjectRetriever
     public SystemSubject getSubject()
     {
         SystemSubject systemSubject;
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 
-        Object principal = auth.getPrincipal();
+        Object principal = getPrincipal();
 
         if (ANONYMOUS_USER.equals(principal.toString()))
         {
@@ -54,6 +54,21 @@ public class SubjectRetriever
         return systemSubject;
     }
 
+    private Object getPrincipal()
+    {
+        Object principal = null;
+        SecurityContext securityContext = SecurityContextHolder.getContext();
+        if (securityContext != null)
+        {
+            Authentication authentication = securityContext.getAuthentication();
+            if (authentication != null)
+            {
+                principal = authentication.getPrincipal();
+            }
+        }
+        return principal;
+    }
+
     private SystemSubject buildAnonymousUser()
     {
         Role emptyRole = new Role(-1L,"","");
@@ -64,6 +79,6 @@ public class SubjectRetriever
 
     public boolean isUserAnonymous()
     {
-        return ANONYMOUS_USER.equals(SecurityContextHolder.getContext().getAuthentication().getPrincipal());
+        return ANONYMOUS_USER.equals(getPrincipal());
     }
 }

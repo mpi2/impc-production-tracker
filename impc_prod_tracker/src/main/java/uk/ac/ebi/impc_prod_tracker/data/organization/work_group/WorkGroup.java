@@ -32,8 +32,7 @@ import javax.persistence.SequenceGenerator;
 import java.util.Set;
 
 @NoArgsConstructor(access= AccessLevel.PRIVATE, force=true)
-@Getter
-@Setter
+@Data
 @Entity
 //@EqualsAndHashCode( exclude = {"workUnits"}, callSuper = false)
 public class WorkGroup extends BaseEntity
@@ -51,21 +50,6 @@ public class WorkGroup extends BaseEntity
     @ToString.Exclude
     @JsonIgnore
     @ManyToMany(mappedBy = "workGroups")
-    private Set<Consortium> consortia;
-
-    @EqualsAndHashCode.Exclude
-    @ToString.Exclude
-    @JsonIgnore
-    @ManyToMany
-    @JoinTable(
-        name = "work_group_unit",
-        joinColumns = @JoinColumn(name = "work_group_id"),
-        inverseJoinColumns = @JoinColumn(name = "work_unit_id"))
-    private Set<WorkUnit> workUnits;
-
-    @EqualsAndHashCode.Exclude
-    @ToString.Exclude
-    @JsonIgnore
-    @ManyToMany(mappedBy = "workGroups")
     private Set<Funder> funders;
+
 }

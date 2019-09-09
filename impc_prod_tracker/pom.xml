@@ -124,10 +124,15 @@
 			<groupId>com.fasterxml.jackson.datatype</groupId>
 			<artifactId>jackson-datatype-jdk8</artifactId>
 		</dependency>
+		<!-- jackson-datatype-jsr310 referenced above
+		     below with hibernate-jpamodelgen
+		-->
+		<!--
 		<dependency>
 			<groupId>com.fasterxml.jackson.datatype</groupId>
 			<artifactId>jackson-datatype-jsr310</artifactId>
 		</dependency>
+		-->
 
         <!--Auditing changes in objects-->
 		<!-- https://mvnrepository.com/artifact/commons-beanutils/commons-beanutils -->

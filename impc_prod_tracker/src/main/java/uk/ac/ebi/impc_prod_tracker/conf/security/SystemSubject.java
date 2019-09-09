@@ -35,4 +35,6 @@ public interface SystemSubject
     Role getRole();
 
     WorkUnit getWorkUnit();
+
+    Boolean isAdmin();
 }

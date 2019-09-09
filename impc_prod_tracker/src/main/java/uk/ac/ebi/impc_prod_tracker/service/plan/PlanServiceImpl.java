@@ -19,20 +19,17 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Component;
-import uk.ac.ebi.impc_prod_tracker.common.Constants;
 import uk.ac.ebi.impc_prod_tracker.common.history.HistoryService;
 import uk.ac.ebi.impc_prod_tracker.conf.error_management.OperationFailedException;
 import uk.ac.ebi.impc_prod_tracker.conf.security.abac.ResourceAccessChecker;
+import uk.ac.ebi.impc_prod_tracker.data.biology.plan_outcome.PlanOutcomeRepository;
+import uk.ac.ebi.impc_prod_tracker.data.biology.plan.Plan;
+import uk.ac.ebi.impc_prod_tracker.data.biology.plan.PlanRepository;
+import uk.ac.ebi.impc_prod_tracker.data.biology.project.Project;
 import uk.ac.ebi.impc_prod_tracker.data.common.history.History;
-import uk.ac.ebi.impc_prod_tracker.web.dto.plan.UpdatePlanRequestDTO;
-import uk.ac.ebi.impc_prod_tracker.data.biology.outcome.Outcome;
-import uk.ac.ebi.impc_prod_tracker.data.biology.outcome.OutcomeRepository;
-import uk.ac.ebi.impc_prod_tracker.data.experiment.colony.Colony;
-import uk.ac.ebi.impc_prod_tracker.data.experiment.plan.Plan;
-import uk.ac.ebi.impc_prod_tracker.data.experiment.plan.PlanRepository;
-import uk.ac.ebi.impc_prod_tracker.data.experiment.project.Project;
 import uk.ac.ebi.impc_prod_tracker.service.plan.engine.PlanUpdater;
 import uk.ac.ebi.impc_prod_tracker.service.plan.engine.UpdatePlanRequestProcessor;
+import uk.ac.ebi.impc_prod_tracker.web.dto.plan.PlanDTO;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -40,45 +37,44 @@ import java.util.List;
 public class PlanServiceImpl implements PlanService
 {
     private PlanRepository planRepository;
-    private OutcomeRepository outcomeRepository;
     private ResourceAccessChecker<Plan> resourceAccessChecker;
     private PlanUpdater planUpdater;
     private UpdatePlanRequestProcessor updatePlanRequestProcessor;
+    private PlanOutcomeRepository planOutcomeRepository;
     private HistoryService historyService;
 
     private static final String READ_PLAN_ACTION = "READ_PLAN";
-    private static final String PLAN_TO_UPDATE_NOT_EXISTS_ERROR =
-        "The plan %s that you are trying to update does not exist.";
+    private static final String PLAN_NOT_EXISTS_ERROR =
+        "The plan[%s] does not exist.";
 
     PlanServiceImpl(
         PlanRepository planRepository,
-        OutcomeRepository outcome,
         ResourceAccessChecker<Plan> resourceAccessChecker,
         PlanUpdater planUpdater,
-        UpdatePlanRequestProcessor updatePlanRequestProcessor, HistoryService historyService)
+        UpdatePlanRequestProcessor updatePlanRequestProcessor,
+        HistoryService historyService,
+        PlanOutcomeRepository planOutcomeRepository)
     {
         this.planRepository = planRepository;
-        this.outcomeRepository = outcome;
         this.resourceAccessChecker = resourceAccessChecker;
         this.planUpdater = planUpdater;
         this.updatePlanRequestProcessor = updatePlanRequestProcessor;
+        this.planOutcomeRepository = planOutcomeRepository;
         this.historyService = historyService;
     }
 
     @Override
+    //TODO
     public Plan getProductionPlanRefByPhenotypePlan(Plan phenotypePlan)
     {
         Plan plan = null;
-        if (Constants.PHENOTYPE_TYPE.equals(phenotypePlan.getPlanType().getName()))
-        {
-            Colony parentColony = phenotypePlan.getColony();
-            List<Outcome> outcomesByColony = outcomeRepository.findAllByColony(parentColony);
-            for (Outcome outcome : outcomesByColony)
-            {
-                plan = planRepository.findPlanById(outcome.getAttempt().getId());
-                break;
-            }
-        }
+//        if (Constants.PHENOTYPE_TYPE.equals(phenotypePlan.getPlanType().getName()))
+//        {
+//            Attempt attempt = phenotypePlan.getAttempt();
+//            PlanOutcome attemptParentOutcome = planOutcomeRepository.findByAttempt(attempt);
+//            Long productionPlanId = attemptParentOutcome.getParentOutcome().getAttempt().getId();
+//            plan = planRepository.findPlanById(productionPlanId);
+//        }
 
         return plan;
     }
@@ -93,6 +89,18 @@ public class PlanServiceImpl implements PlanService
     public Page<Plan> getPlansBySpecPro(Specification<Project> specification, Pageable pageable)
     {
         return null;
+    }
+
+    @Override
+    public Plan getNotNullPlanByPin(String pin)
+        throws OperationFailedException
+    {
+        Plan plan = planRepository.findPlanByPin(pin);
+        if (plan == null)
+        {
+            throw new OperationFailedException(String.format(PLAN_NOT_EXISTS_ERROR, pin));
+        }
+        return plan;
     }
 
 
@@ -133,26 +141,26 @@ public class PlanServiceImpl implements PlanService
 
     private Plan getAccessCheckedPlan(Plan plan)
     {
-        return (Plan) resourceAccessChecker.checkAccess(plan, READ_PLAN_ACTION);
+        // TODO revise restriction by plans
+//        return (Plan) resourceAccessChecker.checkAccess(plan, READ_PLAN_ACTION);
+        return  plan;
     }
 
     private List<Plan> getAccessCheckedPlans(List<Plan> plans)
     {
-        return (List<Plan>) resourceAccessChecker.checkAccessForCollection(plans, READ_PLAN_ACTION);
+        // TODO revise restriction by plans
+//        return (List<Plan>) resourceAccessChecker.checkAccessForCollection(plans, READ_PLAN_ACTION);
+        return plans;
     }
 
     @Override
-    public History updatePlan(String pin, UpdatePlanRequestDTO updatePlanRequestDTO)
+    public History updatePlan(String pin, PlanDTO planDTO)
     {
-        Plan existingPlan = planRepository.findPlanByPin(pin);
+        Plan existingPlan = getNotNullPlanByPin(pin);
         Plan newPlan = new Plan(existingPlan);
         Plan originalPlan  = new Plan(existingPlan);
-        if (originalPlan == null)
-        {
-            throw new OperationFailedException(
-                String.format(PLAN_TO_UPDATE_NOT_EXISTS_ERROR, pin));
-        }
-        newPlan = updatePlanRequestProcessor.getPlanToUpdate(newPlan, updatePlanRequestDTO);
+
+        newPlan = updatePlanRequestProcessor.getPlanToUpdate(newPlan, planDTO);
 
         return planUpdater.updatePlan(originalPlan, newPlan);
     }

@@ -123,8 +123,15 @@ public class AapSystemSubject implements SystemSubject
         }
         else
         {
-            role = person.getRole();
-            workUnit = person.getWorkUnit();
+            //TODO: Adjust with several work units and consortia.
+//            role = person.getRole();
+//            workUnit = person.getWorkUnit();
         }
+    }
+
+    @Override
+    public Boolean isAdmin()
+    {
+        return "admin".equalsIgnoreCase(role.getName());
     }
 }

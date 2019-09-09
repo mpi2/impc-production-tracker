@@ -1,8 +1,7 @@
 package uk.ac.ebi.impc_prod_tracker.service.plan.engine;
 
 import org.springframework.stereotype.Component;
-import uk.ac.ebi.impc_prod_tracker.data.biology.attempt.crispr_attempt.CrisprAttempt;
-import uk.ac.ebi.impc_prod_tracker.data.experiment.plan.Plan;
+import uk.ac.ebi.impc_prod_tracker.data.biology.plan.Plan;
 
 /**
  * Class that validates the date in a  {@link Plan}.
@@ -10,27 +9,35 @@ import uk.ac.ebi.impc_prod_tracker.data.experiment.plan.Plan;
 @Component
 public class PlanValidator
 {
+    private CrisprAttemptValidator crisprAttemptValidator;
+
+    public PlanValidator(CrisprAttemptValidator crisprAttemptValidator)
+    {
+        this.crisprAttemptValidator = crisprAttemptValidator;
+    }
+
     /**
      * Validates the data in a plan
-     * @param plan
+     * @param plan Plan to be validated.
      */
-    public void validatePlan(Plan plan)
+    public void validate(Plan plan)
     {
         System.out.println("Validating Plan");
         validateBasicPlanData(plan);
-        validateCrisprAttemptData(plan.getCrisprAttempt());
+        validateAttemptData(plan);
     }
 
     private void validateBasicPlanData(Plan plan)
     {
-
+        System.out.println("validating basic data of the plan...");
     }
 
-    private void validateCrisprAttemptData(CrisprAttempt crisprAttempt)
+    private void validateAttemptData(Plan plan)
     {
-        if (crisprAttempt != null)
+        System.out.println("Validate attempt: "+ AttemptTypeChecker.getAttemptTypeName(plan));
+        if (AttemptTypeChecker.CRISPR_TYPE.equalsIgnoreCase(AttemptTypeChecker.getAttemptTypeName(plan)))
         {
-            // Validates data in the crispr attempt.
+            crisprAttemptValidator.validate(plan.getCrisprAttempt());
         }
     }
 }

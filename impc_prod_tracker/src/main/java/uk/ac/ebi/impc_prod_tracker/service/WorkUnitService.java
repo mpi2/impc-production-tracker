@@ -16,13 +16,15 @@ public class WorkUnitService {
         this.workUnitRepository = workUnitRepository;
     }
 
-    public Set<WorkGroup> getWorkGroupsByWorkUnitName(String name)
+    public WorkGroup getWorkGroupByWorkUnitName(String name)
     {
         WorkUnit workUnit = workUnitRepository.findWorkUnitByName(name);
         if (workUnit != null)
         {
-            return workUnit.getWorkGroups();
+            return workUnit.getWorkGroup();
+
         }
         return null;
     }
+
 }

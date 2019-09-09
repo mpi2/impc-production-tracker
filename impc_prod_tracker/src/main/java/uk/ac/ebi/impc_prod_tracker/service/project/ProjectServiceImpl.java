@@ -23,10 +23,10 @@ import org.springframework.util.CollectionUtils;
 import uk.ac.ebi.impc_prod_tracker.common.history.HistoryService;
 import uk.ac.ebi.impc_prod_tracker.data.common.history.History;
 import uk.ac.ebi.impc_prod_tracker.web.dto.project.NewProjectRequestDTO;
-import uk.ac.ebi.impc_prod_tracker.data.experiment.assignment_status.AssignmentStatus;
-import uk.ac.ebi.impc_prod_tracker.data.experiment.plan.Plan;
-import uk.ac.ebi.impc_prod_tracker.data.experiment.project.Project;
-import uk.ac.ebi.impc_prod_tracker.data.experiment.project.ProjectRepository;
+import uk.ac.ebi.impc_prod_tracker.data.biology.assignment_status.AssignmentStatus;
+import uk.ac.ebi.impc_prod_tracker.data.biology.plan.Plan;
+import uk.ac.ebi.impc_prod_tracker.data.biology.project.Project;
+import uk.ac.ebi.impc_prod_tracker.data.biology.project.ProjectRepository;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.transaction.Transactional;
@@ -51,12 +51,16 @@ public class ProjectServiceImpl implements ProjectService
     @PersistenceContext
     private EntityManager em;
 
-
-
     @Override
     public List<Project> getProjects()
     {
         return projectRepository.findAll();
+    }
+
+    @Override
+    public Page<Project> getProjects(Pageable pageable)
+    {
+        return projectRepository.findAll(pageable);
     }
 
     @Override
@@ -67,7 +71,7 @@ public class ProjectServiceImpl implements ProjectService
     }
 
     @Override
-    public Page<Project> getProjectsBySpecPro(
+    public Page<Project> getProjects(
         Specification<Project> specification, Pageable pageable)
     {
         return projectRepository.findAll(specification, pageable);
@@ -84,7 +88,7 @@ public class ProjectServiceImpl implements ProjectService
     {
         Set<Plan> plans = project.getPlans();
 
-//        plans = checkCollention(plans, workUnits);
+        plans = checkCollention(plans, workUnits);
 
         if (!CollectionUtils.isEmpty(workUnits))
         {
@@ -93,6 +97,8 @@ public class ProjectServiceImpl implements ProjectService
                     && workUnits.contains(plan.getWorkUnit().getName()))
                 .collect(Collectors.toSet());
         }
+        // TODO requires revision
+        /*
         if (!CollectionUtils.isEmpty(workGroups))
         {
             plans = plans.stream()
@@ -100,6 +106,7 @@ public class ProjectServiceImpl implements ProjectService
                     && workGroups.contains(plan.getWorkGroup().getName()))
                 .collect(Collectors.toSet());
         }
+        */
         if (!CollectionUtils.isEmpty(planTypes))
         {
             plans = plans.stream()
@@ -115,6 +122,8 @@ public class ProjectServiceImpl implements ProjectService
                 .collect(Collectors.toSet());
         }
 
+        // TODO requires revision for privacy
+        /*
         if (!CollectionUtils.isEmpty(privacies))
         {
             plans = plans.stream()
@@ -122,35 +131,34 @@ public class ProjectServiceImpl implements ProjectService
                     && privacies.contains(plan.getPrivacy().getName()))
                 .collect(Collectors.toSet());
         }
+        */
 
         project.setPlans(plans);
         return project;
     }
 
-//    public Set<Plan> checkCollention(Set<Plan> plans, List<String> list) {
-//        if (!CollectionUtils.isEmpty(list))
-//        {
-//            plans = plans.stream()
-//                    .filter(plan -> plan.getWorkUnit() != null
-//                            && list.contains(plan.getWorkUnit().getName()))
-//                    .collect(Collectors.toSet());
-//        }
-//        return plans;
-//    }
+    public Set<Plan> checkCollention(Set<Plan> plans, List<String> list) {
+        if (!CollectionUtils.isEmpty(list))
+        {
+            plans = plans.stream()
+                    .filter(plan -> plan.getWorkUnit() != null
+                            && list.contains(plan.getWorkUnit().getName()))
+                    .collect(Collectors.toSet());
+        }
+        return plans;
+    }
 
     @Override
     public Project createProject(NewProjectRequestDTO newProjectRequestDTO)
     {
         Project p = new Project();
 
-
         p.setTpn("TPN:");
         em.persist(p);
         String tpn = createIdentifier(p.getId(), p.getTpn(), 9);
         p.setTpn(tpn);
         em.close();
-//        projectRepository.save(p);
-
+        projectRepository.save(p);
 
         return p;
     }

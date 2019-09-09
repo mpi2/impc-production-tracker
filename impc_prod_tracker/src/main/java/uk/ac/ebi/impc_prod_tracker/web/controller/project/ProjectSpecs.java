@@ -16,25 +16,22 @@
 package uk.ac.ebi.impc_prod_tracker.web.controller.project;
 
 import org.springframework.data.jpa.domain.Specification;
-import uk.ac.ebi.impc_prod_tracker.data.biology.intented_mouse_gene.IntendedMouseGene;
-import uk.ac.ebi.impc_prod_tracker.data.biology.intented_mouse_gene.IntendedMouseGene_;
-import uk.ac.ebi.impc_prod_tracker.data.experiment.plan.Plan;
-import uk.ac.ebi.impc_prod_tracker.data.experiment.plan.Plan_;
-import uk.ac.ebi.impc_prod_tracker.data.experiment.plan.type.PlanType;
-import uk.ac.ebi.impc_prod_tracker.data.experiment.plan.type.PlanType_;
-import uk.ac.ebi.impc_prod_tracker.data.experiment.privacy.Privacy;
-import uk.ac.ebi.impc_prod_tracker.data.experiment.privacy.Privacy_;
-import uk.ac.ebi.impc_prod_tracker.data.experiment.project.Project;
-import uk.ac.ebi.impc_prod_tracker.data.experiment.project.Project_;
-import uk.ac.ebi.impc_prod_tracker.data.experiment.project_mouse_gene.ProjectMouseGene;
-import uk.ac.ebi.impc_prod_tracker.data.experiment.project_mouse_gene.ProjectMouseGene_;
-import uk.ac.ebi.impc_prod_tracker.data.experiment.status.Status;
-import uk.ac.ebi.impc_prod_tracker.data.experiment.status.Status_;
+import org.springframework.stereotype.Component;
+import uk.ac.ebi.impc_prod_tracker.conf.security.abac.spring.SubjectRetriever;
+import uk.ac.ebi.impc_prod_tracker.data.biology.plan.Plan;
+import uk.ac.ebi.impc_prod_tracker.data.biology.plan.Plan_;
+import uk.ac.ebi.impc_prod_tracker.data.biology.plan.type.PlanType;
+import uk.ac.ebi.impc_prod_tracker.data.biology.plan.type.PlanType_;
+import uk.ac.ebi.impc_prod_tracker.data.biology.privacy.Privacy;
+import uk.ac.ebi.impc_prod_tracker.data.biology.privacy.Privacy_;
+import uk.ac.ebi.impc_prod_tracker.data.biology.project.Project;
+import uk.ac.ebi.impc_prod_tracker.data.biology.project.Project_;
+import uk.ac.ebi.impc_prod_tracker.data.biology.status.Status;
+import uk.ac.ebi.impc_prod_tracker.data.biology.status.Status_;
 import uk.ac.ebi.impc_prod_tracker.data.organization.work_group.WorkGroup;
 import uk.ac.ebi.impc_prod_tracker.data.organization.work_group.WorkGroup_;
 import uk.ac.ebi.impc_prod_tracker.data.organization.work_unit.WorkUnit;
 import uk.ac.ebi.impc_prod_tracker.data.organization.work_unit.WorkUnit_;
-
 import javax.persistence.criteria.Path;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.SetJoin;
@@ -44,8 +41,35 @@ import java.util.List;
 /**
  * This class creates the filters needed when searching projects.
  */
+@Component
 public class ProjectSpecs
 {
+    private SubjectRetriever subjectRetriever;
+
+    public ProjectSpecs(SubjectRetriever subjectRetriever)
+    {
+        this.subjectRetriever = subjectRetriever;
+    }
+
+    public Specification<Project> getProjectsWithPlansInMyWorkUnit()
+    {
+        if (subjectRetriever.getSubject().isAdmin())
+        {
+            return (Specification<Project>) (root, query, criteriaBuilder)
+                -> criteriaBuilder.isTrue(criteriaBuilder.literal(true));
+        }
+        else
+        {
+            WorkUnit workUnit = subjectRetriever.getSubject().getWorkUnit();
+            List<String> workUnitNames = new ArrayList<>();
+            if (workUnit != null)
+            {
+                workUnitNames.add(workUnit.getName());
+            }
+            return getProjectsByWorkUnitNames(workUnitNames);
+        }
+    }
+
     /**
      * Get all the projects which plans are related with the work units specified in workUnitNames
      * @param workUnitNames List of names of the Work Units
@@ -86,12 +110,12 @@ public class ProjectSpecs
 
             List<Predicate> predicates = new ArrayList<>();
 
-            SetJoin<Project, ProjectMouseGene> projectSetJoin = root.join(Project_.projectMouseGenes);
-            Path<IntendedMouseGene> intendedMouseGenePath = projectSetJoin.get(ProjectMouseGene_.gene);
-            Path<String> symbolName = intendedMouseGenePath.get(IntendedMouseGene_.symbol);
-//            Predicate titlePredicate = criteriaBuilder.like(intendedMouseGenePath.get(IntendedMouseGene_.symbol), "%" + symbolName + "%");
-//            //predicates.add(titlePredicate);
-            predicates.add(symbolName.in(markerSymbols));
+
+//            SetJoin<Project, ProjectMouseGene> projectSetJoin = root.join(Project_.projectMouseGenes);
+//            Path<IntendedMouseGene> intendedMouseGenePath = projectSetJoin.get(ProjectMouseGene_.gene);
+//            Path<String> symbolName = intendedMouseGenePath.get(IntendedMouseGene_.symbol);
+//            predicates.add(symbolName.in(markerSymbols));
+
             query.distinct(true);
 
 
@@ -115,9 +139,10 @@ public class ProjectSpecs
             List<Predicate> predicates = new ArrayList<>();
 
             SetJoin<Project, Plan> plansJoin = root.join(Project_.plans);
-            Path<WorkGroup> workGroupPath = plansJoin.get(Plan_.workGroup);
-            Path<String> workGroupName = workGroupPath.get(WorkGroup_.name);
-            predicates.add(workGroupName.in(workGroupsNames));
+            //TODO: Filter at project level
+//            Path<WorkGroup> workGroupPath = plansJoin.get(Plan_.workGroup);
+//            Path<String> workGroupName = workGroupPath.get(WorkGroup_.name);
+//            predicates.add(workGroupName.in(workGroupsNames));
             query.distinct(true);
 
             return criteriaBuilder.and(predicates.toArray(new Predicate[predicates.size()]));
@@ -190,9 +215,10 @@ public class ProjectSpecs
             List<Predicate> predicates = new ArrayList<>();
 
             SetJoin<Project, Plan> plansJoin = root.join(Project_.plans);
-            Path<Privacy> privacy = plansJoin.get(Plan_.privacy);
-            Path<String> privacyName = privacy.get(Privacy_.name);
-            predicates.add(privacyName.in(privacies));
+            //TODO: Adjust with privacy at project level.
+//            Path<Privacy> privacy = plansJoin.get(Plan_.privacy);
+//            Path<String> privacyName = privacy.get(Privacy_.name);
+//            predicates.add(privacyName.in(privacies));
             query.distinct(true);
 
             return criteriaBuilder.and(predicates.toArray(new Predicate[predicates.size()]));

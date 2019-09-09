@@ -20,7 +20,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import uk.ac.ebi.impc_prod_tracker.data.common.history.History;
 import uk.ac.ebi.impc_prod_tracker.web.dto.project.NewProjectRequestDTO;
-import uk.ac.ebi.impc_prod_tracker.data.experiment.project.Project;
+import uk.ac.ebi.impc_prod_tracker.data.biology.project.Project;
 
 import java.util.List;
 
@@ -31,6 +31,7 @@ public interface ProjectService
      * @return
      */
     List<Project> getProjects();
+    Page<Project> getProjects(Pageable pageable);
 
     /**
      * Get the project identified by a specific tpn.
@@ -45,7 +46,7 @@ public interface ProjectService
      * @param pageable Pagination information.
      * @return Paginated Projects filtered with criteria defined in specification.
      */
-    Page<Project> getProjectsBySpecPro(Specification<Project> specification, Pageable pageable);
+    Page<Project> getProjects(Specification<Project> specification, Pageable pageable);
 
     /**
      * 
