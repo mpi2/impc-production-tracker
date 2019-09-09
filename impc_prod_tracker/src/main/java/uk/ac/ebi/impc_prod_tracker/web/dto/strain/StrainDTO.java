@@ -9,11 +9,9 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class StrainDTO
 {
-    @JsonIgnore
-    private Long id;
+
     private String name;
-    @JsonProperty("mgi_accession")
-    private String mgiId;
-    @JsonProperty("mgi_name")
-    private String mgiName;
+
+    @JsonProperty("mgi_strain_acc_id")
+    private String mgiStrainAccId;
 }

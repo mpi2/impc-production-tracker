@@ -25,6 +25,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.hateoas.RepresentationModel;
 import uk.ac.ebi.impc_prod_tracker.web.dto.gene.ProjectGeneDTO;
 import uk.ac.ebi.impc_prod_tracker.web.dto.location.ProjectLocationDTO;
+import uk.ac.ebi.impc_prod_tracker.web.dto.species.SpeciesDTO;
 import uk.ac.ebi.impc_prod_tracker.web.dto.status_stamps.StatusStampsDTO;
 
 import java.util.List;
@@ -65,4 +66,13 @@ public class ProjectDTO extends RepresentationModel
 
     @JsonProperty("is_active")
     private Boolean isActive;
+
+    @JsonProperty("privacy_name")
+    private String privacyName;
+
+    @JsonProperty("species_attributes")
+    private List<SpeciesDTO> projectSpeciesDTOs;
+
+    @JsonProperty("consortia_names")
+    private List<String> consortiaNames;
 }

@@ -16,8 +16,11 @@
 package uk.ac.ebi.impc_prod_tracker.data.organization.work_unit;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import uk.ac.ebi.impc_prod_tracker.data.BaseEntity;
+import uk.ac.ebi.impc_prod_tracker.data.organization.consortium.Consortium;
+import uk.ac.ebi.impc_prod_tracker.data.organization.funder.Funder;
 import uk.ac.ebi.impc_prod_tracker.data.organization.institute.Institute;
 import uk.ac.ebi.impc_prod_tracker.data.organization.work_group.WorkGroup;
 
@@ -42,15 +45,12 @@ public class WorkUnit extends BaseEntity
 
     private String ilarCode;
 
-    @EqualsAndHashCode.Exclude
-    @ToString.Exclude
-    @ManyToMany(mappedBy = "workUnits")
-    @JsonBackReference
-    private Set<WorkGroup> workGroups;
+    @ManyToOne(targetEntity = WorkGroup.class)
+    private WorkGroup workGroup;
 
-    @ManyToOne
-    @JoinColumn
-    private Institute institute;
+    @JsonIgnore
+    @ManyToMany(mappedBy = "workUnits")
+    private Set<Consortium> consortia;
 
     public WorkUnit(String name)
     {

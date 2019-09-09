@@ -39,9 +39,7 @@ public class Strain extends BaseEntity implements Serializable
     @Column(columnDefinition = "TEXT")
     private String name;
 
-    private String mgiId;
-
-    private String mgiName;
+    private String mgiStrainAccId;
 
     @ToString.Exclude
     @JsonIgnore

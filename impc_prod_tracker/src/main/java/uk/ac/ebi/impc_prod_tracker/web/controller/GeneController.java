@@ -23,11 +23,11 @@ public class GeneController {
     @GetMapping(value = {"/genes"})
     public List<?> getGeneSymbols (@RequestParam String symbol)
     {
-//        if (specie.equals("mouse"))
+//        if (species.equals("mouse"))
 //        {
 //            return geneService.getMouseGenesBySymbol(StringUtils.capitalize(symbol));
 //        }
-//        else if (specie.equals("human"))
+//        else if (species.equals("human"))
 //        {
 //            return humanGeneService.getHumanGenesBySymbol(symbol.toUpperCase());
 //        }

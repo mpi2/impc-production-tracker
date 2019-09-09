@@ -2,10 +2,10 @@ package uk.ac.ebi.impc_prod_tracker.web.mapping.plan;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
-import uk.ac.ebi.impc_prod_tracker.data.biology.attempt.attempt_type.AttemptType;
+import uk.ac.ebi.impc_prod_tracker.data.biology.plan.attempt_type.AttemptType;
 import uk.ac.ebi.impc_prod_tracker.data.biology.plan.Plan;
 import uk.ac.ebi.impc_prod_tracker.web.dto.plan.PlanDTO;
-import uk.ac.ebi.impc_prod_tracker.web.dto.plan.attempt.production.crispr_attempt.CrisprAttemptDTO;
+import uk.ac.ebi.impc_prod_tracker.web.dto.plan.production.crispr_attempt.CrisprAttemptDTO;
 import uk.ac.ebi.impc_prod_tracker.web.mapping.plan.attempt.crispr_attempt.CrisprAttemptMapper;
 import java.util.ArrayList;
 import java.util.List;

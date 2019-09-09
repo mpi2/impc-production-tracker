@@ -19,7 +19,7 @@ public class LocationMapper
         locationDTO.setStop(location.getStop());
         locationDTO.setStrand(location.getStrand());
         locationDTO.setGenomeBuild(location.getGenomeBuild());
-        locationDTO.setSpecieName(location.getSpecie().getName());
+        locationDTO.setSpeciesName(location.getSpecies().getName());
         return locationDTO;
     }
 

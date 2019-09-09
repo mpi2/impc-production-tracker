@@ -50,21 +50,6 @@ public class WorkGroup extends BaseEntity
     @ToString.Exclude
     @JsonIgnore
     @ManyToMany(mappedBy = "workGroups")
-    private Set<Consortium> consortia;
-
-    @EqualsAndHashCode.Exclude
-    @ToString.Exclude
-    @JsonIgnore
-    @ManyToMany
-    @JoinTable(
-        name = "work_group_unit",
-        joinColumns = @JoinColumn(name = "work_group_id"),
-        inverseJoinColumns = @JoinColumn(name = "work_unit_id"))
-    private Set<WorkUnit> workUnits;
-
-    @EqualsAndHashCode.Exclude
-    @ToString.Exclude
-    @JsonIgnore
-    @ManyToMany(mappedBy = "workGroups")
     private Set<Funder> funders;
+
 }

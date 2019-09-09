@@ -22,9 +22,12 @@ import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import org.springframework.data.rest.core.annotation.RestResource;
 import uk.ac.ebi.impc_prod_tracker.data.BaseEntity;
+import uk.ac.ebi.impc_prod_tracker.data.biology.project.Project;
 import uk.ac.ebi.impc_prod_tracker.data.organization.funder.Funder;
 import uk.ac.ebi.impc_prod_tracker.data.organization.institute.Institute;
 import uk.ac.ebi.impc_prod_tracker.data.organization.work_group.WorkGroup;
+import uk.ac.ebi.impc_prod_tracker.data.organization.work_unit.WorkUnit;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -50,24 +53,20 @@ public class Consortium extends BaseEntity
 
     private String description;
 
-    @JsonIgnore
-    @ManyToMany
-    @JoinTable(
-        name = "consortium_institute",
-        joinColumns = @JoinColumn(name = "consortium_id"),
-        inverseJoinColumns = @JoinColumn(name = "institute_id"))
-    private Set<Institute> institutes;
 
     @JsonIgnore
     @ManyToMany
     @JoinTable(
-        name = "consortium_work_group",
+        name = "consortium_work_unit",
         joinColumns = @JoinColumn(name = "consortium_id"),
-        inverseJoinColumns = @JoinColumn(name = "work_group_id"))
-    private Set<WorkGroup> workGroups;
+        inverseJoinColumns = @JoinColumn(name = "work_unit_id"))
+    private Set<WorkUnit> workUnits;
 
     @JsonIgnore
-    @ManyToMany(mappedBy = "consortia")
-    private Set<Funder> funders;
-
+    @ManyToMany
+    @JoinTable(
+            name = "consortium_project",
+            joinColumns = @JoinColumn(name = "consortium_id"),
+            inverseJoinColumns = @JoinColumn(name = "project_id"))
+    private Set<Project> projects;
 }

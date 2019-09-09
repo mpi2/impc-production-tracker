@@ -44,6 +44,7 @@ public class AuthControllerTest extends ControllerTestTemplate
             .andDo(documentSignIn());
     }
 
+    //TODO: Adjust with new structure for work unit and roles.
     private ResultHandler documentSignIn() {
         ConstrainedFields fields = fields(AuthenticationRequest.class);
         return document(
@@ -57,12 +58,6 @@ public class AuthControllerTest extends ControllerTestTemplate
                 fields
                     .withPath("access_token")
                     .description("The token to access the protected end points"),
-                fields
-                    .withPath("workUnitName")
-                    .description("Work unit the user belongs to"),
-                fields
-                    .withPath("role")
-                    .description("Role the user has assigned"),
                 fields
                     .withPath("username")
                     .description("User name in the system (usually the email)")

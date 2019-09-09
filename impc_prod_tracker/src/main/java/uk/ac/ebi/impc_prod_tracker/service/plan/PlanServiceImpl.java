@@ -19,13 +19,10 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Component;
-import uk.ac.ebi.impc_prod_tracker.common.Constants;
 import uk.ac.ebi.impc_prod_tracker.common.history.HistoryService;
 import uk.ac.ebi.impc_prod_tracker.conf.error_management.OperationFailedException;
 import uk.ac.ebi.impc_prod_tracker.conf.security.abac.ResourceAccessChecker;
-import uk.ac.ebi.impc_prod_tracker.data.biology.attempt.Attempt;
-import uk.ac.ebi.impc_prod_tracker.data.biology.attempt_parent_outcome.AttemptParentOutcome;
-import uk.ac.ebi.impc_prod_tracker.data.biology.attempt_parent_outcome.AttemptParentOutcomeRepository;
+import uk.ac.ebi.impc_prod_tracker.data.biology.plan_outcome.PlanOutcomeRepository;
 import uk.ac.ebi.impc_prod_tracker.data.biology.plan.Plan;
 import uk.ac.ebi.impc_prod_tracker.data.biology.plan.PlanRepository;
 import uk.ac.ebi.impc_prod_tracker.data.biology.project.Project;
@@ -43,7 +40,7 @@ public class PlanServiceImpl implements PlanService
     private ResourceAccessChecker<Plan> resourceAccessChecker;
     private PlanUpdater planUpdater;
     private UpdatePlanRequestProcessor updatePlanRequestProcessor;
-    private AttemptParentOutcomeRepository attemptParentOutcomeRepository;
+    private PlanOutcomeRepository planOutcomeRepository;
     private HistoryService historyService;
 
     private static final String READ_PLAN_ACTION = "READ_PLAN";
@@ -56,13 +53,13 @@ public class PlanServiceImpl implements PlanService
         PlanUpdater planUpdater,
         UpdatePlanRequestProcessor updatePlanRequestProcessor,
         HistoryService historyService,
-        AttemptParentOutcomeRepository attemptParentOutcomeRepository)
+        PlanOutcomeRepository planOutcomeRepository)
     {
         this.planRepository = planRepository;
         this.resourceAccessChecker = resourceAccessChecker;
         this.planUpdater = planUpdater;
         this.updatePlanRequestProcessor = updatePlanRequestProcessor;
-        this.attemptParentOutcomeRepository = attemptParentOutcomeRepository;
+        this.planOutcomeRepository = planOutcomeRepository;
         this.historyService = historyService;
     }
 
@@ -74,7 +71,7 @@ public class PlanServiceImpl implements PlanService
 //        if (Constants.PHENOTYPE_TYPE.equals(phenotypePlan.getPlanType().getName()))
 //        {
 //            Attempt attempt = phenotypePlan.getAttempt();
-//            AttemptParentOutcome attemptParentOutcome = attemptParentOutcomeRepository.findByAttempt(attempt);
+//            PlanOutcome attemptParentOutcome = planOutcomeRepository.findByAttempt(attempt);
 //            Long productionPlanId = attemptParentOutcome.getParentOutcome().getAttempt().getId();
 //            plan = planRepository.findPlanById(productionPlanId);
 //        }
@@ -144,12 +141,16 @@ public class PlanServiceImpl implements PlanService
 
     private Plan getAccessCheckedPlan(Plan plan)
     {
-        return (Plan) resourceAccessChecker.checkAccess(plan, READ_PLAN_ACTION);
+        // TODO revise restriction by plans
+//        return (Plan) resourceAccessChecker.checkAccess(plan, READ_PLAN_ACTION);
+        return  plan;
     }
 
     private List<Plan> getAccessCheckedPlans(List<Plan> plans)
     {
-        return (List<Plan>) resourceAccessChecker.checkAccessForCollection(plans, READ_PLAN_ACTION);
+        // TODO revise restriction by plans
+//        return (List<Plan>) resourceAccessChecker.checkAccessForCollection(plans, READ_PLAN_ACTION);
+        return plans;
     }
 
     @Override

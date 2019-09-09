@@ -21,24 +21,18 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
-import uk.ac.ebi.impc_prod_tracker.conf.error_management.OperationFailedException;
-import uk.ac.ebi.impc_prod_tracker.conf.security.Resource;
-import uk.ac.ebi.impc_prod_tracker.conf.security.ResourcePrivacy;
 import uk.ac.ebi.impc_prod_tracker.data.BaseEntity;
-import uk.ac.ebi.impc_prod_tracker.data.biology.attempt.Attempt;
-import uk.ac.ebi.impc_prod_tracker.data.biology.attempt.attempt_type.AttemptType;
-import uk.ac.ebi.impc_prod_tracker.data.biology.attempt.breeding_attempt.BreedingAttempt;
-import uk.ac.ebi.impc_prod_tracker.data.biology.attempt.crispr_attempt.CrisprAttempt;
-import uk.ac.ebi.impc_prod_tracker.data.biology.attempt.phenotyping_attempt.PhenotypingAttempt;
+import uk.ac.ebi.impc_prod_tracker.data.biology.plan.attempt_type.AttemptType;
+import uk.ac.ebi.impc_prod_tracker.data.biology.breeding_attempt.BreedingAttempt;
+import uk.ac.ebi.impc_prod_tracker.data.biology.crispr_attempt.CrisprAttempt;
+import uk.ac.ebi.impc_prod_tracker.data.biology.phenotyping_attempt.PhenotypingAttempt;
 import uk.ac.ebi.impc_prod_tracker.data.biology.plan.flag.PlanFlag;
 import uk.ac.ebi.impc_prod_tracker.data.biology.plan.protocol.Protocol;
 import uk.ac.ebi.impc_prod_tracker.data.biology.plan.type.PlanType;
-import uk.ac.ebi.impc_prod_tracker.data.biology.privacy.Privacy;
 import uk.ac.ebi.impc_prod_tracker.data.biology.project.Project;
 import uk.ac.ebi.impc_prod_tracker.data.biology.status.Status;
 import uk.ac.ebi.impc_prod_tracker.data.organization.consortium.Consortium;
 import uk.ac.ebi.impc_prod_tracker.data.organization.funder.Funder;
-import uk.ac.ebi.impc_prod_tracker.data.organization.work_group.WorkGroup;
 import uk.ac.ebi.impc_prod_tracker.data.organization.work_unit.WorkUnit;
 
 import javax.persistence.*;
@@ -50,7 +44,7 @@ import java.util.Set;
 @Data
 @Entity
 @EqualsAndHashCode(onlyExplicitlyIncluded = true, callSuper = false)
-public class Plan extends BaseEntity implements Resource<Plan>
+public class Plan extends BaseEntity
 {
     @Id
     @SequenceGenerator(name = "planSeq", sequenceName = "PLAN_SEQ")
@@ -73,9 +67,6 @@ public class Plan extends BaseEntity implements Resource<Plan>
     @ManyToOne(targetEntity = Consortium.class)
     private Consortium consortium;
 
-    @ManyToOne(targetEntity = WorkGroup.class)
-    private WorkGroup workGroup;
-
     @ManyToOne(targetEntity = WorkUnit.class)
     private WorkUnit workUnit;
 
@@ -89,14 +80,13 @@ public class Plan extends BaseEntity implements Resource<Plan>
     @ManyToOne(targetEntity= PlanType.class)
     private PlanType planType;
 
-//    @NotNull
-    @ManyToOne(targetEntity= Privacy.class)
-    private Privacy privacy;
-
     @Column(columnDefinition = "TEXT")
     private String comment;
 
     private Boolean productsAvailableForGeneralPublic;
+
+    @ManyToOne
+    private AttemptType type;
 
     @ManyToMany()
     @JoinTable(
@@ -120,9 +110,7 @@ public class Plan extends BaseEntity implements Resource<Plan>
         this.isActive = plan.isActive;
         this.project = plan.project;
         this.planType = plan.planType;
-        this.privacy = plan.privacy;
         this.workUnit = plan.workUnit;
-        this.workGroup = plan.workGroup;
         this.consortium = plan.consortium;
         this.funder = plan.funder;
         this.comment = plan.comment;
@@ -150,46 +138,8 @@ public class Plan extends BaseEntity implements Resource<Plan>
     private BreedingAttempt breedingAttempt;
 
     @Override
-    @JsonIgnore
-    public ResourcePrivacy getResourcePrivacy()
-    {
-        ResourcePrivacy resourcePrivacy;
-        switch (privacy.getName().toLowerCase())
-        {
-            case "public":
-                resourcePrivacy = ResourcePrivacy.PUBLIC;
-                break;
-            case "protected":
-                resourcePrivacy = ResourcePrivacy.PROTECTED;
-                break;
-            case "restricted":
-                resourcePrivacy = ResourcePrivacy.RESTRICTED;
-                break;
-            default:
-                throw new OperationFailedException("Invalid privacy");
-        }
-        return resourcePrivacy;
-    }
-
-    @Override
-    @JsonIgnore
-    public Plan getRestrictedObject()
-    {
-        Plan plan = new Plan();
-        plan.setPrivacy(this.privacy);
-        plan.setPin(this.pin);
-        plan.setPlanType(this.planType);
-        Project restrictedProject = new Project();
-        restrictedProject.setTpn(this.project.getTpn());
-        plan.setProject(restrictedProject);
-
-        return plan;
-    }
-
-    @Override
     public String toString()
     {
-        return "(id:" +id + ", pin:" + pin + ", type: "+ (this.planType == null ? "Not defined" : planType.getName())
-            + ", privacy: " + (privacy == null ? "Not defined" : privacy.getName()) + ")";
+        return "(id:" +id + ", pin:" + pin + ", type: "+ (this.planType == null ? "Not defined" : planType.getName());
     }
 }

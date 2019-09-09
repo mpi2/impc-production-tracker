@@ -4,7 +4,7 @@ import org.springframework.stereotype.Component;
 import uk.ac.ebi.impc_prod_tracker.conf.security.SystemSubject;
 import uk.ac.ebi.impc_prod_tracker.conf.security.abac.spring.SubjectRetriever;
 import uk.ac.ebi.impc_prod_tracker.data.biology.allele_type.AlleleTypeRepository;
-import uk.ac.ebi.impc_prod_tracker.data.biology.attempt.phenotyping_attempt.material_deposited_type.MaterialDepositedTypeRepository;
+import uk.ac.ebi.impc_prod_tracker.data.biology.phenotyping_attempt.material_deposited_type.MaterialDepositedTypeRepository;
 import uk.ac.ebi.impc_prod_tracker.data.biology.plan.type.PlanTypeRepository;
 import uk.ac.ebi.impc_prod_tracker.data.biology.privacy.PrivacyRepository;
 import uk.ac.ebi.impc_prod_tracker.data.biology.status.StatusRepository;

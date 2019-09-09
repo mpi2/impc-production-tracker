@@ -19,12 +19,14 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import org.hibernate.annotations.Type;
 import uk.ac.ebi.impc_prod_tracker.data.BaseEntity;
-import uk.ac.ebi.impc_prod_tracker.data.biology.allele_subtype.AlleleSubtype;
+import uk.ac.ebi.impc_prod_tracker.data.biology.allele_categorization.AlleleCategorization;
 import uk.ac.ebi.impc_prod_tracker.data.biology.allele_type.AlleleType;
 import uk.ac.ebi.impc_prod_tracker.data.biology.colony.Colony;
 import uk.ac.ebi.impc_prod_tracker.data.biology.genbank_file.GenbankFile;
 import uk.ac.ebi.impc_prod_tracker.data.biology.gene.Gene;
+import uk.ac.ebi.impc_prod_tracker.data.biology.molecular_mutation_type.MolecularMutationType;
 import uk.ac.ebi.impc_prod_tracker.data.biology.outcome.Outcome;
+import uk.ac.ebi.impc_prod_tracker.data.biology.sequence.Sequence;
 
 import javax.persistence.*;
 import java.util.Set;
@@ -54,8 +56,11 @@ public class Allele extends BaseEntity
     @ManyToOne(targetEntity= AlleleType.class)
     private AlleleType alleleType;
 
-    @ManyToOne(targetEntity= AlleleSubtype.class)
-    private AlleleSubtype alleleSubtype;
+    @ManyToOne(targetEntity= AlleleCategorization.class)
+    private AlleleCategorization alleleCategorization;
+
+    @ManyToOne(targetEntity= MolecularMutationType.class)
+    private MolecularMutationType molecularMutationType;
 
     @OneToOne(targetEntity = GenbankFile.class)
     private GenbankFile genebankFile;
@@ -80,9 +85,6 @@ public class Allele extends BaseEntity
     @Type(type="org.hibernate.type.BinaryType")
     private byte[] vcf_file_index;
 
-    @Column(columnDefinition = "TEXT")
-    private String mutant_fa;
-
     @ToString.Exclude
     @JsonIgnore
     @ManyToMany
@@ -100,6 +102,15 @@ public class Allele extends BaseEntity
             joinColumns = @JoinColumn(name = "allele_id"),
             inverseJoinColumns = @JoinColumn(name = "outcome_id"))
     private Set<Outcome> outcomes;
+
+    @ToString.Exclude
+    @JsonIgnore
+    @ManyToMany
+    @JoinTable(
+            name = "allele_sequence",
+            joinColumns = @JoinColumn(name = "allele_id"),
+            inverseJoinColumns = @JoinColumn(name = "sequence_id"))
+    private Set<Sequence> sequences;
 
     @ToString.Exclude
     @JsonIgnore

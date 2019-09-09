@@ -97,6 +97,8 @@ public class ProjectServiceImpl implements ProjectService
                     && workUnits.contains(plan.getWorkUnit().getName()))
                 .collect(Collectors.toSet());
         }
+        // TODO requires revision
+        /*
         if (!CollectionUtils.isEmpty(workGroups))
         {
             plans = plans.stream()
@@ -104,6 +106,7 @@ public class ProjectServiceImpl implements ProjectService
                     && workGroups.contains(plan.getWorkGroup().getName()))
                 .collect(Collectors.toSet());
         }
+        */
         if (!CollectionUtils.isEmpty(planTypes))
         {
             plans = plans.stream()
@@ -119,6 +122,8 @@ public class ProjectServiceImpl implements ProjectService
                 .collect(Collectors.toSet());
         }
 
+        // TODO requires revision for privacy
+        /*
         if (!CollectionUtils.isEmpty(privacies))
         {
             plans = plans.stream()
@@ -126,6 +131,7 @@ public class ProjectServiceImpl implements ProjectService
                     && privacies.contains(plan.getPrivacy().getName()))
                 .collect(Collectors.toSet());
         }
+        */
 
         project.setPlans(plans);
         return project;

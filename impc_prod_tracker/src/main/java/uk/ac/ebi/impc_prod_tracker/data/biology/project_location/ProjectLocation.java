@@ -7,6 +7,7 @@ import uk.ac.ebi.impc_prod_tracker.data.BaseEntity;
 import uk.ac.ebi.impc_prod_tracker.data.biology.allele_type.AlleleType;
 import uk.ac.ebi.impc_prod_tracker.data.biology.chromosome_feature_type.ChromosomeFeatureType;
 import uk.ac.ebi.impc_prod_tracker.data.biology.location.Location;
+import uk.ac.ebi.impc_prod_tracker.data.biology.molecular_mutation_type.MolecularMutationType;
 import uk.ac.ebi.impc_prod_tracker.data.biology.project.Project;
 
 import javax.persistence.*;
@@ -28,6 +29,9 @@ public class ProjectLocation extends BaseEntity implements Serializable
     @ManyToOne
     private Location location;
 
+    @ManyToOne(targetEntity= MolecularMutationType.class)
+    private MolecularMutationType molecularMutationType;
+
     @ManyToOne
     private AlleleType alleleType;
 
@@ -36,5 +40,4 @@ public class ProjectLocation extends BaseEntity implements Serializable
     @ManyToOne(targetEntity= ChromosomeFeatureType.class)
     private ChromosomeFeatureType chromosomeFeatureType;
 
-    private String sequence;
 }

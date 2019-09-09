@@ -70,20 +70,21 @@ public class AuthController
             SystemSubject person = personService.getPersonByToken(token);
             String roleName = "";
             String workUnitName = "";
-            if (person.getRole() != null)
-            {
-                roleName = person.getRole().getName();
-            }
-            if (person.getWorkUnit() != null)
-            {
-                workUnitName = person.getWorkUnit().getName();
-            }
+//            if (person.getRole() != null)
+//            {
+//                roleName = person.getRole().getName();
+//            }
+//            if (person.getWorkUnit() != null)
+//            {
+//                workUnitName = person.getWorkUnit().getName();
+//            }
 
             Map<Object, Object> model = new HashMap<>();
             model.put("username", username);
             model.put("access_token", token);
-            model.put("role", roleName);
-            model.put("workUnitName", workUnitName);
+            // TODO: Adjust with new structure
+//            model.put("role", roleName);
+//            model.put("workUnitName", workUnitName);
 
             return ok(model);
         }

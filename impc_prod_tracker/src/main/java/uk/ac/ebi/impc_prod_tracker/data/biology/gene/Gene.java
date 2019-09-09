@@ -22,7 +22,7 @@ import uk.ac.ebi.impc_prod_tracker.data.biology.allele.Allele;
 import uk.ac.ebi.impc_prod_tracker.data.biology.gene.flag.GeneFlag;
 import uk.ac.ebi.impc_prod_tracker.data.biology.gene.id_list.IdList;
 import uk.ac.ebi.impc_prod_tracker.data.biology.project_gene.ProjectGene;
-import uk.ac.ebi.impc_prod_tracker.data.biology.specie.Specie;
+import uk.ac.ebi.impc_prod_tracker.data.biology.species.Species;
 
 import javax.persistence.*;
 import javax.validation.constraints.Pattern;
@@ -69,8 +69,8 @@ public class Gene extends BaseEntity
     @ManyToMany(mappedBy = "genes")
     private Set<Allele> alleles;
 
-    @ManyToOne(targetEntity= Specie.class)
-    private Specie specie;
+    @ManyToOne(targetEntity= Species.class)
+    private Species species;
 
     @ManyToMany()
     @JoinTable(
