@@ -15,12 +15,21 @@
  *******************************************************************************/
 package uk.ac.ebi.impc_prod_tracker.web.controller.project;
 
-import org.springframework.hateoas.CollectionModel;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
+import org.springframework.data.web.PagedResourcesAssembler;
 import org.springframework.hateoas.EntityModel;
+import org.springframework.hateoas.PagedModel;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import uk.ac.ebi.impc_prod_tracker.common.types.PlanTypes;
 import uk.ac.ebi.impc_prod_tracker.data.biology.project.Project;
 import uk.ac.ebi.impc_prod_tracker.service.project.ProjectService;
+import uk.ac.ebi.impc_prod_tracker.web.controller.common.PlanLinkBuilder;
+import uk.ac.ebi.impc_prod_tracker.web.controller.util.LinkUtil;
 import uk.ac.ebi.impc_prod_tracker.web.dto.common.history.HistoryDTO;
 import uk.ac.ebi.impc_prod_tracker.web.dto.project.NewProjectRequestDTO;
 import uk.ac.ebi.impc_prod_tracker.web.dto.project.ProjectDTO;
@@ -28,6 +37,7 @@ import uk.ac.ebi.impc_prod_tracker.web.mapping.common.history.HistoryMapper;
 import uk.ac.ebi.impc_prod_tracker.web.mapping.project.ProjectMapper;
 import java.util.List;
 
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.http.ResponseEntity.ok;
 
 @RestController
@@ -38,15 +48,18 @@ class ProjectController
     private ProjectService projectService;
     private ProjectMapper projectMapper;
     private HistoryMapper historyMapper;
+    private ProjectSpecs projectSpecs;
 
     ProjectController(
         ProjectService projectService,
         ProjectMapper projectMapper,
-        HistoryMapper historyMapper)
+        HistoryMapper historyMapper,
+        ProjectSpecs projectSpecs)
     {
         this.projectService = projectService;
         this.projectMapper = projectMapper;
         this.historyMapper = historyMapper;
+        this.projectSpecs = projectSpecs;
     }
 
     /**
@@ -54,28 +67,46 @@ class ProjectController
      * @return A collection of {@link ProjectDTO} objects.
      */
     @GetMapping(value = {"/projects"})
-    CollectionModel<ProjectDTO> getAllProjects()
+    public ResponseEntity findAll(Pageable pageable, PagedResourcesAssembler assembler)
     {
-        List<Project> projects = projectService.getProjects();
-        List<ProjectDTO> projectDTOList = projectMapper.projectsToDTOs(projects);
-        return new CollectionModel<>(projectDTOList);
+        Specification<Project> specification =
+            Specification.where(projectSpecs.getProjectsWithPlansInMyWorkUnit());
+        Page<Project> projects = projectService.getProjects(specification, pageable);
+        Page<ProjectDTO> projectDtos =
+            projects.map(this::getDTO);
+        PagedModel pr =
+            assembler.toModel(
+                projectDtos,
+                linkTo(ProjectSummaryController.class).slash("projects").withSelfRel());
+
+        HttpHeaders responseHeaders = new HttpHeaders();
+        responseHeaders.add("Link", LinkUtil.createLinkHeader(pr));
+
+        return new ResponseEntity<>(pr, responseHeaders, HttpStatus.OK);
+    }
+    private ProjectDTO getDTO(Project project)
+    {
+        ProjectDTO projectDTO = projectMapper.projectToDTO(project);
+        projectDTO.add(
+            PlanLinkBuilder.buildPlanLinks(project, PlanTypes.PRODUCTION, "production_plans"));
+        projectDTO.add(
+            PlanLinkBuilder.buildPlanLinks(project, PlanTypes.PHENOTYPING, "phenotyping_plans"));
+        return projectDTO;
     }
 
     /**
      * Get a specific project.
-     * @param tpn Project identifier.
+     * @param tpn tpn Project identifier.
      * @return Entity with the project information.
      */
     @GetMapping(value = {"/projects/{tpn}"})
-    EntityModel<ProjectDTO> getProject(@PathVariable String tpn)
+    public EntityModel<ProjectDTO> findOne(@PathVariable String tpn)
     {
         Project project = ProjectUtilities.getNotNullProjectByTpn(tpn);
-        // List<Plan> plans = planService.getPlansByProject(project);
-        ProjectDTO projectDTO = projectMapper.projectToDTO(project);
+        ProjectDTO projectDTO = getDTO(project);
 
         return new EntityModel<>(projectDTO);
     }
-
     /**
      *      * @api {post} / create a new project.
      */
