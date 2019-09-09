@@ -38,10 +38,14 @@ public class ProjectDTO extends RepresentationModel
     private String tpn;
 
     @NonNull
+    @JsonProperty("assigment_status_name")
     private String assigmentStatusName;
 
-    @JsonProperty("assignmentStatusStamps")
+    @JsonProperty("assignment_status_stamps")
     private List<StatusStampsDTO> statusStampsDTOS;
+
+    @JsonProperty("external_reference")
+    private String externalReference;
 
     private Boolean withdrawn;
     private Boolean recovery;
@@ -58,5 +62,7 @@ public class ProjectDTO extends RepresentationModel
     private Long imitsMiPlanId;
 
     private String comment;
+
+    @JsonProperty("is_active")
     private Boolean isActive;
 }
