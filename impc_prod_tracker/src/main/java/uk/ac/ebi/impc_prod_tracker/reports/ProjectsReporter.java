@@ -48,26 +48,6 @@ public class ProjectsReporter {
         //System.out.println(writer.toString());
         statement.close();
         conn.close();
-
-
-//EntityManager em=
-//        Query q = em.createNativeQuery("SELECT a.firstname, a.lastname FROM Author a");
-//        List<Object[]> authors = q.getResultList();
-//
-//        for (Object[] a : authors) {
-//            System.out.println("Author "
-//                    + a[0]
-//                    + " "
-//                    + a[1]);
-//        }
-//        CSVWriter csvWriter = new CSVWriter(new FileWriter("yourfile.csv"), '\t');
-//        Boolean includeHeaders = true;
-//
-//        java.sql.ResultSet myResultSet = .... //your resultset logic here
-//
-//        csvWriter.writeAll(myResultSet, includeHeaders);
-//
-//        csvWriter.close();
     }
 
 }

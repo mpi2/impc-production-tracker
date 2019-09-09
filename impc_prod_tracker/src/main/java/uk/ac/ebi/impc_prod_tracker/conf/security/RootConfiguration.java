@@ -84,7 +84,7 @@ public class RootConfiguration extends WebSecurityConfigurerAdapter
             .antMatchers("/api/projectSummaries").permitAll()
             .antMatchers("/api/projectSummaries/**").permitAll()
             .antMatchers("/api/projects/**").permitAll()
-                .antMatchers("/download/projectSummaries/**").permitAll()
+                .antMatchers("/reports/**").permitAll()
                 .anyRequest().authenticated()
             .and()
             .addFilterBefore(jwtTokenFilter, UsernamePasswordAuthenticationFilter.class)
