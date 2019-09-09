@@ -42,11 +42,6 @@ public class Person extends BaseEntity
 
     private String authId;
 
-    @ManyToOne
-    @JoinColumn
-    @NotNull
-    private Role role;
-
     private Boolean isActive;
 
     private Boolean contactable;
@@ -56,29 +51,11 @@ public class Person extends BaseEntity
     @Pattern(regexp = "^(.+)@(.+)$", message = "Invalid email format")
     private String email;
 
-    @ManyToOne
-    @JoinColumn
-    private WorkUnit workUnit;
-
-    @ManyToMany(mappedBy = "people")
-    @JsonBackReference
-    private Set<Institute> institutes = new HashSet<>();
+    private Boolean ebiAdmin;
 
     public Person(String email)
     {
         this.email = email;
-    }
-
-    public void addInstitute(Institute institute)
-    {
-        this.institutes.add(institute);
-        institute.getPeople().add(this);
-    }
-
-    public void removeInstitute(Institute institute)
-    {
-        this.institutes.remove(institute);
-        institute.getPeople().remove(this);
     }
 
     @Override

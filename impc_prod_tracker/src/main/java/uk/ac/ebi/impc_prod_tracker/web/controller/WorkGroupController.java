@@ -19,10 +19,10 @@ public class WorkGroupController {
         this.workUnitService = workUnitService;
     }
 
-    @GetMapping(value = {"/workGroups"})
-    public Set<WorkGroup> getWorkGroups(@RequestParam String workUnitName)
+    @GetMapping(value = {"/workGroup"})
+    public WorkGroup getWorkGroup(@RequestParam String workUnitName)
     {
-        return workUnitService.getWorkGroupsByWorkUnitName(workUnitName);
+        return workUnitService.getWorkGroupByWorkUnitName(workUnitName);
     }
 
 }

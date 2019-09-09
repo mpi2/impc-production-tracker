@@ -3,7 +3,7 @@ package uk.ac.ebi.impc_prod_tracker.data.biology.outcome;
 import lombok.*;
 import uk.ac.ebi.impc_prod_tracker.data.BaseEntity;
 import uk.ac.ebi.impc_prod_tracker.data.biology.allele.Allele;
-import uk.ac.ebi.impc_prod_tracker.data.biology.attempt.Attempt;
+import uk.ac.ebi.impc_prod_tracker.data.biology.plan.Plan;
 import uk.ac.ebi.impc_prod_tracker.data.biology.status.Status;
 
 import javax.persistence.*;
@@ -24,7 +24,7 @@ public class Outcome extends BaseEntity
     private String tpo;
 
     @ManyToOne
-    private Attempt attempt;
+    private Plan plan;
 
     @NotNull
     @ManyToOne(targetEntity= Status.class)

@@ -2,8 +2,8 @@ package uk.ac.ebi.impc_prod_tracker.web.mapping.plan.attempt.crispr_attempt;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
-import uk.ac.ebi.impc_prod_tracker.data.biology.attempt.crispr_attempt.nuclease.Nuclease;
-import uk.ac.ebi.impc_prod_tracker.web.dto.plan.attempt.production.crispr_attempt.NucleaseDTO;
+import uk.ac.ebi.impc_prod_tracker.data.biology.crispr_attempt.nuclease.Nuclease;
+import uk.ac.ebi.impc_prod_tracker.web.dto.plan.production.crispr_attempt.NucleaseDTO;
 
 import java.util.ArrayList;
 import java.util.Collection;

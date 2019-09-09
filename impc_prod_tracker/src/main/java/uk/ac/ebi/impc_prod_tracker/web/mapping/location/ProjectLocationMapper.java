@@ -21,13 +21,11 @@ public class ProjectLocationMapper
     {
         ProjectLocationDTO projectLocationDTO = new ProjectLocationDTO();
         projectLocationDTO.setLocationDTO(locationMapper.toDto(projectLocation.getLocation()));
-        projectLocationDTO.setIndex(projectLocation.getIndex());
         if (projectLocation.getChromosomeFeatureType() != null)
         {
             projectLocationDTO.setChrFeatureTypeName(projectLocation.getChromosomeFeatureType().getType());
         }
         projectLocationDTO.setAlleleTypeName(projectLocation.getAlleleType().getName());
-        projectLocationDTO.setSequence(projectLocation.getSequence());
 
         return projectLocationDTO;
     }

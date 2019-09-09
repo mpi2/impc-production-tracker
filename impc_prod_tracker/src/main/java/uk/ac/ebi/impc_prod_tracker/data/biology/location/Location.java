@@ -2,7 +2,8 @@ package uk.ac.ebi.impc_prod_tracker.data.biology.location;
 
 import lombok.*;
 import uk.ac.ebi.impc_prod_tracker.data.BaseEntity;
-import uk.ac.ebi.impc_prod_tracker.data.biology.specie.Specie;
+import uk.ac.ebi.impc_prod_tracker.data.biology.species.Species;
+import uk.ac.ebi.impc_prod_tracker.data.biology.strain.Strain;
 
 import javax.persistence.*;
 import javax.validation.constraints.Pattern;
@@ -28,6 +29,9 @@ public class Location extends BaseEntity
 
     private String genomeBuild;
 
-    @ManyToOne(targetEntity = Specie.class)
-    private Specie specie;
+    @ManyToOne(targetEntity = Species.class)
+    private Species species;
+
+    @ManyToOne(targetEntity = Strain.class)
+    private Strain strain;
 }

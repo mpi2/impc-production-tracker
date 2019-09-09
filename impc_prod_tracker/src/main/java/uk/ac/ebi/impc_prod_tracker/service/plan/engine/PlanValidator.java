@@ -1,7 +1,6 @@
 package uk.ac.ebi.impc_prod_tracker.service.plan.engine;
 
 import org.springframework.stereotype.Component;
-import uk.ac.ebi.impc_prod_tracker.data.biology.attempt.crispr_attempt.CrisprAttempt;
 import uk.ac.ebi.impc_prod_tracker.data.biology.plan.Plan;
 
 /**

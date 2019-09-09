@@ -26,7 +26,4 @@ public class AlleleLocation extends BaseEntity implements Serializable
 
     @ManyToOne(targetEntity = Location.class)
     private Location location;
-
-    @ManyToOne(targetEntity= ChromosomeFeatureType.class)
-    private ChromosomeFeatureType chromosomeFeatureType;
 }

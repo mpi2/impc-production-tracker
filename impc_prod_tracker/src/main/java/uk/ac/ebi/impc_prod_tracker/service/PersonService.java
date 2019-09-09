@@ -105,8 +105,9 @@ public class PersonService
 
             person = new Person(email);
             person.setIsActive(true);
-            person.setRole(role);
-            person.setWorkUnit(workUnit);
+            //TODO: Adjust with several work units and consortia.
+//            person.setRole(role);
+//            person.setWorkUnit(workUnit);
             String authId = createUserInAuthenticationSystem(userRegisterRequest);
             person.setAuthId(authId);
             personRepository.save(person);
@@ -119,7 +120,7 @@ public class PersonService
                     throw new OperationFailedException(
                         String.format(INSTITUTE_NOT_EXIST_IN_THE_SYSTEM, instituteName));
                 }
-                institute.addPerson(person);
+                //TODO: Adjust with several work units and consortia.
                 instituteRepository.save(institute);
             }
             personRepository.save(person);

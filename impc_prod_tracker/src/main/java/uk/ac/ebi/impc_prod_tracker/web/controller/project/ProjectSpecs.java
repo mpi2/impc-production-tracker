@@ -137,9 +137,10 @@ public class ProjectSpecs
             List<Predicate> predicates = new ArrayList<>();
 
             SetJoin<Project, Plan> plansJoin = root.join(Project_.plans);
-            Path<WorkGroup> workGroupPath = plansJoin.get(Plan_.workGroup);
-            Path<String> workGroupName = workGroupPath.get(WorkGroup_.name);
-            predicates.add(workGroupName.in(workGroupsNames));
+            //TODO: Filter at project level
+//            Path<WorkGroup> workGroupPath = plansJoin.get(Plan_.workGroup);
+//            Path<String> workGroupName = workGroupPath.get(WorkGroup_.name);
+//            predicates.add(workGroupName.in(workGroupsNames));
             query.distinct(true);
 
             return criteriaBuilder.and(predicates.toArray(new Predicate[predicates.size()]));
@@ -212,9 +213,10 @@ public class ProjectSpecs
             List<Predicate> predicates = new ArrayList<>();
 
             SetJoin<Project, Plan> plansJoin = root.join(Project_.plans);
-            Path<Privacy> privacy = plansJoin.get(Plan_.privacy);
-            Path<String> privacyName = privacy.get(Privacy_.name);
-            predicates.add(privacyName.in(privacies));
+            //TODO: Adjust with privacy at project level.
+//            Path<Privacy> privacy = plansJoin.get(Plan_.privacy);
+//            Path<String> privacyName = privacy.get(Privacy_.name);
+//            predicates.add(privacyName.in(privacies));
             query.distinct(true);
 
             return criteriaBuilder.and(predicates.toArray(new Predicate[predicates.size()]));

@@ -1,14 +1,14 @@
 package uk.ac.ebi.impc_prod_tracker.service.plan.engine;
 
 import org.springframework.stereotype.Component;
-import uk.ac.ebi.impc_prod_tracker.data.biology.attempt.crispr_attempt.CrisprAttempt;
+import uk.ac.ebi.impc_prod_tracker.data.biology.crispr_attempt.CrisprAttempt;
 import uk.ac.ebi.impc_prod_tracker.data.biology.plan.Plan;
 import uk.ac.ebi.impc_prod_tracker.data.biology.privacy.Privacy;
 import uk.ac.ebi.impc_prod_tracker.data.biology.privacy.PrivacyRepository;
 import uk.ac.ebi.impc_prod_tracker.data.organization.work_group.WorkGroup;
 import uk.ac.ebi.impc_prod_tracker.data.organization.work_group.WorkGroupRepository;
 import uk.ac.ebi.impc_prod_tracker.web.dto.plan.PlanDTO;
-import uk.ac.ebi.impc_prod_tracker.web.dto.plan.attempt.production.crispr_attempt.CrisprAttemptDTO;
+import uk.ac.ebi.impc_prod_tracker.web.dto.plan.production.crispr_attempt.CrisprAttemptDTO;
 import uk.ac.ebi.impc_prod_tracker.web.mapping.plan.attempt.crispr_attempt.CrisprAttemptMapper;
 
 /**
@@ -65,25 +65,26 @@ public class UpdatePlanRequestProcessor
 
     private void updateBasicInformation(Plan plan, PlanDTO planDTO)
     {
-        String newPrivacyName = planDTO.getPrivacyName();
-        if (newPrivacyName != null)
-        {
-            Privacy newPrivacy = privacyRepository.findByName(newPrivacyName);
-            if (newPrivacy != null)
-            {
-                plan.setPrivacy(newPrivacy);
-            }
-        }
-        // ADMIN
-        String newWorkGroupName = planDTO.getWorkGroupName();
-        if (newWorkGroupName != null)
-        {
-            WorkGroup newWorkGroup = workGroupRepository.findWorkGroupByName(newWorkGroupName);
-            if (newWorkGroup != null)
-            {
-                plan.setWorkGroup(newWorkGroup);
-            }
-        }
+        // TODO move privacy and work_group to project level
+//        String newPrivacyName = planDTO.getPrivacyName();
+//        if (newPrivacyName != null)
+//        {
+//            Privacy newPrivacy = privacyRepository.findByName(newPrivacyName);
+//            if (newPrivacy != null)
+//            {
+//                plan.setPrivacy(newPrivacy);
+//            }
+//        }
+//        // ADMIN
+//        String newWorkGroupName = planDTO.getWorkGroupName();
+//        if (newWorkGroupName != null)
+//        {
+//            WorkGroup newWorkGroup = workGroupRepository.findWorkGroupByName(newWorkGroupName);
+//            if (newWorkGroup != null)
+//            {
+//                plan.setWorkGroup(newWorkGroup);
+//            }
+//        }
         String newComment = planDTO.getComment();
         if (newComment != null)
         {

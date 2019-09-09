@@ -38,12 +38,6 @@ public class Funder extends BaseEntity
 
     private String description;
 
-    @ManyToMany
-    @JoinTable(
-        name = "funder_consortium",
-        joinColumns = @JoinColumn(name = "funder_id"),
-        inverseJoinColumns = @JoinColumn(name = "consortium_id"))
-    private Set<Consortium> consortia;
 
     @ManyToMany
     @JoinTable(

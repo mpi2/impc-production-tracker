@@ -1,18 +1,18 @@
 package uk.ac.ebi.impc_prod_tracker.service.plan;
 
 import org.springframework.stereotype.Component;
-import uk.ac.ebi.impc_prod_tracker.data.biology.attempt.crispr_attempt.CrisprAttempt;
-import uk.ac.ebi.impc_prod_tracker.data.biology.attempt.crispr_attempt.CrisprAttemptRepository;
-import uk.ac.ebi.impc_prod_tracker.data.biology.attempt.crispr_attempt.delivery_type.DeliveryMethodType;
-import uk.ac.ebi.impc_prod_tracker.data.biology.attempt.crispr_attempt.nuclease.Nuclease;
-import uk.ac.ebi.impc_prod_tracker.data.biology.attempt.crispr_attempt.nuclease.NucleaseRepository;
-import uk.ac.ebi.impc_prod_tracker.data.biology.attempt.crispr_attempt.genotype_primer.GenotypePrimer;
-import uk.ac.ebi.impc_prod_tracker.data.biology.attempt.crispr_attempt.genotype_primer.GenotypePrimerRepository;
-import uk.ac.ebi.impc_prod_tracker.data.biology.attempt.crispr_attempt.mutagenesis_donor.MutagenesisDonor;
-import uk.ac.ebi.impc_prod_tracker.data.biology.attempt.crispr_attempt.mutagenesis_donor.MutagenesisDonorRepository;
-import uk.ac.ebi.impc_prod_tracker.data.biology.attempt.crispr_attempt.assay.assay_type.AssayType;
-import uk.ac.ebi.impc_prod_tracker.data.biology.attempt.crispr_attempt.assay.assay_type.AssayTypeRepository;
-import uk.ac.ebi.impc_prod_tracker.data.biology.attempt.crispr_attempt.delivery_type.DeliveryMethodTypeRepository;
+import uk.ac.ebi.impc_prod_tracker.data.biology.crispr_attempt.CrisprAttempt;
+import uk.ac.ebi.impc_prod_tracker.data.biology.crispr_attempt.CrisprAttemptRepository;
+import uk.ac.ebi.impc_prod_tracker.data.biology.crispr_attempt.delivery_type.DeliveryMethodType;
+import uk.ac.ebi.impc_prod_tracker.data.biology.crispr_attempt.nuclease.Nuclease;
+import uk.ac.ebi.impc_prod_tracker.data.biology.crispr_attempt.nuclease.NucleaseRepository;
+import uk.ac.ebi.impc_prod_tracker.data.biology.crispr_attempt.genotype_primer.GenotypePrimer;
+import uk.ac.ebi.impc_prod_tracker.data.biology.crispr_attempt.genotype_primer.GenotypePrimerRepository;
+import uk.ac.ebi.impc_prod_tracker.data.biology.crispr_attempt.mutagenesis_donor.MutagenesisDonor;
+import uk.ac.ebi.impc_prod_tracker.data.biology.crispr_attempt.mutagenesis_donor.MutagenesisDonorRepository;
+import uk.ac.ebi.impc_prod_tracker.data.biology.crispr_attempt.assay.assay_type.AssayType;
+import uk.ac.ebi.impc_prod_tracker.data.biology.crispr_attempt.assay.assay_type.AssayTypeRepository;
+import uk.ac.ebi.impc_prod_tracker.data.biology.crispr_attempt.delivery_type.DeliveryMethodTypeRepository;
 import java.util.List;
 import java.util.Optional;
 
