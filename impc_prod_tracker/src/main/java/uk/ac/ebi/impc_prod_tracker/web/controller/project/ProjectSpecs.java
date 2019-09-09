@@ -110,10 +110,12 @@ public class ProjectSpecs
 
             List<Predicate> predicates = new ArrayList<>();
 
+
 //            SetJoin<Project, ProjectMouseGene> projectSetJoin = root.join(Project_.projectMouseGenes);
 //            Path<IntendedMouseGene> intendedMouseGenePath = projectSetJoin.get(ProjectMouseGene_.gene);
 //            Path<String> symbolName = intendedMouseGenePath.get(IntendedMouseGene_.symbol);
 //            predicates.add(symbolName.in(markerSymbols));
+
             query.distinct(true);
 
 
