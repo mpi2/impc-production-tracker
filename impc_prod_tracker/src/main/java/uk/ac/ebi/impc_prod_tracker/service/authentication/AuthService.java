@@ -50,7 +50,7 @@ public class AuthService
     {
         ResponseEntity<String> response;
         HttpHeaders headers = new HttpHeaders();
-        headers.setBasicAuth(authenticationRequest.getUsername(), authenticationRequest.getPassword());
+        headers.setBasicAuth(authenticationRequest.getUserName(), authenticationRequest.getPassword());
         HttpEntity<String> entity = new HttpEntity<>("parameters", headers);
         try
         {
