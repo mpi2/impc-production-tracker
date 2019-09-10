@@ -57,7 +57,7 @@ class ProjectSummaryController
     public ResponseEntity findAll(Pageable pageable, PagedResourcesAssembler assembler)
     {
         Specification<Project> specification =
-            Specification.where(projectSpecs.getProjectsWithPlansInMyWorkUnit());
+            Specification.where(projectSpecs.withPlansInUserWorkUnits());
 
         Page<Project> projects = projectService.getProjects(specification, pageable);
         Page<ProjectSummaryDTO> summaries =
@@ -76,7 +76,7 @@ class ProjectSummaryController
 
     private ProjectSummaryDTO getDTO(Project project)
     {
-        ProjectDTO projectDTO = projectMapper.projectToDTO(project);
+        ProjectDTO projectDTO = projectMapper.toDto(project);
         ProjectSummaryDTO projectSummaryDTO = projectSummaryMapper.toDto(projectDTO);
         projectSummaryDTO.add(
             PlanLinkBuilder.buildPlanLinks(project, PlanTypes.PRODUCTION, "production_plans"));

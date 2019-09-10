@@ -64,7 +64,6 @@ public class Project extends BaseEntity implements Resource<Project>
 
     private Boolean recovery;
 
-//    @NotNull
     private Boolean isActive;
 
     @Column(columnDefinition = "TEXT")
@@ -73,10 +72,6 @@ public class Project extends BaseEntity implements Resource<Project>
     @Column(columnDefinition = "TEXT")
     private String projectExternalRef;
 
-
-
-
-    //    @NotNull
     @ManyToOne(targetEntity= Privacy.class)
     private Privacy privacy;
 

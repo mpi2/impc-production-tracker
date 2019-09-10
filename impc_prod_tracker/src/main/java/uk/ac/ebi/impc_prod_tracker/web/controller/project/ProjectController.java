@@ -41,7 +41,7 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.http.ResponseEntity.ok;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/projects")
 @CrossOrigin(origins = "*")
 class ProjectController
 {
@@ -66,12 +66,17 @@ class ProjectController
      * Get all the projects in the system.
      * @return A collection of {@link ProjectDTO} objects.
      */
-    @GetMapping(value = {"/projects"})
-    public ResponseEntity findAll(Pageable pageable, PagedResourcesAssembler assembler)
+    @GetMapping
+    public ResponseEntity findAll(
+        Pageable pageable,
+        PagedResourcesAssembler assembler,
+        @RequestParam(value = "consortium", required = false) List<String> consortia,
+        @RequestParam(value = "status", required = false) List<String> statuses,
+        @RequestParam(value = "privacy", required = false) List<String> privacies)
     {
-        Specification<Project> specification =
-            Specification.where(projectSpecs.getProjectsWithPlansInMyWorkUnit());
-        Page<Project> projects = projectService.getProjects(specification, pageable);
+        Specification<Project> specifications =
+            buildSpecificationsWithCriteria(consortia, statuses, privacies);
+        Page<Project> projects = projectService.getProjects(specifications, pageable);
         Page<ProjectDTO> projectDtos =
             projects.map(this::getDTO);
         PagedModel pr =
@@ -84,9 +89,21 @@ class ProjectController
 
         return new ResponseEntity<>(pr, responseHeaders, HttpStatus.OK);
     }
+
+    private Specification<Project> buildSpecificationsWithCriteria(
+        List<String> consortia, List<String> statuses, List<String> privacies)
+    {
+        Specification<Project> specifications =
+            Specification.where(projectSpecs.withPlansInUserWorkUnits())
+                .and(projectSpecs.withConsortia(consortia))
+                .and(projectSpecs.withStatuses(statuses))
+                .and(projectSpecs.withPrivacies(privacies));
+        return specifications;
+    }
+
     private ProjectDTO getDTO(Project project)
     {
-        ProjectDTO projectDTO = projectMapper.projectToDTO(project);
+        ProjectDTO projectDTO = projectMapper.toDto(project);
         projectDTO.add(
             PlanLinkBuilder.buildPlanLinks(project, PlanTypes.PRODUCTION, "production_plans"));
         projectDTO.add(
@@ -99,7 +116,7 @@ class ProjectController
      * @param tpn tpn Project identifier.
      * @return Entity with the project information.
      */
-    @GetMapping(value = {"/projects/{tpn}"})
+    @GetMapping(value = {"/{tpn}"})
     public EntityModel<ProjectDTO> findOne(@PathVariable String tpn)
     {
         Project project = ProjectUtilities.getNotNullProjectByTpn(tpn);
@@ -110,7 +127,7 @@ class ProjectController
     /**
      *      * @api {post} / create a new project.
      */
-    @PostMapping(value = {"/projects"})
+    @PostMapping
     private ResponseEntity createProject(@RequestBody NewProjectRequestDTO newProjectRequestDTO)
     {
         Project newProject = projectService.createProject(newProjectRequestDTO);
@@ -118,7 +135,7 @@ class ProjectController
         return ok("Project created!");
     }
 
-    @GetMapping(value = {"/projects/{tpn}/history"})
+    @GetMapping(value = {"/{tpn}/history"})
     public List<HistoryDTO> getProjectHistory(@PathVariable String tpn)
     {
         Project project = ProjectUtilities.getNotNullProjectByTpn(tpn);

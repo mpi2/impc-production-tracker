@@ -83,8 +83,7 @@ public class ProjectServiceImpl implements ProjectService
         List<String> workUnits,
         List<String> workGroups,
         List<String> planTypes,
-        List<String> statuses,
-        List<String> privacies)
+        List<String> statuses)
     {
         Set<Plan> plans = project.getPlans();
 
@@ -97,16 +96,15 @@ public class ProjectServiceImpl implements ProjectService
                     && workUnits.contains(plan.getWorkUnit().getName()))
                 .collect(Collectors.toSet());
         }
-        // TODO requires revision
-        /*
+
         if (!CollectionUtils.isEmpty(workGroups))
         {
             plans = plans.stream()
-                .filter(plan -> plan.getWorkGroup() != null
-                    && workGroups.contains(plan.getWorkGroup().getName()))
+                .filter(plan -> plan.getWorkUnit().getWorkGroup() != null
+                    && workGroups.contains(plan.getWorkUnit().getWorkGroup().getName()))
                 .collect(Collectors.toSet());
         }
-        */
+
         if (!CollectionUtils.isEmpty(planTypes))
         {
             plans = plans.stream()
@@ -121,17 +119,6 @@ public class ProjectServiceImpl implements ProjectService
                     && statuses.contains(plan.getStatus().getName()))
                 .collect(Collectors.toSet());
         }
-
-        // TODO requires revision for privacy
-        /*
-        if (!CollectionUtils.isEmpty(privacies))
-        {
-            plans = plans.stream()
-                .filter(plan -> plan.getPrivacy() != null
-                    && privacies.contains(plan.getPrivacy().getName()))
-                .collect(Collectors.toSet());
-        }
-        */
 
         project.setPlans(plans);
         return project;

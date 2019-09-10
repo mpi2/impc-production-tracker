@@ -50,21 +50,19 @@ public interface ProjectService
 
     /**
      * 
-     * @param project
-     * @param workUnits
-     * @param workGroups
-     * @param planTypes
-     * @param statuses
-     * @param privacies
-     * @return
+     * @param project Project to filter
+     * @param workUnits Work unit name list.
+     * @param workGroups Work group name list.
+     * @param planTypes Plan type name list.
+     * @param statuses Statuses name list.
+     * @return Filtered project.
      */
     Project getProjectFilteredByPlanAttributes(
         Project project,
         List<String> workUnits,
         List<String> workGroups,
         List<String> planTypes,
-        List<String> statuses,
-        List<String> privacies
+        List<String> statuses
     );
 
     Project createProject(NewProjectRequestDTO newProjectRequestDTO);

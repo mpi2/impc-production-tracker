@@ -111,6 +111,8 @@ public class AapSystemSubject implements SystemSubject
             if (isMaintainerUser())
             {
                 isEbiAdmin = true;
+                roleWorkUnits = null;
+                roleConsortia = null;
             }
             else
             {
