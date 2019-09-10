@@ -8,8 +8,8 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class PersonRoleConsortiumDTO
 {
-    @JsonProperty("consortium")
-    private String consortium;
+    @JsonProperty("consortium_name")
+    private String consortiumName;
 
     @JsonProperty("role_name")
     private String roleName;
