@@ -15,8 +15,10 @@
  *******************************************************************************/
 package uk.ac.ebi.impc_prod_tracker.conf.security;
 
-import uk.ac.ebi.impc_prod_tracker.data.organization.role.Role;
-import uk.ac.ebi.impc_prod_tracker.data.organization.work_unit.WorkUnit;
+import uk.ac.ebi.impc_prod_tracker.data.organization.person_role_consortium.PersonRoleConsortium;
+import uk.ac.ebi.impc_prod_tracker.data.organization.person_role_work_unit.PersonRoleWorkUnit;
+
+import java.util.List;
 
 /**
  * Information a subject in the system should have.
@@ -32,9 +34,9 @@ public interface SystemSubject
 
     String getEmail();
 
-    Role getRole();
+    List<PersonRoleWorkUnit> getRoleWorkUnits();
 
-    WorkUnit getWorkUnit();
+    List<PersonRoleConsortium> getRoleConsortia();
 
     Boolean isAdmin();
 }

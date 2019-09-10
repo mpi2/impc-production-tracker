@@ -21,10 +21,10 @@ import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import uk.ac.ebi.impc_prod_tracker.conf.error_management.OperationFailedException;
-import uk.ac.ebi.impc_prod_tracker.conf.security.constants.PersonManagementConstants;
 import uk.ac.ebi.impc_prod_tracker.data.organization.person.Person;
 import uk.ac.ebi.impc_prod_tracker.data.organization.person.PersonRepository;
-import uk.ac.ebi.impc_prod_tracker.data.organization.role.Role;
+import uk.ac.ebi.impc_prod_tracker.data.organization.person_role_consortium.PersonRoleConsortium;
+import uk.ac.ebi.impc_prod_tracker.data.organization.person_role_work_unit.PersonRoleWorkUnit;
 import uk.ac.ebi.impc_prod_tracker.data.organization.work_unit.WorkUnit;
 import java.util.ArrayList;
 import java.util.List;
@@ -43,11 +43,14 @@ public class AapSystemSubject implements SystemSubject
     private String name;
     private String userRefId;
     private String email;
-    private Role role;
     private WorkUnit workUnit;
     private PersonRepository personRepository;
     private Person person;
+    private boolean isEbiAdmin;
     private List<String> domains = new ArrayList<>();
+    private List<PersonRoleWorkUnit> roleWorkUnits;
+    private List<PersonRoleConsortium> roleConsortia;
+
     private final static String NOT_USER_INFORMATION_MESSAGE = "There is not associated information in the system for " +
         "the user [%s].";
     private final static String NULL_AUTH_ID_MESSAGE = "AuthId cannot be null. The jwt token may not have" +
@@ -87,11 +90,6 @@ public class AapSystemSubject implements SystemSubject
         return domains.contains(TRACKER_MAINTAINER_DOMAIN_NAME);
     }
 
-    private Role getAdminRole()
-    {
-        return new Role(PersonManagementConstants.ADMIN_ROLE);
-    }
-
     /**
      * Simple constructor that sets the minimal information for a user.
      * @param login
@@ -112,7 +110,7 @@ public class AapSystemSubject implements SystemSubject
         {
             if (isMaintainerUser())
             {
-                role = getAdminRole();
+                isEbiAdmin = true;
             }
             else
             {
@@ -123,15 +121,27 @@ public class AapSystemSubject implements SystemSubject
         }
         else
         {
-            //TODO: Adjust with several work units and consortia.
-//            role = person.getRole();
-//            workUnit = person.getWorkUnit();
+            isEbiAdmin = person.getEbiAdmin() == null ? false : person.getEbiAdmin();
+            roleWorkUnits = new ArrayList<>(person.getRoleWorkUnits());
+            roleConsortia = new ArrayList<>(person.getRoleConsortia());
         }
+    }
+
+    @Override
+    public List<PersonRoleWorkUnit> getRoleWorkUnits()
+    {
+        return roleWorkUnits;
+    }
+
+    @Override
+    public List<PersonRoleConsortium> getRoleConsortia()
+    {
+        return roleConsortia;
     }
 
     @Override
     public Boolean isAdmin()
     {
-        return "admin".equalsIgnoreCase(role.getName());
+        return isEbiAdmin;
     }
 }

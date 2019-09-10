@@ -60,7 +60,8 @@ public class ProjectSpecs
         }
         else
         {
-            WorkUnit workUnit = subjectRetriever.getSubject().getWorkUnit();
+           // WorkUnit workUnit = subjectRetriever.getSubject().getWorkUnit();
+            WorkUnit workUnit = null;
             List<String> workUnitNames = new ArrayList<>();
             if (workUnit != null)
             {
