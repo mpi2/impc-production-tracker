@@ -15,13 +15,12 @@
  *******************************************************************************/
 package uk.ac.ebi.impc_prod_tracker.data.organization.person;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.*;
 import org.springframework.data.rest.core.annotation.RestResource;
 import uk.ac.ebi.impc_prod_tracker.data.BaseEntity;
-import uk.ac.ebi.impc_prod_tracker.data.organization.institute.Institute;
-import uk.ac.ebi.impc_prod_tracker.data.organization.work_unit.WorkUnit;
-import uk.ac.ebi.impc_prod_tracker.data.organization.role.Role;
+import uk.ac.ebi.impc_prod_tracker.data.organization.person_role_consortium.PersonRoleConsortium;
+import uk.ac.ebi.impc_prod_tracker.data.organization.person_role_work_unit.PersonRoleWorkUnit;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
@@ -30,7 +29,6 @@ import java.util.Set;
 
 @NoArgsConstructor(access= AccessLevel.PRIVATE, force=true)
 @Data
-@EqualsAndHashCode( exclude = {"institutes"}, callSuper = false)
 @Entity
 @RestResource(rel = "people", path = "people")
 public class Person extends BaseEntity
@@ -57,6 +55,16 @@ public class Person extends BaseEntity
     {
         this.email = email;
     }
+
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
+    @OneToMany(mappedBy = "person")
+    private Set<PersonRoleWorkUnit> roleWorkUnits;
+
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
+    @OneToMany(mappedBy = "person")
+    private Set<PersonRoleConsortium> roleConsortia;
 
     @Override
     public String toString()
