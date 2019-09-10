@@ -18,7 +18,6 @@ package uk.ac.ebi.impc_prod_tracker.web.controller.auth;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -38,9 +37,7 @@ import uk.ac.ebi.impc_prod_tracker.web.dto.auth.PersonRoleWorkUnitDTO;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import static org.springframework.http.ResponseEntity.ok;
 
@@ -73,7 +70,7 @@ public class AuthController
     {
         try
         {
-            String username = authenticationRequest.getUsername();
+            String username = authenticationRequest.getUserName();
             String token = authService.getAuthenticationToken(authenticationRequest);
 
             SystemSubject person = personService.getPersonByToken(token);
@@ -119,7 +116,7 @@ public class AuthController
                 {
                     PersonRoleConsortiumDTO personRoleConsortiumDTO = new PersonRoleConsortiumDTO();
                     personRoleConsortiumDTO.setRoleName(x.getRole().getName());
-                    personRoleConsortiumDTO.setConsortium(x.getConsortium().getName());
+                    personRoleConsortiumDTO.setConsortiumName(x.getConsortium().getName());
                     roleConsortiumDTOS.add(personRoleConsortiumDTO);
                 });
             authenticationResponseDTO.setRolesConsortia(roleConsortiumDTOS);
