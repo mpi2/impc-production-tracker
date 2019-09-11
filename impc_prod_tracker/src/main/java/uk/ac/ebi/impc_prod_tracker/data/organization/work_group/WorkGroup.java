@@ -53,7 +53,6 @@ public class WorkGroup extends BaseEntity
     private Set<Funder> funders;
 
 
-    @JsonIgnore
     @ManyToMany
     @JoinTable(
             name = "work_group_work_unit",
