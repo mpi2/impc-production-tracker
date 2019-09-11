@@ -18,6 +18,8 @@ package uk.ac.ebi.impc_prod_tracker.web.controller.project;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Component;
 import uk.ac.ebi.impc_prod_tracker.conf.security.abac.spring.SubjectRetriever;
+import uk.ac.ebi.impc_prod_tracker.data.biology.assignment_status.AssignmentStatus;
+import uk.ac.ebi.impc_prod_tracker.data.biology.assignment_status.AssignmentStatus_;
 import uk.ac.ebi.impc_prod_tracker.data.biology.plan.Plan;
 import uk.ac.ebi.impc_prod_tracker.data.biology.plan.Plan_;
 import uk.ac.ebi.impc_prod_tracker.data.biology.plan.type.PlanType;
@@ -26,10 +28,9 @@ import uk.ac.ebi.impc_prod_tracker.data.biology.privacy.Privacy;
 import uk.ac.ebi.impc_prod_tracker.data.biology.privacy.Privacy_;
 import uk.ac.ebi.impc_prod_tracker.data.biology.project.Project;
 import uk.ac.ebi.impc_prod_tracker.data.biology.project.Project_;
-import uk.ac.ebi.impc_prod_tracker.data.biology.status.Status;
-import uk.ac.ebi.impc_prod_tracker.data.biology.status.Status_;
-import uk.ac.ebi.impc_prod_tracker.data.organization.work_group.WorkGroup;
-import uk.ac.ebi.impc_prod_tracker.data.organization.work_group.WorkGroup_;
+import uk.ac.ebi.impc_prod_tracker.data.organization.consortium.Consortium;
+import uk.ac.ebi.impc_prod_tracker.data.organization.consortium.Consortium_;
+import uk.ac.ebi.impc_prod_tracker.data.organization.person_role_work_unit.PersonRoleWorkUnit;
 import uk.ac.ebi.impc_prod_tracker.data.organization.work_unit.WorkUnit;
 import uk.ac.ebi.impc_prod_tracker.data.organization.work_unit.WorkUnit_;
 import javax.persistence.criteria.Path;
@@ -37,6 +38,7 @@ import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.SetJoin;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * This class creates the filters needed when searching projects.
@@ -51,24 +53,34 @@ public class ProjectSpecs
         this.subjectRetriever = subjectRetriever;
     }
 
-    public Specification<Project> getProjectsWithPlansInMyWorkUnit()
+    public Specification<Project> withPlansInUserWorkUnits()
     {
+        Specification<Project> specification;
+
         if (subjectRetriever.getSubject().isAdmin())
         {
-            return (Specification<Project>) (root, query, criteriaBuilder)
+            specification = (Specification<Project>) (root, query, criteriaBuilder)
                 -> criteriaBuilder.isTrue(criteriaBuilder.literal(true));
         }
         else
         {
-           // WorkUnit workUnit = subjectRetriever.getSubject().getWorkUnit();
-            WorkUnit workUnit = null;
+            List<WorkUnit> workUnits =
+                subjectRetriever.getSubject().getRoleWorkUnits().stream()
+                    .map(PersonRoleWorkUnit::getWorkUnit)
+                    .collect(Collectors.toList());
             List<String> workUnitNames = new ArrayList<>();
-            if (workUnit != null)
+            workUnits.forEach(x -> workUnitNames.add(x.getName()));
+            if (workUnits.isEmpty())
             {
-                workUnitNames.add(workUnit.getName());
+                specification = (Specification<Project>) (root, query, criteriaBuilder)
+                    -> criteriaBuilder.isTrue(criteriaBuilder.literal(false));
             }
-            return getProjectsByWorkUnitNames(workUnitNames);
+            else
+            {
+                specification = getProjectsByWorkUnitNames(workUnitNames);
+            }
         }
+        return specification;
     }
 
     /**
@@ -76,7 +88,7 @@ public class ProjectSpecs
      * @param workUnitNames List of names of the Work Units
      * @return The found projects. If workUnitNames is null then not filter is applied.
      */
-    public static Specification<Project> getProjectsByWorkUnitNames(List<String> workUnitNames)
+    private static Specification<Project> getProjectsByWorkUnitNames(List<String> workUnitNames)
     {
         return (Specification<Project>) (root, query, criteriaBuilder) -> {
             if (workUnitNames == null)
@@ -176,53 +188,120 @@ public class ProjectSpecs
     }
 
     /**
-     * Get all the projects which plans with the status in statuses.
+     * Get all the projects whose status is one of the list of statuses provided.
      * @param statuses List of names of statuses.
      * @return The found projects. If statuses is null then not filter is applied.
      */
-    public static Specification<Project> getProjectsByStatus(List<String> statuses)
+    public Specification<Project> withStatuses(List<String> statuses)
     {
-        return (Specification<Project>) (root, query, criteriaBuilder) -> {
-            if (statuses == null)
-            {
-                return criteriaBuilder.isTrue(criteriaBuilder.literal(true));
-            }
+        Specification<Project> specification;
+        if (statuses == null)
+        {
+            specification = (Specification<Project>) (root, query, criteriaBuilder) ->
+                criteriaBuilder.isTrue(criteriaBuilder.literal(true));
+        }
+        else
+        {
+            specification = (Specification<Project>) (root, query, criteriaBuilder) -> {
 
-            List<Predicate> predicates = new ArrayList<>();
+                List<Predicate> predicates = new ArrayList<>();
 
-            SetJoin<Project, Plan> plansJoin = root.join(Project_.plans);
-            Path<Status> status = plansJoin.get(Plan_.status);
-            Path<String> statusName = status.get(Status_.name);
-            predicates.add(statusName.in(statuses));
-            query.distinct(true);
+                Path<AssignmentStatus> status = root.get(Project_.assignmentStatus);
+                Path<String> statusName = status.get(AssignmentStatus_.name);
+                predicates.add(statusName.in(statuses));
+                query.distinct(true);
 
-            return criteriaBuilder.and(predicates.toArray(new Predicate[predicates.size()]));
-        };
+                return criteriaBuilder.and(predicates.toArray(new Predicate[predicates.size()]));
+            };
+        }
+        return specification;
     }
 
     /**
-     * Get all the projects which plans have privacy in privacies.
-     * @param privacies List of names of statuses.
+     * Get all the projects with a specific privacy (or privacies).
+     * @param privacies List of names of privacies.
      * @return The found projects. If privacies is null then not filter is applied.
      */
-    public static Specification<Project> getProjectsByPrivacy(List<String> privacies)
+    public Specification<Project> withPrivacies(List<String> privacies)
     {
-        return (Specification<Project>) (root, query, criteriaBuilder) -> {
-            if (privacies == null)
-            {
-                return criteriaBuilder.isTrue(criteriaBuilder.literal(true));
-            }
+        Specification<Project> specification;
+        if (privacies == null)
+        {
+            specification = (Specification<Project>) (root, query, criteriaBuilder) ->
+                criteriaBuilder.isTrue(criteriaBuilder.literal(true));
+        }
+        else
+        {
+            specification = (Specification<Project>) (root, query, criteriaBuilder) -> {
 
-            List<Predicate> predicates = new ArrayList<>();
+                List<Predicate> predicates = new ArrayList<>();
 
-            SetJoin<Project, Plan> plansJoin = root.join(Project_.plans);
-            //TODO: Adjust with privacy at project level.
-//            Path<Privacy> privacy = plansJoin.get(Plan_.privacy);
-//            Path<String> privacyName = privacy.get(Privacy_.name);
-//            predicates.add(privacyName.in(privacies));
-            query.distinct(true);
+                Path<Privacy> privacy = root.get(Project_.privacy);
+                Path<String> privacyName = privacy.get(Privacy_.name);
+                predicates.add(privacyName.in(privacies));
+                query.distinct(true);
 
-            return criteriaBuilder.and(predicates.toArray(new Predicate[predicates.size()]));
-        };
+                return criteriaBuilder.and(predicates.toArray(new Predicate[predicates.size()]));
+            };
+        }
+        return specification;
+    }
+
+    /**
+     * Get all the projects with a specific consortium (or consortia).
+     * @param consortia List of names of consortia.
+     * @return The found projects. If privacies is null then not filter is applied.
+     */
+    public Specification<Project> withConsortia(List<String> consortia)
+    {
+        Specification<Project> specification;
+        if (consortia == null)
+        {
+            specification = (Specification<Project>) (root, query, criteriaBuilder) ->
+                criteriaBuilder.isTrue(criteriaBuilder.literal(true));
+        }
+        else
+        {
+            specification = (Specification<Project>) (root, query, criteriaBuilder) -> {
+
+                List<Predicate> predicates = new ArrayList<>();
+
+                SetJoin<Project, Consortium> consortiumSetJoin = root.join(Project_.consortia);
+                Path<String> consortiumName = consortiumSetJoin.get(Consortium_.name);
+                predicates.add(consortiumName.in(consortia));
+                query.distinct(true);
+
+                return criteriaBuilder.and(predicates.toArray(new Predicate[predicates.size()]));
+            };
+        }
+        return specification;
+    }
+
+    /**
+     * Get all the projects with a specific tpn (or tpns).
+     * @param tpns List of names of tpn.
+     * @return The found projects. If tpn is null then not filter is applied.
+     */
+    public Specification<Project> withTpns(List<String> tpns)
+    {
+        Specification<Project> specification;
+        if (tpns == null)
+        {
+            specification = (Specification<Project>) (root, query, criteriaBuilder) ->
+                criteriaBuilder.isTrue(criteriaBuilder.literal(true));
+        }
+        else
+        {
+            specification = (Specification<Project>) (root, query, criteriaBuilder) -> {
+
+                List<Predicate> predicates = new ArrayList<>();
+                Path<String> tpn = root.get(Project_.tpn);
+                predicates.add(tpn.in(tpns));
+                query.distinct(true);
+
+                return criteriaBuilder.and(predicates.toArray(new Predicate[predicates.size()]));
+            };
+        }
+        return specification;
     }
 }

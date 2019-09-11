@@ -1,13 +1,13 @@
 package uk.ac.ebi.impc_prod_tracker.common.history;
 
-import org.junit.Ignore;
 import org.junit.Test;
 import uk.ac.ebi.impc_prod_tracker.data.biology.crispr_attempt.CrisprAttempt;
+import uk.ac.ebi.impc_prod_tracker.data.biology.crispr_attempt.genotype_primer.GenotypePrimer;
 import uk.ac.ebi.impc_prod_tracker.data.biology.crispr_attempt.guide.Guide;
 import uk.ac.ebi.impc_prod_tracker.data.biology.plan.Plan;
 import uk.ac.ebi.impc_prod_tracker.data.biology.privacy.Privacy;
+import uk.ac.ebi.impc_prod_tracker.data.biology.project.Project;
 import uk.ac.ebi.impc_prod_tracker.data.organization.work_unit.WorkUnit;
-
 import java.util.*;
 
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -49,19 +49,17 @@ public class HistoryChangesAdaptorUsingPlanObjectTest
     }
 
     @Test
-    @Ignore
-    //TODO: Use project instead.
     public void testWhenPrivacyChanged()
     {
-        Plan originalPlan = buildBasicPlan();
-        Plan newPlan = buildBasicPlan();
+        Project originalProject = buildBasicProject();
+        Project newProject = buildBasicProject();
         Privacy newPrivacy = new Privacy();
         newPrivacy.setId(2L);
         newPrivacy.setName("New Privacy");
-        //newPlan.setPrivacy(newPrivacy);
+        newProject.setPrivacy(newPrivacy);
 
-        HistoryChangesAdaptor<Plan> historyChangesAdaptor =
-            new HistoryChangesAdaptor<>(Arrays.asList(), originalPlan, newPlan);
+        HistoryChangesAdaptor<Project> historyChangesAdaptor =
+            new HistoryChangesAdaptor<>(Arrays.asList(), originalProject, newProject);
 
         List<ChangeDescription> changeDescriptionList =  historyChangesAdaptor.getChanges();
         System.out.println(changeDescriptionList);
@@ -74,19 +72,17 @@ public class HistoryChangesAdaptorUsingPlanObjectTest
     }
 
     @Test
-    @Ignore
-    //TODO: Use project instead.
     public void testWhenCommentAndPrivacyChanged()
     {
-        Plan originalPlan = buildBasicPlan();
-        Plan newPlan = buildBasicPlan();
+        Project originalProject = buildBasicProject();
+        Project newProject = buildBasicProject();
         Privacy newPrivacy = new Privacy();
         newPrivacy.setId(2L);
         newPrivacy.setName("New Privacy");
-       // newPlan.setPrivacy(newPrivacy);
-        newPlan.setComment("A comment");
-        HistoryChangesAdaptor<Plan> historyChangesAdaptor =
-            new HistoryChangesAdaptor<>(Arrays.asList(), originalPlan, newPlan);
+        newProject.setPrivacy(newPrivacy);
+        newProject.setComment("A comment");
+        HistoryChangesAdaptor<Project> historyChangesAdaptor =
+            new HistoryChangesAdaptor<>(Arrays.asList(), originalProject, newProject);
 
         List<ChangeDescription> changeDescriptionList =  historyChangesAdaptor.getChanges();
         System.out.println(changeDescriptionList);
@@ -242,34 +238,30 @@ public class HistoryChangesAdaptorUsingPlanObjectTest
         System.out.println(changeDescriptionList);
     }
 
-    @Ignore
-    //TODO: This should work once the Primers are added as reference to the CrisprAttempt object.
-//    @Test
-//    public void testWhenAddedPrimer()
-//    {
-//        Plan originalPlan = buildBasicPlan();
-//        Plan newPlan = buildBasicPlan();
-//        HistoryChangesAdaptor<Plan> historyChangesAdaptor =
-//            new HistoryChangesAdaptor<>(Arrays.asList(), originalPlan, newPlan);
-//
-//        CrisprAttempt crisprAttempt1 = new CrisprAttempt();
-//        Attempt attempt1 = new Attempt();
-//        attempt1.setCrisprAttempt(crisprAttempt1);
-//
-//        originalPlan.setAttempt(attempt1);
-//
-//        CrisprAttempt crisprAttempt2 = new CrisprAttempt();
-//        GenotypePrimer primer1 = new GenotypePrimer();
-//        primer1.set
-//        primer1.setSequence("ACACCCCTAGTCTTGTGTCTCA");
-//        primer1.setName("Dnah10 KO F");
-//        primer1.setCrisprAttempt(crisprAttempt2);
-//        newPlan.setCrisprAttempt(crisprAttempt2);
-//
-//        List<ChangeDescription> changeDescriptionList = historyChangesAdaptor.getChanges();
-//        System.out.println(changeDescriptionList);
-//        assertThat("Unexpected number of changes:", changeDescriptionList.size(), is(1));
-//    }
+    @Test
+    public void testWhenAddedPrimer()
+    {
+        Plan originalPlan = buildBasicPlan();
+        Plan newPlan = buildBasicPlan();
+        HistoryChangesAdaptor<Plan> historyChangesAdaptor =
+            new HistoryChangesAdaptor<>(Arrays.asList(), originalPlan, newPlan);
+
+        CrisprAttempt crisprAttempt1 = new CrisprAttempt();
+        originalPlan.setCrisprAttempt(crisprAttempt1);
+
+        CrisprAttempt crisprAttempt2 = new CrisprAttempt();
+        GenotypePrimer primer1 = new GenotypePrimer();
+        primer1.setSequence("ACACCCCTAGTCTTGTGTCTCA");
+        primer1.setName("Dnah10 KO F");
+        Set<GenotypePrimer> genotypePrimers = new HashSet<>();
+        genotypePrimers.add(primer1);
+        crisprAttempt2.setPrimers(genotypePrimers);
+        newPlan.setCrisprAttempt(crisprAttempt2);
+
+        List<ChangeDescription> changeDescriptionList = historyChangesAdaptor.getChanges();
+        System.out.println(changeDescriptionList);
+        assertThat("Unexpected number of changes:", changeDescriptionList.size(), is(1));
+    }
 
     private Plan buildBasicPlan()
     {
@@ -282,6 +274,17 @@ public class HistoryChangesAdaptorUsingPlanObjectTest
         plan.setWorkUnit(workUnit);
 
         return plan;
+    }
+
+    private Project buildBasicProject()
+    {
+        Project project = new Project();
+        Privacy privacy = new Privacy();
+        privacy.setId(1L);
+        privacy.setName("Privacy1");
+        project.setPrivacy(privacy);
+
+        return project;
     }
 
     private ChangeDescription getChange(

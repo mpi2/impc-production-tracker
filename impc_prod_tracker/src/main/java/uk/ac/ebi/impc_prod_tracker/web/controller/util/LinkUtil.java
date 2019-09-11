@@ -1,7 +1,6 @@
 package uk.ac.ebi.impc_prod_tracker.web.controller.util;
 
 import org.springframework.hateoas.PagedModel;
-import uk.ac.ebi.impc_prod_tracker.web.dto.project.ProjectSummaryDTO;
 
 public class LinkUtil
 {
