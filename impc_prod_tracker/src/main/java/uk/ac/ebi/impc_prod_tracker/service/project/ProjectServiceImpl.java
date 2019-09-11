@@ -20,14 +20,12 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Component;
-import org.springframework.util.CollectionUtils;
 import uk.ac.ebi.impc_prod_tracker.common.history.HistoryService;
 import uk.ac.ebi.impc_prod_tracker.conf.security.abac.ResourceAccessChecker;
 import uk.ac.ebi.impc_prod_tracker.data.common.history.History;
 import uk.ac.ebi.impc_prod_tracker.web.controller.project.ProjectSpecs;
 import uk.ac.ebi.impc_prod_tracker.web.dto.project.NewProjectRequestDTO;
 import uk.ac.ebi.impc_prod_tracker.data.biology.assignment_status.AssignmentStatus;
-import uk.ac.ebi.impc_prod_tracker.data.biology.plan.Plan;
 import uk.ac.ebi.impc_prod_tracker.data.biology.project.Project;
 import uk.ac.ebi.impc_prod_tracker.data.biology.project.ProjectRepository;
 import javax.persistence.EntityManager;
@@ -36,7 +34,6 @@ import javax.transaction.Transactional;
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 @Component
@@ -47,6 +44,8 @@ public class ProjectServiceImpl implements ProjectService
     private HistoryService<Project> historyService;
     private ProjectSpecs projectSpecs;
     private ResourceAccessChecker<Project> resourceAccessChecker;
+
+    public static final String READ_PROJECT_ACTION = "READ_PROJECT";
 
     public ProjectServiceImpl(
         ProjectRepository projectRepository,
@@ -102,14 +101,20 @@ public class ProjectServiceImpl implements ProjectService
         Specification<Project> specifications =
             buildSpecificationsWithCriteria(consortiaNames, statusesNames, privaciesNames);
         Page<Project> projects = projectRepository.findAll(specifications, pageable);
-        return projects;
-//        List<Project> filteredProjectList = getCheckedCollection(projects.getContent());
-//        return new PageImpl<>(filteredProjectList, pageable, filteredProjectList.size());
+        return getAccessCheckedPage(projects, pageable);
+    }
+
+    private Page<Project> getAccessCheckedPage(Page<Project> projects, Pageable pageable)
+    {
+        List<Project> filteredProjectList = getCheckedCollection(projects.getContent());
+        int numberElementsFilteredOut = projects.getContent().size() - filteredProjectList.size();
+        return new PageImpl<>(
+            filteredProjectList, pageable, projects.getTotalElements() - numberElementsFilteredOut);
     }
 
     private Project getAccessChecked(Project project)
     {
-        return (Project) resourceAccessChecker.checkAccess(project, "READ_PROJECT");
+        return (Project) resourceAccessChecker.checkAccess(project, READ_PROJECT_ACTION);
     }
 
     private List<Project> getCheckedCollection(Collection<Project> projects)
@@ -125,17 +130,6 @@ public class ProjectServiceImpl implements ProjectService
                 .and(projectSpecs.withStatuses(statuses))
                 .and(projectSpecs.withPrivacies(privacies));
         return specifications;
-    }
-
-    public Set<Plan> checkCollention(Set<Plan> plans, List<String> list) {
-        if (!CollectionUtils.isEmpty(list))
-        {
-            plans = plans.stream()
-                    .filter(plan -> plan.getWorkUnit() != null
-                            && list.contains(plan.getWorkUnit().getName()))
-                    .collect(Collectors.toSet());
-        }
-        return plans;
     }
 
     @Override
