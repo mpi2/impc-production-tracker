@@ -74,7 +74,8 @@ class ProjectController
         @RequestParam(value = "status", required = false) List<String> statuses,
         @RequestParam(value = "privacy", required = false) List<String> privacies)
     {
-        Page<Project> projects = projectService.getProjects(pageable, consortia, statuses, privacies);
+        Page<Project> projects =
+            projectService.getProjects(pageable, consortia, statuses, privacies);
         Page<ProjectDTO> projectDtos =
             projects.map(this::getDTO);
         PagedModel pr =
@@ -111,7 +112,7 @@ class ProjectController
     public EntityModel<?> findOne(@PathVariable String tpn)
     {
         EntityModel<ProjectDTO> entityModel;
-        Project project = projectService.getProjectByTpn(tpn);
+        Project project = projectService.getCurrentUserProjectByTpn(tpn);
         ProjectDTO projectDTO = getDTO(project);
 
         if (projectDTO != null)

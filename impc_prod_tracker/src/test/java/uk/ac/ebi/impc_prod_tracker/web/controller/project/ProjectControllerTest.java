@@ -37,11 +37,11 @@ class ProjectControllerTest extends ControllerTestTemplate
 //            .andExpect(status().isOk())
 //            .andDo(document("projectSummaries"));
 //
-//        List<Project> projects = projectService.getProjects();
+//        List<Project> projects = projectService.getCurrentUserProjects();
 //        assertEquals(2, projects.size());
-//        Project project1 = projectService.getProjectByTpn("TPN01");
+//        Project project1 = projectService.getCurrentUserProjectByTpn("TPN01");
 //        assertNotNull(project1);
-//        Project project2 = projectService.getProjectByTpn("TPN02");
+//        Project project2 = projectService.getCurrentUserProjectByTpn("TPN02");
 //        assertNotNull(project2);
     }
 

@@ -16,11 +16,13 @@
 package uk.ac.ebi.impc_prod_tracker.service.project;
 
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 import uk.ac.ebi.impc_prod_tracker.common.history.HistoryService;
+import uk.ac.ebi.impc_prod_tracker.conf.security.abac.ResourceAccessChecker;
 import uk.ac.ebi.impc_prod_tracker.data.common.history.History;
 import uk.ac.ebi.impc_prod_tracker.web.controller.project.ProjectSpecs;
 import uk.ac.ebi.impc_prod_tracker.web.dto.project.NewProjectRequestDTO;
@@ -31,7 +33,9 @@ import uk.ac.ebi.impc_prod_tracker.data.biology.project.ProjectRepository;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.transaction.Transactional;
+import java.util.Collection;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -42,22 +46,25 @@ public class ProjectServiceImpl implements ProjectService
     private ProjectRepository projectRepository;
     private HistoryService<Project> historyService;
     private ProjectSpecs projectSpecs;
+    private ResourceAccessChecker<Project> resourceAccessChecker;
 
     public ProjectServiceImpl(
         ProjectRepository projectRepository,
         HistoryService<Project> historyService,
-        ProjectSpecs projectSpecs)
+        ProjectSpecs projectSpecs,
+        ResourceAccessChecker resourceAccessChecker)
     {
         this.projectRepository = projectRepository;
         this.historyService = historyService;
         this.projectSpecs = projectSpecs;
+        this.resourceAccessChecker = resourceAccessChecker;
     }
 
     @PersistenceContext
     private EntityManager em;
 
     @Override
-    public Page<Project> getProjects(
+    public Page<Project> getCurrentUserProjects(
         Pageable pageable,
         List<String> consortiaNames,
         List<String> statusesNames,
@@ -72,7 +79,7 @@ public class ProjectServiceImpl implements ProjectService
     }
 
     @Override
-    public Project getProjectByTpn(String tpn)
+    public Project getCurrentUserProjectByTpn(String tpn)
     {
         Project project = null;
         Specification<Project> specifications =
@@ -83,6 +90,31 @@ public class ProjectServiceImpl implements ProjectService
             project = projects.stream().filter(x -> tpn.equals(x.getTpn())).findFirst().orElse(null);
         }
         return project;
+    }
+
+    @Override
+    public Page<Project> getProjects(
+        Pageable pageable,
+        List<String> consortiaNames,
+        List<String> statusesNames,
+        List<String> privaciesNames)
+    {
+        Specification<Project> specifications =
+            buildSpecificationsWithCriteria(consortiaNames, statusesNames, privaciesNames);
+        Page<Project> projects = projectRepository.findAll(specifications, pageable);
+        return projects;
+//        List<Project> filteredProjectList = getCheckedCollection(projects.getContent());
+//        return new PageImpl<>(filteredProjectList, pageable, filteredProjectList.size());
+    }
+
+    private Project getAccessChecked(Project project)
+    {
+        return (Project) resourceAccessChecker.checkAccess(project, "READ_PROJECT");
+    }
+
+    private List<Project> getCheckedCollection(Collection<Project> projects)
+    {
+        return projects.stream().map(this::getAccessChecked).filter(Objects::nonNull).collect(Collectors.toList());
     }
 
     private Specification<Project> buildSpecificationsWithCriteria(

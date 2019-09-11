@@ -26,6 +26,13 @@ import java.util.List;
 
 public interface PlanService
 {
+    /**
+     * Get all the plans  that are visible for the current user. A plan is visible for the user
+     * if the plan work unit is the same as the work unit of the user or
+     * @param pageable Pagination information.
+     * @return Paginated plans visible for the user.
+     */
+    Page<Plan> getPlans(Pageable pageable);
     List<Plan> getPlansByProject(Project project);
 
     Plan getPlanByPin(String pin);
