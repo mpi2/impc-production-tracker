@@ -17,7 +17,6 @@ package uk.ac.ebi.impc_prod_tracker.web.controller.project;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.web.PagedResourcesAssembler;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.PagedModel;
@@ -26,6 +25,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import uk.ac.ebi.impc_prod_tracker.common.types.PlanTypes;
+import uk.ac.ebi.impc_prod_tracker.conf.error_management.OperationFailedException;
 import uk.ac.ebi.impc_prod_tracker.data.biology.project.Project;
 import uk.ac.ebi.impc_prod_tracker.service.project.ProjectService;
 import uk.ac.ebi.impc_prod_tracker.web.controller.common.PlanLinkBuilder;
@@ -48,18 +48,18 @@ class ProjectController
     private ProjectService projectService;
     private ProjectMapper projectMapper;
     private HistoryMapper historyMapper;
-    private ProjectSpecs projectSpecs;
+
+    private static final String PROJECT_NOT_FOUND_ERROR =
+        "Project %s does not exist or you don't have access to it.";
 
     ProjectController(
         ProjectService projectService,
         ProjectMapper projectMapper,
-        HistoryMapper historyMapper,
-        ProjectSpecs projectSpecs)
+        HistoryMapper historyMapper)
     {
         this.projectService = projectService;
         this.projectMapper = projectMapper;
         this.historyMapper = historyMapper;
-        this.projectSpecs = projectSpecs;
     }
 
     /**
@@ -74,15 +74,13 @@ class ProjectController
         @RequestParam(value = "status", required = false) List<String> statuses,
         @RequestParam(value = "privacy", required = false) List<String> privacies)
     {
-        Specification<Project> specifications =
-            buildSpecificationsWithCriteria(consortia, statuses, privacies);
-        Page<Project> projects = projectService.getProjects(specifications, pageable);
+        Page<Project> projects = projectService.getProjects(pageable, consortia, statuses, privacies);
         Page<ProjectDTO> projectDtos =
             projects.map(this::getDTO);
         PagedModel pr =
             assembler.toModel(
                 projectDtos,
-                linkTo(ProjectSummaryController.class).slash("projects").withSelfRel());
+                linkTo(ProjectController.class).withSelfRel());
 
         HttpHeaders responseHeaders = new HttpHeaders();
         responseHeaders.add("Link", LinkUtil.createLinkHeader(pr));
@@ -90,24 +88,17 @@ class ProjectController
         return new ResponseEntity<>(pr, responseHeaders, HttpStatus.OK);
     }
 
-    private Specification<Project> buildSpecificationsWithCriteria(
-        List<String> consortia, List<String> statuses, List<String> privacies)
-    {
-        Specification<Project> specifications =
-            Specification.where(projectSpecs.withPlansInUserWorkUnits())
-                .and(projectSpecs.withConsortia(consortia))
-                .and(projectSpecs.withStatuses(statuses))
-                .and(projectSpecs.withPrivacies(privacies));
-        return specifications;
-    }
-
     private ProjectDTO getDTO(Project project)
     {
-        ProjectDTO projectDTO = projectMapper.toDto(project);
-        projectDTO.add(
-            PlanLinkBuilder.buildPlanLinks(project, PlanTypes.PRODUCTION, "production_plans"));
-        projectDTO.add(
-            PlanLinkBuilder.buildPlanLinks(project, PlanTypes.PHENOTYPING, "phenotyping_plans"));
+        ProjectDTO projectDTO = null;
+        if (project != null)
+        {
+            projectDTO = projectMapper.toDto(project);
+            projectDTO.add(
+                PlanLinkBuilder.buildPlanLinks(project, PlanTypes.PRODUCTION, "production_plans"));
+            projectDTO.add(
+                PlanLinkBuilder.buildPlanLinks(project, PlanTypes.PHENOTYPING, "phenotyping_plans"));
+        }
         return projectDTO;
     }
 
@@ -117,12 +108,23 @@ class ProjectController
      * @return Entity with the project information.
      */
     @GetMapping(value = {"/{tpn}"})
-    public EntityModel<ProjectDTO> findOne(@PathVariable String tpn)
+    public EntityModel<?> findOne(@PathVariable String tpn)
     {
-        Project project = ProjectUtilities.getNotNullProjectByTpn(tpn);
+        EntityModel<ProjectDTO> entityModel;
+        Project project = projectService.getProjectByTpn(tpn);
         ProjectDTO projectDTO = getDTO(project);
 
-        return new EntityModel<>(projectDTO);
+        if (projectDTO != null)
+        {
+            entityModel = new EntityModel<>(projectDTO);
+        }
+        else
+        {
+            throw new OperationFailedException(
+                String.format(PROJECT_NOT_FOUND_ERROR, tpn), HttpStatus.NOT_FOUND);
+        }
+
+        return entityModel;
     }
     /**
      *      * @api {post} / create a new project.

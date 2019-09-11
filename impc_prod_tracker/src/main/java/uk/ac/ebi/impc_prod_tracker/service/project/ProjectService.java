@@ -17,53 +17,33 @@ package uk.ac.ebi.impc_prod_tracker.service.project;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.domain.Specification;
 import uk.ac.ebi.impc_prod_tracker.data.common.history.History;
 import uk.ac.ebi.impc_prod_tracker.web.dto.project.NewProjectRequestDTO;
 import uk.ac.ebi.impc_prod_tracker.data.biology.project.Project;
-
 import java.util.List;
 
 public interface ProjectService
 {
     /**
-     * Get all projects.
-     * @return
+     * Get all the projects that a user has access to. The visibility of a project is given by the
+     * existence of at least one plan in the project that has a work unit that matches with the
+     * user's work unit.
+     * @param pageable Pageable information.
+     * @param consortiaNames Optional list of consortia names to filter the results.
+     *                       If null no filters are applied.
+     * @param statusesNames Optional list of statuses names to filter the results.
+     *                      If null no filters are applied.
+     * @param privaciesNames Optional list of privacies names to filter the results.
+     *                       If null no filters are applied.
+     * @return Paginated projects.
      */
-    List<Project> getProjects();
-    Page<Project> getProjects(Pageable pageable);
+    Page<Project> getProjects(
+        Pageable pageable,
+        List<String> consortiaNames,
+        List<String> statusesNames,
+        List<String> privaciesNames);
 
-    /**
-     * Get the project identified by a specific tpn.
-     * @param tpn Project identifier.
-     * @return A project with the specific identifier (tpn).
-     */
     Project getProjectByTpn(String tpn);
-
-    /**
-     * Get paginated projects filtering with the criteria defined in specification.
-     * @param specification Filters to apply to the projects to return.
-     * @param pageable Pagination information.
-     * @return Paginated Projects filtered with criteria defined in specification.
-     */
-    Page<Project> getProjects(Specification<Project> specification, Pageable pageable);
-
-    /**
-     * 
-     * @param project Project to filter
-     * @param workUnits Work unit name list.
-     * @param workGroups Work group name list.
-     * @param planTypes Plan type name list.
-     * @param statuses Statuses name list.
-     * @return Filtered project.
-     */
-    Project getProjectFilteredByPlanAttributes(
-        Project project,
-        List<String> workUnits,
-        List<String> workGroups,
-        List<String> planTypes,
-        List<String> statuses
-    );
 
     Project createProject(NewProjectRequestDTO newProjectRequestDTO);
 

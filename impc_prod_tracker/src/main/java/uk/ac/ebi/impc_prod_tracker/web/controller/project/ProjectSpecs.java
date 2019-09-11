@@ -28,21 +28,16 @@ import uk.ac.ebi.impc_prod_tracker.data.biology.privacy.Privacy;
 import uk.ac.ebi.impc_prod_tracker.data.biology.privacy.Privacy_;
 import uk.ac.ebi.impc_prod_tracker.data.biology.project.Project;
 import uk.ac.ebi.impc_prod_tracker.data.biology.project.Project_;
-import uk.ac.ebi.impc_prod_tracker.data.biology.status.Status;
-import uk.ac.ebi.impc_prod_tracker.data.biology.status.Status_;
 import uk.ac.ebi.impc_prod_tracker.data.organization.consortium.Consortium;
 import uk.ac.ebi.impc_prod_tracker.data.organization.consortium.Consortium_;
 import uk.ac.ebi.impc_prod_tracker.data.organization.person_role_work_unit.PersonRoleWorkUnit;
 import uk.ac.ebi.impc_prod_tracker.data.organization.work_unit.WorkUnit;
 import uk.ac.ebi.impc_prod_tracker.data.organization.work_unit.WorkUnit_;
-
-import javax.persistence.criteria.Expression;
 import javax.persistence.criteria.Path;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.SetJoin;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
@@ -274,6 +269,34 @@ public class ProjectSpecs
                 SetJoin<Project, Consortium> consortiumSetJoin = root.join(Project_.consortia);
                 Path<String> consortiumName = consortiumSetJoin.get(Consortium_.name);
                 predicates.add(consortiumName.in(consortia));
+                query.distinct(true);
+
+                return criteriaBuilder.and(predicates.toArray(new Predicate[predicates.size()]));
+            };
+        }
+        return specification;
+    }
+
+    /**
+     * Get all the projects with a specific tpn (or tpns).
+     * @param tpns List of names of tpn.
+     * @return The found projects. If tpn is null then not filter is applied.
+     */
+    public Specification<Project> withTpns(List<String> tpns)
+    {
+        Specification<Project> specification;
+        if (tpns == null)
+        {
+            specification = (Specification<Project>) (root, query, criteriaBuilder) ->
+                criteriaBuilder.isTrue(criteriaBuilder.literal(true));
+        }
+        else
+        {
+            specification = (Specification<Project>) (root, query, criteriaBuilder) -> {
+
+                List<Predicate> predicates = new ArrayList<>();
+                Path<String> tpn = root.get(Project_.tpn);
+                predicates.add(tpn.in(tpns));
                 query.distinct(true);
 
                 return criteriaBuilder.and(predicates.toArray(new Predicate[predicates.size()]));

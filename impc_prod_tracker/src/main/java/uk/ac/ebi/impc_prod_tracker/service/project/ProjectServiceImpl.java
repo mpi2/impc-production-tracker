@@ -22,6 +22,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 import uk.ac.ebi.impc_prod_tracker.common.history.HistoryService;
 import uk.ac.ebi.impc_prod_tracker.data.common.history.History;
+import uk.ac.ebi.impc_prod_tracker.web.controller.project.ProjectSpecs;
 import uk.ac.ebi.impc_prod_tracker.web.dto.project.NewProjectRequestDTO;
 import uk.ac.ebi.impc_prod_tracker.data.biology.assignment_status.AssignmentStatus;
 import uk.ac.ebi.impc_prod_tracker.data.biology.plan.Plan;
@@ -40,88 +41,58 @@ public class ProjectServiceImpl implements ProjectService
 {
     private ProjectRepository projectRepository;
     private HistoryService<Project> historyService;
+    private ProjectSpecs projectSpecs;
 
     public ProjectServiceImpl(
-        ProjectRepository projectRepository, HistoryService<Project> historyService)
+        ProjectRepository projectRepository,
+        HistoryService<Project> historyService,
+        ProjectSpecs projectSpecs)
     {
         this.projectRepository = projectRepository;
         this.historyService = historyService;
+        this.projectSpecs = projectSpecs;
     }
 
     @PersistenceContext
     private EntityManager em;
 
     @Override
-    public List<Project> getProjects()
+    public Page<Project> getProjects(
+        Pageable pageable,
+        List<String> consortiaNames,
+        List<String> statusesNames,
+        List<String> privaciesNames)
     {
-        return projectRepository.findAll();
-    }
-
-    @Override
-    public Page<Project> getProjects(Pageable pageable)
-    {
-        return projectRepository.findAll(pageable);
+        Specification<Project> specifications =
+            Specification.where(projectSpecs.withPlansInUserWorkUnits());
+        specifications =
+            specifications.and(
+                buildSpecificationsWithCriteria(consortiaNames, statusesNames, privaciesNames));
+        return projectRepository.findAll(specifications, pageable);
     }
 
     @Override
     public Project getProjectByTpn(String tpn)
     {
-        Project project = projectRepository.findProjectByTpn(tpn);
+        Project project = null;
+        Specification<Project> specifications =
+            Specification.where(projectSpecs.withPlansInUserWorkUnits());
+        List<Project> projects = projectRepository.findAll(specifications);
+        if (projects != null)
+        {
+            project = projects.stream().filter(x -> tpn.equals(x.getTpn())).findFirst().orElse(null);
+        }
         return project;
     }
 
-    @Override
-    public Page<Project> getProjects(
-        Specification<Project> specification, Pageable pageable)
+    private Specification<Project> buildSpecificationsWithCriteria(
+        List<String> consortia, List<String> statuses, List<String> privacies)
     {
-        return projectRepository.findAll(specification, pageable);
-    }
-
-    @Override
-    public Project getProjectFilteredByPlanAttributes(
-        Project project,
-        List<String> workUnits,
-        List<String> workGroups,
-        List<String> planTypes,
-        List<String> statuses)
-    {
-        Set<Plan> plans = project.getPlans();
-
-        plans = checkCollention(plans, workUnits);
-
-        if (!CollectionUtils.isEmpty(workUnits))
-        {
-            plans = plans.stream()
-                .filter(plan -> plan.getWorkUnit() != null
-                    && workUnits.contains(plan.getWorkUnit().getName()))
-                .collect(Collectors.toSet());
-        }
-
-        if (!CollectionUtils.isEmpty(workGroups))
-        {
-            plans = plans.stream()
-                .filter(plan -> plan.getWorkUnit().getWorkGroup() != null
-                    && workGroups.contains(plan.getWorkUnit().getWorkGroup().getName()))
-                .collect(Collectors.toSet());
-        }
-
-        if (!CollectionUtils.isEmpty(planTypes))
-        {
-            plans = plans.stream()
-                .filter(plan -> plan.getPlanType() != null
-                    && planTypes.contains(plan.getPlanType().getName()))
-                .collect(Collectors.toSet());
-        }
-        if (!CollectionUtils.isEmpty(statuses))
-        {
-            plans = plans.stream()
-                .filter(plan -> plan.getStatus() != null
-                    && statuses.contains(plan.getStatus().getName()))
-                .collect(Collectors.toSet());
-        }
-
-        project.setPlans(plans);
-        return project;
+        Specification<Project> specifications =
+            Specification.where(projectSpecs.withConsortia(consortia))
+                .and(projectSpecs.withStatuses(statuses))
+                .and(projectSpecs.withPrivacies(privacies));
+        return specifications;
     }
 
     public Set<Plan> checkCollention(Set<Plan> plans, List<String> list) {
