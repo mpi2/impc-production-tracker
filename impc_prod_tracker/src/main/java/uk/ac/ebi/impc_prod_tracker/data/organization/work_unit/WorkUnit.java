@@ -45,12 +45,13 @@ public class WorkUnit extends BaseEntity
 
     private String ilarCode;
 
-    @ManyToOne(targetEntity = WorkGroup.class)
-    private WorkGroup workGroup;
-
     @JsonIgnore
     @ManyToMany(mappedBy = "workUnits")
     private Set<Consortium> consortia;
+
+    @JsonIgnore
+    @ManyToMany(mappedBy = "workUnits")
+    private Set<WorkGroup> workGroups;
 
     public WorkUnit(String name)
     {
