@@ -45,10 +45,14 @@ public class WorkUnit extends BaseEntity
 
     private String ilarCode;
 
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
     @JsonIgnore
     @ManyToMany(mappedBy = "workUnits")
     private Set<Consortium> consortia;
 
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
     @JsonIgnore
     @ManyToMany(mappedBy = "workUnits")
     private Set<WorkGroup> workGroups;
