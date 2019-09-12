@@ -21,12 +21,14 @@ import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import uk.ac.ebi.impc_prod_tracker.conf.error_management.OperationFailedException;
+import uk.ac.ebi.impc_prod_tracker.data.organization.consortium.Consortium;
 import uk.ac.ebi.impc_prod_tracker.data.organization.person.Person;
 import uk.ac.ebi.impc_prod_tracker.data.organization.person.PersonRepository;
 import uk.ac.ebi.impc_prod_tracker.data.organization.person_role_consortium.PersonRoleConsortium;
 import uk.ac.ebi.impc_prod_tracker.data.organization.person_role_work_unit.PersonRoleWorkUnit;
 import uk.ac.ebi.impc_prod_tracker.data.organization.work_unit.WorkUnit;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -145,5 +147,17 @@ public class AapSystemSubject implements SystemSubject
     public Boolean isAdmin()
     {
         return isEbiAdmin;
+    }
+
+    @Override
+    public boolean belongsToConsortia(Collection<Consortium> consortia)
+    {
+        boolean result = false;
+        if (roleConsortia != null)
+        {
+            result = roleConsortia.stream().anyMatch(x -> consortia.contains(x.getConsortium()));
+        }
+
+        return result;
     }
 }

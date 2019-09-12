@@ -75,7 +75,7 @@ public class ProjectMapper
 
     private void addProjectLocationDTO(Project project, ProjectDTO projectDTO)
     {
-        if (!project.getLocations().isEmpty())
+        if (project.getLocations() != null && !project.getLocations().isEmpty())
         {
             List<ProjectLocationDTO> projectLocationDTOS =
                 projectLocationMapper.toDtos(project.getLocations());
@@ -85,7 +85,7 @@ public class ProjectMapper
 
     private void addProjectGeneDTO(Project project, ProjectDTO projectDTO)
     {
-        if (!project.getGenes().isEmpty())
+        if (project.getGenes() != null && !project.getGenes().isEmpty())
         {
             List<ProjectGeneDTO> projectGeneDTOS = projectGeneMapper.toDtos(project.getGenes());
             projectDTO.setProjectGeneDTOS(projectGeneDTOS);

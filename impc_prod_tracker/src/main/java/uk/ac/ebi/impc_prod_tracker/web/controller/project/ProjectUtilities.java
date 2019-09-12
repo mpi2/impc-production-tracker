@@ -19,7 +19,7 @@ public class ProjectUtilities
 
     public static Project getNotNullProjectByTpn(String tpn)
     {
-        Project project = projectService.getProjectByTpn(tpn);
+        Project project = projectService.getCurrentUserProjectByTpn(tpn);
         if (project == null)
         {
             throw new OperationFailedException(

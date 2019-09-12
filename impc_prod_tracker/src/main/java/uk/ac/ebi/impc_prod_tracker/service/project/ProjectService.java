@@ -37,13 +37,19 @@ public interface ProjectService
      *                       If null no filters are applied.
      * @return Paginated projects.
      */
-    Page<Project> getProjects(
+    Page<Project> getCurrentUserProjects(
         Pageable pageable,
         List<String> consortiaNames,
         List<String> statusesNames,
         List<String> privaciesNames);
 
-    Project getProjectByTpn(String tpn);
+    Project getCurrentUserProjectByTpn(String tpn);
+
+    Page<Project> getProjects(
+        Pageable pageable,
+        List<String> consortiaNames,
+        List<String> statusesNames,
+        List<String> privaciesNames);
 
     Project createProject(NewProjectRequestDTO newProjectRequestDTO);
 

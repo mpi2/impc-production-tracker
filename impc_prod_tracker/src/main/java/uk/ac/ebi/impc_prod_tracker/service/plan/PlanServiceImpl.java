@@ -86,12 +86,6 @@ public class PlanServiceImpl implements PlanService
     }
 
     @Override
-    public Page<Plan> getPlansBySpecPro(Specification<Project> specification, Pageable pageable)
-    {
-        return null;
-    }
-
-    @Override
     public Plan getNotNullPlanByPin(String pin)
         throws OperationFailedException
     {
@@ -103,55 +97,12 @@ public class PlanServiceImpl implements PlanService
         return plan;
     }
 
-
-    @Override
-    public List<Plan> getPlansByProject(Project project)
-    {
-        List<Plan> plans = new ArrayList<>();
-        project.getPlans().forEach(plans::add);
-        return getAccessCheckedPlans(plans);
-    }
-
-    @Override
-    public Plan getPlanByPin(String pin)
-    {
-        Plan plan = planRepository.findPlanByPin(pin);
-        return getAccessCheckedPlan(plan);
-    }
-
     @Override
     public Plan getPlanByPinWithoutCheckPermissions(String pin)
     {
         return planRepository.findPlanByPin(pin);
     }
 
-    @Override
-    public List<Plan> getPlans()
-    {
-        List<Plan> plans = planRepository.findAll();
-        return getAccessCheckedPlans(plans);
-    }
-
-    @Override
-    public Page<Plan> getPaginatedPlans(Pageable pageable)
-    {
-        Page<Plan> plans = planRepository.findAll(pageable);
-        return plans.map(this::getAccessCheckedPlan);
-    }
-
-    private Plan getAccessCheckedPlan(Plan plan)
-    {
-        // TODO revise restriction by plans
-//        return (Plan) resourceAccessChecker.checkAccess(plan, READ_PLAN_ACTION);
-        return  plan;
-    }
-
-    private List<Plan> getAccessCheckedPlans(List<Plan> plans)
-    {
-        // TODO revise restriction by plans
-//        return (List<Plan>) resourceAccessChecker.checkAccessForCollection(plans, READ_PLAN_ACTION);
-        return plans;
-    }
 
     @Override
     public History updatePlan(String pin, PlanDTO planDTO)

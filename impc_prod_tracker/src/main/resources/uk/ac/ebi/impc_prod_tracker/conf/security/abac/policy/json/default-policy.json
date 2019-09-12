@@ -2,7 +2,7 @@
   {
     "name": "Admin Full Access",
     "description": "Admin can do all.",
-    "target": "subject.role.name == 'admin'",
+    "target": "subject.isAdmin()",
     "condition": "true"
   },
   {
@@ -52,5 +52,18 @@
     "description": "Permission to Update a plan",
     "target": "action == 'UPDATE_PLAN'",
     "condition": "subject.workUnit.id == resource.workUnit.id"
+  },
+  {
+    "name": "Read public projects.",
+    "description": "A user can read a project that is public.",
+    "target": "action == 'READ_PROJECT'",
+    "condition": "resource.resourcePrivacy.name() == 'PUBLIC'"
+  },
+  {
+    "name": "Read projects in related consortia.",
+    "description": "A user can read a project that is related with consortia where the user is a member.",
+    "target": "action == 'READ_PROJECT'",
+    "condition": "subject.belongsToConsortia(resource.consortia)"
   }
+
 ]

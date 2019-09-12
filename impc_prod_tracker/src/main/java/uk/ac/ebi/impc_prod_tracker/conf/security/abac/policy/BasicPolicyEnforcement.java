@@ -19,6 +19,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.expression.Expression;
+import org.springframework.expression.spel.SpelEvaluationException;
 import org.springframework.stereotype.Component;
 import uk.ac.ebi.impc_prod_tracker.conf.error_management.OperationFailedException;
 import java.util.ArrayList;
@@ -81,7 +82,21 @@ public class BasicPolicyEnforcement implements PolicyEnforcement
 
     private boolean evaluateRuleExpression(Expression ruleExpression, SecurityAccessContext cxt)
     {
-        Boolean result = ruleExpression.getValue(cxt, Boolean.class);
+        Boolean result;
+        try
+        {
+            result = ruleExpression.getValue(cxt, Boolean.class);
+        }
+        catch(SpelEvaluationException evalExc)
+        {
+            String errorMessage = "Expression [%s] cannot be evaluated: Error: %s";
+            errorMessage = String.format(
+                errorMessage, ruleExpression.getExpressionString(), evalExc.getLocalizedMessage());
+            logger.error(errorMessage);
+            throw new OperationFailedException(
+                "Permissions cannot be evaluated for the resource you are trying to access.",
+                errorMessage);
+        }
         if (result == null)
         {
             logger.info("Error evaluating policy");
