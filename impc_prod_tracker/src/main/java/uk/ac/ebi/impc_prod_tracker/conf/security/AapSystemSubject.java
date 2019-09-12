@@ -27,9 +27,13 @@ import uk.ac.ebi.impc_prod_tracker.data.organization.person.PersonRepository;
 import uk.ac.ebi.impc_prod_tracker.data.organization.person_role_consortium.PersonRoleConsortium;
 import uk.ac.ebi.impc_prod_tracker.data.organization.person_role_work_unit.PersonRoleWorkUnit;
 import uk.ac.ebi.impc_prod_tracker.data.organization.work_unit.WorkUnit;
+import uk.ac.ebi.impc_prod_tracker.service.WorkUnitService;
+
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Implementation of SystemSubject where most of the user information is taken from a token (jwt). Additional
@@ -52,6 +56,7 @@ public class AapSystemSubject implements SystemSubject
     private List<String> domains = new ArrayList<>();
     private List<PersonRoleWorkUnit> roleWorkUnits;
     private List<PersonRoleConsortium> roleConsortia;
+    WorkUnitService workUnitService;
 
     private final static String NOT_USER_INFORMATION_MESSAGE = "There is not associated information in the system for " +
         "the user [%s].";
@@ -63,9 +68,10 @@ public class AapSystemSubject implements SystemSubject
     private static final String TRACKER_MAINTAINER_DOMAIN_NAME = "self.tracker-maintainer";
 
     @Autowired
-    public AapSystemSubject(PersonRepository personRepository)
+    public AapSystemSubject(PersonRepository personRepository, WorkUnitService workUnitService)
     {
         this.personRepository = personRepository;
+        this.workUnitService = workUnitService;
     }
 
     /**
@@ -152,12 +158,41 @@ public class AapSystemSubject implements SystemSubject
     @Override
     public boolean belongsToConsortia(Collection<Consortium> consortia)
     {
+        return personBelongsToConsortia(consortia) || workUnitBelongsToConsortia(consortia);
+    }
+
+    private boolean personBelongsToConsortia(Collection<Consortium> consortia)
+    {
         boolean result = false;
         if (roleConsortia != null)
         {
             result = roleConsortia.stream().anyMatch(x -> consortia.contains(x.getConsortium()));
         }
+        return result;
+    }
 
+    private boolean workUnitBelongsToConsortia(Collection<Consortium> consortia)
+    {
+        boolean result = false;
+
+        if (roleWorkUnits != null)
+        {
+            List<Consortium> consortiaByWorkUnits = new ArrayList<>();
+            roleWorkUnits.forEach(x -> consortiaByWorkUnits.addAll(getConsortiaByWorkUnit(x.getWorkUnit())));
+            result = consortiaByWorkUnits.stream().anyMatch(consortia::contains);
+        }
+        return result;
+    }
+
+    private Set<Consortium> getConsortiaByWorkUnit(WorkUnit workUnit)
+    {
+        Set<Consortium> result = Collections.emptySet();
+        WorkUnit workUnitWithConsortia =
+            workUnitService.getWorkUnitWithConsortia(workUnit.getId());
+        if (workUnitWithConsortia != null)
+        {
+            result = workUnitWithConsortia.getConsortia();
+        }
         return result;
     }
 }
