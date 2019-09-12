@@ -16,9 +16,7 @@
 package uk.ac.ebi.impc_prod_tracker.web.controller.plan;
 
 import org.springframework.hateoas.server.ExposesResourceFor;
-import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-import uk.ac.ebi.impc_prod_tracker.conf.error_management.OperationFailedException;
 import uk.ac.ebi.impc_prod_tracker.data.biology.plan.Plan;
 import uk.ac.ebi.impc_prod_tracker.data.common.history.History;
 import uk.ac.ebi.impc_prod_tracker.service.plan.PlanService;
@@ -43,12 +41,6 @@ public class PlanController
         this.historyMapper = historyMapper;
         this.planService = planService;
         this.planMapper = planMapper;
-    }
-
-    @GetMapping
-    public List<PlanDTO> plans()
-    {
-        return planMapper.toDtos(planService.getPlans());
     }
 
     @GetMapping(value = {"/{id}"})

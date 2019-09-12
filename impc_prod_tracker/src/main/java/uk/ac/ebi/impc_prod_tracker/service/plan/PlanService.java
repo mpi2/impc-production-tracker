@@ -26,22 +26,7 @@ import java.util.List;
 
 public interface PlanService
 {
-    /**
-     * Get all the plans  that are visible for the current user. A plan is visible for the user
-     * if the plan work unit is the same as the work unit of the user or
-     * @param pageable Pagination information.
-     * @return Paginated plans visible for the user.
-     */
-    Page<Plan> getPlans(Pageable pageable);
-    List<Plan> getPlansByProject(Project project);
-
-    Plan getPlanByPin(String pin);
-
     Plan getPlanByPinWithoutCheckPermissions(String pin);
-
-    List<Plan> getPlans();
-
-    Page<Plan> getPaginatedPlans(Pageable pageable);
 
     /**
      * Get the production plan that is related with a phenotype plan. The relation is given by the
@@ -53,7 +38,6 @@ public interface PlanService
     Plan getProductionPlanRefByPhenotypePlan(Plan phenotypePlan);
 
     Page<Plan> getPlansBySpec(Specification<Plan> specification, Pageable pageable);
-    Page<Plan> getPlansBySpecPro(Specification<Project> specification, Pageable pageable);
 
     Plan getNotNullPlanByPin(String pin);
 
