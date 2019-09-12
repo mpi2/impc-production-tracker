@@ -58,6 +58,12 @@
     "description": "A user can read a project that is public.",
     "target": "action == 'READ_PROJECT'",
     "condition": "resource.resourcePrivacy.name() == 'PUBLIC'"
+  },
+  {
+    "name": "Read projects in related consortia.",
+    "description": "A user can read a project that is related with consortia where the user is a member.",
+    "target": "action == 'READ_PROJECT'",
+    "condition": "subject.belongsToConsortia(resource.consortia)"
   }
 
 ]

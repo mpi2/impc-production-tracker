@@ -24,6 +24,8 @@ import java.util.Set;
 @Entity
 public class Project extends BaseEntity implements Resource<Project>
 {
+    transient private Boolean isObjectRestricted = null;
+
     @Id
     @SequenceGenerator(name = "projectSeq", sequenceName = "PROJECT_SEQ")
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "projectSeq")
@@ -99,20 +101,18 @@ public class Project extends BaseEntity implements Resource<Project>
     @JsonIgnore
     public Project getRestrictedObject()
     {
-        /* TODO
-        Plan plan = new Plan();
-
-        plan.setPrivacy(this.privacy);
-        plan.setPin(this.pin);
-        plan.setPlanType(this.planType);
         Project restrictedProject = new Project();
-        restrictedProject.setTpn(this.project.getTpn());
-        plan.setProject(restrictedProject);
-
-        return plan;
-        */
-        Project project = new Project();
-        return project;
+        restrictedProject.setId(id);
+        restrictedProject.setTpn(tpn);
+        restrictedProject.setPrivacy(privacy);
+        restrictedProject.setWithdrawn(withdrawn);
+        restrictedProject.setComment(comment);
+        restrictedProject.setIsActive(isActive);
+        restrictedProject.setRecovery(recovery);
+        restrictedProject.setProjectExternalRef(projectExternalRef);
+        restrictedProject.setGenes(genes);
+        restrictedProject.setIsObjectRestricted(true);
+        return restrictedProject;
     }
 
 
