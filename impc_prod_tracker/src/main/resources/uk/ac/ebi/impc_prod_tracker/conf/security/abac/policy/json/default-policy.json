@@ -55,13 +55,13 @@
   },
   {
     "name": "Read public projects.",
-    "description": "A user can read a project that is public.",
+    "description": "A project that is public can be read by anyone.",
     "target": "action == 'READ_PROJECT'",
     "condition": "resource.resourcePrivacy.name() == 'PUBLIC'"
   },
   {
     "name": "Read projects in related consortia.",
-    "description": "A user can read a project that is related with consortia where the user is a member.",
+    "description": "A user can read a project that is related to a consortium where the user is a member of that consortium.",
     "target": "action == 'READ_PROJECT'",
     "condition": "subject.belongsToConsortia(resource.consortia)"
   }
