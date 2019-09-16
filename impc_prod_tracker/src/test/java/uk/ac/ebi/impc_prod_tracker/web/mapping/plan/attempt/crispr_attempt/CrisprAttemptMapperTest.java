@@ -1,6 +1,5 @@
 package uk.ac.ebi.impc_prod_tracker.web.mapping.plan.attempt.crispr_attempt;
 
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +11,7 @@ import uk.ac.ebi.impc_prod_tracker.data.biology.crispr_attempt.CrisprAttempt;
 import uk.ac.ebi.impc_prod_tracker.data.biology.crispr_attempt.assay.Assay;
 import uk.ac.ebi.impc_prod_tracker.data.biology.crispr_attempt.assay.assay_type.AssayType;
 import uk.ac.ebi.impc_prod_tracker.data.biology.crispr_attempt.delivery_type.DeliveryMethodType;
+import uk.ac.ebi.impc_prod_tracker.data.biology.crispr_attempt.genotype_primer.GenotypePrimer;
 import uk.ac.ebi.impc_prod_tracker.data.biology.crispr_attempt.guide.Guide;
 import uk.ac.ebi.impc_prod_tracker.data.biology.strain.Strain;
 import uk.ac.ebi.impc_prod_tracker.data.biology.strain.strain_type.StrainType;
@@ -24,7 +24,6 @@ import uk.ac.ebi.impc_prod_tracker.web.dto.plan.production.crispr_attempt.Mutage
 import uk.ac.ebi.impc_prod_tracker.web.dto.plan.production.crispr_attempt.NucleaseDTO;
 import uk.ac.ebi.impc_prod_tracker.web.dto.plan.production.crispr_attempt.ReagentDTO;
 import uk.ac.ebi.impc_prod_tracker.web.dto.strain.StrainDTO;
-
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -125,6 +124,7 @@ public class CrisprAttemptMapperTest
     {
         CrisprAttempt crisprAttempt = buildCrisprAttempt();
         addGuides(crisprAttempt);
+        addGenotypePrimers(crisprAttempt);
 
         CrisprAttemptDTO crisprAttemptDTO = crisprAttemptMapper.toDto(crisprAttempt);
 
@@ -236,15 +236,55 @@ public class CrisprAttemptMapperTest
             guideDTO2.getProtospacerSequence(),
             is(GUIDE_PROTOSPACER_SEQUENCE + GUIDE_ID_2));
 
+        System.out.println("----"+crisprAttemptDTO.getGenotypePrimerDTOS());
+        GenotypePrimerDTO genotypePrimerDTO1 =
+            findGenotypePrimerDTOById(crisprAttemptDTO.getGenotypePrimerDTOS(), GENOTYPE_PRIMER_ID_1);
+        assertThat("Genotype Primer 1", genotypePrimerDTO1, notNullValue());
+        assertThat(
+            "genotypePrimerDTO1 sequence",
+            genotypePrimerDTO1.getSequence(),
+            is (GENOTYPE_PRIMER_SEQUENCE + GENOTYPE_PRIMER_ID_1));
+        assertThat(
+            "genotypePrimerDTO1 1 start ",
+            genotypePrimerDTO1.getGenomicStartCoordinate(),
+            is (GENOTYPE_PRIMER_START_1));
+        assertThat(
+            "genotypePrimerDTO1 1 stop ",
+            genotypePrimerDTO1.getGenomicEndCoordinate(),
+            is (GENOTYPE_PRIMER_STOP_1));
+
+        GenotypePrimerDTO genotypePrimerDTO2 =
+            findGenotypePrimerDTOById(crisprAttemptDTO.getGenotypePrimerDTOS(), GENOTYPE_PRIMER_ID_2);
+        assertThat("Genotype Primer 2", genotypePrimerDTO2, notNullValue());
+        assertThat(
+            "genotypePrimerDTO2 sequence",
+            genotypePrimerDTO2.getSequence(),
+            is (GENOTYPE_PRIMER_SEQUENCE + GENOTYPE_PRIMER_ID_2));
+        assertThat(
+            "genotypePrimerDTO2 start ",
+            genotypePrimerDTO2.getGenomicStartCoordinate(),
+            is (GENOTYPE_PRIMER_START_2));
+        assertThat(
+            "genotypePrimerDTO2 stop ",
+            genotypePrimerDTO2.getGenomicEndCoordinate(),
+            is (GENOTYPE_PRIMER_STOP_2));
+
     }
 
     private GuideDTO findGuideDtoById(Collection<GuideDTO> guideDTOS, Long id)
     {
          return guideDTOS.stream().filter(t -> id.equals(t.getId())).findFirst().orElse(null);
     }
+
     private Guide findGuideById(Collection<Guide> guides, Long id)
     {
         return guides.stream().filter(t -> id.equals(t.getId())).findFirst().orElse(null);
+    }
+
+    private GenotypePrimerDTO findGenotypePrimerDTOById(
+        Collection<GenotypePrimerDTO> genotypePrimerDTOS, Long id)
+    {
+        return genotypePrimerDTOS.stream().filter(t -> id.equals(t.getId())).findFirst().orElse(null);
     }
 
     private void addGuides(CrisprAttempt crisprAttempt)
@@ -275,6 +315,29 @@ public class CrisprAttemptMapperTest
         guide.setProtospacerSequence(GUIDE_PROTOSPACER_SEQUENCE + id);
 
         return guide;
+    }
+
+    private void addGenotypePrimers(CrisprAttempt crisprAttempt)
+    {
+        Set<GenotypePrimer> genotypePrimers = new HashSet<>();
+        GenotypePrimer genotypePrimer1 =
+            buildGenotypePrimer(GENOTYPE_PRIMER_ID_1, GENOTYPE_PRIMER_START_1, GENOTYPE_PRIMER_STOP_1);
+        GenotypePrimer genotypePrimer2 =
+            buildGenotypePrimer(GENOTYPE_PRIMER_ID_2, GENOTYPE_PRIMER_START_2, GENOTYPE_PRIMER_STOP_2);
+        genotypePrimers.add(genotypePrimer1);
+        genotypePrimers.add(genotypePrimer2);
+        crisprAttempt.setPrimers(genotypePrimers);
+    }
+
+    private GenotypePrimer buildGenotypePrimer(Long id, Integer start, Integer end)
+    {
+        GenotypePrimer genotypePrimer = new GenotypePrimer();
+        genotypePrimer.setId(id);
+        genotypePrimer.setGenomicStartCoordinate(start);
+        genotypePrimer.setGenomicEndCoordinate(end);
+        genotypePrimer.setSequence(GENOTYPE_PRIMER_SEQUENCE + id);
+
+        return genotypePrimer;
     }
 
     private CrisprAttempt buildCrisprAttempt()
@@ -327,7 +390,6 @@ public class CrisprAttemptMapperTest
     }
 
     @Test
-    @Ignore
     public void testToEntity()
     {
         DeliveryMethodType deliveryMethodType = new DeliveryMethodType();

@@ -105,7 +105,7 @@ public class PlanController
         return plan;
     }
 
-    @PutMapping(value = {"/plans/{pin}"})
+    @PutMapping(value = {"/{pin}"})
     public HistoryDTO updatePlan(
         @PathVariable String pin, @RequestBody PlanDTO planDTO)
     {

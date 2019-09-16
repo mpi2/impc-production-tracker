@@ -5,9 +5,11 @@ import org.springframework.stereotype.Component;
 import uk.ac.ebi.impc_prod_tracker.conf.error_management.OperationFailedException;
 import uk.ac.ebi.impc_prod_tracker.data.biology.crispr_attempt.CrisprAttempt;
 import uk.ac.ebi.impc_prod_tracker.data.biology.crispr_attempt.delivery_type.DeliveryMethodType;
+import uk.ac.ebi.impc_prod_tracker.data.biology.crispr_attempt.genotype_primer.GenotypePrimer;
 import uk.ac.ebi.impc_prod_tracker.data.biology.crispr_attempt.guide.Guide;
 import uk.ac.ebi.impc_prod_tracker.service.plan.CrisprAttempService;
 import uk.ac.ebi.impc_prod_tracker.web.dto.plan.production.crispr_attempt.CrisprAttemptDTO;
+
 import java.util.Set;
 
 @Component
@@ -16,6 +18,7 @@ public class CrisprAttemptMapper
     private ModelMapper modelMapper;
     private GuideMapper guideMapper;
     private NucleaseMapper nucleaseMapper;
+    private GenotypePrimerMapper genotypePrimerMapper;
     private CrisprAttempService crisprAttempService;
 
     private static final String DELIVERY_TYPE_METHOD_NOT_FOUND = "Delivery Method Type [%s]" +
@@ -24,12 +27,16 @@ public class CrisprAttemptMapper
     public CrisprAttemptMapper(
         ModelMapper modelMapper,
         GuideMapper guideMapper,
-        NucleaseMapper nucleaseMapper, CrisprAttempService crisprAttempService)
+        NucleaseMapper nucleaseMapper,
+        GenotypePrimerMapper genotypePrimerMapper,
+        CrisprAttempService crisprAttempService)
     {
         this.modelMapper = modelMapper;
         this.guideMapper = guideMapper;
         this.nucleaseMapper = nucleaseMapper;
+        this.genotypePrimerMapper = genotypePrimerMapper;
         this.crisprAttempService = crisprAttempService;
+
     }
 
     public CrisprAttemptDTO toDto(CrisprAttempt crisprAttempt)
@@ -39,6 +46,7 @@ public class CrisprAttemptMapper
         {
             crisprAttemptDTO = modelMapper.map(crisprAttempt, CrisprAttemptDTO.class);
             crisprAttemptDTO.setGuideDTOS(guideMapper.toDtos(crisprAttempt.getGuides()));
+            crisprAttemptDTO.setGenotypePrimerDTOS(genotypePrimerMapper.toDtos(crisprAttempt.getPrimers()));
         }
         return crisprAttemptDTO;
     }
@@ -48,6 +56,7 @@ public class CrisprAttemptMapper
         CrisprAttempt crisprAttempt = modelMapper.map(crisprAttemptDTO, CrisprAttempt.class);
         setGuidesToEntity(crisprAttempt, crisprAttemptDTO);
         setDeliveryTypeMethodToEntity(crisprAttempt, crisprAttemptDTO);
+        setGenotypePrimersToEntity(crisprAttempt, crisprAttemptDTO);
         return crisprAttempt;
     }
 
@@ -56,6 +65,13 @@ public class CrisprAttemptMapper
         Set<Guide> guides = guideMapper.toEntities(crisprAttemptDTO.getGuideDTOS());
         guides.forEach(x -> x.setCrisprAttempt(crisprAttempt));
         crisprAttempt.setGuides(guides);
+    }
+
+    private void setGenotypePrimersToEntity(CrisprAttempt crisprAttempt, CrisprAttemptDTO crisprAttemptDTO)
+    {
+        Set<GenotypePrimer> genotypePrimers = genotypePrimerMapper.toEntities(crisprAttemptDTO.getGenotypePrimerDTOS());
+        genotypePrimers.forEach(x -> x.setCrisprAttempt(crisprAttempt));
+        crisprAttempt.setPrimers(genotypePrimers);
     }
 
     private void setDeliveryTypeMethodToEntity(
