@@ -23,7 +23,7 @@ public class ProjectLocationMapper
         projectLocationDTO.setLocationDTO(locationMapper.toDto(projectLocation.getLocation()));
         if (projectLocation.getChromosomeFeatureType() != null)
         {
-            projectLocationDTO.setChrFeatureTypeName(projectLocation.getChromosomeFeatureType().getType());
+            projectLocationDTO.setChrFeatureTypeName(projectLocation.getChromosomeFeatureType().getName());
         }
         projectLocationDTO.setAlleleTypeName(projectLocation.getAlleleType().getName());
 
