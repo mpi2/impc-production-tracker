@@ -12,6 +12,7 @@ import uk.ac.ebi.impc_prod_tracker.data.biology.plan.Plan;
 import uk.ac.ebi.impc_prod_tracker.data.biology.privacy.Privacy;
 import uk.ac.ebi.impc_prod_tracker.data.biology.project_gene.ProjectGene;
 import uk.ac.ebi.impc_prod_tracker.data.biology.project_location.ProjectLocation;
+import uk.ac.ebi.impc_prod_tracker.data.biology.project_sequence.ProjectSequence;
 import uk.ac.ebi.impc_prod_tracker.data.biology.species.Species;
 import uk.ac.ebi.impc_prod_tracker.data.organization.consortium.Consortium;
 
@@ -120,6 +121,11 @@ public class Project extends BaseEntity implements Resource<Project>
     @ToString.Exclude
     @OneToMany(mappedBy = "project")
     private Set<ProjectGene> genes;
+
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
+    @OneToMany(mappedBy = "project")
+    private Set<ProjectSequence> sequences;
 
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
