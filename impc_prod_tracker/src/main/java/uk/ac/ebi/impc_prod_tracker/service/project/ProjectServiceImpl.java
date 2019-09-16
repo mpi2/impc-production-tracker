@@ -16,22 +16,24 @@
 package uk.ac.ebi.impc_prod_tracker.service.project;
 
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Component;
-import org.springframework.util.CollectionUtils;
 import uk.ac.ebi.impc_prod_tracker.common.history.HistoryService;
+import uk.ac.ebi.impc_prod_tracker.conf.security.abac.ResourceAccessChecker;
 import uk.ac.ebi.impc_prod_tracker.data.common.history.History;
 import uk.ac.ebi.impc_prod_tracker.web.dto.project.NewProjectRequestDTO;
 import uk.ac.ebi.impc_prod_tracker.data.biology.assignment_status.AssignmentStatus;
-import uk.ac.ebi.impc_prod_tracker.data.biology.plan.Plan;
 import uk.ac.ebi.impc_prod_tracker.data.biology.project.Project;
 import uk.ac.ebi.impc_prod_tracker.data.biology.project.ProjectRepository;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.transaction.Transactional;
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
-import java.util.Set;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Component
@@ -40,112 +42,77 @@ public class ProjectServiceImpl implements ProjectService
 {
     private ProjectRepository projectRepository;
     private HistoryService<Project> historyService;
+    private ResourceAccessChecker<Project> resourceAccessChecker;
+
+    public static final String READ_PROJECT_ACTION = "READ_PROJECT";
 
     public ProjectServiceImpl(
-        ProjectRepository projectRepository, HistoryService<Project> historyService)
+        ProjectRepository projectRepository,
+        HistoryService<Project> historyService,
+        ResourceAccessChecker resourceAccessChecker)
     {
         this.projectRepository = projectRepository;
         this.historyService = historyService;
+        this.resourceAccessChecker = resourceAccessChecker;
     }
 
     @PersistenceContext
     private EntityManager em;
 
     @Override
-    public List<Project> getProjects()
-    {
-        return projectRepository.findAll();
-    }
-
-    @Override
-    public Page<Project> getProjects(Pageable pageable)
-    {
-        return projectRepository.findAll(pageable);
-    }
-
-    @Override
     public Project getProjectByTpn(String tpn)
     {
-        Project project = projectRepository.findProjectByTpn(tpn);
-        return project;
+        Specification<Project> specifications = ProjectSpecs.withTpns(Arrays.asList(tpn));
+        Project project = projectRepository.findOne(specifications).orElse(null);
+        return getAccessChecked(project);
     }
 
     @Override
     public Page<Project> getProjects(
-        Specification<Project> specification, Pageable pageable)
+        Pageable pageable,
+        List<String> workUnitNames,
+        List<String> consortiaNames,
+        List<String> statusesNames,
+        List<String> privaciesNames)
     {
-        return projectRepository.findAll(specification, pageable);
+          Specification<Project> specifications =
+              buildSpecificationsWithCriteria(
+                  workUnitNames, consortiaNames, statusesNames, privaciesNames);
+        Page<Project> projects = projectRepository.findAll(specifications, pageable);
+        return getAccessCheckedPage(projects, pageable);
     }
 
-    @Override
-    public Project getProjectFilteredByPlanAttributes(
-        Project project,
-        List<String> workUnits,
-        List<String> workGroups,
-        List<String> planTypes,
+    private Page<Project> getAccessCheckedPage(Page<Project> projects, Pageable pageable)
+    {
+        List<Project> filteredProjectList = getCheckedCollection(projects.getContent());
+        int numberElementsFilteredOut = projects.getContent().size() - filteredProjectList.size();
+        return new PageImpl<>(
+            filteredProjectList, pageable, projects.getTotalElements() - numberElementsFilteredOut);
+    }
+
+    private Project getAccessChecked(Project project)
+    {
+        return (Project) resourceAccessChecker.checkAccess(project, READ_PROJECT_ACTION);
+    }
+
+    private List<Project> getCheckedCollection(Collection<Project> projects)
+    {
+        return projects.stream().map(this::getAccessChecked).filter(Objects::nonNull).collect(Collectors.toList());
+    }
+
+    private Specification<Project> buildSpecificationsWithCriteria(
+        List<String> workUnitNames,
+        List<String> consortia,
         List<String> statuses,
         List<String> privacies)
     {
-        Set<Plan> plans = project.getPlans();
-
-        plans = checkCollention(plans, workUnits);
-
-        if (!CollectionUtils.isEmpty(workUnits))
-        {
-            plans = plans.stream()
-                .filter(plan -> plan.getWorkUnit() != null
-                    && workUnits.contains(plan.getWorkUnit().getName()))
-                .collect(Collectors.toSet());
-        }
-        // TODO requires revision
-        /*
-        if (!CollectionUtils.isEmpty(workGroups))
-        {
-            plans = plans.stream()
-                .filter(plan -> plan.getWorkGroup() != null
-                    && workGroups.contains(plan.getWorkGroup().getName()))
-                .collect(Collectors.toSet());
-        }
-        */
-        if (!CollectionUtils.isEmpty(planTypes))
-        {
-            plans = plans.stream()
-                .filter(plan -> plan.getPlanType() != null
-                    && planTypes.contains(plan.getPlanType().getName()))
-                .collect(Collectors.toSet());
-        }
-        if (!CollectionUtils.isEmpty(statuses))
-        {
-            plans = plans.stream()
-                .filter(plan -> plan.getStatus() != null
-                    && statuses.contains(plan.getStatus().getName()))
-                .collect(Collectors.toSet());
-        }
-
-        // TODO requires revision for privacy
-        /*
-        if (!CollectionUtils.isEmpty(privacies))
-        {
-            plans = plans.stream()
-                .filter(plan -> plan.getPrivacy() != null
-                    && privacies.contains(plan.getPrivacy().getName()))
-                .collect(Collectors.toSet());
-        }
-        */
-
-        project.setPlans(plans);
-        return project;
-    }
-
-    public Set<Plan> checkCollention(Set<Plan> plans, List<String> list) {
-        if (!CollectionUtils.isEmpty(list))
-        {
-            plans = plans.stream()
-                    .filter(plan -> plan.getWorkUnit() != null
-                            && list.contains(plan.getWorkUnit().getName()))
-                    .collect(Collectors.toSet());
-        }
-        return plans;
+        Specification<Project> specifications =
+            Specification.where(
+                ProjectSpecs.withPlansInWorkUnitsNames(workUnitNames)
+                .and(ProjectSpecs.withConsortia(consortia))
+                .and(ProjectSpecs.withStatuses(statuses))
+                .and(ProjectSpecs.withPrivacies(privacies)));
+        return specifications;
     }
 
     @Override

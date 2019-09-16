@@ -15,23 +15,29 @@
  *******************************************************************************/
 package uk.ac.ebi.impc_prod_tracker.web.controller.plan;
 
-import org.springframework.hateoas.server.ExposesResourceFor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PagedResourcesAssembler;
+import org.springframework.hateoas.PagedModel;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import uk.ac.ebi.impc_prod_tracker.conf.error_management.OperationFailedException;
 import uk.ac.ebi.impc_prod_tracker.data.biology.plan.Plan;
 import uk.ac.ebi.impc_prod_tracker.data.common.history.History;
 import uk.ac.ebi.impc_prod_tracker.service.plan.PlanService;
+import uk.ac.ebi.impc_prod_tracker.web.controller.util.LinkUtil;
 import uk.ac.ebi.impc_prod_tracker.web.dto.common.history.HistoryDTO;
 import uk.ac.ebi.impc_prod_tracker.web.dto.plan.PlanDTO;
 import uk.ac.ebi.impc_prod_tracker.web.mapping.common.history.HistoryMapper;
 import uk.ac.ebi.impc_prod_tracker.web.mapping.plan.PlanMapper;
 import java.util.List;
 
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+
 @RestController
 @RequestMapping("/api/plans")
 @CrossOrigin(origins="*")
-@ExposesResourceFor(PlanDTO.class)
 public class PlanController
 {
     private HistoryMapper historyMapper;
@@ -46,13 +52,37 @@ public class PlanController
     }
 
     @GetMapping
-    public List<PlanDTO> plans()
+    public ResponseEntity findAll(
+        Pageable pageable,
+        PagedResourcesAssembler assembler,
+        @RequestParam(value = "tpn", required = false) List<String> tpns,
+        @RequestParam(value = "work_unit_name", required = false) List<String> workUnitNames)
     {
-        return planMapper.toDtos(planService.getPlans());
+        Page<Plan> plansPage = planService.getPlans(pageable, tpns, workUnitNames);
+        Page<PlanDTO> planDTOPage = plansPage.map(this::getDTO);
+        PagedModel pr =
+            assembler.toModel(
+                planDTOPage,
+                linkTo(PlanController.class).withSelfRel());
+
+        HttpHeaders responseHeaders = new HttpHeaders();
+        responseHeaders.add("Link", LinkUtil.createLinkHeader(pr));
+
+        return new ResponseEntity<>(pr, responseHeaders, HttpStatus.OK);
+    }
+
+    private PlanDTO getDTO(Plan plan)
+    {
+        PlanDTO planDTO = new PlanDTO();
+        if (plan != null)
+        {
+            planDTO = planMapper.toDto(plan);
+        }
+        return planDTO;
     }
 
     @GetMapping(value = {"/{id}"})
-    public PlanDTO plan(@PathVariable("id") String pin)
+    public PlanDTO findOne(@PathVariable("id") String pin)
     {
         Plan plan = getNotNullPlanByPin(pin);
 
@@ -82,7 +112,7 @@ public class PlanController
         History history = planService.updatePlan(pin, planDTO);
         if (history != null)
         {
-            return  historyMapper.toDto(history);
+            return historyMapper.toDto(history);
         }
         return null;
     }

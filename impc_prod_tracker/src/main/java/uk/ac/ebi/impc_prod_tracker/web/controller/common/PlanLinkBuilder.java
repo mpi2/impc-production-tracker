@@ -8,6 +8,7 @@ import uk.ac.ebi.impc_prod_tracker.web.controller.plan.PlanController;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
@@ -21,13 +22,18 @@ public class PlanLinkBuilder
     {
 
         List<Link> links = new ArrayList<>();
-        List<Plan> plans =
-            project.getPlans().stream().filter(
-                x -> planType.getTypeName().equalsIgnoreCase(x.getPlanType().getName()))
-                .collect(Collectors.toList());
-        plans.forEach(
-            x -> links.add(
-                linkTo(PlanController.class).slash(x.getPin()).withRel(groupOfLinksName)));
+        Set<Plan> plans = project.getPlans();
+        if (plans != null)
+        {
+            List<Plan> plansByType =
+                plans.stream().filter(
+                    x -> planType.getTypeName().equalsIgnoreCase(x.getPlanType().getName()))
+                    .collect(Collectors.toList());
+            plansByType.forEach(
+                x -> links.add(
+                    linkTo(PlanController.class).slash(x.getPin()).withRel(groupOfLinksName)));
+        }
+
         return links;
     }
 }

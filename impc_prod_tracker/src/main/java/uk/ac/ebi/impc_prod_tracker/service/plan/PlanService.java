@@ -26,15 +26,9 @@ import java.util.List;
 
 public interface PlanService
 {
-    List<Plan> getPlansByProject(Project project);
-
-    Plan getPlanByPin(String pin);
+    Page<Plan> getPlans(Pageable pageable, List<String> tpns, List<String> workUnitNames);
 
     Plan getPlanByPinWithoutCheckPermissions(String pin);
-
-    List<Plan> getPlans();
-
-    Page<Plan> getPaginatedPlans(Pageable pageable);
 
     /**
      * Get the production plan that is related with a phenotype plan. The relation is given by the
@@ -46,7 +40,6 @@ public interface PlanService
     Plan getProductionPlanRefByPhenotypePlan(Plan phenotypePlan);
 
     Page<Plan> getPlansBySpec(Specification<Plan> specification, Pageable pageable);
-    Page<Plan> getPlansBySpecPro(Specification<Project> specification, Pageable pageable);
 
     Plan getNotNullPlanByPin(String pin);
 

@@ -24,6 +24,8 @@ import java.util.Set;
 @Entity
 public class Project extends BaseEntity implements Resource<Project>
 {
+    transient private Boolean isObjectRestricted = null;
+
     @Id
     @SequenceGenerator(name = "projectSeq", sequenceName = "PROJECT_SEQ")
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "projectSeq")
@@ -50,7 +52,7 @@ public class Project extends BaseEntity implements Resource<Project>
 
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
-    @OneToMany
+    @OneToMany(fetch=FetchType.EAGER)
     @JoinColumn(name = "project_id")
     private Set<AssignmentStatusStamp> assignmentStatusStamps;
 
@@ -64,7 +66,6 @@ public class Project extends BaseEntity implements Resource<Project>
 
     private Boolean recovery;
 
-//    @NotNull
     private Boolean isActive;
 
     @Column(columnDefinition = "TEXT")
@@ -73,10 +74,6 @@ public class Project extends BaseEntity implements Resource<Project>
     @Column(columnDefinition = "TEXT")
     private String projectExternalRef;
 
-
-
-
-    //    @NotNull
     @ManyToOne(targetEntity= Privacy.class)
     private Privacy privacy;
 
@@ -104,19 +101,18 @@ public class Project extends BaseEntity implements Resource<Project>
     @JsonIgnore
     public Project getRestrictedObject()
     {
-        /* TODO
-        Plan plan = new Plan();
-
-        plan.setPrivacy(this.privacy);
-        plan.setPin(this.pin);
-        plan.setPlanType(this.planType);
         Project restrictedProject = new Project();
-        restrictedProject.setTpn(this.project.getTpn());
-        plan.setProject(restrictedProject);
-
-        return plan;
-        */
-        return null;
+        restrictedProject.setId(id);
+        restrictedProject.setTpn(tpn);
+        restrictedProject.setPrivacy(privacy);
+        restrictedProject.setWithdrawn(withdrawn);
+        restrictedProject.setComment(comment);
+        restrictedProject.setIsActive(isActive);
+        restrictedProject.setRecovery(recovery);
+        restrictedProject.setProjectExternalRef(projectExternalRef);
+        restrictedProject.setGenes(genes);
+        restrictedProject.setIsObjectRestricted(true);
+        return restrictedProject;
     }
 
 

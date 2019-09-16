@@ -5,11 +5,9 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.ResultHandler;
-import uk.ac.ebi.impc_prod_tracker.data.organization.person.Person;
 import uk.ac.ebi.impc_prod_tracker.data.organization.person.PersonRepository;
 import uk.ac.ebi.impc_prod_tracker.domain.login.AuthenticationRequest;
 import uk.ac.ebi.impc_prod_tracker.framework.ControllerTestTemplate;
-import java.util.List;
 
 import static org.hamcrest.Matchers.containsString;
 import static org.springframework.restdocs.payload.PayloadDocumentation.requestFields;
@@ -34,7 +32,6 @@ public class AuthControllerTest extends ControllerTestTemplate
     {
         AuthenticationRequest authenticationRequest =
             new AuthenticationRequest("imits2test", "imits2test");
-        List<Person> people = personRepository.findAll();
 
         mvc().perform(post("/auth/signin")
             .content(toJson(authenticationRequest))
@@ -43,24 +40,40 @@ public class AuthControllerTest extends ControllerTestTemplate
             .andExpect(status().isOk())
             .andDo(documentSignIn());
     }
-
-    //TODO: Adjust with new structure for work unit and roles.
+    
     private ResultHandler documentSignIn() {
         ConstrainedFields fields = fields(AuthenticationRequest.class);
         return document(
             "auth/signin",
             requestFields(
                 fields
-                    .withPath("username").description("The user name"),
+                    .withPath("user_name").description("The user name."),
                 fields
-                    .withPath("password").description("The password")),
+                    .withPath("password").description("The password.")),
             responseFields(
                 fields
-                    .withPath("access_token")
-                    .description("The token to access the protected end points"),
+                    .withPath("user_name").description("User name in the system (usually the email)."),
                 fields
-                    .withPath("username")
-                    .description("User name in the system (usually the email)")
+                    .withPath("access_token")
+                    .description("The token to access the protected end points."),
+                fields
+                    .withPath("roles_work_units")
+                    .description("User roles for the work units they belong."),
+                fields
+                    .withPath("roles_work_units[].work_unit_name")
+                    .description("Work unit."),
+                fields
+                    .withPath("roles_work_units[].role_name")
+                    .description("Work unit role name."),
+                fields
+                    .withPath("roles_consortia")
+                    .description("User roles for the consortia they belong."),
+                fields
+                    .withPath("roles_consortia[].consortium_name")
+                    .description("Consortium"),
+                fields
+                    .withPath("roles_consortia[].role_name")
+                    .description("Consortium role name.")
                 ));
     }
 

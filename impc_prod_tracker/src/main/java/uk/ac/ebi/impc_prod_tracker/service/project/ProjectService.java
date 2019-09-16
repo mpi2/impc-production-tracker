@@ -17,55 +17,21 @@ package uk.ac.ebi.impc_prod_tracker.service.project;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.domain.Specification;
 import uk.ac.ebi.impc_prod_tracker.data.common.history.History;
 import uk.ac.ebi.impc_prod_tracker.web.dto.project.NewProjectRequestDTO;
 import uk.ac.ebi.impc_prod_tracker.data.biology.project.Project;
-
 import java.util.List;
 
 public interface ProjectService
 {
-    /**
-     * Get all projects.
-     * @return
-     */
-    List<Project> getProjects();
-    Page<Project> getProjects(Pageable pageable);
-
-    /**
-     * Get the project identified by a specific tpn.
-     * @param tpn Project identifier.
-     * @return A project with the specific identifier (tpn).
-     */
     Project getProjectByTpn(String tpn);
 
-    /**
-     * Get paginated projects filtering with the criteria defined in specification.
-     * @param specification Filters to apply to the projects to return.
-     * @param pageable Pagination information.
-     * @return Paginated Projects filtered with criteria defined in specification.
-     */
-    Page<Project> getProjects(Specification<Project> specification, Pageable pageable);
-
-    /**
-     * 
-     * @param project
-     * @param workUnits
-     * @param workGroups
-     * @param planTypes
-     * @param statuses
-     * @param privacies
-     * @return
-     */
-    Project getProjectFilteredByPlanAttributes(
-        Project project,
-        List<String> workUnits,
-        List<String> workGroups,
-        List<String> planTypes,
-        List<String> statuses,
-        List<String> privacies
-    );
+    Page<Project> getProjects(
+        Pageable pageable,
+        List<String> workUnitNames,
+        List<String> consortiaNames,
+        List<String> statusesNames,
+        List<String> privaciesNames);
 
     Project createProject(NewProjectRequestDTO newProjectRequestDTO);
 

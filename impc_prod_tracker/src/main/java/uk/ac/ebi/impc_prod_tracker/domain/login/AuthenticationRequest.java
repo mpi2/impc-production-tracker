@@ -15,11 +15,11 @@
  *******************************************************************************/
 package uk.ac.ebi.impc_prod_tracker.domain.login;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import java.io.Serializable;
 
 /**
  * Payload structure for an authentication request.
@@ -30,7 +30,10 @@ import java.io.Serializable;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class AuthenticationRequest implements Serializable {
-    private String username;
+public class AuthenticationRequest
+{
+    @JsonProperty("user_name")
+    private String userName;
+
     private String password;
 }

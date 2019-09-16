@@ -203,7 +203,7 @@ public class PersonService
      */
     static class LocalAccountInfo
     {
-        @JsonProperty("username")
+        @JsonProperty("userName")
         String userName;
 
         @JsonProperty("name")

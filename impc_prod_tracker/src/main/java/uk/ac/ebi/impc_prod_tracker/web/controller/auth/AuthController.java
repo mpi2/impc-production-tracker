@@ -25,18 +25,24 @@ import org.springframework.web.bind.annotation.RestController;
 import uk.ac.ebi.impc_prod_tracker.conf.error_management.OperationFailedException;
 import uk.ac.ebi.impc_prod_tracker.conf.security.SystemSubject;
 import uk.ac.ebi.impc_prod_tracker.data.organization.person.Person;
+import uk.ac.ebi.impc_prod_tracker.data.organization.person_role_consortium.PersonRoleConsortium;
+import uk.ac.ebi.impc_prod_tracker.data.organization.person_role_work_unit.PersonRoleWorkUnit;
 import uk.ac.ebi.impc_prod_tracker.domain.login.AuthenticationRequest;
 import uk.ac.ebi.impc_prod_tracker.domain.login.UserRegisterRequest;
 import uk.ac.ebi.impc_prod_tracker.service.authentication.AuthService;
 import uk.ac.ebi.impc_prod_tracker.service.PersonService;
+import uk.ac.ebi.impc_prod_tracker.web.dto.auth.AuthenticationResponseDTO;
+import uk.ac.ebi.impc_prod_tracker.web.dto.auth.PersonRoleConsortiumDTO;
+import uk.ac.ebi.impc_prod_tracker.web.dto.auth.PersonRoleWorkUnitDTO;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 import static org.springframework.http.ResponseEntity.ok;
 
 /**
- * Controller for end points related with the authentication process.
+ * Controller for end points related with the auth process.
  *
  * @author Mauricio Martinez
  */
@@ -64,34 +70,59 @@ public class AuthController
     {
         try
         {
-            String username = authenticationRequest.getUsername();
+            String username = authenticationRequest.getUserName();
             String token = authService.getAuthenticationToken(authenticationRequest);
 
             SystemSubject person = personService.getPersonByToken(token);
-            String roleName = "";
-            String workUnitName = "";
-//            if (person.getRole() != null)
-//            {
-//                roleName = person.getRole().getName();
-//            }
-//            if (person.getWorkUnit() != null)
-//            {
-//                workUnitName = person.getWorkUnit().getName();
-//            }
+            AuthenticationResponseDTO authenticationResponseDTO = buildAuthenticationResponseDTO(
+                username, token, person.getRoleWorkUnits(), person.getRoleConsortia());
 
-            Map<Object, Object> model = new HashMap<>();
-            model.put("username", username);
-            model.put("access_token", token);
-            // TODO: Adjust with new structure
-//            model.put("role", roleName);
-//            model.put("workUnitName", workUnitName);
-
-            return ok(model);
+            return ok(authenticationResponseDTO);
         }
         catch (AuthenticationException e)
         {
             throw new OperationFailedException(AUTHENTICATION_ERROR);
         }
+    }
+
+    private AuthenticationResponseDTO buildAuthenticationResponseDTO(
+        String userName,
+        String token,
+        Collection<PersonRoleWorkUnit> roleWorkUnits,
+        Collection<PersonRoleConsortium> roleConsortia)
+    {
+        AuthenticationResponseDTO authenticationResponseDTO = new AuthenticationResponseDTO();
+        authenticationResponseDTO.setUserName(userName);
+        authenticationResponseDTO.setAccessToken(token);
+
+        if (roleWorkUnits != null)
+        {
+            List<PersonRoleWorkUnitDTO> roleWorkUnitDTOS = new ArrayList<>();
+            roleWorkUnits.forEach(
+                x ->
+                {
+                    PersonRoleWorkUnitDTO personRoleWorkUnitDTO = new PersonRoleWorkUnitDTO();
+                    personRoleWorkUnitDTO.setRoleName(x.getRole().getName());
+                    personRoleWorkUnitDTO.setWorkUnitName(x.getWorkUnit().getName());
+                    roleWorkUnitDTOS.add(personRoleWorkUnitDTO);
+                });
+            authenticationResponseDTO.setRolesWorkUnits(roleWorkUnitDTOS);
+        }
+        if (roleConsortia != null)
+        {
+            List<PersonRoleConsortiumDTO> roleConsortiumDTOS = new ArrayList<>();
+            roleConsortia.forEach(
+                x ->
+                {
+                    PersonRoleConsortiumDTO personRoleConsortiumDTO = new PersonRoleConsortiumDTO();
+                    personRoleConsortiumDTO.setRoleName(x.getRole().getName());
+                    personRoleConsortiumDTO.setConsortiumName(x.getConsortium().getName());
+                    roleConsortiumDTOS.add(personRoleConsortiumDTO);
+                });
+            authenticationResponseDTO.setRolesConsortia(roleConsortiumDTOS);
+        }
+
+        return authenticationResponseDTO;
     }
 
     /**

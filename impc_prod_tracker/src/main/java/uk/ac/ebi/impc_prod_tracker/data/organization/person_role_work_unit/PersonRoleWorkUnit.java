@@ -25,11 +25,11 @@ public class PersonRoleWorkUnit extends BaseEntity implements Serializable {
     private Long id;
 
     @NotNull
-    @ManyToOne(targetEntity = Person.class)
+    @ManyToOne
     private Person person;
 
     @NotNull
-    @ManyToOne(targetEntity = WorkUnit.class)
+    @ManyToOne
     private WorkUnit workUnit;
 
     @NotNull

@@ -22,7 +22,6 @@ import org.springframework.stereotype.Component;
 import uk.ac.ebi.impc_prod_tracker.conf.error_management.OperationFailedException;
 import uk.ac.ebi.impc_prod_tracker.conf.security.AapSystemSubject;
 import uk.ac.ebi.impc_prod_tracker.conf.security.SystemSubject;
-import uk.ac.ebi.impc_prod_tracker.data.organization.role.Role;
 
 /**
  * Class in charge of retrieven information about the user currently logged into the system.
@@ -71,9 +70,7 @@ public class SubjectRetriever
 
     private SystemSubject buildAnonymousUser()
     {
-        Role emptyRole = new Role(-1L,"","");
         AapSystemSubject anonymousSubject = new AapSystemSubject(ANONYMOUS_USER);
-        anonymousSubject.setRole(emptyRole);
         return anonymousSubject;
     }
 
