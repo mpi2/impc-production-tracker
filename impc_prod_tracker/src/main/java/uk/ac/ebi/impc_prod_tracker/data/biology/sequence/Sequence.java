@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import uk.ac.ebi.impc_prod_tracker.data.BaseEntity;
 import uk.ac.ebi.impc_prod_tracker.data.biology.allele.Allele;
+import uk.ac.ebi.impc_prod_tracker.data.biology.sequence.category.SequenceCategory;
 import uk.ac.ebi.impc_prod_tracker.data.biology.sequence.type.SequenceType;
 
 import javax.persistence.*;
@@ -25,6 +26,9 @@ public class Sequence extends BaseEntity {
 
     @ManyToOne(targetEntity= SequenceType.class)
     private SequenceType sequenceType;
+
+    @ManyToOne(targetEntity= SequenceCategory.class)
+    private SequenceCategory sequenceCategory;
 
     @ManyToMany(mappedBy = "sequences")
     private Set<Allele> alleles;
