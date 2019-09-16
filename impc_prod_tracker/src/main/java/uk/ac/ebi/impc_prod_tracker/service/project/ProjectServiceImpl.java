@@ -23,7 +23,6 @@ import org.springframework.stereotype.Component;
 import uk.ac.ebi.impc_prod_tracker.common.history.HistoryService;
 import uk.ac.ebi.impc_prod_tracker.conf.security.abac.ResourceAccessChecker;
 import uk.ac.ebi.impc_prod_tracker.data.common.history.History;
-import uk.ac.ebi.impc_prod_tracker.web.controller.project.ProjectSpecs;
 import uk.ac.ebi.impc_prod_tracker.web.dto.project.NewProjectRequestDTO;
 import uk.ac.ebi.impc_prod_tracker.data.biology.assignment_status.AssignmentStatus;
 import uk.ac.ebi.impc_prod_tracker.data.biology.project.Project;
@@ -31,6 +30,7 @@ import uk.ac.ebi.impc_prod_tracker.data.biology.project.ProjectRepository;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.transaction.Transactional;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
@@ -42,7 +42,6 @@ public class ProjectServiceImpl implements ProjectService
 {
     private ProjectRepository projectRepository;
     private HistoryService<Project> historyService;
-    private ProjectSpecs projectSpecs;
     private ResourceAccessChecker<Project> resourceAccessChecker;
 
     public static final String READ_PROJECT_ACTION = "READ_PROJECT";
@@ -50,12 +49,10 @@ public class ProjectServiceImpl implements ProjectService
     public ProjectServiceImpl(
         ProjectRepository projectRepository,
         HistoryService<Project> historyService,
-        ProjectSpecs projectSpecs,
         ResourceAccessChecker resourceAccessChecker)
     {
         this.projectRepository = projectRepository;
         this.historyService = historyService;
-        this.projectSpecs = projectSpecs;
         this.resourceAccessChecker = resourceAccessChecker;
     }
 
@@ -63,43 +60,24 @@ public class ProjectServiceImpl implements ProjectService
     private EntityManager em;
 
     @Override
-    public Page<Project> getCurrentUserProjects(
-        Pageable pageable,
-        List<String> consortiaNames,
-        List<String> statusesNames,
-        List<String> privaciesNames)
+    public Project getProjectByTpn(String tpn)
     {
-        Specification<Project> specifications =
-            Specification.where(projectSpecs.withPlansInUserWorkUnits());
-        specifications =
-            specifications.and(
-                buildSpecificationsWithCriteria(consortiaNames, statusesNames, privaciesNames));
-        return projectRepository.findAll(specifications, pageable);
-    }
-
-    @Override
-    public Project getCurrentUserProjectByTpn(String tpn)
-    {
-        Project project = null;
-        Specification<Project> specifications =
-            Specification.where(projectSpecs.withPlansInUserWorkUnits());
-        List<Project> projects = projectRepository.findAll(specifications);
-        if (projects != null)
-        {
-            project = projects.stream().filter(x -> tpn.equals(x.getTpn())).findFirst().orElse(null);
-        }
-        return project;
+        Specification<Project> specifications = ProjectSpecs.withTpns(Arrays.asList(tpn));
+        Project project = projectRepository.findOne(specifications).orElse(null);
+        return getAccessChecked(project);
     }
 
     @Override
     public Page<Project> getProjects(
         Pageable pageable,
+        List<String> workUnitNames,
         List<String> consortiaNames,
         List<String> statusesNames,
         List<String> privaciesNames)
     {
-        Specification<Project> specifications =
-            buildSpecificationsWithCriteria(consortiaNames, statusesNames, privaciesNames);
+          Specification<Project> specifications =
+              buildSpecificationsWithCriteria(
+                  workUnitNames, consortiaNames, statusesNames, privaciesNames);
         Page<Project> projects = projectRepository.findAll(specifications, pageable);
         return getAccessCheckedPage(projects, pageable);
     }
@@ -123,12 +101,17 @@ public class ProjectServiceImpl implements ProjectService
     }
 
     private Specification<Project> buildSpecificationsWithCriteria(
-        List<String> consortia, List<String> statuses, List<String> privacies)
+        List<String> workUnitNames,
+        List<String> consortia,
+        List<String> statuses,
+        List<String> privacies)
     {
         Specification<Project> specifications =
-            Specification.where(projectSpecs.withConsortia(consortia))
-                .and(projectSpecs.withStatuses(statuses))
-                .and(projectSpecs.withPrivacies(privacies));
+            Specification.where(
+                ProjectSpecs.withPlansInWorkUnitsNames(workUnitNames)
+                .and(ProjectSpecs.withConsortia(consortia))
+                .and(ProjectSpecs.withStatuses(statuses))
+                .and(ProjectSpecs.withPrivacies(privacies)));
         return specifications;
     }
 

@@ -27,7 +27,6 @@ import uk.ac.ebi.impc_prod_tracker.web.dto.plan.phenotyping.PhenotypingAttemptDT
 import uk.ac.ebi.impc_prod_tracker.web.dto.plan.production.breeding_attempt.BreedingAttemptDTO;
 import uk.ac.ebi.impc_prod_tracker.web.dto.plan.production.crispr_attempt.CrisprAttemptDTO;
 import uk.ac.ebi.impc_prod_tracker.web.dto.status_stamps.StatusStampsDTO;
-
 import java.util.List;
 
 @Data
@@ -42,14 +41,11 @@ public class PlanDTO extends RepresentationModel
     private String pin;
 
     @NonNull
-    @JsonProperty("project_tpn")
+    @JsonProperty("tpn")
     private String tpn;
 
     @JsonProperty("funder_name")
     private String funderName;
-
-    @JsonProperty("consortium_name")
-    private String consortiumName;
 
     @JsonProperty("work_unit_name")
     private String workUnitName;

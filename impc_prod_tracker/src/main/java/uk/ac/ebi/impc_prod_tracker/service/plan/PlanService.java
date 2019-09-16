@@ -26,6 +26,8 @@ import java.util.List;
 
 public interface PlanService
 {
+    Page<Plan> getPlans(Pageable pageable, List<String> tpns, List<String> workUnitNames);
+
     Plan getPlanByPinWithoutCheckPermissions(String pin);
 
     /**

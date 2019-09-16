@@ -52,7 +52,7 @@ public class Project extends BaseEntity implements Resource<Project>
 
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
-    @OneToMany
+    @OneToMany(fetch=FetchType.EAGER)
     @JoinColumn(name = "project_id")
     private Set<AssignmentStatusStamp> assignmentStatusStamps;
 

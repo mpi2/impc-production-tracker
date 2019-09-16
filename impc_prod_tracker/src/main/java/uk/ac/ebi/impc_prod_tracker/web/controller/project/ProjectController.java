@@ -70,14 +70,14 @@ class ProjectController
     public ResponseEntity findAll(
         Pageable pageable,
         PagedResourcesAssembler assembler,
+        @RequestParam(value = "work_unit_name", required = false) List<String> workUnitNames,
         @RequestParam(value = "consortium", required = false) List<String> consortia,
         @RequestParam(value = "status", required = false) List<String> statuses,
         @RequestParam(value = "privacy", required = false) List<String> privacies)
     {
         Page<Project> projects =
-            projectService.getProjects(pageable, consortia, statuses, privacies);
-        Page<ProjectDTO> projectDtos =
-            projects.map(this::getDTO);
+            projectService.getProjects(pageable, workUnitNames, consortia, statuses, privacies);
+        Page<ProjectDTO> projectDtos = projects.map(this::getDTO);
         PagedModel pr =
             assembler.toModel(
                 projectDtos,
@@ -112,7 +112,7 @@ class ProjectController
     public EntityModel<?> findOne(@PathVariable String tpn)
     {
         EntityModel<ProjectDTO> entityModel;
-        Project project = projectService.getCurrentUserProjectByTpn(tpn);
+        Project project = projectService.getProjectByTpn(tpn);
         ProjectDTO projectDTO = getDTO(project);
 
         if (projectDTO != null)

@@ -24,29 +24,11 @@ import java.util.List;
 
 public interface ProjectService
 {
-    /**
-     * Get all the projects that a user has access to. The visibility of a project is given by the
-     * existence of at least one plan in the project that has a work unit that matches with the
-     * user's work unit.
-     * @param pageable Pageable information.
-     * @param consortiaNames Optional list of consortia names to filter the results.
-     *                       If null no filters are applied.
-     * @param statusesNames Optional list of statuses names to filter the results.
-     *                      If null no filters are applied.
-     * @param privaciesNames Optional list of privacies names to filter the results.
-     *                       If null no filters are applied.
-     * @return Paginated projects.
-     */
-    Page<Project> getCurrentUserProjects(
-        Pageable pageable,
-        List<String> consortiaNames,
-        List<String> statusesNames,
-        List<String> privaciesNames);
-
-    Project getCurrentUserProjectByTpn(String tpn);
+    Project getProjectByTpn(String tpn);
 
     Page<Project> getProjects(
         Pageable pageable,
+        List<String> workUnitNames,
         List<String> consortiaNames,
         List<String> statusesNames,
         List<String> privaciesNames);
