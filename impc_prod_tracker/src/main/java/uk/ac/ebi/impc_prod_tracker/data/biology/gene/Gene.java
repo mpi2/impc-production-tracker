@@ -28,7 +28,7 @@ import javax.persistence.*;
 import javax.validation.constraints.Pattern;
 import java.util.Set;
 
-@NoArgsConstructor(access= AccessLevel.PRIVATE, force=true)
+@NoArgsConstructor(access= AccessLevel.PUBLIC, force=true)
 @Data
 @Entity
 public class Gene extends BaseEntity

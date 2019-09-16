@@ -1,5 +1,6 @@
 package uk.ac.ebi.impc_prod_tracker.web.dto.gene;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 
@@ -7,7 +8,9 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class GeneDTO
 {
-    private String accessionIdValue;
+    @JsonProperty("accession_id_value")
+    private String idListValue;
     private String symbol;
-    private String specieName;
+    @JsonProperty("species_name")
+    private String speciesName;
 }
