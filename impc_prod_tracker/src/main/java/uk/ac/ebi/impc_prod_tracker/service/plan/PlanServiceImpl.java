@@ -25,12 +25,11 @@ import uk.ac.ebi.impc_prod_tracker.conf.security.abac.ResourceAccessChecker;
 import uk.ac.ebi.impc_prod_tracker.data.biology.plan_outcome.PlanOutcomeRepository;
 import uk.ac.ebi.impc_prod_tracker.data.biology.plan.Plan;
 import uk.ac.ebi.impc_prod_tracker.data.biology.plan.PlanRepository;
-import uk.ac.ebi.impc_prod_tracker.data.biology.project.Project;
 import uk.ac.ebi.impc_prod_tracker.data.common.history.History;
 import uk.ac.ebi.impc_prod_tracker.service.plan.engine.PlanUpdater;
 import uk.ac.ebi.impc_prod_tracker.service.plan.engine.UpdatePlanRequestProcessor;
 import uk.ac.ebi.impc_prod_tracker.web.dto.plan.PlanDTO;
-import java.util.ArrayList;
+
 import java.util.List;
 
 @Component
@@ -62,6 +61,24 @@ public class PlanServiceImpl implements PlanService
         this.planOutcomeRepository = planOutcomeRepository;
         this.historyService = historyService;
     }
+
+    @Override
+    public Page<Plan> getPlans(Pageable pageable, List<String> tpns, List<String> workUnitNames)
+    {
+        Specification<Plan> specifications =
+            buildSpecificationsWithCriteria(tpns, workUnitNames);
+        return planRepository.findAll(specifications, pageable);
+    }
+
+    private Specification<Plan> buildSpecificationsWithCriteria(
+        List<String> tpns, List<String> workUnitNames)
+    {
+        Specification<Plan> specifications =
+            Specification.where(PlanSpecs.withTpns(tpns))
+                .and(Specification.where(PlanSpecs.withWorkUnitNames(workUnitNames)));
+        return specifications;
+    }
+
 
     @Override
     //TODO
