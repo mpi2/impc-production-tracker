@@ -23,5 +23,7 @@ public class AlleleQcResult extends BaseEntity implements Serializable
     @ManyToOne(targetEntity = QcType.class)
     private QcType qcType;
 
-    private String status;
+    @ManyToOne(targetEntity = QcStatus.class)
+    private QcStatus status;
+
 }
