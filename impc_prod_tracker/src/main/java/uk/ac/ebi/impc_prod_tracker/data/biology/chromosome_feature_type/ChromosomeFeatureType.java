@@ -19,5 +19,5 @@ public class ChromosomeFeatureType extends BaseEntity
     private Long id;
 
     @NotNull
-    private String type;
+    private String name;
 }
