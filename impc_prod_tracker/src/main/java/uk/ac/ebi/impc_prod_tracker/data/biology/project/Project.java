@@ -134,12 +134,15 @@ public class Project extends BaseEntity implements Resource<Project>
     private Set<ProjectLocation> locations;
 
 
-    @EqualsAndHashCode.Exclude
+
     @ToString.Exclude
     @JsonIgnore
-    @ManyToMany(mappedBy = "projects")
+    @ManyToMany
+    @JoinTable(
+            name = "project_consortia",
+            joinColumns = @JoinColumn(name = "project_id"),
+            inverseJoinColumns = @JoinColumn(name = "consortium_id"))
     private Set<Consortium> consortia;
-
 
     @ToString.Exclude
     @JsonIgnore
