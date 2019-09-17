@@ -41,7 +41,7 @@ public class EntityMapperTest
         GeneDTO geneDTO = entityMapper.toTarget(gene, GeneDTO.class);
 
         assertThat("Gene Symbol", geneDTO.getSymbol(), is(SYMBOL + ID1));
-        assertThat("Gene idListValue", geneDTO.getIdListValue(), is(ID_LIST_VALUE));
+        assertThat("Gene idListValue", geneDTO.getAccId(), is(ID_LIST_VALUE));
         assertThat("Gene Species Name", geneDTO.getSpeciesName(), is(SPECIES_NAME));
     }
 
@@ -73,7 +73,7 @@ public class EntityMapperTest
     {
         Gene gene = new Gene();
         gene.setId(id);
-        gene.setIdListValue(ID_LIST_VALUE);
+        gene.setAccId(ID_LIST_VALUE);
         gene.setSymbol(SYMBOL + id);
         Species species = new Species();
         species.setName(SPECIES_NAME);
