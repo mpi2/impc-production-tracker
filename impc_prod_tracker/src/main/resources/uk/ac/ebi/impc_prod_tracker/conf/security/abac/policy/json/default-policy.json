@@ -51,7 +51,7 @@
     "name": "Update a plan that is in the same subject's work unit",
     "description": "Permission to Update a plan",
     "target": "action == 'UPDATE_PLAN'",
-    "condition": "subject.workUnit.id == resource.workUnit.id"
+    "condition": "subject.belongsToAnyWorkUnit(resource.workUnit)"
   },
   {
     "name": "Read public projects.",
@@ -64,6 +64,12 @@
     "description": "A user can read a project that is related to a consortium where the user is a member of that consortium.",
     "target": "action == 'READ_PROJECT'",
     "condition": "subject.belongsToConsortia(resource.consortia)"
+  },
+  {
+    "name": "Modify associated projects",
+    "description": "A user can modify a project if they have plans associated with it.",
+    "target": "action == 'UPDATE_PROJECT'",
+    "condition": "subject.belongsToAnyWorkUnit(resource.getRelatedWorkUnits())"
   }
 
 ]

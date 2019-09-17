@@ -3,6 +3,7 @@ package uk.ac.ebi.impc_prod_tracker.service.conf;
 import org.springframework.stereotype.Component;
 import uk.ac.ebi.impc_prod_tracker.conf.security.abac.spring.ContextAwarePolicyEnforcement;
 import uk.ac.ebi.impc_prod_tracker.service.plan.PlanService;
+import uk.ac.ebi.impc_prod_tracker.service.project.ProjectService;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -17,14 +18,21 @@ public class PermissionServiceImpl implements PermissionService
 
     private static final String UPDATE_PLAN = "canUpdatePlan";
     private static final String UPDATE_PLAN_ACTION = "UPDATE_PLAN";
+    private static final String UPDATE_PROJECT = "canUpdateProject";
+    private static final String UPDATE_PROJECT_ACTION = "UPDATE_PROJECT";
 
     private ContextAwarePolicyEnforcement policyEnforcement;
     private PlanService planService;
+    private ProjectService projectService;
 
-    public PermissionServiceImpl(ContextAwarePolicyEnforcement policyEnforcement, PlanService planService)
+    public PermissionServiceImpl(
+        ContextAwarePolicyEnforcement policyEnforcement,
+        PlanService planService,
+        ProjectService projectService)
     {
         this.policyEnforcement = policyEnforcement;
         this.planService = planService;
+        this.projectService = projectService;
     }
 
     @Override
@@ -53,8 +61,14 @@ public class PermissionServiceImpl implements PermissionService
                 actionInPolicySystem = UPDATE_PLAN_ACTION;
                 break;
 
+            case UPDATE_PROJECT:
+                resource = projectService.getProjectByTpn(resourceId);
+                actionInPolicySystem = UPDATE_PROJECT_ACTION;
+                break;
+
             default:
         }
+
         if (resource == null)
         {
             hasPermission = false;

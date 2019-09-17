@@ -15,9 +15,12 @@ import uk.ac.ebi.impc_prod_tracker.data.biology.project_location.ProjectLocation
 import uk.ac.ebi.impc_prod_tracker.data.biology.project_sequence.ProjectSequence;
 import uk.ac.ebi.impc_prod_tracker.data.biology.species.Species;
 import uk.ac.ebi.impc_prod_tracker.data.organization.consortium.Consortium;
+import uk.ac.ebi.impc_prod_tracker.data.organization.work_unit.WorkUnit;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 @NoArgsConstructor(access= AccessLevel.PUBLIC, force=true)
@@ -114,6 +117,14 @@ public class Project extends BaseEntity implements Resource<Project>
         restrictedProject.setGenes(genes);
         restrictedProject.setIsObjectRestricted(true);
         return restrictedProject;
+    }
+
+    @Override
+    public List<WorkUnit> getRelatedWorkUnits()
+    {
+        List<WorkUnit> relatedWorkUnites = new ArrayList<>();
+        plans.forEach(x -> relatedWorkUnites.add(x.getWorkUnit()));
+        return relatedWorkUnites;
     }
 
 
