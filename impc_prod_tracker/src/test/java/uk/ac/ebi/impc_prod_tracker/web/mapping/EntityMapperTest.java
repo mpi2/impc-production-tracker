@@ -73,7 +73,7 @@ public class EntityMapperTest
     {
         Gene gene = new Gene();
         gene.setId(id);
-        gene.setIdListValue(ID_LIST_VALUE);
+        gene.setAccId(ID_LIST_VALUE);
         gene.setSymbol(SYMBOL + id);
         Species species = new Species();
         species.setName(SPECIES_NAME);
