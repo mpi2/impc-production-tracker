@@ -139,7 +139,7 @@ public class Project extends BaseEntity implements Resource<Project>
     @JsonIgnore
     @ManyToMany
     @JoinTable(
-            name = "project_consortia",
+            name = "project_consortium",
             joinColumns = @JoinColumn(name = "project_id"),
             inverseJoinColumns = @JoinColumn(name = "consortium_id"))
     private Set<Consortium> consortia;
