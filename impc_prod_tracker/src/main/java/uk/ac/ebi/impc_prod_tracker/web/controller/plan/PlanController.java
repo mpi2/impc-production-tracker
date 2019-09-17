@@ -91,7 +91,7 @@ public class PlanController
         return planDTO;
     }
 
-    @GetMapping(value = {"/plans/{pin}/history"})
+    @GetMapping(value = {"{pin}/history"})
     public List<HistoryDTO> getPlanHistory(@PathVariable String pin)
     {
         Plan plan = getNotNullPlanByPin(pin);
