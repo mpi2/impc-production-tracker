@@ -16,6 +16,7 @@ package uk.ac.ebi.impc_prod_tracker.data.biology.gene;
  * License.
  *******************************************************************************/
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import uk.ac.ebi.impc_prod_tracker.data.BaseEntity;
 import uk.ac.ebi.impc_prod_tracker.data.biology.allele.Allele;
@@ -71,6 +72,9 @@ public class Gene extends BaseEntity
     @ManyToOne(targetEntity= Species.class)
     private Species species;
 
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
+    @JsonIgnore
     @ManyToMany()
     @JoinTable(
             name = "gene_flag_relation",

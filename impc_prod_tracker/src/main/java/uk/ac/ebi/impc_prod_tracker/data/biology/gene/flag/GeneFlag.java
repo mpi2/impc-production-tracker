@@ -15,6 +15,7 @@
  *******************************************************************************/
 package uk.ac.ebi.impc_prod_tracker.data.biology.gene.flag;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.*;
 import uk.ac.ebi.impc_prod_tracker.data.BaseEntity;
 import uk.ac.ebi.impc_prod_tracker.data.biology.gene.Gene;
@@ -37,6 +38,8 @@ public class GeneFlag extends BaseEntity
 
     private String name;
 
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
     @ManyToMany(mappedBy = "geneFlags")
     private Set<Gene> genes;
 }
