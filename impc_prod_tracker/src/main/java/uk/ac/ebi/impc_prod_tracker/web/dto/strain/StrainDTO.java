@@ -1,6 +1,5 @@
 package uk.ac.ebi.impc_prod_tracker.web.dto.strain;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
@@ -9,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class StrainDTO
 {
+    private Long id;
 
     private String name;
 

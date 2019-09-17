@@ -25,7 +25,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class GenotypePrimerDTO
 {
-    @JsonIgnore
     private Long id;
     @JsonIgnore
     private Long crispr_attempt_plan_id;

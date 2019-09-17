@@ -24,6 +24,8 @@ public class GenotypePrimer extends BaseEntity
 
     private int genomicEndCoordinate;
 
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
     @ManyToOne(targetEntity = CrisprAttempt.class)
     private CrisprAttempt crisprAttempt;
 }
