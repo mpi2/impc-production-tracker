@@ -2,12 +2,14 @@ package uk.ac.ebi.impc_prod_tracker.data.biology.project_gene;
 
 import lombok.*;
 import uk.ac.ebi.impc_prod_tracker.data.BaseEntity;
+import uk.ac.ebi.impc_prod_tracker.data.biology.allele_categorization.AlleleCategorization;
 import uk.ac.ebi.impc_prod_tracker.data.biology.allele_type.AlleleType;
 import uk.ac.ebi.impc_prod_tracker.data.biology.gene.Gene;
 import uk.ac.ebi.impc_prod_tracker.data.biology.molecular_mutation_type.MolecularMutationType;
 import uk.ac.ebi.impc_prod_tracker.data.biology.project.Project;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 
 @NoArgsConstructor(access= AccessLevel.PRIVATE, force=true)
@@ -26,8 +28,12 @@ public class ProjectGene extends BaseEntity implements Serializable
     @ManyToOne(targetEntity = Gene.class)
     private Gene gene;
 
+    @NotNull
     @ManyToOne(targetEntity= MolecularMutationType.class)
     private MolecularMutationType molecularMutationType;
+
+    @ManyToOne(targetEntity= AlleleCategorization.class)
+    private AlleleCategorization alleleCategorization;
 
     @ManyToOne(targetEntity = AlleleType.class)
     private AlleleType alleleType;
