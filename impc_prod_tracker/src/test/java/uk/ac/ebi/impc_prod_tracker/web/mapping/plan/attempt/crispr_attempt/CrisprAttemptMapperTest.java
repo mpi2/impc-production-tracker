@@ -24,6 +24,8 @@ import uk.ac.ebi.impc_prod_tracker.web.dto.plan.production.crispr_attempt.Mutage
 import uk.ac.ebi.impc_prod_tracker.web.dto.plan.production.crispr_attempt.NucleaseDTO;
 import uk.ac.ebi.impc_prod_tracker.web.dto.plan.production.crispr_attempt.ReagentDTO;
 import uk.ac.ebi.impc_prod_tracker.web.dto.strain.StrainDTO;
+
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -45,7 +47,7 @@ public class CrisprAttemptMapperTest
     private CrisprAttemptMapper crisprAttemptMapper;
 
     private static final Long IMITS_MI_ATTEMPT_ID = 1L;
-    private static final LocalDateTime MI_DATE = LocalDateTime.of(1900, 1, 1, 1, 1);
+    private static final LocalDate MI_DATE = LocalDate.of(1900, 1, 1);
     private static final String MI_EXTERNAL_REF = "externalRef";
     private static final Boolean EXPERIMENTAL_TRUE = true;
     private static final Boolean EXPERIMENTAL_FALSE = false;

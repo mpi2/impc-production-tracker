@@ -5,8 +5,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import uk.ac.ebi.impc_prod_tracker.web.dto.strain.StrainDTO;
-
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.List;
 
 @Data
@@ -20,7 +19,7 @@ public class CrisprAttemptDTO
     private Long imitsMiAttemptId;
 
     @JsonProperty("mi_date")
-    private LocalDateTime miDate;
+    private LocalDate miDate;
 
     @JsonProperty("attempt_external_ref")
     private String miExternalRef;
