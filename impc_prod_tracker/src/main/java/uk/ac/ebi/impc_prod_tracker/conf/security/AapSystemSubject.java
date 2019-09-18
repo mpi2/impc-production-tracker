@@ -195,4 +195,20 @@ public class AapSystemSubject implements SystemSubject
         }
         return result;
     }
+
+    @Override
+    public List<WorkUnit> getRelatedWorkUnits()
+    {
+        List<WorkUnit> relatedWorkUnits = new ArrayList<>();
+
+        roleWorkUnits.forEach(x -> relatedWorkUnits.add(x.getWorkUnit()));
+
+        return relatedWorkUnits;
+    }
+
+    @Override
+    public boolean belongsToAnyWorkUnit(Collection<WorkUnit> workUnits)
+    {
+        return getRelatedWorkUnits().stream().anyMatch(workUnits::contains);
+    }
 }

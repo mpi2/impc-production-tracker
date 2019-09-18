@@ -29,7 +29,6 @@ import uk.ac.ebi.impc_prod_tracker.data.biology.crispr_attempt.guide.Guide;
 import uk.ac.ebi.impc_prod_tracker.data.biology.crispr_attempt.nuclease.Nuclease;
 import uk.ac.ebi.impc_prod_tracker.data.biology.plan.Plan;
 import uk.ac.ebi.impc_prod_tracker.data.biology.strain.Strain;
-
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -38,8 +37,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.MapsId;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
-
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.Set;
 
 @NoArgsConstructor(access= AccessLevel.PUBLIC, force=true)
@@ -57,7 +55,7 @@ public class CrisprAttempt extends BaseEntity
 
     private Long imitsMiAttemptId;
 
-    private LocalDateTime miDate;
+    private LocalDate miDate;
 
     private String miExternalRef;
 
