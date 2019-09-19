@@ -27,5 +27,6 @@ public class GenotypePrimer extends BaseEntity
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
     @ManyToOne(targetEntity = CrisprAttempt.class)
+    @JoinColumn(name = "attempt_id")
     private CrisprAttempt crisprAttempt;
 }
