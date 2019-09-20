@@ -19,16 +19,18 @@ import javax.persistence.SequenceGenerator;
 
 @NoArgsConstructor(access= AccessLevel.PUBLIC, force=true)
 @Data
-@EqualsAndHashCode( exclude = {"id", "crisprAttempt"}, callSuper = false)
+@EqualsAndHashCode(callSuper = false)
 @Entity
 public class Guide extends BaseEntity
 {
+    @EqualsAndHashCode.Exclude
     @Id
     @SequenceGenerator(name = "guideSeq", sequenceName = "GUIDE_SEQ")
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "guideSeq")
     private Long id;
 
     @JsonIgnore
+    @EqualsAndHashCode.Exclude
     @ManyToOne(targetEntity = CrisprAttempt.class)
     @JoinColumn(name = "attempt_id")
     private CrisprAttempt crisprAttempt;

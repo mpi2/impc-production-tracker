@@ -17,6 +17,7 @@ package uk.ac.ebi.impc_prod_tracker.data.biology.crispr_attempt.crispr_attempt_r
 
 import lombok.AccessLevel;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import uk.ac.ebi.impc_prod_tracker.data.BaseEntity;
 import uk.ac.ebi.impc_prod_tracker.data.biology.crispr_attempt.CrisprAttempt;
@@ -35,6 +36,7 @@ public class CrisprAttemptReagent extends BaseEntity
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "crisprAttemptReagentSeq")
     private Long id;
 
+    @EqualsAndHashCode.Exclude
     @NotNull
     @ManyToOne
     @JoinColumn(name = "attempt_id")
