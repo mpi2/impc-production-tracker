@@ -16,6 +16,7 @@ public class MutagenesisDonor extends BaseEntity
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "mutagenesisDonorSeq")
     private Long id;
 
+    @EqualsAndHashCode.Exclude
     @ManyToOne(targetEntity = CrisprAttempt.class)
     @JoinColumn(name = "attempt_id")
     private CrisprAttempt crisprAttempt;

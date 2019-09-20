@@ -576,9 +576,9 @@ public class CrisprAttemptMapperTest
         MutagenesisDonorDTO mutagenesisDonorDTO = new MutagenesisDonorDTO();
         mutagenesisDonorDTO.setId(id);
         mutagenesisDonorDTO.setConcentration(MUTAGENESIS_DONOR_CONCENTRATION + id);
-        mutagenesisDonorDTO.setPreparation(MUTAGENESIS_DONOR_PREPARATION  + id);
+        mutagenesisDonorDTO.setPreparationTypeName(MUTAGENESIS_DONOR_PREPARATION  + id);
         mutagenesisDonorDTO.setVectorName(MUTAGENESIS_DONOR_VECTOR_NAME  + id);
-        mutagenesisDonorDTO.setOligoSequenceFa(MUTAGENESIS_DONOR_OLIGO_SEQUENCE_FA  + id);
+        mutagenesisDonorDTO.setOligoSequenceFasta(MUTAGENESIS_DONOR_OLIGO_SEQUENCE_FA  + id);
         return mutagenesisDonorDTO;
     }
 

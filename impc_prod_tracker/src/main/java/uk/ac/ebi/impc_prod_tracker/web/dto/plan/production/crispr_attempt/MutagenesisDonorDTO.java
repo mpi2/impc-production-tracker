@@ -11,8 +11,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class MutagenesisDonorDTO
 {
-    @JsonIgnore
     private Long id;
+
     @JsonIgnore
     private Long attemptId;
 
@@ -20,8 +20,10 @@ public class MutagenesisDonorDTO
     private String vectorName;
 
     private Double concentration;
-    private String preparation;
+
+    @JsonProperty("preparation")
+    private String preparationTypeName;
 
     @JsonProperty("oligo_sequence_fa")
-    private String oligoSequenceFa;
+    private String oligoSequenceFasta;
 }

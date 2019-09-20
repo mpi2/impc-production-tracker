@@ -23,6 +23,7 @@ public class Nuclease extends BaseEntity
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "nucleaseSeq")
     private Long id;
 
+    @EqualsAndHashCode.Exclude
     @ManyToOne(targetEntity = CrisprAttempt.class)
     @JoinColumn(name = "attempt_id")
     private CrisprAttempt crisprAttempt;
