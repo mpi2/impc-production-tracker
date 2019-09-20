@@ -37,6 +37,7 @@ public class CrisprAttemptReagent extends BaseEntity
 
     @NotNull
     @ManyToOne
+    @JoinColumn(name = "attempt_id")
     private CrisprAttempt crisprAttempt;
 
     @NotNull

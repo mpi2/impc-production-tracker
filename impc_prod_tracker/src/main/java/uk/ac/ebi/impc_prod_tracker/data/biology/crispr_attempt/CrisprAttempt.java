@@ -26,6 +26,7 @@ import uk.ac.ebi.impc_prod_tracker.data.biology.crispr_attempt.crispr_attempt_re
 import uk.ac.ebi.impc_prod_tracker.data.biology.crispr_attempt.delivery_type.DeliveryMethodType;
 import uk.ac.ebi.impc_prod_tracker.data.biology.crispr_attempt.genotype_primer.GenotypePrimer;
 import uk.ac.ebi.impc_prod_tracker.data.biology.crispr_attempt.guide.Guide;
+import uk.ac.ebi.impc_prod_tracker.data.biology.crispr_attempt.mutagenesis_donor.MutagenesisDonor;
 import uk.ac.ebi.impc_prod_tracker.data.biology.crispr_attempt.nuclease.Nuclease;
 import uk.ac.ebi.impc_prod_tracker.data.biology.plan.Plan;
 import uk.ac.ebi.impc_prod_tracker.data.biology.strain.Strain;
@@ -113,4 +114,9 @@ public class CrisprAttempt extends BaseEntity
     @ToString.Exclude
     @OneToMany(mappedBy = "crisprAttempt")
     private Set<Nuclease> nucleases;
+
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
+    @OneToMany(mappedBy = "crisprAttempt")
+    private Set<MutagenesisDonor> mutagenesisDonors;
 }

@@ -17,6 +17,7 @@ public class MutagenesisDonor extends BaseEntity
     private Long id;
 
     @ManyToOne(targetEntity = CrisprAttempt.class)
+    @JoinColumn(name = "attempt_id")
     private CrisprAttempt crisprAttempt;
 
     private Double concentration;
@@ -26,4 +27,12 @@ public class MutagenesisDonor extends BaseEntity
 
     @Column(columnDefinition = "TEXT")
     private String oligoSequenceFasta;
+
+    @Override
+    public String toString()
+    {
+        String preparationTypeName = preparationType == null ? "Not defined" : preparationType.getName();
+        return "(" + "oligo Sequence Fasta: " + oligoSequenceFasta + ", "
+            + "Preparation Type: " + preparationTypeName + ", " + "Concentration: " + concentration + ")";
+    }
 }
