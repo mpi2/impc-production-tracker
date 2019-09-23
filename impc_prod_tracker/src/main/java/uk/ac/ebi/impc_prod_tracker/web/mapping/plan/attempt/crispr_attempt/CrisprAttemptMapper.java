@@ -4,13 +4,16 @@ import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
 import uk.ac.ebi.impc_prod_tracker.conf.error_management.OperationFailedException;
 import uk.ac.ebi.impc_prod_tracker.data.biology.crispr_attempt.CrisprAttempt;
+import uk.ac.ebi.impc_prod_tracker.data.biology.crispr_attempt.crispr_attempt_reagent.CrisprAttemptReagent;
 import uk.ac.ebi.impc_prod_tracker.data.biology.crispr_attempt.delivery_type.DeliveryMethodType;
 import uk.ac.ebi.impc_prod_tracker.data.biology.crispr_attempt.genotype_primer.GenotypePrimer;
 import uk.ac.ebi.impc_prod_tracker.data.biology.crispr_attempt.guide.Guide;
 import uk.ac.ebi.impc_prod_tracker.data.biology.crispr_attempt.mutagenesis_donor.MutagenesisDonor;
+import uk.ac.ebi.impc_prod_tracker.data.biology.crispr_attempt.nuclease.Nuclease;
 import uk.ac.ebi.impc_prod_tracker.service.plan.CrisprAttempService;
 import uk.ac.ebi.impc_prod_tracker.web.dto.plan.production.crispr_attempt.CrisprAttemptDTO;
 
+import java.util.HashSet;
 import java.util.Set;
 
 @Component
@@ -65,6 +68,8 @@ public class CrisprAttemptMapper
         setDeliveryTypeMethodToEntity(crisprAttempt, crisprAttemptDTO);
         setGenotypePrimersToEntity(crisprAttempt, crisprAttemptDTO);
         setMutagenesisDonorsToEntity(crisprAttempt, crisprAttemptDTO);
+        setReagentsToEntity(crisprAttempt, crisprAttemptDTO);
+        setNucleasesToEntity(crisprAttempt, crisprAttemptDTO);
         return crisprAttempt;
     }
 
@@ -109,5 +114,19 @@ public class CrisprAttemptMapper
             mutagenesisDonorMapper.toEntities(crisprAttemptDTO.getMutagenesisDonorDTOS());
         mutagenesisDonors.forEach(x -> x.setCrisprAttempt(crisprAttempt));
         crisprAttempt.setMutagenesisDonors(mutagenesisDonors);
+    }
+
+    private void setReagentsToEntity(CrisprAttempt crisprAttempt, CrisprAttemptDTO crisprAttemptDTO)
+    {
+        Set<CrisprAttemptReagent> crisprAttemptReagents = new HashSet<>();
+        crisprAttemptReagents.forEach(x -> x.setCrisprAttempt(crisprAttempt));
+        crisprAttempt.setCrisprAttemptReagents(crisprAttemptReagents);
+    }
+
+    private void setNucleasesToEntity(CrisprAttempt crisprAttempt, CrisprAttemptDTO crisprAttemptDTO)
+    {
+        Set<Nuclease> nucleases = new HashSet<>();
+        nucleases.forEach(x -> x.setCrisprAttempt(crisprAttempt));
+        crisprAttempt.setNucleases(nucleases);
     }
 }

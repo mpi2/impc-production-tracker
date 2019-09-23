@@ -26,6 +26,7 @@ import uk.ac.ebi.impc_prod_tracker.data.organization.person.Person;
 import uk.ac.ebi.impc_prod_tracker.data.organization.person.PersonRepository;
 import uk.ac.ebi.impc_prod_tracker.data.organization.person_role_consortium.PersonRoleConsortium;
 import uk.ac.ebi.impc_prod_tracker.data.organization.person_role_work_unit.PersonRoleWorkUnit;
+import uk.ac.ebi.impc_prod_tracker.data.organization.role.Role;
 import uk.ac.ebi.impc_prod_tracker.data.organization.work_unit.WorkUnit;
 import uk.ac.ebi.impc_prod_tracker.service.WorkUnitService;
 
@@ -210,5 +211,14 @@ public class AapSystemSubject implements SystemSubject
     public boolean belongsToAnyWorkUnit(Collection<WorkUnit> workUnits)
     {
         return getRelatedWorkUnits().stream().anyMatch(workUnits::contains);
+    }
+
+    @Override
+    public List<Role> getRelatedRoles()
+    {
+        List<Role> relatedRoles = new ArrayList<>();
+        roleWorkUnits.forEach(x -> relatedRoles.add(x.getRole()));
+        roleConsortia.forEach(x -> relatedRoles.add(x.getRole()));
+        return relatedRoles;
     }
 }

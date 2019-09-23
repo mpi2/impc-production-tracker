@@ -13,6 +13,8 @@ import uk.ac.ebi.impc_prod_tracker.data.biology.crispr_attempt.assay.assay_type.
 import uk.ac.ebi.impc_prod_tracker.data.biology.crispr_attempt.delivery_type.DeliveryMethodType;
 import uk.ac.ebi.impc_prod_tracker.data.biology.crispr_attempt.genotype_primer.GenotypePrimer;
 import uk.ac.ebi.impc_prod_tracker.data.biology.crispr_attempt.guide.Guide;
+import uk.ac.ebi.impc_prod_tracker.data.biology.crispr_attempt.mutagenesis_donor.preparation_type.PreparationType;
+import uk.ac.ebi.impc_prod_tracker.data.biology.crispr_attempt.mutagenesis_donor.preparation_type.PreparationTypeRepository;
 import uk.ac.ebi.impc_prod_tracker.data.biology.strain.Strain;
 import uk.ac.ebi.impc_prod_tracker.data.biology.strain.strain_type.StrainType;
 import uk.ac.ebi.impc_prod_tracker.service.plan.CrisprAttempService;
@@ -24,9 +26,7 @@ import uk.ac.ebi.impc_prod_tracker.web.dto.plan.production.crispr_attempt.Mutage
 import uk.ac.ebi.impc_prod_tracker.web.dto.plan.production.crispr_attempt.NucleaseDTO;
 import uk.ac.ebi.impc_prod_tracker.web.dto.plan.production.crispr_attempt.ReagentDTO;
 import uk.ac.ebi.impc_prod_tracker.web.dto.strain.StrainDTO;
-
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
@@ -98,10 +98,11 @@ public class CrisprAttemptMapperTest
     private static final Double NUCLEASE_CONCENTRATION_1 = 30.0;
     private static final Double NUCLEASE_CONCENTRATION_2 = 50.0;
     private static final Long MUTAGENESIS_DONOR_ID1 = 1L;
-    private static final String MUTAGENESIS_DONOR_VECTOR_NAME = "Vector Name 1";
-    private static final Double MUTAGENESIS_DONOR_CONCENTRATION = 30.0;
-    private static final String MUTAGENESIS_DONOR_PREPARATION = "Preparation 1";
-    private static final String MUTAGENESIS_DONOR_OLIGO_SEQUENCE_FA = "Oligosequence FA 1";
+    private static final String MUTAGENESIS_DONOR_VECTOR_NAME = "Vector Name";
+    private static final Double MUTAGENESIS_DONOR_CONCENTRATION_1 = 30.0;
+    private static final Double MUTAGENESIS_DONOR_CONCENTRATION_2 = 40.0;
+    private static final String MUTAGENESIS_DONOR_PREPARATION = "Preparation";
+    private static final String MUTAGENESIS_DONOR_OLIGO_SEQUENCE_FA = "Oligosequence FA";
     private static final Long MUTAGENESIS_DONOR_ID2 = 2L;
     private static final Long REAGENT_ID_1 = 1L;
     private static final Long REAGENT_ID_2 = 2L;
@@ -120,6 +121,9 @@ public class CrisprAttemptMapperTest
 
     @MockBean @Autowired
     CrisprAttempService crisprAttempService;
+
+    @MockBean @Autowired
+    PreparationTypeRepository preparationTypeRepository;
 
     @Test
     public void testToDto()
@@ -396,7 +400,17 @@ public class CrisprAttemptMapperTest
     {
         DeliveryMethodType deliveryMethodType = new DeliveryMethodType();
         deliveryMethodType.setName(DELIVERY_METHOD_TYPE_NAME);
+        PreparationType preparationType1 = new PreparationType();
+        preparationType1.setName(MUTAGENESIS_DONOR_PREPARATION + MUTAGENESIS_DONOR_ID1);
+        PreparationType preparationType2 = new PreparationType();
+        preparationType1.setName(MUTAGENESIS_DONOR_PREPARATION + MUTAGENESIS_DONOR_ID2);
         when(crisprAttempService.getDeliveryTypeByName("deliveryMethodTypeName")).thenReturn(deliveryMethodType);
+        when(preparationTypeRepository.findFirstByName(
+            MUTAGENESIS_DONOR_PREPARATION + MUTAGENESIS_DONOR_ID1))
+            .thenReturn(preparationType1);
+        when(preparationTypeRepository.findFirstByName(
+            MUTAGENESIS_DONOR_PREPARATION + MUTAGENESIS_DONOR_ID2))
+            .thenReturn(preparationType2);
 
         CrisprAttemptDTO crisprAttemptDTO = buildCrisprAttemptDto();
         addNucleaseDTOs(crisprAttemptDTO);
@@ -566,17 +580,19 @@ public class CrisprAttemptMapperTest
     private void addMutagenesisDonorDTOs(CrisprAttemptDTO crisprAttemptDTO)
     {
         List<MutagenesisDonorDTO> mutagenesisDonorDTOS = new ArrayList<>();
-        mutagenesisDonorDTOS.add(buildMutagenesisDonorDTO(MUTAGENESIS_DONOR_ID1));
-        mutagenesisDonorDTOS.add(buildMutagenesisDonorDTO(MUTAGENESIS_DONOR_ID2));
+        mutagenesisDonorDTOS.add(
+            buildMutagenesisDonorDTO(MUTAGENESIS_DONOR_ID1, MUTAGENESIS_DONOR_CONCENTRATION_1));
+        mutagenesisDonorDTOS.add(
+            buildMutagenesisDonorDTO(MUTAGENESIS_DONOR_ID2, MUTAGENESIS_DONOR_CONCENTRATION_1));
         crisprAttemptDTO.setMutagenesisDonorDTOS(mutagenesisDonorDTOS);
     }
 
-    private MutagenesisDonorDTO buildMutagenesisDonorDTO(Long id)
+    private MutagenesisDonorDTO buildMutagenesisDonorDTO(Long id, Double concentration)
     {
         MutagenesisDonorDTO mutagenesisDonorDTO = new MutagenesisDonorDTO();
         mutagenesisDonorDTO.setId(id);
-        mutagenesisDonorDTO.setConcentration(MUTAGENESIS_DONOR_CONCENTRATION + id);
-        mutagenesisDonorDTO.setPreparationTypeName(MUTAGENESIS_DONOR_PREPARATION  + id);
+        mutagenesisDonorDTO.setConcentration(concentration);
+        mutagenesisDonorDTO.setPreparationTypeName(MUTAGENESIS_DONOR_PREPARATION + id);
         mutagenesisDonorDTO.setVectorName(MUTAGENESIS_DONOR_VECTOR_NAME  + id);
         mutagenesisDonorDTO.setOligoSequenceFasta(MUTAGENESIS_DONOR_OLIGO_SEQUENCE_FA  + id);
         return mutagenesisDonorDTO;

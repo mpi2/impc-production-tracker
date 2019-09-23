@@ -1,7 +1,10 @@
 package uk.ac.ebi.impc_prod_tracker.web.mapping.plan.attempt.crispr_attempt;
 
 import org.springframework.stereotype.Component;
+import uk.ac.ebi.impc_prod_tracker.conf.error_management.OperationFailedException;
 import uk.ac.ebi.impc_prod_tracker.data.biology.crispr_attempt.mutagenesis_donor.MutagenesisDonor;
+import uk.ac.ebi.impc_prod_tracker.data.biology.crispr_attempt.mutagenesis_donor.preparation_type.PreparationType;
+import uk.ac.ebi.impc_prod_tracker.data.biology.crispr_attempt.mutagenesis_donor.preparation_type.PreparationTypeRepository;
 import uk.ac.ebi.impc_prod_tracker.web.dto.plan.production.crispr_attempt.MutagenesisDonorDTO;
 import uk.ac.ebi.impc_prod_tracker.web.mapping.EntityMapper;
 import java.util.Collection;
@@ -13,10 +16,16 @@ import java.util.Set;
 public class MutagenesisDonorMapper
 {
     private EntityMapper entityMapper;
+    private PreparationTypeRepository preparationTypeRepository;
 
-    public MutagenesisDonorMapper(EntityMapper entityMapper)
+    private static final String PREPARATION_TYPE_NOT_FOUND = "Preparation Type [%s]" +
+        " does not exist. Please correct the name or create first the preparation type.";
+
+    public MutagenesisDonorMapper(
+        EntityMapper entityMapper, PreparationTypeRepository preparationTypeRepository)
     {
         this.entityMapper = entityMapper;
+        this.preparationTypeRepository = preparationTypeRepository;
     }
 
     public MutagenesisDonorDTO toDto(MutagenesisDonor mutagenesisDonor)
@@ -31,11 +40,43 @@ public class MutagenesisDonorMapper
 
     public MutagenesisDonor toEntity(MutagenesisDonorDTO mutagenesisDonorDTO)
     {
-        return entityMapper.toTarget(mutagenesisDonorDTO, MutagenesisDonor.class);
+        MutagenesisDonor mutagenesisDonor =
+            entityMapper.toTarget(mutagenesisDonorDTO, MutagenesisDonor.class);
+        setPreparationTypeToEntity(mutagenesisDonor, mutagenesisDonorDTO);
+        removeInvalidId(mutagenesisDonor);
+        return mutagenesisDonor;
     }
 
     public Set<MutagenesisDonor> toEntities(Collection<MutagenesisDonorDTO> mutagenesisDonorDTOs)
     {
-        return new HashSet<>(entityMapper.toTargets(mutagenesisDonorDTOs, MutagenesisDonor.class));
+        Set<MutagenesisDonor> mutagenesisDonors = new HashSet<>();
+        mutagenesisDonorDTOs.forEach(x -> mutagenesisDonors.add(toEntity(x)));
+        return mutagenesisDonors;
+    }
+
+    private void setPreparationTypeToEntity(
+        MutagenesisDonor mutagenesisDonor, MutagenesisDonorDTO mutagenesisDonorDTO)
+    {
+        String preparationTypeName = mutagenesisDonorDTO.getPreparationTypeName();
+        if (preparationTypeName != null)
+        {
+            PreparationType preparationType =
+                preparationTypeRepository.findFirstByName(preparationTypeName);
+            if (preparationType == null)
+            {
+                String errorMessage =
+                    String.format(PREPARATION_TYPE_NOT_FOUND, preparationTypeName);
+                throw new OperationFailedException(errorMessage);
+            }
+            mutagenesisDonor.setPreparationType(preparationType);
+        }
+    }
+
+    private void removeInvalidId(MutagenesisDonor mutagenesisDonor)
+    {
+        if (mutagenesisDonor.getId() < 0)
+        {
+            mutagenesisDonor.setId(null);
+        }
     }
 }

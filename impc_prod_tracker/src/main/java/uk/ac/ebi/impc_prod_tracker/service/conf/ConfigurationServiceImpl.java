@@ -4,6 +4,7 @@ import org.springframework.stereotype.Component;
 import uk.ac.ebi.impc_prod_tracker.conf.security.SystemSubject;
 import uk.ac.ebi.impc_prod_tracker.conf.security.abac.spring.SubjectRetriever;
 import uk.ac.ebi.impc_prod_tracker.data.biology.allele_type.AlleleTypeRepository;
+import uk.ac.ebi.impc_prod_tracker.data.biology.crispr_attempt.mutagenesis_donor.preparation_type.PreparationTypeRepository;
 import uk.ac.ebi.impc_prod_tracker.data.biology.phenotyping_attempt.material_deposited_type.MaterialDepositedTypeRepository;
 import uk.ac.ebi.impc_prod_tracker.data.biology.plan.type.PlanTypeRepository;
 import uk.ac.ebi.impc_prod_tracker.data.biology.privacy.PrivacyRepository;
@@ -32,23 +33,25 @@ public class ConfigurationServiceImpl implements ConfigurationService
     private InstituteRepository instituteRepository;
     private RoleRepository roleRepository;
     private StrainRepository strainRepository;
+    private PreparationTypeRepository preparationTypeRepository;
 
     private MaterialDepositedTypeRepository materialDepositedTypeRepository;
 
     private Map<String, List<String>> conf = new HashMap<>();
 
     public ConfigurationServiceImpl(
-            SubjectRetriever subjectRetriever,
-            WorkUnitRepository workUnitRepository,
-            WorkGroupRepository workGroupRepository,
-            PlanTypeRepository planTypeRepository,
-            PrivacyRepository privacyRepository,
-            StatusRepository statusRepository,
-            AlleleTypeRepository alleleTypeRepository,
-            InstituteRepository instituteRepository,
-            RoleRepository roleRepository,
-            StrainRepository strainRepository,
-            MaterialDepositedTypeRepository materialDepositedTypeRepository
+        SubjectRetriever subjectRetriever,
+        WorkUnitRepository workUnitRepository,
+        WorkGroupRepository workGroupRepository,
+        PlanTypeRepository planTypeRepository,
+        PrivacyRepository privacyRepository,
+        StatusRepository statusRepository,
+        AlleleTypeRepository alleleTypeRepository,
+        InstituteRepository instituteRepository,
+        RoleRepository roleRepository,
+        StrainRepository strainRepository,
+        PreparationTypeRepository preparationTypeRepository,
+        MaterialDepositedTypeRepository materialDepositedTypeRepository
     )
     {
         this.subjectRetriever = subjectRetriever;
@@ -61,6 +64,7 @@ public class ConfigurationServiceImpl implements ConfigurationService
         this.instituteRepository = instituteRepository;
         this.roleRepository = roleRepository;
         this.strainRepository = strainRepository;
+        this.preparationTypeRepository = preparationTypeRepository;
         this.materialDepositedTypeRepository = materialDepositedTypeRepository;
     }
 
@@ -82,6 +86,7 @@ public class ConfigurationServiceImpl implements ConfigurationService
                 addRoles();
                 addStrains();
                 addMaterialTypes();
+                addPreparationTypes();
             }
         }
 
@@ -156,5 +161,12 @@ public class ConfigurationServiceImpl implements ConfigurationService
         List<String> materialTypes = new ArrayList<>();
         materialDepositedTypeRepository.findAll().forEach(p -> materialTypes.add(p.getName()));
         conf.put("materialTypes", materialTypes);
+    }
+
+    private void addPreparationTypes()
+    {
+        List<String> preparationTypes = new ArrayList<>();
+        preparationTypeRepository.findAll().forEach(p -> preparationTypes.add(p.getName()));
+        conf.put("preparationTypes", preparationTypes);
     }
 }
