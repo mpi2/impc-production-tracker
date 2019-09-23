@@ -107,16 +107,16 @@ public class CrisprAttempt extends BaseEntity
 
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
-    @OneToMany(mappedBy = "crisprAttempt")
+    @OneToMany(cascade=CascadeType.ALL, mappedBy = "crisprAttempt", orphanRemoval=true)
     private Set<CrisprAttemptReagent> crisprAttemptReagents;
 
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
-    @OneToMany(mappedBy = "crisprAttempt")
+    @OneToMany(cascade=CascadeType.ALL, mappedBy = "crisprAttempt", orphanRemoval=true)
     private Set<Nuclease> nucleases;
 
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
-    @OneToMany(mappedBy = "crisprAttempt")
+    @OneToMany(cascade=CascadeType.ALL, mappedBy = "crisprAttempt", orphanRemoval=true)
     private Set<MutagenesisDonor> mutagenesisDonors;
 }

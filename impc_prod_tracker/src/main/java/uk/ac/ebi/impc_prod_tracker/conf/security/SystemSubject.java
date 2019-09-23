@@ -18,6 +18,7 @@ package uk.ac.ebi.impc_prod_tracker.conf.security;
 import uk.ac.ebi.impc_prod_tracker.data.organization.consortium.Consortium;
 import uk.ac.ebi.impc_prod_tracker.data.organization.person_role_consortium.PersonRoleConsortium;
 import uk.ac.ebi.impc_prod_tracker.data.organization.person_role_work_unit.PersonRoleWorkUnit;
+import uk.ac.ebi.impc_prod_tracker.data.organization.role.Role;
 import uk.ac.ebi.impc_prod_tracker.data.organization.work_unit.WorkUnit;
 
 import java.util.Collection;
@@ -48,4 +49,6 @@ public interface SystemSubject
     List<WorkUnit> getRelatedWorkUnits();
 
     boolean belongsToAnyWorkUnit(Collection<WorkUnit> workUnits);
+
+    List<Role> getRelatedRoles();
 }
