@@ -1,8 +1,6 @@
 package uk.ac.ebi.impc_prod_tracker.service.conf;
 
 import org.springframework.stereotype.Component;
-import uk.ac.ebi.impc_prod_tracker.conf.security.SystemSubject;
-import uk.ac.ebi.impc_prod_tracker.conf.security.abac.spring.SubjectRetriever;
 import uk.ac.ebi.impc_prod_tracker.data.biology.allele_type.AlleleTypeRepository;
 import uk.ac.ebi.impc_prod_tracker.data.biology.crispr_attempt.mutagenesis_donor.preparation_type.PreparationTypeRepository;
 import uk.ac.ebi.impc_prod_tracker.data.biology.phenotyping_attempt.material_deposited_type.MaterialDepositedTypeRepository;
@@ -14,7 +12,6 @@ import uk.ac.ebi.impc_prod_tracker.data.organization.institute.InstituteReposito
 import uk.ac.ebi.impc_prod_tracker.data.organization.role.RoleRepository;
 import uk.ac.ebi.impc_prod_tracker.data.organization.work_group.WorkGroupRepository;
 import uk.ac.ebi.impc_prod_tracker.data.organization.work_unit.WorkUnitRepository;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -23,7 +20,6 @@ import java.util.Map;
 @Component
 public class ConfigurationServiceImpl implements ConfigurationService
 {
-    private SubjectRetriever subjectRetriever;
     private WorkUnitRepository workUnitRepository;
     private WorkGroupRepository workGroupRepository;
     private PlanTypeRepository planTypeRepository;
@@ -34,13 +30,11 @@ public class ConfigurationServiceImpl implements ConfigurationService
     private RoleRepository roleRepository;
     private StrainRepository strainRepository;
     private PreparationTypeRepository preparationTypeRepository;
-
     private MaterialDepositedTypeRepository materialDepositedTypeRepository;
 
     private Map<String, List<String>> conf = new HashMap<>();
 
     public ConfigurationServiceImpl(
-        SubjectRetriever subjectRetriever,
         WorkUnitRepository workUnitRepository,
         WorkGroupRepository workGroupRepository,
         PlanTypeRepository planTypeRepository,
@@ -54,7 +48,6 @@ public class ConfigurationServiceImpl implements ConfigurationService
         MaterialDepositedTypeRepository materialDepositedTypeRepository
     )
     {
-        this.subjectRetriever = subjectRetriever;
         this.workUnitRepository = workUnitRepository;
         this.workGroupRepository = workGroupRepository;
         this.planTypeRepository = planTypeRepository;
@@ -73,21 +66,17 @@ public class ConfigurationServiceImpl implements ConfigurationService
     {
         if (conf.isEmpty())
         {
-            SystemSubject systemSubject = subjectRetriever.getSubject();
-            if (systemSubject != null)
-            {
-                addWorkUnits();
-                addWorkGroups();
-                addPlanTypes();
-                addPrivacies();
-                addStatuses();
-                addAlleleTypes();
-                addInstitutes();
-                addRoles();
-                addStrains();
-                addMaterialTypes();
-                addPreparationTypes();
-            }
+            addWorkUnits();
+            addWorkGroups();
+            addPlanTypes();
+            addPrivacies();
+            addStatuses();
+            addAlleleTypes();
+            addInstitutes();
+            addRoles();
+            addStrains();
+            addMaterialTypes();
+            addPreparationTypes();
         }
 
         return conf;

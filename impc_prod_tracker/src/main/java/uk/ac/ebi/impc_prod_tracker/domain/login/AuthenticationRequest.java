@@ -15,7 +15,6 @@
  *******************************************************************************/
 package uk.ac.ebi.impc_prod_tracker.domain.login;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -32,7 +31,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class AuthenticationRequest
 {
-    @JsonProperty("user_name")
     private String userName;
 
     private String password;

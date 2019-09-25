@@ -13,18 +13,12 @@ public class LocationDTO
     private Long start;
     private Long stop;
     private String strand;
-
-
-    @JsonProperty("genome_build")
     private String genomeBuild;
 
-    @JsonProperty("strain_attributes")
+    @JsonProperty("strainAttributes")
     private StrainDTO strainAttributes;
 
-    @JsonProperty("species_name")
     private String speciesName;
-
-    @JsonProperty("species_taxon_id")
     private Integer speciesTaxonId;
 
 

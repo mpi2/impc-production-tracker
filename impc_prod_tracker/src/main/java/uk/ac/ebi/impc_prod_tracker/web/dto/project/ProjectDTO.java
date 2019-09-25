@@ -27,7 +27,6 @@ import uk.ac.ebi.impc_prod_tracker.web.dto.gene.ProjectGeneDTO;
 import uk.ac.ebi.impc_prod_tracker.web.dto.location.ProjectLocationDTO;
 import uk.ac.ebi.impc_prod_tracker.web.dto.species.SpeciesDTO;
 import uk.ac.ebi.impc_prod_tracker.web.dto.status_stamps.StatusStampsDTO;
-
 import java.util.List;
 
 @Data
@@ -39,24 +38,21 @@ public class ProjectDTO extends RepresentationModel
     private String tpn;
 
     @NonNull
-    @JsonProperty("assigment_status_name")
     private String assigmentStatusName;
 
-    @JsonProperty("assignment_status_stamps")
+    @JsonProperty("assignmentStatusStamps")
     private List<StatusStampsDTO> statusStampsDTOS;
 
-    @JsonProperty("external_reference")
     private String externalReference;
-
     private Boolean withdrawn;
     private Boolean recovery;
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    @JsonProperty("intention_by_gene_attributes")
+    @JsonProperty("intentionByGeneAttributes")
     private List<ProjectGeneDTO> projectGeneDTOS;
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    @JsonProperty("intention_by_location_attributes")
+    @JsonProperty("intentionByLocationAttributes")
     private List<ProjectLocationDTO> projectLocationDTOS;
 
     @JsonIgnore
@@ -64,19 +60,19 @@ public class ProjectDTO extends RepresentationModel
 
     private String comment;
 
-    @JsonProperty("is_active")
+    @JsonProperty("isActive")
     private Boolean isActive;
 
-    @JsonProperty("privacy_name")
+    @JsonProperty("privacyName")
     private String privacyName;
 
-    @JsonProperty("species_attributes")
+    @JsonProperty("speciesAttributes")
     private List<SpeciesDTO> projectSpeciesDTOs;
 
-    @JsonProperty("consortia_names")
+    @JsonProperty("consortiaNames")
     private List<String> consortiaNames;
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    @JsonProperty("is_object_restricted")
+    @JsonProperty("isObjectRestricted")
     private Boolean isObjectRestricted;
 }

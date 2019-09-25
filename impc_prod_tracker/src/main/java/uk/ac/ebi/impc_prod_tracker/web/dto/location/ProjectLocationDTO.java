@@ -8,15 +8,12 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class ProjectLocationDTO
 {
-    @JsonProperty("location_attributes")
+    @JsonProperty("locationAttributes")
     private LocationDTO locationDTO;
 
-    @JsonProperty("allele_type_name")
+    @JsonProperty("alleleTypeName")
     private String alleleTypeName;
 
-    @JsonProperty("molecular_mutation_type_name")
     private String molecularMutationTypeName;
-
-    @JsonProperty("chr_feature_type_name")
     private String chrFeatureTypeName;
 }

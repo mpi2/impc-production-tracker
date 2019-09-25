@@ -70,7 +70,7 @@ class ProjectController
     public ResponseEntity findAll(
         Pageable pageable,
         PagedResourcesAssembler assembler,
-        @RequestParam(value = "work_unit_name", required = false) List<String> workUnitNames,
+        @RequestParam(value = "workUnitName", required = false) List<String> workUnitNames,
         @RequestParam(value = "consortium", required = false) List<String> consortia,
         @RequestParam(value = "status", required = false) List<String> statuses,
         @RequestParam(value = "privacy", required = false) List<String> privacies)

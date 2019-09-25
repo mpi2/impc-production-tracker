@@ -27,6 +27,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
 import uk.ac.ebi.impc_prod_tracker.conf.error_management.OperationFailedException;
 import uk.ac.ebi.impc_prod_tracker.conf.security.AapSystemSubject;
+import uk.ac.ebi.impc_prod_tracker.conf.security.AuthorizationHeaderReader;
 import uk.ac.ebi.impc_prod_tracker.conf.security.PublicKeyProvider;
 import uk.ac.ebi.impc_prod_tracker.conf.security.SystemSubject;
 import javax.servlet.http.HttpServletRequest;
@@ -41,8 +42,6 @@ import java.util.Date;
 @Component
 public class JwtTokenProvider
 {
-    private static final String AUTHORIZATION_HEADER = "Authorization";
-    private static final String AUTHORIZATION_SCHEMA_NAME = "Bearer ";
     static final String INVALID_TOKEN_MESSAGE = "Expired or invalid JWT token.";
     private static final String INVALID_TOKEN_DEBUG_MESSAGE =
         "Tokens expire after a while (usually 1 hour), please create a new one. Also check that you"
@@ -53,7 +52,10 @@ public class JwtTokenProvider
     private PublicKeyProvider publicKeyProvider;
     private AapSystemSubject aapSystemSubject;
 
-    public JwtTokenProvider(PublicKeyProvider publicKeyProvider, AapSystemSubject aapSystemSubject)
+    private AuthorizationHeaderReader authorizationHeaderReader = new AuthorizationHeaderReader();
+
+    public JwtTokenProvider(
+        PublicKeyProvider publicKeyProvider, AapSystemSubject aapSystemSubject)
     {
         this.publicKeyProvider = publicKeyProvider;
         this.aapSystemSubject = aapSystemSubject;
@@ -89,12 +91,7 @@ public class JwtTokenProvider
      */
     String resolveToken(HttpServletRequest req)
     {
-        String bearerToken = req.getHeader(AUTHORIZATION_HEADER);
-        if (bearerToken != null && bearerToken.startsWith(AUTHORIZATION_SCHEMA_NAME))
-        {
-            return bearerToken.substring(AUTHORIZATION_SCHEMA_NAME.length());
-        }
-        return null;
+        return authorizationHeaderReader.getAuthorizationToken(req);
     }
 
     /**

@@ -12,6 +12,6 @@ public class StrainDTO
 
     private String name;
 
-    @JsonProperty("mgi_strain_acc_id")
+    @JsonProperty("mgiStrainAccId")
     private String mgiStrainAccId;
 }
