@@ -18,15 +18,15 @@ package uk.ac.ebi.impc_prod_tracker.web.controller.auth;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import uk.ac.ebi.impc_prod_tracker.conf.error_management.OperationFailedException;
+import uk.ac.ebi.impc_prod_tracker.conf.security.AuthorizationHeaderReader;
 import uk.ac.ebi.impc_prod_tracker.conf.security.SystemSubject;
 import uk.ac.ebi.impc_prod_tracker.data.organization.person.Person;
-import uk.ac.ebi.impc_prod_tracker.data.organization.person_role_consortium.PersonRoleConsortium;
-import uk.ac.ebi.impc_prod_tracker.data.organization.person_role_work_unit.PersonRoleWorkUnit;
 import uk.ac.ebi.impc_prod_tracker.domain.login.AuthenticationRequest;
 import uk.ac.ebi.impc_prod_tracker.domain.login.UserRegisterRequest;
 import uk.ac.ebi.impc_prod_tracker.service.authentication.AuthService;
@@ -34,9 +34,9 @@ import uk.ac.ebi.impc_prod_tracker.service.PersonService;
 import uk.ac.ebi.impc_prod_tracker.web.dto.auth.AuthenticationResponseDTO;
 import uk.ac.ebi.impc_prod_tracker.web.dto.auth.PersonRoleConsortiumDTO;
 import uk.ac.ebi.impc_prod_tracker.web.dto.auth.PersonRoleWorkUnitDTO;
-
+import uk.ac.ebi.impc_prod_tracker.web.dto.auth.UserSecurityInformationDTO;
+import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 import static org.springframework.http.ResponseEntity.ok;
@@ -53,6 +53,8 @@ public class AuthController
     private static final String AUTHENTICATION_ERROR = "Invalid User/Password provided.";
     private AuthService authService;
     private PersonService personService;
+
+    private AuthorizationHeaderReader authorizationHeaderReader = new AuthorizationHeaderReader();
 
     public AuthController(AuthService authService, PersonService personService)
     {
@@ -72,10 +74,8 @@ public class AuthController
         {
             String username = authenticationRequest.getUserName();
             String token = authService.getAuthenticationToken(authenticationRequest);
-
-            SystemSubject person = personService.getPersonByToken(token);
             AuthenticationResponseDTO authenticationResponseDTO = buildAuthenticationResponseDTO(
-                username, token, person.getRoleWorkUnits(), person.getRoleConsortia());
+                username, token);
 
             return ok(authenticationResponseDTO);
         }
@@ -85,43 +85,11 @@ public class AuthController
         }
     }
 
-    private AuthenticationResponseDTO buildAuthenticationResponseDTO(
-        String userName,
-        String token,
-        Collection<PersonRoleWorkUnit> roleWorkUnits,
-        Collection<PersonRoleConsortium> roleConsortia)
+    private AuthenticationResponseDTO buildAuthenticationResponseDTO(String userName, String token)
     {
         AuthenticationResponseDTO authenticationResponseDTO = new AuthenticationResponseDTO();
         authenticationResponseDTO.setUserName(userName);
         authenticationResponseDTO.setAccessToken(token);
-
-        if (roleWorkUnits != null)
-        {
-            List<PersonRoleWorkUnitDTO> roleWorkUnitDTOS = new ArrayList<>();
-            roleWorkUnits.forEach(
-                x ->
-                {
-                    PersonRoleWorkUnitDTO personRoleWorkUnitDTO = new PersonRoleWorkUnitDTO();
-                    personRoleWorkUnitDTO.setRoleName(x.getRole().getName());
-                    personRoleWorkUnitDTO.setWorkUnitName(x.getWorkUnit().getName());
-                    roleWorkUnitDTOS.add(personRoleWorkUnitDTO);
-                });
-            authenticationResponseDTO.setRolesWorkUnits(roleWorkUnitDTOS);
-        }
-        if (roleConsortia != null)
-        {
-            List<PersonRoleConsortiumDTO> roleConsortiumDTOS = new ArrayList<>();
-            roleConsortia.forEach(
-                x ->
-                {
-                    PersonRoleConsortiumDTO personRoleConsortiumDTO = new PersonRoleConsortiumDTO();
-                    personRoleConsortiumDTO.setRoleName(x.getRole().getName());
-                    personRoleConsortiumDTO.setConsortiumName(x.getConsortium().getName());
-                    roleConsortiumDTOS.add(personRoleConsortiumDTO);
-                });
-            authenticationResponseDTO.setRolesConsortia(roleConsortiumDTOS);
-        }
-
         return authenticationResponseDTO;
     }
 
@@ -144,5 +112,48 @@ public class AuthController
         {
             throw new OperationFailedException(AUTHENTICATION_ERROR);
         }
+    }
+
+    @GetMapping(value = {"/securityInformation"})
+    public UserSecurityInformationDTO signIn(HttpServletRequest req)
+    {
+        String token = authorizationHeaderReader.getAuthorizationToken(req);
+        SystemSubject person = personService.getPersonByToken(token);
+        UserSecurityInformationDTO userSecurityInformationDTO = buildUserSecurityInformationDTO(person);
+        return userSecurityInformationDTO;
+    }
+
+    private UserSecurityInformationDTO buildUserSecurityInformationDTO(SystemSubject person)
+    {
+        UserSecurityInformationDTO userSecurityInformationDTO = new UserSecurityInformationDTO();
+        userSecurityInformationDTO.setUserName(person.getLogin());
+        if (person.getRoleWorkUnits() != null)
+        {
+            List<PersonRoleWorkUnitDTO> roleWorkUnitDTOS = new ArrayList<>();
+            person.getRoleWorkUnits().forEach(
+                x ->
+                {
+                    PersonRoleWorkUnitDTO personRoleWorkUnitDTO = new PersonRoleWorkUnitDTO();
+                    personRoleWorkUnitDTO.setRoleName(x.getRole().getName());
+                    personRoleWorkUnitDTO.setWorkUnitName(x.getWorkUnit().getName());
+                    roleWorkUnitDTOS.add(personRoleWorkUnitDTO);
+                });
+            userSecurityInformationDTO.setRolesWorkUnits(roleWorkUnitDTOS);
+        }
+        if (person.getRoleConsortia() != null)
+        {
+            List<PersonRoleConsortiumDTO> roleConsortiumDTOS = new ArrayList<>();
+            person.getRoleConsortia().forEach(
+                x ->
+                {
+                    PersonRoleConsortiumDTO personRoleConsortiumDTO = new PersonRoleConsortiumDTO();
+                    personRoleConsortiumDTO.setRoleName(x.getRole().getName());
+                    personRoleConsortiumDTO.setConsortiumName(x.getConsortium().getName());
+                    roleConsortiumDTOS.add(personRoleConsortiumDTO);
+                });
+            userSecurityInformationDTO.setRolesConsortia(roleConsortiumDTOS);
+        }
+        userSecurityInformationDTO.setAdmin(person.isAdmin());
+        return userSecurityInformationDTO;
     }
 }

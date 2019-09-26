@@ -41,44 +41,33 @@ public class PlanDTO extends RepresentationModel
     private String pin;
 
     @NonNull
-    @JsonProperty("tpn")
     private String tpn;
 
-    @JsonProperty("funder_name")
     private String funderName;
-
-    @JsonProperty("work_unit_name")
     private String workUnitName;
-
-    @JsonProperty("is_active")
     private Boolean isActive;
-
-    @JsonProperty("status_name")
     private String statusName;
 
-    @JsonProperty("status_dates")
+    @JsonProperty("statusDates")
     private List<StatusStampsDTO> statusStampsDTOS;
 
     private String comment;
-
-    @JsonProperty("products_available_for_general_public")
     private Boolean productsAvailableForGeneralPublic;
 
-    @JsonProperty("type_name")
+    @JsonProperty("typeName")
     private String planTypeName;
 
-    @JsonProperty("attempt_type_name")
     private String attemptTypeName;
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    @JsonProperty("crispr_attempt_attributes")
+    @JsonProperty("crisprAttemptAttributes")
     private CrisprAttemptDTO crisprAttemptDTO;
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    @JsonProperty("breeding_attempt_attributes")
+    @JsonProperty("breedingAttemptAttributes")
     private BreedingAttemptDTO breedingAttemptDTO;
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    @JsonProperty("phenotyping_attempt_attributes")
+    @JsonProperty("phenotypingAttemptAttributes")
     private PhenotypingAttemptDTO phenotypingAttemptDTO;
 }

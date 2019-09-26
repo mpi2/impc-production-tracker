@@ -18,66 +18,58 @@ public class CrisprAttemptDTO
     @JsonIgnore
     private Long imitsMiAttemptId;
 
-    @JsonProperty("mi_date")
     private LocalDate miDate;
 
-    @JsonProperty("attempt_external_ref")
+    @JsonProperty("attemptExternalRef")
     private String miExternalRef;
 
     private Boolean experimental;
 
     private String comment;
-
-    @JsonProperty("mutagenesis_external_ref")
     private String mutagenesisExternalRef;
-
-    @JsonProperty("delivery_type_method_name")
     private String deliveryTypeMethodName;
-
     private Double voltage;
 
-    @JsonProperty("number_of_pulses")
+    @JsonProperty("numberOfPulses")
     private Integer noOfPulses;
 
-    @JsonProperty("nucleases_attributes")
+    @JsonProperty("nucleasesAttributes")
     private List<NucleaseDTO> nucleaseDTOS;
 
-    @JsonProperty("guides_attributes")
+    @JsonProperty("guidesAttributes")
     private List<GuideDTO> guideDTOS;
 
-    @JsonProperty("mutagenesis_donors_attributes")
+    @JsonProperty("mutagenesisDonorsAttributes")
     private List<MutagenesisDonorDTO> mutagenesisDonorDTOS;
 
-    @JsonProperty("reagents_attributes")
+    @JsonProperty("reagentsAttributes")
     private List<ReagentDTO> reagentDTOS;
 
-    @JsonProperty("genotype_primers_attributes")
+    @JsonProperty("genotypePrimersAttributes")
     private List<GenotypePrimerDTO> genotypePrimerDTOS;
 
-    @JsonProperty("total_embryos_injected")
+    @JsonProperty("totalEmbryosInjected")
     private Integer totalEmbryosInjected;
 
-    @JsonProperty("total_embryos_survived")
+    @JsonProperty("totalEmbryosSurvived")
     private Integer totalEmbryosSurvived;
 
-    @JsonProperty("embryo_transfer_day")
+    @JsonProperty("embryoTransferDay")
     private String embryoTransferDay;
 
-    @JsonProperty("embryo_2_cell")
+    @JsonProperty("embryo2Cell")
     private String embryo2Cell;
 
-    @JsonProperty("total_transferred")
+    @JsonProperty("totalTransferred")
     private Integer totalTransferred;
 
-    @JsonProperty("num_founder_pups")
     private Integer numFounderPups;
 
-    @JsonProperty("assay_attributes")
+    @JsonProperty("assayAttributes")
     private AssayDTO assay;
 
-    @JsonProperty("num_founders_selected_for_breeding")
     private Integer numFounderSelectedForBreeding;
 
-    @JsonProperty("strain_injected_attributes")
+    @JsonProperty("strainInjectedAttributes")
     private StrainDTO strain;
 }

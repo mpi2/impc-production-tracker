@@ -16,7 +16,6 @@
 package uk.ac.ebi.impc_prod_tracker.web.dto.plan.production.crispr_attempt;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -28,14 +27,9 @@ public class GenotypePrimerDTO
 {
     private Long id;
     @JsonIgnore
-    private Long crispr_attempt_plan_id;
-
-    @JsonProperty("genomic_start_coordinate")
+    private Long attempt_id;
     private Integer genomicStartCoordinate;
-
-    @JsonProperty("genomic_end_coordinate")
     private Integer genomicEndCoordinate;
-
     private String name;
     private String sequence;
 }
