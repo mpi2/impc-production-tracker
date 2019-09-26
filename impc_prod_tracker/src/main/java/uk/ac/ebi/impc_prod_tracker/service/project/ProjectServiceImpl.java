@@ -78,16 +78,16 @@ public class ProjectServiceImpl implements ProjectService
           Specification<Project> specifications =
               buildSpecificationsWithCriteria(
                   workUnitNames, consortiaNames, statusesNames, privaciesNames);
-        Page<Project> projects = projectRepository.findAll(specifications, pageable);
+        List<Project> projects = projectRepository.findAll(specifications);
         return getAccessCheckedPage(projects, pageable);
     }
 
-    private Page<Project> getAccessCheckedPage(Page<Project> projects, Pageable pageable)
+    private Page<Project> getAccessCheckedPage(List<Project> projects, Pageable pageable)
     {
-        List<Project> filteredProjectList = getCheckedCollection(projects.getContent());
-        int numberElementsFilteredOut = projects.getContent().size() - filteredProjectList.size();
+
+        List<Project> filteredProjectList = getCheckedCollection(projects);
         return new PageImpl<>(
-            filteredProjectList, pageable, projects.getTotalElements() - numberElementsFilteredOut);
+            filteredProjectList, pageable, filteredProjectList.size());
     }
 
     private Project getAccessChecked(Project project)

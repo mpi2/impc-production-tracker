@@ -82,7 +82,7 @@ public class RootConfiguration extends WebSecurityConfigurerAdapter
             .authorizeRequests()
             .antMatchers("/auth/signin").permitAll()
             .antMatchers("/api/conf").permitAll()
-            .antMatchers("/api/plans").permitAll()
+            .antMatchers("/api/plans/**").permitAll()
             .antMatchers("/api/projects/**").permitAll()
                 .antMatchers("/reports/**").permitAll()
                 .anyRequest().authenticated()
