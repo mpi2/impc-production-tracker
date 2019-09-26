@@ -2,6 +2,7 @@ package uk.ac.ebi.impc_prod_tracker.service.conf;
 
 import org.springframework.stereotype.Component;
 import uk.ac.ebi.impc_prod_tracker.data.biology.allele_type.AlleleTypeRepository;
+import uk.ac.ebi.impc_prod_tracker.data.biology.assignment_status.AssignmentStatusRepository;
 import uk.ac.ebi.impc_prod_tracker.data.biology.crispr_attempt.mutagenesis_donor.preparation_type.PreparationTypeRepository;
 import uk.ac.ebi.impc_prod_tracker.data.biology.phenotyping_attempt.material_deposited_type.MaterialDepositedTypeRepository;
 import uk.ac.ebi.impc_prod_tracker.data.biology.plan.type.PlanTypeRepository;
@@ -24,6 +25,7 @@ public class ConfigurationServiceImpl implements ConfigurationService
     private PlanTypeRepository planTypeRepository;
     private PrivacyRepository privacyRepository;
     private StatusRepository statusRepository;
+    private AssignmentStatusRepository assignmentStatusRepository;
     private AlleleTypeRepository alleleTypeRepository;
     private InstituteRepository instituteRepository;
     private StrainRepository strainRepository;
@@ -38,6 +40,7 @@ public class ConfigurationServiceImpl implements ConfigurationService
         PlanTypeRepository planTypeRepository,
         PrivacyRepository privacyRepository,
         StatusRepository statusRepository,
+        AssignmentStatusRepository assignmentStatusRepository,
         AlleleTypeRepository alleleTypeRepository,
         InstituteRepository instituteRepository,
         StrainRepository strainRepository,
@@ -50,6 +53,7 @@ public class ConfigurationServiceImpl implements ConfigurationService
         this.planTypeRepository = planTypeRepository;
         this.privacyRepository = privacyRepository;
         this.statusRepository = statusRepository;
+        this.assignmentStatusRepository = assignmentStatusRepository;
         this.alleleTypeRepository = alleleTypeRepository;
         this.instituteRepository = instituteRepository;
         this.strainRepository = strainRepository;
@@ -67,6 +71,7 @@ public class ConfigurationServiceImpl implements ConfigurationService
             addPlanTypes();
             addPrivacies();
             addStatuses();
+            addAssignmentStatuses();
             addAlleleTypes();
             addInstitutes();
             addStrains();
@@ -110,6 +115,14 @@ public class ConfigurationServiceImpl implements ConfigurationService
         List<String> statuses = new ArrayList<>();
         statusRepository.findAll().forEach(p -> statuses.add(p.getName()));
         conf.put("statuses", statuses);
+    }
+
+    private void addAssignmentStatuses()
+    {
+        List<String> assignmentStatuses = new ArrayList<>();
+        assignmentStatusRepository.findAll().forEach(p -> assignmentStatuses.add(p.getName()));
+        conf.put("assignmentStatuses", assignmentStatuses);
+
     }
 
     private void addAlleleTypes()
