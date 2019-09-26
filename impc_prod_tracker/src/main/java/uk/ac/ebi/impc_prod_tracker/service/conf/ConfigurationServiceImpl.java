@@ -9,7 +9,6 @@ import uk.ac.ebi.impc_prod_tracker.data.biology.privacy.PrivacyRepository;
 import uk.ac.ebi.impc_prod_tracker.data.biology.status.StatusRepository;
 import uk.ac.ebi.impc_prod_tracker.data.biology.strain.StrainRepository;
 import uk.ac.ebi.impc_prod_tracker.data.organization.institute.InstituteRepository;
-import uk.ac.ebi.impc_prod_tracker.data.organization.role.RoleRepository;
 import uk.ac.ebi.impc_prod_tracker.data.organization.work_group.WorkGroupRepository;
 import uk.ac.ebi.impc_prod_tracker.data.organization.work_unit.WorkUnitRepository;
 import java.util.ArrayList;
@@ -27,7 +26,6 @@ public class ConfigurationServiceImpl implements ConfigurationService
     private StatusRepository statusRepository;
     private AlleleTypeRepository alleleTypeRepository;
     private InstituteRepository instituteRepository;
-    private RoleRepository roleRepository;
     private StrainRepository strainRepository;
     private PreparationTypeRepository preparationTypeRepository;
     private MaterialDepositedTypeRepository materialDepositedTypeRepository;
@@ -42,7 +40,6 @@ public class ConfigurationServiceImpl implements ConfigurationService
         StatusRepository statusRepository,
         AlleleTypeRepository alleleTypeRepository,
         InstituteRepository instituteRepository,
-        RoleRepository roleRepository,
         StrainRepository strainRepository,
         PreparationTypeRepository preparationTypeRepository,
         MaterialDepositedTypeRepository materialDepositedTypeRepository
@@ -55,7 +52,6 @@ public class ConfigurationServiceImpl implements ConfigurationService
         this.statusRepository = statusRepository;
         this.alleleTypeRepository = alleleTypeRepository;
         this.instituteRepository = instituteRepository;
-        this.roleRepository = roleRepository;
         this.strainRepository = strainRepository;
         this.preparationTypeRepository = preparationTypeRepository;
         this.materialDepositedTypeRepository = materialDepositedTypeRepository;
@@ -73,7 +69,6 @@ public class ConfigurationServiceImpl implements ConfigurationService
             addStatuses();
             addAlleleTypes();
             addInstitutes();
-            addRoles();
             addStrains();
             addMaterialTypes();
             addPreparationTypes();
@@ -129,13 +124,6 @@ public class ConfigurationServiceImpl implements ConfigurationService
         List<String> institutes = new ArrayList<>();
         instituteRepository.findAll().forEach(p -> institutes.add(p.getName()));
         conf.put("institutes", institutes);
-    }
-
-    private void addRoles()
-    {
-        List<String> roles = new ArrayList<>();
-        roleRepository.findAll().forEach(p -> roles.add(p.getName()));
-        conf.put("roles", roles);
     }
 
     private void addStrains()
