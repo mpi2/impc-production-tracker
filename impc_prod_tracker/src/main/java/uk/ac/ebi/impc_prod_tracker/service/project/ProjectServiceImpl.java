@@ -15,12 +15,14 @@
  *******************************************************************************/
 package uk.ac.ebi.impc_prod_tracker.service.project;
 
+import org.springframework.beans.support.PagedListHolder;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Component;
 import uk.ac.ebi.impc_prod_tracker.common.history.HistoryService;
+import uk.ac.ebi.impc_prod_tracker.common.pagination.CustomPageImpl;
 import uk.ac.ebi.impc_prod_tracker.conf.security.abac.ResourceAccessChecker;
 import uk.ac.ebi.impc_prod_tracker.data.common.history.History;
 import uk.ac.ebi.impc_prod_tracker.web.dto.project.NewProjectRequestDTO;
@@ -86,8 +88,11 @@ public class ProjectServiceImpl implements ProjectService
     {
 
         List<Project> filteredProjectList = getCheckedCollection(projects);
-        return new PageImpl<>(
-            filteredProjectList, pageable, filteredProjectList.size());
+        PagedListHolder<Project> pagedListHolder = new PagedListHolder<>(filteredProjectList);
+        pagedListHolder.setPageSize(pageable.getPageSize());
+        pagedListHolder.setPage(pageable.getPageNumber());
+
+        return new PageImpl<>(pagedListHolder.getPageList(), pageable, filteredProjectList.size());
     }
 
     private Project getAccessChecked(Project project)
