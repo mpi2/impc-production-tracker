@@ -19,12 +19,16 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Component;
 import uk.ac.ebi.impc_prod_tracker.data.biology.assignment_status.AssignmentStatus;
 import uk.ac.ebi.impc_prod_tracker.data.biology.assignment_status.AssignmentStatus_;
+import uk.ac.ebi.impc_prod_tracker.data.biology.gene.Gene;
+import uk.ac.ebi.impc_prod_tracker.data.biology.gene.Gene_;
 import uk.ac.ebi.impc_prod_tracker.data.biology.plan.Plan;
 import uk.ac.ebi.impc_prod_tracker.data.biology.plan.Plan_;
 import uk.ac.ebi.impc_prod_tracker.data.biology.privacy.Privacy;
 import uk.ac.ebi.impc_prod_tracker.data.biology.privacy.Privacy_;
 import uk.ac.ebi.impc_prod_tracker.data.biology.project.Project;
 import uk.ac.ebi.impc_prod_tracker.data.biology.project.Project_;
+import uk.ac.ebi.impc_prod_tracker.data.biology.project_gene.ProjectGene;
+import uk.ac.ebi.impc_prod_tracker.data.biology.project_gene.ProjectGene_;
 import uk.ac.ebi.impc_prod_tracker.data.organization.consortium.Consortium;
 import uk.ac.ebi.impc_prod_tracker.data.organization.consortium.Consortium_;
 import uk.ac.ebi.impc_prod_tracker.data.organization.work_unit.WorkUnit;
@@ -49,7 +53,7 @@ public class ProjectSpecs
      * @param markerSymbols List of names of the marker symbols
      * @return The found projects. If markerSymbols is null then not filter is applied.
      */
-    public static Specification<Project> getProjectsByMarkerSymbolAndSpecie(List<String> markerSymbols)
+    public static Specification<Project> withMarkerSymbols(List<String> markerSymbols)
     {
         return (Specification<Project>) (root, query, criteriaBuilder) -> {
             if (markerSymbols == null)
@@ -60,12 +64,12 @@ public class ProjectSpecs
             List<Predicate> predicates = new ArrayList<>();
 
 
-//            SetJoin<Project, ProjectMouseGene> projectSetJoin = root.join(Project_.projectMouseGenes);
-//            Path<IntendedMouseGene> intendedMouseGenePath = projectSetJoin.get(ProjectMouseGene_.gene);
-//            Path<String> symbolName = intendedMouseGenePath.get(IntendedMouseGene_.symbol);
-//            predicates.add(symbolName.in(markerSymbols));
+              SetJoin<Project, ProjectGene> projectProjectGeneSetJoin = root.join(Project_.genes);
+              Path<Gene> genePath = projectProjectGeneSetJoin.get(ProjectGene_.gene);
+              Path<String> symbolName = genePath.get(Gene_.symbol);
+              predicates.add(symbolName.in(markerSymbols));
 
-            query.distinct(true);
+              query.distinct(true);
 
 
             return criteriaBuilder.and(predicates.toArray(new Predicate[predicates.size()]));
