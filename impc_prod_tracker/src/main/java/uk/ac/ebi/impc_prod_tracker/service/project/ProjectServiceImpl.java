@@ -24,6 +24,7 @@ import org.springframework.stereotype.Component;
 import uk.ac.ebi.impc_prod_tracker.common.history.HistoryService;
 import uk.ac.ebi.impc_prod_tracker.conf.security.abac.ResourceAccessChecker;
 import uk.ac.ebi.impc_prod_tracker.data.common.history.History;
+import uk.ac.ebi.impc_prod_tracker.web.controller.project.ProjectSearch;
 import uk.ac.ebi.impc_prod_tracker.web.dto.project.NewProjectRequestDTO;
 import uk.ac.ebi.impc_prod_tracker.data.biology.assignment_status.AssignmentStatus;
 import uk.ac.ebi.impc_prod_tracker.data.biology.project.Project;
@@ -69,16 +70,9 @@ public class ProjectServiceImpl implements ProjectService
     }
 
     @Override
-    public Page<Project> getProjects(
-        Pageable pageable,
-        List<String> workUnitNames,
-        List<String> consortiaNames,
-        List<String> statusesNames,
-        List<String> privaciesNames)
+    public Page<Project> getProjects(Pageable pageable, ProjectSearch projectSearch)
     {
-          Specification<Project> specifications =
-              buildSpecificationsWithCriteria(
-                  workUnitNames, consortiaNames, statusesNames, privaciesNames);
+        Specification<Project> specifications = buildSpecificationsWithCriteria(projectSearch);
         List<Project> projects = projectRepository.findAll(specifications);
         return getAccessCheckedPage(projects, pageable);
     }
@@ -104,18 +98,17 @@ public class ProjectServiceImpl implements ProjectService
         return projects.stream().map(this::getAccessChecked).filter(Objects::nonNull).collect(Collectors.toList());
     }
 
-    private Specification<Project> buildSpecificationsWithCriteria(
-        List<String> workUnitNames,
-        List<String> consortia,
-        List<String> statuses,
-        List<String> privacies)
+    private Specification<Project> buildSpecificationsWithCriteria(ProjectSearch projectSearch)
     {
         Specification<Project> specifications =
             Specification.where(
-                ProjectSpecs.withPlansInWorkUnitsNames(workUnitNames)
-                .and(ProjectSpecs.withConsortia(consortia))
-                .and(ProjectSpecs.withStatuses(statuses))
-                .and(ProjectSpecs.withPrivacies(privacies)));
+                ProjectSpecs.withTpns(projectSearch.getTpns())
+                .and(ProjectSpecs.withMarkerSymbols(projectSearch.getMarkerSymbols()))
+                .and(ProjectSpecs.withIntentions(projectSearch.getIntentions()))
+                .and(ProjectSpecs.withPlansInWorkUnitsNames(projectSearch.getWorkUnitNames()))
+                .and(ProjectSpecs.withConsortia(projectSearch.getConsortiaNames()))
+                .and(ProjectSpecs.withStatuses(projectSearch.getStatusesNames()))
+                .and(ProjectSpecs.withPrivacies(projectSearch.getPrivaciesNames())));
         return specifications;
     }
 

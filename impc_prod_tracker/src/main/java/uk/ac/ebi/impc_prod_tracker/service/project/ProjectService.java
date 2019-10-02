@@ -18,6 +18,7 @@ package uk.ac.ebi.impc_prod_tracker.service.project;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import uk.ac.ebi.impc_prod_tracker.data.common.history.History;
+import uk.ac.ebi.impc_prod_tracker.web.controller.project.ProjectSearch;
 import uk.ac.ebi.impc_prod_tracker.web.dto.project.NewProjectRequestDTO;
 import uk.ac.ebi.impc_prod_tracker.data.biology.project.Project;
 import java.util.List;
@@ -26,12 +27,7 @@ public interface ProjectService
 {
     Project getProjectByTpn(String tpn);
 
-    Page<Project> getProjects(
-        Pageable pageable,
-        List<String> workUnitNames,
-        List<String> consortiaNames,
-        List<String> statusesNames,
-        List<String> privaciesNames);
+    Page<Project> getProjects(Pageable pageable, ProjectSearch projectSearch);
 
     Project createProject(NewProjectRequestDTO newProjectRequestDTO);
 
