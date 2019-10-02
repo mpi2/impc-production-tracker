@@ -8,6 +8,7 @@ public class ProjectSearch
 {
     private List<String> tpns;
     private List<String> markerSymbols;
+    private List<String> intentions;
     private List<String> workUnitNames;
     private List<String> consortiaNames;
     private List<String> statusesNames;

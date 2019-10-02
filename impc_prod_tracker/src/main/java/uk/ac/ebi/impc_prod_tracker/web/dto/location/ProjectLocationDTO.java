@@ -11,9 +11,7 @@ public class ProjectLocationDTO
     @JsonProperty("locationAttributes")
     private LocationDTO locationDTO;
 
-    @JsonProperty("alleleTypeName")
     private String alleleTypeName;
-
     private String molecularMutationTypeName;
     private String chrFeatureTypeName;
 }

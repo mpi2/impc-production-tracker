@@ -17,6 +17,8 @@ package uk.ac.ebi.impc_prod_tracker.service.project;
 
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Component;
+import uk.ac.ebi.impc_prod_tracker.data.biology.allele_type.AlleleType;
+import uk.ac.ebi.impc_prod_tracker.data.biology.allele_type.AlleleType_;
 import uk.ac.ebi.impc_prod_tracker.data.biology.assignment_status.AssignmentStatus;
 import uk.ac.ebi.impc_prod_tracker.data.biology.assignment_status.AssignmentStatus_;
 import uk.ac.ebi.impc_prod_tracker.data.biology.gene.Gene;
@@ -29,11 +31,17 @@ import uk.ac.ebi.impc_prod_tracker.data.biology.project.Project;
 import uk.ac.ebi.impc_prod_tracker.data.biology.project.Project_;
 import uk.ac.ebi.impc_prod_tracker.data.biology.project_gene.ProjectGene;
 import uk.ac.ebi.impc_prod_tracker.data.biology.project_gene.ProjectGene_;
+import uk.ac.ebi.impc_prod_tracker.data.biology.project_location.ProjectLocation;
+import uk.ac.ebi.impc_prod_tracker.data.biology.project_location.ProjectLocation_;
+import uk.ac.ebi.impc_prod_tracker.data.biology.project_sequence.ProjectSequence;
+import uk.ac.ebi.impc_prod_tracker.data.biology.project_sequence.ProjectSequence_;
 import uk.ac.ebi.impc_prod_tracker.data.organization.consortium.Consortium;
 import uk.ac.ebi.impc_prod_tracker.data.organization.consortium.Consortium_;
 import uk.ac.ebi.impc_prod_tracker.data.organization.work_unit.WorkUnit;
 import uk.ac.ebi.impc_prod_tracker.data.organization.work_unit.WorkUnit_;
 
+import javax.persistence.criteria.Join;
+import javax.persistence.criteria.JoinType;
 import javax.persistence.criteria.Path;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.SetJoin;
@@ -62,22 +70,63 @@ public class ProjectSpecs
             }
 
             List<Predicate> predicates = new ArrayList<>();
+            SetJoin<Project, ProjectGene> projectProjectGeneSetJoin = root.join(Project_.genes);
+            Path<Gene> genePath = projectProjectGeneSetJoin.get(ProjectGene_.gene);
+            Path<String> symbolName = genePath.get(Gene_.symbol);
+            predicates.add(symbolName.in(markerSymbols));
 
-
-              SetJoin<Project, ProjectGene> projectProjectGeneSetJoin = root.join(Project_.genes);
-              Path<Gene> genePath = projectProjectGeneSetJoin.get(ProjectGene_.gene);
-              Path<String> symbolName = genePath.get(Gene_.symbol);
-              predicates.add(symbolName.in(markerSymbols));
-
-              query.distinct(true);
-
-
+            query.distinct(true);
             return criteriaBuilder.and(predicates.toArray(new Predicate[predicates.size()]));
         };
     }
 
+    public static Specification<Project> withIntentions(List<String> intentionNames)
+    {
+        Specification<Project> specification;
+
+        if (intentionNames == null)
+        {
+            specification = buildTrueCondition();
+        } else
+        {
+            specification = (Specification<Project>) (root, query, criteriaBuilder) -> {
+
+                SetJoin<Project, ProjectGene> projectProjectGeneSetJoin =
+                    root.join(Project_.genes, JoinType.LEFT);
+                SetJoin<Project, ProjectLocation> projectProjectLocationSetJoin =
+                    root.join(Project_.locations, JoinType.LEFT);
+                SetJoin<Project, ProjectSequence> projectProjectSequenceSetJoin =
+                    root.join(Project_.sequences, JoinType.LEFT);
+
+                Path<AlleleType> alleleTypePathByGene =
+                    projectProjectGeneSetJoin.join(ProjectGene_.alleleType, JoinType.LEFT);
+                Path<AlleleType> alleleTypePathByLocation =
+                    projectProjectLocationSetJoin.join(ProjectLocation_.alleleType, JoinType.LEFT);
+                Path<AlleleType> alleleTypePathBySequence =
+                    projectProjectSequenceSetJoin.join(ProjectSequence_.alleleType, JoinType.LEFT);
+
+                Path<String> alleleTypePathByGeneName =
+                    alleleTypePathByGene.get(AlleleType_.name);
+                Path<String> alleleTypePathByLocationName =
+                    alleleTypePathByLocation.get(AlleleType_.name);
+                Path<String> alleleTypePathBySequenceName =
+                    alleleTypePathBySequence.get(AlleleType_.name);
+
+                query.distinct(true);
+
+                return criteriaBuilder.or(
+                    alleleTypePathByGeneName.in(intentionNames),
+                    alleleTypePathByLocationName.in(intentionNames),
+                    alleleTypePathBySequenceName.in(intentionNames)
+                );
+            };
+        }
+        return specification;
+    }
+
     /**
      * Get all the projects which plans are related with the work units specified in workUnitNames
+     *
      * @param workUnitNames List of names of the Work Units
      * @return The found projects. If workUnitNames is null then not filter is applied.
      */
@@ -88,8 +137,7 @@ public class ProjectSpecs
         if (workUnitNames == null)
         {
             specification = buildTrueCondition();
-        }
-        else
+        } else
         {
             specification = (Specification<Project>) (root, query, criteriaBuilder) -> {
 
