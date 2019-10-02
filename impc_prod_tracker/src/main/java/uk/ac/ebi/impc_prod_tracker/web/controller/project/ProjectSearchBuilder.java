@@ -29,6 +29,7 @@ public class ProjectSearchBuilder
         ProjectSearch projectSearch = new ProjectSearch();
         projectSearch.setTpns(tpns);
         projectSearch.setMarkerSymbols(markerSymbols);
+        projectSearch.setWorkUnitNames(workUnitNames);
         projectSearch.setIntentions(intentions);
         projectSearch.setPrivaciesNames(privaciesNames);
         return projectSearch;
@@ -55,6 +56,12 @@ public class ProjectSearchBuilder
     ProjectSearchBuilder withPrivacies(List<String> privacies)
     {
         this.privaciesNames = privacies;
+        return this;
+    }
+
+    ProjectSearchBuilder withWorkUnitNames(List<String> workUnitNames)
+    {
+        this.workUnitNames = workUnitNames;
         return this;
     }
 }

@@ -83,6 +83,7 @@ class ProjectController
             .withMarkerSymbols(markerSymbols)
             .withIntentions(intentions)
             .withPrivacies(privaciesNames)
+            .withWorkUnitNames(workUnitNames)
             .build();
         Page<Project> projects =
             projectService.getProjects(pageable, projectSearch);
