@@ -12,13 +12,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import uk.ac.ebi.impc_prod_tracker.common.pagination.PaginationHelper;
 import uk.ac.ebi.impc_prod_tracker.conf.error_management.OperationFailedException;
-import uk.ac.ebi.impc_prod_tracker.service.project.ProjectService;
+import uk.ac.ebi.impc_prod_tracker.service.project.search.ProjectSearcherService;
 import uk.ac.ebi.impc_prod_tracker.service.project.search.Search;
 import uk.ac.ebi.impc_prod_tracker.service.project.search.SearchBuilder;
 import uk.ac.ebi.impc_prod_tracker.service.project.search.SearchReport;
 import uk.ac.ebi.impc_prod_tracker.service.project.search.SearchResult;
-import uk.ac.ebi.impc_prod_tracker.web.dto.project.ProjectDTO;
-import uk.ac.ebi.impc_prod_tracker.web.dto.project.SearchReportDTO;
+import uk.ac.ebi.impc_prod_tracker.web.dto.project.search.SearchReportDTO;
 import uk.ac.ebi.impc_prod_tracker.web.mapping.project.SearchReportMapper;
 
 import java.util.List;
@@ -28,24 +27,21 @@ import java.util.List;
 @CrossOrigin(origins = "*")
 public class ProjectSearcherController
 {
-    private ProjectService projectService;
+    private ProjectSearcherService projectSearcherService;
     private SearchReportMapper searchReportMapper;
 
     public ProjectSearcherController(
-        ProjectService projectService, SearchReportMapper searchReportMapper)
+        ProjectSearcherService projectSearcherService,
+        SearchReportMapper searchReportMapper)
     {
-        this.projectService = projectService;
+        this.projectSearcherService = projectSearcherService;
         this.searchReportMapper = searchReportMapper;
     }
 
-    /**
-     * Get all the projects in the system.
-     * @return A collection of {@link ProjectDTO} objects.
-     */
     @GetMapping
     public ResponseEntity search(
         Pageable pageable,
-        @RequestParam(value = "searchType") String searchType,
+        @RequestParam(value = "searchType", required = false) String searchType,
         @RequestParam(value = "input", required = false) List<String> inputs,
         @RequestParam(value = "tpn", required = false) List<String> tpns)
     {
@@ -55,7 +51,7 @@ public class ProjectSearcherController
                 .withSearchType(searchType)
                 .withInputs(inputs)
                 .build();
-            SearchReport searchReport = projectService.executeSearch(search);
+            SearchReport searchReport = projectSearcherService.executeSearch(search);
 
             Page<SearchResult> paginatedContent =
                 PaginationHelper.createPage(searchReport.getResults(), pageable);

@@ -15,11 +15,7 @@
  *******************************************************************************/
 package uk.ac.ebi.impc_prod_tracker.service.project.search;
 
-import uk.ac.ebi.impc_prod_tracker.data.biology.project.Project;
-
-import java.util.List;
-
-interface SearchExecutor
+public interface ProjectSearcherService
 {
-    List<Project> findProjects(String input);
+    SearchReport executeSearch(Search search);
 }
