@@ -28,13 +28,20 @@ import uk.ac.ebi.impc_prod_tracker.common.types.PlanTypes;
 import uk.ac.ebi.impc_prod_tracker.conf.error_management.OperationFailedException;
 import uk.ac.ebi.impc_prod_tracker.data.biology.project.Project;
 import uk.ac.ebi.impc_prod_tracker.service.project.ProjectService;
+import uk.ac.ebi.impc_prod_tracker.service.project.search.Search;
+import uk.ac.ebi.impc_prod_tracker.service.project.search.SearchBuilder;
 import uk.ac.ebi.impc_prod_tracker.web.controller.common.PlanLinkBuilder;
 import uk.ac.ebi.impc_prod_tracker.web.controller.util.LinkUtil;
 import uk.ac.ebi.impc_prod_tracker.web.dto.common.history.HistoryDTO;
 import uk.ac.ebi.impc_prod_tracker.web.dto.project.NewProjectRequestDTO;
 import uk.ac.ebi.impc_prod_tracker.web.dto.project.ProjectDTO;
+import uk.ac.ebi.impc_prod_tracker.service.project.search.SearchFilter;
+import uk.ac.ebi.impc_prod_tracker.service.project.search.SearchReport;
+import uk.ac.ebi.impc_prod_tracker.service.project.search.SearchResult;
 import uk.ac.ebi.impc_prod_tracker.web.mapping.common.history.HistoryMapper;
 import uk.ac.ebi.impc_prod_tracker.web.mapping.project.ProjectMapper;
+import java.time.LocalDateTime;
+import java.util.Arrays;
 import java.util.List;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
@@ -78,7 +85,7 @@ class ProjectController
         @RequestParam(value = "status", required = false) List<String> statuses,
         @RequestParam(value = "privacyName", required = false) List<String> privaciesNames)
     {
-        ProjectSearch projectSearch = ProjectSearchBuilder.getInstance()
+        ProjectFilter projectFilter = ProjectFilterBuilder.getInstance()
             .withTpns(tpns)
             .withMarkerSymbols(markerSymbols)
             .withIntentions(intentions)
@@ -86,7 +93,7 @@ class ProjectController
             .withWorkUnitNames(workUnitNames)
             .build();
         Page<Project> projects =
-            projectService.getProjects(pageable, projectSearch);
+            projectService.getProjects(pageable, projectFilter);
         Page<ProjectDTO> projectDtos = projects.map(this::getDTO);
         PagedModel pr =
             assembler.toModel(
@@ -154,5 +161,78 @@ class ProjectController
         Project project = ProjectUtilities.getNotNullProjectByTpn(tpn);
 
         return historyMapper.toDtos(projectService.getProjectHistory(project));
+    }
+
+    /**
+     * Get all the projects in the system.
+     * @return A collection of {@link ProjectDTO} objects.
+     */
+    @GetMapping(value = {"/search"})
+    public ResponseEntity search(
+        Pageable pageable,
+        PagedResourcesAssembler assembler,
+        @RequestParam(value = "searchType") String searchType,
+        @RequestParam(value = "input", required = false) List<String> inputs,
+        @RequestParam(value = "tpn", required = false) List<String> tpns)
+    {
+        try
+        {
+            Search search = SearchBuilder.getInstance()
+                .withSearchType(searchType)
+                .withInputs(inputs)
+                .build();
+            SearchReport searchReport = projectService.executeSearch(search, pageable);
+            return new ResponseEntity<>(searchReport, HttpStatus.OK);
+
+        }
+        catch (Exception e)
+        {
+            throw new OperationFailedException(e.getMessage());
+        }
+
+
+
+//        SearchReport searchReport = new SearchReport();
+//        searchReport.setDate(LocalDateTime.now());
+//        searchReport.setSpeciesName("mouse");
+//        SearchFilter searchFilter = new SearchFilter();
+//        searchFilter.setField("workUnitName");
+//        searchFilter.setValues(Arrays.asList("wu1"));
+//       // searchReport.setFilters(Arrays.asList(searchFilter));
+//
+//        SearchResult searchResult = new SearchResult();
+//       // searchReport.setSearchType("Gene");
+//        searchReport.setInputs(Arrays.asList("gene1", "gene2"));
+//        searchResult.setInput("gene1");
+//
+//        ProjectDTO projectDTO = new ProjectDTO();
+//        searchResult.setProjects(Arrays.asList(projectDTO) );
+//
+//        SearchResult searchResultEmpty = new SearchResult();
+//        searchResultEmpty.setInput("gene2");
+//
+//        ProjectFilter projectFilter = ProjectFilterBuilder.getInstance()
+//            .withIntentions(Arrays.asList("null"))
+//            .build();
+//        Page<Project> projects =
+//            projectService.getProjects(pageable, projectFilter);
+//        Page<ProjectDTO> projectDtos = projects.map(this::getDTO);
+//        searchReport.setTestPages(projectDtos.getContent());
+//        searchReport.setResults(Arrays.asList(searchResult, searchResultEmpty));
+//        searchReport.setP(pageable);
+//
+//
+//
+//        PagedModel pr =
+//            assembler.toModel(
+//                projectDtos,
+//                linkTo(ProjectController.class).withSelfRel());
+//        searchReport.setPm(pr);
+//
+//
+//        HttpHeaders responseHeaders = new HttpHeaders();
+//        responseHeaders.add("Link", LinkUtil.createLinkHeader(pr));
+//
+//        return new ResponseEntity<>(searchReport, responseHeaders, HttpStatus.OK);
     }
 }
