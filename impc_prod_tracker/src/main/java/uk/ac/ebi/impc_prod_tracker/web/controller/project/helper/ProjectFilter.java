@@ -1,10 +1,10 @@
-package uk.ac.ebi.impc_prod_tracker.web.controller.project;
+package uk.ac.ebi.impc_prod_tracker.web.controller.project.helper;
 
 import lombok.Data;
 import java.util.List;
 
 @Data
-public class ProjectSearch
+public class ProjectFilter
 {
     private List<String> tpns;
     private List<String> markerSymbols;

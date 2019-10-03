@@ -24,7 +24,10 @@ import org.springframework.stereotype.Component;
 import uk.ac.ebi.impc_prod_tracker.common.history.HistoryService;
 import uk.ac.ebi.impc_prod_tracker.conf.security.abac.ResourceAccessChecker;
 import uk.ac.ebi.impc_prod_tracker.data.common.history.History;
-import uk.ac.ebi.impc_prod_tracker.web.controller.project.ProjectSearch;
+import uk.ac.ebi.impc_prod_tracker.service.project.search.Search;
+import uk.ac.ebi.impc_prod_tracker.service.project.search.SearchReport;
+import uk.ac.ebi.impc_prod_tracker.service.project.search.Searcher;
+import uk.ac.ebi.impc_prod_tracker.web.controller.project.helper.ProjectFilter;
 import uk.ac.ebi.impc_prod_tracker.web.dto.project.NewProjectRequestDTO;
 import uk.ac.ebi.impc_prod_tracker.data.biology.assignment_status.AssignmentStatus;
 import uk.ac.ebi.impc_prod_tracker.data.biology.project.Project;
@@ -45,17 +48,20 @@ public class ProjectServiceImpl implements ProjectService
     private ProjectRepository projectRepository;
     private HistoryService<Project> historyService;
     private ResourceAccessChecker<Project> resourceAccessChecker;
+    private Searcher searcher;
 
     public static final String READ_PROJECT_ACTION = "READ_PROJECT";
 
     public ProjectServiceImpl(
         ProjectRepository projectRepository,
         HistoryService<Project> historyService,
-        ResourceAccessChecker resourceAccessChecker)
+        ResourceAccessChecker resourceAccessChecker,
+        Searcher searcher)
     {
         this.projectRepository = projectRepository;
         this.historyService = historyService;
         this.resourceAccessChecker = resourceAccessChecker;
+        this.searcher = searcher;
     }
 
     @PersistenceContext
@@ -70,16 +76,15 @@ public class ProjectServiceImpl implements ProjectService
     }
 
     @Override
-    public Page<Project> getProjects(Pageable pageable, ProjectSearch projectSearch)
+    public Page<Project> getProjects(Pageable pageable, ProjectFilter projectFilter)
     {
-        Specification<Project> specifications = buildSpecificationsWithCriteria(projectSearch);
+        Specification<Project> specifications = buildSpecificationsWithCriteria(projectFilter);
         List<Project> projects = projectRepository.findAll(specifications);
         return getAccessCheckedPage(projects, pageable);
     }
 
     private Page<Project> getAccessCheckedPage(List<Project> projects, Pageable pageable)
     {
-
         List<Project> filteredProjectList = getCheckedCollection(projects);
         PagedListHolder<Project> pagedListHolder = new PagedListHolder<>(filteredProjectList);
         pagedListHolder.setPageSize(pageable.getPageSize());
@@ -98,17 +103,17 @@ public class ProjectServiceImpl implements ProjectService
         return projects.stream().map(this::getAccessChecked).filter(Objects::nonNull).collect(Collectors.toList());
     }
 
-    private Specification<Project> buildSpecificationsWithCriteria(ProjectSearch projectSearch)
+    private Specification<Project> buildSpecificationsWithCriteria(ProjectFilter projectFilter)
     {
         Specification<Project> specifications =
             Specification.where(
-                ProjectSpecs.withTpns(projectSearch.getTpns())
-                .and(ProjectSpecs.withMarkerSymbols(projectSearch.getMarkerSymbols()))
-                .and(ProjectSpecs.withIntentions(projectSearch.getIntentions()))
-                .and(ProjectSpecs.withPlansInWorkUnitsNames(projectSearch.getWorkUnitNames()))
-                .and(ProjectSpecs.withConsortia(projectSearch.getConsortiaNames()))
-                .and(ProjectSpecs.withStatuses(projectSearch.getStatusesNames()))
-                .and(ProjectSpecs.withPrivacies(projectSearch.getPrivaciesNames())));
+                ProjectSpecs.withTpns(projectFilter.getTpns())
+                .and(ProjectSpecs.withMarkerSymbols(projectFilter.getMarkerSymbols()))
+                .and(ProjectSpecs.withIntentions(projectFilter.getIntentions()))
+                .and(ProjectSpecs.withPlansInWorkUnitsNames(projectFilter.getWorkUnitNames()))
+                .and(ProjectSpecs.withConsortia(projectFilter.getConsortiaNames()))
+                .and(ProjectSpecs.withStatuses(projectFilter.getStatusesNames()))
+                .and(ProjectSpecs.withPrivacies(projectFilter.getPrivaciesNames())));
         return specifications;
     }
 
@@ -143,5 +148,12 @@ public class ProjectServiceImpl implements ProjectService
     public List<History> getProjectHistory(Project project)
     {
         return historyService.getHistoryByEntityNameAndEntityId("Project", project.getId());
+    }
+
+    @Override
+    public SearchReport executeSearch(Search search)
+    {
+        SearchReport searchReport = searcher.execute(search);
+        return searchReport;
     }
 }
