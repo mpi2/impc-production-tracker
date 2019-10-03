@@ -16,6 +16,8 @@
 package uk.ac.ebi.impc_prod_tracker.service.project.search;
 
 import uk.ac.ebi.impc_prod_tracker.common.types.FilterTypes;
+
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -59,7 +61,7 @@ public class SearchBuilder
 
     public SearchBuilder withInputs(List<String> inputs)
     {
-        this.inputs = inputs;
+        this.inputs = inputs == null ? Collections.emptyList(): inputs;
         return this;
     }
 

@@ -1,4 +1,4 @@
-package uk.ac.ebi.impc_prod_tracker.web.controller.project;
+package uk.ac.ebi.impc_prod_tracker.web.controller.project.helper;
 
 import java.util.List;
 
@@ -17,12 +17,12 @@ public class ProjectFilterBuilder
     {
     }
 
-    static ProjectFilterBuilder getInstance()
+    public static ProjectFilterBuilder getInstance()
     {
         return new ProjectFilterBuilder();
     }
 
-    ProjectFilter build()
+    public ProjectFilter build()
     {
         ProjectFilter projectFilter = new ProjectFilter();
         projectFilter.setTpns(tpns);
@@ -33,31 +33,31 @@ public class ProjectFilterBuilder
         return projectFilter;
     }
 
-    ProjectFilterBuilder withTpns(List<String> tpns)
+    public ProjectFilterBuilder withTpns(List<String> tpns)
     {
         this.tpns = tpns;
         return this;
     }
 
-    ProjectFilterBuilder withMarkerSymbols(List<String> markerSymbols)
+    public ProjectFilterBuilder withMarkerSymbols(List<String> markerSymbols)
     {
         this.markerSymbols = markerSymbols;
         return this;
     }
 
-    ProjectFilterBuilder withIntentions(List<String> intentions)
+    public ProjectFilterBuilder withIntentions(List<String> intentions)
     {
         this.intentions = intentions;
         return this;
     }
 
-    ProjectFilterBuilder withPrivacies(List<String> privacies)
+    public ProjectFilterBuilder withPrivacies(List<String> privacies)
     {
         this.privaciesNames = privacies;
         return this;
     }
 
-    ProjectFilterBuilder withWorkUnitNames(List<String> workUnitNames)
+    public ProjectFilterBuilder withWorkUnitNames(List<String> workUnitNames)
     {
         this.workUnitNames = workUnitNames;
         return this;

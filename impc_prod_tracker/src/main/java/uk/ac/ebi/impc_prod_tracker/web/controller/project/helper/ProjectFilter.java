@@ -1,4 +1,4 @@
-package uk.ac.ebi.impc_prod_tracker.web.controller.project;
+package uk.ac.ebi.impc_prod_tracker.web.controller.project.helper;
 
 import lombok.Data;
 import java.util.List;

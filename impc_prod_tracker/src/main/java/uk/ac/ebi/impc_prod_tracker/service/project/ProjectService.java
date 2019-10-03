@@ -20,7 +20,7 @@ import org.springframework.data.domain.Pageable;
 import uk.ac.ebi.impc_prod_tracker.data.common.history.History;
 import uk.ac.ebi.impc_prod_tracker.service.project.search.Search;
 import uk.ac.ebi.impc_prod_tracker.service.project.search.SearchReport;
-import uk.ac.ebi.impc_prod_tracker.web.controller.project.ProjectFilter;
+import uk.ac.ebi.impc_prod_tracker.web.controller.project.helper.ProjectFilter;
 import uk.ac.ebi.impc_prod_tracker.web.dto.project.NewProjectRequestDTO;
 import uk.ac.ebi.impc_prod_tracker.data.biology.project.Project;
 import java.util.List;
@@ -40,5 +40,5 @@ public interface ProjectService
      */
     List<History> getProjectHistory(Project project);
 
-    SearchReport executeSearch(Search search, Pageable pageable);
+    SearchReport executeSearch(Search search);
 }

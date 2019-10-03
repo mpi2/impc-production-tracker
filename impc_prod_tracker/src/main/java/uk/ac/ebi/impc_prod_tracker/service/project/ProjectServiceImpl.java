@@ -22,14 +22,12 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Component;
 import uk.ac.ebi.impc_prod_tracker.common.history.HistoryService;
-import uk.ac.ebi.impc_prod_tracker.common.pagination.PaginationHelper;
 import uk.ac.ebi.impc_prod_tracker.conf.security.abac.ResourceAccessChecker;
 import uk.ac.ebi.impc_prod_tracker.data.common.history.History;
 import uk.ac.ebi.impc_prod_tracker.service.project.search.Search;
 import uk.ac.ebi.impc_prod_tracker.service.project.search.SearchReport;
-import uk.ac.ebi.impc_prod_tracker.service.project.search.SearchResult;
 import uk.ac.ebi.impc_prod_tracker.service.project.search.Searcher;
-import uk.ac.ebi.impc_prod_tracker.web.controller.project.ProjectFilter;
+import uk.ac.ebi.impc_prod_tracker.web.controller.project.helper.ProjectFilter;
 import uk.ac.ebi.impc_prod_tracker.web.dto.project.NewProjectRequestDTO;
 import uk.ac.ebi.impc_prod_tracker.data.biology.assignment_status.AssignmentStatus;
 import uk.ac.ebi.impc_prod_tracker.data.biology.project.Project;
@@ -153,12 +151,9 @@ public class ProjectServiceImpl implements ProjectService
     }
 
     @Override
-    public SearchReport executeSearch(Search search, Pageable pageable)
+    public SearchReport executeSearch(Search search)
     {
         SearchReport searchReport = searcher.execute(search);
-        Page<SearchResult> paginatedContent =
-            PaginationHelper.createPage(searchReport.getResults(), pageable);
-        searchReport.setResults(paginatedContent.getContent());
         return searchReport;
     }
 }
