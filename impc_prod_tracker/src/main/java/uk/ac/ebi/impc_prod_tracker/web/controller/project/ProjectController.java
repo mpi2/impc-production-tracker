@@ -70,13 +70,23 @@ class ProjectController
     public ResponseEntity findAll(
         Pageable pageable,
         PagedResourcesAssembler assembler,
+        @RequestParam(value = "tpn", required = false) List<String> tpns,
+        @RequestParam(value = "markerSymbol", required = false) List<String> markerSymbols,
+        @RequestParam(value = "intention", required = false) List<String> intentions,
         @RequestParam(value = "workUnitName", required = false) List<String> workUnitNames,
         @RequestParam(value = "consortium", required = false) List<String> consortia,
         @RequestParam(value = "status", required = false) List<String> statuses,
-        @RequestParam(value = "privacy", required = false) List<String> privacies)
+        @RequestParam(value = "privacyName", required = false) List<String> privaciesNames)
     {
+        ProjectSearch projectSearch = ProjectSearchBuilder.getInstance()
+            .withTpns(tpns)
+            .withMarkerSymbols(markerSymbols)
+            .withIntentions(intentions)
+            .withPrivacies(privaciesNames)
+            .withWorkUnitNames(workUnitNames)
+            .build();
         Page<Project> projects =
-            projectService.getProjects(pageable, workUnitNames, consortia, statuses, privacies);
+            projectService.getProjects(pageable, projectSearch);
         Page<ProjectDTO> projectDtos = projects.map(this::getDTO);
         PagedModel pr =
             assembler.toModel(
