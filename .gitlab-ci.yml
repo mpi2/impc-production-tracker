@@ -115,6 +115,7 @@ deploy:
       # and record the deployment so you can rollback to this particular version.
       #
       sed -i "s/latest/${CI_COMMIT_SHA:0:12}/g" kube/sandbox/api-service/api-service-deployment.yaml
+      sed -i "s/STRING_REPLACED_DURING_REDEPLOY/$(date)/g" kube/sandbox/api-service/api-service-deployment.yaml
 
       if kubectl apply -f kube/sandbox/api-service/api-service-deployment.yaml --record | grep -q unchanged; then
           echo "=> Patching deployment to force image update."

@@ -27,6 +27,8 @@ spec:
           value: production-tracker-database
         - name: TRACKER_POSTGRESQL_DB_PORT
           value: "5432"
+        - name: REDEPLOY_KEY
+          value: "STRING_REPLACED_DURING_REDEPLOY"
         ports:
         - containerPort: 8080
           protocol: TCP
