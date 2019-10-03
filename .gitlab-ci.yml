@@ -41,12 +41,6 @@ variables:
 services:
    - docker:dind
 
-# Use this command to look at your docker environment
-# Note: This step can be overwritten by before_script sections in specific jobs.
-#
-before_script:
-   - docker info
-
 
 stages:
    - build
@@ -56,11 +50,13 @@ stages:
 
 build_image:
     stage: build
-    before_script:
+    except:
+        - schedules
+    script:
+        - docker info
         - mkdir -p "$MOUNT_POINT"
         - echo "${CI_REGISTRY_PASSWORD}" | docker login -u "${CI_REGISTRY_USER}" --password-stdin  ${CI_REGISTRY}
-    script:
-    
+   
         - cd impc_prod_tracker
     
          
