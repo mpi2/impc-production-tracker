@@ -53,6 +53,7 @@ build_image:
     except:
         - schedules
         - triggers
+        - pipelines
     script:
         - docker info
         - mkdir -p "$MOUNT_POINT"
