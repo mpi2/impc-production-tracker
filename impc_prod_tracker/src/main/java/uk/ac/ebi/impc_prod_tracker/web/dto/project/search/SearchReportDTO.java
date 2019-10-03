@@ -1,4 +1,4 @@
-package uk.ac.ebi.impc_prod_tracker.web.dto.project;
+package uk.ac.ebi.impc_prod_tracker.web.dto.project.search;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
@@ -21,7 +21,7 @@ public class SearchReportDTO extends RepresentationModel
     private String searchTypeName;
     private List<String> inputs;
     private Map<FilterTypes, List<String>> filters;
-    private List<SearchResult> results;
+    private List<SearchResultDTO> results;
 
     @JsonProperty("page")
     private PagedModel.PageMetadata pageMetadata;

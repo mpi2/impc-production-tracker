@@ -3,7 +3,7 @@ package uk.ac.ebi.impc_prod_tracker.web.mapping.project;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
 import uk.ac.ebi.impc_prod_tracker.service.project.search.SearchReport;
-import uk.ac.ebi.impc_prod_tracker.web.dto.project.SearchReportDTO;
+import uk.ac.ebi.impc_prod_tracker.web.dto.project.search.SearchReportDTO;
 
 @Component
 public class SearchReportMapper
