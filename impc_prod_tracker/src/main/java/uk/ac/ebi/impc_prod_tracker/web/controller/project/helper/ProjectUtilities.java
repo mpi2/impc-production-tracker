@@ -1,4 +1,4 @@
-package uk.ac.ebi.impc_prod_tracker.web.controller.project;
+package uk.ac.ebi.impc_prod_tracker.web.controller.project.helper;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;

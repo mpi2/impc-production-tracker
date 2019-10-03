@@ -18,7 +18,9 @@ package uk.ac.ebi.impc_prod_tracker.service.project;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import uk.ac.ebi.impc_prod_tracker.data.common.history.History;
-import uk.ac.ebi.impc_prod_tracker.web.controller.project.ProjectSearch;
+import uk.ac.ebi.impc_prod_tracker.service.project.search.Search;
+import uk.ac.ebi.impc_prod_tracker.service.project.search.SearchReport;
+import uk.ac.ebi.impc_prod_tracker.web.controller.project.helper.ProjectFilter;
 import uk.ac.ebi.impc_prod_tracker.web.dto.project.NewProjectRequestDTO;
 import uk.ac.ebi.impc_prod_tracker.data.biology.project.Project;
 import java.util.List;
@@ -27,7 +29,7 @@ public interface ProjectService
 {
     Project getProjectByTpn(String tpn);
 
-    Page<Project> getProjects(Pageable pageable, ProjectSearch projectSearch);
+    Page<Project> getProjects(Pageable pageable, ProjectFilter projectFilter);
 
     Project createProject(NewProjectRequestDTO newProjectRequestDTO);
 
@@ -37,4 +39,6 @@ public interface ProjectService
      * @return List of {@link History} with the trace of the changes for a project.
      */
     List<History> getProjectHistory(Project project);
+
+    SearchReport executeSearch(Search search);
 }

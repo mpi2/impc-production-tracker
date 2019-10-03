@@ -29,6 +29,9 @@ import uk.ac.ebi.impc_prod_tracker.conf.error_management.OperationFailedExceptio
 import uk.ac.ebi.impc_prod_tracker.data.biology.project.Project;
 import uk.ac.ebi.impc_prod_tracker.service.project.ProjectService;
 import uk.ac.ebi.impc_prod_tracker.web.controller.common.PlanLinkBuilder;
+import uk.ac.ebi.impc_prod_tracker.web.controller.project.helper.ProjectFilter;
+import uk.ac.ebi.impc_prod_tracker.web.controller.project.helper.ProjectFilterBuilder;
+import uk.ac.ebi.impc_prod_tracker.web.controller.project.helper.ProjectUtilities;
 import uk.ac.ebi.impc_prod_tracker.web.controller.util.LinkUtil;
 import uk.ac.ebi.impc_prod_tracker.web.dto.common.history.HistoryDTO;
 import uk.ac.ebi.impc_prod_tracker.web.dto.project.NewProjectRequestDTO;
@@ -78,7 +81,7 @@ class ProjectController
         @RequestParam(value = "status", required = false) List<String> statuses,
         @RequestParam(value = "privacyName", required = false) List<String> privaciesNames)
     {
-        ProjectSearch projectSearch = ProjectSearchBuilder.getInstance()
+        ProjectFilter projectFilter = ProjectFilterBuilder.getInstance()
             .withTpns(tpns)
             .withMarkerSymbols(markerSymbols)
             .withIntentions(intentions)
@@ -86,7 +89,7 @@ class ProjectController
             .withWorkUnitNames(workUnitNames)
             .build();
         Page<Project> projects =
-            projectService.getProjects(pageable, projectSearch);
+            projectService.getProjects(pageable, projectFilter);
         Page<ProjectDTO> projectDtos = projects.map(this::getDTO);
         PagedModel pr =
             assembler.toModel(
