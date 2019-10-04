@@ -55,13 +55,14 @@ public class SearchBuilder
         }
         else
         {
+            this.searchType = SearchType.valueOfName(searchTypeName);
             if (this.searchType == null)
             {
                 throw new IllegalArgumentException(
                     String.format(
                         INVALID_SEARCH_TYPE, searchTypeName, SearchType.getValidValuesNames()));
             }
-            this.searchType = SearchType.valueOfName(searchTypeName);
+
         }
 
         return this;
