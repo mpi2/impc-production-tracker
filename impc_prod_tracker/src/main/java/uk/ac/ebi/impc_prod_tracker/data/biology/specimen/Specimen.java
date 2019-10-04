@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import uk.ac.ebi.impc_prod_tracker.data.BaseEntity;
 import uk.ac.ebi.impc_prod_tracker.data.biology.outcome.Outcome;
+import uk.ac.ebi.impc_prod_tracker.data.biology.specimen_type.SpecimenType;
 
 import javax.persistence.*;
 
@@ -21,6 +22,9 @@ public class Specimen extends BaseEntity {
 
     @Column(columnDefinition = "TEXT")
     private String specimenExternalRef;
+
+    @ManyToOne
+    private SpecimenType specimenType;
 
     // TODO revision? - Is this relation correct
     // - will multiple samples be taken from one embryos to characterise different outcomes in the individual embryo?
