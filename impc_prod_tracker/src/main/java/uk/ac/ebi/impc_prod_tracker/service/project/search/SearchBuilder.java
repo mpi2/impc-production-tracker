@@ -19,6 +19,7 @@ import uk.ac.ebi.impc_prod_tracker.common.types.FilterTypes;
 import uk.ac.ebi.impc_prod_tracker.conf.error_management.OperationFailedException;
 
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -34,7 +35,9 @@ public class SearchBuilder
     private static final String NO_SEARCH_TYPE_DEFINED =
         "If you are specifying an input in the search you have to define also the search type.";
 
-    private SearchBuilder() {}
+    private SearchBuilder() {
+        filters = new HashMap<>();
+    }
 
     public static SearchBuilder getInstance()
     {

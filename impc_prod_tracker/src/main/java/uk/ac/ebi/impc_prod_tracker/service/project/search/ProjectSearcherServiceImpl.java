@@ -43,7 +43,7 @@ public class ProjectSearcherServiceImpl implements ProjectSearcherService
         SearchReport searchReport;
         if (search.getSearchType() == null || search.getInputs().isEmpty())
         {
-            searchReport = retrieveAllAvailableProjects();
+            searchReport = retrieveAllAvailableProjects(search.getFilters());
         }
         else
         {
@@ -52,11 +52,10 @@ public class ProjectSearcherServiceImpl implements ProjectSearcherService
         return searchReport;
     }
 
-    private SearchReport retrieveAllAvailableProjects()
+    private SearchReport retrieveAllAvailableProjects(Map<FilterTypes, List<String>> filters)
     {
         SearchReport searchReport = new SearchReport();
 
-        Map<FilterTypes, List<String>> filters = new HashMap<>(0);
         List<Project> projects = projectService.getProjects(filters);
         List<SearchResult> searchResults = new ArrayList<>();
         projects.forEach(p -> searchResults.add(new SearchResult(null, p, null)));
