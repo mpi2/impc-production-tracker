@@ -25,7 +25,6 @@ import uk.ac.ebi.impc_prod_tracker.common.history.HistoryService;
 import uk.ac.ebi.impc_prod_tracker.common.types.FilterTypes;
 import uk.ac.ebi.impc_prod_tracker.conf.security.abac.ResourceAccessChecker;
 import uk.ac.ebi.impc_prod_tracker.data.common.history.History;
-import uk.ac.ebi.impc_prod_tracker.service.project.search.Searcher;
 import uk.ac.ebi.impc_prod_tracker.web.controller.project.helper.ProjectFilter;
 import uk.ac.ebi.impc_prod_tracker.web.dto.project.NewProjectRequestDTO;
 import uk.ac.ebi.impc_prod_tracker.data.biology.assignment_status.AssignmentStatus;
@@ -48,20 +47,17 @@ public class ProjectServiceImpl implements ProjectService
     private ProjectRepository projectRepository;
     private HistoryService<Project> historyService;
     private ResourceAccessChecker<Project> resourceAccessChecker;
-    private Searcher searcher;
 
     public static final String READ_PROJECT_ACTION = "READ_PROJECT";
 
     public ProjectServiceImpl(
         ProjectRepository projectRepository,
         HistoryService<Project> historyService,
-        ResourceAccessChecker resourceAccessChecker,
-        Searcher searcher)
+        ResourceAccessChecker resourceAccessChecker)
     {
         this.projectRepository = projectRepository;
         this.historyService = historyService;
         this.resourceAccessChecker = resourceAccessChecker;
-        this.searcher = searcher;
     }
 
     @PersistenceContext
