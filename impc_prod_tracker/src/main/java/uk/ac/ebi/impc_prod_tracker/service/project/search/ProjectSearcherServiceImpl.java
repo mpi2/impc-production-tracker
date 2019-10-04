@@ -41,7 +41,7 @@ public class ProjectSearcherServiceImpl implements ProjectSearcherService
     public SearchReport executeSearch(Search search)
     {
         SearchReport searchReport;
-        if (search.getSearchType() == null && search.getInputs().isEmpty())
+        if (search.getSearchType() == null || search.getInputs().isEmpty())
         {
             searchReport = retrieveAllAvailableProjects();
         }

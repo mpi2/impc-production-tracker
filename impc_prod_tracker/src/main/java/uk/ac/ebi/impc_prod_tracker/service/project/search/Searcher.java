@@ -88,6 +88,18 @@ public class Searcher
         List<Project> foundProjects = searchExecutor.findProjects(input);
         List<SearchResult> searchResults = new ArrayList<>();
         foundProjects.forEach(p -> searchResults.add(new SearchResult(input, p, null)));
+        if (searchResults.isEmpty())
+        {
+            addEmptyResult(searchResults, input);
+        }
         return searchResults;
+    }
+
+    private void addEmptyResult(List<SearchResult> searchResults, String input)
+    {
+        SearchResult searchResult = new SearchResult();
+        searchResult.setInput(input);
+        searchResult.setProject(null);
+        searchResults.add(searchResult);
     }
 }
