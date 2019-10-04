@@ -43,13 +43,15 @@ public class ProjectSearcherController
         Pageable pageable,
         @RequestParam(value = "searchType", required = false) String searchType,
         @RequestParam(value = "input", required = false) List<String> inputs,
-        @RequestParam(value = "tpn", required = false) List<String> tpns)
+        @RequestParam(value = "tpn", required = false) List<String> tpns,
+        @RequestParam(value = "workUnitName", required = false) List<String> workUnitsNames)
     {
         try
         {
             Search search = SearchBuilder.getInstance()
                 .withSearchType(searchType)
                 .withInputs(inputs)
+                .withWorkUnitNames(workUnitsNames)
                 .build();
             SearchReport searchReport = projectSearcherService.executeSearch(search);
 
