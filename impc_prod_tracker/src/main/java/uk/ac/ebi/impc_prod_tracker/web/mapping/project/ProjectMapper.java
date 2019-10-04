@@ -37,13 +37,16 @@ public class ProjectMapper
 
     public ProjectDTO toDto(Project project)
     {
-        ProjectDTO projectDTO = modelMapper.map(project, ProjectDTO.class);
-        addStatusStampsDTO(project, projectDTO);
-        addProjectGeneDTO(project, projectDTO);
-        addProjectLocationDTO(project, projectDTO);
-        addSpeciesDTO(project, projectDTO);
-        addConsortiaNames(project, projectDTO);
-
+        ProjectDTO projectDTO = null;
+        if (project != null)
+        {
+            projectDTO = modelMapper.map(project, ProjectDTO.class);
+            addStatusStampsDTO(project, projectDTO);
+            addProjectGeneDTO(project, projectDTO);
+            addProjectLocationDTO(project, projectDTO);
+            addSpeciesDTO(project, projectDTO);
+            addConsortiaNames(project, projectDTO);
+        }
         return projectDTO;
     }
 
