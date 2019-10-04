@@ -12,6 +12,8 @@ import uk.ac.ebi.impc_prod_tracker.data.biology.strain.StrainRepository;
 import uk.ac.ebi.impc_prod_tracker.data.organization.institute.InstituteRepository;
 import uk.ac.ebi.impc_prod_tracker.data.organization.work_group.WorkGroupRepository;
 import uk.ac.ebi.impc_prod_tracker.data.organization.work_unit.WorkUnitRepository;
+import uk.ac.ebi.impc_prod_tracker.service.project.search.SearchType;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -77,6 +79,7 @@ public class ConfigurationServiceImpl implements ConfigurationService
             addStrains();
             addMaterialTypes();
             addPreparationTypes();
+            addSearchTypes();
         }
 
         return conf;
@@ -158,5 +161,11 @@ public class ConfigurationServiceImpl implements ConfigurationService
         List<String> preparationTypes = new ArrayList<>();
         preparationTypeRepository.findAll().forEach(p -> preparationTypes.add(p.getName()));
         conf.put("preparationTypes", preparationTypes);
+    }
+
+    private void addSearchTypes()
+    {
+        List<String> searchTypes = SearchType.getValidValuesNames();
+        conf.put("searchTypes", searchTypes);
     }
 }
