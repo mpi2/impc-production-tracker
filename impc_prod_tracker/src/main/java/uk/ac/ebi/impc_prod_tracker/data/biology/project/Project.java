@@ -123,7 +123,10 @@ public class Project extends BaseEntity implements Resource<Project>
     public List<WorkUnit> getRelatedWorkUnits()
     {
         List<WorkUnit> relatedWorkUnites = new ArrayList<>();
-        plans.forEach(x -> relatedWorkUnites.add(x.getWorkUnit()));
+        if (plans != null)
+        {
+            plans.forEach(x -> relatedWorkUnites.add(x.getWorkUnit()));
+        }
         return relatedWorkUnites;
     }
 
