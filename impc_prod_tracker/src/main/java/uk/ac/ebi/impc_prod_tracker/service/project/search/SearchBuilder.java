@@ -16,6 +16,7 @@
 package uk.ac.ebi.impc_prod_tracker.service.project.search;
 
 import uk.ac.ebi.impc_prod_tracker.common.types.FilterTypes;
+import uk.ac.ebi.impc_prod_tracker.conf.error_management.OperationFailedException;
 
 import java.util.Collections;
 import java.util.List;
@@ -30,6 +31,8 @@ public class SearchBuilder
 
     private static final String INVALID_SEARCH_TYPE =
         "Search type [%s] not recognized. Please use one of these values: %s.";
+    private static final String NO_SEARCH_TYPE_DEFINED =
+        "If you are specifying an input in the search you have to define also the search type.";
 
     private SearchBuilder() {}
 
@@ -44,7 +47,16 @@ public class SearchBuilder
         search.setSearchType(searchType);
         search.setInputs(inputs);
         search.setFilters(filters);
+        validate(search);
         return search;
+    }
+
+    private void validate(Search search)
+    {
+        if (search.getInputs() != null && !search.getInputs().isEmpty() && searchType == null)
+        {
+            throw new OperationFailedException(NO_SEARCH_TYPE_DEFINED);
+        }
     }
 
     public SearchBuilder withSearchType(String searchTypeName)

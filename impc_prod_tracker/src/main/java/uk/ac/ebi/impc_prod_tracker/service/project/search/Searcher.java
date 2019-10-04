@@ -30,6 +30,12 @@ import java.util.List;
 public class Searcher
 {
     private SearchExecutor searchExecutor;
+    private SearchExecutorByGene searchExecutorByGene;
+
+    public Searcher(SearchExecutorByGene searchExecutorByGene)
+    {
+        this.searchExecutorByGene = searchExecutorByGene;
+    }
 
     public SearchReport execute(Search search)
     {
@@ -57,7 +63,7 @@ public class Searcher
         switch (search.getSearchType())
         {
             case BY_GENE:
-                searchExecutor = new SearchExecutorByGene();
+                searchExecutor = searchExecutorByGene;
                 break;
             case BY_LOCATION:
                 throw new NotImplementedException("Search by location not implemented yet.");
