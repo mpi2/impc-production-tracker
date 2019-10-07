@@ -49,6 +49,7 @@ public class Colony extends BaseEntity
 
     private String genotypingComment;
 
+    @EqualsAndHashCode.Exclude
     @ManyToMany(mappedBy = "colonies")
     private Set<Allele> alleles;
 }
