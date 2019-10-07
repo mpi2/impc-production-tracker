@@ -66,6 +66,7 @@ public class Gene extends BaseEntity
     @Pattern(regexp = "^([\\+-\\?]{1}|)$", message = "The values allowed for the strand are: '+', '-', or if the value es unknown enter '?'.")
     private String ensemblStrand;
 
+    @EqualsAndHashCode.Exclude
     @ManyToMany(mappedBy = "genes")
     private Set<Allele> alleles;
 
