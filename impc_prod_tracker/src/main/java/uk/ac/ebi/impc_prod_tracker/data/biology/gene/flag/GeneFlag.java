@@ -37,4 +37,9 @@ public class GeneFlag extends BaseEntity
     private Long id;
 
     private String name;
+
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
+    @ManyToMany(mappedBy = "geneFlags")
+    private Set<Gene> genes;
 }

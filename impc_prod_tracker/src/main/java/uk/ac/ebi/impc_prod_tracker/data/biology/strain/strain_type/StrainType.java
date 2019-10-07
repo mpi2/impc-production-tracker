@@ -21,4 +21,7 @@ public class StrainType extends BaseEntity
 
     private String name;
 
+    @EqualsAndHashCode.Exclude
+    @ManyToMany(mappedBy = "strainTypes")
+    private Set<Strain> strains;
 }

@@ -2,6 +2,7 @@ package uk.ac.ebi.impc_prod_tracker.data.biology.sequence;
 
 import lombok.AccessLevel;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import uk.ac.ebi.impc_prod_tracker.data.BaseEntity;
 import uk.ac.ebi.impc_prod_tracker.data.biology.allele.Allele;
@@ -30,5 +31,7 @@ public class Sequence extends BaseEntity {
     @ManyToOne(targetEntity= SequenceCategory.class)
     private SequenceCategory sequenceCategory;
 
-    // Removed ManyToMany relationship to alleles to prevent a circular dependency.
+    @EqualsAndHashCode.Exclude
+    @ManyToMany(mappedBy = "sequences")
+    private Set<Allele> alleles;
 }
