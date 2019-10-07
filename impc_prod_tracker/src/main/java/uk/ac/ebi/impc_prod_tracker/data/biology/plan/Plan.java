@@ -56,9 +56,8 @@ public class Plan extends BaseEntity
     private String pin;
 
     @ToString.Exclude
-    @JsonIgnore
-    @ManyToOne
     @NotNull
+    @ManyToOne
     private Project project;
 
     @ManyToOne(targetEntity = Funder.class)
