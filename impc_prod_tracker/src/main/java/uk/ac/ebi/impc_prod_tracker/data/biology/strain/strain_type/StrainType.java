@@ -1,5 +1,7 @@
 package uk.ac.ebi.impc_prod_tracker.data.biology.strain.strain_type;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import uk.ac.ebi.impc_prod_tracker.data.BaseEntity;
 import uk.ac.ebi.impc_prod_tracker.data.biology.strain.Strain;
@@ -19,6 +21,4 @@ public class StrainType extends BaseEntity
 
     private String name;
 
-    @ManyToMany(mappedBy = "strainTypes")
-    private Set<Strain> strains;
 }

@@ -15,7 +15,9 @@
  *******************************************************************************/
 package uk.ac.ebi.impc_prod_tracker.data.biology.strain;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.*;
 import uk.ac.ebi.impc_prod_tracker.data.BaseEntity;
 import uk.ac.ebi.impc_prod_tracker.data.biology.strain.strain_type.StrainType;
@@ -28,11 +30,11 @@ import java.util.Set;
 @NoArgsConstructor(access= AccessLevel.PUBLIC, force=true)
 @Data
 @Entity
-public class Strain extends BaseEntity implements Serializable
+public class Strain extends BaseEntity
 {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", updatable=false)
+    @SequenceGenerator(name = "strainSeq", sequenceName = "STRAIN_SEQ")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "strainSeq")
     private Long id;
 
     @NotNull
@@ -42,7 +44,6 @@ public class Strain extends BaseEntity implements Serializable
     private String mgiStrainAccId;
 
     @ToString.Exclude
-    @JsonIgnore
     @ManyToMany
     @JoinTable(
             name = "strain_type_relationship",

@@ -30,6 +30,5 @@ public class Sequence extends BaseEntity {
     @ManyToOne(targetEntity= SequenceCategory.class)
     private SequenceCategory sequenceCategory;
 
-    @ManyToMany(mappedBy = "sequences")
-    private Set<Allele> alleles;
+    // Removed ManyToMany relationship to alleles to prevent a circular dependency.
 }
