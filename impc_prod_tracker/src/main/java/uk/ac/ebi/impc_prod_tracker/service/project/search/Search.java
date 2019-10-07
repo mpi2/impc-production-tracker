@@ -73,6 +73,6 @@ public class Search
 
     private boolean isInputProvided(List<String> inputs)
     {
-        return inputs != null && inputs.isEmpty();
+        return inputs != null && !inputs.isEmpty();
     }
 }
