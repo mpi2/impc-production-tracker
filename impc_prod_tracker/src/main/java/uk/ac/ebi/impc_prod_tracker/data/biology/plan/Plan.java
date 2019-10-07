@@ -84,9 +84,6 @@ public class Plan extends BaseEntity
 
     private Boolean productsAvailableForGeneralPublic;
 
-    @ManyToOne
-    private AttemptType type;
-
     @ManyToMany()
     @JoinTable(
             name = "plan_flag_relation",
