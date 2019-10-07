@@ -16,12 +16,15 @@
 package uk.ac.ebi.impc_prod_tracker.conf.error_management;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.databind.annotation.JsonTypeIdResolver;
 import com.fasterxml.jackson.databind.jsontype.impl.TypeIdResolverBase;
 import lombok.Data;
 import org.hibernate.validator.internal.engine.path.PathImpl;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.FieldError;
 import org.springframework.validation.ObjectError;
@@ -49,15 +52,51 @@ public class ApiError
     private String debugMessage;
     private List<ApiSubError> subErrors;
 
+    @JsonIgnore
+    private Throwable exception;
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(ApiError.class);
+    private static final String ERROR_MESSAGE_TO_LOG =
+        "Exception occurred. Message:[%s]. DebugMessage:[%s]. SubErrors:[subErrors]";
+    private static final String ERROR_MESSAGE =
+        "An unexpected error has occurred in the system: %s. Please contact the administrator " +
+        "to check the errors in the logs.";
+
     private ApiError()
     {
         timestamp = LocalDateTime.now();
+    }
+
+    public ApiError(OperationFailedException exception)
+    {
+        this();
+        this.exception = exception;
+        this.status = HttpStatus.INTERNAL_SERVER_ERROR;
+        this.message = getExceptionMessage(exception);
+        this.debugMessage = exception.getDebugMessage();
+        logError();
+    }
+
+    private String getExceptionMessage(Throwable exception)
+    {
+        String message = exception.getMessage();
+        if (message == null)
+        {
+            Throwable cause = exception.getCause();
+            if (cause == null)
+            {
+                cause = exception;
+            }
+            message = String.format(ERROR_MESSAGE, cause.toString());
+        }
+        return message;
     }
 
     public ApiError(HttpStatus status)
     {
         this();
         this.status = status;
+        logError();
     }
 
     public ApiError(HttpStatus status, Throwable ex)
@@ -66,6 +105,7 @@ public class ApiError
         this.status = status;
         this.message = "Unexpected error";
         this.debugMessage = ex.getLocalizedMessage();
+        logError();
     }
 
     public ApiError(HttpStatus status, String message, Throwable ex)
@@ -74,6 +114,7 @@ public class ApiError
         this.status = status;
         this.message = message;
         this.debugMessage = ex.getLocalizedMessage();
+        logError();
     }
 
     public ApiError(HttpStatus status, String message, String debugMessage)
@@ -82,6 +123,7 @@ public class ApiError
         this.status = status;
         this.message = message;
         this.debugMessage = debugMessage;
+        logError();
     }
 
     public ApiError(HttpStatus status, ExceptionFormatter exceptionFormatter)
@@ -90,6 +132,7 @@ public class ApiError
         this.status = status;
         this.message = exceptionFormatter.getMessage();
         this.debugMessage = exceptionFormatter.getDebugMessage();
+        logError();
     }
 
     private void addSubError(ApiSubError subError)
@@ -154,6 +197,22 @@ public class ApiError
     void addValidationErrors(Set<ConstraintViolation<?>> constraintViolations)
     {
         constraintViolations.forEach(this::addValidationError);
+    }
+
+    private void logError()
+    {
+        String extendedDebugMessage = debugMessage + "|";
+        Throwable cause = exception.getCause();
+        if (cause != null)
+        {
+            StackTraceElement[] stackTraceElements = cause.getStackTrace();
+            if (stackTraceElements != null && stackTraceElements.length > 0)
+            {
+                extendedDebugMessage += stackTraceElements[0];
+            }
+        }
+
+        LOGGER.error(String.format(ERROR_MESSAGE_TO_LOG, message, extendedDebugMessage, subErrors));
     }
 }
 
