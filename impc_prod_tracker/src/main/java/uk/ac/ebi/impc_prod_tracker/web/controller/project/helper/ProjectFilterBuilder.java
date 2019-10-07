@@ -1,20 +1,19 @@
 package uk.ac.ebi.impc_prod_tracker.web.controller.project.helper;
 
+import uk.ac.ebi.impc_prod_tracker.common.types.FilterTypes;
+
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class ProjectFilterBuilder
 {
-    private List<String> tpns;
-    private List<String> markerSymbols;
-    private List<String> intentions;
-    private List<String> workUnitNames;
-    private List<String> consortiaNames;
-    private List<String> statusesNames;
-    private List<String> privaciesNames;
+    private Map<FilterTypes, List<String>> filters;
 
     // Prevents instantiation.
     private ProjectFilterBuilder()
     {
+        filters = new HashMap<>();
     }
 
     public static ProjectFilterBuilder getInstance()
@@ -25,41 +24,37 @@ public class ProjectFilterBuilder
     public ProjectFilter build()
     {
         ProjectFilter projectFilter = new ProjectFilter();
-        projectFilter.setTpns(tpns);
-        projectFilter.setMarkerSymbols(markerSymbols);
-        projectFilter.setWorkUnitNames(workUnitNames);
-        projectFilter.setIntentions(intentions);
-        projectFilter.setPrivaciesNames(privaciesNames);
+        projectFilter.setFilters(filters);
         return projectFilter;
     }
 
     public ProjectFilterBuilder withTpns(List<String> tpns)
     {
-        this.tpns = tpns;
+        filters.put(FilterTypes.TPN, tpns);
         return this;
     }
 
     public ProjectFilterBuilder withMarkerSymbols(List<String> markerSymbols)
     {
-        this.markerSymbols = markerSymbols;
+        filters.put(FilterTypes.MARKER_SYMBOL, markerSymbols);
         return this;
     }
 
     public ProjectFilterBuilder withIntentions(List<String> intentions)
     {
-        this.intentions = intentions;
+        filters.put(FilterTypes.INTENTION, intentions);
         return this;
     }
 
     public ProjectFilterBuilder withPrivacies(List<String> privacies)
     {
-        this.privaciesNames = privacies;
+        filters.put(FilterTypes.PRIVACY_NAME, privacies);
         return this;
     }
 
     public ProjectFilterBuilder withWorkUnitNames(List<String> workUnitNames)
     {
-        this.workUnitNames = workUnitNames;
+        filters.put(FilterTypes.WORK_UNIT_NAME, workUnitNames);
         return this;
     }
 }

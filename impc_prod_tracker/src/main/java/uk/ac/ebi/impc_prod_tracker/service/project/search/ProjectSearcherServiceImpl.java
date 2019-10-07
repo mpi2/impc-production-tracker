@@ -16,14 +16,12 @@
 package uk.ac.ebi.impc_prod_tracker.service.project.search;
 
 import org.springframework.stereotype.Component;
-import uk.ac.ebi.impc_prod_tracker.common.types.FilterTypes;
 import uk.ac.ebi.impc_prod_tracker.data.biology.project.Project;
 import uk.ac.ebi.impc_prod_tracker.service.project.ProjectService;
-
+import uk.ac.ebi.impc_prod_tracker.web.controller.project.helper.ProjectFilter;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @Component
 public class ProjectSearcherServiceImpl implements ProjectSearcherService
@@ -40,27 +38,37 @@ public class ProjectSearcherServiceImpl implements ProjectSearcherService
     @Override
     public SearchReport executeSearch(Search search)
     {
-        SearchReport searchReport;
+        SearchReport searchReport = buildReportWithInitialData(search);
+        List<SearchResult> results;
+
         if (search.getSearchType() == null || search.getInputs().isEmpty())
         {
-            searchReport = retrieveAllAvailableProjects(search.getFilters());
+            results = retrieveAllAvailableProjects(search.getFilters());
         }
         else
         {
-            searchReport = searcher.execute(search);
+            results = searcher.execute(search);
         }
+        searchReport.setResults(results);
         return searchReport;
     }
 
-    private SearchReport retrieveAllAvailableProjects(Map<FilterTypes, List<String>> filters)
+    private SearchReport buildReportWithInitialData(Search search)
     {
         SearchReport searchReport = new SearchReport();
+        searchReport.setDate(LocalDateTime.now());
+        searchReport.setSearchType(search.getSearchType());
+        searchReport.setFilters(search.getFilters().getNotNullFilterNames());
+        searchReport.setInputs(search.getInputs());
+        return searchReport;
+    }
 
+    private List<SearchResult>  retrieveAllAvailableProjects(ProjectFilter filters)
+    {
         List<Project> projects = projectService.getProjects(filters);
         List<SearchResult> searchResults = new ArrayList<>();
         projects.forEach(p -> searchResults.add(new SearchResult(null, p, null)));
-        searchReport.setResults(searchResults);
 
-        return searchReport;
+        return searchResults;
     }
 }

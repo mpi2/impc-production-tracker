@@ -18,7 +18,6 @@ package uk.ac.ebi.impc_prod_tracker.service.project.search;
 import org.apache.commons.lang3.NotImplementedException;
 import org.springframework.stereotype.Component;
 import uk.ac.ebi.impc_prod_tracker.data.biology.project.Project;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -37,25 +36,11 @@ public class Searcher
         this.searchExecutorByGene = searchExecutorByGene;
     }
 
-    public SearchReport execute(Search search)
+    public List<SearchResult> execute(Search search)
     {
-        SearchReport searchReport = buildReportWithInitialData(search);
         resolveSearchExecutor(search);
-        List<SearchResult> results = getResults(search);
-        searchReport.setResults(results);
 
-        return searchReport;
-    }
-
-    private SearchReport buildReportWithInitialData(Search search)
-    {
-        SearchReport searchReport = new SearchReport();
-        searchReport.setDate(LocalDateTime.now());
-        searchReport.setSearchType(search.getSearchType());
-        searchReport.setSpeciesName(search.getSpeciesName());
-        searchReport.setInputs(search.getInputs());
-        searchReport.setFilters(search.getFilters());
-        return searchReport;
+        return getResults(search);
     }
 
     private void resolveSearchExecutor(Search search)
