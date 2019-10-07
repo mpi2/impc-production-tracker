@@ -26,10 +26,9 @@ import java.util.Map;
 public class SearchReport
 {
     private LocalDateTime date;
-    private String speciesName;
     private SearchType searchType;
     private List<ProjectDTO> testPages;
     private List<String> inputs;
-    private Map<FilterTypes, List<String>> filters;
+    private Map<String, List<String>> filters;
     private List<SearchResult> results;
 }

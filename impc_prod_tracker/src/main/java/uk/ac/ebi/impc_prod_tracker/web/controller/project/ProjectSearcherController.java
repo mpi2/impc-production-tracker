@@ -14,12 +14,12 @@ import uk.ac.ebi.impc_prod_tracker.common.pagination.PaginationHelper;
 import uk.ac.ebi.impc_prod_tracker.conf.error_management.OperationFailedException;
 import uk.ac.ebi.impc_prod_tracker.service.project.search.ProjectSearcherService;
 import uk.ac.ebi.impc_prod_tracker.service.project.search.Search;
-import uk.ac.ebi.impc_prod_tracker.service.project.search.SearchBuilder;
 import uk.ac.ebi.impc_prod_tracker.service.project.search.SearchReport;
 import uk.ac.ebi.impc_prod_tracker.service.project.search.SearchResult;
+import uk.ac.ebi.impc_prod_tracker.web.controller.project.helper.ProjectFilter;
+import uk.ac.ebi.impc_prod_tracker.web.controller.project.helper.ProjectFilterBuilder;
 import uk.ac.ebi.impc_prod_tracker.web.dto.project.search.SearchReportDTO;
 import uk.ac.ebi.impc_prod_tracker.web.mapping.project.SearchReportMapper;
-
 import java.util.List;
 
 @RestController
@@ -41,18 +41,18 @@ public class ProjectSearcherController
     @GetMapping
     public ResponseEntity search(
         Pageable pageable,
-        @RequestParam(value = "searchType", required = false) String searchType,
+        @RequestParam(value = "searchTypeName", required = false) String searchTypeName,
         @RequestParam(value = "input", required = false) List<String> inputs,
         @RequestParam(value = "tpn", required = false) List<String> tpns,
         @RequestParam(value = "workUnitName", required = false) List<String> workUnitsNames)
     {
         try
         {
-            Search search = SearchBuilder.getInstance()
-                .withSearchType(searchType)
-                .withInputs(inputs)
+            ProjectFilter projectFilter = ProjectFilterBuilder.getInstance()
+                .withTpns(tpns)
                 .withWorkUnitNames(workUnitsNames)
                 .build();
+            Search search = new Search(searchTypeName, inputs, projectFilter);
             SearchReport searchReport = projectSearcherService.executeSearch(search);
 
             Page<SearchResult> paginatedContent =
@@ -63,11 +63,10 @@ public class ProjectSearcherController
             searchReportDTO.setPageMetadata(pageMetadata);
 
             return new ResponseEntity<>(searchReportDTO, HttpStatus.OK);
-
         }
         catch (Exception e)
         {
-            throw new OperationFailedException(e.getMessage());
+            throw new OperationFailedException(e);
         }
     }
 

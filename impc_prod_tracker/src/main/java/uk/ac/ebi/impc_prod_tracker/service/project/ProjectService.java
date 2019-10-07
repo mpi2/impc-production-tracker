@@ -31,9 +31,7 @@ public interface ProjectService
 {
     Project getProjectByTpn(String tpn);
 
-    @Deprecated
-    Page<Project> getProjects(Pageable pageable, ProjectFilter projectFilter);
-    List<Project>  getProjects(Map<FilterTypes, List<String>> filters);
+    List<Project>  getProjects(ProjectFilter projectFilter);
 
     Project createProject(NewProjectRequestDTO newProjectRequestDTO);
 

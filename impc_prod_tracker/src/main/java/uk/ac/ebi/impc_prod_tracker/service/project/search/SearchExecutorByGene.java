@@ -4,6 +4,8 @@ import org.springframework.stereotype.Component;
 import uk.ac.ebi.impc_prod_tracker.common.types.FilterTypes;
 import uk.ac.ebi.impc_prod_tracker.data.biology.project.Project;
 import uk.ac.ebi.impc_prod_tracker.service.project.ProjectService;
+import uk.ac.ebi.impc_prod_tracker.web.controller.project.helper.ProjectFilter;
+import uk.ac.ebi.impc_prod_tracker.web.controller.project.helper.ProjectFilterBuilder;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -32,7 +34,9 @@ class SearchExecutorByGene implements SearchExecutor
     {
         Map<FilterTypes, List<String>> markerSymbolFilters = new HashMap<>();
         markerSymbolFilters.put(FilterTypes.MARKER_SYMBOL, Arrays.asList(input));
-        return projectService.getProjects(markerSymbolFilters);
+        ProjectFilter projectFilter =
+            ProjectFilterBuilder.getInstance().withMarkerSymbols(Arrays.asList(input)).build();
+        return projectService.getProjects(projectFilter);
 
     }
 }

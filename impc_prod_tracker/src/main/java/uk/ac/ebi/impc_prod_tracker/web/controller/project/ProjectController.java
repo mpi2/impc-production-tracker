@@ -24,10 +24,12 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import uk.ac.ebi.impc_prod_tracker.common.pagination.PaginationHelper;
 import uk.ac.ebi.impc_prod_tracker.common.types.PlanTypes;
 import uk.ac.ebi.impc_prod_tracker.conf.error_management.OperationFailedException;
 import uk.ac.ebi.impc_prod_tracker.data.biology.project.Project;
 import uk.ac.ebi.impc_prod_tracker.service.project.ProjectService;
+import uk.ac.ebi.impc_prod_tracker.service.project.search.SearchResult;
 import uk.ac.ebi.impc_prod_tracker.web.controller.common.PlanLinkBuilder;
 import uk.ac.ebi.impc_prod_tracker.web.controller.project.helper.ProjectFilter;
 import uk.ac.ebi.impc_prod_tracker.web.controller.project.helper.ProjectFilterBuilder;
@@ -88,9 +90,10 @@ class ProjectController
             .withPrivacies(privaciesNames)
             .withWorkUnitNames(workUnitNames)
             .build();
-        Page<Project> projects =
-            projectService.getProjects(pageable, projectFilter);
-        Page<ProjectDTO> projectDtos = projects.map(this::getDTO);
+        List<Project> projects = projectService.getProjects(projectFilter);
+        Page<Project> paginatedContent =
+            PaginationHelper.createPage(projects, pageable);
+        Page<ProjectDTO> projectDtos = paginatedContent.map(this::getDTO);
         PagedModel pr =
             assembler.toModel(
                 projectDtos,

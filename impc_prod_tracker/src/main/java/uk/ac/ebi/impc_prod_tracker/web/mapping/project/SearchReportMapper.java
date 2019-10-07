@@ -2,12 +2,16 @@ package uk.ac.ebi.impc_prod_tracker.web.mapping.project;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
+import uk.ac.ebi.impc_prod_tracker.common.types.FilterTypes;
 import uk.ac.ebi.impc_prod_tracker.service.project.search.SearchReport;
+import uk.ac.ebi.impc_prod_tracker.web.dto.common.filters.FilterDTO;
 import uk.ac.ebi.impc_prod_tracker.web.dto.project.ProjectDTO;
 import uk.ac.ebi.impc_prod_tracker.web.dto.project.search.SearchReportDTO;
 import uk.ac.ebi.impc_prod_tracker.web.dto.project.search.SearchResultDTO;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Component
@@ -30,6 +34,18 @@ public class SearchReportMapper
                 .map(x -> searchResultMapper.toDto(x))
                 .collect(Collectors.toList());
         searchReportDTO.setResults(searchResultDTOS);
+        searchReportDTO.setFilters(toFilterDtos(searchReport.getFilters()));
         return searchReportDTO;
+    }
+
+    private List<FilterDTO> toFilterDtos(Map<String, List<String>> filters)
+    {
+        List<FilterDTO> filterDTOS = new ArrayList<>();
+        if (filters != null)
+        {
+            filters.forEach((key, value) -> filterDTOS.add(new FilterDTO(key, value)));
+        }
+        return filterDTOS;
+
     }
 }
