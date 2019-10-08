@@ -87,7 +87,7 @@ public class ExceptionHandlerFilter extends OncePerRequestFilter
             }
             else
             {
-                apiError = new ApiError(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage(), "");
+                apiError = new ApiError(new OperationFailedException(e));
             }
             addExceptionInfoToResponse(response, apiError);
         }
