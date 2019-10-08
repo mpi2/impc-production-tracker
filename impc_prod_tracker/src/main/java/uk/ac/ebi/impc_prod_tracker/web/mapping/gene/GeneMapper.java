@@ -2,6 +2,7 @@ package uk.ac.ebi.impc_prod_tracker.web.mapping.gene;
 
 import org.springframework.stereotype.Component;
 import uk.ac.ebi.impc_prod_tracker.data.biology.gene.Gene;
+import uk.ac.ebi.impc_prod_tracker.data.biology.species.Species;
 import uk.ac.ebi.impc_prod_tracker.web.dto.gene.GeneDTO;
 
 import java.util.ArrayList;
@@ -16,7 +17,11 @@ public class GeneMapper
         GeneDTO geneDTO = new GeneDTO();
         geneDTO.setAccId(gene.getAccId());
         geneDTO.setSymbol(gene.getSymbol());
-        geneDTO.setSpeciesName(gene.getSpecies().getName());
+        Species species = gene.getSpecies();
+        if (species != null)
+        {
+            geneDTO.setSpeciesName(species.getName());
+        }
         return geneDTO;
     }
 
