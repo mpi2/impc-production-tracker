@@ -30,6 +30,12 @@ public class OperationFailedException extends RuntimeException
     private Throwable cause;
     private HttpStatus httpStatus;
 
+    public OperationFailedException(Throwable exception)
+    {
+        super(exception.getMessage());
+        this.cause = exception;
+    }
+
     public OperationFailedException(String message)
     {
         super(message);

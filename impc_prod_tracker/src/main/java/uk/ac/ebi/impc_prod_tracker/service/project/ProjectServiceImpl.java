@@ -15,14 +15,9 @@
  *******************************************************************************/
 package uk.ac.ebi.impc_prod_tracker.service.project;
 
-import org.springframework.beans.support.PagedListHolder;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Component;
 import uk.ac.ebi.impc_prod_tracker.common.history.HistoryService;
-import uk.ac.ebi.impc_prod_tracker.common.types.FilterTypes;
 import uk.ac.ebi.impc_prod_tracker.conf.security.abac.ResourceAccessChecker;
 import uk.ac.ebi.impc_prod_tracker.data.common.history.History;
 import uk.ac.ebi.impc_prod_tracker.web.controller.project.helper.ProjectFilter;
@@ -36,7 +31,6 @@ import javax.transaction.Transactional;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
@@ -71,30 +65,11 @@ public class ProjectServiceImpl implements ProjectService
         return getAccessChecked(project);
     }
 
-    @Override
-    public Page<Project> getProjects(Pageable pageable, ProjectFilter projectFilter)
+    public List<Project> getProjects(ProjectFilter projectFilter)
     {
         Specification<Project> specifications = buildSpecificationsWithCriteria(projectFilter);
         List<Project> projects = projectRepository.findAll(specifications);
-        return getAccessCheckedPage(projects, pageable);
-    }
-
-    // NEW IMPLEMENTATION. Expected to replace getProjects(Pageable pageable, ProjectFilter projectFilter).
-    public List<Project> getProjects(Map<FilterTypes, List<String>> filters)
-    {
-        Specification<Project> specifications = buildSpecificationsWithCriteria(filters);
-        List<Project> projects = projectRepository.findAll(specifications);
         return getCheckedCollection(projects);
-    }
-
-    private Page<Project> getAccessCheckedPage(List<Project> projects, Pageable pageable)
-    {
-        List<Project> filteredProjectList = getCheckedCollection(projects);
-        PagedListHolder<Project> pagedListHolder = new PagedListHolder<>(filteredProjectList);
-        pagedListHolder.setPageSize(pageable.getPageSize());
-        pagedListHolder.setPage(pageable.getPageNumber());
-
-        return new PageImpl<>(pagedListHolder.getPageList(), pageable, filteredProjectList.size());
     }
 
     private Project getAccessChecked(Project project)
@@ -107,7 +82,6 @@ public class ProjectServiceImpl implements ProjectService
         return projects.stream().map(this::getAccessChecked).filter(Objects::nonNull).collect(Collectors.toList());
     }
 
-    @Deprecated
     private Specification<Project> buildSpecificationsWithCriteria(ProjectFilter projectFilter)
     {
         Specification<Project> specifications =
@@ -119,20 +93,6 @@ public class ProjectServiceImpl implements ProjectService
                 .and(ProjectSpecs.withConsortia(projectFilter.getConsortiaNames()))
                 .and(ProjectSpecs.withStatuses(projectFilter.getStatusesNames()))
                 .and(ProjectSpecs.withPrivacies(projectFilter.getPrivaciesNames())));
-        return specifications;
-    }
-
-    private Specification<Project> buildSpecificationsWithCriteria(Map<FilterTypes, List<String>> filters)
-    {
-        Specification<Project> specifications =
-            Specification.where(
-                ProjectSpecs.withTpns(filters.get(FilterTypes.TPN))
-                    .and(ProjectSpecs.withMarkerSymbols(filters.get(FilterTypes.MARKER_SYMBOL)))
-                    .and(ProjectSpecs.withIntentions(filters.get(FilterTypes.INTENTION)))
-                    .and(ProjectSpecs.withPlansInWorkUnitsNames(filters.get(FilterTypes.WORK_UNIT_NAME)))
-                    .and(ProjectSpecs.withConsortia(filters.get(FilterTypes.CONSORTIUM)))
-                    .and(ProjectSpecs.withStatuses(filters.get(FilterTypes.ASSIGNMENT_STATUS)))
-                    .and(ProjectSpecs.withPrivacies(filters.get(FilterTypes.PRIVACY_NAME))));
         return specifications;
     }
 

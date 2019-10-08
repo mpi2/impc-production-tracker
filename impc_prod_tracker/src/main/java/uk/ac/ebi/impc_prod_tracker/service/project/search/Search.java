@@ -15,20 +15,64 @@
  *******************************************************************************/
 package uk.ac.ebi.impc_prod_tracker.service.project.search;
 
-import lombok.Data;
-import uk.ac.ebi.impc_prod_tracker.common.types.FilterTypes;
+import lombok.Getter;
+import uk.ac.ebi.impc_prod_tracker.conf.error_management.OperationFailedException;
+import uk.ac.ebi.impc_prod_tracker.web.controller.project.helper.ProjectFilter;
 
+import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 
 /**
- * Defines the structure of a search
+ * Defines the structure of a search.
  */
-@Data
+@Getter
 public class Search
 {
-    private String speciesName;
     private SearchType searchType;
     private List<String> inputs;
-    private Map<FilterTypes, List<String>> filters;
+    private ProjectFilter filters;
+
+    private static final String INVALID_SEARCH_TYPE =
+        "Search type [%s] not recognized. Please use one of these values: %s.";
+    private static final String NO_SEARCH_TYPE_DEFINED =
+        "If you are specifying an input in the search you have to define also the search type.";
+
+    private Search(){};
+
+    public Search(String searchTypeName, List<String> inputs, ProjectFilter filters)
+    {
+        searchType = getSearchTypeBySearchTypeName(searchTypeName);
+        validateSearchTypeDefinedIfThereIsInput(searchType, inputs);
+        this.inputs = inputs == null ? Collections.emptyList() : inputs;
+        this.filters = filters;
+    }
+
+    private SearchType getSearchTypeBySearchTypeName(String searchTypeName)
+    {
+        SearchType searchType = null;
+        if (searchTypeName != null)
+        {
+            searchType = SearchType.valueOfName(searchTypeName);
+            if (searchType == null)
+            {
+                throw new IllegalArgumentException(
+                    String.format(
+                        INVALID_SEARCH_TYPE, searchTypeName, SearchType.getValidValuesNames()));
+            }
+        }
+        return searchType;
+    }
+
+    private void validateSearchTypeDefinedIfThereIsInput(SearchType searchType, List<String> inputs)
+    {
+        if (isInputProvided(inputs) && searchType == null)
+        {
+            throw new OperationFailedException(NO_SEARCH_TYPE_DEFINED);
+        }
+    }
+
+    private boolean isInputProvided(List<String> inputs)
+    {
+        return inputs != null && !inputs.isEmpty();
+    }
 }

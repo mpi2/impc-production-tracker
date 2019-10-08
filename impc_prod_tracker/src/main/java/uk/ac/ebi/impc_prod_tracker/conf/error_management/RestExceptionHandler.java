@@ -59,8 +59,7 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler
     {
         if (ex.getHttpStatus() == null)
         {
-            return buildResponseEntity(
-                new ApiError(INTERNAL_SERVER_ERROR, ex.getMessage(), ex.getDebugMessage()));
+            return buildResponseEntity(new ApiError(ex));
         }
         else
         {
