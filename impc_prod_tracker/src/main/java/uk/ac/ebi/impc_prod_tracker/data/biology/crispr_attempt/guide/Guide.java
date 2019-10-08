@@ -29,7 +29,6 @@ public class Guide extends BaseEntity
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "guideSeq")
     private Long id;
 
-    @JsonIgnore
     @EqualsAndHashCode.Exclude
     @ManyToOne(targetEntity = CrisprAttempt.class)
     @JoinColumn(name = "attempt_id")
