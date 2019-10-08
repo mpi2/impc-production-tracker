@@ -88,6 +88,7 @@ public class ProjectServiceImpl implements ProjectService
             Specification.where(
                 ProjectSpecs.withTpns(projectFilter.getTpns())
                 .and(ProjectSpecs.withMarkerSymbols(projectFilter.getMarkerSymbols()))
+                .and(ProjectSpecs.withGenes(projectFilter.getGenes()))
                 .and(ProjectSpecs.withIntentions(projectFilter.getIntentions()))
                 .and(ProjectSpecs.withPlansInWorkUnitsNames(projectFilter.getWorkUnitNames()))
                 .and(ProjectSpecs.withConsortia(projectFilter.getConsortiaNames()))

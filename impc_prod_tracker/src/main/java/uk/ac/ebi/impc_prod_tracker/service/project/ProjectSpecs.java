@@ -47,6 +47,7 @@ import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.SetJoin;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * This class creates the filters needed when searching projects.
@@ -77,6 +78,30 @@ public class ProjectSpecs
 
             query.distinct(true);
             return criteriaBuilder.and(predicates.toArray(new Predicate[predicates.size()]));
+        };
+    }
+
+    public static Specification<Project> withGenes(List<String> genesNameOrIds)
+    {
+        return (Specification<Project>) (root, query, criteriaBuilder) -> {
+            if (genesNameOrIds == null)
+            {
+                return criteriaBuilder.isTrue(criteriaBuilder.literal(true));
+            }
+
+            List<String> lowerCaseGenesNameOrIds =
+                genesNameOrIds.stream().map(String::toLowerCase).collect(Collectors.toList());
+
+            SetJoin<Project, ProjectGene> projectProjectGeneSetJoin = root.join(Project_.genes);
+            Path<Gene> genePath = projectProjectGeneSetJoin.get(ProjectGene_.gene);
+            Path<String> symbolNamePath = genePath.get(Gene_.symbol);
+            Path<String> accIdPath = genePath.get(Gene_.accId);
+
+            query.distinct(true);
+            return criteriaBuilder.or(
+                criteriaBuilder.lower(symbolNamePath).in(lowerCaseGenesNameOrIds),
+                criteriaBuilder.lower(accIdPath).in(lowerCaseGenesNameOrIds)
+            );
         };
     }
 

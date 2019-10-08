@@ -40,6 +40,12 @@ public class ProjectFilterBuilder
         return this;
     }
 
+    public ProjectFilterBuilder withGenes(List<String> genesNameOrIds)
+    {
+        filters.put(FilterTypes.GENE, genesNameOrIds);
+        return this;
+    }
+
     public ProjectFilterBuilder withIntentions(List<String> intentions)
     {
         filters.put(FilterTypes.INTENTION, intentions);

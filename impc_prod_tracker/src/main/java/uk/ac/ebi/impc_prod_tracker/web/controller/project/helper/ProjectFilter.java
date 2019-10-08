@@ -35,6 +35,11 @@ public class ProjectFilter
         return filters.getOrDefault(FilterTypes.MARKER_SYMBOL, null);
     }
 
+    public List<String> getGenes()
+    {
+        return filters.getOrDefault(FilterTypes.GENE, null);
+    }
+
     public List<String> getIntentions()
     {
         return filters.getOrDefault(FilterTypes.INTENTION, null);

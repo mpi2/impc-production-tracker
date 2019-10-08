@@ -3,6 +3,7 @@ package uk.ac.ebi.impc_prod_tracker.common.types;
 public enum FilterTypes
 {
     TPN("tpn"),
+    GENE("gene"),
     WORK_UNIT_NAME("workUnitName"),
     MARKER_SYMBOL("markerSymbol"),
     INTENTION("intention"),
