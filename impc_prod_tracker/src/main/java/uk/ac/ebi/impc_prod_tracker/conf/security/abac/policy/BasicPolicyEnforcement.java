@@ -21,7 +21,9 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.expression.Expression;
 import org.springframework.expression.spel.SpelEvaluationException;
 import org.springframework.stereotype.Component;
-import uk.ac.ebi.impc_prod_tracker.conf.error_management.OperationFailedException;
+import uk.ac.ebi.impc_prod_tracker.conf.exceptions.SystemOperationFailedException;
+import uk.ac.ebi.impc_prod_tracker.conf.exceptions.UserOperationFailedException;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -93,14 +95,15 @@ public class BasicPolicyEnforcement implements PolicyEnforcement
             errorMessage = String.format(
                 errorMessage, ruleExpression.getExpressionString(), evalExc.getLocalizedMessage());
             logger.error(errorMessage);
-            throw new OperationFailedException(
+            throw new SystemOperationFailedException(
                 "Permissions cannot be evaluated for the resource you are trying to access.",
                 errorMessage);
         }
         if (result == null)
         {
             logger.info("Error evaluating policy");
-            throw new OperationFailedException("Error evaluating policy");
+            throw new SystemOperationFailedException(
+                "Error evaluating policy", ruleExpression.getExpressionString());
         }
         return result;
     }

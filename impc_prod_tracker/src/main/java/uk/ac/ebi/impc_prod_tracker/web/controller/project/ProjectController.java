@@ -26,10 +26,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import uk.ac.ebi.impc_prod_tracker.common.pagination.PaginationHelper;
 import uk.ac.ebi.impc_prod_tracker.common.types.PlanTypes;
-import uk.ac.ebi.impc_prod_tracker.conf.error_management.OperationFailedException;
+import uk.ac.ebi.impc_prod_tracker.conf.exceptions.UserOperationFailedException;
 import uk.ac.ebi.impc_prod_tracker.data.biology.project.Project;
 import uk.ac.ebi.impc_prod_tracker.service.project.ProjectService;
-import uk.ac.ebi.impc_prod_tracker.service.project.search.SearchResult;
 import uk.ac.ebi.impc_prod_tracker.web.controller.common.PlanLinkBuilder;
 import uk.ac.ebi.impc_prod_tracker.web.controller.project.helper.ProjectFilter;
 import uk.ac.ebi.impc_prod_tracker.web.controller.project.helper.ProjectFilterBuilder;
@@ -137,7 +136,7 @@ class ProjectController
         }
         else
         {
-            throw new OperationFailedException(
+            throw new UserOperationFailedException(
                 String.format(PROJECT_NOT_FOUND_ERROR, tpn), HttpStatus.NOT_FOUND);
         }
 

@@ -24,7 +24,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
-import uk.ac.ebi.impc_prod_tracker.conf.error_management.OperationFailedException;
+import uk.ac.ebi.impc_prod_tracker.conf.exceptions.SystemOperationFailedException;
+import uk.ac.ebi.impc_prod_tracker.conf.exceptions.UserOperationFailedException;
 import uk.ac.ebi.impc_prod_tracker.conf.security.SystemSubject;
 import uk.ac.ebi.impc_prod_tracker.conf.security.constants.PersonManagementConstants;
 import uk.ac.ebi.impc_prod_tracker.conf.security.jwt.JwtTokenProvider;
@@ -83,7 +84,7 @@ public class PersonService
         SystemSubject systemSubject = jwtTokenProvider.getSystemSubject(token);
         if (systemSubject == null)
         {
-            throw new OperationFailedException("User does not exist");
+            throw new SystemOperationFailedException("User does not exist", "Token provided "+ token);
         }
         return systemSubject;
     }
@@ -117,7 +118,7 @@ public class PersonService
                 Institute institute = instituteRepository.findInstituteByName(instituteName);
                 if (!instituteName.isEmpty() && institute == null)
                 {
-                    throw new OperationFailedException(
+                    throw new UserOperationFailedException(
                         String.format(INSTITUTE_NOT_EXIST_IN_THE_SYSTEM, instituteName));
                 }
                 //TODO: Adjust with several work units and consortia.
@@ -127,7 +128,7 @@ public class PersonService
         }
         else
         {
-            throw new OperationFailedException(String.format(PERSON_ALREADY_EXISTS_ERROR, email));
+            throw new UserOperationFailedException(String.format(PERSON_ALREADY_EXISTS_ERROR, email));
         }
 
         return person;
@@ -139,7 +140,7 @@ public class PersonService
         WorkUnit workUnit = workUnitRepository.findWorkUnitByIlarCode(workUnitInRequest);
         if (!workUnitInRequest.isEmpty() && workUnit == null)
         {
-            throw new OperationFailedException(
+            throw new UserOperationFailedException(
                 String.format(WORK_UNIT_NOT_EXIST_IN_THE_SYSTEM, workUnitInRequest));
         }
         return workUnit;
@@ -151,7 +152,7 @@ public class PersonService
         Role role = roleRepository.findRoleByName(roleInRequest);
         if (!roleInRequest.isEmpty() && role == null)
         {
-            throw new OperationFailedException(
+            throw new UserOperationFailedException(
                 String.format(ROLE_NOT_EXIST_IN_THE_SYSTEM, roleInRequest));
         }
         return role;
@@ -190,7 +191,7 @@ public class PersonService
             {
                 message = String.format(PERSON_ALREADY_IN_AAP_ERROR, userRegisterRequest.getName());
             }
-            throw new OperationFailedException(message);
+            throw new UserOperationFailedException(message);
         }
         return response.getBody();
     }

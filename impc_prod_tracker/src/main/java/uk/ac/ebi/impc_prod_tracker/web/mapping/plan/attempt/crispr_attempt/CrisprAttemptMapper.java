@@ -2,7 +2,7 @@ package uk.ac.ebi.impc_prod_tracker.web.mapping.plan.attempt.crispr_attempt;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
-import uk.ac.ebi.impc_prod_tracker.conf.error_management.OperationFailedException;
+import uk.ac.ebi.impc_prod_tracker.conf.exceptions.UserOperationFailedException;
 import uk.ac.ebi.impc_prod_tracker.data.biology.crispr_attempt.CrisprAttempt;
 import uk.ac.ebi.impc_prod_tracker.data.biology.crispr_attempt.crispr_attempt_reagent.CrisprAttemptReagent;
 import uk.ac.ebi.impc_prod_tracker.data.biology.crispr_attempt.delivery_type.DeliveryMethodType;
@@ -101,7 +101,7 @@ public class CrisprAttemptMapper
             {
                 String errorMessage =
                     String.format(DELIVERY_TYPE_METHOD_NOT_FOUND, deliveryMethodTypeName);
-                throw new OperationFailedException(errorMessage);
+                throw new UserOperationFailedException(errorMessage);
             }
             crisprAttempt.setDeliveryMethodType(deliveryMethodType);
         }

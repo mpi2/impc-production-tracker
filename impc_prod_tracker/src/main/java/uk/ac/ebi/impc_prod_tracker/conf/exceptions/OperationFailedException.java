@@ -13,9 +13,10 @@
  * language governing permissions and limitations under the
  * License.
  *******************************************************************************/
-package uk.ac.ebi.impc_prod_tracker.conf.error_management;
+package uk.ac.ebi.impc_prod_tracker.conf.exceptions;
 
 import lombok.Getter;
+import lombok.Setter;
 import org.springframework.http.HttpStatus;
 
 /**
@@ -24,39 +25,13 @@ import org.springframework.http.HttpStatus;
  * @author Mauricio Martinez
  */
 @Getter
-public class OperationFailedException extends RuntimeException
+@Setter
+public abstract class OperationFailedException extends RuntimeException
 {
-    private String debugMessage;
-    private Throwable cause;
-    private HttpStatus httpStatus;
-
-    public OperationFailedException(Throwable exception)
-    {
-        super(exception.getMessage());
-        this.cause = exception;
-    }
+    protected HttpStatus httpStatus;
 
     public OperationFailedException(String message)
     {
         super(message);
-    }
-
-    public OperationFailedException(String message, HttpStatus httpStatus)
-    {
-        super(message);
-        this.httpStatus = httpStatus;
-    }
-
-    public OperationFailedException(String message, Throwable cause)
-    {
-        this(message);
-        this.cause = cause;
-        this.debugMessage = cause.getLocalizedMessage();
-    }
-
-    public OperationFailedException(String message, String debugMessage)
-    {
-        this(message);
-        this.debugMessage = debugMessage;
     }
 }

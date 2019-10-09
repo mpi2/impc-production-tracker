@@ -16,9 +16,8 @@
 package uk.ac.ebi.impc_prod_tracker.service.project.search;
 
 import lombok.Getter;
-import uk.ac.ebi.impc_prod_tracker.conf.error_management.OperationFailedException;
+import uk.ac.ebi.impc_prod_tracker.conf.exceptions.UserOperationFailedException;
 import uk.ac.ebi.impc_prod_tracker.web.controller.project.helper.ProjectFilter;
-
 import java.util.Collections;
 import java.util.List;
 
@@ -67,7 +66,7 @@ public class Search
     {
         if (isInputProvided(inputs) && searchType == null)
         {
-            throw new OperationFailedException(NO_SEARCH_TYPE_DEFINED);
+            throw new UserOperationFailedException(NO_SEARCH_TYPE_DEFINED);
         }
     }
 

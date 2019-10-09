@@ -1,15 +1,12 @@
-package uk.ac.ebi.impc_prod_tracker.framework;
+package uk.ac.ebi.impc_prod_tracker.common.json;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import org.springframework.restdocs.hypermedia.Link;
 
 import java.io.IOException;
-import java.util.List;
 
 /** Collection of utility methods to work with JSON strings. */
 public class JsonHelper
@@ -65,24 +62,4 @@ public class JsonHelper
     return mapper.writeValueAsString(object);
   }
 
-  /**
-   * Maps the given object to JSON, ignoring the "links" property that contains the hypermedia
-   * links. This method should be used for mapping request payload only, since the hypermedia links
-   * are expected in response payloads.
-   */
-  public static <T> String toJsonWithoutLinks(T object) {
-    try {
-      ObjectMapper mapper = new ObjectMapper();
-      mapper.addMixIn(object.getClass(), IgnoreLinksMixin.class);
-      return mapper.writeValueAsString(object);
-    } catch (JsonProcessingException e) {
-      throw new RuntimeException(e);
-    }
-  }
-
-  /** Jackson Mixin used to ignore HATEOAS Links. */
-  private abstract class IgnoreLinksMixin {
-    @JsonIgnore
-    abstract List<Link> getLinks();
-  }
 }

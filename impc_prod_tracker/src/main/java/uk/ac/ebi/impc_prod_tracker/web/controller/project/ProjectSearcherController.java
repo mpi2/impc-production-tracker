@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import uk.ac.ebi.impc_prod_tracker.common.pagination.PaginationHelper;
-import uk.ac.ebi.impc_prod_tracker.conf.error_management.OperationFailedException;
+import uk.ac.ebi.impc_prod_tracker.conf.exceptions.UserOperationFailedException;
 import uk.ac.ebi.impc_prod_tracker.service.project.search.ProjectSearcherService;
 import uk.ac.ebi.impc_prod_tracker.service.project.search.Search;
 import uk.ac.ebi.impc_prod_tracker.service.project.search.SearchReport;
@@ -66,7 +66,7 @@ public class ProjectSearcherController
         }
         catch (Exception e)
         {
-            throw new OperationFailedException(e);
+            throw new UserOperationFailedException(e);
         }
     }
 

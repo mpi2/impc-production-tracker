@@ -5,8 +5,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import uk.ac.ebi.impc_prod_tracker.service.GeneService;
-
+import uk.ac.ebi.impc_prod_tracker.data.biology.gene.Gene;
+import uk.ac.ebi.impc_prod_tracker.service.gene.GeneExternalService;
+import uk.ac.ebi.impc_prod_tracker.service.gene.GeneService;
 import java.util.List;
 
 @RestController
@@ -14,24 +15,29 @@ import java.util.List;
 public class GeneController {
 
     private GeneService geneService;
+    private GeneExternalService geneExternalService;
 
-    public GeneController (GeneService geneService)
+    public GeneController(GeneService geneService, GeneExternalService geneExternalService)
     {
         this.geneService = geneService;
+        this.geneExternalService = geneExternalService;
     }
 
     @GetMapping(value = {"/genes"})
     public List<?> getGeneSymbols (@RequestParam String symbol)
     {
-//        if (species.equals("mouse"))
-//        {
-//            return geneService.getMouseGenesBySymbol(StringUtils.capitalize(symbol));
-//        }
-//        else if (species.equals("human"))
-//        {
-//            return humanGeneService.getHumanGenesBySymbol(symbol.toUpperCase());
-//        }
-
         return geneService.getGenesBySymbol(StringUtils.capitalize(symbol));
+    }
+
+    @GetMapping(value = {"/geneInExternalData"})
+    public Gene getGeneInExternalData (@RequestParam String symbol)
+    {
+        return geneExternalService.getFromExternalGenes(symbol);
+    }
+
+    @GetMapping(value = {"/geneSynonymInExternalData"})
+    public Gene getSynonymInExternalData (@RequestParam String symbol)
+    {
+        return geneExternalService.getSynonymFromExternalGenes(symbol);
     }
 }

@@ -2,7 +2,7 @@ package uk.ac.ebi.impc_prod_tracker.web.controller.project.helper;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
-import uk.ac.ebi.impc_prod_tracker.conf.error_management.OperationFailedException;
+import uk.ac.ebi.impc_prod_tracker.conf.exceptions.UserOperationFailedException;
 import uk.ac.ebi.impc_prod_tracker.data.biology.project.Project;
 import uk.ac.ebi.impc_prod_tracker.service.project.ProjectService;
 
@@ -22,7 +22,7 @@ public class ProjectUtilities
         Project project = projectService.getProjectByTpn(tpn);
         if (project == null)
         {
-            throw new OperationFailedException(
+            throw new UserOperationFailedException(
                 String.format(PROJECT_NOT_FOUND_ERROR, tpn), HttpStatus.NOT_FOUND);
         }
         return project;

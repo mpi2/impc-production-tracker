@@ -37,6 +37,7 @@ import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 import org.springframework.web.servlet.NoHandlerFoundException;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
+import uk.ac.ebi.impc_prod_tracker.conf.exceptions.OperationFailedException;
 import javax.persistence.EntityNotFoundException;
 import javax.validation.ConstraintViolationException;
 
@@ -57,15 +58,7 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler
     public final ResponseEntity<Object> handleAccessDeniedException(
         OperationFailedException ex, WebRequest request)
     {
-        if (ex.getHttpStatus() == null)
-        {
-            return buildResponseEntity(new ApiError(ex));
-        }
-        else
-        {
-            return buildResponseEntity(
-                new ApiError(ex.getHttpStatus(), ex.getMessage(), ex.getDebugMessage()));
-        }
+        return buildResponseEntity(ApiError.of(ex));
     }
 
     @ExceptionHandler(AccessDeniedException.class)
@@ -137,7 +130,7 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler
         HttpStatus status,
         WebRequest request)
     {
-        ApiError apiError = new ApiError(BAD_REQUEST);
+        ApiError apiError = new ApiError(BAD_REQUEST, ex);
         apiError.setMessage("Validation error");
         apiError.addValidationErrors(ex.getBindingResult().getFieldErrors());
         apiError.addValidationError(ex.getBindingResult().getGlobalErrors());
@@ -155,7 +148,7 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler
     protected ResponseEntity<Object> handleConstraintViolation(
         ConstraintViolationException ex)
     {
-        ApiError apiError = new ApiError(BAD_REQUEST);
+        ApiError apiError = new ApiError(BAD_REQUEST, ex);
         apiError.setMessage("Validation error");
         apiError.addValidationErrors(ex.getConstraintViolations());
         return buildResponseEntity(apiError);
@@ -165,7 +158,7 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler
     protected ResponseEntity<Object> handleConstraintViolation(
     TransactionSystemException ex)
     {
-        ApiError apiError = new ApiError(BAD_REQUEST);
+        ApiError apiError = new ApiError(BAD_REQUEST, ex);
         apiError.setMessage("Validation error");
 
         Throwable originalException = ex.getOriginalException();
@@ -193,7 +186,7 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler
     @ExceptionHandler(EntityNotFoundException.class)
     protected ResponseEntity<Object> handleEntityNotFound(
         EntityNotFoundException ex) {
-        ApiError apiError = new ApiError(NOT_FOUND);
+        ApiError apiError = new ApiError(NOT_FOUND, ex);
         apiError.setMessage(ex.getMessage());
         return buildResponseEntity(apiError);
     }
@@ -259,7 +252,7 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler
     protected ResponseEntity<Object> handleNoHandlerFoundException(
         NoHandlerFoundException ex, HttpHeaders headers, HttpStatus status, WebRequest request)
     {
-        ApiError apiError = new ApiError(BAD_REQUEST);
+        ApiError apiError = new ApiError(BAD_REQUEST, ex);
         apiError.setMessage(
             String.format("Could not find the %s method for URL %s", ex.getHttpMethod(), ex.getRequestURL()));
         apiError.setDebugMessage(ex.getMessage());
@@ -301,7 +294,7 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler
     protected ResponseEntity<Object> handleMethodArgumentTypeMismatch(
         MethodArgumentTypeMismatchException ex,WebRequest request)
     {
-        ApiError apiError = new ApiError(BAD_REQUEST);
+        ApiError apiError = new ApiError(BAD_REQUEST, ex);
         String typeName = null;
         Class requiredType = ex.getRequiredType();
         if (requiredType != null)

@@ -19,7 +19,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
-import uk.ac.ebi.impc_prod_tracker.conf.error_management.OperationFailedException;
+import uk.ac.ebi.impc_prod_tracker.conf.exceptions.SystemOperationFailedException;
 import uk.ac.ebi.impc_prod_tracker.conf.security.AapSystemSubject;
 import uk.ac.ebi.impc_prod_tracker.conf.security.SystemSubject;
 
@@ -48,7 +48,8 @@ public class SubjectRetriever
         }
         else
         {
-            throw new OperationFailedException("Subject cannot be determined");
+            throw new SystemOperationFailedException(
+                "Subject cannot be determined", "Error in SubjectRetriever");
         }
         return systemSubject;
     }

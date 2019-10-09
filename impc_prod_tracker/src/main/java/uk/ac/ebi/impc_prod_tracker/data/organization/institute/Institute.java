@@ -36,7 +36,7 @@ import java.util.Set;
 
 @NoArgsConstructor(access= AccessLevel.PUBLIC, force=true)
 @Data
-@EqualsAndHashCode( exclude = {"people"}, callSuper = false)
+@EqualsAndHashCode( callSuper = false)
 @Entity
 public class Institute extends BaseEntity
 {
