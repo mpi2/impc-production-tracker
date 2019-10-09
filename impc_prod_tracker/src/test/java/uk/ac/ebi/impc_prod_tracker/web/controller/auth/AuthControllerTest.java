@@ -12,7 +12,7 @@ import static org.springframework.restdocs.payload.PayloadDocumentation.response
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static uk.ac.ebi.impc_prod_tracker.framework.JsonHelper.toJson;
+import static uk.ac.ebi.impc_prod_tracker.common.json.JsonHelper.toJson;
 
 public class AuthControllerTest extends ControllerTestTemplate
 {

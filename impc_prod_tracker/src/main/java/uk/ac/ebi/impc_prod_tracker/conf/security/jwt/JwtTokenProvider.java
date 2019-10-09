@@ -25,14 +25,13 @@ import io.jsonwebtoken.SigningKeyResolverAdapter;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
-import uk.ac.ebi.impc_prod_tracker.conf.error_management.OperationFailedException;
+import uk.ac.ebi.impc_prod_tracker.conf.exceptions.UserOperationFailedException;
 import uk.ac.ebi.impc_prod_tracker.conf.security.AapSystemSubject;
 import uk.ac.ebi.impc_prod_tracker.conf.security.AuthorizationHeaderReader;
 import uk.ac.ebi.impc_prod_tracker.conf.security.PublicKeyProvider;
 import uk.ac.ebi.impc_prod_tracker.conf.security.SystemSubject;
 import javax.servlet.http.HttpServletRequest;
 import java.security.Key;
-import java.security.PublicKey;
 import java.util.Date;
 
 /**
@@ -65,7 +64,7 @@ public class JwtTokenProvider
     {
         if (token == null || token.isEmpty())
         {
-            throw new OperationFailedException(NULL_EMPTY_TOKEN_MESSAGE);
+            throw new UserOperationFailedException(NULL_EMPTY_TOKEN_MESSAGE);
         }
         SystemSubject systemSubject = getSystemSubject(token);
         return new UsernamePasswordAuthenticationToken(systemSubject, "", null);
@@ -117,7 +116,7 @@ public class JwtTokenProvider
         catch (JwtException | IllegalArgumentException e)
         {
             System.out.println(e.getMessage());
-            throw new OperationFailedException(INVALID_TOKEN_MESSAGE, INVALID_TOKEN_DEBUG_MESSAGE);
+            throw new UserOperationFailedException(INVALID_TOKEN_MESSAGE, INVALID_TOKEN_DEBUG_MESSAGE);
         }
     }
 

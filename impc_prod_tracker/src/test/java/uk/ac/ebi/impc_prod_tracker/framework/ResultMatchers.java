@@ -8,7 +8,7 @@ import org.springframework.test.web.servlet.ResultMatcher;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.fail;
-import static uk.ac.ebi.impc_prod_tracker.framework.JsonHelper.fromJson;
+import static uk.ac.ebi.impc_prod_tracker.common.json.JsonHelper.fromJson;
 
 /** Collection of ResultMatchers to be used in MockMvc's fluent API. */
 public class ResultMatchers

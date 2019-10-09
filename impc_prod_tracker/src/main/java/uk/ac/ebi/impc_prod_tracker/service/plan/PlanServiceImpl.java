@@ -20,7 +20,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Component;
 import uk.ac.ebi.impc_prod_tracker.common.history.HistoryService;
-import uk.ac.ebi.impc_prod_tracker.conf.error_management.OperationFailedException;
+import uk.ac.ebi.impc_prod_tracker.conf.exceptions.UserOperationFailedException;
 import uk.ac.ebi.impc_prod_tracker.conf.security.abac.ResourceAccessChecker;
 import uk.ac.ebi.impc_prod_tracker.data.biology.plan_outcome.PlanOutcomeRepository;
 import uk.ac.ebi.impc_prod_tracker.data.biology.plan.Plan;
@@ -104,12 +104,12 @@ public class PlanServiceImpl implements PlanService
 
     @Override
     public Plan getNotNullPlanByPin(String pin)
-        throws OperationFailedException
+    throws UserOperationFailedException
     {
         Plan plan = planRepository.findPlanByPin(pin);
         if (plan == null)
         {
-            throw new OperationFailedException(String.format(PLAN_NOT_EXISTS_ERROR, pin));
+            throw new UserOperationFailedException(String.format(PLAN_NOT_EXISTS_ERROR, pin));
         }
         return plan;
     }

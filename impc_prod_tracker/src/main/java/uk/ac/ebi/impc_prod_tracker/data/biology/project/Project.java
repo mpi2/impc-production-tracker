@@ -2,7 +2,7 @@ package uk.ac.ebi.impc_prod_tracker.data.biology.project;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
-import uk.ac.ebi.impc_prod_tracker.conf.error_management.OperationFailedException;
+import uk.ac.ebi.impc_prod_tracker.conf.exceptions.SystemOperationFailedException;
 import uk.ac.ebi.impc_prod_tracker.conf.security.Resource;
 import uk.ac.ebi.impc_prod_tracker.conf.security.ResourcePrivacy;
 import uk.ac.ebi.impc_prod_tracker.data.BaseEntity;
@@ -16,7 +16,6 @@ import uk.ac.ebi.impc_prod_tracker.data.biology.project_sequence.ProjectSequence
 import uk.ac.ebi.impc_prod_tracker.data.biology.species.Species;
 import uk.ac.ebi.impc_prod_tracker.data.organization.consortium.Consortium;
 import uk.ac.ebi.impc_prod_tracker.data.organization.work_unit.WorkUnit;
-
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
@@ -97,7 +96,8 @@ public class Project extends BaseEntity implements Resource<Project>
                 resourcePrivacy = ResourcePrivacy.RESTRICTED;
                 break;
             default:
-                throw new OperationFailedException("Invalid privacy");
+                String detailedError = "Privacy: " + privacy.getName() + " in project " + toString();
+                throw new SystemOperationFailedException("Invalid privacy", detailedError);
         }
         return resourcePrivacy;
     }

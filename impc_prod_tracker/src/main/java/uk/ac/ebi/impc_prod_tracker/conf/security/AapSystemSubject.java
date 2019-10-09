@@ -20,7 +20,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import uk.ac.ebi.impc_prod_tracker.conf.error_management.OperationFailedException;
+import uk.ac.ebi.impc_prod_tracker.conf.exceptions.UserOperationFailedException;
 import uk.ac.ebi.impc_prod_tracker.data.organization.consortium.Consortium;
 import uk.ac.ebi.impc_prod_tracker.data.organization.person.Person;
 import uk.ac.ebi.impc_prod_tracker.data.organization.person.PersonRepository;
@@ -29,7 +29,6 @@ import uk.ac.ebi.impc_prod_tracker.data.organization.person_role_work_unit.Perso
 import uk.ac.ebi.impc_prod_tracker.data.organization.role.Role;
 import uk.ac.ebi.impc_prod_tracker.data.organization.work_unit.WorkUnit;
 import uk.ac.ebi.impc_prod_tracker.service.WorkUnitService;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -112,7 +111,7 @@ public class AapSystemSubject implements SystemSubject
     {
         if (authId == null)
         {
-            throw new OperationFailedException(NULL_AUTH_ID_MESSAGE);
+            throw new UserOperationFailedException(NULL_AUTH_ID_MESSAGE);
         }
         this.person = personRepository.findPersonByAuthIdEquals(authId);
         if (person == null)
@@ -125,7 +124,7 @@ public class AapSystemSubject implements SystemSubject
             }
             else
             {
-                throw new OperationFailedException(
+                throw new UserOperationFailedException(
                     String.format(NOT_USER_INFORMATION_MESSAGE, login),
                     String.format(NOT_USER_INFORMATION_DEBUG_MESSAGE, login, authId));
             }

@@ -1,7 +1,7 @@
 package uk.ac.ebi.impc_prod_tracker.web.mapping.plan.attempt.crispr_attempt;
 
 import org.springframework.stereotype.Component;
-import uk.ac.ebi.impc_prod_tracker.conf.error_management.OperationFailedException;
+import uk.ac.ebi.impc_prod_tracker.conf.exceptions.UserOperationFailedException;
 import uk.ac.ebi.impc_prod_tracker.data.biology.crispr_attempt.mutagenesis_donor.MutagenesisDonor;
 import uk.ac.ebi.impc_prod_tracker.data.biology.crispr_attempt.mutagenesis_donor.preparation_type.PreparationType;
 import uk.ac.ebi.impc_prod_tracker.data.biology.crispr_attempt.mutagenesis_donor.preparation_type.PreparationTypeRepository;
@@ -66,7 +66,7 @@ public class MutagenesisDonorMapper
             {
                 String errorMessage =
                     String.format(PREPARATION_TYPE_NOT_FOUND, preparationTypeName);
-                throw new OperationFailedException(errorMessage);
+                throw new UserOperationFailedException(errorMessage);
             }
             mutagenesisDonor.setPreparationType(preparationType);
         }

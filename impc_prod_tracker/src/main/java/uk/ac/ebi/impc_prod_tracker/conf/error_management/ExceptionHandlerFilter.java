@@ -23,6 +23,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
+import uk.ac.ebi.impc_prod_tracker.conf.exceptions.OperationFailedException;
+import uk.ac.ebi.impc_prod_tracker.conf.exceptions.SystemOperationFailedException;
 import javax.servlet.FilterChain;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -55,7 +57,7 @@ public class ExceptionHandlerFilter extends OncePerRequestFilter
         }
         catch (OperationFailedException ofe)
         {
-            apiError = new ApiError(ofe);
+            apiError = ApiError.of(ofe);
             addExceptionInfoToResponse(response, apiError);
         }
         catch (RuntimeException e)
@@ -65,30 +67,24 @@ public class ExceptionHandlerFilter extends OncePerRequestFilter
         }
         catch (Exception e)
         {
-            if (e.getCause() instanceof OperationFailedException)
+            Throwable cause = e.getCause();
+            if (cause == null)
             {
-                OperationFailedException ofe = (OperationFailedException) e.getCause();
-                if (ofe.getHttpStatus() == null)
-                {
-                    apiError =
-                        new ApiError(
-                            HttpStatus.INTERNAL_SERVER_ERROR,
-                            ofe.getMessage(),
-                            ofe.getDebugMessage());
-                }
-                else
-                {
-                    apiError =
-                        new ApiError(
-                            ofe.getHttpStatus(),
-                            ofe.getMessage(),
-                            ofe.getDebugMessage());
-                }
+                apiError = ApiError.of(new SystemOperationFailedException(e));
             }
             else
             {
-                apiError = new ApiError(new OperationFailedException(e));
+                if (cause instanceof OperationFailedException)
+                {
+                    OperationFailedException ofe = (OperationFailedException) cause;
+                    apiError = ApiError.of(ofe);
+                }
+                else
+                {
+                    apiError = ApiError.of(new SystemOperationFailedException(cause));
+                }
             }
+
             addExceptionInfoToResponse(response, apiError);
         }
     }

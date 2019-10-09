@@ -3,7 +3,7 @@ package uk.ac.ebi.impc_prod_tracker.service.project.search;
 import org.springframework.stereotype.Component;
 import uk.ac.ebi.impc_prod_tracker.common.types.FilterTypes;
 import uk.ac.ebi.impc_prod_tracker.data.biology.project.Project;
-import uk.ac.ebi.impc_prod_tracker.service.GeneService;
+import uk.ac.ebi.impc_prod_tracker.service.gene.GeneExternalService;
 import uk.ac.ebi.impc_prod_tracker.service.project.ProjectService;
 import uk.ac.ebi.impc_prod_tracker.web.controller.project.helper.ProjectFilter;
 import uk.ac.ebi.impc_prod_tracker.web.controller.project.helper.ProjectFilterBuilder;
@@ -17,12 +17,12 @@ import java.util.Map;
 class SearchExecutorByGene implements SearchExecutor
 {
     private ProjectService projectService;
-    private GeneService geneService;
+    private GeneExternalService geneExternalService;
 
-    SearchExecutorByGene(ProjectService projectService, GeneService geneService)
+    SearchExecutorByGene(ProjectService projectService, GeneExternalService geneExternalService)
     {
         this.projectService = projectService;
-        this.geneService = geneService;
+        this.geneExternalService = geneExternalService;
     }
 
     @Override
@@ -34,7 +34,7 @@ class SearchExecutorByGene implements SearchExecutor
 
     private List<Project> findProjectsByGene(String input)
     {
-        geneService.getFromExternalGenes(input);
+        geneExternalService.getFromExternalGenes(input);
         Map<FilterTypes, List<String>> markerSymbolFilters = new HashMap<>();
         markerSymbolFilters.put(FilterTypes.GENE, Arrays.asList(input));
         ProjectFilter projectFilter =

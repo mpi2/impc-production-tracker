@@ -23,7 +23,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import uk.ac.ebi.impc_prod_tracker.conf.error_management.OperationFailedException;
+import uk.ac.ebi.impc_prod_tracker.conf.exceptions.UserOperationFailedException;
 import uk.ac.ebi.impc_prod_tracker.conf.security.AuthorizationHeaderReader;
 import uk.ac.ebi.impc_prod_tracker.conf.security.SystemSubject;
 import uk.ac.ebi.impc_prod_tracker.data.organization.person.Person;
@@ -81,7 +81,7 @@ public class AuthController
         }
         catch (AuthenticationException e)
         {
-            throw new OperationFailedException(AUTHENTICATION_ERROR);
+            throw new UserOperationFailedException(AUTHENTICATION_ERROR);
         }
     }
 
@@ -110,7 +110,7 @@ public class AuthController
         }
         catch (AuthenticationException e)
         {
-            throw new OperationFailedException(AUTHENTICATION_ERROR);
+            throw new UserOperationFailedException(AUTHENTICATION_ERROR);
         }
     }
 
