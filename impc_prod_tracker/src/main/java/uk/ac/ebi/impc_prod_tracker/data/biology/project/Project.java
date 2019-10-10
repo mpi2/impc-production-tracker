@@ -48,7 +48,6 @@ public class Project extends BaseEntity implements Resource<Project>
     private Long imitsMiPlanId;
 
     @EqualsAndHashCode.Exclude
-    @JsonIgnore
     @ToString.Exclude
     @ManyToOne
     private AssignmentStatus assignmentStatus;

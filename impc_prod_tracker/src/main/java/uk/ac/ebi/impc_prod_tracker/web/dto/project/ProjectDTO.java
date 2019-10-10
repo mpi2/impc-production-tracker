@@ -37,8 +37,7 @@ public class ProjectDTO extends RepresentationModel
     @NonNull
     private String tpn;
 
-    @NonNull
-    private String assigmentStatusName;
+    private String assignmentStatusName;
 
     @JsonProperty("assignmentStatusStamps")
     private List<StatusStampsDTO> statusStampsDTOS;
