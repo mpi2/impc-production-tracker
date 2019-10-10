@@ -36,6 +36,7 @@ public class Species extends BaseEntity
     @NotNull
     private String name;
 
+    @Column(unique = true)
     private Integer taxonId;
 
     @ManyToMany(mappedBy = "species")
