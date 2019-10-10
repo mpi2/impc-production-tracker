@@ -2,6 +2,7 @@ package uk.ac.ebi.impc_prod_tracker.data.biology.project_sequence;
 
 import lombok.AccessLevel;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import uk.ac.ebi.impc_prod_tracker.data.BaseEntity;
 import uk.ac.ebi.impc_prod_tracker.data.biology.allele_categorization.AlleleCategorization;
@@ -15,6 +16,7 @@ import uk.ac.ebi.impc_prod_tracker.data.biology.sequence.Sequence;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
+import java.util.Set;
 
 @NoArgsConstructor(access= AccessLevel.PRIVATE, force=true)
 @Data
@@ -35,9 +37,6 @@ public class ProjectSequence extends BaseEntity implements Serializable {
     @ManyToOne(targetEntity= MolecularMutationType.class)
     private MolecularMutationType molecularMutationType;
 
-    @ManyToOne(targetEntity= AlleleCategorization.class)
-    private AlleleCategorization alleleCategorization;
-
     @ManyToOne
     private AlleleType alleleType;
 
@@ -45,4 +44,13 @@ public class ProjectSequence extends BaseEntity implements Serializable {
 
     @ManyToOne(targetEntity= ChromosomeFeatureType.class)
     private ChromosomeFeatureType chromosomeFeatureType;
+
+
+    @EqualsAndHashCode.Exclude
+    @ManyToMany
+    @JoinTable(
+            name = "project_sequence_allele_categorization",
+            joinColumns = @JoinColumn(name = "project_sequence_id"),
+            inverseJoinColumns = @JoinColumn(name = "allele_categorization_id"))
+    private Set<AlleleCategorization> alleleCategorizations;
 }

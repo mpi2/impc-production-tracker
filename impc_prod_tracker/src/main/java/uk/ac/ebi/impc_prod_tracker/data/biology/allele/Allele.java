@@ -41,23 +41,29 @@ public class Allele extends BaseEntity
     @Column(name = "id", updatable=false)
     private Long id;
 
-    @Column(columnDefinition = "TEXT")
-    private String name;
-
-//    @NotNull
-    private String alleleSymbol;
-
     private String mgiAlleleId;
 
     private String mgiAlleleSymbolSuperscript;
 
-    private String mgiAlleleSymbolWithoutImpcAbbreviation;
+    private Boolean mgiAlleleSymbolWithoutImpcAbbreviation;
+
+    private Boolean alleleConfirmed;
+
+    private String alleleSymbolSuperscriptTemplate;
+
+    // The next two fields are for Arturo's pipeline
+    @Column(columnDefinition = "TEXT")
+    private String description;
+
+    @Column(columnDefinition = "TEXT")
+    private String autoDescription;
+
+    @Column(unique = true)
+    private Long imitsAlleleId;
+
 
     @ManyToOne(targetEntity= AlleleType.class)
     private AlleleType alleleType;
-
-    @ManyToOne(targetEntity= AlleleCategorization.class)
-    private AlleleCategorization alleleCategorization;
 
     @ManyToOne(targetEntity= MolecularMutationType.class)
     private MolecularMutationType molecularMutationType;
@@ -120,4 +126,16 @@ public class Allele extends BaseEntity
             joinColumns = @JoinColumn(name = "allele_id"),
             inverseJoinColumns = @JoinColumn(name = "colony_id"))
     private Set<Colony> colonies;
+
+
+    @EqualsAndHashCode.Exclude
+    @ManyToMany
+    @JoinTable(
+            name = "allele_allele_categorization",
+            joinColumns = @JoinColumn(name = "allele_id"),
+            inverseJoinColumns = @JoinColumn(name = "allele_categorization_id"))
+    private Set<AlleleCategorization> alleleCategorizations;
+
+
+
 }

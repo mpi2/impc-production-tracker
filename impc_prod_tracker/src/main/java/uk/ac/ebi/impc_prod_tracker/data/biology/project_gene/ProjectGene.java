@@ -11,6 +11,7 @@ import uk.ac.ebi.impc_prod_tracker.data.biology.project.Project;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
+import java.util.Set;
 
 @NoArgsConstructor(access= AccessLevel.PRIVATE, force=true)
 @Data
@@ -32,9 +33,15 @@ public class ProjectGene extends BaseEntity implements Serializable
     @ManyToOne(targetEntity= MolecularMutationType.class)
     private MolecularMutationType molecularMutationType;
 
-    @ManyToOne(targetEntity= AlleleCategorization.class)
-    private AlleleCategorization alleleCategorization;
-
     @ManyToOne(targetEntity = AlleleType.class)
     private AlleleType alleleType;
+
+
+    @EqualsAndHashCode.Exclude
+    @ManyToMany
+    @JoinTable(
+            name = "project_gene_allele_categorization",
+            joinColumns = @JoinColumn(name = "project_gene_id"),
+            inverseJoinColumns = @JoinColumn(name = "allele_categorization_id"))
+    private Set<AlleleCategorization> alleleCategorizations;
 }
