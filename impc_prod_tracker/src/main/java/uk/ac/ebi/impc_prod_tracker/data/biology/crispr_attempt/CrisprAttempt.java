@@ -30,7 +30,6 @@ import uk.ac.ebi.impc_prod_tracker.data.biology.crispr_attempt.mutagenesis_donor
 import uk.ac.ebi.impc_prod_tracker.data.biology.crispr_attempt.mutagenesis_strategy.MutagenesisStrategy;
 import uk.ac.ebi.impc_prod_tracker.data.biology.crispr_attempt.nuclease.Nuclease;
 import uk.ac.ebi.impc_prod_tracker.data.biology.plan.Plan;
-import uk.ac.ebi.impc_prod_tracker.data.biology.plan.protocol.ProtocolType;
 import uk.ac.ebi.impc_prod_tracker.data.biology.strain.Strain;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
