@@ -17,7 +17,6 @@ package uk.ac.ebi.impc_prod_tracker.service.project.search;
 
 import org.apache.commons.lang3.NotImplementedException;
 import org.springframework.stereotype.Component;
-import uk.ac.ebi.impc_prod_tracker.data.biology.project.Project;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -70,14 +69,13 @@ public class Searcher
 
     private List<SearchResult> getResultsByInput(String input)
     {
-        List<Project> foundProjects = searchExecutor.findProjects(input);
-        List<SearchResult> searchResults = new ArrayList<>();
-        foundProjects.forEach(p -> searchResults.add(new SearchResult(input, p, null)));
-        if (searchResults.isEmpty())
+        List<SearchResult> foundProjects = searchExecutor.findProjects(input);
+
+        if (foundProjects.isEmpty())
         {
-            addEmptyResult(searchResults, input);
+            addEmptyResult(foundProjects, input);
         }
-        return searchResults;
+        return foundProjects;
     }
 
     private void addEmptyResult(List<SearchResult> searchResults, String input)

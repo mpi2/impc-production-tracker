@@ -24,27 +24,29 @@ class SearchExecutorByGene implements SearchExecutor
     }
 
     @Override
-    public List<Project> findProjects(String searchTerm)
+    public List<SearchResult> findProjects(String searchTerm)
     {
-        List<Project> projects = findProjectsByGene(searchTerm);
-        if (noProjectsFoundInInternalDatabase(projects) && !isAccessionId(searchTerm))
+        List<SearchResult> searchResults = findProjectsByGene(searchTerm);
+        if (noProjectsFoundInInternalDatabase(searchResults) && !isAccessionId(searchTerm))
         {
-            projects = searchGeneInExternalService(searchTerm);
+            searchResults = searchGeneInExternalService(searchTerm);
         }
-        return projects;
+        return searchResults;
     }
 
-    private List<Project> findProjectsByGene(String searchTerm)
+    private List<SearchResult> findProjectsByGene(String searchTerm)
     {
+        List<SearchResult> searchResults = new ArrayList<>();
         ProjectFilter projectFilter =
             ProjectFilterBuilder.getInstance().withGenes(Arrays.asList(searchTerm)).build();
         List<Project> projects = projectService.getProjects(projectFilter);
-        return projects;
+        projects.forEach(p -> searchResults.add(new SearchResult(searchTerm, p, null)));
+        return searchResults;
     }
 
-    private boolean noProjectsFoundInInternalDatabase(List<Project> projects)
+    private boolean noProjectsFoundInInternalDatabase(List<SearchResult> searchResults)
     {
-        return projects == null || projects.isEmpty();
+        return searchResults == null || searchResults.isEmpty();
     }
 
     private boolean isAccessionId(String searchTerm)
@@ -52,14 +54,14 @@ class SearchExecutorByGene implements SearchExecutor
         return searchTerm.contains(":");
     }
 
-    private List<Project> searchGeneInExternalService(String searchTerm)
+    private List<SearchResult> searchGeneInExternalService(String searchTerm)
     {
-        List<Project> projects = new ArrayList<>();
+        List<SearchResult> searchResults = new ArrayList<>();
         if (!isSymbol(searchTerm))
         {
-            projects = findProjectsBySynonym(searchTerm);
+            searchResults = findProjectsBySynonym(searchTerm);
         }
-        return projects;
+        return searchResults;
     }
 
     // Checks if the search term is a "current symbol", meaning it exists in the mouse_gene
@@ -69,14 +71,20 @@ class SearchExecutorByGene implements SearchExecutor
         return geneExternalService.getFromExternalGenes(searchTerm) != null;
     }
 
-    private List<Project> findProjectsBySynonym(String searchTerm)
+    private List<SearchResult> findProjectsBySynonym(String searchTerm)
     {
-        List<Project> projects = new ArrayList<>();
+        List<Project> projects;
+        List<SearchResult> searchResults = new ArrayList<>();
         Gene synonym = geneExternalService.getSynonymFromExternalGenes(searchTerm);
         if (synonym != null)
         {
-            projects = findProjectsByGene(synonym.getAccId());
+            searchResults = findProjectsByGene(synonym.getAccId());
+            searchResults.forEach(s ->
+                {
+                    s.setInput(searchTerm);
+                    s.setComment("Synonym of " + synonym.getSymbol());
+                });
         }
-        return projects;
+        return searchResults;
     }
 }

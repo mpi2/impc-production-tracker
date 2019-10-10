@@ -21,8 +21,13 @@ public class GeneExternalService
 
     private static final String JSON_QUERY_MOUSE_SYNONYM_EXTERNAL_REF =
         "{ \"query\":" +
-            " \"{ mouse_gene_synonym(where: {synonym: {_ilike: \\\"%s\\\"}})" +
-            " { synonym mgi_gene_acc_id } }\" }";
+            " \"{" +
+            "  mouse_gene(where: {mouse_gene_synonym_relations: {mouse_gene_synonym: {synonym: {_ilike: \\\"%s\\\"}}}}) {" +
+            "    symbol" +
+            "    mgi_gene_acc_id" +
+            "  }" +
+            "}\" " +
+            "}";
 
     public GeneExternalService(GraphQLConsumer graphQLConsumer)
     {
@@ -32,18 +37,29 @@ public class GeneExternalService
     public Gene getFromExternalGenes(String symbol)
     {
         String query = String.format(JSON_QUERY_MOUSE_EXTERNAL_REF, symbol);
+        return getGeneFromExternalData(query);
+    }
+
+    public Gene getSynonymFromExternalGenes(String symbol)
+    {
+        String query = String.format(JSON_QUERY_MOUSE_SYNONYM_EXTERNAL_REF, symbol);
+        return getGeneFromExternalData(query);
+    }
+
+    private Gene getGeneFromExternalData(String query)
+    {
         String result = graphQLConsumer.executeQuery(query);
         Gene gene = null;
         try
         {
-            ExternalDataMouseGeneResponse externalDataResponse =
-                JsonHelper.fromJson(result, ExternalDataMouseGeneResponse.class);
-            List<ExternalDataMouseGene> externalDataMouseGenes = externalDataResponse.getData();
+            MouseGeneResponse externalDataResponse =
+                JsonHelper.fromJson(result, MouseGeneResponse.class);
+            List<MouseGene> externalDataMouseGenes = externalDataResponse.getData();
 
             if (!externalDataMouseGenes.isEmpty())
             {
                 gene = new Gene();
-                ExternalDataMouseGene firstResult = externalDataMouseGenes.get(0);
+                MouseGene firstResult = externalDataMouseGenes.get(0);
                 gene.setAccId(firstResult.accId);
                 gene.setSymbol(firstResult.symbol);
             }
@@ -55,62 +71,19 @@ public class GeneExternalService
         return gene;
     }
 
-    public Gene getSynonymFromExternalGenes(String symbol)
-    {
-        String query = String.format(JSON_QUERY_MOUSE_SYNONYM_EXTERNAL_REF, symbol);
-        String result = graphQLConsumer.executeQuery(query);
-        Gene gene = null;
-        try
-        {
-            ExternalDataMouseGeneSynonymResponse externalDataResponse =
-                JsonHelper.fromJson(result, ExternalDataMouseGeneSynonymResponse.class);
-            List<ExternalDataMouseGeneSynonym> externalDataMouseGeneSynonyms =
-                externalDataResponse.getData();
-
-            if (!externalDataMouseGeneSynonyms.isEmpty())
-            {
-                gene = new Gene();
-                ExternalDataMouseGeneSynonym firstResult = externalDataMouseGeneSynonyms.get(0);
-                gene.setAccId(firstResult.accId);
-                gene.setSymbol(firstResult.synonym);
-            }
-        }
-        catch (IOException e)
-        {
-            throw new SystemOperationFailedException(e);
-        }
-        return gene;
-    }
-
     @Data
-    static class ExternalDataMouseGeneResponse
+    static class MouseGeneResponse
     {
         @JsonProperty("mouse_gene")
-        List<ExternalDataMouseGene> data;
+        List<MouseGene> data;
     }
 
     @Data
-    private static class ExternalDataMouseGene
+    private static class MouseGene
     {
         @JsonProperty("mgi_gene_acc_id")
         private String accId;
 
         private String symbol;
-    }
-
-    @Data
-    static class ExternalDataMouseGeneSynonymResponse
-    {
-        @JsonProperty("mouse_gene_synonym")
-        List<ExternalDataMouseGeneSynonym> data;
-    }
-
-    @Data
-    private static class ExternalDataMouseGeneSynonym
-    {
-        @JsonProperty("mgi_gene_acc_id")
-        private String accId;
-
-        private String synonym;
     }
 }
