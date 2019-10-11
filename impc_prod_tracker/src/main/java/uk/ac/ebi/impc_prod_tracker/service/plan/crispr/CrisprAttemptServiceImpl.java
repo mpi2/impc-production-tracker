@@ -1,4 +1,4 @@
-package uk.ac.ebi.impc_prod_tracker.service.plan;
+package uk.ac.ebi.impc_prod_tracker.service.plan.crispr;
 
 import org.springframework.stereotype.Component;
 import uk.ac.ebi.impc_prod_tracker.data.biology.crispr_attempt.CrisprAttempt;
@@ -13,11 +13,13 @@ import uk.ac.ebi.impc_prod_tracker.data.biology.crispr_attempt.mutagenesis_donor
 import uk.ac.ebi.impc_prod_tracker.data.biology.crispr_attempt.assay.assay_type.AssayType;
 import uk.ac.ebi.impc_prod_tracker.data.biology.crispr_attempt.assay.assay_type.AssayTypeRepository;
 import uk.ac.ebi.impc_prod_tracker.data.biology.crispr_attempt.delivery_type.DeliveryMethodTypeRepository;
+import uk.ac.ebi.impc_prod_tracker.service.plan.crispr.CrisprAttemptService;
+
 import java.util.List;
 import java.util.Optional;
 
 @Component
-public class CrisprAttempServiceImpl implements CrisprAttempService
+public class CrisprAttemptServiceImpl implements CrisprAttemptService
 {
     private CrisprAttemptRepository crisprAttemptRepository;
     private GenotypePrimerRepository genotypePrimerRepository;
@@ -26,7 +28,7 @@ public class CrisprAttempServiceImpl implements CrisprAttempService
     private AssayTypeRepository assayTypeRepository;
     private DeliveryMethodTypeRepository deliveryTypeRepository;
 
-    public CrisprAttempServiceImpl(
+    public CrisprAttemptServiceImpl(
         CrisprAttemptRepository crisprAttemptRepository,
         GenotypePrimerRepository genotypePrimerRepository,
         NucleaseRepository nucleaseRepository,

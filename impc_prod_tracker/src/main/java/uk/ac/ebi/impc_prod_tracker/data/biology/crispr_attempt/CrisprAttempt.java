@@ -90,7 +90,9 @@ public class CrisprAttempt extends BaseEntity
     @Column(columnDefinition = "TEXT")
     private String comment;
 
-    @OneToOne
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
+    @OneToOne(cascade=CascadeType.ALL, mappedBy = "crisprAttempt")
     private Assay assay;
 
     @ManyToOne(targetEntity= MutagenesisStrategy.class)

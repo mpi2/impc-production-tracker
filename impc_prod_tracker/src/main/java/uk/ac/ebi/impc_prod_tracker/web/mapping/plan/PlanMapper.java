@@ -16,8 +16,7 @@ public class PlanMapper
     private ModelMapper modelMapper;
     private CrisprAttemptMapper crisprAttemptMapper;
 
-    private static final String CRISPR_ATTEMPT_TYPE = "Crispr";
-
+    private static final String CRISPR_ATTEMPT_TYPE = "crispr";
 
     public PlanMapper(ModelMapper modelMapper, CrisprAttemptMapper crisprAttemptMapper)
     {

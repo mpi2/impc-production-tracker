@@ -2,7 +2,9 @@ package uk.ac.ebi.impc_prod_tracker.data.biology.crispr_attempt.assay;
 
 import lombok.*;
 import uk.ac.ebi.impc_prod_tracker.data.BaseEntity;
+import uk.ac.ebi.impc_prod_tracker.data.biology.crispr_attempt.CrisprAttempt;
 import uk.ac.ebi.impc_prod_tracker.data.biology.crispr_attempt.assay.assay_type.AssayType;
+import uk.ac.ebi.impc_prod_tracker.data.biology.plan.Plan;
 
 import javax.persistence.*;
 
@@ -12,9 +14,13 @@ import javax.persistence.*;
 public class Assay extends BaseEntity
 {
     @Id
-    @SequenceGenerator(name = "assaySeq", sequenceName = "ASSAY_SEQ")
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "assaySeq")
+    @Column(name = "id")
     private Long id;
+
+    @OneToOne
+    @JoinColumn(name = "attempt_id")
+    @MapsId
+    private CrisprAttempt crisprAttempt;
 
     @ManyToOne(targetEntity = AssayType.class)
     private AssayType assayType;

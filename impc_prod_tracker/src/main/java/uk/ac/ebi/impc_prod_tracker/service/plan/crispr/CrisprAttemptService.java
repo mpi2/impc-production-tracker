@@ -1,4 +1,4 @@
-package uk.ac.ebi.impc_prod_tracker.service.plan;
+package uk.ac.ebi.impc_prod_tracker.service.plan.crispr;
 
 import uk.ac.ebi.impc_prod_tracker.data.biology.crispr_attempt.CrisprAttempt;
 import uk.ac.ebi.impc_prod_tracker.data.biology.crispr_attempt.delivery_type.DeliveryMethodType;
@@ -10,7 +10,7 @@ import uk.ac.ebi.impc_prod_tracker.data.biology.crispr_attempt.assay.assay_type.
 import java.util.List;
 import java.util.Optional;
 
-public interface CrisprAttempService
+public interface CrisprAttemptService
 {
     Optional<CrisprAttempt> getCrisprAttemptById(Long planId);
 
