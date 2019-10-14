@@ -10,6 +10,7 @@ public class GeneDTO
 {
     @JsonProperty("accessionId")
     private String accId;
+    private String name;
     private String symbol;
     private String speciesName;
     private String externalLink;
