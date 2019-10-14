@@ -16,6 +16,7 @@
 package uk.ac.ebi.impc_prod_tracker.conf.error_management;
 
 import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.databind.JsonMappingException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
@@ -211,7 +212,8 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler
         log.info("{} to {}", servletWebRequest.getHttpMethod(), servletWebRequest.getRequest().getServletPath());
         ApiError apiError = null;
         String error = "Malformed JSON request";
-        if (ex.getCause() instanceof JsonParseException)
+        if (ex.getCause() instanceof JsonParseException
+            || (ex.getCause() instanceof JsonMappingException))
         {
             apiError = new ApiError(BAD_REQUEST, new JsonPayloadExceptionFormatter(ex.getCause()));
         }

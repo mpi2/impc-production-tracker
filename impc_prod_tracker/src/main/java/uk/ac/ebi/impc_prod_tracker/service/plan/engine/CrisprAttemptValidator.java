@@ -4,7 +4,7 @@ import org.springframework.stereotype.Component;
 import uk.ac.ebi.impc_prod_tracker.conf.exceptions.UserOperationFailedException;
 import uk.ac.ebi.impc_prod_tracker.data.biology.crispr_attempt.CrisprAttempt;
 import uk.ac.ebi.impc_prod_tracker.data.biology.crispr_attempt.delivery_type.DeliveryMethodType;
-import uk.ac.ebi.impc_prod_tracker.service.plan.CrisprAttempService;
+import uk.ac.ebi.impc_prod_tracker.service.plan.crispr.CrisprAttemptService;
 
 /**
  * Class that validates that a Crispr Attempt object is valid
@@ -12,14 +12,14 @@ import uk.ac.ebi.impc_prod_tracker.service.plan.CrisprAttempService;
 @Component
 public class CrisprAttemptValidator
 {
-    private CrisprAttempService crisprAttempService;
+    private CrisprAttemptService crisprAttemptService;
 
     private static final String DELIVERY_TYPE_METHOD_NOT_FOUND = "Delivery Method Type [%s]" +
         " does not exist. Please correct the name or create first the delivery type method.";
 
-    public CrisprAttemptValidator(CrisprAttempService crisprAttempService)
+    public CrisprAttemptValidator(CrisprAttemptService crisprAttemptService)
     {
-        this.crisprAttempService = crisprAttempService;
+        this.crisprAttemptService = crisprAttemptService;
     }
 
     void validate(CrisprAttempt crisprAttempt)
@@ -32,7 +32,7 @@ public class CrisprAttemptValidator
     {
         if (deliveryMethodType != null)
         {
-            if (crisprAttempService.getDeliveryTypeByName(deliveryMethodType.getName()) == null)
+            if (crisprAttemptService.getDeliveryTypeByName(deliveryMethodType.getName()) == null)
             {
                 String errorMessage =
                     String.format(DELIVERY_TYPE_METHOD_NOT_FOUND, deliveryMethodType.getName());

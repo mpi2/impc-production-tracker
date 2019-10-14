@@ -17,7 +17,7 @@ import uk.ac.ebi.impc_prod_tracker.data.biology.crispr_attempt.mutagenesis_donor
 import uk.ac.ebi.impc_prod_tracker.data.biology.crispr_attempt.mutagenesis_donor.preparation_type.PreparationTypeRepository;
 import uk.ac.ebi.impc_prod_tracker.data.biology.strain.Strain;
 import uk.ac.ebi.impc_prod_tracker.data.biology.strain.strain_type.StrainType;
-import uk.ac.ebi.impc_prod_tracker.service.plan.CrisprAttempService;
+import uk.ac.ebi.impc_prod_tracker.service.plan.crispr.CrisprAttemptService;
 import uk.ac.ebi.impc_prod_tracker.web.dto.plan.production.crispr_attempt.AssayDTO;
 import uk.ac.ebi.impc_prod_tracker.web.dto.plan.production.crispr_attempt.CrisprAttemptDTO;
 import uk.ac.ebi.impc_prod_tracker.web.dto.plan.production.crispr_attempt.GenotypePrimerDTO;
@@ -120,7 +120,7 @@ public class CrisprAttemptMapperTest
     private static final Integer GENOTYPE_PRIMER_STOP_2 = 35;
 
     @MockBean @Autowired
-    CrisprAttempService crisprAttempService;
+    CrisprAttemptService crisprAttemptService;
 
     @MockBean @Autowired
     PreparationTypeRepository preparationTypeRepository;
@@ -404,13 +404,16 @@ public class CrisprAttemptMapperTest
         preparationType1.setName(MUTAGENESIS_DONOR_PREPARATION + MUTAGENESIS_DONOR_ID1);
         PreparationType preparationType2 = new PreparationType();
         preparationType1.setName(MUTAGENESIS_DONOR_PREPARATION + MUTAGENESIS_DONOR_ID2);
-        when(crisprAttempService.getDeliveryTypeByName("deliveryMethodTypeName")).thenReturn(deliveryMethodType);
+        AssayType assayType = new AssayType();
+        assayType.setName(ASSAY_TYPE_NAME);
+        when(crisprAttemptService.getDeliveryTypeByName("deliveryMethodTypeName")).thenReturn(deliveryMethodType);
         when(preparationTypeRepository.findFirstByName(
             MUTAGENESIS_DONOR_PREPARATION + MUTAGENESIS_DONOR_ID1))
             .thenReturn(preparationType1);
         when(preparationTypeRepository.findFirstByName(
             MUTAGENESIS_DONOR_PREPARATION + MUTAGENESIS_DONOR_ID2))
             .thenReturn(preparationType2);
+        when(crisprAttemptService.getAssayTypeByName(ASSAY_TYPE_NAME)).thenReturn(assayType);
 
         CrisprAttemptDTO crisprAttemptDTO = buildCrisprAttemptDto();
         addNucleaseDTOs(crisprAttemptDTO);

@@ -60,10 +60,22 @@
     "condition": "resource.resourcePrivacy.name() == 'PUBLIC'"
   },
   {
+    "name": "Read protected projects if user logged into the system.",
+    "description": "A project that is protected can be read by anyone logged into the system.",
+    "target": "action == 'READ_PROJECT'",
+    "condition": "resource.resourcePrivacy.name() == 'PROTECTED' && subject.name != 'anonymousUser'"
+  },
+  {
     "name": "Read projects in related consortia.",
     "description": "A user can read a project that is related to a consortium where the user is a member of that consortium.",
     "target": "action == 'READ_PROJECT'",
     "condition": "subject.belongsToConsortia(resource.consortia)"
+  },
+  {
+    "name": "Read projects associated projects.",
+    "description": "A user can read a project if they have plans associated with it.",
+    "target": "action == 'READ_PROJECT'",
+    "condition": "subject.belongsToAnyWorkUnit(resource.getRelatedWorkUnits())"
   },
   {
     "name": "Modify associated projects",

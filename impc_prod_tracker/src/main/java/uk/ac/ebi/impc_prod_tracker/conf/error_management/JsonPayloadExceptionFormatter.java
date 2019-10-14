@@ -16,6 +16,7 @@
 package uk.ac.ebi.impc_prod_tracker.conf.error_management;
 
 import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.databind.JsonMappingException;
 
 /**
  * Class to format Json related exceptions.
@@ -39,7 +40,7 @@ public class JsonPayloadExceptionFormatter extends BaseExceptionFormatter
     private void init()
     {
         String rootCauseMessage = exception.getMessage();
-        if (exception instanceof JsonParseException)
+        if (exception instanceof JsonParseException || exception instanceof JsonMappingException)
         {
             message = MESSAGE;
             if (rootCauseMessage.contains(UNRECOGNIZED_TOKEN))
