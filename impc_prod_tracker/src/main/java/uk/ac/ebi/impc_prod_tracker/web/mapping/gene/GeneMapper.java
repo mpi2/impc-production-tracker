@@ -4,7 +4,6 @@ import org.springframework.stereotype.Component;
 import uk.ac.ebi.impc_prod_tracker.data.biology.gene.Gene;
 import uk.ac.ebi.impc_prod_tracker.data.biology.species.Species;
 import uk.ac.ebi.impc_prod_tracker.web.dto.gene.GeneDTO;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -16,6 +15,7 @@ public class GeneMapper
     {
         GeneDTO geneDTO = new GeneDTO();
         geneDTO.setAccId(gene.getAccId());
+        geneDTO.setName(gene.getName());
         geneDTO.setSymbol(gene.getSymbol());
         Species species = gene.getSpecies();
         if (species != null)

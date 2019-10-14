@@ -23,7 +23,6 @@ import uk.ac.ebi.impc_prod_tracker.data.biology.allele.Allele;
 import uk.ac.ebi.impc_prod_tracker.data.biology.gene.flag.GeneFlag;
 import uk.ac.ebi.impc_prod_tracker.data.biology.project_gene.ProjectGene;
 import uk.ac.ebi.impc_prod_tracker.data.biology.species.Species;
-
 import javax.persistence.*;
 import javax.validation.constraints.Pattern;
 import java.util.Set;
@@ -39,6 +38,8 @@ public class Gene extends BaseEntity
     private Long id;
 
     private String symbol;
+
+    private String name;
 
     private String type;
 
