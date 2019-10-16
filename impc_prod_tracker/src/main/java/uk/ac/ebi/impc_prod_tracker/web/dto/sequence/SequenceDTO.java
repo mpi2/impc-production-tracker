@@ -10,8 +10,12 @@ import java.util.List;
 public class SequenceDTO {
 
     private String sequence;
+
+    @JsonProperty("typeName")
     private String sequenceTypeName;
 
-    @JsonProperty("sequenceLocationAttributes")
+    private String sequenceCategoryName;
+
+    @JsonProperty("sequenceLocations")
     private List<SequenceLocationDTO> sequenceLocationDTOS;
 }

@@ -23,8 +23,10 @@ import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.hateoas.RepresentationModel;
-import uk.ac.ebi.impc_prod_tracker.web.dto.gene.ProjectGeneDTO;
-import uk.ac.ebi.impc_prod_tracker.web.dto.location.ProjectLocationDTO;
+import uk.ac.ebi.impc_prod_tracker.web.dto.ProjectIntentionDTO;
+import uk.ac.ebi.impc_prod_tracker.web.dto.gene.ProjectIntentionGeneDTO;
+import uk.ac.ebi.impc_prod_tracker.web.dto.location.ProjectIntentionLocationDTO;
+import uk.ac.ebi.impc_prod_tracker.web.dto.sequence.ProjectIntentionSequenceDTO;
 import uk.ac.ebi.impc_prod_tracker.web.dto.species.SpeciesDTO;
 import uk.ac.ebi.impc_prod_tracker.web.dto.status_stamps.StatusStampsDTO;
 import java.util.List;
@@ -47,12 +49,16 @@ public class ProjectDTO extends RepresentationModel
     private Boolean recovery;
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    @JsonProperty("intentionByGeneAttributes")
-    private List<ProjectGeneDTO> projectGeneDTOS;
+    @JsonProperty("intentionsByGene")
+    private List<ProjectIntentionGeneDTO> projectIntentionGeneDTOS;
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    @JsonProperty("intentionByLocationAttributes")
-    private List<ProjectLocationDTO> projectLocationDTOS;
+    @JsonProperty("intentionsByLocation")
+    private List<ProjectIntentionLocationDTO> projectIntentionLocationDTOS;
+
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    @JsonProperty("intentionsBySequence")
+    private List<ProjectIntentionSequenceDTO> projectIntentionSequenceDTOS;
 
     @JsonIgnore
     private Long imitsMiPlanId;

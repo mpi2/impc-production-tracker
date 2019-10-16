@@ -3,36 +3,49 @@ package uk.ac.ebi.impc_prod_tracker.web.mapping.project;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
 import uk.ac.ebi.impc_prod_tracker.data.biology.project.Project;
-import uk.ac.ebi.impc_prod_tracker.web.dto.gene.ProjectGeneDTO;
-import uk.ac.ebi.impc_prod_tracker.web.dto.location.ProjectLocationDTO;
+import uk.ac.ebi.impc_prod_tracker.data.biology.project_intention.ProjectIntention;
+import uk.ac.ebi.impc_prod_tracker.data.biology.project_intention_gene.ProjectIntentionGene;
+import uk.ac.ebi.impc_prod_tracker.data.biology.project_intention_location.ProjectIntentionLocation;
+import uk.ac.ebi.impc_prod_tracker.data.biology.project_intention_location.SortByProjectIntentionLocationIndex;
+import uk.ac.ebi.impc_prod_tracker.data.biology.project_intention_sequence.ProjectIntentionSequence;
+import uk.ac.ebi.impc_prod_tracker.data.biology.project_intention_sequence.SortByProjectIntentionSequenceIndex;
 import uk.ac.ebi.impc_prod_tracker.web.dto.project.ProjectDTO;
 import uk.ac.ebi.impc_prod_tracker.web.dto.species.SpeciesDTO;
 import uk.ac.ebi.impc_prod_tracker.web.dto.status_stamps.StatusStampsDTO;
-import uk.ac.ebi.impc_prod_tracker.web.mapping.gene.ProjectGeneMapper;
-import uk.ac.ebi.impc_prod_tracker.web.mapping.location.ProjectLocationMapper;
+import uk.ac.ebi.impc_prod_tracker.web.mapping.gene.ProjectIntentionGeneMapper;
+import uk.ac.ebi.impc_prod_tracker.web.mapping.location.ProjectIntentionLocationMapper;
+import uk.ac.ebi.impc_prod_tracker.web.mapping.sequence.ProjectIntentionSequenceMapper;
 import uk.ac.ebi.impc_prod_tracker.web.mapping.statusStamp.StatusStampMapper;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Objects;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Component
 public class ProjectMapper
 {
     private ModelMapper modelMapper;
     private StatusStampMapper statusStampMapper;
-    private ProjectGeneMapper projectGeneMapper;
-    private ProjectLocationMapper projectLocationMapper;
+    private ProjectIntentionGeneMapper projectIntentionGeneMapper;
+    private ProjectIntentionLocationMapper projectIntentionLocationMapper;
+    private ProjectIntentionSequenceMapper projectIntentionSequenceMapper;
     private static final String MGI_URL = "http://www.mousephenotype.org/data/genes/";
 
     public ProjectMapper(
         ModelMapper modelMapper,
         StatusStampMapper statusStampMapper,
-        ProjectGeneMapper projectGeneMapper,
-        ProjectLocationMapper projectLocationMapper)
+        ProjectIntentionGeneMapper projectIntentionGeneMapper,
+        ProjectIntentionLocationMapper projectIntentionLocationMapper,
+        ProjectIntentionSequenceMapper projectIntentionSequenceMapper)
     {
         this.modelMapper = modelMapper;
         this.statusStampMapper = statusStampMapper;
-        this.projectGeneMapper = projectGeneMapper;
-        this.projectLocationMapper = projectLocationMapper;
+        this.projectIntentionGeneMapper = projectIntentionGeneMapper;
+        this.projectIntentionLocationMapper = projectIntentionLocationMapper;
+        this.projectIntentionSequenceMapper = projectIntentionSequenceMapper;
     }
 
     public ProjectDTO toDto(Project project)
@@ -42,8 +55,9 @@ public class ProjectMapper
         {
             projectDTO = modelMapper.map(project, ProjectDTO.class);
             addStatusStampsDTO(project, projectDTO);
-            addProjectGeneDTO(project, projectDTO);
-            addProjectLocationDTO(project, projectDTO);
+            addProjectIntentionGenes(project, projectDTO);
+            addProjectIntentionLocations(project, projectDTO);
+            addProjectIntentionSequences(project, projectDTO);
             addSpeciesDTO(project, projectDTO);
             addConsortiaNames(project, projectDTO);
         }
@@ -76,23 +90,91 @@ public class ProjectMapper
         projectDTO.setProjectSpeciesDTOs(projectSpeciesDTOs);
     }
 
-    private void addProjectLocationDTO(Project project, ProjectDTO projectDTO)
+    private void addProjectIntentionGenes(Project project, ProjectDTO projectDTO)
     {
-        if (project.getLocations() != null && !project.getLocations().isEmpty())
+        Set<ProjectIntentionGene> projectIntentionGenes =
+            getProjectIntentionGene(project.getProjectIntentions());
+        if (projectIntentionGenes != null)
         {
-            List<ProjectLocationDTO> projectLocationDTOS =
-                projectLocationMapper.toDtos(project.getLocations());
-            projectDTO.setProjectLocationDTOS(projectLocationDTOS);
+            projectDTO.setProjectIntentionGeneDTOS(
+                projectIntentionGeneMapper.toDtos(projectIntentionGenes));
         }
     }
 
-    private void addProjectGeneDTO(Project project, ProjectDTO projectDTO)
+    private void addProjectIntentionLocations(Project project, ProjectDTO projectDTO)
     {
-        if (project.getGenes() != null && !project.getGenes().isEmpty())
+        List<ProjectIntentionLocation> projectIntentionLocations =
+            getProjectIntentionLocation(project.getProjectIntentions());
+        if (projectIntentionLocations != null)
         {
-            List<ProjectGeneDTO> projectGeneDTOS = projectGeneMapper.toDtos(project.getGenes());
-            projectDTO.setProjectGeneDTOS(projectGeneDTOS);
+            projectDTO.setProjectIntentionLocationDTOS(
+                projectIntentionLocationMapper.toDtos(projectIntentionLocations));
         }
+    }
+
+    private void addProjectIntentionSequences(Project project, ProjectDTO projectDTO)
+    {
+        List<ProjectIntentionSequence> projectIntentionSequences =
+            getProjectIntentionSequence(project.getProjectIntentions());
+        if (projectIntentionSequences != null)
+        {
+            projectDTO.setProjectIntentionSequenceDTOS(
+                projectIntentionSequenceMapper.toDtos(projectIntentionSequences));
+        }
+    }
+
+    private Set<ProjectIntentionGene> getProjectIntentionGene(Set<ProjectIntention> projectIntentions)
+    {
+        Set<ProjectIntentionGene> projectIntentionGenes = null;
+        if (projectIntentions != null)
+        {
+            projectIntentionGenes = projectIntentions.stream()
+                .map(ProjectIntention::getProjectIntentionGene)
+                .filter(Objects::nonNull)
+                .collect(Collectors.toSet());
+        }
+        if (projectIntentionGenes.isEmpty())
+        {
+            projectIntentionGenes = null;
+        }
+        return projectIntentionGenes;
+    }
+
+    private List<ProjectIntentionLocation> getProjectIntentionLocation(Set<ProjectIntention> projectIntentions)
+    {
+        List<ProjectIntentionLocation> projectIntentionLocation = null;
+        if (projectIntentions != null)
+        {
+            projectIntentionLocation = projectIntentions.stream()
+                .map(ProjectIntention::getProjectIntentionLocation)
+                .filter(Objects::nonNull)
+                .collect(Collectors.toList());
+        }
+        Collections.sort(projectIntentionLocation, new SortByProjectIntentionLocationIndex());
+        if (projectIntentionLocation.isEmpty())
+        {
+            projectIntentionLocation = null;
+        }
+        return projectIntentionLocation;
+    }
+
+    private List<ProjectIntentionSequence> getProjectIntentionSequence(
+        Set<ProjectIntention> projectIntentions)
+    {
+        List<ProjectIntentionSequence> projectIntentionSequence = null;
+        if (projectIntentions != null)
+        {
+            projectIntentionSequence = projectIntentions.stream()
+                .map(ProjectIntention::getProjectIntentionSequence)
+                .filter(Objects::nonNull)
+                .collect(Collectors.toList());
+        }
+        Collections.sort(projectIntentionSequence, new SortByProjectIntentionSequenceIndex());
+        if (projectIntentionSequence.isEmpty())
+        {
+            projectIntentionSequence = null;
+        }
+        return projectIntentionSequence;
     }
 
     private void addStatusStampsDTO(Project project, ProjectDTO projectDTO)
