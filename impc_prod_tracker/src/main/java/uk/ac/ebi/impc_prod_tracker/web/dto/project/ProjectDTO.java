@@ -23,7 +23,6 @@ import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.hateoas.RepresentationModel;
-import uk.ac.ebi.impc_prod_tracker.web.dto.ProjectIntentionDTO;
 import uk.ac.ebi.impc_prod_tracker.web.dto.gene.ProjectIntentionGeneDTO;
 import uk.ac.ebi.impc_prod_tracker.web.dto.location.ProjectIntentionLocationDTO;
 import uk.ac.ebi.impc_prod_tracker.web.dto.sequence.ProjectIntentionSequenceDTO;

@@ -3,7 +3,7 @@ package uk.ac.ebi.impc_prod_tracker.web.dto.gene;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
-import uk.ac.ebi.impc_prod_tracker.web.dto.ProjectIntentionDTO;
+import uk.ac.ebi.impc_prod_tracker.web.dto.intention.ProjectIntentionDTO;
 
 @Data
 @RequiredArgsConstructor

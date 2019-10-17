@@ -30,7 +30,6 @@ public class ProjectIntentionSequenceMapper
         projectIntentionSequenceDTO.setIndex(projectIntentionSequence.getIndex());
         projectIntentionSequenceDTO.setProjectIntentionDTO(
             projectIntentionMapper.toDto(projectIntentionSequence.getProjectIntention()));
-
         return projectIntentionSequenceDTO;
     }
 
