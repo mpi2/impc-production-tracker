@@ -114,9 +114,9 @@ class ProjectController
         {
             projectDTO = projectEntityToDtoMapper.toDto(project);
             projectDTO.add(
-                PlanLinkBuilder.buildPlanLinks(project, PlanTypes.PRODUCTION, "production_plans"));
+                PlanLinkBuilder.buildPlanLinks(project, PlanTypes.PRODUCTION, "productionPlans"));
             projectDTO.add(
-                PlanLinkBuilder.buildPlanLinks(project, PlanTypes.PHENOTYPING, "phenotyping_plans"));
+                PlanLinkBuilder.buildPlanLinks(project, PlanTypes.PHENOTYPING, "phenotypingPlans"));
         }
         return projectDTO;
     }
