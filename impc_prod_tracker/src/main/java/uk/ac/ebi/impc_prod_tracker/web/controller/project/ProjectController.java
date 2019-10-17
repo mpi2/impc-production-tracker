@@ -35,10 +35,10 @@ import uk.ac.ebi.impc_prod_tracker.web.controller.project.helper.ProjectFilterBu
 import uk.ac.ebi.impc_prod_tracker.web.controller.project.helper.ProjectUtilities;
 import uk.ac.ebi.impc_prod_tracker.web.controller.util.LinkUtil;
 import uk.ac.ebi.impc_prod_tracker.web.dto.common.history.HistoryDTO;
-import uk.ac.ebi.impc_prod_tracker.web.dto.project.NewProjectRequestDTO;
 import uk.ac.ebi.impc_prod_tracker.web.dto.project.ProjectDTO;
 import uk.ac.ebi.impc_prod_tracker.web.mapping.common.history.HistoryMapper;
-import uk.ac.ebi.impc_prod_tracker.web.mapping.project.ProjectMapper;
+import uk.ac.ebi.impc_prod_tracker.web.mapping.project.ProjectDtoToEntityMapper;
+import uk.ac.ebi.impc_prod_tracker.web.mapping.project.ProjectEntityToDtoMapper;
 import java.util.List;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
@@ -50,20 +50,23 @@ import static org.springframework.http.ResponseEntity.ok;
 class ProjectController
 {
     private ProjectService projectService;
-    private ProjectMapper projectMapper;
+    private ProjectEntityToDtoMapper projectEntityToDtoMapper;
     private HistoryMapper historyMapper;
+    private ProjectDtoToEntityMapper projectDtoToEntityMapper;
 
     private static final String PROJECT_NOT_FOUND_ERROR =
         "Project %s does not exist or you don't have access to it.";
 
     ProjectController(
         ProjectService projectService,
-        ProjectMapper projectMapper,
-        HistoryMapper historyMapper)
+        ProjectEntityToDtoMapper projectEntityToDtoMapper,
+        HistoryMapper historyMapper,
+        ProjectDtoToEntityMapper projectDtoToEntityMapper)
     {
         this.projectService = projectService;
-        this.projectMapper = projectMapper;
+        this.projectEntityToDtoMapper = projectEntityToDtoMapper;
         this.historyMapper = historyMapper;
+        this.projectDtoToEntityMapper = projectDtoToEntityMapper;
     }
 
     /**
@@ -109,7 +112,7 @@ class ProjectController
         ProjectDTO projectDTO = null;
         if (project != null)
         {
-            projectDTO = projectMapper.toDto(project);
+            projectDTO = projectEntityToDtoMapper.toDto(project);
             projectDTO.add(
                 PlanLinkBuilder.buildPlanLinks(project, PlanTypes.PRODUCTION, "production_plans"));
             projectDTO.add(
@@ -146,10 +149,12 @@ class ProjectController
      *      * @api {post} / create a new project.
      */
     @PostMapping
-    private ResponseEntity createProject(@RequestBody NewProjectRequestDTO newProjectRequestDTO)
+    private ResponseEntity createProject(@RequestBody ProjectDTO projectDTO)
     {
-        Project newProject = projectService.createProject(newProjectRequestDTO);
-        System.out.println("Project created => "+ newProject);
+
+        Project projectToBeCreated = projectDtoToEntityMapper.toEntity(projectDTO);
+        Project createdProject = projectService.createProject(projectToBeCreated);
+        System.out.println("Project created => "+ createdProject);
         return ok("Project created!");
     }
 

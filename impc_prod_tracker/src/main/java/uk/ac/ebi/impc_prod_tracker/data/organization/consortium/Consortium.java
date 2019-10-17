@@ -38,7 +38,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.SequenceGenerator;
 import java.util.Set;
 
-@NoArgsConstructor(access= AccessLevel.PRIVATE, force=true)
+@NoArgsConstructor(access= AccessLevel.PUBLIC, force=true)
 @Data
 @Entity
 @RestResource(rel = "consortia", path = "consortia")

@@ -13,26 +13,24 @@
  * language governing permissions and limitations under the
  * License.
  *******************************************************************************/
-package uk.ac.ebi.impc_prod_tracker.service.project;
+package uk.ac.ebi.impc_prod_tracker.service.consortium;
 
-import uk.ac.ebi.impc_prod_tracker.data.common.history.History;
-import uk.ac.ebi.impc_prod_tracker.web.controller.project.helper.ProjectFilter;
-import uk.ac.ebi.impc_prod_tracker.data.biology.project.Project;
+import org.springframework.stereotype.Component;
+import uk.ac.ebi.impc_prod_tracker.data.organization.consortium.Consortium;
+import uk.ac.ebi.impc_prod_tracker.data.organization.consortium.ConsortiumRepository;
 
-import java.util.List;
-
-public interface ProjectService
+@Component
+public class ConsortiumService
 {
-    Project getProjectByTpn(String tpn);
+    private ConsortiumRepository consortiumRepository;
 
-    List<Project> getProjects(ProjectFilter projectFilter);
+    public ConsortiumService(ConsortiumRepository consortiumRepository)
+    {
+        this.consortiumRepository = consortiumRepository;
+    }
 
-    Project createProject(Project projectDTO);
-
-    /**
-     * Gets the history for a project
-     * @param project The project.
-     * @return List of {@link History} with the trace of the changes for a project.
-     */
-    List<History> getProjectHistory(Project project);
+    public Consortium findConsortiumByName(String name)
+    {
+        return consortiumRepository.findByNameIgnoreCase(name);
+    }
 }

@@ -15,13 +15,10 @@
  *******************************************************************************/
 package uk.ac.ebi.impc_prod_tracker.web.dto.project;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
 import org.springframework.hateoas.RepresentationModel;
 import uk.ac.ebi.impc_prod_tracker.web.dto.gene.ProjectIntentionGeneDTO;
 import uk.ac.ebi.impc_prod_tracker.web.dto.location.ProjectIntentionLocationDTO;
@@ -31,19 +28,17 @@ import uk.ac.ebi.impc_prod_tracker.web.dto.status_stamps.StatusStampsDTO;
 import java.util.List;
 
 @Data
-@RequiredArgsConstructor
 @NoArgsConstructor
 public class ProjectDTO extends RepresentationModel
 {
-    @NonNull
     private String tpn;
-
     private String assignmentStatusName;
 
     @JsonProperty("assignmentStatusStamps")
     private List<StatusStampsDTO> statusStampsDTOS;
 
-    private String externalReference;
+    @JsonProperty("externalReference")
+    private String projectExternalRef;
     private Boolean withdrawn;
     private Boolean recovery;
 
@@ -58,9 +53,6 @@ public class ProjectDTO extends RepresentationModel
     @JsonInclude(JsonInclude.Include.NON_NULL)
     @JsonProperty("intentionsBySequence")
     private List<ProjectIntentionSequenceDTO> projectIntentionSequenceDTOS;
-
-    @JsonIgnore
-    private Long imitsMiPlanId;
 
     private String comment;
 

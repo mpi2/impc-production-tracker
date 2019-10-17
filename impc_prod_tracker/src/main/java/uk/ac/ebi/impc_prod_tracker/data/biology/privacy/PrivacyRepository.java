@@ -18,5 +18,5 @@ package uk.ac.ebi.impc_prod_tracker.data.biology.privacy;
 import org.springframework.data.repository.CrudRepository;
 
 public interface PrivacyRepository extends CrudRepository<Privacy, Long> {
-    Privacy findByName(String name);
+    Privacy findByNameIgnoreCase(String name);
 }

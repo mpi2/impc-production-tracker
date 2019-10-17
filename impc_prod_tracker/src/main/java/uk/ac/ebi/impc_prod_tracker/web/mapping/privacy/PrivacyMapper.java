@@ -13,29 +13,32 @@
  * language governing permissions and limitations under the
  * License.
  *******************************************************************************/
-package uk.ac.ebi.impc_prod_tracker.web.mapping.project;
+package uk.ac.ebi.impc_prod_tracker.web.mapping.privacy;
 
 import org.springframework.stereotype.Component;
-import uk.ac.ebi.impc_prod_tracker.service.project.search.SearchResult;
-import uk.ac.ebi.impc_prod_tracker.web.dto.project.search.SearchResultDTO;
+import uk.ac.ebi.impc_prod_tracker.conf.exceptions.UserOperationFailedException;
+import uk.ac.ebi.impc_prod_tracker.data.biology.privacy.Privacy;
+import uk.ac.ebi.impc_prod_tracker.service.privacy.PrivacyService;
 
 @Component
-public class SearchResultMapper
+public class PrivacyMapper
 {
-    private ProjectEntityToDtoMapper projectEntityToDtoMapper;
+    private PrivacyService privacyService;
 
-    public SearchResultMapper(ProjectEntityToDtoMapper projectEntityToDtoMapper)
+    private static final String PRIVACY_NOT_FOUND_ERROR = "Privacy [%s] does not exist.";
+
+    public PrivacyMapper(PrivacyService privacyService)
     {
-        this.projectEntityToDtoMapper = projectEntityToDtoMapper;
+        this.privacyService = privacyService;
     }
 
-    public SearchResultDTO toDto(SearchResult searchResult)
+    public Privacy toEntity(String privacyName)
     {
-        SearchResultDTO searchResultDTO = new SearchResultDTO();
-        searchResultDTO.setInput(searchResult.getInput());
-        searchResultDTO.setComment(searchResult.getComment());
-        searchResultDTO.setProject(projectEntityToDtoMapper.toDto(searchResult.getProject()));
-
-        return searchResultDTO;
+        Privacy privacy = privacyService.findPrivacyByName(privacyName);
+        if (privacy == null)
+        {
+            throw new UserOperationFailedException(String.format(PRIVACY_NOT_FOUND_ERROR, privacyName));
+        }
+        return privacy;
     }
 }
