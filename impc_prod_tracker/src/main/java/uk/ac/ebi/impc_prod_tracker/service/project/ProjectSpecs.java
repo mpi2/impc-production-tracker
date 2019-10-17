@@ -29,19 +29,14 @@ import uk.ac.ebi.impc_prod_tracker.data.biology.privacy.Privacy;
 import uk.ac.ebi.impc_prod_tracker.data.biology.privacy.Privacy_;
 import uk.ac.ebi.impc_prod_tracker.data.biology.project.Project;
 import uk.ac.ebi.impc_prod_tracker.data.biology.project.Project_;
-import uk.ac.ebi.impc_prod_tracker.data.biology.project_gene.ProjectGene;
-import uk.ac.ebi.impc_prod_tracker.data.biology.project_gene.ProjectGene_;
-import uk.ac.ebi.impc_prod_tracker.data.biology.project_location.ProjectLocation;
-import uk.ac.ebi.impc_prod_tracker.data.biology.project_location.ProjectLocation_;
-import uk.ac.ebi.impc_prod_tracker.data.biology.project_sequence.ProjectSequence;
-import uk.ac.ebi.impc_prod_tracker.data.biology.project_sequence.ProjectSequence_;
+import uk.ac.ebi.impc_prod_tracker.data.biology.project_intention_gene.ProjectIntentionGene;
+import uk.ac.ebi.impc_prod_tracker.data.biology.project_intention.ProjectIntention;
+import uk.ac.ebi.impc_prod_tracker.data.biology.project_intention.ProjectIntention_;
+import uk.ac.ebi.impc_prod_tracker.data.biology.project_intention_gene.ProjectIntentionGene_;
 import uk.ac.ebi.impc_prod_tracker.data.organization.consortium.Consortium;
 import uk.ac.ebi.impc_prod_tracker.data.organization.consortium.Consortium_;
 import uk.ac.ebi.impc_prod_tracker.data.organization.work_unit.WorkUnit;
 import uk.ac.ebi.impc_prod_tracker.data.organization.work_unit.WorkUnit_;
-
-import javax.persistence.criteria.Join;
-import javax.persistence.criteria.JoinType;
 import javax.persistence.criteria.Path;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.SetJoin;
@@ -71,8 +66,12 @@ public class ProjectSpecs
             }
 
             List<Predicate> predicates = new ArrayList<>();
-            SetJoin<Project, ProjectGene> projectProjectGeneSetJoin = root.join(Project_.genes);
-            Path<Gene> genePath = projectProjectGeneSetJoin.get(ProjectGene_.gene);
+            SetJoin<Project, ProjectIntention> projectProjectIntentionSetJoin =
+                root.join(Project_.projectIntentions);
+
+            Path<ProjectIntentionGene> projectIntentionProjectGeneSetJoin =
+                projectProjectIntentionSetJoin.get(ProjectIntention_.projectIntentionGene);
+            Path<Gene> genePath = projectIntentionProjectGeneSetJoin.get(ProjectIntentionGene_.gene);
             Path<String> symbolName = genePath.get(Gene_.symbol);
             predicates.add(symbolName.in(markerSymbols));
 
@@ -92,8 +91,11 @@ public class ProjectSpecs
             List<String> lowerCaseGenesNameOrIds =
                 genesNameOrIds.stream().map(String::toLowerCase).collect(Collectors.toList());
 
-            SetJoin<Project, ProjectGene> projectProjectGeneSetJoin = root.join(Project_.genes);
-            Path<Gene> genePath = projectProjectGeneSetJoin.get(ProjectGene_.gene);
+            SetJoin<Project, ProjectIntention> projectProjectIntentionSetJoin =
+                root.join(Project_.projectIntentions);
+            Path<ProjectIntentionGene> projectGenePath =
+                projectProjectIntentionSetJoin.join(ProjectIntention_.projectIntentionGene);
+            Path<Gene> genePath = projectGenePath.get(ProjectIntentionGene_.gene);
             Path<String> symbolNamePath = genePath.get(Gene_.symbol);
             Path<String> accIdPath = genePath.get(Gene_.accId);
 
@@ -116,34 +118,17 @@ public class ProjectSpecs
         {
             specification = (Specification<Project>) (root, query, criteriaBuilder) -> {
 
-                SetJoin<Project, ProjectGene> projectProjectGeneSetJoin =
-                    root.join(Project_.genes, JoinType.LEFT);
-                SetJoin<Project, ProjectLocation> projectProjectLocationSetJoin =
-                    root.join(Project_.locations, JoinType.LEFT);
-                SetJoin<Project, ProjectSequence> projectProjectSequenceSetJoin =
-                    root.join(Project_.sequences, JoinType.LEFT);
+                SetJoin<Project, ProjectIntention> projectProjectIntentionSetJoin =
+                    root.join(Project_.projectIntentions);
 
-                Path<AlleleType> alleleTypePathByGene =
-                    projectProjectGeneSetJoin.join(ProjectGene_.alleleType, JoinType.LEFT);
-                Path<AlleleType> alleleTypePathByLocation =
-                    projectProjectLocationSetJoin.join(ProjectLocation_.alleleType, JoinType.LEFT);
-                Path<AlleleType> alleleTypePathBySequence =
-                    projectProjectSequenceSetJoin.join(ProjectSequence_.alleleType, JoinType.LEFT);
+                Path<AlleleType> alleleTypePath =
+                    projectProjectIntentionSetJoin.join(ProjectIntention_.alleleType);
 
-                Path<String> alleleTypePathByGeneName =
-                    alleleTypePathByGene.get(AlleleType_.name);
-                Path<String> alleleTypePathByLocationName =
-                    alleleTypePathByLocation.get(AlleleType_.name);
-                Path<String> alleleTypePathBySequenceName =
-                    alleleTypePathBySequence.get(AlleleType_.name);
+                Path<String> alleleTypeName = alleleTypePath.get(AlleleType_.name);
 
                 query.distinct(true);
 
-                return criteriaBuilder.or(
-                    alleleTypePathByGeneName.in(intentionNames),
-                    alleleTypePathByLocationName.in(intentionNames),
-                    alleleTypePathBySequenceName.in(intentionNames)
-                );
+                return alleleTypeName.in(intentionNames);
             };
         }
         return specification;

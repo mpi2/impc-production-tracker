@@ -9,9 +9,8 @@ import uk.ac.ebi.impc_prod_tracker.web.dto.location.LocationDTO;
 @RequiredArgsConstructor
 public class SequenceLocationDTO {
 
-    @JsonProperty("location_index")
     private Integer locationIndex;
 
-    @JsonProperty("location_attributes")
-    private LocationDTO locationAttributes;
+    @JsonProperty("location")
+    private LocationDTO locationDTO;
 }

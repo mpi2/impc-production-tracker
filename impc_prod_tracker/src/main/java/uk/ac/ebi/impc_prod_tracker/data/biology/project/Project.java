@@ -10,9 +10,7 @@ import uk.ac.ebi.impc_prod_tracker.data.biology.assignment_status.AssignmentStat
 import uk.ac.ebi.impc_prod_tracker.data.biology.assignment_status_stamp.AssignmentStatusStamp;
 import uk.ac.ebi.impc_prod_tracker.data.biology.plan.Plan;
 import uk.ac.ebi.impc_prod_tracker.data.biology.privacy.Privacy;
-import uk.ac.ebi.impc_prod_tracker.data.biology.project_gene.ProjectGene;
-import uk.ac.ebi.impc_prod_tracker.data.biology.project_location.ProjectLocation;
-import uk.ac.ebi.impc_prod_tracker.data.biology.project_sequence.ProjectSequence;
+import uk.ac.ebi.impc_prod_tracker.data.biology.project_intention.ProjectIntention;
 import uk.ac.ebi.impc_prod_tracker.data.biology.species.Species;
 import uk.ac.ebi.impc_prod_tracker.data.organization.consortium.Consortium;
 import uk.ac.ebi.impc_prod_tracker.data.organization.work_unit.WorkUnit;
@@ -113,7 +111,7 @@ public class Project extends BaseEntity implements Resource<Project>
         restrictedProject.setIsActive(isActive);
         restrictedProject.setRecovery(recovery);
         restrictedProject.setProjectExternalRef(projectExternalRef);
-        restrictedProject.setGenes(genes);
+        restrictedProject.setProjectIntentions(projectIntentions);
         restrictedProject.setIsObjectRestricted(true);
         return restrictedProject;
     }
@@ -129,24 +127,10 @@ public class Project extends BaseEntity implements Resource<Project>
         return relatedWorkUnites;
     }
 
-
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
     @OneToMany(mappedBy = "project")
-    private Set<ProjectGene> genes;
-
-    @EqualsAndHashCode.Exclude
-    @ToString.Exclude
-    @OneToMany(mappedBy = "project")
-    private Set<ProjectSequence> sequences;
-
-    @EqualsAndHashCode.Exclude
-    @ToString.Exclude
-    @OneToMany
-    @JoinColumn(name = "project_id")
-    private Set<ProjectLocation> locations;
-
-
+    private Set<ProjectIntention> projectIntentions;
 
     @ToString.Exclude
     @JsonIgnore
