@@ -22,11 +22,11 @@ import uk.ac.ebi.impc_prod_tracker.web.dto.project.search.SearchResultDTO;
 @Component
 public class SearchResultMapper
 {
-    private ProjectMapper projectMapper;
+    private ProjectEntityToDtoMapper projectEntityToDtoMapper;
 
-    public SearchResultMapper(ProjectMapper projectMapper)
+    public SearchResultMapper(ProjectEntityToDtoMapper projectEntityToDtoMapper)
     {
-        this.projectMapper = projectMapper;
+        this.projectEntityToDtoMapper = projectEntityToDtoMapper;
     }
 
     public SearchResultDTO toDto(SearchResult searchResult)
@@ -34,7 +34,7 @@ public class SearchResultMapper
         SearchResultDTO searchResultDTO = new SearchResultDTO();
         searchResultDTO.setInput(searchResult.getInput());
         searchResultDTO.setComment(searchResult.getComment());
-        searchResultDTO.setProject(projectMapper.toDto(searchResult.getProject()));
+        searchResultDTO.setProject(projectEntityToDtoMapper.toDto(searchResult.getProject()));
 
         return searchResultDTO;
     }

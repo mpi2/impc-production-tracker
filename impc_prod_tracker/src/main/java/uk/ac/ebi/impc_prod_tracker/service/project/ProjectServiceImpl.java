@@ -20,11 +20,12 @@ import org.springframework.stereotype.Component;
 import uk.ac.ebi.impc_prod_tracker.common.history.HistoryService;
 import uk.ac.ebi.impc_prod_tracker.conf.security.abac.ResourceAccessChecker;
 import uk.ac.ebi.impc_prod_tracker.data.common.history.History;
+import uk.ac.ebi.impc_prod_tracker.service.project.engine.ProjectCreator;
 import uk.ac.ebi.impc_prod_tracker.web.controller.project.helper.ProjectFilter;
-import uk.ac.ebi.impc_prod_tracker.web.dto.project.NewProjectRequestDTO;
 import uk.ac.ebi.impc_prod_tracker.data.biology.assignment_status.AssignmentStatus;
 import uk.ac.ebi.impc_prod_tracker.data.biology.project.Project;
 import uk.ac.ebi.impc_prod_tracker.data.biology.project.ProjectRepository;
+
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.transaction.Transactional;
@@ -41,17 +42,20 @@ public class ProjectServiceImpl implements ProjectService
     private ProjectRepository projectRepository;
     private HistoryService<Project> historyService;
     private ResourceAccessChecker<Project> resourceAccessChecker;
+    private ProjectCreator projectCreator;
 
     public static final String READ_PROJECT_ACTION = "READ_PROJECT";
 
     public ProjectServiceImpl(
         ProjectRepository projectRepository,
         HistoryService<Project> historyService,
-        ResourceAccessChecker resourceAccessChecker)
+        ResourceAccessChecker resourceAccessChecker,
+        ProjectCreator projectCreator)
     {
         this.projectRepository = projectRepository;
         this.historyService = historyService;
         this.resourceAccessChecker = resourceAccessChecker;
+        this.projectCreator = projectCreator;
     }
 
     @PersistenceContext
@@ -98,16 +102,9 @@ public class ProjectServiceImpl implements ProjectService
     }
 
     @Override
-    public Project createProject(NewProjectRequestDTO newProjectRequestDTO)
+    public Project createProject(Project project)
     {
-        Project p = new Project();
-
-        p.setTpn("TPN:");
-        em.persist(p);
-        String tpn = createIdentifier(p.getId(), p.getTpn(), 9);
-        p.setTpn(tpn);
-        em.close();
-        projectRepository.save(p);
+        Project p = projectCreator.createProject(project);
 
         return p;
     }
