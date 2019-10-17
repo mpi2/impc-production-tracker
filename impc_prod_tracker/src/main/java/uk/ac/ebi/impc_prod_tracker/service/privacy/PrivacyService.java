@@ -13,10 +13,24 @@
  * language governing permissions and limitations under the
  * License.
  *******************************************************************************/
-package uk.ac.ebi.impc_prod_tracker.data.biology.privacy;
+package uk.ac.ebi.impc_prod_tracker.service.privacy;
 
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.stereotype.Component;
+import uk.ac.ebi.impc_prod_tracker.data.biology.privacy.Privacy;
+import uk.ac.ebi.impc_prod_tracker.data.biology.privacy.PrivacyRepository;
 
-public interface PrivacyRepository extends CrudRepository<Privacy, Long> {
-    Privacy findByNameIgnoreCase(String name);
+@Component
+public class PrivacyService
+{
+    private PrivacyRepository privacyRepository;
+
+    public PrivacyService(PrivacyRepository privacyRepository)
+    {
+        this.privacyRepository = privacyRepository;
+    }
+
+    public Privacy findPrivacyByName(String name)
+    {
+        return privacyRepository.findByNameIgnoreCase(name);
+    }
 }
