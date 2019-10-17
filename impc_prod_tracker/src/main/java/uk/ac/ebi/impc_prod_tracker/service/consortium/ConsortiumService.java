@@ -13,11 +13,24 @@
  * language governing permissions and limitations under the
  * License.
  *******************************************************************************/
-package uk.ac.ebi.impc_prod_tracker.data.organization.consortium;
+package uk.ac.ebi.impc_prod_tracker.service.consortium;
 
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.stereotype.Component;
+import uk.ac.ebi.impc_prod_tracker.data.organization.consortium.Consortium;
+import uk.ac.ebi.impc_prod_tracker.data.organization.consortium.ConsortiumRepository;
 
-public interface ConsortiumRepository extends CrudRepository<Consortium, Long>
+@Component
+public class ConsortiumService
 {
-    Consortium findByNameIgnoreCase(String name);
+    private ConsortiumRepository consortiumRepository;
+
+    public ConsortiumService(ConsortiumRepository consortiumRepository)
+    {
+        this.consortiumRepository = consortiumRepository;
+    }
+
+    public Consortium findConsortiumByName(String name)
+    {
+        return consortiumRepository.findByNameIgnoreCase(name);
+    }
 }
