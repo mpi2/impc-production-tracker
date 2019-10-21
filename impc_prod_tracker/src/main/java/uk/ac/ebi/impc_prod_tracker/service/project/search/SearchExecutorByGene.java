@@ -3,7 +3,7 @@ package uk.ac.ebi.impc_prod_tracker.service.project.search;
 import org.springframework.stereotype.Component;
 import uk.ac.ebi.impc_prod_tracker.data.biology.gene.Gene;
 import uk.ac.ebi.impc_prod_tracker.data.biology.project.Project;
-import uk.ac.ebi.impc_prod_tracker.service.gene.GeneExternalService;
+import uk.ac.ebi.impc_prod_tracker.service.gene.external_ref.GeneExternalService;
 import uk.ac.ebi.impc_prod_tracker.service.project.ProjectService;
 import uk.ac.ebi.impc_prod_tracker.web.controller.project.helper.ProjectFilter;
 import uk.ac.ebi.impc_prod_tracker.web.controller.project.helper.ProjectFilterBuilder;
@@ -68,7 +68,7 @@ class SearchExecutorByGene implements SearchExecutor
     // external table and therefore it is not a synonym.
     private boolean isSymbol(String searchTerm)
     {
-        return geneExternalService.getFromExternalGenes(searchTerm) != null;
+        return geneExternalService.getFromExternalGenesBySymbolOrAccId(searchTerm) != null;
     }
 
     private List<SearchResult> findProjectsBySynonym(String searchTerm)

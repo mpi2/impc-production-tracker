@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import uk.ac.ebi.impc_prod_tracker.data.biology.gene.Gene;
-import uk.ac.ebi.impc_prod_tracker.service.gene.GeneExternalService;
+import uk.ac.ebi.impc_prod_tracker.service.gene.external_ref.GeneExternalService;
 import uk.ac.ebi.impc_prod_tracker.service.gene.GeneService;
 import java.util.List;
 
@@ -32,7 +32,7 @@ public class GeneController {
     @GetMapping(value = {"/geneInExternalData"})
     public Gene getGeneInExternalData (@RequestParam String symbol)
     {
-        return geneExternalService.getFromExternalGenes(symbol);
+        return geneExternalService.getFromExternalGenesBySymbolOrAccId(symbol);
     }
 
     @GetMapping(value = {"/geneSynonymInExternalData"})
