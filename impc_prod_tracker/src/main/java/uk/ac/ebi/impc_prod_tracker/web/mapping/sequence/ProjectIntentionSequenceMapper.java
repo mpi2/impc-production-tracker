@@ -42,6 +42,15 @@ public class ProjectIntentionSequenceMapper
             projectIntentionSequences.forEach(x -> projectIntentionSequenceDTOS.add(toDto(x)));
         }
         return projectIntentionSequenceDTOS;
+    }
 
+    public ProjectIntentionSequence toEntity(ProjectIntentionSequenceDTO projectIntentionSequenceDTO)
+    {
+        ProjectIntentionSequence projectIntentionGene = new ProjectIntentionSequence();
+        projectIntentionGene.setSequence(
+            sequenceMapper.toEntity(projectIntentionSequenceDTO.getSequenceDTO()));
+        projectIntentionGene.setProjectIntention(
+            projectIntentionMapper.toEntity(projectIntentionSequenceDTO.getProjectIntentionDTO()));
+        return projectIntentionGene;
     }
 }

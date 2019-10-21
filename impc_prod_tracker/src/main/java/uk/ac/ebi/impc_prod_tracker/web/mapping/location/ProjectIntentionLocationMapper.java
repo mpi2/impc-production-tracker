@@ -42,4 +42,13 @@ public class ProjectIntentionLocationMapper
         projectIntentionLocations.forEach(projectLocation -> projectIntentionLocationDTOS.add(toDto(projectLocation)));
         return projectIntentionLocationDTOS;
     }
+
+    public ProjectIntentionLocation toEntity(ProjectIntentionLocationDTO projectIntentionLocationDTO)
+    {
+        ProjectIntentionLocation projectIntentionLocation = new ProjectIntentionLocation();
+        projectIntentionLocation.setLocation(locationMapper.toEntity(projectIntentionLocationDTO.getLocationDTO()));
+        projectIntentionLocation.setProjectIntention(
+            projectIntentionMapper.toEntity(projectIntentionLocationDTO.getProjectIntentionDTO()));
+        return projectIntentionLocation;
+    }
 }

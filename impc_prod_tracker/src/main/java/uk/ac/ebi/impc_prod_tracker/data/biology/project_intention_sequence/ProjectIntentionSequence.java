@@ -10,7 +10,7 @@ import uk.ac.ebi.impc_prod_tracker.data.biology.sequence.Sequence;
 import javax.persistence.*;
 import java.io.Serializable;
 
-@NoArgsConstructor(access= AccessLevel.PRIVATE, force=true)
+@NoArgsConstructor(access= AccessLevel.PUBLIC, force=true)
 @Data
 @Entity
 public class ProjectIntentionSequence extends BaseEntity implements Serializable {

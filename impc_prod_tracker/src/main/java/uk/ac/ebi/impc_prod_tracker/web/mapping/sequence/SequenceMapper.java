@@ -47,4 +47,9 @@ public class SequenceMapper
         }
         return sequenceDTOS;
     }
+
+    public Sequence toEntity(SequenceDTO sequenceDTO)
+    {
+        return entityMapper.toTarget(sequenceDTO, Sequence.class);
+    }
 }

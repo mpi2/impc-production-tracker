@@ -15,7 +15,6 @@ import uk.ac.ebi.impc_prod_tracker.data.biology.species.Species;
 import uk.ac.ebi.impc_prod_tracker.data.organization.consortium.Consortium;
 import uk.ac.ebi.impc_prod_tracker.data.organization.work_unit.WorkUnit;
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -32,15 +31,7 @@ public class Project extends BaseEntity implements Resource<Project>
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "projectSeq")
     private Long id;
 
-    @Column(unique = true)
-    @NotNull
     private String tpn;
-
-//    @PostPersist
-//    public void postPersist()
-//    {
-//        tpn = "TPN:" + String.format("%0" + 9 + "d", id);
-//    }
 
     @Column(unique = true)
     private Long imitsMiPlanId;
@@ -150,5 +141,3 @@ public class Project extends BaseEntity implements Resource<Project>
             inverseJoinColumns = @JoinColumn(name = "species_id"))
     private Set<Species> species;
 }
-
-

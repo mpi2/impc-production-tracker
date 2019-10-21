@@ -13,28 +13,24 @@
  * language governing permissions and limitations under the
  * License.
  *******************************************************************************/
-package uk.ac.ebi.impc_prod_tracker.data.biology.project_intention_gene;
+package uk.ac.ebi.impc_prod_tracker.web.mapping.molecular_mutation;
 
-import lombok.*;
-import uk.ac.ebi.impc_prod_tracker.data.BaseEntity;
-import uk.ac.ebi.impc_prod_tracker.data.biology.gene.Gene;
-import uk.ac.ebi.impc_prod_tracker.data.biology.project_intention.ProjectIntention;
-import javax.persistence.*;
+import org.springframework.stereotype.Component;
+import uk.ac.ebi.impc_prod_tracker.data.biology.molecular_mutation_type.MolecularMutationType;
+import uk.ac.ebi.impc_prod_tracker.service.molecular_mutation.MolecularMutationService;
 
-@NoArgsConstructor(access= AccessLevel.PUBLIC, force=true)
-@Data
-@Entity
-public class ProjectIntentionGene extends BaseEntity
+@Component
+public class MolecularMutationTypeMapper
 {
-    @Id
-    @Column(name = "id")
-    private Long id;
+    private MolecularMutationService molecularMutationService;
 
-    @OneToOne
-    @JoinColumn(name = "project_intention_id")
-    @MapsId
-    private ProjectIntention projectIntention;
+    public MolecularMutationTypeMapper(MolecularMutationService molecularMutationService)
+    {
+        this.molecularMutationService = molecularMutationService;
+    }
 
-    @ManyToOne(targetEntity = Gene.class)
-    private Gene gene;
+    public MolecularMutationType toEntity(String molecularMutationTypeName)
+    {
+        return molecularMutationService.getMolecularMutationTypeByName(molecularMutationTypeName);
+    }
 }
