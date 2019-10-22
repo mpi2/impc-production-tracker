@@ -13,20 +13,15 @@
  * language governing permissions and limitations under the
  * License.
  *******************************************************************************/
-package uk.ac.ebi.impc_prod_tracker.web.dto.location;
+package uk.ac.ebi.impc_prod_tracker.web.mapping.project.intention;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.Data;
-import lombok.RequiredArgsConstructor;
+import uk.ac.ebi.impc_prod_tracker.web.dto.intention.ProjectIntentionDTO;
+import java.util.Comparator;
 
-@Data
-@RequiredArgsConstructor
-public class ProjectIntentionLocationDTO
+public class SortByProjectIntentionIndex implements Comparator<ProjectIntentionDTO>
 {
-    @JsonProperty("location")
-    private LocationDTO locationDTO;
-
-    private String chrFeatureTypeName;
-
-    private Integer index;
+    public int compare(ProjectIntentionDTO a, ProjectIntentionDTO b)
+    {
+        return a.getIndex() - b.getIndex() ;
+    }
 }

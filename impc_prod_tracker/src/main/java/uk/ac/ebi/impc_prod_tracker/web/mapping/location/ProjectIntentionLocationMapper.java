@@ -3,7 +3,6 @@ package uk.ac.ebi.impc_prod_tracker.web.mapping.location;
 import org.springframework.stereotype.Component;
 import uk.ac.ebi.impc_prod_tracker.data.biology.project_intention_location.ProjectIntentionLocation;
 import uk.ac.ebi.impc_prod_tracker.web.dto.location.ProjectIntentionLocationDTO;
-import uk.ac.ebi.impc_prod_tracker.web.mapping.project.intention.ProjectIntentionMapper;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -12,16 +11,13 @@ import java.util.List;
 public class ProjectIntentionLocationMapper
 {
     private LocationMapper locationMapper;
-    private ProjectIntentionMapper projectIntentionMapper;
 
-    public ProjectIntentionLocationMapper(
-        LocationMapper locationMapper, ProjectIntentionMapper projectIntentionMapper)
+    public ProjectIntentionLocationMapper(LocationMapper locationMapper)
     {
         this.locationMapper = locationMapper;
-        this.projectIntentionMapper = projectIntentionMapper;
     }
 
-    public ProjectIntentionLocationDTO toDto (ProjectIntentionLocation projectIntentionLocation)
+    public ProjectIntentionLocationDTO toDto(ProjectIntentionLocation projectIntentionLocation)
     {
         ProjectIntentionLocationDTO projectIntentionLocationDTO = new ProjectIntentionLocationDTO();
         projectIntentionLocationDTO.setLocationDTO(locationMapper.toDto(projectIntentionLocation.getLocation()));
@@ -30,8 +26,6 @@ public class ProjectIntentionLocationMapper
             projectIntentionLocationDTO.setChrFeatureTypeName(projectIntentionLocation.getChromosomeFeatureType().getName());
         }
         projectIntentionLocationDTO.setIndex(projectIntentionLocation.getIndex());
-        projectIntentionLocationDTO.setProjectIntentionDTO(
-            projectIntentionMapper.toDto(projectIntentionLocation.getProjectIntention()));
 
         return projectIntentionLocationDTO;
     }
@@ -47,8 +41,6 @@ public class ProjectIntentionLocationMapper
     {
         ProjectIntentionLocation projectIntentionLocation = new ProjectIntentionLocation();
         projectIntentionLocation.setLocation(locationMapper.toEntity(projectIntentionLocationDTO.getLocationDTO()));
-        projectIntentionLocation.setProjectIntention(
-            projectIntentionMapper.toEntity(projectIntentionLocationDTO.getProjectIntentionDTO()));
         return projectIntentionLocation;
     }
 }

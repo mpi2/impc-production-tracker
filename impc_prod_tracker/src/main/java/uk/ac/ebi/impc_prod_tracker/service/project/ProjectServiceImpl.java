@@ -25,10 +25,6 @@ import uk.ac.ebi.impc_prod_tracker.web.controller.project.helper.ProjectFilter;
 import uk.ac.ebi.impc_prod_tracker.data.biology.assignment_status.AssignmentStatus;
 import uk.ac.ebi.impc_prod_tracker.data.biology.project.Project;
 import uk.ac.ebi.impc_prod_tracker.data.biology.project.ProjectRepository;
-
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import javax.transaction.Transactional;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
@@ -36,7 +32,6 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Component
-@Transactional
 public class ProjectServiceImpl implements ProjectService
 {
     private ProjectRepository projectRepository;
@@ -57,9 +52,6 @@ public class ProjectServiceImpl implements ProjectService
         this.resourceAccessChecker = resourceAccessChecker;
         this.projectCreator = projectCreator;
     }
-
-    @PersistenceContext
-    private EntityManager em;
 
     @Override
     public Project getProjectByTpn(String tpn)
@@ -104,15 +96,7 @@ public class ProjectServiceImpl implements ProjectService
     @Override
     public Project createProject(Project project)
     {
-        Project p = projectCreator.createProject(project);
-
-        return p;
-    }
-
-    private String createIdentifier(Long id, String name, int length){
-        String identifier = String.format("%0" + length + "d", id);
-        identifier = name + identifier;
-        return identifier;
+        return projectCreator.createProject(project);
     }
 
     private AssignmentStatus checkIfAnyProjectAlreadyCreated()

@@ -18,14 +18,12 @@ package uk.ac.ebi.impc_prod_tracker.web.mapping.gene;
 import org.springframework.stereotype.Component;
 import uk.ac.ebi.impc_prod_tracker.conf.exceptions.UserOperationFailedException;
 import uk.ac.ebi.impc_prod_tracker.data.biology.gene.Gene;
-import uk.ac.ebi.impc_prod_tracker.data.biology.project_intention.ProjectIntention;
 import uk.ac.ebi.impc_prod_tracker.data.biology.project_intention_gene.ProjectIntentionGene;
 import uk.ac.ebi.impc_prod_tracker.service.gene.external_ref.GeneExternalService;
 import uk.ac.ebi.impc_prod_tracker.service.gene.GeneService;
 import uk.ac.ebi.impc_prod_tracker.service.project_intention.ProjectIntentionService;
 import uk.ac.ebi.impc_prod_tracker.web.dto.gene.GeneDTO;
 import uk.ac.ebi.impc_prod_tracker.web.dto.gene.ProjectIntentionGeneDTO;
-import uk.ac.ebi.impc_prod_tracker.web.mapping.project.intention.ProjectIntentionMapper;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -34,7 +32,6 @@ import java.util.List;
 public class ProjectIntentionGeneMapper
 {
     private GeneMapper geneMapper;
-    private ProjectIntentionMapper projectIntentionMapper;
     private GeneService geneService;
     private GeneExternalService geneExternalService;
     private ProjectIntentionService projectIntentionService;
@@ -45,12 +42,10 @@ public class ProjectIntentionGeneMapper
 
     public ProjectIntentionGeneMapper(
         GeneMapper geneMapper,
-        ProjectIntentionMapper projectIntentionMapper,
         GeneService geneService,
         GeneExternalService geneExternalService, ProjectIntentionService projectIntentionService)
     {
         this.geneMapper = geneMapper;
-        this.projectIntentionMapper = projectIntentionMapper;
         this.geneService = geneService;
         this.geneExternalService = geneExternalService;
         this.projectIntentionService = projectIntentionService;
@@ -60,8 +55,6 @@ public class ProjectIntentionGeneMapper
     {
         ProjectIntentionGeneDTO projectIntentionGeneDTO = new ProjectIntentionGeneDTO();
         projectIntentionGeneDTO.setGeneDTO(geneMapper.toDto(projectIntentionGene.getGene()));
-        projectIntentionGeneDTO.setProjectIntentionDTO(
-            projectIntentionMapper.toDto(projectIntentionGene.getProjectIntention()));
         return projectIntentionGeneDTO;
     }
 
@@ -80,12 +73,20 @@ public class ProjectIntentionGeneMapper
         ProjectIntentionGene projectIntentionGene = new ProjectIntentionGene();
         Gene gene = loadGene(projectIntentionGeneDTO.getGeneDTO());
         projectIntentionGene.setGene(gene);
-        ProjectIntention projectIntention =
-            projectIntentionMapper.toEntity(projectIntentionGeneDTO.getProjectIntentionDTO());
-        projectIntention.setIntentionType(
-            projectIntentionService.getIntentionTypeByName(GENE_INTENTION_TYPE));
-        projectIntentionGene.setProjectIntention(projectIntention);
+//        projectIntention.setIntentionType(
+//            projectIntentionService.getIntentionTypeByName(GENE_INTENTION_TYPE));
+
         return projectIntentionGene;
+    }
+
+    public List<ProjectIntentionGene> toEntities(List<ProjectIntentionGeneDTO> projectIntentionGeneDTOS)
+    {
+        List<ProjectIntentionGene> projectIntentionGenes = new ArrayList<>();
+        if (projectIntentionGeneDTOS != null)
+        {
+            projectIntentionGeneDTOS.forEach(x -> projectIntentionGenes.add(toEntity(x)));
+        }
+        return projectIntentionGenes;
     }
 
     private Gene loadGene(GeneDTO geneDTO)
