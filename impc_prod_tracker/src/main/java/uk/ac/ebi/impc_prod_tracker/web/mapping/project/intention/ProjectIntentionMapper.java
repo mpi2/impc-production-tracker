@@ -179,55 +179,6 @@ public class ProjectIntentionMapper
         }
     }
 
-//    private List<ProjectIntention> getProjectIntentionsByGene(ProjectDTO projectDTO)
-//    {
-//        List<ProjectIntention> projectIntentions = new ArrayList<>();
-//        List<ProjectIntentionGeneDTO> projectIntentionGeneDTOS =
-//            projectDTO.getProjectIntentionGeneDTOS();
-//        if (projectIntentionGeneDTOS != null)
-//        {
-//            projectIntentionGeneDTOS.forEach(x -> {
-//                ProjectIntentionGene projectIntentionGene = projectIntentionGeneMapper.toEntity(x);
-//                ProjectIntention projectIntention = projectIntentionGene.getProjectIntention();
-//                projectIntention.setProjectIntentionGene(projectIntentionGene);
-//                projectIntentions.add(projectIntention);
-//            });
-//        }
-//        return projectIntentions;
-//    }
-//
-//    private List<ProjectIntention> getProjectIntentionsByLocation(ProjectDTO projectDTO)
-//    {
-//        List<ProjectIntention> projectIntentions = new ArrayList<>();
-//        List<ProjectIntentionLocationDTO> projectIntentionLocationDTOS =
-//            projectDTO.getProjectIntentionLocationDTOS();
-//        if (projectIntentionLocationDTOS != null)
-//        {
-//            projectIntentionLocationDTOS.forEach(x -> {
-//                ProjectIntentionLocation projectIntentionLocation = projectIntentionLocationMapper.toEntity(x);
-//                ProjectIntention projectIntention = projectIntentionLocation.getProjectIntention();
-//                projectIntentions.add(projectIntention);
-//            });
-//        }
-//        return projectIntentions;
-//    }
-//
-//    private List<ProjectIntention> getProjectIntentionsBySequence(ProjectDTO projectDTO)
-//    {
-//        List<ProjectIntention> projectIntentions = new ArrayList<>();
-//        List<ProjectIntentionSequenceDTO> projectIntentionSequenceDTOS =
-//            projectDTO.getProjectIntentionSequenceDTOS();
-//        if (projectIntentionSequenceDTOS != null)
-//        {
-//            projectIntentionSequenceDTOS.forEach(x -> {
-//                ProjectIntentionSequence projectIntentionSequence = projectIntentionSequenceMapper.toEntity(x);
-//                ProjectIntention projectIntention = projectIntentionSequence.getProjectIntention();
-//                projectIntentions.add(projectIntention);
-//            });
-//        }
-//        return projectIntentions;
-//    }
-
     public List<ProjectIntention> toEntities(Collection<ProjectIntentionDTO> projectIntentionDTOS)
     {
         List<ProjectIntention> projectIntentions = new ArrayList<>();
