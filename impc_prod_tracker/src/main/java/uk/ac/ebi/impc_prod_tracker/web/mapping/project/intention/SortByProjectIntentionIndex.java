@@ -13,28 +13,15 @@
  * language governing permissions and limitations under the
  * License.
  *******************************************************************************/
-package uk.ac.ebi.impc_prod_tracker.data.biology.project_intention_gene;
+package uk.ac.ebi.impc_prod_tracker.web.mapping.project.intention;
 
-import lombok.*;
-import uk.ac.ebi.impc_prod_tracker.data.BaseEntity;
-import uk.ac.ebi.impc_prod_tracker.data.biology.gene.Gene;
-import uk.ac.ebi.impc_prod_tracker.data.biology.project_intention.ProjectIntention;
-import javax.persistence.*;
+import uk.ac.ebi.impc_prod_tracker.web.dto.intention.ProjectIntentionDTO;
+import java.util.Comparator;
 
-@NoArgsConstructor(access= AccessLevel.PUBLIC, force=true)
-@Data
-@Entity
-public class ProjectIntentionGene extends BaseEntity
+public class SortByProjectIntentionIndex implements Comparator<ProjectIntentionDTO>
 {
-    @Id
-    @Column(name = "id")
-    private Long id;
-
-    @OneToOne
-    @JoinColumn(name = "project_intention_id")
-    @MapsId
-    private ProjectIntention projectIntention;
-
-    @ManyToOne(targetEntity = Gene.class)
-    private Gene gene;
+    public int compare(ProjectIntentionDTO a, ProjectIntentionDTO b)
+    {
+        return a.getIndex() - b.getIndex() ;
+    }
 }

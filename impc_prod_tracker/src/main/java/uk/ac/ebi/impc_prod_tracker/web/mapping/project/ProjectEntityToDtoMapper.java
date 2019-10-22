@@ -17,49 +17,34 @@ package uk.ac.ebi.impc_prod_tracker.web.mapping.project;
 
 import org.springframework.stereotype.Component;
 import uk.ac.ebi.impc_prod_tracker.data.biology.project.Project;
-import uk.ac.ebi.impc_prod_tracker.data.biology.project_intention.ProjectIntention;
-import uk.ac.ebi.impc_prod_tracker.data.biology.project_intention_gene.ProjectIntentionGene;
-import uk.ac.ebi.impc_prod_tracker.data.biology.project_intention_location.ProjectIntentionLocation;
-import uk.ac.ebi.impc_prod_tracker.data.biology.project_intention_location.SortByProjectIntentionLocationIndex;
-import uk.ac.ebi.impc_prod_tracker.data.biology.project_intention_sequence.ProjectIntentionSequence;
-import uk.ac.ebi.impc_prod_tracker.data.biology.project_intention_sequence.SortByProjectIntentionSequenceIndex;
+import uk.ac.ebi.impc_prod_tracker.web.dto.intention.ProjectIntentionDTO;
 import uk.ac.ebi.impc_prod_tracker.web.dto.project.ProjectDTO;
 import uk.ac.ebi.impc_prod_tracker.web.dto.species.SpeciesDTO;
 import uk.ac.ebi.impc_prod_tracker.web.dto.status_stamps.StatusStampsDTO;
 import uk.ac.ebi.impc_prod_tracker.web.mapping.EntityMapper;
-import uk.ac.ebi.impc_prod_tracker.web.mapping.gene.ProjectIntentionGeneMapper;
-import uk.ac.ebi.impc_prod_tracker.web.mapping.location.ProjectIntentionLocationMapper;
-import uk.ac.ebi.impc_prod_tracker.web.mapping.sequence.ProjectIntentionSequenceMapper;
+import uk.ac.ebi.impc_prod_tracker.web.mapping.project.intention.ProjectIntentionMapper;
+import uk.ac.ebi.impc_prod_tracker.web.mapping.project.intention.SortByProjectIntentionIndex;
 import uk.ac.ebi.impc_prod_tracker.web.mapping.statusStamp.StatusStampMapper;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Objects;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 @Component
 public class ProjectEntityToDtoMapper
 {
     private EntityMapper entityMapper;
     private StatusStampMapper statusStampMapper;
-    private ProjectIntentionGeneMapper projectIntentionGeneMapper;
-    private ProjectIntentionLocationMapper projectIntentionLocationMapper;
-    private ProjectIntentionSequenceMapper projectIntentionSequenceMapper;
+    private ProjectIntentionMapper projectIntentionMapper;
     private static final String MGI_URL = "http://www.mousephenotype.org/data/genes/";
 
     public ProjectEntityToDtoMapper(
         EntityMapper entityMapper,
         StatusStampMapper statusStampMapper,
-        ProjectIntentionGeneMapper projectIntentionGeneMapper,
-        ProjectIntentionLocationMapper projectIntentionLocationMapper,
-        ProjectIntentionSequenceMapper projectIntentionSequenceMapper)
+        ProjectIntentionMapper projectIntentionMapper)
     {
         this.entityMapper = entityMapper;
         this.statusStampMapper = statusStampMapper;
-        this.projectIntentionGeneMapper = projectIntentionGeneMapper;
-        this.projectIntentionLocationMapper = projectIntentionLocationMapper;
-        this.projectIntentionSequenceMapper = projectIntentionSequenceMapper;
+        this.projectIntentionMapper = projectIntentionMapper;
     }
 
     public ProjectDTO toDto(Project project)
@@ -69,13 +54,24 @@ public class ProjectEntityToDtoMapper
         {
             projectDTO = entityMapper.toTarget(project, ProjectDTO.class);
             addStatusStampsDTO(project, projectDTO);
-            addProjectIntentionGenes(project, projectDTO);
-            addProjectIntentionLocations(project, projectDTO);
-            addProjectIntentionSequences(project, projectDTO);
+            addProjectIntentions(project, projectDTO);
             addSpeciesDTO(project, projectDTO);
             addConsortiaNames(project, projectDTO);
         }
         return projectDTO;
+    }
+
+    private void addProjectIntentions(Project project, ProjectDTO projectDTO)
+    {
+        List<ProjectIntentionDTO> projectIntentionDTOs =
+            projectIntentionMapper.toDtos(project.getProjectIntentions());
+        sort(projectIntentionDTOs);
+        projectDTO.setProjectIntentionDTOS(projectIntentionDTOs);
+    }
+
+    private void sort(List<ProjectIntentionDTO> projectIntentionDTOs)
+    {
+        Collections.sort(projectIntentionDTOs, new SortByProjectIntentionIndex());
     }
 
     private void addConsortiaNames(Project project, ProjectDTO projectDTO)
@@ -102,93 +98,6 @@ public class ProjectEntityToDtoMapper
             });
         }
         projectDTO.setProjectSpeciesDTOs(projectSpeciesDTOs);
-    }
-
-    private void addProjectIntentionGenes(Project project, ProjectDTO projectDTO)
-    {
-        Set<ProjectIntentionGene> projectIntentionGenes =
-            getProjectIntentionGene(project.getProjectIntentions());
-        if (projectIntentionGenes != null)
-        {
-            projectDTO.setProjectIntentionGeneDTOS(
-                projectIntentionGeneMapper.toDtos(projectIntentionGenes));
-        }
-    }
-
-    private void addProjectIntentionLocations(Project project, ProjectDTO projectDTO)
-    {
-        List<ProjectIntentionLocation> projectIntentionLocations =
-            getProjectIntentionLocation(project.getProjectIntentions());
-        if (projectIntentionLocations != null)
-        {
-            projectDTO.setProjectIntentionLocationDTOS(
-                projectIntentionLocationMapper.toDtos(projectIntentionLocations));
-        }
-    }
-
-    private void addProjectIntentionSequences(Project project, ProjectDTO projectDTO)
-    {
-        List<ProjectIntentionSequence> projectIntentionSequences =
-            getProjectIntentionSequence(project.getProjectIntentions());
-        if (projectIntentionSequences != null)
-        {
-            projectDTO.setProjectIntentionSequenceDTOS(
-                projectIntentionSequenceMapper.toDtos(projectIntentionSequences));
-        }
-    }
-
-    private Set<ProjectIntentionGene> getProjectIntentionGene(Set<ProjectIntention> projectIntentions)
-    {
-        Set<ProjectIntentionGene> projectIntentionGenes = null;
-        if (projectIntentions != null)
-        {
-            projectIntentionGenes = projectIntentions.stream()
-                .map(ProjectIntention::getProjectIntentionGene)
-                .filter(Objects::nonNull)
-                .collect(Collectors.toSet());
-        }
-        if (projectIntentionGenes.isEmpty())
-        {
-            projectIntentionGenes = null;
-        }
-        return projectIntentionGenes;
-    }
-
-    private List<ProjectIntentionLocation> getProjectIntentionLocation(Set<ProjectIntention> projectIntentions)
-    {
-        List<ProjectIntentionLocation> projectIntentionLocation = null;
-        if (projectIntentions != null)
-        {
-            projectIntentionLocation = projectIntentions.stream()
-                .map(ProjectIntention::getProjectIntentionLocation)
-                .filter(Objects::nonNull)
-                .collect(Collectors.toList());
-        }
-        Collections.sort(projectIntentionLocation, new SortByProjectIntentionLocationIndex());
-        if (projectIntentionLocation.isEmpty())
-        {
-            projectIntentionLocation = null;
-        }
-        return projectIntentionLocation;
-    }
-
-    private List<ProjectIntentionSequence> getProjectIntentionSequence(
-        Set<ProjectIntention> projectIntentions)
-    {
-        List<ProjectIntentionSequence> projectIntentionSequence = null;
-        if (projectIntentions != null)
-        {
-            projectIntentionSequence = projectIntentions.stream()
-                .map(ProjectIntention::getProjectIntentionSequence)
-                .filter(Objects::nonNull)
-                .collect(Collectors.toList());
-        }
-        Collections.sort(projectIntentionSequence, new SortByProjectIntentionSequenceIndex());
-        if (projectIntentionSequence.isEmpty())
-        {
-            projectIntentionSequence = null;
-        }
-        return projectIntentionSequence;
     }
 
     private void addStatusStampsDTO(Project project, ProjectDTO projectDTO)

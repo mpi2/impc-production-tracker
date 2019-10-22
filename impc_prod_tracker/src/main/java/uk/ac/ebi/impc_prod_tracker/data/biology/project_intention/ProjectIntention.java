@@ -13,7 +13,7 @@ import uk.ac.ebi.impc_prod_tracker.data.biology.project_intention_gene.ProjectIn
 import uk.ac.ebi.impc_prod_tracker.data.biology.project_intention.type.IntentionType;
 import uk.ac.ebi.impc_prod_tracker.data.biology.project_intention_location.ProjectIntentionLocation;
 import uk.ac.ebi.impc_prod_tracker.data.biology.project_intention_sequence.ProjectIntentionSequence;
-
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -50,17 +50,17 @@ public class ProjectIntention
 
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
-    @OneToOne(mappedBy = "projectIntention")
+    @OneToOne(cascade= CascadeType.ALL, mappedBy = "projectIntention")
     private ProjectIntentionGene projectIntentionGene;
 
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
-    @OneToOne(mappedBy = "projectIntention")
+    @OneToOne(cascade=CascadeType.ALL, mappedBy = "projectIntention")
     private ProjectIntentionLocation projectIntentionLocation;
 
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
-    @OneToOne(mappedBy = "projectIntention")
+    @OneToOne(cascade=CascadeType.ALL, mappedBy = "projectIntention")
     private ProjectIntentionSequence projectIntentionSequence;
 
     @EqualsAndHashCode.Exclude

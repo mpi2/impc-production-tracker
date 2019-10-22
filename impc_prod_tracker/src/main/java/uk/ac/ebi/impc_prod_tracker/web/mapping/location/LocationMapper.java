@@ -3,30 +3,36 @@ package uk.ac.ebi.impc_prod_tracker.web.mapping.location;
 import org.springframework.stereotype.Component;
 import uk.ac.ebi.impc_prod_tracker.data.biology.location.Location;
 import uk.ac.ebi.impc_prod_tracker.web.dto.location.LocationDTO;
+import uk.ac.ebi.impc_prod_tracker.web.mapping.EntityMapper;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
-import java.util.Set;
 
 @Component
 public class LocationMapper
 {
-    public LocationDTO toDto (Location location)
+    private EntityMapper entityMapper;
+
+    public LocationMapper(EntityMapper entityMapper)
     {
-        LocationDTO locationDTO = new LocationDTO();
-        locationDTO.setChr(location.getChr());
-        locationDTO.setStart(location.getStart());
-        locationDTO.setStop(location.getStop());
-        locationDTO.setStrand(location.getStrand());
-        locationDTO.setGenomeBuild(location.getGenomeBuild());
-        locationDTO.setSpeciesName(location.getSpecies().getName());
-        return locationDTO;
+        this.entityMapper = entityMapper;
     }
 
-    public List<LocationDTO> toDtos (Set<Location> locations)
+    public LocationDTO toDto(Location location)
+    {
+        return entityMapper.toTarget(location, LocationDTO.class);
+    }
+
+    public List<LocationDTO> toDtos(Collection<Location> locations)
     {
         List<LocationDTO> locationDTOS = new ArrayList<>();
         locations.forEach(location -> locationDTOS.add(toDto(location)));
         return locationDTOS;
+    }
+
+    public Location toEntity(LocationDTO locationDTO)
+    {
+        return entityMapper.toTarget(locationDTO, Location.class);
     }
 }

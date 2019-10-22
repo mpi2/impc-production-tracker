@@ -37,6 +37,8 @@ import uk.ac.ebi.impc_prod_tracker.data.organization.consortium.Consortium;
 import uk.ac.ebi.impc_prod_tracker.data.organization.consortium.Consortium_;
 import uk.ac.ebi.impc_prod_tracker.data.organization.work_unit.WorkUnit;
 import uk.ac.ebi.impc_prod_tracker.data.organization.work_unit.WorkUnit_;
+
+import javax.persistence.criteria.ListJoin;
 import javax.persistence.criteria.Path;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.SetJoin;
@@ -66,7 +68,7 @@ public class ProjectSpecs
             }
 
             List<Predicate> predicates = new ArrayList<>();
-            SetJoin<Project, ProjectIntention> projectProjectIntentionSetJoin =
+            ListJoin<Project, ProjectIntention> projectProjectIntentionSetJoin =
                 root.join(Project_.projectIntentions);
 
             Path<ProjectIntentionGene> projectIntentionProjectGeneSetJoin =
@@ -91,7 +93,7 @@ public class ProjectSpecs
             List<String> lowerCaseGenesNameOrIds =
                 genesNameOrIds.stream().map(String::toLowerCase).collect(Collectors.toList());
 
-            SetJoin<Project, ProjectIntention> projectProjectIntentionSetJoin =
+            ListJoin<Project, ProjectIntention> projectProjectIntentionSetJoin =
                 root.join(Project_.projectIntentions);
             Path<ProjectIntentionGene> projectGenePath =
                 projectProjectIntentionSetJoin.join(ProjectIntention_.projectIntentionGene);
@@ -118,7 +120,7 @@ public class ProjectSpecs
         {
             specification = (Specification<Project>) (root, query, criteriaBuilder) -> {
 
-                SetJoin<Project, ProjectIntention> projectProjectIntentionSetJoin =
+                ListJoin<Project, ProjectIntention> projectProjectIntentionSetJoin =
                     root.join(Project_.projectIntentions);
 
                 Path<AlleleType> alleleTypePath =

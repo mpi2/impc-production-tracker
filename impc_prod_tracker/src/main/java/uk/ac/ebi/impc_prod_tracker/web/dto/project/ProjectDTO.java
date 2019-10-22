@@ -20,13 +20,18 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.hateoas.RepresentationModel;
+import uk.ac.ebi.impc_prod_tracker.data.biology.project_intention.ProjectIntention;
 import uk.ac.ebi.impc_prod_tracker.web.dto.gene.ProjectIntentionGeneDTO;
+import uk.ac.ebi.impc_prod_tracker.web.dto.intention.ProjectIntentionDTO;
 import uk.ac.ebi.impc_prod_tracker.web.dto.location.ProjectIntentionLocationDTO;
 import uk.ac.ebi.impc_prod_tracker.web.dto.sequence.ProjectIntentionSequenceDTO;
 import uk.ac.ebi.impc_prod_tracker.web.dto.species.SpeciesDTO;
 import uk.ac.ebi.impc_prod_tracker.web.dto.status_stamps.StatusStampsDTO;
 import java.util.List;
 
+/**
+ * Representation of a Project that will be presented in the API.
+ */
 @Data
 @NoArgsConstructor
 public class ProjectDTO extends RepresentationModel
@@ -42,17 +47,8 @@ public class ProjectDTO extends RepresentationModel
     private Boolean withdrawn;
     private Boolean recovery;
 
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    @JsonProperty("intentionsByGene")
-    private List<ProjectIntentionGeneDTO> projectIntentionGeneDTOS;
-
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    @JsonProperty("intentionsByLocation")
-    private List<ProjectIntentionLocationDTO> projectIntentionLocationDTOS;
-
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    @JsonProperty("intentionsBySequence")
-    private List<ProjectIntentionSequenceDTO> projectIntentionSequenceDTOS;
+    @JsonProperty("projectIntentions")
+    private List<ProjectIntentionDTO> projectIntentionDTOS;
 
     private String comment;
 

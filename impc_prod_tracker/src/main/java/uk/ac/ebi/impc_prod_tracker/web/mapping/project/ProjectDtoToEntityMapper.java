@@ -18,11 +18,14 @@ package uk.ac.ebi.impc_prod_tracker.web.mapping.project;
 import org.springframework.stereotype.Component;
 import uk.ac.ebi.impc_prod_tracker.data.biology.privacy.Privacy;
 import uk.ac.ebi.impc_prod_tracker.data.biology.project.Project;
+import uk.ac.ebi.impc_prod_tracker.data.biology.project_intention.ProjectIntention;
 import uk.ac.ebi.impc_prod_tracker.data.organization.consortium.Consortium;
 import uk.ac.ebi.impc_prod_tracker.web.dto.project.ProjectDTO;
 import uk.ac.ebi.impc_prod_tracker.web.mapping.EntityMapper;
 import uk.ac.ebi.impc_prod_tracker.web.mapping.consortium.ConsortiumMapper;
 import uk.ac.ebi.impc_prod_tracker.web.mapping.privacy.PrivacyMapper;
+import uk.ac.ebi.impc_prod_tracker.web.mapping.project.intention.ProjectIntentionMapper;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -34,21 +37,35 @@ public class ProjectDtoToEntityMapper
     private EntityMapper entityMapper;
     private PrivacyMapper privacyMapper;
     private ConsortiumMapper consortiumMapper;
+    private ProjectIntentionMapper projectIntentionMapper;
 
     public ProjectDtoToEntityMapper(
-        EntityMapper entityMapper, PrivacyMapper privacyMapper, ConsortiumMapper consortiumMapper)
+        EntityMapper entityMapper,
+        PrivacyMapper privacyMapper,
+        ConsortiumMapper consortiumMapper,
+        ProjectIntentionMapper projectIntentionMapper)
     {
         this.entityMapper = entityMapper;
         this.privacyMapper = privacyMapper;
         this.consortiumMapper = consortiumMapper;
+        this.projectIntentionMapper = projectIntentionMapper;
     }
 
     public Project toEntity(ProjectDTO projectDTO)
     {
         Project project = entityMapper.toTarget(projectDTO, Project.class);
+        setProjectIntention(project, projectDTO);
         setPrivacy(project, projectDTO);
         setConsortia(project, projectDTO);
         return project;
+    }
+
+    private void setProjectIntention(Project project, ProjectDTO projectDTO)
+    {
+        List<ProjectIntention> projectIntentions =
+            projectIntentionMapper.toEntities(projectDTO.getProjectIntentionDTOS());
+        projectIntentions.forEach(x -> x.setProject(project));
+        project.setProjectIntentions(projectIntentions);
     }
 
     private void setPrivacy(Project project, ProjectDTO projectDTO)
