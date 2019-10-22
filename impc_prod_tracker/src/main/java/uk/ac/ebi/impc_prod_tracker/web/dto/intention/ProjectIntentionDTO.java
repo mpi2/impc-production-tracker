@@ -46,6 +46,8 @@ public class ProjectIntentionDTO
     @JsonProperty("intentionBySequence")
     private ProjectIntentionSequenceDTO projectIntentionSequenceDTO;
 
+    private String intentionTypeName;
+
     @JsonIgnore
     private int index;
 }

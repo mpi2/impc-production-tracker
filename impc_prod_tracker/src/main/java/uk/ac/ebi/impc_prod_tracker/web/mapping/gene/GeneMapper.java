@@ -28,18 +28,21 @@ import java.util.Set;
 public class GeneMapper
 {
     private EntityMapper entityMapper;
+    private static final String MGI_URL = "http://www.mousephenotype.org/data/genes/";
 
     public GeneMapper(EntityMapper entityMapper)
     {
         this.entityMapper = entityMapper;
     }
 
-    public GeneDTO toDto (Gene gene)
+    public GeneDTO toDto(Gene gene)
     {
-        return entityMapper.toTarget(gene, GeneDTO.class);
+        GeneDTO geneDTO = entityMapper.toTarget(gene, GeneDTO.class);
+        geneDTO.setExternalLink(MGI_URL + gene.getAccId());
+        return geneDTO;
     }
 
-    public List<GeneDTO> toDtos (Collection<Gene> genes)
+    public List<GeneDTO> toDtos(Collection<Gene> genes)
     {
         return entityMapper.toTargets(genes, GeneDTO.class);
     }

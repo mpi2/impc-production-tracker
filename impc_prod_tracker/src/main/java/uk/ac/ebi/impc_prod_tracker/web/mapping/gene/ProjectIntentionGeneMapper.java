@@ -21,7 +21,6 @@ import uk.ac.ebi.impc_prod_tracker.data.biology.gene.Gene;
 import uk.ac.ebi.impc_prod_tracker.data.biology.project_intention_gene.ProjectIntentionGene;
 import uk.ac.ebi.impc_prod_tracker.service.gene.external_ref.GeneExternalService;
 import uk.ac.ebi.impc_prod_tracker.service.gene.GeneService;
-import uk.ac.ebi.impc_prod_tracker.service.project_intention.ProjectIntentionService;
 import uk.ac.ebi.impc_prod_tracker.web.dto.gene.GeneDTO;
 import uk.ac.ebi.impc_prod_tracker.web.dto.gene.ProjectIntentionGeneDTO;
 import java.util.ArrayList;
@@ -34,7 +33,6 @@ public class ProjectIntentionGeneMapper
     private GeneMapper geneMapper;
     private GeneService geneService;
     private GeneExternalService geneExternalService;
-    private ProjectIntentionService projectIntentionService;
 
     private static final String GENE_INTENTION_TYPE = "gene";
 
@@ -43,12 +41,11 @@ public class ProjectIntentionGeneMapper
     public ProjectIntentionGeneMapper(
         GeneMapper geneMapper,
         GeneService geneService,
-        GeneExternalService geneExternalService, ProjectIntentionService projectIntentionService)
+        GeneExternalService geneExternalService)
     {
         this.geneMapper = geneMapper;
         this.geneService = geneService;
         this.geneExternalService = geneExternalService;
-        this.projectIntentionService = projectIntentionService;
     }
 
     public ProjectIntentionGeneDTO toDto(ProjectIntentionGene projectIntentionGene)
