@@ -29,13 +29,15 @@ import uk.ac.ebi.impc_prod_tracker.service.RoleService;
 import uk.ac.ebi.impc_prod_tracker.service.WorkUnitService;
 import uk.ac.ebi.impc_prod_tracker.service.consortium.ConsortiumService;
 import uk.ac.ebi.impc_prod_tracker.web.dto.common.NamedValueDTO;
+
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
 @Component
-public class ListsByUserServiceImpl implements ListsByUserService
+public class EntitiesValuesByUserServiceImpl implements EntitiesValuesByUserService
 {
     private SubjectRetriever subjectRetriever;
     private WorkUnitService workUnitService;
@@ -43,7 +45,7 @@ public class ListsByUserServiceImpl implements ListsByUserService
     private RoleService roleService;
     private InstituteService instituteService;
 
-    public ListsByUserServiceImpl(
+    public EntitiesValuesByUserServiceImpl(
         SubjectRetriever subjectRetriever,
         WorkUnitService workUnitService,
         ConsortiumService consortiumService,
@@ -58,19 +60,20 @@ public class ListsByUserServiceImpl implements ListsByUserService
     }
 
     @Override
-    public Map<String, List<NamedValueDTO>> getListsByManagerUser()
+    public List<EntityValues> getListsByManagerUser()
     {
         SystemSubject systemSubject = subjectRetriever.getSubject();
-        Map<String, List<NamedValueDTO>> entities = new HashMap<>();
-        addWorkUnits(systemSubject, entities);
-        addConsortia(systemSubject, entities);
-        addInstitutes(systemSubject, entities);
-        addRoles(entities);
+        List<EntityValues> entities = new ArrayList<>();
+        entities.add(getWorkUnits(systemSubject));
+        entities.add(getConsortia(systemSubject));
+        entities.add(getInstitutes(systemSubject));
+        entities.add(getRoles());
         return entities;
     }
 
-    private void addWorkUnits(SystemSubject systemSubject, Map<String, List<NamedValueDTO>> entities)
+    private EntityValues getWorkUnits(SystemSubject systemSubject)
     {
+        EntityValues entityValues = new EntityValues();
         List<WorkUnit> workUnits;
         if (systemSubject.isAdmin())
         {
@@ -84,11 +87,14 @@ public class ListsByUserServiceImpl implements ListsByUserService
             workUnits.stream()
                 .map(x -> new NamedValueDTO(x.getName()))
                 .collect(Collectors.toList());
-        entities.put("workUnits", workUnitNames);
+        entityValues.setEntityName("workUnits");
+        entityValues.setValues(workUnitNames);
+        return entityValues;
     }
 
-    private void addConsortia(SystemSubject systemSubject, Map<String, List<NamedValueDTO>> entities)
+    private EntityValues getConsortia(SystemSubject systemSubject)
     {
+        EntityValues entityValues = new EntityValues();
         List<Consortium> consortia;
         if (systemSubject.isAdmin())
         {
@@ -102,21 +108,27 @@ public class ListsByUserServiceImpl implements ListsByUserService
             consortia.stream()
                 .map(x -> new NamedValueDTO(x.getName()))
                 .collect(Collectors.toList());
-        entities.put("consortia", consortiaNames);
+        entityValues.setEntityName("consortia");
+        entityValues.setValues(consortiaNames);
+        return entityValues;
     }
 
-    private void addRoles(Map<String, List<NamedValueDTO>> entities)
+    private EntityValues getRoles()
     {
+        EntityValues entityValues = new EntityValues();
         List<Role> roles = getAllRoles();
         List<NamedValueDTO> rolesNames =
             roles.stream()
                 .map(x -> new NamedValueDTO(x.getName()))
                 .collect(Collectors.toList());
-        entities.put("roles", rolesNames);
+        entityValues.setEntityName("roles");
+        entityValues.setValues(rolesNames);
+        return entityValues;
     }
 
-    private void addInstitutes(SystemSubject systemSubject, Map<String, List<NamedValueDTO>> entities)
+    private EntityValues getInstitutes(SystemSubject systemSubject)
     {
+        EntityValues entityValues = new EntityValues();
         List<Institute> institutes;
         if (systemSubject.isAdmin())
         {
@@ -130,7 +142,9 @@ public class ListsByUserServiceImpl implements ListsByUserService
             institutes.stream()
                 .map(x -> new NamedValueDTO(x.getName()))
                 .collect(Collectors.toList());
-        entities.put("institutes", instituteNames);
+        entityValues.setEntityName("institutes");
+        entityValues.setValues(instituteNames);
+        return entityValues;
     }
 
     private List<WorkUnit> getManagedWorkUnits(SystemSubject systemSubject)

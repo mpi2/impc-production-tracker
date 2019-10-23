@@ -19,10 +19,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import uk.ac.ebi.impc_prod_tracker.service.conf.ListsByUserService;
+import uk.ac.ebi.impc_prod_tracker.service.conf.EntitiesValuesByUserService;
+import uk.ac.ebi.impc_prod_tracker.service.conf.EntityValues;
 import uk.ac.ebi.impc_prod_tracker.service.conf.PermissionService;
-import uk.ac.ebi.impc_prod_tracker.web.dto.common.NamedValueDTO;
-
 import java.util.List;
 import java.util.Map;
 
@@ -31,13 +30,13 @@ import java.util.Map;
 public class PermissionController
 {
     private PermissionService permissionService;
-    private ListsByUserService listsByUserService;
+    private EntitiesValuesByUserService entitiesValuesByUserService;
 
-    public PermissionController(PermissionService permissionService, ListsByUserService listsByUserService)
+    public PermissionController(PermissionService permissionService, EntitiesValuesByUserService entitiesValuesByUserService)
     {
 
         this.permissionService = permissionService;
-        this.listsByUserService = listsByUserService;
+        this.entitiesValuesByUserService = entitiesValuesByUserService;
     }
 
     @GetMapping(value = {"/permissions"})
@@ -54,8 +53,8 @@ public class PermissionController
     }
 
     @GetMapping(value = {"/listsByManagerUser"})
-    public Map<String, List<NamedValueDTO>> getManagedEntities()
+    public List<EntityValues> getManagedEntities()
     {
-        return listsByUserService.getListsByManagerUser();
+        return entitiesValuesByUserService.getListsByManagerUser();
     }
 }

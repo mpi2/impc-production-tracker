@@ -15,17 +15,13 @@
  *******************************************************************************/
 package uk.ac.ebi.impc_prod_tracker.service.conf;
 
+import lombok.Data;
 import uk.ac.ebi.impc_prod_tracker.web.dto.common.NamedValueDTO;
-
 import java.util.List;
-import java.util.Map;
 
-public interface ListsByUserService
+@Data
+public class EntityValues
 {
-    /**
-     * Returns a catalog with data for entities according to the user. The user must be manager or
-     * admin because the entities are meant to be data managed by that user.
-     * @return Map with entities and values for those entities.
-     */
-    Map<String, List<NamedValueDTO>> getListsByManagerUser();
+    private String entityName;
+    private List<NamedValueDTO> values;
 }
