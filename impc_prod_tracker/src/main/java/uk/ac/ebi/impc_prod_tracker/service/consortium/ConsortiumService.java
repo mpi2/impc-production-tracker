@@ -19,6 +19,8 @@ import org.springframework.stereotype.Component;
 import uk.ac.ebi.impc_prod_tracker.data.organization.consortium.Consortium;
 import uk.ac.ebi.impc_prod_tracker.data.organization.consortium.ConsortiumRepository;
 
+import java.util.List;
+
 @Component
 public class ConsortiumService
 {
@@ -32,5 +34,10 @@ public class ConsortiumService
     public Consortium findConsortiumByName(String name)
     {
         return consortiumRepository.findByNameIgnoreCase(name);
+    }
+
+    public List<Consortium> findAllConsortia()
+    {
+        return consortiumRepository.findAll();
     }
 }

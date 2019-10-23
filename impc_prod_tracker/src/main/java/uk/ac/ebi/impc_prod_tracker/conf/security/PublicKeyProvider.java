@@ -15,6 +15,7 @@
  *******************************************************************************/
 package uk.ac.ebi.impc_prod_tracker.conf.security;
 
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
@@ -48,6 +49,7 @@ public class PublicKeyProvider
      * @param authenticationServiceUrl Url to get the public key.
      * @return The public key.
      */
+    @Cacheable("publicKey")
     public PublicKey getPublicKey(String authenticationServiceUrl)
     {
         if (publicKey == null)

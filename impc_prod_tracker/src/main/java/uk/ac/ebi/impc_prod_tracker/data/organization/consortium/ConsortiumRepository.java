@@ -17,7 +17,11 @@ package uk.ac.ebi.impc_prod_tracker.data.organization.consortium;
 
 import org.springframework.data.repository.CrudRepository;
 
+import java.util.List;
+
 public interface ConsortiumRepository extends CrudRepository<Consortium, Long>
 {
     Consortium findByNameIgnoreCase(String name);
+
+    List<Consortium> findAll();
 }
