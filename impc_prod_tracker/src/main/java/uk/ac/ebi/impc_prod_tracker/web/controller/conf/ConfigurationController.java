@@ -18,7 +18,7 @@ package uk.ac.ebi.impc_prod_tracker.web.controller.conf;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import uk.ac.ebi.impc_prod_tracker.service.conf.ConfigurationService;
+import uk.ac.ebi.impc_prod_tracker.service.conf.CatalogService;
 import java.util.List;
 import java.util.Map;
 
@@ -31,16 +31,16 @@ import java.util.Map;
 @RequestMapping("/api")
 public class ConfigurationController
 {
-    private ConfigurationService configurationService;
+    private CatalogService catalogService;
 
-    public ConfigurationController(ConfigurationService configurationService)
+    public ConfigurationController(CatalogService catalogService)
     {
-        this.configurationService = configurationService;
+        this.catalogService = catalogService;
     }
 
     @GetMapping(value = {"/conf"})
     public Map<String, List<String>> getConfiguration()
     {
-        return configurationService.getConfiguration();
+        return catalogService.getCatalog();
     }
 }

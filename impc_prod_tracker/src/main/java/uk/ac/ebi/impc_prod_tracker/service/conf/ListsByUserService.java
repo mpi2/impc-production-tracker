@@ -15,24 +15,17 @@
  *******************************************************************************/
 package uk.ac.ebi.impc_prod_tracker.service.conf;
 
+import uk.ac.ebi.impc_prod_tracker.web.dto.common.NamedValueDTO;
+
+import java.util.List;
 import java.util.Map;
 
-/**
- * Returns the permissions a user has in the application.
- */
-public interface PermissionService
+public interface ListsByUserService
 {
     /**
-     * Get the general permissions a user have that don't depend on specific resources.
-     * @return Map with the permissions.
+     * Returns a catalog with data for entities according to the user. The user must be manager or
+     * admin because the entities are meant to be data managed by that user.
+     * @return Map with entities and values for those entities.
      */
-    Map<String, Boolean> getPermissions();
-
-    /**
-     * Returns if the current use can execute an comment on a specific resource.
-     * @param action The comment to evaluate.
-     * @param resourceId The resource identifier.
-     * @return True if the use has permission to execute the comment.
-     */
-    boolean getPermissionByActionOnResource(String action, String resourceId);
+    Map<String, List<NamedValueDTO>> getListsByManagerUser();
 }

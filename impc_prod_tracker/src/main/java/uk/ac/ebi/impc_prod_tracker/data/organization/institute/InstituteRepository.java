@@ -17,6 +17,11 @@ package uk.ac.ebi.impc_prod_tracker.data.organization.institute;
 
 import org.springframework.data.repository.CrudRepository;
 
-public interface InstituteRepository extends CrudRepository<Institute, Long> {
+import java.util.List;
+
+public interface InstituteRepository extends CrudRepository<Institute, Long>
+{
     Institute findInstituteByName(String name);
+
+    List<Institute> findAll();
 }
