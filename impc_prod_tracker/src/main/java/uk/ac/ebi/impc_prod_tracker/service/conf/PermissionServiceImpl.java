@@ -19,15 +19,16 @@ import org.springframework.stereotype.Component;
 import uk.ac.ebi.impc_prod_tracker.conf.security.abac.spring.ContextAwarePolicyEnforcement;
 import uk.ac.ebi.impc_prod_tracker.service.biology.plan.PlanService;
 import uk.ac.ebi.impc_prod_tracker.service.biology.project.ProjectService;
-import java.util.HashMap;
-import java.util.Map;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Component
 public class PermissionServiceImpl implements PermissionService
 {
-    private static final String CAN_REGISTER_USER_KEY = "canRegisterUser";
-    private static final String CREATE_USER_ACTION = "CREATE_USER";
-    private static final String EXECUTE_MANAGER_TASKS_KEY = "canExecuteManagerTasks";
+    private static final String MANAGE_USERS_KEY = "manageUsers";
+    private static final String MANAGE_USERS_ACTION = "MANAGE_USERS";
+    private static final String EXECUTE_MANAGER_TASKS_KEY = "executeManagerTasks";
     private static final String EXECUTE_MANAGER_TASKS_ACTION = "EXECUTE_MANAGER_TASKS";
 
     private static final String UPDATE_PLAN = "canUpdatePlan";
@@ -35,9 +36,9 @@ public class PermissionServiceImpl implements PermissionService
     private static final String UPDATE_PROJECT = "canUpdateProject";
     private static final String UPDATE_PROJECT_ACTION = "UPDATE_PROJECT";
 
-    private ContextAwarePolicyEnforcement policyEnforcement;
-    private PlanService planService;
-    private ProjectService projectService;
+    private final ContextAwarePolicyEnforcement policyEnforcement;
+    private final PlanService planService;
+    private final ProjectService projectService;
 
     public PermissionServiceImpl(
         ContextAwarePolicyEnforcement policyEnforcement,
@@ -50,16 +51,29 @@ public class PermissionServiceImpl implements PermissionService
     }
 
     @Override
-    public Map<String, Boolean> getPermissions()
+    public List<ActionPermission> getPermissions()
     {
-        Map<String, Boolean> permissions = new HashMap<>();
-        permissions.put(
-            CAN_REGISTER_USER_KEY,
-            policyEnforcement.hasPermission(null, CREATE_USER_ACTION));
-        permissions.put(
-            EXECUTE_MANAGER_TASKS_KEY,
+        List<ActionPermission> actionPermissions = new ArrayList<>();
+        actionPermissions.add(getManageUsersPermission());
+        actionPermissions.add(getExecutingManagementTasks());
+        return actionPermissions;
+    }
+
+    private ActionPermission getManageUsersPermission()
+    {
+        ActionPermission actionPermission = new ActionPermission();
+        actionPermission.setActionName(MANAGE_USERS_KEY);
+        actionPermission.setValue(policyEnforcement.hasPermission(null, MANAGE_USERS_ACTION));
+        return actionPermission;
+    }
+
+    private ActionPermission getExecutingManagementTasks()
+    {
+        ActionPermission actionPermission = new ActionPermission();
+        actionPermission.setActionName(EXECUTE_MANAGER_TASKS_KEY);
+        actionPermission.setValue(
             policyEnforcement.hasPermission(null, EXECUTE_MANAGER_TASKS_ACTION));
-        return permissions;
+        return actionPermission;
     }
 
     @Override

@@ -20,7 +20,6 @@ import uk.ac.ebi.impc_prod_tracker.data.organization.person_role_consortium.Pers
 import uk.ac.ebi.impc_prod_tracker.data.organization.person_role_work_unit.PersonRoleWorkUnit;
 import uk.ac.ebi.impc_prod_tracker.data.organization.role.Role;
 import uk.ac.ebi.impc_prod_tracker.data.organization.work_unit.WorkUnit;
-
 import java.util.Collection;
 import java.util.List;
 
@@ -50,5 +49,5 @@ public interface SystemSubject
 
     boolean belongsToAnyWorkUnit(Collection<WorkUnit> workUnits);
 
-    List<Role> getRelatedRoles();
+    List<String> getRelatedRolesNames();
 }

@@ -25,7 +25,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import java.util.Set;
 
-@NoArgsConstructor(access= AccessLevel.PRIVATE, force=true)
+@NoArgsConstructor(access= AccessLevel.PUBLIC, force=true)
 @Data
 @Entity
 @RestResource(rel = "people", path = "people")
@@ -35,6 +35,8 @@ public class Person extends BaseEntity
     @SequenceGenerator(name = "personSeq", sequenceName = "PERSON_SEQ")
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "personSeq")
     private Long id;
+
+    private String name;
 
     private String authId;
 

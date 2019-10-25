@@ -6,22 +6,22 @@
     "condition": "true"
   },
   {
-    "name": "Create new users",
-    "description": "Admin and Manager can create new users.",
-    "target": "action == 'CREATE_USER'",
-    "condition": "subject.getRelatedRoles().contains('manager')"
+    "name": "Manage Users",
+    "description": "Admin and Manager can manage users.",
+    "target": "action == 'MANAGE_USERS'",
+    "condition": "subject.isAdmin() OR subject.getRelatedRolesNames().contains('manager')"
   },
   {
     "name": "General permission to execute manager related tasks",
     "description": "General permission to execute manager related tasks",
     "target": "action == 'EXECUTE_MANAGER_TASKS'",
-    "condition": "subject.getRelatedRoles().contains('manager')"
+    "condition": "subject.getRelatedRolesNames().contains('manager')"
   },
   {
     "name": "Filter roles",
     "description": "Managers can create new users with equal roles or lower permissions.",
     "target": "action == 'FILTER_ROLE'",
-    "condition": "subject.isAdmin() OR (subject.getRelatedRoles().contains('manager') AND {'manager', 'general'}.contains(resource.name))"
+    "condition": "subject.isAdmin() OR (subject.getRelatedRolesNames().contains('manager') AND {'manager', 'general'}.contains(resource.name))"
   },
   {
     "name": "Read Public plans",
