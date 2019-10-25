@@ -12,7 +12,7 @@ import uk.ac.ebi.impc_prod_tracker.data.biology.crispr_attempt.guide.Guide;
 import uk.ac.ebi.impc_prod_tracker.data.biology.crispr_attempt.mutagenesis_donor.MutagenesisDonor;
 import uk.ac.ebi.impc_prod_tracker.data.biology.crispr_attempt.nuclease.Nuclease;
 import uk.ac.ebi.impc_prod_tracker.data.biology.strain.Strain;
-import uk.ac.ebi.impc_prod_tracker.service.plan.crispr.CrisprAttemptService;
+import uk.ac.ebi.impc_prod_tracker.service.biology.plan.crispr.CrisprAttemptService;
 import uk.ac.ebi.impc_prod_tracker.web.dto.plan.production.crispr_attempt.CrisprAttemptDTO;
 import java.util.HashSet;
 import java.util.Set;

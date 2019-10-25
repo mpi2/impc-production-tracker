@@ -19,8 +19,8 @@ import org.springframework.stereotype.Component;
 import uk.ac.ebi.impc_prod_tracker.conf.exceptions.UserOperationFailedException;
 import uk.ac.ebi.impc_prod_tracker.data.biology.gene.Gene;
 import uk.ac.ebi.impc_prod_tracker.data.biology.project_intention_gene.ProjectIntentionGene;
-import uk.ac.ebi.impc_prod_tracker.service.gene.external_ref.GeneExternalService;
-import uk.ac.ebi.impc_prod_tracker.service.gene.GeneService;
+import uk.ac.ebi.impc_prod_tracker.service.biology.gene.external_ref.GeneExternalService;
+import uk.ac.ebi.impc_prod_tracker.service.biology.gene.GeneService;
 import uk.ac.ebi.impc_prod_tracker.web.dto.gene.GeneDTO;
 import uk.ac.ebi.impc_prod_tracker.web.dto.gene.ProjectIntentionGeneDTO;
 import java.util.ArrayList;
@@ -113,6 +113,6 @@ public class ProjectIntentionGeneMapper
 
     private Gene loadGeneFromExternalData(String accessionId)
     {
-        return geneExternalService.getFromExternalGenesBySymbolOrAccId(accessionId);
+        return geneExternalService.getGeneFromExternalDataBySymbolOrAccId(accessionId);
     }
 }

@@ -17,8 +17,8 @@ package uk.ac.ebi.impc_prod_tracker.service.conf;
 
 import org.springframework.stereotype.Component;
 import uk.ac.ebi.impc_prod_tracker.conf.security.abac.spring.ContextAwarePolicyEnforcement;
-import uk.ac.ebi.impc_prod_tracker.service.plan.PlanService;
-import uk.ac.ebi.impc_prod_tracker.service.project.ProjectService;
+import uk.ac.ebi.impc_prod_tracker.service.biology.plan.PlanService;
+import uk.ac.ebi.impc_prod_tracker.service.biology.project.ProjectService;
 import java.util.HashMap;
 import java.util.Map;
 

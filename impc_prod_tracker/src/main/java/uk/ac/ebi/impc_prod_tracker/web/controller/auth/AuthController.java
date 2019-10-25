@@ -30,7 +30,7 @@ import uk.ac.ebi.impc_prod_tracker.data.organization.person.Person;
 import uk.ac.ebi.impc_prod_tracker.domain.login.AuthenticationRequest;
 import uk.ac.ebi.impc_prod_tracker.domain.login.UserRegisterRequest;
 import uk.ac.ebi.impc_prod_tracker.service.authentication.AuthService;
-import uk.ac.ebi.impc_prod_tracker.service.PersonService;
+import uk.ac.ebi.impc_prod_tracker.service.organization.PersonService;
 import uk.ac.ebi.impc_prod_tracker.web.dto.auth.AuthenticationResponseDTO;
 import uk.ac.ebi.impc_prod_tracker.web.dto.auth.PersonRoleConsortiumDTO;
 import uk.ac.ebi.impc_prod_tracker.web.dto.auth.PersonRoleWorkUnitDTO;

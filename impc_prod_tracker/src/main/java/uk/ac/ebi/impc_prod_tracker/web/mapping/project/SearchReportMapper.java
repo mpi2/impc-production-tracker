@@ -2,10 +2,8 @@ package uk.ac.ebi.impc_prod_tracker.web.mapping.project;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
-import uk.ac.ebi.impc_prod_tracker.common.types.FilterTypes;
-import uk.ac.ebi.impc_prod_tracker.service.project.search.SearchReport;
+import uk.ac.ebi.impc_prod_tracker.service.biology.project.search.SearchReport;
 import uk.ac.ebi.impc_prod_tracker.web.dto.common.filters.FilterDTO;
-import uk.ac.ebi.impc_prod_tracker.web.dto.project.ProjectDTO;
 import uk.ac.ebi.impc_prod_tracker.web.dto.project.search.SearchReportDTO;
 import uk.ac.ebi.impc_prod_tracker.web.dto.project.search.SearchResultDTO;
 

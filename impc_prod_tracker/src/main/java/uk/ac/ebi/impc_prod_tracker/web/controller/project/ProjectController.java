@@ -28,7 +28,7 @@ import uk.ac.ebi.impc_prod_tracker.common.pagination.PaginationHelper;
 import uk.ac.ebi.impc_prod_tracker.common.types.PlanTypes;
 import uk.ac.ebi.impc_prod_tracker.conf.exceptions.UserOperationFailedException;
 import uk.ac.ebi.impc_prod_tracker.data.biology.project.Project;
-import uk.ac.ebi.impc_prod_tracker.service.project.ProjectService;
+import uk.ac.ebi.impc_prod_tracker.service.biology.project.ProjectService;
 import uk.ac.ebi.impc_prod_tracker.web.controller.common.PlanLinkBuilder;
 import uk.ac.ebi.impc_prod_tracker.web.controller.project.helper.ProjectFilter;
 import uk.ac.ebi.impc_prod_tracker.web.controller.project.helper.ProjectFilterBuilder;

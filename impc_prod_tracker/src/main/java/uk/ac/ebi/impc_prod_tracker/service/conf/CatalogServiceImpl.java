@@ -27,7 +27,7 @@ import uk.ac.ebi.impc_prod_tracker.data.biology.strain.StrainRepository;
 import uk.ac.ebi.impc_prod_tracker.data.organization.institute.InstituteRepository;
 import uk.ac.ebi.impc_prod_tracker.data.organization.work_group.WorkGroupRepository;
 import uk.ac.ebi.impc_prod_tracker.data.organization.work_unit.WorkUnitRepository;
-import uk.ac.ebi.impc_prod_tracker.service.project.search.SearchType;
+import uk.ac.ebi.impc_prod_tracker.service.biology.project.search.SearchType;
 
 import java.util.ArrayList;
 import java.util.HashMap;
