@@ -33,6 +33,12 @@ public interface PersonService
     List<Person> getAllPeople();
 
     /**
+     * Returns the {@link Person} object representing the current user.
+     * @return
+     */
+    Person getLoggedPerson();
+
+    /**
      * Saves a person object in the system.
      * @param person {@link Person} object with the person basic information and their associations
      *                             with work units and consortia.

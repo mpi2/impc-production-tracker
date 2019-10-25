@@ -53,6 +53,12 @@ public class PersonController
         return personMapper.toDtos(personService.getAllPeople());
     }
 
+    @GetMapping(value = {"/people/currentPerson"})
+    public PersonDTO getCurrentPerson()
+    {
+        return personMapper.toDto(personService.getLoggedPerson());
+    }
+
     /**
      * Creates a person in the system.
      * @param personCreationDTO Request with data of the user to be created.
