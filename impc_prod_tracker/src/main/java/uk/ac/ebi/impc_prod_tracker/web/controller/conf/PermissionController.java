@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import uk.ac.ebi.impc_prod_tracker.service.conf.ActionPermission;
 import uk.ac.ebi.impc_prod_tracker.service.conf.EntitiesValuesByUserService;
 import uk.ac.ebi.impc_prod_tracker.service.conf.EntityValues;
 import uk.ac.ebi.impc_prod_tracker.service.conf.PermissionService;
@@ -40,7 +41,7 @@ public class PermissionController
     }
 
     @GetMapping(value = {"/permissions"})
-    public Map<String, Boolean> getConfiguration()
+    public List<ActionPermission> getConfiguration()
     {
         return permissionService.getPermissions();
     }

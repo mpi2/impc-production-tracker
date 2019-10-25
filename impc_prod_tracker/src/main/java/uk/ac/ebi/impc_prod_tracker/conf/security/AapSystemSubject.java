@@ -213,11 +213,11 @@ public class AapSystemSubject implements SystemSubject
     }
 
     @Override
-    public List<Role> getRelatedRoles()
+    public List<String> getRelatedRolesNames()
     {
-        List<Role> relatedRoles = new ArrayList<>();
-        roleWorkUnits.forEach(x -> relatedRoles.add(x.getRole()));
-        roleConsortia.forEach(x -> relatedRoles.add(x.getRole()));
-        return relatedRoles;
+        List<String> relatedRolesNames = new ArrayList<>();
+        roleWorkUnits.forEach(x -> relatedRolesNames.add(x.getRole().getName()));
+        roleConsortia.forEach(x -> relatedRolesNames.add(x.getRole().getName()));
+        return relatedRolesNames;
     }
 }

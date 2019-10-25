@@ -14,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 import uk.ac.ebi.impc_prod_tracker.conf.exceptions.OperationFailedException;
+import uk.ac.ebi.impc_prod_tracker.conf.security.abac.spring.SubjectRetriever;
 import uk.ac.ebi.impc_prod_tracker.conf.security.constants.PersonManagementConstants;
 import uk.ac.ebi.impc_prod_tracker.conf.security.jwt.JwtTokenProvider;
 import uk.ac.ebi.impc_prod_tracker.data.organization.institute.Institute;
@@ -25,7 +26,7 @@ import uk.ac.ebi.impc_prod_tracker.data.organization.role.RoleRepository;
 import uk.ac.ebi.impc_prod_tracker.data.organization.work_unit.WorkUnit;
 import uk.ac.ebi.impc_prod_tracker.data.organization.work_unit.WorkUnitRepository;
 import uk.ac.ebi.impc_prod_tracker.domain.login.UserRegisterRequest;
-import uk.ac.ebi.impc_prod_tracker.service.organization.PersonService;
+import uk.ac.ebi.impc_prod_tracker.service.organization.PersonServiceImpl;
 
 import java.util.Arrays;
 import java.util.HashSet;
@@ -38,7 +39,7 @@ import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
 @SpringBootTest
-public class PersonServiceTest
+public class PersonServiceImplTest
 {
     @Mock
     private PersonRepository personRepository;
@@ -52,6 +53,8 @@ public class PersonServiceTest
     private RestTemplate restTemplate;
     @Mock
     private JwtTokenProvider jwtTokenProvider;
+    @Mock
+    private SubjectRetriever subjectRetriever;
 
     @Rule
     public ExpectedException exceptionRule = ExpectedException.none();
@@ -72,17 +75,17 @@ public class PersonServiceTest
     private static final Institute INSTITUTE = new Institute(INSTITUTE_NAME);
     private static UserRegisterRequest userRegisterRequest;
 
-    private PersonService testInstance;
+    private PersonServiceImpl testInstance;
 
     @Before
     public void setUp() throws Exception
     {
-        testInstance = new PersonService(
+        testInstance = new PersonServiceImpl(
             personRepository,
             roleRepository,
             workUnitRepository,
             instituteRepository,
-            restTemplate, jwtTokenProvider);
+            restTemplate, jwtTokenProvider, subjectRetriever);
 
         userRegisterRequest =
             new UserRegisterRequest(
@@ -123,7 +126,7 @@ public class PersonServiceTest
         when(personRepository.findPersonByEmail(EMAIL)).thenReturn(existingPerson);
 
         exceptionRule.expect(OperationFailedException.class);
-        exceptionRule.expectMessage(String.format(PersonService.PERSON_ALREADY_EXISTS_ERROR, EMAIL));
+        exceptionRule.expectMessage(String.format(PersonServiceImpl.PERSON_ALREADY_EXISTS_ERROR, EMAIL));
 
         testInstance.createPerson(userRegisterRequest);
     }
@@ -137,7 +140,7 @@ public class PersonServiceTest
             .thenThrow(new HttpClientErrorException(HttpStatus.CONFLICT));
 
         exceptionRule.expect(OperationFailedException.class);
-        exceptionRule.expectMessage(String.format(PersonService.PERSON_ALREADY_IN_AAP_ERROR, NAME_TEST));
+        exceptionRule.expectMessage(String.format(PersonServiceImpl.PERSON_ALREADY_IN_AAP_ERROR, NAME_TEST));
 
         testInstance.createPerson(userRegisterRequest);
     }
@@ -147,7 +150,7 @@ public class PersonServiceTest
     {
         exceptionRule.expect(OperationFailedException.class);
         exceptionRule.expectMessage(
-            String.format(PersonService.WORK_UNIT_NOT_EXIST_IN_THE_SYSTEM, WORK_UNIT_NAME));
+            String.format(PersonServiceImpl.WORK_UNIT_NOT_EXIST_IN_THE_SYSTEM, WORK_UNIT_NAME));
         when(workUnitRepository.findWorkUnitByIlarCode(WORK_UNIT_NAME)).thenReturn(null);
 
         testInstance.createPerson(userRegisterRequest);
@@ -158,7 +161,7 @@ public class PersonServiceTest
     {
         exceptionRule.expect(OperationFailedException.class);
         exceptionRule.expectMessage(
-            String.format(PersonService.INSTITUTE_NOT_EXIST_IN_THE_SYSTEM, INSTITUTE_NAME));
+            String.format(PersonServiceImpl.INSTITUTE_NOT_EXIST_IN_THE_SYSTEM, INSTITUTE_NAME));
         when(instituteRepository.findInstituteByName(INSTITUTE_NAME)).thenReturn(null);
 
         testInstance.createPerson(userRegisterRequest);
@@ -169,7 +172,7 @@ public class PersonServiceTest
     {
         exceptionRule.expect(OperationFailedException.class);
         exceptionRule.expectMessage(
-            String.format(PersonService.ROLE_NOT_EXIST_IN_THE_SYSTEM, ROLE_NAME));
+            String.format(PersonServiceImpl.ROLE_NOT_EXIST_IN_THE_SYSTEM, ROLE_NAME));
         when(roleRepository.findRoleByName(ROLE_NAME)).thenReturn(null);
 
         testInstance.createPerson(userRegisterRequest);

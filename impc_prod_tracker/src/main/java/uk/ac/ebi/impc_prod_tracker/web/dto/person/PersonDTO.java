@@ -13,22 +13,22 @@
  language governing permissions and limitations under the
  License.
  */
-package uk.ac.ebi.impc_prod_tracker.service.organization;
+package uk.ac.ebi.impc_prod_tracker.web.dto.person;
 
-import uk.ac.ebi.impc_prod_tracker.data.organization.person.Person;
+import lombok.Data;
+import uk.ac.ebi.impc_prod_tracker.service.conf.ActionPermission;
+
 import java.util.List;
 
-/**
- * Functionality to manage people in the system.
- */
-public interface PersonService
+@Data
+public class PersonDTO
 {
-    /**
-     * Return a list of users that the logged user can see. If the logged user is a manager, they
-     * can see all the users that can be managed by them. If the logged user is an admin they can
-     * see all the users in the system.
-     * @return List of {@link Person} with information about the people visible for the current
-     * logged user.
-     */
-    List<Person> getAllPeople();
+    private Long id;
+    private String name;
+    private String email;
+    private Boolean contactable;
+    private List<PersonRoleWorkUnitDTO> rolesWorkUnits;
+    private List<PersonRoleConsortiumDTO> rolesConsortia;
+    private boolean isAdmin;
+    private List<ActionPermission> actionPermissions;
 }
