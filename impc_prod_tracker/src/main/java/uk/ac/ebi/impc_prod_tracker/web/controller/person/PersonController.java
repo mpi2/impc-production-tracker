@@ -15,10 +15,14 @@
  */
 package uk.ac.ebi.impc_prod_tracker.web.controller.person;
 
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import uk.ac.ebi.impc_prod_tracker.data.organization.person.Person;
 import uk.ac.ebi.impc_prod_tracker.service.organization.PersonService;
+import uk.ac.ebi.impc_prod_tracker.web.dto.person.PersonCreationDTO;
 import uk.ac.ebi.impc_prod_tracker.web.dto.person.PersonDTO;
 import uk.ac.ebi.impc_prod_tracker.web.mapping.person.PersonMapper;
 import java.util.List;
@@ -47,5 +51,18 @@ public class PersonController
     public List<PersonDTO> getAllPeople()
     {
         return personMapper.toDtos(personService.getAllPeople());
+    }
+
+    /**
+     * Creates a person in the system.
+     * @param personCreationDTO Request with data of the user to be created.
+     * @return {@link Person} entity created
+     */
+    @PostMapping(value = {"/people"})
+    @PreAuthorize("hasPermission(null, 'CREATE_USER')")
+    public PersonDTO createPerson(PersonCreationDTO personCreationDTO)
+    {
+        Person personToBeCreated = personMapper.personCreationDTOtoEntity(personCreationDTO);
+        return personMapper.toDto(personService.createPerson(personToBeCreated));
     }
 }

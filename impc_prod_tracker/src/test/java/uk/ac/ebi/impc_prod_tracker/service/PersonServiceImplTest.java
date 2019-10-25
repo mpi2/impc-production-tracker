@@ -16,7 +16,6 @@ import org.springframework.web.client.RestTemplate;
 import uk.ac.ebi.impc_prod_tracker.conf.exceptions.OperationFailedException;
 import uk.ac.ebi.impc_prod_tracker.conf.security.abac.spring.SubjectRetriever;
 import uk.ac.ebi.impc_prod_tracker.conf.security.constants.PersonManagementConstants;
-import uk.ac.ebi.impc_prod_tracker.conf.security.jwt.JwtTokenProvider;
 import uk.ac.ebi.impc_prod_tracker.data.organization.institute.Institute;
 import uk.ac.ebi.impc_prod_tracker.data.organization.institute.InstituteRepository;
 import uk.ac.ebi.impc_prod_tracker.data.organization.person.Person;
@@ -27,7 +26,6 @@ import uk.ac.ebi.impc_prod_tracker.data.organization.work_unit.WorkUnit;
 import uk.ac.ebi.impc_prod_tracker.data.organization.work_unit.WorkUnitRepository;
 import uk.ac.ebi.impc_prod_tracker.domain.login.UserRegisterRequest;
 import uk.ac.ebi.impc_prod_tracker.service.organization.PersonServiceImpl;
-
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
@@ -51,8 +49,6 @@ public class PersonServiceImplTest
     private InstituteRepository instituteRepository;
     @Mock
     private RestTemplate restTemplate;
-    @Mock
-    private JwtTokenProvider jwtTokenProvider;
     @Mock
     private SubjectRetriever subjectRetriever;
 
@@ -85,7 +81,8 @@ public class PersonServiceImplTest
             roleRepository,
             workUnitRepository,
             instituteRepository,
-            restTemplate, jwtTokenProvider, subjectRetriever);
+            restTemplate,
+            subjectRetriever);
 
         userRegisterRequest =
             new UserRegisterRequest(
