@@ -2,7 +2,7 @@ package uk.ac.ebi.impc_prod_tracker.web.mapping.allele;
 
 import org.springframework.stereotype.Component;
 import uk.ac.ebi.impc_prod_tracker.data.biology.allele_type.AlleleType;
-import uk.ac.ebi.impc_prod_tracker.service.allele.AlleleService;
+import uk.ac.ebi.impc_prod_tracker.service.biology.allele.AlleleService;
 
 @Component
 public class AlleleTypeMapper

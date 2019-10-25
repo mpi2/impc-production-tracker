@@ -25,6 +25,8 @@ import uk.ac.ebi.impc_prod_tracker.data.organization.role.RoleRepository;
 import uk.ac.ebi.impc_prod_tracker.data.organization.work_unit.WorkUnit;
 import uk.ac.ebi.impc_prod_tracker.data.organization.work_unit.WorkUnitRepository;
 import uk.ac.ebi.impc_prod_tracker.domain.login.UserRegisterRequest;
+import uk.ac.ebi.impc_prod_tracker.service.organization.PersonService;
+
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;

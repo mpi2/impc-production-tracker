@@ -24,16 +24,13 @@ import uk.ac.ebi.impc_prod_tracker.data.organization.person_role_consortium.Pers
 import uk.ac.ebi.impc_prod_tracker.data.organization.person_role_work_unit.PersonRoleWorkUnit;
 import uk.ac.ebi.impc_prod_tracker.data.organization.role.Role;
 import uk.ac.ebi.impc_prod_tracker.data.organization.work_unit.WorkUnit;
-import uk.ac.ebi.impc_prod_tracker.service.InstituteService;
-import uk.ac.ebi.impc_prod_tracker.service.RoleService;
-import uk.ac.ebi.impc_prod_tracker.service.WorkUnitService;
-import uk.ac.ebi.impc_prod_tracker.service.consortium.ConsortiumService;
+import uk.ac.ebi.impc_prod_tracker.service.organization.InstituteService;
+import uk.ac.ebi.impc_prod_tracker.service.organization.RoleService;
+import uk.ac.ebi.impc_prod_tracker.service.organization.WorkUnitService;
+import uk.ac.ebi.impc_prod_tracker.service.organization.consortium.ConsortiumService;
 import uk.ac.ebi.impc_prod_tracker.web.dto.common.NamedValueDTO;
-
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 @Component

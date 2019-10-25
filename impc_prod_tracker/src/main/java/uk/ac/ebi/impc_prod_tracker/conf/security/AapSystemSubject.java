@@ -28,7 +28,7 @@ import uk.ac.ebi.impc_prod_tracker.data.organization.person_role_consortium.Pers
 import uk.ac.ebi.impc_prod_tracker.data.organization.person_role_work_unit.PersonRoleWorkUnit;
 import uk.ac.ebi.impc_prod_tracker.data.organization.role.Role;
 import uk.ac.ebi.impc_prod_tracker.data.organization.work_unit.WorkUnit;
-import uk.ac.ebi.impc_prod_tracker.service.WorkUnitService;
+import uk.ac.ebi.impc_prod_tracker.service.organization.WorkUnitService;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;

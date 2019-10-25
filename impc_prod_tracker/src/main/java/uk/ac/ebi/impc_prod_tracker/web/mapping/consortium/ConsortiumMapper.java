@@ -18,11 +18,10 @@ package uk.ac.ebi.impc_prod_tracker.web.mapping.consortium;
 import org.springframework.stereotype.Component;
 import uk.ac.ebi.impc_prod_tracker.conf.exceptions.UserOperationFailedException;
 import uk.ac.ebi.impc_prod_tracker.data.organization.consortium.Consortium;
-import uk.ac.ebi.impc_prod_tracker.service.consortium.ConsortiumService;
+import uk.ac.ebi.impc_prod_tracker.service.organization.consortium.ConsortiumService;
 
 import java.util.Collection;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 @Component

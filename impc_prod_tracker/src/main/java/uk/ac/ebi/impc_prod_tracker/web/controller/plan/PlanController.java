@@ -25,7 +25,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import uk.ac.ebi.impc_prod_tracker.data.biology.plan.Plan;
 import uk.ac.ebi.impc_prod_tracker.data.common.history.History;
-import uk.ac.ebi.impc_prod_tracker.service.plan.PlanService;
+import uk.ac.ebi.impc_prod_tracker.service.biology.plan.PlanService;
 import uk.ac.ebi.impc_prod_tracker.web.controller.util.LinkUtil;
 import uk.ac.ebi.impc_prod_tracker.web.dto.common.history.HistoryDTO;
 import uk.ac.ebi.impc_prod_tracker.web.dto.plan.PlanDTO;

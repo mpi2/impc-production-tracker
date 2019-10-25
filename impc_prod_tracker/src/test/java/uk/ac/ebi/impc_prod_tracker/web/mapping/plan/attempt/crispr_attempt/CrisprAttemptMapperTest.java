@@ -17,7 +17,7 @@ import uk.ac.ebi.impc_prod_tracker.data.biology.crispr_attempt.mutagenesis_donor
 import uk.ac.ebi.impc_prod_tracker.data.biology.crispr_attempt.mutagenesis_donor.preparation_type.PreparationTypeRepository;
 import uk.ac.ebi.impc_prod_tracker.data.biology.strain.Strain;
 import uk.ac.ebi.impc_prod_tracker.data.biology.strain.strain_type.StrainType;
-import uk.ac.ebi.impc_prod_tracker.service.plan.crispr.CrisprAttemptService;
+import uk.ac.ebi.impc_prod_tracker.service.biology.plan.crispr.CrisprAttemptService;
 import uk.ac.ebi.impc_prod_tracker.web.dto.plan.production.crispr_attempt.AssayDTO;
 import uk.ac.ebi.impc_prod_tracker.web.dto.plan.production.crispr_attempt.CrisprAttemptDTO;
 import uk.ac.ebi.impc_prod_tracker.web.dto.plan.production.crispr_attempt.GenotypePrimerDTO;

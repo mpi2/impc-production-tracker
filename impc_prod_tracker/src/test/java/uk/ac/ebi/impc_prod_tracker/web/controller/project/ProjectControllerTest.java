@@ -5,18 +5,15 @@ import com.github.springtestdbunit.annotation.DatabaseSetup;
 import org.junit.Ignore;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import uk.ac.ebi.impc_prod_tracker.data.biology.project.Project;
 import uk.ac.ebi.impc_prod_tracker.data.biology.project.ProjectRepository;
 import uk.ac.ebi.impc_prod_tracker.data.organization.person.PersonRepository;
 import uk.ac.ebi.impc_prod_tracker.framework.ControllerTestTemplate;
-import uk.ac.ebi.impc_prod_tracker.service.project.ProjectService;
+import uk.ac.ebi.impc_prod_tracker.service.biology.project.ProjectService;
 import uk.ac.ebi.impc_prod_tracker.web.db.Paths;
 
-import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 class ProjectControllerTest extends ControllerTestTemplate
 {

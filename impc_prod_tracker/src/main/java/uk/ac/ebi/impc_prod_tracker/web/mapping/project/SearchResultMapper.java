@@ -16,7 +16,7 @@
 package uk.ac.ebi.impc_prod_tracker.web.mapping.project;
 
 import org.springframework.stereotype.Component;
-import uk.ac.ebi.impc_prod_tracker.service.project.search.SearchResult;
+import uk.ac.ebi.impc_prod_tracker.service.biology.project.search.SearchResult;
 import uk.ac.ebi.impc_prod_tracker.web.dto.project.search.SearchResultDTO;
 
 @Component

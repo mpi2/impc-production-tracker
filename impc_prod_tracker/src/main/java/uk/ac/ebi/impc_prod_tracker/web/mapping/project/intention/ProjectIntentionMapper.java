@@ -20,7 +20,7 @@ import uk.ac.ebi.impc_prod_tracker.data.biology.project_intention.ProjectIntenti
 import uk.ac.ebi.impc_prod_tracker.data.biology.project_intention_gene.ProjectIntentionGene;
 import uk.ac.ebi.impc_prod_tracker.data.biology.project_intention_location.ProjectIntentionLocation;
 import uk.ac.ebi.impc_prod_tracker.data.biology.project_intention_sequence.ProjectIntentionSequence;
-import uk.ac.ebi.impc_prod_tracker.service.project_intention.ProjectIntentionService;
+import uk.ac.ebi.impc_prod_tracker.service.biology.project_intention.ProjectIntentionService;
 import uk.ac.ebi.impc_prod_tracker.web.dto.gene.ProjectIntentionGeneDTO;
 import uk.ac.ebi.impc_prod_tracker.web.dto.intention.ProjectIntentionDTO;
 import uk.ac.ebi.impc_prod_tracker.web.dto.location.ProjectIntentionLocationDTO;

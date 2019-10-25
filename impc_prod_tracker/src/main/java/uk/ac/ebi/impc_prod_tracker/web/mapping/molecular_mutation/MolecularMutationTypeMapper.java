@@ -17,7 +17,7 @@ package uk.ac.ebi.impc_prod_tracker.web.mapping.molecular_mutation;
 
 import org.springframework.stereotype.Component;
 import uk.ac.ebi.impc_prod_tracker.data.biology.molecular_mutation_type.MolecularMutationType;
-import uk.ac.ebi.impc_prod_tracker.service.molecular_mutation.MolecularMutationService;
+import uk.ac.ebi.impc_prod_tracker.service.biology.molecular_mutation.MolecularMutationService;
 
 @Component
 public class MolecularMutationTypeMapper

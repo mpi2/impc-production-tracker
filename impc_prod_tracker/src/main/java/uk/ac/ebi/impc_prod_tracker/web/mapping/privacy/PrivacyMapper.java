@@ -18,7 +18,7 @@ package uk.ac.ebi.impc_prod_tracker.web.mapping.privacy;
 import org.springframework.stereotype.Component;
 import uk.ac.ebi.impc_prod_tracker.conf.exceptions.UserOperationFailedException;
 import uk.ac.ebi.impc_prod_tracker.data.biology.privacy.Privacy;
-import uk.ac.ebi.impc_prod_tracker.service.privacy.PrivacyService;
+import uk.ac.ebi.impc_prod_tracker.service.biology.project.privacy.PrivacyService;
 
 @Component
 public class PrivacyMapper
