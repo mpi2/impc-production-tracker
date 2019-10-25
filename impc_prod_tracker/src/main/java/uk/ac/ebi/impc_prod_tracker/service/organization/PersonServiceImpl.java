@@ -100,6 +100,19 @@ public class PersonServiceImpl implements PersonService
     }
 
     @Override
+    public Person getLoggedPerson()
+    {
+        Person person = null;
+        SystemSubject systemSubject = subjectRetriever.getSubject();
+        if (systemSubject != null)
+        {
+            person = systemSubject.getPerson();
+        }
+
+        return person;
+    }
+
+    @Override
     public Person createPerson(Person person)
     {
         return null;
