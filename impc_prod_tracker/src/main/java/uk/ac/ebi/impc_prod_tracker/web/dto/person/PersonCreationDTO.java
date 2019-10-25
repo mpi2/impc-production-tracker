@@ -16,15 +16,16 @@
 package uk.ac.ebi.impc_prod_tracker.web.dto.person;
 
 import lombok.Data;
-
 import java.util.List;
 
 @Data
 public class PersonCreationDTO
 {
-    private String userName;
+    private String name;
+    private String email;
     private String password;
+    private Boolean contactable;
+    private boolean isAdmin;
     private List<PersonRoleWorkUnitDTO> rolesWorkUnits;
     private List<PersonRoleConsortiumDTO> rolesConsortia;
-    private boolean isAdmin;
 }

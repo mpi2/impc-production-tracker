@@ -31,4 +31,12 @@ public interface PersonService
      * logged user.
      */
     List<Person> getAllPeople();
+
+    /**
+     * Saves a person object in the system.
+     * @param person {@link Person} object with the person basic information and their associations
+     *                             with work units and consortia.
+     * @return Created {@link Person} with an id provided by the system.
+     */
+    Person createPerson(Person person);
 }

@@ -1,18 +1,18 @@
-/*******************************************************************************
- * Copyright 2019 EMBL - European Bioinformatics Institute
- *
- * Licensed under the Apache License, Version 2.0 (the
- * "License"); you may not use this file except in compliance
- * with the License. You may obtain a copy of the License at
- * http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing,
- * software distributed under the License is distributed on an
- * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
- * either express or implied. See the License for the specific
- * language governing permissions and limitations under the
- * License.
- *******************************************************************************/
+/******************************************************************************
+ Copyright 2019 EMBL - European Bioinformatics Institute
+
+ Licensed under the Apache License, Version 2.0 (the
+ "License"); you may not use this file except in compliance
+ with the License. You may obtain a copy of the License at
+ http://www.apache.org/licenses/LICENSE-2.0
+
+ Unless required by applicable law or agreed to in writing,
+ software distributed under the License is distributed on an
+ "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
+ either express or implied. See the License for the specific
+ language governing permissions and limitations under the
+ License.
+ */
 package uk.ac.ebi.impc_prod_tracker.service.organization;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -24,12 +24,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
-import uk.ac.ebi.impc_prod_tracker.conf.exceptions.SystemOperationFailedException;
 import uk.ac.ebi.impc_prod_tracker.conf.exceptions.UserOperationFailedException;
 import uk.ac.ebi.impc_prod_tracker.conf.security.SystemSubject;
 import uk.ac.ebi.impc_prod_tracker.conf.security.abac.spring.SubjectRetriever;
 import uk.ac.ebi.impc_prod_tracker.conf.security.constants.PersonManagementConstants;
-import uk.ac.ebi.impc_prod_tracker.conf.security.jwt.JwtTokenProvider;
 import uk.ac.ebi.impc_prod_tracker.data.organization.institute.Institute;
 import uk.ac.ebi.impc_prod_tracker.data.organization.institute.InstituteRepository;
 import uk.ac.ebi.impc_prod_tracker.data.organization.person.Person;
@@ -54,7 +52,6 @@ public class PersonServiceImpl implements PersonService
     private WorkUnitRepository workUnitRepository;
     private InstituteRepository instituteRepository;
     private RestTemplate restTemplate;
-    private JwtTokenProvider jwtTokenProvider;
     private SubjectRetriever subjectRetriever;
 
     public static final String PERSON_ALREADY_EXISTS_ERROR =
@@ -72,14 +69,14 @@ public class PersonServiceImpl implements PersonService
         RoleRepository roleRepository,
         WorkUnitRepository workUnitRepository,
         InstituteRepository instituteRepository,
-        RestTemplate restTemplate, JwtTokenProvider jwtTokenProvider, SubjectRetriever subjectRetriever)
+        RestTemplate restTemplate,
+        SubjectRetriever subjectRetriever)
     {
         this.personRepository = personRepository;
         this.roleRepository = roleRepository;
         this.workUnitRepository = workUnitRepository;
         this.instituteRepository = instituteRepository;
         this.restTemplate = restTemplate;
-        this.jwtTokenProvider = jwtTokenProvider;
         this.subjectRetriever = subjectRetriever;
     }
 
@@ -102,15 +99,10 @@ public class PersonServiceImpl implements PersonService
         return people;
     }
 
-    public SystemSubject getPersonByToken(String token)
+    @Override
+    public Person createPerson(Person person)
     {
-        // UserName is the same as email.
-        SystemSubject systemSubject = jwtTokenProvider.getSystemSubject(token);
-        if (systemSubject == null)
-        {
-            throw new SystemOperationFailedException("User does not exist", "Token provided "+ token);
-        }
-        return systemSubject;
+        return null;
     }
 
     /**
@@ -157,6 +149,7 @@ public class PersonServiceImpl implements PersonService
 
         return person;
     }
+
 
     private WorkUnit getWorkUnitFromRequest(UserRegisterRequest userRegisterRequest)
     {

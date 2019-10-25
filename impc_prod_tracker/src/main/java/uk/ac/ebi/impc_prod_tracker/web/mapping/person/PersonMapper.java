@@ -20,6 +20,7 @@ import uk.ac.ebi.impc_prod_tracker.data.organization.person.Person;
 import uk.ac.ebi.impc_prod_tracker.data.organization.person_role_consortium.PersonRoleConsortium;
 import uk.ac.ebi.impc_prod_tracker.data.organization.person_role_work_unit.PersonRoleWorkUnit;
 import uk.ac.ebi.impc_prod_tracker.service.conf.PermissionService;
+import uk.ac.ebi.impc_prod_tracker.web.dto.person.PersonCreationDTO;
 import uk.ac.ebi.impc_prod_tracker.web.dto.person.PersonDTO;
 import uk.ac.ebi.impc_prod_tracker.web.dto.person.PersonRoleConsortiumDTO;
 import uk.ac.ebi.impc_prod_tracker.web.dto.person.PersonRoleWorkUnitDTO;
@@ -80,5 +81,15 @@ public class PersonMapper
         Collection<PersonRoleConsortium> peopleRoleConsortia)
     {
         return entityMapper.toTargets(peopleRoleConsortia, PersonRoleConsortiumDTO.class);
+    }
+
+    public Person toEntity(PersonDTO personDTO)
+    {
+        return entityMapper.toTarget(personDTO, Person.class);
+    }
+
+    public Person personCreationDTOtoEntity(PersonCreationDTO personCreationDTO)
+    {
+        return entityMapper.toTarget(personCreationDTO, Person.class);
     }
 }
