@@ -24,7 +24,7 @@ import uk.ac.ebi.impc_prod_tracker.conf.security.AapSystemSubject;
 import uk.ac.ebi.impc_prod_tracker.conf.security.SystemSubject;
 
 /**
- * Class in charge of retrieven information about the user currently logged into the system.
+ * Class in charge of retrieving information about the user currently logged into the system.
  * @author Mauricio Martinez
  */
 @Component

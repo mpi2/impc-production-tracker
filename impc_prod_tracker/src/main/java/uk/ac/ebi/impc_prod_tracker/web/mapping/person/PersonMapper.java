@@ -45,9 +45,12 @@ public class PersonMapper
     public PersonDTO toDto(Person person)
     {
         PersonDTO personDTO = entityMapper.toTarget(person, PersonDTO.class);
-        personDTO.setRolesWorkUnits(peopleRoleWorkUnitToDtos(person.getRoleWorkUnits()));
-        personDTO.setRolesConsortia(peopleRoleConsortiaToDto(person.getRoleConsortia()));
-        personDTO.setActionPermissions(permissionService.getPermissions());
+        if (personDTO != null)
+        {
+            personDTO.setRolesWorkUnits(peopleRoleWorkUnitToDtos(person.getRoleWorkUnits()));
+            personDTO.setRolesConsortia(peopleRoleConsortiaToDto(person.getRoleConsortia()));
+            personDTO.setActionPermissions(permissionService.getPermissions());
+        }
         return personDTO;
     }
 
