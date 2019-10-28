@@ -15,6 +15,7 @@
  */
 package uk.ac.ebi.impc_prod_tracker.web.dto.person;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 import uk.ac.ebi.impc_prod_tracker.service.conf.ActionPermission;
 
@@ -29,6 +30,7 @@ public class PersonDTO
     private Boolean contactable;
     private List<PersonRoleWorkUnitDTO> rolesWorkUnits;
     private List<PersonRoleConsortiumDTO> rolesConsortia;
+    @JsonProperty("isAdmin")
     private boolean isAdmin;
     private List<ActionPermission> actionPermissions;
 }

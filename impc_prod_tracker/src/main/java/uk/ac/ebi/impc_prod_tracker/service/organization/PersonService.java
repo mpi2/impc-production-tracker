@@ -39,6 +39,13 @@ public interface PersonService
     Person getLoggedPerson();
 
     /**
+     * Get a {@link Person} object with the information of the person identified by the given email.
+     * @param email The email.
+     * @return The person identified by email. Null if not found.
+     */
+    Person getPersonByEmail(String email);
+
+    /**
      * Saves a person object in the system.
      * @param person {@link Person} object with the person basic information and their associations
      *                             with work units and consortia.

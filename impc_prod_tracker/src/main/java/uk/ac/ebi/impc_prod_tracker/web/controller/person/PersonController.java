@@ -15,11 +15,14 @@
  */
 package uk.ac.ebi.impc_prod_tracker.web.controller.person;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import uk.ac.ebi.impc_prod_tracker.conf.exceptions.UserOperationFailedException;
 import uk.ac.ebi.impc_prod_tracker.data.organization.person.Person;
 import uk.ac.ebi.impc_prod_tracker.service.organization.PersonService;
 import uk.ac.ebi.impc_prod_tracker.web.dto.person.PersonCreationDTO;
@@ -28,7 +31,7 @@ import uk.ac.ebi.impc_prod_tracker.web.mapping.person.PersonMapper;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/")
+@RequestMapping("/api/people")
 public class PersonController
 {
     private PersonService personService;
@@ -47,13 +50,27 @@ public class PersonController
      * @return List of {@link PersonDTO} with information about the people visible for the current
      * logged user.
      */
-    @GetMapping(value = {"/people"})
+    @GetMapping
     public List<PersonDTO> getAllPeople()
     {
         return personMapper.toDtos(personService.getAllPeople());
     }
 
-    @GetMapping(value = {"/people/currentPerson"})
+    @GetMapping(value = {"/{email}"})
+    @PreAuthorize("hasPermission(null, 'MANAGE_USERS')")
+    public PersonDTO findByEmail(@PathVariable("email") String email)
+    {
+        Person person = personService.getPersonByEmail(email);
+        if (person == null)
+        {
+            throw new UserOperationFailedException(
+                "User with email " + email + " not found.",
+                HttpStatus.NOT_FOUND);
+        }
+        return personMapper.toDto(person);
+    }
+
+    @GetMapping(value = {"/currentPerson"})
     public PersonDTO getCurrentPerson()
     {
         return personMapper.toDto(personService.getLoggedPerson());
@@ -64,7 +81,7 @@ public class PersonController
      * @param personCreationDTO Request with data of the user to be created.
      * @return {@link Person} entity created
      */
-    @PostMapping(value = {"/people"})
+    @PostMapping
     @PreAuthorize("hasPermission(null, 'CREATE_USER')")
     public PersonDTO createPerson(PersonCreationDTO personCreationDTO)
     {
