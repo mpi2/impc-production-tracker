@@ -113,6 +113,12 @@ public class PersonServiceImpl implements PersonService
     }
 
     @Override
+    public Person getPersonByEmail(String email)
+    {
+        return personRepository.findPersonByEmail(email);
+    }
+
+    @Override
     public Person createPerson(Person person)
     {
         return null;
