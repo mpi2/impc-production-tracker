@@ -121,6 +121,10 @@ public class AapSystemSubject implements SystemSubject
                 isEbiAdmin = true;
                 roleWorkUnits = null;
                 roleConsortia = null;
+                person = new Person();
+                person.setName(name);
+                person.setEmail(email);
+                person.setEbiAdmin(isEbiAdmin);
             }
             else
             {
