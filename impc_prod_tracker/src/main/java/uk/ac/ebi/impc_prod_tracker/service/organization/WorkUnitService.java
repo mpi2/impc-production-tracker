@@ -15,8 +15,10 @@
  *******************************************************************************/
 package uk.ac.ebi.impc_prod_tracker.service.organization;
 
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
+import uk.ac.ebi.impc_prod_tracker.conf.exceptions.UserOperationFailedException;
 import uk.ac.ebi.impc_prod_tracker.data.organization.work_group.WorkGroup;
 import uk.ac.ebi.impc_prod_tracker.data.organization.work_unit.WorkUnit;
 import uk.ac.ebi.impc_prod_tracker.data.organization.work_unit.WorkUnitRepository;
@@ -34,6 +36,7 @@ import java.util.Set;
 @Component
 public class WorkUnitService
 {
+    private static final String WORK_UNUT_NOT_EXISTS_ERROR = "Work unit %s does not exist.";
 
     private WorkUnitRepository workUnitRepository;
     @PersistenceContext
@@ -51,13 +54,30 @@ public class WorkUnitService
 
     public Set<WorkGroup> getWorkGroupsByWorkUnitName(String name)
     {
-        WorkUnit workUnit = workUnitRepository.findWorkUnitByName(name);
+        WorkUnit workUnit = workUnitRepository.findWorkUnitByNameIgnoreCase(name);
         if (workUnit != null)
         {
             return workUnit.getWorkGroups();
 
         }
         return null;
+    }
+
+    @Cacheable("workUnitsNames")
+    public WorkUnit getWorkUnitByName(String name)
+    {
+        return workUnitRepository.findWorkUnitByNameIgnoreCase(name);
+    }
+
+    public WorkUnit getWorkUnitByNameOrThrowException(String name)
+    {
+        WorkUnit workUnit = getWorkUnitByName(name);
+        if (workUnit == null)
+        {
+            throw new UserOperationFailedException(
+                String.format(WORK_UNUT_NOT_EXISTS_ERROR, name));
+        }
+        return workUnit;
     }
 
     @Transactional
