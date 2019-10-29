@@ -13,23 +13,16 @@
  language governing permissions and limitations under the
  License.
  */
-package uk.ac.ebi.impc_prod_tracker.web.dto.person;
+package uk.ac.ebi.impc_prod_tracker.web.controller.person;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.Data;
-import uk.ac.ebi.impc_prod_tracker.service.conf.ActionPermission;
-import java.util.List;
+import org.junit.Test;
+import uk.ac.ebi.impc_prod_tracker.framework.ControllerTestTemplate;
 
-@Data
-public class PersonDTO
+public class PersonControllerTest extends ControllerTestTemplate
 {
-    private Long id;
-    private String name;
-    private String email;
-    private Boolean contactable;
-    private List<PersonRoleWorkUnitDTO> rolesWorkUnits;
-    private List<PersonRoleConsortiumDTO> rolesConsortia;
-    @JsonProperty("isAdmin")
-    private boolean ebiAdmin;
-    private List<ActionPermission> actionPermissions;
+    @Test
+    public void testGetAllPeople()
+    {
+
+    }
 }

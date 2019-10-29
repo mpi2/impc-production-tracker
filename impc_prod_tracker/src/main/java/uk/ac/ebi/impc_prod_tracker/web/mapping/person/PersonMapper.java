@@ -25,21 +25,29 @@ import uk.ac.ebi.impc_prod_tracker.web.dto.person.PersonDTO;
 import uk.ac.ebi.impc_prod_tracker.web.dto.person.PersonRoleConsortiumDTO;
 import uk.ac.ebi.impc_prod_tracker.web.dto.person.PersonRoleWorkUnitDTO;
 import uk.ac.ebi.impc_prod_tracker.web.mapping.EntityMapper;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 
 @Component
 public class PersonMapper
 {
     private EntityMapper entityMapper;
     private PermissionService permissionService;
+    private PersonRoleWorkUnitMapper personRoleWorkUnitMapper;
+    private PersonRoleConsortiumMapper personRoleConsortiumMapper;
 
-    public PersonMapper(EntityMapper entityMapper, PermissionService permissionService)
+    public PersonMapper(
+        EntityMapper entityMapper,
+        PermissionService permissionService,
+        PersonRoleWorkUnitMapper personRoleWorkUnitMapper,
+        PersonRoleConsortiumMapper personRoleConsortiumMapper)
     {
         this.entityMapper = entityMapper;
         this.permissionService = permissionService;
+        this.personRoleWorkUnitMapper = personRoleWorkUnitMapper;
+        this.personRoleConsortiumMapper = personRoleConsortiumMapper;
     }
 
     public PersonDTO toDto(Person person)
@@ -47,8 +55,8 @@ public class PersonMapper
         PersonDTO personDTO = entityMapper.toTarget(person, PersonDTO.class);
         if (personDTO != null)
         {
-            personDTO.setRolesWorkUnits(peopleRoleWorkUnitToDtos(person.getRoleWorkUnits()));
-            personDTO.setRolesConsortia(peopleRoleConsortiaToDto(person.getRoleConsortia()));
+            personDTO.setRolesWorkUnits(peopleRoleWorkUnitToDtos(person.getRolesWorkUnits()));
+            personDTO.setRolesConsortia(peopleRoleConsortiaToDto(person.getRolesConsortia()));
             personDTO.setActionPermissions(permissionService.getPermissions());
         }
         return personDTO;
@@ -93,6 +101,35 @@ public class PersonMapper
 
     public Person personCreationDTOtoEntity(PersonCreationDTO personCreationDTO)
     {
-        return entityMapper.toTarget(personCreationDTO, Person.class);
+        Person person = new Person();
+        person.setId(null);
+        person.setName(personCreationDTO.getName());
+        person.setEmail(personCreationDTO.getEmail());
+        person.setPassword(personCreationDTO.getPassword());
+        person.setIsActive(true);
+        person.setEbiAdmin(personCreationDTO.isEbiAdmin());
+        person.setContactable(personCreationDTO.getContactable());
+        addRolesWorkUnits(personCreationDTO, person);
+        addRolesConsortia(personCreationDTO, person);
+
+        return person;
+    }
+
+    private void addRolesWorkUnits(PersonCreationDTO personCreationDTO, Person person)
+    {
+        List<PersonRoleWorkUnitDTO> roleWorkUnitDTOS = personCreationDTO.getRolesWorkUnits();
+        Set<PersonRoleWorkUnit> roleWorkUnitDTOSet =
+            personRoleWorkUnitMapper.toEntities(roleWorkUnitDTOS);
+        roleWorkUnitDTOSet.forEach(x -> x.setPerson(person));
+        person.setRolesWorkUnits(roleWorkUnitDTOSet);
+    }
+
+    private void addRolesConsortia(PersonCreationDTO personCreationDTO, Person person)
+    {
+        List<PersonRoleConsortiumDTO> roleConsortiaDTOs = personCreationDTO.getRolesConsortia();
+        Set<PersonRoleConsortium> roleConsortiumSet =
+            personRoleConsortiumMapper.toEntities(roleConsortiaDTOs);
+        roleConsortiumSet.forEach(x -> x.setPerson(person));
+        person.setRolesConsortia(roleConsortiumSet);
     }
 }

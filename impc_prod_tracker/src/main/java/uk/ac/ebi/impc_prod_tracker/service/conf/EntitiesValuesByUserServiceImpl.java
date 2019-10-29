@@ -19,12 +19,10 @@ import org.springframework.stereotype.Component;
 import uk.ac.ebi.impc_prod_tracker.conf.security.SystemSubject;
 import uk.ac.ebi.impc_prod_tracker.conf.security.abac.spring.SubjectRetriever;
 import uk.ac.ebi.impc_prod_tracker.data.organization.consortium.Consortium;
-import uk.ac.ebi.impc_prod_tracker.data.organization.institute.Institute;
 import uk.ac.ebi.impc_prod_tracker.data.organization.person_role_consortium.PersonRoleConsortium;
 import uk.ac.ebi.impc_prod_tracker.data.organization.person_role_work_unit.PersonRoleWorkUnit;
 import uk.ac.ebi.impc_prod_tracker.data.organization.role.Role;
 import uk.ac.ebi.impc_prod_tracker.data.organization.work_unit.WorkUnit;
-import uk.ac.ebi.impc_prod_tracker.service.organization.InstituteService;
 import uk.ac.ebi.impc_prod_tracker.service.organization.RoleService;
 import uk.ac.ebi.impc_prod_tracker.service.organization.WorkUnitService;
 import uk.ac.ebi.impc_prod_tracker.service.organization.consortium.ConsortiumService;
@@ -40,20 +38,17 @@ public class EntitiesValuesByUserServiceImpl implements EntitiesValuesByUserServ
     private WorkUnitService workUnitService;
     private ConsortiumService consortiumService;
     private RoleService roleService;
-    private InstituteService instituteService;
 
     public EntitiesValuesByUserServiceImpl(
         SubjectRetriever subjectRetriever,
         WorkUnitService workUnitService,
         ConsortiumService consortiumService,
-        RoleService roleService,
-        InstituteService instituteService)
+        RoleService roleService)
     {
         this.subjectRetriever = subjectRetriever;
         this.workUnitService = workUnitService;
         this.consortiumService = consortiumService;
         this.roleService = roleService;
-        this.instituteService = instituteService;
     }
 
     @Override
@@ -63,7 +58,6 @@ public class EntitiesValuesByUserServiceImpl implements EntitiesValuesByUserServ
         List<EntityValues> entities = new ArrayList<>();
         entities.add(getWorkUnits(systemSubject));
         entities.add(getConsortia(systemSubject));
-        entities.add(getInstitutes(systemSubject));
         entities.add(getRoles());
         return entities;
     }
@@ -123,27 +117,6 @@ public class EntitiesValuesByUserServiceImpl implements EntitiesValuesByUserServ
         return entityValues;
     }
 
-    private EntityValues getInstitutes(SystemSubject systemSubject)
-    {
-        EntityValues entityValues = new EntityValues();
-        List<Institute> institutes;
-        if (systemSubject.isAdmin())
-        {
-            institutes = getAllInstitutes();
-        }
-        else
-        {
-            institutes = getManagedInstitutes(systemSubject);
-        }
-        List<NamedValueDTO> instituteNames =
-            institutes.stream()
-                .map(x -> new NamedValueDTO(x.getName()))
-                .collect(Collectors.toList());
-        entityValues.setEntityName("institutes");
-        entityValues.setValues(instituteNames);
-        return entityValues;
-    }
-
     private List<WorkUnit> getManagedWorkUnits(SystemSubject systemSubject)
     {
         List<PersonRoleWorkUnit> personRoleWorkUnits = systemSubject.getRoleWorkUnits();
@@ -172,21 +145,6 @@ public class EntitiesValuesByUserServiceImpl implements EntitiesValuesByUserServ
     private List<Consortium> getAllConsortia()
     {
         return consortiumService.findAllConsortia();
-    }
-
-    private List<Institute> getManagedInstitutes(SystemSubject systemSubject)
-    {
-        List<PersonRoleConsortium> personRoleConsortia = systemSubject.getRoleConsortia();
-        return
-            personRoleConsortia.stream()
-                .filter(x -> RoleService.MANAGER_ROLE.equalsIgnoreCase(x.getRole().getName()))
-                .map(PersonRoleConsortium::getInstitute)
-                .collect(Collectors.toList());
-    }
-
-    private List<Institute> getAllInstitutes()
-    {
-        return instituteService.getAllInstitutes();
     }
 
     private List<Role> getAllRoles()
