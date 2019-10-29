@@ -32,10 +32,6 @@ public class PersonRoleConsortium extends BaseEntity implements Serializable {
     private Consortium consortium;
 
     @NotNull
-    @ManyToOne(targetEntity = Institute.class)
-    private Institute institute;
-
-    @NotNull
     @ManyToOne(targetEntity = Role.class)
     private Role role;
 }
