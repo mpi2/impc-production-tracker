@@ -22,6 +22,7 @@ import uk.ac.ebi.impc_prod_tracker.data.biology.crispr_attempt.mutagenesis_donor
 import uk.ac.ebi.impc_prod_tracker.data.biology.phenotyping_attempt.material_deposited_type.MaterialDepositedTypeRepository;
 import uk.ac.ebi.impc_prod_tracker.data.biology.plan.type.PlanTypeRepository;
 import uk.ac.ebi.impc_prod_tracker.data.biology.privacy.PrivacyRepository;
+import uk.ac.ebi.impc_prod_tracker.data.biology.species.SpeciesRepository;
 import uk.ac.ebi.impc_prod_tracker.data.biology.status.StatusRepository;
 import uk.ac.ebi.impc_prod_tracker.data.biology.strain.StrainRepository;
 import uk.ac.ebi.impc_prod_tracker.data.organization.institute.InstituteRepository;
@@ -48,6 +49,7 @@ public class CatalogServiceImpl implements CatalogService
     private StrainRepository strainRepository;
     private PreparationTypeRepository preparationTypeRepository;
     private MaterialDepositedTypeRepository materialDepositedTypeRepository;
+    private SpeciesRepository speciesRepository;
 
     private Map<String, List<String>> conf = new HashMap<>();
 
@@ -62,7 +64,8 @@ public class CatalogServiceImpl implements CatalogService
         InstituteRepository instituteRepository,
         StrainRepository strainRepository,
         PreparationTypeRepository preparationTypeRepository,
-        MaterialDepositedTypeRepository materialDepositedTypeRepository
+        MaterialDepositedTypeRepository materialDepositedTypeRepository,
+        SpeciesRepository speciesRepository
     )
     {
         this.workUnitRepository = workUnitRepository;
@@ -76,6 +79,7 @@ public class CatalogServiceImpl implements CatalogService
         this.strainRepository = strainRepository;
         this.preparationTypeRepository = preparationTypeRepository;
         this.materialDepositedTypeRepository = materialDepositedTypeRepository;
+        this.speciesRepository = speciesRepository;
     }
 
     @Override
@@ -95,6 +99,7 @@ public class CatalogServiceImpl implements CatalogService
             addMaterialTypes();
             addPreparationTypes();
             addSearchTypes();
+            addSpecies();
         }
 
         return conf;
@@ -182,5 +187,12 @@ public class CatalogServiceImpl implements CatalogService
     {
         List<String> searchTypes = SearchType.getValidValuesNames();
         conf.put("searchTypes", searchTypes);
+    }
+
+    private void addSpecies()
+    {
+        List<String> species = new ArrayList<>();
+        speciesRepository.findAll().forEach(p -> species.add(p.getName()));
+        conf.put("species", species);
     }
 }
