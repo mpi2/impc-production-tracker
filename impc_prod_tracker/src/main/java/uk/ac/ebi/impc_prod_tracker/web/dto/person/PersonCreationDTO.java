@@ -15,6 +15,7 @@
  */
 package uk.ac.ebi.impc_prod_tracker.web.dto.person;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 import java.util.List;
 
@@ -25,7 +26,8 @@ public class PersonCreationDTO
     private String email;
     private String password;
     private Boolean contactable;
-    private boolean isAdmin;
+    @JsonProperty("isAdmin")
+    private boolean ebiAdmin;
     private List<PersonRoleWorkUnitDTO> rolesWorkUnits;
     private List<PersonRoleConsortiumDTO> rolesConsortia;
 }

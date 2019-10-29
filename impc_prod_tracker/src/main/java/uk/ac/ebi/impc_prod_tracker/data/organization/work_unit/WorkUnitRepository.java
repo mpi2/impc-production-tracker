@@ -20,7 +20,7 @@ import org.springframework.data.repository.CrudRepository;
 import java.util.List;
 
 public interface WorkUnitRepository extends CrudRepository<WorkUnit, Long> {
-    WorkUnit findWorkUnitByName(String name);
+    WorkUnit findWorkUnitByNameIgnoreCase(String name);
 
     WorkUnit findWorkUnitByIlarCode(String code);
 
