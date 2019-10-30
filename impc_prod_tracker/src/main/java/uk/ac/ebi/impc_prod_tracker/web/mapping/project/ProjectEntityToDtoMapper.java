@@ -18,10 +18,12 @@ package uk.ac.ebi.impc_prod_tracker.web.mapping.project;
 import org.springframework.stereotype.Component;
 import uk.ac.ebi.impc_prod_tracker.data.biology.project.Project;
 import uk.ac.ebi.impc_prod_tracker.web.dto.intention.ProjectIntentionDTO;
+import uk.ac.ebi.impc_prod_tracker.web.dto.project.ProjectConsortiumDTO;
 import uk.ac.ebi.impc_prod_tracker.web.dto.project.ProjectDTO;
 import uk.ac.ebi.impc_prod_tracker.web.dto.species.SpeciesDTO;
 import uk.ac.ebi.impc_prod_tracker.web.dto.status_stamps.StatusStampsDTO;
 import uk.ac.ebi.impc_prod_tracker.web.mapping.EntityMapper;
+import uk.ac.ebi.impc_prod_tracker.web.mapping.project.consortium.ProjectConsortiumMapper;
 import uk.ac.ebi.impc_prod_tracker.web.mapping.project.intention.ProjectIntentionMapper;
 import uk.ac.ebi.impc_prod_tracker.web.mapping.project.intention.SortByProjectIntentionIndex;
 import uk.ac.ebi.impc_prod_tracker.web.mapping.statusStamp.StatusStampMapper;
@@ -35,16 +37,19 @@ public class ProjectEntityToDtoMapper
     private EntityMapper entityMapper;
     private StatusStampMapper statusStampMapper;
     private ProjectIntentionMapper projectIntentionMapper;
+    private ProjectConsortiumMapper projectConsortiumMapper;
     private static final String MGI_URL = "http://www.mousephenotype.org/data/genes/";
 
     public ProjectEntityToDtoMapper(
         EntityMapper entityMapper,
         StatusStampMapper statusStampMapper,
-        ProjectIntentionMapper projectIntentionMapper)
+        ProjectIntentionMapper projectIntentionMapper,
+        ProjectConsortiumMapper projectConsortiumMapper)
     {
         this.entityMapper = entityMapper;
         this.statusStampMapper = statusStampMapper;
         this.projectIntentionMapper = projectIntentionMapper;
+        this.projectConsortiumMapper = projectConsortiumMapper;
     }
 
     public ProjectDTO toDto(Project project)
@@ -56,7 +61,7 @@ public class ProjectEntityToDtoMapper
             addStatusStampsDTO(project, projectDTO);
             addProjectIntentions(project, projectDTO);
             addSpeciesDTO(project, projectDTO);
-            addConsortiaNames(project, projectDTO);
+            addProjectConsortia(project, projectDTO);
         }
         return projectDTO;
     }
@@ -74,14 +79,11 @@ public class ProjectEntityToDtoMapper
         Collections.sort(projectIntentionDTOs, new SortByProjectIntentionIndex());
     }
 
-    private void addConsortiaNames(Project project, ProjectDTO projectDTO)
+    private void addProjectConsortia(Project project, ProjectDTO projectDTO)
     {
-        List<String> consortiaNames = new ArrayList<>();
-        if (project.getConsortia() != null)
-        {
-            project.getConsortia().forEach(x -> consortiaNames.add(x.getName()));
-        }
-        projectDTO.setConsortiaNames(consortiaNames);
+        List<ProjectConsortiumDTO> projectConsortiumDTOS =
+                projectConsortiumMapper.toDtos(project.getProjectConsortia());
+        projectDTO.setProjectConsortiumDTOS(projectConsortiumDTOS);
     }
 
     private void addSpeciesDTO(Project project, ProjectDTO projectDTO)

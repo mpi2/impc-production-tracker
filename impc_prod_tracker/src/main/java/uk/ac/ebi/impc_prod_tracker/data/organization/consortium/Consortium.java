@@ -62,12 +62,4 @@ public class Consortium extends BaseEntity
         inverseJoinColumns = @JoinColumn(name = "work_unit_id"))
     private Set<WorkUnit> workUnits;
 
-
-    @EqualsAndHashCode.Exclude
-    @ToString.Exclude
-    @JsonIgnore
-    @ManyToMany(mappedBy = "consortia")
-    private Set<Project> projects;
-
-
 }

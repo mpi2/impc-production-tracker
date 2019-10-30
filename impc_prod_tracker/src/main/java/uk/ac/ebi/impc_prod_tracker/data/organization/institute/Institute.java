@@ -15,11 +15,10 @@
  *******************************************************************************/
 package uk.ac.ebi.impc_prod_tracker.data.organization.institute;
 
-import lombok.AccessLevel;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.*;
 import uk.ac.ebi.impc_prod_tracker.data.BaseEntity;
+import uk.ac.ebi.impc_prod_tracker.data.biology.project_consortium.ProjectConsortium;
 import uk.ac.ebi.impc_prod_tracker.data.organization.consortium.Consortium;
 import uk.ac.ebi.impc_prod_tracker.data.organization.person.Person;
 import javax.persistence.Column;
@@ -59,4 +58,10 @@ public class Institute extends BaseEntity
     {
         return String.format("id: {%d}. Name: {%s}", id, name);
     }
+
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
+    @JsonIgnore
+    @ManyToMany(mappedBy = "institutes")
+    private Set<ProjectConsortium> projectConsortiums;
 }
