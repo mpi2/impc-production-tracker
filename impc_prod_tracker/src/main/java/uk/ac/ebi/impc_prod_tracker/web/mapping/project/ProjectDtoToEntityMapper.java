@@ -26,6 +26,7 @@ import uk.ac.ebi.impc_prod_tracker.web.mapping.privacy.PrivacyMapper;
 import uk.ac.ebi.impc_prod_tracker.web.mapping.project.consortium.ProjectConsortiumMapper;
 import uk.ac.ebi.impc_prod_tracker.web.mapping.project.intention.ProjectIntentionMapper;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Class in charge of converting a {@link ProjectDTO} into a {@link Project}  entity.
@@ -75,7 +76,7 @@ public class ProjectDtoToEntityMapper
 
     private void setConsortia(Project project, ProjectDTO projectDTO)
     {
-        List<ProjectConsortium> projectConsortia = projectConsortiumMapper.toEntities(projectDTO.getProjectConsortiumDTOS());
+        Set<ProjectConsortium> projectConsortia = projectConsortiumMapper.toEntities(projectDTO.getProjectConsortiumDTOS());
         projectConsortia.forEach(x -> x.setProject(project));
         project.setProjectConsortia(projectConsortia);
 

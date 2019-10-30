@@ -39,9 +39,9 @@ public class ProjectConsortiumMapper {
         return id;
     }
 
-    public List<ProjectConsortium> toEntities(Collection<ProjectConsortiumDTO> projectConsortiumDTOS)
+    public Set<ProjectConsortium> toEntities(Collection<ProjectConsortiumDTO> projectConsortiumDTOS)
     {
-        List<ProjectConsortium> projectConsortia = new ArrayList<>();
+        Set<ProjectConsortium> projectConsortia = new HashSet<>();
         if (projectConsortiumDTOS != null)
         {
             projectConsortiumDTOS.forEach(x -> projectConsortia.add(toEntity(x)));

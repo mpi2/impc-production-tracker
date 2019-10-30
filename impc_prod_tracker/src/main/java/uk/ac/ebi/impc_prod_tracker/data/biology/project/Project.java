@@ -150,6 +150,6 @@ public class Project extends BaseEntity implements Resource<Project>
 
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
-    @OneToMany(cascade=CascadeType.ALL, mappedBy = "consortium", orphanRemoval=true, fetch = FetchType.EAGER)
-    private List<ProjectConsortium> projectConsortia;
+    @OneToMany(cascade=CascadeType.ALL, mappedBy = "project", orphanRemoval=true)
+    private Set<ProjectConsortium> projectConsortia;
 }
