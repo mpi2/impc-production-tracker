@@ -19,6 +19,7 @@ import io.jsonwebtoken.Claims;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import uk.ac.ebi.impc_prod_tracker.conf.exceptions.UserOperationFailedException;
 import uk.ac.ebi.impc_prod_tracker.data.organization.consortium.Consortium;
@@ -64,7 +65,9 @@ public class AapSystemSubject implements SystemSubject
     private final static String NOT_USER_INFORMATION_DEBUG_MESSAGE =
         "The user [%s] with reference id [%s] was successfully logged in but there is no related information for them " +
             "in the system. Please contact an administrator.";
-    private static final String TRACKER_MAINTAINER_DOMAIN_NAME = "self.tracker-maintainer";
+
+    @Value("${gentar-maintainer-domain-name}")
+    private String MAINTAINER_DOMAIN_NAME;
 
     @Autowired
     public AapSystemSubject(PersonRepository personRepository, WorkUnitService workUnitService)
@@ -94,7 +97,7 @@ public class AapSystemSubject implements SystemSubject
 
     private boolean isMaintainerUser()
     {
-        return domains.contains(TRACKER_MAINTAINER_DOMAIN_NAME);
+        return domains.contains(MAINTAINER_DOMAIN_NAME);
     }
 
     /**

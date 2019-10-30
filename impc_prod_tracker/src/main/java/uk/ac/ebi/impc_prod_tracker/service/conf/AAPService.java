@@ -16,17 +16,22 @@
 package uk.ac.ebi.impc_prod_tracker.service.conf;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
+import uk.ac.ebi.impc_prod_tracker.conf.exceptions.SystemOperationFailedException;
 import uk.ac.ebi.impc_prod_tracker.conf.exceptions.UserOperationFailedException;
 import uk.ac.ebi.impc_prod_tracker.conf.security.constants.PersonManagementConstants;
 import uk.ac.ebi.impc_prod_tracker.data.organization.person.Person;
+import java.util.HashMap;
+import java.util.Map;
 
 @Component
 public class AAPService
@@ -36,12 +41,31 @@ public class AAPService
     public static final String PERSON_ALREADY_IN_AAP_ERROR = "The user [%s] already exists in the "
         + "Authentication System.";
 
+    @Value("${local_authentication_base_url}")
+    private String LOCAL_AUTHENTICATION_BASE_URL;
+
+    @Value("${gentar-maintainer-domain-reference}")
+    private String MAINTAINER_DOMAIN_REFERENCE;
+
+    private static final String SET_USER_TO_DOMAIN =
+        "%s/domains/{domainReference}/{userReference}/user";
+
     public AAPService(RestTemplate restTemplate)
     {
         this.restTemplate = restTemplate;
     }
 
-    public String createUser(Person person)
+    public String createUser(Person person, String token)
+    {
+        String authId = createLocalAccount(person);
+        if (person.getEbiAdmin())
+        {
+            associateUserToDomain(authId, MAINTAINER_DOMAIN_REFERENCE, token);
+        }
+        return authId;
+    }
+
+    private String createLocalAccount(Person person)
     {
         LocalAccountInfo localAccountInfo =
             new LocalAccountInfo(person.getName(), person.getPassword(), person.getEmail());
@@ -71,9 +95,29 @@ public class AAPService
         return response.getBody();
     }
 
-    private void setMaintainerDomain()
+    public void associateUserToDomain(String userReference, String domainReference, String token)
     {
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        headers.setBearerAuth(token);
 
+        HttpEntity<?> httpEntity = new HttpEntity<>(headers);
+
+        Map<String, String> params = new HashMap<>();
+        params.put("domainReference", domainReference);
+        params.put("userReference", userReference);
+
+        String url = String.format(SET_USER_TO_DOMAIN, LOCAL_AUTHENTICATION_BASE_URL);
+
+        try
+        {
+            restTemplate.exchange(url, HttpMethod.PUT, httpEntity, String.class, params);
+        }
+        catch (Exception e)
+        {
+            throw new SystemOperationFailedException(
+                "Error associating user to domain", e.getMessage());
+        }
     }
 
     /**

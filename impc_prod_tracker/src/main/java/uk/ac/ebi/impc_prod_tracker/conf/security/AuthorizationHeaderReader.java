@@ -1,7 +1,10 @@
 package uk.ac.ebi.impc_prod_tracker.conf.security;
 
+import org.springframework.stereotype.Component;
+
 import javax.servlet.http.HttpServletRequest;
 
+@Component
 public class AuthorizationHeaderReader
 {
     private static final String AUTHORIZATION_HEADER = "Authorization";
