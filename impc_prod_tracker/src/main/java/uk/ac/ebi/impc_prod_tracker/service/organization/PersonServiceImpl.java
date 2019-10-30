@@ -95,10 +95,10 @@ public class PersonServiceImpl implements PersonService
     }
 
     @Override
-    public Person createPerson(Person person)
+    public Person createPerson(Person person, String token)
     {
         validatePersonNotExists(person);
-        String authId = aapService.createUser(person);
+        String authId = aapService.createUser(person, token);
         person.setAuthId(authId);
         personRepository.save(person);
         return person;

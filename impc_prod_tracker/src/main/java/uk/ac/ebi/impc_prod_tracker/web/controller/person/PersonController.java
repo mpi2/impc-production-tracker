@@ -20,15 +20,19 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import uk.ac.ebi.impc_prod_tracker.conf.exceptions.UserOperationFailedException;
+import uk.ac.ebi.impc_prod_tracker.conf.security.AuthorizationHeaderReader;
 import uk.ac.ebi.impc_prod_tracker.data.organization.person.Person;
+import uk.ac.ebi.impc_prod_tracker.service.conf.AAPService;
 import uk.ac.ebi.impc_prod_tracker.service.organization.PersonService;
 import uk.ac.ebi.impc_prod_tracker.web.dto.person.PersonCreationDTO;
 import uk.ac.ebi.impc_prod_tracker.web.dto.person.PersonDTO;
 import uk.ac.ebi.impc_prod_tracker.web.mapping.person.PersonMapper;
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 @RestController
@@ -37,11 +41,19 @@ public class PersonController
 {
     private PersonService personService;
     private PersonMapper personMapper;
+    private AAPService aapService;
+    private AuthorizationHeaderReader authorizationHeaderReader;
 
-    public PersonController(PersonService personService, PersonMapper personMapper)
+    public PersonController(
+        PersonService personService,
+        PersonMapper personMapper,
+        AAPService aapService,
+        AuthorizationHeaderReader authorizationHeaderReader)
     {
         this.personService = personService;
         this.personMapper = personMapper;
+        this.aapService = aapService;
+        this.authorizationHeaderReader = authorizationHeaderReader;
     }
 
     /**
@@ -84,9 +96,11 @@ public class PersonController
      */
     @PostMapping
     @PreAuthorize("hasPermission(null, 'CREATE_USER')")
-    public PersonDTO createPerson(@RequestBody PersonCreationDTO personCreationDTO)
+    public PersonDTO createPerson(
+        @RequestBody PersonCreationDTO personCreationDTO, HttpServletRequest request)
     {
+        String token = authorizationHeaderReader.getAuthorizationToken(request);
         Person personToBeCreated = personMapper.personCreationDTOtoEntity(personCreationDTO);
-        return personMapper.toDto(personService.createPerson(personToBeCreated));
+        return personMapper.toDto(personService.createPerson(personToBeCreated, token));
     }
 }
