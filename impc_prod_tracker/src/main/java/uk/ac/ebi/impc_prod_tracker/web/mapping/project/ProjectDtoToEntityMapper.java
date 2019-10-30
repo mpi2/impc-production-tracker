@@ -18,15 +18,14 @@ package uk.ac.ebi.impc_prod_tracker.web.mapping.project;
 import org.springframework.stereotype.Component;
 import uk.ac.ebi.impc_prod_tracker.data.biology.privacy.Privacy;
 import uk.ac.ebi.impc_prod_tracker.data.biology.project.Project;
+import uk.ac.ebi.impc_prod_tracker.data.biology.project_consortium.ProjectConsortium;
 import uk.ac.ebi.impc_prod_tracker.data.biology.project_intention.ProjectIntention;
-import uk.ac.ebi.impc_prod_tracker.data.organization.consortium.Consortium;
 import uk.ac.ebi.impc_prod_tracker.web.dto.project.ProjectDTO;
 import uk.ac.ebi.impc_prod_tracker.web.mapping.EntityMapper;
-import uk.ac.ebi.impc_prod_tracker.web.mapping.consortium.ConsortiumMapper;
 import uk.ac.ebi.impc_prod_tracker.web.mapping.privacy.PrivacyMapper;
+import uk.ac.ebi.impc_prod_tracker.web.mapping.project.consortium.ProjectConsortiumMapper;
 import uk.ac.ebi.impc_prod_tracker.web.mapping.project.intention.ProjectIntentionMapper;
 import java.util.List;
-import java.util.Set;
 
 /**
  * Class in charge of converting a {@link ProjectDTO} into a {@link Project}  entity.
@@ -36,18 +35,18 @@ public class ProjectDtoToEntityMapper
 {
     private EntityMapper entityMapper;
     private PrivacyMapper privacyMapper;
-    private ConsortiumMapper consortiumMapper;
+    private ProjectConsortiumMapper projectConsortiumMapper;
     private ProjectIntentionMapper projectIntentionMapper;
 
     public ProjectDtoToEntityMapper(
         EntityMapper entityMapper,
         PrivacyMapper privacyMapper,
-        ConsortiumMapper consortiumMapper,
+        ProjectConsortiumMapper projectConsortiumMapper,
         ProjectIntentionMapper projectIntentionMapper)
     {
         this.entityMapper = entityMapper;
         this.privacyMapper = privacyMapper;
-        this.consortiumMapper = consortiumMapper;
+        this.projectConsortiumMapper = projectConsortiumMapper;
         this.projectIntentionMapper = projectIntentionMapper;
     }
 
@@ -76,10 +75,14 @@ public class ProjectDtoToEntityMapper
 
     private void setConsortia(Project project, ProjectDTO projectDTO)
     {
-        Set<Consortium> consortia = consortiumMapper.toEntities(projectDTO.getConsortiaNames());
-        if (!consortia.isEmpty())
-        {
-            project.setConsortia(consortia);
-        }
+        List<ProjectConsortium> projectConsortia = projectConsortiumMapper.toEntities(projectDTO.getProjectConsortiumDTOS());
+        projectConsortia.forEach(x -> x.setProject(project));
+        project.setProjectConsortia(projectConsortia);
+
+//        Set<Consortium> consortia = consortiumMapper.toEntities(projectDTO.getConsortiaNames());
+//        if (!consortia.isEmpty())
+//        {
+//            project.setProjectConsortiums(consortia);
+//        }
     }
 }

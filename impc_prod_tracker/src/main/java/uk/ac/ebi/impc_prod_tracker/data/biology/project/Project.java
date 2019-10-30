@@ -25,6 +25,7 @@ import uk.ac.ebi.impc_prod_tracker.data.biology.assignment_status.AssignmentStat
 import uk.ac.ebi.impc_prod_tracker.data.biology.assignment_status_stamp.AssignmentStatusStamp;
 import uk.ac.ebi.impc_prod_tracker.data.biology.plan.Plan;
 import uk.ac.ebi.impc_prod_tracker.data.biology.privacy.Privacy;
+import uk.ac.ebi.impc_prod_tracker.data.biology.project_consortium.ProjectConsortium;
 import uk.ac.ebi.impc_prod_tracker.data.biology.project_intention.ProjectIntention;
 import uk.ac.ebi.impc_prod_tracker.data.biology.species.Species;
 import uk.ac.ebi.impc_prod_tracker.data.organization.consortium.Consortium;
@@ -142,17 +143,13 @@ public class Project extends BaseEntity implements Resource<Project>
     @JsonIgnore
     @ManyToMany
     @JoinTable(
-            name = "project_consortium",
-            joinColumns = @JoinColumn(name = "project_id"),
-            inverseJoinColumns = @JoinColumn(name = "consortium_id"))
-    private Set<Consortium> consortia;
-
-    @ToString.Exclude
-    @JsonIgnore
-    @ManyToMany
-    @JoinTable(
             name = "project_species",
             joinColumns = @JoinColumn(name = "project_id"),
             inverseJoinColumns = @JoinColumn(name = "species_id"))
     private Set<Species> species;
+
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
+    @OneToMany(cascade=CascadeType.ALL, mappedBy = "consortium", orphanRemoval=true, fetch = FetchType.EAGER)
+    private List<ProjectConsortium> projectConsortia;
 }

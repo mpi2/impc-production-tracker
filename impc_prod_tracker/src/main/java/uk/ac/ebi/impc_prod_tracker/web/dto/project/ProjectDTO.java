@@ -61,8 +61,8 @@ public class ProjectDTO extends RepresentationModel
     @JsonProperty("speciesAttributes")
     private List<SpeciesDTO> projectSpeciesDTOs;
 
-    @JsonProperty("consortiaNames")
-    private List<String> consortiaNames;
+    @JsonProperty("projectConsortia")
+    private List<ProjectConsortiumDTO> projectConsortiumDTOS;
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
     @JsonProperty("isObjectRestricted")

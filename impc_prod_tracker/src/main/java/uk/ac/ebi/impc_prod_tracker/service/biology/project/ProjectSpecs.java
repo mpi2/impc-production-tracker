@@ -29,6 +29,8 @@ import uk.ac.ebi.impc_prod_tracker.data.biology.privacy.Privacy;
 import uk.ac.ebi.impc_prod_tracker.data.biology.privacy.Privacy_;
 import uk.ac.ebi.impc_prod_tracker.data.biology.project.Project;
 import uk.ac.ebi.impc_prod_tracker.data.biology.project.Project_;
+import uk.ac.ebi.impc_prod_tracker.data.biology.project_consortium.ProjectConsortium;
+import uk.ac.ebi.impc_prod_tracker.data.biology.project_consortium.ProjectConsortium_;
 import uk.ac.ebi.impc_prod_tracker.data.biology.project_intention_gene.ProjectIntentionGene;
 import uk.ac.ebi.impc_prod_tracker.data.biology.project_intention.ProjectIntention;
 import uk.ac.ebi.impc_prod_tracker.data.biology.project_intention.ProjectIntention_;
@@ -247,8 +249,9 @@ public class ProjectSpecs
 
                 List<Predicate> predicates = new ArrayList<>();
 
-                SetJoin<Project, Consortium> consortiumSetJoin = root.join(Project_.consortia);
-                Path<String> consortiumName = consortiumSetJoin.get(Consortium_.name);
+                Path<ProjectConsortium> projectProjectConsortiumSetJoin = root.join(Project_.projectConsortia);
+                Path<Consortium> consortiumPath = projectProjectConsortiumSetJoin.get(ProjectConsortium_.consortium);
+                Path<String> consortiumName = consortiumPath.get(Consortium_.name);
                 predicates.add(consortiumName.in(consortia));
                 query.distinct(true);
 
