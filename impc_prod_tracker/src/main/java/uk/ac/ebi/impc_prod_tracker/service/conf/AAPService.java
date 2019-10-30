@@ -50,6 +50,9 @@ public class AAPService
     private static final String SET_USER_TO_DOMAIN =
         "%s/domains/{domainReference}/{userReference}/user";
 
+    private static final String SET_MANAGER_TO_DOMAIN =
+        "%s/domains/{domainReference}/managers/{userReference}";
+
     public AAPService(RestTemplate restTemplate)
     {
         this.restTemplate = restTemplate;
@@ -61,6 +64,7 @@ public class AAPService
         if (person.getEbiAdmin())
         {
             associateUserToDomain(authId, MAINTAINER_DOMAIN_REFERENCE, token);
+            setUserAsManagerInDomain(authId, MAINTAINER_DOMAIN_REFERENCE, token);
         }
         return authId;
     }
@@ -97,6 +101,23 @@ public class AAPService
 
     public void associateUserToDomain(String userReference, String domainReference, String token)
     {
+        executeDomainUserCall(
+            SET_USER_TO_DOMAIN, "Associating user to domain", userReference, domainReference, token);
+    }
+
+    public void setUserAsManagerInDomain(String userReference, String domainReference, String token)
+    {
+        executeDomainUserCall(
+            SET_MANAGER_TO_DOMAIN, "Setting user as domain manager", userReference, domainReference, token);
+    }
+
+    public void executeDomainUserCall(
+        final String urlTemplate,
+        final String actionMessage,
+        String userReference,
+        String domainReference,
+        String token)
+    {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         headers.setBearerAuth(token);
@@ -107,7 +128,7 @@ public class AAPService
         params.put("domainReference", domainReference);
         params.put("userReference", userReference);
 
-        String url = String.format(SET_USER_TO_DOMAIN, LOCAL_AUTHENTICATION_BASE_URL);
+        String url = String.format(urlTemplate, LOCAL_AUTHENTICATION_BASE_URL);
 
         try
         {
@@ -115,8 +136,7 @@ public class AAPService
         }
         catch (Exception e)
         {
-            throw new SystemOperationFailedException(
-                "Error associating user to domain", e.getMessage());
+            throw new SystemOperationFailedException(actionMessage, e.getMessage());
         }
     }
 
