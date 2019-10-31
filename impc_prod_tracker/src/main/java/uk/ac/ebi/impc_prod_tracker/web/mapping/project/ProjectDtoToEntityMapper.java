@@ -24,6 +24,7 @@ import uk.ac.ebi.impc_prod_tracker.web.dto.project.ProjectDTO;
 import uk.ac.ebi.impc_prod_tracker.web.mapping.EntityMapper;
 import uk.ac.ebi.impc_prod_tracker.web.mapping.privacy.PrivacyMapper;
 import uk.ac.ebi.impc_prod_tracker.web.mapping.project.consortium.ProjectConsortiumMapper;
+import uk.ac.ebi.impc_prod_tracker.web.mapping.project.consortium.institute.ProjectConsortiumInstituteMapper;
 import uk.ac.ebi.impc_prod_tracker.web.mapping.project.intention.ProjectIntentionMapper;
 import java.util.List;
 import java.util.Set;
@@ -57,6 +58,7 @@ public class ProjectDtoToEntityMapper
         setProjectIntention(project, projectDTO);
         setPrivacy(project, projectDTO);
         setConsortia(project, projectDTO);
+
         return project;
     }
 
@@ -79,11 +81,5 @@ public class ProjectDtoToEntityMapper
         Set<ProjectConsortium> projectConsortia = projectConsortiumMapper.toEntities(projectDTO.getProjectConsortiumDTOS());
         projectConsortia.forEach(x -> x.setProject(project));
         project.setProjectConsortia(projectConsortia);
-
-//        Set<Consortium> consortia = consortiumMapper.toEntities(projectDTO.getConsortiaNames());
-//        if (!consortia.isEmpty())
-//        {
-//            project.setProjectConsortiums(consortia);
-//        }
     }
 }
