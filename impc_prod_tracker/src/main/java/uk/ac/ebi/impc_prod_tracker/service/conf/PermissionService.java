@@ -22,6 +22,12 @@ import java.util.List;
  */
 public interface PermissionService
 {
+    String MANAGE_USERS_ACTION = "MANAGE_USERS";
+    String EXECUTE_MANAGER_TASKS_ACTION = "EXECUTE_MANAGER_TASKS";
+    String UPDATE_PLAN_ACTION = "UPDATE_PLAN";
+    String UPDATE_PROJECT_ACTION = "UPDATE_PROJECT";
+    String UPDATE_USER = "UPDATE_USER";
+
     /**
      * Get the general permissions a user have that don't depend on specific resources.
      * @return List with the permissions.

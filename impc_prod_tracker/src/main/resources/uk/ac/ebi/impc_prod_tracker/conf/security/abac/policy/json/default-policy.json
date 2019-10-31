@@ -18,6 +18,12 @@
     "condition": "subject.getRelatedRolesNames().contains('manager')"
   },
   {
+    "name": "Update information for a user",
+    "description": "A manager can update a user if the user is managed by the manager.",
+    "target": "action == 'UPDATE_USER'",
+    "condition": "subject.managesAnyWorkUnit(resource.getRelatedWorkUnits())"
+  },
+  {
     "name": "Filter roles",
     "description": "Managers can create new users with equal roles or lower permissions.",
     "target": "action == 'FILTER_ROLE'",

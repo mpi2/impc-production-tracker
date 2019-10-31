@@ -59,6 +59,7 @@ public class PersonMapper
             personDTO.setRolesConsortia(peopleRoleConsortiaToDto(person.getRolesConsortia()));
             personDTO.setActionPermissions(permissionService.getPermissions());
         }
+        personDTO.setPassword(null);
         return personDTO;
     }
 
@@ -96,7 +97,18 @@ public class PersonMapper
 
     public Person toEntity(PersonDTO personDTO)
     {
-        return entityMapper.toTarget(personDTO, Person.class);
+        Person person = new Person();
+        person.setId(personDTO.getId());
+        person.setName(personDTO.getName());
+        person.setEmail(personDTO.getEmail());
+        person.setPassword(personDTO.getPassword());
+        person.setIsActive(true);
+        person.setEbiAdmin(personDTO.isEbiAdmin());
+        person.setContactable(personDTO.getContactable());
+        addRolesWorkUnits(personDTO, person);
+        addRolesConsortia(personDTO, person);
+
+        return person;
     }
 
     public Person personCreationDTOtoEntity(PersonCreationDTO personCreationDTO)
@@ -113,6 +125,24 @@ public class PersonMapper
         addRolesConsortia(personCreationDTO, person);
 
         return person;
+    }
+
+    private void addRolesWorkUnits(PersonDTO personDTO, Person person)
+    {
+        List<PersonRoleWorkUnitDTO> roleWorkUnitDTOS = personDTO.getRolesWorkUnits();
+        Set<PersonRoleWorkUnit> roleWorkUnitDTOSet =
+            personRoleWorkUnitMapper.toEntities(roleWorkUnitDTOS);
+        roleWorkUnitDTOSet.forEach(x -> x.setPerson(person));
+        person.setRolesWorkUnits(roleWorkUnitDTOSet);
+    }
+
+    private void addRolesConsortia(PersonDTO personDTO, Person person)
+    {
+        List<PersonRoleConsortiumDTO> roleConsortiaDTOs = personDTO.getRolesConsortia();
+        Set<PersonRoleConsortium> roleConsortiumSet =
+            personRoleConsortiumMapper.toEntities(roleConsortiaDTOs);
+        roleConsortiumSet.forEach(x -> x.setPerson(person));
+        person.setRolesConsortia(roleConsortiumSet);
     }
 
     private void addRolesWorkUnits(PersonCreationDTO personCreationDTO, Person person)

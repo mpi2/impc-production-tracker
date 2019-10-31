@@ -18,11 +18,12 @@ package uk.ac.ebi.impc_prod_tracker.service.organization;
 import org.springframework.stereotype.Component;
 import uk.ac.ebi.impc_prod_tracker.conf.exceptions.UserOperationFailedException;
 import uk.ac.ebi.impc_prod_tracker.conf.security.SystemSubject;
+import uk.ac.ebi.impc_prod_tracker.conf.security.abac.spring.ContextAwarePolicyEnforcement;
 import uk.ac.ebi.impc_prod_tracker.conf.security.abac.spring.SubjectRetriever;
 import uk.ac.ebi.impc_prod_tracker.data.organization.person.Person;
 import uk.ac.ebi.impc_prod_tracker.data.organization.person.PersonRepository;
 import uk.ac.ebi.impc_prod_tracker.service.conf.AAPService;
-
+import uk.ac.ebi.impc_prod_tracker.service.conf.PermissionService;
 import java.util.List;
 
 /**
@@ -35,25 +36,20 @@ public class PersonServiceImpl implements PersonService
     private PersonRepository personRepository;
     private AAPService aapService;
     private SubjectRetriever subjectRetriever;
+    private final ContextAwarePolicyEnforcement policyEnforcement;
 
     public static final String PERSON_ALREADY_EXISTS_ERROR =
         "The user with email [%s] already exists in the system.";
-    public static final String PERSON_ALREADY_IN_AAP_ERROR = "The user [%s] already exists in the "
-        + "Authentication System.";
-    public static final String WORK_UNIT_NOT_EXIST_IN_THE_SYSTEM
-        = "Work Unit [%s] does not exist in the system.";
-    public static final String INSTITUTE_NOT_EXIST_IN_THE_SYSTEM
-        = "Institute [%s] does not exist in the system.";
-    public static final String ROLE_NOT_EXIST_IN_THE_SYSTEM = "Role [%s] does not exist in the system.";
 
     public PersonServiceImpl(
         PersonRepository personRepository,
         AAPService aapService,
-        SubjectRetriever subjectRetriever)
+        SubjectRetriever subjectRetriever, ContextAwarePolicyEnforcement policyEnforcement)
     {
         this.personRepository = personRepository;
         this.aapService = aapService;
         this.subjectRetriever = subjectRetriever;
+        this.policyEnforcement = policyEnforcement;
     }
 
     public List<Person> getAllPeople()
@@ -95,13 +91,28 @@ public class PersonServiceImpl implements PersonService
     }
 
     @Override
-    public Person createPerson(Person person, String token)
+    public Person createPerson(Person person)
     {
         validatePersonNotExists(person);
-        String authId = aapService.createUser(person, token);
+        String authId = aapService.createUser(person);
         person.setAuthId(authId);
         personRepository.save(person);
         return person;
+    }
+
+    @Override
+    public Person updatePerson(Person person, String token)
+    {
+        validatePermissions(PermissionService.UPDATE_USER, person);
+        return null;
+    }
+
+    private void validatePermissions(String updateUser, Person person)
+    {
+        if (!policyEnforcement.hasPermission(person, updateUser))
+        {
+            throw new UserOperationFailedException("You don't have permissions to update the user.");
+        }
     }
 
     private void validatePersonNotExists(Person person)

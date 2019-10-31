@@ -22,6 +22,7 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.boot.test.context.SpringBootTest;
 import uk.ac.ebi.impc_prod_tracker.conf.security.SystemSubject;
+import uk.ac.ebi.impc_prod_tracker.conf.security.abac.spring.ContextAwarePolicyEnforcement;
 import uk.ac.ebi.impc_prod_tracker.conf.security.abac.spring.SubjectRetriever;
 import uk.ac.ebi.impc_prod_tracker.data.organization.person.Person;
 import uk.ac.ebi.impc_prod_tracker.data.organization.person.PersonRepository;
@@ -53,6 +54,9 @@ public class PersonServiceImplTest
     @Mock
     private AAPService aapService;
 
+    @Mock
+    private ContextAwarePolicyEnforcement policyEnforcement;
+
     private List<Person> allThePeople = new ArrayList<>();
 
     private PersonService testInstance;
@@ -60,7 +64,7 @@ public class PersonServiceImplTest
     @Before
     public void setup()
     {
-        testInstance = new PersonServiceImpl(personRepository, aapService, subjectRetriever);
+        testInstance = new PersonServiceImpl(personRepository, aapService, subjectRetriever, policyEnforcement);
         setPeople();
     }
 

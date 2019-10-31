@@ -19,19 +19,15 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
-import uk.ac.ebi.impc_prod_tracker.conf.exceptions.SystemOperationFailedException;
 import uk.ac.ebi.impc_prod_tracker.conf.exceptions.UserOperationFailedException;
 import uk.ac.ebi.impc_prod_tracker.conf.security.constants.PersonManagementConstants;
 import uk.ac.ebi.impc_prod_tracker.data.organization.person.Person;
-import java.util.HashMap;
-import java.util.Map;
 
 @Component
 public class AAPService
@@ -44,28 +40,14 @@ public class AAPService
     @Value("${local_authentication_base_url}")
     private String LOCAL_AUTHENTICATION_BASE_URL;
 
-    @Value("${gentar-maintainer-domain-reference}")
-    private String MAINTAINER_DOMAIN_REFERENCE;
-
-    private static final String SET_USER_TO_DOMAIN =
-        "%s/domains/{domainReference}/{userReference}/user";
-
-    private static final String SET_MANAGER_TO_DOMAIN =
-        "%s/domains/{domainReference}/managers/{userReference}";
-
     public AAPService(RestTemplate restTemplate)
     {
         this.restTemplate = restTemplate;
     }
 
-    public String createUser(Person person, String token)
+    public String createUser(Person person)
     {
         String authId = createLocalAccount(person);
-        if (person.getEbiAdmin())
-        {
-            associateUserToDomain(authId, MAINTAINER_DOMAIN_REFERENCE, token);
-            setUserAsManagerInDomain(authId, MAINTAINER_DOMAIN_REFERENCE, token);
-        }
         return authId;
     }
 
@@ -97,47 +79,6 @@ public class AAPService
             throw new UserOperationFailedException(message);
         }
         return response.getBody();
-    }
-
-    public void associateUserToDomain(String userReference, String domainReference, String token)
-    {
-        executeDomainUserCall(
-            SET_USER_TO_DOMAIN, "Associating user to domain", userReference, domainReference, token);
-    }
-
-    public void setUserAsManagerInDomain(String userReference, String domainReference, String token)
-    {
-        executeDomainUserCall(
-            SET_MANAGER_TO_DOMAIN, "Setting user as domain manager", userReference, domainReference, token);
-    }
-
-    public void executeDomainUserCall(
-        final String urlTemplate,
-        final String actionMessage,
-        String userReference,
-        String domainReference,
-        String token)
-    {
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
-        headers.setBearerAuth(token);
-
-        HttpEntity<?> httpEntity = new HttpEntity<>(headers);
-
-        Map<String, String> params = new HashMap<>();
-        params.put("domainReference", domainReference);
-        params.put("userReference", userReference);
-
-        String url = String.format(urlTemplate, LOCAL_AUTHENTICATION_BASE_URL);
-
-        try
-        {
-            restTemplate.exchange(url, HttpMethod.PUT, httpEntity, String.class, params);
-        }
-        catch (Exception e)
-        {
-            throw new SystemOperationFailedException(actionMessage, e.getMessage());
-        }
     }
 
     /**
