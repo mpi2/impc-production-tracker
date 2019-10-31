@@ -63,5 +63,5 @@ public class Institute extends BaseEntity
     @ToString.Exclude
     @JsonIgnore
     @ManyToMany(mappedBy = "institutes")
-    private Set<ProjectConsortium> projectConsortiums;
+    private Set<ProjectConsortium> projectConsortia;
 }
