@@ -15,24 +15,19 @@
  */
 package uk.ac.ebi.impc_prod_tracker.web.dto.person;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
-import uk.ac.ebi.impc_prod_tracker.service.conf.ActionPermission;
+
 import java.util.List;
 
 @Data
-public class PersonDTO
+public class PersonUpdateDTO
 {
-    private Long id;
     private String name;
-    @JsonInclude(JsonInclude.Include.NON_NULL)
     private String password;
-    private String email;
     private Boolean contactable;
-    private List<PersonRoleWorkUnitDTO> rolesWorkUnits;
-    private List<PersonRoleConsortiumDTO> rolesConsortia;
     @JsonProperty("isAdmin")
     private boolean ebiAdmin;
-    private List<ActionPermission> actionPermissions;
+    private List<PersonRoleWorkUnitDTO> rolesWorkUnits;
+    private List<PersonRoleConsortiumDTO> rolesConsortia;
 }

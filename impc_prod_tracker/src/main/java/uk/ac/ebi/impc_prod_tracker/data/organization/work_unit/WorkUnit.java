@@ -24,7 +24,7 @@ import uk.ac.ebi.impc_prod_tracker.data.organization.work_group.WorkGroup;
 import javax.persistence.*;
 import java.util.Set;
 
-@NoArgsConstructor(access= AccessLevel.PRIVATE, force=true)
+@NoArgsConstructor(access= AccessLevel.PUBLIC, force=true)
 @Data
 @Entity
 public class WorkUnit extends BaseEntity

@@ -27,7 +27,6 @@ import org.springframework.web.bind.annotation.RestController;
 import uk.ac.ebi.impc_prod_tracker.conf.exceptions.UserOperationFailedException;
 import uk.ac.ebi.impc_prod_tracker.conf.security.AuthorizationHeaderReader;
 import uk.ac.ebi.impc_prod_tracker.data.organization.person.Person;
-import uk.ac.ebi.impc_prod_tracker.service.conf.AAPService;
 import uk.ac.ebi.impc_prod_tracker.service.organization.PersonService;
 import uk.ac.ebi.impc_prod_tracker.web.dto.person.PersonCreationDTO;
 import uk.ac.ebi.impc_prod_tracker.web.dto.person.PersonDTO;
@@ -41,18 +40,15 @@ public class PersonController
 {
     private PersonService personService;
     private PersonMapper personMapper;
-    private AAPService aapService;
     private AuthorizationHeaderReader authorizationHeaderReader;
 
     public PersonController(
         PersonService personService,
         PersonMapper personMapper,
-        AAPService aapService,
         AuthorizationHeaderReader authorizationHeaderReader)
     {
         this.personService = personService;
         this.personMapper = personMapper;
-        this.aapService = aapService;
         this.authorizationHeaderReader = authorizationHeaderReader;
     }
 
@@ -95,12 +91,22 @@ public class PersonController
      * @return {@link Person} entity created
      */
     @PostMapping
-    @PreAuthorize("hasPermission(null, 'CREATE_USER')")
+    @PreAuthorize("hasPermission(null, 'MANAGE_USERS')")
     public PersonDTO createPerson(
-        @RequestBody PersonCreationDTO personCreationDTO, HttpServletRequest request)
+        @RequestBody PersonCreationDTO personCreationDTO)
+    {
+        Person personToBeCreated = personMapper.personCreationDTOtoEntity(personCreationDTO);
+        return personMapper.toDto(personService.createPerson(personToBeCreated));
+    }
+
+    @PutMapping
+    @PreAuthorize("hasPermission(null, 'UPDATE_USER')")
+    public PersonDTO updatePerson(@RequestBody PersonDTO personDTO, HttpServletRequest request)
     {
         String token = authorizationHeaderReader.getAuthorizationToken(request);
-        Person personToBeCreated = personMapper.personCreationDTOtoEntity(personCreationDTO);
-        return personMapper.toDto(personService.createPerson(personToBeCreated, token));
+        Person personToBeUpdated = personMapper.toEntity(personDTO);
+        personService.updatePerson(personToBeUpdated, token);
+        return null;
     }
+
 }

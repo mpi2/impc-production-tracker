@@ -27,14 +27,10 @@ import java.util.List;
 public class PermissionServiceImpl implements PermissionService
 {
     private static final String MANAGE_USERS_KEY = "manageUsers";
-    private static final String MANAGE_USERS_ACTION = "MANAGE_USERS";
     private static final String EXECUTE_MANAGER_TASKS_KEY = "executeManagerTasks";
-    private static final String EXECUTE_MANAGER_TASKS_ACTION = "EXECUTE_MANAGER_TASKS";
 
     private static final String UPDATE_PLAN = "canUpdatePlan";
-    private static final String UPDATE_PLAN_ACTION = "UPDATE_PLAN";
     private static final String UPDATE_PROJECT = "canUpdateProject";
-    private static final String UPDATE_PROJECT_ACTION = "UPDATE_PROJECT";
 
     private final ContextAwarePolicyEnforcement policyEnforcement;
     private final PlanService planService;

@@ -21,6 +21,7 @@ import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+import uk.ac.ebi.impc_prod_tracker.common.fluent.FluentPersonRoleWorkUnitList;
 import uk.ac.ebi.impc_prod_tracker.conf.exceptions.UserOperationFailedException;
 import uk.ac.ebi.impc_prod_tracker.data.organization.consortium.Consortium;
 import uk.ac.ebi.impc_prod_tracker.data.organization.person.Person;
@@ -29,6 +30,7 @@ import uk.ac.ebi.impc_prod_tracker.data.organization.person_role_consortium.Pers
 import uk.ac.ebi.impc_prod_tracker.data.organization.person_role_work_unit.PersonRoleWorkUnit;
 import uk.ac.ebi.impc_prod_tracker.data.organization.work_unit.WorkUnit;
 import uk.ac.ebi.impc_prod_tracker.service.organization.WorkUnitService;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -38,6 +40,7 @@ import java.util.Set;
 /**
  * Implementation of SystemSubject where most of the user information is taken from a token (jwt). Additional
  * information needs to be loaded from the database.
+ *
  * @author Mauricio Martinez
  */
 @Component
@@ -53,7 +56,6 @@ public class AapSystemSubject implements SystemSubject
     private PersonRepository personRepository;
     private Person person;
     private boolean isEbiAdmin;
-    private List<String> domains = new ArrayList<>();
     private List<PersonRoleWorkUnit> roleWorkUnits;
     private List<PersonRoleConsortium> roleConsortia;
     WorkUnitService workUnitService;
@@ -79,6 +81,7 @@ public class AapSystemSubject implements SystemSubject
     /**
      * Builds a AapSystemSubject object using the information in the claims of an already validated token (jwt).
      * Then complements the information with additional data taken from the database.
+     *
      * @param claims Claims in the token with information about the user.
      * @return SystemSubject with the information.
      */
@@ -88,20 +91,15 @@ public class AapSystemSubject implements SystemSubject
         name = claims.get("name", String.class);
         userRefId = claims.getSubject();
         email = claims.get("email", String.class);
-        domains = claims.get("domains", List.class);
 
         loadPersonInformation(userRefId);
 
         return this;
     }
 
-    private boolean isMaintainerUser()
-    {
-        return domains.contains(MAINTAINER_DOMAIN_NAME);
-    }
-
     /**
      * Simple constructor that sets the minimal information for a user.
+     *
      * @param login
      */
     public AapSystemSubject(String login)
@@ -118,22 +116,9 @@ public class AapSystemSubject implements SystemSubject
         this.person = personRepository.findPersonByAuthIdEquals(authId);
         if (person == null)
         {
-            if (isMaintainerUser())
-            {
-                isEbiAdmin = true;
-                roleWorkUnits = null;
-                roleConsortia = null;
-                person = new Person();
-                person.setName(name);
-                person.setEmail(email);
-                person.setEbiAdmin(isEbiAdmin);
-            }
-            else
-            {
-                throw new UserOperationFailedException(
-                    String.format(NOT_USER_INFORMATION_MESSAGE, login),
-                    String.format(NOT_USER_INFORMATION_DEBUG_MESSAGE, login, authId));
-            }
+            throw new UserOperationFailedException(
+                String.format(NOT_USER_INFORMATION_MESSAGE, login),
+                String.format(NOT_USER_INFORMATION_DEBUG_MESSAGE, login, authId));
         }
         else
         {
@@ -225,5 +210,20 @@ public class AapSystemSubject implements SystemSubject
         roleWorkUnits.forEach(x -> relatedRolesNames.add(x.getRole().getName()));
         roleConsortia.forEach(x -> relatedRolesNames.add(x.getRole().getName()));
         return relatedRolesNames;
+    }
+
+    @Override
+    public FluentPersonRoleWorkUnitList getFluentRoleWorkUnits()
+    {
+        return new FluentPersonRoleWorkUnitList(roleWorkUnits);
+    }
+
+    @Override
+    public boolean managesAnyWorkUnit(Collection<WorkUnit> workUnits)
+    {
+        return new FluentPersonRoleWorkUnitList(roleWorkUnits)
+            .whereUserHasRole("manager")
+            .getWorkUnits().stream()
+            .anyMatch(workUnits::contains);
     }
 }

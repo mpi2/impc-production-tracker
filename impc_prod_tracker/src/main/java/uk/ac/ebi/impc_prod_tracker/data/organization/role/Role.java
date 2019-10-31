@@ -23,7 +23,7 @@ import uk.ac.ebi.impc_prod_tracker.data.BaseEntity;
 
 import javax.persistence.*;
 
-@NoArgsConstructor(access= AccessLevel.PRIVATE, force=true)
+@NoArgsConstructor(access= AccessLevel.PUBLIC, force=true)
 @AllArgsConstructor
 @Data
 @Entity

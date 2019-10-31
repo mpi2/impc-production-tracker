@@ -51,5 +51,13 @@ public interface PersonService
      *                             with work units and consortia.
      * @return Created {@link Person} with an id provided by the system.
      */
-    Person createPerson(Person person, String token);
+    Person createPerson(Person person);
+
+    /**
+     * Updates the information for a person, as long as the current user has permission to do it.
+     * @param person New information. Only some fields will be taken into account to the update.
+     * @param token JWT token to communicate with AAP in case of need.
+     * @return Updated person.
+     */
+    Person updatePerson(Person person, String token);
 }
