@@ -13,9 +13,14 @@ public class ProjectFilter
 {
     private Map<FilterTypes, List<String>> filters;
 
-    public ProjectFilter()
+    ProjectFilter()
     {
         filters = new HashMap<>();
+    }
+
+    public static final ProjectFilter getInstance()
+    {
+        return new ProjectFilter();
     }
 
     public Map<String, List<String>> getNotNullFilterNames()
