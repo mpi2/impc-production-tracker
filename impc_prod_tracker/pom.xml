@@ -115,6 +115,13 @@
 			<version>2.3.2</version>
 		</dependency>
 
+        <!--Allow to change names in collections when mapping json-->
+		<dependency>
+			<groupId>org.atteo</groupId>
+			<artifactId>evo-inflector</artifactId>
+			<version>1.2.2</version>
+		</dependency>
+
 		<!--Jackson modules for date management.-->
 		<dependency>
 			<groupId>com.fasterxml.jackson.module</groupId>
