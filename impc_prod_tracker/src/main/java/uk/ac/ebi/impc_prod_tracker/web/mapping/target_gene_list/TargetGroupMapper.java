@@ -19,12 +19,12 @@ import org.springframework.stereotype.Component;
 import uk.ac.ebi.impc_prod_tracker.data.biology.gene.Gene;
 import uk.ac.ebi.impc_prod_tracker.data.biology.target_gene_list.target_group.TargetGroup;
 import uk.ac.ebi.impc_prod_tracker.service.biology.gene.external_ref.GeneExternalService;
-import uk.ac.ebi.impc_prod_tracker.web.dto.target_gene_list.TargetGroupDTO;
+import uk.ac.ebi.impc_prod_tracker.web.dto.target_gene_list.TargetDTO;
 import uk.ac.ebi.impc_prod_tracker.web.mapping.Mapper;
 import uk.ac.ebi.impc_prod_tracker.web.mapping.gene.GeneMapper;
 
 @Component
-public class TargetGroupMapper implements Mapper<TargetGroup, TargetGroupDTO>
+public class TargetGroupMapper implements Mapper<TargetGroup, TargetDTO>
 {
     private GeneExternalService geneExternalService;
     private GeneMapper geneMapper;
@@ -35,12 +35,12 @@ public class TargetGroupMapper implements Mapper<TargetGroup, TargetGroupDTO>
         this.geneMapper = geneMapper;
     }
 
-    public TargetGroupDTO toDto(TargetGroup targetGroup)
+    public TargetDTO toDto(TargetGroup targetGroup)
     {
-        TargetGroupDTO targetGroupDTO = new TargetGroupDTO();
+        TargetDTO targetDTO = new TargetDTO();
         Gene gene = getGeneByAccessionId(targetGroup.getAccId());
-        targetGroupDTO.setGeneDTO(geneMapper.toDto(gene));
-        return targetGroupDTO;
+        targetDTO.setGeneDTO(geneMapper.toDto(gene));
+        return targetDTO;
     }
 
     private Gene getGeneByAccessionId(String accId)

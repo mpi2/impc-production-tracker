@@ -25,8 +25,8 @@ public class ConsortiumListDTO
     private Long id;
     private String note;
 
-    @JsonProperty("genes")
-    private List<TargetGroupDTO> targetGroupDTOs;
+    @JsonProperty("targets")
+    private List<TargetDTO> targetDTOS;
 
     @JsonProperty("projects")
     private List<ProjectByGeneSummaryDTO> projectByGeneSummaryDTOS;

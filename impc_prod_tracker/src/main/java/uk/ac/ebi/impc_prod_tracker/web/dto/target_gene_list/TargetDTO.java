@@ -20,7 +20,7 @@ import lombok.Data;
 import uk.ac.ebi.impc_prod_tracker.web.dto.gene.GeneDTO;
 
 @Data
-public class TargetGroupDTO
+public class TargetDTO
 {
     @JsonProperty("gene")
     private GeneDTO geneDTO;
