@@ -18,7 +18,6 @@ package uk.ac.ebi.impc_prod_tracker.web.dto.target_gene_list;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 import org.springframework.hateoas.server.core.Relation;
-
 import java.util.List;
 
 @Data
@@ -26,6 +25,6 @@ import java.util.List;
 public class TargetListsByConsortiumDTO
 {
     private String consortiumName;
-    @JsonProperty("lists")
+    @JsonProperty("list")
     private List<ConsortiumListDTO> consortiumListDTOList;
 }

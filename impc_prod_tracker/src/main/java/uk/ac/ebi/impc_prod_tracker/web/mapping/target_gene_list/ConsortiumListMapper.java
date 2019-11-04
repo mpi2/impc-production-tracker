@@ -49,7 +49,7 @@ public class ConsortiumListMapper implements Mapper<ConsortiumList, ConsortiumLi
         ConsortiumListDTO consortiumListDTO = new ConsortiumListDTO();
         consortiumListDTO.setId(consortiumList.getId());
         consortiumListDTO.setNote(consortiumList.getNote());
-        consortiumListDTO.setTargetGroupDTOs(
+        consortiumListDTO.setTargetDTOS(
             targetGroupMapper.toDtos(consortiumList.getTargetGroups()));
         List<Project> projects =
             projectsByGroupOfGenesFinder.findProjectsByGenes(consortiumList.getTargetGroups());
