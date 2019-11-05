@@ -15,6 +15,7 @@
  */
 package uk.ac.ebi.impc_prod_tracker.conf.security;
 
+import uk.ac.ebi.impc_prod_tracker.common.fluent.FluentPersonRoleConsortiumList;
 import uk.ac.ebi.impc_prod_tracker.common.fluent.FluentPersonRoleWorkUnitList;
 import uk.ac.ebi.impc_prod_tracker.data.organization.consortium.Consortium;
 import uk.ac.ebi.impc_prod_tracker.data.organization.person.Person;
@@ -55,7 +56,9 @@ public interface SystemSubject
     List<String> getRelatedRolesNames();
 
     FluentPersonRoleWorkUnitList getFluentRoleWorkUnits();
+    FluentPersonRoleConsortiumList getFluentRoleConsortia();
 
     boolean managesAnyWorkUnit(Collection<WorkUnit> workUnits);
+    boolean managesAnyConsortia(Collection<Consortium> consortia);
 
 }
