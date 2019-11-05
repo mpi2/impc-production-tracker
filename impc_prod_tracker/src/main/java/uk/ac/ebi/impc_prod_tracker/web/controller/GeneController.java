@@ -24,6 +24,7 @@ import uk.ac.ebi.impc_prod_tracker.service.biology.GeneIdentifierValidator;
 import uk.ac.ebi.impc_prod_tracker.service.biology.gene.external_ref.GeneExternalService;
 import uk.ac.ebi.impc_prod_tracker.service.biology.gene.GeneService;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api")
@@ -54,6 +55,14 @@ public class GeneController {
     {
         validateInput(input);
         return geneExternalService.getGenesFromExternalDataBySymbolOrAccId(input);
+    }
+
+    @GetMapping(value = {"/genesNamesInExternalData"})
+    public List<String> getGenesNamesInExternalData (@RequestParam String input)
+    {
+        validateInput(input);
+        List<Gene> data = geneExternalService.getGenesFromExternalDataBySymbolOrAccId(input);
+        return data.stream().map(Gene::getSymbol).collect(Collectors.toList());
     }
 
     private void validateInput(String input)
