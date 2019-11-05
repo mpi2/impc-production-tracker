@@ -24,7 +24,6 @@ import uk.ac.ebi.impc_prod_tracker.service.conf.EntitiesValuesByUserService;
 import uk.ac.ebi.impc_prod_tracker.service.conf.EntityValues;
 import uk.ac.ebi.impc_prod_tracker.service.conf.PermissionService;
 import java.util.List;
-import java.util.Map;
 
 @RestController
 @RequestMapping("/api")
@@ -33,7 +32,8 @@ public class PermissionController
     private PermissionService permissionService;
     private EntitiesValuesByUserService entitiesValuesByUserService;
 
-    public PermissionController(PermissionService permissionService, EntitiesValuesByUserService entitiesValuesByUserService)
+    public PermissionController(
+        PermissionService permissionService, EntitiesValuesByUserService entitiesValuesByUserService)
     {
 
         this.permissionService = permissionService;

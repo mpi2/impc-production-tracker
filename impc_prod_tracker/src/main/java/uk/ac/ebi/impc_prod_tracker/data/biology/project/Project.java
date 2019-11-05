@@ -134,6 +134,17 @@ public class Project extends BaseEntity implements Resource<Project>
         return relatedWorkUnites;
     }
 
+    @Override
+    public List<Consortium> getRelatedConsortia()
+    {
+        List<Consortium> relatedConsortia = new ArrayList<>();
+        if (projectConsortia != null)
+        {
+            projectConsortia.forEach(x -> relatedConsortia.add(x.getConsortium()));
+        }
+        return relatedConsortia;
+    }
+
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
     @OneToMany(cascade=CascadeType.ALL, mappedBy = "project")

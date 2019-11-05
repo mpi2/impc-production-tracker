@@ -21,6 +21,7 @@ import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+import uk.ac.ebi.impc_prod_tracker.common.fluent.FluentPersonRoleConsortiumList;
 import uk.ac.ebi.impc_prod_tracker.common.fluent.FluentPersonRoleWorkUnitList;
 import uk.ac.ebi.impc_prod_tracker.conf.exceptions.UserOperationFailedException;
 import uk.ac.ebi.impc_prod_tracker.data.organization.consortium.Consortium;
@@ -30,7 +31,6 @@ import uk.ac.ebi.impc_prod_tracker.data.organization.person_role_consortium.Pers
 import uk.ac.ebi.impc_prod_tracker.data.organization.person_role_work_unit.PersonRoleWorkUnit;
 import uk.ac.ebi.impc_prod_tracker.data.organization.work_unit.WorkUnit;
 import uk.ac.ebi.impc_prod_tracker.service.organization.WorkUnitService;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -219,11 +219,26 @@ public class AapSystemSubject implements SystemSubject
     }
 
     @Override
+    public FluentPersonRoleConsortiumList getFluentRoleConsortia()
+    {
+        return new FluentPersonRoleConsortiumList(roleConsortia);
+    }
+
+    @Override
     public boolean managesAnyWorkUnit(Collection<WorkUnit> workUnits)
     {
         return new FluentPersonRoleWorkUnitList(roleWorkUnits)
             .whereUserHasRole("manager")
             .getWorkUnits().stream()
             .anyMatch(workUnits::contains);
+    }
+
+    @Override
+    public boolean managesAnyConsortia(Collection<Consortium> consortia)
+    {
+        return getFluentRoleConsortia()
+            .whereUserHasRole("manager")
+            .getConsortia().stream()
+            .anyMatch(consortia::contains);
     }
 }

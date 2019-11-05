@@ -31,6 +31,7 @@ public class PermissionServiceImpl implements PermissionService
 
     private static final String UPDATE_PLAN = "canUpdatePlan";
     private static final String UPDATE_PROJECT = "canUpdateProject";
+    private static final String MANAGE_GENE_LISTS = "canManageGeneLists";
 
     private final ContextAwarePolicyEnforcement policyEnforcement;
     private final PlanService planService;
@@ -52,6 +53,7 @@ public class PermissionServiceImpl implements PermissionService
         List<ActionPermission> actionPermissions = new ArrayList<>();
         actionPermissions.add(getManageUsersPermission());
         actionPermissions.add(getExecutingManagementTasks());
+        actionPermissions.add(getManageGeneLists());
         return actionPermissions;
     }
 
@@ -69,6 +71,15 @@ public class PermissionServiceImpl implements PermissionService
         actionPermission.setActionName(EXECUTE_MANAGER_TASKS_KEY);
         actionPermission.setValue(
             policyEnforcement.hasPermission(null, EXECUTE_MANAGER_TASKS_ACTION));
+        return actionPermission;
+    }
+
+    private ActionPermission getManageGeneLists()
+    {
+        ActionPermission actionPermission = new ActionPermission();
+        actionPermission.setActionName(MANAGE_GENE_LISTS);
+        actionPermission.setValue(
+            policyEnforcement.hasPermission(null, MANAGE_GENE_LISTS));
         return actionPermission;
     }
 

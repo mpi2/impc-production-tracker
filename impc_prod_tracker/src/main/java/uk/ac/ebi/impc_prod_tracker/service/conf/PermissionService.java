@@ -27,6 +27,7 @@ public interface PermissionService
     String UPDATE_PLAN_ACTION = "UPDATE_PLAN";
     String UPDATE_PROJECT_ACTION = "UPDATE_PROJECT";
     String UPDATE_USER = "UPDATE_USER";
+    String MANAGE_GENE_LISTS = "MANAGE_GENE_LISTS";
 
     /**
      * Get the general permissions a user have that don't depend on specific resources.
