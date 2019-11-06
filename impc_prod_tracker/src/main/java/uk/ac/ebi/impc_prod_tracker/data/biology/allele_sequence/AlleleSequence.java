@@ -13,7 +13,8 @@ import java.io.Serializable;
 @Entity
 public class AlleleSequence extends BaseEntity implements Serializable {
     @Id
-    @Column(name = "id")
+    @SequenceGenerator(name = "alleleSequenceSeq", sequenceName = "ALLELE_SEQUENCE_SEQ")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "alleleSequenceSeq")
     private Long id;
 
     @ManyToOne(targetEntity= Allele.class)
