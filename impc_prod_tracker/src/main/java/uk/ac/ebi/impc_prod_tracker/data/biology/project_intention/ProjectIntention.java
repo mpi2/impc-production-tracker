@@ -11,7 +11,6 @@ import uk.ac.ebi.impc_prod_tracker.data.biology.molecular_mutation_type.Molecula
 import uk.ac.ebi.impc_prod_tracker.data.biology.project.Project;
 import uk.ac.ebi.impc_prod_tracker.data.biology.project_intention_gene.ProjectIntentionGene;
 import uk.ac.ebi.impc_prod_tracker.data.biology.project_intention.type.IntentionType;
-import uk.ac.ebi.impc_prod_tracker.data.biology.project_intention_location.ProjectIntentionLocation;
 import uk.ac.ebi.impc_prod_tracker.data.biology.project_intention_sequence.ProjectIntentionSequence;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -52,11 +51,6 @@ public class ProjectIntention
     @ToString.Exclude
     @OneToOne(cascade= CascadeType.ALL, mappedBy = "projectIntention")
     private ProjectIntentionGene projectIntentionGene;
-
-    @EqualsAndHashCode.Exclude
-    @ToString.Exclude
-    @OneToOne(cascade=CascadeType.ALL, mappedBy = "projectIntention")
-    private ProjectIntentionLocation projectIntentionLocation;
 
     @EqualsAndHashCode.Exclude
     @ToString.Exclude

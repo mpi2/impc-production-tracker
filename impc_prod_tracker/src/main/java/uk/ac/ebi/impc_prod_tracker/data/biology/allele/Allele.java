@@ -113,15 +113,6 @@ public class Allele extends BaseEntity
     @JsonIgnore
     @ManyToMany
     @JoinTable(
-            name = "allele_sequence",
-            joinColumns = @JoinColumn(name = "allele_id"),
-            inverseJoinColumns = @JoinColumn(name = "sequence_id"))
-    private Set<Sequence> sequences;
-
-    @ToString.Exclude
-    @JsonIgnore
-    @ManyToMany
-    @JoinTable(
             name = "allele_colony",
             joinColumns = @JoinColumn(name = "allele_id"),
             inverseJoinColumns = @JoinColumn(name = "colony_id"))

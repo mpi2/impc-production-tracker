@@ -18,18 +18,15 @@ package uk.ac.ebi.impc_prod_tracker.web.mapping.project.intention;
 import org.springframework.stereotype.Component;
 import uk.ac.ebi.impc_prod_tracker.data.biology.project_intention.ProjectIntention;
 import uk.ac.ebi.impc_prod_tracker.data.biology.project_intention_gene.ProjectIntentionGene;
-import uk.ac.ebi.impc_prod_tracker.data.biology.project_intention_location.ProjectIntentionLocation;
 import uk.ac.ebi.impc_prod_tracker.data.biology.project_intention_sequence.ProjectIntentionSequence;
 import uk.ac.ebi.impc_prod_tracker.service.biology.project_intention.ProjectIntentionService;
 import uk.ac.ebi.impc_prod_tracker.web.dto.gene.ProjectIntentionGeneDTO;
 import uk.ac.ebi.impc_prod_tracker.web.dto.intention.ProjectIntentionDTO;
-import uk.ac.ebi.impc_prod_tracker.web.dto.location.ProjectIntentionLocationDTO;
 import uk.ac.ebi.impc_prod_tracker.web.dto.sequence.ProjectIntentionSequenceDTO;
 import uk.ac.ebi.impc_prod_tracker.web.mapping.EntityMapper;
 import uk.ac.ebi.impc_prod_tracker.web.mapping.allele.AlleleTypeMapper;
 import uk.ac.ebi.impc_prod_tracker.web.mapping.allele_categorization.AlleleCategorizationMapper;
 import uk.ac.ebi.impc_prod_tracker.web.mapping.gene.ProjectIntentionGeneMapper;
-import uk.ac.ebi.impc_prod_tracker.web.mapping.location.ProjectIntentionLocationMapper;
 import uk.ac.ebi.impc_prod_tracker.web.mapping.molecular_mutation.MolecularMutationTypeMapper;
 import uk.ac.ebi.impc_prod_tracker.web.mapping.sequence.ProjectIntentionSequenceMapper;
 import java.util.ArrayList;
@@ -44,12 +41,10 @@ public class ProjectIntentionMapper
     private AlleleCategorizationMapper alleleCategorizationMapper;
     private MolecularMutationTypeMapper molecularMutationTypeMapper;
     private ProjectIntentionGeneMapper projectIntentionGeneMapper;
-    private ProjectIntentionLocationMapper projectIntentionLocationMapper;
     private ProjectIntentionSequenceMapper projectIntentionSequenceMapper;
     private ProjectIntentionService projectIntentionService;
 
     private static final String INTENTION_TYPE_GENE = "gene";
-    private static final String INTENTION_TYPE_LOCATION = "location";
     private static final String INTENTION_TYPE_SEQUENCE = "sequence";
 
     public ProjectIntentionMapper(
@@ -58,7 +53,6 @@ public class ProjectIntentionMapper
         AlleleCategorizationMapper alleleCategorizationMapper,
         MolecularMutationTypeMapper molecularMutationTypeMapper,
         ProjectIntentionGeneMapper projectIntentionGeneMapper,
-        ProjectIntentionLocationMapper projectIntentionLocationMapper,
         ProjectIntentionSequenceMapper projectIntentionSequenceMapper, ProjectIntentionService projectIntentionService)
     {
         this.entityMapper = entityMapper;
@@ -66,7 +60,6 @@ public class ProjectIntentionMapper
         this.alleleCategorizationMapper = alleleCategorizationMapper;
         this.molecularMutationTypeMapper = molecularMutationTypeMapper;
         this.projectIntentionGeneMapper = projectIntentionGeneMapper;
-        this.projectIntentionLocationMapper = projectIntentionLocationMapper;
         this.projectIntentionSequenceMapper = projectIntentionSequenceMapper;
         this.projectIntentionService = projectIntentionService;
     }
@@ -78,7 +71,6 @@ public class ProjectIntentionMapper
         projectIntentionDTO.setAlleleCategorizationDTOS(
             alleleCategorizationMapper.toDtos(projectIntention.getAlleleCategorizations()));
         setProjectIntentionGeneDTO(projectIntention, projectIntentionDTO);
-        setProjectIntentionLocationDTO(projectIntention, projectIntentionDTO);
         setProjectIntentionSequenceDTO(projectIntention, projectIntentionDTO);
         return projectIntentionDTO;
     }
@@ -92,20 +84,6 @@ public class ProjectIntentionMapper
             ProjectIntentionGeneDTO projectIntentionGeneDTO =
                 projectIntentionGeneMapper.toDto(projectIntentionGene);
             projectIntentionDTO.setProjectIntentionGeneDTO(projectIntentionGeneDTO);
-        }
-    }
-
-    private void setProjectIntentionLocationDTO(
-        ProjectIntention projectIntention, ProjectIntentionDTO projectIntentionDTO)
-    {
-        ProjectIntentionLocation projectIntentionLocation =
-            projectIntention.getProjectIntentionLocation();
-        if (projectIntentionLocation != null)
-        {
-            ProjectIntentionLocationDTO projectIntentionLocationDTO =
-                projectIntentionLocationMapper.toDto(projectIntentionLocation);
-            projectIntentionDTO.setProjectIntentionLocationDTO(projectIntentionLocationDTO);
-            projectIntentionDTO.setIndex(projectIntentionLocationDTO.getIndex());
         }
     }
 
@@ -156,16 +134,6 @@ public class ProjectIntentionMapper
             projectIntention.setProjectIntentionGene(projectIntentionGene);
             projectIntention.setIntentionType(
                 projectIntentionService.getIntentionTypeByName(INTENTION_TYPE_GENE));
-        }
-        else if (projectIntention.getProjectIntentionLocation() != null)
-        {
-            ProjectIntentionLocation projectIntentionLocation =
-                projectIntentionLocationMapper.toEntity(
-                    projectIntentionDTO.getProjectIntentionLocationDTO());
-            projectIntentionLocation.setProjectIntention(projectIntention);
-            projectIntention.setProjectIntentionLocation(projectIntentionLocation);
-            projectIntention.setIntentionType(
-                projectIntentionService.getIntentionTypeByName(INTENTION_TYPE_LOCATION));
         }
         else if (projectIntention.getProjectIntentionSequence() != null)
         {
