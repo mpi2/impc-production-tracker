@@ -21,7 +21,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 import uk.ac.ebi.impc_prod_tracker.web.dto.allele_categorization.AlleleCategorizationDTO;
 import uk.ac.ebi.impc_prod_tracker.web.dto.gene.ProjectIntentionGeneDTO;
-import uk.ac.ebi.impc_prod_tracker.web.dto.location.ProjectIntentionLocationDTO;
 import uk.ac.ebi.impc_prod_tracker.web.dto.sequence.ProjectIntentionSequenceDTO;
 import java.util.List;
 
@@ -37,10 +36,6 @@ public class ProjectIntentionDTO
     @JsonInclude(JsonInclude.Include.NON_NULL)
     @JsonProperty("intentionByGene")
     private ProjectIntentionGeneDTO projectIntentionGeneDTO;
-
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    @JsonProperty("intentionByLocation")
-    private ProjectIntentionLocationDTO projectIntentionLocationDTO;
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
     @JsonProperty("intentionBySequence")

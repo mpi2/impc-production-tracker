@@ -4,8 +4,6 @@ import lombok.AccessLevel;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import uk.ac.ebi.impc_prod_tracker.data.BaseEntity;
-import uk.ac.ebi.impc_prod_tracker.data.biology.allele.Allele;
-import uk.ac.ebi.impc_prod_tracker.data.biology.chromosome_feature_type.ChromosomeFeatureType;
 import uk.ac.ebi.impc_prod_tracker.data.biology.location.Location;
 import uk.ac.ebi.impc_prod_tracker.data.biology.sequence.Sequence;
 
@@ -25,7 +23,7 @@ public class SequenceLocation extends BaseEntity implements Serializable {
     @ManyToOne(targetEntity = Sequence.class)
     private Sequence sequence;
 
-    private int index;
+    private Integer index;
 
     @ManyToOne(targetEntity = Location.class)
     private Location location;

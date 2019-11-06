@@ -31,7 +31,4 @@ public class Sequence extends BaseEntity {
     @ManyToOne(targetEntity= SequenceCategory.class)
     private SequenceCategory sequenceCategory;
 
-    @EqualsAndHashCode.Exclude
-    @ManyToMany(mappedBy = "sequences")
-    private Set<Allele> alleles;
 }
