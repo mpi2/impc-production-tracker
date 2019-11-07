@@ -24,6 +24,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import uk.ac.ebi.impc_prod_tracker.common.pagination.PaginationHelper;
@@ -32,8 +33,6 @@ import uk.ac.ebi.impc_prod_tracker.service.biology.target_gene_list.TargetGeneLi
 import uk.ac.ebi.impc_prod_tracker.web.controller.util.LinkUtil;
 import uk.ac.ebi.impc_prod_tracker.web.dto.target_gene_list.TargetListsByConsortiumDTO;
 import uk.ac.ebi.impc_prod_tracker.web.mapping.target_gene_list.TargetListsByConsortiumMapper;
-
-import java.util.ArrayList;
 import java.util.List;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
@@ -63,8 +62,40 @@ public class TargetGeneListController
     @GetMapping
     public ResponseEntity findAll(Pageable pageable, PagedResourcesAssembler assembler)
     {
-        TargetListsByConsortiumDTO targetListsByConsortiumDTO = new TargetListsByConsortiumDTO();
         Page<ConsortiumList> consortiumListPage = targetGeneListService.getAll(pageable);
+        return buildResponseEntity(pageable, assembler, consortiumListPage);
+    }
+
+    /**
+     * Get all the target gene lists the user has access to.
+     * @param pageable Pagination information.
+     * @param assembler Allows to manage hal.
+     * @return Lists by consortium.
+     */
+
+    /**
+     * Get target gene lists by consortium.
+     * @param pageable Pagination information.
+     * @param assembler Allows to manage hal.
+     * @param consortiumName Name of the consortium.
+     * @return Lists by consortium.
+     */
+    @GetMapping(value = {"/{consortiumName}"})
+    public ResponseEntity findByConsortium(
+        Pageable pageable,
+        PagedResourcesAssembler assembler,
+        @PathVariable("consortiumName") String consortiumName)
+    {
+        Page<ConsortiumList> consortiumListPage =
+            targetGeneListService.getByConsortium(pageable, consortiumName);
+        return buildResponseEntity(pageable, assembler, consortiumListPage);
+    }
+
+    private ResponseEntity buildResponseEntity(
+        Pageable pageable,
+        PagedResourcesAssembler assembler,
+        Page<ConsortiumList> consortiumListPage)
+    {
         List<TargetListsByConsortiumDTO> targetListsByConsortiumDTOS =
             targetListsByConsortiumMapper.consortiumListsToDtos(consortiumListPage.getContent());
         Page<TargetListsByConsortiumDTO> targetListsByConsortiumDTOSPage =
