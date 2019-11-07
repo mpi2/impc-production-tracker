@@ -30,6 +30,7 @@ public class Outcome extends BaseEntity
     @ManyToOne(targetEntity= Status.class)
     private Status status;
 
+    @EqualsAndHashCode.Exclude
     @ManyToMany(mappedBy = "outcomes")
     private Set<Allele> alleles;
 }

@@ -42,6 +42,7 @@ public class Colony extends BaseEntity
     @ManyToOne
     private Strain strain;
 
+    @EqualsAndHashCode.Exclude
     @ManyToOne(targetEntity = Outcome.class)
     private Outcome outcome;
 
