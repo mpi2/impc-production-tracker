@@ -13,18 +13,12 @@
  language governing permissions and limitations under the
  License.
  */
-package uk.ac.ebi.impc_prod_tracker.web.dto.target_gene_list;
+package uk.ac.ebi.impc_prod_tracker.data.biology.gene_list;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.Data;
-import org.springframework.hateoas.server.core.Relation;
-import java.util.List;
+import org.springframework.data.repository.CrudRepository;
+import uk.ac.ebi.impc_prod_tracker.data.organization.consortium.Consortium;
 
-@Data
-@Relation(collectionRelation = "listsByConsortium")
-public class TargetListsByConsortiumDTO
+public interface GeneListRepository extends CrudRepository<GeneList, Long>
 {
-    private String consortiumName;
-    @JsonProperty("list")
-    private List<ConsortiumListDTO> consortiumListDTOList;
+    GeneList findByConsortium(Consortium consortium);
 }
