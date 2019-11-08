@@ -13,10 +13,13 @@
  language governing permissions and limitations under the
  License.
  */
-package uk.ac.ebi.impc_prod_tracker.data.biology.target_gene_list.target_group;
+package uk.ac.ebi.impc_prod_tracker.data.biology.gene_list.gene_list_record;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.CrudRepository;
 
-public interface TargetGroupRepository extends CrudRepository<TargetGroup, Long>
+public interface GeneListRecordRepository extends CrudRepository<GeneListRecord, Long>
 {
+    Page<GeneListRecord> findAllByGeneListConsortiumName(Pageable pageable, String consortiumName);
 }

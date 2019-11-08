@@ -13,13 +13,10 @@
  language governing permissions and limitations under the
  License.
  */
-package uk.ac.ebi.impc_prod_tracker.web.dto.target_gene_list;
+package uk.ac.ebi.impc_prod_tracker.data.biology.gene_list.gene_list_record;
 
-import lombok.Data;
+import org.springframework.data.repository.CrudRepository;
 
-@Data
-public class ProjectByGeneSummaryDTO
+public interface GeneByGeneListRecordRepository extends CrudRepository<GeneByGeneListRecord, Long>
 {
-    private String tpn;
-    private String assigmentStatusName;
 }

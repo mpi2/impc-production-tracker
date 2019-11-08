@@ -13,7 +13,7 @@
  language governing permissions and limitations under the
  License.
  */
-package uk.ac.ebi.impc_prod_tracker.web.controller.target_gene_list;
+package uk.ac.ebi.impc_prod_tracker.web.controller.gene_list;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -25,53 +25,40 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
+import uk.ac.ebi.impc_prod_tracker.common.files.CsvReader;
 import uk.ac.ebi.impc_prod_tracker.common.pagination.PaginationHelper;
-import uk.ac.ebi.impc_prod_tracker.data.biology.target_gene_list.ConsortiumList;
-import uk.ac.ebi.impc_prod_tracker.service.biology.target_gene_list.TargetGeneListService;
+import uk.ac.ebi.impc_prod_tracker.data.biology.gene_list.gene_list_record.GeneListRecord;
+import uk.ac.ebi.impc_prod_tracker.service.biology.target_gene_list.GeneListService;
 import uk.ac.ebi.impc_prod_tracker.web.controller.util.LinkUtil;
-import uk.ac.ebi.impc_prod_tracker.web.dto.target_gene_list.TargetListsByConsortiumDTO;
-import uk.ac.ebi.impc_prod_tracker.web.mapping.target_gene_list.TargetListsByConsortiumMapper;
+import uk.ac.ebi.impc_prod_tracker.web.dto.gene_list.GeneListRecordDTO;
+import uk.ac.ebi.impc_prod_tracker.web.mapping.gene_list.GeneListRecordMapper;
 import java.util.List;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 
 @RestController
-@RequestMapping("/api/targetGeneList")
+@RequestMapping("/api/geneList")
 @CrossOrigin(origins = "*")
-public class TargetGeneListController
+public class GeneListController
 {
-    private TargetGeneListService targetGeneListService;
-    private TargetListsByConsortiumMapper targetListsByConsortiumMapper;
+    private GeneListService geneListService;
+    private GeneListRecordMapper geneListRecordMapper;
+    private CsvReader csvReader;
 
-    public TargetGeneListController(
-        TargetGeneListService targetGeneListService,
-        TargetListsByConsortiumMapper targetListsByConsortiumMapper)
+    public GeneListController(
+        GeneListService geneListService,
+        GeneListRecordMapper geneListRecordMapper,
+        CsvReader csvReader)
     {
-        this.targetGeneListService = targetGeneListService;
-        this.targetListsByConsortiumMapper = targetListsByConsortiumMapper;
+        this.geneListService = geneListService;
+        this.geneListRecordMapper = geneListRecordMapper;
+        this.csvReader = csvReader;
     }
-
-    /**
-     * Get all the target gene lists the user has access to.
-     * @param pageable Pagination information.
-     * @param assembler Allows to manage hal.
-     * @return Lists by consortium.
-     */
-    @GetMapping
-    public ResponseEntity findAll(Pageable pageable, PagedResourcesAssembler assembler)
-    {
-        Page<ConsortiumList> consortiumListPage = targetGeneListService.getAll(pageable);
-        return buildResponseEntity(pageable, assembler, consortiumListPage);
-    }
-
-    /**
-     * Get all the target gene lists the user has access to.
-     * @param pageable Pagination information.
-     * @param assembler Allows to manage hal.
-     * @return Lists by consortium.
-     */
 
     /**
      * Get target gene lists by consortium.
@@ -80,33 +67,44 @@ public class TargetGeneListController
      * @param consortiumName Name of the consortium.
      * @return Lists by consortium.
      */
-    @GetMapping(value = {"/{consortiumName}"})
+    @GetMapping(value = {"/{consortiumName}/content"})
     public ResponseEntity findByConsortium(
         Pageable pageable,
         PagedResourcesAssembler assembler,
         @PathVariable("consortiumName") String consortiumName)
     {
-        Page<ConsortiumList> consortiumListPage =
-            targetGeneListService.getByConsortium(pageable, consortiumName);
-        return buildResponseEntity(pageable, assembler, consortiumListPage);
+        Page<GeneListRecord> geneListRecords =
+            geneListService.getByConsortium(pageable, consortiumName);
+        String slashContent = consortiumName + "/content";
+        return buildResponseEntity(pageable, assembler, slashContent, geneListRecords);
     }
 
     private ResponseEntity buildResponseEntity(
         Pageable pageable,
         PagedResourcesAssembler assembler,
-        Page<ConsortiumList> consortiumListPage)
+        String slashContent, Page<GeneListRecord> geneListRecordsPage)
     {
-        List<TargetListsByConsortiumDTO> targetListsByConsortiumDTOS =
-            targetListsByConsortiumMapper.consortiumListsToDtos(consortiumListPage.getContent());
-        Page<TargetListsByConsortiumDTO> targetListsByConsortiumDTOSPage =
-            PaginationHelper.createPage(targetListsByConsortiumDTOS, pageable);
+        List<GeneListRecordDTO> geneListRecordDTOS =
+            geneListRecordMapper.toDtos(geneListRecordsPage.getContent());
+        Page<GeneListRecordDTO> geneListRecordDTOPage =
+            PaginationHelper.createPage(geneListRecordDTOS, pageable);
         PagedModel pr =
             assembler.toModel(
-                targetListsByConsortiumDTOSPage,
-                linkTo(TargetGeneListController.class).withSelfRel());
+                geneListRecordDTOPage,
+                linkTo(GeneListController.class).slash(slashContent).withSelfRel());
         HttpHeaders responseHeaders = new HttpHeaders();
         responseHeaders.add("Link", LinkUtil.createLinkHeader(pr));
 
         return new ResponseEntity<>(pr, responseHeaders, HttpStatus.OK);
+    }
+
+    @PostMapping("/updateListWithFile/{consortiumName}")
+    public List<List<String>> uploadFile(
+        @RequestParam("file") MultipartFile file,
+        @PathVariable("consortiumName") String consortiumName)
+    {
+        List<List<String>> csvContent = csvReader.getCsvContentFromMultipartFile(file);
+        geneListService.updateListWithCsvContent(consortiumName, csvContent);
+        return csvContent;
     }
 }

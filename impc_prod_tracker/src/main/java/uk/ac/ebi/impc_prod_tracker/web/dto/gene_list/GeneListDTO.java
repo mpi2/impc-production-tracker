@@ -13,15 +13,17 @@
  language governing permissions and limitations under the
  License.
  */
-package uk.ac.ebi.impc_prod_tracker.web.dto.target_gene_list;
+package uk.ac.ebi.impc_prod_tracker.web.dto.gene_list;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
-import uk.ac.ebi.impc_prod_tracker.web.dto.gene.GeneDTO;
+import java.util.List;
 
 @Data
-public class TargetDTO
+public class GeneListDTO
 {
-    @JsonProperty("gene")
-    private GeneDTO geneDTO;
+    private String consortiumName;
+
+    @JsonProperty("list")
+    private List<GeneListRecordDTO> geneListRecordDTOS;
 }
