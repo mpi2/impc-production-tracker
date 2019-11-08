@@ -22,4 +22,6 @@ import org.springframework.data.repository.CrudRepository;
 public interface ConsortiumListRepository extends CrudRepository<ConsortiumList, Long>
 {
     Page<ConsortiumList> findAll(Pageable pageable);
+
+    Page<ConsortiumList> findByConsortiumName(Pageable pageable, String consortiumName);
 }

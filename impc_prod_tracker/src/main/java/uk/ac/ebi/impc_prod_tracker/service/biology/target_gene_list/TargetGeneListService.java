@@ -36,4 +36,9 @@ public class TargetGeneListService
     {
         return consortiumListRepository.findAll(pageable);
     }
+
+    public Page<ConsortiumList> getByConsortium(Pageable pageable, String consortiumName)
+    {
+        return consortiumListRepository.findByConsortiumName(pageable, consortiumName);
+    }
 }
