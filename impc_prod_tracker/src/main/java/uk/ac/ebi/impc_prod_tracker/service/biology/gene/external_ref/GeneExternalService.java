@@ -17,6 +17,7 @@ package uk.ac.ebi.impc_prod_tracker.service.biology.gene.external_ref;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Component;
 import uk.ac.ebi.impc_prod_tracker.common.json.JsonHelper;
 import uk.ac.ebi.impc_prod_tracker.conf.exceptions.SystemOperationFailedException;
@@ -36,6 +37,7 @@ public class GeneExternalService
         this.graphQLConsumer = graphQLConsumer;
     }
 
+    @Cacheable("external_genes_by_input")
     public Gene getGeneFromExternalDataBySymbolOrAccId(String input)
     {
         String query =

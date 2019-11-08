@@ -18,24 +18,14 @@ package uk.ac.ebi.impc_prod_tracker.service.biology.target_gene_list;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
-import uk.ac.ebi.impc_prod_tracker.conf.exceptions.UserOperationFailedException;
-import uk.ac.ebi.impc_prod_tracker.data.biology.gene.Gene;
 import uk.ac.ebi.impc_prod_tracker.data.biology.gene_list.GeneList;
 import uk.ac.ebi.impc_prod_tracker.data.biology.gene_list.GeneListRepository;
-import uk.ac.ebi.impc_prod_tracker.data.biology.gene_list.gene_list_record.GeneByGeneListRecord;
 import uk.ac.ebi.impc_prod_tracker.data.biology.gene_list.gene_list_record.GeneListRecord;
 import uk.ac.ebi.impc_prod_tracker.data.biology.gene_list.gene_list_record.GeneListRecordRepository;
 import uk.ac.ebi.impc_prod_tracker.data.organization.consortium.Consortium;
-import uk.ac.ebi.impc_prod_tracker.service.biology.gene.external_ref.GeneExternalService;
 import uk.ac.ebi.impc_prod_tracker.service.organization.consortium.ConsortiumService;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
-
 
 @Component
 public class GeneListService
@@ -43,18 +33,17 @@ public class GeneListService
     private GeneListRepository geneListRepository;
     private GeneListRecordRepository geneListRecordRepository;
     private GeneListCsvConverter geneListCsvConverter;
-    private GeneExternalService geneExternalService;
     private ConsortiumService consortiumService;
 
     public GeneListService(
         GeneListRepository geneListRepository,
         GeneListRecordRepository geneListRecordRepository,
-        GeneListCsvConverter geneListCsvConverter, GeneExternalService geneExternalService, ConsortiumService consortiumService)
+        GeneListCsvConverter geneListCsvConverter,
+        ConsortiumService consortiumService)
     {
         this.geneListRepository = geneListRepository;
         this.geneListRecordRepository = geneListRecordRepository;
         this.geneListCsvConverter = geneListCsvConverter;
-        this.geneExternalService = geneExternalService;
         this.consortiumService = consortiumService;
     }
 
@@ -111,5 +100,4 @@ public class GeneListService
         geneList.setConsortium(consortium);
         return geneList;
     }
-
 }
