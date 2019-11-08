@@ -76,18 +76,15 @@ public class GeneListController
         Page<GeneListRecord> geneListRecords =
             geneListService.getByConsortium(pageable, consortiumName);
         String slashContent = consortiumName + "/content";
-        return buildResponseEntity(pageable, assembler, slashContent, geneListRecords);
+        return buildResponseEntity(assembler, slashContent, geneListRecords);
     }
 
     private ResponseEntity buildResponseEntity(
-        Pageable pageable,
         PagedResourcesAssembler assembler,
         String slashContent, Page<GeneListRecord> geneListRecordsPage)
     {
-        List<GeneListRecordDTO> geneListRecordDTOS =
-            geneListRecordMapper.toDtos(geneListRecordsPage.getContent());
         Page<GeneListRecordDTO> geneListRecordDTOPage =
-            PaginationHelper.createPage(geneListRecordDTOS, pageable);
+            geneListRecordsPage.map(x -> geneListRecordMapper.toDto(x));
         PagedModel pr =
             assembler.toModel(
                 geneListRecordDTOPage,
