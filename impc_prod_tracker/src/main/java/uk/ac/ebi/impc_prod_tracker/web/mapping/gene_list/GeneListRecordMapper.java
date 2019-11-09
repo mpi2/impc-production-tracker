@@ -17,28 +17,35 @@ package uk.ac.ebi.impc_prod_tracker.web.mapping.gene_list;
 
 import org.springframework.stereotype.Component;
 import uk.ac.ebi.impc_prod_tracker.data.biology.assignment_status.AssignmentStatus;
-import uk.ac.ebi.impc_prod_tracker.data.biology.gene_list.gene_list_record.GeneListRecord;
+import uk.ac.ebi.impc_prod_tracker.data.biology.gene_list.record.GeneByGeneListRecord;
+import uk.ac.ebi.impc_prod_tracker.data.biology.gene_list.record.GeneListRecord;
 import uk.ac.ebi.impc_prod_tracker.data.biology.project.Project;
-import uk.ac.ebi.impc_prod_tracker.service.biology.target_gene_list.ProjectsByGroupOfGenesFinder;
+import uk.ac.ebi.impc_prod_tracker.service.biology.gene_list.GeneListRecordService;
+import uk.ac.ebi.impc_prod_tracker.service.biology.gene_list.ProjectsByGroupOfGenesFinder;
 import uk.ac.ebi.impc_prod_tracker.web.dto.gene_list.GeneListRecordDTO;
 import uk.ac.ebi.impc_prod_tracker.web.dto.gene_list.ProjectByGeneSummaryDTO;
 import uk.ac.ebi.impc_prod_tracker.web.mapping.Mapper;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+import java.util.concurrent.atomic.AtomicInteger;
 
 @Component
 public class GeneListRecordMapper implements Mapper<GeneListRecord, GeneListRecordDTO>
 {
     private GeneByGeneListRecordMapper geneByGeneListRecordMapper;
     private ProjectsByGroupOfGenesFinder projectsByGroupOfGenesFinder;
+    private GeneListRecordService geneListRecordService;
 
     public GeneListRecordMapper(
         GeneByGeneListRecordMapper geneByGeneListRecordMapper,
-        ProjectsByGroupOfGenesFinder projectsByGroupOfGenesFinder)
+        ProjectsByGroupOfGenesFinder projectsByGroupOfGenesFinder, GeneListRecordService geneListRecordService)
     {
         this.geneByGeneListRecordMapper = geneByGeneListRecordMapper;
         this.projectsByGroupOfGenesFinder = projectsByGroupOfGenesFinder;
+        this.geneListRecordService = geneListRecordService;
     }
 
     @Override
@@ -76,5 +83,44 @@ public class GeneListRecordMapper implements Mapper<GeneListRecord, GeneListReco
             projectByGeneSummaryDTO.setAssigmentStatusName(assignmentStatus.getName());
         }
         return projectByGeneSummaryDTO;
+    }
+
+    public GeneListRecord toEntity(GeneListRecordDTO geneListRecordDTO)
+    {
+        GeneListRecord geneListRecord;
+        Long id = geneListRecordDTO.getId();
+        if (id != null)
+        {
+            geneListRecord = geneListRecordService.getGeneListRecordById(id);
+        }
+        else
+        {
+            geneListRecord = new GeneListRecord();
+            Set<GeneByGeneListRecord> geneByGeneListRecords = new HashSet<>();
+            geneListRecord.setGenesByRecord(geneByGeneListRecords);
+        }
+        geneListRecord.setNote(geneListRecordDTO.getNote());
+        addGeneByGeneListRecords(geneListRecord, geneListRecordDTO);
+        return geneListRecord;
+    }
+
+    private void addGeneByGeneListRecords(
+        GeneListRecord geneListRecord, GeneListRecordDTO geneListRecordDTO)
+    {
+        var geneEntities = geneByGeneListRecordMapper.toEntities(geneListRecordDTO.getGenes());
+        Set<GeneByGeneListRecord> geneByGeneListRecords = new HashSet<>(geneEntities);
+        if (geneListRecord.getGenesByRecord() == null)
+        {
+            geneListRecord.setGenesByRecord(geneByGeneListRecords);
+        }
+        else
+        {
+            geneListRecord.getGenesByRecord().addAll(geneByGeneListRecords);
+        }
+        AtomicInteger index = new AtomicInteger();
+        geneByGeneListRecords.forEach(x -> {
+            x.setGeneListRecord(geneListRecord);
+            x.setIndex(index.getAndIncrement());
+        });
     }
 }

@@ -13,7 +13,7 @@
  language governing permissions and limitations under the
  License.
  */
-package uk.ac.ebi.impc_prod_tracker.data.biology.gene_list.gene_list_record;
+package uk.ac.ebi.impc_prod_tracker.data.biology.gene_list.record;
 
 import lombok.AccessLevel;
 import lombok.Data;

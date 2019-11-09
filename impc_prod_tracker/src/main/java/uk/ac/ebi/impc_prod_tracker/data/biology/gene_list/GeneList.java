@@ -21,7 +21,7 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 import uk.ac.ebi.impc_prod_tracker.data.BaseEntity;
-import uk.ac.ebi.impc_prod_tracker.data.biology.gene_list.gene_list_record.GeneListRecord;
+import uk.ac.ebi.impc_prod_tracker.data.biology.gene_list.record.GeneListRecord;
 import uk.ac.ebi.impc_prod_tracker.data.organization.consortium.Consortium;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;

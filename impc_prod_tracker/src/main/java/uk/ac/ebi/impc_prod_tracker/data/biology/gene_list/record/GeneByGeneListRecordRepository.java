@@ -13,15 +13,10 @@
  language governing permissions and limitations under the
  License.
  */
-package uk.ac.ebi.impc_prod_tracker.web.mapping.project.intention;
+package uk.ac.ebi.impc_prod_tracker.data.biology.gene_list.record;
 
-import uk.ac.ebi.impc_prod_tracker.web.dto.intention.ProjectIntentionDTO;
-import java.util.Comparator;
+import org.springframework.data.repository.CrudRepository;
 
-public class SortByProjectIntentionIndex implements Comparator<ProjectIntentionDTO>
+public interface GeneByGeneListRecordRepository extends CrudRepository<GeneByGeneListRecord, Long>
 {
-    public int compare(ProjectIntentionDTO a, ProjectIntentionDTO b)
-    {
-        return a.getIndex() - b.getIndex() ;
-    }
 }

@@ -18,7 +18,6 @@ package uk.ac.ebi.impc_prod_tracker.web.dto.gene_list;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 import org.springframework.hateoas.server.core.Relation;
-import uk.ac.ebi.impc_prod_tracker.data.biology.gene_list.gene_list_record.GeneByGeneListRecordDTO;
 import java.util.List;
 
 @Relation(collectionRelation = "records")

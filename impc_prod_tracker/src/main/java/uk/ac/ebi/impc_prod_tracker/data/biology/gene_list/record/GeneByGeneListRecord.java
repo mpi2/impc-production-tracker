@@ -13,11 +13,13 @@
  language governing permissions and limitations under the
  License.
  */
-package uk.ac.ebi.impc_prod_tracker.data.biology.gene_list.gene_list_record;
+package uk.ac.ebi.impc_prod_tracker.data.biology.gene_list.record;
 
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import uk.ac.ebi.impc_prod_tracker.data.biology.gene_list.record.GeneListRecord;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -39,4 +41,8 @@ public class GeneByGeneListRecord
     GeneListRecord geneListRecord;
 
     private String accId;
+
+    transient private String inputSymbolValue;
+
+    private Integer index;
 }

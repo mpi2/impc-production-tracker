@@ -13,10 +13,10 @@
  language governing permissions and limitations under the
  License.
  */
-package uk.ac.ebi.impc_prod_tracker.service.biology.target_gene_list;
+package uk.ac.ebi.impc_prod_tracker.service.biology.gene_list;
 
 import org.springframework.stereotype.Component;
-import uk.ac.ebi.impc_prod_tracker.data.biology.gene_list.gene_list_record.GeneByGeneListRecord;
+import uk.ac.ebi.impc_prod_tracker.data.biology.gene_list.record.GeneByGeneListRecord;
 import uk.ac.ebi.impc_prod_tracker.data.biology.project.Project;
 import uk.ac.ebi.impc_prod_tracker.service.biology.project.search.ProjectSearcherService;
 import uk.ac.ebi.impc_prod_tracker.service.biology.project.search.Search;
