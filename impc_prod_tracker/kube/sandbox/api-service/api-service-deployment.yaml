@@ -23,8 +23,8 @@ spec:
         imagePullPolicy: Always
         name: api-service-sandbox
         env:
-        - name: REST_BASE_PATH
-          value: /production-tracker-sandbox-api/tracking-api
+        - name: SERVER_SERVLET_CONTEXT_PATH
+          value: /production-tracker-sandbox-api
         - name: TRACKER_POSTGRESQL_DB_HOST
           value: production-tracker-database
         - name: TRACKER_POSTGRESQL_DB_PORT
