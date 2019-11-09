@@ -26,7 +26,7 @@ metadata:
     # https://github.com/nginxinc/kubernetes-ingress/
     #
     kubernetes.io/ingress.class: nginx
-    nginx.ingress.kubernetes.io/rewrite-target: /$2
+    nginx.ingress.kubernetes.io/rewrite-target: /production-tracker-sandbox-api/$2
     nginx.ingress.kubernetes.io/ssl-redirect: "false"
 
 spec:
