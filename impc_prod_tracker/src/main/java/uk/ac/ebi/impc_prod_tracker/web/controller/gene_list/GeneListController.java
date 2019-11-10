@@ -37,6 +37,8 @@ import uk.ac.ebi.impc_prod_tracker.service.biology.gene_list.GeneListService;
 import uk.ac.ebi.impc_prod_tracker.web.controller.util.LinkUtil;
 import uk.ac.ebi.impc_prod_tracker.web.dto.gene_list.GeneListRecordDTO;
 import uk.ac.ebi.impc_prod_tracker.web.mapping.gene_list.GeneListRecordMapper;
+
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -98,23 +100,27 @@ public class GeneListController
     }
 
     @PostMapping("/updateListWithFile/{consortiumName}")
-    public List<List<String>> uploadFile(
+    public ResponseEntity uploadFile(
+        Pageable pageable,
+        PagedResourcesAssembler assembler,
         @RequestParam("file") MultipartFile file,
         @PathVariable("consortiumName") String consortiumName)
     {
         List<List<String>> csvContent = csvReader.getCsvContentFromMultipartFile(file);
         geneListService.updateListWithCsvContent(consortiumName, csvContent);
-        return csvContent;
+        return findByConsortium(pageable, assembler, consortiumName);
     }
 
     @PostMapping(value = {"/{consortiumName}/content"})
-    public String updateRecordsInList(
+    public ResponseEntity updateRecordsInList(
+        Pageable pageable,
+        PagedResourcesAssembler assembler,
         @RequestBody List<GeneListRecordDTO> records,
         @PathVariable("consortiumName") String consortiumName)
     {
-        Set<GeneListRecord> geneListRecords =
-            new HashSet<>(geneListRecordMapper.toEntities(records));
+        List<GeneListRecord> geneListRecords =
+            new ArrayList<>(geneListRecordMapper.toEntities(records));
         geneListService.updateRecordsInList(geneListRecords, consortiumName);
-        return "ok";
+        return findByConsortium(pageable, assembler, consortiumName);
     }
 }

@@ -30,7 +30,7 @@ import javax.persistence.Id;
 import javax.persistence.MapsId;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
-import java.util.Set;
+import java.util.List;
 
 @NoArgsConstructor(access= AccessLevel.PUBLIC, force=true)
 @Data
@@ -48,5 +48,5 @@ public class GeneList extends BaseEntity
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
     @OneToMany(cascade= CascadeType.ALL, mappedBy = "geneList", orphanRemoval=true)
-    private Set<GeneListRecord> geneListRecords;
+    private List<GeneListRecord> geneListRecords;
 }

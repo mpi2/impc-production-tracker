@@ -41,24 +41,26 @@ public class ProjectsByGroupOfGenesFinder
     public List<Project> findProjectsByGenes(Set<GeneByGeneListRecord> geneByGeneListRecords)
     {
         Set<Project> projects = new HashSet<>();
-        List<String> ids = new ArrayList<>();
-        if (geneByGeneListRecords != null)
+        if (!geneByGeneListRecords.isEmpty())
         {
-            geneByGeneListRecords.forEach(x -> ids.add(x.getAccId()));
+            List<String> ids = new ArrayList<>();
+            if (geneByGeneListRecords != null)
+            {
+                geneByGeneListRecords.forEach(x -> ids.add(x.getAccId()));
+            }
+            Search search = new Search(SearchType.BY_GENE.getName(), ids, ProjectFilter.getInstance());
+            SearchReport searchReport = projectSearcherService.executeSearch(search);
+            if (searchReport.getResults() != null)
+            {
+                searchReport.getResults().forEach(x -> {
+                    Project p = x.getProject();
+                    if (p != null)
+                    {
+                        projects.add(p);
+                    }
+                });
+            }
         }
-        Search search = new Search(SearchType.BY_GENE.getName(), ids, ProjectFilter.getInstance());
-        SearchReport searchReport = projectSearcherService.executeSearch(search);
-        if (searchReport.getResults() != null)
-        {
-            searchReport.getResults().forEach(x -> {
-                Project p = x.getProject();
-                if (p != null)
-                {
-                    projects.add(p);
-                }
-            });
-        }
-
         return filterExactMatches(projects);
     }
 

@@ -26,6 +26,7 @@ import uk.ac.ebi.impc_prod_tracker.data.biology.gene_list.record.SortGeneByGeneL
 import uk.ac.ebi.impc_prod_tracker.data.organization.consortium.Consortium;
 import uk.ac.ebi.impc_prod_tracker.service.organization.consortium.ConsortiumService;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -62,7 +63,7 @@ public class GeneListService
     }
 
     public void updateRecordsInList(
-        Set<GeneListRecord> geneListRecords, String consortiumName)
+        List<GeneListRecord> geneListRecords, String consortiumName)
     {
         Consortium consortium =
             consortiumService.getConsortiumByNameOrThrowException(consortiumName);
@@ -128,20 +129,17 @@ public class GeneListService
         Map<String, Long> sortedAccIdsInCurrentList = getAccIdHashesForGeneList(geneList);
         Map<String, List<String>> recordsByColumns =
             geneListCsvConverter.processCsvContent(csvContent);
-        Set<GeneListRecord> listData =
+        var listData =
             geneListCsvConverter.buildListFromCsvContent(recordsByColumns, sortedAccIdsInCurrentList);
         validateNewCsvRecords(new ArrayList<>(listData), geneList, recordsByColumns);
-        if (listData != null)
+        listData.forEach(x -> x.setGeneList(geneList));
+        if (geneList.getGeneListRecords() == null)
         {
-            listData.forEach(x -> x.setGeneList(geneList));
-            if (geneList.getGeneListRecords() == null)
-            {
-                geneList.setGeneListRecords(listData);
-            }
-            else
-            {
-                geneList.getGeneListRecords().addAll(listData);
-            }
+            geneList.setGeneListRecords(listData);
+        }
+        else
+        {
+            geneList.getGeneListRecords().addAll(listData);
         }
         return geneList;
     }

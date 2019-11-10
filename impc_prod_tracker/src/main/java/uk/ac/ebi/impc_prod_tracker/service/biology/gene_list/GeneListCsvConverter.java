@@ -93,11 +93,11 @@ public class GeneListCsvConverter
         return elements;
     }
 
-    public Set<GeneListRecord> buildListFromCsvContent(
+    public List<GeneListRecord> buildListFromCsvContent(
         Map<String, List<String>> recordsByColumns,
         Map<String, Long> sortedAccIdsInCurrentList)
     {
-        Set<GeneListRecord> listData = new HashSet<>();
+        List<GeneListRecord> listData = new ArrayList<>();
         List<String> geneColumnContent = recordsByColumns.get(CSV_GENE_HEADER);
         List<String> noteColumnContent = recordsByColumns.get(CSV_NOTE_HEADER);
         int numberOfRows = geneColumnContent.size();
