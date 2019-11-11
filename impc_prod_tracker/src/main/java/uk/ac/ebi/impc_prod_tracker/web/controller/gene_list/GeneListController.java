@@ -37,11 +37,8 @@ import uk.ac.ebi.impc_prod_tracker.service.biology.gene_list.GeneListService;
 import uk.ac.ebi.impc_prod_tracker.web.controller.util.LinkUtil;
 import uk.ac.ebi.impc_prod_tracker.web.dto.gene_list.GeneListRecordDTO;
 import uk.ac.ebi.impc_prod_tracker.web.mapping.gene_list.GeneListRecordMapper;
-
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 
