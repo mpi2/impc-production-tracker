@@ -21,7 +21,7 @@ public class StrainMapper
     public Strain toEntity(StrainDTO strainDTO)
     {
         Strain strain = entityMapper.toTarget(strainDTO, Strain.class);
-        if (strain.getStrainTypes() == null && strain.getId() != null)
+        if (strain != null && strain.getStrainTypes() == null && strain.getId() != null)
         {
             Strain persisted = strainRepository.findById(strain.getId()).orElse(null);
             if (persisted != null)
