@@ -13,10 +13,10 @@
  language governing permissions and limitations under the
  License.
  */
-package uk.ac.ebi.impc_prod_tracker.service.biology.target_gene_list;
+package uk.ac.ebi.impc_prod_tracker.service.biology.gene_list;
 
 import org.springframework.stereotype.Component;
-import uk.ac.ebi.impc_prod_tracker.data.biology.gene_list.gene_list_record.GeneByGeneListRecord;
+import uk.ac.ebi.impc_prod_tracker.data.biology.gene_list.record.GeneByGeneListRecord;
 import uk.ac.ebi.impc_prod_tracker.data.biology.project.Project;
 import uk.ac.ebi.impc_prod_tracker.service.biology.project.search.ProjectSearcherService;
 import uk.ac.ebi.impc_prod_tracker.service.biology.project.search.Search;
@@ -41,24 +41,26 @@ public class ProjectsByGroupOfGenesFinder
     public List<Project> findProjectsByGenes(Set<GeneByGeneListRecord> geneByGeneListRecords)
     {
         Set<Project> projects = new HashSet<>();
-        List<String> ids = new ArrayList<>();
-        if (geneByGeneListRecords != null)
+        if (!geneByGeneListRecords.isEmpty())
         {
-            geneByGeneListRecords.forEach(x -> ids.add(x.getAccId()));
+            List<String> ids = new ArrayList<>();
+            if (geneByGeneListRecords != null)
+            {
+                geneByGeneListRecords.forEach(x -> ids.add(x.getAccId()));
+            }
+            Search search = new Search(SearchType.BY_GENE.getName(), ids, ProjectFilter.getInstance());
+            SearchReport searchReport = projectSearcherService.executeSearch(search);
+            if (searchReport.getResults() != null)
+            {
+                searchReport.getResults().forEach(x -> {
+                    Project p = x.getProject();
+                    if (p != null)
+                    {
+                        projects.add(p);
+                    }
+                });
+            }
         }
-        Search search = new Search(SearchType.BY_GENE.getName(), ids, ProjectFilter.getInstance());
-        SearchReport searchReport = projectSearcherService.executeSearch(search);
-        if (searchReport.getResults() != null)
-        {
-            searchReport.getResults().forEach(x -> {
-                Project p = x.getProject();
-                if (p != null)
-                {
-                    projects.add(p);
-                }
-            });
-        }
-
         return filterExactMatches(projects);
     }
 

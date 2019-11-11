@@ -26,18 +26,22 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import uk.ac.ebi.impc_prod_tracker.common.files.CsvReader;
-import uk.ac.ebi.impc_prod_tracker.common.pagination.PaginationHelper;
-import uk.ac.ebi.impc_prod_tracker.data.biology.gene_list.gene_list_record.GeneListRecord;
-import uk.ac.ebi.impc_prod_tracker.service.biology.target_gene_list.GeneListService;
+import uk.ac.ebi.impc_prod_tracker.data.biology.gene_list.record.GeneListRecord;
+import uk.ac.ebi.impc_prod_tracker.service.biology.gene_list.GeneListService;
 import uk.ac.ebi.impc_prod_tracker.web.controller.util.LinkUtil;
 import uk.ac.ebi.impc_prod_tracker.web.dto.gene_list.GeneListRecordDTO;
 import uk.ac.ebi.impc_prod_tracker.web.mapping.gene_list.GeneListRecordMapper;
+
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 
@@ -96,12 +100,27 @@ public class GeneListController
     }
 
     @PostMapping("/updateListWithFile/{consortiumName}")
-    public List<List<String>> uploadFile(
+    public ResponseEntity uploadFile(
+        Pageable pageable,
+        PagedResourcesAssembler assembler,
         @RequestParam("file") MultipartFile file,
         @PathVariable("consortiumName") String consortiumName)
     {
         List<List<String>> csvContent = csvReader.getCsvContentFromMultipartFile(file);
         geneListService.updateListWithCsvContent(consortiumName, csvContent);
-        return csvContent;
+        return findByConsortium(pageable, assembler, consortiumName);
+    }
+
+    @PostMapping(value = {"/{consortiumName}/content"})
+    public ResponseEntity updateRecordsInList(
+        Pageable pageable,
+        PagedResourcesAssembler assembler,
+        @RequestBody List<GeneListRecordDTO> records,
+        @PathVariable("consortiumName") String consortiumName)
+    {
+        List<GeneListRecord> geneListRecords =
+            new ArrayList<>(geneListRecordMapper.toEntities(records));
+        geneListService.updateRecordsInList(geneListRecords, consortiumName);
+        return findByConsortium(pageable, assembler, consortiumName);
     }
 }

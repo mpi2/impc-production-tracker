@@ -13,15 +13,16 @@
  language governing permissions and limitations under the
  License.
  */
-package uk.ac.ebi.impc_prod_tracker.web.mapping.project.intention;
+package uk.ac.ebi.impc_prod_tracker.web.dto.gene_list;
 
-import uk.ac.ebi.impc_prod_tracker.web.dto.intention.ProjectIntentionDTO;
-import java.util.Comparator;
+import lombok.Data;
 
-public class SortByProjectIntentionIndex implements Comparator<ProjectIntentionDTO>
+@Data
+public class GeneByGeneListRecordDTO
 {
-    public int compare(ProjectIntentionDTO a, ProjectIntentionDTO b)
-    {
-        return a.getIndex() - b.getIndex() ;
-    }
+    private Long id;
+    private String accId;
+    private String symbol;
+    private String name;
+    private Integer index;
 }
