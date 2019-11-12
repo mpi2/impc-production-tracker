@@ -90,9 +90,18 @@ class SearchExecutorByGene implements SearchExecutor
     {
         List<SearchResult> searchResults = new ArrayList<>();
         Gene synonym = geneExternalService.getSynonymFromExternalGenes(searchTerm);
-        if (synonym != null)
+        if (synonym == null)
+        {
+            SearchResult searchResult = getNoValidInputResult(searchTerm);
+            searchResults.add(searchResult);
+        }
+        else
         {
             searchResults = findProjectsByGene(synonym.getAccId());
+            if (searchResults.isEmpty())
+            {
+                addEmptyResult(searchResults);
+            }
             searchResults.forEach(s ->
                 {
                     s.setInput(searchTerm);
@@ -100,5 +109,19 @@ class SearchExecutorByGene implements SearchExecutor
                 });
         }
         return searchResults;
+    }
+
+    private void addEmptyResult(List<SearchResult> searchResults)
+    {
+        SearchResult searchResult = new SearchResult();
+        searchResults.add(searchResult);
+    }
+
+    private SearchResult getNoValidInputResult(String searchTerm)
+    {
+        SearchResult searchResult = new SearchResult();
+        searchResult.setInput(searchTerm);
+        searchResult.setComment("Not a gene symbol or synonym");
+        return searchResult;
     }
 }

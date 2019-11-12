@@ -35,6 +35,11 @@ public class Searcher
         this.searchExecutorByGene = searchExecutorByGene;
     }
 
+    /**
+     * Executes a search.
+     * @param search Parameters of the search.
+     * @return List of {@link SearchResult} with the results of the search.
+     */
     public List<SearchResult> execute(Search search)
     {
         resolveSearchExecutor(search);

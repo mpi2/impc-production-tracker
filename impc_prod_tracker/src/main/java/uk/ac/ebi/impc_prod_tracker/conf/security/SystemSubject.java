@@ -62,6 +62,6 @@ public interface SystemSubject
     boolean managesAnyWorkUnit(Collection<WorkUnit> workUnits);
 
     boolean managesAnyConsortia(Collection<Consortium> consortia);
-    
+
     FluentPersonRoleConsortiumList whereUserHasRole(String role);
 }
