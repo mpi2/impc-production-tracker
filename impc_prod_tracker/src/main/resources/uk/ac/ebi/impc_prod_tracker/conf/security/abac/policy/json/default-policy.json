@@ -93,7 +93,7 @@
     "name": "Manage target gene lists",
     "description": "A user can manage target gene lists if they are manager in any consortium",
     "target": "action == 'MANAGE_GENE_LISTS'",
-    "condition": "subject.whereUserHasRole('manager').getConsortia().size > 0"
+    "condition": "subject.whereUserHasRole('manager').getConsortia().size() > 0"
   }
 
 ]
