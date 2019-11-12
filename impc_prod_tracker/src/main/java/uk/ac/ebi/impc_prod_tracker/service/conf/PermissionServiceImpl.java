@@ -79,7 +79,7 @@ public class PermissionServiceImpl implements PermissionService
         ActionPermission actionPermission = new ActionPermission();
         actionPermission.setActionName(MANAGE_GENE_LISTS);
         actionPermission.setValue(
-            policyEnforcement.hasPermission(null, MANAGE_GENE_LISTS));
+            policyEnforcement.hasPermission(null, MANAGE_GENE_LIST_ACTION));
         return actionPermission;
     }
 
