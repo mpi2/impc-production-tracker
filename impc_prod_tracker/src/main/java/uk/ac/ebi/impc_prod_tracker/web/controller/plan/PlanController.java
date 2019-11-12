@@ -56,7 +56,7 @@ public class PlanController
         Pageable pageable,
         PagedResourcesAssembler assembler,
         @RequestParam(value = "tpn", required = false) List<String> tpns,
-        @RequestParam(value = "work_unit_name", required = false) List<String> workUnitNames)
+        @RequestParam(value = "workUnitName", required = false) List<String> workUnitNames)
     {
         Page<Plan> plansPage = planService.getPlans(pageable, tpns, workUnitNames);
         Page<PlanDTO> planDTOPage = plansPage.map(this::getDTO);
