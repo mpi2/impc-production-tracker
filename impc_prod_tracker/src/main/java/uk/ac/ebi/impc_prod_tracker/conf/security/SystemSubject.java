@@ -56,9 +56,12 @@ public interface SystemSubject
     List<String> getRelatedRolesNames();
 
     FluentPersonRoleWorkUnitList getFluentRoleWorkUnits();
+
     FluentPersonRoleConsortiumList getFluentRoleConsortia();
 
     boolean managesAnyWorkUnit(Collection<WorkUnit> workUnits);
-    boolean managesAnyConsortia(Collection<Consortium> consortia);
 
+    boolean managesAnyConsortia(Collection<Consortium> consortia);
+    
+    FluentPersonRoleConsortiumList whereUserHasRole(String role);
 }
