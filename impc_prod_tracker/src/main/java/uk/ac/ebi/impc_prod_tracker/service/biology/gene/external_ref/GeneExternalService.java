@@ -37,7 +37,7 @@ public class GeneExternalService
         this.graphQLConsumer = graphQLConsumer;
     }
 
-    //@Cacheable("external_genes_by_input")
+    @Cacheable("external_genes_by_input")
     public Gene getGeneFromExternalDataBySymbolOrAccId(String input)
     {
         String query =
