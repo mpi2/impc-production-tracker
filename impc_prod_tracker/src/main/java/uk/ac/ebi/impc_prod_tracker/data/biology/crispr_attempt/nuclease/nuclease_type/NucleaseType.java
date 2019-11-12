@@ -12,12 +12,14 @@ import javax.persistence.*;
 public class NucleaseType extends BaseEntity
 {
     @Id
+    @ToString.Exclude
     @SequenceGenerator(name = "nucleaseTypeSeq", sequenceName = "NUCLEASE_TYPE_SEQ")
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "nucleaseTypeSeq")
     private Long id;
 
     private String name;
 
+    @ToString.Exclude
     @ManyToOne(targetEntity = NucleaseClass.class)
     private NucleaseClass nucleaseClass;
 }

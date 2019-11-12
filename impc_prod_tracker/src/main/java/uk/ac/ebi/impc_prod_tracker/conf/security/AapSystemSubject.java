@@ -187,9 +187,10 @@ public class AapSystemSubject implements SystemSubject
     public List<WorkUnit> getRelatedWorkUnits()
     {
         List<WorkUnit> relatedWorkUnits = new ArrayList<>();
-
-        roleWorkUnits.forEach(x -> relatedWorkUnits.add(x.getWorkUnit()));
-
+        if (roleWorkUnits != null)
+        {
+            roleWorkUnits.forEach(x -> relatedWorkUnits.add(x.getWorkUnit()));
+        }
         return relatedWorkUnits;
     }
 
