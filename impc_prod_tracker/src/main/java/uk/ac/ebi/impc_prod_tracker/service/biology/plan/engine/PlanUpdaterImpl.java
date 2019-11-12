@@ -2,6 +2,7 @@ package uk.ac.ebi.impc_prod_tracker.service.biology.plan.engine;
 
 import org.springframework.stereotype.Component;
 import uk.ac.ebi.impc_prod_tracker.common.history.HistoryService;
+import uk.ac.ebi.impc_prod_tracker.conf.exceptions.UserOperationFailedException;
 import uk.ac.ebi.impc_prod_tracker.conf.security.abac.spring.ContextAwarePolicyEnforcement;
 
 import uk.ac.ebi.impc_prod_tracker.data.biology.plan.Plan;
@@ -48,7 +49,11 @@ public class PlanUpdaterImpl implements PlanUpdater
      */
     private void validatePermissionToUpdatePlan(Plan plan)
     {
-        policyEnforcement.checkPermission(plan, "UPDATE_PLAN");
+        if (!policyEnforcement.hasPermission(plan, "UPDATE_PLAN"))
+        {
+            throw new UserOperationFailedException(
+                "You don't have permission to edit this plan");
+        }
     }
 
     /**
