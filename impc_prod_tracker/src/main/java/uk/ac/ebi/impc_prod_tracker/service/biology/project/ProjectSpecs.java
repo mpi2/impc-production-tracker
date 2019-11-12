@@ -1,18 +1,18 @@
-/*******************************************************************************
- * Copyright 2019 EMBL - European Bioinformatics Institute
- *
- * Licensed under the Apache License, Version 2.0 (the
- * "License"); you may not use this file except in compliance
- * with the License. You may obtain a copy of the License at
- * http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing,
- * software distributed under the License is distributed on an
- * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
- * either express or implied. See the License for the specific
- * language governing permissions and limitations under the
- * License.
- *******************************************************************************/
+/******************************************************************************
+ Copyright 2019 EMBL - European Bioinformatics Institute
+
+ Licensed under the Apache License, Version 2.0 (the
+ "License"); you may not use this file except in compliance
+ with the License. You may obtain a copy of the License at
+ http://www.apache.org/licenses/LICENSE-2.0
+
+ Unless required by applicable law or agreed to in writing,
+ software distributed under the License is distributed on an
+ "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
+ either express or implied. See the License for the specific
+ language governing permissions and limitations under the
+ License.
+ */
 package uk.ac.ebi.impc_prod_tracker.service.biology.project;
 
 import org.springframework.data.jpa.domain.Specification;
@@ -37,15 +37,17 @@ import uk.ac.ebi.impc_prod_tracker.data.biology.project_intention.ProjectIntenti
 import uk.ac.ebi.impc_prod_tracker.data.biology.project_intention_gene.ProjectIntentionGene_;
 import uk.ac.ebi.impc_prod_tracker.data.organization.consortium.Consortium;
 import uk.ac.ebi.impc_prod_tracker.data.organization.consortium.Consortium_;
+import uk.ac.ebi.impc_prod_tracker.data.organization.work_group.WorkGroup_;
 import uk.ac.ebi.impc_prod_tracker.data.organization.work_unit.WorkUnit;
 import uk.ac.ebi.impc_prod_tracker.data.organization.work_unit.WorkUnit_;
-
+import javax.persistence.criteria.Join;
 import javax.persistence.criteria.ListJoin;
 import javax.persistence.criteria.Path;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.SetJoin;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
@@ -167,7 +169,37 @@ public class ProjectSpecs
             };
         }
         return specification;
+    }
 
+    /**
+     * Get all the projects which plans are related with the work groups specified in workUnitNames
+     *
+     * @param workGroupNames List of names of the Work Groups
+     * @return The found projects. If workUnitNames is null then not filter is applied.
+     */
+    public static Specification<Project> withPlansInWorkGroupNames(List<String> workGroupNames)
+    {
+        Specification<Project> specification;
+
+        if (workGroupNames == null)
+        {
+            specification = buildTrueCondition();
+        } else
+        {
+            specification = (Specification<Project>) (root, query, criteriaBuilder) -> {
+
+                List<Predicate> predicates = new ArrayList<>();
+                SetJoin<Project, Plan> plansJoin = root.join(Project_.plans);
+                Join planWorkUnitJoin = plansJoin.join(Plan_.workUnit);
+                Join planWorkUnitJoinWorkGroups = planWorkUnitJoin.join(WorkUnit_.workGroups);
+                Path<String> workGroupName = planWorkUnitJoinWorkGroups.get(WorkGroup_.name);
+                predicates.add(workGroupName.in(workGroupNames));
+                query.distinct(true);
+
+                return criteriaBuilder.and(predicates.toArray(new Predicate[predicates.size()]));
+            };
+        }
+        return specification;
     }
 
     /**

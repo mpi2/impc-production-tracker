@@ -55,6 +55,11 @@ public class ProjectFilter
         return filters.getOrDefault(FilterTypes.WORK_UNIT_NAME, null);
     }
 
+    public List<String> getWorGroupNames()
+    {
+        return filters.getOrDefault(FilterTypes.WORK_GROUP_NAME, null);
+    }
+
     public List<String> getConsortiaNames()
     {
         return filters.getOrDefault(FilterTypes.CONSORTIUM, null);

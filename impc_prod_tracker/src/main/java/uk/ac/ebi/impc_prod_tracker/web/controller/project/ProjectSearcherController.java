@@ -59,13 +59,15 @@ public class ProjectSearcherController
         @RequestParam(value = "searchTypeName", required = false) String searchTypeName,
         @RequestParam(value = "input", required = false) List<String> inputs,
         @RequestParam(value = "tpn", required = false) List<String> tpns,
-        @RequestParam(value = "workUnitName", required = false) List<String> workUnitsNames)
+        @RequestParam(value = "workUnitName", required = false) List<String> workUnitsNames,
+        @RequestParam(value = "workGroupName", required = false) List<String> workGroupNames)
     {
         try
         {
             ProjectFilter projectFilter = ProjectFilterBuilder.getInstance()
                 .withTpns(tpns)
                 .withWorkUnitNames(workUnitsNames)
+                .withWorkGroupNames(workGroupNames)
                 .build();
             Search search = new Search(searchTypeName, inputs, projectFilter);
             SearchReport searchReport = projectSearcherService.executeSearch(search);
