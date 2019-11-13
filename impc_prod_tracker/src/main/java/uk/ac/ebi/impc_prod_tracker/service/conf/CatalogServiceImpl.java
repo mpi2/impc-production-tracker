@@ -19,12 +19,14 @@ import org.springframework.stereotype.Component;
 import uk.ac.ebi.impc_prod_tracker.data.biology.allele_type.AlleleTypeRepository;
 import uk.ac.ebi.impc_prod_tracker.data.biology.assignment_status.AssignmentStatusRepository;
 import uk.ac.ebi.impc_prod_tracker.data.biology.crispr_attempt.mutagenesis_donor.preparation_type.PreparationTypeRepository;
+import uk.ac.ebi.impc_prod_tracker.data.biology.molecular_mutation_type.MolecularMutationTypeRepository;
 import uk.ac.ebi.impc_prod_tracker.data.biology.phenotyping_attempt.material_deposited_type.MaterialDepositedTypeRepository;
 import uk.ac.ebi.impc_prod_tracker.data.biology.plan.type.PlanTypeRepository;
 import uk.ac.ebi.impc_prod_tracker.data.biology.privacy.PrivacyRepository;
 import uk.ac.ebi.impc_prod_tracker.data.biology.species.SpeciesRepository;
 import uk.ac.ebi.impc_prod_tracker.data.biology.status.StatusRepository;
 import uk.ac.ebi.impc_prod_tracker.data.biology.strain.StrainRepository;
+import uk.ac.ebi.impc_prod_tracker.data.organization.consortium.ConsortiumRepository;
 import uk.ac.ebi.impc_prod_tracker.data.organization.institute.InstituteRepository;
 import uk.ac.ebi.impc_prod_tracker.data.organization.work_group.WorkGroupRepository;
 import uk.ac.ebi.impc_prod_tracker.data.organization.work_unit.WorkUnitRepository;
@@ -50,6 +52,8 @@ public class CatalogServiceImpl implements CatalogService
     private PreparationTypeRepository preparationTypeRepository;
     private MaterialDepositedTypeRepository materialDepositedTypeRepository;
     private SpeciesRepository speciesRepository;
+    private ConsortiumRepository consortiumRepository;
+    private MolecularMutationTypeRepository molecularMutationTypeRepository;
 
     private Map<String, List<String>> conf = new HashMap<>();
 
@@ -65,7 +69,9 @@ public class CatalogServiceImpl implements CatalogService
         StrainRepository strainRepository,
         PreparationTypeRepository preparationTypeRepository,
         MaterialDepositedTypeRepository materialDepositedTypeRepository,
-        SpeciesRepository speciesRepository
+        SpeciesRepository speciesRepository,
+        ConsortiumRepository consortiumRepository,
+        MolecularMutationTypeRepository molecularMutationTypeRepository
     )
     {
         this.workUnitRepository = workUnitRepository;
@@ -80,6 +86,8 @@ public class CatalogServiceImpl implements CatalogService
         this.preparationTypeRepository = preparationTypeRepository;
         this.materialDepositedTypeRepository = materialDepositedTypeRepository;
         this.speciesRepository = speciesRepository;
+        this.consortiumRepository = consortiumRepository;
+        this.molecularMutationTypeRepository = molecularMutationTypeRepository;
     }
 
     @Override
@@ -100,9 +108,17 @@ public class CatalogServiceImpl implements CatalogService
             addPreparationTypes();
             addSearchTypes();
             addSpecies();
+            addConsortia();
+            addMolecularMutationTypes();
         }
-
         return conf;
+    }
+
+    private void addConsortia()
+    {
+        List<String> consortia = new ArrayList<>();
+        consortiumRepository.findAll().forEach(p -> consortia.add(p.getName()));
+        conf.put("consortia", consortia);
     }
 
     private void addWorkUnits()
@@ -194,5 +210,12 @@ public class CatalogServiceImpl implements CatalogService
         List<String> species = new ArrayList<>();
         speciesRepository.findAll().forEach(p -> species.add(p.getName()));
         conf.put("species", species);
+    }
+
+    private void addMolecularMutationTypes()
+    {
+        List<String> molecularMutationTypes = new ArrayList<>();
+        molecularMutationTypeRepository.findAll().forEach(p -> molecularMutationTypes.add(p.getName()));
+        conf.put("molecularMutationTypes", molecularMutationTypes);
     }
 }
