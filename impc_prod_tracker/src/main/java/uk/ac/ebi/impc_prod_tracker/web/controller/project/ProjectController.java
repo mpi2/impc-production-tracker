@@ -149,13 +149,13 @@ class ProjectController
      *      * @api {post} / create a new project.
      */
     @PostMapping
-    private ResponseEntity createProject(@RequestBody ProjectDTO projectDTO)
+    private ProjectDTO createProject(@RequestBody ProjectDTO projectDTO)
     {
 
         Project projectToBeCreated = projectDtoToEntityMapper.toEntity(projectDTO);
         Project createdProject = projectService.createProject(projectToBeCreated);
         System.out.println("Project created => "+ createdProject);
-        return ok("Project created!");
+        return projectEntityToDtoMapper.toDto(createdProject);
     }
 
     @GetMapping(value = {"/{tpn}/history"})
