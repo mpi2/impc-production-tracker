@@ -42,7 +42,6 @@ import uk.ac.ebi.impc_prod_tracker.web.mapping.project.ProjectEntityToDtoMapper;
 import java.util.List;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
-import static org.springframework.http.ResponseEntity.ok;
 
 @RestController
 @RequestMapping("/api/projects")

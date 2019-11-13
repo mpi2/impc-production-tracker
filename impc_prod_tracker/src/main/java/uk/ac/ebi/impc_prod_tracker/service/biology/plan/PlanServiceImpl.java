@@ -29,8 +29,10 @@ import uk.ac.ebi.impc_prod_tracker.data.common.history.History;
 import uk.ac.ebi.impc_prod_tracker.service.biology.plan.engine.PlanUpdater;
 import uk.ac.ebi.impc_prod_tracker.service.biology.plan.engine.UpdatePlanRequestProcessor;
 import uk.ac.ebi.impc_prod_tracker.web.dto.plan.PlanDTO;
-
+import java.util.Collection;
 import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 @Component
 public class PlanServiceImpl implements PlanService
@@ -39,7 +41,6 @@ public class PlanServiceImpl implements PlanService
     private ResourceAccessChecker<Plan> resourceAccessChecker;
     private PlanUpdater planUpdater;
     private UpdatePlanRequestProcessor updatePlanRequestProcessor;
-    private PlanOutcomeRepository planOutcomeRepository;
     private HistoryService historyService;
 
     private static final String READ_PLAN_ACTION = "READ_PLAN";
@@ -58,16 +59,15 @@ public class PlanServiceImpl implements PlanService
         this.resourceAccessChecker = resourceAccessChecker;
         this.planUpdater = planUpdater;
         this.updatePlanRequestProcessor = updatePlanRequestProcessor;
-        this.planOutcomeRepository = planOutcomeRepository;
         this.historyService = historyService;
     }
 
     @Override
-    public Page<Plan> getPlans(Pageable pageable, List<String> tpns, List<String> workUnitNames)
+    public List<Plan> getPlans(List<String> tpns, List<String> workUnitNames)
     {
         Specification<Plan> specifications =
             buildSpecificationsWithCriteria(tpns, workUnitNames);
-        return planRepository.findAll(specifications, pageable);
+        return getCheckedCollection(planRepository.findAll(specifications));
     }
 
     private Specification<Plan> buildSpecificationsWithCriteria(
@@ -77,23 +77,6 @@ public class PlanServiceImpl implements PlanService
             Specification.where(PlanSpecs.withTpns(tpns))
                 .and(Specification.where(PlanSpecs.withWorkUnitNames(workUnitNames)));
         return specifications;
-    }
-
-
-    @Override
-    //TODO
-    public Plan getProductionPlanRefByPhenotypePlan(Plan phenotypePlan)
-    {
-        Plan plan = null;
-//        if (Constants.PHENOTYPE_TYPE.equals(phenotypePlan.getPlanType().getName()))
-//        {
-//            Attempt attempt = phenotypePlan.getAttempt();
-//            PlanOutcome attemptParentOutcome = planOutcomeRepository.findByAttempt(attempt);
-//            Long productionPlanId = attemptParentOutcome.getParentOutcome().getAttempt().getId();
-//            plan = planRepository.findPlanById(productionPlanId);
-//        }
-
-        return plan;
     }
 
     @Override
@@ -120,6 +103,17 @@ public class PlanServiceImpl implements PlanService
         return planRepository.findPlanByPin(pin);
     }
 
+    private List<Plan> getCheckedCollection(Collection<Plan> plans)
+    {
+        return plans.stream().map(this::getAccessChecked)
+            .filter(Objects::nonNull)
+            .collect(Collectors.toList());
+    }
+
+    private Plan getAccessChecked(Plan plan)
+    {
+        return (Plan) resourceAccessChecker.checkAccess(plan, READ_PLAN_ACTION);
+    }
 
     @Override
     public History updatePlan(String pin, PlanDTO planDTO)

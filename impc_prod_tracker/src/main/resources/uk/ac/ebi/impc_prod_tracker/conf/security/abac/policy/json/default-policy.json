@@ -36,16 +36,16 @@
     "condition": "true"
   },
   {
-    "name": "Read Plans",
-    "description": "Permission to read plans in same work unit",
-    "target": "action == 'READ_PLAN' AND resource.resourcePrivacy.name() == 'RESTRICTED'",
-    "condition": "subject.workUnit.id == resource.workUnit.id"
+    "name": "Read plans in a project of the same consortium",
+    "description": "A user can read a plan that belongs to a project related with consortia where the user is a member",
+    "target": "action == 'READ_PLAN'",
+    "condition": "subject.belongsToConsortia(resource.project.getRelatedConsortia())"
   },
   {
     "name": "Read Plans in the subject's work unit",
     "description": "Permission to read plans in same work unit",
     "target": "action == 'READ_PLAN'",
-    "condition": "subject.workUnit.id == resource.workUnit.id"
+    "condition": "subject.belongsToAnyWorkUnit(resource.workUnit)"
   },
   {
     "name": "Admin can delete resources",

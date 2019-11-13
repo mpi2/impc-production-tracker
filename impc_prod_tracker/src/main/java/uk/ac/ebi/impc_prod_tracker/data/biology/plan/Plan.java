@@ -1,26 +1,27 @@
-/*******************************************************************************
- * Copyright 2019 EMBL - European Bioinformatics Institute
- *
- * Licensed under the Apache License, Version 2.0 (the
- * "License"); you may not use this file except in compliance
- * with the License. You may obtain a copy of the License at
- * http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing,
- * software distributed under the License is distributed on an
- * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
- * either express or implied. See the License for the specific
- * language governing permissions and limitations under the
- * License.
- *******************************************************************************/
+/******************************************************************************
+ Copyright 2019 EMBL - European Bioinformatics Institute
+
+ Licensed under the Apache License, Version 2.0 (the
+ "License"); you may not use this file except in compliance
+ with the License. You may obtain a copy of the License at
+ http://www.apache.org/licenses/LICENSE-2.0
+
+ Unless required by applicable law or agreed to in writing,
+ software distributed under the License is distributed on an
+ "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
+ either express or implied. See the License for the specific
+ language governing permissions and limitations under the
+ License.
+ */
 package uk.ac.ebi.impc_prod_tracker.data.biology.plan;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+import uk.ac.ebi.impc_prod_tracker.conf.security.Resource;
+import uk.ac.ebi.impc_prod_tracker.conf.security.ResourcePrivacy;
 import uk.ac.ebi.impc_prod_tracker.data.BaseEntity;
 import uk.ac.ebi.impc_prod_tracker.data.biology.plan.attempt_type.AttemptType;
 import uk.ac.ebi.impc_prod_tracker.data.biology.breeding_attempt.BreedingAttempt;
@@ -34,17 +35,20 @@ import uk.ac.ebi.impc_prod_tracker.data.biology.status.Status;
 import uk.ac.ebi.impc_prod_tracker.data.organization.consortium.Consortium;
 import uk.ac.ebi.impc_prod_tracker.data.organization.funder.Funder;
 import uk.ac.ebi.impc_prod_tracker.data.organization.work_unit.WorkUnit;
-
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @NoArgsConstructor(access= AccessLevel.PUBLIC, force=true)
 @Data
 @Entity
 @EqualsAndHashCode(onlyExplicitlyIncluded = true, callSuper = false)
-public class Plan extends BaseEntity
+public class Plan extends BaseEntity  implements Resource<Plan>
 {
     @Id
     @SequenceGenerator(name = "planSeq", sequenceName = "PLAN_SEQ")
@@ -133,5 +137,29 @@ public class Plan extends BaseEntity
     public String toString()
     {
         return "(id:" +id + ", pin:" + pin + ", type: "+ (this.planType == null ? "Not defined" : planType.getName());
+    }
+
+    @Override
+    public ResourcePrivacy getResourcePrivacy()
+    {
+        return project.getResourcePrivacy();
+    }
+
+    @Override
+    public Resource<Plan> getRestrictedObject()
+    {
+        return this;
+    }
+
+    @Override
+    public List<WorkUnit> getRelatedWorkUnits()
+    {
+        return Arrays.asList(workUnit);
+    }
+
+    @Override
+    public List<Consortium> getRelatedConsortia()
+    {
+        return Collections.emptyList();
     }
 }
