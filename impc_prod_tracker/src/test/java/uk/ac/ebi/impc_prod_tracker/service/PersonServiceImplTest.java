@@ -29,9 +29,11 @@ import uk.ac.ebi.impc_prod_tracker.data.organization.person.PersonRepository;
 import uk.ac.ebi.impc_prod_tracker.service.conf.AAPService;
 import uk.ac.ebi.impc_prod_tracker.service.organization.PersonService;
 import uk.ac.ebi.impc_prod_tracker.service.organization.PersonServiceImpl;
+import uk.ac.ebi.impc_prod_tracker.service.organization.management.ManagementService;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
-
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.mockito.Mockito.times;
@@ -55,6 +57,9 @@ public class PersonServiceImplTest
     private AAPService aapService;
 
     @Mock
+    private ManagementService managementService;
+
+    @Mock
     private ContextAwarePolicyEnforcement policyEnforcement;
 
     private List<Person> allThePeople = new ArrayList<>();
@@ -64,7 +69,7 @@ public class PersonServiceImplTest
     @Before
     public void setup()
     {
-        testInstance = new PersonServiceImpl(personRepository, aapService, subjectRetriever, policyEnforcement);
+        testInstance = new PersonServiceImpl(personRepository, aapService, subjectRetriever, managementService, policyEnforcement);
         setPeople();
     }
 
@@ -97,6 +102,6 @@ public class PersonServiceImplTest
         verify(personRepository, times(0)).findAll();
 
         List<Person> people = testInstance.getAllPeople();
-        assertNull("", people);
+        assertEquals(Collections.emptyList(), people);
     }
 }

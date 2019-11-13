@@ -1,31 +1,30 @@
-/*******************************************************************************
- * Copyright 2019 EMBL - European Bioinformatics Institute
- *
- * Licensed under the Apache License, Version 2.0 (the
- * "License"); you may not use this file except in compliance
- * with the License. You may obtain a copy of the License at
- * http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing,
- * software distributed under the License is distributed on an
- * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
- * either express or implied. See the License for the specific
- * language governing permissions and limitations under the
- * License.
- *******************************************************************************/
+/******************************************************************************
+ Copyright 2019 EMBL - European Bioinformatics Institute
+
+ Licensed under the Apache License, Version 2.0 (the
+ "License"); you may not use this file except in compliance
+ with the License. You may obtain a copy of the License at
+ http://www.apache.org/licenses/LICENSE-2.0
+
+ Unless required by applicable law or agreed to in writing,
+ software distributed under the License is distributed on an
+ "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
+ either express or implied. See the License for the specific
+ language governing permissions and limitations under the
+ License.
+ */
 package uk.ac.ebi.impc_prod_tracker.service.conf;
 
 import org.springframework.stereotype.Component;
 import uk.ac.ebi.impc_prod_tracker.conf.security.SystemSubject;
 import uk.ac.ebi.impc_prod_tracker.conf.security.abac.spring.SubjectRetriever;
 import uk.ac.ebi.impc_prod_tracker.data.organization.consortium.Consortium;
-import uk.ac.ebi.impc_prod_tracker.data.organization.person_role_consortium.PersonRoleConsortium;
-import uk.ac.ebi.impc_prod_tracker.data.organization.person_role_work_unit.PersonRoleWorkUnit;
 import uk.ac.ebi.impc_prod_tracker.data.organization.role.Role;
 import uk.ac.ebi.impc_prod_tracker.data.organization.work_unit.WorkUnit;
 import uk.ac.ebi.impc_prod_tracker.service.organization.RoleService;
 import uk.ac.ebi.impc_prod_tracker.service.organization.WorkUnitService;
 import uk.ac.ebi.impc_prod_tracker.service.organization.consortium.ConsortiumService;
+import uk.ac.ebi.impc_prod_tracker.service.organization.management.ManagementService;
 import uk.ac.ebi.impc_prod_tracker.web.dto.common.NamedValueDTO;
 import java.util.ArrayList;
 import java.util.List;
@@ -38,17 +37,20 @@ public class EntitiesValuesByUserServiceImpl implements EntitiesValuesByUserServ
     private WorkUnitService workUnitService;
     private ConsortiumService consortiumService;
     private RoleService roleService;
+    private ManagementService managementService;
 
     public EntitiesValuesByUserServiceImpl(
         SubjectRetriever subjectRetriever,
         WorkUnitService workUnitService,
         ConsortiumService consortiumService,
-        RoleService roleService)
+        RoleService roleService,
+        ManagementService managementService)
     {
         this.subjectRetriever = subjectRetriever;
         this.workUnitService = workUnitService;
         this.consortiumService = consortiumService;
         this.roleService = roleService;
+        this.managementService = managementService;
     }
 
     @Override
@@ -72,7 +74,7 @@ public class EntitiesValuesByUserServiceImpl implements EntitiesValuesByUserServ
         }
         else
         {
-            workUnits = getManagedWorkUnits(systemSubject);
+            workUnits = managementService.getManagedWorkUnits(systemSubject);
         }
         List<NamedValueDTO> workUnitNames =
             workUnits.stream()
@@ -93,7 +95,7 @@ public class EntitiesValuesByUserServiceImpl implements EntitiesValuesByUserServ
         }
         else
         {
-            consortia = getManagedConsortia(systemSubject);
+            consortia = managementService.getManagedConsortia(systemSubject);
         }
         List<NamedValueDTO> consortiaNames =
             consortia.stream()
@@ -117,29 +119,9 @@ public class EntitiesValuesByUserServiceImpl implements EntitiesValuesByUserServ
         return entityValues;
     }
 
-    private List<WorkUnit> getManagedWorkUnits(SystemSubject systemSubject)
-    {
-        List<PersonRoleWorkUnit> personRoleWorkUnits = systemSubject.getRoleWorkUnits();
-        return
-            personRoleWorkUnits.stream()
-                .filter(x -> RoleService.MANAGER_ROLE.equalsIgnoreCase(x.getRole().getName()))
-                .map(PersonRoleWorkUnit::getWorkUnit)
-                .collect(Collectors.toList());
-    }
-
     private List<WorkUnit> getAllWorkUnits()
     {
         return workUnitService.getAllWorkUnits();
-    }
-
-    private List<Consortium> getManagedConsortia(SystemSubject systemSubject)
-    {
-        List<PersonRoleConsortium> personRoleConsortia = systemSubject.getRoleConsortia();
-        return
-            personRoleConsortia.stream()
-                .filter(x -> RoleService.MANAGER_ROLE.equalsIgnoreCase(x.getRole().getName()))
-                .map(PersonRoleConsortium::getConsortium)
-                .collect(Collectors.toList());
     }
 
     private List<Consortium> getAllConsortia()

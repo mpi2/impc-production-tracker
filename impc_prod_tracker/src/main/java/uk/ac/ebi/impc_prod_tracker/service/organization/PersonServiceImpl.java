@@ -17,13 +17,19 @@ package uk.ac.ebi.impc_prod_tracker.service.organization;
 
 import org.springframework.stereotype.Component;
 import uk.ac.ebi.impc_prod_tracker.conf.exceptions.UserOperationFailedException;
+import uk.ac.ebi.impc_prod_tracker.conf.security.AapSystemSubject;
 import uk.ac.ebi.impc_prod_tracker.conf.security.SystemSubject;
 import uk.ac.ebi.impc_prod_tracker.conf.security.abac.spring.ContextAwarePolicyEnforcement;
 import uk.ac.ebi.impc_prod_tracker.conf.security.abac.spring.SubjectRetriever;
+import uk.ac.ebi.impc_prod_tracker.data.organization.consortium.Consortium;
 import uk.ac.ebi.impc_prod_tracker.data.organization.person.Person;
 import uk.ac.ebi.impc_prod_tracker.data.organization.person.PersonRepository;
+import uk.ac.ebi.impc_prod_tracker.data.organization.work_unit.WorkUnit;
 import uk.ac.ebi.impc_prod_tracker.service.conf.AAPService;
 import uk.ac.ebi.impc_prod_tracker.service.conf.PermissionService;
+import uk.ac.ebi.impc_prod_tracker.service.organization.management.ManagementService;
+
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -36,6 +42,7 @@ public class PersonServiceImpl implements PersonService
     private PersonRepository personRepository;
     private AAPService aapService;
     private SubjectRetriever subjectRetriever;
+    private ManagementService managementService;
     private final ContextAwarePolicyEnforcement policyEnforcement;
 
     public static final String PERSON_ALREADY_EXISTS_ERROR =
@@ -44,11 +51,14 @@ public class PersonServiceImpl implements PersonService
     public PersonServiceImpl(
         PersonRepository personRepository,
         AAPService aapService,
-        SubjectRetriever subjectRetriever, ContextAwarePolicyEnforcement policyEnforcement)
+        SubjectRetriever subjectRetriever,
+        ManagementService managementService,
+        ContextAwarePolicyEnforcement policyEnforcement)
     {
         this.personRepository = personRepository;
         this.aapService = aapService;
         this.subjectRetriever = subjectRetriever;
+        this.managementService = managementService;
         this.policyEnforcement = policyEnforcement;
     }
 
@@ -64,7 +74,7 @@ public class PersonServiceImpl implements PersonService
             }
             else
             {
-                people = null;
+                people = managementService.getManagedPeople(systemSubject);
             }
         }
 

@@ -57,7 +57,7 @@ public class AapSystemSubject implements SystemSubject
     private boolean isEbiAdmin;
     private List<PersonRoleWorkUnit> roleWorkUnits;
     private List<PersonRoleConsortium> roleConsortia;
-    WorkUnitService workUnitService;
+    private WorkUnitService workUnitService;
 
     private final static String NOT_USER_INFORMATION_MESSAGE = "There is not associated information in the system for " +
         "the user [%s].";
@@ -72,6 +72,14 @@ public class AapSystemSubject implements SystemSubject
     {
         this.personRepository = personRepository;
         this.workUnitService = workUnitService;
+    }
+
+    public AapSystemSubject(PersonRepository personRepository, WorkUnitService workUnitService, Person person)
+    {
+        this.personRepository = personRepository;
+        this.workUnitService = workUnitService;
+        this.person = person;
+        setPersonData(person);
     }
 
     /**
@@ -118,10 +126,15 @@ public class AapSystemSubject implements SystemSubject
         }
         else
         {
-            isEbiAdmin = person.getEbiAdmin() == null ? false : person.getEbiAdmin();
-            roleWorkUnits = new ArrayList<>(person.getRolesWorkUnits());
-            roleConsortia = new ArrayList<>(person.getRolesConsortia());
+            setPersonData(person);
         }
+    }
+
+    private void setPersonData(Person person)
+    {
+        isEbiAdmin = person.getEbiAdmin() == null ? false : person.getEbiAdmin();
+        roleWorkUnits = new ArrayList<>(person.getRolesWorkUnits());
+        roleConsortia = new ArrayList<>(person.getRolesConsortia());
     }
 
     @Override
