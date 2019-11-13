@@ -12,6 +12,6 @@ import java.util.List;
 public class ProjectConsortiumDTO {
     private String consortiumName;
 
-    @JsonProperty("projectConsortiumInstitutes")
+    @JsonProperty("institutes")
     private List<ProjectConsortiumInstituteDTO> projectConsortiumInstituteDTOS;
 }

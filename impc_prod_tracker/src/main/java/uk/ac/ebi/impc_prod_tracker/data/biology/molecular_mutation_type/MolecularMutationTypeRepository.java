@@ -17,7 +17,11 @@ package uk.ac.ebi.impc_prod_tracker.data.biology.molecular_mutation_type;
 
 import org.springframework.data.repository.CrudRepository;
 
+import java.util.List;
+
 public interface MolecularMutationTypeRepository extends CrudRepository<MolecularMutationType, Long>
 {
     MolecularMutationType findFirstByNameIgnoreCase(String name);
+
+    List<MolecularMutationType> findAll();
 }
