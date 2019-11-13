@@ -97,8 +97,9 @@ public class CrisprAttemptServiceImpl implements CrisprAttemptService
     }
 
     @Override
-    public NucleaseType getNucleaseTypeByName(String nucleaseTypeName)
+    public NucleaseType getNucleaseTypeByNameAndClassName(String nucleaseTypeName, String nucleaseClassName)
     {
-        return nucleaseTypeRepository.findByNameIgnoreCase(nucleaseTypeName);
+        return nucleaseTypeRepository.findByNameAndNucleaseClassNameIgnoreCase(
+            nucleaseTypeName, nucleaseClassName);
     }
 }
