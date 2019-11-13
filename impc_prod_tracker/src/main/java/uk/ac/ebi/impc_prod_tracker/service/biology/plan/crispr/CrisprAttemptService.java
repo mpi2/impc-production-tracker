@@ -39,5 +39,5 @@ public interface CrisprAttemptService
 
     DeliveryMethodType getDeliveryTypeByName(String deliveryTypeName);
 
-    NucleaseType getNucleaseTypeByName(String nucleaseTypeName);
+    NucleaseType getNucleaseTypeByNameAndClassName(String nucleaseTypeName, String nucleaseClassName);
 }

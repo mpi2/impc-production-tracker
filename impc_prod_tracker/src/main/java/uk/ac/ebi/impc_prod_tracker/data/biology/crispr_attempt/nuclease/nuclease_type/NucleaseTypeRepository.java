@@ -4,5 +4,5 @@ import org.springframework.data.repository.CrudRepository;
 
 public interface NucleaseTypeRepository extends CrudRepository<NucleaseType, Long>
 {
-    NucleaseType findByNameIgnoreCase(String name);
+    NucleaseType findByNameAndNucleaseClassNameIgnoreCase(String nucleaseType, String nucleaseClass);
 }
