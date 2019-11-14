@@ -21,5 +21,5 @@ import lombok.Data;
 public class ProjectByGeneSummaryDTO
 {
     private String tpn;
-    private String assigmentStatusName;
+    private String assignmentStatusName;
 }
