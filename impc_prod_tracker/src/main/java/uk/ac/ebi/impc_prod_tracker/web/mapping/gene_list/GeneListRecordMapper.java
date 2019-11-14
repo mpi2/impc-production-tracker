@@ -80,7 +80,7 @@ public class GeneListRecordMapper implements Mapper<GeneListRecord, GeneListReco
         AssignmentStatus assignmentStatus = project.getAssignmentStatus();
         if (assignmentStatus != null)
         {
-            projectByGeneSummaryDTO.setAssigmentStatusName(assignmentStatus.getName());
+            projectByGeneSummaryDTO.setAssignmentStatusName(assignmentStatus.getName());
         }
         return projectByGeneSummaryDTO;
     }
