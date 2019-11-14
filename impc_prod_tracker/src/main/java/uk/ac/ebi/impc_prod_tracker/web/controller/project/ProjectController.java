@@ -88,6 +88,7 @@ class ProjectController
             .withTpns(tpns)
             .withMarkerSymbols(markerSymbols)
             .withIntentions(intentions)
+            .withStatuses(statuses)
             .withPrivacies(privaciesNames)
             .withWorkUnitNames(workUnitNames)
             .build();
