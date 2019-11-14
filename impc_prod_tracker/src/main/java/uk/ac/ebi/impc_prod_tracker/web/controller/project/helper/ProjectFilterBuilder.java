@@ -72,6 +72,12 @@ public class ProjectFilterBuilder
         return this;
     }
 
+    public ProjectFilterBuilder withStatuses(List<String> statuses)
+    {
+        filters.put(FilterTypes.ASSIGNMENT_STATUS, statuses);
+        return this;
+    }
+
     public ProjectFilterBuilder withWorkUnitNames(List<String> workUnitNames)
     {
         filters.put(FilterTypes.WORK_UNIT_NAME, workUnitNames);
