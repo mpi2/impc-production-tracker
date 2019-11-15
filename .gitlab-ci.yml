@@ -91,9 +91,9 @@ deploy:
   stage: deploy
   image: dtzar/helm-kubectl:2.13.0
   only:
-    refs:
-      - triggers
-      # - master
+    - triggers
+    # refs:
+     # - master
     variables:
       - $KUBERNETES_DEPLOYMENT == "true"
   script:
