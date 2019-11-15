@@ -91,8 +91,9 @@ deploy:
   stage: deploy
   image: dtzar/helm-kubectl:2.13.0
   only:
-    refs:
-      - master
+    - triggers
+    #refs:
+    #  - master
     variables:
       - $KUBERNETES_DEPLOYMENT == "true"
   script:
@@ -114,7 +115,8 @@ deploy:
       # Substitute the "latest" image tag in your deployment template with a more specific tag
       # and record the deployment so you can rollback to this particular version.
       #
-      sed -i "s/latest/${CI_COMMIT_SHA:0:12}/g" kube/sandbox/api-service/api-service-deployment.yaml
+      # sed -i "s/latest/${CI_COMMIT_SHA:0:12}/g" kube/sandbox/api-service/api-service-deployment.yaml
+      sed -i "s/latest/a6e1ad8dbb79/g" kube/sandbox/api-service/api-service-deployment.yaml
       sed -i "s/STRING_REPLACED_DURING_REDEPLOY/$(date)/g" kube/sandbox/api-service/api-service-deployment.yaml
 
       if kubectl apply -f kube/sandbox/api-service/api-service-deployment.yaml --record | grep -q unchanged; then
