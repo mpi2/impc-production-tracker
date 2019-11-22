@@ -8,11 +8,12 @@
 		<version>2.2.0.M6</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
-	<groupId>uk.ac.ebi</groupId>
-	<artifactId>impc-production-tracker</artifactId>
+	<groupId>org.gentar</groupId>
+	<artifactId>gentar_app</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>impc-production-tracker</name>
-	<description>An improved IMPC effort production tracker</description>
+	<name>GenTaR</name>
+	<description>Genomic Targeting Repository</description>
+	<url>http://www.gentar.org</url>
 
 	<properties>
 		<java.version>11</java.version>
