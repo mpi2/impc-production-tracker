@@ -1,0 +1,99 @@
+[
+  {
+    "name": "Admin Full Access",
+    "description": "Admin can do all.",
+    "target": "subject.isAdmin()",
+    "condition": "true"
+  },
+  {
+    "name": "Manage Users",
+    "description": "Admin and Manager can manage users.",
+    "target": "action == 'MANAGE_USERS'",
+    "condition": "subject.isAdmin() OR subject.getRelatedRolesNames().contains('manager')"
+  },
+  {
+    "name": "General permission to execute manager related tasks",
+    "description": "General permission to execute manager related tasks",
+    "target": "action == 'EXECUTE_MANAGER_TASKS'",
+    "condition": "subject.getRelatedRolesNames().contains('manager')"
+  },
+  {
+    "name": "Update information for a user",
+    "description": "A manager can update a user if the user is managed by the manager.",
+    "target": "action == 'UPDATE_USER'",
+    "condition": "subject.managesAnyWorkUnit(resource.getRelatedWorkUnits())"
+  },
+  {
+    "name": "Filter roles",
+    "description": "Managers can create new users with equal roles or lower permissions.",
+    "target": "action == 'FILTER_ROLE'",
+    "condition": "subject.isAdmin() OR (subject.getRelatedRolesNames().contains('manager') AND {'manager', 'general'}.contains(resource.name))"
+  },
+  {
+    "name": "Read Public plans",
+    "description": "Permission to read public plans",
+    "target": "action == 'READ_PLAN' AND resource.resourcePrivacy.name() == 'PUBLIC'",
+    "condition": "true"
+  },
+  {
+    "name": "Read plans in a project of the same consortium",
+    "description": "A user can read a plan that belongs to a project related with consortia where the user is a member",
+    "target": "action == 'READ_PLAN'",
+    "condition": "subject.belongsToConsortia(resource.project.getRelatedConsortia())"
+  },
+  {
+    "name": "Read Plans in the subject's work unit",
+    "description": "Permission to read plans in same work unit",
+    "target": "action == 'READ_PLAN'",
+    "condition": "subject.belongsToAnyWorkUnit(resource.workUnit)"
+  },
+  {
+    "name": "Admin can delete resources",
+    "description": "Permission to delete any resource for admins",
+    "target": "action == 'DELETE_RESOURCE'",
+    "condition": "subject.role.name == 'admin'"
+  },
+  {
+    "name": "Update a plan that is in the same subject's work unit",
+    "description": "Permission to Update a plan",
+    "target": "action == 'UPDATE_PLAN'",
+    "condition": "subject.belongsToAnyWorkUnit(resource.workUnit)"
+  },
+  {
+    "name": "Read public projects.",
+    "description": "A project that is public can be read by anyone.",
+    "target": "action == 'READ_PROJECT'",
+    "condition": "resource.resourcePrivacy.name() == 'PUBLIC'"
+  },
+  {
+    "name": "Read protected projects if user logged into the system.",
+    "description": "A project that is protected can be read by anyone logged into the system.",
+    "target": "action == 'READ_PROJECT'",
+    "condition": "resource.resourcePrivacy.name() == 'PROTECTED' && subject.name != 'anonymousUser'"
+  },
+  {
+    "name": "Read projects in related consortia.",
+    "description": "A user can read a project that is related to a consortium where the user is a member of that consortium.",
+    "target": "action == 'READ_PROJECT'",
+    "condition": "subject.belongsToConsortia(resource.getRelatedConsortia())"
+  },
+  {
+    "name": "Read projects associated projects.",
+    "description": "A user can read a project if they have plans associated with it.",
+    "target": "action == 'READ_PROJECT'",
+    "condition": "subject.belongsToAnyWorkUnit(resource.getRelatedWorkUnits())"
+  },
+  {
+    "name": "Modify associated projects",
+    "description": "A user can modify a project if they have plans associated with it.",
+    "target": "action == 'UPDATE_PROJECT'",
+    "condition": "subject.belongsToAnyWorkUnit(resource.getRelatedWorkUnits())"
+  },
+  {
+    "name": "Manage target gene lists",
+    "description": "A user can manage target gene lists if they are manager in any consortium",
+    "target": "action == 'MANAGE_GENE_LISTS'",
+    "condition": "subject.whereUserHasRole('manager').getConsortia().size() > 0"
+  }
+
+]

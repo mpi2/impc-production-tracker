@@ -16,10 +16,10 @@
 package uk.ac.ebi.impc_prod_tracker.common.fluent;
 
 import org.junit.Test;
-import uk.ac.ebi.impc_prod_tracker.data.organization.person.Person;
-import uk.ac.ebi.impc_prod_tracker.data.organization.person_role_work_unit.PersonRoleWorkUnit;
-import uk.ac.ebi.impc_prod_tracker.data.organization.role.Role;
-import uk.ac.ebi.impc_prod_tracker.data.organization.work_unit.WorkUnit;
+import org.gentar.organization.person.Person;
+import org.gentar.organization.person_role_work_unit.PersonRoleWorkUnit;
+import org.gentar.organization.role.Role;
+import org.gentar.organization.work_unit.WorkUnit;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;

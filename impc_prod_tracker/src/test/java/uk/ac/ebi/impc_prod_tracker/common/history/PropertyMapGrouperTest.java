@@ -1,10 +1,10 @@
 package uk.ac.ebi.impc_prod_tracker.common.history;
 
 import org.junit.Test;
-import uk.ac.ebi.impc_prod_tracker.common.diff.ChangeEntry;
-import uk.ac.ebi.impc_prod_tracker.common.diff.ChangesDetector;
-import uk.ac.ebi.impc_prod_tracker.data.biology.plan.Plan;
-import uk.ac.ebi.impc_prod_tracker.data.organization.work_unit.WorkUnit;
+import org.gentar.audit.diff.ChangeEntry;
+import org.gentar.audit.diff.ChangesDetector;
+import org.gentar.biology.plan.Plan;
+import org.gentar.organization.work_unit.WorkUnit;
 
 import java.util.ArrayList;
 import java.util.Arrays;

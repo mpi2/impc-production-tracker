@@ -5,10 +5,10 @@ import com.github.springtestdbunit.annotation.DatabaseSetup;
 import org.junit.Ignore;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import uk.ac.ebi.impc_prod_tracker.data.biology.project.ProjectRepository;
-import uk.ac.ebi.impc_prod_tracker.data.organization.person.PersonRepository;
+import org.gentar.biology.project.ProjectRepository;
+import org.gentar.organization.person.PersonRepository;
 import uk.ac.ebi.impc_prod_tracker.framework.ControllerTestTemplate;
-import uk.ac.ebi.impc_prod_tracker.service.biology.project.ProjectService;
+import org.gentar.biology.project.ProjectService;
 import uk.ac.ebi.impc_prod_tracker.web.db.Paths;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;

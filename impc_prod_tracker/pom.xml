@@ -282,6 +282,7 @@
 
 	<modules>
 		<module>core</module>
+		<module>web-api</module>
 	</modules>
 
 </project>

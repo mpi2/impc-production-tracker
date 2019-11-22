@@ -1,13 +1,13 @@
 package uk.ac.ebi.impc_prod_tracker.common.history;
 
 import org.junit.Test;
-import uk.ac.ebi.impc_prod_tracker.data.biology.crispr_attempt.CrisprAttempt;
-import uk.ac.ebi.impc_prod_tracker.data.biology.crispr_attempt.genotype_primer.GenotypePrimer;
-import uk.ac.ebi.impc_prod_tracker.data.biology.crispr_attempt.guide.Guide;
-import uk.ac.ebi.impc_prod_tracker.data.biology.plan.Plan;
-import uk.ac.ebi.impc_prod_tracker.data.biology.privacy.Privacy;
-import uk.ac.ebi.impc_prod_tracker.data.biology.project.Project;
-import uk.ac.ebi.impc_prod_tracker.data.organization.work_unit.WorkUnit;
+import org.gentar.biology.crispr_attempt.CrisprAttempt;
+import org.gentar.biology.crispr_attempt.genotype_primer.GenotypePrimer;
+import org.gentar.biology.crispr_attempt.guide.Guide;
+import org.gentar.biology.plan.Plan;
+import org.gentar.biology.privacy.Privacy;
+import org.gentar.biology.project.Project;
+import org.gentar.organization.work_unit.WorkUnit;
 import java.util.*;
 
 import static org.hamcrest.MatcherAssert.assertThat;
