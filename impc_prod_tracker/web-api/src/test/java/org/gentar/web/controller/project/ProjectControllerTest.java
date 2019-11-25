@@ -1,19 +1,16 @@
-package uk.ac.ebi.impc_prod_tracker.web.controller.project;
-
+package org.gentar.web.controller.project;
 
 import com.github.springtestdbunit.annotation.DatabaseSetup;
+import org.gentar.biology.project.ProjectRepository;
+import org.gentar.framework.ControllerTestTemplate;
+import org.gentar.framework.db.Paths;
+import org.gentar.organization.person.PersonRepository;
+import org.gentar.service.biology.project.ProjectService;
 import org.junit.Ignore;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.gentar.biology.project.ProjectRepository;
-import org.gentar.organization.person.PersonRepository;
-import uk.ac.ebi.impc_prod_tracker.framework.ControllerTestTemplate;
-import org.gentar.biology.project.ProjectService;
-import org.gentar.framework.db.Paths;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.junit.jupiter.api.Assertions.*;
 
 class ProjectControllerTest extends ControllerTestTemplate
 {
