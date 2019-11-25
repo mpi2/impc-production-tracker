@@ -1,5 +1,8 @@
-package uk.ac.ebi.impc_prod_tracker.web.mapping;
+package org.gentar.web.mapping;
 
+import org.gentar.biology.gene.Gene;
+import org.gentar.biology.species.Species;
+import org.gentar.web.dto.gene.GeneDTO;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.modelmapper.ModelMapper;
@@ -7,12 +10,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
-import org.gentar.biology.gene.Gene;
-import org.gentar.biology.species.Species;
-import uk.ac.ebi.impc_prod_tracker.web.dto.gene.GeneDTO;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;

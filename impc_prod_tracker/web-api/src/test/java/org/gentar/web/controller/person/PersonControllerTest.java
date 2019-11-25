@@ -13,10 +13,10 @@
  language governing permissions and limitations under the
  License.
  */
-package uk.ac.ebi.impc_prod_tracker.web.controller.person;
+package org.gentar.web.controller.person;
 
+import org.gentar.framework.ControllerTestTemplate;
 import org.junit.Test;
-import uk.ac.ebi.impc_prod_tracker.framework.ControllerTestTemplate;
 
 public class PersonControllerTest extends ControllerTestTemplate
 {

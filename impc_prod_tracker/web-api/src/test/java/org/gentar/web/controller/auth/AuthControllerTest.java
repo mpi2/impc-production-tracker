@@ -13,21 +13,21 @@
  language governing permissions and limitations under the
  License.
  */
-package uk.ac.ebi.impc_prod_tracker.web.controller.auth;
+package org.gentar.web.controller.auth;
 
 import com.github.springtestdbunit.annotation.DatabaseSetup;
+import org.gentar.framework.ControllerTestTemplate;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.ResultHandler;
-import uk.ac.ebi.impc_prod_tracker.domain.login.AuthenticationRequest;
-import uk.ac.ebi.impc_prod_tracker.framework.ControllerTestTemplate;
+
+import static org.gentar.util.JsonHelper.toJson;
 import static org.hamcrest.Matchers.containsString;
 import static org.springframework.restdocs.payload.PayloadDocumentation.requestFields;
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static uk.ac.ebi.impc_prod_tracker.common.json.JsonHelper.toJson;
 
 public class AuthControllerTest extends ControllerTestTemplate
 {

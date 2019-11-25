@@ -21,19 +21,6 @@ public class ProjectsReporter {
     @Autowired
     DataSource dataSource;
 
-    public static void main(String[] args) {
-        System.out.println("running main method here");
-//        ProjectsReporter reporter = new ProjectsReporter();
-//        try {
-//            reporter.printReport();
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        } catch (SQLException e) {
-//            e.printStackTrace();
-//        }
-    }
-
-
     public void printReport(PrintWriter printWriter) throws IOException, SQLException {
         Connection conn = dataSource.getConnection();
         Statement statement = conn.createStatement();

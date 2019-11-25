@@ -1,5 +1,14 @@
-package uk.ac.ebi.impc_prod_tracker.web.mapping.plan.attempt.crispr_attempt;
+package org.gentar.web.mapping.plan.attempt.crispr_attempt;
 
+import org.gentar.service.biology.plan.crispr.CrisprAttemptService;
+import org.gentar.web.dto.plan.production.crispr_attempt.AssayDTO;
+import org.gentar.web.dto.plan.production.crispr_attempt.CrisprAttemptDTO;
+import org.gentar.web.dto.plan.production.crispr_attempt.GenotypePrimerDTO;
+import org.gentar.web.dto.plan.production.crispr_attempt.GuideDTO;
+import org.gentar.web.dto.plan.production.crispr_attempt.MutagenesisDonorDTO;
+import org.gentar.web.dto.plan.production.crispr_attempt.NucleaseDTO;
+import org.gentar.web.dto.plan.production.crispr_attempt.ReagentDTO;
+import org.gentar.web.dto.strain.StrainDTO;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,15 +26,6 @@ import org.gentar.biology.crispr_attempt.mutagenesis_donor.preparation_type.Prep
 import org.gentar.biology.crispr_attempt.mutagenesis_donor.preparation_type.PreparationTypeRepository;
 import org.gentar.biology.strain.Strain;
 import org.gentar.biology.strain.strain_type.StrainType;
-import org.gentar.biology.plan.crispr.CrisprAttemptService;
-import uk.ac.ebi.impc_prod_tracker.web.dto.plan.production.crispr_attempt.AssayDTO;
-import uk.ac.ebi.impc_prod_tracker.web.dto.plan.production.crispr_attempt.CrisprAttemptDTO;
-import uk.ac.ebi.impc_prod_tracker.web.dto.plan.production.crispr_attempt.GenotypePrimerDTO;
-import uk.ac.ebi.impc_prod_tracker.web.dto.plan.production.crispr_attempt.GuideDTO;
-import uk.ac.ebi.impc_prod_tracker.web.dto.plan.production.crispr_attempt.MutagenesisDonorDTO;
-import uk.ac.ebi.impc_prod_tracker.web.dto.plan.production.crispr_attempt.NucleaseDTO;
-import uk.ac.ebi.impc_prod_tracker.web.dto.plan.production.crispr_attempt.ReagentDTO;
-import uk.ac.ebi.impc_prod_tracker.web.dto.strain.StrainDTO;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collection;
