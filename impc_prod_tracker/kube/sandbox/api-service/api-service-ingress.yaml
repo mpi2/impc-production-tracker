@@ -27,6 +27,7 @@ metadata:
     #
     kubernetes.io/ingress.class: nginx
     nginx.ingress.kubernetes.io/rewrite-target: /production-tracker-sandbox-api/$2
+    nginx.ingress.kubernetes.io/from-to-www-redirect: "true"
     # adds 301 redirect with trailing slash
     # see: https://github.com/kubernetes/ingress-nginx/issues/646
     nginx.ingress.kubernetes.io/configuration-snippet: |
@@ -44,6 +45,7 @@ spec:
           servicePort: 8080
   tls:
     - hosts:
+        - gentar.org
         - www.gentar.org
       secretName: gentar-tls
 
