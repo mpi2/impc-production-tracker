@@ -10,8 +10,7 @@
 	<description>Genomic Targeting Repository</description>
 	<url>http://www.gentar.org</url>
 	<packaging>pom</packaging>
-
-
+	
 	<modules>
 		<module>core</module>
 		<module>web-api</module>
