@@ -16,11 +16,11 @@
 package org.gentar.security.abac.subject;
 
 import org.gentar.organization.consortium.Consortium;
-import org.gentar.organization.person.FluentPersonRoleConsortiumList;
-import org.gentar.organization.person.FluentPersonRoleWorkUnitList;
+import org.gentar.organization.person.associations.FluentPersonRoleConsortiumList;
+import org.gentar.organization.person.associations.FluentPersonRoleWorkUnitList;
 import org.gentar.organization.person.Person;
-import org.gentar.organization.person_role_consortium.PersonRoleConsortium;
-import org.gentar.organization.person_role_work_unit.PersonRoleWorkUnit;
+import org.gentar.organization.person.associations.PersonRoleConsortium;
+import org.gentar.organization.person.associations.PersonRoleWorkUnit;
 import org.gentar.organization.work_unit.WorkUnit;
 import java.util.Collection;
 import java.util.List;

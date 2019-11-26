@@ -1,6 +1,7 @@
 package org.gentar.organization.person;
 
-import org.gentar.organization.person_role_work_unit.PersonRoleWorkUnit;
+import org.gentar.organization.person.associations.FluentPersonRoleWorkUnitList;
+import org.gentar.organization.person.associations.PersonRoleWorkUnit;
 import org.gentar.organization.role.Role;
 import org.gentar.organization.work_unit.WorkUnit;
 import org.junit.jupiter.api.Test;
