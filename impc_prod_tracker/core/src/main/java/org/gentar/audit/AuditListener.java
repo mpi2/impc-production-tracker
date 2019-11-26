@@ -1,12 +1,12 @@
 package org.gentar.audit;
 
 import org.gentar.audit.diff.ObjectIdExtractor;
-import org.gentar.history.HistoryService;
+import org.gentar.audit.history.HistoryService;
 import org.gentar.util.BeanUtil;
 import org.gentar.util.Cloner;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.gentar.history.History;
+import org.gentar.audit.history.History;
 import javax.persistence.PostLoad;
 import javax.transaction.Transactional;
 import javax.persistence.PreUpdate;

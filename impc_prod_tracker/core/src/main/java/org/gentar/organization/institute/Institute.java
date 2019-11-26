@@ -18,7 +18,7 @@ package org.gentar.organization.institute;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import org.gentar.BaseEntity;
-import org.gentar.biology.project_consortium.ProjectConsortium;
+import org.gentar.biology.project.consortium.ProjectConsortium;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
