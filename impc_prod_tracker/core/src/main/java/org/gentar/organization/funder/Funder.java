@@ -22,7 +22,7 @@ import org.gentar.organization.work_group.WorkGroup;
 import javax.persistence.*;
 import java.util.Set;
 
-@NoArgsConstructor(access= AccessLevel.PRIVATE, force=true)
+@NoArgsConstructor(access= AccessLevel.PUBLIC, force=true)
 @Data
 @Entity
 public class Funder extends BaseEntity

@@ -31,7 +31,6 @@ public class CrisprAttemptDTO
     @JsonIgnore
     private Long crisprAttemptId;
 
-    @JsonIgnore
     private Long imitsMiAttemptId;
 
     private LocalDate miDate;
