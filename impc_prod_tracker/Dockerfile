@@ -17,7 +17,7 @@ FROM openjdk:11.0.2-jre-slim-stretch
 
 VOLUME /tmp
 
-COPY  --from=build /usr/src/gentar/target/*.jar app.jar
+COPY  --from=build /usr/src/gentar/rest-api/target/*.jar app.jar
 COPY docker-scripts/start.sh /
 
 RUN ["chmod", "+x", "/start.sh"]
