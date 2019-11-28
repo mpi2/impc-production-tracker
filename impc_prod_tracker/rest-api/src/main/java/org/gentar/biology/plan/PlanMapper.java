@@ -6,7 +6,7 @@ import org.gentar.biology.plan.attempt.crispr.CrisprAttempt;
 import org.gentar.biology.plan.production.crispr_attempt.CrisprAttemptDTO;
 import org.gentar.Mapper;
 import org.gentar.biology.project.ProjectService;
-import org.gentar.biology.statusStamp.StatusMapper;
+import org.gentar.biology.status.StatusMapper;
 import org.gentar.organization.funder.FunderMapper;
 import org.gentar.organization.work_unit.WorkUnitMapper;
 import org.springframework.stereotype.Component;

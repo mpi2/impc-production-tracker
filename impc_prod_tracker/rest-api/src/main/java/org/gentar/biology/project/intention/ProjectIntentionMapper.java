@@ -21,7 +21,7 @@ import org.gentar.biology.intention.ProjectIntentionDTO;
 import org.gentar.biology.sequence.ProjectIntentionSequenceDTO;
 import org.gentar.EntityMapper;
 import org.gentar.biology.allele.AlleleTypeMapper;
-import org.gentar.biology.allele_categorization.AlleleCategorizationMapper;
+import org.gentar.biology.allele.AlleleCategorizationMapper;
 import org.gentar.biology.gene.ProjectIntentionGeneMapper;
 import org.gentar.biology.molecular_mutation.MolecularMutationTypeMapper;
 import org.springframework.stereotype.Component;

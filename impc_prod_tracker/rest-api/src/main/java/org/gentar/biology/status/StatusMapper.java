@@ -1,8 +1,6 @@
-package org.gentar.biology.statusStamp;
+package org.gentar.biology.status;
 
 import org.gentar.Mapper;
-import org.gentar.biology.status.Status;
-import org.gentar.biology.status.StatusService;
 import org.springframework.stereotype.Component;
 
 @Component

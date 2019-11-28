@@ -23,7 +23,7 @@ import org.springframework.stereotype.Component;
 import org.gentar.biology.project.consortium.ProjectConsortiumMapper;
 import org.gentar.biology.project.intention.ProjectIntentionMapper;
 import org.gentar.biology.project.intention.SortByProjectIntentionIndex;
-import org.gentar.biology.statusStamp.StatusStampMapper;
+import org.gentar.biology.status.StatusStampMapper;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;

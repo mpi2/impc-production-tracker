@@ -1,4 +1,4 @@
-package org.gentar.biology.statusStamp;
+package org.gentar.biology.status;
 
 import org.gentar.biology.status_stamps.StatusStampsDTO;
 import org.springframework.stereotype.Component;

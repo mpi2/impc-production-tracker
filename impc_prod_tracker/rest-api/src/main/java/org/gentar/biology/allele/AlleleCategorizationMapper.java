@@ -1,4 +1,4 @@
-package org.gentar.biology.allele_categorization;
+package org.gentar.biology.allele;
 
 import org.springframework.stereotype.Component;
 import org.gentar.biology.allele.categorizarion.AlleleCategorization;
