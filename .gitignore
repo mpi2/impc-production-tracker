@@ -29,5 +29,8 @@ hs_err_pid*
 .idea/
 
 # Build folders to ignore
-/target/
+target/
 impc_prod_tracker/target/
+impc_prod_tracker/dto/target/
+impc_prod_tracker/core/target/
+impc_prod_tracker/rest-api/target/
