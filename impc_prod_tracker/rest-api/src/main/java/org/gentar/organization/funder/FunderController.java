@@ -1,5 +1,6 @@
-package org.gentar.organization;
+package org.gentar.organization.funder;
 
+import org.gentar.organization.WorkGroupServive;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;

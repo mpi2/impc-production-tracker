@@ -15,7 +15,6 @@
  *******************************************************************************/
 package org.gentar.biology.plan;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
@@ -34,7 +33,6 @@ import java.util.List;
 @NoArgsConstructor
 public class PlanDTO extends RepresentationModel
 {
-    @JsonIgnore
     private Long id;
 
     @NonNull

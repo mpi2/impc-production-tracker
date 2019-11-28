@@ -15,8 +15,9 @@
  *******************************************************************************/
 package org.gentar.biology.plan;
 
-import org.gentar.biology.plan.PlanType;
 import org.springframework.data.repository.CrudRepository;
 
-public interface PlanTypeRepository extends CrudRepository<PlanType, Long> {
+public interface PlanTypeRepository extends CrudRepository<PlanType, Long>
+{
+    PlanType findFirstByNameIgnoreCase(String name);
 }

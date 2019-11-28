@@ -108,6 +108,7 @@ public class Plan extends BaseEntity  implements Resource<Plan>
         this.workUnit = plan.workUnit;
         this.funder = plan.funder;
         this.comment = plan.comment;
+        this.productsAvailableForGeneralPublic = plan.productsAvailableForGeneralPublic;
         this.planFlags = new HashSet<>(plan.planFlags);
         this.protocols = new HashSet<>(plan.protocols);
         this.status = plan.status;
