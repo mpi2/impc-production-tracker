@@ -112,11 +112,7 @@ public class PlanServiceImpl implements PlanService
     public History updatePlan(String pin, Plan plan)
     {
         Plan existingPlan = getNotNullPlanByPin(pin);
-        Plan newPlan = new Plan(existingPlan);
-        Plan originalPlan  = new Plan(existingPlan);
-
-       // newPlan = updatePlanRequestProcessor.getPlanToUpdate(newPlan, planDTO);
-
+        Plan originalPlan = new Plan(existingPlan);
         return planUpdater.updatePlan(originalPlan, plan);
     }
 

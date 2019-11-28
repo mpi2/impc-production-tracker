@@ -42,7 +42,6 @@ import java.util.Set;
  * @author Mauricio Martinez
  */
 @Component
-@Data
 @NoArgsConstructor
 public class AapSystemSubject implements SystemSubject
 {
@@ -52,7 +51,7 @@ public class AapSystemSubject implements SystemSubject
     private String email;
     private WorkUnit workUnit;
     private PersonRepository personRepository;
-    private Person person;
+    private Person person = new Person();
     private boolean isEbiAdmin;
     private List<PersonRoleWorkUnit> roleWorkUnits;
     private List<PersonRoleConsortium> roleConsortia;
@@ -115,6 +114,36 @@ public class AapSystemSubject implements SystemSubject
         isEbiAdmin = person.getEbiAdmin() == null ? false : person.getEbiAdmin();
         roleWorkUnits = new ArrayList<>(person.getRolesWorkUnits());
         roleConsortia = new ArrayList<>(person.getRolesConsortia());
+    }
+
+    @Override
+    public Person getPerson()
+    {
+        return person;
+    }
+
+    @Override
+    public String getLogin()
+    {
+        return person.getEmail();
+    }
+
+    @Override
+    public String getName()
+    {
+        return person.getName();
+    }
+
+    @Override
+    public String getUserRefId()
+    {
+        return person.getAuthId();
+    }
+
+    @Override
+    public String getEmail()
+    {
+        return person.getEmail();
     }
 
     @Override
@@ -242,5 +271,10 @@ public class AapSystemSubject implements SystemSubject
     {
         loadPersonInformation(person.getAuthId());
         return this;
+    }
+
+    public void setUserRefId(String subject)
+    {
+        this.userRefId = subject;
     }
 }
