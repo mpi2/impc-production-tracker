@@ -16,10 +16,10 @@
 package org.gentar.biology.gene_list;
 
 import org.gentar.Mapper;
+import org.gentar.biology.gene_list.record.GeneByListRecord;
+import org.gentar.biology.gene_list.record.ListRecord;
 import org.springframework.stereotype.Component;
 import org.gentar.biology.project.assignment_status.AssignmentStatus;
-import org.gentar.biology.gene_list.record.GeneByGeneListRecord;
-import org.gentar.biology.gene_list.record.GeneListRecord;
 import org.gentar.biology.project.Project;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -29,7 +29,7 @@ import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
 
 @Component
-public class GeneListRecordMapper implements Mapper<GeneListRecord, GeneListRecordDTO>
+public class GeneListRecordMapper implements Mapper<ListRecord, GeneListRecordDTO>
 {
     private GeneByGeneListRecordMapper geneByGeneListRecordMapper;
     private ProjectsByGroupOfGenesFinder projectsByGroupOfGenesFinder;
@@ -45,15 +45,15 @@ public class GeneListRecordMapper implements Mapper<GeneListRecord, GeneListReco
     }
 
     @Override
-    public GeneListRecordDTO toDto(GeneListRecord geneListRecord)
+    public GeneListRecordDTO toDto(ListRecord listRecord)
     {
         GeneListRecordDTO geneListRecordDTO = new GeneListRecordDTO();
-        geneListRecordDTO.setId(geneListRecord.getId());
-        geneListRecordDTO.setNote(geneListRecord.getNote());
+        geneListRecordDTO.setId(listRecord.getId());
+        geneListRecordDTO.setNote(listRecord.getNote());
         geneListRecordDTO.setGenes(
-            geneByGeneListRecordMapper.toDtos(geneListRecord.getGenesByRecord()));
+            geneByGeneListRecordMapper.toDtos(listRecord.getGenesByRecord()));
         List<Project> projects =
-            projectsByGroupOfGenesFinder.findProjectsByGenes(geneListRecord.getGenesByRecord());
+            projectsByGroupOfGenesFinder.findProjectsByGenes(listRecord.getGenesByRecord());
         geneListRecordDTO.setProjectByGeneSummaryDTOS(projectsToSummariesDtos(projects));
 
         return geneListRecordDTO;
@@ -81,41 +81,41 @@ public class GeneListRecordMapper implements Mapper<GeneListRecord, GeneListReco
         return projectByGeneSummaryDTO;
     }
 
-    public GeneListRecord toEntity(GeneListRecordDTO geneListRecordDTO)
+    public ListRecord toEntity(GeneListRecordDTO geneListRecordDTO)
     {
-        GeneListRecord geneListRecord;
+        ListRecord listRecord;
         Long id = geneListRecordDTO.getId();
         if (id != null)
         {
-            geneListRecord = geneListRecordService.getGeneListRecordById(id);
+            listRecord = geneListRecordService.getGeneListRecordById(id);
         }
         else
         {
-            geneListRecord = new GeneListRecord();
-            Set<GeneByGeneListRecord> geneByGeneListRecords = new HashSet<>();
-            geneListRecord.setGenesByRecord(geneByGeneListRecords);
+            listRecord = new ListRecord();
+            Set<GeneByListRecord> geneByListRecords = new HashSet<>();
+            listRecord.setGenesByRecord(geneByListRecords);
         }
-        geneListRecord.setNote(geneListRecordDTO.getNote());
-        addGeneByGeneListRecords(geneListRecord, geneListRecordDTO);
-        return geneListRecord;
+        listRecord.setNote(geneListRecordDTO.getNote());
+        addGeneByGeneListRecords(listRecord, geneListRecordDTO);
+        return listRecord;
     }
 
     private void addGeneByGeneListRecords(
-        GeneListRecord geneListRecord, GeneListRecordDTO geneListRecordDTO)
+        ListRecord listRecord, GeneListRecordDTO geneListRecordDTO)
     {
         var geneEntities = geneByGeneListRecordMapper.toEntities(geneListRecordDTO.getGenes());
-        Set<GeneByGeneListRecord> geneByGeneListRecords = new HashSet<>(geneEntities);
-        if (geneListRecord.getGenesByRecord() == null)
+        Set<GeneByListRecord> geneByListRecords = new HashSet<>(geneEntities);
+        if (listRecord.getGenesByRecord() == null)
         {
-            geneListRecord.setGenesByRecord(geneByGeneListRecords);
+            listRecord.setGenesByRecord(geneByListRecords);
         }
         else
         {
-            geneListRecord.getGenesByRecord().addAll(geneByGeneListRecords);
+            listRecord.getGenesByRecord().addAll(geneByListRecords);
         }
         AtomicInteger index = new AtomicInteger();
-        geneByGeneListRecords.forEach(x -> {
-            x.setGeneListRecord(geneListRecord);
+        geneByListRecords.forEach(x -> {
+            x.setListRecord(listRecord);
             x.setIndex(index.getAndIncrement());
         });
     }

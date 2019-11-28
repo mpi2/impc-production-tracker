@@ -15,6 +15,7 @@
  */
 package org.gentar.biology.gene_list;
 
+import org.gentar.biology.gene_list.record.ListRecord;
 import org.gentar.helpers.CsvReader;
 import org.gentar.helpers.LinkUtil;
 import org.springframework.data.domain.Page;
@@ -33,7 +34,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
-import org.gentar.biology.gene_list.record.GeneListRecord;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -72,7 +72,7 @@ public class GeneListController
         PagedResourcesAssembler assembler,
         @PathVariable("consortiumName") String consortiumName)
     {
-        Page<GeneListRecord> geneListRecords =
+        Page<ListRecord> geneListRecords =
             geneListService.getByConsortium(pageable, consortiumName);
         String slashContent = consortiumName + "/content";
         return buildResponseEntity(assembler, slashContent, geneListRecords);
@@ -80,7 +80,7 @@ public class GeneListController
 
     private ResponseEntity buildResponseEntity(
         PagedResourcesAssembler assembler,
-        String slashContent, Page<GeneListRecord> geneListRecordsPage)
+        String slashContent, Page<ListRecord> geneListRecordsPage)
     {
         Page<GeneListRecordDTO> geneListRecordDTOPage =
             geneListRecordsPage.map(x -> geneListRecordMapper.toDto(x));
@@ -113,9 +113,9 @@ public class GeneListController
         @RequestBody List<GeneListRecordDTO> records,
         @PathVariable("consortiumName") String consortiumName)
     {
-        List<GeneListRecord> geneListRecords =
+        List<ListRecord> listRecords =
             new ArrayList<>(geneListRecordMapper.toEntities(records));
-        geneListService.updateRecordsInList(geneListRecords, consortiumName);
+        geneListService.updateRecordsInList(listRecords, consortiumName);
         return findByConsortium(pageable, assembler, consortiumName);
     }
 }

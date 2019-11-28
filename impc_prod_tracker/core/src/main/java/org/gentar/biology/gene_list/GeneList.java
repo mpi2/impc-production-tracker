@@ -21,7 +21,7 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 import org.gentar.BaseEntity;
-import org.gentar.biology.gene_list.record.GeneListRecord;
+import org.gentar.biology.gene_list.record.ListRecord;
 import org.gentar.organization.consortium.Consortium;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -48,5 +48,5 @@ public class GeneList extends BaseEntity
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
     @OneToMany(cascade= CascadeType.ALL, mappedBy = "geneList", orphanRemoval=true)
-    private List<GeneListRecord> geneListRecords;
+    private List<ListRecord> listRecords;
 }
