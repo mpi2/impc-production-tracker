@@ -89,7 +89,7 @@ public class GeneListService
     {
         var currentListRecords = geneList.getListRecords();
         listRecords.forEach(x -> {
-            var index = indexOfRecordIdInList(x.getId(), listRecords);
+            var index = indexOfRecordIdInList(x.getId(), currentListRecords);
             if (index == -1)
             {
                 listRecords.add(x);
