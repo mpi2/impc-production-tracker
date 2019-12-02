@@ -20,6 +20,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+import org.gentar.biology.outcome.Outcome;
 import org.gentar.security.abac.Resource;
 import org.gentar.security.abac.ResourcePrivacy;
 import org.gentar.BaseEntity;
@@ -96,6 +97,10 @@ public class Plan extends BaseEntity  implements Resource<Plan>
             joinColumns = @JoinColumn(name = "plan_id"),
             inverseJoinColumns = @JoinColumn(name = "protocol_id"))
     private Set<Protocol> protocols;
+
+    @OneToMany
+    @JoinColumn(name = "plan_id")
+    private Set<Outcome> outcomes;
 
     // Copy Constructor
     public Plan(Plan plan)

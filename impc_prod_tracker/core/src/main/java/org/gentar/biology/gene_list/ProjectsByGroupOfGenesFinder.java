@@ -61,7 +61,7 @@ public class ProjectsByGroupOfGenesFinder
         }
         return filterExactMatches(ids, projects);
     }
-    
+
     private List<Project> filterExactMatches(List<String> ids, Set<Project> projects)
     {
         List<Project> filteredProjects = new ArrayList<>();

@@ -17,9 +17,12 @@ package org.gentar.biology.gene_list;
 
 import lombok.Data;
 
+import java.util.List;
+
 @Data
 public class ProjectByGeneSummaryDTO
 {
     private String tpn;
     private String assignmentStatusName;
+    private List<PlanSummaryDTO> plans;
 }
