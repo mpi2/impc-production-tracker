@@ -34,15 +34,17 @@ public class ListRecordMapper implements Mapper<ListRecord, ListRecordDTO>
 {
     private GeneByListRecordMapper geneByListRecordMapper;
     private ProjectsByGroupOfGenesFinder projectsByGroupOfGenesFinder;
+    private ProjectByGeneSummaryMapper projectByGeneSummaryMapper;
     private EntityMapper entityMapper;
 
     public ListRecordMapper(
         GeneByListRecordMapper geneByListRecordMapper,
         ProjectsByGroupOfGenesFinder projectsByGroupOfGenesFinder,
-        EntityMapper entityMapper)
+        ProjectByGeneSummaryMapper projectByGeneSummaryMapper, EntityMapper entityMapper)
     {
         this.geneByListRecordMapper = geneByListRecordMapper;
         this.projectsByGroupOfGenesFinder = projectsByGroupOfGenesFinder;
+        this.projectByGeneSummaryMapper = projectByGeneSummaryMapper;
         this.entityMapper = entityMapper;
     }
 
@@ -73,14 +75,7 @@ public class ListRecordMapper implements Mapper<ListRecord, ListRecordDTO>
 
     private ProjectByGeneSummaryDTO projectToSummaryDto(Project project)
     {
-        ProjectByGeneSummaryDTO projectByGeneSummaryDTO = new ProjectByGeneSummaryDTO();
-        projectByGeneSummaryDTO.setTpn(project.getTpn());
-        AssignmentStatus assignmentStatus = project.getAssignmentStatus();
-        if (assignmentStatus != null)
-        {
-            projectByGeneSummaryDTO.setAssignmentStatusName(assignmentStatus.getName());
-        }
-        return projectByGeneSummaryDTO;
+        return projectByGeneSummaryMapper.toDto(project);
     }
 
     public ListRecord toEntity(ListRecordDTO listRecordDTO)
