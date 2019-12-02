@@ -26,6 +26,9 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
@@ -34,20 +37,29 @@ import java.util.Set;
 @NoArgsConstructor(access= AccessLevel.PUBLIC, force=true)
 @Data
 @Entity
-public class GeneListRecord
+public class ListRecord
 {
     @Id
-    @SequenceGenerator(name = "geneListRecordSeq", sequenceName = "GENE_LIST_RECORD_SEQ")
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "geneListRecordSeq")
+    @SequenceGenerator(name = "listRecordSeq", sequenceName = "LIST_RECORD_SEQ")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "listRecordSeq")
     private Long id;
 
     @ManyToOne
+    @JoinColumn(name="gene_list_id")
     private GeneList geneList;
 
     private String note;
 
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
-    @OneToMany(cascade= CascadeType.ALL, mappedBy = "geneListRecord", orphanRemoval=true)
-    private Set<GeneByGeneListRecord> genesByRecord;
+    @OneToMany(cascade= CascadeType.ALL, mappedBy = "listRecord", orphanRemoval=true)
+    private Set<GeneByListRecord> genesByRecord;
+
+    @ToString.Exclude
+    @ManyToMany
+    @JoinTable(
+        name = "List_record_List_record_type",
+        joinColumns = @JoinColumn(name = "list_record_id"),
+        inverseJoinColumns = @JoinColumn(name = "list_record_type_id"))
+    private Set<ListRecordType> listRecordTypes;
 }

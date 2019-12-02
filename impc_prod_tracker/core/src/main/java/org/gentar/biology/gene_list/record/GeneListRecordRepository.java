@@ -19,7 +19,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.CrudRepository;
 
-public interface GeneListRecordRepository extends CrudRepository<GeneListRecord, Long>
+public interface GeneListRecordRepository extends CrudRepository<ListRecord, Long>
 {
-    Page<GeneListRecord> findAllByGeneListConsortiumName(Pageable pageable, String consortiumName);
+    Page<ListRecord> findAllByGeneListConsortiumName(Pageable pageable, String consortiumName);
 }

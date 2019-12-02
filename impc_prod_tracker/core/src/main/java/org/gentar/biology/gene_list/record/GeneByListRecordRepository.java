@@ -17,6 +17,6 @@ package org.gentar.biology.gene_list.record;
 
 import org.springframework.data.repository.CrudRepository;
 
-public interface GeneByGeneListRecordRepository extends CrudRepository<GeneByGeneListRecord, Long>
+public interface GeneByListRecordRepository extends CrudRepository<GeneByListRecord, Long>
 {
 }

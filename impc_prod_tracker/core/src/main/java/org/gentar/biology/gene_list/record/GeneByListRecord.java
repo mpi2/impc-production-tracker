@@ -18,7 +18,6 @@ package org.gentar.biology.gene_list.record;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -29,15 +28,15 @@ import javax.persistence.SequenceGenerator;
 @NoArgsConstructor(access= AccessLevel.PUBLIC, force=true)
 @Data
 @Entity
-public class GeneByGeneListRecord
+public class GeneByListRecord
 {
     @Id
-    @SequenceGenerator(name = "geneByGeneListRecordSeq", sequenceName = "GENE_BY_GENE_LIST_RECORD_SEQ")
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "geneByGeneListRecordSeq")
+    @SequenceGenerator(name = "geneByListRecordSeq", sequenceName = "GENE_BY_LIST_RECORD_SEQ")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "geneByListRecordSeq")
     private Long id;
 
     @ManyToOne
-    GeneListRecord geneListRecord;
+    ListRecord listRecord;
 
     private String accId;
 

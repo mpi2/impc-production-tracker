@@ -15,23 +15,23 @@
  */
 package org.gentar.biology.gene_list;
 
+import org.gentar.biology.gene_list.record.GeneByListRecord;
 import org.springframework.stereotype.Component;
-import org.gentar.biology.gene_list.record.GeneByGeneListRecord;
-import org.gentar.biology.gene_list.record.GeneByGeneListRecordRepository;
+import org.gentar.biology.gene_list.record.GeneByListRecordRepository;
 
 @Component
 public class GeneByGeneListRecordService
 {
-    private GeneByGeneListRecordRepository geneByGeneListRecordRepository;
+    private GeneByListRecordRepository geneByListRecordRepository;
 
     public GeneByGeneListRecordService(
-        GeneByGeneListRecordRepository geneByGeneListRecordRepository)
+        GeneByListRecordRepository geneByListRecordRepository)
     {
-        this.geneByGeneListRecordRepository = geneByGeneListRecordRepository;
+        this.geneByListRecordRepository = geneByListRecordRepository;
     }
 
-    public GeneByGeneListRecord findById(Long id)
+    public GeneByListRecord findById(Long id)
     {
-        return geneByGeneListRecordRepository.findById(id).orElse(null);
+        return geneByListRecordRepository.findById(id).orElse(null);
     }
 }

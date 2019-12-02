@@ -21,7 +21,7 @@ import org.gentar.biology.project.search.Search;
 import org.gentar.biology.project.search.SearchReport;
 import org.gentar.biology.project.search.SearchType;
 import org.springframework.stereotype.Component;
-import org.gentar.biology.gene_list.record.GeneByGeneListRecord;
+import org.gentar.biology.gene_list.record.GeneByListRecord;
 import org.gentar.biology.project.Project;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -38,15 +38,15 @@ public class ProjectsByGroupOfGenesFinder
         this.projectSearcherService = projectSearcherService;
     }
 
-    public List<Project> findProjectsByGenes(Set<GeneByGeneListRecord> geneByGeneListRecords)
+    public List<Project> findProjectsByGenes(Set<GeneByListRecord> geneByListRecords)
     {
         Set<Project> projects = new HashSet<>();
-        if (!geneByGeneListRecords.isEmpty())
+        if (!geneByListRecords.isEmpty())
         {
             List<String> ids = new ArrayList<>();
-            if (geneByGeneListRecords != null)
+            if (geneByListRecords != null)
             {
-                geneByGeneListRecords.forEach(x -> ids.add(x.getAccId()));
+                geneByListRecords.forEach(x -> ids.add(x.getAccId()));
             }
             Search search = new Search(SearchType.BY_GENE.getName(), ids, ProjectFilter.getInstance());
             SearchReport searchReport = projectSearcherService.executeSearch(search);

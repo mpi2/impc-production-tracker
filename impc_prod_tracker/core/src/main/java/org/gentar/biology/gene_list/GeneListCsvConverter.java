@@ -1,10 +1,10 @@
 package org.gentar.biology.gene_list;
 
+import org.gentar.biology.gene_list.record.ListRecord;
 import org.gentar.exceptions.UserOperationFailedException;
 import org.springframework.stereotype.Component;
 import org.gentar.biology.gene.Gene;
-import org.gentar.biology.gene_list.record.GeneByGeneListRecord;
-import org.gentar.biology.gene_list.record.GeneListRecord;
+import org.gentar.biology.gene_list.record.GeneByListRecord;
 import org.gentar.biology.gene.external_ref.GeneExternalService;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -93,65 +93,65 @@ public class GeneListCsvConverter
         return elements;
     }
 
-    public List<GeneListRecord> buildListFromCsvContent(
+    public List<ListRecord> buildListFromCsvContent(
         Map<String, List<String>> recordsByColumns,
         Map<String, Long> sortedAccIdsInCurrentList)
     {
-        List<GeneListRecord> listData = new ArrayList<>();
+        List<ListRecord> listData = new ArrayList<>();
         List<String> geneColumnContent = recordsByColumns.get(CSV_GENE_HEADER);
         List<String> noteColumnContent = recordsByColumns.get(CSV_NOTE_HEADER);
         int numberOfRows = geneColumnContent.size();
         for (int i = 0; i < numberOfRows; i++)
         {
-            GeneListRecord geneListRecord =
+            ListRecord listRecord =
                 buildGeneListRecord(
                     geneColumnContent.get(i),
                     noteColumnContent.get(i),
                     sortedAccIdsInCurrentList);
-            listData.add(geneListRecord);
+            listData.add(listRecord);
         }
         return listData;
     }
 
-    private GeneListRecord buildGeneListRecord(
+    private ListRecord buildGeneListRecord(
         String geneColumnContent, String note, Map<String, Long> sortedAccIdsInCurrentList)
     {
-        GeneListRecord geneListRecord = new GeneListRecord();
+        ListRecord listRecord = new ListRecord();
         List<String> geneSymbols = Arrays.asList(geneColumnContent.split(","));
-        Set<GeneByGeneListRecord> geneByGeneListRecords =
+        Set<GeneByListRecord> geneByListRecords =
             buildGeneByGeneListRecords(geneSymbols, sortedAccIdsInCurrentList);
-        geneListRecord.setNote(note);
-        geneListRecord.setGenesByRecord(geneByGeneListRecords);
-        geneByGeneListRecords.forEach(x -> x.setGeneListRecord(geneListRecord));
-        return geneListRecord;
+        listRecord.setNote(note);
+        listRecord.setGenesByRecord(geneByListRecords);
+        geneByListRecords.forEach(x -> x.setListRecord(listRecord));
+        return listRecord;
     }
 
-    private Set<GeneByGeneListRecord> buildGeneByGeneListRecords(
+    private Set<GeneByListRecord> buildGeneByGeneListRecords(
         List<String> geneSymbols, Map<String, Long> currentListSymbols)
     {
-        Set<GeneByGeneListRecord> geneByGeneListRecords = new HashSet<>();
+        Set<GeneByListRecord> geneByListRecords = new HashSet<>();
         List<Gene> genes = getGenesByListOfSymbols(geneSymbols);
         AtomicInteger index = new AtomicInteger();
         genes.forEach(x -> {
             var geneByGeneListRecord = buildGeneByGeneListRecord(x);
             geneByGeneListRecord.setIndex(index.getAndIncrement());
-            geneByGeneListRecords.add(geneByGeneListRecord);
+            geneByListRecords.add(geneByGeneListRecord);
         });
         String inputAccIdHash =
-            geneListRecordService.genesByRecordToString(geneByGeneListRecords);
+            geneListRecordService.genesByRecordToString(geneByListRecords);
         if (currentListSymbols.containsKey(inputAccIdHash))
         {
             throw new UserOperationFailedException(geneSymbols + " already exist in the list.");
         }
 
-        return geneByGeneListRecords;
+        return geneByListRecords;
     }
 
-    private GeneByGeneListRecord buildGeneByGeneListRecord(Gene gene)
+    private GeneByListRecord buildGeneByGeneListRecord(Gene gene)
     {
-        GeneByGeneListRecord geneByGeneListRecord = new GeneByGeneListRecord();
-        geneByGeneListRecord.setAccId(gene.getAccId());
-        return geneByGeneListRecord;
+        GeneByListRecord geneByListRecord = new GeneByListRecord();
+        geneByListRecord.setAccId(gene.getAccId());
+        return geneByListRecord;
     }
 
     private List<Gene> getGenesByListOfSymbols(List<String> geneSymbols)

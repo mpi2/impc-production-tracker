@@ -17,9 +17,9 @@ package org.gentar.biology.gene_list.record;
 
 import java.util.Comparator;
 
-public class SortGeneByGeneListRecordByIndex implements Comparator<GeneByGeneListRecord>
+public class SortGeneByGeneListRecordByIndex implements Comparator<GeneByListRecord>
 {
-    public int compare(GeneByGeneListRecord a, GeneByGeneListRecord b)
+    public int compare(GeneByListRecord a, GeneByListRecord b)
     {
         return a.getIndex() - b.getIndex() ;
     }
