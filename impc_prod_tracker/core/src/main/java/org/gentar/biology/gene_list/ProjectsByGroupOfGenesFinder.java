@@ -24,6 +24,7 @@ import org.springframework.stereotype.Component;
 import org.gentar.biology.gene_list.record.GeneByListRecord;
 import org.gentar.biology.project.Project;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -41,13 +42,10 @@ public class ProjectsByGroupOfGenesFinder
     public List<Project> findProjectsByGenes(Set<GeneByListRecord> geneByListRecords)
     {
         Set<Project> projects = new HashSet<>();
-        if (!geneByListRecords.isEmpty())
+        List<String> ids = new ArrayList<>();
+        if (geneByListRecords != null && !geneByListRecords.isEmpty())
         {
-            List<String> ids = new ArrayList<>();
-            if (geneByListRecords != null)
-            {
-                geneByListRecords.forEach(x -> ids.add(x.getAccId()));
-            }
+            geneByListRecords.forEach(x -> ids.add(x.getAccId()));
             Search search = new Search(SearchType.BY_GENE.getName(), ids, ProjectFilter.getInstance());
             SearchReport searchReport = projectSearcherService.executeSearch(search);
             if (searchReport.getResults() != null)
@@ -61,11 +59,37 @@ public class ProjectsByGroupOfGenesFinder
                 });
             }
         }
-        return filterExactMatches(projects);
+        return filterExactMatches(ids, projects);
+    }
+    
+    private List<Project> filterExactMatches(List<String> ids, Set<Project> projects)
+    {
+        List<Project> filteredProjects = new ArrayList<>();
+        projects.forEach(p -> {
+            if (hasExactlyTheseGeneIntentions(ids, p))
+            {
+                filteredProjects.add(p);
+            }
+        });
+        return filteredProjects;
+    }
+    private boolean hasExactlyTheseGeneIntentions(List<String> geneIntentionsIds, Project project)
+    {
+        Collections.sort(geneIntentionsIds);
+        List<String> intentionsAsAccIds = getIntentionsAsAccIds(project);
+        Collections.sort(intentionsAsAccIds);
+        return geneIntentionsIds.equals(intentionsAsAccIds);
     }
 
-    private List<Project> filterExactMatches(Set<Project> projects)
+    private List<String> getIntentionsAsAccIds(Project project)
     {
-        return new ArrayList<>(projects);
+        List<String> intentionsAsAccIds = new ArrayList<>();
+        var intentions = project.getProjectIntentions();
+        intentions.forEach(i ->
+        {
+            var geneIntention = i.getProjectIntentionGene();
+            intentionsAsAccIds.add(geneIntention.getGene().getAccId());
+        });
+        return intentionsAsAccIds;
     }
 }
