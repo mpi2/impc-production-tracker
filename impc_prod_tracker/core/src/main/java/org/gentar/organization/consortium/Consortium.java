@@ -49,7 +49,7 @@ public class Consortium extends BaseEntity
 
     private String description;
 
-
+    @ToString.Exclude
     @JsonIgnore
     @ManyToMany
     @JoinTable(

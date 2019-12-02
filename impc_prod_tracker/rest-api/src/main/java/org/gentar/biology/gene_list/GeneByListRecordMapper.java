@@ -23,13 +23,13 @@ import org.springframework.stereotype.Component;
 import org.gentar.biology.gene.Gene;
 
 @Component
-public class GeneByGeneListRecordMapper
+public class GeneByListRecordMapper
     implements Mapper<GeneByListRecord, GeneByListRecordDTO>
 {
     private GeneExternalService geneExternalService;
     private GeneByGeneListRecordService geneByGeneListRecordService;
 
-    public GeneByGeneListRecordMapper(
+    public GeneByListRecordMapper(
         GeneExternalService geneExternalService,
         GeneByGeneListRecordService geneByGeneListRecordService)
     {

@@ -22,7 +22,7 @@ import java.util.List;
 
 @Relation(collectionRelation = "records")
 @Data
-public class GeneListRecordDTO
+public class ListRecordDTO
 {
     private Long id;
     private String note;

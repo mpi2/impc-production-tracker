@@ -25,5 +25,5 @@ public class GeneListDTO
     private String consortiumName;
 
     @JsonProperty("list")
-    private List<GeneListRecordDTO> geneListRecordDTOS;
+    private List<ListRecordDTO> listRecordDTOS;
 }

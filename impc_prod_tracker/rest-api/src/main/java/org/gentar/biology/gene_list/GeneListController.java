@@ -46,16 +46,16 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 public class GeneListController
 {
     private GeneListService geneListService;
-    private GeneListRecordMapper geneListRecordMapper;
+    private ListRecordMapper listRecordMapper;
     private CsvReader csvReader;
 
     public GeneListController(
         GeneListService geneListService,
-        GeneListRecordMapper geneListRecordMapper,
+        ListRecordMapper listRecordMapper,
         CsvReader csvReader)
     {
         this.geneListService = geneListService;
-        this.geneListRecordMapper = geneListRecordMapper;
+        this.listRecordMapper = listRecordMapper;
         this.csvReader = csvReader;
     }
 
@@ -82,8 +82,8 @@ public class GeneListController
         PagedResourcesAssembler assembler,
         String slashContent, Page<ListRecord> geneListRecordsPage)
     {
-        Page<GeneListRecordDTO> geneListRecordDTOPage =
-            geneListRecordsPage.map(x -> geneListRecordMapper.toDto(x));
+        Page<ListRecordDTO> geneListRecordDTOPage =
+            geneListRecordsPage.map(x -> listRecordMapper.toDto(x));
         PagedModel pr =
             assembler.toModel(
                 geneListRecordDTOPage,
@@ -106,15 +106,23 @@ public class GeneListController
         return findByConsortium(pageable, assembler, consortiumName);
     }
 
+    /**
+     * Update the content of a list
+     * @param pageable Pagination information.
+     * @param assembler Assembler to create links.
+     * @param records Records to update.
+     * @param consortiumName Name of the consortium
+     * @return Paginated content updated.
+     */
     @PostMapping(value = {"/{consortiumName}/content"})
     public ResponseEntity updateRecordsInList(
         Pageable pageable,
         PagedResourcesAssembler assembler,
-        @RequestBody List<GeneListRecordDTO> records,
+        @RequestBody List<ListRecordDTO> records,
         @PathVariable("consortiumName") String consortiumName)
     {
         List<ListRecord> listRecords =
-            new ArrayList<>(geneListRecordMapper.toEntities(records));
+            new ArrayList<>(listRecordMapper.toEntities(records));
         geneListService.updateRecordsInList(listRecords, consortiumName);
         return findByConsortium(pageable, assembler, consortiumName);
     }

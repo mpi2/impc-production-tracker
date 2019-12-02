@@ -15,6 +15,7 @@
  */
 package org.gentar.biology.gene_list;
 
+import org.gentar.EntityMapper;
 import org.gentar.Mapper;
 import org.gentar.biology.gene_list.record.GeneByListRecord;
 import org.gentar.biology.gene_list.record.ListRecord;
@@ -29,34 +30,35 @@ import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
 
 @Component
-public class GeneListRecordMapper implements Mapper<ListRecord, GeneListRecordDTO>
+public class ListRecordMapper implements Mapper<ListRecord, ListRecordDTO>
 {
-    private GeneByGeneListRecordMapper geneByGeneListRecordMapper;
+    private GeneByListRecordMapper geneByListRecordMapper;
     private ProjectsByGroupOfGenesFinder projectsByGroupOfGenesFinder;
-    private GeneListRecordService geneListRecordService;
+    private EntityMapper entityMapper;
 
-    public GeneListRecordMapper(
-        GeneByGeneListRecordMapper geneByGeneListRecordMapper,
-        ProjectsByGroupOfGenesFinder projectsByGroupOfGenesFinder, GeneListRecordService geneListRecordService)
+    public ListRecordMapper(
+        GeneByListRecordMapper geneByListRecordMapper,
+        ProjectsByGroupOfGenesFinder projectsByGroupOfGenesFinder,
+        EntityMapper entityMapper)
     {
-        this.geneByGeneListRecordMapper = geneByGeneListRecordMapper;
+        this.geneByListRecordMapper = geneByListRecordMapper;
         this.projectsByGroupOfGenesFinder = projectsByGroupOfGenesFinder;
-        this.geneListRecordService = geneListRecordService;
+        this.entityMapper = entityMapper;
     }
 
     @Override
-    public GeneListRecordDTO toDto(ListRecord listRecord)
+    public ListRecordDTO toDto(ListRecord listRecord)
     {
-        GeneListRecordDTO geneListRecordDTO = new GeneListRecordDTO();
-        geneListRecordDTO.setId(listRecord.getId());
-        geneListRecordDTO.setNote(listRecord.getNote());
-        geneListRecordDTO.setGenes(
-            geneByGeneListRecordMapper.toDtos(listRecord.getGenesByRecord()));
+        ListRecordDTO listRecordDTO = new ListRecordDTO();
+        listRecordDTO.setId(listRecord.getId());
+        listRecordDTO.setNote(listRecord.getNote());
+        listRecordDTO.setGenes(
+            geneByListRecordMapper.toDtos(listRecord.getGenesByRecord()));
         List<Project> projects =
             projectsByGroupOfGenesFinder.findProjectsByGenes(listRecord.getGenesByRecord());
-        geneListRecordDTO.setProjectByGeneSummaryDTOS(projectsToSummariesDtos(projects));
+        listRecordDTO.setProjectByGeneSummaryDTOS(projectsToSummariesDtos(projects));
 
-        return geneListRecordDTO;
+        return listRecordDTO;
     }
 
     private List<ProjectByGeneSummaryDTO> projectsToSummariesDtos(Collection<Project> projects)
@@ -81,29 +83,17 @@ public class GeneListRecordMapper implements Mapper<ListRecord, GeneListRecordDT
         return projectByGeneSummaryDTO;
     }
 
-    public ListRecord toEntity(GeneListRecordDTO geneListRecordDTO)
+    public ListRecord toEntity(ListRecordDTO listRecordDTO)
     {
-        ListRecord listRecord;
-        Long id = geneListRecordDTO.getId();
-        if (id != null)
-        {
-            listRecord = geneListRecordService.getGeneListRecordById(id);
-        }
-        else
-        {
-            listRecord = new ListRecord();
-            Set<GeneByListRecord> geneByListRecords = new HashSet<>();
-            listRecord.setGenesByRecord(geneByListRecords);
-        }
-        listRecord.setNote(geneListRecordDTO.getNote());
-        addGeneByGeneListRecords(listRecord, geneListRecordDTO);
+        ListRecord listRecord = entityMapper.toTarget(listRecordDTO, ListRecord.class);
+        addGeneByListRecords(listRecord, listRecordDTO);
         return listRecord;
     }
 
-    private void addGeneByGeneListRecords(
-        ListRecord listRecord, GeneListRecordDTO geneListRecordDTO)
+    private void addGeneByListRecords(
+        ListRecord listRecord, ListRecordDTO listRecordDTO)
     {
-        var geneEntities = geneByGeneListRecordMapper.toEntities(geneListRecordDTO.getGenes());
+        var geneEntities = geneByListRecordMapper.toEntities(listRecordDTO.getGenes());
         Set<GeneByListRecord> geneByListRecords = new HashSet<>(geneEntities);
         if (listRecord.getGenesByRecord() == null)
         {
