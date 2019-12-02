@@ -80,9 +80,41 @@ public class GeneListService
         }
         else
         {
-            geneList.getListRecords().addAll(listRecords);
+            addOrReplaceListRecords(listRecords, geneList);
         }
         geneListRepository.save(geneList);
+    }
+
+    private void addOrReplaceListRecords(List<ListRecord> listRecords, GeneList geneList)
+    {
+        var currentListRecords = geneList.getListRecords();
+        listRecords.forEach(x -> {
+            var index = indexOfRecordIdInList(x.getId(), listRecords);
+            if (index == -1)
+            {
+                listRecords.add(x);
+            }
+            else
+            {
+                currentListRecords.set(index, x);
+            }
+        });
+    }
+
+    private int indexOfRecordIdInList(Long id, List<ListRecord> listRecords)
+    {
+        int index = -1;
+        int size = listRecords.size();
+        for (int i = 0; i < size; i++)
+        {
+            ListRecord listRecord = listRecords.get(i);
+            if (id.equals(listRecord.getId()))
+            {
+                index = i;
+                break;
+            }
+        }
+        return index;
     }
 
     private void validateNewRecords(List<ListRecord> listData, GeneList geneList)
