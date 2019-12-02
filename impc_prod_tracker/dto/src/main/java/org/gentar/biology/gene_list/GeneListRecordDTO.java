@@ -26,7 +26,7 @@ public class GeneListRecordDTO
 {
     private Long id;
     private String note;
-    private List<GeneByGeneListRecordDTO> genes;
+    private List<GeneByListRecordDTO> genes;
 
     @JsonProperty("projects")
     private List<ProjectByGeneSummaryDTO> projectByGeneSummaryDTOS;

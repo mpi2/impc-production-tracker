@@ -18,7 +18,7 @@ package org.gentar.biology.gene_list;
 import lombok.Data;
 
 @Data
-public class GeneByGeneListRecordDTO
+public class GeneByListRecordDTO
 {
     private Long id;
     private String accId;
