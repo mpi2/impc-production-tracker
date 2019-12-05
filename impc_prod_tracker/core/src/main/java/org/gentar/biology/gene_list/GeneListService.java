@@ -94,7 +94,7 @@ public class GeneListService
             var index = indexOfRecordIdInList(x.getId(), currentListRecords);
             if (index == -1)
             {
-                listRecords.add(x);
+                currentListRecords.add(x);
             }
             else
             {
@@ -106,14 +106,17 @@ public class GeneListService
     private int indexOfRecordIdInList(Long id, List<ListRecord> listRecords)
     {
         int index = -1;
-        int size = listRecords.size();
-        for (int i = 0; i < size; i++)
+        if (id != null)
         {
-            ListRecord listRecord = listRecords.get(i);
-            if (id.equals(listRecord.getId()))
+            int size = listRecords.size();
+            for (int i = 0; i < size; i++)
             {
-                index = i;
-                break;
+                ListRecord listRecord = listRecords.get(i);
+                if (id.equals(listRecord.getId()))
+                {
+                    index = i;
+                    break;
+                }
             }
         }
         return index;
