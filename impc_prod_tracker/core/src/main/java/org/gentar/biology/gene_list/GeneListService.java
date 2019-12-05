@@ -15,6 +15,7 @@
  */
 package org.gentar.biology.gene_list;
 
+import org.gentar.biology.gene_list.filter.GeneListFilter;
 import org.gentar.biology.gene_list.record.ListRecord;
 import org.gentar.organization.consortium.ConsortiumService;
 import org.springframework.data.domain.Page;
@@ -53,9 +54,10 @@ public class GeneListService
         return geneListRepository.findByConsortium(consortium);
     }
 
-    public Page<ListRecord> getByConsortium(Pageable pageable, String consortiumName)
+    public Page<ListRecord> getAllWithFilters(
+        Pageable pageable, GeneListFilter filter)
     {
-        return geneListRecordService.getAllByConsortium(pageable, consortiumName);
+        return geneListRecordService.getAllBySpecs(pageable, filter);
     }
 
     public void updateRecordsInList(

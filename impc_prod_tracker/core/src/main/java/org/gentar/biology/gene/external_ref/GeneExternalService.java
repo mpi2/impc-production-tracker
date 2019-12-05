@@ -18,14 +18,19 @@ package org.gentar.biology.gene.external_ref;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 import org.gentar.exceptions.SystemOperationFailedException;
-import org.gentar.biology.gene.externalData.GraphQLConsumer;
+import org.gentar.graphql.GraphQLConsumer;
+import org.gentar.graphql.QueryBuilder;
 import org.gentar.util.JsonHelper;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Component;
 import org.gentar.biology.gene.Gene;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 @Component
 public class GeneExternalService
@@ -43,6 +48,44 @@ public class GeneExternalService
         String query =
             String.format(ExternalReferenceConstants.GENE_BY_SYMBOL_OR_ACC_ID_QUERY, input, input);
         return getGeneFromExternalData(query);
+    }
+
+    public Map<String, String> getAccIdsByMarkerSymbols(List<String> inputs)
+    {
+        if (inputs.size() <= 1)
+        {
+            return getAccIdsBySingleMarkerSymbol(inputs.get(0));
+        }
+        else
+        {
+            return getAccIdsByCollectionMarkerSymbols(inputs);
+        }
+    }
+
+    private Map<String, String> getAccIdsBySingleMarkerSymbol(String input)
+    {
+        String query = QueryBuilder.getInstance()
+            .withRoot("mouse_gene")
+            .withColumnInLikeValuesIgnoreCase("symbol", Arrays.asList(input))
+            .withFields(Arrays.asList("mgi_gene_acc_id", "symbol"))
+            .build();
+        return getAccIdsFromExternalData(query);
+    }
+
+    private Map<String, String> getAccIdsByCollectionMarkerSymbols(List<String> inputs)
+    {
+        Map<String, String> accIds = new LinkedHashMap<>();
+        String query = QueryBuilder.getInstance()
+            .withRoot("mouse_gene")
+            .withColumnInLikeValuesIgnoreCase("symbol", inputs)
+            .withFields(Arrays.asList("mgi_gene_acc_id", "symbol"))
+            .build();
+        var queryResults = getAccIdsFromExternalData(query);
+        inputs.forEach(x ->
+        {
+            accIds.put(x, queryResults.get(x.toLowerCase()));
+        });
+        return accIds;
     }
 
     public List<Gene> getGenesFromExternalDataBySymbolOrAccId(String input)
@@ -77,7 +120,7 @@ public class GeneExternalService
         {
             MouseGeneResponse externalDataResponse =
                 JsonHelper.fromJson(result, MouseGeneResponse.class);
-            List<MouseGeneExternalReferenceDTO> externalDataMouseGenes = externalDataResponse.getData();
+            var externalDataMouseGenes = externalDataResponse.getData();
 
             if (!externalDataMouseGenes.isEmpty())
             {
@@ -89,6 +132,29 @@ public class GeneExternalService
             throw new SystemOperationFailedException(e);
         }
         return genes;
+    }
+
+    private Map<String, String> getAccIdsFromExternalData(String query)
+    {
+        String result = graphQLConsumer.executeQuery(query);
+        Map<String, String> accIds = new HashMap<>();
+        try
+        {
+            MouseGeneResponse externalDataResponse =
+                JsonHelper.fromJson(result, MouseGeneResponse.class);
+            var externalDataMouseGenes = externalDataResponse.getData();
+
+            if (externalDataMouseGenes != null)
+            {
+                externalDataMouseGenes.forEach(
+                    x -> accIds.put(x.getSymbol().toLowerCase(), x.getAccId()));
+            }
+        }
+        catch (IOException e)
+        {
+            throw new SystemOperationFailedException(e);
+        }
+        return accIds;
     }
 
     private Gene getGene(MouseGeneExternalReferenceDTO mouseGene)
