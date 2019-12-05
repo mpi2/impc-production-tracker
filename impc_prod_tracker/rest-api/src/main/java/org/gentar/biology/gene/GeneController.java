@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.gentar.biology.gene.Gene;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @RestController
@@ -63,6 +64,13 @@ public class GeneController {
         validateInput(input);
         List<Gene> data = geneExternalService.getGenesFromExternalDataBySymbolOrAccId(input);
         return data.stream().map(Gene::getSymbol).collect(Collectors.toList());
+    }
+
+    @GetMapping(value = {"/test"})
+    public Map<String, String> test (@RequestParam List<String> values)
+    {
+        Map<String, String> data = geneExternalService.getAccIdsByMarkerSymbols(values);
+        return data;
     }
 
     private void validateInput(String input)

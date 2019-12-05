@@ -15,6 +15,9 @@
  */
 package org.gentar.biology.gene_list;
 
+import org.gentar.biology.gene.external_ref.GeneExternalService;
+import org.gentar.biology.gene_list.filter.GeneListFilter;
+import org.gentar.biology.gene_list.filter.GeneListFilterBuilder;
 import org.gentar.biology.gene_list.record.ListRecord;
 import org.gentar.helpers.CsvReader;
 import org.gentar.helpers.LinkUtil;
@@ -36,7 +39,9 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 
@@ -48,15 +53,17 @@ public class GeneListController
     private GeneListService geneListService;
     private ListRecordMapper listRecordMapper;
     private CsvReader csvReader;
+    private GeneExternalService geneExternalService;
 
     public GeneListController(
         GeneListService geneListService,
         ListRecordMapper listRecordMapper,
-        CsvReader csvReader)
+        CsvReader csvReader, GeneExternalService geneExternalService)
     {
         this.geneListService = geneListService;
         this.listRecordMapper = listRecordMapper;
         this.csvReader = csvReader;
+        this.geneExternalService = geneExternalService;
     }
 
     /**
@@ -70,12 +77,38 @@ public class GeneListController
     public ResponseEntity findByConsortium(
         Pageable pageable,
         PagedResourcesAssembler assembler,
-        @PathVariable("consortiumName") String consortiumName)
+        @PathVariable("consortiumName") String consortiumName,
+        @RequestParam (value = "markerSymbol", required = false) List<String> markerSymbols)
     {
+        List<String> accIds = getListAccIdsByMarkerSymbols(markerSymbols);
+        if (markerSymbols != null && accIds.isEmpty())
+        {
+            return buildNoContent();
+        }
+        GeneListFilter filter = GeneListFilterBuilder.getInstance()
+            .withConsortiumName(consortiumName)
+            .withAccIds(accIds)
+            .build();
+
         Page<ListRecord> geneListRecords =
-            geneListService.getByConsortium(pageable, consortiumName);
+            geneListService.getAllWithFilters(pageable, filter);
         String slashContent = consortiumName + "/content";
         return buildResponseEntity(assembler, slashContent, geneListRecords);
+    }
+
+    List<String> getListAccIdsByMarkerSymbols(List<String> markerSymbols)
+    {
+        List<String> accIds = new ArrayList<>();
+        if (markerSymbols != null)
+        {
+            Map<String, String> converted =
+                geneExternalService.getAccIdsByMarkerSymbols(markerSymbols);
+            converted.forEach((k, v) -> {
+                accIds.add(v);
+            });
+        }
+
+        return accIds;
     }
 
     private ResponseEntity buildResponseEntity(
@@ -94,6 +127,11 @@ public class GeneListController
         return new ResponseEntity<>(pr, responseHeaders, HttpStatus.OK);
     }
 
+    private ResponseEntity buildNoContent()
+    {
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
     @PostMapping("/updateListWithFile/{consortiumName}")
     public ResponseEntity uploadFile(
         Pageable pageable,
@@ -103,7 +141,7 @@ public class GeneListController
     {
         List<List<String>> csvContent = csvReader.getCsvContentFromMultipartFile(file);
         geneListService.updateListWithCsvContent(consortiumName, csvContent);
-        return findByConsortium(pageable, assembler, consortiumName);
+        return findByConsortium(pageable, assembler, consortiumName, Collections.emptyList());
     }
 
     /**
@@ -124,6 +162,6 @@ public class GeneListController
         List<ListRecord> listRecords =
             new ArrayList<>(listRecordMapper.toEntities(records));
         geneListService.updateRecordsInList(listRecords, consortiumName);
-        return findByConsortium(pageable, assembler, consortiumName);
+        return findByConsortium(pageable, assembler, consortiumName, Collections.emptyList());
     }
 }

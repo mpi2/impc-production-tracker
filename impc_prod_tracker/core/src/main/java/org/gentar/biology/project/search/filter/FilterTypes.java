@@ -19,6 +19,7 @@ public enum FilterTypes
 {
     TPN("tpn"),
     GENE("gene"),
+    ACC_ID("acc_id"),
     WORK_UNIT_NAME("workUnitName"),
     WORK_GROUP_NAME("workGroup"),
     MARKER_SYMBOL("markerSymbol"),
