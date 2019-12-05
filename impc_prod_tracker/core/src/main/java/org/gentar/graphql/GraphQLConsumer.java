@@ -1,4 +1,4 @@
-package org.gentar.biology.gene.externalData;
+package org.gentar.graphql;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
