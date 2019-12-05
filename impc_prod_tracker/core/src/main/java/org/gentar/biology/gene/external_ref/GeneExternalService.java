@@ -27,6 +27,7 @@ import org.gentar.biology.gene.Gene;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -52,7 +53,11 @@ public class GeneExternalService
 
     public Map<String, String> getAccIdsByMarkerSymbols(List<String> inputs)
     {
-        if (inputs.size() <= 1)
+        if (inputs.isEmpty())
+        {
+            return Collections.emptyMap();
+        }
+        if (inputs.size() == 1)
         {
             return getAccIdsBySingleMarkerSymbol(inputs.get(0));
         }
