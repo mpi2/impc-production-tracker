@@ -48,20 +48,6 @@ public class QueryBuilder
         return this;
     }
 
-//    public QueryBuilder withColumnInLikeValueIgnoreCase(String column, String value)
-//    {
-//        List<String> newCondition = new ArrayList<>();
-//        if (values != null)
-//        {
-//            values.forEach(x -> {
-//                String ilikeCondition =Conditions.createIlikeCondition(column, x);
-//                newCondition.add(ilikeCondition);
-//            });
-//        }
-//        this.conditions.add(Conditions.createOrCondition(conditionsToString(newCondition)));
-//        return this;
-//    }
-
     public QueryBuilder withColumnInLikeValuesIgnoreCase(String column, List<String> values)
     {
         List<String> newCondition = new ArrayList<>();
