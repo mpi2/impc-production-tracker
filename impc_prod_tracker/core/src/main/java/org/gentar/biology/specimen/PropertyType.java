@@ -1,4 +1,4 @@
-package org.gentar.biology.specimen.type;
+package org.gentar.biology.specimen;
 
 import lombok.AccessLevel;
 import lombok.Data;
