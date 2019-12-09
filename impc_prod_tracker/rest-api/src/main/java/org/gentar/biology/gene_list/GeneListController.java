@@ -29,6 +29,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -78,7 +79,7 @@ public class GeneListController
         Pageable pageable,
         PagedResourcesAssembler assembler,
         @PathVariable("consortiumName") String consortiumName,
-        @RequestParam (value = "markerSymbol", required = false) List<String> markerSymbols)
+        @RequestParam(value = "markerSymbol", required = false) List<String> markerSymbols)
     {
         List<String> accIds = getListAccIdsByMarkerSymbols(markerSymbols);
         if (markerSymbols != null && accIds.isEmpty())
@@ -162,6 +163,25 @@ public class GeneListController
         List<ListRecord> listRecords =
             new ArrayList<>(listRecordMapper.toEntities(records));
         geneListService.updateRecordsInList(listRecords, consortiumName);
+        return findByConsortium(pageable, assembler, consortiumName, Collections.emptyList());
+    }
+
+    /**
+     * Delete records of a list
+     * @param pageable Pagination information.
+     * @param assembler Assembler to create links.
+     * @param recordsIds Records to delete.
+     * @param consortiumName Name of the consortium
+     * @return Paginated content updated.
+     */
+    @DeleteMapping(value = {"/{consortiumName}/content"})
+    public ResponseEntity deleteRecordsInList(
+        Pageable pageable,
+        PagedResourcesAssembler assembler,
+        @RequestParam(value = "recordId", required = false) List<Long> recordsIds,
+        @PathVariable("consortiumName") String consortiumName)
+    {
+        geneListService.deleteRecordsInList(recordsIds, consortiumName);
         return findByConsortium(pageable, assembler, consortiumName, Collections.emptyList());
     }
 }
