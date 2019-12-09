@@ -82,10 +82,6 @@ public class ListRecordMapper implements Mapper<ListRecord, ListRecordDTO>
     {
         ListRecord listRecord = entityMapper.toTarget(listRecordDTO, ListRecord.class);
         addGeneByListRecords(listRecord, listRecordDTO);
-        if (listRecordDTO.getId() < 0)
-        {
-            listRecord.setId(null);
-        }
         return listRecord;
     }
 

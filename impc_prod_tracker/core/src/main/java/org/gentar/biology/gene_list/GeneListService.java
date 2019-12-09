@@ -87,6 +87,22 @@ public class GeneListService
         geneListRepository.save(geneList);
     }
 
+    public void deleteRecordsInList(
+        List<Long> listRecordsIds, String consortiumName)
+    {
+        Consortium consortium =
+            consortiumService.getConsortiumByNameOrThrowException(consortiumName);
+        final GeneList geneList = getOrCreateGeneList(consortium);
+
+        if (geneList.getListRecords() != null)
+        {
+            removeListRecords(listRecordsIds, geneList);
+        }
+        geneListRepository.save(geneList);
+    }
+
+
+
     private void addOrReplaceListRecords(List<ListRecord> listRecords, GeneList geneList)
     {
         var currentListRecords = geneList.getListRecords();
@@ -99,6 +115,18 @@ public class GeneListService
             else
             {
                 currentListRecords.set(index, x);
+            }
+        });
+    }
+
+    private void removeListRecords(List<Long> listRecordsIds, GeneList geneList)
+    {
+        var currentListRecords = geneList.getListRecords();
+        listRecordsIds.forEach(x -> {
+            var index = indexOfRecordIdInList(x, currentListRecords);
+            if (index != -1)
+            {
+                currentListRecords.remove(index);
             }
         });
     }
