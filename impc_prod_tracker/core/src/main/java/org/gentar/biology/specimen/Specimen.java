@@ -5,7 +5,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.gentar.BaseEntity;
 import org.gentar.biology.outcome.Outcome;
-import org.gentar.biology.specimen_type.SpecimenType;
 
 import javax.persistence.*;
 

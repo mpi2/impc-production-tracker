@@ -1,11 +1,9 @@
-package org.gentar.biology.specimen.specimen_properties;
+package org.gentar.biology.specimen;
 
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.gentar.BaseEntity;
-import org.gentar.biology.specimen.Specimen;
-import org.gentar.biology.specimen.type.PropertyType;
 
 import javax.persistence.*;
 import java.io.Serializable;

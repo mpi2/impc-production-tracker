@@ -1,4 +1,4 @@
-package org.gentar.biology.specimen.type;
+package org.gentar.biology.specimen;
 
 import org.springframework.data.repository.CrudRepository;
 

@@ -1,10 +1,9 @@
-package org.gentar.biology.specimen_type;
+package org.gentar.biology.specimen;
 
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.gentar.BaseEntity;
-
 import javax.persistence.*;
 
 @NoArgsConstructor(access= AccessLevel.PRIVATE, force=true)
