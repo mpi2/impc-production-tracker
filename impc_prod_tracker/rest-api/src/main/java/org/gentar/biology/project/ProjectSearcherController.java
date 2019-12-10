@@ -70,7 +70,7 @@ public class ProjectSearcherController
                 .withWorkGroupNames(workGroupNames)
                 .build();
             Search search = new Search(searchTypeName, inputs, projectFilter);
-            SearchReport searchReport = projectSearcherService.executeSearch(search);
+            SearchReport searchReport = projectSearcherService.executeSearch(search, pageable);
 
             Page<SearchResult> paginatedContent =
                 PaginationHelper.createPage(searchReport.getResults(), pageable);

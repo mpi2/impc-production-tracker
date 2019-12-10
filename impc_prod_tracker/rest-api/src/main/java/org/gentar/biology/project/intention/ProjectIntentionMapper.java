@@ -16,13 +16,12 @@
 package org.gentar.biology.project.intention;
 
 import org.gentar.biology.project.intention.project_intention.ProjectIntentionService;
-import org.gentar.biology.gene.ProjectIntentionGeneDTO;
+import org.gentar.biology.intention.ProjectIntentionGeneDTO;
 import org.gentar.biology.intention.ProjectIntentionDTO;
 import org.gentar.biology.sequence.ProjectIntentionSequenceDTO;
 import org.gentar.EntityMapper;
 import org.gentar.biology.allele.AlleleTypeMapper;
 import org.gentar.biology.allele.AlleleCategorizationMapper;
-import org.gentar.biology.gene.ProjectIntentionGeneMapper;
 import org.gentar.biology.molecular_mutation.MolecularMutationTypeMapper;
 import org.springframework.stereotype.Component;
 import org.gentar.biology.project.intention.project_intention.ProjectIntention;
@@ -43,6 +42,7 @@ public class ProjectIntentionMapper
     private ProjectIntentionGeneMapper projectIntentionGeneMapper;
     private ProjectIntentionSequenceMapper projectIntentionSequenceMapper;
     private ProjectIntentionService projectIntentionService;
+    private OrthologMapper orthologMapper;
 
     private static final String INTENTION_TYPE_GENE = "gene";
     private static final String INTENTION_TYPE_SEQUENCE = "sequence";
@@ -53,7 +53,9 @@ public class ProjectIntentionMapper
         AlleleCategorizationMapper alleleCategorizationMapper,
         MolecularMutationTypeMapper molecularMutationTypeMapper,
         ProjectIntentionGeneMapper projectIntentionGeneMapper,
-        ProjectIntentionSequenceMapper projectIntentionSequenceMapper, ProjectIntentionService projectIntentionService)
+        ProjectIntentionSequenceMapper projectIntentionSequenceMapper,
+        ProjectIntentionService projectIntentionService,
+        OrthologMapper orthologMapper)
     {
         this.entityMapper = entityMapper;
         this.alleleTypeMapper = alleleTypeMapper;
@@ -62,6 +64,7 @@ public class ProjectIntentionMapper
         this.projectIntentionGeneMapper = projectIntentionGeneMapper;
         this.projectIntentionSequenceMapper = projectIntentionSequenceMapper;
         this.projectIntentionService = projectIntentionService;
+        this.orthologMapper = orthologMapper;
     }
 
     public ProjectIntentionDTO toDto(ProjectIntention projectIntention)
@@ -83,6 +86,10 @@ public class ProjectIntentionMapper
         {
             ProjectIntentionGeneDTO projectIntentionGeneDTO =
                 projectIntentionGeneMapper.toDto(projectIntentionGene);
+            projectIntentionGeneDTO.setAllOrthologs(
+                orthologMapper.toDtos(projectIntentionGene.getAllOrthologs()));
+            projectIntentionGeneDTO.setBestOrthologs(
+                orthologMapper.toDtos(projectIntentionGene.getBestOrthologs()));
             projectIntentionDTO.setProjectIntentionGeneDTO(projectIntentionGeneDTO);
         }
     }

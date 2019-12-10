@@ -1,9 +1,9 @@
-package org.gentar.biology.ortholog;
+package org.gentar.biology.intention;
 
 import lombok.Data;
 
 @Data
-public class Ortholog
+public class OrthologDTO
 {
     private String symbol;
     private String category;

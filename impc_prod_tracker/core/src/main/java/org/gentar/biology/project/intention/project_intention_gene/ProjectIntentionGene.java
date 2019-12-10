@@ -18,8 +18,10 @@ package org.gentar.biology.project.intention.project_intention_gene;
 import lombok.*;
 import org.gentar.BaseEntity;
 import org.gentar.biology.gene.Gene;
+import org.gentar.biology.ortholog.Ortholog;
 import org.gentar.biology.project.intention.project_intention.ProjectIntention;
 import javax.persistence.*;
+import java.util.List;
 
 @NoArgsConstructor(access= AccessLevel.PUBLIC, force=true)
 @Data
@@ -37,4 +39,8 @@ public class ProjectIntentionGene extends BaseEntity
 
     @ManyToOne(targetEntity = Gene.class)
     private Gene gene;
+
+    private transient List<Ortholog> allOrthologs;
+
+    private transient List<Ortholog> bestOrthologs;
 }

@@ -16,6 +16,8 @@
 package org.gentar.biology.project.search;
 
 import org.gentar.biology.project.search.filter.ProjectFilter;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 import org.gentar.biology.project.Project;
 import org.gentar.biology.project.ProjectService;
@@ -53,6 +55,24 @@ public class ProjectSearcherServiceImpl implements ProjectSearcherService
         return searchReport;
     }
 
+    @Override
+    public SearchReport executeSearch(Search search, Pageable pageable)
+    {
+        SearchReport searchReport = buildReportWithInitialData(search);
+        List<SearchResult> results;
+
+        if (search.getSearchType() == null || search.getInputs().isEmpty())
+        {
+            results = retrieveAllAvailableProjectsWithPagination(search.getFilters(), pageable);
+        }
+        else
+        {
+            results = searcher.execute(search);
+        }
+        searchReport.setResults(results);
+        return searchReport;
+    }
+
     private SearchReport buildReportWithInitialData(Search search)
     {
         SearchReport searchReport = new SearchReport();
@@ -63,9 +83,19 @@ public class ProjectSearcherServiceImpl implements ProjectSearcherService
         return searchReport;
     }
 
-    private List<SearchResult>  retrieveAllAvailableProjects(ProjectFilter filters)
+    private List<SearchResult> retrieveAllAvailableProjects(ProjectFilter filters)
     {
         List<Project> projects = projectService.getProjects(filters);
+        List<SearchResult> searchResults = new ArrayList<>();
+        projects.forEach(p -> searchResults.add(new SearchResult(null, p, null)));
+
+        return searchResults;
+    }
+
+    private List<SearchResult> retrieveAllAvailableProjectsWithPagination(
+        ProjectFilter filters, Pageable pageable)
+    {
+        Page<Project> projects = projectService.getProjects(filters, pageable);
         List<SearchResult> searchResults = new ArrayList<>();
         projects.forEach(p -> searchResults.add(new SearchResult(null, p, null)));
 
