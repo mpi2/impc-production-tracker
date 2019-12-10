@@ -15,7 +15,10 @@
  */
 package org.gentar.biology.project.search;
 
+import org.springframework.data.domain.Pageable;
+
 public interface ProjectSearcherService
 {
     SearchReport executeSearch(Search search);
+    SearchReport executeSearch(Search search, Pageable pageable);
 }

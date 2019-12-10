@@ -17,6 +17,8 @@ package org.gentar.biology.project;
 
 import org.gentar.audit.history.History;
 import org.gentar.biology.project.search.filter.ProjectFilter;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 
@@ -25,6 +27,7 @@ public interface ProjectService
     Project getProjectByTpn(String tpn);
 
     List<Project> getProjects(ProjectFilter projectFilter);
+    Page<Project> getProjects(ProjectFilter projectFilter, Pageable pageable);
 
     Project createProject(Project projectDTO);
 

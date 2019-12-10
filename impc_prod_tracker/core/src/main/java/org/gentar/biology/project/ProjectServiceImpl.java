@@ -16,16 +16,24 @@
 package org.gentar.biology.project;
 
 import org.gentar.audit.history.HistoryService;
+import org.gentar.biology.ortholog.Ortholog;
+import org.gentar.biology.ortholog.OrthologService;
+import org.gentar.biology.project.intention.project_intention.ProjectIntention;
+import org.gentar.biology.project.intention.project_intention_gene.ProjectIntentionGene;
 import org.gentar.security.abac.ResourceAccessChecker;
 import org.gentar.biology.project.search.filter.ProjectFilter;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Component;
 import org.gentar.audit.history.History;
 import org.gentar.biology.project.engine.ProjectCreator;
 import org.gentar.biology.project.assignment_status.AssignmentStatus;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
@@ -36,19 +44,22 @@ public class ProjectServiceImpl implements ProjectService
     private HistoryService<Project> historyService;
     private ResourceAccessChecker<Project> resourceAccessChecker;
     private ProjectCreator projectCreator;
+    private OrthologService orthologService;
 
     public static final String READ_PROJECT_ACTION = "READ_PROJECT";
 
     public ProjectServiceImpl(
         ProjectRepository projectRepository,
         HistoryService<Project> historyService,
-        ResourceAccessChecker resourceAccessChecker,
-        ProjectCreator projectCreator)
+        ResourceAccessChecker<Project> resourceAccessChecker,
+        ProjectCreator projectCreator,
+        OrthologService orthologService)
     {
         this.projectRepository = projectRepository;
         this.historyService = historyService;
         this.resourceAccessChecker = resourceAccessChecker;
         this.projectCreator = projectCreator;
+        this.orthologService = orthologService;
     }
 
     @Override
@@ -63,7 +74,74 @@ public class ProjectServiceImpl implements ProjectService
     {
         Specification<Project> specifications = buildSpecificationsWithCriteria(projectFilter);
         List<Project> projects = projectRepository.findAll(specifications);
+        addOrthologs(projects);
         return getCheckedCollection(projects);
+    }
+
+    @Override
+    public Page<Project> getProjects(ProjectFilter projectFilter, Pageable pageable)
+    {
+        Specification<Project> specifications = buildSpecificationsWithCriteria(projectFilter);
+        Page<Project> projectsPage = projectRepository.findAll(specifications, pageable);
+        addOrthologs(projectsPage.getContent());
+        return projectsPage.map(this::getAccessChecked);
+    }
+
+    private void addOrthologs(List<Project> projects)
+    {
+        List<String> accIds = new ArrayList<>();
+        projects.forEach(x -> {
+            accIds.addAll(getAccIdsByProject(x));
+        });
+        Map<String, List<Ortholog>> orthologs = orthologService.getOrthologsByAccIds(accIds);
+        List<ProjectIntentionGene> projectIntentionGenes = getIntentionGenesByProjects(projects);
+        projectIntentionGenes.forEach(i -> {
+            String accId = i.getGene().getAccId();
+            List<Ortholog> orthologsByAccId = orthologs.get(accId);
+            i.setAllOrthologs(orthologsByAccId);
+            i.setBestOrthologs(calculateBestOrthologs(orthologsByAccId));
+        });
+    }
+
+    private List<Ortholog> calculateBestOrthologs(List<Ortholog> orthologsByAccId)
+    {
+        return orthologService.calculateBestOrthologs(orthologsByAccId);
+    }
+
+    private List<String> getAccIdsByProject(Project project)
+    {
+        List<String> accIds = new ArrayList<>();
+        List<ProjectIntentionGene> projectIntentionGenes = getIntentionGenesByProject(project);
+        projectIntentionGenes.forEach(x -> {
+            accIds.add(x.getGene().getAccId());
+        });
+        return accIds;
+    }
+
+    private List<ProjectIntentionGene> getIntentionGenesByProjects(List<Project> projects)
+    {
+        List<ProjectIntentionGene> projectIntentionGenes = new ArrayList<>();
+        projects.forEach(x -> {
+            projectIntentionGenes.addAll(getIntentionGenesByProject(x));
+        });
+        return projectIntentionGenes;
+    }
+
+    private List<ProjectIntentionGene> getIntentionGenesByProject(Project project)
+    {
+        List<ProjectIntentionGene> projectIntentionGenes = new ArrayList<>();
+        List<ProjectIntention> intentions = project.getProjectIntentions();
+        if (intentions != null)
+        {
+            intentions.forEach(x -> {
+                ProjectIntentionGene intentionGene = x.getProjectIntentionGene();
+                if (intentionGene != null)
+                {
+                    projectIntentionGenes.add(intentionGene);
+                }
+            });
+        }
+        return projectIntentionGenes;
     }
 
     private Project getAccessChecked(Project project)

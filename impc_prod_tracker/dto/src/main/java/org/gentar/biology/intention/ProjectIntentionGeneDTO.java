@@ -13,11 +13,13 @@
  * language governing permissions and limitations under the
  * License.
  *******************************************************************************/
-package org.gentar.biology.gene;
+package org.gentar.biology.intention;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
+import org.gentar.biology.gene.GeneDTO;
+import java.util.List;
 
 @Data
 @RequiredArgsConstructor
@@ -25,4 +27,8 @@ public class ProjectIntentionGeneDTO
 {
     @JsonProperty("gene")
     private GeneDTO geneDTO;
+
+    private List<OrthologDTO> bestOrthologs;
+
+    private List<OrthologDTO> allOrthologs;
 }

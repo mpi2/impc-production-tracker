@@ -87,10 +87,8 @@ class ProjectController
             .withPrivacies(privaciesNames)
             .withWorkUnitNames(workUnitNames)
             .build();
-        List<Project> projects = projectService.getProjects(projectFilter);
-        Page<Project> paginatedContent =
-            PaginationHelper.createPage(projects, pageable);
-        Page<ProjectDTO> projectDtos = paginatedContent.map(this::getDTO);
+        Page<Project> projectsPage = projectService.getProjects(projectFilter, pageable);
+        Page<ProjectDTO> projectDtos = projectsPage.map(this::getDTO);
         PagedModel pr =
             assembler.toModel(
                 projectDtos,
@@ -104,7 +102,7 @@ class ProjectController
 
     private ProjectDTO getDTO(Project project)
     {
-        ProjectDTO projectDTO = null;
+        ProjectDTO projectDTO = new ProjectDTO();
         if (project != null)
         {
             projectDTO = projectEntityToDtoMapper.toDto(project);
