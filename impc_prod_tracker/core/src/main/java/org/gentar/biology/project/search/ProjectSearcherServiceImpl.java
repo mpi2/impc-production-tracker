@@ -16,14 +16,18 @@
 package org.gentar.biology.project.search;
 
 import org.gentar.biology.project.search.filter.ProjectFilter;
+import org.gentar.util.PaginationHelper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.hateoas.PagedModel;
 import org.springframework.stereotype.Component;
 import org.gentar.biology.project.Project;
 import org.gentar.biology.project.ProjectService;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
+import java.util.Objects;
 
 @Component
 public class ProjectSearcherServiceImpl implements ProjectSearcherService
@@ -59,18 +63,30 @@ public class ProjectSearcherServiceImpl implements ProjectSearcherService
     public SearchReport executeSearch(Search search, Pageable pageable)
     {
         SearchReport searchReport = buildReportWithInitialData(search);
-        List<SearchResult> results;
+        List<SearchResult> results = new ArrayList<>();
 
         if (search.getSearchType() == null || search.getInputs().isEmpty())
         {
-            results = retrieveAllAvailableProjectsWithPagination(search.getFilters(), pageable);
+            Page<Project> paginatedProjects = getAllPaginatedProjects(search.getFilters(), pageable);
+            PagedModel.PageMetadata pageMetadata = buildPageMetadata(paginatedProjects);
+            searchReport.setPageMetadata(pageMetadata);
+            addProjectsToResult(paginatedProjects.getContent(), results);
         }
         else
         {
             results = searcher.execute(search);
+            Page<SearchResult> paginatedContent =
+                PaginationHelper.createPage(results, pageable);
+            PagedModel.PageMetadata pageMetadata = buildPageMetadata(paginatedContent);
+            searchReport.setPageMetadata(pageMetadata);
         }
         searchReport.setResults(results);
         return searchReport;
+    }
+
+    private void addProjectsToResult(Collection<Project> projects, List<SearchResult> searchResults)
+    {
+        projects.forEach(p -> searchResults.add(new SearchResult(null, p, null)));
     }
 
     private SearchReport buildReportWithInitialData(Search search)
@@ -92,13 +108,18 @@ public class ProjectSearcherServiceImpl implements ProjectSearcherService
         return searchResults;
     }
 
-    private List<SearchResult> retrieveAllAvailableProjectsWithPagination(
-        ProjectFilter filters, Pageable pageable)
+    private Page<Project> getAllPaginatedProjects(ProjectFilter filters, Pageable pageable)
     {
-        Page<Project> projects = projectService.getProjects(filters, pageable);
-        List<SearchResult> searchResults = new ArrayList<>();
-        projects.forEach(p -> searchResults.add(new SearchResult(null, p, null)));
+        return projectService.getProjects(filters, pageable);
+    }
 
-        return searchResults;
+    private PagedModel.PageMetadata buildPageMetadata(Page<?> paginatedContent)
+    {
+        int numNulls = (int) paginatedContent.stream().filter(Objects::isNull).count();
+        return new PagedModel.PageMetadata(
+            paginatedContent.getSize(),
+            paginatedContent.getNumber(),
+            paginatedContent.getTotalElements(),
+            paginatedContent.getTotalPages());
     }
 }
