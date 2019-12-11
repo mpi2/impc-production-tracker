@@ -51,15 +51,13 @@ public class OrthologService
     public Map<String, List<Ortholog>> getOrthologsByAccIds(List<String> accIds)
     {
         Map<String, List<Ortholog>> orthologs = new HashMap<>();
-        accIds.forEach(x ->
+        if (accIds != null && !accIds.isEmpty())
         {
-            orthologs.put(x, null);
-        });
-        System.out.println(buildQuery(accIds));
-        String query = buildQuery(accIds);
-        String result = graphQLConsumer.executeQuery(query);
-        System.out.println(result);
-        return jsonToOrthologsMapper.toOrthologs(result);
+            String query = buildQuery(accIds);
+            String result = graphQLConsumer.executeQuery(query);
+            orthologs = jsonToOrthologsMapper.toOrthologs(result);
+        }
+        return orthologs;
     }
 
     private String buildQuery(List<String> accIds)

@@ -16,6 +16,8 @@
 package org.gentar.biology.project.search;
 
 import lombok.Data;
+import org.springframework.hateoas.PagedModel;
+
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
@@ -28,4 +30,5 @@ public class SearchReport
     private List<String> inputs;
     private Map<String, List<String>> filters;
     private List<SearchResult> results;
+    private PagedModel.PageMetadata pageMetadata;
 }

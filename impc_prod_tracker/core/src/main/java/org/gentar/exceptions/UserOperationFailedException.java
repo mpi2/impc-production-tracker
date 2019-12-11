@@ -7,7 +7,6 @@ public class UserOperationFailedException extends OperationFailedException
 {
     private String debugMessage;
     private Throwable cause;
-   // private HttpStatus httpStatus;
 
     public UserOperationFailedException(Throwable exception)
     {
@@ -19,12 +18,6 @@ public class UserOperationFailedException extends OperationFailedException
     {
         super(message);
     }
-
-//    public UserOperationFailedException(String message, HttpStatus httpStatus)
-//    {
-//        super(message);
-//        this.httpStatus = httpStatus;
-//    }
 
     public UserOperationFailedException(String message, Throwable cause)
     {

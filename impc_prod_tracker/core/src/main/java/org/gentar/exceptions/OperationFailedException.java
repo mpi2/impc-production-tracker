@@ -17,6 +17,8 @@ package org.gentar.exceptions;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Class to manage the Exceptions in the application
@@ -27,8 +29,6 @@ import lombok.Setter;
 @Setter
 public abstract class OperationFailedException extends RuntimeException
 {
-    //protected HttpStatus httpStatus;
-
     public OperationFailedException(String message)
     {
         super(message);
