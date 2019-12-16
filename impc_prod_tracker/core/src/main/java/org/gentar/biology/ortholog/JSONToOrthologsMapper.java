@@ -21,6 +21,7 @@ import java.util.Map;
 public class JSONToOrthologsMapper
 {
     private static ObjectMapper mapper = new ObjectMapper();
+    private static final String HGNC_URL = "https://www.genenames.org/data/gene-symbol-report/#!/hgnc_id/";
 
     Map<String, List<Ortholog>> toOrthologs(String json)
     {
@@ -56,6 +57,7 @@ public class JSONToOrthologsMapper
                 mappedResult.orthologResults.forEach(x -> {
                     Ortholog ortholog = new Ortholog();
                     ortholog.setSymbol(x.getHumanGeneResult().getSymbol());
+                    ortholog.setLink(HGNC_URL + x.getHumanGeneResult().getHgncAccId());
                     ortholog.setCategory(x.getCategory());
                     ortholog.setSupport(x.getSupport());
                     ortholog.setSupportCount(x.getSupportCount());
