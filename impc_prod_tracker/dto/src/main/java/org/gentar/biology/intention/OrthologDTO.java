@@ -9,4 +9,5 @@ public class OrthologDTO
     private String category;
     private String support;
     private Integer supportCount;
+    private String link;
 }
