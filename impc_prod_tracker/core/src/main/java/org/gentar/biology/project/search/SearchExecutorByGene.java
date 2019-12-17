@@ -17,6 +17,7 @@ package org.gentar.biology.project.search;
 
 import org.gentar.biology.project.search.filter.ProjectFilter;
 import org.gentar.biology.project.search.filter.ProjectFilterBuilder;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Component;
 import org.gentar.biology.gene.Gene;
 import org.gentar.biology.project.Project;
@@ -39,6 +40,7 @@ class SearchExecutorByGene implements SearchExecutor
     }
 
     @Override
+    @Cacheable("projectsBySearchTerm")
     public List<SearchResult> findProjects(String searchTerm)
     {
         List<SearchResult> searchResults = findProjectsByGene(searchTerm);
