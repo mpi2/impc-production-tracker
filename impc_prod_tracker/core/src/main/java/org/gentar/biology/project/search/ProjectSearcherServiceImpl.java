@@ -74,11 +74,12 @@ public class ProjectSearcherServiceImpl implements ProjectSearcherService
         }
         else
         {
-            results = searcher.execute(search);
+            var allResults = searcher.execute(search);
             Page<SearchResult> paginatedContent =
-                PaginationHelper.createPage(results, pageable);
+                PaginationHelper.createPage(allResults, pageable);
             PagedModel.PageMetadata pageMetadata = buildPageMetadata(paginatedContent);
             searchReport.setPageMetadata(pageMetadata);
+            results = paginatedContent.getContent();
         }
         searchReport.setResults(results);
         return searchReport;
