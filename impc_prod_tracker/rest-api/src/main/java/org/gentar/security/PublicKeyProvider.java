@@ -15,6 +15,7 @@
  *******************************************************************************/
 package org.gentar.security;
 
+import org.gentar.exceptions.SystemOperationFailedException;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
@@ -61,15 +62,24 @@ public class PublicKeyProvider
 
     private String requestPublicKeyText(String authenticationServiceUrl)
     {
-        ResponseEntity<String> response =
-            restTemplate.getForEntity(authenticationServiceUrl, String.class);
-        String text = response.getBody();
-        if (text != null)
+        String text = "";
+        try
         {
-            text = text
-                .replaceAll(BEGIN_CERT, "")
-                .replaceAll(END_CERT, "")
-                .replaceAll("\n","");
+            ResponseEntity<String> response =
+                restTemplate.getForEntity(authenticationServiceUrl, String.class);
+            text = response.getBody();
+            if (text != null)
+            {
+                text = text
+                    .replaceAll(BEGIN_CERT, "")
+                    .replaceAll(END_CERT, "")
+                    .replaceAll("\n","");
+            }
+        }
+        catch (Exception e)
+        {
+            throw new SystemOperationFailedException(
+                "Error while getting public key in authentication", e.getMessage());
         }
         return text;
     }
