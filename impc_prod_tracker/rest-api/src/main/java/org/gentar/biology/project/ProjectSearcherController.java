@@ -17,11 +17,14 @@ package org.gentar.biology.project;
 
 import org.gentar.biology.project.search.ProjectSearcherService;
 import org.gentar.biology.project.search.Search;
+import org.gentar.helpers.SearchCsvRecord;
 import org.gentar.biology.project.search.SearchReport;
 import org.gentar.biology.project.search.SearchReportDTO;
 import org.gentar.helpers.CsvReader;
+import org.gentar.helpers.CsvWriter;
 import org.gentar.util.TextUtil;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -33,7 +36,8 @@ import org.springframework.web.bind.annotation.RestController;
 import org.gentar.biology.project.search.filter.ProjectFilter;
 import org.gentar.biology.project.search.filter.ProjectFilterBuilder;
 import org.springframework.web.multipart.MultipartFile;
-
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -45,14 +49,38 @@ public class ProjectSearcherController
     private ProjectSearcherService projectSearcherService;
     private SearchReportMapper searchReportMapper;
     private CsvReader csvReader;
+    private CsvWriter<SearchCsvRecord> csvWriter;
+    private SearchCsvRecordMapper searchCsvRecordMapper;
 
     public ProjectSearcherController(
         ProjectSearcherService projectSearcherService,
-        SearchReportMapper searchReportMapper, CsvReader csvReader)
+        SearchReportMapper searchReportMapper,
+        CsvReader csvReader,
+        CsvWriter<SearchCsvRecord> csvWriter,
+        SearchCsvRecordMapper searchCsvRecordMapper)
     {
         this.projectSearcherService = projectSearcherService;
         this.searchReportMapper = searchReportMapper;
         this.csvReader = csvReader;
+        this.csvWriter = csvWriter;
+        this.searchCsvRecordMapper = searchCsvRecordMapper;
+    }
+
+    private Search buildSearch(
+        String searchTypeName,
+        List<String> inputs,
+        List<String> tpns,
+        List<String> privacies,
+        List<String> workUnitsNames,
+        List<String> workGroupNames)
+    {
+        ProjectFilter projectFilter = ProjectFilterBuilder.getInstance()
+            .withTpns(tpns)
+            .withWorkUnitNames(workUnitsNames)
+            .withWorkGroupNames(workGroupNames)
+            .withPrivacies(privacies)
+            .build();
+        return new Search(searchTypeName, inputs, projectFilter);
     }
 
     @GetMapping
@@ -61,17 +89,12 @@ public class ProjectSearcherController
         @RequestParam(value = "searchTypeName", required = false) String searchTypeName,
         @RequestParam(value = "input", required = false) List<String> inputs,
         @RequestParam(value = "tpn", required = false) List<String> tpns,
-        @RequestParam(value = "privacyName", required = false) List<String> privacies,
+        @RequestParam(value = "privacyNames", required = false) List<String> privacies,
         @RequestParam(value = "workUnitName", required = false) List<String> workUnitsNames,
         @RequestParam(value = "workGroupName", required = false) List<String> workGroupNames)
     {
-        ProjectFilter projectFilter = ProjectFilterBuilder.getInstance()
-            .withTpns(tpns)
-            .withWorkUnitNames(workUnitsNames)
-            .withWorkGroupNames(workGroupNames)
-            .withPrivacies(privacies)
-            .build();
-        Search search = new Search(searchTypeName, inputs, projectFilter);
+        Search search =
+            buildSearch(searchTypeName, inputs, tpns, privacies, workUnitsNames, workGroupNames);
         SearchReport searchReport = projectSearcherService.executeSearch(search, pageable);
         SearchReportDTO searchReportDTO = searchReportMapper.toDto(searchReport);
 
@@ -83,19 +106,14 @@ public class ProjectSearcherController
         Pageable pageable,
         @RequestParam(value = "searchTypeName", required = false) String searchTypeName,
         @RequestParam("file") MultipartFile file,
-        @RequestParam(value = "tpn", required = false) List<String> tpns,
-        @RequestParam(value = "privacyName", required = false) List<String> privacies,
-        @RequestParam(value = "workUnitName", required = false) List<String> workUnitsNames,
-        @RequestParam(value = "workGroupName", required = false) List<String> workGroupNames)
+        @RequestParam(value = "tpns", required = false) List<String> tpns,
+        @RequestParam(value = "privacyNames", required = false) List<String> privacies,
+        @RequestParam(value = "workUnitNames", required = false) List<String> workUnitsNames,
+        @RequestParam(value = "workGroupNames", required = false) List<String> workGroupNames)
     {
         List<String> inputs = getInputByFile(file);
-        ProjectFilter projectFilter = ProjectFilterBuilder.getInstance()
-            .withTpns(tpns)
-            .withWorkUnitNames(workUnitsNames)
-            .withWorkGroupNames(workGroupNames)
-            .withPrivacies(privacies)
-            .build();
-        Search search = new Search(searchTypeName, inputs, projectFilter);
+        Search search =
+            buildSearch(searchTypeName, inputs, tpns, privacies, workUnitsNames, workGroupNames);
         SearchReport searchReport = projectSearcherService.executeSearch(search, pageable);
         SearchReportDTO searchReportDTO = searchReportMapper.toDto(searchReport);
 
@@ -108,6 +126,54 @@ public class ProjectSearcherController
         List<String> inputs = new ArrayList<>();
         csvContent.forEach(x -> inputs.add(getCleanText(String.join(",", x))));
         return inputs;
+    }
+
+    @GetMapping("/exportSearch")
+    public void exportCSV(
+        HttpServletResponse response,
+        @RequestParam(value = "searchTypeName", required = false) String searchTypeName,
+        @RequestParam(value = "input", required = false) List<String> inputs,
+        @RequestParam(value = "tpns", required = false) List<String> tpns,
+        @RequestParam(value = "privacyNames", required = false) List<String> privacies,
+        @RequestParam(value = "workUnitNames", required = false) List<String> workUnitsNames,
+        @RequestParam(value = "workGroupNames", required = false) List<String> workGroupNames) throws Exception
+    {
+        exportCsv(response, searchTypeName, inputs, tpns, privacies, workUnitsNames, workGroupNames);
+    }
+
+    @PostMapping("/exportSearchByFile")
+    public void exportCSVByFile(
+        HttpServletResponse response,
+        @RequestParam(value = "searchTypeName", required = false) String searchTypeName,
+        @RequestParam("file") MultipartFile file,
+        @RequestParam(value = "tpns", required = false) List<String> tpns,
+        @RequestParam(value = "privacyNames", required = false) List<String> privacies,
+        @RequestParam(value = "workUnitNames", required = false) List<String> workUnitsNames,
+        @RequestParam(value = "workGroupNames", required = false) List<String> workGroupNames) throws Exception
+    {
+
+        List<String> inputs = getInputByFile(file);
+        exportCsv(response, searchTypeName, inputs, tpns, privacies, workUnitsNames, workGroupNames);
+    }
+
+    private void exportCsv(
+        HttpServletResponse response,
+        String searchTypeName,
+        List<String> inputs,
+        List<String> tpns,
+        List<String> privacies,
+        List<String> workUnitsNames,
+        List<String> workGroupNames) throws IOException
+    {
+        String filename = "download.csv";
+        response.setContentType("text/csv");
+        response.setHeader(
+            HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + filename + "\"");
+        Search search =
+            buildSearch(searchTypeName, inputs, tpns, privacies, workUnitsNames, workGroupNames);
+        SearchReport searchReport = projectSearcherService.executeSearch(search);
+        var searchCsvRecords = searchCsvRecordMapper.toDtos(searchReport.getResults());
+        csvWriter.writeListToCsv(response.getWriter(), searchCsvRecords, SearchCsvRecord.HEADERS);
     }
 
     private String getCleanText(String text)

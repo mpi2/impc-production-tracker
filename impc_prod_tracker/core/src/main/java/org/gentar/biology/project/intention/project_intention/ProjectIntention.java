@@ -15,6 +15,7 @@ import org.gentar.biology.project.intention.project_intention_sequence.ProjectIn
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -59,10 +60,11 @@ public class ProjectIntention
     private ProjectIntentionSequence projectIntentionSequence;
 
     @EqualsAndHashCode.Exclude
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
         name = "project_intention_allele_categorization",
         joinColumns = @JoinColumn(name = "project_intention_id"),
-        inverseJoinColumns = @JoinColumn(name = "allele_categorization_id"))
+        inverseJoinColumns = @JoinColumn(name = "allele_categorization_id")
+    )
     private Set<AlleleCategorization> alleleCategorizations;
 }
