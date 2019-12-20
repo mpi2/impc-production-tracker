@@ -23,6 +23,8 @@ import org.springframework.hateoas.RepresentationModel;
 import org.gentar.biology.intention.ProjectIntentionDTO;
 import org.gentar.biology.species.SpeciesDTO;
 import org.gentar.biology.status_stamps.StatusStampsDTO;
+import org.springframework.hateoas.server.core.Relation;
+
 import java.util.List;
 
 /**
@@ -30,6 +32,7 @@ import java.util.List;
  */
 @Data
 @NoArgsConstructor
+@Relation(collectionRelation = "projects")
 public class ProjectDTO extends RepresentationModel
 {
     private String tpn;
