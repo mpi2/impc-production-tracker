@@ -88,7 +88,7 @@ build_image:
 
 build_jars:
   stage: build
-  image: maven:3.3.9-jdk-8
+  image: maven:3.6.3-jdk-11
   script:
     - 'mvn -f impc_prod_tracker/pom.xml -s .gitlab-ci_settings.xml clean deploy'
   only:
