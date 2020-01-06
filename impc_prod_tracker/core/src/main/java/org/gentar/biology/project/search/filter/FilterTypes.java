@@ -26,6 +26,7 @@ public enum FilterTypes
     INTENTION("intention"),
     CONSORTIUM("consortium"),
     ASSIGNMENT_STATUS("assignmentStatus"),
+    EXTERNAL_REFERENCE("externalReference"),
     PRIVACY_NAME("privacyName");
 
     private String name;

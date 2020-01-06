@@ -88,4 +88,10 @@ public class ProjectFilterBuilder
         filters.put(FilterTypes.WORK_GROUP_NAME, workGroupNames);
         return this;
     }
+
+    public ProjectFilterBuilder withExternalReference(List<String> externalReferences)
+    {
+        filters.put(FilterTypes.EXTERNAL_REFERENCE, externalReferences);
+        return this;
+    }
 }
