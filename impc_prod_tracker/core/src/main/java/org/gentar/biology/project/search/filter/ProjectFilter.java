@@ -34,6 +34,11 @@ public class ProjectFilter
         return filters.getOrDefault(FilterTypes.TPN, null);
     }
 
+    public List<String> getExternalReferences()
+    {
+        return filters.getOrDefault(FilterTypes.EXTERNAL_REFERENCE, null);
+    }
+
     public List<String> getMarkerSymbols()
     {
         return filters.getOrDefault(FilterTypes.MARKER_SYMBOL, null);

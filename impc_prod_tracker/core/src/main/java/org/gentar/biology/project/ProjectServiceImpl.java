@@ -20,6 +20,7 @@ import org.gentar.biology.ortholog.Ortholog;
 import org.gentar.biology.ortholog.OrthologService;
 import org.gentar.biology.project.intention.project_intention.ProjectIntention;
 import org.gentar.biology.project.intention.project_intention_gene.ProjectIntentionGene;
+import org.gentar.biology.project.specs.ProjectSpecs;
 import org.gentar.security.abac.ResourceAccessChecker;
 import org.gentar.biology.project.search.filter.ProjectFilter;
 import org.springframework.data.domain.Page;
@@ -159,6 +160,7 @@ public class ProjectServiceImpl implements ProjectService
         Specification<Project> specifications =
             Specification.where(
                 ProjectSpecs.withTpns(projectFilter.getTpns())
+                .and(ProjectSpecs.withExternalReferences(projectFilter.getExternalReferences()))
                 .and(ProjectSpecs.withMarkerSymbols(projectFilter.getMarkerSymbols()))
                 .and(ProjectSpecs.withGenes(projectFilter.getGenes()))
                 .and(ProjectSpecs.withIntentions(projectFilter.getIntentions()))
