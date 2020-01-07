@@ -15,7 +15,6 @@
  *******************************************************************************/
 package org.gentar.biology.project.intention;
 
-import org.gentar.biology.project.intention.project_intention.ProjectIntentionService;
 import org.gentar.biology.intention.ProjectIntentionGeneDTO;
 import org.gentar.biology.intention.ProjectIntentionDTO;
 import org.gentar.biology.sequence.ProjectIntentionSequenceDTO;
@@ -41,11 +40,7 @@ public class ProjectIntentionMapper
     private MolecularMutationTypeMapper molecularMutationTypeMapper;
     private ProjectIntentionGeneMapper projectIntentionGeneMapper;
     private ProjectIntentionSequenceMapper projectIntentionSequenceMapper;
-    private ProjectIntentionService projectIntentionService;
     private OrthologMapper orthologMapper;
-
-    private static final String INTENTION_TYPE_GENE = "gene";
-    private static final String INTENTION_TYPE_SEQUENCE = "sequence";
 
     public ProjectIntentionMapper(
         EntityMapper entityMapper,
@@ -54,7 +49,6 @@ public class ProjectIntentionMapper
         MolecularMutationTypeMapper molecularMutationTypeMapper,
         ProjectIntentionGeneMapper projectIntentionGeneMapper,
         ProjectIntentionSequenceMapper projectIntentionSequenceMapper,
-        ProjectIntentionService projectIntentionService,
         OrthologMapper orthologMapper)
     {
         this.entityMapper = entityMapper;
@@ -63,7 +57,6 @@ public class ProjectIntentionMapper
         this.molecularMutationTypeMapper = molecularMutationTypeMapper;
         this.projectIntentionGeneMapper = projectIntentionGeneMapper;
         this.projectIntentionSequenceMapper = projectIntentionSequenceMapper;
-        this.projectIntentionService = projectIntentionService;
         this.orthologMapper = orthologMapper;
     }
 
@@ -139,8 +132,6 @@ public class ProjectIntentionMapper
                 projectIntentionGeneMapper.toEntity(projectIntentionDTO.getProjectIntentionGeneDTO());
             projectIntentionGene.setProjectIntention(projectIntention);
             projectIntention.setProjectIntentionGene(projectIntentionGene);
-            projectIntention.setIntentionType(
-                projectIntentionService.getIntentionTypeByName(INTENTION_TYPE_GENE));
         }
         else if (projectIntention.getProjectIntentionSequence() != null)
         {
@@ -149,8 +140,6 @@ public class ProjectIntentionMapper
                     projectIntentionDTO.getProjectIntentionSequenceDTO());
             projectIntentionSequence.setProjectIntention(projectIntention);
             projectIntention.setProjectIntentionSequence(projectIntentionSequence);
-            projectIntention.setIntentionType(
-                projectIntentionService.getIntentionTypeByName(INTENTION_TYPE_SEQUENCE));
         }
     }
 

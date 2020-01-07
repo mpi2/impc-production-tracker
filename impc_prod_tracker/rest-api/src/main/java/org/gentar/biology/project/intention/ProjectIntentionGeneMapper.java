@@ -71,8 +71,6 @@ public class ProjectIntentionGeneMapper
         ProjectIntentionGene projectIntentionGene = new ProjectIntentionGene();
         Gene gene = loadGene(projectIntentionGeneDTO.getGeneDTO());
         projectIntentionGene.setGene(gene);
-//        projectIntention.setIntentionType(
-//            projectIntentionService.getIntentionTypeByName(GENE_INTENTION_TYPE));
 
         return projectIntentionGene;
     }

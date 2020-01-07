@@ -17,5 +17,5 @@ package org.gentar.biology.plan.protocol;
 
 import org.springframework.data.repository.CrudRepository;
 
-public interface ProtocolDetailRepository extends CrudRepository<ProtocolDetail, Long> {
+public interface ProtocolVersionRepository extends CrudRepository<ProtocolVersion, Long> {
 }
