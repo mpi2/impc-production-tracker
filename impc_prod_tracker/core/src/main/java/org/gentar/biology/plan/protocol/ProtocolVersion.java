@@ -28,11 +28,11 @@ import javax.validation.constraints.NotNull;
 @NoArgsConstructor(access= AccessLevel.PRIVATE, force=true)
 @Data
 @Entity
-public class ProtocolDetail extends BaseEntity
+public class ProtocolVersion extends BaseEntity
 {
     @Id
-    @SequenceGenerator(name = "protocolDetailSeq", sequenceName = "PROTOCOL_DETAIL_SEQ")
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "protocolDetailSeq")
+    @SequenceGenerator(name = "protocolVersionSeq", sequenceName = "PROTOCOL_VERSION_SEQ")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "protocolVersionSeq")
     private Long id;
 
     @NotNull
@@ -40,4 +40,6 @@ public class ProtocolDetail extends BaseEntity
     private Protocol protocol;
 
     private String protocolUrl;
+
+    private Integer version;
 }

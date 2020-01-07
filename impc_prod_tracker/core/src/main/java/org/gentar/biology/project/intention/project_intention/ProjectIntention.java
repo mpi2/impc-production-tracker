@@ -9,7 +9,6 @@ import org.gentar.biology.allele.categorizarion.AlleleCategorization;
 import org.gentar.biology.allele.AlleleType;
 import org.gentar.biology.molecular_mutation_type.MolecularMutationType;
 import org.gentar.biology.project.Project;
-import org.gentar.biology.project.intention.project_intention.type.IntentionType;
 import org.gentar.biology.project.intention.project_intention_gene.ProjectIntentionGene;
 import org.gentar.biology.project.intention.project_intention_sequence.ProjectIntentionSequence;
 
@@ -45,9 +44,6 @@ public class ProjectIntention
 
     @ManyToOne
     private AlleleType alleleType;
-
-    @ManyToOne
-    private IntentionType intentionType;
 
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
