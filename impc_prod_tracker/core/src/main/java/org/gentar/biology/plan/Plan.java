@@ -15,6 +15,7 @@
  */
 package org.gentar.biology.plan;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -150,6 +151,7 @@ public class Plan extends BaseEntity  implements Resource<Plan>
     }
 
     @Override
+    @JsonIgnore
     public Resource<Plan> getRestrictedObject()
     {
         return this;
