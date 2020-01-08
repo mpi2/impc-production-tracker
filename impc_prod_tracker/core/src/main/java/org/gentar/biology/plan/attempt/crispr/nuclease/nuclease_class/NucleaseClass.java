@@ -14,6 +14,7 @@ import javax.persistence.SequenceGenerator;
 public class NucleaseClass extends BaseEntity
 {
     @Id
+    @ToString.Exclude
     @SequenceGenerator(name = "nucleaseClassSeq", sequenceName = "NUCLEASE_CLASS_SEQ")
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "nucleaseClassSeq")
     private Long id;

@@ -18,6 +18,7 @@ package org.gentar.biology.plan.attempt.crispr.nuclease;
 import lombok.*;
 import org.gentar.BaseEntity;
 import org.gentar.biology.plan.attempt.crispr.CrisprAttempt;
+import org.gentar.biology.plan.attempt.crispr.nuclease.nuclease_class.NucleaseClass;
 import org.gentar.biology.plan.attempt.crispr.nuclease.nuclease_type.NucleaseType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -46,6 +47,11 @@ public class Nuclease extends BaseEntity
 
     private Double concentration;
 
+    @ToString.Exclude
     @ManyToOne(targetEntity = NucleaseType.class)
     private NucleaseType nucleaseType;
+
+    @ToString.Exclude
+    @ManyToOne(targetEntity = NucleaseClass.class)
+    private NucleaseClass nucleaseClass;
 }
