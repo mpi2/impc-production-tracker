@@ -15,6 +15,8 @@
  */
 package org.gentar.biology.plan.attempt.crispr;
 
+import org.gentar.biology.plan.attempt.crispr.nuclease.nuclease_class.NucleaseClass;
+import org.gentar.biology.plan.attempt.crispr.nuclease.nuclease_class.NucleaseClassRepository;
 import org.springframework.stereotype.Component;
 import org.gentar.biology.plan.attempt.crispr.delivery_type.DeliveryMethodType;
 import org.gentar.biology.plan.attempt.crispr.nuclease.Nuclease;
@@ -39,6 +41,7 @@ public class CrisprAttemptServiceImpl implements CrisprAttemptService
     private GenotypePrimerRepository genotypePrimerRepository;
     private NucleaseRepository nucleaseRepository;
     private NucleaseTypeRepository nucleaseTypeRepository;
+    private NucleaseClassRepository nucleaseClassRepository;
     private MutagenesisDonorRepository mutagenesisDonorRepository;
     private AssayTypeRepository assayTypeRepository;
     private DeliveryMethodTypeRepository deliveryTypeRepository;
@@ -48,6 +51,7 @@ public class CrisprAttemptServiceImpl implements CrisprAttemptService
         GenotypePrimerRepository genotypePrimerRepository,
         NucleaseRepository nucleaseRepository,
         NucleaseTypeRepository nucleaseTypeRepository,
+        NucleaseClassRepository nucleaseClassRepository,
         MutagenesisDonorRepository mutagenesisDonorRepository,
         AssayTypeRepository assayTypeRepository,
         DeliveryMethodTypeRepository deliveryTypeRepository)
@@ -56,6 +60,7 @@ public class CrisprAttemptServiceImpl implements CrisprAttemptService
         this.genotypePrimerRepository = genotypePrimerRepository;
         this.nucleaseRepository = nucleaseRepository;
         this.nucleaseTypeRepository = nucleaseTypeRepository;
+        this.nucleaseClassRepository = nucleaseClassRepository;
         this.mutagenesisDonorRepository = mutagenesisDonorRepository;
         this.assayTypeRepository = assayTypeRepository;
         this.deliveryTypeRepository = deliveryTypeRepository;
@@ -95,9 +100,16 @@ public class CrisprAttemptServiceImpl implements CrisprAttemptService
     }
 
     @Override
-    public NucleaseType getNucleaseTypeByNameAndClassName(String nucleaseTypeName, String nucleaseClassName)
+    public NucleaseType getNucleaseTypeByName(String nucleaseTypeName)
     {
-        return nucleaseTypeRepository.findByNameAndNucleaseClassNameIgnoreCase(
-            nucleaseTypeName, nucleaseClassName);
+        return nucleaseTypeRepository.findByNameIgnoreCase(
+                nucleaseTypeName);
+    }
+
+    @Override
+    public NucleaseClass getNucleaseClassByName(String nucleaseClassName)
+    {
+        return nucleaseClassRepository.findByNameIgnoreCase(
+                nucleaseClassName);
     }
 }

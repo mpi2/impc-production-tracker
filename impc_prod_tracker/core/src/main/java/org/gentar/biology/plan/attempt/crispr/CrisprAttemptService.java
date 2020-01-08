@@ -20,6 +20,7 @@ import org.gentar.biology.plan.attempt.crispr.nuclease.Nuclease;
 import org.gentar.biology.plan.attempt.crispr.genotype_primer.GenotypePrimer;
 import org.gentar.biology.plan.attempt.crispr.mutagenesis_donor.MutagenesisDonor;
 import org.gentar.biology.plan.attempt.crispr.assay.AssayType;
+import org.gentar.biology.plan.attempt.crispr.nuclease.nuclease_class.NucleaseClass;
 import org.gentar.biology.plan.attempt.crispr.nuclease.nuclease_type.NucleaseType;
 import java.util.List;
 import java.util.Optional;
@@ -38,5 +39,7 @@ public interface CrisprAttemptService
 
     DeliveryMethodType getDeliveryTypeByName(String deliveryTypeName);
 
-    NucleaseType getNucleaseTypeByNameAndClassName(String nucleaseTypeName, String nucleaseClassName);
+    NucleaseType getNucleaseTypeByName(String nucleaseTypeName);
+
+    NucleaseClass getNucleaseClassByName(String nucleaseClassName);
 }
