@@ -73,6 +73,7 @@ class ProjectController
         PagedResourcesAssembler assembler,
         @RequestParam(value = "tpn", required = false) List<String> tpns,
         @RequestParam(value = "markerSymbol", required = false) List<String> markerSymbols,
+        @RequestParam(value = "gene", required = false) List<String> genes,
         @RequestParam(value = "intention", required = false) List<String> intentions,
         @RequestParam(value = "workUnitName", required = false) List<String> workUnitNames,
         @RequestParam(value = "consortium", required = false) List<String> consortia,
@@ -84,6 +85,7 @@ class ProjectController
             .withTpns(tpns)
             .withMarkerSymbols(markerSymbols)
             .withIntentions(intentions)
+            .withGenes(genes)
             .withStatuses(statuses)
             .withPrivacies(privaciesNames)
             .withWorkUnitNames(workUnitNames)
