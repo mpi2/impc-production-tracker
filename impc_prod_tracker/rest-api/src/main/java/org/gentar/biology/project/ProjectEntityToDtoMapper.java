@@ -19,6 +19,7 @@ import org.gentar.biology.intention.ProjectIntentionDTO;
 import org.gentar.biology.species.SpeciesDTO;
 import org.gentar.biology.status_stamps.StatusStampsDTO;
 import org.gentar.EntityMapper;
+import org.gentar.organization.work_unit.WorkUnit;
 import org.springframework.stereotype.Component;
 import org.gentar.biology.project.consortium.ProjectConsortiumMapper;
 import org.gentar.biology.project.intention.ProjectIntentionMapper;
@@ -26,6 +27,7 @@ import org.gentar.biology.project.intention.SortByProjectIntentionIndex;
 import org.gentar.biology.status.StatusStampMapper;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 
 @Component
@@ -58,6 +60,7 @@ public class ProjectEntityToDtoMapper
             addProjectIntentions(project, projectDTO);
             addSpeciesDTO(project, projectDTO);
             addProjectConsortia(project, projectDTO);
+            addRelatedWorkUnits(project, projectDTO);
         }
         return projectDTO;
     }
@@ -80,6 +83,13 @@ public class ProjectEntityToDtoMapper
         List<ProjectConsortiumDTO> projectConsortiumDTOS =
                 projectConsortiumMapper.toDtos(project.getProjectConsortia());
         projectDTO.setProjectConsortiumDTOS(projectConsortiumDTOS);
+    }
+
+    private void addRelatedWorkUnits(Project project, ProjectDTO projectDTO)
+    {
+        List<String> relatedWorkUnits = new ArrayList<>();
+        project.getRelatedWorkUnits().forEach(x -> relatedWorkUnits.add(x.getName()));
+        projectDTO.setRelatedWorkUnitNames(new HashSet<>(relatedWorkUnits));
     }
 
     private void addSpeciesDTO(Project project, ProjectDTO projectDTO)

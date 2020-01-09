@@ -16,6 +16,7 @@
 package org.gentar.biology.project.search;
 
 import org.gentar.biology.project.search.filter.ProjectFilter;
+import org.gentar.biology.project.search.filter.ProjectFilterApplier;
 import org.gentar.util.PaginationHelper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -34,11 +35,16 @@ public class ProjectSearcherServiceImpl implements ProjectSearcherService
 {
     private Searcher searcher;
     private ProjectService projectService;
+    private ProjectFilterApplier projectFilterApplier;
 
-    public ProjectSearcherServiceImpl(Searcher searcher, ProjectService projectService)
+    public ProjectSearcherServiceImpl(
+        Searcher searcher,
+        ProjectService projectService,
+        ProjectFilterApplier projectFilterApplier)
     {
         this.searcher = searcher;
         this.projectService = projectService;
+        this.projectFilterApplier = projectFilterApplier;
     }
 
     @Override
@@ -75,14 +81,20 @@ public class ProjectSearcherServiceImpl implements ProjectSearcherService
         else
         {
             var allResults = searcher.execute(search);
+            var filteredResults = applyFiltersToResults(allResults, search.getFilters());
             Page<SearchResult> paginatedContent =
-                PaginationHelper.createPage(allResults, pageable);
+                PaginationHelper.createPage(filteredResults, pageable);
             PagedModel.PageMetadata pageMetadata = buildPageMetadata(paginatedContent);
             searchReport.setPageMetadata(pageMetadata);
             results = paginatedContent.getContent();
         }
         searchReport.setResults(results);
         return searchReport;
+    }
+
+    private List<SearchResult> applyFiltersToResults(List<SearchResult> allResults, ProjectFilter filters)
+    {
+        return projectFilterApplier.applyFilters(allResults, filters);
     }
 
     private void addProjectsToResult(Collection<Project> projects, List<SearchResult> searchResults)
