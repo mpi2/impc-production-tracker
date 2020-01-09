@@ -90,8 +90,8 @@ public class ProjectSearcherController
         @RequestParam(value = "input", required = false) List<String> inputs,
         @RequestParam(value = "tpn", required = false) List<String> tpns,
         @RequestParam(value = "privacyNames", required = false) List<String> privacies,
-        @RequestParam(value = "workUnitName", required = false) List<String> workUnitsNames,
-        @RequestParam(value = "workGroupName", required = false) List<String> workGroupNames)
+        @RequestParam(value = "workUnitNames", required = false) List<String> workUnitsNames,
+        @RequestParam(value = "workGroupNames", required = false) List<String> workGroupNames)
     {
         Search search =
             buildSearch(searchTypeName, inputs, tpns, privacies, workUnitsNames, workGroupNames);

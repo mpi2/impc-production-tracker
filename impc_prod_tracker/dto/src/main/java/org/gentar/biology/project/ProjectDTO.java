@@ -24,8 +24,8 @@ import org.gentar.biology.intention.ProjectIntentionDTO;
 import org.gentar.biology.species.SpeciesDTO;
 import org.gentar.biology.status_stamps.StatusStampsDTO;
 import org.springframework.hateoas.server.core.Relation;
-
 import java.util.List;
+import java.util.Set;
 
 /**
  * Representation of a Project that will be presented in the API.
@@ -66,4 +66,6 @@ public class ProjectDTO extends RepresentationModel
     @JsonInclude(JsonInclude.Include.NON_NULL)
     @JsonProperty("isObjectRestricted")
     private Boolean isObjectRestricted;
+
+    private Set<String> relatedWorkUnitNames;
 }

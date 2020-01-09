@@ -18,6 +18,7 @@ package org.gentar.biology.project;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import org.gentar.exceptions.SystemOperationFailedException;
+import org.gentar.organization.work_group.WorkGroup;
 import org.gentar.security.abac.Resource;
 import org.gentar.BaseEntity;
 import org.gentar.biology.project.assignment_status.AssignmentStatus;
@@ -30,7 +31,6 @@ import org.gentar.biology.species.Species;
 import org.gentar.organization.consortium.Consortium;
 import org.gentar.organization.work_unit.WorkUnit;
 import org.gentar.security.abac.ResourcePrivacy;
-
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -66,7 +66,7 @@ public class Project extends BaseEntity implements Resource<Project>
 
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
-    @OneToMany
+    @OneToMany(fetch=FetchType.EAGER)
     @JoinColumn(name = "project_id")
     private Set<Plan> plans;
 
@@ -133,6 +133,17 @@ public class Project extends BaseEntity implements Resource<Project>
             plans.forEach(x -> relatedWorkUnites.add(x.getWorkUnit()));
         }
         return relatedWorkUnites;
+    }
+
+    public List<WorkGroup> getRelatedWorkGroups()
+    {
+        List<WorkGroup> relatedWorkGroups = new ArrayList<>();
+        List<WorkUnit> relatedWorkUnites = getRelatedWorkUnits();
+        relatedWorkUnites.forEach(wu -> {
+            var workGroups = wu.getWorkGroups();
+            relatedWorkGroups.addAll(workGroups);
+        });
+        return relatedWorkGroups;
     }
 
     @Override
