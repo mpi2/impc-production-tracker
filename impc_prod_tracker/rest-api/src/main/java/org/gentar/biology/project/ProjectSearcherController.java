@@ -93,7 +93,7 @@ public class ProjectSearcherController
         Pageable pageable,
         @RequestParam(value = "searchTypeName", required = false) String searchTypeName,
         @RequestParam(value = "input", required = false) List<String> inputs,
-        @RequestParam(value = "tpn", required = false) List<String> tpns,
+        @RequestParam(value = "tpns", required = false) List<String> tpns,
         @RequestParam(value = "intentionTypeNames", required = false) List<String> intentionTypeNames,
         @RequestParam(value = "privacyNames", required = false) List<String> privacies,
         @RequestParam(value = "workUnitNames", required = false) List<String> workUnitsNames,
