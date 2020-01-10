@@ -40,6 +40,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/projects/search")
@@ -70,15 +71,19 @@ public class ProjectSearcherController
         String searchTypeName,
         List<String> inputs,
         List<String> tpns,
+        List<String> intentionTypeNames,
         List<String> privacies,
         List<String> workUnitsNames,
-        List<String> workGroupNames)
+        List<String> workGroupNames,
+        List<String> consortiaNames)
     {
         ProjectFilter projectFilter = ProjectFilterBuilder.getInstance()
             .withTpns(tpns)
+            .withIntentions(intentionTypeNames)
             .withWorkUnitNames(workUnitsNames)
             .withWorkGroupNames(workGroupNames)
             .withPrivacies(privacies)
+            .withConsortiaNames(consortiaNames)
             .build();
         return new Search(searchTypeName, inputs, projectFilter);
     }
@@ -89,12 +94,22 @@ public class ProjectSearcherController
         @RequestParam(value = "searchTypeName", required = false) String searchTypeName,
         @RequestParam(value = "input", required = false) List<String> inputs,
         @RequestParam(value = "tpn", required = false) List<String> tpns,
+        @RequestParam(value = "intentionTypeNames", required = false) List<String> intentionTypeNames,
         @RequestParam(value = "privacyNames", required = false) List<String> privacies,
         @RequestParam(value = "workUnitNames", required = false) List<String> workUnitsNames,
-        @RequestParam(value = "workGroupNames", required = false) List<String> workGroupNames)
+        @RequestParam(value = "workGroupNames", required = false) List<String> workGroupNames,
+        @RequestParam(value = "consortiaNames", required = false) List<String> consortiaNames)
     {
         Search search =
-            buildSearch(searchTypeName, inputs, tpns, privacies, workUnitsNames, workGroupNames);
+            buildSearch(
+                searchTypeName,
+                inputs,
+                tpns,
+                intentionTypeNames,
+                privacies,
+                workUnitsNames,
+                workGroupNames,
+                consortiaNames);
         SearchReport searchReport = projectSearcherService.executeSearch(search, pageable);
         SearchReportDTO searchReportDTO = searchReportMapper.toDto(searchReport);
 
@@ -107,13 +122,23 @@ public class ProjectSearcherController
         @RequestParam(value = "searchTypeName", required = false) String searchTypeName,
         @RequestParam("file") MultipartFile file,
         @RequestParam(value = "tpns", required = false) List<String> tpns,
+        @RequestParam(value = "intentionTypeNames", required = false) List<String> intentionTypeNames,
         @RequestParam(value = "privacyNames", required = false) List<String> privacies,
         @RequestParam(value = "workUnitNames", required = false) List<String> workUnitsNames,
-        @RequestParam(value = "workGroupNames", required = false) List<String> workGroupNames)
+        @RequestParam(value = "workGroupNames", required = false) List<String> workGroupNames,
+        @RequestParam(value = "consortiaNames", required = false) List<String> consortiaNames)
     {
         List<String> inputs = getInputByFile(file);
         Search search =
-            buildSearch(searchTypeName, inputs, tpns, privacies, workUnitsNames, workGroupNames);
+            buildSearch(
+                searchTypeName,
+                inputs,
+                tpns,
+                intentionTypeNames,
+                privacies,
+                workUnitsNames,
+                workGroupNames,
+                consortiaNames);
         SearchReport searchReport = projectSearcherService.executeSearch(search, pageable);
         SearchReportDTO searchReportDTO = searchReportMapper.toDto(searchReport);
 
@@ -134,11 +159,22 @@ public class ProjectSearcherController
         @RequestParam(value = "searchTypeName", required = false) String searchTypeName,
         @RequestParam(value = "input", required = false) List<String> inputs,
         @RequestParam(value = "tpns", required = false) List<String> tpns,
+        @RequestParam(value = "intentionTypeNames", required = false) List<String> intentionTypeNames,
         @RequestParam(value = "privacyNames", required = false) List<String> privacies,
         @RequestParam(value = "workUnitNames", required = false) List<String> workUnitsNames,
-        @RequestParam(value = "workGroupNames", required = false) List<String> workGroupNames) throws Exception
+        @RequestParam(value = "workGroupNames", required = false) List<String> workGroupNames,
+        @RequestParam(value = "consortiaNames", required = false) List<String> consortiaNames) throws Exception
     {
-        exportCsv(response, searchTypeName, inputs, tpns, privacies, workUnitsNames, workGroupNames);
+        exportCsv(
+            response,
+            searchTypeName,
+            inputs,
+            tpns,
+            intentionTypeNames,
+            privacies,
+            workUnitsNames,
+            workGroupNames,
+            consortiaNames);
     }
 
     @PostMapping("/exportSearchByFile")
@@ -147,13 +183,24 @@ public class ProjectSearcherController
         @RequestParam(value = "searchTypeName", required = false) String searchTypeName,
         @RequestParam("file") MultipartFile file,
         @RequestParam(value = "tpns", required = false) List<String> tpns,
+        @RequestParam(value = "intentionTypeNames", required = false) List<String> intentionTypeNames,
         @RequestParam(value = "privacyNames", required = false) List<String> privacies,
         @RequestParam(value = "workUnitNames", required = false) List<String> workUnitsNames,
-        @RequestParam(value = "workGroupNames", required = false) List<String> workGroupNames) throws Exception
+        @RequestParam(value = "workGroupNames", required = false) List<String> workGroupNames,
+        @RequestParam(value = "consortiaNames", required = false) List<String> consortiaNames) throws Exception
     {
 
         List<String> inputs = getInputByFile(file);
-        exportCsv(response, searchTypeName, inputs, tpns, privacies, workUnitsNames, workGroupNames);
+        exportCsv(
+            response,
+            searchTypeName,
+            inputs,
+            tpns,
+            intentionTypeNames,
+            privacies,
+            workUnitsNames,
+            workGroupNames,
+            consortiaNames);
     }
 
     private void exportCsv(
@@ -161,16 +208,26 @@ public class ProjectSearcherController
         String searchTypeName,
         List<String> inputs,
         List<String> tpns,
+        List<String> intentionTypeNames,
         List<String> privacies,
         List<String> workUnitsNames,
-        List<String> workGroupNames) throws IOException
+        List<String> workGroupNames,
+        List<String> consortiaNames) throws IOException
     {
         String filename = "download.csv";
         response.setContentType("text/csv");
         response.setHeader(
             HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + filename + "\"");
         Search search =
-            buildSearch(searchTypeName, inputs, tpns, privacies, workUnitsNames, workGroupNames);
+            buildSearch(
+                searchTypeName,
+                inputs,
+                tpns,
+                intentionTypeNames,
+                privacies,
+                workUnitsNames,
+                workGroupNames,
+                consortiaNames);
         SearchReport searchReport = projectSearcherService.executeSearch(search);
         var searchCsvRecords = searchCsvRecordMapper.toDtos(searchReport.getResults());
         csvWriter.writeListToCsv(response.getWriter(), searchCsvRecords, SearchCsvRecord.HEADERS);

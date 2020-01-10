@@ -89,6 +89,12 @@ public class ProjectFilterBuilder
         return this;
     }
 
+    public ProjectFilterBuilder withConsortiaNames(List<String> consortiaNames)
+    {
+        filters.put(FilterTypes.CONSORTIUM, consortiaNames);
+        return this;
+    }
+
     public ProjectFilterBuilder withExternalReference(List<String> externalReferences)
     {
         filters.put(FilterTypes.EXTERNAL_REFERENCE, externalReferences);
