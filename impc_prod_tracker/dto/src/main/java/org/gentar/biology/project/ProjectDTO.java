@@ -68,4 +68,5 @@ public class ProjectDTO extends RepresentationModel
     private Boolean isObjectRestricted;
 
     private Set<String> relatedWorkUnitNames;
+    private Set<String> relatedWorkGroupNames;
 }

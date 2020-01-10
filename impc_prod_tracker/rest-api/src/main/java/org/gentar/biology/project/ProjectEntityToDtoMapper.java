@@ -61,6 +61,7 @@ public class ProjectEntityToDtoMapper
             addSpeciesDTO(project, projectDTO);
             addProjectConsortia(project, projectDTO);
             addRelatedWorkUnits(project, projectDTO);
+            addRelatedWorkGroups(project, projectDTO);
         }
         return projectDTO;
     }
@@ -90,6 +91,13 @@ public class ProjectEntityToDtoMapper
         List<String> relatedWorkUnits = new ArrayList<>();
         project.getRelatedWorkUnits().forEach(x -> relatedWorkUnits.add(x.getName()));
         projectDTO.setRelatedWorkUnitNames(new HashSet<>(relatedWorkUnits));
+    }
+
+    private void addRelatedWorkGroups(Project project, ProjectDTO projectDTO)
+    {
+        List<String> relatedWorkGroups = new ArrayList<>();
+        project.getRelatedWorkGroups().forEach(x -> relatedWorkGroups.add(x.getName()));
+        projectDTO.setRelatedWorkGroupNames(new HashSet<>(relatedWorkGroups));
     }
 
     private void addSpeciesDTO(Project project, ProjectDTO projectDTO)
