@@ -61,7 +61,8 @@ public class ProjectSearcherServiceImpl implements ProjectSearcherService
         {
             results = searcher.execute(search);
         }
-        searchReport.setResults(results);
+        var filteredResults = applyFiltersToResults(results, search.getFilters());
+        searchReport.setResults(filteredResults);
         return searchReport;
     }
 
