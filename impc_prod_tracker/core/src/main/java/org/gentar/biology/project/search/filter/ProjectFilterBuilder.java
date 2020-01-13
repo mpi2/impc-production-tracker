@@ -18,6 +18,7 @@ package org.gentar.biology.project.search.filter;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Filter;
 
 public class ProjectFilterBuilder
 {
@@ -41,63 +42,67 @@ public class ProjectFilterBuilder
         return projectFilter;
     }
 
+    private ProjectFilterBuilder withFilter(FilterTypes filterType, List<String> values)
+    {
+        if (isListValid(values))
+        {
+            filters.put(filterType, values);
+        }
+        return this;
+    }
+
     public ProjectFilterBuilder withTpns(List<String> tpns)
     {
-        filters.put(FilterTypes.TPN, tpns);
-        return this;
+        return withFilter(FilterTypes.TPN, tpns);
     }
 
     public ProjectFilterBuilder withMarkerSymbols(List<String> markerSymbols)
     {
-        filters.put(FilterTypes.MARKER_SYMBOL, markerSymbols);
-        return this;
+        return withFilter(FilterTypes.MARKER_SYMBOL, markerSymbols);
     }
 
     public ProjectFilterBuilder withGenes(List<String> genesNameOrIds)
     {
-        filters.put(FilterTypes.GENE, genesNameOrIds);
-        return this;
+        return withFilter(FilterTypes.GENE, genesNameOrIds);
     }
 
     public ProjectFilterBuilder withIntentions(List<String> intentions)
     {
-        filters.put(FilterTypes.INTENTION, intentions);
-        return this;
+        return withFilter(FilterTypes.INTENTION, intentions);
     }
 
     public ProjectFilterBuilder withPrivacies(List<String> privacies)
     {
-        filters.put(FilterTypes.PRIVACY_NAME, privacies);
-        return this;
+        return withFilter(FilterTypes.PRIVACY_NAME, privacies);
     }
 
     public ProjectFilterBuilder withStatuses(List<String> statuses)
     {
-        filters.put(FilterTypes.ASSIGNMENT_STATUS, statuses);
-        return this;
+        return withFilter(FilterTypes.ASSIGNMENT_STATUS, statuses);
     }
 
     public ProjectFilterBuilder withWorkUnitNames(List<String> workUnitNames)
     {
-        filters.put(FilterTypes.WORK_UNIT_NAME, workUnitNames);
-        return this;
+        return withFilter(FilterTypes.WORK_UNIT_NAME, workUnitNames);
     }
 
     public ProjectFilterBuilder withWorkGroupNames(List<String> workGroupNames)
     {
-        filters.put(FilterTypes.WORK_GROUP_NAME, workGroupNames);
-        return this;
+        return withFilter(FilterTypes.WORK_GROUP_NAME, workGroupNames);
     }
 
     public ProjectFilterBuilder withConsortiaNames(List<String> consortiaNames)
     {
-        filters.put(FilterTypes.CONSORTIUM, consortiaNames);
-        return this;
+        return withFilter(FilterTypes.CONSORTIUM, consortiaNames);
     }
 
     public ProjectFilterBuilder withExternalReference(List<String> externalReferences)
     {
-        filters.put(FilterTypes.EXTERNAL_REFERENCE, externalReferences);
-        return this;
+        return withFilter(FilterTypes.EXTERNAL_REFERENCE, externalReferences);
+    }
+
+    private boolean isListValid(List<String> values)
+    {
+        return values != null && !values.isEmpty();
     }
 }
