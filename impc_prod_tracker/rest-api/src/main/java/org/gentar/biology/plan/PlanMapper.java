@@ -7,13 +7,16 @@ import org.gentar.biology.plan.production.crispr_attempt.CrisprAttemptDTO;
 import org.gentar.Mapper;
 import org.gentar.biology.project.ProjectService;
 import org.gentar.biology.status.StatusMapper;
+import org.gentar.organization.funder.Funder;
 import org.gentar.organization.funder.FunderMapper;
 import org.gentar.organization.work_unit.WorkUnitMapper;
 import org.springframework.stereotype.Component;
 import org.gentar.biology.plan.attempt.AttemptType;
 import org.gentar.biology.plan.attempt.crispr_attempt.CrisprAttemptMapper;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Component
 public class PlanMapper implements Mapper<Plan, PlanDTO>
@@ -60,6 +63,7 @@ public class PlanMapper implements Mapper<Plan, PlanDTO>
     {
         addAttempt(planDTO, plan);
         planDTO.setTpn(plan.getProject().getTpn());
+        planDTO.setFunderNames(funderMapper.toDtos(plan.getFunders()));
     }
 
     public List<PlanDTO> toDtos(List<Plan> plans)
@@ -104,7 +108,8 @@ public class PlanMapper implements Mapper<Plan, PlanDTO>
         }
         plan.setPlanType(planTypeMapper.toEntity(planDTO.getPlanTypeName()));
         plan.setAttemptType(attemptTypeMapper.toEntity(planDTO.getAttemptTypeName()));
-        plan.setFunder(funderMapper.toEntity(planDTO.getFunderName()));
+        Set<Funder> funders = new HashSet<Funder>(funderMapper.toEntities(planDTO.getFunderNames()));
+        plan.setFunders(funders);
         plan.setWorkUnit(workUnitMapper.toEntity(planDTO.getWorkUnitName()));
         plan.setStatus(statusMapper.toEntity(planDTO.getStatusName()));
         return plan;
