@@ -16,7 +16,7 @@
 package org.gentar.biology.project.search;
 
 import org.gentar.biology.project.search.filter.ProjectFilter;
-import org.gentar.biology.project.search.filter.ProjectFilterApplier;
+import org.gentar.biology.project.search.filter.SearchResultFilterer;
 import org.gentar.util.PaginationHelper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -35,12 +35,12 @@ public class ProjectSearcherServiceImpl implements ProjectSearcherService
 {
     private Searcher searcher;
     private ProjectService projectService;
-    private ProjectFilterApplier projectFilterApplier;
+    private SearchResultFilterer projectFilterApplier;
 
     public ProjectSearcherServiceImpl(
         Searcher searcher,
         ProjectService projectService,
-        ProjectFilterApplier projectFilterApplier)
+        SearchResultFilterer projectFilterApplier)
     {
         this.searcher = searcher;
         this.projectService = projectService;
