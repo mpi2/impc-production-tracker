@@ -3,7 +3,7 @@ package org.gentar.helpers;
 import lombok.Data;
 
 @Data
-public class SearchCsvRecord implements CsvRecord
+public class ProjectCsvRecord implements CsvRecord
 {
     private static final String SEPARATOR = ",";
     public static final String[] HEADERS =

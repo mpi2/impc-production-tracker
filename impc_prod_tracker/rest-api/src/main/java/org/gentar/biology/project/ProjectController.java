@@ -16,11 +16,12 @@
 package org.gentar.biology.project;
 
 import org.gentar.exceptions.UserOperationFailedException;
-import org.gentar.helpers.PaginationHelper;
+import org.gentar.helpers.CsvWriter;
 import org.gentar.helpers.PlanLinkBuilder;
 import org.gentar.helpers.LinkUtil;
 import org.gentar.common.history.HistoryDTO;
 import org.gentar.audit.history.HistoryMapper;
+import org.gentar.helpers.ProjectCsvRecord;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PagedResourcesAssembler;
@@ -34,6 +35,8 @@ import org.gentar.biology.project.search.filter.ProjectFilter;
 import org.gentar.biology.project.search.filter.ProjectFilterBuilder;
 import org.gentar.biology.project.helper.ProjectUtilities;
 
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.util.List;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
@@ -47,6 +50,8 @@ class ProjectController
     private ProjectEntityToDtoMapper projectEntityToDtoMapper;
     private HistoryMapper historyMapper;
     private ProjectDtoToEntityMapper projectDtoToEntityMapper;
+    private CsvWriter<ProjectCsvRecord> csvWriter;
+    private ProjectCsvRecordMapper projectCsvRecordMapper;
 
     private static final String PROJECT_NOT_FOUND_ERROR =
         "Project %s does not exist or you don't have access to it.";
@@ -55,12 +60,16 @@ class ProjectController
         ProjectService projectService,
         ProjectEntityToDtoMapper projectEntityToDtoMapper,
         HistoryMapper historyMapper,
-        ProjectDtoToEntityMapper projectDtoToEntityMapper)
+        ProjectDtoToEntityMapper projectDtoToEntityMapper,
+        CsvWriter<ProjectCsvRecord> csvWriter,
+        ProjectCsvRecordMapper projectCsvRecordMapper)
     {
         this.projectService = projectService;
         this.projectEntityToDtoMapper = projectEntityToDtoMapper;
         this.historyMapper = historyMapper;
         this.projectDtoToEntityMapper = projectDtoToEntityMapper;
+        this.csvWriter = csvWriter;
+        this.projectCsvRecordMapper = projectCsvRecordMapper;
     }
 
     /**
@@ -104,6 +113,38 @@ class ProjectController
         return new ResponseEntity<>(pr, responseHeaders, HttpStatus.OK);
     }
 
+    /**
+     * Get all the projects in the system.
+     * @return A collection of {@link ProjectDTO} objects.
+     */
+    @GetMapping("/exportProjects")
+    public void exportProjects(
+        HttpServletResponse response,
+        @RequestParam(value = "tpn", required = false) List<String> tpns,
+        @RequestParam(value = "markerSymbol", required = false) List<String> markerSymbols,
+        @RequestParam(value = "gene", required = false) List<String> genes,
+        @RequestParam(value = "intention", required = false) List<String> intentions,
+        @RequestParam(value = "workUnitName", required = false) List<String> workUnitNames,
+        @RequestParam(value = "consortium", required = false) List<String> consortia,
+        @RequestParam(value = "status", required = false) List<String> statuses,
+        @RequestParam(value = "privacyName", required = false) List<String> privaciesNames,
+        @RequestParam(value = "externalReference", required = false) List<String> externalReferences) throws IOException
+    {
+        ProjectFilter projectFilter = ProjectFilterBuilder.getInstance()
+            .withTpns(tpns)
+            .withMarkerSymbols(markerSymbols)
+            .withIntentions(intentions)
+            .withGenes(genes)
+            .withStatuses(statuses)
+            .withPrivacies(privaciesNames)
+            .withWorkUnitNames(workUnitNames)
+            .withExternalReference(externalReferences)
+            .build();
+        var projectsPage = projectService.getProjects(projectFilter);
+        List<ProjectCsvRecord> projectCsvRecords = projectCsvRecordMapper.toDtos(projectsPage);
+        csvWriter.writeListToCsv(response.getWriter(), projectCsvRecords, ProjectCsvRecord.HEADERS);
+    }
+
     private ProjectDTO getDTO(Project project)
     {
         ProjectDTO projectDTO = new ProjectDTO();
@@ -137,8 +178,7 @@ class ProjectController
         else
         {
             //TODO: Exception not found
-            throw new UserOperationFailedException(
-                String.format(PROJECT_NOT_FOUND_ERROR, tpn));
+            throw new UserOperationFailedException(String.format(PROJECT_NOT_FOUND_ERROR, tpn));
         }
 
         return entityModel;

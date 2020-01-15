@@ -20,6 +20,8 @@ import org.gentar.biology.ortholog.Ortholog;
 import org.gentar.biology.ortholog.OrthologService;
 import org.gentar.biology.project.intention.project_intention.ProjectIntention;
 import org.gentar.biology.project.intention.project_intention_gene.ProjectIntentionGene;
+import org.gentar.biology.project.search.SearchResult;
+import org.gentar.biology.project.search.filter.ProjectResultFilterer;
 import org.gentar.biology.project.specs.ProjectSpecs;
 import org.gentar.security.abac.ResourceAccessChecker;
 import org.gentar.biology.project.search.filter.ProjectFilter;
@@ -46,6 +48,7 @@ public class ProjectServiceImpl implements ProjectService
     private ResourceAccessChecker<Project> resourceAccessChecker;
     private ProjectCreator projectCreator;
     private OrthologService orthologService;
+    private ProjectResultFilterer projectResultFilterer;
 
     public static final String READ_PROJECT_ACTION = "READ_PROJECT";
 
@@ -54,13 +57,15 @@ public class ProjectServiceImpl implements ProjectService
         HistoryService<Project> historyService,
         ResourceAccessChecker<Project> resourceAccessChecker,
         ProjectCreator projectCreator,
-        OrthologService orthologService)
+        OrthologService orthologService,
+        ProjectResultFilterer projectResultFilterer)
     {
         this.projectRepository = projectRepository;
         this.historyService = historyService;
         this.resourceAccessChecker = resourceAccessChecker;
         this.projectCreator = projectCreator;
         this.orthologService = orthologService;
+        this.projectResultFilterer = projectResultFilterer;
     }
 
     @Override
@@ -75,6 +80,7 @@ public class ProjectServiceImpl implements ProjectService
     {
         Specification<Project> specifications = buildSpecificationsWithCriteria(projectFilter);
         List<Project> projects = projectRepository.findAll(specifications);
+        projects = applyFiltersToResults(projects, projectFilter);
         addOrthologs(projects);
         return getCheckedCollection(projects);
     }
@@ -188,5 +194,10 @@ public class ProjectServiceImpl implements ProjectService
     public List<History> getProjectHistory(Project project)
     {
         return historyService.getHistoryByEntityNameAndEntityId("Project", project.getId());
+    }
+
+    private List<Project> applyFiltersToResults(List<Project> allResults, ProjectFilter filters)
+    {
+        return projectResultFilterer.applyFilters(allResults, filters);
     }
 }
