@@ -15,8 +15,8 @@
  */
 package org.gentar.biology.project.search;
 
+import org.gentar.biology.project.search.filter.FluentSearchResultFilter;
 import org.gentar.biology.project.search.filter.ProjectFilter;
-import org.gentar.biology.project.search.filter.SearchResultFilterer;
 import org.gentar.util.PaginationHelper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -35,16 +35,13 @@ public class ProjectSearcherServiceImpl implements ProjectSearcherService
 {
     private Searcher searcher;
     private ProjectService projectService;
-    private SearchResultFilterer projectFilterApplier;
 
     public ProjectSearcherServiceImpl(
         Searcher searcher,
-        ProjectService projectService,
-        SearchResultFilterer projectFilterApplier)
+        ProjectService projectService)
     {
         this.searcher = searcher;
         this.projectService = projectService;
-        this.projectFilterApplier = projectFilterApplier;
     }
 
     @Override
@@ -95,7 +92,16 @@ public class ProjectSearcherServiceImpl implements ProjectSearcherService
 
     private List<SearchResult> applyFiltersToResults(List<SearchResult> allResults, ProjectFilter filters)
     {
-        return projectFilterApplier.applyFilters(allResults, filters);
+        FluentSearchResultFilter fluentSearchResultFilter = new FluentSearchResultFilter(allResults);
+        return fluentSearchResultFilter
+            .withTpns(filters.getTpns())
+            .withWorkUnitNames(filters.getWorkUnitNames())
+            .withWorkGroupNames(filters.getWorGroupNames())
+            .withExternalReference(filters.getExternalReferences())
+            .withAlleleTypeNames(filters.getIntentions())
+            .withConsortiaNames(filters.getConsortiaNames())
+            .withPrivaciesNames(filters.getPrivaciesNames())
+            .getFilteredData();
     }
 
     private void addProjectsToResult(Collection<Project> projects, List<SearchResult> searchResults)

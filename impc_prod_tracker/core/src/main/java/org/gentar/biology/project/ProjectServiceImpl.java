@@ -20,8 +20,7 @@ import org.gentar.biology.ortholog.Ortholog;
 import org.gentar.biology.ortholog.OrthologService;
 import org.gentar.biology.project.intention.project_intention.ProjectIntention;
 import org.gentar.biology.project.intention.project_intention_gene.ProjectIntentionGene;
-import org.gentar.biology.project.search.SearchResult;
-import org.gentar.biology.project.search.filter.ProjectResultFilterer;
+import org.gentar.biology.project.search.filter.FluentProjectFilter;
 import org.gentar.biology.project.specs.ProjectSpecs;
 import org.gentar.security.abac.ResourceAccessChecker;
 import org.gentar.biology.project.search.filter.ProjectFilter;
@@ -48,7 +47,6 @@ public class ProjectServiceImpl implements ProjectService
     private ResourceAccessChecker<Project> resourceAccessChecker;
     private ProjectCreator projectCreator;
     private OrthologService orthologService;
-    private ProjectResultFilterer projectResultFilterer;
 
     public static final String READ_PROJECT_ACTION = "READ_PROJECT";
 
@@ -57,15 +55,13 @@ public class ProjectServiceImpl implements ProjectService
         HistoryService<Project> historyService,
         ResourceAccessChecker<Project> resourceAccessChecker,
         ProjectCreator projectCreator,
-        OrthologService orthologService,
-        ProjectResultFilterer projectResultFilterer)
+        OrthologService orthologService)
     {
         this.projectRepository = projectRepository;
         this.historyService = historyService;
         this.resourceAccessChecker = resourceAccessChecker;
         this.projectCreator = projectCreator;
         this.orthologService = orthologService;
-        this.projectResultFilterer = projectResultFilterer;
     }
 
     @Override
@@ -115,7 +111,7 @@ public class ProjectServiceImpl implements ProjectService
         return orthologService.calculateBestOrthologs(orthologsByAccId);
     }
 
-    private List<String> getAccIdsByProject(Project project)
+    public List<String> getAccIdsByProject(Project project)
     {
         List<String> accIds = new ArrayList<>();
         List<ProjectIntentionGene> projectIntentionGenes = getIntentionGenesByProject(project);
@@ -134,7 +130,7 @@ public class ProjectServiceImpl implements ProjectService
         return projectIntentionGenes;
     }
 
-    private List<ProjectIntentionGene> getIntentionGenesByProject(Project project)
+    public List<ProjectIntentionGene> getIntentionGenesByProject(Project project)
     {
         List<ProjectIntentionGene> projectIntentionGenes = new ArrayList<>();
         List<ProjectIntention> intentions = project.getProjectIntentions();
@@ -198,6 +194,14 @@ public class ProjectServiceImpl implements ProjectService
 
     private List<Project> applyFiltersToResults(List<Project> allResults, ProjectFilter filters)
     {
-        return projectResultFilterer.applyFilters(allResults, filters);
+        FluentProjectFilter fluentProjectFilter = new FluentProjectFilter(allResults);
+        return fluentProjectFilter
+            .withTpns(filters.getTpns())
+            .withWorkUnitNames(filters.getWorkUnitNames())
+            .withWorkGroupNames(filters.getWorGroupNames())
+            .withExternalReference(filters.getExternalReferences())
+            .withAlleleTypeNames(filters.getIntentions())
+            .withConsortiaNames(filters.getConsortiaNames())
+            .withPrivaciesNames(filters.getPrivaciesNames()).getFilteredData();
     }
 }
