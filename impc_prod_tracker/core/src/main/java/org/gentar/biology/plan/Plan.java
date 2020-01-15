@@ -64,8 +64,12 @@ public class Plan extends BaseEntity  implements Resource<Plan>
     @ManyToOne
     private Project project;
 
-    @ManyToOne(targetEntity = Funder.class)
-    private Funder funder;
+    @ManyToMany
+    @JoinTable(
+            name = "plan_funder",
+            joinColumns = @JoinColumn(name = "plan_id"),
+            inverseJoinColumns = @JoinColumn(name = "funder_id"))
+    private Set<Funder> funders;
 
     @ManyToOne(targetEntity = WorkUnit.class)
     private WorkUnit workUnit;
@@ -112,7 +116,7 @@ public class Plan extends BaseEntity  implements Resource<Plan>
         this.project = plan.project;
         this.planType = plan.planType;
         this.workUnit = plan.workUnit;
-        this.funder = plan.funder;
+        this.funders = new HashSet<>(plan.funders);
         this.comment = plan.comment;
         this.productsAvailableForGeneralPublic = plan.productsAvailableForGeneralPublic;
         this.planFlags = new HashSet<>(plan.planFlags);

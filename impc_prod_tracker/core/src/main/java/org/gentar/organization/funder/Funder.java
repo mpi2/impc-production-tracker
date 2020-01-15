@@ -15,8 +15,10 @@
  *******************************************************************************/
 package org.gentar.organization.funder;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import org.gentar.BaseEntity;
+import org.gentar.biology.plan.Plan;
 import org.gentar.organization.work_group.WorkGroup;
 
 import javax.persistence.*;
@@ -37,6 +39,11 @@ public class Funder extends BaseEntity
 
     private String description;
 
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
+    @JsonIgnore
+    @ManyToMany(mappedBy = "funders")
+    private Set<Plan> plans;
 
     @ManyToMany
     @JoinTable(

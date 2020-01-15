@@ -41,7 +41,7 @@ public class PlanDTO extends RepresentationModel
     @NonNull
     private String tpn;
 
-    private String funderName;
+    private List<String> funderNames;
     private String workUnitName;
     private Boolean isActive;
     private String statusName;
