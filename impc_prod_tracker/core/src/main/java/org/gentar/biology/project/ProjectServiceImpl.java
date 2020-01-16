@@ -18,7 +18,6 @@ package org.gentar.biology.project;
 import org.gentar.audit.history.HistoryService;
 import org.gentar.biology.ortholog.Ortholog;
 import org.gentar.biology.ortholog.OrthologService;
-import org.gentar.biology.project.intention.project_intention.ProjectIntention;
 import org.gentar.biology.project.intention.project_intention_gene.ProjectIntentionGene;
 import org.gentar.biology.project.search.filter.FluentProjectFilter;
 import org.gentar.biology.project.specs.ProjectSpecs;
@@ -47,6 +46,7 @@ public class ProjectServiceImpl implements ProjectService
     private ResourceAccessChecker<Project> resourceAccessChecker;
     private ProjectCreator projectCreator;
     private OrthologService orthologService;
+    private ProjectQueryHelper projectQueryHelper;
 
     public static final String READ_PROJECT_ACTION = "READ_PROJECT";
 
@@ -55,13 +55,15 @@ public class ProjectServiceImpl implements ProjectService
         HistoryService<Project> historyService,
         ResourceAccessChecker<Project> resourceAccessChecker,
         ProjectCreator projectCreator,
-        OrthologService orthologService)
+        OrthologService orthologService,
+        ProjectQueryHelper projectQueryHelper)
     {
         this.projectRepository = projectRepository;
         this.historyService = historyService;
         this.resourceAccessChecker = resourceAccessChecker;
         this.projectCreator = projectCreator;
         this.orthologService = orthologService;
+        this.projectQueryHelper = projectQueryHelper;
     }
 
     @Override
@@ -94,7 +96,7 @@ public class ProjectServiceImpl implements ProjectService
     {
         List<String> accIds = new ArrayList<>();
         projects.forEach(x -> {
-            accIds.addAll(getAccIdsByProject(x));
+            accIds.addAll(projectQueryHelper.getAccIdsByProject(x));
         });
         Map<String, List<Ortholog>> orthologs = orthologService.getOrthologsByAccIds(accIds);
         List<ProjectIntentionGene> projectIntentionGenes = getIntentionGenesByProjects(projects);
@@ -111,39 +113,12 @@ public class ProjectServiceImpl implements ProjectService
         return orthologService.calculateBestOrthologs(orthologsByAccId);
     }
 
-    public List<String> getAccIdsByProject(Project project)
-    {
-        List<String> accIds = new ArrayList<>();
-        List<ProjectIntentionGene> projectIntentionGenes = getIntentionGenesByProject(project);
-        projectIntentionGenes.forEach(x -> {
-            accIds.add(x.getGene().getAccId());
-        });
-        return accIds;
-    }
-
     private List<ProjectIntentionGene> getIntentionGenesByProjects(List<Project> projects)
     {
         List<ProjectIntentionGene> projectIntentionGenes = new ArrayList<>();
         projects.forEach(x -> {
-            projectIntentionGenes.addAll(getIntentionGenesByProject(x));
+            projectIntentionGenes.addAll(projectQueryHelper.getIntentionGenesByProject(x));
         });
-        return projectIntentionGenes;
-    }
-
-    public List<ProjectIntentionGene> getIntentionGenesByProject(Project project)
-    {
-        List<ProjectIntentionGene> projectIntentionGenes = new ArrayList<>();
-        List<ProjectIntention> intentions = project.getProjectIntentions();
-        if (intentions != null)
-        {
-            intentions.forEach(x -> {
-                ProjectIntentionGene intentionGene = x.getProjectIntentionGene();
-                if (intentionGene != null)
-                {
-                    projectIntentionGenes.add(intentionGene);
-                }
-            });
-        }
         return projectIntentionGenes;
     }
 

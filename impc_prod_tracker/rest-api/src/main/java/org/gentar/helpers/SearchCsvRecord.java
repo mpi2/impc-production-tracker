@@ -12,11 +12,15 @@ public class SearchCsvRecord implements CsvRecord
                 "Input",
                 "Search Comment",
                 "Tpn",
-                "Allele Intentions",
                 "Gene Or Location",
+                "MGI",
+                "Allele Intentions",
                 "Best human Orthologs",
+                "Work Unit",
+                "Work Group",
                 "Project Assignment",
-                "Privacy"
+                "Privacy",
+                "Consortia"
             };
 
     private String input;
@@ -24,15 +28,29 @@ public class SearchCsvRecord implements CsvRecord
     private String tpn;
     private String alleleIntentions;
     private String geneSymbolOrLocation;
+    private String accIds;
     private String bestHumanOrthologs;
+    private String workUnits;
+    private String workGroups;
     private String projectAssignment;
     private String privacy;
+    private String consortia;
 
     public String toString()
     {
-        return input + SEPARATOR +
+        return
+            input + SEPARATOR +
             searchComment + SEPARATOR +
-            tpn + SEPARATOR;
+            tpn + SEPARATOR +
+            geneSymbolOrLocation + SEPARATOR +
+            accIds + SEPARATOR +
+            alleleIntentions + SEPARATOR +
+            bestHumanOrthologs + SEPARATOR +
+            workUnits + SEPARATOR +
+            workGroups + SEPARATOR +
+            projectAssignment + SEPARATOR +
+            privacy + SEPARATOR +
+            consortia;
     }
 
     @Override
@@ -43,11 +61,15 @@ public class SearchCsvRecord implements CsvRecord
                 input,
                 searchComment,
                 tpn,
-                alleleIntentions,
                 geneSymbolOrLocation,
+                accIds,
+                alleleIntentions,
                 bestHumanOrthologs,
+                workUnits,
+                workGroups,
                 projectAssignment,
-                privacy
+                privacy,
+                consortia
             };
     }
 }
