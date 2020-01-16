@@ -15,8 +15,11 @@ public class ProjectCsvRecord implements CsvRecord
                 "MGI",
                 "Allele Intentions",
                 "Best human Orthologs",
+                "Work Unit",
+                "Work Group",
                 "Project Assignment",
-                "Privacy"
+                "Privacy",
+                "Consortia"
             };
 
     private String tpn;
@@ -25,8 +28,11 @@ public class ProjectCsvRecord implements CsvRecord
     private String accIds;
     private String alleleIntentions;
     private String bestHumanOrthologs;
+    private String workUnits;
+    private String workGroups;
     private String projectAssignment;
     private String privacy;
+    private String consortia;
 
     public String toString()
     {
@@ -37,8 +43,11 @@ public class ProjectCsvRecord implements CsvRecord
             accIds + SEPARATOR +
             alleleIntentions + SEPARATOR +
             bestHumanOrthologs + SEPARATOR +
+            workUnits + SEPARATOR +
+            workGroups + SEPARATOR +
             projectAssignment + SEPARATOR +
-            privacy;
+            privacy + SEPARATOR +
+            consortia;
     }
 
     @Override
@@ -52,8 +61,11 @@ public class ProjectCsvRecord implements CsvRecord
                 accIds,
                 alleleIntentions,
                 bestHumanOrthologs,
+                workUnits,
+                workGroups,
                 projectAssignment,
-                privacy
+                privacy,
+                consortia
             };
     }
 }
