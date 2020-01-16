@@ -9,30 +9,36 @@ public class ProjectCsvRecord implements CsvRecord
     public static final String[] HEADERS =
         new String[]
             {
-                "Input",
-                "Search Comment",
                 "Tpn",
-                "Allele Intentions",
+                "External Reference",
                 "Gene Or Location",
+                "MGI",
+                "Allele Intentions",
                 "Best human Orthologs",
                 "Project Assignment",
                 "Privacy"
             };
 
-    private String input;
-    private String searchComment;
     private String tpn;
-    private String alleleIntentions;
+    private String externalReference;
     private String geneSymbolOrLocation;
+    private String accIds;
+    private String alleleIntentions;
     private String bestHumanOrthologs;
     private String projectAssignment;
     private String privacy;
 
     public String toString()
     {
-        return input + SEPARATOR +
-            searchComment + SEPARATOR +
-            tpn + SEPARATOR;
+        return
+            tpn + SEPARATOR +
+            externalReference + SEPARATOR +
+            geneSymbolOrLocation + SEPARATOR +
+            accIds + SEPARATOR +
+            alleleIntentions + SEPARATOR +
+            bestHumanOrthologs + SEPARATOR +
+            projectAssignment + SEPARATOR +
+            privacy;
     }
 
     @Override
@@ -40,11 +46,11 @@ public class ProjectCsvRecord implements CsvRecord
     {
         return new String[]
             {
-                input,
-                searchComment,
                 tpn,
-                alleleIntentions,
+                externalReference,
                 geneSymbolOrLocation,
+                accIds,
+                alleleIntentions,
                 bestHumanOrthologs,
                 projectAssignment,
                 privacy

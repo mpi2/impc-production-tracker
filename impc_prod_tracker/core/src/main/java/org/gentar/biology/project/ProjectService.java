@@ -16,6 +16,7 @@
 package org.gentar.biology.project;
 
 import org.gentar.audit.history.History;
+import org.gentar.biology.project.intention.project_intention_gene.ProjectIntentionGene;
 import org.gentar.biology.project.search.filter.ProjectFilter;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -37,4 +38,8 @@ public interface ProjectService
      * @return List of {@link History} with the trace of the changes for a project.
      */
     List<History> getProjectHistory(Project project);
+
+    List<ProjectIntentionGene> getIntentionGenesByProject(Project project);
+
+    List<String> getAccIdsByProject(Project project);
 }
