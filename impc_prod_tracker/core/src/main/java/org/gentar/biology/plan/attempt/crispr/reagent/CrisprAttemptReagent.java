@@ -47,6 +47,5 @@ public class CrisprAttemptReagent extends BaseEntity implements Serializable
     @ManyToOne(targetEntity = Reagent.class)
     private Reagent reagent;
 
-    @NotNull
     private Integer concentration;
 }
