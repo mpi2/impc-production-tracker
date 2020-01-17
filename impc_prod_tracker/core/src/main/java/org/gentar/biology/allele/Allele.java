@@ -20,7 +20,6 @@ import lombok.*;
 import org.hibernate.annotations.Type;
 import org.gentar.BaseEntity;
 import org.gentar.biology.allele.categorizarion.AlleleCategorization;
-import org.gentar.biology.colony.Colony;
 import org.gentar.biology.allele.genbank_file.GenbankFile;
 import org.gentar.biology.gene.Gene;
 import org.gentar.biology.molecular_mutation_type.MolecularMutationType;
@@ -106,16 +105,6 @@ public class Allele extends BaseEntity
             joinColumns = @JoinColumn(name = "allele_id"),
             inverseJoinColumns = @JoinColumn(name = "outcome_id"))
     private Set<Outcome> outcomes;
-
-    @ToString.Exclude
-    @JsonIgnore
-    @ManyToMany
-    @JoinTable(
-            name = "allele_colony",
-            joinColumns = @JoinColumn(name = "allele_id"),
-            inverseJoinColumns = @JoinColumn(name = "colony_id"))
-    private Set<Colony> colonies;
-
 
     @EqualsAndHashCode.Exclude
     @ManyToMany

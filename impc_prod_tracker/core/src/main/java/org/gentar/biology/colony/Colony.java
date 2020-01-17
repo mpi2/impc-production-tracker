@@ -17,7 +17,6 @@ package org.gentar.biology.colony;
 
 import lombok.*;
 import org.gentar.BaseEntity;
-import org.gentar.biology.allele.Allele;
 import org.gentar.biology.outcome.Outcome;
 import org.gentar.biology.strain.Strain;
 
@@ -49,8 +48,4 @@ public class Colony extends BaseEntity
     private Boolean genotypeConfirmed;
 
     private String genotypingComment;
-
-    @EqualsAndHashCode.Exclude
-    @ManyToMany(mappedBy = "colonies")
-    private Set<Allele> alleles;
 }
