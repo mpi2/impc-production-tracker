@@ -13,15 +13,9 @@
  * language governing permissions and limitations under the
  * License.
  *******************************************************************************/
-package org.gentar.organization.work_group;
+package org.gentar.biology.mutation;
 
 import org.springframework.data.repository.CrudRepository;
 
-public interface WorkGroupRepository extends CrudRepository<WorkGroup, Long> {
-    WorkGroup findWorkGroupByName(String name);
-
-//    WorkGroup findWorkGroupByIlarCode(String code);
-
-    WorkGroup findWorkGroupByNameIgnoreCase(String name);
-
+public interface MutationRepository extends CrudRepository<Mutation, Long> {
 }

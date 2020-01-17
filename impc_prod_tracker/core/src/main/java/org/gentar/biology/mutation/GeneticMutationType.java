@@ -13,50 +13,29 @@
  * language governing permissions and limitations under the
  * License.
  *******************************************************************************/
-package org.gentar.organization.work_group;
+package org.gentar.biology.mutation;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.*;
+import lombok.AccessLevel;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.gentar.BaseEntity;
-import org.gentar.organization.funder.Funder;
-import org.gentar.organization.work_unit.WorkUnit;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
 import javax.persistence.SequenceGenerator;
-import java.util.Set;
+import javax.validation.constraints.NotNull;
 
 @NoArgsConstructor(access= AccessLevel.PUBLIC, force=true)
 @Data
 @Entity
-//@EqualsAndHashCode( exclude = {"workUnits"}, callSuper = false)
-public class WorkGroup extends BaseEntity
+public class GeneticMutationType extends BaseEntity
 {
     @Id
-    @SequenceGenerator(name = "workGroupSeq", sequenceName = "WORK_GROUP_SEQ")
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "workGroupSeq")
+    @SequenceGenerator(name = "geneticMutationTypeSeq", sequenceName = "GENETIC_MUTATION_TYPE_SEQ")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "geneticMutationTypeSeq")
     private Long id;
 
+    @NotNull
     private String name;
-
-    private String description;
-
-    @EqualsAndHashCode.Exclude
-    @ToString.Exclude
-    @JsonIgnore
-    @ManyToMany(mappedBy = "workGroups")
-    private Set<Funder> funders;
-
-
-    @ManyToMany
-    @JoinTable(
-            name = "work_group_work_unit",
-            joinColumns = @JoinColumn(name = "work_group_id"),
-            inverseJoinColumns = @JoinColumn(name = "work_unit_id"))
-    private Set<WorkUnit> workUnits;
-
 }

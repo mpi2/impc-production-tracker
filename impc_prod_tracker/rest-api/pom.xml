@@ -10,7 +10,7 @@
 	</parent>
 	<groupId>org.gentar</groupId>
 	<artifactId>rest-api</artifactId>
-	<version>0.0.2-SNAPSHOT</version>
+	<version>0.0.3-SNAPSHOT</version>
 	<name>rest-api</name>
 	<description>GenTaR REST API</description>
 

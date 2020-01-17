@@ -13,39 +13,67 @@
  * language governing permissions and limitations under the
  * License.
  *******************************************************************************/
-package org.gentar.biology.colony;
+package org.gentar.biology.mutation.annotation;
 
 import lombok.*;
 import org.gentar.BaseEntity;
-import org.gentar.biology.outcome.Outcome;
-import org.gentar.biology.strain.Strain;
+import org.gentar.biology.mutation.Mutation;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import java.util.Set;
 
 @NoArgsConstructor(access= AccessLevel.PRIVATE, force=true)
 @Data
 @Entity
-public class Colony extends BaseEntity
+public class MutationAnnotation extends BaseEntity
 {
     @Id
-    @SequenceGenerator(name = "colonySeq", sequenceName = "COLONY_SEQ")
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "colonySeq")
+    @SequenceGenerator(name = "mutationAnnotationSeq", sequenceName = "MUTATION_ANNOTATION_SEQ")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "mutationAnnotationSeq")
     private Long id;
 
     @NotNull
-    private String name;
+    @OneToOne(targetEntity = Mutation.class)
+    private Mutation mutation;
 
     @NotNull
-    @ManyToOne
-    private Strain strain;
+    private String chr;
 
-    @EqualsAndHashCode.Exclude
-    @ManyToOne(targetEntity = Outcome.class)
-    private Outcome outcome;
+    @NotNull
+    private Long start;
 
-    private Boolean genotypeConfirmed;
+    @NotNull
+    private Long stop;
 
-    private String genotypingComment;
+    private String refSeq;
+
+    private String altSeq;
+
+    private String exdels;
+
+    private String partialExdels;
+
+    private String txc;
+
+    private Boolean spliceDonor;
+
+    private Boolean spliceAcceptor;
+
+    private Boolean proteinCodingRegion;
+
+    private Boolean intronic;
+
+    private Boolean frameShift;
+
+    private String linkedConsequence;
+
+    private Boolean downstreamOfStop;
+
+    private Boolean stopGained;
+
+    private String aminoAcid;
+
+    private String dupCoords;
+
+    private String consequence;
 }

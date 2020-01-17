@@ -2,7 +2,7 @@ package org.gentar.biology.outcome;
 
 import lombok.*;
 import org.gentar.BaseEntity;
-import org.gentar.biology.allele.Allele;
+import org.gentar.biology.mutation.Mutation;
 import org.gentar.biology.plan.Plan;
 import org.gentar.biology.status.Status;
 
@@ -32,5 +32,5 @@ public class Outcome extends BaseEntity
 
     @EqualsAndHashCode.Exclude
     @ManyToMany(mappedBy = "outcomes")
-    private Set<Allele> alleles;
+    private Set<Mutation> mutations;
 }

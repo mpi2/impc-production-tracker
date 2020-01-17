@@ -20,18 +20,18 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 import org.gentar.biology.sequence.ProjectIntentionSequenceDTO;
-import org.gentar.biology.allele.AlleleCategorizationDTO;
+import org.gentar.biology.mutation.MutationCategorizationDTO;
 
 import java.util.List;
 
 @Data
 public class ProjectIntentionDTO
 {
-    private String alleleTypeName;
+    private String geneticMutationTypeName;
     private String molecularMutationTypeName;
 
-    @JsonProperty("alleleCategorizations")
-    private List<AlleleCategorizationDTO> alleleCategorizationDTOS;
+    @JsonProperty("mutationCategorizations")
+    private List<MutationCategorizationDTO> mutationCategorizationDTOS;
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
     @JsonProperty("intentionByGene")

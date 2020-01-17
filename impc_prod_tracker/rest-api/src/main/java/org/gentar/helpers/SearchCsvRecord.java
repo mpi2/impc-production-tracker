@@ -11,11 +11,11 @@ public class SearchCsvRecord implements CsvRecord
             {
                 "Input",
                 "Search Comment",
-                "Tpn",
+                "TPN",
                 "Gene Or Location",
                 "MGI",
-                "Allele Intentions",
-                "Best human Orthologs",
+                "Mutation Intentions",
+                "Best Human Orthologs",
                 "Work Unit",
                 "Work Group",
                 "Project Assignment",
@@ -26,7 +26,7 @@ public class SearchCsvRecord implements CsvRecord
     private String input;
     private String searchComment;
     private String tpn;
-    private String alleleIntentions;
+    private String mutationIntentions;
     private String geneSymbolOrLocation;
     private String accIds;
     private String bestHumanOrthologs;
@@ -44,7 +44,7 @@ public class SearchCsvRecord implements CsvRecord
             tpn + SEPARATOR +
             geneSymbolOrLocation + SEPARATOR +
             accIds + SEPARATOR +
-            alleleIntentions + SEPARATOR +
+                    mutationIntentions + SEPARATOR +
             bestHumanOrthologs + SEPARATOR +
             workUnits + SEPARATOR +
             workGroups + SEPARATOR +
@@ -63,7 +63,7 @@ public class SearchCsvRecord implements CsvRecord
                 tpn,
                 geneSymbolOrLocation,
                 accIds,
-                alleleIntentions,
+                    mutationIntentions,
                 bestHumanOrthologs,
                 workUnits,
                 workGroups,

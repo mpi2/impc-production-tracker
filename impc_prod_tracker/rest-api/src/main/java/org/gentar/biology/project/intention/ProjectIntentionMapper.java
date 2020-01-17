@@ -19,8 +19,8 @@ import org.gentar.biology.intention.ProjectIntentionGeneDTO;
 import org.gentar.biology.intention.ProjectIntentionDTO;
 import org.gentar.biology.sequence.ProjectIntentionSequenceDTO;
 import org.gentar.EntityMapper;
-import org.gentar.biology.allele.AlleleTypeMapper;
-import org.gentar.biology.allele.AlleleCategorizationMapper;
+import org.gentar.biology.mutation.GeneticMutationTypeMapper;
+import org.gentar.biology.mutation.MutationCategorizationMapper;
 import org.gentar.biology.molecular_mutation.MolecularMutationTypeMapper;
 import org.springframework.stereotype.Component;
 import org.gentar.biology.project.intention.project_intention.ProjectIntention;
@@ -35,25 +35,25 @@ import java.util.List;
 public class ProjectIntentionMapper
 {
     private EntityMapper entityMapper;
-    private AlleleTypeMapper alleleTypeMapper;
-    private AlleleCategorizationMapper alleleCategorizationMapper;
+    private GeneticMutationTypeMapper geneticMutationTypeMapper;
+    private MutationCategorizationMapper mutationCategorizationMapper;
     private MolecularMutationTypeMapper molecularMutationTypeMapper;
     private ProjectIntentionGeneMapper projectIntentionGeneMapper;
     private ProjectIntentionSequenceMapper projectIntentionSequenceMapper;
     private OrthologMapper orthologMapper;
 
     public ProjectIntentionMapper(
-        EntityMapper entityMapper,
-        AlleleTypeMapper alleleTypeMapper,
-        AlleleCategorizationMapper alleleCategorizationMapper,
-        MolecularMutationTypeMapper molecularMutationTypeMapper,
-        ProjectIntentionGeneMapper projectIntentionGeneMapper,
-        ProjectIntentionSequenceMapper projectIntentionSequenceMapper,
-        OrthologMapper orthologMapper)
+            EntityMapper entityMapper,
+            GeneticMutationTypeMapper geneticMutationTypeMapper,
+            MutationCategorizationMapper mutationCategorizationMapper,
+            MolecularMutationTypeMapper molecularMutationTypeMapper,
+            ProjectIntentionGeneMapper projectIntentionGeneMapper,
+            ProjectIntentionSequenceMapper projectIntentionSequenceMapper,
+            OrthologMapper orthologMapper)
     {
         this.entityMapper = entityMapper;
-        this.alleleTypeMapper = alleleTypeMapper;
-        this.alleleCategorizationMapper = alleleCategorizationMapper;
+        this.geneticMutationTypeMapper = geneticMutationTypeMapper;
+        this.mutationCategorizationMapper = mutationCategorizationMapper;
         this.molecularMutationTypeMapper = molecularMutationTypeMapper;
         this.projectIntentionGeneMapper = projectIntentionGeneMapper;
         this.projectIntentionSequenceMapper = projectIntentionSequenceMapper;
@@ -64,8 +64,8 @@ public class ProjectIntentionMapper
     {
         ProjectIntentionDTO projectIntentionDTO =
             entityMapper.toTarget(projectIntention, ProjectIntentionDTO.class);
-        projectIntentionDTO.setAlleleCategorizationDTOS(
-            alleleCategorizationMapper.toDtos(projectIntention.getAlleleCategorizations()));
+        projectIntentionDTO.setMutationCategorizationDTOS(
+            mutationCategorizationMapper.toDtos(projectIntention.getMutationCategorizations()));
         setProjectIntentionGeneDTO(projectIntention, projectIntentionDTO);
         setProjectIntentionSequenceDTO(projectIntention, projectIntentionDTO);
         return projectIntentionDTO;
@@ -115,8 +115,8 @@ public class ProjectIntentionMapper
     {
         ProjectIntention projectIntention =
             entityMapper.toTarget(projectIntentionDTO, ProjectIntention.class);
-        projectIntention.setAlleleType(
-            alleleTypeMapper.toEntity(projectIntentionDTO.getAlleleTypeName()));
+        projectIntention.setGeneticMutationType(
+            geneticMutationTypeMapper.toEntity(projectIntentionDTO.getGeneticMutationTypeName()));
         projectIntention.setMolecularMutationType(
             molecularMutationTypeMapper.toEntity(projectIntentionDTO.getMolecularMutationTypeName()));
         setProjectIntention(projectIntention, projectIntentionDTO);
