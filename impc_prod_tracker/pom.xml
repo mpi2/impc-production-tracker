@@ -5,7 +5,7 @@
 
 	<groupId>org.gentar</groupId>
 	<artifactId>gentar_app</artifactId>
-	<version>0.0.2-SNAPSHOT</version>
+	<version>0.0.3-SNAPSHOT</version>
 	<name>GenTaR</name>
 	<description>Genomic Targeting Repository</description>
 	<url>http://www.gentar.org</url>

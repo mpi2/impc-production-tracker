@@ -25,10 +25,10 @@ public class ProjectCsvRecordMapper implements Mapper<Project, ProjectCsvRecord>
             String.join(SEPARATOR, projectQueryHelper.getSymbolsOrLocations(project)));
         projectCsvRecord.setAccIds(
             String.join(SEPARATOR, projectQueryHelper.getAccIdsByProject(project)));
-        projectCsvRecord.setAlleleIntentions(
-            String.join(SEPARATOR, projectQueryHelper.getIntentionAlleleTypeNames(project)));
+        projectCsvRecord.setMutationIntentions(
+            String.join(SEPARATOR, projectQueryHelper.getIntentionGeneticMutationTypeNames(project)));
         projectCsvRecord.setBestHumanOrthologs(
-            String.join(SEPARATOR, projectQueryHelper.getIntentionAlleleTypeNames(project)));
+            String.join(SEPARATOR, projectQueryHelper.getIntentionGeneticMutationTypeNames(project)));
         projectCsvRecord.setWorkUnits(
             String.join(SEPARATOR, projectQueryHelper.getWorkUnitsNames(project)));
         projectCsvRecord.setWorkGroups(

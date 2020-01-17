@@ -16,10 +16,10 @@ iMITS2 is designed to coordinate the production of transgenic mice between high-
 mouse production facilities and consortia of clinicians and human geneticists
 while minimizing the overlap	and	maximizing	efficiencies. iMITS2 captures the intention	of
 a particular consortium	to produce mutant mice on a	particular	gene, the	progress	of
-mouse	production	and	modified	allele	creation	on	the	original	mouse,	and	the	capture
+mouse	production	and	modified	mutation	creation	on	the	original	mouse,	and	the	capture
 of	phenotype	data	on	the	mouse.
 
-This is a secure resource that can house various types of alleles linked to genes,
+This is a secure resource that can house various types of mutations linked to genes,
 and will provide different data access policies to users.
 
 

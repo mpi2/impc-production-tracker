@@ -9,12 +9,12 @@ public class ProjectCsvRecord implements CsvRecord
     public static final String[] HEADERS =
         new String[]
             {
-                "Tpn",
+                "TPN",
                 "External Reference",
                 "Gene Or Location",
                 "MGI",
-                "Allele Intentions",
-                "Best human Orthologs",
+                "Mutation Intentions",
+                "Best Human Orthologs",
                 "Work Unit",
                 "Work Group",
                 "Project Assignment",
@@ -26,7 +26,7 @@ public class ProjectCsvRecord implements CsvRecord
     private String externalReference;
     private String geneSymbolOrLocation;
     private String accIds;
-    private String alleleIntentions;
+    private String mutationIntentions;
     private String bestHumanOrthologs;
     private String workUnits;
     private String workGroups;
@@ -41,7 +41,7 @@ public class ProjectCsvRecord implements CsvRecord
             externalReference + SEPARATOR +
             geneSymbolOrLocation + SEPARATOR +
             accIds + SEPARATOR +
-            alleleIntentions + SEPARATOR +
+                    mutationIntentions + SEPARATOR +
             bestHumanOrthologs + SEPARATOR +
             workUnits + SEPARATOR +
             workGroups + SEPARATOR +
@@ -59,7 +59,7 @@ public class ProjectCsvRecord implements CsvRecord
                 externalReference,
                 geneSymbolOrLocation,
                 accIds,
-                alleleIntentions,
+                    mutationIntentions,
                 bestHumanOrthologs,
                 workUnits,
                 workGroups,

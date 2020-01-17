@@ -5,7 +5,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
-import org.gentar.biology.allele.AlleleDTO;
+import org.gentar.biology.mutation.MutationDTO;
 import org.gentar.biology.colony.ColonyDTO;
 import org.gentar.biology.status_stamps.StatusStampsDTO;
 
@@ -27,10 +27,10 @@ public class OutcomeDTO
     private List<StatusStampsDTO> statusStampsDTOS;
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    @JsonProperty("allelesAttributes")
-    private List<AlleleDTO> alleleDTOS;
+    @JsonProperty("mutations")
+    private List<MutationDTO> mutationDTOS;
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    @JsonProperty("coloniesAttributes")
+    @JsonProperty("colonies")
     private List<ColonyDTO> colonyDTOS;
 }

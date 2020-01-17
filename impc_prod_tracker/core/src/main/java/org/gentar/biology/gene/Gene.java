@@ -19,7 +19,7 @@ package org.gentar.biology.gene;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import org.gentar.BaseEntity;
-import org.gentar.biology.allele.Allele;
+import org.gentar.biology.mutation.Mutation;
 import org.gentar.biology.gene.flag.GeneFlag;
 import org.gentar.biology.project.intention.project_intention_gene.ProjectIntentionGene;
 import org.gentar.biology.species.Species;
@@ -69,7 +69,7 @@ public class Gene extends BaseEntity
 
     @EqualsAndHashCode.Exclude
     @ManyToMany(mappedBy = "genes")
-    private Set<Allele> alleles;
+    private Set<Mutation> mutations;
 
     @ManyToOne(targetEntity= Species.class)
     private Species species;

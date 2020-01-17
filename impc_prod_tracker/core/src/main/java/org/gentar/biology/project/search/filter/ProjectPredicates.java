@@ -1,6 +1,6 @@
 package org.gentar.biology.project.search.filter;
 
-import org.gentar.biology.allele.AlleleType;
+import org.gentar.biology.mutation.GeneticMutationType;
 import org.gentar.biology.project.Project;
 import org.gentar.biology.project.intention.project_intention.ProjectIntention;
 import org.gentar.organization.work_group.WorkGroup;
@@ -48,25 +48,25 @@ public class ProjectPredicates
     public static Predicate<Project> inAlleleTypeNames(List<String> values)
     {
         return (p) -> {
-            List<AlleleType> alleleTypes = getProjectAlleleTypes(p);
-            return alleleTypes.stream()
+            List<GeneticMutationType> geneticMutationTypes = getProjectAlleleTypes(p);
+            return geneticMutationTypes.stream()
                 .filter(x -> values.contains(x.getName()))
                 .findFirst().orElse(null) != null;
         };
     }
 
-    private static List<AlleleType> getProjectAlleleTypes(Project project)
+    private static List<GeneticMutationType> getProjectAlleleTypes(Project project)
     {
-        List<AlleleType> alleleTypes = new ArrayList<>();
+        List<GeneticMutationType> geneticMutationTypes = new ArrayList<>();
         if (project != null)
         {
             List<ProjectIntention> projectIntentions = project.getProjectIntentions();
             if (projectIntentions != null)
             {
-                projectIntentions.forEach(i -> alleleTypes.add(i.getAlleleType()));
+                projectIntentions.forEach(i -> geneticMutationTypes.add(i.getGeneticMutationType()));
             }
         }
-        return alleleTypes;
+        return geneticMutationTypes;
     }
 
     public static Predicate<Project> inConsortiaNames(List<String> values)

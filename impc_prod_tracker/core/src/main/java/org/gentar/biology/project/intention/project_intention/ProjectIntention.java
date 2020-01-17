@@ -5,8 +5,8 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
-import org.gentar.biology.allele.categorizarion.AlleleCategorization;
-import org.gentar.biology.allele.AlleleType;
+import org.gentar.biology.mutation.GeneticMutationType;
+import org.gentar.biology.mutation.categorizarion.MutationCategorization;
 import org.gentar.biology.molecular_mutation_type.MolecularMutationType;
 import org.gentar.biology.project.Project;
 import org.gentar.biology.project.intention.project_intention_gene.ProjectIntentionGene;
@@ -43,7 +43,7 @@ public class ProjectIntention
     private MolecularMutationType molecularMutationType;
 
     @ManyToOne
-    private AlleleType alleleType;
+    private GeneticMutationType geneticMutationType;
 
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
@@ -58,9 +58,9 @@ public class ProjectIntention
     @EqualsAndHashCode.Exclude
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
-        name = "project_intention_allele_categorization",
+        name = "project_intention_mutation_categorization",
         joinColumns = @JoinColumn(name = "project_intention_id"),
-        inverseJoinColumns = @JoinColumn(name = "allele_categorization_id")
+        inverseJoinColumns = @JoinColumn(name = "mutation_categorization_id")
     )
-    private Set<AlleleCategorization> alleleCategorizations;
+    private Set<MutationCategorization> mutationCategorizations;
 }

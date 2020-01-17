@@ -78,11 +78,11 @@ public class ProjectSpecs
         if (intentionNames != null)
         {
             specification = (Specification<Project>) (root, query, criteriaBuilder) -> {
-                Path<String> alleleTypeNamePath = ProjectPaths.getAlleleTypeNamePath(root);
+                Path<String> geneticMutationTypeNamePath = ProjectPaths.getGeneticMutationTypeNamePath(root);
 
                 query.distinct(true);
                 return PredicateBuilder.addInPredicates(
-                    criteriaBuilder, alleleTypeNamePath, intentionNames);
+                    criteriaBuilder, geneticMutationTypeNamePath, intentionNames);
             };
         }
         return specification;

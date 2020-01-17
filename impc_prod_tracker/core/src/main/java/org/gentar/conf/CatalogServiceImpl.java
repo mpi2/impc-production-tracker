@@ -16,7 +16,7 @@
 package org.gentar.conf;
 
 import org.springframework.stereotype.Component;
-import org.gentar.biology.allele.AlleleTypeRepository;
+import org.gentar.biology.mutation.GeneticMutationTypeRepository;
 import org.gentar.biology.project.assignment_status.AssignmentStatusRepository;
 import org.gentar.biology.plan.attempt.crispr.mutagenesis_donor.preparation_type.PreparationTypeRepository;
 import org.gentar.biology.molecular_mutation_type.MolecularMutationTypeRepository;
@@ -46,7 +46,7 @@ public class CatalogServiceImpl implements CatalogService
     private PrivacyRepository privacyRepository;
     private StatusRepository statusRepository;
     private AssignmentStatusRepository assignmentStatusRepository;
-    private AlleleTypeRepository alleleTypeRepository;
+    private GeneticMutationTypeRepository geneticMutationTypeRepository;
     private InstituteRepository instituteRepository;
     private StrainRepository strainRepository;
     private PreparationTypeRepository preparationTypeRepository;
@@ -64,7 +64,7 @@ public class CatalogServiceImpl implements CatalogService
         PrivacyRepository privacyRepository,
         StatusRepository statusRepository,
         AssignmentStatusRepository assignmentStatusRepository,
-        AlleleTypeRepository alleleTypeRepository,
+        GeneticMutationTypeRepository geneticMutationTypeRepository,
         InstituteRepository instituteRepository,
         StrainRepository strainRepository,
         PreparationTypeRepository preparationTypeRepository,
@@ -80,7 +80,7 @@ public class CatalogServiceImpl implements CatalogService
         this.privacyRepository = privacyRepository;
         this.statusRepository = statusRepository;
         this.assignmentStatusRepository = assignmentStatusRepository;
-        this.alleleTypeRepository = alleleTypeRepository;
+        this.geneticMutationTypeRepository = geneticMutationTypeRepository;
         this.instituteRepository = instituteRepository;
         this.strainRepository = strainRepository;
         this.preparationTypeRepository = preparationTypeRepository;
@@ -101,7 +101,7 @@ public class CatalogServiceImpl implements CatalogService
             addPrivacies();
             addStatuses();
             addAssignmentStatuses();
-            addAlleleTypes();
+            addGeneticMutationTypes();
             addInstitutes();
             addStrains();
             addMaterialTypes();
@@ -164,11 +164,11 @@ public class CatalogServiceImpl implements CatalogService
 
     }
 
-    private void addAlleleTypes()
+    private void addGeneticMutationTypes()
     {
-        List<String> alleleTypes = new ArrayList<>();
-        alleleTypeRepository.findAll().forEach(p -> alleleTypes.add(p.getName()));
-        conf.put("alleleTypes", alleleTypes);
+        List<String> geneticMutationTypes = new ArrayList<>();
+        geneticMutationTypeRepository.findAll().forEach(p -> geneticMutationTypes.add(p.getName()));
+        conf.put("geneticMutationTypes", geneticMutationTypes);
     }
 
     private void addInstitutes()
