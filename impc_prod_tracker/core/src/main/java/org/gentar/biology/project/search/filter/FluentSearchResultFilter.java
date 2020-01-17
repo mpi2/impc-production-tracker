@@ -19,7 +19,15 @@ public class FluentSearchResultFilter extends AbstractFluentProjectFilter<Search
     protected List<SearchResult> withCondition(Predicate<Project> condition)
     {
         return data.stream()
-            .filter(x -> condition.test(x.getProject()))
+            .filter(x ->
+                {
+                    if (x.getProject() == null)
+                    {
+                        return false;
+                    }
+                    return condition.test(x.getProject());
+                }
+            )
             .collect(Collectors.toList());
     }
 }

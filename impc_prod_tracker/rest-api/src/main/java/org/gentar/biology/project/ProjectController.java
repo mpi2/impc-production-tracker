@@ -34,7 +34,6 @@ import org.springframework.web.bind.annotation.*;
 import org.gentar.biology.project.search.filter.ProjectFilter;
 import org.gentar.biology.project.search.filter.ProjectFilterBuilder;
 import org.gentar.biology.project.helper.ProjectUtilities;
-
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
@@ -80,15 +79,16 @@ class ProjectController
     public ResponseEntity findAll(
         Pageable pageable,
         PagedResourcesAssembler assembler,
-        @RequestParam(value = "tpn", required = false) List<String> tpns,
-        @RequestParam(value = "markerSymbol", required = false) List<String> markerSymbols,
-        @RequestParam(value = "gene", required = false) List<String> genes,
-        @RequestParam(value = "intention", required = false) List<String> intentions,
-        @RequestParam(value = "workUnitName", required = false) List<String> workUnitNames,
-        @RequestParam(value = "consortium", required = false) List<String> consortia,
-        @RequestParam(value = "status", required = false) List<String> statuses,
-        @RequestParam(value = "privacyName", required = false) List<String> privaciesNames,
-        @RequestParam(value = "externalReference", required = false) List<String> externalReferences)
+        @RequestParam(value = "tpns", required = false) List<String> tpns,
+        @RequestParam(value = "markerSymbols", required = false) List<String> markerSymbols,
+        @RequestParam(value = "genes", required = false) List<String> genes,
+        @RequestParam(value = "intentions", required = false) List<String> intentions,
+        @RequestParam(value = "workUnitNames", required = false) List<String> workUnitNames,
+        @RequestParam(value = "workGroupNames", required = false) List<String> workGroupNames,
+        @RequestParam(value = "consortiaNames", required = false) List<String> consortia,
+        @RequestParam(value = "statuses", required = false) List<String> statuses,
+        @RequestParam(value = "privacyNames", required = false) List<String> privaciesNames,
+        @RequestParam(value = "externalReferences", required = false) List<String> externalReferences)
     {
         ProjectFilter projectFilter = ProjectFilterBuilder.getInstance()
             .withTpns(tpns)
@@ -98,6 +98,8 @@ class ProjectController
             .withStatuses(statuses)
             .withPrivacies(privaciesNames)
             .withWorkUnitNames(workUnitNames)
+            .withConsortiaNames(consortia)
+            .withWorkGroupNames(workGroupNames)
             .withExternalReference(externalReferences)
             .build();
         Page<Project> projectsPage = projectService.getProjects(projectFilter, pageable);
@@ -120,15 +122,16 @@ class ProjectController
     @GetMapping("/exportProjects")
     public void exportProjects(
         HttpServletResponse response,
-        @RequestParam(value = "tpn", required = false) List<String> tpns,
-        @RequestParam(value = "markerSymbol", required = false) List<String> markerSymbols,
-        @RequestParam(value = "gene", required = false) List<String> genes,
-        @RequestParam(value = "intention", required = false) List<String> intentions,
-        @RequestParam(value = "workUnitName", required = false) List<String> workUnitNames,
-        @RequestParam(value = "consortium", required = false) List<String> consortia,
-        @RequestParam(value = "status", required = false) List<String> statuses,
-        @RequestParam(value = "privacyName", required = false) List<String> privaciesNames,
-        @RequestParam(value = "externalReference", required = false) List<String> externalReferences) throws IOException
+        @RequestParam(value = "tpns", required = false) List<String> tpns,
+        @RequestParam(value = "markerSymbols", required = false) List<String> markerSymbols,
+        @RequestParam(value = "genes", required = false) List<String> genes,
+        @RequestParam(value = "intentions", required = false) List<String> intentions,
+        @RequestParam(value = "workUnitNames", required = false) List<String> workUnitNames,
+        @RequestParam(value = "workGroupNames", required = false) List<String> workGroupNames,
+        @RequestParam(value = "consortiaNames", required = false) List<String> consortia,
+        @RequestParam(value = "statuses", required = false) List<String> statuses,
+        @RequestParam(value = "privacyNames", required = false) List<String> privaciesNames,
+        @RequestParam(value = "externalReferences", required = false) List<String> externalReferences) throws IOException
     {
         ProjectFilter projectFilter = ProjectFilterBuilder.getInstance()
             .withTpns(tpns)
@@ -138,6 +141,8 @@ class ProjectController
             .withStatuses(statuses)
             .withPrivacies(privaciesNames)
             .withWorkUnitNames(workUnitNames)
+            .withWorkGroupNames(workGroupNames)
+            .withConsortiaNames(consortia)
             .withExternalReference(externalReferences)
             .build();
         var projectsPage = projectService.getProjects(projectFilter);
