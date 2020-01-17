@@ -1,4 +1,4 @@
-package org.gentar.organization;
+package org.gentar.organization.work_group;
 
 import org.gentar.organization.work_unit.WorkUnitService;
 import org.springframework.web.bind.annotation.GetMapping;

@@ -22,4 +22,6 @@ public interface WorkGroupRepository extends CrudRepository<WorkGroup, Long> {
 
 //    WorkGroup findWorkGroupByIlarCode(String code);
 
+    WorkGroup findWorkGroupByNameIgnoreCase(String name);
+
 }

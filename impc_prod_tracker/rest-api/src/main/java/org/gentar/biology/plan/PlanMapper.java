@@ -9,6 +9,7 @@ import org.gentar.biology.project.ProjectService;
 import org.gentar.biology.status.StatusMapper;
 import org.gentar.organization.funder.Funder;
 import org.gentar.organization.funder.FunderMapper;
+import org.gentar.organization.work_group.WorkGroupMapper;
 import org.gentar.organization.work_unit.WorkUnitMapper;
 import org.springframework.stereotype.Component;
 import org.gentar.biology.plan.attempt.AttemptType;
@@ -26,6 +27,7 @@ public class PlanMapper implements Mapper<Plan, PlanDTO>
     private AttemptTypeMapper attemptTypeMapper;
     private FunderMapper funderMapper;
     private WorkUnitMapper workUnitMapper;
+    private WorkGroupMapper workGroupMapper;
     private StatusMapper statusMapper;
     private PlanTypeMapper planTypeMapper;
     private ProjectService projectService;
@@ -33,19 +35,20 @@ public class PlanMapper implements Mapper<Plan, PlanDTO>
     private static final String CRISPR_ATTEMPT_TYPE = "crispr";
 
     public PlanMapper(
-        EntityMapper entityMapper,
-        CrisprAttemptMapper crisprAttemptMapper,
-        AttemptTypeMapper attemptTypeMapper,
-        FunderMapper funderMapper,
-        WorkUnitMapper workUnitMapper,
-        StatusMapper statusMapper,
-        PlanTypeMapper planTypeMapper, ProjectService projectService)
+            EntityMapper entityMapper,
+            CrisprAttemptMapper crisprAttemptMapper,
+            AttemptTypeMapper attemptTypeMapper,
+            FunderMapper funderMapper,
+            WorkUnitMapper workUnitMapper,
+            WorkGroupMapper workGroupMapper, StatusMapper statusMapper,
+            PlanTypeMapper planTypeMapper, ProjectService projectService)
     {
         this.entityMapper = entityMapper;
         this.crisprAttemptMapper = crisprAttemptMapper;
         this.attemptTypeMapper = attemptTypeMapper;
         this.funderMapper = funderMapper;
         this.workUnitMapper = workUnitMapper;
+        this.workGroupMapper = workGroupMapper;
         this.statusMapper = statusMapper;
         this.planTypeMapper = planTypeMapper;
         this.projectService = projectService;
@@ -111,6 +114,7 @@ public class PlanMapper implements Mapper<Plan, PlanDTO>
         Set<Funder> funders = new HashSet<Funder>(funderMapper.toEntities(planDTO.getFunderNames()));
         plan.setFunders(funders);
         plan.setWorkUnit(workUnitMapper.toEntity(planDTO.getWorkUnitName()));
+        plan.setWorkGroup(workGroupMapper.toEntity(planDTO.getWorkGroupName()));
         plan.setStatus(statusMapper.toEntity(planDTO.getStatusName()));
         return plan;
     }

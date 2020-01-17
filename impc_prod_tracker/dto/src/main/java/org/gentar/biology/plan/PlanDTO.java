@@ -43,6 +43,7 @@ public class PlanDTO extends RepresentationModel
 
     private List<String> funderNames;
     private String workUnitName;
+    private String workGroupName;
     private Boolean isActive;
     private String statusName;
 

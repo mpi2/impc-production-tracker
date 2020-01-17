@@ -1,11 +1,10 @@
 package org.gentar.organization.funder;
 
-import org.gentar.organization.WorkGroupServive;
+import org.gentar.organization.work_group.WorkGroupService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import org.gentar.organization.funder.Funder;
 
 import java.util.Set;
 
@@ -13,13 +12,13 @@ import java.util.Set;
 @RequestMapping("/api")
 public class FunderController {
 
-    private WorkGroupServive workGroupServive;
+    private WorkGroupService workGroupService;
 
-    public FunderController (WorkGroupServive workGroupServive) { this.workGroupServive = workGroupServive; }
+    public FunderController (WorkGroupService workGroupService) { this.workGroupService = workGroupService; }
 
     @GetMapping(value = {"/funders"})
     public Set<Funder> getFunders(@RequestParam String workGroupName)
     {
-        return workGroupServive.getFundersByWorkGroupName(workGroupName);
+        return workGroupService.getFundersByWorkGroupName(workGroupName);
     }
 }
