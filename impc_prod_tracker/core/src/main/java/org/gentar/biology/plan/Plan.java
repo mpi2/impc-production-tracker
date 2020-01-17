@@ -22,6 +22,7 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 import org.gentar.biology.outcome.Outcome;
+import org.gentar.organization.work_group.WorkGroup;
 import org.gentar.security.abac.Resource;
 import org.gentar.security.abac.ResourcePrivacy;
 import org.gentar.BaseEntity;
@@ -74,6 +75,9 @@ public class Plan extends BaseEntity  implements Resource<Plan>
     @ManyToOne(targetEntity = WorkUnit.class)
     private WorkUnit workUnit;
 
+    @ManyToOne(targetEntity = WorkGroup.class)
+    private WorkGroup workGroup;
+
     @NotNull
     private Boolean isActive;
 
@@ -116,6 +120,7 @@ public class Plan extends BaseEntity  implements Resource<Plan>
         this.project = plan.project;
         this.planType = plan.planType;
         this.workUnit = plan.workUnit;
+        this.workGroup = plan.workGroup;
         this.funders = new HashSet<>(plan.funders);
         this.comment = plan.comment;
         this.productsAvailableForGeneralPublic = plan.productsAvailableForGeneralPublic;
