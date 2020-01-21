@@ -98,7 +98,7 @@ public class ProjectSearcherServiceImpl implements ProjectSearcherService
             .withWorkUnitNames(filters.getWorkUnitNames())
             .withWorkGroupNames(filters.getWorGroupNames())
             .withExternalReference(filters.getExternalReferences())
-            .withAlleleTypeNames(filters.getIntentions())
+            .withMolecularMutationTypeNames(filters.getIntentions())
             .withConsortiaNames(filters.getConsortiaNames())
             .withPrivaciesNames(filters.getPrivaciesNames())
             .getFilteredData();

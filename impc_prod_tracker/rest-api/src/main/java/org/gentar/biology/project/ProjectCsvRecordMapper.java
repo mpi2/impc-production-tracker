@@ -26,9 +26,9 @@ public class ProjectCsvRecordMapper implements Mapper<Project, ProjectCsvRecord>
         projectCsvRecord.setAccIds(
             String.join(SEPARATOR, projectQueryHelper.getAccIdsByProject(project)));
         projectCsvRecord.setMutationIntentions(
-            String.join(SEPARATOR, projectQueryHelper.getIntentionGeneticMutationTypeNames(project)));
+            String.join(SEPARATOR, projectQueryHelper.getIntentionMolecularMutationTypeNames(project)));
         projectCsvRecord.setBestHumanOrthologs(
-            String.join(SEPARATOR, projectQueryHelper.getIntentionGeneticMutationTypeNames(project)));
+            String.join(SEPARATOR, projectQueryHelper.getBestOrthologsSymbols(project)));
         projectCsvRecord.setWorkUnits(
             String.join(SEPARATOR, projectQueryHelper.getWorkUnitsNames(project)));
         projectCsvRecord.setWorkGroups(

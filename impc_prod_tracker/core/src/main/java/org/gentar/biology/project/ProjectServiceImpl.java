@@ -175,7 +175,7 @@ public class ProjectServiceImpl implements ProjectService
             .withWorkUnitNames(filters.getWorkUnitNames())
             .withWorkGroupNames(filters.getWorGroupNames())
             .withExternalReference(filters.getExternalReferences())
-            .withAlleleTypeNames(filters.getIntentions())
+            .withMolecularMutationTypeNames(filters.getIntentions())
             .withConsortiaNames(filters.getConsortiaNames())
             .withPrivaciesNames(filters.getPrivaciesNames()).getFilteredData();
     }

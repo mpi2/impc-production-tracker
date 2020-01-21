@@ -51,11 +51,11 @@ public abstract class AbstractFluentProjectFilter<T>
         return this;
     }
 
-    public AbstractFluentProjectFilter<T> withAlleleTypeNames(List<String> alleleTypeNames)
+    public AbstractFluentProjectFilter<T> withMolecularMutationTypeNames(List<String> molecularMutationTypeNames)
     {
-        if (isListValid(alleleTypeNames))
+        if (isListValid(molecularMutationTypeNames))
         {
-            data = withCondition(ProjectPredicates.inAlleleTypeNames(alleleTypeNames));
+            data = withCondition(ProjectPredicates.inMolecularMutationTypeNames(molecularMutationTypeNames));
         }
         return this;
     }

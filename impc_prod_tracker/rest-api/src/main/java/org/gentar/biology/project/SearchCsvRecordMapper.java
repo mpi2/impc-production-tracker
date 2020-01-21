@@ -31,7 +31,7 @@ public class SearchCsvRecordMapper implements Mapper<SearchResult, SearchCsvReco
             searchCsvRecord.setAccIds(
                 String.join(SEPARATOR, projectQueryHelper.getAccIdsByProject(project)));
             searchCsvRecord.setMutationIntentions(
-                String.join(SEPARATOR, projectQueryHelper.getIntentionGeneticMutationTypeNames(project)));
+                String.join(SEPARATOR, projectQueryHelper.getIntentionMolecularMutationTypeNames(project)));
             searchCsvRecord.setBestHumanOrthologs(
                 String.join(SEPARATOR, projectQueryHelper.getBestOrthologsSymbols(project)));
             searchCsvRecord.setWorkUnits(

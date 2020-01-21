@@ -19,7 +19,6 @@ import org.gentar.biology.intention.ProjectIntentionGeneDTO;
 import org.gentar.biology.intention.ProjectIntentionDTO;
 import org.gentar.biology.sequence.ProjectIntentionSequenceDTO;
 import org.gentar.EntityMapper;
-import org.gentar.biology.mutation.GeneticMutationTypeMapper;
 import org.gentar.biology.mutation.MutationCategorizationMapper;
 import org.gentar.biology.molecular_mutation.MolecularMutationTypeMapper;
 import org.springframework.stereotype.Component;
@@ -35,7 +34,6 @@ import java.util.List;
 public class ProjectIntentionMapper
 {
     private EntityMapper entityMapper;
-    private GeneticMutationTypeMapper geneticMutationTypeMapper;
     private MutationCategorizationMapper mutationCategorizationMapper;
     private MolecularMutationTypeMapper molecularMutationTypeMapper;
     private ProjectIntentionGeneMapper projectIntentionGeneMapper;
@@ -44,7 +42,6 @@ public class ProjectIntentionMapper
 
     public ProjectIntentionMapper(
             EntityMapper entityMapper,
-            GeneticMutationTypeMapper geneticMutationTypeMapper,
             MutationCategorizationMapper mutationCategorizationMapper,
             MolecularMutationTypeMapper molecularMutationTypeMapper,
             ProjectIntentionGeneMapper projectIntentionGeneMapper,
@@ -52,7 +49,6 @@ public class ProjectIntentionMapper
             OrthologMapper orthologMapper)
     {
         this.entityMapper = entityMapper;
-        this.geneticMutationTypeMapper = geneticMutationTypeMapper;
         this.mutationCategorizationMapper = mutationCategorizationMapper;
         this.molecularMutationTypeMapper = molecularMutationTypeMapper;
         this.projectIntentionGeneMapper = projectIntentionGeneMapper;
@@ -115,8 +111,6 @@ public class ProjectIntentionMapper
     {
         ProjectIntention projectIntention =
             entityMapper.toTarget(projectIntentionDTO, ProjectIntention.class);
-        projectIntention.setGeneticMutationType(
-            geneticMutationTypeMapper.toEntity(projectIntentionDTO.getGeneticMutationTypeName()));
         projectIntention.setMolecularMutationType(
             molecularMutationTypeMapper.toEntity(projectIntentionDTO.getMolecularMutationTypeName()));
         setProjectIntention(projectIntention, projectIntentionDTO);
