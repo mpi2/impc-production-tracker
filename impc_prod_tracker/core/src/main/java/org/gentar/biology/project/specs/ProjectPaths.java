@@ -1,9 +1,9 @@
 package org.gentar.biology.project.specs;
 
-import org.gentar.biology.mutation.GeneticMutationType;
+import org.gentar.biology.molecular_mutation_type.MolecularMutationType;
 import org.gentar.biology.gene.Gene;
 import org.gentar.biology.gene.Gene_;
-import org.gentar.biology.mutation.GeneticMutationType_;
+import org.gentar.biology.molecular_mutation_type.MolecularMutationType_;
 import org.gentar.biology.plan.Plan;
 import org.gentar.biology.plan.Plan_;
 import org.gentar.biology.project.Project;
@@ -79,15 +79,15 @@ public class ProjectPaths
         return planWorkUnitJoinWorkGroups.get(WorkGroup_.name);
     }
 
-    public static Path<String> getGeneticMutationTypeNamePath(Root<Project> root)
+    public static Path<String> getMolecularMutationTypeNamePath(Root<Project> root)
     {
         ListJoin<Project, ProjectIntention> projectProjectIntentionSetJoin =
             root.join(Project_.projectIntentions);
 
-        Path<GeneticMutationType> geneticMutationTypePath =
-            projectProjectIntentionSetJoin.join(ProjectIntention_.geneticMutationType);
+        Path<MolecularMutationType> molecularMutationTypePath =
+            projectProjectIntentionSetJoin.join(ProjectIntention_.molecularMutationType);
 
-        return geneticMutationTypePath.get(GeneticMutationType_.name);
+        return molecularMutationTypePath.get(MolecularMutationType_.name);
     }
 
     public static Path<String> getMarkerSymbolPath(Root<Project> root)
