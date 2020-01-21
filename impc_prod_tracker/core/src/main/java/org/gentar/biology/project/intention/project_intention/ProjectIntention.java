@@ -42,9 +42,6 @@ public class ProjectIntention
     @ManyToOne
     private MolecularMutationType molecularMutationType;
 
-    @ManyToOne
-    private GeneticMutationType geneticMutationType;
-
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
     @OneToOne(cascade= CascadeType.ALL, mappedBy = "projectIntention")

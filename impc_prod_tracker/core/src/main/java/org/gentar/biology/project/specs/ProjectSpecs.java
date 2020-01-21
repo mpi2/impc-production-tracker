@@ -78,7 +78,7 @@ public class ProjectSpecs
         if (intentionNames != null)
         {
             specification = (Specification<Project>) (root, query, criteriaBuilder) -> {
-                Path<String> geneticMutationTypeNamePath = ProjectPaths.getGeneticMutationTypeNamePath(root);
+                Path<String> geneticMutationTypeNamePath = ProjectPaths.getMolecularMutationTypeNamePath(root);
 
                 query.distinct(true);
                 return PredicateBuilder.addInPredicates(

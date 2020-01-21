@@ -1,6 +1,6 @@
 package org.gentar.biology.project.search.filter;
 
-import org.gentar.biology.mutation.GeneticMutationType;
+import org.gentar.biology.molecular_mutation_type.MolecularMutationType;
 import org.gentar.biology.project.Project;
 import org.gentar.biology.project.intention.project_intention.ProjectIntention;
 import org.gentar.organization.work_group.WorkGroup;
@@ -45,28 +45,28 @@ public class ProjectPredicates
         return p -> values.contains(p.getProjectExternalRef());
     }
 
-    public static Predicate<Project> inAlleleTypeNames(List<String> values)
+    public static Predicate<Project> inMolecularMutationTypeNames(List<String> values)
     {
         return (p) -> {
-            List<GeneticMutationType> geneticMutationTypes = getProjectAlleleTypes(p);
-            return geneticMutationTypes.stream()
+            List<MolecularMutationType> molecularMutationTypes = getProjectMolecularMutationTypes(p);
+            return molecularMutationTypes.stream()
                 .filter(x -> values.contains(x.getName()))
                 .findFirst().orElse(null) != null;
         };
     }
 
-    private static List<GeneticMutationType> getProjectAlleleTypes(Project project)
+    private static List<MolecularMutationType> getProjectMolecularMutationTypes(Project project)
     {
-        List<GeneticMutationType> geneticMutationTypes = new ArrayList<>();
+        List<MolecularMutationType> molecularMutationTypes = new ArrayList<>();
         if (project != null)
         {
             List<ProjectIntention> projectIntentions = project.getProjectIntentions();
             if (projectIntentions != null)
             {
-                projectIntentions.forEach(i -> geneticMutationTypes.add(i.getGeneticMutationType()));
+                projectIntentions.forEach(i -> molecularMutationTypes.add(i.getMolecularMutationType()));
             }
         }
-        return geneticMutationTypes;
+        return molecularMutationTypes;
     }
 
     public static Predicate<Project> inConsortiaNames(List<String> values)

@@ -61,15 +61,15 @@ public class ProjectQueryHelper
         return targetNames;
     }
 
-    public List<String> getIntentionGeneticMutationTypeNames(Project project)
+    public List<String> getIntentionMolecularMutationTypeNames(Project project)
     {
-        List<String> geneticMutationTypeNames = new ArrayList<>();
+        List<String> molecularMutationTypeNames = new ArrayList<>();
         var projectIntentionGenes = project.getProjectIntentions();
         if (projectIntentionGenes != null)
         {
-            projectIntentionGenes.forEach(x -> geneticMutationTypeNames.add(x.getGeneticMutationType().getName()));
+            projectIntentionGenes.forEach(x -> molecularMutationTypeNames.add(x.getMolecularMutationType().getName()));
         }
-        return geneticMutationTypeNames;
+        return molecularMutationTypeNames;
     }
 
     public List<String> getAccIdsByProject(Project project)
