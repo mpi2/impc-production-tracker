@@ -16,6 +16,7 @@
 package org.gentar.biology.plan;
 
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.gentar.biology.project.Project;
 
@@ -31,4 +32,7 @@ public interface PlanRepository extends PagingAndSortingRepository<Plan, Long>, 
     Plan findPlanByPin(String pin);
 
     Plan findPlanById(Long id);
+
+    @Query("SELECT max(p.pin) FROM Plan p")
+    String getMaxPin();
 }
