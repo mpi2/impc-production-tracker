@@ -22,7 +22,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Component;
-import org.gentar.biology.plan.outcome.PlanOutcomeRepository;
 import org.gentar.audit.history.History;
 import org.gentar.biology.plan.engine.PlanUpdater;
 import java.util.Collection;
@@ -46,8 +45,7 @@ public class PlanServiceImpl implements PlanService
         PlanRepository planRepository,
         ResourceAccessChecker<Plan> resourceAccessChecker,
         PlanUpdater planUpdater,
-        HistoryService historyService,
-        PlanOutcomeRepository planOutcomeRepository)
+        HistoryService historyService)
     {
         this.planRepository = planRepository;
         this.resourceAccessChecker = resourceAccessChecker;
