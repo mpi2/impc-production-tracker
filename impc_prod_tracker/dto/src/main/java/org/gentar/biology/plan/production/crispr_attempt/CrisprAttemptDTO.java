@@ -48,7 +48,7 @@ public class CrisprAttemptDTO
     @JsonProperty("numberOfPulses")
     private Integer noOfPulses;
 
-    @JsonProperty("nucleasesAttributes")
+    @JsonProperty("nucleases")
     private List<NucleaseDTO> nucleaseDTOS;
 
     @JsonProperty("guidesAttributes")

@@ -50,7 +50,7 @@ public class NucleaseMapper implements Mapper<Nuclease, NucleaseDTO>
             nuclease.setId(nucleaseDTO.getId());
         }
         String typeName = nucleaseDTO.getTypeName();
-        String className = nucleaseDTO.getTypeClassName();
+        String className = nucleaseDTO.getClassName();
         NucleaseType nucleaseType =
                 crisprAttemptService.getNucleaseTypeByName(typeName);
         NucleaseClass nucleaseClass =
