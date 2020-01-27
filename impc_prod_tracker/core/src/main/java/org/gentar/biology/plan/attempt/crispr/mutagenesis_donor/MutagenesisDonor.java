@@ -17,7 +17,7 @@ public class MutagenesisDonor extends BaseEntity
     private Long id;
 
     @EqualsAndHashCode.Exclude
-    @ManyToOne(targetEntity = CrisprAttempt.class)
+    @ManyToOne
     @JoinColumn(name = "attempt_id")
     private CrisprAttempt crisprAttempt;
 
