@@ -85,11 +85,14 @@ public class HistoryServiceImpl<T> implements HistoryService<T>
     private List<History> getOlderChangesForReferenceEntity(
         String field, LocalDateTime date, String referenceEntity, String entityId)
     {
-        List<History> histories =
-            historyRepository.findAllByEntityNameAndEntityIdAndDateAfter(
-                referenceEntity, Long.parseLong(entityId), date);
         List<History> result = new ArrayList<>();
-        histories.forEach(h ->
+        if (entityId !=null)
+        {
+            List<History> histories =
+                historyRepository.findAllByEntityNameAndEntityIdAndDateAfter(
+                    referenceEntity, Long.parseLong(entityId), date);
+
+            histories.forEach(h ->
             {
                 List<HistoryDetail> historyDetails = h.getHistoryDetailSet();
                 String wantedRecordField = field.substring(field.lastIndexOf(".") + 1);
@@ -105,8 +108,8 @@ public class HistoryServiceImpl<T> implements HistoryService<T>
                     result.add(newHistory);
                 }
             });
+        }
         return result;
-
     }
 
     private HistoryDetail findRecordInDetailsWithField(
