@@ -10,7 +10,8 @@ import javax.persistence.*;
 @NoArgsConstructor(access= AccessLevel.PRIVATE, force=true)
 @Data
 @Entity
-public class MutagenesisStrategyProperty extends BaseEntity {
+public class MutagenesisStrategyProperty extends BaseEntity
+{
 
     @Id
     @SequenceGenerator(name = "mutagenesisStrategyPropertySeq", sequenceName = "MUTAGENESIS_STRATEGY_PROPERTY_SEQ")
