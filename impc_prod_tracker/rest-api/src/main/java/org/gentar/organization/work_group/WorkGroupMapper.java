@@ -27,13 +27,16 @@ public class WorkGroupMapper implements Mapper<WorkGroup, String>
     @Override
     public WorkGroup toEntity(String name)
     {
-        WorkGroup workGroup = workGroupService.getWorkGroupByName(name);
-        if (workGroup == null)
+        WorkGroup workGroup = null;
+        if (name != null)
         {
-            workGroup = new WorkGroup();
-            workGroup.setName(name);
+            workGroup = workGroupService.getWorkGroupByName(name);
+            if (workGroup == null)
+            {
+                workGroup = new WorkGroup();
+                workGroup.setName(name);
+            }
         }
-
         return workGroup;
     }
 }
