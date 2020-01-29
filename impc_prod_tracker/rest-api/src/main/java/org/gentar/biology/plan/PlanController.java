@@ -113,10 +113,20 @@ public class PlanController
     {
         Plan plan = planMapper.toEntity(planDTO);
         History history = planService.updatePlan(pin, plan);
+        HistoryDTO historyDTO = new HistoryDTO();
         if (history != null)
         {
-            return historyMapper.toDto(history);
+            historyDTO = historyMapper.toDto(history);
         }
-        return null;
+        return historyDTO;
+    }
+
+    @PutMapping(value = {"/{pin}/changeStatus"})
+    public HistoryDTO changeStatus(
+        @PathVariable String pin,  @RequestParam(value = "action", required = true) String action)
+    {
+        System.out.println("action-->> "+ action);
+        HistoryDTO historyDTO = new HistoryDTO();
+        return historyDTO;
     }
 }
