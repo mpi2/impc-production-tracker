@@ -150,8 +150,6 @@ public class PlanMapper implements Mapper<Plan, PlanDTO>
                 transition.setNextStatus(x.getEndState().getName());
                 transition.setNote(x.getTriggerNote());
                 transition.setAvailable(x.isTriggeredByUser());
-                transition.add(linkTo(methodOn(PlanController.class).changeStatus(
-                    plan.getPin(), x.getName())).withRel("changeStatus"));
                 transitionDTOS.add(transition);
             });
         }
