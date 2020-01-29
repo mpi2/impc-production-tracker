@@ -1,8 +1,6 @@
 package org.gentar.biology.gene_list.record;
 
-import lombok.AccessLevel;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.gentar.biology.gene_list.GeneList;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -28,6 +26,8 @@ public class ListRecordType
     @ManyToOne
     private GeneList geneList;
 
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
     @ManyToMany(mappedBy = "listRecordTypes")
     private Set<ListRecord> listRecords;
 
