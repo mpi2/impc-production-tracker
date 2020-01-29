@@ -24,6 +24,6 @@ public class MutagenesisDonorDTO
     @JsonProperty("preparation")
     private String preparationTypeName;
 
-    @JsonProperty("oligo_sequence_fa")
+    @JsonProperty("oligoSequenceFa")
     private String oligoSequenceFasta;
 }

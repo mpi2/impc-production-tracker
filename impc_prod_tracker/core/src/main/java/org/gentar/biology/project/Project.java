@@ -130,7 +130,13 @@ public class Project extends BaseEntity implements Resource<Project>
         List<WorkUnit> relatedWorkUnites = new ArrayList<>();
         if (plans != null)
         {
-            plans.forEach(x -> relatedWorkUnites.add(x.getWorkUnit()));
+            plans.forEach(x -> {
+                WorkUnit workUnit = x.getWorkUnit();
+                if (workUnit != null)
+                {
+                    relatedWorkUnites.add(workUnit);
+                }
+            } );
         }
         return relatedWorkUnites;
     }
@@ -138,11 +144,16 @@ public class Project extends BaseEntity implements Resource<Project>
     public List<WorkGroup> getRelatedWorkGroups()
     {
         List<WorkGroup> relatedWorkGroups = new ArrayList<>();
-        List<WorkUnit> relatedWorkUnites = getRelatedWorkUnits();
-        relatedWorkUnites.forEach(wu -> {
-            var workGroups = wu.getWorkGroups();
-            relatedWorkGroups.addAll(workGroups);
-        });
+        if (plans != null)
+        {
+            plans.forEach(x -> {
+                WorkGroup workGroup = x.getWorkGroup();
+                if (workGroup != null)
+                {
+                    relatedWorkGroups.add(workGroup);
+                }
+            });
+        }
         return relatedWorkGroups;
     }
 

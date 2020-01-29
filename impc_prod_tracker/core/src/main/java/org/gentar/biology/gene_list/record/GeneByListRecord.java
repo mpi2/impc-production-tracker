@@ -17,7 +17,10 @@ package org.gentar.biology.gene_list.record;
 
 import lombok.AccessLevel;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -35,6 +38,8 @@ public class GeneByListRecord
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "geneByListRecordSeq")
     private Long id;
 
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
     @ManyToOne
     ListRecord listRecord;
 

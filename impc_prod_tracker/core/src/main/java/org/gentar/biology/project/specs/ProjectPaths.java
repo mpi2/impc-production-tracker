@@ -73,10 +73,8 @@ public class ProjectPaths
     public static Path<String> getWorkGroupNamePath(Root<Project> root)
     {
         SetJoin<Project, Plan> plansJoin = root.join(Project_.plans);
-        Join<Plan, WorkUnit> planWorkUnitJoin = plansJoin.join(Plan_.workUnit);
-        Join<WorkUnit, WorkGroup> planWorkUnitJoinWorkGroups =
-            planWorkUnitJoin.join(WorkUnit_.workGroups);
-        return planWorkUnitJoinWorkGroups.get(WorkGroup_.name);
+        Path<WorkGroup> workGroupPath = plansJoin.get(Plan_.workGroup);
+        return workGroupPath.get(WorkGroup_.name);
     }
 
     public static Path<String> getMolecularMutationTypeNamePath(Root<Project> root)

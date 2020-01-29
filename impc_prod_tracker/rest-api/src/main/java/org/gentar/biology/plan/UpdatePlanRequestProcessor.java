@@ -15,12 +15,10 @@
  */
 package org.gentar.biology.plan;
 
-import org.gentar.biology.plan.PlanDTO;
 import org.gentar.biology.plan.production.crispr_attempt.CrisprAttemptDTO;
 import org.gentar.biology.plan.attempt.crispr_attempt.CrisprAttemptMapper;
 import org.springframework.stereotype.Component;
 import org.gentar.biology.plan.attempt.crispr.CrisprAttempt;
-import org.gentar.biology.plan.Plan;
 
 /**
  * Class in charge of analysing a PlanDTO object and retrieve the Plan object
