@@ -26,10 +26,6 @@ public class PhenotypingAttempt extends BaseEntity
 
     private LocalDateTime phenotypingExperimentsStarted;
 
-    private Boolean phenotypingStarted;
-
-    private Boolean phenotypingComplete;
-
     private Boolean doNotCountTowardsCompleteness;
 
     private String phenotypingColonyName;
