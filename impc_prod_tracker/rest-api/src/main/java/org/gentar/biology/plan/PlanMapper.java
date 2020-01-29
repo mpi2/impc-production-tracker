@@ -3,14 +3,18 @@ package org.gentar.biology.plan;
 import org.gentar.EntityMapper;
 import org.gentar.biology.plan.attempt.AttemptTypeMapper;
 import org.gentar.biology.plan.attempt.crispr.CrisprAttempt;
+import org.gentar.biology.plan.engine.PlanState;
 import org.gentar.biology.plan.production.crispr_attempt.CrisprAttemptDTO;
 import org.gentar.Mapper;
 import org.gentar.biology.project.ProjectService;
 import org.gentar.biology.status.StatusMapper;
+import org.gentar.common.state_machine.StatusTransitionDTO;
+import org.gentar.common.state_machine.TransitionDTO;
 import org.gentar.organization.funder.Funder;
 import org.gentar.organization.funder.FunderMapper;
 import org.gentar.organization.work_group.WorkGroupMapper;
 import org.gentar.organization.work_unit.WorkUnitMapper;
+import org.gentar.statemachine.ProcessEvent;
 import org.springframework.stereotype.Component;
 import org.gentar.biology.plan.attempt.AttemptType;
 import org.gentar.biology.plan.attempt.crispr_attempt.CrisprAttemptMapper;
@@ -18,6 +22,9 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 @Component
 public class PlanMapper implements Mapper<Plan, PlanDTO>
@@ -67,6 +74,7 @@ public class PlanMapper implements Mapper<Plan, PlanDTO>
         addAttempt(planDTO, plan);
         planDTO.setTpn(plan.getProject().getTpn());
         planDTO.setFunderNames(funderMapper.toDtos(plan.getFunders()));
+        planDTO.setStatusTransitionDTO(buildStatusTransitionDTO(plan));
     }
 
     public List<PlanDTO> toDtos(List<Plan> plans)
@@ -117,5 +125,36 @@ public class PlanMapper implements Mapper<Plan, PlanDTO>
         plan.setWorkGroup(workGroupMapper.toEntity(planDTO.getWorkGroupName()));
         plan.setStatus(statusMapper.toEntity(planDTO.getStatusName()));
         return plan;
+    }
+
+    private StatusTransitionDTO buildStatusTransitionDTO(Plan plan)
+    {
+        StatusTransitionDTO statusTransitionDTO = new StatusTransitionDTO();
+        statusTransitionDTO.setCurrentStatus(plan.getStatus().getName());
+        statusTransitionDTO.setTransitions(getTransitions(plan));
+        return statusTransitionDTO;
+    }
+
+    private List<TransitionDTO> getTransitions(Plan plan)
+    {
+        List<TransitionDTO> transitionDTOS = new ArrayList<>();
+        String currentStatusName = plan.getStatus().getName();
+        PlanState planState = PlanState.getStateByInternalName(currentStatusName);
+        if (planState != null)
+        {
+            List<ProcessEvent> planEvents = planState.getAllAvailableEvents();
+            planEvents.forEach(x -> {
+                TransitionDTO transition = new TransitionDTO();
+                transition.setAction(x.getName());
+                transition.setDescription(x.getDescription());
+                transition.setNextStatus(x.getEndState().getName());
+                transition.setNote(x.getTriggerNote());
+                transition.setAvailable(x.isTriggeredByUser());
+                transition.add(linkTo(methodOn(PlanController.class).changeStatus(
+                    plan.getPin(), x.getName())).withRel("changeStatus"));
+                transitionDTOS.add(transition);
+            });
+        }
+        return transitionDTOS;
     }
 }

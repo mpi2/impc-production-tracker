@@ -4,10 +4,8 @@ import org.gentar.exceptions.UserOperationFailedException;
 import org.gentar.audit.history.HistoryService;
 import org.springframework.stereotype.Component;
 import org.gentar.security.abac.spring.ContextAwarePolicyEnforcement;
-
 import org.gentar.biology.plan.Plan;
 import org.gentar.biology.plan.PlanRepository;
-
 import org.gentar.audit.history.History;
 
 @Component

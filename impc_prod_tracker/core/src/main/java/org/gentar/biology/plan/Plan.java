@@ -37,6 +37,9 @@ import org.gentar.biology.status.Status;
 import org.gentar.organization.consortium.Consortium;
 import org.gentar.organization.funder.Funder;
 import org.gentar.organization.work_unit.WorkUnit;
+import org.gentar.statemachine.ProcessData;
+import org.gentar.statemachine.ProcessEvent;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.Arrays;
@@ -49,12 +52,15 @@ import java.util.Set;
 @Data
 @Entity
 @EqualsAndHashCode(onlyExplicitlyIncluded = true, callSuper = false)
-public class Plan extends BaseEntity  implements Resource<Plan>
+public class Plan extends BaseEntity  implements Resource<Plan>, ProcessData
 {
     @Id
     @SequenceGenerator(name = "planSeq", sequenceName = "PLAN_SEQ")
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "planSeq")
     private Long id;
+
+    @Transient
+    private ProcessEvent event;
 
     @NotNull
     @EqualsAndHashCode.Include
@@ -176,5 +182,11 @@ public class Plan extends BaseEntity  implements Resource<Plan>
     public List<Consortium> getRelatedConsortia()
     {
         return Collections.emptyList();
+    }
+
+    @Override
+    public ProcessEvent getEvent()
+    {
+        return this.event;
     }
 }

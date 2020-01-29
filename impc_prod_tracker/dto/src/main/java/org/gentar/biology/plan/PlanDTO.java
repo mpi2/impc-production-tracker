@@ -22,6 +22,7 @@ import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.gentar.biology.plan.phenotyping.PhenotypingAttemptDTO;
+import org.gentar.common.state_machine.StatusTransitionDTO;
 import org.springframework.hateoas.RepresentationModel;
 import org.gentar.biology.plan.production.breeding_attempt.BreedingAttemptDTO;
 import org.gentar.biology.plan.production.crispr_attempt.CrisprAttemptDTO;
@@ -69,4 +70,7 @@ public class PlanDTO extends RepresentationModel
     @JsonInclude(JsonInclude.Include.NON_NULL)
     @JsonProperty("phenotypingAttemptAttributes")
     private PhenotypingAttemptDTO phenotypingAttemptDTO;
+
+    @JsonProperty("statusTransition")
+    private StatusTransitionDTO statusTransitionDTO;
 }
