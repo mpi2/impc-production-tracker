@@ -15,17 +15,19 @@ public class PlanUpdaterImpl implements PlanUpdater
     private ContextAwarePolicyEnforcement policyEnforcement;
     private PlanRepository planRepository;
     private PlanValidator planValidator;
+    private PlanStateTransitionManager stateTransitionManager;
 
     public PlanUpdaterImpl(
         HistoryService<Plan> historyService,
         ContextAwarePolicyEnforcement policyEnforcement,
         PlanRepository planRepository,
-        PlanValidator planValidator)
+        PlanValidator planValidator, PlanStateTransitionManager stateTransitionManager)
     {
         this.historyService = historyService;
         this.policyEnforcement = policyEnforcement;
         this.planRepository = planRepository;
         this.planValidator = planValidator;
+        this.stateTransitionManager = stateTransitionManager;
     }
 
     @Override
@@ -34,8 +36,8 @@ public class PlanUpdaterImpl implements PlanUpdater
         historyService.setEntityData(Plan.class.getSimpleName(), originalPlan.getId());
         validatePermissionToUpdatePlan(newPlan);
         validateData(newPlan);
-        History history = detectTrackOfChanges(originalPlan, newPlan);
         changeStatusIfNeeded(newPlan);
+        History history = detectTrackOfChanges(originalPlan, newPlan);
         saveChanges(newPlan);
         saveTrackOfChanges(history);
         return history;
@@ -61,6 +63,10 @@ public class PlanUpdaterImpl implements PlanUpdater
     private void changeStatusIfNeeded(Plan plan)
     {
         System.out.println("Changing status");
+        if (plan.getEvent() != null)
+        {
+            plan = (Plan)stateTransitionManager.processEvent(plan);
+        }
     }
 
     /**

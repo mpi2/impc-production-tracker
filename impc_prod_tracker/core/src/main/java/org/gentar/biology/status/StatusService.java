@@ -14,6 +14,6 @@ public class StatusService
 
     public Status getStatusByName(String name)
     {
-        return statusRepository.findByName(name);
+        return statusRepository.findByNameIgnoreCase(name);
     }
 }

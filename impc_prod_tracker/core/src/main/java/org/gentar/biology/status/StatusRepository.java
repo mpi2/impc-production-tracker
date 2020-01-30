@@ -18,5 +18,6 @@ package org.gentar.biology.status;
 import org.springframework.data.repository.CrudRepository;
 
 public interface StatusRepository extends CrudRepository<Status, Long> {
-    Status findByName(String name);
+    Status findByNameIgnoreCase(String name);
+
 }

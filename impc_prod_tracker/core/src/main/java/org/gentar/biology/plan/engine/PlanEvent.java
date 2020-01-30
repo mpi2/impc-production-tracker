@@ -31,13 +31,27 @@ public enum PlanEvent implements ProcessEvent
         PlanState.Aborted,
         PlanState.MicroInjectionInProgress,
         true,
-        null),
+        null)
+        {
+            @Override
+            public Class<? extends Processor> nextStepProcessor()
+            {
+                return AbortProcessor.class;
+            }
+        },
     abortWhenComplete(
         "Abort plan with MI Complete",
         PlanState.MicroInjectionComplete,
         PlanState.Aborted,
         true,
-        "Only possible if...");
+        "Only possible if...")
+        {
+            @Override
+            public Class<? extends Processor> nextStepProcessor()
+            {
+                return AbortProcessor.class;
+            }
+        };
 
     PlanEvent(
         String description,
@@ -51,6 +65,17 @@ public enum PlanEvent implements ProcessEvent
         this.endState = endState;
         this.triggeredByUser = triggeredByUser;
         this.triggerNote = triggerNote;
+    }
+
+    public static PlanEvent getEventByName(String name)
+    {
+        PlanEvent[] planEvents = PlanEvent.values();
+        for (PlanEvent planEvent : planEvents)
+        {
+            if (planEvent.name().equalsIgnoreCase(name))
+                return planEvent;
+        }
+        return null;
     }
 
     @Override

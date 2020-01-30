@@ -15,6 +15,8 @@
  */
 package org.gentar.biology.plan;
 
+import org.gentar.biology.plan.engine.PlanEvent;
+import org.gentar.common.state_machine.StatusTransitionDTO;
 import org.gentar.helpers.PaginationHelper;
 import org.gentar.helpers.LinkUtil;
 import org.gentar.common.history.HistoryDTO;
@@ -41,12 +43,18 @@ public class PlanController
     private HistoryMapper historyMapper;
     private PlanService planService;
     private PlanMapper planMapper;
+    private UpdatePlanRequestProcessor updatePlanRequestProcessor;
 
-    public PlanController(HistoryMapper historyMapper, PlanService planService, PlanMapper planMapper)
+    public PlanController(
+        HistoryMapper historyMapper,
+        PlanService planService,
+        PlanMapper planMapper,
+        UpdatePlanRequestProcessor updatePlanRequestProcessor)
     {
         this.historyMapper = historyMapper;
         this.planService = planService;
         this.planMapper = planMapper;
+        this.updatePlanRequestProcessor = updatePlanRequestProcessor;
     }
 
     @GetMapping
@@ -111,7 +119,9 @@ public class PlanController
     public HistoryDTO updatePlan(
         @PathVariable String pin, @RequestBody PlanDTO planDTO)
     {
-        Plan plan = planMapper.toEntity(planDTO);
+        Plan plan = getPlanToUpdate(pin, planDTO);
+        PlanEvent planEvent = getEventFromRequest(planDTO);
+        plan.setEvent(planEvent);
         History history = planService.updatePlan(pin, plan);
         HistoryDTO historyDTO = new HistoryDTO();
         if (history != null)
@@ -121,6 +131,13 @@ public class PlanController
         return historyDTO;
     }
 
+    private Plan getPlanToUpdate(String pin, PlanDTO planDTO)
+    {
+        Plan currentPlan = getNotNullPlanByPin(pin);
+        Plan newPlan = new Plan(currentPlan);
+        return updatePlanRequestProcessor.getPlanToUpdate(newPlan, planDTO);
+    }
+
     @PutMapping(value = {"/{pin}/changeStatus"})
     public HistoryDTO changeStatus(
         @PathVariable String pin,  @RequestParam(value = "action", required = true) String action)
@@ -128,5 +145,18 @@ public class PlanController
         System.out.println("action-->> "+ action);
         HistoryDTO historyDTO = new HistoryDTO();
         return historyDTO;
+    }
+
+    private PlanEvent getEventFromRequest(PlanDTO planDTO)
+    {
+        PlanEvent planEvent = null;
+        StatusTransitionDTO statusTransitionDTO =  planDTO.getStatusTransitionDTO();
+        if (statusTransitionDTO != null)
+        {
+            String action = statusTransitionDTO.getActionToExecute();
+            planEvent = PlanEvent.getEventByName(action);
+            System.out.println(">>>>>> >>> >>>> action to execute:::" + action);
+        }
+        return planEvent;
     }
 }
