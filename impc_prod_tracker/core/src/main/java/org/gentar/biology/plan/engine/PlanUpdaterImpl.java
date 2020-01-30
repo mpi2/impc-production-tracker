@@ -21,7 +21,8 @@ public class PlanUpdaterImpl implements PlanUpdater
         HistoryService<Plan> historyService,
         ContextAwarePolicyEnforcement policyEnforcement,
         PlanRepository planRepository,
-        PlanValidator planValidator, PlanStateTransitionManager stateTransitionManager)
+        PlanValidator planValidator,
+        PlanStateTransitionManager stateTransitionManager)
     {
         this.historyService = historyService;
         this.policyEnforcement = policyEnforcement;

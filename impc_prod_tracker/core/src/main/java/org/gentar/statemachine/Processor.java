@@ -5,5 +5,5 @@ package org.gentar.statemachine;
  */
 public interface Processor
 {
-    ProcessData process(ProcessData data) throws ProcessException;
+    ProcessData process(ProcessData data);
 }

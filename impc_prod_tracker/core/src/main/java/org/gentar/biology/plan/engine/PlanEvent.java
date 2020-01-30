@@ -1,6 +1,7 @@
 package org.gentar.biology.plan.engine;
 
-import org.gentar.biology.plan.engine.processors.AbortProcessor;
+import org.gentar.biology.plan.engine.processors.PlanAbortProcessor;
+import org.gentar.biology.plan.engine.processors.PlanAbortReverserProcessor;
 import org.gentar.statemachine.ProcessEvent;
 import org.gentar.statemachine.ProcessState;
 import org.gentar.statemachine.Processor;
@@ -17,7 +18,7 @@ public enum PlanEvent implements ProcessEvent
             @Override
             public Class<? extends Processor> nextStepProcessor()
             {
-                return AbortProcessor.class;
+                return PlanAbortProcessor.class;
             }
         },
     complete(
@@ -36,7 +37,7 @@ public enum PlanEvent implements ProcessEvent
             @Override
             public Class<? extends Processor> nextStepProcessor()
             {
-                return AbortProcessor.class;
+                return PlanAbortReverserProcessor.class;
             }
         },
     abortWhenComplete(
@@ -49,7 +50,7 @@ public enum PlanEvent implements ProcessEvent
             @Override
             public Class<? extends Processor> nextStepProcessor()
             {
-                return AbortProcessor.class;
+                return PlanAbortProcessor.class;
             }
         };
 
