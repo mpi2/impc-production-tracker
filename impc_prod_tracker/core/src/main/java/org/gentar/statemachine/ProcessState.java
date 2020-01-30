@@ -8,6 +8,7 @@ import java.util.List;
 public interface ProcessState
 {
     String getName();
+    String getInternalName();
     List<ProcessEvent> getUserAvailableEvents();
     List<ProcessEvent> getSystemAvailableEvents();
 }

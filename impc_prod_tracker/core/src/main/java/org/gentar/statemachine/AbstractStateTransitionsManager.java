@@ -5,11 +5,12 @@ package org.gentar.statemachine;
  */
 public abstract class AbstractStateTransitionsManager implements StateTransitionsManager
 {
-    protected abstract ProcessData initializeState(ProcessData data) throws ProcessException;
-    protected abstract ProcessData processStateTransition(ProcessData data) throws ProcessException;
+    protected abstract ProcessData initializeState(ProcessData data);
+    protected abstract ProcessData processStateTransition(ProcessData data);
 
     @Override
-    public ProcessData processEvent(ProcessData data) throws ProcessException {
+    public ProcessData processEvent(ProcessData data)
+    {
         initializeState(data);
         return processStateTransition(data);
     }

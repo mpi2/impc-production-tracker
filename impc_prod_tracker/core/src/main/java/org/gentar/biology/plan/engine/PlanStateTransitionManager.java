@@ -18,7 +18,7 @@ public class PlanStateTransitionManager extends AbstractStateTransitionsManager
     private final ApplicationContext context;
 
     @Override
-    protected ProcessData initializeState(ProcessData sdata) throws ProcessException
+    protected ProcessData initializeState(ProcessData sdata)
     {
         Plan data = (Plan) sdata;
         log.info("Initial state: ");
@@ -26,7 +26,7 @@ public class PlanStateTransitionManager extends AbstractStateTransitionsManager
     }
 
     @Override
-    protected ProcessData processStateTransition(ProcessData sdata) throws ProcessException
+    protected ProcessData processStateTransition(ProcessData sdata)
     {
         Plan data = (Plan) sdata;
         try {
