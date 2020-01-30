@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 public class PlanProcessor implements Processor
 {
     @Override
-    public ProcessData process(ProcessData data) throws ProcessException
+    public ProcessData process(ProcessData data)
     {
         ProcessEvent processEvent = data.getEvent();
         ProcessState targetFinalState = processEvent.getEndState();
