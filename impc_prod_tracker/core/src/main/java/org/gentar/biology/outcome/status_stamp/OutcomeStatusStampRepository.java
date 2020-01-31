@@ -1,4 +1,4 @@
-package org.gentar.biology.outcome_status_stamp;
+package org.gentar.biology.outcome.status_stamp;
 
 import org.springframework.data.repository.CrudRepository;
 
