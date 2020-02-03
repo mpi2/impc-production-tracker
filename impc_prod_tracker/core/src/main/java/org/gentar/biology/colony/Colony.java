@@ -42,7 +42,7 @@ public class Colony extends BaseEntity
     private String name;
 
     @NotNull
-    @ManyToOne
+    @ManyToOne(cascade=CascadeType.ALL)
     private Strain strain;
 
     @NotNull

@@ -12,7 +12,7 @@ import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
-@NoArgsConstructor(access= AccessLevel.PRIVATE, force=true)
+@NoArgsConstructor(access= AccessLevel.PUBLIC, force=true)
 @Data
 @Entity
 public class ColonyStatusStamp extends BaseEntity implements Serializable {
@@ -22,7 +22,8 @@ public class ColonyStatusStamp extends BaseEntity implements Serializable {
     private Long id;
 
     @NotNull
-    @ManyToOne(targetEntity = Colony.class)
+    @ManyToOne
+    @JoinColumn(name = "colony_id")
     private Colony colony;
 
     @NotNull
