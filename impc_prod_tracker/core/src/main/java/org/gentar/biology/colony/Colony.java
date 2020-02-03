@@ -24,7 +24,7 @@ import org.gentar.biology.strain.Strain;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
-@NoArgsConstructor(access= AccessLevel.PRIVATE, force=true)
+@NoArgsConstructor(access= AccessLevel.PUBLIC, force=true)
 @Data
 @Entity
 public class Colony extends BaseEntity

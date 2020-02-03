@@ -15,7 +15,6 @@ public class MutationDTO
 {
     @JsonIgnore
     private Long id;
-    private String name;
     private String alleleSymbol;
     private String mgiAlleleId;
     private String geneticMutationTypeName;
