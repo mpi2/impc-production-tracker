@@ -24,15 +24,17 @@ public class OutcomeDTO
 
     private String tpo;
 
+    private String outcomeTypeName;
+
     @JsonInclude(JsonInclude.Include.NON_NULL)
     @JsonProperty("mutations")
     private List<MutationDTO> mutationDTOS;
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    @JsonProperty("colonies")
-    private List<ColonyDTO> colonyDTOS;
+    @JsonProperty("colony")
+    private ColonyDTO colonyDTO;
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    @JsonProperty("specimens")
-    private List<SpecimenDTO> specimenDTOS;
+    @JsonProperty("specimen")
+    private SpecimenDTO specimenDTO;
 }

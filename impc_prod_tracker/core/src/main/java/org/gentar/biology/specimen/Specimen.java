@@ -10,7 +10,7 @@ import org.gentar.biology.status.Status;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
-@NoArgsConstructor(access= AccessLevel.PRIVATE, force=true)
+@NoArgsConstructor(access= AccessLevel.PUBLIC, force=true)
 @Data
 @Entity
 public class Specimen extends BaseEntity {
