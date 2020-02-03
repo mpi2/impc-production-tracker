@@ -16,9 +16,12 @@ import javax.validation.constraints.NotNull;
 public class Specimen extends BaseEntity {
 
     @Id
-    @SequenceGenerator(name = "specimenSeq", sequenceName = "SPECIMEN_SEQ")
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "specimenSeq")
+    @Column(name = "id")
     private Long id;
+
+    @OneToOne
+    @MapsId
+    private Outcome outcome;
 
 
     @Column(columnDefinition = "TEXT")
@@ -26,12 +29,6 @@ public class Specimen extends BaseEntity {
 
     @ManyToOne
     private SpecimenType specimenType;
-
-    // TODO revision? - Is this relation correct
-    // - will multiple samples be taken from one embryos to characterise different outcomes in the individual embryo?
-    @ManyToOne(targetEntity = Outcome.class)
-    private Outcome outcome;
-
 
     @NotNull
     @ManyToOne(targetEntity= Status.class)
