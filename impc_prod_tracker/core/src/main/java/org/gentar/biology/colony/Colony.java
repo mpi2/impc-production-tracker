@@ -23,7 +23,6 @@ import org.gentar.biology.strain.Strain;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import java.util.Set;
 
 @NoArgsConstructor(access= AccessLevel.PRIVATE, force=true)
 @Data
@@ -31,9 +30,12 @@ import java.util.Set;
 public class Colony extends BaseEntity
 {
     @Id
-    @SequenceGenerator(name = "colonySeq", sequenceName = "COLONY_SEQ")
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "colonySeq")
+    @Column(name = "id")
     private Long id;
+
+    @OneToOne
+    @MapsId
+    private Outcome outcome;
 
     @NotNull
     @Column(unique = true)
@@ -42,10 +44,6 @@ public class Colony extends BaseEntity
     @NotNull
     @ManyToOne
     private Strain strain;
-
-    @EqualsAndHashCode.Exclude
-    @ManyToOne(targetEntity = Outcome.class)
-    private Outcome outcome;
 
     @NotNull
     @ManyToOne(targetEntity= Status.class)
