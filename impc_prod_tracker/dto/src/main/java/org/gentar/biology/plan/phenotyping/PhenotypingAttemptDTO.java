@@ -24,10 +24,14 @@ public class PhenotypingAttemptDTO
     private Boolean phenotypingStarted;
     private Boolean phenotypingComplete;
     private Boolean doNotCountTowardsCompleteness;
-    private String phenotypingColonyName;
+    private String phenotypingExternalRef;
 
     @JsonProperty("colonyDetails")
     private ColonyDTO colonyDTO;
+
+    // TODO Add specimenDetails and outcomeType? - so the wranglers can understand phenotypingExternalRef
+    // @JsonProperty("specimenDetails")
+    // private SpecimenDTO specimenDTO;
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
     @JsonProperty("tissueDistributionCentresAttributes")

@@ -29,5 +29,5 @@ public class PhenotypingAttempt extends BaseEntity
     private Boolean doNotCountTowardsCompleteness;
 
     @Column(unique = true)
-    private String phenotypingColonyName;
+    private String phenotypingExternalRef;
 }
