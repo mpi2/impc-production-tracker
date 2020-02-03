@@ -4,7 +4,6 @@ import lombok.*;
 import org.gentar.BaseEntity;
 import org.gentar.biology.mutation.Mutation;
 import org.gentar.biology.plan.Plan;
-import org.gentar.biology.status.Status;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.Set;
@@ -23,11 +22,10 @@ public class Outcome extends BaseEntity
     private String tpo;
 
     @ManyToOne
-    private Plan plan;
+    private OutcomeType outcomeType;
 
-    @NotNull
-    @ManyToOne(targetEntity= Status.class)
-    private Status status;
+    @ManyToOne
+    private Plan plan;
 
     @EqualsAndHashCode.Exclude
     @ManyToMany(mappedBy = "outcomes")

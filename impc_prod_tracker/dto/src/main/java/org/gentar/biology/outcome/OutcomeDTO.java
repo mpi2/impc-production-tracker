@@ -8,7 +8,6 @@ import lombok.RequiredArgsConstructor;
 import org.gentar.biology.mutation.MutationDTO;
 import org.gentar.biology.colony.ColonyDTO;
 import org.gentar.biology.specimen.SpecimenDTO;
-import org.gentar.biology.status_stamps.StatusStampsDTO;
 import org.springframework.hateoas.server.core.Relation;
 import java.util.List;
 
@@ -24,11 +23,6 @@ public class OutcomeDTO
     private String pin;
 
     private String tpo;
-
-    private String statusName;
-
-    @JsonProperty("statusDates")
-    private List<StatusStampsDTO> statusStampsDTOS;
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
     @JsonProperty("mutations")

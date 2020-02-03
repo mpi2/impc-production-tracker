@@ -18,6 +18,7 @@ package org.gentar.biology.colony;
 import lombok.*;
 import org.gentar.BaseEntity;
 import org.gentar.biology.outcome.Outcome;
+import org.gentar.biology.status.Status;
 import org.gentar.biology.strain.Strain;
 
 import javax.persistence.*;
@@ -35,6 +36,7 @@ public class Colony extends BaseEntity
     private Long id;
 
     @NotNull
+    @Column(unique = true)
     private String name;
 
     @NotNull
@@ -45,7 +47,9 @@ public class Colony extends BaseEntity
     @ManyToOne(targetEntity = Outcome.class)
     private Outcome outcome;
 
-    private Boolean genotypeConfirmed;
+    @NotNull
+    @ManyToOne(targetEntity= Status.class)
+    private Status status;
 
     private String genotypingComment;
 }
