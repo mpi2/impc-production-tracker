@@ -18,6 +18,7 @@ package org.gentar.biology.colony;
 import lombok.*;
 import org.gentar.BaseEntity;
 import org.gentar.biology.outcome.Outcome;
+import org.gentar.biology.status.Status;
 import org.gentar.biology.strain.Strain;
 
 import javax.persistence.*;
@@ -44,6 +45,10 @@ public class Colony extends BaseEntity
     @EqualsAndHashCode.Exclude
     @ManyToOne(targetEntity = Outcome.class)
     private Outcome outcome;
+
+    @NotNull
+    @ManyToOne(targetEntity= Status.class)
+    private Status status;
 
     private Boolean genotypeConfirmed;
 

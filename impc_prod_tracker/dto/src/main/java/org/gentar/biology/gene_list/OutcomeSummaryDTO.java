@@ -5,6 +5,5 @@ import lombok.Data;
 @Data
 public class OutcomeSummaryDTO
 {
-    private String statusName;
     private String molecularMutationTypeName;
 }

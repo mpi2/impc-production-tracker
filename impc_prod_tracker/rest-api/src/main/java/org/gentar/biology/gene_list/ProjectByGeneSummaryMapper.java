@@ -51,7 +51,6 @@ public class ProjectByGeneSummaryMapper implements Mapper<Project, ProjectByGene
         {
             outcomes.forEach(o -> {
                 OutcomeSummaryDTO outcomeSummaryDTO = new OutcomeSummaryDTO();
-                outcomeSummaryDTO.setStatusName(o.getStatus().getName());
                 outcomeSummaryDTO.setMolecularMutationTypeName("Unknown");
                 outcomeSummaryDTOS.add(outcomeSummaryDTO);
             });

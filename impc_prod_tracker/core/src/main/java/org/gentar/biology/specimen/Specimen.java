@@ -5,8 +5,10 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.gentar.BaseEntity;
 import org.gentar.biology.outcome.Outcome;
+import org.gentar.biology.status.Status;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 
 @NoArgsConstructor(access= AccessLevel.PRIVATE, force=true)
 @Data
@@ -29,4 +31,9 @@ public class Specimen extends BaseEntity {
     // - will multiple samples be taken from one embryos to characterise different outcomes in the individual embryo?
     @ManyToOne(targetEntity = Outcome.class)
     private Outcome outcome;
+
+
+    @NotNull
+    @ManyToOne(targetEntity= Status.class)
+    private Status status;
 }
