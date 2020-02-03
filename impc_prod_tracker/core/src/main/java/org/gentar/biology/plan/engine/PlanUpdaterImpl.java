@@ -2,6 +2,7 @@ package org.gentar.biology.plan.engine;
 
 import org.gentar.exceptions.UserOperationFailedException;
 import org.gentar.audit.history.HistoryService;
+import org.gentar.statemachine.StateTransitionsManager;
 import org.springframework.stereotype.Component;
 import org.gentar.security.abac.spring.ContextAwarePolicyEnforcement;
 import org.gentar.biology.plan.Plan;
@@ -15,14 +16,14 @@ public class PlanUpdaterImpl implements PlanUpdater
     private ContextAwarePolicyEnforcement policyEnforcement;
     private PlanRepository planRepository;
     private PlanValidator planValidator;
-    private PlanStateTransitionManager stateTransitionManager;
+    private StateTransitionsManager stateTransitionManager;
 
     public PlanUpdaterImpl(
         HistoryService<Plan> historyService,
         ContextAwarePolicyEnforcement policyEnforcement,
         PlanRepository planRepository,
         PlanValidator planValidator,
-        PlanStateTransitionManager stateTransitionManager)
+        StateTransitionsManager stateTransitionManager)
     {
         this.historyService = historyService;
         this.policyEnforcement = policyEnforcement;
