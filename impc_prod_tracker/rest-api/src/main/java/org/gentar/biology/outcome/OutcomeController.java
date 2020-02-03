@@ -11,9 +11,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
 import java.util.List;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
@@ -23,10 +26,10 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 @CrossOrigin(origins="*")
 public class OutcomeController
 {
-    private OutcomeService outcomeService;
+    private OutcomeServiceImpl outcomeService;
     private OutcomeMapper outcomeMapper;
 
-    public OutcomeController(OutcomeService outcomeService, OutcomeMapper outcomeMapper)
+    public OutcomeController(OutcomeServiceImpl outcomeService, OutcomeMapper outcomeMapper)
     {
         this.outcomeService = outcomeService;
         this.outcomeMapper = outcomeMapper;
@@ -49,6 +52,28 @@ public class OutcomeController
         responseHeaders.add("Link", LinkUtil.createLinkHeader(pr));
 
         return new ResponseEntity(pr, responseHeaders, HttpStatus.OK);
+    }
+
+    /**
+     * Create an outcome in the system.
+     * @param outcomeDTO DTO with the representation of the outcome.
+     * @return The DTO with the outcome of the created outcome.
+     */
+    @PostMapping
+    private OutcomeDTO create(@RequestBody OutcomeDTO outcomeDTO)
+    {
+        Outcome outcome = outcomeMapper.toEntity(outcomeDTO);
+        Outcome createdOutcome = outcomeService.create(outcome);
+        return outcomeMapper.toDto(createdOutcome);
+    }
+
+    @PutMapping(value = {"/{tpo}"})
+    public void update(@PathVariable String tpo, @RequestBody OutcomeDTO outcomeDTO)
+    {
+        System.out.println(tpo);
+        System.out.println(outcomeDTO);
+        Outcome outcome = outcomeMapper.toEntity(outcomeDTO);
+        outcomeService.update(outcome);
     }
 
 }

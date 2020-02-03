@@ -1,21 +1,29 @@
 package org.gentar.biology.outcome;
 
-import org.springframework.stereotype.Component;
-
 import java.util.List;
 
-@Component
-public class OutcomeService
+/**
+ * The methods to control the information of outcomes.
+ */
+public interface OutcomeService
 {
-    private OutcomeRepository outcomeRepository;
+    /**
+     * Find all the outcomes.
+     * @return A list of {@link Outcome}
+     */
+    List<Outcome> findAll();
 
-    public OutcomeService(OutcomeRepository outcomeRepository)
-    {
-        this.outcomeRepository = outcomeRepository;
-    }
+    /**
+     * Creates an outcome in the system.
+     * @param outcome In memory outcome object. Without ids. Not saved in database yet.
+     * @return The outcome saved in the database.
+     */
+    Outcome create(Outcome outcome);
 
-    public List<Outcome> findAll()
-    {
-        return outcomeRepository.findAll();
-    }
+    /**
+     * Updates an existing outcome.
+     * @param outcome New data for the outcome.
+     * @return
+     */
+    Outcome update(Outcome outcome);
 }

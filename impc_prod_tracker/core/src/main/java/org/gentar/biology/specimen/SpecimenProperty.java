@@ -8,7 +8,7 @@ import org.gentar.BaseEntity;
 import javax.persistence.*;
 import java.io.Serializable;
 
-@NoArgsConstructor(access= AccessLevel.PRIVATE, force=true)
+@NoArgsConstructor(access= AccessLevel.PUBLIC, force=true)
 @Data
 @Entity
 public class SpecimenProperty  extends BaseEntity implements Serializable {
