@@ -50,7 +50,5 @@ public class Colony extends BaseEntity
     @ManyToOne(targetEntity= Status.class)
     private Status status;
 
-    private Boolean genotypeConfirmed;
-
     private String genotypingComment;
 }

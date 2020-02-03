@@ -19,7 +19,6 @@ public class ColonyDTO
     @JsonIgnore
     private Long outcomeId;
     private String name;
-    private Boolean genotypeConfirmed;
     private Boolean genotypingComment;
     private Boolean isReleasedFromGenotyping;
     private String statusName;
