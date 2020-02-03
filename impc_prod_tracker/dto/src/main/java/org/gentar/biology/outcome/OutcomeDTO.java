@@ -7,18 +7,22 @@ import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.gentar.biology.mutation.MutationDTO;
 import org.gentar.biology.colony.ColonyDTO;
-
+import org.gentar.biology.specimen.SpecimenDTO;
+import org.springframework.hateoas.server.core.Relation;
 import java.util.List;
 
 @Data
 @RequiredArgsConstructor
+@Relation(collectionRelation = "outcomes")
 public class OutcomeDTO
 {
-    @JsonIgnore
     private Long id;
     @JsonIgnore
     private Long attemptId;
+
     private String pin;
+
+    private String tpo;
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
     @JsonProperty("mutations")
@@ -27,4 +31,8 @@ public class OutcomeDTO
     @JsonInclude(JsonInclude.Include.NON_NULL)
     @JsonProperty("colonies")
     private List<ColonyDTO> colonyDTOS;
+
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    @JsonProperty("specimens")
+    private List<SpecimenDTO> specimenDTOS;
 }
