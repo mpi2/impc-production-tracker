@@ -22,6 +22,9 @@ public class Outcome extends BaseEntity
     private String tpo;
 
     @ManyToOne
+    private OutcomeType outcomeType;
+
+    @ManyToOne
     private Plan plan;
 
     @EqualsAndHashCode.Exclude
