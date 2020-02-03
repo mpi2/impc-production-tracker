@@ -28,10 +28,4 @@ public class PlanStartingPoint extends BaseEntity implements Serializable {
     @ManyToOne(targetEntity= Outcome.class)
     private Outcome outcome;
 
-    @ManyToOne(targetEntity= Colony.class)
-    private Colony colony;
-
-    @ManyToOne(targetEntity= Specimen.class)
-    private Specimen specimen;
-
 }
