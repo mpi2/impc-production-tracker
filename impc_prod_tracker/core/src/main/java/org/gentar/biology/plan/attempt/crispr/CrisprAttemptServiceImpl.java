@@ -18,7 +18,6 @@ package org.gentar.biology.plan.attempt.crispr;
 import org.gentar.biology.plan.attempt.crispr.nuclease.nuclease_class.NucleaseClass;
 import org.gentar.biology.plan.attempt.crispr.nuclease.nuclease_class.NucleaseClassRepository;
 import org.springframework.stereotype.Component;
-import org.gentar.biology.plan.attempt.crispr.delivery_type.DeliveryMethodType;
 import org.gentar.biology.plan.attempt.crispr.nuclease.Nuclease;
 import org.gentar.biology.plan.attempt.crispr.nuclease.NucleaseRepository;
 import org.gentar.biology.plan.attempt.crispr.genotype_primer.GenotypePrimer;
@@ -27,7 +26,6 @@ import org.gentar.biology.plan.attempt.crispr.mutagenesis_donor.MutagenesisDonor
 import org.gentar.biology.plan.attempt.crispr.mutagenesis_donor.MutagenesisDonorRepository;
 import org.gentar.biology.plan.attempt.crispr.assay.AssayType;
 import org.gentar.biology.plan.attempt.crispr.assay.AssayTypeRepository;
-import org.gentar.biology.plan.attempt.crispr.delivery_type.DeliveryMethodTypeRepository;
 import org.gentar.biology.plan.attempt.crispr.nuclease.nuclease_type.NucleaseType;
 import org.gentar.biology.plan.attempt.crispr.nuclease.nuclease_type.NucleaseTypeRepository;
 
@@ -44,7 +42,6 @@ public class CrisprAttemptServiceImpl implements CrisprAttemptService
     private NucleaseClassRepository nucleaseClassRepository;
     private MutagenesisDonorRepository mutagenesisDonorRepository;
     private AssayTypeRepository assayTypeRepository;
-    private DeliveryMethodTypeRepository deliveryTypeRepository;
 
     public CrisprAttemptServiceImpl(
         CrisprAttemptRepository crisprAttemptRepository,
@@ -53,8 +50,7 @@ public class CrisprAttemptServiceImpl implements CrisprAttemptService
         NucleaseTypeRepository nucleaseTypeRepository,
         NucleaseClassRepository nucleaseClassRepository,
         MutagenesisDonorRepository mutagenesisDonorRepository,
-        AssayTypeRepository assayTypeRepository,
-        DeliveryMethodTypeRepository deliveryTypeRepository)
+        AssayTypeRepository assayTypeRepository)
     {
         this.crisprAttemptRepository = crisprAttemptRepository;
         this.genotypePrimerRepository = genotypePrimerRepository;
@@ -63,7 +59,6 @@ public class CrisprAttemptServiceImpl implements CrisprAttemptService
         this.nucleaseClassRepository = nucleaseClassRepository;
         this.mutagenesisDonorRepository = mutagenesisDonorRepository;
         this.assayTypeRepository = assayTypeRepository;
-        this.deliveryTypeRepository = deliveryTypeRepository;
     }
 
     @Override
@@ -91,12 +86,6 @@ public class CrisprAttemptServiceImpl implements CrisprAttemptService
     public AssayType getAssayTypeByName(String assayTypeName)
     {
         return assayTypeRepository.findByName(assayTypeName);
-    }
-
-    @Override
-    public DeliveryMethodType getDeliveryTypeByName(String deliveryTypeName)
-    {
-        return deliveryTypeRepository.findByName(deliveryTypeName);
     }
 
     @Override

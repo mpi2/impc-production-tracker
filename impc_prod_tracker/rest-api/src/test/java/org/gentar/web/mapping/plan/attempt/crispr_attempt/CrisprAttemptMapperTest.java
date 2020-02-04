@@ -20,7 +20,6 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.gentar.biology.plan.attempt.crispr.CrisprAttempt;
 import org.gentar.biology.plan.attempt.crispr.assay.Assay;
 import org.gentar.biology.plan.attempt.crispr.assay.AssayType;
-import org.gentar.biology.plan.attempt.crispr.delivery_type.DeliveryMethodType;
 import org.gentar.biology.plan.attempt.crispr.genotype_primer.GenotypePrimer;
 import org.gentar.biology.plan.attempt.crispr.guide.Guide;
 import org.gentar.biology.plan.attempt.crispr.mutagenesis_donor.preparation_type.PreparationType;
@@ -53,8 +52,6 @@ public class CrisprAttemptMapperTest
     private static final Boolean EXPERIMENTAL_TRUE = true;
     private static final Boolean EXPERIMENTAL_FALSE = false;
     private static final String MUTAGENESIS_EXTERNAL_REF = "mutagenesisExternalRef";
-    private static final Double VOLTAGE = 10.0;
-    private static final Integer NO_OF_PULSES = 11;
     private static final Integer TOTAL_EMBRYOS_INJECTED = 7;
     private static final Integer TOTAL_EMBRYOS_SURVIVED = 8;
     private static final String EMBRYO_TRANSFER_DAY = "day1";
@@ -149,8 +146,6 @@ public class CrisprAttemptMapperTest
             "MutagenesisExternalRef",
             crisprAttemptDTO.getMutagenesisExternalRef(),
             is(MUTAGENESIS_EXTERNAL_REF));
-        assertThat("Voltage", crisprAttemptDTO.getVoltage(), is(VOLTAGE));
-        assertThat("NoOfPulses", crisprAttemptDTO.getNoOfPulses(), is(NO_OF_PULSES));
         assertThat(
             "TotalEmbryosInjected",
             crisprAttemptDTO.getTotalEmbryosInjected(),
@@ -160,10 +155,6 @@ public class CrisprAttemptMapperTest
             crisprAttemptDTO.getTotalEmbryosSurvived(),
             is(TOTAL_EMBRYOS_SURVIVED));
         assertThat("Embryo2Cell", crisprAttemptDTO.getEmbryo2Cell(), is(EMBRYO2CELL));
-        assertThat(
-            "DeliveryTypeMethodName",
-            crisprAttemptDTO.getDeliveryTypeMethodName(),
-            is(DELIVERY_METHOD_TYPE_NAME));
         assertThat("Comment", crisprAttemptDTO.getComment(), is(COMMENT));
         assertThat("Assay", crisprAttemptDTO.getAssay(), notNullValue());
         assertThat(
@@ -355,14 +346,9 @@ public class CrisprAttemptMapperTest
         crisprAttempt.setMiExternalRef(MI_EXTERNAL_REF);
         crisprAttempt.setExperimental(EXPERIMENTAL_TRUE);
         crisprAttempt.setMutagenesisExternalRef(MUTAGENESIS_EXTERNAL_REF);
-        crisprAttempt.setVoltage(VOLTAGE);
-        crisprAttempt.setNoOfPulses(NO_OF_PULSES);
         crisprAttempt.setTotalEmbryosInjected(TOTAL_EMBRYOS_INJECTED);
         crisprAttempt.setTotalEmbryosSurvived(TOTAL_EMBRYOS_SURVIVED);
         crisprAttempt.setEmbryo2Cell(EMBRYO2CELL);
-        DeliveryMethodType deliveryMethodType = new DeliveryMethodType();
-        deliveryMethodType.setName(DELIVERY_METHOD_TYPE_NAME);
-        crisprAttempt.setDeliveryMethodType(deliveryMethodType);
         crisprAttempt.setComment(COMMENT);
         Assay assay = new Assay();
         assay.setId(ASSAY_ID);
@@ -399,15 +385,12 @@ public class CrisprAttemptMapperTest
     @Test
     public void testToEntity()
     {
-        DeliveryMethodType deliveryMethodType = new DeliveryMethodType();
-        deliveryMethodType.setName(DELIVERY_METHOD_TYPE_NAME);
         PreparationType preparationType1 = new PreparationType();
         preparationType1.setName(MUTAGENESIS_DONOR_PREPARATION + MUTAGENESIS_DONOR_ID1);
         PreparationType preparationType2 = new PreparationType();
         preparationType1.setName(MUTAGENESIS_DONOR_PREPARATION + MUTAGENESIS_DONOR_ID2);
         AssayType assayType = new AssayType();
         assayType.setName(ASSAY_TYPE_NAME);
-        when(crisprAttemptService.getDeliveryTypeByName("deliveryMethodTypeName")).thenReturn(deliveryMethodType);
         when(preparationTypeRepository.findFirstByName(
             MUTAGENESIS_DONOR_PREPARATION + MUTAGENESIS_DONOR_ID1))
             .thenReturn(preparationType1);
@@ -442,8 +425,6 @@ public class CrisprAttemptMapperTest
             "MutagenesisExternalRef",
             crisprAttempt.getMutagenesisExternalRef(),
             is(MUTAGENESIS_EXTERNAL_REF));
-        assertThat("Voltage", crisprAttempt.getVoltage(), is(VOLTAGE));
-        assertThat("NoOfPulses", crisprAttempt.getNoOfPulses(), is(NO_OF_PULSES));
         assertThat(
             "TotalEmbryosInjected",
             crisprAttempt.getTotalEmbryosInjected(),
@@ -453,10 +434,6 @@ public class CrisprAttemptMapperTest
             crisprAttempt.getTotalEmbryosSurvived(),
             is(TOTAL_EMBRYOS_SURVIVED));
         assertThat("Embryo2Cell", crisprAttempt.getEmbryo2Cell(), is(EMBRYO2CELL));
-        assertThat(
-            "DeliveryTypeMethodName",
-            crisprAttempt.getDeliveryMethodType().getName(),
-            is(DELIVERY_METHOD_TYPE_NAME));
         assertThat("Comment", crisprAttempt.getComment(), is(COMMENT));
         assertThat("Assay", crisprAttempt.getAssay(), notNullValue());
         assertThat(
@@ -652,9 +629,6 @@ public class CrisprAttemptMapperTest
         crisprAttemptDTO.setMiExternalRef(MI_EXTERNAL_REF);
         crisprAttemptDTO.setExperimental(EXPERIMENTAL_TRUE);
         crisprAttemptDTO.setMutagenesisExternalRef(MUTAGENESIS_EXTERNAL_REF);
-        crisprAttemptDTO.setDeliveryTypeMethodName(DELIVERY_METHOD_TYPE_NAME);
-        crisprAttemptDTO.setVoltage(VOLTAGE);
-        crisprAttemptDTO.setNoOfPulses(NO_OF_PULSES);
         crisprAttemptDTO.setTotalEmbryosInjected(TOTAL_EMBRYOS_INJECTED);
         crisprAttemptDTO.setTotalEmbryosSurvived(TOTAL_EMBRYOS_SURVIVED);
         crisprAttemptDTO.setEmbryo2Cell(EMBRYO2CELL);

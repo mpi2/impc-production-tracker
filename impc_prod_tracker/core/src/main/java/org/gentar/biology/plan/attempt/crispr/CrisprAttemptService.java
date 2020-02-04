@@ -15,7 +15,6 @@
  */
 package org.gentar.biology.plan.attempt.crispr;
 
-import org.gentar.biology.plan.attempt.crispr.delivery_type.DeliveryMethodType;
 import org.gentar.biology.plan.attempt.crispr.nuclease.Nuclease;
 import org.gentar.biology.plan.attempt.crispr.genotype_primer.GenotypePrimer;
 import org.gentar.biology.plan.attempt.crispr.mutagenesis_donor.MutagenesisDonor;
@@ -36,8 +35,6 @@ public interface CrisprAttemptService
     List<MutagenesisDonor> getMutagenesisDonorsByCrisprAttempt(CrisprAttempt crisprAttempt);
 
     AssayType getAssayTypeByName(String assayTypeName);
-
-    DeliveryMethodType getDeliveryTypeByName(String deliveryTypeName);
 
     NucleaseType getNucleaseTypeByName(String nucleaseTypeName);
 

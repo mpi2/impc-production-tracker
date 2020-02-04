@@ -42,11 +42,6 @@ public class CrisprAttemptDTO
 
     private String comment;
     private String mutagenesisExternalRef;
-    private String deliveryTypeMethodName;
-    private Double voltage;
-
-    @JsonProperty("numberOfPulses")
-    private Integer noOfPulses;
 
     @JsonProperty("nucleases")
     private List<NucleaseDTO> nucleaseDTOS;
