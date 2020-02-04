@@ -136,6 +136,7 @@ public class Plan extends BaseEntity  implements Resource<Plan>, ProcessData
         this.planFlags = new HashSet<>(plan.planFlags);
         this.protocols = new HashSet<>(plan.protocols);
         this.status = plan.status;
+        this.summaryStatus = plan.summaryStatus;
         this.attemptType = plan.attemptType;
         this.crisprAttempt = plan.crisprAttempt;
         this.breedingAttempt = plan.breedingAttempt;
