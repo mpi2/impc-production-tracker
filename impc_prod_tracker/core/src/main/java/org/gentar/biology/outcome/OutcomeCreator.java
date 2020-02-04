@@ -1,6 +1,5 @@
 package org.gentar.biology.outcome;
 
-import org.gentar.biology.project.Project;
 import org.springframework.stereotype.Component;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -15,7 +14,6 @@ class OutcomeCreator
 {
     @PersistenceContext
     private EntityManager entityManager;
-
 
     public Outcome create(Outcome outcome)
     {

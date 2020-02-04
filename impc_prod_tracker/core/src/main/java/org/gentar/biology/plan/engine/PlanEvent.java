@@ -5,6 +5,8 @@ import org.gentar.biology.plan.engine.processors.PlanAbortReverserProcessor;
 import org.gentar.statemachine.ProcessEvent;
 import org.gentar.statemachine.ProcessState;
 import org.gentar.statemachine.Processor;
+import java.util.Arrays;
+import java.util.List;
 
 public enum PlanEvent implements ProcessEvent
 {
@@ -16,7 +18,7 @@ public enum PlanEvent implements ProcessEvent
         null)
         {
             @Override
-            public Class<? extends Processor> nextStepProcessor()
+            public Class<? extends Processor> getNextStepProcessor()
             {
                 return PlanAbortProcessor.class;
             }
@@ -35,7 +37,7 @@ public enum PlanEvent implements ProcessEvent
         null)
         {
             @Override
-            public Class<? extends Processor> nextStepProcessor()
+            public Class<? extends Processor> getNextStepProcessor()
             {
                 return PlanAbortReverserProcessor.class;
             }
@@ -48,7 +50,7 @@ public enum PlanEvent implements ProcessEvent
         "Only possible if...")
         {
             @Override
-            public Class<? extends Processor> nextStepProcessor()
+            public Class<? extends Processor> getNextStepProcessor()
             {
                 return PlanAbortProcessor.class;
             }
@@ -110,7 +112,7 @@ public enum PlanEvent implements ProcessEvent
     private String triggerNote;
 
     @Override
-    public Class<? extends Processor> nextStepProcessor()
+    public Class<? extends Processor> getNextStepProcessor()
     {
         return PlanProcessor.class;
     }
@@ -125,5 +127,10 @@ public enum PlanEvent implements ProcessEvent
     public String getDescription()
     {
         return description;
+    }
+
+    public static List<ProcessEvent> getAllEvents()
+    {
+        return Arrays.asList(PlanEvent.values());
     }
 }

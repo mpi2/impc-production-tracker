@@ -3,6 +3,7 @@ package org.gentar.biology.plan;
 import org.gentar.EntityMapper;
 import org.gentar.biology.plan.attempt.AttemptTypeMapper;
 import org.gentar.biology.plan.attempt.crispr.CrisprAttempt;
+import org.gentar.biology.plan.engine.PlanEvent;
 import org.gentar.biology.plan.engine.PlanState;
 import org.gentar.biology.plan.production.crispr_attempt.CrisprAttemptDTO;
 import org.gentar.Mapper;
@@ -14,7 +15,9 @@ import org.gentar.organization.funder.Funder;
 import org.gentar.organization.funder.FunderMapper;
 import org.gentar.organization.work_group.WorkGroupMapper;
 import org.gentar.organization.work_unit.WorkUnitMapper;
+import org.gentar.statemachine.EnumStateHelper;
 import org.gentar.statemachine.ProcessEvent;
+import org.gentar.statemachine.ProcessState;
 import org.springframework.stereotype.Component;
 import org.gentar.biology.plan.attempt.AttemptType;
 import org.gentar.biology.plan.attempt.crispr_attempt.CrisprAttemptMapper;
@@ -139,10 +142,11 @@ public class PlanMapper implements Mapper<Plan, PlanDTO>
     {
         List<TransitionDTO> transitionDTOS = new ArrayList<>();
         String currentStatusName = plan.getStatus().getName();
-        PlanState planState = PlanState.getStateByInternalName(currentStatusName);
+        ProcessState planState = PlanState.getStateByInternalName(currentStatusName);
         if (planState != null)
         {
-            List<ProcessEvent> planEvents = planState.getAllAvailableEvents();
+            List<ProcessEvent> planEvents =
+                EnumStateHelper.getAvailableEventsByState(PlanEvent.getAllEvents(), planState);
             planEvents.forEach(x -> {
                 TransitionDTO transition = new TransitionDTO();
                 transition.setAction(x.getName());

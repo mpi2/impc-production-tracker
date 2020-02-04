@@ -1,42 +1,41 @@
-package org.gentar.biology.plan.engine;
+package org.gentar.biology.colony.engine;
 
 import org.gentar.statemachine.EnumStateHelper;
 import org.gentar.statemachine.ProcessState;
 import java.util.Arrays;
 import java.util.List;
 
-public enum PlanState implements ProcessState
+public enum ColonyState implements ProcessState
 {
-    MicroInjectionInProgress("Micro-injection In Progress"),
-    MicroInjectionComplete("Micro-injection Complete"),
-    Aborted("Micro-injection Aborted");
+    GenotypeNotConfirmed("Genotype Not Confirmed"),
+    GenotypeConfirmed("Genotype Confirmed");
 
     private String internalName;
 
-    PlanState(String internalName)
+    ColonyState(String internalName)
     {
         this.internalName = internalName;
     }
 
-    public String getInternalName()
-    {
-        return internalName;
-    }
-
     public static List<ProcessState> getAllStates()
     {
-        return Arrays.asList(PlanState.values());
+        return Arrays.asList(ColonyState.values());
     }
 
     public static ProcessState getStateByInternalName(String internalName)
     {
         return EnumStateHelper.getStateByInternalName(
-            Arrays.asList(PlanState.values()), internalName);
+            Arrays.asList(ColonyState.values()), internalName);
     }
-
     @Override
     public String getName()
     {
         return this.name();
+    }
+
+    @Override
+    public String getInternalName()
+    {
+        return internalName;
     }
 }
