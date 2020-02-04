@@ -45,8 +45,6 @@ public class Nuclease extends BaseEntity
     @JoinColumn(name = "attempt_id")
     private CrisprAttempt crisprAttempt;
 
-    private Double concentration;
-
     @ToString.Exclude
     @ManyToOne(targetEntity = NucleaseType.class)
     private NucleaseType nucleaseType;

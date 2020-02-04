@@ -93,8 +93,6 @@ public class CrisprAttemptMapperTest
     private static final String NUCLEASE_TYPE_NAME = "NucleaseTypeName1";
     private static final Long NUCLEASE_ID1 = 1L;
     private static final Long NUCLEASE_ID2 = 2L;
-    private static final Double NUCLEASE_CONCENTRATION_1 = 30.0;
-    private static final Double NUCLEASE_CONCENTRATION_2 = 50.0;
     private static final Long MUTAGENESIS_DONOR_ID1 = 1L;
     private static final String MUTAGENESIS_DONOR_VECTOR_NAME = "Vector Name";
     private static final Double MUTAGENESIS_DONOR_CONCENTRATION_1 = 30.0;
@@ -517,16 +515,15 @@ public class CrisprAttemptMapperTest
     private void addNucleaseDTOs(CrisprAttemptDTO crisprAttemptDTO)
     {
         List<NucleaseDTO> nucleaseDTOS = new ArrayList<>();
-        nucleaseDTOS.add(buildNucleaseDTO(NUCLEASE_ID1, NUCLEASE_CONCENTRATION_1));
-        nucleaseDTOS.add(buildNucleaseDTO(NUCLEASE_ID2, NUCLEASE_CONCENTRATION_2));
+        nucleaseDTOS.add(buildNucleaseDTO(NUCLEASE_ID1));
+        nucleaseDTOS.add(buildNucleaseDTO(NUCLEASE_ID2));
         crisprAttemptDTO.setNucleaseDTOS(nucleaseDTOS);
     }
 
-    private NucleaseDTO buildNucleaseDTO(Long id, Double concentration)
+    private NucleaseDTO buildNucleaseDTO(Long id)
     {
         NucleaseDTO nucleaseDTO = new NucleaseDTO();
         nucleaseDTO.setId(id);
-        nucleaseDTO.setConcentration(concentration);
         nucleaseDTO.setTypeName(NUCLEASE_TYPE_NAME + id);
 
         return nucleaseDTO;
