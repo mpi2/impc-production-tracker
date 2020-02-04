@@ -53,8 +53,6 @@ public class CrisprAttemptMapperTest
     private static final Boolean EXPERIMENTAL_TRUE = true;
     private static final Boolean EXPERIMENTAL_FALSE = false;
     private static final String MUTAGENESIS_EXTERNAL_REF = "mutagenesisExternalRef";
-    private static final Double VOLTAGE = 10.0;
-    private static final Integer NO_OF_PULSES = 11;
     private static final Integer TOTAL_EMBRYOS_INJECTED = 7;
     private static final Integer TOTAL_EMBRYOS_SURVIVED = 8;
     private static final String EMBRYO_TRANSFER_DAY = "day1";
@@ -149,8 +147,6 @@ public class CrisprAttemptMapperTest
             "MutagenesisExternalRef",
             crisprAttemptDTO.getMutagenesisExternalRef(),
             is(MUTAGENESIS_EXTERNAL_REF));
-        assertThat("Voltage", crisprAttemptDTO.getVoltage(), is(VOLTAGE));
-        assertThat("NoOfPulses", crisprAttemptDTO.getNoOfPulses(), is(NO_OF_PULSES));
         assertThat(
             "TotalEmbryosInjected",
             crisprAttemptDTO.getTotalEmbryosInjected(),
@@ -355,8 +351,6 @@ public class CrisprAttemptMapperTest
         crisprAttempt.setMiExternalRef(MI_EXTERNAL_REF);
         crisprAttempt.setExperimental(EXPERIMENTAL_TRUE);
         crisprAttempt.setMutagenesisExternalRef(MUTAGENESIS_EXTERNAL_REF);
-        crisprAttempt.setVoltage(VOLTAGE);
-        crisprAttempt.setNoOfPulses(NO_OF_PULSES);
         crisprAttempt.setTotalEmbryosInjected(TOTAL_EMBRYOS_INJECTED);
         crisprAttempt.setTotalEmbryosSurvived(TOTAL_EMBRYOS_SURVIVED);
         crisprAttempt.setEmbryo2Cell(EMBRYO2CELL);
@@ -442,8 +436,6 @@ public class CrisprAttemptMapperTest
             "MutagenesisExternalRef",
             crisprAttempt.getMutagenesisExternalRef(),
             is(MUTAGENESIS_EXTERNAL_REF));
-        assertThat("Voltage", crisprAttempt.getVoltage(), is(VOLTAGE));
-        assertThat("NoOfPulses", crisprAttempt.getNoOfPulses(), is(NO_OF_PULSES));
         assertThat(
             "TotalEmbryosInjected",
             crisprAttempt.getTotalEmbryosInjected(),
@@ -653,8 +645,6 @@ public class CrisprAttemptMapperTest
         crisprAttemptDTO.setExperimental(EXPERIMENTAL_TRUE);
         crisprAttemptDTO.setMutagenesisExternalRef(MUTAGENESIS_EXTERNAL_REF);
         crisprAttemptDTO.setDeliveryTypeMethodName(DELIVERY_METHOD_TYPE_NAME);
-        crisprAttemptDTO.setVoltage(VOLTAGE);
-        crisprAttemptDTO.setNoOfPulses(NO_OF_PULSES);
         crisprAttemptDTO.setTotalEmbryosInjected(TOTAL_EMBRYOS_INJECTED);
         crisprAttemptDTO.setTotalEmbryosSurvived(TOTAL_EMBRYOS_SURVIVED);
         crisprAttemptDTO.setEmbryo2Cell(EMBRYO2CELL);

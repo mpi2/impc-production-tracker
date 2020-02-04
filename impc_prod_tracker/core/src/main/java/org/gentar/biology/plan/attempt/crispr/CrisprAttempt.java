@@ -65,10 +65,6 @@ public class CrisprAttempt extends BaseEntity
 
     private String mutagenesisExternalRef;
 
-    private Double voltage;
-
-    private Integer noOfPulses;
-
     private Integer totalEmbryosInjected;
 
     private Integer totalEmbryosSurvived;
