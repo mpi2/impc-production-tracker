@@ -11,7 +11,7 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 
-@NoArgsConstructor(access= AccessLevel.PRIVATE, force=true)
+@NoArgsConstructor(access= AccessLevel.PUBLIC, force=true)
 @Data
 @Entity
 public class DistributionProduct extends BaseEntity
@@ -30,6 +30,7 @@ public class DistributionProduct extends BaseEntity
     private ProductType productType;
 
     @ManyToOne
+    @JoinColumn(name = "colony_id")
     private Colony colony;
 
     @OneToOne

@@ -3,13 +3,11 @@ package org.gentar.biology.outcome;
 import lombok.*;
 import org.gentar.BaseEntity;
 import org.gentar.biology.colony.Colony;
-import org.gentar.biology.colony.distribution.product_type.ProductType;
 import org.gentar.biology.mutation.Mutation;
 import org.gentar.biology.plan.Plan;
 import org.gentar.biology.specimen.Specimen;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 import java.util.Set;
 
 @NoArgsConstructor(access= AccessLevel.PUBLIC, force=true)
@@ -22,7 +20,6 @@ public class Outcome extends BaseEntity
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "outcomeSeq")
     private Long id;
 
-    @NotNull
     private String tpo;
 
     @ManyToOne

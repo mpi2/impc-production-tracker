@@ -26,4 +26,18 @@ public interface OutcomeService
      * @return
      */
     Outcome update(Outcome outcome);
+
+    /**
+     * Gets a {@link OutcomeType} object based in its name.
+     * @param name Name of the {@link OutcomeType} object.
+     * @return {@link OutcomeType} object.
+     */
+    OutcomeType getOutcomeTypeByName(String name);
+
+    /**
+     * Gets a {@link OutcomeType} object based in its name.
+     * @param name Name of the {@link OutcomeType} object.
+     * @return {@link OutcomeType} object.
+     */
+    OutcomeType getOutcomeTypeByNameFailingWhenNull(String name);
 }
