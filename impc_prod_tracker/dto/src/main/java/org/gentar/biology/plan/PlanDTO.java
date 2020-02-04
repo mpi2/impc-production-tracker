@@ -47,6 +47,7 @@ public class PlanDTO extends RepresentationModel
     private String workGroupName;
     private Boolean isActive;
     private String statusName;
+    private String summaryStatusName;
 
     @JsonProperty("statusDates")
     private List<StatusStampsDTO> statusStampsDTOS;
