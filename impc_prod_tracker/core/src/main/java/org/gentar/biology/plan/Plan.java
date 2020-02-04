@@ -91,6 +91,10 @@ public class Plan extends BaseEntity  implements Resource<Plan>, ProcessData
     @ManyToOne(targetEntity= Status.class)
     private Status status;
 
+    @NotNull
+    @ManyToOne(targetEntity= Status.class)
+    private Status summaryStatus;
+
     @ManyToOne(targetEntity= PlanType.class)
     private PlanType planType;
 
