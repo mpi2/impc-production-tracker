@@ -17,6 +17,7 @@ package org.gentar.biology.project;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
+import org.gentar.biology.status.Status;
 import org.gentar.exceptions.SystemOperationFailedException;
 import org.gentar.organization.work_group.WorkGroup;
 import org.gentar.security.abac.Resource;
@@ -32,6 +33,7 @@ import org.gentar.organization.consortium.Consortium;
 import org.gentar.organization.work_unit.WorkUnit;
 import org.gentar.security.abac.ResourcePrivacy;
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -57,6 +59,9 @@ public class Project extends BaseEntity implements Resource<Project>
     @ToString.Exclude
     @ManyToOne
     private AssignmentStatus assignmentStatus;
+
+    @ManyToOne(targetEntity= Status.class)
+    private Status summaryStatus;
 
     @EqualsAndHashCode.Exclude
     @ToString.Exclude

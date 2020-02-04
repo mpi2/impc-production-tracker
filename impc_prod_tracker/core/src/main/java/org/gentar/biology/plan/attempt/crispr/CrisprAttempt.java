@@ -73,16 +73,8 @@ public class CrisprAttempt extends BaseEntity
 
     private Integer totalEmbryosSurvived;
 
-    private String embryoTransferDay;
-
     @Column(name = "embryo_2_Cell")
     private String embryo2Cell;
-
-    private Integer totalTransferred;
-
-    private Integer numFounderPups;
-
-    private Integer numFounderSelectedForBreeding;
 
     @ManyToOne
     private DeliveryMethodType deliveryMethodType;

@@ -72,21 +72,11 @@ public class CrisprAttemptDTO
     @JsonProperty("totalEmbryosSurvived")
     private Integer totalEmbryosSurvived;
 
-    @JsonProperty("embryoTransferDay")
-    private String embryoTransferDay;
-
     @JsonProperty("embryo2Cell")
     private String embryo2Cell;
 
-    @JsonProperty("totalTransferred")
-    private Integer totalTransferred;
-
-    private Integer numFounderPups;
-
     @JsonProperty("assayAttributes")
     private AssayDTO assay;
-
-    private Integer numFounderSelectedForBreeding;
 
     @JsonProperty("strainInjectedAttributes")
     private StrainDTO strain;

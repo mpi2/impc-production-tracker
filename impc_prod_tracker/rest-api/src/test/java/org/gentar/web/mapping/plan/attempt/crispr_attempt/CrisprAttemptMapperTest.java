@@ -159,15 +159,7 @@ public class CrisprAttemptMapperTest
             "TotalEmbryosSurvived",
             crisprAttemptDTO.getTotalEmbryosSurvived(),
             is(TOTAL_EMBRYOS_SURVIVED));
-        assertThat(
-            "EmbryoTransferDay", crisprAttemptDTO.getEmbryoTransferDay(), is(EMBRYO_TRANSFER_DAY));
         assertThat("Embryo2Cell", crisprAttemptDTO.getEmbryo2Cell(), is(EMBRYO2CELL));
-        assertThat("TotalTransferred", crisprAttemptDTO.getTotalTransferred(), is(TOTAL_TRANSFERED));
-        assertThat("NumFounderPups", crisprAttemptDTO.getNumFounderPups(), is(NUM_FOUNDER_PUPS));
-        assertThat(
-            "NumFoundersSelectedForBreeding",
-            crisprAttemptDTO.getNumFounderSelectedForBreeding(),
-            is(NUM_FOUNDER_SELECTED_FOR_BREEDING));
         assertThat(
             "DeliveryTypeMethodName",
             crisprAttemptDTO.getDeliveryTypeMethodName(),
@@ -176,6 +168,14 @@ public class CrisprAttemptMapperTest
         assertThat("Assay", crisprAttemptDTO.getAssay(), notNullValue());
         assertThat(
             "Assay TypeName", crisprAttemptDTO.getAssay().getTypeName(), is(ASSAY_TYPE_NAME));
+        assertThat(
+                "Assay EmbryoTransferDay", crisprAttemptDTO.getAssay().getEmbryoTransferDay(), is(EMBRYO_TRANSFER_DAY));
+        assertThat(
+                "Assay NumFoundersSelectedForBreeding",
+                crisprAttemptDTO.getAssay().getNumFounderSelectedForBreeding(),
+                is(NUM_FOUNDER_SELECTED_FOR_BREEDING));
+        assertThat("Assay TotalTransferred", crisprAttemptDTO.getAssay().getTotalTransferred(), is(TOTAL_TRANSFERED));
+        assertThat("Assay NumFounderPups", crisprAttemptDTO.getAssay().getNumFounderPups(), is(NUM_FOUNDER_PUPS));
         assertThat(
             "Assay FounderNumAssays",
             crisprAttemptDTO.getAssay().getFounderNumAssays(),
@@ -359,11 +359,7 @@ public class CrisprAttemptMapperTest
         crisprAttempt.setNoOfPulses(NO_OF_PULSES);
         crisprAttempt.setTotalEmbryosInjected(TOTAL_EMBRYOS_INJECTED);
         crisprAttempt.setTotalEmbryosSurvived(TOTAL_EMBRYOS_SURVIVED);
-        crisprAttempt.setEmbryoTransferDay(EMBRYO_TRANSFER_DAY);
         crisprAttempt.setEmbryo2Cell(EMBRYO2CELL);
-        crisprAttempt.setTotalTransferred(TOTAL_TRANSFERED);
-        crisprAttempt.setNumFounderPups(NUM_FOUNDER_PUPS);
-        crisprAttempt.setNumFounderSelectedForBreeding(NUM_FOUNDER_SELECTED_FOR_BREEDING);
         DeliveryMethodType deliveryMethodType = new DeliveryMethodType();
         deliveryMethodType.setName(DELIVERY_METHOD_TYPE_NAME);
         crisprAttempt.setDeliveryMethodType(deliveryMethodType);
@@ -374,6 +370,10 @@ public class CrisprAttemptMapperTest
         assayType.setId(ASSAY_TYPE_ID);
         assayType.setName(ASSAY_TYPE_NAME);
         assay.setAssayType(assayType);
+        assay.setEmbryoTransferDay(EMBRYO_TRANSFER_DAY);
+        assay.setTotalTransferred(TOTAL_TRANSFERED);
+        assay.setNumFounderPups(NUM_FOUNDER_PUPS);
+        assay.setNumFounderSelectedForBreeding(NUM_FOUNDER_SELECTED_FOR_BREEDING);
         assay.setFounderNumAssays(NUM_FOUNDER_NUM_ASSAYS);
         assay.setNumHdrG0Mutants(NUM_HDRG0_MUTANTS);
         assay.setNumDeletionG0Mutants(NUM_DELETION_G0_MUTANTS);
@@ -452,15 +452,7 @@ public class CrisprAttemptMapperTest
             "TotalEmbryosSurvived",
             crisprAttempt.getTotalEmbryosSurvived(),
             is(TOTAL_EMBRYOS_SURVIVED));
-        assertThat(
-            "EmbryoTransferDay", crisprAttempt.getEmbryoTransferDay(), is(EMBRYO_TRANSFER_DAY));
         assertThat("Embryo2Cell", crisprAttempt.getEmbryo2Cell(), is(EMBRYO2CELL));
-        assertThat("TotalTransferred", crisprAttempt.getTotalTransferred(), is(TOTAL_TRANSFERED));
-        assertThat("NumFounderPups", crisprAttempt.getNumFounderPups(), is(NUM_FOUNDER_PUPS));
-        assertThat(
-            "NumFoundersSelectedForBreeding",
-            crisprAttempt.getNumFounderSelectedForBreeding(),
-            is(NUM_FOUNDER_SELECTED_FOR_BREEDING));
         assertThat(
             "DeliveryTypeMethodName",
             crisprAttempt.getDeliveryMethodType().getName(),
@@ -469,6 +461,14 @@ public class CrisprAttemptMapperTest
         assertThat("Assay", crisprAttempt.getAssay(), notNullValue());
         assertThat(
             "Assay TypeName", crisprAttempt.getAssay().getAssayType().getName(), is(ASSAY_TYPE_NAME));
+        assertThat(
+                "EmbryoTransferDay", crisprAttempt.getAssay().getEmbryoTransferDay(), is(EMBRYO_TRANSFER_DAY));
+        assertThat("TotalTransferred", crisprAttempt.getAssay().getTotalTransferred(), is(TOTAL_TRANSFERED));
+        assertThat("NumFounderPups", crisprAttempt.getAssay().getNumFounderPups(), is(NUM_FOUNDER_PUPS));
+        assertThat(
+                "NumFoundersSelectedForBreeding",
+                crisprAttempt.getAssay().getNumFounderSelectedForBreeding(),
+                is(NUM_FOUNDER_SELECTED_FOR_BREEDING));
         assertThat(
             "Assay FounderNumAssays",
             crisprAttempt.getAssay().getFounderNumAssays(),
@@ -657,15 +657,15 @@ public class CrisprAttemptMapperTest
         crisprAttemptDTO.setNoOfPulses(NO_OF_PULSES);
         crisprAttemptDTO.setTotalEmbryosInjected(TOTAL_EMBRYOS_INJECTED);
         crisprAttemptDTO.setTotalEmbryosSurvived(TOTAL_EMBRYOS_SURVIVED);
-        crisprAttemptDTO.setEmbryoTransferDay(EMBRYO_TRANSFER_DAY);
         crisprAttemptDTO.setEmbryo2Cell(EMBRYO2CELL);
-        crisprAttemptDTO.setTotalTransferred(TOTAL_TRANSFERED);
-        crisprAttemptDTO.setNumFounderPups(NUM_FOUNDER_PUPS);
-        crisprAttemptDTO.setNumFounderSelectedForBreeding(NUM_FOUNDER_SELECTED_FOR_BREEDING);
         crisprAttemptDTO.setComment(COMMENT);
         AssayDTO assayDTO = new AssayDTO();
         assayDTO.setId(ASSAY_ID);
         assayDTO.setTypeName(ASSAY_TYPE_NAME);
+        assayDTO.setEmbryoTransferDay(EMBRYO_TRANSFER_DAY);
+        assayDTO.setTotalTransferred(TOTAL_TRANSFERED);
+        assayDTO.setNumFounderPups(NUM_FOUNDER_PUPS);
+        assayDTO.setNumFounderSelectedForBreeding(NUM_FOUNDER_SELECTED_FOR_BREEDING);
         assayDTO.setFounderNumAssays(NUM_FOUNDER_NUM_ASSAYS);
         assayDTO.setNumHdrG0Mutants(NUM_HDRG0_MUTANTS);
         assayDTO.setNumDeletionG0Mutants(NUM_DELETION_G0_MUTANTS);
