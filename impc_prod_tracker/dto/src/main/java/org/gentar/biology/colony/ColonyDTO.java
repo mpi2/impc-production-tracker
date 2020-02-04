@@ -22,7 +22,7 @@ public class ColonyDTO
     @JsonProperty("statusDates")
     private List<StatusStampsDTO> statusStampsDTOS;
 
-    @JsonProperty("backgroundStrainAttributes")
+    @JsonProperty("backgroundStrain")
     private StrainDTO strainDTO;
 
     @JsonInclude(JsonInclude.Include.NON_NULL)

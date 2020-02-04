@@ -2,9 +2,11 @@ package org.gentar.biology.outcome;
 
 import org.gentar.EntityMapper;
 import org.gentar.Mapper;
+import org.gentar.biology.colony.Colony;
 import org.gentar.biology.colony.ColonyMapper;
 import org.gentar.biology.mutation.MutationMapper;
 import org.gentar.biology.plan.Plan;
+import org.gentar.biology.plan.PlanService;
 import org.gentar.biology.specimen.SpecimenMapper;
 import org.springframework.stereotype.Component;
 
@@ -15,17 +17,23 @@ public class OutcomeMapper implements Mapper<Outcome, OutcomeDTO>
     private ColonyMapper colonyMapper;
     private SpecimenMapper specimenMapper;
     private MutationMapper mutationMapper;
+    private OutcomeService outcomeService;
+    private PlanService planService;
 
     public OutcomeMapper(
         EntityMapper entityMapper,
         ColonyMapper colonyMapper,
         SpecimenMapper specimenMapper,
-        MutationMapper mutationMapper)
+        MutationMapper mutationMapper,
+        OutcomeService outcomeService,
+        PlanService planService)
     {
         this.entityMapper = entityMapper;
         this.colonyMapper = colonyMapper;
         this.specimenMapper = specimenMapper;
         this.mutationMapper = mutationMapper;
+        this.outcomeService = outcomeService;
+        this.planService = planService;
     }
 
     @Override
@@ -51,6 +59,14 @@ public class OutcomeMapper implements Mapper<Outcome, OutcomeDTO>
     @Override
     public Outcome toEntity(OutcomeDTO dto)
     {
-        return null;
+        Outcome outcome = entityMapper.toTarget(dto, Outcome.class);
+        Colony colony = colonyMapper.toEntity(dto.getColonyDTO());
+        colony.setOutcome(outcome);
+        outcome.setColony(colony);
+        outcome.setPlan(planService.getNotNullPlanByPin(dto.getPin()));
+        OutcomeType outcomeType =
+            outcomeService.getOutcomeTypeByNameFailingWhenNull(dto.getOutcomeTypeName());
+        outcome.setOutcomeType(outcomeType);
+        return outcome;
     }
 }
