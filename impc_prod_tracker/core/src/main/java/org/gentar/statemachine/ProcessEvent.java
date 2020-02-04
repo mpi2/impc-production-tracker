@@ -2,7 +2,7 @@ package org.gentar.statemachine;
 
 public interface ProcessEvent
 {
-    Class<? extends Processor> nextStepProcessor();
+    Class<? extends Processor> getNextStepProcessor();
     String getName();
     String getDescription();
     ProcessState getInitialState();

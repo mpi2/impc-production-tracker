@@ -34,7 +34,7 @@ public class StateTransitionsManager
         ProcessEvent processEvent = data.getEvent();
         if (processEvent != null)
         {
-            Class<? extends Processor> processor = processEvent.nextStepProcessor();
+            Class<? extends Processor> processor = processEvent.getNextStepProcessor();
             if (processor != null)
             {
                 this.context.getBean(processor).process(data);
