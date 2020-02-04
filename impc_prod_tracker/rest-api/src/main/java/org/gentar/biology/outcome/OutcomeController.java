@@ -79,7 +79,7 @@ public class OutcomeController
      * @return The DTO with the outcome of the created outcome.
      */
     @PostMapping(value = {"plans/{pin}/outcomes"})
-    private OutcomeDTO create(@RequestBody OutcomeDTO outcomeDTO)
+    public OutcomeDTO create(@RequestBody OutcomeDTO outcomeDTO)
     {
         Outcome outcome = outcomeMapper.toEntity(outcomeDTO);
         Outcome createdOutcome = outcomeService.create(outcome);

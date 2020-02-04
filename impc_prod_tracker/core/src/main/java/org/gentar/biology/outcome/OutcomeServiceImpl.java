@@ -29,7 +29,8 @@ public class OutcomeServiceImpl implements OutcomeService
 
     public Outcome create(Outcome outcome)
     {
-        return outcomeCreator.create(outcome);
+        Outcome createdOutcome = outcomeCreator.create(outcome);
+        return createdOutcome;
     }
 
     public Outcome update(Outcome outcome)

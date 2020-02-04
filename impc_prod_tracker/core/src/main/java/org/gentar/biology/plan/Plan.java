@@ -39,7 +39,6 @@ import org.gentar.organization.funder.Funder;
 import org.gentar.organization.work_unit.WorkUnit;
 import org.gentar.statemachine.ProcessData;
 import org.gentar.statemachine.ProcessEvent;
-
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.Arrays;
