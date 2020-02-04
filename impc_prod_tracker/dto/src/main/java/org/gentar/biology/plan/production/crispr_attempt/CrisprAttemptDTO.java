@@ -42,7 +42,6 @@ public class CrisprAttemptDTO
 
     private String comment;
     private String mutagenesisExternalRef;
-    private String deliveryTypeMethodName;
 
     @JsonProperty("nucleases")
     private List<NucleaseDTO> nucleaseDTOS;

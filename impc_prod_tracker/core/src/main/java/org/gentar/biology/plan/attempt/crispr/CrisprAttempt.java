@@ -23,7 +23,6 @@ import lombok.ToString;
 import org.gentar.BaseEntity;
 import org.gentar.biology.plan.attempt.crispr.assay.Assay;
 import org.gentar.biology.plan.attempt.crispr.reagent.CrisprAttemptReagent;
-import org.gentar.biology.plan.attempt.crispr.delivery_type.DeliveryMethodType;
 import org.gentar.biology.plan.attempt.crispr.genotype_primer.GenotypePrimer;
 import org.gentar.biology.plan.attempt.crispr.guide.Guide;
 import org.gentar.biology.plan.attempt.crispr.mutagenesis_donor.MutagenesisDonor;
@@ -71,9 +70,6 @@ public class CrisprAttempt extends BaseEntity
 
     @Column(name = "embryo_2_Cell")
     private String embryo2Cell;
-
-    @ManyToOne
-    private DeliveryMethodType deliveryMethodType;
 
     @Column(columnDefinition = "TEXT")
     private String comment;

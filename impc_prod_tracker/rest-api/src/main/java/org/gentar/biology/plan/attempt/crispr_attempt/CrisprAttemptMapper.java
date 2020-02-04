@@ -16,7 +16,6 @@
 package org.gentar.biology.plan.attempt.crispr_attempt;
 
 import org.gentar.biology.plan.attempt.crispr.mutagenesis_strategy.MutagenesisStrategy;
-import org.gentar.exceptions.UserOperationFailedException;
 import org.gentar.biology.plan.attempt.crispr.CrisprAttemptService;
 import org.gentar.biology.plan.production.crispr_attempt.CrisprAttemptDTO;
 import org.modelmapper.ModelMapper;
@@ -24,7 +23,6 @@ import org.springframework.stereotype.Component;
 import org.gentar.biology.plan.attempt.crispr.CrisprAttempt;
 import org.gentar.biology.plan.attempt.crispr.assay.Assay;
 import org.gentar.biology.plan.attempt.crispr.reagent.CrisprAttemptReagent;
-import org.gentar.biology.plan.attempt.crispr.delivery_type.DeliveryMethodType;
 import org.gentar.biology.plan.attempt.crispr.genotype_primer.GenotypePrimer;
 import org.gentar.biology.plan.attempt.crispr.guide.Guide;
 import org.gentar.biology.plan.attempt.crispr.mutagenesis_donor.MutagenesisDonor;
@@ -45,9 +43,6 @@ public class CrisprAttemptMapper
     private GenotypePrimerMapper genotypePrimerMapper;
     private AssayMapper assayMapper;
     private CrisprAttemptService crisprAttemptService;
-
-    private static final String DELIVERY_TYPE_METHOD_NOT_FOUND = "Delivery Method Type [%s]" +
-        " does not exist. Please correct the name or create first the delivery type method.";
 
     public CrisprAttemptMapper(
         ModelMapper modelMapper,
@@ -95,7 +90,6 @@ public class CrisprAttemptMapper
         setAssayType(crisprAttempt, crisprAttemptDTO);
         setStrain(crisprAttempt, crisprAttemptDTO);
         setGuidesToEntity(crisprAttempt, crisprAttemptDTO);
-        setDeliveryTypeMethodToEntity(crisprAttempt, crisprAttemptDTO);
         setGenotypePrimersToEntity(crisprAttempt, crisprAttemptDTO);
         setMutagenesisDonorsToEntity(crisprAttempt, crisprAttemptDTO);
         setMutagenesisStrategyToEntity(crisprAttempt, crisprAttemptDTO);
@@ -131,24 +125,6 @@ public class CrisprAttemptMapper
             genotypePrimerMapper.toEntities(crisprAttemptDTO.getGenotypePrimerDTOS());
         genotypePrimers.forEach(x -> x.setCrisprAttempt(crisprAttempt));
         crisprAttempt.setPrimers(genotypePrimers);
-    }
-
-    private void setDeliveryTypeMethodToEntity(
-        CrisprAttempt crisprAttempt, CrisprAttemptDTO crisprAttemptDTO)
-    {
-        String deliveryMethodTypeName = crisprAttemptDTO.getDeliveryTypeMethodName();
-        if (deliveryMethodTypeName != null)
-        {
-            DeliveryMethodType deliveryMethodType =
-                crisprAttemptService.getDeliveryTypeByName(deliveryMethodTypeName);
-            if (deliveryMethodType == null)
-            {
-                String errorMessage =
-                    String.format(DELIVERY_TYPE_METHOD_NOT_FOUND, deliveryMethodTypeName);
-                throw new UserOperationFailedException(errorMessage);
-            }
-            crisprAttempt.setDeliveryMethodType(deliveryMethodType);
-        }
     }
 
     private void setMutagenesisDonorsToEntity(
