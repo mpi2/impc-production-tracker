@@ -21,8 +21,6 @@ public class MutagenesisDonor extends BaseEntity
     @JoinColumn(name = "attempt_id")
     private CrisprAttempt crisprAttempt;
 
-    private Double concentration;
-
     @ManyToOne
     private PreparationType preparationType;
 
@@ -34,6 +32,6 @@ public class MutagenesisDonor extends BaseEntity
     {
         String preparationTypeName = preparationType == null ? "Not defined" : preparationType.getName();
         return "(" + "oligo Sequence Fasta: " + oligoSequenceFasta + ", "
-            + "Preparation Type: " + preparationTypeName + ", " + "Concentration: " + concentration + ")";
+            + "Preparation Type: " + preparationTypeName + ")";
     }
 }

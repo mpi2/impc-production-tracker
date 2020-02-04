@@ -95,8 +95,6 @@ public class CrisprAttemptMapperTest
     private static final Long NUCLEASE_ID2 = 2L;
     private static final Long MUTAGENESIS_DONOR_ID1 = 1L;
     private static final String MUTAGENESIS_DONOR_VECTOR_NAME = "Vector Name";
-    private static final Double MUTAGENESIS_DONOR_CONCENTRATION_1 = 30.0;
-    private static final Double MUTAGENESIS_DONOR_CONCENTRATION_2 = 40.0;
     private static final String MUTAGENESIS_DONOR_PREPARATION = "Preparation";
     private static final String MUTAGENESIS_DONOR_OLIGO_SEQUENCE_FA = "Oligosequence FA";
     private static final Long MUTAGENESIS_DONOR_ID2 = 2L;
@@ -559,17 +557,16 @@ public class CrisprAttemptMapperTest
     {
         List<MutagenesisDonorDTO> mutagenesisDonorDTOS = new ArrayList<>();
         mutagenesisDonorDTOS.add(
-            buildMutagenesisDonorDTO(MUTAGENESIS_DONOR_ID1, MUTAGENESIS_DONOR_CONCENTRATION_1));
+            buildMutagenesisDonorDTO(MUTAGENESIS_DONOR_ID1));
         mutagenesisDonorDTOS.add(
-            buildMutagenesisDonorDTO(MUTAGENESIS_DONOR_ID2, MUTAGENESIS_DONOR_CONCENTRATION_1));
+            buildMutagenesisDonorDTO(MUTAGENESIS_DONOR_ID2));
         crisprAttemptDTO.setMutagenesisDonorDTOS(mutagenesisDonorDTOS);
     }
 
-    private MutagenesisDonorDTO buildMutagenesisDonorDTO(Long id, Double concentration)
+    private MutagenesisDonorDTO buildMutagenesisDonorDTO(Long id)
     {
         MutagenesisDonorDTO mutagenesisDonorDTO = new MutagenesisDonorDTO();
         mutagenesisDonorDTO.setId(id);
-        mutagenesisDonorDTO.setConcentration(concentration);
         mutagenesisDonorDTO.setPreparationTypeName(MUTAGENESIS_DONOR_PREPARATION + id);
         mutagenesisDonorDTO.setVectorName(MUTAGENESIS_DONOR_VECTOR_NAME  + id);
         mutagenesisDonorDTO.setOligoSequenceFasta(MUTAGENESIS_DONOR_OLIGO_SEQUENCE_FA  + id);
