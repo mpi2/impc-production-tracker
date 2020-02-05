@@ -170,7 +170,6 @@ public class HistoryChangesAdaptorUsingPlanObjectTest
         guide1.setStart(105880383);
         guide1.setStop(105880405);
         guide1.setTruncatedGuide(false);
-        guide1.setGrnaConcentration(null);
 
         Guide guide2 = new Guide();
         guide2.setId(2L);
@@ -179,7 +178,6 @@ public class HistoryChangesAdaptorUsingPlanObjectTest
         guide2.setStart(9999999);
         guide2.setStop(999999999);
         guide2.setTruncatedGuide(false);
-        guide2.setGrnaConcentration(null);
         crisprAttempt1.setGuides(null);
         guides.add(guide1);
         guides.add(guide2);
@@ -222,7 +220,6 @@ public class HistoryChangesAdaptorUsingPlanObjectTest
         guide1.setStart(105880383);
         guide1.setStop(105880405);
         guide1.setTruncatedGuide(false);
-        guide1.setGrnaConcentration(null);
 
         Guide guide2 = new Guide();
         guide2.setId(2L);
@@ -231,7 +228,6 @@ public class HistoryChangesAdaptorUsingPlanObjectTest
         guide2.setStart(105880383);
         guide2.setStop(105880405);
         guide2.setTruncatedGuide(false);
-        guide2.setGrnaConcentration(null);
          crisprAttempt1.setGuides(null);
         guides.add(guide1);
         guides.add(guide2);
