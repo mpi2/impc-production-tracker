@@ -19,8 +19,6 @@ public class MutagenesisDonorDTO
     @JsonProperty("vector_name")
     private String vectorName;
 
-    private Double concentration;
-
     @JsonProperty("preparation")
     private String preparationTypeName;
 

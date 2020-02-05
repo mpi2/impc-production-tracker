@@ -11,7 +11,6 @@ public class GuideDTO
     private String chr;
     private Integer start;
     private Integer stop;
-    private Double grnaConcentration;
     private String sequence;
     private Boolean truncatedGuide;
     private String strand;
