@@ -20,6 +20,8 @@ import org.gentar.BaseEntity;
 import org.gentar.biology.outcome.Outcome;
 import org.gentar.biology.status.Status;
 import org.gentar.biology.strain.Strain;
+import org.gentar.statemachine.ProcessData;
+import org.gentar.statemachine.ProcessEvent;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -27,7 +29,7 @@ import javax.validation.constraints.NotNull;
 @NoArgsConstructor(access= AccessLevel.PUBLIC, force=true)
 @Data
 @Entity
-public class Colony extends BaseEntity
+public class Colony extends BaseEntity implements ProcessData
 {
     @Id
     @Column(name = "id")
@@ -50,4 +52,6 @@ public class Colony extends BaseEntity
     private Status status;
 
     private String genotypingComment;
+
+    private transient ProcessEvent event;
 }

@@ -8,4 +8,5 @@ import java.util.List;
 public interface OutcomeRepository extends CrudRepository<Outcome, Long>
 {
     List<Outcome> findAll();
+    Outcome findByTpo(String tpo);
 }

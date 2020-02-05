@@ -1,7 +1,10 @@
 package org.gentar.biology.outcome;
 
+import org.gentar.audit.history.History;
+import org.gentar.audit.history.HistoryMapper;
 import org.gentar.biology.plan.Plan;
 import org.gentar.biology.plan.PlanService;
+import org.gentar.common.history.HistoryDTO;
 import org.gentar.helpers.LinkUtil;
 import org.gentar.helpers.PaginationHelper;
 import org.springframework.data.domain.Page;
@@ -33,15 +36,21 @@ public class OutcomeController
     private OutcomeServiceImpl outcomeService;
     private OutcomeMapper outcomeMapper;
     private PlanService planService;
+    private OutcomeRequestProcessor outcomeRequestProcessor;
+    private HistoryMapper historyMapper;
 
     public OutcomeController(
         OutcomeServiceImpl outcomeService,
         OutcomeMapper outcomeMapper,
-        PlanService planService)
+        PlanService planService,
+        OutcomeRequestProcessor outcomeRequestProcessor,
+        HistoryMapper historyMapper)
     {
         this.outcomeService = outcomeService;
         this.outcomeMapper = outcomeMapper;
         this.planService = planService;
+        this.outcomeRequestProcessor = outcomeRequestProcessor;
+        this.historyMapper = historyMapper;
     }
 
     @GetMapping(value = {"/outcomes"})
@@ -86,13 +95,32 @@ public class OutcomeController
         return outcomeMapper.toDto(createdOutcome);
     }
 
-    @PutMapping(value = {"/{tpo}"})
-    public void update(@PathVariable String tpo, @RequestBody OutcomeDTO outcomeDTO)
+    @PutMapping(value = {"plans/{pin}/outcomes/{tpo}"})
+    public HistoryDTO update(@PathVariable String pin, @PathVariable String tpo, @RequestBody OutcomeDTO outcomeDTO)
     {
-        System.out.println(tpo);
-        System.out.println(outcomeDTO);
-        Outcome outcome = outcomeMapper.toEntity(outcomeDTO);
-        outcomeService.update(outcome);
+        HistoryDTO historyDTO = new HistoryDTO();
+        outcomeRequestProcessor.validateAssociation(pin, tpo);
+        Outcome outcome = getOutcomeToUpdate(tpo, outcomeDTO);
+        History history = outcomeService.update(outcome);
+
+        if (history != null)
+        {
+            historyDTO = historyMapper.toDto(history);
+        }
+        return historyDTO;
+    }
+
+    /**
+     * Get an Outcome object based on OutcomeDTO using the fields that can be updated by the user.
+     * @param tpo public id of the outcome
+     * @param outcomeDTO outcome sent by the user.
+     * @return The original outcome with the allowed modifications specified in the dto.
+     */
+    private Outcome getOutcomeToUpdate(String tpo, OutcomeDTO outcomeDTO)
+    {
+        Outcome currentOutcome = outcomeService.getByTpoFailsIfNotFound(tpo);
+        Outcome newOutcome = new Outcome(currentOutcome);
+        return outcomeRequestProcessor.getOutcomeToUpdate(newOutcome, outcomeDTO);
     }
 
 }

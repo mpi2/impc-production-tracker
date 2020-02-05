@@ -8,6 +8,7 @@ import org.gentar.biology.plan.Plan;
 import org.gentar.biology.specimen.Specimen;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.Set;
 
 @NoArgsConstructor(access= AccessLevel.PUBLIC, force=true)
@@ -42,4 +43,16 @@ public class Outcome extends BaseEntity
     @ToString.Exclude
     @OneToOne(cascade=CascadeType.ALL, mappedBy = "outcome")
     private Specimen specimen;
+
+    // Copy Constructor
+    public Outcome(Outcome outcome)
+    {
+        this.id = outcome.id;
+        this.tpo = outcome.tpo;
+        this.outcomeType = outcome.outcomeType;
+        this.plan = outcome.plan;
+        this.mutations = new HashSet<>(outcome.mutations);
+        this.colony = outcome.colony;
+        this.specimen = outcome.specimen;
+    }
 }
