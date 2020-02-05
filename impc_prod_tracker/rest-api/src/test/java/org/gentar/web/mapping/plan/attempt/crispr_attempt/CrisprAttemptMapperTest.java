@@ -102,8 +102,6 @@ public class CrisprAttemptMapperTest
     private static final Long REAGENT_ID_2 = 2L;
     private static final String REAGENT_NAME = "Reagent Name";
     private static final String REAGENT_DESCRIPTION = "Reagent description";
-    private static final double REAGENT_CONCENTRATION_1 = 20.0;
-    private static final double REAGENT_CONCENTRATION_2 = 40.0;
     private static final String GENOTYPE_PRIMER_NAME = "GenotypeName";
     private static final String GENOTYPE_PRIMER_SEQUENCE = "GenotypeSequence";
     private static final Long GENOTYPE_PRIMER_ID_1 = 1L;
@@ -576,18 +574,17 @@ public class CrisprAttemptMapperTest
     private void addReagentDTOs(CrisprAttemptDTO crisprAttemptDTO)
     {
         List<ReagentDTO> reagentDTOS = new ArrayList<>();
-        reagentDTOS.add(buildReagentDTO(REAGENT_ID_1, REAGENT_CONCENTRATION_1));
-        reagentDTOS.add(buildReagentDTO(REAGENT_ID_2, REAGENT_CONCENTRATION_2));
+        reagentDTOS.add(buildReagentDTO(REAGENT_ID_1));
+        reagentDTOS.add(buildReagentDTO(REAGENT_ID_2));
         crisprAttemptDTO.setReagentDTOS(reagentDTOS);
     }
 
-    private ReagentDTO buildReagentDTO(Long id, Double concentration)
+    private ReagentDTO buildReagentDTO(Long id)
     {
         ReagentDTO reagentDTO = new ReagentDTO();
         reagentDTO.setId(id);
         reagentDTO.setName(REAGENT_NAME + id);
         reagentDTO.setDescription(REAGENT_DESCRIPTION + id);
-        reagentDTO.setConcentration(concentration);
         return reagentDTO;
     }
 

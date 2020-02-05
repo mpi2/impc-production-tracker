@@ -15,6 +15,7 @@
  *******************************************************************************/
 package org.gentar.biology.plan.attempt.crispr;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -22,22 +23,16 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 import org.gentar.BaseEntity;
 import org.gentar.biology.plan.attempt.crispr.assay.Assay;
-import org.gentar.biology.plan.attempt.crispr.reagent.CrisprAttemptReagent;
 import org.gentar.biology.plan.attempt.crispr.genotype_primer.GenotypePrimer;
 import org.gentar.biology.plan.attempt.crispr.guide.Guide;
 import org.gentar.biology.plan.attempt.crispr.mutagenesis_donor.MutagenesisDonor;
 import org.gentar.biology.plan.attempt.crispr.mutagenesis_strategy.MutagenesisStrategy;
 import org.gentar.biology.plan.attempt.crispr.nuclease.Nuclease;
 import org.gentar.biology.plan.Plan;
+import org.gentar.biology.plan.attempt.crispr.reagent.Reagent;
 import org.gentar.biology.strain.Strain;
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
-import javax.persistence.MapsId;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
+
+import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.Set;
 
@@ -95,10 +90,14 @@ public class CrisprAttempt extends BaseEntity
     @OneToMany(cascade=CascadeType.ALL, mappedBy = "crisprAttempt", orphanRemoval=true)
     private Set<GenotypePrimer> primers;
 
-    @EqualsAndHashCode.Exclude
     @ToString.Exclude
-    @OneToMany(cascade=CascadeType.ALL, mappedBy = "crisprAttempt", orphanRemoval=true)
-    private Set<CrisprAttemptReagent> crisprAttemptReagents;
+    @JsonIgnore
+    @ManyToMany
+    @JoinTable(
+            name = "crispr_attempt_reagent",
+            joinColumns = @JoinColumn(name = "reagent_id"),
+            inverseJoinColumns = @JoinColumn(name = "attempt_id"))
+    private Set<Reagent> reagents;
 
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
