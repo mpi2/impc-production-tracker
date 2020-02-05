@@ -15,6 +15,7 @@
  */
 package org.gentar.biology.plan.attempt.crispr_attempt;
 
+import org.gentar.Mapper;
 import org.gentar.biology.strain.StrainDTO;
 import org.gentar.EntityMapper;
 import org.springframework.stereotype.Component;
@@ -22,7 +23,7 @@ import org.gentar.biology.strain.Strain;
 import org.gentar.biology.strain.StrainRepository;
 
 @Component
-public class StrainMapper
+public class StrainMapper implements Mapper<Strain, StrainDTO>
 {
     private EntityMapper entityMapper;
     private StrainRepository strainRepository;
@@ -31,6 +32,12 @@ public class StrainMapper
     {
         this.entityMapper = entityMapper;
         this.strainRepository = strainRepository;
+    }
+
+    @Override
+    public StrainDTO toDto(Strain entity)
+    {
+        return entityMapper.toTarget(entity, StrainDTO.class);
     }
 
     public Strain toEntity(StrainDTO strainDTO)

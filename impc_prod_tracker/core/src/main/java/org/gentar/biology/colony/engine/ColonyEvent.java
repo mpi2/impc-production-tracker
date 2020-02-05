@@ -1,9 +1,12 @@
 package org.gentar.biology.colony.engine;
 
+import org.gentar.biology.colony.engine.processors.ColonyProcessor;
 import org.gentar.statemachine.ProcessEvent;
 import org.gentar.statemachine.ProcessState;
 import org.gentar.statemachine.Processor;
 import org.gentar.statemachine.StateMachineConstants;
+import java.util.Arrays;
+import java.util.List;
 
 public enum ColonyEvent implements ProcessEvent
 {
@@ -17,7 +20,20 @@ public enum ColonyEvent implements ProcessEvent
             @Override
             public Class<? extends Processor> getNextStepProcessor()
             {
-                return null;
+                return ColonyProcessor.class;
+            }
+        },
+    reverseGenotypeConfirmation(
+        "Reverse genotype confirmation",
+        ColonyState.GenotypeConfirmed,
+        ColonyState.GenotypeNotConfirmed,
+        StateMachineConstants.TRIGGERED_BY_USER,
+        null)
+        {
+            @Override
+            public Class<? extends Processor> getNextStepProcessor()
+            {
+                return ColonyProcessor.class;
             }
         };
 
@@ -74,5 +90,9 @@ public enum ColonyEvent implements ProcessEvent
     public String getDescription()
     {
         return description;
+    }
+    public static List<ProcessEvent> getAllEvents()
+    {
+        return Arrays.asList(ColonyEvent.values());
     }
 }

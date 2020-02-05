@@ -26,6 +26,22 @@ public class EnumStateHelper
     }
 
     /**
+     * Search the ProcessEvent in a list that has an internal name matching internalName.
+     * @param processEvents All the events to search in.
+     * @param name The name of the state we are looking for.
+     * @return Found event or null if not found.
+     */
+    public static ProcessEvent getEventByName(List<ProcessEvent> processEvents, String name)
+    {
+        for (ProcessEvent processEventValue : processEvents)
+        {
+            if (processEventValue.getName().equalsIgnoreCase(name))
+                return processEventValue;
+        }
+        return null;
+    }
+
+    /**
      * Given a State, this method returns the possible events that can be executed next.
      * @param processEvents All the events in the machine.
      * @param processState The state we want to check

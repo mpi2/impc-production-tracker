@@ -30,7 +30,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.gentar.audit.history.History;
 import org.gentar.audit.history.HistoryMapper;
-
 import java.util.List;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
@@ -136,15 +135,6 @@ public class PlanController
         Plan currentPlan = getNotNullPlanByPin(pin);
         Plan newPlan = new Plan(currentPlan);
         return updatePlanRequestProcessor.getPlanToUpdate(newPlan, planDTO);
-    }
-
-    @PutMapping(value = {"/{pin}/changeStatus"})
-    public HistoryDTO changeStatus(
-        @PathVariable String pin,  @RequestParam(value = "action", required = true) String action)
-    {
-        System.out.println("action-->> "+ action);
-        HistoryDTO historyDTO = new HistoryDTO();
-        return historyDTO;
     }
 
     private PlanEvent getEventFromRequest(PlanDTO planDTO)

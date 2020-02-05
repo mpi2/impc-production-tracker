@@ -1,5 +1,6 @@
 package org.gentar.biology.outcome;
 
+import org.gentar.audit.history.History;
 import java.util.List;
 
 /**
@@ -25,7 +26,7 @@ public interface OutcomeService
      * @param outcome New data for the outcome.
      * @return
      */
-    Outcome update(Outcome outcome);
+    History update(Outcome outcome);
 
     /**
      * Gets a {@link OutcomeType} object based in its name.
@@ -40,4 +41,11 @@ public interface OutcomeService
      * @return {@link OutcomeType} object.
      */
     OutcomeType getOutcomeTypeByNameFailingWhenNull(String name);
+
+    /**
+    * Gets an outcome given its tpo. Throws an exception if the tpo is not found.
+    * @param tpo TPO
+    * @return The Outcome
+     */
+    Outcome getByTpoFailsIfNotFound(String tpo);
 }

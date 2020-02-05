@@ -1,13 +1,12 @@
 package org.gentar.biology.outcome;
 
+import org.gentar.audit.history.History;
 import org.gentar.biology.colony.Colony;
 import org.gentar.biology.colony.engine.ColonyState;
 import org.gentar.biology.status.Status;
 import org.gentar.biology.status.StatusService;
 import org.gentar.exceptions.UserOperationFailedException;
-import org.gentar.statemachine.StateTransitionsManager;
 import org.springframework.stereotype.Component;
-
 import java.util.List;
 
 @Component
@@ -17,17 +16,20 @@ public class OutcomeServiceImpl implements OutcomeService
     private OutcomeTypeRepository outcomeTypeRepository;
     private OutcomeCreator outcomeCreator;
     private StatusService statusService;
+    private OutcomeUpdater outcomeUpdater;
 
     public OutcomeServiceImpl(
         OutcomeRepository outcomeRepository,
         OutcomeTypeRepository outcomeTypeRepository,
         OutcomeCreator outcomeCreator,
-        StatusService statusService)
+        StatusService statusService,
+        OutcomeUpdater outcomeUpdater)
     {
         this.outcomeRepository = outcomeRepository;
         this.outcomeTypeRepository = outcomeTypeRepository;
         this.outcomeCreator = outcomeCreator;
         this.statusService = statusService;
+        this.outcomeUpdater = outcomeUpdater;
     }
 
     public List<Outcome> findAll()
@@ -53,10 +55,10 @@ public class OutcomeServiceImpl implements OutcomeService
         }
     }
 
-    public Outcome update(Outcome outcome)
+    public History update(Outcome outcome)
     {
-        System.out.println("OutcomeService Update " + outcome);
-        return null;
+        Outcome originalOutcome = new Outcome(getByTpoFailsIfNotFound(outcome.getTpo()));
+        return outcomeUpdater.update(originalOutcome, outcome);
     }
 
     @Override
@@ -74,5 +76,16 @@ public class OutcomeServiceImpl implements OutcomeService
             throw new UserOperationFailedException("Outcome type" + name + " does not exist.");
         }
         return outcomeType;
+    }
+
+    @Override
+    public Outcome getByTpoFailsIfNotFound(String tpo)
+    {
+        Outcome outcome = outcomeRepository.findByTpo(tpo);
+        if (outcome == null)
+        {
+            throw new UserOperationFailedException("Outocome " + tpo + " does not exist");
+        }
+        return outcome;
     }
 }
