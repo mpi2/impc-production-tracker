@@ -3,8 +3,10 @@ package org.gentar.biology.plan.attempt.phenotyping;
 import lombok.*;
 import org.gentar.BaseEntity;
 import org.gentar.biology.plan.Plan;
+import org.gentar.biology.strain.Strain;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 
 @NoArgsConstructor(access= AccessLevel.PRIVATE, force=true)
@@ -28,6 +30,15 @@ public class PhenotypingAttempt extends BaseEntity
 
     private Boolean doNotCountTowardsCompleteness;
 
-    @Column(unique = true)
+    @NotNull
+    // TODO Need to ensure this field is unique in the Java project
+    // or restructure the data model. @Column(unique = true) does not
+    // work here because early and late phenotyping can be applied to the same colony.
+    // @Column(unique = true)
     private String phenotypingExternalRef;
+
+    @NotNull
+    @ManyToOne(cascade=CascadeType.ALL)
+    private Strain strain;
+
 }
