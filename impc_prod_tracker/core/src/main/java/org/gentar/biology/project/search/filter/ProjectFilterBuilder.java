@@ -96,6 +96,11 @@ public class ProjectFilterBuilder
         return withFilter(FilterTypes.CONSORTIUM, consortiaNames);
     }
 
+    public ProjectFilterBuilder withSummaryStatusNames(List<String> summaryStatusNames)
+    {
+        return withFilter(FilterTypes.SUMMARY_STATUS, summaryStatusNames);
+    }
+
     public ProjectFilterBuilder withExternalReference(List<String> externalReferences)
     {
         return withFilter(FilterTypes.EXTERNAL_REFERENCE, externalReferences);

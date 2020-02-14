@@ -74,6 +74,11 @@ public class ProjectFilter
         return filters.getOrDefault(FilterTypes.ASSIGNMENT_STATUS, null);
     }
 
+    public List<String> getSummaryStatusNames()
+    {
+        return filters.getOrDefault(FilterTypes.SUMMARY_STATUS, null);
+    }
+
     public List<String> getPrivaciesNames()
     {
         return filters.getOrDefault(FilterTypes.PRIVACY_NAME, null);

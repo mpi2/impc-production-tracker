@@ -145,6 +145,7 @@ public class ProjectServiceImpl implements ProjectService
                 .and(ProjectSpecs.withPlansInWorkGroupNames(projectFilter.getWorGroupNames()))
                 .and(ProjectSpecs.withConsortia(projectFilter.getConsortiaNames()))
                 .and(ProjectSpecs.withStatuses(projectFilter.getStatusesNames()))
+                .and(ProjectSpecs.withSummaryStatuses(projectFilter.getSummaryStatusNames()))
                 .and(ProjectSpecs.withPrivacies(projectFilter.getPrivaciesNames())));
         return specifications;
     }

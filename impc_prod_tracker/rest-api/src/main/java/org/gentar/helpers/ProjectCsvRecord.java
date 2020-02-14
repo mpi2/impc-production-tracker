@@ -18,6 +18,7 @@ public class ProjectCsvRecord implements CsvRecord
                 "Work Unit",
                 "Work Group",
                 "Project Assignment",
+                "Project Summary Status",
                 "Privacy",
                 "Consortia"
             };
@@ -31,6 +32,7 @@ public class ProjectCsvRecord implements CsvRecord
     private String workUnits;
     private String workGroups;
     private String projectAssignment;
+    private String projectSummaryStatus;
     private String privacy;
     private String consortia;
 
@@ -46,6 +48,7 @@ public class ProjectCsvRecord implements CsvRecord
             workUnits + SEPARATOR +
             workGroups + SEPARATOR +
             projectAssignment + SEPARATOR +
+            projectSummaryStatus + SEPARATOR +
             privacy + SEPARATOR +
             consortia;
     }
@@ -59,11 +62,12 @@ public class ProjectCsvRecord implements CsvRecord
                 externalReference,
                 geneSymbolOrLocation,
                 accIds,
-                    mutationIntentions,
+                mutationIntentions,
                 bestHumanOrthologs,
                 workUnits,
                 workGroups,
                 projectAssignment,
+                projectSummaryStatus,
                 privacy,
                 consortia
             };

@@ -75,7 +75,8 @@ public class ProjectSearcherController
         List<String> privacies,
         List<String> workUnitsNames,
         List<String> workGroupNames,
-        List<String> consortiaNames)
+        List<String> consortiaNames,
+        List<String> summaryStatusNames)
     {
         ProjectFilter projectFilter = ProjectFilterBuilder.getInstance()
             .withTpns(tpns)
@@ -84,6 +85,7 @@ public class ProjectSearcherController
             .withWorkGroupNames(workGroupNames)
             .withPrivacies(privacies)
             .withConsortiaNames(consortiaNames)
+            .withSummaryStatusNames(summaryStatusNames)
             .build();
         return new Search(searchTypeName, inputs, projectFilter);
     }
@@ -98,7 +100,8 @@ public class ProjectSearcherController
         @RequestParam(value = "privacyNames", required = false) List<String> privacies,
         @RequestParam(value = "workUnitNames", required = false) List<String> workUnitsNames,
         @RequestParam(value = "workGroupNames", required = false) List<String> workGroupNames,
-        @RequestParam(value = "consortiaNames", required = false) List<String> consortiaNames)
+        @RequestParam(value = "consortiaNames", required = false) List<String> consortiaNames,
+        @RequestParam(value = "summaryStatusNames", required = false) List<String> summaryStatusNames)
     {
         Search search =
             buildSearch(
@@ -109,7 +112,8 @@ public class ProjectSearcherController
                 privacies,
                 workUnitsNames,
                 workGroupNames,
-                consortiaNames);
+                consortiaNames,
+                summaryStatusNames);
         SearchReport searchReport = projectSearcherService.executeSearch(search, pageable);
         SearchReportDTO searchReportDTO = searchReportMapper.toDto(searchReport);
 
@@ -126,7 +130,8 @@ public class ProjectSearcherController
         @RequestParam(value = "privacyNames", required = false) List<String> privacies,
         @RequestParam(value = "workUnitNames", required = false) List<String> workUnitsNames,
         @RequestParam(value = "workGroupNames", required = false) List<String> workGroupNames,
-        @RequestParam(value = "consortiaNames", required = false) List<String> consortiaNames)
+        @RequestParam(value = "consortiaNames", required = false) List<String> consortiaNames,
+        @RequestParam(value = "summaryStatusNames", required = false) List<String> summaryStatusNames)
     {
         List<String> inputs = getInputByFile(file);
         Search search =
@@ -138,7 +143,8 @@ public class ProjectSearcherController
                 privacies,
                 workUnitsNames,
                 workGroupNames,
-                consortiaNames);
+                consortiaNames,
+                summaryStatusNames);
         SearchReport searchReport = projectSearcherService.executeSearch(search, pageable);
         SearchReportDTO searchReportDTO = searchReportMapper.toDto(searchReport);
 
@@ -163,7 +169,8 @@ public class ProjectSearcherController
         @RequestParam(value = "privacyNames", required = false) List<String> privacies,
         @RequestParam(value = "workUnitNames", required = false) List<String> workUnitsNames,
         @RequestParam(value = "workGroupNames", required = false) List<String> workGroupNames,
-        @RequestParam(value = "consortiaNames", required = false) List<String> consortiaNames) throws Exception
+        @RequestParam(value = "consortiaNames", required = false) List<String> consortiaNames,
+        @RequestParam(value = "summaryStatusNames", required = false) List<String> summaryStatusNames) throws Exception
     {
         exportCsv(
             response,
@@ -174,7 +181,8 @@ public class ProjectSearcherController
             privacies,
             workUnitsNames,
             workGroupNames,
-            consortiaNames);
+            consortiaNames,
+            summaryStatusNames);
     }
 
     @PostMapping("/exportSearchByFile")
@@ -187,7 +195,8 @@ public class ProjectSearcherController
         @RequestParam(value = "privacyNames", required = false) List<String> privacies,
         @RequestParam(value = "workUnitNames", required = false) List<String> workUnitsNames,
         @RequestParam(value = "workGroupNames", required = false) List<String> workGroupNames,
-        @RequestParam(value = "consortiaNames", required = false) List<String> consortiaNames) throws Exception
+        @RequestParam(value = "consortiaNames", required = false) List<String> consortiaNames,
+        @RequestParam(value = "summaryStatusNames", required = false) List<String> summaryStatusNames) throws Exception
     {
 
         List<String> inputs = getInputByFile(file);
@@ -200,7 +209,8 @@ public class ProjectSearcherController
             privacies,
             workUnitsNames,
             workGroupNames,
-            consortiaNames);
+            consortiaNames,
+            summaryStatusNames);
     }
 
     private void exportCsv(
@@ -212,7 +222,8 @@ public class ProjectSearcherController
         List<String> privacies,
         List<String> workUnitsNames,
         List<String> workGroupNames,
-        List<String> consortiaNames) throws IOException
+        List<String> consortiaNames,
+        List<String> summaryStatusNames) throws IOException
     {
         String filename = "download.csv";
         response.setContentType("text/csv");
@@ -227,7 +238,8 @@ public class ProjectSearcherController
                 privacies,
                 workUnitsNames,
                 workGroupNames,
-                consortiaNames);
+                consortiaNames,
+                summaryStatusNames);
         SearchReport searchReport = projectSearcherService.executeSearch(search);
         var searchCsvRecords = searchCsvRecordMapper.toDtos(searchReport.getResults());
         csvWriter.writeListToCsv(response.getWriter(), searchCsvRecords, SearchCsvRecord.HEADERS);
