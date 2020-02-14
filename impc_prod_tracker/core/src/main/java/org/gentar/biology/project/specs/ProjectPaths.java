@@ -18,6 +18,8 @@ import org.gentar.biology.project.intention.project_intention_gene.ProjectIntent
 import org.gentar.biology.project.intention.project_intention_gene.ProjectIntentionGene_;
 import org.gentar.biology.project.privacy.Privacy;
 import org.gentar.biology.project.privacy.Privacy_;
+import org.gentar.biology.status.Status;
+import org.gentar.biology.status.Status_;
 import org.gentar.organization.consortium.Consortium;
 import org.gentar.organization.consortium.Consortium_;
 import org.gentar.organization.work_group.WorkGroup;
@@ -52,6 +54,13 @@ public class ProjectPaths
     {
         Path<AssignmentStatus> status = root.get(Project_.assignmentStatus);
         return status.get(AssignmentStatus_.name);
+    }
+
+
+    public static Path<String> getSummaryStatusNamePath(Root<Project> root)
+    {
+        Path<Status> status = root.get(Project_.summaryStatus);
+        return status.get(Status_.name);
     }
 
     public static Path<String> getConsortiaNamePath(Root<Project> root)

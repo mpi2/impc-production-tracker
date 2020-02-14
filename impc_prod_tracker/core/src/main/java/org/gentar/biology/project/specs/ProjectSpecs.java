@@ -151,6 +151,26 @@ public class ProjectSpecs
     }
 
     /**
+     * Get all the projects whose summary status is one of the list of statuses provided.
+     *
+     * @param summaryStatuses List of names of statuses.
+     * @return The found projects. If statuses is null then not filter is applied.
+     */
+    public static Specification<Project> withSummaryStatuses(List<String> summaryStatuses)
+    {
+        Specification<Project> specification = Specification.where(null);
+        if (summaryStatuses != null)
+        {
+            specification = (Specification<Project>) (root, query, criteriaBuilder) -> {
+                Path<String> statusNamePath = ProjectPaths.getSummaryStatusNamePath(root);
+                query.distinct(true);
+                return PredicateBuilder.addInPredicates(criteriaBuilder, statusNamePath, summaryStatuses);
+            };
+        }
+        return specification;
+    }
+
+    /**
      * Get all the projects with a specific privacy (or privacies).
      *
      * @param privacies List of names of privacies.

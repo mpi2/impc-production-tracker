@@ -34,6 +34,7 @@ public class ProjectCsvRecordMapper implements Mapper<Project, ProjectCsvRecord>
         projectCsvRecord.setWorkGroups(
             String.join(SEPARATOR, projectQueryHelper.getWorkGroupsNames(project)));
         projectCsvRecord.setProjectAssignment(project.getAssignmentStatus().getName());
+        projectCsvRecord.setProjectSummaryStatus(project.getSummaryStatus().getName());
         projectCsvRecord.setPrivacy(project.getPrivacy().getName());
         projectCsvRecord.setConsortia(
             String.join(SEPARATOR, projectQueryHelper.getConsortiaNames(project)));

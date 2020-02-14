@@ -16,6 +16,7 @@
 package org.gentar.biology.project;
 
 import org.gentar.EntityMapper;
+import org.gentar.biology.status.StatusMapper;
 import org.springframework.stereotype.Component;
 import org.gentar.biology.project.privacy.Privacy;
 import org.gentar.biology.project.consortium.ProjectConsortium;
@@ -37,25 +38,29 @@ public class ProjectDtoToEntityMapper
     private ProjectConsortiumMapper projectConsortiumMapper;
     private ProjectIntentionMapper projectIntentionMapper;
     private AssignmentStatusMapper assignmentStatusMapper;
+    private StatusMapper summaryStatusMapper;
 
     public ProjectDtoToEntityMapper(
         EntityMapper entityMapper,
         PrivacyMapper privacyMapper,
         ProjectConsortiumMapper projectConsortiumMapper,
         ProjectIntentionMapper projectIntentionMapper,
-        AssignmentStatusMapper assignmentStatusMapper)
+        AssignmentStatusMapper assignmentStatusMapper,
+        StatusMapper summaryStatusMapper)
     {
         this.entityMapper = entityMapper;
         this.privacyMapper = privacyMapper;
         this.projectConsortiumMapper = projectConsortiumMapper;
         this.projectIntentionMapper = projectIntentionMapper;
         this.assignmentStatusMapper = assignmentStatusMapper;
+        this.summaryStatusMapper = summaryStatusMapper;
     }
 
     public Project toEntity(ProjectDTO projectDTO)
     {
         Project project = entityMapper.toTarget(projectDTO, Project.class);
         setAssignmentStatus(project, projectDTO);
+        setSummaryStatus(project, projectDTO);
         setProjectIntention(project, projectDTO);
         setPrivacy(project, projectDTO);
         setConsortia(project, projectDTO);
@@ -66,7 +71,13 @@ public class ProjectDtoToEntityMapper
     private void setAssignmentStatus(Project project, ProjectDTO projectDTO)
     {
         project.setAssignmentStatus(
-            assignmentStatusMapper.toEntity(projectDTO.getAssignmentStatusName()));
+                assignmentStatusMapper.toEntity(projectDTO.getAssignmentStatusName()));
+    }
+
+    private void setSummaryStatus(Project project, ProjectDTO projectDTO)
+    {
+        project.setSummaryStatus(
+                summaryStatusMapper.toEntity(projectDTO.getSummaryStatusName()));
     }
 
     private void setProjectIntention(Project project, ProjectDTO projectDTO)

@@ -160,6 +160,8 @@ class ProjectController
                 PlanLinkBuilder.buildPlanLinks(project, PlanTypes.PRODUCTION, "productionPlans"));
             projectDTO.add(
                 PlanLinkBuilder.buildPlanLinks(project, PlanTypes.PHENOTYPING, "phenotypingPlans"));
+            projectDTO.add(
+                PlanLinkBuilder.buildPlanLinks(project, PlanTypes.LATE_ADULT_PHENOTYPING, "lateAdultPhenotypingPlans"));
         }
         return projectDTO;
     }

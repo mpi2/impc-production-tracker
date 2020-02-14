@@ -3,7 +3,8 @@ package org.gentar.biology.project;
 public enum PlanTypes
 {
     PRODUCTION("Production"),
-    PHENOTYPING("Phenotyping");
+    PHENOTYPING("Phenotyping"),
+    LATE_ADULT_PHENOTYPING("Late Adult Phenotyping");
 
     private String typeName;
 

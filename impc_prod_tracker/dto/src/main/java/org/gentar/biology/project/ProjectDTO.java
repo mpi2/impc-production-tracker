@@ -37,6 +37,8 @@ public class ProjectDTO extends RepresentationModel
 {
     private String tpn;
     private String assignmentStatusName;
+    private String summaryStatusName;
+    private Long imitsMiPlanId;
 
     @JsonProperty("assignmentStatusStamps")
     private List<StatusStampsDTO> statusStampsDTOS;
