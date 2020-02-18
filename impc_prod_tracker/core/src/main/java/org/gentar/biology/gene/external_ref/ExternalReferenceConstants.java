@@ -25,6 +25,11 @@ class ExternalReferenceConstants
             "    ensembl_start" +
             "    ensembl_stop" +
             "    ensembl_strand" +
+            "    mgi_cm" +
+            "    mgi_chromosome" +
+            "    mgi_start" +
+            "    mgi_stop" +
+            "    mgi_strand" +
             "  }" +
             "}\" " +
             "}";

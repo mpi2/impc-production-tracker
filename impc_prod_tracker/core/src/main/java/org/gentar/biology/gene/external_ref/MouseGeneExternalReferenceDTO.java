@@ -66,4 +66,19 @@ class MouseGeneExternalReferenceDTO
 
     @JsonProperty("ensembl_strand")
     private String ensemblStrand;
+
+    @JsonProperty("mgi_cm")
+    private String mgiCm;
+
+    @JsonProperty("mgi_chromosome")
+    private String mgiChromosome;
+
+    @JsonProperty("mgi_start")
+    private Long mgiStart;
+
+    @JsonProperty("mgi_stop")
+    private Long mgiStop;
+
+    @JsonProperty("mgi_strand")
+    private String mgiStrand;
 }
