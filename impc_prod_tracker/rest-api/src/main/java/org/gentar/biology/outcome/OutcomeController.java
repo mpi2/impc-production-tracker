@@ -62,7 +62,7 @@ public class OutcomeController
         Page<Outcome> paginatedContent = PaginationHelper.createPage(outcomes, pageable);
         Page<OutcomeDTO> outcomeDTOPage = paginatedContent.map(x -> outcomeMapper.toDto(x));
 
-        PagedModel<EntityModel<OutcomeDTO>> pr =
+        PagedModel pr =
             assembler.toModel(
                 outcomeDTOPage,
                 linkTo(OutcomeController.class).withSelfRel());

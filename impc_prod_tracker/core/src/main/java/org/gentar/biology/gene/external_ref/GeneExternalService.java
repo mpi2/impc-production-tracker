@@ -181,6 +181,11 @@ public class GeneExternalService
         gene.setEnsemblStart(mouseGene.getEnsemblStart());
         gene.setEnsemblStop(mouseGene.getEnsemblStop());
         gene.setEnsemblStrand(mouseGene.getEnsemblStrand());
+        gene.setMgiCm(mouseGene.getMgiCm());
+        gene.setMgiChromosome(mouseGene.getMgiChromosome());
+        gene.setMgiStart(mouseGene.getMgiStart());
+        gene.setMgiStop(mouseGene.getMgiStop());
+        gene.setMgiStrand(mouseGene.getMgiStrand());
         return gene;
     }
 
