@@ -19,6 +19,11 @@ import org.gentar.biology.plan.attempt.crispr.mutagenesis_strategy.MutagenesisSt
 import org.gentar.biology.plan.attempt.crispr.mutagenesis_strategy.MutagenesisStrategyTypeRepository;
 import org.gentar.biology.plan.attempt.crispr.nuclease.nuclease_class.NucleaseClassRepository;
 import org.gentar.biology.plan.attempt.crispr.nuclease.nuclease_type.NucleaseTypeRepository;
+import org.gentar.biology.mutation.categorizarion.MutationCategorizationRepository;
+import org.gentar.biology.plan.attempt.AttemptTypeRepository;
+import org.gentar.biology.sequence.category.SequenceCategoryRepository;
+import org.gentar.biology.sequence.type.SequenceTypeRepository;
+import org.gentar.organization.funder.FunderRepository;
 import org.springframework.stereotype.Component;
 import org.gentar.biology.mutation.GeneticMutationTypeRepository;
 import org.gentar.biology.project.assignment_status.AssignmentStatusRepository;
@@ -62,6 +67,11 @@ public class CatalogServiceImpl implements CatalogService
     private MutagenesisStrategyPropertyRepository mutagenesisStrategyPropertyRepository;
     private NucleaseTypeRepository nucleaseTypeRepository;
     private NucleaseClassRepository nucleaseClassRepository;
+    private MutationCategorizationRepository mutationCategorizationRepository;
+    private FunderRepository funderRepository;
+    private AttemptTypeRepository attemptTypeRepository;
+    private SequenceTypeRepository sequenceTypeRepository;
+    private SequenceCategoryRepository sequenceCategoryRepository;
 
     private Map<String, List<String>> conf = new HashMap<>();
 
@@ -83,7 +93,13 @@ public class CatalogServiceImpl implements CatalogService
         MutagenesisStrategyTypeRepository mutagenesisStrategyTypeRepository,
         MutagenesisStrategyPropertyRepository mutagenesisStrategyPropertyRepository,
         NucleaseTypeRepository nucleaseTypeRepository,
-        NucleaseClassRepository nucleaseClassRepository)
+        NucleaseClassRepository nucleaseClassRepository,
+        MutationCategorizationRepository mutationCategorizationRepository,
+        FunderRepository funderRepository,
+        AttemptTypeRepository attemptTypeRepository,
+        SequenceTypeRepository sequenceTypeRepository,
+        SequenceCategoryRepository sequenceCategoryRepository
+    )
     {
         this.workUnitRepository = workUnitRepository;
         this.workGroupRepository = workGroupRepository;
@@ -103,6 +119,11 @@ public class CatalogServiceImpl implements CatalogService
         this.mutagenesisStrategyPropertyRepository = mutagenesisStrategyPropertyRepository;
         this.nucleaseTypeRepository = nucleaseTypeRepository;
         this.nucleaseClassRepository = nucleaseClassRepository;
+        this.mutationCategorizationRepository = mutationCategorizationRepository;
+        this.funderRepository = funderRepository;
+        this.attemptTypeRepository = attemptTypeRepository;
+        this.sequenceTypeRepository = sequenceTypeRepository;
+        this.sequenceCategoryRepository = sequenceCategoryRepository;
     }
 
     @Override
@@ -129,8 +150,27 @@ public class CatalogServiceImpl implements CatalogService
             addMutagenesisStrategyClasses();
             addNucleaseTypes();
             addNucleaseClasses();
+            addAlleleCategorizations();
+            addFunders();
+            addAttemptTypes();
+            addSequenceTypes();
+            addSequenceCategorization();
         }
         return conf;
+    }
+
+    private void addAttemptTypes()
+    {
+        List<String> attemptTypes = new ArrayList<>();
+        attemptTypeRepository.findAll().forEach(p -> attemptTypes.add(p.getName()));
+        conf.put("attemptTypes", attemptTypes);
+    }
+
+    private void addFunders()
+    {
+        List<String> funders = new ArrayList<>();
+        funderRepository.findAll().forEach(p -> funders.add(p.getName()));
+        conf.put("funders", funders);
     }
 
     private void addConsortia()
@@ -265,4 +305,26 @@ public class CatalogServiceImpl implements CatalogService
         nucleaseClassRepository.findAll().forEach(p -> nucleaseClasses.add(p.getName()));
         conf.put("nucleaseClasses", nucleaseClasses);
     }
+
+    private void addAlleleCategorizations ()
+    {
+        List<String> mutationCategorizations = new ArrayList<>();
+        mutationCategorizationRepository.findAll().forEach(p -> mutationCategorizations.add(p.getName()));
+        conf.put("mutationCategorizations", mutationCategorizations);
+    }
+
+    private void addSequenceTypes ()
+    {
+        List<String> sequenceTypes = new ArrayList<>();
+        sequenceTypeRepository.findAll().forEach(p -> sequenceTypes.add(p.getName()));
+        conf.put("sequenceTypes", sequenceTypes);
+    }
+
+    private void addSequenceCategorization ()
+    {
+        List<String> sequenceCategorizations = new ArrayList<>();
+        sequenceCategoryRepository.findAll().forEach(p -> sequenceCategorizations.add(p.getName()));
+        conf.put("sequenceCategorizations", sequenceCategorizations);
+    }
+
 }

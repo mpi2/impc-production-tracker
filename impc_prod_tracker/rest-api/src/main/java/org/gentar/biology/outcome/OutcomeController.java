@@ -57,7 +57,7 @@ public class OutcomeController
     public ResponseEntity<OutcomeDTO> findAll(
         Pageable pageable, PagedResourcesAssembler<OutcomeDTO> assembler)
     {
-        List<Outcome> outcomes = outcomeService.findAll();
+        List<Outcome> outcomes = outcomeService.getOutcomes();
 
         Page<Outcome> paginatedContent = PaginationHelper.createPage(outcomes, pageable);
         Page<OutcomeDTO> outcomeDTOPage = paginatedContent.map(x -> outcomeMapper.toDto(x));

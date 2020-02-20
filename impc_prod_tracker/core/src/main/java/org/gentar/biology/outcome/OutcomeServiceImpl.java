@@ -6,8 +6,15 @@ import org.gentar.biology.colony.engine.ColonyState;
 import org.gentar.biology.status.Status;
 import org.gentar.biology.status.StatusService;
 import org.gentar.exceptions.UserOperationFailedException;
+import org.gentar.security.abac.Resource;
+import org.gentar.security.abac.ResourceAccessChecker;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Component;
+
+import java.util.Collection;
 import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 @Component
 public class OutcomeServiceImpl implements OutcomeService
@@ -17,24 +24,43 @@ public class OutcomeServiceImpl implements OutcomeService
     private OutcomeCreator outcomeCreator;
     private StatusService statusService;
     private OutcomeUpdater outcomeUpdater;
+    private ResourceAccessChecker<Outcome> resourceAccessChecker;
+
+    public static final String READ_OUTCOME_ACTION = "READ_OUTCOME";
 
     public OutcomeServiceImpl(
         OutcomeRepository outcomeRepository,
         OutcomeTypeRepository outcomeTypeRepository,
         OutcomeCreator outcomeCreator,
         StatusService statusService,
-        OutcomeUpdater outcomeUpdater)
+        OutcomeUpdater outcomeUpdater,
+        ResourceAccessChecker<Outcome> resourceAccessChecker)
     {
         this.outcomeRepository = outcomeRepository;
         this.outcomeTypeRepository = outcomeTypeRepository;
         this.outcomeCreator = outcomeCreator;
         this.statusService = statusService;
         this.outcomeUpdater = outcomeUpdater;
+        this.resourceAccessChecker = resourceAccessChecker;
     }
 
-    public List<Outcome> findAll()
+    private List<Outcome> getCheckedCollection(Collection<Outcome> outcomes)
     {
-        return outcomeRepository.findAll();
+        return outcomes.stream().map(this::getAccessChecked)
+                .filter(Objects::nonNull)
+                .collect(Collectors.toList());
+    }
+
+    private Outcome getAccessChecked(Outcome outcome)
+    {
+        return (Outcome) resourceAccessChecker.checkAccess(outcome, READ_OUTCOME_ACTION);
+    }
+
+    public List<Outcome> getOutcomes()
+    {
+//        return outcomeRepository.findAll();
+
+        return getCheckedCollection(outcomeRepository.findAll());
     }
 
     public Outcome create(Outcome outcome)

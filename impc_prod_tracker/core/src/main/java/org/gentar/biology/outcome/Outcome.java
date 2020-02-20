@@ -1,20 +1,24 @@
 package org.gentar.biology.outcome;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import org.gentar.BaseEntity;
 import org.gentar.biology.colony.Colony;
 import org.gentar.biology.mutation.Mutation;
 import org.gentar.biology.plan.Plan;
 import org.gentar.biology.specimen.Specimen;
+import org.gentar.organization.consortium.Consortium;
+import org.gentar.organization.work_unit.WorkUnit;
+import org.gentar.security.abac.Resource;
+import org.gentar.security.abac.ResourcePrivacy;
 
 import javax.persistence.*;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 @NoArgsConstructor(access= AccessLevel.PUBLIC, force=true)
 @Data
 @Entity
-public class Outcome extends BaseEntity
+public class Outcome extends BaseEntity implements Resource<Outcome>
 {
     @Id
     @SequenceGenerator(name = "outcomeSeq", sequenceName = "OUTCOME_SEQ")
@@ -54,5 +58,30 @@ public class Outcome extends BaseEntity
         this.mutations = new HashSet<>(outcome.mutations);
         this.colony = outcome.colony;
         this.specimen = outcome.specimen;
+    }
+
+    @Override
+    public ResourcePrivacy getResourcePrivacy()
+    {
+        return plan.getProject().getResourcePrivacy();
+    }
+
+    @Override
+    @JsonIgnore
+    public Resource<Outcome> getRestrictedObject()
+    {
+        return this;
+    }
+
+    @Override
+    public List<WorkUnit> getRelatedWorkUnits()
+    {
+        return Collections.emptyList();
+    }
+
+    @Override
+    public List<Consortium> getRelatedConsortia()
+    {
+        return Collections.emptyList();
     }
 }

@@ -32,7 +32,7 @@ import java.util.Set;
 @Component
 public class WorkUnitService
 {
-    private static final String WORK_UNUT_NOT_EXISTS_ERROR = "Work unit %s does not exist.";
+    private static final String WORK_UNIT_NOT_EXISTS_ERROR = "Work unit %s does not exist.";
 
     private WorkUnitRepository workUnitRepository;
     @PersistenceContext
@@ -71,7 +71,7 @@ public class WorkUnitService
         if (workUnit == null)
         {
             throw new UserOperationFailedException(
-                String.format(WORK_UNUT_NOT_EXISTS_ERROR, name));
+                String.format(WORK_UNIT_NOT_EXISTS_ERROR, name));
         }
         return workUnit;
     }
