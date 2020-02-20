@@ -12,7 +12,8 @@ public interface OutcomeService
      * Find all the outcomes.
      * @return A list of {@link Outcome}
      */
-    List<Outcome> findAll();
+//    List<Outcome> findAll();
+    List<Outcome> getOutcomes();
 
     /**
      * Creates an outcome in the system.
