@@ -23,38 +23,57 @@ public enum PlanEvent implements ProcessEvent
                 return PlanAbortProcessor.class;
             }
         },
-    complete(
-        "Complete MI",
-        PlanState.MicroInjectionInProgress,
-        PlanState.MicroInjectionComplete,
-        false,
-        "executed by system when there is any outcome registered"),
+    embryosProduced(
+            "Embryos produced from the MI",
+            PlanState.MicroInjectionInProgress,
+            PlanState.EmbryosProduced,
+            false,
+            "executed by the system when injected embryos are registered"),
+    foundersObtained(
+            "Founder obtained from the MI",
+            PlanState.EmbryosProduced,
+            PlanState.FounderObtained,
+            false,
+            "executed by the system when a founder is registered."),
     reverseAbortion(
-        "Reverse abortion",
-        PlanState.Aborted,
-        PlanState.MicroInjectionInProgress,
-        true,
-        null)
-        {
-            @Override
-            public Class<? extends Processor> getNextStepProcessor()
+            "Reverse abortion",
+            PlanState.Aborted,
+            PlanState.MicroInjectionInProgress,
+            true,
+            null)
             {
-                return PlanAbortReverserProcessor.class;
-            }
-        },
-    abortWhenComplete(
-        "Abort plan with MI Complete",
-        PlanState.MicroInjectionComplete,
-        PlanState.Aborted,
-        true,
-        "Only possible if...")
-        {
-            @Override
-            public Class<? extends Processor> getNextStepProcessor()
+                @Override
+                public Class<? extends Processor> getNextStepProcessor()
+                {
+                    return PlanAbortReverserProcessor.class;
+                }
+            },
+    abortWhenEmbryosProduced(
+            "Abort plan with MI embryos produced",
+            PlanState.EmbryosProduced,
+            PlanState.Aborted,
+            true,
+            "Only possible if...")
             {
-                return PlanAbortProcessor.class;
-            }
-        };
+                @Override
+                public Class<? extends Processor> getNextStepProcessor()
+                {
+                    return PlanAbortProcessor.class;
+                }
+            },
+    abortWhenFounderObtained(
+            "Abort plan with MI founder obtained",
+            PlanState.FounderObtained,
+            PlanState.Aborted,
+            true,
+            null)
+            {
+                @Override
+                public Class<? extends Processor> getNextStepProcessor()
+                {
+                    return PlanAbortProcessor.class;
+                }
+            };
 
     PlanEvent(
         String description,
