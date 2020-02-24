@@ -8,7 +8,8 @@ import java.util.List;
 public enum PlanState implements ProcessState
 {
     MicroInjectionInProgress("Micro-injection In Progress"),
-    MicroInjectionComplete("Micro-injection Complete"),
+    EmbryosProduced("Embryos produced"),
+    FounderObtained("Founder obtained"),
     Aborted("Micro-injection Aborted");
 
     private String internalName;
