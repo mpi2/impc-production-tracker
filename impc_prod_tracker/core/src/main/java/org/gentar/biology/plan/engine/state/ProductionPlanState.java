@@ -1,11 +1,11 @@
-package org.gentar.biology.plan.engine;
+package org.gentar.biology.plan.engine.state;
 
 import org.gentar.statemachine.EnumStateHelper;
 import org.gentar.statemachine.ProcessState;
 import java.util.Arrays;
 import java.util.List;
 
-public enum PlanState implements ProcessState
+public enum ProductionPlanState implements ProcessState
 {
     MicroInjectionInProgress("Micro-injection In Progress"),
     EmbryosProduced("Embryos produced"),
@@ -14,7 +14,7 @@ public enum PlanState implements ProcessState
 
     private String internalName;
 
-    PlanState(String internalName)
+    ProductionPlanState(String internalName)
     {
         this.internalName = internalName;
     }
@@ -26,13 +26,13 @@ public enum PlanState implements ProcessState
 
     public static List<ProcessState> getAllStates()
     {
-        return Arrays.asList(PlanState.values());
+        return Arrays.asList(ProductionPlanState.values());
     }
 
     public static ProcessState getStateByInternalName(String internalName)
     {
         return EnumStateHelper.getStateByInternalName(
-            Arrays.asList(PlanState.values()), internalName);
+            Arrays.asList(ProductionPlanState.values()), internalName);
     }
 
     @Override

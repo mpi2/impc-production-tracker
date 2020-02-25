@@ -1,5 +1,7 @@
-package org.gentar.biology.plan.engine;
+package org.gentar.biology.plan.engine.events;
 
+import org.gentar.biology.plan.engine.PlanProcessor;
+import org.gentar.biology.plan.engine.state.ProductionPlanState;
 import org.gentar.biology.plan.engine.processors.PlanAbortProcessor;
 import org.gentar.biology.plan.engine.processors.PlanAbortReverserProcessor;
 import org.gentar.statemachine.ProcessEvent;
@@ -8,12 +10,12 @@ import org.gentar.statemachine.Processor;
 import java.util.Arrays;
 import java.util.List;
 
-public enum PlanEvent implements ProcessEvent
+public enum ProductionPlanEvent implements ProcessEvent
 {
     abortWhenInProgress(
         "Abort plan in MI In Progress",
-        PlanState.MicroInjectionInProgress,
-        PlanState.Aborted,
+        ProductionPlanState.MicroInjectionInProgress,
+        ProductionPlanState.Aborted,
         true,
         null)
         {
@@ -25,20 +27,20 @@ public enum PlanEvent implements ProcessEvent
         },
     embryosProduced(
             "Embryos produced from the MI",
-            PlanState.MicroInjectionInProgress,
-            PlanState.EmbryosProduced,
+            ProductionPlanState.MicroInjectionInProgress,
+            ProductionPlanState.EmbryosProduced,
             false,
             "executed by the system when injected embryos are registered"),
     foundersObtained(
             "Founder obtained from the MI",
-            PlanState.EmbryosProduced,
-            PlanState.FounderObtained,
+            ProductionPlanState.EmbryosProduced,
+            ProductionPlanState.FounderObtained,
             false,
             "executed by the system when a founder is registered."),
     reverseAbortion(
             "Reverse abortion",
-            PlanState.Aborted,
-            PlanState.MicroInjectionInProgress,
+            ProductionPlanState.Aborted,
+            ProductionPlanState.MicroInjectionInProgress,
             true,
             null)
             {
@@ -50,8 +52,8 @@ public enum PlanEvent implements ProcessEvent
             },
     abortWhenEmbryosProduced(
             "Abort plan with MI embryos produced",
-            PlanState.EmbryosProduced,
-            PlanState.Aborted,
+            ProductionPlanState.EmbryosProduced,
+            ProductionPlanState.Aborted,
             true,
             "Only possible if...")
             {
@@ -63,8 +65,8 @@ public enum PlanEvent implements ProcessEvent
             },
     abortWhenFounderObtained(
             "Abort plan with MI founder obtained",
-            PlanState.FounderObtained,
-            PlanState.Aborted,
+            ProductionPlanState.FounderObtained,
+            ProductionPlanState.Aborted,
             true,
             null)
             {
@@ -75,7 +77,7 @@ public enum PlanEvent implements ProcessEvent
                 }
             };
 
-    PlanEvent(
+    ProductionPlanEvent(
         String description,
         ProcessState initialState,
         ProcessState endState,
@@ -89,13 +91,13 @@ public enum PlanEvent implements ProcessEvent
         this.triggerNote = triggerNote;
     }
 
-    public static PlanEvent getEventByName(String name)
+    public static ProductionPlanEvent getEventByName(String name)
     {
-        PlanEvent[] planEvents = PlanEvent.values();
-        for (PlanEvent planEvent : planEvents)
+        ProductionPlanEvent[] productionPlanEvents = ProductionPlanEvent.values();
+        for (ProductionPlanEvent productionPlanEvent : productionPlanEvents)
         {
-            if (planEvent.name().equalsIgnoreCase(name))
-                return planEvent;
+            if (productionPlanEvent.name().equalsIgnoreCase(name))
+                return productionPlanEvent;
         }
         return null;
     }
@@ -150,6 +152,6 @@ public enum PlanEvent implements ProcessEvent
 
     public static List<ProcessEvent> getAllEvents()
     {
-        return Arrays.asList(PlanEvent.values());
+        return Arrays.asList(ProductionPlanEvent.values());
     }
 }

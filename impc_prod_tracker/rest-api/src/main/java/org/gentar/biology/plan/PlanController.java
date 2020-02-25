@@ -15,7 +15,10 @@
  */
 package org.gentar.biology.plan;
 
-import org.gentar.biology.plan.engine.PlanEvent;
+import org.gentar.biology.plan.engine.events.LateAdultPhenotypePlanEvent;
+import org.gentar.biology.plan.engine.events.PhenotypePlanEvent;
+import org.gentar.biology.plan.engine.events.ProductionPlanEvent;
+import org.gentar.biology.project.PlanTypes;
 import org.gentar.common.state_machine.StatusTransitionDTO;
 import org.gentar.helpers.PaginationHelper;
 import org.gentar.helpers.LinkUtil;
@@ -114,13 +117,32 @@ public class PlanController
         return plan;
     }
 
+    private void setEventByPlanType(Plan plan, PlanDTO planDTO)
+    {
+        PlanType type = plan.getPlanType();
+        if(PlanTypes.PRODUCTION.getTypeName().equalsIgnoreCase(type.getName()))
+        {
+            ProductionPlanEvent productionPlanEvent = getProductionPlanEventFromRequest(planDTO);
+            plan.setEvent(productionPlanEvent);
+        }
+        else if (PlanTypes.PHENOTYPING.getTypeName().equalsIgnoreCase(type.getName()))
+        {
+            PhenotypePlanEvent phenotypePlanEvent = getPhenotypePlanEventFromRequest(planDTO);
+            plan.setEvent(phenotypePlanEvent);
+        }
+        else if (PlanTypes.LATE_ADULT_PHENOTYPING.getTypeName().equalsIgnoreCase(type.getName()))
+        {
+            LateAdultPhenotypePlanEvent lateAdultPhenotypePlanEvent = getLateAdultPhenotypePlanEventFromRequest(planDTO);
+            plan.setEvent(lateAdultPhenotypePlanEvent);
+        }
+    }
+
     @PutMapping(value = {"/{pin}"})
     public HistoryDTO updatePlan(
         @PathVariable String pin, @RequestBody PlanDTO planDTO)
     {
         Plan plan = getPlanToUpdate(pin, planDTO);
-        PlanEvent planEvent = getEventFromRequest(planDTO);
-        plan.setEvent(planEvent);
+        setEventByPlanType(plan, planDTO);
         History history = planService.updatePlan(pin, plan);
         HistoryDTO historyDTO = new HistoryDTO();
         if (history != null)
@@ -137,16 +159,42 @@ public class PlanController
         return updatePlanRequestProcessor.getPlanToUpdate(newPlan, planDTO);
     }
 
-    private PlanEvent getEventFromRequest(PlanDTO planDTO)
+    private ProductionPlanEvent getProductionPlanEventFromRequest(PlanDTO planDTO)
     {
-        PlanEvent planEvent = null;
+        ProductionPlanEvent productionPlanEvent = null;
         StatusTransitionDTO statusTransitionDTO =  planDTO.getStatusTransitionDTO();
         if (statusTransitionDTO != null)
         {
             String action = statusTransitionDTO.getActionToExecute();
-            planEvent = PlanEvent.getEventByName(action);
+            productionPlanEvent = ProductionPlanEvent.getEventByName(action);
             System.out.println(">>>>>> >>> >>>> action to execute:::" + action);
         }
-        return planEvent;
+        return productionPlanEvent;
+    }
+
+    private PhenotypePlanEvent getPhenotypePlanEventFromRequest(PlanDTO planDTO)
+    {
+        PhenotypePlanEvent phenotypePlanEvent = null;
+        StatusTransitionDTO statusTransitionDTO =  planDTO.getStatusTransitionDTO();
+        if (statusTransitionDTO != null)
+        {
+            String action = statusTransitionDTO.getActionToExecute();
+            phenotypePlanEvent = PhenotypePlanEvent.getEventByName(action);
+            System.out.println(">>>>>> >>> >>>> action to execute:::" + action);
+        }
+        return phenotypePlanEvent;
+    }
+
+    private LateAdultPhenotypePlanEvent getLateAdultPhenotypePlanEventFromRequest(PlanDTO planDTO)
+    {
+        LateAdultPhenotypePlanEvent lateAdultPhenotypePlanEvent = null;
+        StatusTransitionDTO statusTransitionDTO =  planDTO.getStatusTransitionDTO();
+        if (statusTransitionDTO != null)
+        {
+            String action = statusTransitionDTO.getActionToExecute();
+            lateAdultPhenotypePlanEvent = LateAdultPhenotypePlanEvent.getEventByName(action);
+            System.out.println(">>>>>> >>> >>>> action to execute:::" + action);
+        }
+        return lateAdultPhenotypePlanEvent;
     }
 }
