@@ -15,7 +15,9 @@
  */
 package org.gentar.biology.plan;
 
+import org.gentar.biology.plan.engine.PhenotypePlanEvent;
 import org.gentar.biology.plan.engine.PlanEvent;
+import org.gentar.biology.project.PlanTypes;
 import org.gentar.common.state_machine.StatusTransitionDTO;
 import org.gentar.helpers.PaginationHelper;
 import org.gentar.helpers.LinkUtil;
@@ -114,13 +116,27 @@ public class PlanController
         return plan;
     }
 
+    private void setEventByPlanType(Plan plan, PlanDTO planDTO)
+    {
+        PlanType type = plan.getPlanType();
+        if(PlanTypes.PRODUCTION.getTypeName().equalsIgnoreCase(type.getName()))
+        {
+            PlanEvent planEvent = getProductionPlanEventFromRequest(planDTO);
+            plan.setEvent(planEvent);
+        }
+        else if (PlanTypes.PHENOTYPING.getTypeName().equalsIgnoreCase(type.getName()))
+        {
+            PhenotypePlanEvent phenotypePlanEvent = getPhenotypePlanEventFromRequest(planDTO);
+            plan.setEvent(phenotypePlanEvent);
+        }
+    }
+
     @PutMapping(value = {"/{pin}"})
     public HistoryDTO updatePlan(
         @PathVariable String pin, @RequestBody PlanDTO planDTO)
     {
         Plan plan = getPlanToUpdate(pin, planDTO);
-        PlanEvent planEvent = getEventFromRequest(planDTO);
-        plan.setEvent(planEvent);
+        setEventByPlanType(plan, planDTO);
         History history = planService.updatePlan(pin, plan);
         HistoryDTO historyDTO = new HistoryDTO();
         if (history != null)
@@ -137,7 +153,7 @@ public class PlanController
         return updatePlanRequestProcessor.getPlanToUpdate(newPlan, planDTO);
     }
 
-    private PlanEvent getEventFromRequest(PlanDTO planDTO)
+    private PlanEvent getProductionPlanEventFromRequest(PlanDTO planDTO)
     {
         PlanEvent planEvent = null;
         StatusTransitionDTO statusTransitionDTO =  planDTO.getStatusTransitionDTO();
@@ -148,5 +164,18 @@ public class PlanController
             System.out.println(">>>>>> >>> >>>> action to execute:::" + action);
         }
         return planEvent;
+    }
+
+    private PhenotypePlanEvent getPhenotypePlanEventFromRequest(PlanDTO planDTO)
+    {
+        PhenotypePlanEvent phenotypePlanEvent = null;
+        StatusTransitionDTO statusTransitionDTO =  planDTO.getStatusTransitionDTO();
+        if (statusTransitionDTO != null)
+        {
+            String action = statusTransitionDTO.getActionToExecute();
+            phenotypePlanEvent = PhenotypePlanEvent.getEventByName(action);
+            System.out.println(">>>>>> >>> >>>> action to execute:::" + action);
+        }
+        return phenotypePlanEvent;
     }
 }
