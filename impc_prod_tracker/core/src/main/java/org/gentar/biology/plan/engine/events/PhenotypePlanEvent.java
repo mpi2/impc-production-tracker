@@ -46,7 +46,7 @@ public enum PhenotypePlanEvent implements ProcessEvent
             PhenotypePlanState.PhenotypeAttemptRegistered,
             PhenotypePlanState.RederivationStarted,
             true,
-            "executed by the user when rederivation is started.."),
+            "executed by the user when rederivation is started."),
     rederivationComplete(
             "Rederivation of the colony for phenotyping is complete",
             PhenotypePlanState.RederivationStarted,
@@ -70,9 +70,9 @@ public enum PhenotypePlanEvent implements ProcessEvent
             PhenotypePlanState.PhenotypingStarted,
             PhenotypePlanState.PhenotypingComplete,
             false,
-            "executed by the CDA when phenotyping is complete."),
+            "executed by the CDA when phenotyping data received."),
     phenotypingFinished(
-            "Marked as ",
+            "Marked as finished by the DCC when all phenotype data received",
             PhenotypePlanState.PhenotypingComplete,
             PhenotypePlanState.PhenotypingFinished,
             false,
