@@ -15,8 +15,8 @@
  */
 package org.gentar.biology.plan;
 
-import org.gentar.biology.plan.engine.PhenotypePlanEvent;
-import org.gentar.biology.plan.engine.PlanEvent;
+import org.gentar.biology.plan.engine.events.PhenotypePlanEvent;
+import org.gentar.biology.plan.engine.events.ProductionPlanEvent;
 import org.gentar.biology.project.PlanTypes;
 import org.gentar.common.state_machine.StatusTransitionDTO;
 import org.gentar.helpers.PaginationHelper;
@@ -121,8 +121,8 @@ public class PlanController
         PlanType type = plan.getPlanType();
         if(PlanTypes.PRODUCTION.getTypeName().equalsIgnoreCase(type.getName()))
         {
-            PlanEvent planEvent = getProductionPlanEventFromRequest(planDTO);
-            plan.setEvent(planEvent);
+            ProductionPlanEvent productionPlanEvent = getProductionPlanEventFromRequest(planDTO);
+            plan.setEvent(productionPlanEvent);
         }
         else if (PlanTypes.PHENOTYPING.getTypeName().equalsIgnoreCase(type.getName()))
         {
@@ -153,17 +153,17 @@ public class PlanController
         return updatePlanRequestProcessor.getPlanToUpdate(newPlan, planDTO);
     }
 
-    private PlanEvent getProductionPlanEventFromRequest(PlanDTO planDTO)
+    private ProductionPlanEvent getProductionPlanEventFromRequest(PlanDTO planDTO)
     {
-        PlanEvent planEvent = null;
+        ProductionPlanEvent productionPlanEvent = null;
         StatusTransitionDTO statusTransitionDTO =  planDTO.getStatusTransitionDTO();
         if (statusTransitionDTO != null)
         {
             String action = statusTransitionDTO.getActionToExecute();
-            planEvent = PlanEvent.getEventByName(action);
+            productionPlanEvent = ProductionPlanEvent.getEventByName(action);
             System.out.println(">>>>>> >>> >>>> action to execute:::" + action);
         }
-        return planEvent;
+        return productionPlanEvent;
     }
 
     private PhenotypePlanEvent getPhenotypePlanEventFromRequest(PlanDTO planDTO)

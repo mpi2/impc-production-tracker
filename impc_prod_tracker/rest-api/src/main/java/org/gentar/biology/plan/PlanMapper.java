@@ -3,10 +3,10 @@ package org.gentar.biology.plan;
 import org.gentar.EntityMapper;
 import org.gentar.biology.plan.attempt.AttemptTypeMapper;
 import org.gentar.biology.plan.attempt.crispr.CrisprAttempt;
-import org.gentar.biology.plan.engine.PhenotypePlanEvent;
-import org.gentar.biology.plan.engine.PhenotypePlanState;
-import org.gentar.biology.plan.engine.PlanEvent;
-import org.gentar.biology.plan.engine.PlanState;
+import org.gentar.biology.plan.engine.events.PhenotypePlanEvent;
+import org.gentar.biology.plan.engine.state.PhenotypePlanState;
+import org.gentar.biology.plan.engine.events.ProductionPlanEvent;
+import org.gentar.biology.plan.engine.state.ProductionPlanState;
 import org.gentar.biology.plan.production.crispr_attempt.CrisprAttemptDTO;
 import org.gentar.Mapper;
 import org.gentar.biology.project.PlanTypes;
@@ -30,7 +30,6 @@ import java.util.List;
 import java.util.Set;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
-import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 @Component
 public class PlanMapper implements Mapper<Plan, PlanDTO>
@@ -161,11 +160,11 @@ public class PlanMapper implements Mapper<Plan, PlanDTO>
     }
 
     private void setProductionPlanTransitions(List<TransitionDTO> transitionDTOS, String currentStatusName) {
-        ProcessState planState = PlanState.getStateByInternalName(currentStatusName);
+        ProcessState planState = ProductionPlanState.getStateByInternalName(currentStatusName);
         if (planState != null)
         {
             List<ProcessEvent> planEvents =
-                    EnumStateHelper.getAvailableEventsByState(PlanEvent.getAllEvents(), planState);
+                    EnumStateHelper.getAvailableEventsByState(ProductionPlanEvent.getAllEvents(), planState);
             planEvents.forEach(x -> {
                 TransitionDTO transition = new TransitionDTO();
                 transition.setAction(x.getName());

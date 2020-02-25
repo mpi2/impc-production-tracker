@@ -1,4 +1,4 @@
-package org.gentar.biology.plan.engine;
+package org.gentar.biology.plan.engine.state;
 
 import org.gentar.statemachine.EnumStateHelper;
 import org.gentar.statemachine.ProcessState;

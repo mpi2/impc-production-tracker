@@ -1,5 +1,7 @@
-package org.gentar.biology.plan.engine;
+package org.gentar.biology.plan.engine.events;
 
+import org.gentar.biology.plan.engine.state.PhenotypePlanState;
+import org.gentar.biology.plan.engine.PlanProcessor;
 import org.gentar.biology.plan.engine.processors.PhenotypePlanAbortProcessor;
 import org.gentar.biology.plan.engine.processors.PhenotypePlanAbortReverserProcessor;
 import org.gentar.statemachine.ProcessEvent;
