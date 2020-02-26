@@ -15,6 +15,7 @@
  */
 package org.gentar.biology.plan;
 
+import org.gentar.biology.plan.engine.events.BreedingPlanEvent;
 import org.gentar.biology.plan.engine.events.LateAdultPhenotypePlanEvent;
 import org.gentar.biology.plan.engine.events.PhenotypePlanEvent;
 import org.gentar.biology.plan.engine.events.ProductionPlanEvent;
@@ -135,6 +136,11 @@ public class PlanController
             LateAdultPhenotypePlanEvent lateAdultPhenotypePlanEvent = getLateAdultPhenotypePlanEventFromRequest(planDTO);
             plan.setEvent(lateAdultPhenotypePlanEvent);
         }
+        else if (PlanTypes.BREEDING.getTypeName().equalsIgnoreCase(type.getName()))
+        {
+            BreedingPlanEvent breedingPlanEvent = getBreedingPlanEventFromRequest(planDTO);
+            plan.setEvent(breedingPlanEvent);
+        }
     }
 
     @PutMapping(value = {"/{pin}"})
@@ -196,5 +202,18 @@ public class PlanController
             System.out.println(">>>>>> >>> >>>> action to execute:::" + action);
         }
         return lateAdultPhenotypePlanEvent;
+    }
+
+    private BreedingPlanEvent getBreedingPlanEventFromRequest(PlanDTO planDTO)
+    {
+        BreedingPlanEvent breedingPlanEvent = null;
+        StatusTransitionDTO statusTransitionDTO =  planDTO.getStatusTransitionDTO();
+        if (statusTransitionDTO != null)
+        {
+            String action = statusTransitionDTO.getActionToExecute();
+            breedingPlanEvent = BreedingPlanEvent.getEventByName(action);
+            System.out.println(">>>>>> >>> >>>> action to execute:::" + action);
+        }
+        return breedingPlanEvent;
     }
 }
