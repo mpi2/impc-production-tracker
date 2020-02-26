@@ -67,11 +67,6 @@ public class UpdatePlanRequestProcessor
 
     private void updateBasicInformation(Plan plan, PlanDTO planDTO)
     {
-        Boolean newIsActive = planDTO.getIsActive();
-        if (newIsActive != null)
-        {
-            plan.setIsActive(newIsActive);
-        }
         String newComment = planDTO.getComment();
         if (newComment != null)
         {

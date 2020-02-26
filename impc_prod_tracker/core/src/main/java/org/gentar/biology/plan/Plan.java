@@ -84,9 +84,6 @@ public class Plan extends BaseEntity  implements Resource<Plan>, ProcessData
     private WorkGroup workGroup;
 
     @NotNull
-    private Boolean isActive;
-
-    @NotNull
     @ManyToOne(targetEntity= Status.class)
     private Status status;
 
@@ -125,7 +122,6 @@ public class Plan extends BaseEntity  implements Resource<Plan>, ProcessData
     {
         this.id = plan.id;
         this.pin = plan.pin;
-        this.isActive = plan.isActive;
         this.project = plan.project;
         this.planType = plan.planType;
         this.workUnit = plan.workUnit;
