@@ -33,20 +33,38 @@ public enum LateAdultPhenotypePlanEvent implements ProcessEvent
             LateAdultPhenotypePlanState.LateAdultPhenotypingStarted,
             false,
             "executed by the DCC when late adult phenotyping is started."),
-    lateAdultPhenotypingComplete(
-            "Marked as complete when the CDA receives phenotype data",
+    lateAdultPhenotypingDataReceived(
+            "The CDA has received phenotype data",
             LateAdultPhenotypePlanState.LateAdultPhenotypingStarted,
-            LateAdultPhenotypePlanState.LateAdultPhenotypingComplete,
+            LateAdultPhenotypePlanState.LateAdultPhenotypingDataReceived,
             false,
             "executed by the CDA when late adult phenotyping data recieved."),
+    lateAdultPhenotypingAllDataSent(
+            "No more Late Adult Phenotype data will be sent to the DCC.",
+            LateAdultPhenotypePlanState.LateAdultPhenotypingDataReceived,
+            LateAdultPhenotypePlanState.LateAdultPhenotypingAllDataSent,
+            true,
+            "Used to indicate all phenotype data has been sent to the DCC."),
     lateAdultPhenotypingFinished(
             "Late Adult Phenotype Plan is marked as finished by the DCC",
-            LateAdultPhenotypePlanState.LateAdultPhenotypingComplete,
+            LateAdultPhenotypePlanState.LateAdultPhenotypingAllDataSent,
             LateAdultPhenotypePlanState.LateAdultPhenotypingFinished,
             false,
-            "executed by the DCC when all phenotype data received."),
+            "executed by the DCC when all phenotype data received and validated."),
+    revertLateAdultPhenotypingAllDataSent(
+            "Rollback the state of a Late Adult Phenotype Plan marked as having all phenotype data sent to allow data entry.",
+            LateAdultPhenotypePlanState.LateAdultPhenotypingAllDataSent,
+            LateAdultPhenotypePlanState.LateAdultPhenotypingDataReceived,
+            true,
+            "Used when more data needs to be sent for a plan in the LateAdultPhenotypingAllDataSent state."),
+    revertLateAdultPhenotypingFinished(
+            "Rollback the state of a Late Adult Phenotype Plan marked as finished to allow data entry.",
+            LateAdultPhenotypePlanState.LateAdultPhenotypingFinished,
+            LateAdultPhenotypePlanState.LateAdultPhenotypingDataReceived,
+            false,
+            "executed by the DCC when more data needs to be sent for a finished plan."),
     reverseAbortion(
-            "Reverse abortion",
+            "Reinstate an arborted plan.",
             LateAdultPhenotypePlanState.LateAdultPhenotypeProductionAborted,
             LateAdultPhenotypePlanState.RegisteredForLateAdultPhenotypingProduction,
             true,
@@ -59,11 +77,11 @@ public enum LateAdultPhenotypePlanEvent implements ProcessEvent
                 }
             },
     abortWhenLateAdultPhenotypingStarted(
-            "Abort a late adult phenotyping plan when late adult phenotyping is started",
+            "Abort the plan when late adult phenotyping has been started",
             LateAdultPhenotypePlanState.LateAdultPhenotypingStarted,
             LateAdultPhenotypePlanState.LateAdultPhenotypeProductionAborted,
             true,
-            "Can only be carried out by the DCC or CDA")
+            null)
             {
                 @Override
                 public Class<? extends Processor> getNextStepProcessor()
@@ -72,11 +90,24 @@ public enum LateAdultPhenotypePlanEvent implements ProcessEvent
                 }
             },
     abortWhenLateAdultPhenotypingComplete(
-            "Abort a late adult phenotyping plan when late adult phenotyping is complete",
-            LateAdultPhenotypePlanState.LateAdultPhenotypingComplete,
+            "Abort the plan when late adult phenotype data has been received by the CDA.",
+            LateAdultPhenotypePlanState.LateAdultPhenotypingDataReceived,
             LateAdultPhenotypePlanState.LateAdultPhenotypeProductionAborted,
             true,
-            "Can only be carried out by the DCC or CDA")
+            null)
+            {
+                @Override
+                public Class<? extends Processor> getNextStepProcessor()
+                {
+                    return LateAdultPhenotypePlanAbortProcessor.class;
+                }
+            },
+    abortWhenLateAdultPhenotypingAllDataSent(
+            "Abort the late adult phenotyping plan when all phenotype data has been sent to the DCC.",
+            LateAdultPhenotypePlanState.LateAdultPhenotypingAllDataSent,
+            LateAdultPhenotypePlanState.LateAdultPhenotypeProductionAborted,
+            true,
+            null)
             {
                 @Override
                 public Class<? extends Processor> getNextStepProcessor()
@@ -85,11 +116,11 @@ public enum LateAdultPhenotypePlanEvent implements ProcessEvent
                 }
             },
     abortWhenLateAdultPhenotypingFinished(
-            "Abort a late adult phenotyping plan when late adult phenotyping is finished",
+            "Abort the plan when late adult phenotyping is finished",
             LateAdultPhenotypePlanState.LateAdultPhenotypingFinished,
             LateAdultPhenotypePlanState.LateAdultPhenotypeProductionAborted,
             true,
-            "Can only be carried out by the DCC or CDA")
+            null)
             {
                 @Override
                 public Class<? extends Processor> getNextStepProcessor()

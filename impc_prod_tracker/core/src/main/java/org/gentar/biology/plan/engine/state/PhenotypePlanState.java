@@ -13,7 +13,8 @@ public enum PhenotypePlanState implements ProcessState
     RederivationStarted("Rederivation Started"),
     RederivationComplete("Rederivation Complete"),
     PhenotypingStarted("Phenotyping Started"),
-    PhenotypingComplete("Phenotyping Complete"),
+    PhenotypingDataReceived("Phenotyping Data Received"),
+    PhenotypingAllDataSent("Phenotyping All Data Sent"),
     PhenotypingFinished("Phenotyping Finished"),
     PhenotypeProductionAborted("Phenotype Production Aborted");
 

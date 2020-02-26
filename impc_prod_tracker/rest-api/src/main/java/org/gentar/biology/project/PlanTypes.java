@@ -4,7 +4,8 @@ public enum PlanTypes
 {
     PRODUCTION("Production"),
     PHENOTYPING("Phenotyping"),
-    LATE_ADULT_PHENOTYPING("Late Adult Phenotyping");
+    LATE_ADULT_PHENOTYPING("Late Adult Phenotyping"),
+    BREEDING("Breeding");
 
     private String typeName;
 

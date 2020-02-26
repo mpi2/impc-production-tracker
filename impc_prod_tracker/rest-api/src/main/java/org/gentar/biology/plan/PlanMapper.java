@@ -3,8 +3,10 @@ package org.gentar.biology.plan;
 import org.gentar.EntityMapper;
 import org.gentar.biology.plan.attempt.AttemptTypeMapper;
 import org.gentar.biology.plan.attempt.crispr.CrisprAttempt;
+import org.gentar.biology.plan.engine.events.BreedingPlanEvent;
 import org.gentar.biology.plan.engine.events.LateAdultPhenotypePlanEvent;
 import org.gentar.biology.plan.engine.events.PhenotypePlanEvent;
+import org.gentar.biology.plan.engine.state.BreedingPlanState;
 import org.gentar.biology.plan.engine.state.LateAdultPhenotypePlanState;
 import org.gentar.biology.plan.engine.state.PhenotypePlanState;
 import org.gentar.biology.plan.engine.events.ProductionPlanEvent;
@@ -160,6 +162,10 @@ public class PlanMapper implements Mapper<Plan, PlanDTO>
             {
                 setLateAdultPhenotypePlanTransitions(transitionDTOS, currentStatusName);
             }
+            else if (PlanTypes.BREEDING.getTypeName().equalsIgnoreCase(planType.getName()))
+            {
+                setBreedingPlanTransitions(transitionDTOS, currentStatusName);
+            }
 
         }
         return transitionDTOS;
@@ -208,6 +214,24 @@ public class PlanMapper implements Mapper<Plan, PlanDTO>
             List<ProcessEvent> lateAdultPhenotypePlanEvents =
                     EnumStateHelper.getAvailableEventsByState(LateAdultPhenotypePlanEvent.getAllEvents(), lateAdultPhenotypePlanState);
             lateAdultPhenotypePlanEvents.forEach(x -> {
+                TransitionDTO transition = new TransitionDTO();
+                transition.setAction(x.getName());
+                transition.setDescription(x.getDescription());
+                transition.setNextStatus(x.getEndState().getName());
+                transition.setNote(x.getTriggerNote());
+                transition.setAvailable(x.isTriggeredByUser());
+                transitionDTOS.add(transition);
+            });
+        }
+    }
+
+    private void setBreedingPlanTransitions(List<TransitionDTO> transitionDTOS, String currentStatusName) {
+        ProcessState breedingPlanState = BreedingPlanState.getStateByInternalName(currentStatusName);
+        if (breedingPlanState != null)
+        {
+            List<ProcessEvent> breedingPlanEvents =
+                    EnumStateHelper.getAvailableEventsByState(BreedingPlanEvent.getAllEvents(), breedingPlanState);
+            breedingPlanEvents.forEach(x -> {
                 TransitionDTO transition = new TransitionDTO();
                 transition.setAction(x.getName());
                 transition.setDescription(x.getDescription());
