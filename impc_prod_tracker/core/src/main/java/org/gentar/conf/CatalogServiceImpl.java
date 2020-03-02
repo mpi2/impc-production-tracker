@@ -15,8 +15,6 @@
  *******************************************************************************/
 package org.gentar.conf;
 
-import org.gentar.biology.plan.attempt.crispr.mutagenesis_strategy.MutagenesisStrategyPropertyRepository;
-import org.gentar.biology.plan.attempt.crispr.mutagenesis_strategy.MutagenesisStrategyTypeRepository;
 import org.gentar.biology.plan.attempt.crispr.nuclease.nuclease_class.NucleaseClassRepository;
 import org.gentar.biology.plan.attempt.crispr.nuclease.nuclease_type.NucleaseTypeRepository;
 import org.gentar.biology.mutation.categorizarion.MutationCategorizationRepository;
@@ -63,8 +61,6 @@ public class CatalogServiceImpl implements CatalogService
     private SpeciesRepository speciesRepository;
     private ConsortiumRepository consortiumRepository;
     private MolecularMutationTypeRepository molecularMutationTypeRepository;
-    private MutagenesisStrategyTypeRepository mutagenesisStrategyTypeRepository;
-    private MutagenesisStrategyPropertyRepository mutagenesisStrategyPropertyRepository;
     private NucleaseTypeRepository nucleaseTypeRepository;
     private NucleaseClassRepository nucleaseClassRepository;
     private MutationCategorizationRepository mutationCategorizationRepository;
@@ -90,8 +86,6 @@ public class CatalogServiceImpl implements CatalogService
         SpeciesRepository speciesRepository,
         ConsortiumRepository consortiumRepository,
         MolecularMutationTypeRepository molecularMutationTypeRepository,
-        MutagenesisStrategyTypeRepository mutagenesisStrategyTypeRepository,
-        MutagenesisStrategyPropertyRepository mutagenesisStrategyPropertyRepository,
         NucleaseTypeRepository nucleaseTypeRepository,
         NucleaseClassRepository nucleaseClassRepository,
         MutationCategorizationRepository mutationCategorizationRepository,
@@ -115,8 +109,6 @@ public class CatalogServiceImpl implements CatalogService
         this.speciesRepository = speciesRepository;
         this.consortiumRepository = consortiumRepository;
         this.molecularMutationTypeRepository = molecularMutationTypeRepository;
-        this.mutagenesisStrategyTypeRepository = mutagenesisStrategyTypeRepository;
-        this.mutagenesisStrategyPropertyRepository = mutagenesisStrategyPropertyRepository;
         this.nucleaseTypeRepository = nucleaseTypeRepository;
         this.nucleaseClassRepository = nucleaseClassRepository;
         this.mutationCategorizationRepository = mutationCategorizationRepository;
@@ -146,8 +138,6 @@ public class CatalogServiceImpl implements CatalogService
             addSpecies();
             addConsortia();
             addMolecularMutationTypes();
-            addMutagenesisStrategyTypes();
-            addMutagenesisStrategyClasses();
             addNucleaseTypes();
             addNucleaseClasses();
             addAlleleCategorizations();
@@ -276,20 +266,6 @@ public class CatalogServiceImpl implements CatalogService
         List<String> molecularMutationTypes = new ArrayList<>();
         molecularMutationTypeRepository.findAll().forEach(p -> molecularMutationTypes.add(p.getName()));
         conf.put("molecularMutationTypes", molecularMutationTypes);
-    }
-
-    private void addMutagenesisStrategyTypes()
-    {
-        List<String> mutagenesisStrategyTypes = new ArrayList<>();
-        mutagenesisStrategyTypeRepository.findAll().forEach(p -> mutagenesisStrategyTypes.add(p.getName()));
-        conf.put("mutagenesisStrategyTypes", mutagenesisStrategyTypes);
-    }
-
-    private void addMutagenesisStrategyClasses()
-    {
-        List<String> mutagenesisStrategyClasses = new ArrayList<>();
-        mutagenesisStrategyPropertyRepository.findAll().forEach(p -> mutagenesisStrategyClasses.add(p.getName()));
-        conf.put("mutagenesisStrategyClasses", mutagenesisStrategyClasses);
     }
 
     private void addNucleaseTypes()

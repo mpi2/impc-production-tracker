@@ -15,7 +15,6 @@
  */
 package org.gentar.biology.plan.attempt.crispr_attempt;
 
-import org.gentar.biology.plan.attempt.crispr.mutagenesis_strategy.MutagenesisStrategy;
 import org.gentar.biology.plan.attempt.crispr.CrisprAttemptService;
 import org.gentar.biology.plan.attempt.crispr.reagent.Reagent;
 import org.gentar.biology.plan.production.crispr_attempt.CrisprAttemptDTO;
@@ -40,7 +39,6 @@ public class CrisprAttemptMapper
     private ReagentMapper reagentMapper;
     private StrainMapper strainMapper;
     private MutagenesisDonorMapper mutagenesisDonorMapper;
-    private MutagenesisStrategyMapper mutagenesisStrategyMapper;
     private GenotypePrimerMapper genotypePrimerMapper;
     private AssayMapper assayMapper;
     private CrisprAttemptService crisprAttemptService;
@@ -52,7 +50,7 @@ public class CrisprAttemptMapper
         ReagentMapper reagentMapper,
         StrainMapper strainMapper,
         MutagenesisDonorMapper mutagenesisDonorMapper,
-        MutagenesisStrategyMapper mutagenesisStrategyMapper, GenotypePrimerMapper genotypePrimerMapper,
+        GenotypePrimerMapper genotypePrimerMapper,
         AssayMapper assayMapper,
         CrisprAttemptService crisprAttemptService)
     {
@@ -62,7 +60,6 @@ public class CrisprAttemptMapper
         this.reagentMapper = reagentMapper;
         this.strainMapper = strainMapper;
         this.mutagenesisDonorMapper = mutagenesisDonorMapper;
-        this.mutagenesisStrategyMapper = mutagenesisStrategyMapper;
         this.genotypePrimerMapper = genotypePrimerMapper;
         this.assayMapper = assayMapper;
         this.crisprAttemptService = crisprAttemptService;
@@ -79,9 +76,6 @@ public class CrisprAttemptMapper
                 genotypePrimerMapper.toDtos(crisprAttempt.getPrimers()));
             crisprAttemptDTO.setMutagenesisDonorDTOS(
                 mutagenesisDonorMapper.toDtos(crisprAttempt.getMutagenesisDonors()));
-            crisprAttemptDTO.setMutagenesisStrategyDTO(
-                mutagenesisStrategyMapper.toDto(crisprAttempt.getStrategy())
-            );
             crisprAttemptDTO.setNucleaseDTOS(nucleaseMapper.toDtos(crisprAttempt.getNucleases()));
             crisprAttemptDTO.setReagentDTOS(reagentMapper.toDtos(crisprAttempt.getReagents()));
         }
@@ -96,7 +90,6 @@ public class CrisprAttemptMapper
         setGuidesToEntity(crisprAttempt, crisprAttemptDTO);
         setGenotypePrimersToEntity(crisprAttempt, crisprAttemptDTO);
         setMutagenesisDonorsToEntity(crisprAttempt, crisprAttemptDTO);
-        setMutagenesisStrategyToEntity(crisprAttempt, crisprAttemptDTO);
         setReagentsToEntity(crisprAttempt, crisprAttemptDTO);
         setNucleasesToEntity(crisprAttempt, crisprAttemptDTO);
         return crisprAttempt;
@@ -138,14 +131,6 @@ public class CrisprAttemptMapper
             mutagenesisDonorMapper.toEntities(crisprAttemptDTO.getMutagenesisDonorDTOS());
         mutagenesisDonors.forEach(x -> x.setCrisprAttempt(crisprAttempt));
         crisprAttempt.setMutagenesisDonors(mutagenesisDonors);
-    }
-
-    private void setMutagenesisStrategyToEntity(
-        CrisprAttempt crisprAttempt, CrisprAttemptDTO crisprAttemptDTO)
-    {
-        MutagenesisStrategy mutagenesisStrategy =
-            mutagenesisStrategyMapper.toEntity(crisprAttemptDTO.getMutagenesisStrategyDTO());
-        crisprAttempt.setStrategy(mutagenesisStrategy);
     }
 
     private void setReagentsToEntity(CrisprAttempt crisprAttempt, CrisprAttemptDTO crisprAttemptDTO)
