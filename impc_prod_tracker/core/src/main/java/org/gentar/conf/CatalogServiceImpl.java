@@ -28,7 +28,7 @@ import org.gentar.biology.project.assignment_status.AssignmentStatusRepository;
 import org.gentar.biology.plan.attempt.crispr.mutagenesis_donor.preparation_type.PreparationTypeRepository;
 import org.gentar.biology.molecular_mutation_type.MolecularMutationTypeRepository;
 import org.gentar.biology.plan.attempt.phenotyping.material_deposited_type.MaterialDepositedTypeRepository;
-import org.gentar.biology.plan.PlanTypeRepository;
+import org.gentar.biology.plan.type.PlanTypeRepository;
 import org.gentar.biology.project.privacy.PrivacyRepository;
 import org.gentar.biology.species.SpeciesRepository;
 import org.gentar.biology.status.StatusRepository;

@@ -19,7 +19,7 @@ import org.gentar.biology.gene.Gene;
 import org.gentar.biology.gene.GeneDTO;
 import org.gentar.biology.gene.GeneMapper;
 import org.gentar.biology.gene.GeneService;
-import org.gentar.biology.intention.ProjectIntentionGeneDTO;
+import org.gentar.biology.gene.ProjectIntentionGeneDTO;
 import org.gentar.exceptions.UserOperationFailedException;
 import org.gentar.biology.gene.external_ref.GeneExternalService;
 import org.springframework.stereotype.Component;

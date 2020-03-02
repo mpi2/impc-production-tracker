@@ -13,27 +13,24 @@
  * language governing permissions and limitations under the
  * License.
  *******************************************************************************/
-package org.gentar.biology.plan;
+package org.gentar.biology.mutation;
 
-import lombok.*;
-import org.gentar.BaseEntity;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.SequenceGenerator;
-import javax.validation.constraints.NotNull;
+import org.gentar.biology.molecular_mutation_type.MolecularMutationService;
+import org.springframework.stereotype.Component;
+import org.gentar.biology.molecular_mutation_type.MolecularMutationType;
 
-@NoArgsConstructor(access= AccessLevel.PUBLIC, force=true)
-@Data
-@Entity
-public class PlanType extends BaseEntity
+@Component
+public class MolecularMutationTypeMapper
 {
-    @Id
-    @SequenceGenerator(name = "planTypeSeq", sequenceName = "PLAN_TYPE_SEQ")
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "planTypeSeq")
-    private Long id;
+    private MolecularMutationService molecularMutationService;
 
-    @NotNull
-    private String name;
+    public MolecularMutationTypeMapper(MolecularMutationService molecularMutationService)
+    {
+        this.molecularMutationService = molecularMutationService;
+    }
+
+    public MolecularMutationType toEntity(String molecularMutationTypeName)
+    {
+        return molecularMutationService.getMolecularMutationTypeByName(molecularMutationTypeName);
+    }
 }

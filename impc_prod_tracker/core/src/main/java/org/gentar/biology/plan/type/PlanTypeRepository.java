@@ -13,24 +13,11 @@
  * language governing permissions and limitations under the
  * License.
  *******************************************************************************/
-package org.gentar.biology.molecular_mutation;
+package org.gentar.biology.plan.type;
 
-import org.gentar.biology.molecular_mutation_type.MolecularMutationService;
-import org.springframework.stereotype.Component;
-import org.gentar.biology.molecular_mutation_type.MolecularMutationType;
+import org.springframework.data.repository.CrudRepository;
 
-@Component
-public class MolecularMutationTypeMapper
+public interface PlanTypeRepository extends CrudRepository<PlanType, Long>
 {
-    private MolecularMutationService molecularMutationService;
-
-    public MolecularMutationTypeMapper(MolecularMutationService molecularMutationService)
-    {
-        this.molecularMutationService = molecularMutationService;
-    }
-
-    public MolecularMutationType toEntity(String molecularMutationTypeName)
-    {
-        return molecularMutationService.getMolecularMutationTypeByName(molecularMutationTypeName);
-    }
+    PlanType findFirstByNameIgnoreCase(String name);
 }

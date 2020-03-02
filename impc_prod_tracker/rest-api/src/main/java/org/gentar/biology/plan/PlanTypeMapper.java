@@ -1,6 +1,8 @@
 package org.gentar.biology.plan;
 
 import org.gentar.Mapper;
+import org.gentar.biology.plan.type.PlanType;
+import org.gentar.biology.plan.type.PlanTypeService;
 import org.springframework.stereotype.Component;
 
 @Component

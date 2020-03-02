@@ -17,6 +17,7 @@ package org.gentar.biology.species;
 
 import lombok.*;
 import org.gentar.BaseEntity;
+import org.gentar.biology.mutation.Mutation;
 import org.gentar.biology.project.Project;
 
 import javax.persistence.*;
@@ -39,6 +40,8 @@ public class Species extends BaseEntity
     @Column(unique = true)
     private Integer taxonId;
 
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
     @ManyToMany(mappedBy = "species")
     private Set<Project> projects;
 }

@@ -190,8 +190,7 @@ public class CrisprAttemptMapperTest
             crisprAttemptDTO.getAssay().getNumNhejG0Mutants(),
             is(NUM_NHEJ_G0_MUTANTS));
         assertThat("Strain", crisprAttemptDTO.getStrain(), notNullValue());
-        assertThat("Strain MgiStrainAccId", crisprAttemptDTO.getStrain().getMgiStrainAccId(), is(MGI_STRAIN_ACC_ID));
-        assertThat("Strain Name", crisprAttemptDTO.getStrain().getName(), is(STRAIN_NAME));
+        assertThat("Strain Name", crisprAttemptDTO.getStrain().getStrainName(), is(STRAIN_NAME));
         assertThat("Guides", crisprAttemptDTO.getGuideDTOS(), notNullValue());
 
         GuideDTO guideDTO1 = findGuideDtoById(crisprAttemptDTO.getGuideDTOS(), GUIDE_ID_1);
@@ -640,8 +639,7 @@ public class CrisprAttemptMapperTest
         assayDTO.setNumNhejG0Mutants(NUM_NHEJ_G0_MUTANTS);
         crisprAttemptDTO.setAssay(assayDTO);
         StrainDTO strainDTO = new StrainDTO();
-        strainDTO.setMgiStrainAccId(MGI_STRAIN_ACC_ID);
-        strainDTO.setName(STRAIN_NAME);
+        strainDTO.setStrainName(STRAIN_NAME);
         crisprAttemptDTO.setStrain(strainDTO);
 
         return crisprAttemptDTO;

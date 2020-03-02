@@ -18,6 +18,7 @@ package org.gentar.biology.plan.attempt.crispr_attempt;
 import org.gentar.Mapper;
 import org.gentar.biology.strain.StrainDTO;
 import org.gentar.EntityMapper;
+import org.gentar.biology.strain.StrainService;
 import org.springframework.stereotype.Component;
 import org.gentar.biology.strain.Strain;
 import org.gentar.biology.strain.StrainRepository;
@@ -27,11 +28,13 @@ public class StrainMapper implements Mapper<Strain, StrainDTO>
 {
     private EntityMapper entityMapper;
     private StrainRepository strainRepository;
+    private StrainService strainService;
 
-    public StrainMapper(EntityMapper entityMapper, StrainRepository strainRepository)
+    public StrainMapper(EntityMapper entityMapper, StrainRepository strainRepository, StrainService strainService)
     {
         this.entityMapper = entityMapper;
         this.strainRepository = strainRepository;
+        this.strainService = strainService;
     }
 
     @Override
@@ -42,10 +45,12 @@ public class StrainMapper implements Mapper<Strain, StrainDTO>
 
     public Strain toEntity(StrainDTO strainDTO)
     {
-        Strain strain = entityMapper.toTarget(strainDTO, Strain.class);
+        Strain strain = strainService.getStrainByName(strainDTO.getStrainName());
+
         if (strain != null && strain.getStrainTypes() == null && strain.getId() != null)
         {
-            Strain persisted = strainRepository.findById(strain.getId()).orElse(null);
+            Strain persisted = strainService.getStrainById(strain.getId());
+
             if (persisted != null)
             {
                 strain.setStrainTypes(persisted.getStrainTypes());

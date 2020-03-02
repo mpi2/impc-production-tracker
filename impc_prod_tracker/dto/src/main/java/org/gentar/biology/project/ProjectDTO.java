@@ -53,14 +53,11 @@ public class ProjectDTO extends RepresentationModel
 
     private String comment;
 
-    @JsonProperty("isActive")
-    private Boolean isActive;
-
     @JsonProperty("privacyName")
     private String privacyName;
 
-    @JsonProperty("speciesAttributes")
-    private List<SpeciesDTO> projectSpeciesDTOs;
+    @JsonProperty("speciesNames")
+    private List<SpeciesDTO> speciesNames;
 
     @JsonProperty("consortia")
     private List<ProjectConsortiumDTO> projectConsortiumDTOS;

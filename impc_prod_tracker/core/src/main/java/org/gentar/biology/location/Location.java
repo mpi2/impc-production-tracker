@@ -2,11 +2,14 @@ package org.gentar.biology.location;
 
 import lombok.*;
 import org.gentar.BaseEntity;
+import org.gentar.biology.project.intention.project_intention_sequence.ProjectIntentionSequence;
+import org.gentar.biology.sequence_location.SequenceLocation;
 import org.gentar.biology.species.Species;
 import org.gentar.biology.strain.Strain;
 
 import javax.persistence.*;
 import javax.validation.constraints.Pattern;
+import java.util.List;
 
 @NoArgsConstructor(access= AccessLevel.PRIVATE, force=true)
 @Data
@@ -34,4 +37,10 @@ public class Location extends BaseEntity
 
     @ManyToOne(targetEntity = Strain.class)
     private Strain strain;
+
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
+    @OneToMany(cascade=CascadeType.ALL, fetch=FetchType.EAGER)
+    @JoinColumn(name = "location_id")
+    private List<SequenceLocation> sequenceLocations;
 }

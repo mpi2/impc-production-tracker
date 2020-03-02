@@ -3,6 +3,7 @@ package org.gentar.biology.project.intention.project_intention_sequence;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 import org.gentar.BaseEntity;
 import org.gentar.biology.project.intention.project_intention.ProjectIntention;
 import org.gentar.biology.sequence.Sequence;
@@ -22,7 +23,8 @@ public class ProjectIntentionSequence extends BaseEntity implements Serializable
     @MapsId
     private ProjectIntention projectIntention;
 
-    @ManyToOne
+    @ToString.Exclude
+    @ManyToOne(cascade=CascadeType.ALL)
     private Sequence sequence;
 
     private Integer index;

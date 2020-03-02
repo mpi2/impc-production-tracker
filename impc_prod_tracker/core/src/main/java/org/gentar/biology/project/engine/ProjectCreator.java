@@ -52,7 +52,7 @@ public class ProjectCreator
 
     private void registerCreationInHistory()
     {
-
+        // TODO history for Project creation
     }
 
     private String buildTpn(Long id)

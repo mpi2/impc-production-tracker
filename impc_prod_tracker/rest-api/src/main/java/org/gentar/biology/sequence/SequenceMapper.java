@@ -8,6 +8,7 @@ import org.gentar.biology.sequence_location.SequenceLocationRepository;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 
 @Component
 public class SequenceMapper
@@ -15,15 +16,22 @@ public class SequenceMapper
     private EntityMapper entityMapper;
     private SequenceLocationRepository sequenceLocationRepository;
     private SequenceLocationMapper sequenceLocationMapper;
+    private SequenceCategoryMapper sequenceCategoryMapper;
+    private SequenceTypeMapper sequenceTypeMapper;
+
 
     public SequenceMapper(
         EntityMapper entityMapper,
         SequenceLocationRepository sequenceLocationRepository,
-        SequenceLocationMapper sequenceLocationMapper)
+        SequenceLocationMapper sequenceLocationMapper,
+        SequenceCategoryMapper sequenceCategoryMapper,
+        SequenceTypeMapper sequenceTypeMapper)
     {
         this.entityMapper = entityMapper;
         this.sequenceLocationRepository = sequenceLocationRepository;
         this.sequenceLocationMapper = sequenceLocationMapper;
+        this.sequenceCategoryMapper = sequenceCategoryMapper;
+        this.sequenceTypeMapper = sequenceTypeMapper;
     }
 
     public SequenceDTO toDto(Sequence sequence)
@@ -48,6 +56,23 @@ public class SequenceMapper
 
     public Sequence toEntity(SequenceDTO sequenceDTO)
     {
-        return entityMapper.toTarget(sequenceDTO, Sequence.class);
+        Sequence sequence = entityMapper.toTarget(sequenceDTO, Sequence.class);
+        sequence.setSequenceCategory(
+            sequenceCategoryMapper.toEntity(sequenceDTO.getSequenceCategoryName()));
+        sequence.setSequenceType(
+            sequenceTypeMapper.toEntity(sequenceDTO.getSequenceTypeName()));
+        setSequenceLocations(sequence, sequenceDTO);
+        return sequence;
+    }
+
+    private void setSequenceLocations(Sequence sequence, SequenceDTO sequenceDTO)
+    {
+        if (sequenceDTO.getSequenceLocationDTOS() != null)
+        {
+            List<SequenceLocation> sequenceLocations = sequenceLocationMapper.toEntities(sequenceDTO.getSequenceLocationDTOS());
+            sequenceLocations.forEach(x -> x.setSequence(sequence));
+            sequence.setSequenceLocations(sequenceLocations);
+        }
+
     }
 }

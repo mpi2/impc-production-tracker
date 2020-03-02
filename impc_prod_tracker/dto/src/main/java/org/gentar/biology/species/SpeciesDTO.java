@@ -6,10 +6,7 @@ import lombok.RequiredArgsConstructor;
 
 @Data
 @RequiredArgsConstructor
-public class SpeciesDTO {
-
-    private String name;
-
-    @JsonProperty("taxon_id")
-    private Integer taxonId;
+public class SpeciesDTO
+{
+    private String speciesName;
 }
