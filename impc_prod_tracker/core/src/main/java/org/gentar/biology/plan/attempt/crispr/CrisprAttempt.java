@@ -26,7 +26,6 @@ import org.gentar.biology.plan.attempt.crispr.assay.Assay;
 import org.gentar.biology.plan.attempt.crispr.genotype_primer.GenotypePrimer;
 import org.gentar.biology.plan.attempt.crispr.guide.Guide;
 import org.gentar.biology.plan.attempt.crispr.mutagenesis_donor.MutagenesisDonor;
-import org.gentar.biology.plan.attempt.crispr.mutagenesis_strategy.MutagenesisStrategy;
 import org.gentar.biology.plan.attempt.crispr.nuclease.Nuclease;
 import org.gentar.biology.plan.Plan;
 import org.gentar.biology.plan.attempt.crispr.reagent.Reagent;
@@ -73,9 +72,6 @@ public class CrisprAttempt extends BaseEntity
     @ToString.Exclude
     @OneToOne(cascade=CascadeType.ALL, mappedBy = "crisprAttempt")
     private Assay assay;
-
-    @ManyToOne(targetEntity= MutagenesisStrategy.class)
-    private MutagenesisStrategy strategy;
 
     @ManyToOne
     private Strain strain;

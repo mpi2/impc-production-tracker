@@ -6,7 +6,7 @@ import org.gentar.biology.plan.attempt.crispr.CrisprAttempt;
 import org.gentar.biology.plan.attempt.crispr.mutagenesis_donor.preparation_type.PreparationType;
 import javax.persistence.*;
 
-@NoArgsConstructor(access= AccessLevel.PRIVATE, force=true)
+@NoArgsConstructor(access= AccessLevel.PUBLIC, force=true)
 @Data
 @Entity
 public class MutagenesisDonor extends BaseEntity
@@ -27,11 +27,15 @@ public class MutagenesisDonor extends BaseEntity
     @Column(columnDefinition = "TEXT")
     private String oligoSequenceFasta;
 
+    private String vectorName;
+
     @Override
     public String toString()
     {
         String preparationTypeName = preparationType == null ? "Not defined" : preparationType.getName();
+        String vectorNameToReport = vectorName == null ? "Not defined" : vectorName;
         return "(" + "oligo Sequence Fasta: " + oligoSequenceFasta + ", "
-            + "Preparation Type: " + preparationTypeName + ")";
+                + "Vector Name: " + vectorNameToReport + ", "
+                + "Preparation Type: " + preparationTypeName + ")";
     }
 }
