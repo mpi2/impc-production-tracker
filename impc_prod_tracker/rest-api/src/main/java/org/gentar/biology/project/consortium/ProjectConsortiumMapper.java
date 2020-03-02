@@ -4,6 +4,7 @@ import org.gentar.organization.consortium.ConsortiumService;
 import org.gentar.biology.project.ProjectConsortiumDTO;
 import org.gentar.biology.project.ProjectConsortiumInstituteDTO;
 import org.gentar.EntityMapper;
+import org.gentar.organization.institute.Institute;
 import org.springframework.stereotype.Component;
 import org.gentar.biology.project.consortium.institute.ProjectConsortiumInstituteMapper;
 
@@ -27,6 +28,7 @@ public class ProjectConsortiumMapper {
         ProjectConsortium projectConsortium = new ProjectConsortium();
         String consortiumName = projectConsortiumDTO.getConsortiumName();
         projectConsortium.setConsortium(consortiumService.getConsortiumByNameOrThrowException(consortiumName));
+        projectConsortium.setInstitutes(addProjectConsortiumInstituteFromEntity(projectConsortiumDTO));
 
         return projectConsortium;
     }
@@ -44,7 +46,7 @@ public class ProjectConsortiumMapper {
     public ProjectConsortiumDTO toDto(ProjectConsortium projectConsortium)
     {
         ProjectConsortiumDTO projectConsortiumDTO = entityMapper.toTarget(projectConsortium, ProjectConsortiumDTO.class);
-        addProjectConsortiumInstitute(projectConsortium, projectConsortiumDTO);
+        addProjectConsortiumInstituteFromDto(projectConsortium, projectConsortiumDTO);
         return projectConsortiumDTO;
     }
 
@@ -58,11 +60,18 @@ public class ProjectConsortiumMapper {
         return consortiumDTOS;
     }
 
-    private void addProjectConsortiumInstitute(ProjectConsortium projectConsortium, ProjectConsortiumDTO projectConsortiumDTO)
+    private void addProjectConsortiumInstituteFromDto(ProjectConsortium projectConsortium, ProjectConsortiumDTO projectConsortiumDTO)
     {
         List<ProjectConsortiumInstituteDTO> projectConsortiumInstituteDTOS =
                 projectConsortiumInstituteMapper.toDtos(projectConsortium.getInstitutes());
         projectConsortiumDTO.setProjectConsortiumInstituteDTOS(projectConsortiumInstituteDTOS);
+    }
+
+    private Set<Institute> addProjectConsortiumInstituteFromEntity(ProjectConsortiumDTO projectConsortiumDTO)
+    {
+        Set<Institute> institutes = projectConsortiumInstituteMapper.toEntities(projectConsortiumDTO.getProjectConsortiumInstituteDTOS());
+
+        return institutes;
     }
 
 }

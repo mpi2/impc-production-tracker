@@ -13,8 +13,10 @@
  * language governing permissions and limitations under the
  * License.
  *******************************************************************************/
-package org.gentar.biology.sequence;
+package org.gentar.biology.project.intention;
 
+import org.gentar.biology.sequence.ProjectIntentionSequenceDTO;
+import org.gentar.biology.sequence.SequenceMapper;
 import org.springframework.stereotype.Component;
 import org.gentar.biology.project.intention.project_intention_sequence.ProjectIntentionSequence;
 
@@ -57,6 +59,8 @@ public class ProjectIntentionSequenceMapper
         ProjectIntentionSequence projectIntentionGene = new ProjectIntentionSequence();
         projectIntentionGene.setSequence(
             sequenceMapper.toEntity(projectIntentionSequenceDTO.getSequenceDTO()));
+        projectIntentionGene.setIndex(projectIntentionSequenceDTO.getIndex());
+
         return projectIntentionGene;
     }
 }

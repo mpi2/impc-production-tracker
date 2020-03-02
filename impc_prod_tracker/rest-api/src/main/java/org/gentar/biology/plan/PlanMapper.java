@@ -13,6 +13,7 @@ import org.gentar.biology.plan.engine.events.ProductionPlanEvent;
 import org.gentar.biology.plan.engine.state.ProductionPlanState;
 import org.gentar.biology.plan.production.crispr_attempt.CrisprAttemptDTO;
 import org.gentar.Mapper;
+import org.gentar.biology.plan.type.PlanType;
 import org.gentar.biology.project.PlanTypes;
 import org.gentar.biology.project.ProjectService;
 import org.gentar.biology.status.StatusMapper;

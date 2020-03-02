@@ -1,8 +1,6 @@
 package org.gentar.biology.sequence_location;
 
-import lombok.AccessLevel;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.gentar.BaseEntity;
 import org.gentar.biology.location.Location;
 import org.gentar.biology.sequence.Sequence;
@@ -20,12 +18,14 @@ public class SequenceLocation extends BaseEntity implements Serializable {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequenceLocationSeq")
     private Long id;
 
-    @ManyToOne(targetEntity = Sequence.class)
+    @ToString.Exclude
+    @ManyToOne(targetEntity = Sequence.class, cascade=CascadeType.ALL)
     private Sequence sequence;
 
     private Integer index;
 
-    @ManyToOne(targetEntity = Location.class)
+    @ToString.Exclude
+    @ManyToOne(targetEntity = Location.class, cascade=CascadeType.ALL)
     private Location location;
 
 }

@@ -116,6 +116,21 @@ class ProjectController
     }
 
     /**
+     *      Creates a new project in the system.
+     *      * @param ProjectDTO Request with data of the project to be created.
+     *      * @return {@link Project} entity created
+     */
+    @PostMapping
+    public ProjectDTO createProject(@RequestBody ProjectDTO projectDTO)
+    {
+
+        Project projectToBeCreated = projectDtoToEntityMapper.toEntity(projectDTO);
+        Project createdProject = projectService.createProject(projectToBeCreated);
+        System.out.println("Project created => "+ createdProject);
+        return projectEntityToDtoMapper.toDto(createdProject);
+    }
+
+    /**
      * Get all the projects in the system.
      * @return A collection of {@link ProjectDTO} objects.
      */
@@ -189,18 +204,6 @@ class ProjectController
         }
 
         return entityModel;
-    }
-    /**
-     *      * @api {post} / create a new project.
-     */
-    @PostMapping
-    private ProjectDTO createProject(@RequestBody ProjectDTO projectDTO)
-    {
-
-        Project projectToBeCreated = projectDtoToEntityMapper.toEntity(projectDTO);
-        Project createdProject = projectService.createProject(projectToBeCreated);
-        System.out.println("Project created => "+ createdProject);
-        return projectEntityToDtoMapper.toDto(createdProject);
     }
 
     @GetMapping(value = {"/{tpn}/history"})

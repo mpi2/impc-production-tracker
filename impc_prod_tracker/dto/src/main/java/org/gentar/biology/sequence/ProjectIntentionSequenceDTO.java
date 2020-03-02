@@ -9,12 +9,8 @@ import org.gentar.biology.intention.ProjectIntentionDTO;
 @RequiredArgsConstructor
 public class ProjectIntentionSequenceDTO
 {
-
     @JsonProperty("sequenceAttributes")
     private SequenceDTO sequenceDTO;
-
-    @JsonProperty("intention")
-    private ProjectIntentionDTO projectIntentionDTO;
 
     private Integer index;
 }

@@ -1,6 +1,11 @@
 package org.gentar.biology.sequence;
 
+import org.gentar.EntityMapper;
+import org.gentar.biology.intention.ProjectIntentionDTO;
+import org.gentar.biology.location.Location;
+import org.gentar.biology.location.LocationDTO;
 import org.gentar.biology.location.LocationMapper;
+import org.gentar.biology.project.intention.project_intention.ProjectIntention;
 import org.springframework.stereotype.Component;
 import org.gentar.biology.sequence_location.SequenceLocation;
 
@@ -12,10 +17,12 @@ import java.util.List;
 public class SequenceLocationMapper
 {
     private LocationMapper locationMapper;
+    private EntityMapper entityMapper;
 
-    public SequenceLocationMapper(LocationMapper locationMapper)
+    public SequenceLocationMapper(LocationMapper locationMapper, EntityMapper entityMapper)
     {
         this.locationMapper = locationMapper;
+        this.entityMapper = entityMapper;
     }
 
     public SequenceLocationDTO toDto(SequenceLocation sequenceLocation)
@@ -34,5 +41,33 @@ public class SequenceLocationMapper
             sequenceLocations.forEach(x -> sequenceLocationDTOS.add(toDto(x)));
         }
         return sequenceLocationDTOS;
+    }
+
+    public SequenceLocation toEntity(SequenceLocationDTO sequenceLocationDTO)
+    {
+        SequenceLocation sequenceLocation =
+                entityMapper.toTarget(sequenceLocationDTO, SequenceLocation.class);
+        sequenceLocation.setIndex(sequenceLocationDTO.getLocationIndex());
+        setLocations(sequenceLocation, sequenceLocationDTO);
+        return sequenceLocation;
+    }
+
+    public List<SequenceLocation> toEntities(Collection<SequenceLocationDTO> sequenceLocationDTOS)
+    {
+        List<SequenceLocation> sequenceLocations = new ArrayList<>();
+        if (sequenceLocationDTOS != null)
+        {
+            sequenceLocationDTOS.forEach(x -> sequenceLocations.add(toEntity(x)));
+        }
+        return sequenceLocations;
+    }
+
+    private void setLocations(SequenceLocation sequenceLocation, SequenceLocationDTO sequenceLocationDTO)
+    {
+        if (sequenceLocationDTO.getLocationDTO() != null)
+        {
+            Location location = locationMapper.toEntity(sequenceLocationDTO.getLocationDTO());
+            sequenceLocation.setLocation(location);
+        }
     }
 }

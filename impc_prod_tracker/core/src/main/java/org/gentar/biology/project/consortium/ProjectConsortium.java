@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 import org.gentar.biology.project.Project;
 import org.gentar.organization.consortium.Consortium;
 import org.gentar.organization.institute.Institute;
@@ -26,6 +27,7 @@ public class ProjectConsortium  {
     @ManyToOne
     private Consortium consortium;
 
+    @ToString.Exclude
     @JsonIgnore
     @ManyToMany
     @JoinTable(

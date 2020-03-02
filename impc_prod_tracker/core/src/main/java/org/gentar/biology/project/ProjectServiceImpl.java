@@ -158,7 +158,7 @@ public class ProjectServiceImpl implements ProjectService
 
     private AssignmentStatus checkIfAnyProjectAlreadyCreated()
     {
-
+        // TODO AssignmentStatus in ProjectService
         return null;
     }
 

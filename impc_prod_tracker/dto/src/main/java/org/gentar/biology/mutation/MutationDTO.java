@@ -5,7 +5,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
-import org.gentar.biology.intention.ProjectIntentionGeneDTO;
+import org.gentar.biology.gene.ProjectIntentionGeneDTO;
 
 import java.util.List;
 

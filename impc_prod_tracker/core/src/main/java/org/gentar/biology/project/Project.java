@@ -17,6 +17,8 @@ package org.gentar.biology.project;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
+import org.gentar.biology.mutation.Mutation;
+import org.gentar.biology.outcome.Outcome;
 import org.gentar.biology.status.Status;
 import org.gentar.exceptions.SystemOperationFailedException;
 import org.gentar.organization.work_group.WorkGroup;
@@ -60,6 +62,8 @@ public class Project extends BaseEntity implements Resource<Project>
     @ManyToOne
     private AssignmentStatus assignmentStatus;
 
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
     @ManyToOne(targetEntity= Status.class)
     private Status summaryStatus;
 
@@ -78,8 +82,6 @@ public class Project extends BaseEntity implements Resource<Project>
     private Boolean withdrawn;
 
     private Boolean recovery;
-
-    private Boolean isActive;
 
     @Column(columnDefinition = "TEXT")
     private String comment;
@@ -121,7 +123,6 @@ public class Project extends BaseEntity implements Resource<Project>
         restrictedProject.setPrivacy(privacy);
         restrictedProject.setWithdrawn(withdrawn);
         restrictedProject.setComment(comment);
-        restrictedProject.setIsActive(isActive);
         restrictedProject.setRecovery(recovery);
         restrictedProject.setProjectExternalRef(projectExternalRef);
         restrictedProject.setProjectIntentions(projectIntentions);
