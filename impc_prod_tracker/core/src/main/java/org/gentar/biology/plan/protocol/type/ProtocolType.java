@@ -13,7 +13,7 @@
  * language governing permissions and limitations under the
  * License.
  *******************************************************************************/
-package org.gentar.biology.plan.protocol;
+package org.gentar.biology.plan.protocol.type;
 
 import lombok.*;
 import org.gentar.BaseEntity;

@@ -39,4 +39,6 @@ public class Sequence extends BaseEntity {
     @ToString.Exclude
     @OneToMany(cascade=CascadeType.ALL, mappedBy = "sequence")
     private List<ProjectIntentionSequence> projectIntentionSequences;
+
+
 }

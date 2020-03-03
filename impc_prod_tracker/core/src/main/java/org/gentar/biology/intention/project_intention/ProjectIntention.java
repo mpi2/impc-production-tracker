@@ -10,19 +10,10 @@ import org.gentar.biology.mutation.molecular_type.MolecularMutationType;
 import org.gentar.biology.project.Project;
 import org.gentar.biology.intention.project_intention_gene.ProjectIntentionGene;
 import org.gentar.biology.intention.project_intention_sequence.ProjectIntentionSequence;
+import org.gentar.biology.sequence_location.SequenceLocation;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
-import javax.persistence.SequenceGenerator;
+import javax.persistence.*;
+import java.util.List;
 import java.util.Set;
 
 @NoArgsConstructor(access= AccessLevel.PUBLIC, force=true)
@@ -48,8 +39,9 @@ public class ProjectIntention
 
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
-    @OneToOne(cascade=CascadeType.ALL, mappedBy = "projectIntention")
-    private ProjectIntentionSequence projectIntentionSequence;
+    @OneToMany(cascade=CascadeType.ALL, fetch=FetchType.EAGER)
+    @JoinColumn(name = "project_intention_id")
+    private Set<ProjectIntentionSequence> projectIntentionSequences;
 
     @EqualsAndHashCode.Exclude
     @ManyToMany(fetch = FetchType.EAGER)

@@ -15,14 +15,14 @@
  *******************************************************************************/
 package org.gentar.biology.intention;
 
+import org.gentar.biology.mutation.MutationCategorizationDTO;
+import org.gentar.biology.mutation.categorizarion.MutationCategorization;
 import org.gentar.biology.sequence.ProjectIntentionSequenceDTO;
 import org.gentar.biology.sequence.SequenceMapper;
 import org.springframework.stereotype.Component;
 import org.gentar.biology.intention.project_intention_sequence.ProjectIntentionSequence;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
+import java.util.*;
 
 @Component
 public class ProjectIntentionSequenceMapper
@@ -62,5 +62,15 @@ public class ProjectIntentionSequenceMapper
         projectIntentionGene.setIndex(projectIntentionSequenceDTO.getIndex());
 
         return projectIntentionGene;
+    }
+
+    public Set<ProjectIntentionSequence> toEntities(Collection<ProjectIntentionSequenceDTO> projectIntentionSequenceDTOS)
+    {
+        Set<ProjectIntentionSequence> projectIntentionSequences = new HashSet<>();
+        if (projectIntentionSequenceDTOS != null)
+        {
+            projectIntentionSequenceDTOS.forEach(x -> projectIntentionSequences.add(toEntity(x)));
+        }
+        return projectIntentionSequences;
     }
 }
