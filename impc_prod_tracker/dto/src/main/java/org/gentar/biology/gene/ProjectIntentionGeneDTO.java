@@ -15,6 +15,7 @@
  *******************************************************************************/
 package org.gentar.biology.gene;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
@@ -30,7 +31,9 @@ public class ProjectIntentionGeneDTO
     @JsonProperty("gene")
     private GeneDTO geneDTO;
 
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private List<OrthologDTO> bestOrthologs;
 
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private List<OrthologDTO> allOrthologs;
 }

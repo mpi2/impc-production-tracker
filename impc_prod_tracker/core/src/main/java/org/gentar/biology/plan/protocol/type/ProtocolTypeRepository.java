@@ -1,4 +1,4 @@
-package org.gentar.biology.plan.protocol;
+package org.gentar.biology.plan.protocol.type;
 
 import org.springframework.data.repository.CrudRepository;
 

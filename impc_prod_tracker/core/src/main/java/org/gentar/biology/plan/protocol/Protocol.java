@@ -18,6 +18,8 @@ package org.gentar.biology.plan.protocol;
 import lombok.*;
 import org.gentar.BaseEntity;
 import org.gentar.biology.plan.Plan;
+import org.gentar.biology.plan.protocol.type.ProtocolType;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;

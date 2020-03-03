@@ -18,12 +18,14 @@ public class SequenceLocation extends BaseEntity implements Serializable {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequenceLocationSeq")
     private Long id;
 
+    @EqualsAndHashCode.Exclude
     @ToString.Exclude
     @ManyToOne(targetEntity = Sequence.class, cascade=CascadeType.ALL)
     private Sequence sequence;
 
     private Integer index;
 
+    @EqualsAndHashCode.Exclude
     @ToString.Exclude
     @ManyToOne(targetEntity = Location.class, cascade=CascadeType.ALL)
     private Location location;
