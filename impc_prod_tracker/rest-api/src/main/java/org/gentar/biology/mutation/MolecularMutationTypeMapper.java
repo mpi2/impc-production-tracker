@@ -15,9 +15,9 @@
  *******************************************************************************/
 package org.gentar.biology.mutation;
 
-import org.gentar.biology.molecular_mutation_type.MolecularMutationService;
+import org.gentar.biology.mutation.molecular_type.MolecularMutationService;
 import org.springframework.stereotype.Component;
-import org.gentar.biology.molecular_mutation_type.MolecularMutationType;
+import org.gentar.biology.mutation.molecular_type.MolecularMutationType;
 
 @Component
 public class MolecularMutationTypeMapper

@@ -23,10 +23,9 @@ import org.gentar.organization.work_group.WorkGroup;
 import org.gentar.organization.work_unit.WorkUnit;
 import org.springframework.stereotype.Component;
 import org.gentar.biology.project.consortium.ProjectConsortiumMapper;
-import org.gentar.biology.project.intention.ProjectIntentionMapper;
+import org.gentar.biology.intention.ProjectIntentionMapper;
 import org.gentar.biology.status.StatusStampMapper;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 

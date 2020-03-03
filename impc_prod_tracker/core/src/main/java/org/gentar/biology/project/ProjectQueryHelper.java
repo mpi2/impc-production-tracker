@@ -2,8 +2,8 @@ package org.gentar.biology.project;
 
 import org.gentar.biology.ortholog.Ortholog;
 import org.gentar.biology.ortholog.OrthologService;
-import org.gentar.biology.project.intention.project_intention.ProjectIntention;
-import org.gentar.biology.project.intention.project_intention_gene.ProjectIntentionGene;
+import org.gentar.biology.intention.project_intention.ProjectIntention;
+import org.gentar.biology.intention.project_intention_gene.ProjectIntentionGene;
 import org.springframework.stereotype.Component;
 import java.util.ArrayList;
 import java.util.HashSet;

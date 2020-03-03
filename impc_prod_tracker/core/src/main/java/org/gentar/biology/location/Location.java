@@ -2,7 +2,6 @@ package org.gentar.biology.location;
 
 import lombok.*;
 import org.gentar.BaseEntity;
-import org.gentar.biology.project.intention.project_intention_sequence.ProjectIntentionSequence;
 import org.gentar.biology.sequence_location.SequenceLocation;
 import org.gentar.biology.species.Species;
 import org.gentar.biology.strain.Strain;

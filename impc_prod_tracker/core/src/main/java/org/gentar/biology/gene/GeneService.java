@@ -15,29 +15,11 @@
  *******************************************************************************/
 package org.gentar.biology.gene;
 
-import org.gentar.biology.gene.Gene;
-import org.gentar.biology.gene.GeneRepository;
-import org.springframework.stereotype.Component;
-
 import java.util.List;
 
-@Component
-public class GeneService
+public interface GeneService
 {
-    private GeneRepository geneRepository;
+    List<Gene> getGenesBySymbol(String symbol);
 
-    public GeneService(GeneRepository geneRepository)
-    {
-        this.geneRepository = geneRepository;
-    }
-
-    public List<Gene> getGenesBySymbol(String symbol)
-    {
-        return geneRepository.findBySymbolStartingWith(symbol);
-    }
-
-    public Gene getGeneByAccessionId(String accessionId)
-    {
-        return geneRepository.findFirstByAccIdIgnoreCase(accessionId);
-    }
+    Gene getGeneByAccessionId(String accessionId);
 }

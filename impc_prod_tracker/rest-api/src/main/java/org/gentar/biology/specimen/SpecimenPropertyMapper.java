@@ -2,6 +2,7 @@ package org.gentar.biology.specimen;
 
 import org.gentar.EntityMapper;
 import org.gentar.Mapper;
+import org.gentar.biology.specimen.property.SpecimenProperty;
 
 public class SpecimenPropertyMapper implements Mapper<SpecimenProperty, SpecimenPropertyDTO>
 {

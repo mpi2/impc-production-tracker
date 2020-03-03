@@ -5,6 +5,7 @@ import org.gentar.Mapper;
 import org.gentar.biology.colony.Colony;
 import org.gentar.biology.colony.ColonyMapper;
 import org.gentar.biology.mutation.MutationMapper;
+import org.gentar.biology.outcome.type.OutcomeType;
 import org.gentar.biology.plan.Plan;
 import org.gentar.biology.plan.PlanService;
 import org.gentar.biology.specimen.SpecimenMapper;

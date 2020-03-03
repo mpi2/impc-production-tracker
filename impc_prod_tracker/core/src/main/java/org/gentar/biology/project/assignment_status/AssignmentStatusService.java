@@ -15,20 +15,7 @@
  */
 package org.gentar.biology.project.assignment_status;
 
-import org.springframework.stereotype.Component;
-
-@Component
-public class AssignmentStatusService
+public interface AssignmentStatusService
 {
-    private AssignmentStatusRepository assignmentStatusRepository;
-
-    public AssignmentStatusService(AssignmentStatusRepository assignmentStatusRepository)
-    {
-        this.assignmentStatusRepository = assignmentStatusRepository;
-    }
-
-    public AssignmentStatus getAssignmentStatusByName(String name)
-    {
-        return assignmentStatusRepository.findFirstByNameIgnoreCase(name);
-    }
+    AssignmentStatus getAssignmentStatusByName(String name);
 }

@@ -1,6 +1,8 @@
 package org.gentar.biology.outcome;
 
 import org.gentar.audit.history.History;
+import org.gentar.biology.outcome.type.OutcomeType;
+
 import java.util.List;
 
 /**
