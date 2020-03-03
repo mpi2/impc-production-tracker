@@ -9,5 +9,5 @@ public interface MutationService
 {
     GeneticMutationType getGeneticMutationTypeByName(String geneticMutationTypeName);
 
-    MutationCategorization getMutationCategorizationByName(String name);
+    MutationCategorization getMutationCategorizationByNameAndType(String name, String type);
 }

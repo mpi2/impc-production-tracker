@@ -23,8 +23,8 @@ public class MutationServiceImpl implements MutationService
         return geneticMutationTypeRepository.findFirstByNameIgnoreCase(geneticMutationTypeName);
     }
 
-    public MutationCategorization getMutationCategorizationByName(String name)
+    public MutationCategorization getMutationCategorizationByNameAndType(String name, String type)
     {
-        return mutationCategorizationRepository.findByName(name);
+        return mutationCategorizationRepository.findByNameAndType(name, type);
     }
 }

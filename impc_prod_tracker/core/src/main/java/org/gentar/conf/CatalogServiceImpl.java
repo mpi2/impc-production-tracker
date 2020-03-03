@@ -140,7 +140,7 @@ public class CatalogServiceImpl implements CatalogService
             addMolecularMutationTypes();
             addNucleaseTypes();
             addNucleaseClasses();
-            addAlleleCategorizations();
+            addMutationCategorizations();
             addFunders();
             addAttemptTypes();
             addSequenceTypes();
@@ -282,7 +282,7 @@ public class CatalogServiceImpl implements CatalogService
         conf.put("nucleaseClasses", nucleaseClasses);
     }
 
-    private void addAlleleCategorizations ()
+    private void addMutationCategorizations ()
     {
         List<String> mutationCategorizations = new ArrayList<>();
         mutationCategorizationRepository.findAll().forEach(p -> mutationCategorizations.add(p.getName()));
