@@ -28,9 +28,9 @@ public class MutationCategorizationMapper
         return entityMapper.toTargets(mutationCategorizations, MutationCategorizationDTO.class);
     }
 
-    public MutationCategorization toEntity(String mutationCategorizationName)
+    public MutationCategorization toEntity(MutationCategorizationDTO mutationCategorizationDTO)
     {
-        return mutationService.getMutationCategorizationByName(mutationCategorizationName);
+        return mutationService.getMutationCategorizationByNameAndType(mutationCategorizationDTO.getName(), mutationCategorizationDTO.getType());
     }
 
     public Set<MutationCategorization> toEntities(Collection<MutationCategorizationDTO> mutationCategorizationDTOS)
@@ -38,7 +38,7 @@ public class MutationCategorizationMapper
         Set<MutationCategorization> mutationCategorizations = new HashSet<>();
         if (mutationCategorizationDTOS != null)
         {
-            mutationCategorizationDTOS.forEach(x -> mutationCategorizations.add(toEntity(x.getName())));
+            mutationCategorizationDTOS.forEach(x -> mutationCategorizations.add(toEntity(x)));
         }
         return mutationCategorizations;
     }
