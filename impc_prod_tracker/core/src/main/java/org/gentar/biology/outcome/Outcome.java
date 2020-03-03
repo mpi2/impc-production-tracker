@@ -5,6 +5,7 @@ import lombok.*;
 import org.gentar.BaseEntity;
 import org.gentar.biology.colony.Colony;
 import org.gentar.biology.mutation.Mutation;
+import org.gentar.biology.outcome.type.OutcomeType;
 import org.gentar.biology.plan.Plan;
 import org.gentar.biology.specimen.Specimen;
 import org.gentar.organization.consortium.Consortium;

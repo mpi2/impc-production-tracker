@@ -3,12 +3,12 @@ package org.gentar.biology.outcome;
 import org.gentar.audit.history.History;
 import org.gentar.biology.colony.Colony;
 import org.gentar.biology.colony.engine.ColonyState;
+import org.gentar.biology.outcome.type.OutcomeType;
+import org.gentar.biology.outcome.type.OutcomeTypeRepository;
 import org.gentar.biology.status.Status;
 import org.gentar.biology.status.StatusService;
 import org.gentar.exceptions.UserOperationFailedException;
-import org.gentar.security.abac.Resource;
 import org.gentar.security.abac.ResourceAccessChecker;
-import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Component;
 
 import java.util.Collection;

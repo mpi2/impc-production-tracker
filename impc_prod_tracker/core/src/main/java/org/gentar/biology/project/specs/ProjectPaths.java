@@ -1,9 +1,9 @@
 package org.gentar.biology.project.specs;
 
-import org.gentar.biology.molecular_mutation_type.MolecularMutationType;
+import org.gentar.biology.mutation.molecular_type.MolecularMutationType;
 import org.gentar.biology.gene.Gene;
 import org.gentar.biology.gene.Gene_;
-import org.gentar.biology.molecular_mutation_type.MolecularMutationType_;
+import org.gentar.biology.mutation.molecular_type.MolecularMutationType_;
 import org.gentar.biology.plan.Plan;
 import org.gentar.biology.plan.Plan_;
 import org.gentar.biology.project.Project;
@@ -12,10 +12,10 @@ import org.gentar.biology.project.assignment_status.AssignmentStatus;
 import org.gentar.biology.project.assignment_status.AssignmentStatus_;
 import org.gentar.biology.project.consortium.ProjectConsortium;
 import org.gentar.biology.project.consortium.ProjectConsortium_;
-import org.gentar.biology.project.intention.project_intention.ProjectIntention;
-import org.gentar.biology.project.intention.project_intention.ProjectIntention_;
-import org.gentar.biology.project.intention.project_intention_gene.ProjectIntentionGene;
-import org.gentar.biology.project.intention.project_intention_gene.ProjectIntentionGene_;
+import org.gentar.biology.intention.project_intention.ProjectIntention;
+import org.gentar.biology.intention.project_intention.ProjectIntention_;
+import org.gentar.biology.intention.project_intention_gene.ProjectIntentionGene;
+import org.gentar.biology.intention.project_intention_gene.ProjectIntentionGene_;
 import org.gentar.biology.project.privacy.Privacy;
 import org.gentar.biology.project.privacy.Privacy_;
 import org.gentar.biology.status.Status;
@@ -26,7 +26,7 @@ import org.gentar.organization.work_group.WorkGroup;
 import org.gentar.organization.work_group.WorkGroup_;
 import org.gentar.organization.work_unit.WorkUnit;
 import org.gentar.organization.work_unit.WorkUnit_;
-import javax.persistence.criteria.Join;
+
 import javax.persistence.criteria.ListJoin;
 import javax.persistence.criteria.Path;
 import javax.persistence.criteria.Root;

@@ -15,20 +15,7 @@
  *******************************************************************************/
 package org.gentar.biology.project.privacy;
 
-import org.springframework.stereotype.Component;
-
-@Component
-public class PrivacyService
+public interface PrivacyService
 {
-    private PrivacyRepository privacyRepository;
-
-    public PrivacyService(PrivacyRepository privacyRepository)
-    {
-        this.privacyRepository = privacyRepository;
-    }
-
-    public Privacy findPrivacyByName(String name)
-    {
-        return privacyRepository.findByNameIgnoreCase(name);
-    }
+    Privacy findPrivacyByName(String name);
 }

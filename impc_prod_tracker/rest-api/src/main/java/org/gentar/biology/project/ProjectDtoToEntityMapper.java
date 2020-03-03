@@ -17,7 +17,7 @@ package org.gentar.biology.project;
 
 import org.gentar.EntityMapper;
 import org.gentar.biology.project.consortium.ProjectConsortium;
-import org.gentar.biology.project.intention.project_intention.ProjectIntention;
+import org.gentar.biology.intention.project_intention.ProjectIntention;
 import org.gentar.biology.species.SpeciesMapper;
 import org.gentar.biology.species.Species;
 import org.gentar.biology.status.StatusMapper;
@@ -25,7 +25,7 @@ import org.springframework.stereotype.Component;
 import org.gentar.biology.project.privacy.Privacy;
 import org.gentar.biology.assignment_status.AssignmentStatusMapper;
 import org.gentar.biology.project.consortium.ProjectConsortiumMapper;
-import org.gentar.biology.project.intention.ProjectIntentionMapper;
+import org.gentar.biology.intention.ProjectIntentionMapper;
 
 import java.util.List;
 import java.util.Set;

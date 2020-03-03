@@ -15,44 +15,15 @@
  */
 package org.gentar.organization.consortium;
 
-import org.gentar.exceptions.UserOperationFailedException;
-import org.gentar.organization.consortium.Consortium;
-import org.gentar.organization.consortium.ConsortiumRepository;
 import org.springframework.cache.annotation.Cacheable;
-import org.springframework.stereotype.Component;
 import java.util.List;
 
-@Component
-public class ConsortiumService
+public interface ConsortiumService
 {
-    private ConsortiumRepository consortiumRepository;
-
-    private static final String CONSORTIUM_NOT_EXISTS_ERROR = "Consortium %s does not exist.";
-
-    public ConsortiumService(ConsortiumRepository consortiumRepository)
-    {
-        this.consortiumRepository = consortiumRepository;
-    }
-
     @Cacheable("consortiumNames")
-    public Consortium findConsortiumByName(String name)
-    {
-        return consortiumRepository.findByNameIgnoreCase(name);
-    }
+    Consortium findConsortiumByName(String name);
 
-    public Consortium getConsortiumByNameOrThrowException(String consortiumName)
-    {
-        Consortium consortium = findConsortiumByName(consortiumName);
-        if (consortium == null)
-        {
-            throw new UserOperationFailedException(
-                String.format(CONSORTIUM_NOT_EXISTS_ERROR, consortiumName));
-        }
-        return consortium;
-    }
+    Consortium getConsortiumByNameOrThrowException(String consortiumName);
 
-    public List<Consortium> findAllConsortia()
-    {
-        return consortiumRepository.findAll();
-    }
+    List<Consortium> findAllConsortia();
 }

@@ -7,6 +7,7 @@ import org.gentar.biology.plan.PlanService;
 import org.gentar.common.history.HistoryDTO;
 import org.gentar.helpers.LinkUtil;
 import org.gentar.helpers.PaginationHelper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PagedResourcesAssembler;
@@ -33,14 +34,15 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 @CrossOrigin(origins="*")
 public class OutcomeController
 {
-    private OutcomeServiceImpl outcomeService;
+    @Autowired
+    private OutcomeService outcomeService;
     private OutcomeMapper outcomeMapper;
     private PlanService planService;
     private OutcomeRequestProcessor outcomeRequestProcessor;
     private HistoryMapper historyMapper;
 
     public OutcomeController(
-        OutcomeServiceImpl outcomeService,
+        OutcomeService outcomeService,
         OutcomeMapper outcomeMapper,
         PlanService planService,
         OutcomeRequestProcessor outcomeRequestProcessor,

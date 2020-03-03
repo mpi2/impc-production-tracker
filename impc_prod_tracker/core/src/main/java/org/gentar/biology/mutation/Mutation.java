@@ -18,11 +18,12 @@ package org.gentar.biology.mutation;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import org.gentar.biology.mutation.categorizarion.MutationCategorization;
+import org.gentar.biology.mutation.genetic_type.GeneticMutationType;
 import org.hibernate.annotations.Type;
 import org.gentar.BaseEntity;
 import org.gentar.biology.mutation.genbank_file.GenbankFile;
 import org.gentar.biology.gene.Gene;
-import org.gentar.biology.molecular_mutation_type.MolecularMutationType;
+import org.gentar.biology.mutation.molecular_type.MolecularMutationType;
 import org.gentar.biology.outcome.Outcome;
 
 import javax.persistence.*;

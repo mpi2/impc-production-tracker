@@ -1,19 +1,8 @@
 package org.gentar.biology.specimen;
 
-import org.springframework.stereotype.Component;
+import org.gentar.biology.specimen.type.SpecimenType;
 
-@Component
-public class SpecimenService
+public interface SpecimenService
 {
-    private SpecimenTypeRepository specimenTypeRepository;
-
-    public SpecimenService(SpecimenTypeRepository specimenTypeRepository)
-    {
-        this.specimenTypeRepository = specimenTypeRepository;
-    }
-
-    public SpecimenType getSpecimenTypeByName(String name)
-    {
-        return specimenTypeRepository.findByNameIgnoreCase(name);
-    }
+    SpecimenType getSpecimenTypeByName(String name);
 }

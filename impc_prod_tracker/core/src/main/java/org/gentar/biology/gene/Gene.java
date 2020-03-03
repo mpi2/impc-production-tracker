@@ -21,7 +21,7 @@ import lombok.*;
 import org.gentar.BaseEntity;
 import org.gentar.biology.mutation.Mutation;
 import org.gentar.biology.gene.flag.GeneFlag;
-import org.gentar.biology.project.intention.project_intention_gene.ProjectIntentionGene;
+import org.gentar.biology.intention.project_intention_gene.ProjectIntentionGene;
 import org.gentar.biology.species.Species;
 import javax.persistence.*;
 import javax.validation.constraints.Pattern;

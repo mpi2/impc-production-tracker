@@ -5,6 +5,8 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.beans.factory.annotation.Autowired;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,7 +22,8 @@ class OrthologServiceTest
     @Mock
     private JSONToOrthologsMapper jsonToOrthologsMapper;
 
-    private OrthologService testInstance = new OrthologService(graphQLConsumer, jsonToOrthologsMapper);
+    @Autowired
+    private OrthologService testInstance = new OrthologServiceImpl(graphQLConsumer, jsonToOrthologsMapper);
 
     @Test
     public void testCalculateBestOrthologs()

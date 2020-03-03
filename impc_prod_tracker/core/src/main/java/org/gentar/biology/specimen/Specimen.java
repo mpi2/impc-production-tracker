@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.gentar.BaseEntity;
 import org.gentar.biology.outcome.Outcome;
+import org.gentar.biology.specimen.type.SpecimenType;
 import org.gentar.biology.status.Status;
 import org.gentar.statemachine.ProcessData;
 import org.gentar.statemachine.ProcessEvent;

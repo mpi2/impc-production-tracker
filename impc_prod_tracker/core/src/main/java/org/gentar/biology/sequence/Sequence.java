@@ -2,15 +2,13 @@ package org.gentar.biology.sequence;
 
 import lombok.*;
 import org.gentar.BaseEntity;
-import org.gentar.biology.project.intention.project_intention.ProjectIntention;
-import org.gentar.biology.project.intention.project_intention_sequence.ProjectIntentionSequence;
+import org.gentar.biology.intention.project_intention_sequence.ProjectIntentionSequence;
 import org.gentar.biology.sequence.category.SequenceCategory;
 import org.gentar.biology.sequence.type.SequenceType;
 import org.gentar.biology.sequence_location.SequenceLocation;
 
 import javax.persistence.*;
 import java.util.List;
-import java.util.Set;
 
 @NoArgsConstructor(access= AccessLevel.PRIVATE, force=true)
 @Data

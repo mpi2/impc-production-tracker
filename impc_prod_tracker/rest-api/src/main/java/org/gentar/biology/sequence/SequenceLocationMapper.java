@@ -1,11 +1,8 @@
 package org.gentar.biology.sequence;
 
 import org.gentar.EntityMapper;
-import org.gentar.biology.intention.ProjectIntentionDTO;
 import org.gentar.biology.location.Location;
-import org.gentar.biology.location.LocationDTO;
 import org.gentar.biology.location.LocationMapper;
-import org.gentar.biology.project.intention.project_intention.ProjectIntention;
 import org.springframework.stereotype.Component;
 import org.gentar.biology.sequence_location.SequenceLocation;
 
