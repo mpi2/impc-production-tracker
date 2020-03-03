@@ -1,4 +1,4 @@
-package org.gentar.biology.plan;
+package org.gentar.biology.plan.type;
 
 import org.springframework.stereotype.Component;
 

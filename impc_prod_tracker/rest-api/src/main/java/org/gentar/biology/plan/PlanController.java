@@ -19,6 +19,7 @@ import org.gentar.biology.plan.engine.events.BreedingPlanEvent;
 import org.gentar.biology.plan.engine.events.LateAdultPhenotypePlanEvent;
 import org.gentar.biology.plan.engine.events.PhenotypePlanEvent;
 import org.gentar.biology.plan.engine.events.ProductionPlanEvent;
+import org.gentar.biology.plan.type.PlanType;
 import org.gentar.biology.project.PlanTypes;
 import org.gentar.common.state_machine.StatusTransitionDTO;
 import org.gentar.helpers.PaginationHelper;

@@ -24,7 +24,6 @@ import org.gentar.organization.work_unit.WorkUnit;
 import org.springframework.stereotype.Component;
 import org.gentar.biology.project.consortium.ProjectConsortiumMapper;
 import org.gentar.biology.project.intention.ProjectIntentionMapper;
-import org.gentar.biology.project.intention.SortByProjectIntentionIndex;
 import org.gentar.biology.status.StatusStampMapper;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -71,13 +70,7 @@ public class ProjectEntityToDtoMapper
     {
         List<ProjectIntentionDTO> projectIntentionDTOs =
             projectIntentionMapper.toDtos(project.getProjectIntentions());
-        sort(projectIntentionDTOs);
         projectDTO.setProjectIntentionDTOS(projectIntentionDTOs);
-    }
-
-    private void sort(List<ProjectIntentionDTO> projectIntentionDTOs)
-    {
-        Collections.sort(projectIntentionDTOs, new SortByProjectIntentionIndex());
     }
 
     private void addProjectConsortia(Project project, ProjectDTO projectDTO)
@@ -111,18 +104,17 @@ public class ProjectEntityToDtoMapper
 
     private void addSpeciesDTO(Project project, ProjectDTO projectDTO)
     {
-        List<SpeciesDTO> projectSpeciesDTOs = new ArrayList<>();
+        List<SpeciesDTO> speciesDTOs = new ArrayList<>();
         if (project.getSpecies() != null)
         {
             project.getSpecies().forEach(x ->
             {
                 SpeciesDTO speciesDTO = new SpeciesDTO();
-                speciesDTO.setName(x.getName());
-                speciesDTO.setTaxonId(x.getTaxonId());
-                projectSpeciesDTOs.add(speciesDTO);
+                speciesDTO.setSpeciesName(x.getName());
+                speciesDTOs.add(speciesDTO);
             });
         }
-        projectDTO.setProjectSpeciesDTOs(projectSpeciesDTOs);
+        projectDTO.setSpeciesNames(speciesDTOs);
     }
 
     private void addStatusStampsDTO(Project project, ProjectDTO projectDTO)

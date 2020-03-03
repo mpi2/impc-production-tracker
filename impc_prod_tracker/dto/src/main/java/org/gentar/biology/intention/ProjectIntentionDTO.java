@@ -15,10 +15,10 @@
  *******************************************************************************/
 package org.gentar.biology.intention;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
+import org.gentar.biology.gene.ProjectIntentionGeneDTO;
 import org.gentar.biology.sequence.ProjectIntentionSequenceDTO;
 import org.gentar.biology.mutation.MutationCategorizationDTO;
 
@@ -27,7 +27,6 @@ import java.util.List;
 @Data
 public class ProjectIntentionDTO
 {
-    private String geneticMutationTypeName;
     private String molecularMutationTypeName;
 
     @JsonProperty("mutationCategorizations")
@@ -41,8 +40,4 @@ public class ProjectIntentionDTO
     @JsonProperty("intentionBySequence")
     private ProjectIntentionSequenceDTO projectIntentionSequenceDTO;
 
-    private String intentionTypeName;
-
-    @JsonIgnore
-    private int index;
 }

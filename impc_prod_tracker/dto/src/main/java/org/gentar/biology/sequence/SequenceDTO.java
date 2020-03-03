@@ -14,6 +14,7 @@ public class SequenceDTO {
     @JsonProperty("typeName")
     private String sequenceTypeName;
 
+    @JsonProperty("categoryName")
     private String sequenceCategoryName;
 
     @JsonProperty("sequenceLocations")

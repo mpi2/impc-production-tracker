@@ -8,10 +8,5 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class StrainDTO
 {
-    private Long id;
-
-    private String name;
-
-    @JsonProperty("mgiStrainAccId")
-    private String mgiStrainAccId;
+    private String strainName;
 }

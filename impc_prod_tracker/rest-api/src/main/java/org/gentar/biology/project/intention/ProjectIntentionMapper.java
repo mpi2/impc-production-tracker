@@ -15,17 +15,17 @@
  *******************************************************************************/
 package org.gentar.biology.project.intention;
 
-import org.gentar.biology.intention.ProjectIntentionGeneDTO;
+import org.gentar.biology.gene.ProjectIntentionGeneDTO;
 import org.gentar.biology.intention.ProjectIntentionDTO;
 import org.gentar.biology.sequence.ProjectIntentionSequenceDTO;
 import org.gentar.EntityMapper;
 import org.gentar.biology.mutation.MutationCategorizationMapper;
-import org.gentar.biology.molecular_mutation.MolecularMutationTypeMapper;
+import org.gentar.biology.mutation.MolecularMutationTypeMapper;
 import org.springframework.stereotype.Component;
 import org.gentar.biology.project.intention.project_intention.ProjectIntention;
 import org.gentar.biology.project.intention.project_intention_gene.ProjectIntentionGene;
 import org.gentar.biology.project.intention.project_intention_sequence.ProjectIntentionSequence;
-import org.gentar.biology.sequence.ProjectIntentionSequenceMapper;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -67,6 +67,16 @@ public class ProjectIntentionMapper
         return projectIntentionDTO;
     }
 
+    public List<ProjectIntentionDTO> toDtos(Collection<ProjectIntention> projectIntention)
+    {
+        List<ProjectIntentionDTO> intentionDTOS = new ArrayList<>();
+        if (projectIntention != null)
+        {
+            projectIntention.forEach(x -> intentionDTOS.add(toDto(x)));
+        }
+        return intentionDTOS;
+    }
+
     private void setProjectIntentionGeneDTO(
         ProjectIntention projectIntention, ProjectIntentionDTO projectIntentionDTO)
     {
@@ -93,18 +103,7 @@ public class ProjectIntentionMapper
             ProjectIntentionSequenceDTO projectIntentionSequenceDTO =
                 projectIntentionSequenceMapper.toDto(projectIntentionSequence);
             projectIntentionDTO.setProjectIntentionSequenceDTO(projectIntentionSequenceDTO);
-            projectIntentionDTO.setIndex(projectIntentionDTO.getIndex());
         }
-    }
-
-    public List<ProjectIntentionDTO> toDtos(Collection<ProjectIntention> projectIntention)
-    {
-        List<ProjectIntentionDTO> intentionDTOS = new ArrayList<>();
-        if (projectIntention != null)
-        {
-            projectIntention.forEach(x -> intentionDTOS.add(toDto(x)));
-        }
-        return intentionDTOS;
     }
 
     public ProjectIntention toEntity(ProjectIntentionDTO projectIntentionDTO)
@@ -113,28 +112,10 @@ public class ProjectIntentionMapper
             entityMapper.toTarget(projectIntentionDTO, ProjectIntention.class);
         projectIntention.setMolecularMutationType(
             molecularMutationTypeMapper.toEntity(projectIntentionDTO.getMolecularMutationTypeName()));
+        projectIntention.setMutationCategorizations(
+            mutationCategorizationMapper.toEntities(projectIntentionDTO.getMutationCategorizationDTOS()));
         setProjectIntention(projectIntention, projectIntentionDTO);
         return projectIntention;
-    }
-
-    private void setProjectIntention(
-        ProjectIntention projectIntention, ProjectIntentionDTO projectIntentionDTO)
-    {
-        if (projectIntention.getProjectIntentionGene() != null)
-        {
-            ProjectIntentionGene projectIntentionGene =
-                projectIntentionGeneMapper.toEntity(projectIntentionDTO.getProjectIntentionGeneDTO());
-            projectIntentionGene.setProjectIntention(projectIntention);
-            projectIntention.setProjectIntentionGene(projectIntentionGene);
-        }
-        else if (projectIntention.getProjectIntentionSequence() != null)
-        {
-            ProjectIntentionSequence projectIntentionSequence =
-                projectIntentionSequenceMapper.toEntity(
-                    projectIntentionDTO.getProjectIntentionSequenceDTO());
-            projectIntentionSequence.setProjectIntention(projectIntention);
-            projectIntention.setProjectIntentionSequence(projectIntentionSequence);
-        }
     }
 
     public List<ProjectIntention> toEntities(Collection<ProjectIntentionDTO> projectIntentionDTOS)
@@ -145,5 +126,24 @@ public class ProjectIntentionMapper
             projectIntentionDTOS.forEach(x -> projectIntentions.add(toEntity(x)));
         }
         return projectIntentions;
+    }
+
+    private void setProjectIntention(ProjectIntention projectIntention, ProjectIntentionDTO projectIntentionDTO)
+    {
+        if (projectIntention.getProjectIntentionGene() != null)
+        {
+            ProjectIntentionGene projectIntentionGene =
+                    projectIntentionGeneMapper.toEntity(projectIntentionDTO.getProjectIntentionGeneDTO());
+            projectIntentionGene.setProjectIntention(projectIntention);
+            projectIntention.setProjectIntentionGene(projectIntentionGene);
+        }
+
+        if (projectIntention.getProjectIntentionSequence() != null)
+        {
+            ProjectIntentionSequence projectIntentionSequence =
+                    projectIntentionSequenceMapper.toEntity(projectIntentionDTO.getProjectIntentionSequenceDTO());
+            projectIntentionSequence.setProjectIntention(projectIntention);
+            projectIntention.setProjectIntentionSequence(projectIntentionSequence);
+        }
     }
 }

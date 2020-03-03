@@ -13,11 +13,27 @@
  * language governing permissions and limitations under the
  * License.
  *******************************************************************************/
-package org.gentar.biology.plan;
+package org.gentar.biology.plan.type;
 
-import org.springframework.data.repository.CrudRepository;
+import lombok.*;
+import org.gentar.BaseEntity;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.SequenceGenerator;
+import javax.validation.constraints.NotNull;
 
-public interface PlanTypeRepository extends CrudRepository<PlanType, Long>
+@NoArgsConstructor(access= AccessLevel.PUBLIC, force=true)
+@Data
+@Entity
+public class PlanType extends BaseEntity
 {
-    PlanType findFirstByNameIgnoreCase(String name);
+    @Id
+    @SequenceGenerator(name = "planTypeSeq", sequenceName = "PLAN_TYPE_SEQ")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "planTypeSeq")
+    private Long id;
+
+    @NotNull
+    private String name;
 }

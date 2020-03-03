@@ -21,7 +21,7 @@ import java.util.List;
 
 public interface InstituteRepository extends CrudRepository<Institute, Long>
 {
-    Institute findInstituteByName(String name);
+    Institute findByNameIgnoreCase(String name);
 
     List<Institute> findAll();
 }

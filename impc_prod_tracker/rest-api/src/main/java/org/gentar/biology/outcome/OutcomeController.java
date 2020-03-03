@@ -112,7 +112,7 @@ public class OutcomeController
 
     /**
      * Get an Outcome object based on OutcomeDTO using the fields that can be updated by the user.
-     * @param tpo public id of the outcome
+     * @param tpo public id of the outcome.
      * @param outcomeDTO outcome sent by the user.
      * @return The original outcome with the allowed modifications specified in the dto.
      */

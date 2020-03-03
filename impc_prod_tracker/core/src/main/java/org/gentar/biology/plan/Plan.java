@@ -22,6 +22,7 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 import org.gentar.biology.outcome.Outcome;
+import org.gentar.biology.plan.type.PlanType;
 import org.gentar.organization.work_group.WorkGroup;
 import org.gentar.security.abac.Resource;
 import org.gentar.security.abac.ResourcePrivacy;
