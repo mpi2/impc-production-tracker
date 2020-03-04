@@ -1,20 +1,21 @@
 package org.gentar.biology.mutation;
 
 import org.gentar.biology.mutation.genetic_type.GeneticMutationType;
+import org.gentar.biology.mutation.genetic_type.GeneticMutationTypeService;
 import org.springframework.stereotype.Component;
 
 @Component
 public class GeneticMutationTypeMapper
 {
-    private MutationService mutationService;
+    private GeneticMutationTypeService geneticMutationTypeService;
 
-    public GeneticMutationTypeMapper(MutationService mutationService)
+    public GeneticMutationTypeMapper(GeneticMutationTypeService geneticMutationTypeService)
     {
-        this.mutationService = mutationService;
+        this.geneticMutationTypeService = geneticMutationTypeService;
     }
 
     public GeneticMutationType toEntity(String geneticMutationTypeName)
     {
-        return mutationService.getGeneticMutationTypeByName(geneticMutationTypeName);
+        return geneticMutationTypeService.getGeneticMutationTypeByName(geneticMutationTypeName);
     }
 }
