@@ -28,6 +28,6 @@ public class ProjectIntentionSequence extends BaseEntity implements Serializable
     @ManyToOne(targetEntity = Sequence.class, cascade=CascadeType.ALL)
     private Sequence sequence;
 
-
+    @NotNull
     private Integer index;
 }
