@@ -21,7 +21,7 @@ import java.util.List;
 
 public interface MolecularMutationTypeRepository extends CrudRepository<MolecularMutationType, Long>
 {
-    MolecularMutationType findFirstByNameIgnoreCase(String name);
+    MolecularMutationType findByNameIgnoreCase(String name);
 
     List<MolecularMutationType> findAll();
 }

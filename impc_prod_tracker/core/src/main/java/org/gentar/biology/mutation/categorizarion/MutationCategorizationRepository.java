@@ -4,5 +4,5 @@ import org.springframework.data.repository.CrudRepository;
 
 public interface MutationCategorizationRepository extends CrudRepository<MutationCategorization, Long>
 {
-    MutationCategorization findByNameAndType(String name, String type);
+    MutationCategorization findByNameAndTypeIgnoreCase(String name, String type);
 }

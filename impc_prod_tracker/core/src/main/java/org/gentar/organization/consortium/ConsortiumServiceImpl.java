@@ -11,7 +11,7 @@ public class ConsortiumServiceImpl implements ConsortiumService
 {
     private ConsortiumRepository consortiumRepository;
 
-    private static final String CONSORTIUM_NOT_EXISTS_ERROR = "Consortium %s does not exist.";
+    private static final String CONSORTIUM_NOT_EXISTS_ERROR = "Consortium '%s' does not exist.";
 
     public ConsortiumServiceImpl(ConsortiumRepository consortiumRepository)
     {

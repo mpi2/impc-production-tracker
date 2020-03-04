@@ -10,7 +10,7 @@ public class InstituteServiceImpl implements InstituteService
 {
     private InstituteRepository instituteRepository;
 
-    private static final String INSTITUTE_NOT_EXISTS_ERROR = "Institute %s does not exist.";
+    private static final String INSTITUTE_NOT_EXISTS_ERROR = "Institute '%s' does not exist.";
 
     public InstituteServiceImpl(InstituteRepository instituteRepository)
     {

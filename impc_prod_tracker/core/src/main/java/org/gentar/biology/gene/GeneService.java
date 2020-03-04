@@ -19,7 +19,9 @@ import java.util.List;
 
 public interface GeneService
 {
-    List<Gene> getGenesBySymbol(String symbol);
+    List<Gene> getGenesBySymbolStartingWith(String symbol);
+
+    Gene getGenesBySymbol(String symbol);
 
     Gene getGeneByAccessionId(String accessionId);
 }
