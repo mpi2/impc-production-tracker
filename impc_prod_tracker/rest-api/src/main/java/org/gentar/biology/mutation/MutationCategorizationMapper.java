@@ -1,5 +1,6 @@
 package org.gentar.biology.mutation;
 
+import org.gentar.biology.mutation.categorizarion.MutationCategorizationService;
 import org.springframework.stereotype.Component;
 import org.gentar.biology.mutation.categorizarion.MutationCategorization;
 import org.gentar.EntityMapper;
@@ -10,12 +11,12 @@ import java.util.*;
 public class MutationCategorizationMapper
 {
     private EntityMapper entityMapper;
-    private MutationService mutationService;
+    private MutationCategorizationService mutationCategorizationService;
 
-    public MutationCategorizationMapper(EntityMapper entityMapper, MutationService mutationService)
+    public MutationCategorizationMapper(EntityMapper entityMapper, MutationCategorizationService mutationCategorizationService)
     {
         this.entityMapper = entityMapper;
-        this.mutationService = mutationService;
+        this.mutationCategorizationService = mutationCategorizationService;
     }
 
     public MutationCategorizationDTO toDto(MutationCategorization mutationCategorization)
@@ -30,7 +31,7 @@ public class MutationCategorizationMapper
 
     public MutationCategorization toEntity(MutationCategorizationDTO mutationCategorizationDTO)
     {
-        return mutationService.getMutationCategorizationByNameAndTypeFailingWhenNull(mutationCategorizationDTO.getName(), mutationCategorizationDTO.getType());
+        return mutationCategorizationService.getMutationCategorizationByNameAndTypeFailingWhenNull(mutationCategorizationDTO.getName(), mutationCategorizationDTO.getType());
     }
 
     public Set<MutationCategorization> toEntities(Collection<MutationCategorizationDTO> mutationCategorizationDTOS)
