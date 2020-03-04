@@ -6,6 +6,7 @@ import org.gentar.biology.location.Location;
 import org.gentar.biology.sequence.Sequence;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 
 @NoArgsConstructor(access= AccessLevel.PRIVATE, force=true)
@@ -23,6 +24,7 @@ public class SequenceLocation extends BaseEntity implements Serializable {
     @ManyToOne(targetEntity = Sequence.class, cascade=CascadeType.ALL)
     private Sequence sequence;
 
+    @NotNull
     private Integer index;
 
     @EqualsAndHashCode.Exclude

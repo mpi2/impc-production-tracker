@@ -20,8 +20,6 @@ public class ProjectConsortiumInstituteMapper {
 
     public Institute toEntity(ProjectConsortiumInstituteDTO projectConsortiumInstituteDTO)
     {
-//        Institute institute = entityMapper.toTarget(projectConsortiumInstituteDTO, Institute.class);
-
         String instituteName = projectConsortiumInstituteDTO.getInstituteName();
         Institute institute = instituteService.getInstituteByNameOrThrowException(instituteName);
         return institute;

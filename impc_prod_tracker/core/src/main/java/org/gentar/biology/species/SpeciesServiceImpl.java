@@ -14,6 +14,6 @@ public class SpeciesServiceImpl implements SpeciesService
     @Override
     public Species getSpeciesByName(String name)
     {
-        return speciesRepository.findSpeciesByName(name);
+        return speciesRepository.findSpeciesByNameIgnoreCase(name);
     }
 }

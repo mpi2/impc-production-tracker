@@ -22,4 +22,5 @@ public interface GeneRepository extends CrudRepository<Gene, Long>
 {
     List<Gene> findBySymbolStartingWith(String symbol);
     Gene findFirstByAccIdIgnoreCase(String accId);
+    Gene findBySymbol(String symbol);
 }

@@ -19,6 +19,7 @@ import org.gentar.Mapper;
 import org.gentar.biology.strain.StrainDTO;
 import org.gentar.EntityMapper;
 import org.gentar.biology.strain.StrainService;
+import org.gentar.exceptions.UserOperationFailedException;
 import org.springframework.stereotype.Component;
 import org.gentar.biology.strain.Strain;
 import org.gentar.biology.strain.StrainRepository;
@@ -27,13 +28,13 @@ import org.gentar.biology.strain.StrainRepository;
 public class StrainMapper implements Mapper<Strain, StrainDTO>
 {
     private EntityMapper entityMapper;
-    private StrainRepository strainRepository;
     private StrainService strainService;
 
-    public StrainMapper(EntityMapper entityMapper, StrainRepository strainRepository, StrainService strainService)
+    private static final String STRAIN_NOT_FOUND_ERROR = "Strain '%s' does not exist.";
+
+    public StrainMapper(EntityMapper entityMapper, StrainService strainService)
     {
         this.entityMapper = entityMapper;
-        this.strainRepository = strainRepository;
         this.strainService = strainService;
     }
 
@@ -47,16 +48,22 @@ public class StrainMapper implements Mapper<Strain, StrainDTO>
     {
         Strain strain = strainService.getStrainByName(strainDTO.getStrainName());
 
-        if (strain != null && strain.getStrainTypes() == null && strain.getId() != null)
+        if (strain == null)
         {
-            Strain persisted = strainService.getStrainById(strain.getId());
-
-            if (persisted != null)
-            {
-                strain.setStrainTypes(persisted.getStrainTypes());
-            }
-
+            throw new UserOperationFailedException(String.format(STRAIN_NOT_FOUND_ERROR, strainDTO.getStrainName()));
         }
+
+//        if (strain != null && strain.getStrainTypes() == null && strain.getId() != null)
+//        {
+//            Strain persisted = strainService.getStrainById(strain.getId());
+//
+//            if (persisted != null)
+//            {
+//                strain.setStrainTypes(persisted.getStrainTypes());
+//            }
+//
+//        }
+
         return strain;
     }
 }

@@ -30,7 +30,7 @@ public class MutationCategorizationMapper
 
     public MutationCategorization toEntity(MutationCategorizationDTO mutationCategorizationDTO)
     {
-        return mutationService.getMutationCategorizationByNameAndType(mutationCategorizationDTO.getName(), mutationCategorizationDTO.getType());
+        return mutationService.getMutationCategorizationByNameAndTypeFailingWhenNull(mutationCategorizationDTO.getName(), mutationCategorizationDTO.getType());
     }
 
     public Set<MutationCategorization> toEntities(Collection<MutationCategorizationDTO> mutationCategorizationDTOS)

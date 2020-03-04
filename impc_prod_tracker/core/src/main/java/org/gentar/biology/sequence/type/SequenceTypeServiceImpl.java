@@ -11,6 +11,6 @@ public class SequenceTypeServiceImpl implements SequenceTypeService
 
     public SequenceType getSequenceTypeByName (String typeName)
     {
-        return sequenceTypeRepository.findByName(typeName);
+        return sequenceTypeRepository.findByNameIgnoreCase(typeName);
     }
 }
