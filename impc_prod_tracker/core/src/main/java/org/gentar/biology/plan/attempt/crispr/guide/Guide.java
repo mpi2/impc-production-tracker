@@ -47,6 +47,8 @@ public class Guide extends BaseEntity
 
     private Boolean truncatedGuide;
 
+    private Double grnaConcentration;
+
     private String pam3;
 
     private String pam5;
@@ -56,6 +58,7 @@ public class Guide extends BaseEntity
     public String toString()
     {
         return "(seq=" + sequence + ", chr=" + chr + ", start=" + start
-            + ", stop=" + stop + ", truncated?=" + truncatedGuide +")";
+                + ", stop=" + stop + ", truncated?=" + truncatedGuide + ", grnaConcentration=" +
+                grnaConcentration + ")";
     }
 }

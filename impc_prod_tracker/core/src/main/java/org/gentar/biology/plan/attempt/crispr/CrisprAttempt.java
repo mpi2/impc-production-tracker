@@ -23,12 +23,12 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 import org.gentar.BaseEntity;
 import org.gentar.biology.plan.attempt.crispr.assay.Assay;
+import org.gentar.biology.plan.attempt.crispr.reagent.CrisprAttemptReagent;
 import org.gentar.biology.plan.attempt.crispr.genotype_primer.GenotypePrimer;
 import org.gentar.biology.plan.attempt.crispr.guide.Guide;
 import org.gentar.biology.plan.attempt.crispr.mutagenesis_donor.MutagenesisDonor;
 import org.gentar.biology.plan.attempt.crispr.nuclease.Nuclease;
 import org.gentar.biology.plan.Plan;
-import org.gentar.biology.plan.attempt.crispr.reagent.Reagent;
 import org.gentar.biology.strain.Strain;
 
 import javax.persistence.*;
@@ -86,14 +86,10 @@ public class CrisprAttempt extends BaseEntity
     @OneToMany(cascade=CascadeType.ALL, mappedBy = "crisprAttempt", orphanRemoval=true)
     private Set<GenotypePrimer> primers;
 
+    @EqualsAndHashCode.Exclude
     @ToString.Exclude
-    @JsonIgnore
-    @ManyToMany
-    @JoinTable(
-            name = "crispr_attempt_reagent",
-            joinColumns = @JoinColumn(name = "reagent_id"),
-            inverseJoinColumns = @JoinColumn(name = "attempt_id"))
-    private Set<Reagent> reagents;
+    @OneToMany(cascade=CascadeType.ALL, mappedBy = "crisprAttempt", orphanRemoval=true)
+    private Set<CrisprAttemptReagent> crisprAttemptReagents;
 
     @EqualsAndHashCode.Exclude
     @ToString.Exclude

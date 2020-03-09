@@ -16,12 +16,12 @@
 package org.gentar.biology.plan.attempt.crispr_attempt;
 
 import org.gentar.biology.plan.attempt.crispr.CrisprAttemptService;
-import org.gentar.biology.plan.attempt.crispr.reagent.Reagent;
 import org.gentar.biology.plan.production.crispr_attempt.CrisprAttemptDTO;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
 import org.gentar.biology.plan.attempt.crispr.CrisprAttempt;
 import org.gentar.biology.plan.attempt.crispr.assay.Assay;
+import org.gentar.biology.plan.attempt.crispr.reagent.CrisprAttemptReagent;
 import org.gentar.biology.plan.attempt.crispr.genotype_primer.GenotypePrimer;
 import org.gentar.biology.plan.attempt.crispr.guide.Guide;
 import org.gentar.biology.plan.attempt.crispr.mutagenesis_donor.MutagenesisDonor;
@@ -36,7 +36,6 @@ public class CrisprAttemptMapper
     private ModelMapper modelMapper;
     private GuideMapper guideMapper;
     private NucleaseMapper nucleaseMapper;
-    private ReagentMapper reagentMapper;
     private StrainMapper strainMapper;
     private MutagenesisDonorMapper mutagenesisDonorMapper;
     private GenotypePrimerMapper genotypePrimerMapper;
@@ -47,7 +46,6 @@ public class CrisprAttemptMapper
         ModelMapper modelMapper,
         GuideMapper guideMapper,
         NucleaseMapper nucleaseMapper,
-        ReagentMapper reagentMapper,
         StrainMapper strainMapper,
         MutagenesisDonorMapper mutagenesisDonorMapper,
         GenotypePrimerMapper genotypePrimerMapper,
@@ -57,7 +55,6 @@ public class CrisprAttemptMapper
         this.modelMapper = modelMapper;
         this.guideMapper = guideMapper;
         this.nucleaseMapper = nucleaseMapper;
-        this.reagentMapper = reagentMapper;
         this.strainMapper = strainMapper;
         this.mutagenesisDonorMapper = mutagenesisDonorMapper;
         this.genotypePrimerMapper = genotypePrimerMapper;
@@ -77,7 +74,6 @@ public class CrisprAttemptMapper
             crisprAttemptDTO.setMutagenesisDonorDTOS(
                 mutagenesisDonorMapper.toDtos(crisprAttempt.getMutagenesisDonors()));
             crisprAttemptDTO.setNucleaseDTOS(nucleaseMapper.toDtos(crisprAttempt.getNucleases()));
-            crisprAttemptDTO.setReagentDTOS(reagentMapper.toDtos(crisprAttempt.getReagents()));
         }
         return crisprAttemptDTO;
     }
@@ -135,9 +131,10 @@ public class CrisprAttemptMapper
 
     private void setReagentsToEntity(CrisprAttempt crisprAttempt, CrisprAttemptDTO crisprAttemptDTO)
     {
-        Set<Reagent> reagents = new HashSet<Reagent>(reagentMapper.toEntities(crisprAttemptDTO.getReagentDTOS()));
-        crisprAttempt.setReagents(reagents);
-   }
+        Set<CrisprAttemptReagent> crisprAttemptReagents = new HashSet<>();
+        crisprAttemptReagents.forEach(x -> x.setCrisprAttempt(crisprAttempt));
+        crisprAttempt.setCrisprAttemptReagents(crisprAttemptReagents);
+    }
 
     private void setNucleasesToEntity(CrisprAttempt crisprAttempt, CrisprAttemptDTO crisprAttemptDTO)
     {

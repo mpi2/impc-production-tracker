@@ -21,6 +21,8 @@ public class MutagenesisDonor extends BaseEntity
     @JoinColumn(name = "attempt_id")
     private CrisprAttempt crisprAttempt;
 
+    private Double concentration;
+
     @ManyToOne
     private PreparationType preparationType;
 
@@ -36,6 +38,6 @@ public class MutagenesisDonor extends BaseEntity
         String vectorNameToReport = vectorName == null ? "Not defined" : vectorName;
         return "(" + "oligo Sequence Fasta: " + oligoSequenceFasta + ", "
                 + "Vector Name: " + vectorNameToReport + ", "
-                + "Preparation Type: " + preparationTypeName + ")";
+                + "Preparation Type: " + preparationTypeName + ", " + "Concentration: " + concentration + ")";
     }
 }
