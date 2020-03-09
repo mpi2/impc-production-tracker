@@ -48,7 +48,7 @@ public class GeneController {
     @GetMapping(value = {"/genes"})
     public List<?> getGeneSymbols (@RequestParam String symbol)
     {
-        return geneService.getGenesBySymbol(StringUtils.capitalize(symbol));
+        return geneService.getGenesBySymbolStartingWith(StringUtils.capitalize(symbol));
     }
 
     @GetMapping(value = {"/genesInExternalData"})

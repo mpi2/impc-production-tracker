@@ -15,22 +15,22 @@
  *******************************************************************************/
 package org.gentar.biology.mutation;
 
-import org.gentar.biology.mutation.molecular_type.MolecularMutationService;
+import org.gentar.biology.mutation.molecular_type.MolecularMutationTypeService;
 import org.springframework.stereotype.Component;
 import org.gentar.biology.mutation.molecular_type.MolecularMutationType;
 
 @Component
 public class MolecularMutationTypeMapper
 {
-    private MolecularMutationService molecularMutationService;
+    private MolecularMutationTypeService molecularMutationTypeService;
 
-    public MolecularMutationTypeMapper(MolecularMutationService molecularMutationService)
+    public MolecularMutationTypeMapper(MolecularMutationTypeService molecularMutationTypeService)
     {
-        this.molecularMutationService = molecularMutationService;
+        this.molecularMutationTypeService = molecularMutationTypeService;
     }
 
     public MolecularMutationType toEntity(String molecularMutationTypeName)
     {
-        return molecularMutationService.getMolecularMutationTypeByName(molecularMutationTypeName);
+        return molecularMutationTypeService.getMolecularMutationTypeByNameFailingWhenNull(molecularMutationTypeName);
     }
 }

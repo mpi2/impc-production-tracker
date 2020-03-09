@@ -25,7 +25,7 @@ public class PrivacyMapper
 {
     private PrivacyService privacyService;
 
-    private static final String PRIVACY_NOT_FOUND_ERROR = "Privacy [%s] does not exist.";
+    private static final String PRIVACY_NOT_FOUND_ERROR = "Privacy '%s' does not exist.";
 
     public PrivacyMapper(PrivacyService privacyService)
     {

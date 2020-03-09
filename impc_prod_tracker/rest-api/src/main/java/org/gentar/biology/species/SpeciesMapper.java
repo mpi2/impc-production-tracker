@@ -1,5 +1,6 @@
 package org.gentar.biology.species;
 
+import org.gentar.exceptions.UserOperationFailedException;
 import org.springframework.stereotype.Component;
 
 import java.util.HashSet;
@@ -10,6 +11,8 @@ import java.util.Set;
 public class SpeciesMapper {
     private SpeciesService speciesService;
 
+    private static final String SPECIES_NOT_FOUND_ERROR = "Species '%s' does not exist.";
+
     public SpeciesMapper(SpeciesService speciesService)
     {
         this.speciesService = speciesService;
@@ -17,7 +20,12 @@ public class SpeciesMapper {
 
     public Species toEntity(String name)
     {
-        return speciesService.getSpeciesByName(name);
+        Species species = speciesService.getSpeciesByName(name);
+        if (species == null)
+        {
+            throw new UserOperationFailedException(String.format(SPECIES_NOT_FOUND_ERROR, name));
+        }
+        return species;
     }
 
     public Set<Species> toEntities(List<SpeciesDTO> speciesNames)

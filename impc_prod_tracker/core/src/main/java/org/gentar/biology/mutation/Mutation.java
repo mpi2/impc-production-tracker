@@ -59,7 +59,6 @@ public class Mutation extends BaseEntity
     @Column(unique = true)
     private Long imitsAlleleId;
 
-
     @ManyToOne(targetEntity= GeneticMutationType.class)
     private GeneticMutationType geneticMutationType;
 

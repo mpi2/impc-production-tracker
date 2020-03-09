@@ -10,7 +10,7 @@ public class StrainServiceImpl implements StrainService
     public StrainServiceImpl (StrainRepository strainRepository) { this.strainRepository = strainRepository; }
 
     @Override
-    public Strain getStrainByName (String name) { return strainRepository.findByName(name); }
+    public Strain getStrainByName (String name) { return strainRepository.findByNameIgnoreCase(name); }
 
     @Override
     public Strain getStrainById (Long id) { return strainRepository.findById(id).orElse(null); }

@@ -14,9 +14,14 @@ public class GeneServiceImpl implements GeneService
         this.geneRepository = geneRepository;
     }
 
-    public List<Gene> getGenesBySymbol(String symbol)
+    public List<Gene> getGenesBySymbolStartingWith(String symbol)
     {
         return geneRepository.findBySymbolStartingWith(symbol);
+    }
+
+    public Gene getGenesBySymbol(String symbol)
+    {
+        return geneRepository.findBySymbol(symbol);
     }
 
     public Gene getGeneByAccessionId(String accessionId)
