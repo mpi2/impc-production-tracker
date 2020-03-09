@@ -15,13 +15,10 @@
  *******************************************************************************/
 package org.gentar.biology.plan.attempt.crispr.reagent;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import org.gentar.BaseEntity;
-import org.gentar.biology.plan.attempt.crispr.CrisprAttempt;
 
 import javax.persistence.*;
-import java.util.Set;
 
 @NoArgsConstructor(access= AccessLevel.PRIVATE, force=true)
 @Data
@@ -38,8 +35,4 @@ public class Reagent extends BaseEntity
     @Column(columnDefinition = "TEXT")
     private String description;
 
-    @EqualsAndHashCode.Exclude
-    @ToString.Exclude
-    @ManyToMany(mappedBy = "reagents")
-    private Set<CrisprAttempt> crisprAttempts;
 }

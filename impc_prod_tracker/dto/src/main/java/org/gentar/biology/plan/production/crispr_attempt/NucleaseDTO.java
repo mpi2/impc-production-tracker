@@ -27,5 +27,6 @@ public class NucleaseDTO
     @JsonIgnore
     private Long crisprAttemptId;
     private String typeName;
+    private Double concentration;
     private String className;
 }

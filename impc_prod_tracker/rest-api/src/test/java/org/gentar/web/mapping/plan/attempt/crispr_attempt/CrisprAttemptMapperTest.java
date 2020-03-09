@@ -93,8 +93,12 @@ public class CrisprAttemptMapperTest
     private static final String NUCLEASE_TYPE_NAME = "NucleaseTypeName1";
     private static final Long NUCLEASE_ID1 = 1L;
     private static final Long NUCLEASE_ID2 = 2L;
+    private static final Double NUCLEASE_CONCENTRATION_1 = 30.0;
+    private static final Double NUCLEASE_CONCENTRATION_2 = 50.0;
     private static final Long MUTAGENESIS_DONOR_ID1 = 1L;
     private static final String MUTAGENESIS_DONOR_VECTOR_NAME = "Vector Name";
+    private static final Double MUTAGENESIS_DONOR_CONCENTRATION_1 = 30.0;
+    private static final Double MUTAGENESIS_DONOR_CONCENTRATION_2 = 40.0;
     private static final String MUTAGENESIS_DONOR_PREPARATION = "Preparation";
     private static final String MUTAGENESIS_DONOR_OLIGO_SEQUENCE_FA = "Oligosequence FA";
     private static final Long MUTAGENESIS_DONOR_ID2 = 2L;
@@ -102,6 +106,8 @@ public class CrisprAttemptMapperTest
     private static final Long REAGENT_ID_2 = 2L;
     private static final String REAGENT_NAME = "Reagent Name";
     private static final String REAGENT_DESCRIPTION = "Reagent description";
+    private static final double REAGENT_CONCENTRATION_1 = 20.0;
+    private static final double REAGENT_CONCENTRATION_2 = 40.0;
     private static final String GENOTYPE_PRIMER_NAME = "GenotypeName";
     private static final String GENOTYPE_PRIMER_SEQUENCE = "GenotypeSequence";
     private static final Long GENOTYPE_PRIMER_ID_1 = 1L;
@@ -510,15 +516,16 @@ public class CrisprAttemptMapperTest
     private void addNucleaseDTOs(CrisprAttemptDTO crisprAttemptDTO)
     {
         List<NucleaseDTO> nucleaseDTOS = new ArrayList<>();
-        nucleaseDTOS.add(buildNucleaseDTO(NUCLEASE_ID1));
-        nucleaseDTOS.add(buildNucleaseDTO(NUCLEASE_ID2));
+        nucleaseDTOS.add(buildNucleaseDTO(NUCLEASE_ID1, NUCLEASE_CONCENTRATION_1));
+        nucleaseDTOS.add(buildNucleaseDTO(NUCLEASE_ID2, NUCLEASE_CONCENTRATION_2));
         crisprAttemptDTO.setNucleaseDTOS(nucleaseDTOS);
     }
 
-    private NucleaseDTO buildNucleaseDTO(Long id)
+    private NucleaseDTO buildNucleaseDTO(Long id, Double concentration)
     {
         NucleaseDTO nucleaseDTO = new NucleaseDTO();
         nucleaseDTO.setId(id);
+        nucleaseDTO.setConcentration(concentration);
         nucleaseDTO.setTypeName(NUCLEASE_TYPE_NAME + id);
 
         return nucleaseDTO;
@@ -554,16 +561,17 @@ public class CrisprAttemptMapperTest
     {
         List<MutagenesisDonorDTO> mutagenesisDonorDTOS = new ArrayList<>();
         mutagenesisDonorDTOS.add(
-            buildMutagenesisDonorDTO(MUTAGENESIS_DONOR_ID1));
+                buildMutagenesisDonorDTO(MUTAGENESIS_DONOR_ID1, MUTAGENESIS_DONOR_CONCENTRATION_1));
         mutagenesisDonorDTOS.add(
-            buildMutagenesisDonorDTO(MUTAGENESIS_DONOR_ID2));
+                buildMutagenesisDonorDTO(MUTAGENESIS_DONOR_ID2, MUTAGENESIS_DONOR_CONCENTRATION_2));
         crisprAttemptDTO.setMutagenesisDonorDTOS(mutagenesisDonorDTOS);
     }
 
-    private MutagenesisDonorDTO buildMutagenesisDonorDTO(Long id)
+    private MutagenesisDonorDTO buildMutagenesisDonorDTO(Long id, Double concentration)
     {
         MutagenesisDonorDTO mutagenesisDonorDTO = new MutagenesisDonorDTO();
         mutagenesisDonorDTO.setId(id);
+        mutagenesisDonorDTO.setConcentration(concentration);
         mutagenesisDonorDTO.setPreparationTypeName(MUTAGENESIS_DONOR_PREPARATION + id);
         mutagenesisDonorDTO.setVectorName(MUTAGENESIS_DONOR_VECTOR_NAME  + id);
         mutagenesisDonorDTO.setOligoSequenceFasta(MUTAGENESIS_DONOR_OLIGO_SEQUENCE_FA  + id);
@@ -573,17 +581,18 @@ public class CrisprAttemptMapperTest
     private void addReagentDTOs(CrisprAttemptDTO crisprAttemptDTO)
     {
         List<ReagentDTO> reagentDTOS = new ArrayList<>();
-        reagentDTOS.add(buildReagentDTO(REAGENT_ID_1));
-        reagentDTOS.add(buildReagentDTO(REAGENT_ID_2));
+        reagentDTOS.add(buildReagentDTO(REAGENT_ID_1, REAGENT_CONCENTRATION_1));
+        reagentDTOS.add(buildReagentDTO(REAGENT_ID_2, REAGENT_CONCENTRATION_2));
         crisprAttemptDTO.setReagentDTOS(reagentDTOS);
     }
 
-    private ReagentDTO buildReagentDTO(Long id)
+    private ReagentDTO buildReagentDTO(Long id, Double concentration)
     {
         ReagentDTO reagentDTO = new ReagentDTO();
         reagentDTO.setId(id);
         reagentDTO.setName(REAGENT_NAME + id);
         reagentDTO.setDescription(REAGENT_DESCRIPTION + id);
+        reagentDTO.setConcentration(concentration);
         return reagentDTO;
     }
 

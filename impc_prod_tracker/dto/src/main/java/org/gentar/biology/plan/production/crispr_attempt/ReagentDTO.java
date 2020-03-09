@@ -30,5 +30,6 @@ public class ReagentDTO
     @JsonIgnore
     private Long crispr_attempt_plan_id;
     private String name;
+    private Double concentration;
     private String description;
 }
