@@ -19,6 +19,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import org.gentar.biology.mutation.categorizarion.MutationCategorization;
 import org.gentar.biology.mutation.genetic_type.GeneticMutationType;
+import org.gentar.biology.mutation.qc_results.MutationQcResult;
 import org.hibernate.annotations.Type;
 import org.gentar.BaseEntity;
 import org.gentar.biology.mutation.genbank_file.GenbankFile;
@@ -114,6 +115,10 @@ public class Mutation extends BaseEntity
             inverseJoinColumns = @JoinColumn(name = "mutation_categorization_id"))
     private Set<MutationCategorization> mutationCategorizations;
 
-
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
+    @OneToMany
+    @JoinColumn(name = "mutation_id")
+    private Set<MutationQcResult> mutationQcResults;
 
 }
