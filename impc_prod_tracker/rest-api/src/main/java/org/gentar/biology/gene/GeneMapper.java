@@ -15,18 +15,15 @@
  *******************************************************************************/
 package org.gentar.biology.gene;
 
-import org.gentar.biology.gene.GeneDTO;
 import org.gentar.EntityMapper;
+import org.gentar.Mapper;
 import org.springframework.stereotype.Component;
-import org.gentar.biology.gene.Gene;
-
 import java.util.Collection;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 @Component
-public class GeneMapper
+public class GeneMapper implements Mapper<Gene, GeneDTO>
 {
     private EntityMapper entityMapper;
     private static final String MGI_URL = "http://www.mousephenotype.org/data/genes/";
@@ -41,11 +38,6 @@ public class GeneMapper
         GeneDTO geneDTO = entityMapper.toTarget(gene, GeneDTO.class);
         geneDTO.setExternalLink(MGI_URL + gene.getAccId());
         return geneDTO;
-    }
-
-    public List<GeneDTO> toDtos(Collection<Gene> genes)
-    {
-        return entityMapper.toTargets(genes, GeneDTO.class);
     }
 
     public Gene toEntity(GeneDTO geneDTO)
