@@ -11,6 +11,7 @@ import org.gentar.biology.plan.engine.state.LateAdultPhenotypePlanState;
 import org.gentar.biology.plan.engine.state.PhenotypePlanState;
 import org.gentar.biology.plan.engine.events.ProductionPlanEvent;
 import org.gentar.biology.plan.engine.state.ProductionPlanState;
+import org.gentar.biology.plan.phenotyping.PhenotypingAttemptMapper;
 import org.gentar.biology.plan.production.crispr_attempt.CrisprAttemptDTO;
 import org.gentar.Mapper;
 import org.gentar.biology.plan.type.PlanType;
@@ -41,6 +42,7 @@ public class PlanMapper implements Mapper<Plan, PlanDTO>
 {
     private EntityMapper entityMapper;
     private CrisprAttemptMapper crisprAttemptMapper;
+    private PhenotypingAttemptMapper phenotypingAttemptMapper;
     private AttemptTypeMapper attemptTypeMapper;
     private FunderMapper funderMapper;
     private WorkUnitMapper workUnitMapper;
@@ -52,16 +54,20 @@ public class PlanMapper implements Mapper<Plan, PlanDTO>
     private static final String CRISPR_ATTEMPT_TYPE = "crispr";
 
     public PlanMapper(
-            EntityMapper entityMapper,
-            CrisprAttemptMapper crisprAttemptMapper,
-            AttemptTypeMapper attemptTypeMapper,
-            FunderMapper funderMapper,
-            WorkUnitMapper workUnitMapper,
-            WorkGroupMapper workGroupMapper, StatusMapper statusMapper,
-            PlanTypeMapper planTypeMapper, ProjectService projectService)
+        EntityMapper entityMapper,
+        CrisprAttemptMapper crisprAttemptMapper,
+        PhenotypingAttemptMapper phenotypingAttemptMapper,
+        AttemptTypeMapper attemptTypeMapper,
+        FunderMapper funderMapper,
+        WorkUnitMapper workUnitMapper,
+        WorkGroupMapper workGroupMapper,
+        StatusMapper statusMapper,
+        PlanTypeMapper planTypeMapper,
+        ProjectService projectService)
     {
         this.entityMapper = entityMapper;
         this.crisprAttemptMapper = crisprAttemptMapper;
+        this.phenotypingAttemptMapper = phenotypingAttemptMapper;
         this.attemptTypeMapper = attemptTypeMapper;
         this.funderMapper = funderMapper;
         this.workUnitMapper = workUnitMapper;
@@ -99,19 +105,25 @@ public class PlanMapper implements Mapper<Plan, PlanDTO>
 
     private void addAttempt(PlanDTO planDTO, Plan plan)
     {
-        AttemptType attemptType = plan.getAttemptType();
-        String attemptTypeName = attemptType == null ? "Not defined" : attemptType.getName();
+        PlanType planType = plan.getPlanType();
+        if ("production".equals(planType.getName()))
+        {
+            AttemptType attemptType = plan.getAttemptType();
+            String attemptTypeName = attemptType == null ? "Not defined" : attemptType.getName();
 
-        if (CRISPR_ATTEMPT_TYPE.equalsIgnoreCase(attemptTypeName))
-        {
-            CrisprAttemptDTO crisprAttemptDTO =
-                crisprAttemptMapper.toDto(plan.getCrisprAttempt());
-            planDTO.setCrisprAttemptDTO(crisprAttemptDTO);
-        } else
-        {
-            //TODO: other attempts
+            if (CRISPR_ATTEMPT_TYPE.equalsIgnoreCase(attemptTypeName))
+            {
+                CrisprAttemptDTO crisprAttemptDTO = crisprAttemptMapper.toDto(plan.getCrisprAttempt());
+                planDTO.setCrisprAttemptDTO(crisprAttemptDTO);
+            } else
+            {
+                //TODO: other attempts
+            }
         }
-
+        else if ("phenotyping".equals(planType.getName()))
+        {
+            planDTO.setPhenotypingAttemptDTO(phenotypingAttemptMapper.toDto(plan.getPhenotypingAttempt()));
+        }
     }
 
     @Override
