@@ -44,8 +44,8 @@ services:
 
 stages:
    - build
-   - sandbox-deploy
-   - dev-deploy
+   # - sandbox-deploy
+   # - dev-deploy
 
 
 
