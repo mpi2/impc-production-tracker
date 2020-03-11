@@ -1,6 +1,8 @@
 package org.gentar.biology.mutation;
 
+import org.gentar.Mapper;
 import org.gentar.biology.mutation.categorizarion.MutationCategorizationService;
+import org.gentar.biology.mutation.categorizarion.type.MutationCategorizationType;
 import org.springframework.stereotype.Component;
 import org.gentar.biology.mutation.categorizarion.MutationCategorization;
 import org.gentar.EntityMapper;
@@ -8,7 +10,7 @@ import org.gentar.EntityMapper;
 import java.util.*;
 
 @Component
-public class MutationCategorizationMapper
+public class MutationCategorizationMapper implements Mapper<MutationCategorization, MutationCategorizationDTO>
 {
     private EntityMapper entityMapper;
     private MutationCategorizationService mutationCategorizationService;
@@ -24,23 +26,15 @@ public class MutationCategorizationMapper
         return entityMapper.toTarget(mutationCategorization, MutationCategorizationDTO.class);
     }
 
-    public List<MutationCategorizationDTO> toDtos(Collection<MutationCategorization> mutationCategorizations)
-    {
-        return entityMapper.toTargets(mutationCategorizations, MutationCategorizationDTO.class);
-    }
-
     public MutationCategorization toEntity(MutationCategorizationDTO mutationCategorizationDTO)
     {
-        return mutationCategorizationService.getMutationCategorizationByNameAndTypeFailingWhenNull(mutationCategorizationDTO.getName(), mutationCategorizationDTO.getType());
-    }
-
-    public Set<MutationCategorization> toEntities(Collection<MutationCategorizationDTO> mutationCategorizationDTOS)
-    {
-        Set<MutationCategorization> mutationCategorizations = new HashSet<>();
-        if (mutationCategorizationDTOS != null)
+        MutationCategorization mutationCategorization = entityMapper.toTarget(mutationCategorizationDTO, MutationCategorization.class);
+        String mutationCategorizationTypeName = mutationCategorizationDTO.getMutationCategorizationTypeName();
+        if (mutationCategorizationTypeName != null)
         {
-            mutationCategorizationDTOS.forEach(x -> mutationCategorizations.add(toEntity(x)));
+            MutationCategorizationType mutationCategorizationType = mutationCategorizationService.getMutationCategorizationTypeByName(mutationCategorizationTypeName);
+            mutationCategorization.setMutationCategorizationType(mutationCategorizationType);
         }
-        return mutationCategorizations;
+        return  mutationCategorization;
     }
 }
