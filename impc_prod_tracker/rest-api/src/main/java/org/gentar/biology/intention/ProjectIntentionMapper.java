@@ -16,6 +16,7 @@
 package org.gentar.biology.intention;
 
 import org.gentar.biology.gene.ProjectIntentionGeneDTO;
+import org.gentar.biology.mutation.categorizarion.MutationCategorization;
 import org.gentar.biology.sequence.ProjectIntentionSequenceDTO;
 import org.gentar.EntityMapper;
 import org.gentar.biology.mutation.MutationCategorizationMapper;
@@ -25,10 +26,7 @@ import org.gentar.biology.intention.project_intention.ProjectIntention;
 import org.gentar.biology.intention.project_intention_gene.ProjectIntentionGene;
 import org.gentar.biology.intention.project_intention_sequence.ProjectIntentionSequence;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @Component
 public class ProjectIntentionMapper
@@ -112,8 +110,9 @@ public class ProjectIntentionMapper
             entityMapper.toTarget(projectIntentionDTO, ProjectIntention.class);
         projectIntention.setMolecularMutationType(
             molecularMutationTypeMapper.toEntity(projectIntentionDTO.getMolecularMutationTypeName()));
-        projectIntention.setMutationCategorizations(
-            mutationCategorizationMapper.toEntities(projectIntentionDTO.getMutationCategorizationDTOS()));
+        Set<MutationCategorization> mutationCategorizations =
+                new HashSet<>(mutationCategorizationMapper.toEntities(projectIntentionDTO.getMutationCategorizationDTOS()));
+        projectIntention.setMutationCategorizations(mutationCategorizations);
         setProjectIntentionAttributes(projectIntention, projectIntentionDTO);
         return projectIntention;
     }

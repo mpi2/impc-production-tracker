@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import org.gentar.BaseEntity;
 import org.gentar.biology.intention.project_intention.ProjectIntention;
+import org.gentar.biology.mutation.categorizarion.type.MutationCategorizationType;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.Set;
@@ -24,8 +26,8 @@ public class MutationCategorization extends BaseEntity
 
     private String description;
 
-    @NotNull
-    private String type;
+    @ManyToOne(targetEntity= MutationCategorizationType.class)
+    private MutationCategorizationType mutationCategorizationType;
 
     @EqualsAndHashCode.Exclude
     @ToString.Exclude

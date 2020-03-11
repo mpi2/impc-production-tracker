@@ -1,5 +1,6 @@
 package org.gentar.biology.mutation;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 
 @Data
@@ -7,5 +8,7 @@ public class MutationCategorizationDTO
 {
     private String name;
     private String description;
-    private String type;
+
+    @JsonProperty("typeName")
+    private String mutationCategorizationTypeName;
 }
