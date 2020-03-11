@@ -21,7 +21,9 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+import org.gentar.biology.mutation.Mutation;
 import org.gentar.biology.outcome.Outcome;
+import org.gentar.biology.plan.plan_starting_point.PlanStartingPoint;
 import org.gentar.biology.plan.type.PlanType;
 import org.gentar.organization.work_group.WorkGroup;
 import org.gentar.security.abac.Resource;
@@ -117,6 +119,10 @@ public class Plan extends BaseEntity  implements Resource<Plan>, ProcessData
     @OneToMany
     @JoinColumn(name = "plan_id")
     private Set<Outcome> outcomes;
+
+    @OneToMany
+    @JoinColumn(name = "plan_id")
+    private Set<PlanStartingPoint> planStartingPoints;
 
     // Copy Constructor
     public Plan(Plan plan)

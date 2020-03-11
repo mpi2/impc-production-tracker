@@ -38,7 +38,7 @@ public class PhenotypingAttempt extends BaseEntity
     // TODO Need to ensure this field is unique in the Java project
     // or restructure the data model. @Column(unique = true) does not
     // work here because early and late phenotyping can be applied to the same colony.
-    // @Column(unique = true)
+    @Column(unique = true)
     private String phenotypingExternalRef;
 
     @NotNull
