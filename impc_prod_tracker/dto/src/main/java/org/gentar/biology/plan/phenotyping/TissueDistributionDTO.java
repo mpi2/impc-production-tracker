@@ -26,6 +26,6 @@ public class TissueDistributionDTO
     private Long id;
     private LocalDateTime startDate;
     private LocalDateTime endDate;
-    private String centreName;
+    private String workUnitName;
     private String materialDepositedTypeName;
 }
