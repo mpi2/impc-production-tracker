@@ -60,15 +60,15 @@ public class PlanDTO extends RepresentationModel
     private String attemptTypeName;
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    @JsonProperty("crisprAttemptAttributes")
+    @JsonProperty("crisprAttempt")
     private CrisprAttemptDTO crisprAttemptDTO;
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    @JsonProperty("breedingAttemptAttributes")
+    @JsonProperty("breedingAttempt")
     private BreedingAttemptDTO breedingAttemptDTO;
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    @JsonProperty("phenotypingAttemptAttributes")
+    @JsonProperty("phenotypingAttempt")
     private PhenotypingAttemptDTO phenotypingAttemptDTO;
 
     @JsonProperty("statusTransition")

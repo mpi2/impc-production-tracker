@@ -20,14 +20,12 @@ import lombok.Data;
 import java.time.LocalDateTime;
 
 @Data
-public class TissueDistributionCentreDTO
+public class TissueDistributionDTO
 {
     @JsonIgnore
     private Long id;
-    @JsonIgnore
-    private Long phenotyping_attempt_plan_id;
     private LocalDateTime startDate;
     private LocalDateTime endDate;
     private String centreName;
-    private String materialTypeName;
+    private String materialDepositedTypeName;
 }
