@@ -10,13 +10,18 @@ public class MutationMapper implements Mapper<Mutation, MutationDTO>
 {
     private EntityMapper entityMapper;
     private MutationQCResultMapper mutationQCResultMapper;
+    private MutationCategorizationMapper mutationCategorizationMapper;
     private GeneMapper geneMapper;
 
     public MutationMapper(
-        EntityMapper entityMapper, MutationQCResultMapper mutationQCResultMapper, GeneMapper geneMapper)
+        EntityMapper entityMapper,
+        MutationQCResultMapper mutationQCResultMapper,
+        MutationCategorizationMapper mutationCategorizationMapper,
+        GeneMapper geneMapper)
     {
         this.entityMapper = entityMapper;
         this.mutationQCResultMapper = mutationQCResultMapper;
+        this.mutationCategorizationMapper = mutationCategorizationMapper;
         this.geneMapper = geneMapper;
     }
 
@@ -26,6 +31,8 @@ public class MutationMapper implements Mapper<Mutation, MutationDTO>
         MutationDTO mutationDTO = entityMapper.toTarget(entity, MutationDTO.class);
         mutationDTO.setMutationQCResultDTOs(mutationQCResultMapper.toDtos(entity.getMutationQcResults()));
         mutationDTO.setGeneDTOS(geneMapper.toDtos(entity.getGenes()));
+        mutationDTO.setMutationCategorizationDTOS(
+            mutationCategorizationMapper.toDtos(entity.getMutationCategorizations()));
         return mutationDTO;
     }
 

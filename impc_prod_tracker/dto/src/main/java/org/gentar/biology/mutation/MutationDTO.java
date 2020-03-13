@@ -27,4 +27,6 @@ public class MutationDTO
     private List<MutationQCResultDTO> mutationQCResultDTOs;
     @JsonProperty("genes")
     private List<GeneDTO> geneDTOS;
+    @JsonProperty("mutationCategorizations")
+    private List<MutationCategorizationDTO> mutationCategorizationDTOS;
 }
