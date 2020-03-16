@@ -13,18 +13,37 @@ import java.util.List;
 public enum ProductionPlanEvent implements ProcessEvent
 {
     abortWhenInProgress(
-        "Abort plan in MI In Progress",
-        ProductionPlanState.MicroInjectionInProgress,
-        ProductionPlanState.Aborted,
-        true,
-        null)
-        {
-            @Override
-            public Class<? extends Processor> getNextStepProcessor()
+            "Abort plan in MI In Progress",
+            ProductionPlanState.MicroInjectionInProgress,
+            ProductionPlanState.Aborted,
+            true,
+            null)
             {
-                return PlanAbortProcessor.class;
-            }
-        },
+                @Override
+                public Class<? extends Processor> getNextStepProcessor()
+                {
+                    return PlanAbortProcessor.class;
+                }
+            },
+    abortWhenCreated(
+            "Abort a plan that has been created",
+            ProductionPlanState.PlanCreated,
+            ProductionPlanState.Aborted,
+            true,
+            null)
+            {
+                @Override
+                public Class<? extends Processor> getNextStepProcessor()
+                {
+                    return PlanAbortProcessor.class;
+                }
+            },
+    inProgress(
+            "Attempt in progress",
+            ProductionPlanState.PlanCreated,
+            ProductionPlanState.MicroInjectionInProgress,
+            false,
+            "executed by the system when details of the attempt are registered"),
     embryosProduced(
             "Embryos produced from the MI",
             ProductionPlanState.MicroInjectionInProgress,
@@ -40,7 +59,7 @@ public enum ProductionPlanEvent implements ProcessEvent
     reverseAbortion(
             "Reverse abortion",
             ProductionPlanState.Aborted,
-            ProductionPlanState.MicroInjectionInProgress,
+            ProductionPlanState.PlanCreated,
             true,
             null)
             {

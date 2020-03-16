@@ -7,6 +7,7 @@ import java.util.List;
 
 public enum ProductionPlanState implements ProcessState
 {
+    PlanCreated("Plan Created"),
     MicroInjectionInProgress("Micro-injection In Progress"),
     EmbryosProduced("Embryos produced"),
     FounderObtained("Founder obtained"),
