@@ -1,12 +1,15 @@
 package org.gentar.biology.status;
 
 import org.gentar.Mapper;
+import org.gentar.exceptions.UserOperationFailedException;
 import org.springframework.stereotype.Component;
 
 @Component
 public class StatusMapper implements Mapper<Status, String>
 {
     private StatusService statusService;
+
+    private static final String STATUS_NOT_FOUND_ERROR = "Status '%s' does not exist.";
 
     public StatusMapper(StatusService statusService)
     {
@@ -30,8 +33,7 @@ public class StatusMapper implements Mapper<Status, String>
         Status status = statusService.getStatusByName(name);
         if (status == null)
         {
-           status = new Status();
-            status.setName(name);
+            throw new UserOperationFailedException(String.format(STATUS_NOT_FOUND_ERROR, status));
         }
         return status;
     }

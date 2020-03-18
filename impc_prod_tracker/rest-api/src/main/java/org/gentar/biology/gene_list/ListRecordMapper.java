@@ -20,7 +20,6 @@ import org.gentar.Mapper;
 import org.gentar.biology.gene_list.record.GeneByListRecord;
 import org.gentar.biology.gene_list.record.ListRecord;
 import org.springframework.stereotype.Component;
-import org.gentar.biology.project.assignment_status.AssignmentStatus;
 import org.gentar.biology.project.Project;
 import java.util.ArrayList;
 import java.util.Collection;

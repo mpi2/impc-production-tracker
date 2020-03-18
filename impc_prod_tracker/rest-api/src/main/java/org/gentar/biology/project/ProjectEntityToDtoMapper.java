@@ -16,7 +16,6 @@
 package org.gentar.biology.project;
 
 import org.gentar.biology.intention.ProjectIntentionDTO;
-import org.gentar.biology.species.SpeciesDTO;
 import org.gentar.biology.status_stamps.StatusStampsDTO;
 import org.gentar.EntityMapper;
 import org.gentar.organization.work_group.WorkGroup;
@@ -103,17 +102,15 @@ public class ProjectEntityToDtoMapper
 
     private void addSpeciesDTO(Project project, ProjectDTO projectDTO)
     {
-        List<SpeciesDTO> speciesDTOs = new ArrayList<>();
+        List<String> speciesNames = new ArrayList<>();
         if (project.getSpecies() != null)
         {
             project.getSpecies().forEach(x ->
             {
-                SpeciesDTO speciesDTO = new SpeciesDTO();
-                speciesDTO.setSpeciesName(x.getName());
-                speciesDTOs.add(speciesDTO);
+                speciesNames.add(x.getName());
             });
         }
-        projectDTO.setSpeciesNames(speciesDTOs);
+        projectDTO.setSpeciesNames(speciesNames);
     }
 
     private void addStatusStampsDTO(Project project, ProjectDTO projectDTO)

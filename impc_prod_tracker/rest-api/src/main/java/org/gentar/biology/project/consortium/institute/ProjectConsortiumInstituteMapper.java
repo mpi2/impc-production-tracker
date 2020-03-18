@@ -1,54 +1,63 @@
 package org.gentar.biology.project.consortium.institute;
 
+import org.gentar.Mapper;
+import org.gentar.exceptions.UserOperationFailedException;
 import org.gentar.organization.institute.InstituteService;
-import org.gentar.biology.project.ProjectConsortiumInstituteDTO;
-import org.gentar.EntityMapper;
 import org.springframework.stereotype.Component;
 import org.gentar.organization.institute.Institute;
 import java.util.*;
 
 @Component
-public class ProjectConsortiumInstituteMapper {
-    private EntityMapper entityMapper;
+public class ProjectConsortiumInstituteMapper implements Mapper<Institute, String>
+{
     private InstituteService instituteService;
 
-    public ProjectConsortiumInstituteMapper(EntityMapper entityMapper, InstituteService instituteService)
+    private static final String INSTITUTE_NOT_FOUND_ERROR = "Institute name '%s' does not exist.";
+
+    public ProjectConsortiumInstituteMapper(InstituteService instituteService)
     {
-        this.entityMapper = entityMapper;
         this.instituteService = instituteService;
     }
 
-    public Institute toEntity(ProjectConsortiumInstituteDTO projectConsortiumInstituteDTO)
+    public Institute toEntity(String projectConsortiumInstitute)
     {
-        String instituteName = projectConsortiumInstituteDTO.getInstituteName();
-        Institute institute = instituteService.getInstituteByNameOrThrowException(instituteName);
+        Institute institute = instituteService.getInstituteByNameOrThrowException(projectConsortiumInstitute);
+
+        if (institute == null)
+        {
+            throw new UserOperationFailedException(String.format(INSTITUTE_NOT_FOUND_ERROR, institute));
+        }
+
         return institute;
     }
 
-    public Set<Institute> toEntities(Collection<ProjectConsortiumInstituteDTO> projectConsortiumInstituteDTOS)
+    public Set<Institute> toEntities(Collection<String> projectConsortiumInstitutes)
     {
         Set<Institute> institutes = new HashSet<>();
-        if (projectConsortiumInstituteDTOS != null)
+        if (projectConsortiumInstitutes != null)
         {
-            projectConsortiumInstituteDTOS.forEach(projectConsortiumInstituteDTO -> institutes.add(toEntity(projectConsortiumInstituteDTO)));
+            projectConsortiumInstitutes.forEach(projectConsortiumInstitute -> institutes.add(toEntity(projectConsortiumInstitute)));
         }
         return institutes;
     }
 
-    public ProjectConsortiumInstituteDTO toDto(Institute institute)
+    public String toDto(Institute institute)
     {
-        ProjectConsortiumInstituteDTO projectConsortiumInstituteDTO = entityMapper.toTarget(institute, ProjectConsortiumInstituteDTO.class);
-
-        return projectConsortiumInstituteDTO;
+        String name = null;
+        if (institute != null)
+        {
+            name = institute.getName();
+        }
+        return name;
     }
 
-    public List<ProjectConsortiumInstituteDTO> toDtos(Collection<Institute> institutes)
+    public List<String> toDtos(Collection<Institute> institutes)
     {
-        List<ProjectConsortiumInstituteDTO> instituteDTOS = new ArrayList<>();
+        List<String> instituteNames = new ArrayList<>();
         if (institutes != null)
         {
-            institutes.forEach(x -> instituteDTOS.add(toDto(x)));
+            institutes.forEach(x -> instituteNames.add(toDto(x)));
         }
-        return instituteDTOS;
+        return instituteNames;
     }
 }

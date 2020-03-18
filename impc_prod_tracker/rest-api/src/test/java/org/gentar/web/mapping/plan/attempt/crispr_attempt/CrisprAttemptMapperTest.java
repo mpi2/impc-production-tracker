@@ -9,7 +9,6 @@ import org.gentar.biology.plan.production.crispr_attempt.GuideDTO;
 import org.gentar.biology.plan.production.crispr_attempt.MutagenesisDonorDTO;
 import org.gentar.biology.plan.production.crispr_attempt.NucleaseDTO;
 import org.gentar.biology.plan.production.crispr_attempt.ReagentDTO;
-import org.gentar.biology.strain.StrainDTO;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -195,8 +194,8 @@ public class CrisprAttemptMapperTest
             "Assay NumNhejG0Mutants",
             crisprAttemptDTO.getAssay().getNumNhejG0Mutants(),
             is(NUM_NHEJ_G0_MUTANTS));
-        assertThat("Strain", crisprAttemptDTO.getStrain(), notNullValue());
-        assertThat("Strain Name", crisprAttemptDTO.getStrain().getStrainName(), is(STRAIN_NAME));
+        assertThat("Strain", crisprAttemptDTO.getStrainName(), notNullValue());
+        assertThat("Strain Name", crisprAttemptDTO.getStrainName(), is(STRAIN_NAME));
         assertThat("Guides", crisprAttemptDTO.getGuideDTOS(), notNullValue());
 
         GuideDTO guideDTO1 = findGuideDtoById(crisprAttemptDTO.getGuideDTOS(), GUIDE_ID_1);
@@ -647,9 +646,7 @@ public class CrisprAttemptMapperTest
         assayDTO.setNumHdrG0MutantsSubsetDonorsInserted(NUM_HDR_G0_MUTANTS_SUBSET_DONORS_INSERTED);
         assayDTO.setNumNhejG0Mutants(NUM_NHEJ_G0_MUTANTS);
         crisprAttemptDTO.setAssay(assayDTO);
-        StrainDTO strainDTO = new StrainDTO();
-        strainDTO.setStrainName(STRAIN_NAME);
-        crisprAttemptDTO.setStrain(strainDTO);
+        crisprAttemptDTO.setStrainName(STRAIN_NAME);
 
         return crisprAttemptDTO;
     }

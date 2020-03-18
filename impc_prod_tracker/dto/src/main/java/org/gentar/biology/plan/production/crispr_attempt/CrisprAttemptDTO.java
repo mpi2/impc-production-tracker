@@ -19,7 +19,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
-import org.gentar.biology.strain.StrainDTO;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -70,6 +69,6 @@ public class CrisprAttemptDTO
     @JsonProperty("assayAttributes")
     private AssayDTO assay;
 
-    @JsonProperty("strainInjectedAttributes")
-    private StrainDTO strain;
+    @JsonProperty("strainInjectedName")
+    private String strainName;
 }

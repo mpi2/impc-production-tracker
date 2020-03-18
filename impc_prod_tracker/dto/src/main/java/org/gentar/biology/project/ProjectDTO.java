@@ -21,7 +21,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.hateoas.RepresentationModel;
 import org.gentar.biology.intention.ProjectIntentionDTO;
-import org.gentar.biology.species.SpeciesDTO;
 import org.gentar.biology.status_stamps.StatusStampsDTO;
 import org.springframework.hateoas.server.core.Relation;
 import java.util.List;
@@ -57,7 +56,7 @@ public class ProjectDTO extends RepresentationModel
     private String privacyName;
 
     @JsonProperty("speciesNames")
-    private List<SpeciesDTO> speciesNames;
+    private List<String> speciesNames;
 
     @JsonProperty("consortia")
     private List<ProjectConsortiumDTO> projectConsortiumDTOS;

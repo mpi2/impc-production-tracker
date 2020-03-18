@@ -15,6 +15,7 @@
  */
 package org.gentar.biology.plan.attempt.crispr_attempt;
 
+import org.gentar.Mapper;
 import org.gentar.biology.plan.attempt.crispr.CrisprAttemptService;
 import org.gentar.biology.plan.production.crispr_attempt.CrisprAttemptDTO;
 import org.modelmapper.ModelMapper;
@@ -31,7 +32,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Component
-public class CrisprAttemptMapper
+public class CrisprAttemptMapper implements Mapper<CrisprAttempt, CrisprAttemptDTO>
 {
     private ModelMapper modelMapper;
     private GuideMapper guideMapper;
@@ -100,7 +101,7 @@ public class CrisprAttemptMapper
 
     private void setStrain(CrisprAttempt crisprAttempt, CrisprAttemptDTO crisprAttemptDTO)
     {
-        Strain strain = strainMapper.toEntity(crisprAttemptDTO.getStrain());
+        Strain strain = strainMapper.toEntity(crisprAttemptDTO.getStrainName());
         crisprAttempt.setStrain(strain);
     }
 

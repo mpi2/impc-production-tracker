@@ -1,8 +1,9 @@
 package org.gentar.organization.person;
 
+import org.gentar.EntityMapper;
+import org.gentar.Mapper;
 import org.gentar.organization.work_unit.WorkUnitService;
 import org.gentar.organization.role.RoleService;
-import org.gentar.organization.person.PersonRoleWorkUnitDTO;
 import org.springframework.stereotype.Component;
 import org.gentar.organization.person.associations.PersonRoleWorkUnit;
 import java.util.Collection;
@@ -10,15 +11,27 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Component
-public class PersonRoleWorkUnitMapper
+public class PersonRoleWorkUnitMapper implements Mapper<PersonRoleWorkUnit, PersonRoleWorkUnitDTO>
 {
     private WorkUnitService workUnitService;
     private RoleService roleService;
+    private EntityMapper entityMapper;
 
-    public PersonRoleWorkUnitMapper(WorkUnitService workUnitService, RoleService roleService)
+    public PersonRoleWorkUnitMapper(WorkUnitService workUnitService, RoleService roleService, EntityMapper entityMapper)
     {
         this.workUnitService = workUnitService;
         this.roleService = roleService;
+        this.entityMapper = entityMapper;
+    }
+
+    @Override
+    public PersonRoleWorkUnitDTO toDto(PersonRoleWorkUnit entity) {
+        PersonRoleWorkUnitDTO personRoleWorkUnitDTO = entityMapper.toTarget(entity, PersonRoleWorkUnitDTO.class);
+        personRoleWorkUnitDTO.setId(entity.getId());
+        personRoleWorkUnitDTO.setWorkUnitName(entity.getWorkUnit().getName());
+        personRoleWorkUnitDTO.setRoleName(entity.getRole().getName());
+
+        return personRoleWorkUnitDTO;
     }
 
     public PersonRoleWorkUnit toEntity(PersonRoleWorkUnitDTO personRoleWorkUnitDTO)

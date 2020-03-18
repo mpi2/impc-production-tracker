@@ -16,53 +16,42 @@
 package org.gentar.biology.plan.attempt.crispr_attempt;
 
 import org.gentar.Mapper;
-import org.gentar.biology.strain.StrainDTO;
-import org.gentar.EntityMapper;
 import org.gentar.biology.strain.StrainService;
 import org.gentar.exceptions.UserOperationFailedException;
 import org.springframework.stereotype.Component;
 import org.gentar.biology.strain.Strain;
-import org.gentar.biology.strain.StrainRepository;
 
 @Component
-public class StrainMapper implements Mapper<Strain, StrainDTO>
+public class StrainMapper implements Mapper<Strain, String>
 {
-    private EntityMapper entityMapper;
     private StrainService strainService;
 
     private static final String STRAIN_NOT_FOUND_ERROR = "Strain '%s' does not exist.";
 
-    public StrainMapper(EntityMapper entityMapper, StrainService strainService)
+    public StrainMapper(StrainService strainService)
     {
-        this.entityMapper = entityMapper;
         this.strainService = strainService;
     }
 
     @Override
-    public StrainDTO toDto(Strain entity)
+    public String toDto(Strain entity)
     {
-        return entityMapper.toTarget(entity, StrainDTO.class);
+        String name = null;
+        if (entity != null)
+        {
+            name = entity.getName();
+        }
+        return name;
     }
 
-    public Strain toEntity(StrainDTO strainDTO)
+    public Strain toEntity(String strainName)
     {
-        Strain strain = strainService.getStrainByName(strainDTO.getStrainName());
+        Strain strain = strainService.getStrainByName(strainName);
 
         if (strain == null)
         {
-            throw new UserOperationFailedException(String.format(STRAIN_NOT_FOUND_ERROR, strainDTO.getStrainName()));
+            throw new UserOperationFailedException(String.format(STRAIN_NOT_FOUND_ERROR, strainName));
         }
-
-//        if (strain != null && strain.getStrainTypes() == null && strain.getId() != null)
-//        {
-//            Strain persisted = strainService.getStrainById(strain.getId());
-//
-//            if (persisted != null)
-//            {
-//                strain.setStrainTypes(persisted.getStrainTypes());
-//            }
-//
-//        }
 
         return strain;
     }

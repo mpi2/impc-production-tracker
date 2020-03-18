@@ -15,9 +15,10 @@
  */
 package org.gentar.organization.person;
 
+import org.gentar.EntityMapper;
+import org.gentar.Mapper;
 import org.gentar.organization.role.RoleService;
 import org.gentar.organization.consortium.ConsortiumService;
-import org.gentar.organization.person.PersonRoleConsortiumDTO;
 import org.springframework.stereotype.Component;
 import org.gentar.organization.person.associations.PersonRoleConsortium;
 import java.util.Collection;
@@ -25,15 +26,27 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Component
-public class PersonRoleConsortiumMapper
+public class PersonRoleConsortiumMapper implements Mapper<PersonRoleConsortium, PersonRoleConsortiumDTO>
 {
     private ConsortiumService consortiumService;
     private RoleService roleService;
+    private EntityMapper entityMapper;
 
-    public PersonRoleConsortiumMapper(ConsortiumService consortiumService, RoleService roleService)
+    public PersonRoleConsortiumMapper(ConsortiumService consortiumService, RoleService roleService, EntityMapper entityMapper)
     {
         this.consortiumService = consortiumService;
         this.roleService = roleService;
+        this.entityMapper = entityMapper;
+    }
+
+    @Override
+    public PersonRoleConsortiumDTO toDto(PersonRoleConsortium entity) {
+        PersonRoleConsortiumDTO personRoleConsortiumDTO = entityMapper.toTarget(entity, PersonRoleConsortiumDTO.class);
+        personRoleConsortiumDTO.setId(entity.getId());
+        personRoleConsortiumDTO.setConsortiumName(entity.getConsortium().getName());
+        personRoleConsortiumDTO.setRoleName(entity.getRole().getName());
+
+        return personRoleConsortiumDTO;
     }
 
     public PersonRoleConsortium toEntity(PersonRoleConsortiumDTO personRoleConsortiumDTO)

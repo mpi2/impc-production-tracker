@@ -15,6 +15,7 @@
  *******************************************************************************/
 package org.gentar.biology.intention;
 
+import org.gentar.Mapper;
 import org.gentar.biology.gene.ProjectIntentionGeneDTO;
 import org.gentar.biology.mutation.categorizarion.MutationCategorization;
 import org.gentar.biology.sequence.ProjectIntentionSequenceDTO;
@@ -29,7 +30,7 @@ import org.gentar.biology.intention.project_intention_sequence.ProjectIntentionS
 import java.util.*;
 
 @Component
-public class ProjectIntentionMapper
+public class ProjectIntentionMapper implements Mapper<ProjectIntention, ProjectIntentionDTO>
 {
     private EntityMapper entityMapper;
     private MutationCategorizationMapper mutationCategorizationMapper;

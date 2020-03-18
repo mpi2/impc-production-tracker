@@ -1,5 +1,6 @@
 package org.gentar.biology.project;
 
+import org.gentar.Mapper;
 import org.gentar.biology.project.search.SearchReport;
 import org.gentar.common.filters.FilterDTO;
 import org.gentar.biology.project.search.SearchReportDTO;
@@ -12,7 +13,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 @Component
-public class SearchReportMapper
+public class SearchReportMapper implements Mapper<SearchReport, SearchReportDTO>
 {
     private ModelMapper modelMapper;
     private SearchResultMapper searchResultMapper;

@@ -15,6 +15,7 @@
  */
 package org.gentar.organization.person;
 
+import org.gentar.Mapper;
 import org.gentar.security.permissions.ActionPermission;
 import org.gentar.security.permissions.PermissionService;
 import org.gentar.EntityMapper;
@@ -27,7 +28,7 @@ import java.util.List;
 import java.util.Set;
 
 @Component
-public class PersonMapper
+public class PersonMapper implements Mapper<Person, PersonDTO>
 {
     private EntityMapper entityMapper;
     private PermissionService permissionService;

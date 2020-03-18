@@ -1,12 +1,15 @@
 package org.gentar.organization.work_group;
 
 import org.gentar.Mapper;
+import org.gentar.exceptions.UserOperationFailedException;
 import org.springframework.stereotype.Service;
 
 @Service
 public class WorkGroupMapper implements Mapper<WorkGroup, String>
 {
     private WorkGroupService workGroupService;
+
+    private static final String WORK_GROUP_NOT_FOUND_ERROR = "Work group name '%s' does not exist.";
 
     public WorkGroupMapper(WorkGroupService workGroupService)
     {
@@ -33,8 +36,7 @@ public class WorkGroupMapper implements Mapper<WorkGroup, String>
             workGroup = workGroupService.getWorkGroupByName(name);
             if (workGroup == null)
             {
-                workGroup = new WorkGroup();
-                workGroup.setName(name);
+                throw new UserOperationFailedException(String.format(WORK_GROUP_NOT_FOUND_ERROR, workGroup));
             }
         }
         return workGroup;

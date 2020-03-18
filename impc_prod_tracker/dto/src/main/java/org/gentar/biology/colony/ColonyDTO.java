@@ -1,12 +1,10 @@
 package org.gentar.biology.colony;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.gentar.biology.status_stamps.StatusStampsDTO;
-import org.gentar.biology.strain.StrainDTO;
 import org.gentar.common.state_machine.StatusTransitionDTO;
 
 import java.util.List;
@@ -23,8 +21,8 @@ public class ColonyDTO
     @JsonProperty("statusDates")
     private List<StatusStampsDTO> statusStampsDTOS;
 
-    @JsonProperty("backgroundStrain")
-    private StrainDTO strainDTO;
+    @JsonProperty("backgroundStrainName")
+    private String strainName;
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
     @JsonProperty("distributionCentresAttributes")

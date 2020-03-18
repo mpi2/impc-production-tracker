@@ -12,5 +12,5 @@ public class ProjectConsortiumDTO {
     private String consortiumName;
 
     @JsonProperty("institutes")
-    private List<ProjectConsortiumInstituteDTO> projectConsortiumInstituteDTOS;
+    private List<String> projectConsortiumInstituteNames;
 }

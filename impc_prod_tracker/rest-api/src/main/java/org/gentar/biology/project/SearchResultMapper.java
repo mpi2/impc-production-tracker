@@ -15,12 +15,13 @@
  *******************************************************************************/
 package org.gentar.biology.project;
 
+import org.gentar.Mapper;
 import org.gentar.biology.project.search.SearchResult;
 import org.gentar.biology.project.search.SearchResultDTO;
 import org.springframework.stereotype.Component;
 
 @Component
-public class SearchResultMapper
+public class SearchResultMapper implements Mapper<SearchResult, SearchResultDTO>
 {
     private ProjectEntityToDtoMapper projectEntityToDtoMapper;
 
