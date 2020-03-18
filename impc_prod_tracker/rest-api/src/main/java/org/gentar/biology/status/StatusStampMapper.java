@@ -3,7 +3,7 @@ package org.gentar.biology.status;
 import org.gentar.Mapper;
 import org.gentar.biology.status_stamps.StatusStampsDTO;
 import org.springframework.stereotype.Component;
-import org.gentar.biology.project.assignment_status.AssignmentStatusStamp;
+import org.gentar.biology.project.assignment.AssignmentStatusStamp;
 
 import java.util.ArrayList;
 import java.util.List;

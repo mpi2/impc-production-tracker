@@ -1,10 +1,9 @@
 package org.gentar.biology.gene_list;
 
 import org.gentar.Mapper;
-import org.gentar.biology.outcome.Outcome;
 import org.gentar.biology.plan.Plan;
 import org.gentar.biology.project.Project;
-import org.gentar.biology.project.assignment_status.AssignmentStatus;
+import org.gentar.biology.project.assignment.AssignmentStatus;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;

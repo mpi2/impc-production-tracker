@@ -1,4 +1,4 @@
-package org.gentar.biology.project.assignment_status;
+package org.gentar.biology.project.assignment;
 
 import org.springframework.data.repository.CrudRepository;
 

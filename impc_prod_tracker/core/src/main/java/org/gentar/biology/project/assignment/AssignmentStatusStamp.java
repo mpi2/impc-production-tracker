@@ -1,8 +1,7 @@
-package org.gentar.biology.project.assignment_status;
+package org.gentar.biology.project.assignment;
 
 import lombok.*;
 import org.gentar.BaseEntity;
-import org.gentar.biology.project.assignment_status.AssignmentStatus;
 import org.gentar.biology.project.Project;
 
 import javax.persistence.*;

@@ -24,7 +24,7 @@ import org.gentar.biology.sequence.type.SequenceTypeRepository;
 import org.gentar.organization.funder.FunderRepository;
 import org.springframework.stereotype.Component;
 import org.gentar.biology.mutation.genetic_type.GeneticMutationTypeRepository;
-import org.gentar.biology.project.assignment_status.AssignmentStatusRepository;
+import org.gentar.biology.project.assignment.AssignmentStatusRepository;
 import org.gentar.biology.plan.attempt.crispr.mutagenesis_donor.preparation_type.PreparationTypeRepository;
 import org.gentar.biology.mutation.molecular_type.MolecularMutationTypeRepository;
 import org.gentar.biology.plan.attempt.phenotyping.material_deposited_type.MaterialDepositedTypeRepository;
