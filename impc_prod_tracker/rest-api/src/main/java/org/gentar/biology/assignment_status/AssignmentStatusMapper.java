@@ -16,10 +16,10 @@
 package org.gentar.biology.assignment_status;
 
 import org.gentar.Mapper;
-import org.gentar.biology.project.assignment_status.AssignmentStatusService;
+import org.gentar.biology.project.assignment.AssignmentStatusService;
 import org.gentar.exceptions.UserOperationFailedException;
 import org.springframework.stereotype.Component;
-import org.gentar.biology.project.assignment_status.AssignmentStatus;
+import org.gentar.biology.project.assignment.AssignmentStatus;
 
 
 @Component

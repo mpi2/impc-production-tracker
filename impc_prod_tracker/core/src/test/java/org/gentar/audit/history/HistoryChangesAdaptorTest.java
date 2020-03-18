@@ -1,8 +1,6 @@
 package org.gentar.audit.history;
 
-import org.gentar.audit.history.ChangeDescription;
-import org.gentar.audit.history.HistoryChangesAdaptor;
-import org.gentar.biology.project.assignment_status.AssignmentStatus;
+import org.gentar.biology.project.assignment.AssignmentStatus;
 import org.gentar.biology.plan.Plan;
 import org.gentar.biology.project.Project;
 import org.junit.jupiter.api.Test;

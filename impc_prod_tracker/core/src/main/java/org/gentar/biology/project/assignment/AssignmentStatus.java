@@ -13,9 +13,10 @@
  language governing permissions and limitations under the
  License.
  */
-package org.gentar.biology.project.assignment_status;
+package org.gentar.biology.project.assignment;
 
 import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.gentar.BaseEntity;
@@ -26,6 +27,7 @@ import javax.persistence.Id;
 import javax.persistence.SequenceGenerator;
 
 @NoArgsConstructor(access= AccessLevel.PUBLIC, force=true)
+@AllArgsConstructor
 @Data
 @Entity
 public class AssignmentStatus extends BaseEntity

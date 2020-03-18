@@ -29,7 +29,7 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Component;
 import org.gentar.audit.history.History;
 import org.gentar.biology.project.engine.ProjectCreator;
-import org.gentar.biology.project.assignment_status.AssignmentStatus;
+import org.gentar.biology.project.assignment.AssignmentStatus;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;

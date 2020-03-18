@@ -13,9 +13,11 @@
  language governing permissions and limitations under the
  License.
  */
-package org.gentar.biology.project.assignment_status;
+package org.gentar.biology.project.assignment;
 
-public interface AssignmentStatusService
+import org.springframework.data.repository.CrudRepository;
+
+public interface AssignmentStatusRepository extends CrudRepository<AssignmentStatus, Long>
 {
-    AssignmentStatus getAssignmentStatusByName(String name);
+    AssignmentStatus findFirstByNameIgnoreCase(String name);
 }
