@@ -1,18 +1,15 @@
 package org.gentar.biology.location;
 
-import org.gentar.biology.gene.Gene;
-import org.gentar.biology.gene.GeneDTO;
-import org.gentar.biology.location.LocationDTO;
 import org.gentar.EntityMapper;
+import org.gentar.Mapper;
 import org.gentar.biology.plan.attempt.crispr_attempt.StrainMapper;
 import org.gentar.biology.species.SpeciesMapper;
 import org.springframework.stereotype.Component;
-import org.gentar.biology.location.Location;
 
 import java.util.*;
 
 @Component
-public class LocationMapper
+public class LocationMapper implements Mapper<Location, LocationDTO>
 {
     private EntityMapper entityMapper;
     private StrainMapper strainMapper;
@@ -41,7 +38,7 @@ public class LocationMapper
     {
         Location location = entityMapper.toTarget(locationDTO, Location.class);
         location.setStrain(strainMapper.toEntity(locationDTO.getStrainName()));
-        location.setSpecies(speciesMapper.toEntity(locationDTO.getSpeciesName().getSpeciesName()));
+        location.setSpecies(speciesMapper.toEntity(locationDTO.getSpeciesName()));
         return location;
     }
 }

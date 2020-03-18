@@ -1,12 +1,16 @@
 package org.gentar.organization.funder;
 
 import org.gentar.Mapper;
+import org.gentar.biology.status_stamps.StatusStampsDTO;
+import org.gentar.exceptions.UserOperationFailedException;
 import org.springframework.stereotype.Service;
 
 @Service
 public class FunderMapper implements Mapper<Funder, String>
 {
     private FunderService funderService;
+
+    private static final String FUNDER_NOT_FOUND_ERROR = "Funder '%s' does not exist.";
 
     public FunderMapper(FunderService funderService)
     {
@@ -25,9 +29,7 @@ public class FunderMapper implements Mapper<Funder, String>
         Funder funder = funderService.getFunderByName(name);
         if (funder == null)
         {
-            funder = new Funder();
-            funder.setName(name);
-
+            throw new UserOperationFailedException(String.format(FUNDER_NOT_FOUND_ERROR, funder));
         }
         return funder;
     }

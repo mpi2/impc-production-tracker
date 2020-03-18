@@ -15,6 +15,7 @@
  *******************************************************************************/
 package org.gentar.biology.intention;
 
+import org.gentar.Mapper;
 import org.gentar.biology.gene.Gene;
 import org.gentar.biology.gene.GeneDTO;
 import org.gentar.biology.gene.GeneMapper;
@@ -29,7 +30,7 @@ import java.util.Collection;
 import java.util.List;
 
 @Component
-public class ProjectIntentionGeneMapper
+public class ProjectIntentionGeneMapper implements Mapper<ProjectIntentionGene, ProjectIntentionGeneDTO>
 {
     private GeneMapper geneMapper;
     private GeneService geneService;

@@ -1,5 +1,6 @@
 package org.gentar.biology.plan.attempt.crispr_attempt;
 
+import org.gentar.Mapper;
 import org.gentar.biology.plan.production.crispr_attempt.GuideDTO;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
@@ -12,7 +13,7 @@ import java.util.List;
 import java.util.Set;
 
 @Component
-public class GuideMapper
+public class GuideMapper implements Mapper<Guide, GuideDTO>
 {
     private ModelMapper modelMapper;
 

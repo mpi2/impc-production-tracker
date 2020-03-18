@@ -15,22 +15,44 @@
  */
 package org.gentar.biology.assignment_status;
 
+import org.gentar.Mapper;
 import org.gentar.biology.project.assignment_status.AssignmentStatusService;
+import org.gentar.exceptions.UserOperationFailedException;
 import org.springframework.stereotype.Component;
 import org.gentar.biology.project.assignment_status.AssignmentStatus;
 
+
 @Component
-public class AssignmentStatusMapper
+public class AssignmentStatusMapper implements Mapper<AssignmentStatus, String>
 {
     private AssignmentStatusService assignmentStatusService;
+
+    private static final String ASSIGNMENT_STATUS_NOT_FOUND_ERROR = "Assignment status '%s' does not exist.";
 
     public AssignmentStatusMapper(AssignmentStatusService assignmentStatusService)
     {
         this.assignmentStatusService = assignmentStatusService;
     }
 
+    @Override
+    public String toDto(AssignmentStatus entity) {
+        String name = null;
+        if (entity != null)
+        {
+            name = entity.getName();
+        }
+        return name;
+    }
+
     public AssignmentStatus toEntity(String name)
     {
-        return assignmentStatusService.getAssignmentStatusByName(name);
+        AssignmentStatus assignmentStatus = assignmentStatusService.getAssignmentStatusByName(name);
+
+        if (assignmentStatus == null)
+        {
+            throw new UserOperationFailedException(String.format(ASSIGNMENT_STATUS_NOT_FOUND_ERROR, assignmentStatus));
+        }
+
+        return assignmentStatus;
     }
 }

@@ -1,5 +1,6 @@
 package org.gentar.biology.status;
 
+import org.gentar.Mapper;
 import org.gentar.biology.status_stamps.StatusStampsDTO;
 import org.springframework.stereotype.Component;
 import org.gentar.biology.project.assignment_status.AssignmentStatusStamp;
@@ -9,7 +10,7 @@ import java.util.List;
 import java.util.Set;
 
 @Component
-public class StatusStampMapper
+public class StatusStampMapper implements Mapper<AssignmentStatusStamp, StatusStampsDTO>
 {
     public StatusStampsDTO toDto (AssignmentStatusStamp assignmentStatusStamp)
     {

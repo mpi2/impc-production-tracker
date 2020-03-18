@@ -1,5 +1,6 @@
 package org.gentar.biology.plan.attempt.crispr_attempt;
 
+import org.gentar.Mapper;
 import org.gentar.biology.plan.attempt.crispr.genotype_primer.GenotypePrimer;
 import org.gentar.biology.plan.production.crispr_attempt.GenotypePrimerDTO;
 import org.gentar.EntityMapper;
@@ -10,7 +11,7 @@ import java.util.List;
 import java.util.Set;
 
 @Component
-public class GenotypePrimerMapper
+public class GenotypePrimerMapper implements Mapper<GenotypePrimer, GenotypePrimerDTO>
 {
     private EntityMapper entityMapper;
 

@@ -1,8 +1,8 @@
 package org.gentar.biology.project.consortium;
 
+import org.gentar.Mapper;
 import org.gentar.organization.consortium.ConsortiumService;
 import org.gentar.biology.project.ProjectConsortiumDTO;
-import org.gentar.biology.project.ProjectConsortiumInstituteDTO;
 import org.gentar.EntityMapper;
 import org.gentar.organization.institute.Institute;
 import org.springframework.stereotype.Component;
@@ -11,7 +11,8 @@ import org.gentar.biology.project.consortium.institute.ProjectConsortiumInstitut
 import java.util.*;
 
 @Component
-public class ProjectConsortiumMapper {
+public class ProjectConsortiumMapper implements Mapper<ProjectConsortium, ProjectConsortiumDTO>
+{
     private EntityMapper entityMapper;
     private ConsortiumService consortiumService;
     private ProjectConsortiumInstituteMapper projectConsortiumInstituteMapper;
@@ -62,14 +63,14 @@ public class ProjectConsortiumMapper {
 
     private void addProjectConsortiumInstituteFromDto(ProjectConsortium projectConsortium, ProjectConsortiumDTO projectConsortiumDTO)
     {
-        List<ProjectConsortiumInstituteDTO> projectConsortiumInstituteDTOS =
+        List<String> projectConsortiumInstituteNames =
                 projectConsortiumInstituteMapper.toDtos(projectConsortium.getInstitutes());
-        projectConsortiumDTO.setProjectConsortiumInstituteDTOS(projectConsortiumInstituteDTOS);
+        projectConsortiumDTO.setProjectConsortiumInstituteNames(projectConsortiumInstituteNames);
     }
 
     private Set<Institute> addProjectConsortiumInstituteFromEntity(ProjectConsortiumDTO projectConsortiumDTO)
     {
-        Set<Institute> institutes = projectConsortiumInstituteMapper.toEntities(projectConsortiumDTO.getProjectConsortiumInstituteDTOS());
+        Set<Institute> institutes = projectConsortiumInstituteMapper.toEntities(projectConsortiumDTO.getProjectConsortiumInstituteNames());
 
         return institutes;
     }

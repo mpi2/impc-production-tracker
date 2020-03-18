@@ -5,7 +5,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.gentar.biology.outcome.OutcomeDTO;
-import org.gentar.biology.strain.StrainDTO;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -17,8 +16,8 @@ public class PhenotypingAttemptDTO
     private Boolean doNotCountTowardsCompleteness;
     private String phenotypingExternalRef;
 
-    @JsonProperty("phenotypingBackgroundStrain")
-    private StrainDTO strainDTO;
+    @JsonProperty("phenotypingBackgroundStrainName")
+    private String strainName;
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
     @JsonProperty("tissueDistribution")

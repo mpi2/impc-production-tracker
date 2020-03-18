@@ -1,6 +1,7 @@
 package org.gentar.biology.sequence;
 
 import org.gentar.EntityMapper;
+import org.gentar.Mapper;
 import org.gentar.biology.location.Location;
 import org.gentar.biology.location.LocationMapper;
 import org.springframework.stereotype.Component;
@@ -11,7 +12,7 @@ import java.util.Collection;
 import java.util.List;
 
 @Component
-public class SequenceLocationMapper
+public class SequenceLocationMapper implements Mapper<SequenceLocation, SequenceLocationDTO>
 {
     private LocationMapper locationMapper;
     private EntityMapper entityMapper;

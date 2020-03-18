@@ -15,18 +15,29 @@
  *******************************************************************************/
 package org.gentar.biology.mutation;
 
+import org.gentar.Mapper;
 import org.gentar.biology.mutation.molecular_type.MolecularMutationTypeService;
 import org.springframework.stereotype.Component;
 import org.gentar.biology.mutation.molecular_type.MolecularMutationType;
 
 @Component
-public class MolecularMutationTypeMapper
+public class MolecularMutationTypeMapper implements Mapper<MolecularMutationType, String>
 {
     private MolecularMutationTypeService molecularMutationTypeService;
 
     public MolecularMutationTypeMapper(MolecularMutationTypeService molecularMutationTypeService)
     {
         this.molecularMutationTypeService = molecularMutationTypeService;
+    }
+
+    @Override
+    public String toDto(MolecularMutationType entity) {
+        String name = null;
+        if (entity != null)
+        {
+            name = entity.getName();
+        }
+        return name;
     }
 
     public MolecularMutationType toEntity(String molecularMutationTypeName)

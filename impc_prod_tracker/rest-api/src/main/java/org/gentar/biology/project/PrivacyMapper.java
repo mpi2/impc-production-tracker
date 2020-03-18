@@ -15,13 +15,14 @@
  *******************************************************************************/
 package org.gentar.biology.project;
 
+import org.gentar.Mapper;
 import org.gentar.exceptions.UserOperationFailedException;
 import org.gentar.biology.project.privacy.PrivacyService;
 import org.springframework.stereotype.Component;
 import org.gentar.biology.project.privacy.Privacy;
 
 @Component
-public class PrivacyMapper
+public class PrivacyMapper implements Mapper<Privacy, String>
 {
     private PrivacyService privacyService;
 
@@ -30,6 +31,16 @@ public class PrivacyMapper
     public PrivacyMapper(PrivacyService privacyService)
     {
         this.privacyService = privacyService;
+    }
+
+    public String toDto(Privacy entity)
+    {
+        String name = null;
+        if (entity != null)
+        {
+            name = entity.getName();
+        }
+        return name;
     }
 
     public Privacy toEntity(String privacyName)

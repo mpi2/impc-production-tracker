@@ -1,5 +1,6 @@
 package org.gentar.biology.plan.attempt.crispr_attempt;
 
+import org.gentar.Mapper;
 import org.gentar.exceptions.UserOperationFailedException;
 import org.gentar.biology.plan.production.crispr_attempt.MutagenesisDonorDTO;
 import org.gentar.EntityMapper;
@@ -14,7 +15,7 @@ import java.util.List;
 import java.util.Set;
 
 @Component
-public class MutagenesisDonorMapper
+public class MutagenesisDonorMapper implements Mapper<MutagenesisDonor, MutagenesisDonorDTO>
 {
     private EntityMapper entityMapper;
     private PreparationTypeRepository preparationTypeRepository;

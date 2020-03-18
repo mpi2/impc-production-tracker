@@ -9,7 +9,6 @@ import org.gentar.biology.plan.attempt.phenotyping.PhenotypingAttempt;
 import org.gentar.biology.plan.plan_starting_point.PlanStartingPoint;
 import org.springframework.stereotype.Component;
 
-import java.util.Iterator;
 import java.util.Set;
 
 @Component
@@ -39,7 +38,7 @@ public class PhenotypingAttemptMapper implements Mapper<PhenotypingAttempt, Phen
             entityMapper.toTarget(entity, PhenotypingAttemptDTO.class);
         phenotypingAttemptDTO.setTissueDistributionCentreDTOs(
             tissueDistributionMapper.toDtos(entity.getTissueDistributions()));
-        phenotypingAttemptDTO.setStrainDTO(strainMapper.toDto(entity.getStrain()));
+        phenotypingAttemptDTO.setStrainName(strainMapper.toDto(entity.getStrain()));
 
         Set<PlanStartingPoint> planStartingPoints = entity.getPlan().getPlanStartingPoints();
         if (planStartingPoints.size() == 1)

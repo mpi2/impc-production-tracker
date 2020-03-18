@@ -35,7 +35,7 @@ public class ColonyMapper implements Mapper<Colony, ColonyDTO>
     public ColonyDTO toDto(Colony entity)
     {
         ColonyDTO colonyDTO = entityMapper.toTarget(entity, ColonyDTO.class);
-        colonyDTO.setStrainDTO(strainMapper.toDto(entity.getStrain()));
+        colonyDTO.setStrainName(strainMapper.toDto(entity.getStrain()));
         colonyDTO.setStatusTransitionDTO(buildStatusTransitionDTO(entity));
         return colonyDTO;
     }
@@ -44,7 +44,7 @@ public class ColonyMapper implements Mapper<Colony, ColonyDTO>
     public Colony toEntity(ColonyDTO dto)
     {
         Colony colony = entityMapper.toTarget(dto, Colony.class);
-        colony.setStrain(strainMapper.toEntity(dto.getStrainDTO()));
+        colony.setStrain(strainMapper.toEntity(dto.getStrainName()));
         colony.setStatus(statusService.getStatusByName(dto.getStatusName()));
         return colony;
     }
