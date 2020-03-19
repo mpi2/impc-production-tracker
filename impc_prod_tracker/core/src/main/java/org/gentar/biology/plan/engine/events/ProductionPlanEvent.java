@@ -13,8 +13,8 @@ import java.util.List;
 public enum ProductionPlanEvent implements ProcessEvent
 {
     abortWhenInProgress(
-            "Abort plan in MI In Progress",
-            ProductionPlanState.MicroInjectionInProgress,
+            "Abort plan that is in progress",
+            ProductionPlanState.AttemptInProgress,
             ProductionPlanState.Aborted,
             true,
             null)
@@ -41,21 +41,21 @@ public enum ProductionPlanEvent implements ProcessEvent
     inProgress(
             "Attempt in progress",
             ProductionPlanState.PlanCreated,
-            ProductionPlanState.MicroInjectionInProgress,
+            ProductionPlanState.AttemptInProgress,
             false,
             "executed by the system when details of the attempt are registered"),
-    embryosProduced(
-            "Embryos produced from the MI",
-            ProductionPlanState.MicroInjectionInProgress,
-            ProductionPlanState.EmbryosProduced,
+    embryosObtained(
+            "Embryos obtained from the attempt",
+            ProductionPlanState.AttemptInProgress,
+            ProductionPlanState.EmbryosObtained,
             false,
             "executed by the system when injected embryos are registered"),
-    foundersObtained(
-            "Founder obtained from the MI",
-            ProductionPlanState.EmbryosProduced,
-            ProductionPlanState.FounderObtained,
+    glt(
+            "Germ line transmission obtained for the attempt",
+            ProductionPlanState.EmbryosObtained,
+            ProductionPlanState.GLT,
             false,
-            "executed by the system when a founder is registered."),
+            "executed by the system when germ line transmission is registered."),
     reverseAbortion(
             "Reverse abortion",
             ProductionPlanState.Aborted,
@@ -69,12 +69,12 @@ public enum ProductionPlanEvent implements ProcessEvent
                     return PlanAbortReverserProcessor.class;
                 }
             },
-    abortWhenEmbryosProduced(
-            "Abort plan with MI embryos produced",
-            ProductionPlanState.EmbryosProduced,
+    abortWhenEmbryosObtained(
+            "Abort plan when embryos obtained",
+            ProductionPlanState.EmbryosObtained,
             ProductionPlanState.Aborted,
             true,
-            "Only possible if...")
+            null)
             {
                 @Override
                 public Class<? extends Processor> getNextStepProcessor()
@@ -82,9 +82,9 @@ public enum ProductionPlanEvent implements ProcessEvent
                     return PlanAbortProcessor.class;
                 }
             },
-    abortWhenFounderObtained(
-            "Abort plan with MI founder obtained",
-            ProductionPlanState.FounderObtained,
+    abortWhenGLT(
+            "Abort plan when germ line transmission obtained",
+            ProductionPlanState.GLT,
             ProductionPlanState.Aborted,
             true,
             null)
