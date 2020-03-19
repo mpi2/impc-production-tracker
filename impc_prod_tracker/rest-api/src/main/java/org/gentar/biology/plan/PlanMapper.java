@@ -15,6 +15,7 @@ import org.gentar.biology.plan.phenotyping.PhenotypingAttemptMapper;
 import org.gentar.biology.plan.production.crispr_attempt.CrisprAttemptDTO;
 import org.gentar.Mapper;
 import org.gentar.biology.plan.type.PlanType;
+import org.gentar.biology.project.AttemptTypes;
 import org.gentar.biology.project.PlanTypes;
 import org.gentar.biology.project.ProjectService;
 import org.gentar.biology.status.StatusMapper;
@@ -48,8 +49,6 @@ public class PlanMapper implements Mapper<Plan, PlanDTO>
     private StatusMapper statusMapper;
     private PlanTypeMapper planTypeMapper;
     private ProjectService projectService;
-
-    private static final String CRISPR_ATTEMPT_TYPE = "crispr";
 
     public PlanMapper(
         EntityMapper entityMapper,
@@ -104,12 +103,12 @@ public class PlanMapper implements Mapper<Plan, PlanDTO>
     private void addAttempt(PlanDTO planDTO, Plan plan)
     {
         PlanType planType = plan.getPlanType();
-        if ("production".equals(planType.getName()))
+        if (PlanTypes.PRODUCTION.getTypeName().equalsIgnoreCase(planType.getName()))
         {
             AttemptType attemptType = plan.getAttemptType();
             String attemptTypeName = attemptType == null ? "Not defined" : attemptType.getName();
 
-            if (CRISPR_ATTEMPT_TYPE.equalsIgnoreCase(attemptTypeName))
+            if (AttemptTypes.CRISPR.getTypeName().equalsIgnoreCase(attemptTypeName))
             {
                 CrisprAttemptDTO crisprAttemptDTO = crisprAttemptMapper.toDto(plan.getCrisprAttempt());
                 planDTO.setCrisprAttemptDTO(crisprAttemptDTO);
@@ -118,7 +117,7 @@ public class PlanMapper implements Mapper<Plan, PlanDTO>
                 //TODO: other attempts
             }
         }
-        else if ("phenotyping".equals(planType.getName()))
+        else if (PlanTypes.PHENOTYPING.getTypeName().equalsIgnoreCase((planType.getName())))
         {
             planDTO.setPhenotypingAttemptDTO(phenotypingAttemptMapper.toDto(plan.getPhenotypingAttempt()));
         }
@@ -160,16 +159,19 @@ public class PlanMapper implements Mapper<Plan, PlanDTO>
         List<TransitionDTO> transitionDTOS = new ArrayList<>();
         String currentStatusName = plan.getStatus().getName();
         PlanType planType = plan.getPlanType();
-        if (planType != null){
+        AttemptType attemptType = plan.getAttemptType();
+        if (planType != null && attemptType != null){
             if (PlanTypes.PRODUCTION.getTypeName().equalsIgnoreCase(planType.getName()))
             {
                 setProductionPlanTransitions(transitionDTOS, currentStatusName);
             }
-            else if (PlanTypes.PHENOTYPING.getTypeName().equalsIgnoreCase(planType.getName()))
+            else if ((PlanTypes.PHENOTYPING.getTypeName().equalsIgnoreCase(planType.getName()))
+                    && (AttemptTypes.EARLY_ADULT.getTypeName().equalsIgnoreCase(attemptType.getName())) )
             {
                 setPhenotypePlanTransitions(transitionDTOS, currentStatusName);
             }
-            else if (PlanTypes.LATE_ADULT_PHENOTYPING.getTypeName().equalsIgnoreCase(planType.getName()))
+            else if ( (PlanTypes.PHENOTYPING.getTypeName().equalsIgnoreCase(planType.getName()))
+                    && (AttemptTypes.LATE_ADULT.getTypeName().equalsIgnoreCase(attemptType.getName())) )
             {
                 setLateAdultPhenotypePlanTransitions(transitionDTOS, currentStatusName);
             }
