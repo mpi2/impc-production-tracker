@@ -15,11 +15,13 @@
  */
 package org.gentar.biology.plan;
 
+import org.gentar.biology.plan.attempt.AttemptType;
 import org.gentar.biology.plan.engine.events.BreedingPlanEvent;
 import org.gentar.biology.plan.engine.events.LateAdultPhenotypePlanEvent;
 import org.gentar.biology.plan.engine.events.PhenotypePlanEvent;
 import org.gentar.biology.plan.engine.events.ProductionPlanEvent;
 import org.gentar.biology.plan.type.PlanType;
+import org.gentar.biology.project.AttemptTypes;
 import org.gentar.biology.project.PlanTypes;
 import org.gentar.common.state_machine.StatusTransitionDTO;
 import org.gentar.helpers.PaginationHelper;
@@ -121,23 +123,27 @@ public class PlanController
 
     private void setEventByPlanType(Plan plan, PlanDTO planDTO)
     {
-        PlanType type = plan.getPlanType();
-        if(PlanTypes.PRODUCTION.getTypeName().equalsIgnoreCase(type.getName()))
+        PlanType planType = plan.getPlanType();
+        AttemptType attemptType = plan.getAttemptType();
+
+        if(PlanTypes.PRODUCTION.getTypeName().equalsIgnoreCase(planType.getName()))
         {
             ProductionPlanEvent productionPlanEvent = getProductionPlanEventFromRequest(planDTO);
             plan.setEvent(productionPlanEvent);
         }
-        else if (PlanTypes.PHENOTYPING.getTypeName().equalsIgnoreCase(type.getName()))
+        else if ( (PlanTypes.PHENOTYPING.getTypeName().equalsIgnoreCase(planType.getName()))
+                   && (AttemptTypes.EARLY_ADULT.getTypeName().equalsIgnoreCase(attemptType.getName())) )
         {
             PhenotypePlanEvent phenotypePlanEvent = getPhenotypePlanEventFromRequest(planDTO);
             plan.setEvent(phenotypePlanEvent);
         }
-        else if (PlanTypes.LATE_ADULT_PHENOTYPING.getTypeName().equalsIgnoreCase(type.getName()))
+        else if ( (PlanTypes.PHENOTYPING.getTypeName().equalsIgnoreCase(planType.getName()))
+                   && (AttemptTypes.LATE_ADULT.getTypeName().equalsIgnoreCase(attemptType.getName())) )
         {
             LateAdultPhenotypePlanEvent lateAdultPhenotypePlanEvent = getLateAdultPhenotypePlanEventFromRequest(planDTO);
             plan.setEvent(lateAdultPhenotypePlanEvent);
         }
-        else if (PlanTypes.BREEDING.getTypeName().equalsIgnoreCase(type.getName()))
+        else if (PlanTypes.BREEDING.getTypeName().equalsIgnoreCase(planType.getName()))
         {
             BreedingPlanEvent breedingPlanEvent = getBreedingPlanEventFromRequest(planDTO);
             plan.setEvent(breedingPlanEvent);
