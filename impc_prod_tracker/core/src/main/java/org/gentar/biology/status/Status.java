@@ -38,4 +38,7 @@ public class Status extends BaseEntity
     private String name;
 
     private String description;
+
+    @NotNull
+    private String ordering;
 }
