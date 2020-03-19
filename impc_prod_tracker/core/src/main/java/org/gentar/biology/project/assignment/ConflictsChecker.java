@@ -7,13 +7,26 @@ import org.gentar.biology.project.Project;
 import org.gentar.biology.project.ProjectIntentionService;
 import org.gentar.biology.project.ProjectQueryHelper;
 import org.gentar.biology.status.StatusNames;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-public class AssignmentStatusUpdater
+/**
+ * This class checks the conflict status a project should have. The conflict status are a subset
+ * of the possible assignment statues.
+ * At the moment they are:
+ *     * Assigned (1).
+ *     * Inspect - GLT Mouse (2).
+ *     * Inspect - Attempt (3).
+ *     * Inspect - Conflict (4).
+ *     * Conflict (5).
+ *
+ *     The numbers are the evaluation order of the statuses. Once the conditions are met to assign
+ *     a status, the process stops. Each method assumes the previous methods where already evaluated
+ *     so no logic is repeated.
+ */
+public class ConflictsChecker
 {
     private AssignmentStatusService assignmentStatusService;
     private ProjectIntentionService projectIntentionService;
@@ -21,7 +34,7 @@ public class AssignmentStatusUpdater
 
     private static final String DELETION_MUTATION_TYPE_NAME = "Deletion";
 
-    public AssignmentStatusUpdater(
+    public ConflictsChecker(
         AssignmentStatusService assignmentStatusService,
         ProjectIntentionService projectIntentionService,
         ProjectQueryHelper projectQueryHelper)
@@ -47,14 +60,12 @@ public class AssignmentStatusUpdater
      */
     public AssignmentStatus checkConflicts(Project project)
     {
-        AssignmentStatus result = null;
-        String assignmentStatusName = "";
-        var intentionGenes = projectQueryHelper.getIntentionGenesByProject(project);
-        if (validToAssigned(project, intentionGenes))
+        String assignmentStatusName;
+        if (validToAssigned(project))
         {
             assignmentStatusName = AssignmentStatusNames.ASSIGNED_STATUS_NAME;
         }
-        else if (validToInspectGltMouse(project, intentionGenes))
+        else if (validToInspectGltMouse(project))
         {
             assignmentStatusName = AssignmentStatusNames.INSPECT_GLT_MOUSE_STATUS_NAME;
         }
@@ -80,12 +91,12 @@ public class AssignmentStatusUpdater
      *      - 1 gene.
      *      - Molecular mutation => “deletion”.
      * @param project The project being evaluated.
-     * @param intentionGenes The gene intentions.
      * @return True or False depending if the project can be set to [Assigned] or not.
      */
-    private boolean validToAssigned(Project project, List<ProjectIntentionGene> intentionGenes)
+    private boolean validToAssigned(Project project)
     {
         boolean result = false;
+        var intentionGenes = projectQueryHelper.getIntentionGenesByProject(project);
         if (canBeAssignedDirectly(intentionGenes))
         {
             result = true;
@@ -121,16 +132,13 @@ public class AssignmentStatusUpdater
      *  - And that have at least one plan/attempt with status => "Genotype confirmed".
      *  This method only validates the last part of the condition because the rest is validated by
      *  the method called before this.
-     * @param project
-     * @param intentionGenes
+     * @param project The project being evaluated.
      * @return True or False depending if the project can be set to [Inspect - GLT Mouse] or not.
      */
-    private boolean validToInspectGltMouse(Project project, List<ProjectIntentionGene> intentionGenes)
+    private boolean validToInspectGltMouse(Project project)
     {
         boolean result = false;
         List<Project> projectsWithDeletionIntention = getProjectsSameDeletionIntention(project);
-
-        // Do we need to validate the size (to check only one gene??)
 
         for (Project conflict : projectsWithDeletionIntention)
         {
@@ -153,15 +161,13 @@ public class AssignmentStatusUpdater
      *  - Have at least one plan/attempt with status != ("Attempt aborted" or "Genotype confirmed").
      *  This method only validates the last part of the condition because the rest is validated by
      *  the method called before this.
-     * @param project
+     * @param project The project being evaluated.
      * @return True or False depending if the project can be set to [Inspect - Attempt] or not.
      */
     private boolean validToInspectAttempt(Project project)
     {
         boolean result = false;
         List<Project> projectsWithDeletionIntention = getProjectsSameDeletionIntention(project);
-
-        // Do we need to validate the size (to check only one gene??)
 
         for (Project conflict : projectsWithDeletionIntention)
         {
@@ -185,7 +191,7 @@ public class AssignmentStatusUpdater
      *      - Molecular mutation => “deletion”.
      *  This method only validates the last part of the condition because the rest is validated by
      *  the method called before this.
-     * @param project
+     * @param project The project being evaluated.
      * @return True or False depending if the project can be set to [Inspect - Attempt] or not.
      */
     private boolean validToInspectConflict(Project project)
@@ -195,8 +201,6 @@ public class AssignmentStatusUpdater
             .anyMatch(x -> AssignmentStatusNames.ASSIGNED_STATUS_NAME
                 .equals( x.getAssignmentStatus().getName()));
     }
-
-    //private boolean projectHasPlanInGenotypeConfirmed(Project project)
 
     private List<Project> getProjectsSameDeletionIntention(Project project)
     {
@@ -211,9 +215,6 @@ public class AssignmentStatusUpdater
         return projectIntentions.stream()
             .map(ProjectIntention::getProject).collect(Collectors.toList());
     }
-
-
-
 
     private boolean anyGeneIntentionIsDeletion(List<ProjectIntentionGene> intentionGenes)
     {
