@@ -23,10 +23,8 @@ import org.gentar.biology.species.Species;
 import org.gentar.biology.status.StatusMapper;
 import org.springframework.stereotype.Component;
 import org.gentar.biology.project.privacy.Privacy;
-import org.gentar.biology.assignment_status.AssignmentStatusMapper;
 import org.gentar.biology.project.consortium.ProjectConsortiumMapper;
 import org.gentar.biology.intention.ProjectIntentionMapper;
-
 import java.util.List;
 import java.util.Set;
 
@@ -40,7 +38,6 @@ public class ProjectDtoToEntityMapper
     private PrivacyMapper privacyMapper;
     private ProjectConsortiumMapper projectConsortiumMapper;
     private ProjectIntentionMapper projectIntentionMapper;
-    private AssignmentStatusMapper assignmentStatusMapper;
     private StatusMapper summaryStatusMapper;
     private SpeciesMapper speciesMapper;
 
@@ -49,7 +46,6 @@ public class ProjectDtoToEntityMapper
             PrivacyMapper privacyMapper,
             ProjectConsortiumMapper projectConsortiumMapper,
             ProjectIntentionMapper projectIntentionMapper,
-            AssignmentStatusMapper assignmentStatusMapper,
             StatusMapper summaryStatusMapper,
             SpeciesMapper speciesMapper)
     {
@@ -57,7 +53,6 @@ public class ProjectDtoToEntityMapper
         this.privacyMapper = privacyMapper;
         this.projectConsortiumMapper = projectConsortiumMapper;
         this.projectIntentionMapper = projectIntentionMapper;
-        this.assignmentStatusMapper = assignmentStatusMapper;
         this.summaryStatusMapper = summaryStatusMapper;
         this.speciesMapper = speciesMapper;
     }
@@ -65,13 +60,12 @@ public class ProjectDtoToEntityMapper
     public Project toEntity(ProjectDTO projectDTO)
     {
         Project project = entityMapper.toTarget(projectDTO, Project.class);
-        setAssignmentStatus(project, projectDTO);
         setSummaryStatus(project, projectDTO);
         setProjectIntention(project, projectDTO);
         setPrivacy(project, projectDTO);
         setConsortia(project, projectDTO);
         setSpecies(project, projectDTO);
-
+        setActionToExecute(project, projectDTO);
         return project;
     }
 
@@ -82,10 +76,13 @@ public class ProjectDtoToEntityMapper
         project.setSpecies(species);
     }
 
-    private void setAssignmentStatus(Project project, ProjectDTO projectDTO)
+    private void setActionToExecute(Project project, ProjectDTO projectDTO)
     {
-        project.setAssignmentStatus(
-                assignmentStatusMapper.toEntity(projectDTO.getAssignmentStatusName()));
+        var assignmentStatusActionsDTO = projectDTO.getAssignmentStatusActionsDTO();
+        if (assignmentStatusActionsDTO != null)
+        {
+            project.setActionToExecute(assignmentStatusActionsDTO.getActionToExecute());
+        }
     }
 
     private void setSummaryStatus(Project project, ProjectDTO projectDTO)

@@ -24,11 +24,18 @@ import java.util.List;
 public interface ProjectService
 {
     Project getProjectByTpn(String tpn);
-
+    Project getNotNullProjectByTpn(String tpn);
     List<Project> getProjects(ProjectFilter projectFilter);
     Page<Project> getProjects(ProjectFilter projectFilter, Pageable pageable);
 
-    Project createProject(Project projectDTO);
+    Project createProject(Project project);
+
+    /**
+     * Updates a project.
+     * @param project Project with the new data.
+     * @return A record of {@link History} with the fields that changed in the object.
+     */
+    History updateProject(Project oldProject, Project newProject);
 
     /**
      * Gets the history for a project

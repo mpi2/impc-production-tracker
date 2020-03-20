@@ -15,6 +15,7 @@
  */
 package org.gentar.biology.project;
 
+import org.gentar.audit.history.History;
 import org.gentar.exceptions.UserOperationFailedException;
 import org.gentar.helpers.CsvWriter;
 import org.gentar.helpers.PlanLinkBuilder;
@@ -51,6 +52,7 @@ class ProjectController
     private ProjectDtoToEntityMapper projectDtoToEntityMapper;
     private CsvWriter<ProjectCsvRecord> csvWriter;
     private ProjectCsvRecordMapper projectCsvRecordMapper;
+    private UpdateProjectRequestProcessor updateProjectRequestProcessor;
 
     private static final String PROJECT_NOT_FOUND_ERROR =
         "Project %s does not exist or you don't have access to it.";
@@ -61,7 +63,8 @@ class ProjectController
         HistoryMapper historyMapper,
         ProjectDtoToEntityMapper projectDtoToEntityMapper,
         CsvWriter<ProjectCsvRecord> csvWriter,
-        ProjectCsvRecordMapper projectCsvRecordMapper)
+        ProjectCsvRecordMapper projectCsvRecordMapper,
+        UpdateProjectRequestProcessor updateProjectRequestProcessor)
     {
         this.projectService = projectService;
         this.projectEntityToDtoMapper = projectEntityToDtoMapper;
@@ -69,6 +72,7 @@ class ProjectController
         this.projectDtoToEntityMapper = projectDtoToEntityMapper;
         this.csvWriter = csvWriter;
         this.projectCsvRecordMapper = projectCsvRecordMapper;
+        this.updateProjectRequestProcessor = updateProjectRequestProcessor;
     }
 
     /**
@@ -116,18 +120,37 @@ class ProjectController
     }
 
     /**
-     *      Creates a new project in the system.
-     *      * @param ProjectDTO Request with data of the project to be created.
-     *      * @return {@link Project} entity created
+     * Creates a new project in the system.
+     * @param projectDTO Request with data of the project to be created.
+     * @return {@link ProjectDTO} representing the project created in the system.
      */
     @PostMapping
     public ProjectDTO createProject(@RequestBody ProjectDTO projectDTO)
     {
-
         Project projectToBeCreated = projectDtoToEntityMapper.toEntity(projectDTO);
         Project createdProject = projectService.createProject(projectToBeCreated);
         System.out.println("Project created => "+ createdProject);
         return projectEntityToDtoMapper.toDto(createdProject);
+    }
+
+    @PutMapping(value = {"/{tpn}"})
+    public HistoryDTO updateProject(@PathVariable String tpn, @RequestBody ProjectDTO projectDTO)
+    {
+        Project currentProject = projectService.getNotNullProjectByTpn(tpn);
+        Project newProject = getProjectToUpdate(currentProject, projectDTO);
+        History history = projectService.updateProject(currentProject, newProject);
+        HistoryDTO historyDTO = new HistoryDTO();
+        if (history != null)
+        {
+            historyDTO = historyMapper.toDto(history);
+        }
+        return historyDTO;
+    }
+
+    private Project getProjectToUpdate(Project currentProject, ProjectDTO projectDTO)
+    {
+        Project newProject = new Project(currentProject);
+        return updateProjectRequestProcessor.getProjectToUpdate(newProject, projectDTO);
     }
 
     /**

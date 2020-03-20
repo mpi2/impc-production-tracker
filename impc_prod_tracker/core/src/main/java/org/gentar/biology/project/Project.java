@@ -34,6 +34,7 @@ import org.gentar.organization.work_unit.WorkUnit;
 import org.gentar.security.abac.ResourcePrivacy;
 import javax.persistence.*;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -43,6 +44,26 @@ import java.util.Set;
 public class Project extends BaseEntity implements Resource<Project>
 {
     transient private Boolean isObjectRestricted = null;
+
+    // Copy Constructor
+    public Project(Project project)
+    {
+        this.id = project.id;
+        this.tpn = project.tpn;
+        this.imitsMiPlanId = project.imitsMiPlanId;
+        this.assignmentStatus = project.assignmentStatus;
+        this.summaryStatus = project.summaryStatus;
+        this.assignmentStatusStamps = new HashSet<>(project.assignmentStatusStamps);
+        this.plans = new HashSet<>(project.plans);
+        this.withdrawn = project.withdrawn;
+        this.recovery = project.recovery;
+        this.comment = project.comment;
+        this.projectExternalRef = project.projectExternalRef;
+        this.privacy = project.privacy;
+        this.projectIntentions = new ArrayList<>(project.projectIntentions);
+        this.species = new HashSet<>(project.species);
+        this.projectConsortia = new HashSet<>(project.projectConsortia);
+    }
 
     @Id
     @SequenceGenerator(name = "projectSeq", sequenceName = "PROJECT_SEQ")
@@ -66,8 +87,7 @@ public class Project extends BaseEntity implements Resource<Project>
 
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
-    @OneToMany(fetch=FetchType.EAGER)
-    @JoinColumn(name = "project_id")
+    @OneToMany(cascade= CascadeType.ALL, mappedBy = "project", orphanRemoval=true)
     private Set<AssignmentStatusStamp> assignmentStatusStamps;
 
     @EqualsAndHashCode.Exclude
@@ -189,4 +209,6 @@ public class Project extends BaseEntity implements Resource<Project>
     @ToString.Exclude
     @OneToMany(cascade=CascadeType.ALL, mappedBy = "project", orphanRemoval=true, fetch = FetchType.EAGER)
     private Set<ProjectConsortium> projectConsortia;
+
+    private transient String actionToExecute;
 }

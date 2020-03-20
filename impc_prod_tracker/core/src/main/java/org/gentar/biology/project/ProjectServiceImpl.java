@@ -19,8 +19,9 @@ import org.gentar.audit.history.HistoryService;
 import org.gentar.biology.ortholog.Ortholog;
 import org.gentar.biology.ortholog.OrthologService;
 import org.gentar.biology.intention.project_intention_gene.ProjectIntentionGene;
-import org.gentar.biology.project.search.filter.FluentProjectFilter;
+import org.gentar.biology.project.engine.ProjectUpdater;
 import org.gentar.biology.project.specs.ProjectSpecs;
+import org.gentar.exceptions.UserOperationFailedException;
 import org.gentar.security.abac.ResourceAccessChecker;
 import org.gentar.biology.project.search.filter.ProjectFilter;
 import org.springframework.data.domain.Page;
@@ -29,7 +30,6 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Component;
 import org.gentar.audit.history.History;
 import org.gentar.biology.project.engine.ProjectCreator;
-import org.gentar.biology.project.assignment.AssignmentStatus;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -47,6 +47,7 @@ public class ProjectServiceImpl implements ProjectService
     private ProjectCreator projectCreator;
     private OrthologService orthologService;
     private ProjectQueryHelper projectQueryHelper;
+    private ProjectUpdater projectUpdater;
 
     public static final String READ_PROJECT_ACTION = "READ_PROJECT";
 
@@ -56,7 +57,8 @@ public class ProjectServiceImpl implements ProjectService
         ResourceAccessChecker<Project> resourceAccessChecker,
         ProjectCreator projectCreator,
         OrthologService orthologService,
-        ProjectQueryHelper projectQueryHelper)
+        ProjectQueryHelper projectQueryHelper,
+        ProjectUpdater projectUpdater)
     {
         this.projectRepository = projectRepository;
         this.historyService = historyService;
@@ -64,6 +66,7 @@ public class ProjectServiceImpl implements ProjectService
         this.projectCreator = projectCreator;
         this.orthologService = orthologService;
         this.projectQueryHelper = projectQueryHelper;
+        this.projectUpdater = projectUpdater;
     }
 
     @Override
@@ -74,11 +77,23 @@ public class ProjectServiceImpl implements ProjectService
         return getAccessChecked(project);
     }
 
+    @Override
+    public Project getNotNullProjectByTpn(String tpn)
+    {
+        Project project = getProjectByTpn(tpn);
+        if (project == null)
+        {
+            throw new UserOperationFailedException("Project " + tpn + " does not exist");
+        }
+        return project;
+    }
+
     public List<Project> getProjects(ProjectFilter projectFilter)
     {
         Specification<Project> specifications = buildSpecificationsWithCriteria(projectFilter);
         List<Project> projects = projectRepository.findAll(specifications);
-        projects = applyFiltersToResults(projects, projectFilter);
+        //TODO: Check if in memory filters are still needed.
+        // projects = applyFiltersToResults(projects, projectFilter);
         addOrthologs(projects);
         return getCheckedCollection(projects);
     }
@@ -129,7 +144,8 @@ public class ProjectServiceImpl implements ProjectService
 
     private List<Project> getCheckedCollection(Collection<Project> projects)
     {
-        return projects.stream().map(this::getAccessChecked).filter(Objects::nonNull).collect(Collectors.toList());
+        return projects.stream()
+            .map(this::getAccessChecked).filter(Objects::nonNull).collect(Collectors.toList());
     }
 
     private Specification<Project> buildSpecificationsWithCriteria(ProjectFilter projectFilter)
@@ -153,31 +169,18 @@ public class ProjectServiceImpl implements ProjectService
     @Override
     public Project createProject(Project project)
     {
-        return projectCreator.createProject(project);
+        return projectCreator.createProject(project);;
     }
 
-    private AssignmentStatus checkIfAnyProjectAlreadyCreated()
+    @Override
+    public History updateProject(Project oldProject, Project newProject)
     {
-        // TODO AssignmentStatus in ProjectService
-        return null;
+        return projectUpdater.updateProject(oldProject, newProject);
     }
 
     @Override
     public List<History> getProjectHistory(Project project)
     {
         return historyService.getHistoryByEntityNameAndEntityId("Project", project.getId());
-    }
-
-    private List<Project> applyFiltersToResults(List<Project> allResults, ProjectFilter filters)
-    {
-        FluentProjectFilter fluentProjectFilter = new FluentProjectFilter(allResults);
-        return fluentProjectFilter
-            .withTpns(filters.getTpns())
-            .withWorkUnitNames(filters.getWorkUnitNames())
-            .withWorkGroupNames(filters.getWorGroupNames())
-            .withExternalReference(filters.getExternalReferences())
-            .withMolecularMutationTypeNames(filters.getIntentions())
-            .withConsortiaNames(filters.getConsortiaNames())
-            .withPrivaciesNames(filters.getPrivaciesNames()).getFilteredData();
     }
 }
