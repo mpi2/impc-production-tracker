@@ -169,7 +169,7 @@ public class ProjectServiceImpl implements ProjectService
     @Override
     public Project createProject(Project project)
     {
-        return projectCreator.createProject(project);;
+        return projectCreator.createProject(project);
     }
 
     @Override
