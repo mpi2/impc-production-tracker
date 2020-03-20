@@ -19,6 +19,8 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.gentar.biology.project.assignment.AssignmentStatusActionsDTO;
+import org.gentar.common.actions.ActionDTO;
 import org.springframework.hateoas.RepresentationModel;
 import org.gentar.biology.intention.ProjectIntentionDTO;
 import org.gentar.biology.status_stamps.StatusStampsDTO;
@@ -64,6 +66,9 @@ public class ProjectDTO extends RepresentationModel
     @JsonInclude(JsonInclude.Include.NON_NULL)
     @JsonProperty("isObjectRestricted")
     private Boolean isObjectRestricted;
+
+    @JsonProperty("assignmentStatusActions")
+    private AssignmentStatusActionsDTO assignmentStatusActionsDTO;
 
     private Set<String> relatedWorkUnitNames;
     private Set<String> relatedWorkGroupNames;

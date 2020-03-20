@@ -7,6 +7,8 @@ import org.gentar.biology.project.Project;
 import org.gentar.biology.project.ProjectIntentionService;
 import org.gentar.biology.project.ProjectQueryHelper;
 import org.gentar.biology.status.StatusNames;
+import org.springframework.stereotype.Component;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -26,6 +28,7 @@ import java.util.stream.Collectors;
  *     a status, the process stops. Each method assumes the previous methods where already evaluated
  *     so no logic is repeated.
  */
+@Component
 public class ConflictsChecker
 {
     private AssignmentStatusService assignmentStatusService;
@@ -58,7 +61,7 @@ public class ConflictsChecker
      * @return A {@link AssignmentStatus} referring to a conflict status if there was conflict
      * or Assigned if there was not conflict.
      */
-    public AssignmentStatus checkConflicts(Project project)
+    public AssignmentStatus checkConflict(Project project)
     {
         String assignmentStatusName;
         if (validToAssigned(project))

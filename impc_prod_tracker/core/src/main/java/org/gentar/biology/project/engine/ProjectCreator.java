@@ -15,6 +15,8 @@
  *******************************************************************************/
 package org.gentar.biology.project.engine;
 
+import org.gentar.biology.project.assignment.AssignmentStatus;
+import org.gentar.biology.project.assignment.AssignmentStatusUpdater;
 import org.springframework.stereotype.Component;
 import org.gentar.biology.project.Project;
 import javax.persistence.EntityManager;
@@ -31,6 +33,13 @@ public class ProjectCreator
     @PersistenceContext
     private EntityManager entityManager;
 
+    private AssignmentStatusUpdater assignmentStatusUpdater;
+
+    public ProjectCreator(AssignmentStatusUpdater assignmentStatusUpdater)
+    {
+        this.assignmentStatusUpdater = assignmentStatusUpdater;
+    }
+
     /**
      * Create a project in the system and keep trace of the event in the history.
      * @param project Object with the project information before it is saved in database.
@@ -40,6 +49,7 @@ public class ProjectCreator
     {
         Project createdProject = saveProject(project);
         registerCreationInHistory();
+        createdProject.setAssignmentStatus(getInitialAssignmentStatus(createdProject));
         return createdProject;
     }
 
@@ -60,6 +70,11 @@ public class ProjectCreator
         String identifier = String.format("%0" + 9 + "d", id);
         identifier = "TPN:" + identifier;
         return identifier;
+    }
+
+    private AssignmentStatus getInitialAssignmentStatus(Project project)
+    {
+        return assignmentStatusUpdater.checkConflict(project);
     }
 
 }

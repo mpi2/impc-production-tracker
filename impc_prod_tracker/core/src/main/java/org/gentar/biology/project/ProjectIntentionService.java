@@ -2,21 +2,28 @@ package org.gentar.biology.project;
 
 import org.gentar.biology.project.search.filter.ProjectFilter;
 import org.gentar.biology.project.search.filter.ProjectFilterBuilder;
+import org.gentar.biology.project.specs.ProjectSpecs;
+import org.springframework.data.jpa.domain.Specification;
+import org.springframework.stereotype.Component;
+
 import java.util.List;
 import java.util.stream.Collectors;
 
 /**
  * Logic related with the intentions of projects and to find projects with same intention
  */
+@Component
 public class ProjectIntentionService
 {
     private ProjectQueryHelper projectQueryHelper;
-    private ProjectService projectService;
+    //private ProjectService projectService;
+    private ProjectRepository projectRepository;
 
-    public ProjectIntentionService(ProjectQueryHelper projectQueryHelper, ProjectService projectService)
+    public ProjectIntentionService(ProjectQueryHelper projectQueryHelper, ProjectRepository projectRepository)
     {
         this.projectQueryHelper = projectQueryHelper;
-        this.projectService = projectService;
+        //this.projectService = projectService;
+        this.projectRepository = projectRepository;
     }
 
     /**
@@ -30,8 +37,7 @@ public class ProjectIntentionService
     {
         List<Project> projectsWithSameGeneIntention;
         List<String> accIds = projectQueryHelper.getAccIdsByProject(project);
-        ProjectFilter projectFilter = ProjectFilterBuilder.getInstance().withGenes(accIds).build();
-        projectsWithSameGeneIntention = projectService.getProjects(projectFilter);
+        projectsWithSameGeneIntention = getProjectsWithGenes(accIds);
         // Exclude the current project used in the comparison
         if (project.getId() != null)
         {
@@ -39,5 +45,12 @@ public class ProjectIntentionService
                 .filter(x -> !x.getId().equals(project.getId())).collect(Collectors.toList());
         }
         return projectsWithSameGeneIntention;
+    }
+
+    List<Project> getProjectsWithGenes(List<String> accIds)
+    {
+        Specification<Project> specifications = Specification.where(ProjectSpecs.withGenes(accIds));
+        List<Project> projects = projectRepository.findAll(specifications);
+        return projects;
     }
 }

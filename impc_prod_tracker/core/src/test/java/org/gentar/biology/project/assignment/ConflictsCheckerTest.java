@@ -66,7 +66,7 @@ class ConflictsCheckerTest
                 AssignmentStatusNames.ASSIGNED_STATUS_NAME))
             .thenReturn(assigned);
 
-        AssignmentStatus newStatus = testInstance.checkConflicts(project);
+        AssignmentStatus newStatus = testInstance.checkConflict(project);
         assertThat("Incorrect Assignment status:", newStatus.getName(), is("Assigned"));
     }
 
@@ -84,7 +84,7 @@ class ConflictsCheckerTest
                 AssignmentStatusNames.ASSIGNED_STATUS_NAME))
             .thenReturn(assigned);
 
-        AssignmentStatus newStatus = testInstance.checkConflicts(project);
+        AssignmentStatus newStatus = testInstance.checkConflict(project);
 
         assertThat("Incorrect Assignment status:", newStatus.getName(), is("Assigned"));
         verify(projectIntentionService, times(0)).getProjectsWithSameGeneIntention(project);
@@ -103,7 +103,7 @@ class ConflictsCheckerTest
                 AssignmentStatusNames.ASSIGNED_STATUS_NAME))
             .thenReturn(assigned);
 
-        AssignmentStatus newStatus = testInstance.checkConflicts(project);
+        AssignmentStatus newStatus = testInstance.checkConflict(project);
 
         assertThat("Incorrect Assignment status:", newStatus.getName(), is("Assigned"));
         verify(projectIntentionService, times(1)).getProjectsWithSameGeneIntention(project);
@@ -122,7 +122,7 @@ class ConflictsCheckerTest
                 AssignmentStatusNames.ASSIGNED_STATUS_NAME))
             .thenReturn(assigned);
 
-        AssignmentStatus newStatus = testInstance.checkConflicts(project);
+        AssignmentStatus newStatus = testInstance.checkConflict(project);
 
         assertThat("Incorrect Assignment status:", newStatus.getName(), is("Assigned"));
         verify(projectIntentionService, times(0)).getProjectsWithSameGeneIntention(project);
@@ -147,7 +147,7 @@ class ConflictsCheckerTest
                 AssignmentStatusNames.ASSIGNED_STATUS_NAME))
             .thenReturn(assigned);
 
-        AssignmentStatus newStatus = testInstance.checkConflicts(project);
+        AssignmentStatus newStatus = testInstance.checkConflict(project);
 
         assertThat("Incorrect Assignment status:", newStatus.getName(), is("Assigned"));
         verify(projectIntentionService, times(1)).getProjectsWithSameGeneIntention(project);
@@ -179,7 +179,7 @@ class ConflictsCheckerTest
                 AssignmentStatusNames.INSPECT_GLT_MOUSE_STATUS_NAME))
             .thenReturn(inspect_gtl_mouse);
 
-        AssignmentStatus newStatus = testInstance.checkConflicts(project);
+        AssignmentStatus newStatus = testInstance.checkConflict(project);
 
         assertThat("Incorrect Assignment status:", newStatus.getName(), is("Inspect - GLT Mouse"));
     }
@@ -210,7 +210,7 @@ class ConflictsCheckerTest
                 AssignmentStatusNames.INSPECT_ATTEMPT_STATUS_NAME))
             .thenReturn(inspect_attempt);
 
-        AssignmentStatus newStatus = testInstance.checkConflicts(project);
+        AssignmentStatus newStatus = testInstance.checkConflict(project);
 
         assertThat("Incorrect Assignment status:", newStatus.getName(), is("Inspect - Attempt"));
     }
@@ -242,7 +242,7 @@ class ConflictsCheckerTest
                 AssignmentStatusNames.INSPECT_CONFLICT_STATUS_NAME))
             .thenReturn(inspect_conflict);
 
-        AssignmentStatus newStatus = testInstance.checkConflicts(project);
+        AssignmentStatus newStatus = testInstance.checkConflict(project);
 
         assertThat("Incorrect Assignment status:", newStatus.getName(), is("Inspect - Conflict"));
     }
@@ -274,7 +274,7 @@ class ConflictsCheckerTest
                 AssignmentStatusNames.CONFLICT_STATUS_NAME))
             .thenReturn(conflict);
 
-        AssignmentStatus newStatus = testInstance.checkConflicts(project);
+        AssignmentStatus newStatus = testInstance.checkConflict(project);
 
         assertThat("Incorrect Assignment status:", newStatus.getName(), is("Conflict"));
     }
