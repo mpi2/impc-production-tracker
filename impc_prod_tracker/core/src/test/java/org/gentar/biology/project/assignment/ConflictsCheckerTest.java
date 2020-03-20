@@ -28,7 +28,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-class AssignmentStatusUpdaterTest
+class ConflictsCheckerTest
 {
     @Mock
     private AssignmentStatusService assignmentStatusService;
@@ -37,7 +37,7 @@ class AssignmentStatusUpdaterTest
     @Mock
     private ProjectQueryHelper projectQueryHelper;
 
-    private AssignmentStatusUpdater testInstance;
+    private ConflictsChecker testInstance;
 
     private static AssignmentStatus assigned =
         new AssignmentStatus(1L, AssignmentStatusNames.ASSIGNED_STATUS_NAME, "");
@@ -53,7 +53,7 @@ class AssignmentStatusUpdaterTest
     @BeforeEach
     public void setup()
     {
-        testInstance = new AssignmentStatusUpdater(
+        testInstance = new ConflictsChecker(
             assignmentStatusService, projectIntentionService, projectQueryHelper);
     }
 
