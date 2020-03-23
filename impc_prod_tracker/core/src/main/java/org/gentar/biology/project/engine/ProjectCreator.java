@@ -47,9 +47,9 @@ public class ProjectCreator
      */
     public Project createProject(Project project)
     {
+        project.setAssignmentStatus(getInitialAssignmentStatus(project));
         Project createdProject = saveProject(project);
         registerCreationInHistory();
-        createdProject.setAssignmentStatus(getInitialAssignmentStatus(createdProject));
         return createdProject;
     }
 

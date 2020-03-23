@@ -89,7 +89,7 @@ public class ProjectDtoToEntityMapper
     {
         if (projectDTO.getSummaryStatusName() == null) {
             project.setSummaryStatus(
-                    summaryStatusMapper.toEntity("Project Created"));
+                    summaryStatusMapper.toEntity("Plan Created"));
         } else {
             project.setSummaryStatus(
                     summaryStatusMapper.toEntity(projectDTO.getSummaryStatusName()));
