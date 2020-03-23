@@ -24,17 +24,19 @@ public class MutationCategorizationServiceImpl implements MutationCategorization
 
     public MutationCategorization getMutationCategorizationByNameAndType(String name, String type)
     {
-        System.out.println("name");
-        System.out.println("type");
-        return mutationCategorizationRepository.findByNameAndMutationCategorizationTypeNameIgnoreCase(name, type);
+        return mutationCategorizationRepository
+            .findByNameAndMutationCategorizationTypeNameIgnoreCase(name, type);
     }
 
-    public MutationCategorization getMutationCategorizationByNameAndTypeFailingWhenNull(String name, String type)
+    public MutationCategorization getMutationCategorizationByNameAndTypeFailingWhenNull(
+        String name, String type)
     {
-        MutationCategorization mutationCategorization = getMutationCategorizationByNameAndType(name, type);
+        MutationCategorization mutationCategorization =
+            getMutationCategorizationByNameAndType(name, type);
         if (mutationCategorization == null)
         {
-            throw new UserOperationFailedException("Mutation Categorization name '" + name + "' or type '" + type + "' do not exist.");
+            throw new UserOperationFailedException(
+                "Mutation Categorization name '" + name + "' or type '" + type + "' do not exist.");
         }
         return mutationCategorization;
     }
