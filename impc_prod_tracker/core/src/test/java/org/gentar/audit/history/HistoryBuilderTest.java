@@ -43,8 +43,6 @@ public class HistoryBuilderTest
     public void testBuildHistoryEntry()
     {
         testInstance = new HistoryBuilder<>(subjectRetriever);
-        testInstance.setEntityId(1L);
-        testInstance.setEntityName(PlanMock.class.getSimpleName());
 
         SubStatusMock subStatusMock1 = new SubStatusMock(1L, "subStatusMock1");
         StatusMock statusMock1 = new StatusMock(1L, "statusMock1", subStatusMock1);
@@ -70,7 +68,7 @@ public class HistoryBuilderTest
         planMock2.setWorkUnitList(Arrays.asList(workUnitMock2A, workUnitMock2B));
         planMock2.setPrivacy(privacyMock2);
 
-        History history = testInstance.buildHistoryEntry(planMock1, planMock2);
+        History history = testInstance.buildHistoryEntry(planMock1, planMock2, 1L);
 
         assertThat("History record not generated:", history, is(notNullValue()));
 

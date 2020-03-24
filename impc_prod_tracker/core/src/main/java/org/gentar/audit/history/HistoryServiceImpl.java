@@ -21,9 +21,9 @@ public class HistoryServiceImpl<T> implements HistoryService<T>
     }
 
     @Override
-    public History detectTrackOfChanges(T originalEntity, T newEntity)
+    public History detectTrackOfChanges(T originalEntity, T newEntity, Long id)
     {
-        return historyBuilder.buildHistoryEntry(originalEntity, newEntity);
+        return historyBuilder.buildHistoryEntry(originalEntity, newEntity, id);
     }
 
     @Override
@@ -124,9 +124,8 @@ public class HistoryServiceImpl<T> implements HistoryService<T>
     }
 
     @Override
-    public void setEntityData(String entityName, Long entityId)
+    public History buildCreationTrack(T entity, Long id)
     {
-        historyBuilder.setEntityName(entityName);
-        historyBuilder.setEntityId(entityId);
+        return historyBuilder.buildCreationHistoryEntry(entity, id);
     }
 }

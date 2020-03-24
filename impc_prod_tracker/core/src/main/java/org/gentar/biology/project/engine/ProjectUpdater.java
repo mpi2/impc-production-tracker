@@ -20,10 +20,10 @@ public class ProjectUpdater
 
     public History updateProject(Project originalProject, Project newProject)
     {
-        historyService.setEntityData(Project.class.getSimpleName(), originalProject.getId());
         validatePermissions(newProject);
         changeAssignmentStatusIfNeeded(newProject);
-        History history = historyService.detectTrackOfChanges(originalProject, newProject);
+        History history =
+            historyService.detectTrackOfChanges(originalProject, newProject, originalProject.getId());
         saveChanges(newProject);
         saveTrackOfChanges(history);
         return history;

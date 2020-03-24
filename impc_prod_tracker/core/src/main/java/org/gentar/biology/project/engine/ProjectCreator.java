@@ -15,6 +15,8 @@
  *******************************************************************************/
 package org.gentar.biology.project.engine;
 
+import org.gentar.audit.history.History;
+import org.gentar.audit.history.HistoryService;
 import org.gentar.biology.project.assignment.AssignmentStatus;
 import org.gentar.biology.project.assignment.AssignmentStatusUpdater;
 import org.springframework.stereotype.Component;
@@ -35,9 +37,13 @@ public class ProjectCreator
 
     private AssignmentStatusUpdater assignmentStatusUpdater;
 
-    public ProjectCreator(AssignmentStatusUpdater assignmentStatusUpdater)
+    private HistoryService<Project> historyService;
+
+    public ProjectCreator(
+        AssignmentStatusUpdater assignmentStatusUpdater, HistoryService<Project> historyService)
     {
         this.assignmentStatusUpdater = assignmentStatusUpdater;
+        this.historyService = historyService;
     }
 
     /**
@@ -49,7 +55,7 @@ public class ProjectCreator
     {
         project.setAssignmentStatus(getInitialAssignmentStatus(project));
         Project createdProject = saveProject(project);
-        registerCreationInHistory();
+        registerCreationInHistory(project);
         return createdProject;
     }
 
@@ -60,9 +66,10 @@ public class ProjectCreator
         return project;
     }
 
-    private void registerCreationInHistory()
+    private void registerCreationInHistory(Project project)
     {
-        // TODO history for Project creation
+        History history = historyService.buildCreationTrack(project, project.getId());
+        historyService.saveTrackOfChanges(history);
     }
 
     private String buildTpn(Long id)

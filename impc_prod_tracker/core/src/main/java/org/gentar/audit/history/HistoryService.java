@@ -7,8 +7,8 @@ import java.util.List;
  */
 public interface HistoryService<T>
 {
-    History detectTrackOfChanges(T originalEntity, T newEntity);
+    History detectTrackOfChanges(T originalEntity, T newEntity, Long id);
     void saveTrackOfChanges(History historyEntry);
     List<History> getHistoryByEntityNameAndEntityId(String EntityName, Long EntityId);
-    void setEntityData(String entityName, Long entityId);
+    History buildCreationTrack(T entity, Long id);
 }
