@@ -16,12 +16,8 @@
 package org.gentar.biology.project;
 
 import org.gentar.biology.intention.ProjectIntentionDTO;
-import org.gentar.biology.project.assignment.AssignmentStatusAction;
-import org.gentar.biology.project.assignment.AssignmentStatusActionsDTO;
-import org.gentar.biology.project.assignment.AssignmentStatusUpdater;
 import org.gentar.biology.status_stamps.StatusStampsDTO;
 import org.gentar.EntityMapper;
-import org.gentar.common.actions.ActionDTO;
 import org.gentar.organization.work_group.WorkGroup;
 import org.gentar.organization.work_unit.WorkUnit;
 import org.springframework.stereotype.Component;
@@ -39,20 +35,17 @@ public class ProjectEntityToDtoMapper
     private StatusStampMapper statusStampMapper;
     private ProjectIntentionMapper projectIntentionMapper;
     private ProjectConsortiumMapper projectConsortiumMapper;
-    private AssignmentStatusUpdater assignmentStatusUpdater;
 
     public ProjectEntityToDtoMapper(
         EntityMapper entityMapper,
         StatusStampMapper statusStampMapper,
         ProjectIntentionMapper projectIntentionMapper,
-        ProjectConsortiumMapper projectConsortiumMapper,
-        AssignmentStatusUpdater assignmentStatusUpdater)
+        ProjectConsortiumMapper projectConsortiumMapper)
     {
         this.entityMapper = entityMapper;
         this.statusStampMapper = statusStampMapper;
         this.projectIntentionMapper = projectIntentionMapper;
         this.projectConsortiumMapper = projectConsortiumMapper;
-        this.assignmentStatusUpdater = assignmentStatusUpdater;
     }
 
     public ProjectDTO toDto(Project project)
@@ -67,7 +60,6 @@ public class ProjectEntityToDtoMapper
             addProjectConsortia(project, projectDTO);
             addRelatedWorkUnits(project, projectDTO);
             addRelatedWorkGroups(project, projectDTO);
-            addAssignmentStatusActions(project, projectDTO);
         }
         return projectDTO;
     }
@@ -106,17 +98,6 @@ public class ProjectEntityToDtoMapper
             workGroups.forEach(x -> relatedWorkGroups.add(x.getName()));
         }
         projectDTO.setRelatedWorkGroupNames(new HashSet<>(relatedWorkGroups));
-    }
-
-    private void addAssignmentStatusActions(Project project, ProjectDTO projectDTO)
-    {
-        AssignmentStatusActionsDTO assignmentStatusActionsDTO = new AssignmentStatusActionsDTO();
-        List<AssignmentStatusAction> actions =
-            assignmentStatusUpdater.getPossibleAssignmentStatusActions(project);
-        List<ActionDTO> actionDTOS = new ArrayList<>();
-        actions.forEach(x -> actionDTOS.add(new ActionDTO(x.getActionName(), x.getDescription())));
-        assignmentStatusActionsDTO.setActionDTOS(actionDTOS);
-        projectDTO.setAssignmentStatusActionsDTO(assignmentStatusActionsDTO);
     }
 
     private void addSpeciesDTO(Project project, ProjectDTO projectDTO)
