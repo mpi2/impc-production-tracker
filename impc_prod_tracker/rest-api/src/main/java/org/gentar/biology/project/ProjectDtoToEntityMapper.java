@@ -65,7 +65,6 @@ public class ProjectDtoToEntityMapper
         setPrivacy(project, projectDTO);
         setConsortia(project, projectDTO);
         setSpecies(project, projectDTO);
-        setActionToExecute(project, projectDTO);
         return project;
     }
 
@@ -74,15 +73,6 @@ public class ProjectDtoToEntityMapper
         Set<Species> species =
                 speciesMapper.toEntities(projectDTO.getSpeciesNames());
         project.setSpecies(species);
-    }
-
-    private void setActionToExecute(Project project, ProjectDTO projectDTO)
-    {
-        var assignmentStatusActionsDTO = projectDTO.getAssignmentStatusActionsDTO();
-        if (assignmentStatusActionsDTO != null)
-        {
-            project.setActionToExecute(assignmentStatusActionsDTO.getActionToExecute());
-        }
     }
 
     private void setSummaryStatus(Project project, ProjectDTO projectDTO)
