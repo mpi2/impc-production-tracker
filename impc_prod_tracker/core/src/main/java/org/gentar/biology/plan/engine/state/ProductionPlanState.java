@@ -11,7 +11,7 @@ public enum ProductionPlanState implements ProcessState
     AttemptInProgress("Attempt in progress"),
     EmbryosObtained("Attempt complete - Embryos obtained"),
     GLT("Attempt complete - GTL"),
-    Aborted("Attempt aborted");
+    AttemptAborted("Attempt aborted");
 
     private String internalName;
 

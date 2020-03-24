@@ -13,9 +13,9 @@ import java.util.List;
 public enum ProductionPlanEvent implements ProcessEvent
 {
     abortWhenInProgress(
-            "Abort plan that is in progress",
+            "Abort the plan that is in progress",
             ProductionPlanState.AttemptInProgress,
-            ProductionPlanState.Aborted,
+            ProductionPlanState.AttemptAborted,
             true,
             null)
             {
@@ -26,9 +26,9 @@ public enum ProductionPlanEvent implements ProcessEvent
                 }
             },
     abortWhenCreated(
-            "Abort a plan that has been created",
+            "Abort the plan that has been created",
             ProductionPlanState.PlanCreated,
-            ProductionPlanState.Aborted,
+            ProductionPlanState.AttemptAborted,
             true,
             null)
             {
@@ -58,7 +58,7 @@ public enum ProductionPlanEvent implements ProcessEvent
             "executed by the system when germ line transmission is registered."),
     reverseAbortion(
             "Reverse abortion",
-            ProductionPlanState.Aborted,
+            ProductionPlanState.AttemptAborted,
             ProductionPlanState.PlanCreated,
             true,
             null)
@@ -70,9 +70,9 @@ public enum ProductionPlanEvent implements ProcessEvent
                 }
             },
     abortWhenEmbryosObtained(
-            "Abort plan when embryos obtained",
+            "Abort the plan after embryos obtained",
             ProductionPlanState.EmbryosObtained,
-            ProductionPlanState.Aborted,
+            ProductionPlanState.AttemptAborted,
             true,
             null)
             {
@@ -83,9 +83,9 @@ public enum ProductionPlanEvent implements ProcessEvent
                 }
             },
     abortWhenGLT(
-            "Abort plan when germ line transmission obtained",
+            "Abort the plan after germ line transmission obtained",
             ProductionPlanState.GLT,
-            ProductionPlanState.Aborted,
+            ProductionPlanState.AttemptAborted,
             true,
             null)
             {
