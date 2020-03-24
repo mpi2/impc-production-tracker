@@ -35,7 +35,6 @@ public class PlanUpdaterImpl implements PlanUpdater
     @Override
     public History updatePlan(Plan originalPlan, Plan newPlan)
     {
-        historyService.setEntityData(Plan.class.getSimpleName(), originalPlan.getId());
         validatePermissionToUpdatePlan(newPlan);
         validateData(newPlan);
         changeStatusIfNeeded(newPlan);
@@ -96,8 +95,7 @@ public class PlanUpdaterImpl implements PlanUpdater
      */
     private History detectTrackOfChanges(Plan originalPlan, Plan newPlan)
     {
-        History historyEntry = historyService.detectTrackOfChanges(originalPlan, newPlan);
-        return historyEntry;
+        return historyService.detectTrackOfChanges(originalPlan, newPlan, originalPlan.getId());
     }
 
     /**

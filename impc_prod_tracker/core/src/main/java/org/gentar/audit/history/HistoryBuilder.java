@@ -18,22 +18,10 @@ public class HistoryBuilder<T>
     private SubjectRetriever subjectRetriever;
     private static final String RESOURCE_PRIVACY_PROPERTY_NAME = "resourcePrivacy";
     private static final String RESTRICTED_OBJECT_PROPERTY_NAME = "restrictedObject";
-    private String entityName;
-    private Long entityId;
 
     public HistoryBuilder(SubjectRetriever subjectRetriever)
     {
         this.subjectRetriever = subjectRetriever;
-    }
-
-    public void setEntityName(String entityName)
-    {
-        this.entityName = entityName;
-    }
-
-    public void setEntityId(Long entityId)
-    {
-        this.entityId = entityId;
     }
 
     /**
@@ -41,9 +29,10 @@ public class HistoryBuilder<T>
      * as part as a update.
      * @param originalEntity The entity before the update.
      * @param newEntity The updated entity.
+     * @param id The id of the entity in the system.
      * @return {@link History} object with the information or null if no changes where detected.
      */
-    public History buildHistoryEntry(T originalEntity, T newEntity)
+    public History buildHistoryEntry(T originalEntity, T newEntity, Long id)
     {
         History history = new History();
         List<HistoryDetail> historyDetails = getDetails(originalEntity, newEntity);
@@ -53,14 +42,33 @@ public class HistoryBuilder<T>
         }
         else
         {
-            history.setEntityId(entityId);
-            history.setEntityName(entityName);
+            history.setEntityId(id);
+            history.setEntityName(originalEntity.getClass().getSimpleName());
             history.setDate(LocalDateTime.now());
             history.setComment(originalEntity.getClass().getSimpleName() + " updated");
             history.setHistoryDetailSet(historyDetails);
             history.setUser(subjectRetriever.getSubject().getLogin());
         }
 
+        return history;
+    }
+
+    /**
+     * Creates a {@link History} entity with information about the creation of an entity in the system.
+     * @param entity The entity whose creation is being audited.
+     * @param id The id of the entity.Entity can be any class so we cannot just use a method to
+     *           get the id.
+     * @return A record saying that the entity was created. There is NO details as that is used to
+     *          log the changes done in an object (update rather than creation).
+     */
+    public History buildCreationHistoryEntry(T entity, Long id)
+    {
+        History history = new History();
+        history.setEntityId(id);
+        history.setEntityName(entity.getClass().getSimpleName());
+        history.setDate(LocalDateTime.now());
+        history.setComment(entity.getClass().getSimpleName() + " created");
+        history.setUser(subjectRetriever.getSubject().getLogin());
         return history;
     }
 

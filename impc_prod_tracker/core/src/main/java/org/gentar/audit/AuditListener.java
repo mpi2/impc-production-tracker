@@ -41,8 +41,7 @@ public class AuditListener
         long id = ObjectIdExtractor.getObjectId(originalObject);
         HistoryService historyService = BeanUtil.getBean(HistoryService.class);
         String entityName = originalObject.getClass().getSimpleName();
-        historyService.setEntityData(entityName, id);
-        History history = historyService.detectTrackOfChanges(originalObject, newObject);
+        History history = historyService.detectTrackOfChanges(originalObject, newObject, id);
         if (history != null)
         {
             history.setComment(entityName + " updated");

@@ -25,7 +25,6 @@ public class OutcomeUpdater
 
     History update(Outcome originalOutcome, Outcome newOutcome)
     {
-        historyService.setEntityData(Outcome.class.getSimpleName(), originalOutcome.getId());
         validatePermission(newOutcome);
         validateData(newOutcome);
         changeStatusIfNeeded(newOutcome);
@@ -66,7 +65,6 @@ public class OutcomeUpdater
 
     private History detectTrackOfChanges(Outcome originalOutcome, Outcome newOutcome)
     {
-        History historyEntry = historyService.detectTrackOfChanges(originalOutcome, newOutcome);
-        return historyEntry;
+        return historyService.detectTrackOfChanges(originalOutcome, newOutcome, originalOutcome.getId());
     }
 }
