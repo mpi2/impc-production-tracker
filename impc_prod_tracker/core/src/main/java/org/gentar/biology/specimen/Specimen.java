@@ -6,17 +6,13 @@ import lombok.NoArgsConstructor;
 import org.gentar.BaseEntity;
 import org.gentar.biology.outcome.Outcome;
 import org.gentar.biology.specimen.type.SpecimenType;
-import org.gentar.biology.status.Status;
-import org.gentar.statemachine.ProcessData;
-import org.gentar.statemachine.ProcessEvent;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 
 @NoArgsConstructor(access= AccessLevel.PUBLIC, force=true)
 @Data
 @Entity
-public class Specimen extends BaseEntity implements ProcessData {
+public class Specimen extends BaseEntity {
 
     @Id
     @Column(name = "id")
@@ -32,20 +28,6 @@ public class Specimen extends BaseEntity implements ProcessData {
 
     @ManyToOne
     private SpecimenType specimenType;
-
-    @NotNull
-    @ManyToOne(targetEntity= Status.class)
-    private Status status;
-
-
-    @Transient
-    private ProcessEvent event;
-
-    @Override
-    public ProcessEvent getEvent()
-    {
-        return this.event;
-    }
 
 
 }
