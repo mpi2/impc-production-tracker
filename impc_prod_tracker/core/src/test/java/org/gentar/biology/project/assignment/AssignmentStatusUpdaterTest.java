@@ -10,6 +10,9 @@ import org.mockito.junit.jupiter.MockitoExtension;
 class AssignmentStatusUpdaterTest
 {
     @Mock
+    private AssignmentStatusService assignmentStatusService;
+
+    @Mock
     private ConflictsChecker conflictsChecker;
 
     private AssignmentStatusUpdater testInstance;
@@ -17,6 +20,6 @@ class AssignmentStatusUpdaterTest
     @BeforeEach
     public void setup()
     {
-        testInstance = new AssignmentStatusUpdater(conflictsChecker);
+        testInstance = new AssignmentStatusUpdater(conflictsChecker, assignmentStatusService);
     }
 }
