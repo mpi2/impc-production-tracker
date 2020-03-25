@@ -9,10 +9,10 @@ import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
-@NoArgsConstructor(access= AccessLevel.PRIVATE, force=true)
+@NoArgsConstructor(access= AccessLevel.PUBLIC, force=true)
 @Data
 @Entity
-public class  AssignmentStatusStamp extends BaseEntity implements Serializable
+public class AssignmentStatusStamp extends BaseEntity implements Serializable
 {
     @Id
     @SequenceGenerator(name = "assignmentStatusStampSeq", sequenceName = "ASSIGNMENT_STATUS_STAMP_SEQ")

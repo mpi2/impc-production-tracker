@@ -53,7 +53,7 @@ public class ProjectCreator
      */
     public Project createProject(Project project)
     {
-        project.setAssignmentStatus(getInitialAssignmentStatus(project));
+        setInitialAssignmentStatus(project);
         Project createdProject = saveProject(project);
         registerCreationInHistory(project);
         return createdProject;
@@ -79,9 +79,9 @@ public class ProjectCreator
         return identifier;
     }
 
-    private AssignmentStatus getInitialAssignmentStatus(Project project)
+    private void setInitialAssignmentStatus(Project project)
     {
-        return assignmentStatusUpdater.checkConflict(project);
+        assignmentStatusUpdater.setCalculatedAssignmentStatus(project);
     }
 
 }
