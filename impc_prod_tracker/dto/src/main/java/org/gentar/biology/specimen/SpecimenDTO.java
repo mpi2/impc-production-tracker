@@ -11,6 +11,9 @@ public class SpecimenDTO
     private String specimenExternalRef;
     private String specimenTypeName;
 
+    @JsonProperty("backgroundStrainName")
+    private String strainName;
+
     @JsonProperty("specimenProperties")
     private List<SpecimenPropertyDTO> specimenPropertyDTOS;
 }
