@@ -8,10 +8,10 @@ import java.util.List;
 public enum ProductionPlanState implements ProcessState
 {
     PlanCreated("Plan Created"),
-    AttemptInProgress("Attempt in progress"),
-    EmbryosObtained("Attempt complete - Embryos obtained"),
-    GLT("Attempt complete - GTL"),
-    AttemptAborted("Attempt aborted");
+    AttemptInProgress("Attempt In Progress"),
+    EmbryosObtained("Embryos Obtained"),
+    GLT("GLT"),
+    AttemptAborted("Attempt Aborted");
 
     private String internalName;
 

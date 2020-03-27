@@ -8,10 +8,12 @@ import java.util.List;
 
 public enum LateAdultPhenotypePlanState implements ProcessState
 {
-    RegisteredForLateAdultPhenotypingProduction("Registered for Late Adult Phenotyping Production"),
+    PlanCreated("Plan Created"),
+    RegisteredForLateAdultPhenotypingProduction("Registered For Late Adult Phenotyping Production"),
     LateAdultPhenotypingStarted("Late Adult Phenotyping Started"),
     LateAdultPhenotypingDataReceived("Late Adult Phenotyping Data Received"),
     LateAdultPhenotypingAllDataSent("Late Adult Phenotyping All Data Sent"),
+    LateAdultPhenotypingAllDataValidated("Late Adult Phenotyping All Data Validated"),
     LateAdultPhenotypingFinished("Late Adult Phenotyping Finished"),
     LateAdultPhenotypeProductionAborted("Late Adult Phenotype Production Aborted");
 
