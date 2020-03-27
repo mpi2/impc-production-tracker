@@ -16,6 +16,9 @@
 package org.gentar.biology.project;
 
 import org.gentar.EntityMapper;
+import org.gentar.biology.plan.Plan;
+import org.gentar.biology.plan.PlanDTO;
+import org.gentar.biology.plan.PlanMapper;
 import org.gentar.biology.project.consortium.ProjectConsortium;
 import org.gentar.biology.intention.project_intention.ProjectIntention;
 import org.gentar.biology.species.SpeciesMapper;

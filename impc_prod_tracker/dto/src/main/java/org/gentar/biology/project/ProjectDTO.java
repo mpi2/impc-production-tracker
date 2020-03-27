@@ -37,6 +37,8 @@ public class ProjectDTO extends RepresentationModel
     private String tpn;
     private String assignmentStatusName;
     private String summaryStatusName;
+
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private Long imitsMiPlanId;
 
     @JsonProperty("assignmentStatusStamps")
@@ -65,6 +67,8 @@ public class ProjectDTO extends RepresentationModel
     @JsonProperty("isObjectRestricted")
     private Boolean isObjectRestricted;
 
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private Set<String> relatedWorkUnitNames;
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private Set<String> relatedWorkGroupNames;
 }
