@@ -3,7 +3,9 @@ package org.gentar.biology.plan.engine.events;
 import org.gentar.biology.plan.engine.PlanProcessor;
 import org.gentar.biology.plan.engine.processors.BreedingPlanAbortProcessor;
 import org.gentar.biology.plan.engine.processors.BreedingPlanAbortReverserProcessor;
+import org.gentar.biology.plan.engine.processors.PlanAbortProcessor;
 import org.gentar.biology.plan.engine.state.BreedingPlanState;
+import org.gentar.biology.plan.engine.state.ProductionPlanState;
 import org.gentar.statemachine.ProcessEvent;
 import org.gentar.statemachine.ProcessState;
 import org.gentar.statemachine.Processor;
@@ -13,19 +15,12 @@ import java.util.List;
 
 public enum BreedingPlanEvent implements ProcessEvent 
 {
-    abortWhenBreedingStarted(
-            "Abort a breeding plan that has been started.",
+    breedingStarted(
+            "Breeding plan is started.",
+            BreedingPlanState.PlanCreated,
             BreedingPlanState.BreedingStarted,
-            BreedingPlanState.BreedingAborted,
-            true,
-            null)
-            {
-                @Override
-                public Class<? extends Processor> getNextStepProcessor()
-                {
-                    return BreedingPlanAbortProcessor.class;
-                }
-            },
+            false,
+            null),
     breedingComplete(
             "Breeding plan is complete.",
             BreedingPlanState.BreedingStarted,
@@ -43,6 +38,32 @@ public enum BreedingPlanEvent implements ProcessEvent
                 public Class<? extends Processor> getNextStepProcessor()
                 {
                     return BreedingPlanAbortReverserProcessor.class;
+                }
+            },
+    abortWhenCreated(
+            "Abort a breeding plan that has been created",
+            BreedingPlanState.PlanCreated,
+            BreedingPlanState.BreedingAborted,
+            true,
+            null)
+            {
+                @Override
+                public Class<? extends Processor> getNextStepProcessor()
+                {
+                    return BreedingPlanAbortProcessor.class;
+                }
+            },
+    abortWhenBreedingStarted(
+            "Abort a breeding plan that has been started.",
+            BreedingPlanState.BreedingStarted,
+            BreedingPlanState.BreedingAborted,
+            true,
+            null)
+            {
+                @Override
+                public Class<? extends Processor> getNextStepProcessor()
+                {
+                    return BreedingPlanAbortProcessor.class;
                 }
             },
     abortWhenBreedingComplete(

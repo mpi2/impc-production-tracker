@@ -8,13 +8,14 @@ import java.util.List;
 
 public enum PhenotypePlanState implements ProcessState
 {
+    PlanCreated("Plan Created"),
     PhenotypingProductionRegistered("Phenotyping Production Registered"),
-    PhenotypeAttemptRegistered("Phenotype Attempt Registered"),
     RederivationStarted("Rederivation Started"),
     RederivationComplete("Rederivation Complete"),
     PhenotypingStarted("Phenotyping Started"),
     PhenotypingDataReceived("Phenotyping Data Received"),
     PhenotypingAllDataSent("Phenotyping All Data Sent"),
+    PhenotypingAllDataValidated("Phenotyping All Data Validated"),
     PhenotypingFinished("Phenotyping Finished"),
     PhenotypeProductionAborted("Phenotype Production Aborted");
 

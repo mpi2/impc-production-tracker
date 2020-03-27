@@ -7,6 +7,7 @@ import java.util.Arrays;
 import java.util.List;
 
 public enum BreedingPlanState implements ProcessState {
+    PlanCreated("Plan Created"),
     BreedingStarted("Breeding Started"),
     BreedingComplete("Breeding Complete"),
     BreedingAborted("Breeding Aborted");
