@@ -15,6 +15,7 @@
  *******************************************************************************/
 package org.gentar.conf;
 
+
 import org.gentar.biology.plan.attempt.crispr.nuclease.nuclease_class.NucleaseClassRepository;
 import org.gentar.biology.plan.attempt.crispr.nuclease.nuclease_type.NucleaseTypeRepository;
 import org.gentar.biology.mutation.categorizarion.MutationCategorizationRepository;

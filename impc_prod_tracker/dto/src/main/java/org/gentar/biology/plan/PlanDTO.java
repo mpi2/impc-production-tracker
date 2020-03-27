@@ -30,16 +30,13 @@ import org.gentar.biology.status_stamps.StatusStampsDTO;
 import java.util.List;
 
 @Data
-@RequiredArgsConstructor
 @NoArgsConstructor
 public class PlanDTO extends RepresentationModel
 {
     private Long id;
 
-    @NonNull
     private String pin;
 
-    @NonNull
     private String tpn;
 
     private List<String> funderNames;
@@ -48,15 +45,19 @@ public class PlanDTO extends RepresentationModel
     private String statusName;
     private String summaryStatusName;
 
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     @JsonProperty("statusDates")
     private List<StatusStampsDTO> statusStampsDTOS;
 
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private String comment;
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private Boolean productsAvailableForGeneralPublic;
 
     @JsonProperty("typeName")
     private String planTypeName;
 
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private String attemptTypeName;
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -71,6 +72,7 @@ public class PlanDTO extends RepresentationModel
     @JsonProperty("phenotypingAttempt")
     private PhenotypingAttemptDTO phenotypingAttemptDTO;
 
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     @JsonProperty("statusTransition")
     private StatusTransitionDTO statusTransitionDTO;
 }

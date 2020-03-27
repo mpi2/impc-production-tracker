@@ -15,6 +15,7 @@
  */
 package org.gentar.biology.plan;
 
+import org.gentar.biology.project.Project;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
@@ -45,5 +46,7 @@ public interface PlanService
      * @return List of {@link History} with the trace of the changes for a plan.
      */
     List<History> getPlanHistory(Plan plan);
+
+    Plan createPlan(Plan plan);
 
 }

@@ -13,7 +13,7 @@
  language governing permissions and limitations under the
  License.
  */
-package org.gentar.biology.plan.attempt.crispr_attempt;
+package org.gentar.biology.strain;
 
 import org.gentar.Mapper;
 import org.gentar.biology.strain.StrainService;

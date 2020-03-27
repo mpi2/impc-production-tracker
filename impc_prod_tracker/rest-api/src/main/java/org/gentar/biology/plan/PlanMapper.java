@@ -16,9 +16,7 @@ import org.gentar.biology.plan.production.crispr_attempt.CrisprAttemptDTO;
 import org.gentar.Mapper;
 import org.gentar.biology.plan.status.PlanStatusStamp;
 import org.gentar.biology.plan.type.PlanType;
-import org.gentar.biology.project.AttemptTypes;
-import org.gentar.biology.project.PlanTypes;
-import org.gentar.biology.project.ProjectService;
+import org.gentar.biology.project.*;
 import org.gentar.biology.status.StatusMapper;
 import org.gentar.biology.status_stamps.StatusStampsDTO;
 import org.gentar.common.state_machine.StatusTransitionDTO;
@@ -139,6 +137,60 @@ public class PlanMapper implements Mapper<Plan, PlanDTO>
     {
         Plan plan = entityMapper.toTarget(planDTO, Plan.class);
         plan.setProject(projectService.getProjectByTpn(planDTO.getTpn()));
+
+        Set<Funder> funders = new HashSet<Funder>(funderMapper.toEntities(planDTO.getFunderNames()));
+        plan.setFunders(funders);
+        plan.setWorkUnit(workUnitMapper.toEntity(planDTO.getWorkUnitName()));
+        plan.setWorkGroup(workGroupMapper.toEntity(planDTO.getWorkGroupName()));
+
+        setCrisprAttempt(plan, planDTO);
+        setPlanType(plan, planDTO);
+        setAttemptType(plan, planDTO);
+        setPlanStatus(plan, planDTO);
+        setSummaryStatus(plan, planDTO);
+
+        return plan;
+    }
+
+    private void setSummaryStatus(Plan plan, PlanDTO planDTO)
+    {
+        if (planDTO.getSummaryStatusName() == null) {
+            plan.setSummaryStatus(
+                    statusMapper.toEntity("Plan Created"));
+        } else {
+            plan.setSummaryStatus(
+                    statusMapper.toEntity(planDTO.getSummaryStatusName()));
+        }
+    }
+
+    private void setPlanStatus(Plan plan, PlanDTO planDTO)
+    {
+        if (planDTO.getStatusName() == null) {
+            plan.setStatus(statusMapper.toEntity("Plan Created"));
+        } else {
+            plan.setStatus(statusMapper.toEntity(planDTO.getStatusName()));
+        }
+    }
+
+    private void setAttemptType(Plan plan, PlanDTO planDTO)
+    {
+        if (planDTO.getAttemptTypeName() != null) {
+            plan.setAttemptType(attemptTypeMapper.toEntity(planDTO.getAttemptTypeName()));
+        }
+    }
+
+    private void setPlanType(Plan plan, PlanDTO planDTO)
+    {
+        if (planDTO.getPlanTypeName() == null)
+        {
+            plan.setPlanType(planTypeMapper.toEntity("Production"));
+        } else {
+            plan.setPlanType(planTypeMapper.toEntity(planDTO.getPlanTypeName()));
+        }
+    }
+
+    private void setCrisprAttempt(Plan plan, PlanDTO planDTO)
+    {
         if (planDTO.getCrisprAttemptDTO() != null)
         {
             CrisprAttempt crisprAttempt = crisprAttemptMapper.toEntity(planDTO.getCrisprAttemptDTO());
@@ -147,14 +199,6 @@ public class PlanMapper implements Mapper<Plan, PlanDTO>
             crisprAttempt.setId(plan.getId());
             plan.setCrisprAttempt(crisprAttempt);
         }
-        plan.setPlanType(planTypeMapper.toEntity(planDTO.getPlanTypeName()));
-        plan.setAttemptType(attemptTypeMapper.toEntity(planDTO.getAttemptTypeName()));
-        Set<Funder> funders = new HashSet<Funder>(funderMapper.toEntities(planDTO.getFunderNames()));
-        plan.setFunders(funders);
-        plan.setWorkUnit(workUnitMapper.toEntity(planDTO.getWorkUnitName()));
-        plan.setWorkGroup(workGroupMapper.toEntity(planDTO.getWorkGroupName()));
-        plan.setStatus(statusMapper.toEntity(planDTO.getStatusName()));
-        return plan;
     }
 
     private StatusTransitionDTO buildStatusTransitionDTO(Plan plan)

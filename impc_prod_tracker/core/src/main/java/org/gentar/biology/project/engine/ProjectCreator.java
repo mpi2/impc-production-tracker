@@ -39,9 +39,9 @@ public class ProjectCreator
 
     private HistoryService<Project> historyService;
 
-    public ProjectCreator(
-        AssignmentStatusUpdater assignmentStatusUpdater, HistoryService<Project> historyService)
+    public ProjectCreator(AssignmentStatusUpdater assignmentStatusUpdater, HistoryService<Project> historyService)
     {
+        this.entityManager = entityManager;
         this.assignmentStatusUpdater = assignmentStatusUpdater;
         this.historyService = historyService;
     }

@@ -56,7 +56,7 @@ import java.util.Set;
 @NoArgsConstructor(access= AccessLevel.PUBLIC, force=true)
 @Data
 @Entity
-@EqualsAndHashCode(onlyExplicitlyIncluded = true, callSuper = false)
+ @EqualsAndHashCode(onlyExplicitlyIncluded = true, callSuper = false)
 public class Plan extends BaseEntity  implements Resource<Plan>, ProcessData
 {
     @Id
@@ -67,7 +67,7 @@ public class Plan extends BaseEntity  implements Resource<Plan>, ProcessData
     @Transient
     private ProcessEvent event;
 
-    @NotNull
+//    @NotNull
     @EqualsAndHashCode.Include
     private String pin;
 
