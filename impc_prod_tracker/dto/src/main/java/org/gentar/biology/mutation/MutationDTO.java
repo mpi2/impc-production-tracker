@@ -12,7 +12,8 @@ public class MutationDTO
 {
     private Long id;
     private String mgiAlleleAccessionId;
-    private String mgiAlleleSymbolSuperScript;
+    private String mgiAlleleSymbol;
+    private Boolean mgiAlleleSymbolRequiresConstruction;
     private String geneticMutationTypeName;
     private String molecularMutationTypeName;
     private Integer genBankFileId;
