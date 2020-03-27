@@ -16,6 +16,7 @@
 package org.gentar.biology.plan.engine.processors;
 
 import org.gentar.biology.plan.Plan;
+import org.gentar.biology.plan.engine.PlanStateSetter;
 import org.gentar.biology.status.Status;
 import org.gentar.biology.status.StatusService;
 import org.gentar.statemachine.ProcessData;
@@ -29,11 +30,11 @@ import org.springframework.stereotype.Component;
 @Component
 public class PlanAbortReverserProcessor implements Processor
 {
-    private StatusService statusService;
+    private PlanStateSetter planStateSetter;
 
-    public PlanAbortReverserProcessor(StatusService statusService)
+    public PlanAbortReverserProcessor(PlanStateSetter planStateSetter)
     {
-        this.statusService = statusService;
+        this.planStateSetter = planStateSetter;
     }
 
     @Override
@@ -55,8 +56,7 @@ public class PlanAbortReverserProcessor implements Processor
         {
             ProcessEvent processEvent = plan.getEvent();
             String statusName = processEvent.getEndState().getInternalName();
-            Status newPlanStatus = statusService.getStatusByName(statusName);
-            plan.setStatus(newPlanStatus);
+            planStateSetter.setStatusByName(plan, statusName);
         }
     }
 }

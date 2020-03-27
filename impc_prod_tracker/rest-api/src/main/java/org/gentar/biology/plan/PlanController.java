@@ -180,7 +180,6 @@ public class PlanController
         {
             String action = statusTransitionDTO.getActionToExecute();
             productionPlanEvent = ProductionPlanEvent.getEventByName(action);
-            System.out.println(">>>>>> >>> >>>> action to execute:::" + action);
         }
         return productionPlanEvent;
     }

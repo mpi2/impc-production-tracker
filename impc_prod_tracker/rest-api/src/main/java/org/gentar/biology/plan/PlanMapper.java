@@ -14,9 +14,11 @@ import org.gentar.biology.plan.engine.state.ProductionPlanState;
 import org.gentar.biology.plan.phenotyping.PhenotypingAttemptMapper;
 import org.gentar.biology.plan.production.crispr_attempt.CrisprAttemptDTO;
 import org.gentar.Mapper;
+import org.gentar.biology.plan.status.PlanStatusStamp;
 import org.gentar.biology.plan.type.PlanType;
 import org.gentar.biology.project.*;
 import org.gentar.biology.status.StatusMapper;
+import org.gentar.biology.status_stamps.StatusStampsDTO;
 import org.gentar.common.state_machine.StatusTransitionDTO;
 import org.gentar.common.state_machine.TransitionDTO;
 import org.gentar.organization.funder.Funder;
@@ -30,6 +32,7 @@ import org.springframework.stereotype.Component;
 import org.gentar.biology.plan.attempt.AttemptType;
 import org.gentar.biology.plan.attempt.crispr_attempt.CrisprAttemptMapper;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -83,19 +86,10 @@ public class PlanMapper implements Mapper<Plan, PlanDTO>
     private void addNoMappedData(PlanDTO planDTO, Plan plan)
     {
         addAttempt(planDTO, plan);
+        addStatusStamps(planDTO, plan);
         planDTO.setTpn(plan.getProject().getTpn());
         planDTO.setFunderNames(funderMapper.toDtos(plan.getFunders()));
         planDTO.setStatusTransitionDTO(buildStatusTransitionDTO(plan));
-    }
-
-    public List<PlanDTO> toDtos(List<Plan> plans)
-    {
-        List<PlanDTO> planDTOS = new ArrayList<>();
-        if (plans != null)
-        {
-            plans.forEach(plan -> planDTOS.add(toDto(plan)));
-        }
-        return planDTOS;
     }
 
     private void addAttempt(PlanDTO planDTO, Plan plan)
@@ -119,6 +113,23 @@ public class PlanMapper implements Mapper<Plan, PlanDTO>
         {
             planDTO.setPhenotypingAttemptDTO(phenotypingAttemptMapper.toDto(plan.getPhenotypingAttempt()));
         }
+    }
+
+    private void addStatusStamps(PlanDTO planDTO, Plan plan)
+    {
+        Set<PlanStatusStamp> statusStamps = plan.getPlanStatusStamps();
+        List<StatusStampsDTO> statusStampsDTOS = new ArrayList<>();
+        if (statusStamps != null)
+        {
+            statusStamps.forEach(x -> {
+                StatusStampsDTO statusStampsDTO = new StatusStampsDTO();
+                statusStampsDTO.setStatusName(x.getStatus().getName());
+                statusStampsDTO.setDate(x.getDate());
+                statusStampsDTOS.add(statusStampsDTO);
+            });
+        }
+        statusStampsDTOS.sort(Comparator.comparing(StatusStampsDTO::getDate));
+        planDTO.setStatusStampsDTOS(statusStampsDTOS);
     }
 
     @Override

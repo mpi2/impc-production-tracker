@@ -63,10 +63,9 @@ public class PlanUpdaterImpl implements PlanUpdater
      */
     private void changeStatusIfNeeded(Plan plan)
     {
-        System.out.println("Changing status");
         if (plan.getEvent() != null)
         {
-            plan = (Plan)stateTransitionManager.processEvent(plan);
+             stateTransitionManager.processEvent(plan);
         }
     }
 
@@ -84,7 +83,6 @@ public class PlanUpdaterImpl implements PlanUpdater
      */
     private void saveChanges(Plan plan)
     {
-        System.out.println("Saving changes");
         planRepository.save(plan);
     }
 

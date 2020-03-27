@@ -16,8 +16,8 @@
 package org.gentar.biology.plan.engine.processors;
 
 import org.gentar.biology.plan.Plan;
-import org.gentar.biology.status.Status;
-import org.gentar.biology.status.StatusService;
+import org.gentar.biology.plan.engine.PlanStateSetter;
+import org.gentar.biology.project.assignment.AssignmentStatusUpdater;
 import org.gentar.statemachine.ProcessData;
 import org.gentar.statemachine.ProcessEvent;
 import org.gentar.statemachine.Processor;
@@ -29,11 +29,13 @@ import org.springframework.stereotype.Component;
 @Component
 public class PlanAbortProcessor implements Processor
 {
-    private StatusService statusService;
+    private PlanStateSetter planStateSetter;
+    private AssignmentStatusUpdater assignmentStatusUpdater;
 
-    public PlanAbortProcessor(StatusService statusService)
+    public PlanAbortProcessor(PlanStateSetter planStateSetter, AssignmentStatusUpdater assignmentStatusUpdater)
     {
-        this.statusService = statusService;
+        this.planStateSetter = planStateSetter;
+        this.assignmentStatusUpdater = assignmentStatusUpdater;
     }
 
     @Override
@@ -49,8 +51,8 @@ public class PlanAbortProcessor implements Processor
         {
             ProcessEvent processEvent = plan.getEvent();
             String statusName = processEvent.getEndState().getInternalName();
-            Status newPlanStatus = statusService.getStatusByName(statusName);
-            plan.setStatus(newPlanStatus);
+            planStateSetter.setStatusByName(plan, statusName);
+            assignmentStatusUpdater.inactivateProjectIfNeeded(plan.getProject());
         }
     }
 
