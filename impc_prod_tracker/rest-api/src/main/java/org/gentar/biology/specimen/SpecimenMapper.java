@@ -23,7 +23,9 @@ public class SpecimenMapper implements Mapper<Specimen, SpecimenDTO>
     public SpecimenDTO toDto(Specimen entity)
     {
         SpecimenDTO specimenDTO = entityMapper.toTarget(entity, SpecimenDTO.class);
-        specimenDTO.setStrainName(strainMapper.toDto(entity.getStrain()));
+        if (entity != null) {
+            specimenDTO.setStrainName(strainMapper.toDto(entity.getStrain()));
+        }
         return specimenDTO;
     }
 
