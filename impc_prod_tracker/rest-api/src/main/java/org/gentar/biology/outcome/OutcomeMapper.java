@@ -52,8 +52,11 @@ public class OutcomeMapper implements Mapper<Outcome, OutcomeDTO>
         {
             outcomeDTO.setPin(plan.getPin());
         }
-        outcomeDTO.setColonyDTO(colonyMapper.toDto(outcome.getColony()));
-        outcomeDTO.setSpecimenDTO(specimenMapper.toDto(outcome.getSpecimen()));
+        if (outcome.getColony() != null) {
+            outcomeDTO.setColonyDTO(colonyMapper.toDto(outcome.getColony()));
+        } else if (outcome.getSpecimen() != null) {
+            outcomeDTO.setSpecimenDTO(specimenMapper.toDto(outcome.getSpecimen()));
+        }
         outcomeDTO.setMutationDTOS(mutationMapper.toDtos(outcome.getMutations()));
     }
 

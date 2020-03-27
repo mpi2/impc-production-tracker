@@ -21,8 +21,7 @@ import org.gentar.biology.plan.engine.events.LateAdultPhenotypePlanEvent;
 import org.gentar.biology.plan.engine.events.PhenotypePlanEvent;
 import org.gentar.biology.plan.engine.events.ProductionPlanEvent;
 import org.gentar.biology.plan.type.PlanType;
-import org.gentar.biology.project.AttemptTypes;
-import org.gentar.biology.project.PlanTypes;
+import org.gentar.biology.project.*;
 import org.gentar.common.state_machine.StatusTransitionDTO;
 import org.gentar.helpers.PaginationHelper;
 import org.gentar.helpers.LinkUtil;
@@ -61,6 +60,24 @@ public class PlanController
         this.planService = planService;
         this.planMapper = planMapper;
         this.updatePlanRequestProcessor = updatePlanRequestProcessor;
+    }
+
+    /**
+     * Creates a new project in the system.
+     * @param planDTO Request with data of the project to be created.
+     * @return {@link ProjectDTO} representing the project created in the system.
+     */
+    @PostMapping
+    public PlanDTO createPlan(@RequestBody PlanDTO planDTO)
+    {
+        Plan planToBeCreated = planMapper.toEntity(planDTO);
+        Plan planCreated = planService.createPlan(planToBeCreated);
+        System.out.println("Plan created => " + planCreated);
+
+        PlanDTO planCreatedDTO = planMapper.toDto(planCreated);
+        System.out.println("Plan Created DTO => " + planCreatedDTO);
+
+        return planCreatedDTO;
     }
 
     @GetMapping
