@@ -2,7 +2,7 @@ package org.gentar.biology.specimen;
 
 import org.gentar.EntityMapper;
 import org.gentar.Mapper;
-import org.gentar.biology.plan.attempt.crispr_attempt.StrainMapper;
+import org.gentar.biology.strain.StrainMapper;
 import org.springframework.stereotype.Component;
 
 @Component

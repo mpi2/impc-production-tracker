@@ -15,6 +15,7 @@
  */
 package org.gentar.biology.project;
 
+import org.gentar.Mapper;
 import org.gentar.biology.intention.ProjectIntentionDTO;
 import org.gentar.biology.status_stamps.StatusStampsDTO;
 import org.gentar.EntityMapper;
@@ -62,6 +63,22 @@ public class ProjectEntityToDtoMapper
             addRelatedWorkGroups(project, projectDTO);
         }
         return projectDTO;
+    }
+
+    public ProjectCreationDTO toDtoForProjectCreation(Project project)
+    {
+        ProjectCreationDTO projectCreationDTO = null;
+        if (project != null)
+        {
+            projectCreationDTO = entityMapper.toTarget(project, ProjectCreationDTO.class);
+            addStatusStampsDTO(project, projectCreationDTO);
+            addProjectIntentions(project, projectCreationDTO);
+            addSpeciesDTO(project, projectCreationDTO);
+            addProjectConsortia(project, projectCreationDTO);
+            addRelatedWorkUnits(project, projectCreationDTO);
+            addRelatedWorkGroups(project, projectCreationDTO);
+        }
+        return projectCreationDTO;
     }
 
     private void addProjectIntentions(Project project, ProjectDTO projectDTO)

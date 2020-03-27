@@ -4,7 +4,7 @@ import org.gentar.EntityMapper;
 import org.gentar.Mapper;
 import org.gentar.biology.colony.engine.ColonyEvent;
 import org.gentar.biology.colony.engine.ColonyState;
-import org.gentar.biology.plan.attempt.crispr_attempt.StrainMapper;
+import org.gentar.biology.strain.StrainMapper;
 import org.gentar.biology.status.StatusService;
 import org.gentar.common.state_machine.StatusTransitionDTO;
 import org.gentar.common.state_machine.TransitionDTO;
