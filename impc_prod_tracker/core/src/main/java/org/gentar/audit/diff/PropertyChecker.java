@@ -59,10 +59,18 @@ public class PropertyChecker
                 PropertyDefinition data = new PropertyDefinition();
                 data.setName(x.getName());
                 data.setType(x.getType());
-                dataList.add(data);
+                if (!isMarkedToIgnoreForAuditingChanges(x))
+                {
+                    dataList.add(data);
+                }
             });
 
         return dataList;
+    }
+
+    static boolean isMarkedToIgnoreForAuditingChanges(Field field)
+    {
+        return field.isAnnotationPresent(IgnoreForAuditingChanges.class);
     }
 
     static Class<?> getPropertyType(Object object, String propertyName)
