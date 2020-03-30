@@ -1,4 +1,4 @@
-package org.gentar.biology.plan.attempt.phenotyping.material_deposited_type;
+package org.gentar.biology.plan.attempt.phenotyping.stage.material_deposited_type;
 
 import lombok.*;
 import org.gentar.BaseEntity;

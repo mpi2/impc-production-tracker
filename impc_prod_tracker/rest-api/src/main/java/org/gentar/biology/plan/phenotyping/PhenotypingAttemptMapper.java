@@ -15,18 +15,18 @@ import java.util.Set;
 public class PhenotypingAttemptMapper implements Mapper<PhenotypingAttempt, PhenotypingAttemptDTO>
 {
     private EntityMapper entityMapper;
-    private TissueDistributionMapper tissueDistributionMapper;
+//    private TissueDistributionMapper tissueDistributionMapper;
     private StrainMapper strainMapper;
     private OutcomeMapper outcomeMapper;
 
     public PhenotypingAttemptMapper(
         EntityMapper entityMapper,
-        TissueDistributionMapper tissueDistributionMapper,
+//        TissueDistributionMapper tissueDistributionMapper,
         StrainMapper strainMapper,
         OutcomeMapper outcomeMapper)
     {
         this.entityMapper = entityMapper;
-        this.tissueDistributionMapper = tissueDistributionMapper;
+//        this.tissueDistributionMapper = tissueDistributionMapper;
         this.strainMapper = strainMapper;
         this.outcomeMapper = outcomeMapper;
     }
@@ -36,8 +36,8 @@ public class PhenotypingAttemptMapper implements Mapper<PhenotypingAttempt, Phen
     {
         PhenotypingAttemptDTO phenotypingAttemptDTO =
             entityMapper.toTarget(entity, PhenotypingAttemptDTO.class);
-        phenotypingAttemptDTO.setTissueDistributionCentreDTOs(
-            tissueDistributionMapper.toDtos(entity.getTissueDistributions()));
+//        phenotypingAttemptDTO.setTissueDistributionCentreDTOs(
+//            tissueDistributionMapper.toDtos(entity.getTissueDistributions()));
         phenotypingAttemptDTO.setStrainName(strainMapper.toDto(entity.getStrain()));
 
         Set<PlanStartingPoint> planStartingPoints = entity.getPlan().getPlanStartingPoints();

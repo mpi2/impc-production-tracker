@@ -22,12 +22,10 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 import org.gentar.audit.diff.IgnoreForAuditingChanges;
-import org.gentar.biology.mutation.Mutation;
 import org.gentar.biology.outcome.Outcome;
 import org.gentar.biology.plan.plan_starting_point.PlanStartingPoint;
-import org.gentar.biology.plan.status.PlanStatusStamp;
+import org.gentar.biology.plan.status_stamp.PlanStatusStamp;
 import org.gentar.biology.plan.type.PlanType;
-import org.gentar.biology.project.assignment.AssignmentStatusStamp;
 import org.gentar.organization.work_group.WorkGroup;
 import org.gentar.security.abac.Resource;
 import org.gentar.security.abac.ResourcePrivacy;
@@ -56,7 +54,7 @@ import java.util.Set;
 @NoArgsConstructor(access= AccessLevel.PUBLIC, force=true)
 @Data
 @Entity
- @EqualsAndHashCode(onlyExplicitlyIncluded = true, callSuper = false)
+@EqualsAndHashCode(onlyExplicitlyIncluded = true, callSuper = false)
 public class Plan extends BaseEntity  implements Resource<Plan>, ProcessData
 {
     @Id
@@ -67,7 +65,6 @@ public class Plan extends BaseEntity  implements Resource<Plan>, ProcessData
     @Transient
     private ProcessEvent event;
 
-//    @NotNull
     @EqualsAndHashCode.Include
     private String pin;
 
