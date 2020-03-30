@@ -1,6 +1,11 @@
 package org.gentar.biology.colony.engine;
 
+import org.gentar.biology.colony.engine.processors.ColonyAbortProcessor;
+import org.gentar.biology.colony.engine.processors.ColonyAbortReverserProcessor;
 import org.gentar.biology.colony.engine.processors.ColonyProcessor;
+import org.gentar.biology.plan.engine.processors.BreedingPlanAbortProcessor;
+import org.gentar.biology.plan.engine.processors.BreedingPlanAbortReverserProcessor;
+import org.gentar.biology.plan.engine.state.BreedingPlanState;
 import org.gentar.statemachine.ProcessEvent;
 import org.gentar.statemachine.ProcessState;
 import org.gentar.statemachine.Processor;
@@ -10,19 +15,58 @@ import java.util.List;
 
 public enum ColonyEvent implements ProcessEvent
 {
-    confirmGenotype(
-        "Confirm Genotype",
-        ColonyState.GenotypeNotConfirmed,
-        ColonyState.GenotypeConfirmed,
-        StateMachineConstants.TRIGGERED_BY_USER,
-        null)
-        {
-            @Override
-            public Class<? extends Processor> getNextStepProcessor()
+    abortGenotypeConfirmed(
+            "Abort a colony that is genotype confirmed",
+            ColonyState.GenotypeConfirmed,
+            ColonyState.ColonyAborted,
+            StateMachineConstants.TRIGGERED_BY_USER,
+            null)
             {
-                return ColonyProcessor.class;
-            }
-        },
+                @Override
+                public Class<? extends Processor> getNextStepProcessor()
+                {
+                    return ColonyAbortProcessor.class;
+                }
+            },
+    abortGenotypeNotConfirmed(
+            "Abort a colony whose genotype has not been confirmed",
+            ColonyState.GenotypeNotConfirmed,
+            ColonyState.ColonyAborted,
+            StateMachineConstants.TRIGGERED_BY_USER,
+            null)
+            {
+                @Override
+                public Class<? extends Processor> getNextStepProcessor()
+                {
+                    return ColonyAbortProcessor.class;
+                }
+            },
+    reverseAbortion(
+            "Reverse abortion",
+            ColonyState.ColonyAborted,
+            ColonyState.GenotypeNotConfirmed,
+            StateMachineConstants.TRIGGERED_BY_USER,
+            null)
+            {
+                @Override
+                public Class<? extends Processor> getNextStepProcessor()
+                {
+                    return ColonyAbortReverserProcessor.class;
+                }
+            },
+    confirmGenotype(
+            "Confirm Genotype",
+            ColonyState.GenotypeNotConfirmed,
+            ColonyState.GenotypeConfirmed,
+            StateMachineConstants.TRIGGERED_BY_USER,
+            null)
+            {
+                @Override
+                public Class<? extends Processor> getNextStepProcessor()
+                {
+                    return ColonyProcessor.class;
+                }
+            },
     reverseGenotypeConfirmation(
         "Reverse genotype confirmation",
         ColonyState.GenotypeConfirmed,

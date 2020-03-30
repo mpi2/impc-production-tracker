@@ -8,7 +8,8 @@ import java.util.List;
 public enum ColonyState implements ProcessState
 {
     GenotypeNotConfirmed("Genotype Not Confirmed"),
-    GenotypeConfirmed("Genotype Confirmed");
+    GenotypeConfirmed("Genotype Confirmed"),
+    ColonyAborted("Colony Aborted");
 
     private String internalName;
 
