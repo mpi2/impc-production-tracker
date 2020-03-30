@@ -9,6 +9,7 @@ import org.gentar.biology.plan.engine.state.ProductionPlanState;
 import org.gentar.statemachine.ProcessEvent;
 import org.gentar.statemachine.ProcessState;
 import org.gentar.statemachine.Processor;
+import org.gentar.statemachine.StateMachineConstants;
 
 import java.util.Arrays;
 import java.util.List;
@@ -19,19 +20,19 @@ public enum BreedingPlanEvent implements ProcessEvent
             "Breeding plan is started.",
             BreedingPlanState.PlanCreated,
             BreedingPlanState.BreedingStarted,
-            false,
+            StateMachineConstants.NOT_TRIGGERED_BY_USER,
             null),
     breedingComplete(
             "Breeding plan is complete.",
             BreedingPlanState.BreedingStarted,
             BreedingPlanState.BreedingComplete,
-            true,
+            StateMachineConstants.TRIGGERED_BY_USER,
             null),
     reverseAbortion(
             "Reverse abortion",
             BreedingPlanState.BreedingAborted,
             BreedingPlanState.BreedingStarted,
-            true,
+            StateMachineConstants.TRIGGERED_BY_USER,
             null)
             {
                 @Override
@@ -44,7 +45,7 @@ public enum BreedingPlanEvent implements ProcessEvent
             "Abort a breeding plan that has been created",
             BreedingPlanState.PlanCreated,
             BreedingPlanState.BreedingAborted,
-            true,
+            StateMachineConstants.TRIGGERED_BY_USER,
             null)
             {
                 @Override
@@ -57,7 +58,7 @@ public enum BreedingPlanEvent implements ProcessEvent
             "Abort a breeding plan that has been started.",
             BreedingPlanState.BreedingStarted,
             BreedingPlanState.BreedingAborted,
-            true,
+            StateMachineConstants.TRIGGERED_BY_USER,
             null)
             {
                 @Override
@@ -70,7 +71,7 @@ public enum BreedingPlanEvent implements ProcessEvent
             "Abort a breeding plan that is complete",
             BreedingPlanState.BreedingComplete,
             BreedingPlanState.BreedingAborted,
-            true,
+            StateMachineConstants.TRIGGERED_BY_USER,
             null)
             {
                 @Override
