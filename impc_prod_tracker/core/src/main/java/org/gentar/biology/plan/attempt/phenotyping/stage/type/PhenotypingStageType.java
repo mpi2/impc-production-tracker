@@ -1,0 +1,23 @@
+package org.gentar.biology.plan.attempt.phenotyping.stage.type;
+
+import lombok.AccessLevel;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import org.gentar.BaseEntity;
+
+import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+
+@NoArgsConstructor(access= AccessLevel.PUBLIC, force=true)
+@Data
+@Entity
+public class PhenotypingStageType  extends BaseEntity
+{
+    @Id
+    @SequenceGenerator(name = "phenotypingStageTypeSeq", sequenceName = "PHENOTYPING_STAGE_TYPE_SEQ")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "phenotypingStageTypeSeq")
+    private Long id;
+
+    @NotNull
+    private String name;
+}

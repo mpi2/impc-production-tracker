@@ -1,4 +1,4 @@
-package org.gentar.biology.plan.status;
+package org.gentar.biology.plan.status_stamp;
 
 import lombok.AccessLevel;
 import lombok.Data;

@@ -1,7 +1,7 @@
 package org.gentar.biology.plan.engine;
 
 import org.gentar.biology.plan.Plan;
-import org.gentar.biology.plan.status.PlanStatusStamp;
+import org.gentar.biology.plan.status_stamp.PlanStatusStamp;
 import org.gentar.biology.status.Status;
 import org.gentar.biology.status.StatusService;
 import org.springframework.stereotype.Component;

@@ -5,14 +5,15 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.gentar.biology.outcome.OutcomeDTO;
-import java.time.LocalDateTime;
+
+import java.time.LocalDate;
 import java.util.List;
 
 @Data
 @RequiredArgsConstructor
 public class PhenotypingAttemptDTO
 {
-    private LocalDateTime phenotypingExperimentsStarted;
+    private LocalDate phenotypingExperimentsStarted;
     private Boolean doNotCountTowardsCompleteness;
     private String phenotypingExternalRef;
 

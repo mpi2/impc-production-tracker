@@ -1,11 +1,11 @@
-package org.gentar.biology.plan.attempt.phenotyping.tissue_distribution;
+package org.gentar.biology.plan.attempt.phenotyping.stage.tissue_distribution;
 
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.gentar.BaseEntity;
-import org.gentar.biology.plan.attempt.phenotyping.PhenotypingAttempt;
-import org.gentar.biology.plan.attempt.phenotyping.material_deposited_type.MaterialDepositedType;
+import org.gentar.biology.plan.attempt.phenotyping.stage.PhenotypingStage;
+import org.gentar.biology.plan.attempt.phenotyping.stage.material_deposited_type.MaterialDepositedType;
 import org.gentar.organization.work_unit.WorkUnit;
 
 import javax.persistence.*;
@@ -22,8 +22,8 @@ public class TissueDistribution extends BaseEntity
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "tissueDistributionSeq")
     private Long id;
 
-    @ManyToOne(targetEntity = PhenotypingAttempt.class)
-    private PhenotypingAttempt phenotypingAttempt;
+    @ManyToOne(targetEntity = PhenotypingStage.class)
+    private PhenotypingStage phenotypingStage;
 
     private LocalDateTime startDate;
 
