@@ -14,7 +14,7 @@ import org.gentar.biology.plan.engine.state.ProductionPlanState;
 import org.gentar.biology.plan.phenotyping.PhenotypingAttemptMapper;
 import org.gentar.biology.plan.production.crispr_attempt.CrisprAttemptDTO;
 import org.gentar.Mapper;
-import org.gentar.biology.plan.status.PlanStatusStamp;
+import org.gentar.biology.plan.status_stamp.PlanStatusStamp;
 import org.gentar.biology.plan.type.PlanType;
 import org.gentar.biology.project.*;
 import org.gentar.biology.status.StatusMapper;

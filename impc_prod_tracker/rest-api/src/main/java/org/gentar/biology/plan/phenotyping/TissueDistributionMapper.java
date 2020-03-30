@@ -2,7 +2,7 @@ package org.gentar.biology.plan.phenotyping;
 
 import org.gentar.EntityMapper;
 import org.gentar.Mapper;
-import org.gentar.biology.plan.attempt.phenotyping.tissue_distribution.TissueDistribution;
+import org.gentar.biology.plan.attempt.phenotyping.stage.tissue_distribution.TissueDistribution;
 import org.springframework.stereotype.Component;
 
 @Component
