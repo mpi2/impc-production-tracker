@@ -26,6 +26,7 @@ import org.gentar.biology.project.consortium.ProjectConsortiumMapper;
 import org.gentar.biology.intention.ProjectIntentionMapper;
 import org.gentar.biology.status.StatusStampMapper;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
 
@@ -136,6 +137,7 @@ public class ProjectEntityToDtoMapper
         {
             List<StatusStampsDTO> statusStampsDTOS =
                 statusStampMapper.toDtos(project.getAssignmentStatusStamps());
+            statusStampsDTOS.sort(Comparator.comparing(StatusStampsDTO::getDate));
             projectDTO.setStatusStampsDTOS(statusStampsDTOS);
         }
     }
