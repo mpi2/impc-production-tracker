@@ -24,19 +24,16 @@ public class PlanValidator
      */
     public void validate(Plan plan)
     {
-        System.out.println("Validating Plan");
         validateBasicPlanData(plan);
         validateAttemptData(plan);
     }
 
     private void validateBasicPlanData(Plan plan)
     {
-        System.out.println("validating basic data of the plan...");
     }
 
     private void validateAttemptData(Plan plan)
     {
-        System.out.println("Validate attempt: "+ AttemptTypeChecker.getAttemptTypeName(plan));
         if (AttemptTypeChecker.CRISPR_TYPE.equalsIgnoreCase(AttemptTypeChecker.getAttemptTypeName(plan)))
         {
             crisprAttemptValidator.validate(plan.getCrisprAttempt());

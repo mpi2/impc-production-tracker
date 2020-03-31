@@ -183,4 +183,10 @@ public class ProjectServiceImpl implements ProjectService
     {
         return historyService.getHistoryByEntityNameAndEntityId("Project", project.getId());
     }
+
+    @Override
+    public void checkForUpdates(Project project)
+    {
+        projectUpdater.changeAssignmentStatusIfNeeded(project);
+    }
 }

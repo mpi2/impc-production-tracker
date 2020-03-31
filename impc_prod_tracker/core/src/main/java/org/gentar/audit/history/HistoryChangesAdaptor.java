@@ -84,7 +84,6 @@ class HistoryChangesAdaptor<T>
     {
         ChangesDetector<T> changesDetector =
             new ChangesDetector<>(fieldsToExclude, originalEntity, newEntity);
-        changesDetector.print();
         return changesDetector.getChanges();
     }
 

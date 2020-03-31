@@ -19,8 +19,6 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
 import org.gentar.biology.plan.phenotyping.PhenotypingAttemptDTO;
 import org.gentar.common.state_machine.StatusTransitionDTO;
 import org.springframework.hateoas.RepresentationModel;
@@ -49,7 +47,6 @@ public class PlanDTO extends RepresentationModel
     @JsonProperty("statusDates")
     private List<StatusStampsDTO> statusStampsDTOS;
 
-    @JsonInclude(JsonInclude.Include.NON_NULL)
     private String comment;
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private Boolean productsAvailableForGeneralPublic;
@@ -57,7 +54,6 @@ public class PlanDTO extends RepresentationModel
     @JsonProperty("typeName")
     private String planTypeName;
 
-    @JsonInclude(JsonInclude.Include.NON_NULL)
     private String attemptTypeName;
 
     @JsonInclude(JsonInclude.Include.NON_NULL)

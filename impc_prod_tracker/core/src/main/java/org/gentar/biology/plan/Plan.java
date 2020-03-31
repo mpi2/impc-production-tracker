@@ -55,7 +55,8 @@ import java.util.Set;
 @Data
 @Entity
 @EqualsAndHashCode(onlyExplicitlyIncluded = true, callSuper = false)
-public class Plan extends BaseEntity  implements Resource<Plan>, ProcessData
+@EntityListeners(PlanListener.class)
+public class Plan extends BaseEntity implements Resource<Plan>, ProcessData
 {
     @Id
     @SequenceGenerator(name = "planSeq", sequenceName = "PLAN_SEQ")
@@ -144,6 +145,7 @@ public class Plan extends BaseEntity  implements Resource<Plan>, ProcessData
         this.productsAvailableForGeneralPublic = plan.productsAvailableForGeneralPublic;
         this.planFlags = new HashSet<>(plan.planFlags);
         this.protocols = new HashSet<>(plan.protocols);
+        this.planStatusStamps = new HashSet<>(plan.planStatusStamps);
         this.status = plan.status;
         this.summaryStatus = plan.summaryStatus;
         this.attemptType = plan.attemptType;
