@@ -166,12 +166,16 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler
         if (originalException != null)
         {
             Throwable cause = originalException.getCause();
-            if (cause != null && cause instanceof ConstraintViolationException)
+            if (cause instanceof ConstraintViolationException)
             {
                 ConstraintViolationException constraintViolationException =
                     (ConstraintViolationException)cause;
                 apiError.addValidationErrors(
                     constraintViolationException.getConstraintViolations());
+            }
+            else if (cause instanceof OperationFailedException)
+            {
+                return buildResponseEntity(ApiError.of((OperationFailedException)cause));
             }
         }
         return buildResponseEntity(apiError);
