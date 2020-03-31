@@ -16,6 +16,7 @@
 package org.gentar.biology.plan;
 
 import org.gentar.biology.plan.engine.PlanCreator;
+import org.gentar.biology.project.Project;
 import org.gentar.exceptions.UserOperationFailedException;
 import org.gentar.audit.history.HistoryService;
 import org.gentar.security.abac.ResourceAccessChecker;

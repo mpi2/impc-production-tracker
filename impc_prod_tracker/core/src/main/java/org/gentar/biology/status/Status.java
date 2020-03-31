@@ -17,6 +17,7 @@ package org.gentar.biology.status;
 
 import lombok.*;
 import org.gentar.BaseEntity;
+import org.gentar.audit.diff.IgnoreForAuditingChanges;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -39,6 +40,7 @@ public class Status extends BaseEntity
 
     private String description;
 
+    @IgnoreForAuditingChanges
     @NotNull
     private String ordering;
 }

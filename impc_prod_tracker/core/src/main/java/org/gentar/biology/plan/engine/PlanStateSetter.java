@@ -5,7 +5,6 @@ import org.gentar.biology.plan.status_stamp.PlanStatusStamp;
 import org.gentar.biology.status.Status;
 import org.gentar.biology.status.StatusService;
 import org.springframework.stereotype.Component;
-
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
@@ -14,7 +13,6 @@ import java.util.Set;
 public class PlanStateSetter
 {
     private StatusService statusService;
-
 
     public PlanStateSetter(StatusService statusService)
     {

@@ -43,4 +43,11 @@ public interface ProjectService
      * @return List of {@link History} with the trace of the changes for a project.
      */
     List<History> getProjectHistory(Project project);
+
+    /**
+     * Checks if the project needs to be updated. This is to be called but entities whose changes
+     * affect a project (changes in a plan, eg.)
+     * @param project The project to check
+     */
+    void checkForUpdates(Project project);
 }
