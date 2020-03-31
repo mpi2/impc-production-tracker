@@ -51,6 +51,10 @@ public class AssignmentStatusUpdater
         {
             inactivateProject(project);
         }
+        else if (projectIsInactive(project))
+        {
+            reactivateProject(project);
+        }
     }
 
     private boolean planIsAborted(Plan plan)
@@ -76,6 +80,11 @@ public class AssignmentStatusUpdater
         registerAssignmentStatusStamp(project);
     }
 
+    private void reactivateProject(Project project)
+    {
+        setCalculatedAssignmentStatus(project);
+    }
+
     private void registerAssignmentStatusStamp(Project project)
     {
         Set<AssignmentStatusStamp> stamps = project.getAssignmentStatusStamps();
@@ -89,5 +98,16 @@ public class AssignmentStatusUpdater
         assignmentStatusStamp.setDate(LocalDateTime.now());
         stamps.add(assignmentStatusStamp);
         project.setAssignmentStatusStamps(stamps);
+    }
+
+    private boolean projectIsInactive(Project project)
+    {
+        boolean result = false;
+        AssignmentStatus assignmentStatus = project.getAssignmentStatus();
+        if (assignmentStatus != null)
+        {
+            result = AssignmentStatusNames.INACTIVE_STATUS_NAME.equals(assignmentStatus.getName());
+        }
+        return result;
     }
 }
