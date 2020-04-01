@@ -17,6 +17,7 @@ package org.gentar.biology.project;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
+import org.gentar.audit.diff.IgnoreForAuditingChanges;
 import org.gentar.biology.status.Status;
 import org.gentar.exceptions.SystemOperationFailedException;
 import org.gentar.organization.work_group.WorkGroup;
@@ -85,6 +86,7 @@ public class Project extends BaseEntity implements Resource<Project>
     @ManyToOne(targetEntity= Status.class)
     private Status summaryStatus;
 
+    @IgnoreForAuditingChanges
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
     @OneToMany(cascade= CascadeType.ALL, mappedBy = "project", orphanRemoval=true)

@@ -1,5 +1,7 @@
 package org.gentar.biology.project.assignment;
 
+import org.gentar.audit.history.History;
+import org.gentar.audit.history.HistoryService;
 import org.gentar.biology.plan.Plan;
 import org.gentar.biology.plan.engine.state.BreedingPlanState;
 import org.gentar.biology.plan.engine.state.LateAdultPhenotypePlanState;
@@ -21,23 +23,44 @@ public class AssignmentStatusUpdater
 {
     private ConflictsChecker conflictsChecker;
     private AssignmentStatusService assignmentStatusService;
+    private HistoryService<Project> historyService;
 
     public AssignmentStatusUpdater(
-        ConflictsChecker conflictsChecker, AssignmentStatusService assignmentStatusService)
+        ConflictsChecker conflictsChecker,
+        AssignmentStatusService assignmentStatusService,
+        HistoryService<Project> historyService)
     {
         this.conflictsChecker = conflictsChecker;
         this.assignmentStatusService = assignmentStatusService;
+        this.historyService = historyService;
     }
 
     public void setCalculatedAssignmentStatus(Project project)
     {
-        AssignmentStatus currentAssignmentStatus = project.getAssignmentStatus();
         AssignmentStatus status = conflictsChecker.checkConflict(project);
-        if (!currentAssignmentStatus.getName().equals(status.getName()))
+        Project original = new Project(project);
+        setAndLogNewAssignmentStatus(original, project, status);
+    }
+
+    private void setAndLogNewAssignmentStatus(
+        Project originalProject, Project newProject, AssignmentStatus assignmentStatus)
+    {
+        AssignmentStatus currentAssignmentStatus = originalProject.getAssignmentStatus();
+        if (!currentAssignmentStatus.getName().equals(assignmentStatus.getName()))
         {
-            project.setAssignmentStatus(status);
-            registerAssignmentStatusStamp(project);
+            newProject.setAssignmentStatus(assignmentStatus);
+            registerAssignmentStatusStamp(newProject);
+            saveProjectChangeInHistory(originalProject, newProject);
         }
+    }
+
+    private void saveProjectChangeInHistory(Project originalProject, Project newProject)
+    {
+        History history =
+            historyService.detectTrackOfChanges(
+                originalProject, newProject, originalProject.getId());
+        history = historyService.filterDetailsInNestedEntity(history, "assignmentStatus", "name");
+        historyService.saveTrackOfChanges(history);
     }
 
     /**
@@ -68,21 +91,21 @@ public class AssignmentStatusUpdater
         return statusName.equals(ProductionPlanState.AttemptAborted.getInternalName()) ||
             statusName.equals(BreedingPlanState.BreedingAborted.getInternalName()) ||
             statusName.equals(PhenotypePlanState.PhenotypeProductionAborted.getInternalName()) ||
-            statusName.equals(LateAdultPhenotypePlanState.LateAdultPhenotypeProductionAborted.getInternalName());
+            statusName.equals(
+                LateAdultPhenotypePlanState.LateAdultPhenotypeProductionAborted.getInternalName());
     }
 
     /**
      * Inactivates a project, meaning the Assignment Status is inactive.
-     * This method should be called
      * @param project The project to be inactivated.
      */
     private void inactivateProject(Project project)
     {
+        Project original = new Project(project);
         AssignmentStatus inactive =
             assignmentStatusService.getAssignmentStatusByName(
                 AssignmentStatusNames.INACTIVE_STATUS_NAME);
-        project.setAssignmentStatus(inactive);
-        registerAssignmentStatusStamp(project);
+        setAndLogNewAssignmentStatus(original, project, inactive);
     }
 
     private void reactivateProject(Project project)

@@ -6,6 +6,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Component
@@ -127,5 +128,40 @@ public class HistoryServiceImpl<T> implements HistoryService<T>
     public History buildCreationTrack(T entity, Long id)
     {
         return historyBuilder.buildCreationHistoryEntry(entity, id);
+    }
+
+    @Override
+    public History filterDetailsInNestedEntity(
+        History history, String nestedEntityFieldName, String fieldName)
+    {
+        List<HistoryDetail> details = history.getHistoryDetailSet();
+        if (details != null)
+        {
+            details = details.
+                stream().filter(x -> detailPassesFilter(x, nestedEntityFieldName, fieldName))
+                .collect(Collectors.toList());
+        }
+        history.setHistoryDetailSet(details);
+        return history;
+    }
+
+    public boolean detailPassesFilter(
+        HistoryDetail historyDetail, String nestedEntityFieldName, String fieldName)
+    {
+        boolean result = true;
+        String field = historyDetail.getField();
+        String fieldToKeepInNested = nestedEntityFieldName + "." + fieldName;
+        if (field.contains(nestedEntityFieldName))
+        {
+            if (field.contains(fieldToKeepInNested))
+            {
+                result = true;
+            }
+            else
+                {
+                result = false;
+            }
+        }
+        return result;
     }
 }
