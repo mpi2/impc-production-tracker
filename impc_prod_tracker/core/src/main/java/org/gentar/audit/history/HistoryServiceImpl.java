@@ -6,7 +6,6 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 @Component
@@ -153,14 +152,7 @@ public class HistoryServiceImpl<T> implements HistoryService<T>
         String fieldToKeepInNested = nestedEntityFieldName + "." + fieldName;
         if (field.contains(nestedEntityFieldName))
         {
-            if (field.contains(fieldToKeepInNested))
-            {
-                result = true;
-            }
-            else
-                {
-                result = false;
-            }
+            result = field.contains(fieldToKeepInNested);
         }
         return result;
     }
