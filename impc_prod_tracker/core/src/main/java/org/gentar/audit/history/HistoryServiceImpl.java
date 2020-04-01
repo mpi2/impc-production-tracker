@@ -128,4 +128,32 @@ public class HistoryServiceImpl<T> implements HistoryService<T>
     {
         return historyBuilder.buildCreationHistoryEntry(entity, id);
     }
+
+    @Override
+    public History filterDetailsInNestedEntity(
+        History history, String nestedEntityFieldName, String fieldName)
+    {
+        List<HistoryDetail> details = history.getHistoryDetailSet();
+        if (details != null)
+        {
+            details = details.
+                stream().filter(x -> detailPassesFilter(x, nestedEntityFieldName, fieldName))
+                .collect(Collectors.toList());
+        }
+        history.setHistoryDetailSet(details);
+        return history;
+    }
+
+    public boolean detailPassesFilter(
+        HistoryDetail historyDetail, String nestedEntityFieldName, String fieldName)
+    {
+        boolean result = true;
+        String field = historyDetail.getField();
+        String fieldToKeepInNested = nestedEntityFieldName + "." + fieldName;
+        if (field.contains(nestedEntityFieldName))
+        {
+            result = field.contains(fieldToKeepInNested);
+        }
+        return result;
+    }
 }
