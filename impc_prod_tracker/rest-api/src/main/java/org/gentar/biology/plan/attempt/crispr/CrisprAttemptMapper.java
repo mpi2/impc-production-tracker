@@ -13,15 +13,13 @@
  language governing permissions and limitations under the
  License.
  */
-package org.gentar.biology.plan.attempt.crispr_attempt;
+package org.gentar.biology.plan.attempt.crispr;
 
 import org.gentar.Mapper;
-import org.gentar.biology.plan.attempt.crispr.CrisprAttemptService;
 import org.gentar.biology.plan.production.crispr_attempt.CrisprAttemptDTO;
 import org.gentar.biology.strain.StrainMapper;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
-import org.gentar.biology.plan.attempt.crispr.CrisprAttempt;
 import org.gentar.biology.plan.attempt.crispr.assay.Assay;
 import org.gentar.biology.plan.attempt.crispr.reagent.CrisprAttemptReagent;
 import org.gentar.biology.plan.attempt.crispr.genotype_primer.GenotypePrimer;

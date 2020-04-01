@@ -1,4 +1,4 @@
-package org.gentar.biology.plan.attempt.crispr_attempt;
+package org.gentar.biology.plan.attempt.crispr;
 
 import org.gentar.Mapper;
 import org.gentar.biology.plan.attempt.crispr.genotype_primer.GenotypePrimer;

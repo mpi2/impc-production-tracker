@@ -10,7 +10,7 @@ import org.gentar.organization.work_unit.WorkUnit;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 @NoArgsConstructor(access= AccessLevel.PRIVATE, force=true)
 @Data
@@ -25,9 +25,9 @@ public class TissueDistribution extends BaseEntity
     @ManyToOne(targetEntity = PhenotypingStage.class)
     private PhenotypingStage phenotypingStage;
 
-    private LocalDateTime startDate;
+    private LocalDate startDate;
 
-    private LocalDateTime endDate;
+    private LocalDate endDate;
 
     @NotNull
     @ManyToOne

@@ -1,11 +1,11 @@
-package org.gentar.biology.plan.phenotyping;
+package org.gentar.biology.plan.attempt.phenotyping;
 
 import org.gentar.EntityMapper;
 import org.gentar.Mapper;
 import org.gentar.biology.outcome.Outcome;
 import org.gentar.biology.outcome.OutcomeMapper;
+import org.gentar.biology.plan.attempt.phenotyping.stage.PhenotypingStage;
 import org.gentar.biology.strain.StrainMapper;
-import org.gentar.biology.plan.attempt.phenotyping.PhenotypingAttempt;
 import org.gentar.biology.plan.plan_starting_point.PlanStartingPoint;
 import org.springframework.stereotype.Component;
 
@@ -15,20 +15,20 @@ import java.util.Set;
 public class PhenotypingAttemptMapper implements Mapper<PhenotypingAttempt, PhenotypingAttemptDTO>
 {
     private EntityMapper entityMapper;
-//    private TissueDistributionMapper tissueDistributionMapper;
     private StrainMapper strainMapper;
     private OutcomeMapper outcomeMapper;
+    private PhenotypingStageMapper phenotypingStageMapper;
 
     public PhenotypingAttemptMapper(
         EntityMapper entityMapper,
-//        TissueDistributionMapper tissueDistributionMapper,
         StrainMapper strainMapper,
-        OutcomeMapper outcomeMapper)
+        OutcomeMapper outcomeMapper,
+        PhenotypingStageMapper phenotypingStageMapper)
     {
         this.entityMapper = entityMapper;
-//        this.tissueDistributionMapper = tissueDistributionMapper;
         this.strainMapper = strainMapper;
         this.outcomeMapper = outcomeMapper;
+        this.phenotypingStageMapper = phenotypingStageMapper;
     }
 
     @Override
@@ -36,8 +36,6 @@ public class PhenotypingAttemptMapper implements Mapper<PhenotypingAttempt, Phen
     {
         PhenotypingAttemptDTO phenotypingAttemptDTO =
             entityMapper.toTarget(entity, PhenotypingAttemptDTO.class);
-//        phenotypingAttemptDTO.setTissueDistributionCentreDTOs(
-//            tissueDistributionMapper.toDtos(entity.getTissueDistributions()));
         phenotypingAttemptDTO.setStrainName(strainMapper.toDto(entity.getStrain()));
 
         Set<PlanStartingPoint> planStartingPoints = entity.getPlan().getPlanStartingPoints();
@@ -48,12 +46,15 @@ public class PhenotypingAttemptMapper implements Mapper<PhenotypingAttempt, Phen
             phenotypingAttemptDTO.setOutcomeDTO(outcomeMapper.toDto(outcome));
         }
 
+        phenotypingAttemptDTO.setPhenotypingStageDTOs(phenotypingStageMapper.toDtos(entity.getPhenotypingStages()));
         return phenotypingAttemptDTO;
     }
 
     @Override
     public PhenotypingAttempt toEntity(PhenotypingAttemptDTO dto)
     {
-        return entityMapper.toTarget(dto, PhenotypingAttempt.class);
+        PhenotypingAttempt phenotypingAttempt = entityMapper.toTarget(dto, PhenotypingAttempt.class);
+
+        return phenotypingAttempt;
     }
 }

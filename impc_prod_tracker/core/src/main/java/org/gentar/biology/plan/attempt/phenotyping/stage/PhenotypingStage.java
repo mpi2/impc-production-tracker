@@ -7,13 +7,11 @@ import org.gentar.biology.plan.attempt.phenotyping.PhenotypingAttempt;
 import org.gentar.biology.plan.attempt.phenotyping.stage.status_stamp.PhenotypingStageStatusStamp;
 import org.gentar.biology.plan.attempt.phenotyping.stage.tissue_distribution.TissueDistribution;
 import org.gentar.biology.plan.attempt.phenotyping.stage.type.PhenotypingStageType;
-import org.gentar.biology.plan.type.PlanType;
 import org.gentar.biology.status.Status;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
-import java.util.List;
 import java.util.Set;
 
 @NoArgsConstructor(access= AccessLevel.PUBLIC, force=true)
@@ -28,7 +26,9 @@ public class PhenotypingStage extends BaseEntity
     private Long id;
 
     @NotNull
+    @EqualsAndHashCode.Exclude
     @ManyToOne(targetEntity = PhenotypingAttempt.class)
+    @JoinColumn(name = "plan_id")
     private PhenotypingAttempt phenotypingAttempt;
 
     @NotNull
@@ -43,7 +43,7 @@ public class PhenotypingStage extends BaseEntity
     @EqualsAndHashCode.Exclude
     @OneToMany
     @JoinColumn(name = "phenotyping_stage_id")
-    private List<TissueDistribution> tissueDistributions;
+    private Set<TissueDistribution> tissueDistributions;
 
     @NotNull
     @ManyToOne(targetEntity= Status.class)

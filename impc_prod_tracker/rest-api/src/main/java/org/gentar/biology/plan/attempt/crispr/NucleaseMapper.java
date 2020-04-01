@@ -13,9 +13,8 @@
  language governing permissions and limitations under the
  License.
  */
-package org.gentar.biology.plan.attempt.crispr_attempt;
+package org.gentar.biology.plan.attempt.crispr;
 
-import org.gentar.biology.plan.attempt.crispr.CrisprAttemptService;
 import org.gentar.biology.plan.attempt.crispr.nuclease.nuclease_class.NucleaseClass;
 import org.gentar.biology.plan.production.crispr_attempt.NucleaseDTO;
 import org.gentar.EntityMapper;

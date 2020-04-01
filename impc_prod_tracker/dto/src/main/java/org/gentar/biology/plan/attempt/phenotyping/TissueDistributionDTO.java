@@ -13,19 +13,20 @@
  * language governing permissions and limitations under the
  * License.
  *******************************************************************************/
-package org.gentar.biology.plan.phenotyping;
+package org.gentar.biology.plan.attempt.phenotyping;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
-import java.time.LocalDateTime;
+
+import java.time.LocalDate;
 
 @Data
 public class TissueDistributionDTO
 {
     @JsonIgnore
     private Long id;
-    private LocalDateTime startDate;
-    private LocalDateTime endDate;
+    private LocalDate startDate;
+    private LocalDate endDate;
     private String workUnitName;
     private String materialDepositedTypeName;
 }

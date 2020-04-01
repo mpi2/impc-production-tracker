@@ -1,11 +1,8 @@
-package org.gentar.biology.plan.attempt.crispr_attempt;
+package org.gentar.biology.plan.attempt.crispr;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import org.gentar.Mapper;
-import org.gentar.biology.plan.attempt.crispr.CrisprAttemptService;
 import org.gentar.biology.plan.production.crispr_attempt.AssayDTO;
 import org.gentar.EntityMapper;
-import org.gentar.organization.person.PersonRoleConsortiumDTO;
 import org.springframework.stereotype.Component;
 import org.gentar.biology.plan.attempt.crispr.assay.Assay;
 import org.gentar.biology.plan.attempt.crispr.assay.AssayType;

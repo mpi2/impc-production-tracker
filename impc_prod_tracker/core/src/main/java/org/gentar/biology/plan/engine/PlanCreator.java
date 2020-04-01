@@ -1,5 +1,7 @@
 package org.gentar.biology.plan.engine;
 
+import org.gentar.audit.history.History;
+import org.gentar.audit.history.HistoryService;
 import org.gentar.biology.plan.Plan;
 import org.gentar.biology.project.Project;
 import org.gentar.biology.project.assignment.AssignmentStatus;
@@ -19,10 +21,13 @@ public class PlanCreator
 {
     @PersistenceContext
     private EntityManager entityManager;
+    private HistoryService<Plan> historyService;
 
-    public PlanCreator(EntityManager entityManager)
+    public PlanCreator(EntityManager entityManager,
+                       HistoryService<Plan> historyService)
     {
         this.entityManager = entityManager;
+        this.historyService = historyService;
     }
 
     /**
@@ -33,7 +38,7 @@ public class PlanCreator
     public Plan createPlan(Plan plan)
     {
         Plan createdPlan = savePlan(plan);
-        registerCreationInHistory();
+        registerCreationInHistory(createdPlan);
         return createdPlan;
     }
 
@@ -44,9 +49,10 @@ public class PlanCreator
         return plan;
     }
 
-    private void registerCreationInHistory()
+    private void registerCreationInHistory(Plan plan)
     {
-        // TODO history for Plan creation
+        History history = historyService.buildCreationTrack(plan, plan.getId());
+        historyService.saveTrackOfChanges(history);
     }
 
     private String buildPin(Long id)

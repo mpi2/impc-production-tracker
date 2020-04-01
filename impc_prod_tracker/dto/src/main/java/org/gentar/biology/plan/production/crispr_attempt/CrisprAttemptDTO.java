@@ -16,6 +16,7 @@
 package org.gentar.biology.plan.production.crispr_attempt;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
@@ -30,6 +31,7 @@ public class CrisprAttemptDTO
     @JsonIgnore
     private Long crisprAttemptId;
 
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private Long imitsMiAttemptId;
 
     private LocalDate miDate;
