@@ -32,7 +32,7 @@ public interface ProjectService
 
     /**
      * Updates a project.
-     * @param project Project with the new data.
+     * @param newProject Project with the new data.
      * @return A record of {@link History} with the fields that changed in the object.
      */
     History updateProject(Project oldProject, Project newProject);

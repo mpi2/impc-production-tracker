@@ -4,6 +4,7 @@ import org.gentar.EntityMapper;
 import org.gentar.Mapper;
 import org.gentar.biology.outcome.Outcome;
 import org.gentar.biology.outcome.OutcomeMapper;
+import org.gentar.biology.plan.attempt.phenotyping.stage.PhenotypingStage;
 import org.gentar.biology.strain.StrainMapper;
 import org.gentar.biology.plan.plan_starting_point.PlanStartingPoint;
 import org.springframework.stereotype.Component;
@@ -16,15 +17,18 @@ public class PhenotypingAttemptMapper implements Mapper<PhenotypingAttempt, Phen
     private EntityMapper entityMapper;
     private StrainMapper strainMapper;
     private OutcomeMapper outcomeMapper;
+    private PhenotypingStageMapper phenotypingStageMapper;
 
     public PhenotypingAttemptMapper(
         EntityMapper entityMapper,
         StrainMapper strainMapper,
-        OutcomeMapper outcomeMapper)
+        OutcomeMapper outcomeMapper,
+        PhenotypingStageMapper phenotypingStageMapper)
     {
         this.entityMapper = entityMapper;
         this.strainMapper = strainMapper;
         this.outcomeMapper = outcomeMapper;
+        this.phenotypingStageMapper = phenotypingStageMapper;
     }
 
     @Override
@@ -42,12 +46,15 @@ public class PhenotypingAttemptMapper implements Mapper<PhenotypingAttempt, Phen
             phenotypingAttemptDTO.setOutcomeDTO(outcomeMapper.toDto(outcome));
         }
 
+        phenotypingAttemptDTO.setPhenotypingStageDTOs(phenotypingStageMapper.toDtos(entity.getPhenotypingStages()));
         return phenotypingAttemptDTO;
     }
 
     @Override
     public PhenotypingAttempt toEntity(PhenotypingAttemptDTO dto)
     {
-        return entityMapper.toTarget(dto, PhenotypingAttempt.class);
+        PhenotypingAttempt phenotypingAttempt = entityMapper.toTarget(dto, PhenotypingAttempt.class);
+
+        return phenotypingAttempt;
     }
 }

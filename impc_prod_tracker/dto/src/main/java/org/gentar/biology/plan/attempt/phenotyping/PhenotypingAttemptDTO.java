@@ -6,6 +6,8 @@ import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.gentar.biology.outcome.OutcomeDTO;
 
+import java.util.List;
+
 @Data
 @RequiredArgsConstructor
 public class PhenotypingAttemptDTO
@@ -27,4 +29,7 @@ public class PhenotypingAttemptDTO
 
     @JsonProperty("outcomeDetails")
     private OutcomeDTO outcomeDTO;
+
+    @JsonProperty("phenotypingStageDetails")
+    private List<PhenotypingStageDTO> phenotypingStageDTOs;
 }

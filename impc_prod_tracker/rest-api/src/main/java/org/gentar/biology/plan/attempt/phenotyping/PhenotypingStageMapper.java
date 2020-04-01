@@ -5,6 +5,7 @@ import org.gentar.Mapper;
 import org.gentar.biology.plan.attempt.phenotyping.stage.PhenotypingStage;
 import org.gentar.biology.plan.attempt.phenotyping.stage.status_stamp.PhenotypingStageStatusStamp;
 import org.gentar.biology.plan.attempt.phenotyping.stage.tissue_distribution.TissueDistribution;
+import org.gentar.biology.plan.status_stamp.PlanStatusStamp;
 import org.gentar.biology.status.StatusMapper;
 import org.gentar.biology.status_stamps.StatusStampsDTO;
 import org.springframework.stereotype.Component;
@@ -43,26 +44,19 @@ public class PhenotypingStageMapper implements Mapper<PhenotypingStage, Phenotyp
         return phenotypingStageDTO;
     }
 
-    private void addStatusStamps(PhenotypingStageDTO phenotypingStageDTO, PhenotypingStage phenotypingStage)
-    {
+    private void addStatusStamps(PhenotypingStageDTO phenotypingStageDTO, PhenotypingStage phenotypingStage) {
         Set<PhenotypingStageStatusStamp> statusStamps = phenotypingStage.getPhenotypingStageStatusStamps();
         List<StatusStampsDTO> statusStampsDTOS = new ArrayList<>();
-        if (statusStamps != null)
-        {
-            for (PhenotypingStageStatusStamp x : statusStamps) {
+        if (statusStamps != null) {
+            statusStamps.forEach(x -> {
                 StatusStampsDTO statusStampsDTO = new StatusStampsDTO();
                 statusStampsDTO.setStatusName(x.getStatus().getName());
                 statusStampsDTO.setDate(x.getDate());
                 statusStampsDTOS.add(statusStampsDTO);
-            }
+            });
         }
         statusStampsDTOS.sort(Comparator.comparing(StatusStampsDTO::getDate));
         phenotypingStageDTO.setStatusStampsDTOS(statusStampsDTOS);
-    }
-
-    @Override
-    public List<PhenotypingStageDTO> toDtos(Collection<PhenotypingStage> entities) {
-        return null;
     }
 
     @Override

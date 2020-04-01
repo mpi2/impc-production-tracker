@@ -65,7 +65,7 @@ public class PlanController
     /**
      * Creates a new project in the system.
      * @param planDTO Request with data of the project to be created.
-     * @return {@link ProjectDTO} representing the project created in the system.
+     * @return {@link PlanDTO} representing the project created in the system.
      */
     @PostMapping
     public PlanDTO createPlan(@RequestBody PlanDTO planDTO)

@@ -16,7 +16,7 @@
 package org.gentar.biology.plan;
 
 import org.gentar.biology.plan.production.crispr_attempt.CrisprAttemptDTO;
-import org.gentar.biology.plan.attempt.crispr_attempt.CrisprAttemptMapper;
+import org.gentar.biology.plan.attempt.crispr.CrisprAttemptMapper;
 import org.springframework.stereotype.Component;
 import org.gentar.biology.plan.attempt.crispr.CrisprAttempt;
 

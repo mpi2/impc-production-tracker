@@ -9,6 +9,7 @@ import org.gentar.biology.strain.Strain;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.List;
+import java.util.Set;
 
 @NoArgsConstructor(access= AccessLevel.PUBLIC, force=true)
 @Data
@@ -42,5 +43,5 @@ public class PhenotypingAttempt extends BaseEntity
     @EqualsAndHashCode.Exclude
     @OneToMany
     @JoinColumn(name = "plan_id")
-    private List<PhenotypingStage> phenotypingStages;
+    private Set<PhenotypingStage> phenotypingStages;
 }

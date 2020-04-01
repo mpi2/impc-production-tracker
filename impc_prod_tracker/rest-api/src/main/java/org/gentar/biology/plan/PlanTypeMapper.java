@@ -18,6 +18,7 @@ public class PlanTypeMapper implements Mapper<PlanType, String>
         this.planTypeService = planTypeService;
     }
 
+    @Override
     public String toDto(PlanType entity)
     {
         String name = null;
@@ -28,6 +29,7 @@ public class PlanTypeMapper implements Mapper<PlanType, String>
         return name;
     }
 
+    @Override
     public PlanType toEntity(String name)
     {
         PlanType planType = planTypeService.getPlanTypeByName(name);

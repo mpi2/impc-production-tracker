@@ -1,7 +1,7 @@
 package org.gentar.web.mapping.plan.attempt.crispr_attempt;
 
 import org.gentar.biology.plan.attempt.crispr.CrisprAttemptService;
-import org.gentar.biology.plan.attempt.crispr_attempt.CrisprAttemptMapper;
+import org.gentar.biology.plan.attempt.crispr.CrisprAttemptMapper;
 import org.gentar.biology.plan.production.crispr_attempt.AssayDTO;
 import org.gentar.biology.plan.production.crispr_attempt.CrisprAttemptDTO;
 import org.gentar.biology.plan.production.crispr_attempt.GenotypePrimerDTO;
