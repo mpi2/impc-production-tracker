@@ -28,7 +28,9 @@ public class PhenotypingStage extends BaseEntity
     private Long id;
 
     @NotNull
+    @EqualsAndHashCode.Exclude
     @ManyToOne(targetEntity = PhenotypingAttempt.class)
+    @JoinColumn(name = "plan_id")
     private PhenotypingAttempt phenotypingAttempt;
 
     @NotNull
