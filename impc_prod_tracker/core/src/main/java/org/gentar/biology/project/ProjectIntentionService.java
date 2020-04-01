@@ -1,11 +1,8 @@
 package org.gentar.biology.project;
 
-import org.gentar.biology.project.search.filter.ProjectFilter;
-import org.gentar.biology.project.search.filter.ProjectFilterBuilder;
 import org.gentar.biology.project.specs.ProjectSpecs;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Component;
-
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -16,13 +13,12 @@ import java.util.stream.Collectors;
 public class ProjectIntentionService
 {
     private ProjectQueryHelper projectQueryHelper;
-    //private ProjectService projectService;
     private ProjectRepository projectRepository;
 
-    public ProjectIntentionService(ProjectQueryHelper projectQueryHelper, ProjectRepository projectRepository)
+    public ProjectIntentionService(
+        ProjectQueryHelper projectQueryHelper, ProjectRepository projectRepository)
     {
         this.projectQueryHelper = projectQueryHelper;
-        //this.projectService = projectService;
         this.projectRepository = projectRepository;
     }
 

@@ -9,6 +9,7 @@ import org.gentar.biology.project.Project;
 import org.springframework.stereotype.Component;
 import java.time.LocalDateTime;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -30,9 +31,13 @@ public class AssignmentStatusUpdater
 
     public void setCalculatedAssignmentStatus(Project project)
     {
+        AssignmentStatus currentAssignmentStatus = project.getAssignmentStatus();
         AssignmentStatus status = conflictsChecker.checkConflict(project);
-        project.setAssignmentStatus(status);
-        registerAssignmentStatusStamp(project);
+        if (!currentAssignmentStatus.getName().equals(status.getName()))
+        {
+            project.setAssignmentStatus(status);
+            registerAssignmentStatusStamp(project);
+        }
     }
 
     /**
@@ -109,5 +114,17 @@ public class AssignmentStatusUpdater
             result = AssignmentStatusNames.INACTIVE_STATUS_NAME.equals(assignmentStatus.getName());
         }
         return result;
+    }
+
+    /**
+     * Given that a project was updated (its status of information in entities under it), then check
+     * other projects that can br conflicting with it, searching for a potential change in that
+     * conflict status (a new Assignment Status)
+     * @param project Project to take as reference
+     */
+    public void updateConflictingProjects(Project project)
+    {
+        List<Project> conflictingProjects = conflictsChecker.getProjectsSameDeletionIntention(project);
+        conflictingProjects.forEach(this::setCalculatedAssignmentStatus);
     }
 }
