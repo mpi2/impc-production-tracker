@@ -42,6 +42,7 @@ public class ProjectUpdater
     public void changeAssignmentStatusIfNeeded(Project project)
     {
         assignmentStatusUpdater.inactivateProjectIfNeeded(project);
+        assignmentStatusUpdater.updateConflictingProjects(project);
     }
 
     /**

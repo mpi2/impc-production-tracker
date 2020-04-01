@@ -205,7 +205,12 @@ public class ConflictsChecker
                 .equals( x.getAssignmentStatus().getName()));
     }
 
-    private List<Project> getProjectsSameDeletionIntention(Project project)
+    /**
+     * Get other projects with the same deletion intention as the project parameter.
+     * @param project The reference project.
+     * @return A list of projects with the same deletion intention as the project in parameter.
+     */
+    public List<Project> getProjectsSameDeletionIntention(Project project)
     {
         List<Project> projectsWithSameGeneIntentions =
             projectIntentionService.getProjectsWithSameGeneIntention(project);
