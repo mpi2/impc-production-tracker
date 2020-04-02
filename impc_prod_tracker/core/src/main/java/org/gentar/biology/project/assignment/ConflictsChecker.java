@@ -64,19 +64,20 @@ public class ConflictsChecker
     public AssignmentStatus checkConflict(Project project)
     {
         String assignmentStatusName;
-        if (validToAssigned(project))
+        List<Project> projectConflicts = getProjectsSameDeletionIntention(project);
+        if (validToAssigned(project, projectConflicts))
         {
             assignmentStatusName = AssignmentStatusNames.ASSIGNED_STATUS_NAME;
         }
-        else if (validToInspectGltMouse(project))
+        else if (validToInspectGltMouse(project, projectConflicts))
         {
             assignmentStatusName = AssignmentStatusNames.INSPECT_GLT_MOUSE_STATUS_NAME;
         }
-        else if (validToInspectAttempt(project))
+        else if (validToInspectAttempt(project, projectConflicts))
         {
             assignmentStatusName = AssignmentStatusNames.INSPECT_ATTEMPT_STATUS_NAME;
         }
-        else if (validToInspectConflict(project))
+        else if (validToInspectConflict(project, projectConflicts))
         {
             assignmentStatusName = AssignmentStatusNames.INSPECT_CONFLICT_STATUS_NAME;
         }
@@ -94,9 +95,10 @@ public class ConflictsChecker
      *      - 1 gene.
      *      - Molecular mutation => “deletion”.
      * @param project The project being evaluated.
+     * @param projectConflicts
      * @return True or False depending if the project can be set to [Assigned] or not.
      */
-    private boolean validToAssigned(Project project)
+    private boolean validToAssigned(Project project, List<Project> projectConflicts)
     {
         boolean result = false;
         var intentionGenes = projectQueryHelper.getIntentionGenesByProject(project);
@@ -104,7 +106,7 @@ public class ConflictsChecker
         {
             result = true;
         }
-        else if (canBeAssigned(project))
+        else if (canBeAssigned(project, projectConflicts))
         {
             result = true;
         }
@@ -121,10 +123,14 @@ public class ConflictsChecker
         return result;
     }
 
-    private boolean canBeAssigned(Project project)
+    private boolean canBeAssigned(Project project, List<Project> projectConflicts)
     {
-        List<Project> projectsWithDeletionIntention = getProjectsSameDeletionIntention(project);
-        return projectsWithDeletionIntention.isEmpty();
+        List<Project> assignedProjectsWithDeletionIntention =
+            projectConflicts.stream()
+                .filter(x -> AssignmentStatusNames.ASSIGNED_STATUS_NAME.equals(
+                    x.getAssignmentStatus().getName()))
+                .collect(Collectors.toList());
+        return assignedProjectsWithDeletionIntention.isEmpty();
     }
 
     /**
@@ -136,14 +142,13 @@ public class ConflictsChecker
      *  This method only validates the last part of the condition because the rest is validated by
      *  the method called before this.
      * @param project The project being evaluated.
+     * @param projectConflicts
      * @return True or False depending if the project can be set to [Inspect - GLT Mouse] or not.
      */
-    private boolean validToInspectGltMouse(Project project)
+    private boolean validToInspectGltMouse(Project project, List<Project> projectConflicts)
     {
         boolean result = false;
-        List<Project> projectsWithDeletionIntention = getProjectsSameDeletionIntention(project);
-
-        for (Project conflict : projectsWithDeletionIntention)
+        for (Project conflict : projectConflicts)
         {
             Set<Plan> plans = conflict.getPlans();
             result = plans.stream()
@@ -165,14 +170,13 @@ public class ConflictsChecker
      *  This method only validates the last part of the condition because the rest is validated by
      *  the method called before this.
      * @param project The project being evaluated.
+     * @param projectConflicts
      * @return True or False depending if the project can be set to [Inspect - Attempt] or not.
      */
-    private boolean validToInspectAttempt(Project project)
+    private boolean validToInspectAttempt(Project project, List<Project> projectConflicts)
     {
         boolean result = false;
-        List<Project> projectsWithDeletionIntention = getProjectsSameDeletionIntention(project);
-
-        for (Project conflict : projectsWithDeletionIntention)
+        for (Project conflict : projectConflicts)
         {
             Set<Plan> plans = conflict.getPlans();
             result = plans.stream()
@@ -195,12 +199,12 @@ public class ConflictsChecker
      *  This method only validates the last part of the condition because the rest is validated by
      *  the method called before this.
      * @param project The project being evaluated.
+     * @param projectConflicts
      * @return True or False depending if the project can be set to [Inspect - Attempt] or not.
      */
-    private boolean validToInspectConflict(Project project)
+    private boolean validToInspectConflict(Project project, List<Project> projectConflicts)
     {
-        List<Project> projectsWithDeletionIntention = getProjectsSameDeletionIntention(project);
-        return projectsWithDeletionIntention.stream()
+        return projectConflicts.stream()
             .anyMatch(x -> AssignmentStatusNames.ASSIGNED_STATUS_NAME
                 .equals( x.getAssignmentStatus().getName()));
     }

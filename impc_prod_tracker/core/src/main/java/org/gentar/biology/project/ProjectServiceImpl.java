@@ -189,4 +189,10 @@ public class ProjectServiceImpl implements ProjectService
     {
         projectUpdater.changeAssignmentStatusIfNeeded(project);
     }
+
+    @Override
+    public void updateConflictingProjects(Project project)
+    {
+        projectUpdater.updateConflictingProjects(project);
+    }
 }

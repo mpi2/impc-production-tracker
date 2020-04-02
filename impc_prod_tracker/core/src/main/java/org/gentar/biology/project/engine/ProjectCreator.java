@@ -81,7 +81,7 @@ public class ProjectCreator
 
     private void setInitialAssignmentStatus(Project project)
     {
-        assignmentStatusUpdater.setCalculatedAssignmentStatus(project);
+        assignmentStatusUpdater.recalculateConflicts(project);
     }
 
 }
