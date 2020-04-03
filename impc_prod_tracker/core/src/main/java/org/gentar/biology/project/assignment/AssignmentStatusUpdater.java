@@ -9,6 +9,9 @@ import org.gentar.biology.plan.engine.state.PhenotypePlanState;
 import org.gentar.biology.plan.engine.state.ProductionPlanState;
 import org.gentar.biology.project.Project;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
+
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.List;
@@ -35,7 +38,23 @@ public class AssignmentStatusUpdater
         this.historyService = historyService;
     }
 
-    public void setCalculatedAssignmentStatus(Project project)
+    /**
+     * Method to recalculate assignment statuses when the conflict is susceptible to change because
+     * another conflicting project has changed. If the project is Inactive or Assigned, no changes
+     * are applied because they are statuses that depend on the plans in the project and not in
+     * other projects.
+     * @param project Project being evaluated
+     */
+    public void recalculateConflicts(Project project)
+    {
+        if (!(projectHasStatusByName(project, AssignmentStatusNames.INACTIVE_STATUS_NAME)
+            || projectHasStatusByName(project, AssignmentStatusNames.ASSIGNED_STATUS_NAME)))
+        {
+            setCalculatedAssignmentStatus(project);
+        }
+    }
+
+    private void setCalculatedAssignmentStatus(Project project)
     {
         AssignmentStatus status = conflictsChecker.checkConflict(project);
         Project original = new Project(project);
@@ -67,7 +86,7 @@ public class AssignmentStatusUpdater
      * A project needs to be inactivated if all its plans are aborted.
      * @param project Project to evaluate if needs to be inactivated.
      */
-    public void inactivateProjectIfNeeded(Project project)
+    public void inactivateOrActivateProjectIfNeeded(Project project)
     {
         var plans = project.getPlans();
         boolean areAllPlansAborted = false;
@@ -139,6 +158,17 @@ public class AssignmentStatusUpdater
         return result;
     }
 
+    private boolean projectHasStatusByName(Project project, String assignmentStatusName)
+    {
+        boolean result = false;
+        AssignmentStatus assignmentStatus = project.getAssignmentStatus();
+        if (assignmentStatus != null)
+        {
+            result = assignmentStatusName.equals(assignmentStatus.getName());
+        }
+        return result;
+    }
+
     /**
      * Given that a project was updated (its status of information in entities under it), then check
      * other projects that can br conflicting with it, searching for a potential change in that
@@ -148,6 +178,6 @@ public class AssignmentStatusUpdater
     public void updateConflictingProjects(Project project)
     {
         List<Project> conflictingProjects = conflictsChecker.getProjectsSameDeletionIntention(project);
-        conflictingProjects.forEach(this::setCalculatedAssignmentStatus);
+        conflictingProjects.forEach(this::recalculateConflicts);
     }
 }

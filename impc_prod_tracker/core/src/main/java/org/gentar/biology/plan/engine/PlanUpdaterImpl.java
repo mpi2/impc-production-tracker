@@ -1,5 +1,6 @@
 package org.gentar.biology.plan.engine;
 
+import org.gentar.biology.project.ProjectService;
 import org.gentar.exceptions.UserOperationFailedException;
 import org.gentar.audit.history.HistoryService;
 import org.gentar.statemachine.StateTransitionsManager;
@@ -17,19 +18,22 @@ public class PlanUpdaterImpl implements PlanUpdater
     private PlanRepository planRepository;
     private PlanValidator planValidator;
     private StateTransitionsManager stateTransitionManager;
+    private ProjectService projectService;
 
     public PlanUpdaterImpl(
         HistoryService<Plan> historyService,
         ContextAwarePolicyEnforcement policyEnforcement,
         PlanRepository planRepository,
         PlanValidator planValidator,
-        StateTransitionsManager stateTransitionManager)
+        StateTransitionsManager stateTransitionManager,
+        ProjectService projectService)
     {
         this.historyService = historyService;
         this.policyEnforcement = policyEnforcement;
         this.planRepository = planRepository;
         this.planValidator = planValidator;
         this.stateTransitionManager = stateTransitionManager;
+        this.projectService = projectService;
     }
 
     @Override
@@ -41,6 +45,7 @@ public class PlanUpdaterImpl implements PlanUpdater
         History history = detectTrackOfChanges(originalPlan, newPlan);
         saveChanges(newPlan);
         saveTrackOfChanges(history);
+        projectService.checkForUpdates(newPlan.getProject());
         return history;
     }
 
@@ -83,7 +88,7 @@ public class PlanUpdaterImpl implements PlanUpdater
      */
     private void saveChanges(Plan plan)
     {
-        planRepository.save(plan);
+       planRepository.save(plan);
     }
 
     /**

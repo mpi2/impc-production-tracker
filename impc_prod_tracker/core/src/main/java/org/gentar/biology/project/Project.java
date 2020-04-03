@@ -89,7 +89,7 @@ public class Project extends BaseEntity implements Resource<Project>
     @IgnoreForAuditingChanges
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
-    @OneToMany(cascade= CascadeType.ALL, mappedBy = "project", orphanRemoval=true)
+    @OneToMany(cascade= CascadeType.ALL, mappedBy = "project", orphanRemoval=true, fetch=FetchType.EAGER)
     private Set<AssignmentStatusStamp> assignmentStatusStamps;
 
     @EqualsAndHashCode.Exclude
@@ -212,5 +212,11 @@ public class Project extends BaseEntity implements Resource<Project>
     @OneToMany(cascade=CascadeType.ALL, mappedBy = "project", orphanRemoval=true, fetch = FetchType.EAGER)
     private Set<ProjectConsortium> projectConsortia;
 
-    private transient String actionToExecute;
+    public String toString()
+    {
+        String assignmentStatusName =
+            assignmentStatus == null ? "Not defined" : assignmentStatus.getName();
+        return "tpn=" + tpn + ",assignmentStatus=" + assignmentStatusName;
+    }
+
 }

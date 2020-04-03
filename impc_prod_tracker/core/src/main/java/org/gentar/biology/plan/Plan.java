@@ -55,7 +55,6 @@ import java.util.Set;
 @Data
 @Entity
 @EqualsAndHashCode(onlyExplicitlyIncluded = true, callSuper = false)
-@EntityListeners(PlanListener.class)
 public class Plan extends BaseEntity implements Resource<Plan>, ProcessData
 {
     @Id
@@ -171,7 +170,9 @@ public class Plan extends BaseEntity implements Resource<Plan>, ProcessData
     @Override
     public String toString()
     {
-        return "(id:" +id + ", pin:" + pin + ", type: "+ (this.planType == null ? "Not defined" : planType.getName());
+        String planTypeName = planType == null ? "Not defined" : planType.getName();
+        String statusName = status == null ? "Not defined" : status.getName();
+        return "id:" +id + ", pin:" + pin + ", type: "+ planTypeName + ", status:" +statusName;
     }
 
     @Override
