@@ -181,11 +181,14 @@ public class ConflictsChecker
 
     private boolean planHasSomeProgress(Plan plan)
     {
+        String statusName = plan.getStatus() == null ? "" : plan.getStatus().getName();
         String summaryStatusName =
             plan.getSummaryStatus() == null ? "" : plan.getSummaryStatus().getName();
         return !StatusNames.ATTEMPT_ABORTED.equals(summaryStatusName) &&
+                !StatusNames.ATTEMPT_ABORTED.equals(statusName) &&
                 !StatusNames.GENOTYPE_CONFIRMED.equals(summaryStatusName) &&
-                !StatusNames.PLAN_CREATED.equals(summaryStatusName);
+                !StatusNames.PLAN_CREATED.equals(summaryStatusName) &&
+                !StatusNames.PLAN_CREATED.equals(statusName);
     }
 
     /**
