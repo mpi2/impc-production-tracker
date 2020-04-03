@@ -23,8 +23,6 @@ import java.util.Set;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -47,8 +45,6 @@ class ConflictsCheckerTest
         new AssignmentStatus(1L, AssignmentStatusNames.INSPECT_ATTEMPT_STATUS_NAME, "");
     private static AssignmentStatus inspect_conflict =
         new AssignmentStatus(1L, AssignmentStatusNames.INSPECT_CONFLICT_STATUS_NAME, "");
-    private static AssignmentStatus conflict =
-        new AssignmentStatus(1L, AssignmentStatusNames.CONFLICT_STATUS_NAME, "");
 
     @BeforeEach
     public void setup()
@@ -87,7 +83,6 @@ class ConflictsCheckerTest
         AssignmentStatus newStatus = testInstance.checkConflict(project);
 
         assertThat("Incorrect Assignment status:", newStatus.getName(), is("Assigned"));
-        verify(projectIntentionService, times(0)).getProjectsWithSameGeneIntention(project);
     }
 
     @Test
@@ -106,7 +101,6 @@ class ConflictsCheckerTest
         AssignmentStatus newStatus = testInstance.checkConflict(project);
 
         assertThat("Incorrect Assignment status:", newStatus.getName(), is("Assigned"));
-        verify(projectIntentionService, times(1)).getProjectsWithSameGeneIntention(project);
     }
 
     @Test
@@ -125,7 +119,6 @@ class ConflictsCheckerTest
         AssignmentStatus newStatus = testInstance.checkConflict(project);
 
         assertThat("Incorrect Assignment status:", newStatus.getName(), is("Assigned"));
-        verify(projectIntentionService, times(0)).getProjectsWithSameGeneIntention(project);
     }
 
     @Test
@@ -150,7 +143,6 @@ class ConflictsCheckerTest
         AssignmentStatus newStatus = testInstance.checkConflict(project);
 
         assertThat("Incorrect Assignment status:", newStatus.getName(), is("Assigned"));
-        verify(projectIntentionService, times(1)).getProjectsWithSameGeneIntention(project);
     }
 
     @Test
@@ -171,6 +163,7 @@ class ConflictsCheckerTest
         plansForProject.add(plan);
 
         conflictingProject.setPlans(plansForProject);
+        conflictingProject.setAssignmentStatus(assigned);
         conflictingProjects.add(conflictingProject);
         when(projectIntentionService.getProjectsWithSameGeneIntention(project))
             .thenReturn(conflictingProjects);
@@ -202,6 +195,7 @@ class ConflictsCheckerTest
         plansForProject.add(plan);
 
         conflictingProject.setPlans(plansForProject);
+        conflictingProject.setAssignmentStatus(assigned);
         conflictingProjects.add(conflictingProject);
         when(projectIntentionService.getProjectsWithSameGeneIntention(project))
             .thenReturn(conflictingProjects);
@@ -245,38 +239,6 @@ class ConflictsCheckerTest
         AssignmentStatus newStatus = testInstance.checkConflict(project);
 
         assertThat("Incorrect Assignment status:", newStatus.getName(), is("Inspect - Conflict"));
-    }
-
-    @Test
-    public void testWhenConflict()
-    {
-        Project project = new Project();
-
-        List<ProjectIntentionGene> intentionGeneList = new ArrayList<>();
-        intentionGeneList.add(buildCompleteProjectIntentionGene(1L, 1L, "Deletion", 1L));
-        when(projectQueryHelper.getIntentionGenesByProject(project)).thenReturn(intentionGeneList);
-        List<Project> conflictingProjects = new ArrayList<>();
-
-        // There is another project with same intention and same gene
-        Project conflictingProject = buildCompleteProjectIntentionGene(2L, 2L, "Deletion", 1L)
-            .getProjectIntention().getProject();
-        conflictingProject.setAssignmentStatus(inspect_gtl_mouse);
-        Plan plan = buildPlanWithStatus(StatusNames.ATTEMPT_ABORTED);
-        Set<Plan> plansForProject = new HashSet<>();
-        plansForProject.add(plan);
-
-        conflictingProject.setPlans(plansForProject);
-        conflictingProjects.add(conflictingProject);
-        when(projectIntentionService.getProjectsWithSameGeneIntention(project))
-            .thenReturn(conflictingProjects);
-        when(
-            assignmentStatusService.getAssignmentStatusByName(
-                AssignmentStatusNames.CONFLICT_STATUS_NAME))
-            .thenReturn(conflict);
-
-        AssignmentStatus newStatus = testInstance.checkConflict(project);
-
-        assertThat("Incorrect Assignment status:", newStatus.getName(), is("Conflict"));
     }
 
     private ProjectIntention buildProjectIntention(Long id, String molecularMutationTypeName)
@@ -327,6 +289,7 @@ class ConflictsCheckerTest
         Status status = new Status();
         status.setName(statusName);
         plan.setStatus(status);
+        plan.setSummaryStatus(status);
         return plan;
     }
 

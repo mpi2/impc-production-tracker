@@ -8,7 +8,6 @@ import org.gentar.biology.project.ProjectIntentionService;
 import org.gentar.biology.project.ProjectQueryHelper;
 import org.gentar.biology.status.StatusNames;
 import org.springframework.stereotype.Component;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -22,7 +21,6 @@ import java.util.stream.Collectors;
  *     * Inspect - GLT Mouse (2).
  *     * Inspect - Attempt (3).
  *     * Inspect - Conflict (4).
- *     * Conflict (5).
  *
  *     The numbers are the evaluation order of the statuses. Once the conditions are met to assign
  *     a status, the process stops. Each method assumes the previous methods where already evaluated
@@ -56,7 +54,6 @@ public class ConflictsChecker
      * - Inspect - GLT Mouse.
      * - Inspect - Attempt.
      * - Inspect - Conflict.
-     * - Conflict.
      * @param project The project to evaluate
      * @return A {@link AssignmentStatus} referring to a conflict status if there was conflict
      * or Assigned if there was not conflict.
@@ -69,21 +66,17 @@ public class ConflictsChecker
         {
             assignmentStatusName = AssignmentStatusNames.ASSIGNED_STATUS_NAME;
         }
-        else if (validToInspectGltMouse(project, projectConflicts))
+        else if (validToInspectGltMouse(projectConflicts))
         {
             assignmentStatusName = AssignmentStatusNames.INSPECT_GLT_MOUSE_STATUS_NAME;
         }
-        else if (validToInspectAttempt(project, projectConflicts))
+        else if (validToInspectAttempt(projectConflicts))
         {
             assignmentStatusName = AssignmentStatusNames.INSPECT_ATTEMPT_STATUS_NAME;
         }
-        else if (validToInspectConflict(project, projectConflicts))
-        {
-            assignmentStatusName = AssignmentStatusNames.INSPECT_CONFLICT_STATUS_NAME;
-        }
         else
         {
-            assignmentStatusName = AssignmentStatusNames.CONFLICT_STATUS_NAME;
+            assignmentStatusName = AssignmentStatusNames.INSPECT_CONFLICT_STATUS_NAME;
         }
         return assignmentStatusService.getAssignmentStatusByName(assignmentStatusName);
     }
@@ -95,7 +88,7 @@ public class ConflictsChecker
      *      - 1 gene.
      *      - Molecular mutation => “deletion”.
      * @param project The project being evaluated.
-     * @param projectConflicts
+     * @param projectConflicts Projects that have conflict with the project.
      * @return True or False depending if the project can be set to [Assigned] or not.
      */
     private boolean validToAssigned(Project project, List<Project> projectConflicts)
@@ -106,7 +99,7 @@ public class ConflictsChecker
         {
             result = true;
         }
-        else if (canBeAssigned(project, projectConflicts))
+        else if (canBeAssigned(projectConflicts))
         {
             result = true;
         }
@@ -123,7 +116,7 @@ public class ConflictsChecker
         return result;
     }
 
-    private boolean canBeAssigned(Project project, List<Project> projectConflicts)
+    private boolean canBeAssigned(List<Project> projectConflicts)
     {
         List<Project> assignedProjectsWithDeletionIntention =
             projectConflicts.stream()
@@ -138,21 +131,20 @@ public class ConflictsChecker
      * 1) At least another project with intention being:
      *  - 1 gene.
      *  - Molecular mutation => “deletion”.
-     *  - And that have at least one plan/attempt with status => "Genotype confirmed".
+     *  - And that have at least one plan/attempt with summary status => "Genotype confirmed".
      *  This method only validates the last part of the condition because the rest is validated by
      *  the method called before this.
-     * @param project The project being evaluated.
-     * @param projectConflicts
+     * @param projectConflicts Projects that have conflict with the project.
      * @return True or False depending if the project can be set to [Inspect - GLT Mouse] or not.
      */
-    private boolean validToInspectGltMouse(Project project, List<Project> projectConflicts)
+    private boolean validToInspectGltMouse(List<Project> projectConflicts)
     {
         boolean result = false;
         for (Project conflict : projectConflicts)
         {
             Set<Plan> plans = conflict.getPlans();
             result = plans.stream()
-                .anyMatch(p -> StatusNames.GENOTYPE_CONFIRMED.equals(p.getStatus().getName()));
+                .anyMatch(p -> StatusNames.GENOTYPE_CONFIRMED.equals(p.getSummaryStatus().getName()));
             if (result)
             {
                 break;
@@ -169,20 +161,16 @@ public class ConflictsChecker
      *  - Have at least one plan/attempt with status != ("Attempt aborted" or "Genotype confirmed").
      *  This method only validates the last part of the condition because the rest is validated by
      *  the method called before this.
-     * @param project The project being evaluated.
-     * @param projectConflicts
+     * @param projectConflicts Projects that have conflict with the project.
      * @return True or False depending if the project can be set to [Inspect - Attempt] or not.
      */
-    private boolean validToInspectAttempt(Project project, List<Project> projectConflicts)
+    private boolean validToInspectAttempt(List<Project> projectConflicts)
     {
         boolean result = false;
         for (Project conflict : projectConflicts)
         {
             Set<Plan> plans = conflict.getPlans();
-            result = plans.stream()
-                .anyMatch(p ->
-                    !StatusNames.ATTEMPT_ABORTED.equals(p.getStatus().getName()) &&
-                        !StatusNames.GENOTYPE_CONFIRMED.equals(p.getStatus().getName()));
+            result = plans.stream().anyMatch(this::planHasSomeProgress);
             if (result)
             {
                 break;
@@ -191,22 +179,13 @@ public class ConflictsChecker
         return result;
     }
 
-    /**
-     * A project is set to [Inspect - Attempt] if any of the following conditions are met:
-     * 1) At least another project with intention being:
-     *      - 1 gene.
-     *      - Molecular mutation => “deletion”.
-     *  This method only validates the last part of the condition because the rest is validated by
-     *  the method called before this.
-     * @param project The project being evaluated.
-     * @param projectConflicts
-     * @return True or False depending if the project can be set to [Inspect - Attempt] or not.
-     */
-    private boolean validToInspectConflict(Project project, List<Project> projectConflicts)
+    private boolean planHasSomeProgress(Plan plan)
     {
-        return projectConflicts.stream()
-            .anyMatch(x -> AssignmentStatusNames.ASSIGNED_STATUS_NAME
-                .equals( x.getAssignmentStatus().getName()));
+        String summaryStatusName =
+            plan.getSummaryStatus() == null ? "" : plan.getSummaryStatus().getName();
+        return !StatusNames.ATTEMPT_ABORTED.equals(summaryStatusName) &&
+                !StatusNames.GENOTYPE_CONFIRMED.equals(summaryStatusName) &&
+                !StatusNames.PLAN_CREATED.equals(summaryStatusName);
     }
 
     /**
