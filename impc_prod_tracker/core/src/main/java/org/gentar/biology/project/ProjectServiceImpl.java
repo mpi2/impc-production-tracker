@@ -187,12 +187,6 @@ public class ProjectServiceImpl implements ProjectService
     @Override
     public void checkForUpdates(Project project)
     {
-        projectUpdater.changeAssignmentStatusIfNeeded(project);
-    }
-
-    @Override
-    public void updateConflictingProjects(Project project)
-    {
-        projectUpdater.updateConflictingProjects(project);
+        projectUpdater.updateProjectWhenPlanUpdated(project);
     }
 }
