@@ -42,5 +42,5 @@ public class Status extends BaseEntity
 
     @IgnoreForAuditingChanges
     @NotNull
-    private String ordering;
+    private Integer ordering;
 }
