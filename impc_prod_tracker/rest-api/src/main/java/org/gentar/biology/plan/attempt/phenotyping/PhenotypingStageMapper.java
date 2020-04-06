@@ -4,8 +4,6 @@ import org.gentar.EntityMapper;
 import org.gentar.Mapper;
 import org.gentar.biology.plan.attempt.phenotyping.stage.PhenotypingStage;
 import org.gentar.biology.plan.attempt.phenotyping.stage.status_stamp.PhenotypingStageStatusStamp;
-import org.gentar.biology.plan.attempt.phenotyping.stage.tissue_distribution.TissueDistribution;
-import org.gentar.biology.plan.status_stamp.PlanStatusStamp;
 import org.gentar.biology.status.StatusMapper;
 import org.gentar.biology.status_stamps.StatusStampsDTO;
 import org.springframework.stereotype.Component;

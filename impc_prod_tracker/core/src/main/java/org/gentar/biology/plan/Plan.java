@@ -24,7 +24,7 @@ import lombok.ToString;
 import org.gentar.audit.diff.IgnoreForAuditingChanges;
 import org.gentar.biology.outcome.Outcome;
 import org.gentar.biology.plan.plan_starting_point.PlanStartingPoint;
-import org.gentar.biology.plan.status_stamp.PlanStatusStamp;
+import org.gentar.biology.plan.status.PlanStatusStamp;
 import org.gentar.biology.plan.type.PlanType;
 import org.gentar.organization.work_group.WorkGroup;
 import org.gentar.security.abac.Resource;

@@ -17,7 +17,6 @@ package org.gentar.biology.project.engine;
 
 import org.gentar.audit.history.History;
 import org.gentar.audit.history.HistoryService;
-import org.gentar.biology.project.assignment.AssignmentStatus;
 import org.gentar.biology.project.assignment.AssignmentStatusUpdater;
 import org.springframework.stereotype.Component;
 import org.gentar.biology.project.Project;
@@ -39,9 +38,9 @@ public class ProjectCreator
 
     private HistoryService<Project> historyService;
 
-    public ProjectCreator(AssignmentStatusUpdater assignmentStatusUpdater, HistoryService<Project> historyService)
+    public ProjectCreator(
+        AssignmentStatusUpdater assignmentStatusUpdater, HistoryService<Project> historyService)
     {
-        this.entityManager = entityManager;
         this.assignmentStatusUpdater = assignmentStatusUpdater;
         this.historyService = historyService;
     }

@@ -1,4 +1,4 @@
-package org.gentar.biology.plan.status_stamp;
+package org.gentar.biology.plan.status;
 
 import org.springframework.data.repository.CrudRepository;
 

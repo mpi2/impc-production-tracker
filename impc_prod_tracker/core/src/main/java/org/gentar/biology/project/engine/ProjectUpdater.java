@@ -39,14 +39,17 @@ public class ProjectUpdater
         //TODO: add validations of permission
     }
 
-    public void changeAssignmentStatusIfNeeded(Project project)
+    /**
+     * This method is to be called after a plan is updated in the system.
+     * Things that may need to be updated in the project because a change in one of its plans:
+     *  - Assignment Status.
+     *  - Assignment Statuses in other projects conflicting with the project (having same intention).
+     *  - Summary status.
+     * @param project
+     */
+    public void updateProjectWhenPlanUpdated(Project project)
     {
         assignmentStatusUpdater.inactivateOrActivateProjectIfNeeded(project);
-        assignmentStatusUpdater.updateConflictingProjects(project);
-    }
-
-    public void updateConflictingProjects(Project project)
-    {
         assignmentStatusUpdater.updateConflictingProjects(project);
     }
 

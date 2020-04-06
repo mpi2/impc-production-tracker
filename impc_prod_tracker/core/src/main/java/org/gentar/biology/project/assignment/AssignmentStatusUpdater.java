@@ -2,16 +2,9 @@ package org.gentar.biology.project.assignment;
 
 import org.gentar.audit.history.History;
 import org.gentar.audit.history.HistoryService;
-import org.gentar.biology.plan.Plan;
-import org.gentar.biology.plan.engine.state.BreedingPlanState;
-import org.gentar.biology.plan.engine.state.LateAdultPhenotypePlanState;
-import org.gentar.biology.plan.engine.state.PhenotypePlanState;
-import org.gentar.biology.plan.engine.state.ProductionPlanState;
+import org.gentar.biology.plan.status.PlanStatusChecker;
 import org.gentar.biology.project.Project;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
-
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.List;
@@ -47,8 +40,12 @@ public class AssignmentStatusUpdater
      */
     public void recalculateConflicts(Project project)
     {
-        if (!(projectHasStatusByName(project, AssignmentStatusNames.INACTIVE_STATUS_NAME)
-            || projectHasStatusByName(project, AssignmentStatusNames.ASSIGNED_STATUS_NAME)))
+        boolean projectIsInactive = AssignmentStatusChecker.projectHasStatusByName(
+            project, AssignmentStatusNames.INACTIVE_STATUS_NAME);
+        boolean projectIsAssigned =
+            AssignmentStatusChecker.projectHasStatusByName(
+                project, AssignmentStatusNames.ASSIGNED_STATUS_NAME);
+        if (!(projectIsInactive || projectIsAssigned))
         {
             setCalculatedAssignmentStatus(project);
         }
@@ -92,26 +89,16 @@ public class AssignmentStatusUpdater
         boolean areAllPlansAborted = false;
         if (plans != null)
         {
-            areAllPlansAborted = plans.stream().allMatch(this::planIsAborted);
+            areAllPlansAborted = plans.stream().allMatch(PlanStatusChecker::planIsAborted);
         }
         if (areAllPlansAborted)
         {
             inactivateProject(project);
         }
-        else if (projectIsInactive(project))
+        else if (AssignmentStatusChecker.projectIsInactive(project))
         {
             reactivateProject(project);
         }
-    }
-
-    private boolean planIsAborted(Plan plan)
-    {
-        String statusName = plan.getStatus().getName();
-        return statusName.equals(ProductionPlanState.AttemptAborted.getInternalName()) ||
-            statusName.equals(BreedingPlanState.BreedingAborted.getInternalName()) ||
-            statusName.equals(PhenotypePlanState.PhenotypeProductionAborted.getInternalName()) ||
-            statusName.equals(
-                LateAdultPhenotypePlanState.LateAdultPhenotypeProductionAborted.getInternalName());
     }
 
     /**
@@ -145,28 +132,6 @@ public class AssignmentStatusUpdater
         assignmentStatusStamp.setDate(LocalDateTime.now());
         stamps.add(assignmentStatusStamp);
         project.setAssignmentStatusStamps(stamps);
-    }
-
-    private boolean projectIsInactive(Project project)
-    {
-        boolean result = false;
-        AssignmentStatus assignmentStatus = project.getAssignmentStatus();
-        if (assignmentStatus != null)
-        {
-            result = AssignmentStatusNames.INACTIVE_STATUS_NAME.equals(assignmentStatus.getName());
-        }
-        return result;
-    }
-
-    private boolean projectHasStatusByName(Project project, String assignmentStatusName)
-    {
-        boolean result = false;
-        AssignmentStatus assignmentStatus = project.getAssignmentStatus();
-        if (assignmentStatus != null)
-        {
-            result = assignmentStatusName.equals(assignmentStatus.getName());
-        }
-        return result;
     }
 
     /**

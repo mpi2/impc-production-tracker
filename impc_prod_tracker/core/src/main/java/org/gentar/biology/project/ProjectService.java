@@ -50,6 +50,4 @@ public interface ProjectService
      * @param project The project to check
      */
     void checkForUpdates(Project project);
-
-    void updateConflictingProjects(Project project);
 }
