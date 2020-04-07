@@ -13,7 +13,7 @@
  * language governing permissions and limitations under the
  * License.
  *******************************************************************************/
-package org.gentar.security;
+package org.gentar.spring_configuration;
 
 import org.springframework.security.access.expression.method.DefaultMethodSecurityExpressionHandler;
 import org.springframework.security.access.expression.method.MethodSecurityExpressionHandler;
@@ -22,10 +22,10 @@ import org.springframework.security.config.annotation.method.configuration.Globa
 import org.gentar.security.abac.spring.AbacPermissionEvaluator;
 
 @EnableGlobalMethodSecurity(prePostEnabled = true)
-public class MethodSecurityConfig extends GlobalMethodSecurityConfiguration
+public class MethodSecurityConfiguration extends GlobalMethodSecurityConfiguration
 {
     AbacPermissionEvaluator permissionEvaluator;
-    public MethodSecurityConfig(AbacPermissionEvaluator permissionEvaluator)
+    public MethodSecurityConfiguration(AbacPermissionEvaluator permissionEvaluator)
     {
         this.permissionEvaluator = permissionEvaluator;
     }

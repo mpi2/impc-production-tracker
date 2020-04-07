@@ -1,4 +1,4 @@
-package org.gentar.basic_data;
+package org.gentar.spring_configuration;
 
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.context.annotation.Bean;
