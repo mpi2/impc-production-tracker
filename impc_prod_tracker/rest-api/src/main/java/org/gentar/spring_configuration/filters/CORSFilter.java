@@ -1,4 +1,4 @@
-package org.gentar.security;
+package org.gentar.spring_configuration.filters;
 
 import java.io.IOException;
 import javax.servlet.Filter;

@@ -13,7 +13,7 @@
  * language governing permissions and limitations under the
  * License.
  *******************************************************************************/
-package org.gentar.security;
+package org.gentar.spring_configuration;
 
 import org.gentar.security.abac.subject.SystemSubject;
 import org.springframework.context.annotation.Bean;
@@ -24,7 +24,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import java.util.Optional;
 
 @Configuration
-public class JPAAuditConfig
+public class JPAAuditConfiguration
 {
     @Bean
     public AuditorAware<String> auditorProvider()

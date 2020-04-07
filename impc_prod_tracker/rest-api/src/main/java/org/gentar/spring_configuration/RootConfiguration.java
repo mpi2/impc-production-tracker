@@ -13,8 +13,9 @@
  * language governing permissions and limitations under the
  * License.
  *******************************************************************************/
-package org.gentar.security;
+package org.gentar.spring_configuration;
 
+import org.gentar.spring_configuration.filters.CORSFilter;
 import org.gentar.security.jwt.JwtTokenFilter;
 import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.Bean;
