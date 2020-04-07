@@ -13,16 +13,33 @@
  * language governing permissions and limitations under the
  * License.
  *******************************************************************************/
-package org.gentar.conf;
+package org.gentar.basic_data;
 
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 import java.util.Map;
 
-public interface CatalogService
+/**
+ * Provides information recurrently needed as work groups, work units, etc.
+ *
+ * @author Mauricio Martinez
+ */
+@RestController
+@RequestMapping("/api")
+public class ConfigurationController
 {
-    /**
-     * Returns a catalog with data for the most used entities in the system.
-     * @return Map with entities and values for those entities.
-     */
-    Map<String, List<String>> getCatalog();
+    private CatalogService catalogService;
+
+    public ConfigurationController(CatalogService catalogService)
+    {
+        this.catalogService = catalogService;
+    }
+
+    @GetMapping(value = {"/conf"})
+    public Map<String, List<String>> getConfiguration()
+    {
+        return catalogService.getCatalog();
+    }
 }

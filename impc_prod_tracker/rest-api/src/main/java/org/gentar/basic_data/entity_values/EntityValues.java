@@ -13,34 +13,15 @@
  * language governing permissions and limitations under the
  * License.
  *******************************************************************************/
-package org.gentar.conf;
+package org.gentar.basic_data.entity_values;
 
-import org.gentar.conf.CatalogService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import lombok.Data;
+import org.gentar.common.NamedValueDTO;
 import java.util.List;
-import java.util.Map;
 
-/**
- * Provides information recurrently needed as work groups, work units, etc.
- *
- * @author Mauricio Martinez
- */
-@RestController
-@RequestMapping("/api")
-public class ConfigurationController
+@Data
+public class EntityValues
 {
-    private CatalogService catalogService;
-
-    public ConfigurationController(CatalogService catalogService)
-    {
-        this.catalogService = catalogService;
-    }
-
-    @GetMapping(value = {"/conf"})
-    public Map<String, List<String>> getConfiguration()
-    {
-        return catalogService.getCatalog();
-    }
+    private String entityName;
+    private List<NamedValueDTO> values;
 }

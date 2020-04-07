@@ -13,16 +13,16 @@
  * language governing permissions and limitations under the
  * License.
  *******************************************************************************/
-package org.gentar.conf.entity_values;
+package org.gentar.basic_data;
 
 import java.util.List;
+import java.util.Map;
 
-public interface EntitiesValuesByUserService
+public interface CatalogService
 {
     /**
-     * Returns a catalog with data for entities according to the user. The user must be manager or
-     * admin because the entities are meant to be data managed by that user.
+     * Returns a catalog with data for the most used entities in the system.
      * @return Map with entities and values for those entities.
      */
-    List<EntityValues> getListsByManagerUser();
+    Map<String, List<String>> getCatalog();
 }
