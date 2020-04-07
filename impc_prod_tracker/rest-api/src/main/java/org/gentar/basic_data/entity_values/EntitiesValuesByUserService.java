@@ -13,15 +13,16 @@
  * language governing permissions and limitations under the
  * License.
  *******************************************************************************/
-package org.gentar.conf.entity_values;
+package org.gentar.basic_data.entity_values;
 
-import lombok.Data;
-import org.gentar.common.NamedValueDTO;
 import java.util.List;
 
-@Data
-public class EntityValues
+public interface EntitiesValuesByUserService
 {
-    private String entityName;
-    private List<NamedValueDTO> values;
+    /**
+     * Returns a catalog with data for entities according to the user. The user must be manager or
+     * admin because the entities are meant to be data managed by that user.
+     * @return Map with entities and values for those entities.
+     */
+    List<EntityValues> getListsByManagerUser();
 }

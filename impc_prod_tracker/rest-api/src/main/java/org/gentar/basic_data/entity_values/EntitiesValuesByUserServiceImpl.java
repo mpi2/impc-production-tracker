@@ -13,7 +13,7 @@
  language governing permissions and limitations under the
  License.
  */
-package org.gentar.conf.entity_values;
+package org.gentar.basic_data.entity_values;
 
 import org.gentar.organization.work_unit.WorkUnitService;
 import org.gentar.security.abac.subject.SubjectRetriever;

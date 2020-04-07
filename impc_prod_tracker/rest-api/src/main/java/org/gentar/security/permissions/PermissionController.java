@@ -15,8 +15,8 @@
  *******************************************************************************/
 package org.gentar.security.permissions;
 
-import org.gentar.conf.entity_values.EntitiesValuesByUserService;
-import org.gentar.conf.entity_values.EntityValues;
+import org.gentar.basic_data.entity_values.EntitiesValuesByUserService;
+import org.gentar.basic_data.entity_values.EntityValues;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
