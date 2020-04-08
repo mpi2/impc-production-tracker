@@ -5,6 +5,7 @@ import org.gentar.audit.history.HistoryService;
 import org.gentar.biology.project.Project;
 import org.gentar.biology.project.ProjectRepository;
 import org.gentar.biology.project.assignment.AssignmentStatusUpdater;
+import org.gentar.biology.project.summary_status.ProjectSummaryStatusUpdater;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -13,15 +14,18 @@ public class ProjectUpdater
     private HistoryService<Project> historyService;
     private ProjectRepository projectRepository;
     private AssignmentStatusUpdater assignmentStatusUpdater;
+    private ProjectSummaryStatusUpdater projectSummaryStatusUpdater;
 
     public ProjectUpdater(
         HistoryService<Project> historyService,
         ProjectRepository projectRepository,
-        AssignmentStatusUpdater assignmentStatusUpdater)
+        AssignmentStatusUpdater assignmentStatusUpdater,
+        ProjectSummaryStatusUpdater projectSummaryStatusUpdater)
     {
         this.historyService = historyService;
         this.projectRepository = projectRepository;
         this.assignmentStatusUpdater = assignmentStatusUpdater;
+        this.projectSummaryStatusUpdater = projectSummaryStatusUpdater;
     }
 
     public History updateProject(Project originalProject, Project newProject)
@@ -45,12 +49,13 @@ public class ProjectUpdater
      *  - Assignment Status.
      *  - Assignment Statuses in other projects conflicting with the project (having same intention).
      *  - Summary status.
-     * @param project
+     * @param project Project to be checked.
      */
     public void updateProjectWhenPlanUpdated(Project project)
     {
         assignmentStatusUpdater.inactivateOrActivateProjectIfNeeded(project);
         assignmentStatusUpdater.updateConflictingProjects(project);
+        projectSummaryStatusUpdater.calculateSummaryStatus(project);
     }
 
     /**
