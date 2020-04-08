@@ -38,6 +38,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.time.LocalDateTime;
 
 @NoArgsConstructor(access= AccessLevel.PUBLIC, force=true)
 @Data
@@ -56,7 +57,7 @@ public class Project extends BaseEntity implements Resource<Project>
         this.summaryStatus = project.summaryStatus;
         this.assignmentStatusStamps = new HashSet<>(project.assignmentStatusStamps);
         this.plans = new HashSet<>(project.plans);
-        this.withdrawn = project.withdrawn;
+        this.reactivationDate = project.reactivationDate;
         this.recovery = project.recovery;
         this.comment = project.comment;
         this.projectExternalRef = project.projectExternalRef;
@@ -98,7 +99,7 @@ public class Project extends BaseEntity implements Resource<Project>
     @JoinColumn(name = "project_id")
     private Set<Plan> plans;
 
-    private Boolean withdrawn;
+    private LocalDateTime reactivationDate;
 
     private Boolean recovery;
 
@@ -140,7 +141,7 @@ public class Project extends BaseEntity implements Resource<Project>
         restrictedProject.setId(id);
         restrictedProject.setTpn(tpn);
         restrictedProject.setPrivacy(privacy);
-        restrictedProject.setWithdrawn(withdrawn);
+        restrictedProject.setReactivationDate(reactivationDate);
         restrictedProject.setComment(comment);
         restrictedProject.setRecovery(recovery);
         restrictedProject.setProjectExternalRef(projectExternalRef);
