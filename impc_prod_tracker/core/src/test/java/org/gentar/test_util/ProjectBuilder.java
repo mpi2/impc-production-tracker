@@ -7,7 +7,6 @@ import org.gentar.biology.project.search.filter.ProjectFilter;
 public class ProjectBuilder
 {
     private AssignmentStatus assignmentStatus;
-    private boolean withdrawn;
 
     public static ProjectBuilder getInstance()
     {
@@ -17,7 +16,6 @@ public class ProjectBuilder
     public Project build()
     {
         Project project = new Project();
-        project.setWithdrawn(withdrawn);
         project.setAssignmentStatus(assignmentStatus);
         return project;
     }
@@ -27,12 +25,6 @@ public class ProjectBuilder
         AssignmentStatus assignmentStatus = new AssignmentStatus();
         assignmentStatus.setName(assignmentStatusName);
         this.assignmentStatus = assignmentStatus;
-        return this;
-    }
-
-    public ProjectBuilder withWithdrawn(boolean withdrawn)
-    {
-        this.withdrawn = withdrawn;
         return this;
     }
 }

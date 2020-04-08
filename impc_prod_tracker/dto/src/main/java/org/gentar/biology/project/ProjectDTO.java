@@ -23,6 +23,8 @@ import org.springframework.hateoas.RepresentationModel;
 import org.gentar.biology.intention.ProjectIntentionDTO;
 import org.gentar.biology.status_stamps.StatusStampsDTO;
 import org.springframework.hateoas.server.core.Relation;
+
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Set;
 
@@ -46,7 +48,7 @@ public class ProjectDTO extends RepresentationModel
 
     @JsonProperty("externalReference")
     private String projectExternalRef;
-    private Boolean withdrawn;
+    private LocalDateTime reactivationDate;
     private Boolean recovery;
 
     @JsonProperty("projectIntentions")
