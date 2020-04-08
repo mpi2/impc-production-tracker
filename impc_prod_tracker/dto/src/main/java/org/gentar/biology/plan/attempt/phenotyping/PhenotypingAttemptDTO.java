@@ -22,6 +22,9 @@ public class PhenotypingAttemptDTO
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private Long imitsPhenotypingProductionId;
 
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    private Long imitsParentColonyId;
+
     private String phenotypingExternalRef;
 
     @JsonProperty("phenotypingBackgroundStrainName")
