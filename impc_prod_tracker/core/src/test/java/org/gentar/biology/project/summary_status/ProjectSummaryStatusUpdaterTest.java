@@ -30,12 +30,12 @@ class ProjectSummaryStatusUpdaterTest
     @Mock
     private StatusService statusService;
 
-    private static final Status INACTIVE = new Status(1L, "Inactive", "", 0);
+    private static final Status INACTIVE = new Status(1L, "Inactive", "", 0, false);
 
-    private static final Status STATUS_1 = new Status(1L, "Status1", "Status1", 1);
-    private static final Status STATUS_2 = new Status(2L, "Status2", "Status2", 2);
+    private static final Status STATUS_1 = new Status(1L, "Status1", "Status1", 1, false);
+    private static final Status STATUS_2 = new Status(2L, "Status2", "Status2", 2, false);
     private static final Status STATUS_ABORTED =
-        new Status(5L, "Attempt Aborted", "Attempt Aborted", 100);
+        new Status(5L, "Attempt Aborted", "Attempt Aborted", 100, false);
 
     @BeforeEach
     public void setup()
