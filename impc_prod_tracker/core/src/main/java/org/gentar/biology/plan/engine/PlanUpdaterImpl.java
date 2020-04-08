@@ -9,6 +9,7 @@ import org.gentar.security.abac.spring.ContextAwarePolicyEnforcement;
 import org.gentar.biology.plan.Plan;
 import org.gentar.biology.plan.PlanRepository;
 import org.gentar.audit.history.History;
+import org.springframework.transaction.annotation.Transactional;
 
 @Component
 public class PlanUpdaterImpl implements PlanUpdater
@@ -37,6 +38,7 @@ public class PlanUpdaterImpl implements PlanUpdater
     }
 
     @Override
+    @Transactional
     public History updatePlan(Plan originalPlan, Plan newPlan)
     {
         validatePermissionToUpdatePlan(newPlan);

@@ -27,6 +27,7 @@ import javax.persistence.SequenceGenerator;
 import javax.validation.constraints.NotNull;
 
 @NoArgsConstructor(access= AccessLevel.PUBLIC, force=true)
+@AllArgsConstructor
 @Data
 @Entity
 public class Status extends BaseEntity
