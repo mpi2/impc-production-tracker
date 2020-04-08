@@ -19,7 +19,8 @@ public class ProjectUpdater
     public ProjectUpdater(
         HistoryService<Project> historyService,
         ProjectRepository projectRepository,
-        AssignmentStatusUpdater assignmentStatusUpdater, ProjectSummaryStatusUpdater projectSummaryStatusUpdater)
+        AssignmentStatusUpdater assignmentStatusUpdater,
+        ProjectSummaryStatusUpdater projectSummaryStatusUpdater)
     {
         this.historyService = historyService;
         this.projectRepository = projectRepository;
