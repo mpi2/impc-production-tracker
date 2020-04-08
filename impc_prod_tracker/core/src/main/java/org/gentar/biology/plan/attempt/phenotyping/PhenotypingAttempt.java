@@ -28,6 +28,8 @@ public class PhenotypingAttempt extends BaseEntity
 
     private Long imitsPhenotypingProductionId;
 
+    private Long imitsParentColonyId;
+
     @NotNull
     @Column(unique = true)
     private String phenotypingExternalRef;
