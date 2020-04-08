@@ -1,7 +1,6 @@
 package org.gentar.biology.project.summary_status;
 
 import org.gentar.biology.plan.Plan;
-import org.gentar.biology.plan.status.PlanStatusChecker;
 import org.gentar.biology.project.Project;
 import org.gentar.biology.project.assignment.AssignmentStatusChecker;
 import org.gentar.biology.status.Status;
@@ -53,7 +52,7 @@ public class ProjectSummaryStatusUpdater
         {
             List<Status> summaryStatusesNotAbortedPlans =
                 plans.stream()
-                    .filter(x -> !PlanStatusChecker.planIsAborted(x))
+                    .filter(x -> !x.getStatus().getIsAbortionStatus())
                     .map(Plan::getSummaryStatus)
                     .collect(Collectors.toList());
             mostAdvancedSummaryStatus = summaryStatusesNotAbortedPlans
