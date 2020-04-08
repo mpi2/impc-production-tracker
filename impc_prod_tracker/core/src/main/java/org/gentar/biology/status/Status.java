@@ -17,7 +17,6 @@ package org.gentar.biology.status;
 
 import lombok.*;
 import org.gentar.BaseEntity;
-import org.gentar.audit.diff.IgnoreForAuditingChanges;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -42,8 +41,11 @@ public class Status extends BaseEntity
 
     private String description;
 
-    @IgnoreForAuditingChanges
     @NotNull
     @Column(columnDefinition = "bigint default 0")
     private Integer ordering;
+
+    @NotNull
+    @Column(columnDefinition = "boolean default false")
+    private Boolean isAbortionStatus;
 }
