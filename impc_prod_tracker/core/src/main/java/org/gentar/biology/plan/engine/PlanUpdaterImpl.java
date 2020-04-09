@@ -1,6 +1,8 @@
 package org.gentar.biology.plan.engine;
 
+import org.gentar.biology.plan.Plan_;
 import org.gentar.biology.project.ProjectService;
+import org.gentar.biology.status.Status_;
 import org.gentar.exceptions.UserOperationFailedException;
 import org.gentar.audit.history.HistoryService;
 import org.gentar.statemachine.StateTransitionsManager;
@@ -100,7 +102,10 @@ public class PlanUpdaterImpl implements PlanUpdater
      */
     private History detectTrackOfChanges(Plan originalPlan, Plan newPlan)
     {
-        return historyService.detectTrackOfChanges(originalPlan, newPlan, originalPlan.getId());
+        History history =
+            historyService.detectTrackOfChanges(originalPlan, newPlan, originalPlan.getId());
+        history = historyService.filterDetailsInNestedEntity(history, Plan_.STATUS, Status_.NAME);
+        return history;
     }
 
     /**

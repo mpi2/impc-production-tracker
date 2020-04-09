@@ -7,7 +7,9 @@ import org.gentar.biology.status.Status;
 import org.gentar.biology.status.StatusNames;
 import org.gentar.biology.status.StatusService;
 import org.springframework.stereotype.Component;
+import java.time.LocalDateTime;
 import java.util.Comparator;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -41,7 +43,7 @@ public class ProjectSummaryStatusUpdater
         {
             summaryStatus = getMostAdvancedSummaryStatusFromPlans(project);
         }
-        project.setSummaryStatus(summaryStatus);
+        setAndLogNewSummaryStatus(project, summaryStatus);
     }
 
     private Status getMostAdvancedSummaryStatusFromPlans(Project project)
@@ -61,5 +63,33 @@ public class ProjectSummaryStatusUpdater
                 .orElse(null);
         }
         return mostAdvancedSummaryStatus;
+    }
+
+    private void setAndLogNewSummaryStatus(Project project, Status summaryStatus)
+    {
+        Project originalProject = new Project(project);
+        Status currentSummaryStatus = originalProject.getSummaryStatus();
+        String currentSummaryStatusName =
+            currentSummaryStatus == null ? "" : currentSummaryStatus.getName();
+        if (!currentSummaryStatusName.equals(summaryStatus.getName()))
+        {
+            project.setSummaryStatus(summaryStatus);
+            registerSummaryStatusStamp(project);
+        }
+    }
+
+    private void registerSummaryStatusStamp(Project project)
+    {
+        Set<ProjectSummaryStatusStamp> stamps = project.getSummaryStatusStamps();
+        if (stamps == null)
+        {
+            stamps = new HashSet<>();
+        }
+        ProjectSummaryStatusStamp projectSummaryStatusStamp = new ProjectSummaryStatusStamp();
+        projectSummaryStatusStamp.setProject(project);
+        projectSummaryStatusStamp.setStatus(project.getSummaryStatus());
+        projectSummaryStatusStamp.setDate(LocalDateTime.now());
+        stamps.add(projectSummaryStatusStamp);
+        project.setSummaryStatusStamps(stamps);
     }
 }
