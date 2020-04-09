@@ -18,6 +18,7 @@ package org.gentar.biology.project;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import org.gentar.audit.diff.IgnoreForAuditingChanges;
+import org.gentar.biology.project.summary_status.ProjectSummaryStatusStamp;
 import org.gentar.biology.status.Status;
 import org.gentar.exceptions.SystemOperationFailedException;
 import org.gentar.organization.work_group.WorkGroup;
@@ -55,16 +56,21 @@ public class Project extends BaseEntity implements Resource<Project>
         this.imitsMiPlanId = project.imitsMiPlanId;
         this.assignmentStatus = project.assignmentStatus;
         this.summaryStatus = project.summaryStatus;
-        this.assignmentStatusStamps = new HashSet<>(project.assignmentStatusStamps);
-        this.plans = new HashSet<>(project.plans);
+        this.assignmentStatusStamps =
+            project.assignmentStatusStamps == null ? null : new HashSet<>(project.assignmentStatusStamps);
+        this.summaryStatusStamps =
+            project.summaryStatusStamps == null ? null : new HashSet<>(project.summaryStatusStamps);
+        this.plans = project.plans == null ? null : new HashSet<>(project.plans);
         this.reactivationDate = project.reactivationDate;
         this.recovery = project.recovery;
         this.comment = project.comment;
         this.projectExternalRef = project.projectExternalRef;
         this.privacy = project.privacy;
-        this.projectIntentions = new ArrayList<>(project.projectIntentions);
-        this.species = new HashSet<>(project.species);
-        this.projectConsortia = new HashSet<>(project.projectConsortia);
+        this.projectIntentions =
+            project.projectIntentions == null ? null : new ArrayList<>(project.projectIntentions);
+        this.species = project.species == null ? null : new HashSet<>(project.species);
+        this.projectConsortia =
+            project.projectConsortia == null ? null : new HashSet<>(project.projectConsortia);
     }
 
     @Id
@@ -92,6 +98,12 @@ public class Project extends BaseEntity implements Resource<Project>
     @ToString.Exclude
     @OneToMany(cascade= CascadeType.ALL, mappedBy = "project", orphanRemoval=true, fetch=FetchType.EAGER)
     private Set<AssignmentStatusStamp> assignmentStatusStamps;
+
+    @IgnoreForAuditingChanges
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
+    @OneToMany(cascade= CascadeType.ALL, mappedBy = "project", orphanRemoval=true, fetch=FetchType.EAGER)
+    private Set<ProjectSummaryStatusStamp> summaryStatusStamps;
 
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
