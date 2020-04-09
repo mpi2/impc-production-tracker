@@ -16,6 +16,7 @@
 package org.gentar.biology.plan;
 
 import org.gentar.biology.plan.attempt.AttemptType;
+import org.gentar.biology.plan.attempt.AttemptTypes;
 import org.gentar.biology.plan.engine.events.BreedingPlanEvent;
 import org.gentar.biology.plan.engine.events.LateAdultPhenotypePlanEvent;
 import org.gentar.biology.plan.engine.events.PhenotypePlanEvent;
