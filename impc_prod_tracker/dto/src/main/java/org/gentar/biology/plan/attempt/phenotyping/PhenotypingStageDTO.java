@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.gentar.biology.status_stamps.StatusStampsDTO;
+import org.gentar.common.state_machine.StatusTransitionDTO;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -28,4 +29,7 @@ public class PhenotypingStageDTO {
     @JsonInclude(JsonInclude.Include.NON_NULL)
     @JsonProperty("tissueDistribution")
     private List<TissueDistributionDTO> tissueDistributionCentreDTOs;
+
+    @JsonProperty("statusTransition")
+    private StatusTransitionDTO statusTransitionDTO;
 }

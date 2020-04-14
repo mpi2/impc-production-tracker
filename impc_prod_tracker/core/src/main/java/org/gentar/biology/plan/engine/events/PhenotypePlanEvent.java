@@ -1,7 +1,5 @@
 package org.gentar.biology.plan.engine.events;
 
-import org.gentar.biology.plan.engine.processors.LateAdultPhenotypePlanAbortProcessor;
-import org.gentar.biology.plan.engine.state.LateAdultPhenotypePlanState;
 import org.gentar.biology.plan.engine.state.PhenotypePlanState;
 import org.gentar.biology.plan.engine.PlanProcessor;
 import org.gentar.biology.plan.engine.processors.PhenotypePlanAbortProcessor;
@@ -13,107 +11,13 @@ import org.gentar.statemachine.Processor;
 import java.util.Arrays;
 import java.util.List;
 
-//    PhenotypingProductionRegistered("Phenotyping Production Registered"),
-//    PhenotypeAttemptRegistered("Phenotype Attempt Registered"),
-//    RederivationStarted("Rederivation Started"),
-//            RederivationComplete("Rederivation Complete"),
-//            PhenotypingStarted("Phenotyping Started"),
-//            PhenotypingComplete("Phenotyping Complete"),
-//            PhenotypeProductionAborted("Phenotype Production Aborted");
-
-
 public enum PhenotypePlanEvent implements ProcessEvent
 {
-    abortWhenProductionRegistered(
-            "Abort a registered phenotyping plan",
-            PhenotypePlanState.PhenotypingProductionRegistered,
-            PhenotypePlanState.PhenotypeProductionAborted,
-            true,
-            null)
-            {
-                @Override
-                public Class<? extends Processor> getNextStepProcessor()
-                {
-                    return PhenotypePlanAbortProcessor.class;
-                }
-            },
-    phenotypeProductionRegistered(
-            "A new phenotype attempt is created from a phenotyping plan",
-            PhenotypePlanState.PlanCreated,
-            PhenotypePlanState.PhenotypingProductionRegistered,
-            false,
-            "executed by the system when a phenotype production is registered"),
-    rederivationStarted(
-            "Rederivation of the colony for phenotyping has started",
-            PhenotypePlanState.PhenotypingProductionRegistered,
-            PhenotypePlanState.RederivationStarted,
-            true,
-            "executed by the user when rederivation is started."),
-    rederivationComplete(
-            "Rederivation of the colony for phenotyping is complete",
-            PhenotypePlanState.RederivationStarted,
-            PhenotypePlanState.RederivationComplete,
-            true,
-            "executed by the user when rederivation is complete."),
-    phenotypingStarted(
-            "Marked as started when the DCC recieves phenotype data",
-            PhenotypePlanState.RederivationComplete,
-            PhenotypePlanState.PhenotypingStarted,
-            false,
-            "executed by the DCC following completion of rederivation."),
-    phenotypingStartedWithoutRederivation(
-            "Marked as started when the DCC recieves phenotype data following a rederivation step",
-            PhenotypePlanState.PhenotypingProductionRegistered,
-            PhenotypePlanState.PhenotypingStarted,
-            false,
-            "executed by the DCC when phenotyping is started."),
-    phenotypingDataReceived(
-            "The CDA has received phenotype data",
-            PhenotypePlanState.PhenotypingStarted,
-            PhenotypePlanState.PhenotypingDataReceived,
-            false,
-            "executed by the CDA when phenotyping data received."),
-    phenotypingAllDataSent(
-            "No more Phenotype data will be sent to the DCC.",
-            PhenotypePlanState.PhenotypingDataReceived,
-            PhenotypePlanState.PhenotypingAllDataSent,
-            true,
-            "Used to indicate all phenotype data has been sent to the DCC."),
-    phenotypingAllDataValidated(
-            "No more Phenotype data will be sent to the DCC.",
-            PhenotypePlanState.PhenotypingAllDataSent,
-            PhenotypePlanState.PhenotypingAllDataValidated,
-            true,
-            "Used to indicate all phenotype data has been validated by the DCC."),
-    phenotypingFinished(
-            "Marked as finished by the DCC when all phenotype data received",
-            PhenotypePlanState.PhenotypingAllDataSent,
-            PhenotypePlanState.PhenotypingFinished,
-            false,
-            "executed by the DCC when all phenotype data received and validated."),
-    revertPhenotypingAllDataSent(
-            "Rollback the state of a Phenotype Plan marked as having all phenotype data sent to allow data entry.",
-            PhenotypePlanState.PhenotypingAllDataSent,
-            PhenotypePlanState.PhenotypingDataReceived,
-            true,
-            "Used when more data needs to be sent for a plan in the PhenotypingAllDataSent state."),
-    revertPhenotypingAllDataValidated(
-            "Rollback the state of a Phenotype Plan marked as having all phenotype data validated to allow data entry.",
-            PhenotypePlanState.PhenotypingAllDataValidated,
-            PhenotypePlanState.PhenotypingDataReceived,
-            true,
-            "Used when more data needs to be sent for a plan in the PhenotypingAllDataValidated state."),
-    revertPhenotypingFinished(
-            "Rollback the state of a Phenotype Plan marked as finished to allow data entry.",
-            PhenotypePlanState.PhenotypingFinished,
-            PhenotypePlanState.PhenotypingDataReceived,
-            false,
-            "executed by the DCC when more data needs to be sent for a finished plan."),
     reverseAbortion(
             "Reverse abortion",
-            PhenotypePlanState.PhenotypeProductionAborted,
-            PhenotypePlanState.PhenotypingProductionRegistered,
-            true,
+            PhenotypePlanState.PhenotypePlanAborted,
+            PhenotypePlanState.PlanCreated,
+            false,
             null)
             {
                 @Override
@@ -122,114 +26,10 @@ public enum PhenotypePlanEvent implements ProcessEvent
                     return PhenotypePlanAbortReverserProcessor.class;
                 }
             },
-    abortWhenCreated(
-            "Abort a phenotyping plan that has been created",
+    abortPhenotypingPlan(
+            "Abort a phenotyping plan",
             PhenotypePlanState.PlanCreated,
-            PhenotypePlanState.PhenotypeProductionAborted,
-            false,
-            null)
-            {
-                @Override
-                public Class<? extends Processor> getNextStepProcessor()
-                {
-                    return PhenotypePlanAbortProcessor.class;
-                }
-            },
-    abortWhenPhenotypeProductionRegistered(
-            "Abort a phenotyping plan when a phenotype attempt has been registered",
-            PhenotypePlanState.PhenotypingProductionRegistered,
-            PhenotypePlanState.PhenotypeProductionAborted,
-            true,
-            null)
-            {
-                @Override
-                public Class<? extends Processor> getNextStepProcessor()
-                {
-                    return PhenotypePlanAbortProcessor.class;
-                }
-            },
-    abortWhenRederivationStarted(
-            "Abort a phenotyping plan when rederivation is started",
-            PhenotypePlanState.RederivationStarted,
-            PhenotypePlanState.PhenotypeProductionAborted,
-            true,
-            null)
-            {
-                @Override
-                public Class<? extends Processor> getNextStepProcessor()
-                {
-                    return PhenotypePlanAbortProcessor.class;
-                }
-            },
-    abortWhenRederivationComplete(
-            "Abort a phenotyping plan when rederivation is complete",
-            PhenotypePlanState.RederivationComplete,
-            PhenotypePlanState.PhenotypeProductionAborted,
-            true,
-            null)
-            {
-                @Override
-                public Class<? extends Processor> getNextStepProcessor()
-                {
-                    return PhenotypePlanAbortProcessor.class;
-                }
-            },
-    abortWhenPhenotypingStarted(
-            "Abort a phenotyping plan when phenotyping has been started",
-            PhenotypePlanState.PhenotypingStarted,
-            PhenotypePlanState.PhenotypeProductionAborted,
-            true,
-            null)
-            {
-                @Override
-                public Class<? extends Processor> getNextStepProcessor()
-                {
-                    return PhenotypePlanAbortProcessor.class;
-                }
-            },
-    abortWhenPhenotypingDataReceived(
-            "Abort the plan when phenotype data has been received by the CDA.",
-            PhenotypePlanState.PhenotypingDataReceived,
-            PhenotypePlanState.PhenotypeProductionAborted,
-            true,
-            null)
-            {
-                @Override
-                public Class<? extends Processor> getNextStepProcessor()
-                {
-                    return PhenotypePlanAbortProcessor.class;
-                }
-            },
-    abortWhenPhenotypingAllDataSent(
-            "Abort the phenotyping plan when all phenotype data has been sent to the DCC",
-            PhenotypePlanState.PhenotypingAllDataSent,
-            PhenotypePlanState.PhenotypeProductionAborted,
-            true,
-            null)
-            {
-                @Override
-                public Class<? extends Processor> getNextStepProcessor()
-                {
-                    return PhenotypePlanAbortProcessor.class;
-                }
-            },
-    abortWhenPhenotypingAllDataValidated(
-            "Abort the phenotyping plan when all phenotype data has been validated by the DCC",
-            PhenotypePlanState.PhenotypingAllDataValidated,
-            PhenotypePlanState.PhenotypeProductionAborted,
-            true,
-            null)
-            {
-                @Override
-                public Class<? extends Processor> getNextStepProcessor()
-                {
-                    return PhenotypePlanAbortProcessor.class;
-                }
-            },
-    abortWhenPhenotypingFinished(
-            "Abort the plan when phenotyping is finished",
-            PhenotypePlanState.PhenotypingFinished,
-            PhenotypePlanState.PhenotypeProductionAborted,
+            PhenotypePlanState.PhenotypePlanAborted,
             true,
             null)
             {

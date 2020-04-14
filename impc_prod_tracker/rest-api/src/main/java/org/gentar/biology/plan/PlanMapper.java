@@ -5,10 +5,8 @@ import org.gentar.biology.plan.attempt.AttemptTypeMapper;
 import org.gentar.biology.plan.attempt.AttemptTypes;
 import org.gentar.biology.plan.attempt.crispr.CrisprAttempt;
 import org.gentar.biology.plan.engine.events.BreedingPlanEvent;
-import org.gentar.biology.plan.engine.events.LateAdultPhenotypePlanEvent;
 import org.gentar.biology.plan.engine.events.PhenotypePlanEvent;
 import org.gentar.biology.plan.engine.state.BreedingPlanState;
-import org.gentar.biology.plan.engine.state.LateAdultPhenotypePlanState;
 import org.gentar.biology.plan.engine.state.PhenotypePlanState;
 import org.gentar.biology.plan.engine.events.CrisprProductionPlanEvent;
 import org.gentar.biology.plan.engine.state.CrisprProductionPlanState;
@@ -202,21 +200,14 @@ public class PlanMapper implements Mapper<Plan, PlanDTO>
         List<TransitionDTO> transitionDTOS = new ArrayList<>();
         String currentStatusName = plan.getStatus().getName();
         PlanType planType = plan.getPlanType();
-        AttemptType attemptType = plan.getAttemptType();
-        if (planType != null && attemptType != null){
+        if (planType != null){
             if (PlanTypes.PRODUCTION.getTypeName().equalsIgnoreCase(planType.getName()))
             {
                 setProductionPlanTransitions(transitionDTOS, currentStatusName);
             }
-            else if ((PlanTypes.PHENOTYPING.getTypeName().equalsIgnoreCase(planType.getName()))
-                    && (AttemptTypes.EARLY_ADULT.getTypeName().equalsIgnoreCase(attemptType.getName())) )
+            else if (PlanTypes.PHENOTYPING.getTypeName().equalsIgnoreCase(planType.getName()))
             {
                 setPhenotypePlanTransitions(transitionDTOS, currentStatusName);
-            }
-            else if ( (PlanTypes.PHENOTYPING.getTypeName().equalsIgnoreCase(planType.getName()))
-                    && (AttemptTypes.LATE_ADULT.getTypeName().equalsIgnoreCase(attemptType.getName())) )
-            {
-                setLateAdultPhenotypePlanTransitions(transitionDTOS, currentStatusName);
             }
             else if (PlanTypes.BREEDING.getTypeName().equalsIgnoreCase(planType.getName()))
             {
@@ -252,24 +243,6 @@ public class PlanMapper implements Mapper<Plan, PlanDTO>
             List<ProcessEvent> phenotypePlanEvents =
                     EnumStateHelper.getAvailableEventsByState(PhenotypePlanEvent.getAllEvents(), phenotypePlanState);
             phenotypePlanEvents.forEach(x -> {
-                TransitionDTO transition = new TransitionDTO();
-                transition.setAction(x.getName());
-                transition.setDescription(x.getDescription());
-                transition.setNextStatus(x.getEndState().getName());
-                transition.setNote(x.getTriggerNote());
-                transition.setAvailable(x.isTriggeredByUser());
-                transitionDTOS.add(transition);
-            });
-        }
-    }
-
-    private void setLateAdultPhenotypePlanTransitions(List<TransitionDTO> transitionDTOS, String currentStatusName) {
-        ProcessState lateAdultPhenotypePlanState = LateAdultPhenotypePlanState.getStateByInternalName(currentStatusName);
-        if (lateAdultPhenotypePlanState != null)
-        {
-            List<ProcessEvent> lateAdultPhenotypePlanEvents =
-                    EnumStateHelper.getAvailableEventsByState(LateAdultPhenotypePlanEvent.getAllEvents(), lateAdultPhenotypePlanState);
-            lateAdultPhenotypePlanEvents.forEach(x -> {
                 TransitionDTO transition = new TransitionDTO();
                 transition.setAction(x.getName());
                 transition.setDescription(x.getDescription());
