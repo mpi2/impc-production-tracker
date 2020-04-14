@@ -3,6 +3,7 @@ package org.gentar.biology.plan.attempt.phenotyping;
 import org.gentar.EntityMapper;
 import org.gentar.Mapper;
 import org.gentar.biology.plan.attempt.phenotyping.stage.PhenotypingStage;
+import org.gentar.biology.plan.attempt.phenotyping.stage.PhenotypingStageTypes;
 import org.gentar.biology.plan.attempt.phenotyping.stage.engine.events.EarlyAdultEvent;
 import org.gentar.biology.plan.attempt.phenotyping.stage.engine.events.EarlyHaploessentialEvent;
 import org.gentar.biology.plan.attempt.phenotyping.stage.engine.events.LateAdultEvent;
@@ -131,7 +132,6 @@ public class PhenotypingStageMapper implements Mapper<PhenotypingStage, Phenotyp
         if (phenotypingStageState != null) {
             List<ProcessEvent> phenotypingStageEvents = EnumStateHelper.getAvailableEventsByState(
                     EarlyAdultEvent.getAllEvents(), phenotypingStageState);
-
             setTransitions(transitionDTOS, phenotypingStageEvents);
         }
     }
@@ -142,7 +142,6 @@ public class PhenotypingStageMapper implements Mapper<PhenotypingStage, Phenotyp
         if (phenotypingStageState != null) {
             List<ProcessEvent> phenotypingStageEvents = EnumStateHelper.getAvailableEventsByState(
                     LateAdultEvent.getAllEvents(), phenotypingStageState);
-
             setTransitions(transitionDTOS, phenotypingStageEvents);
         }
     }
@@ -153,7 +152,6 @@ public class PhenotypingStageMapper implements Mapper<PhenotypingStage, Phenotyp
         if (phenotypingStageState != null) {
             List<ProcessEvent> phenotypingStageEvents = EnumStateHelper.getAvailableEventsByState(
                     EarlyHaploessentialEvent.getAllEvents(), phenotypingStageState);
-
             setTransitions(transitionDTOS, phenotypingStageEvents);
         }
     }
@@ -164,7 +162,6 @@ public class PhenotypingStageMapper implements Mapper<PhenotypingStage, Phenotyp
         if (phenotypingStageState != null) {
             List<ProcessEvent> phenotypingStageEvents = EnumStateHelper.getAvailableEventsByState(
                     LateHaploessentialEvent.getAllEvents(), phenotypingStageState);
-
             setTransitions(transitionDTOS, phenotypingStageEvents);
         }
     }

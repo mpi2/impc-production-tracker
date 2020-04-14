@@ -3,10 +3,8 @@ package org.gentar.biology.plan.attempt;
 public enum AttemptTypes {
     CRISPR("crispr"),
     BREEDING("breeding"),
-    EARLY_ADULT("early adult"),
-    LATE_ADULT("late adult"),
-    HAPLOESSENTIAL_EARLY("haplo-essential early"),
-    HAPLOESSENTIAL_LATE("haplo-essential late");
+    ADULT_PHENOTYPING("adult phenotyping"),
+    HAPLOESSENTIAL_PHENOTYPING("haplo-essential phenotyping");
 
     private String typeName;
 
