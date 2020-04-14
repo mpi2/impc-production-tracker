@@ -17,7 +17,6 @@ package org.gentar.biology.plan;
 
 import org.gentar.biology.plan.attempt.AttemptType;
 import org.gentar.biology.plan.engine.events.BreedingPlanEvent;
-import org.gentar.biology.plan.engine.events.LateAdultPhenotypePlanEvent;
 import org.gentar.biology.plan.engine.events.PhenotypePlanEvent;
 import org.gentar.biology.plan.engine.events.ProductionPlanEvent;
 import org.gentar.biology.plan.type.PlanType;
@@ -148,17 +147,10 @@ public class PlanController
             ProductionPlanEvent productionPlanEvent = getProductionPlanEventFromRequest(planDTO);
             plan.setEvent(productionPlanEvent);
         }
-        else if ( (PlanTypes.PHENOTYPING.getTypeName().equalsIgnoreCase(planType.getName()))
-                   && (AttemptTypes.EARLY_ADULT.getTypeName().equalsIgnoreCase(attemptType.getName())) )
+        else if (PlanTypes.PHENOTYPING.getTypeName().equalsIgnoreCase(planType.getName()))
         {
             PhenotypePlanEvent phenotypePlanEvent = getPhenotypePlanEventFromRequest(planDTO);
             plan.setEvent(phenotypePlanEvent);
-        }
-        else if ( (PlanTypes.PHENOTYPING.getTypeName().equalsIgnoreCase(planType.getName()))
-                   && (AttemptTypes.LATE_ADULT.getTypeName().equalsIgnoreCase(attemptType.getName())) )
-        {
-            LateAdultPhenotypePlanEvent lateAdultPhenotypePlanEvent = getLateAdultPhenotypePlanEventFromRequest(planDTO);
-            plan.setEvent(lateAdultPhenotypePlanEvent);
         }
         else if (PlanTypes.BREEDING.getTypeName().equalsIgnoreCase(planType.getName()))
         {
@@ -209,22 +201,8 @@ public class PlanController
         {
             String action = statusTransitionDTO.getActionToExecute();
             phenotypePlanEvent = PhenotypePlanEvent.getEventByName(action);
-            System.out.println(">>>>>> >>> >>>> action to execute:::" + action);
         }
         return phenotypePlanEvent;
-    }
-
-    private LateAdultPhenotypePlanEvent getLateAdultPhenotypePlanEventFromRequest(PlanDTO planDTO)
-    {
-        LateAdultPhenotypePlanEvent lateAdultPhenotypePlanEvent = null;
-        StatusTransitionDTO statusTransitionDTO =  planDTO.getStatusTransitionDTO();
-        if (statusTransitionDTO != null)
-        {
-            String action = statusTransitionDTO.getActionToExecute();
-            lateAdultPhenotypePlanEvent = LateAdultPhenotypePlanEvent.getEventByName(action);
-            System.out.println(">>>>>> >>> >>>> action to execute:::" + action);
-        }
-        return lateAdultPhenotypePlanEvent;
     }
 
     private BreedingPlanEvent getBreedingPlanEventFromRequest(PlanDTO planDTO)
@@ -235,7 +213,6 @@ public class PlanController
         {
             String action = statusTransitionDTO.getActionToExecute();
             breedingPlanEvent = BreedingPlanEvent.getEventByName(action);
-            System.out.println(">>>>>> >>> >>>> action to execute:::" + action);
         }
         return breedingPlanEvent;
     }

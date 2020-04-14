@@ -1,4 +1,4 @@
-package org.gentar.biology.plan.engine.state;
+package org.gentar.biology.plan.attempt.phenotyping.stage.engine.state;
 
 import org.gentar.statemachine.EnumStateHelper;
 import org.gentar.statemachine.ProcessState;
@@ -6,43 +6,43 @@ import org.gentar.statemachine.ProcessState;
 import java.util.Arrays;
 import java.util.List;
 
-public enum LateAdultPhenotypePlanState implements ProcessState
+public enum LateAdultPhenotypingStageState implements ProcessState
 {
-    PlanCreated("Plan Created"),
     RegisteredForLateAdultPhenotypingProduction("Registered For Late Adult Phenotyping Production"),
     LateAdultPhenotypingStarted("Late Adult Phenotyping Started"),
     LateAdultPhenotypingDataReceived("Late Adult Phenotyping Data Received"),
     LateAdultPhenotypingAllDataSent("Late Adult Phenotyping All Data Sent"),
-    LateAdultPhenotypingAllDataValidated("Late Adult Phenotyping All Data Validated"),
+    LateAdultPhenotypingAllDataProcessed("Late Adult Phenotyping All Data Processed"),
     LateAdultPhenotypingFinished("Late Adult Phenotyping Finished"),
     LateAdultPhenotypeProductionAborted("Late Adult Phenotype Production Aborted");
 
     private String internalName;
 
-    LateAdultPhenotypePlanState(String internalName)
+    LateAdultPhenotypingStageState(String internalName)
     {
         this.internalName = internalName;
     }
 
-    public String getInternalName()
-    {
-        return internalName;
-    }
-
     public static List<ProcessState> getAllStates()
     {
-        return Arrays.asList(LateAdultPhenotypePlanState.values());
+        return Arrays.asList(LateAdultPhenotypingStageState.values());
     }
 
     public static ProcessState getStateByInternalName(String internalName)
     {
         return EnumStateHelper.getStateByInternalName(
-                Arrays.asList(LateAdultPhenotypePlanState.values()), internalName);
+                Arrays.asList(LateAdultPhenotypingStageState.values()), internalName);
     }
-
     @Override
     public String getName()
     {
         return this.name();
     }
+
+    @Override
+    public String getInternalName()
+    {
+        return internalName;
+    }
+    
 }

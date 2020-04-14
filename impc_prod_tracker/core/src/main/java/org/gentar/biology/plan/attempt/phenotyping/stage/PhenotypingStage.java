@@ -8,6 +8,8 @@ import org.gentar.biology.plan.attempt.phenotyping.stage.status_stamp.Phenotypin
 import org.gentar.biology.plan.attempt.phenotyping.stage.tissue_distribution.TissueDistribution;
 import org.gentar.biology.plan.attempt.phenotyping.stage.type.PhenotypingStageType;
 import org.gentar.biology.status.Status;
+import org.gentar.statemachine.ProcessData;
+import org.gentar.statemachine.ProcessEvent;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -18,12 +20,15 @@ import java.util.Set;
 @Data
 @Entity
 @Table(name="PHENOTYPING_STAGE", uniqueConstraints=@UniqueConstraint(columnNames={"plan_id", "phenotyping_stage_type_id"}))
-public class PhenotypingStage extends BaseEntity
+public class PhenotypingStage extends BaseEntity implements ProcessData
 {
     @Id
     @SequenceGenerator(name = "phenotypingStageSeq", sequenceName = "PHENOTYPING_STAGE_SEQ")
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "phenotypingStageSeq")
     private Long id;
+
+    @Transient
+    private ProcessEvent event;
 
     @NotNull
     @EqualsAndHashCode.Exclude
@@ -54,4 +59,10 @@ public class PhenotypingStage extends BaseEntity
     @ToString.Exclude
     @OneToMany(cascade= CascadeType.ALL, mappedBy = "phenotypingStage")
     private Set<PhenotypingStageStatusStamp> phenotypingStageStatusStamps;
+
+    @Override
+    public ProcessEvent getEvent()
+    {
+        return this.event;
+    }
 }

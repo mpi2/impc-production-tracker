@@ -2,7 +2,6 @@ package org.gentar.biology.plan.status;
 
 import org.gentar.biology.plan.Plan;
 import org.gentar.biology.plan.engine.state.BreedingPlanState;
-import org.gentar.biology.plan.engine.state.LateAdultPhenotypePlanState;
 import org.gentar.biology.plan.engine.state.PhenotypePlanState;
 import org.gentar.biology.plan.engine.state.ProductionPlanState;
 
@@ -16,8 +15,6 @@ public class PlanStatusChecker
         String statusName = plan.getStatus().getName();
         return statusName.equals(ProductionPlanState.AttemptAborted.getInternalName()) ||
             statusName.equals(BreedingPlanState.BreedingAborted.getInternalName()) ||
-            statusName.equals(PhenotypePlanState.PhenotypeProductionAborted.getInternalName()) ||
-            statusName.equals(
-                LateAdultPhenotypePlanState.LateAdultPhenotypeProductionAborted.getInternalName());
+            statusName.equals(PhenotypePlanState.PhenotypePlanAborted.getInternalName());
     }
 }
