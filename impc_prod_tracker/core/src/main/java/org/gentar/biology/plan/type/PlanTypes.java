@@ -1,4 +1,4 @@
-package org.gentar.biology.project;
+package org.gentar.biology.plan.type;
 
 public enum PlanTypes
 {

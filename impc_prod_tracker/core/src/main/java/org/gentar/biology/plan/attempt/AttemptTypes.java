@@ -15,8 +15,19 @@ public enum AttemptTypes {
         this.typeName = typeName;
     }
 
-    public String getTypeName()
+    public final String getTypeName()
     {
         return typeName;
+    }
+
+    public static AttemptTypes getAttemptTypeEnumByName(String name)
+    {
+        AttemptTypes[] attemptTypes = AttemptTypes.values();
+        for (AttemptTypes attemptTypesValue : attemptTypes)
+        {
+            if (attemptTypesValue.getTypeName().equalsIgnoreCase(name))
+                return attemptTypesValue;
+        }
+        return null;
     }
 }

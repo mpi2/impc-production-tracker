@@ -10,13 +10,14 @@ import org.gentar.biology.plan.engine.events.PhenotypePlanEvent;
 import org.gentar.biology.plan.engine.state.BreedingPlanState;
 import org.gentar.biology.plan.engine.state.LateAdultPhenotypePlanState;
 import org.gentar.biology.plan.engine.state.PhenotypePlanState;
-import org.gentar.biology.plan.engine.events.ProductionPlanEvent;
-import org.gentar.biology.plan.engine.state.ProductionPlanState;
+import org.gentar.biology.plan.engine.events.CrisprProductionPlanEvent;
+import org.gentar.biology.plan.engine.state.CrisprProductionPlanState;
 import org.gentar.biology.plan.attempt.phenotyping.PhenotypingAttemptMapper;
 import org.gentar.biology.plan.production.crispr_attempt.CrisprAttemptDTO;
 import org.gentar.Mapper;
 import org.gentar.biology.plan.status.PlanStatusStamp;
 import org.gentar.biology.plan.type.PlanType;
+import org.gentar.biology.plan.type.PlanTypes;
 import org.gentar.biology.project.*;
 import org.gentar.biology.status.Status;
 import org.gentar.biology.status.StatusMapper;
@@ -227,11 +228,11 @@ public class PlanMapper implements Mapper<Plan, PlanDTO>
     }
 
     private void setProductionPlanTransitions(List<TransitionDTO> transitionDTOS, String currentStatusName) {
-        ProcessState planState = ProductionPlanState.getStateByInternalName(currentStatusName);
+        ProcessState planState = CrisprProductionPlanState.getStateByInternalName(currentStatusName);
         if (planState != null)
         {
             List<ProcessEvent> planEvents =
-                    EnumStateHelper.getAvailableEventsByState(ProductionPlanEvent.getAllEvents(), planState);
+                    EnumStateHelper.getAvailableEventsByState(CrisprProductionPlanEvent.getAllEvents(), planState);
             planEvents.forEach(x -> {
                 TransitionDTO transition = new TransitionDTO();
                 transition.setAction(x.getName());
