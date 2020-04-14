@@ -18,11 +18,11 @@ package org.gentar.biology.plan;
 import org.gentar.biology.plan.attempt.AttemptType;
 import org.gentar.biology.plan.attempt.AttemptTypes;
 import org.gentar.biology.plan.engine.events.BreedingPlanEvent;
+import org.gentar.biology.plan.engine.events.CrisprProductionPlanEvent;
 import org.gentar.biology.plan.engine.events.LateAdultPhenotypePlanEvent;
 import org.gentar.biology.plan.engine.events.PhenotypePlanEvent;
-import org.gentar.biology.plan.engine.events.ProductionPlanEvent;
 import org.gentar.biology.plan.type.PlanType;
-import org.gentar.biology.project.*;
+import org.gentar.biology.plan.type.PlanTypes;
 import org.gentar.common.state_machine.StatusTransitionDTO;
 import org.gentar.helpers.PaginationHelper;
 import org.gentar.helpers.LinkUtil;
@@ -146,8 +146,8 @@ public class PlanController
 
         if(PlanTypes.PRODUCTION.getTypeName().equalsIgnoreCase(planType.getName()))
         {
-            ProductionPlanEvent productionPlanEvent = getProductionPlanEventFromRequest(planDTO);
-            plan.setEvent(productionPlanEvent);
+            CrisprProductionPlanEvent CrisprProductionPlanEvent = getCrisprProductionPlanEventFromRequest(planDTO);
+            plan.setEvent(CrisprProductionPlanEvent);
         }
         else if ( (PlanTypes.PHENOTYPING.getTypeName().equalsIgnoreCase(planType.getName()))
                    && (AttemptTypes.EARLY_ADULT.getTypeName().equalsIgnoreCase(attemptType.getName())) )
@@ -190,16 +190,16 @@ public class PlanController
         return updatePlanRequestProcessor.getPlanToUpdate(newPlan, planDTO);
     }
 
-    private ProductionPlanEvent getProductionPlanEventFromRequest(PlanDTO planDTO)
+    private CrisprProductionPlanEvent getCrisprProductionPlanEventFromRequest(PlanDTO planDTO)
     {
-        ProductionPlanEvent productionPlanEvent = null;
+        CrisprProductionPlanEvent CrisprProductionPlanEvent = null;
         StatusTransitionDTO statusTransitionDTO =  planDTO.getStatusTransitionDTO();
         if (statusTransitionDTO != null)
         {
             String action = statusTransitionDTO.getActionToExecute();
-            productionPlanEvent = ProductionPlanEvent.getEventByName(action);
+            CrisprProductionPlanEvent = CrisprProductionPlanEvent.getEventByName(action);
         }
-        return productionPlanEvent;
+        return CrisprProductionPlanEvent;
     }
 
     private PhenotypePlanEvent getPhenotypePlanEventFromRequest(PlanDTO planDTO)

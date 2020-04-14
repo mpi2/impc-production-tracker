@@ -5,7 +5,7 @@ import org.gentar.statemachine.ProcessState;
 import java.util.Arrays;
 import java.util.List;
 
-public enum ProductionPlanState implements ProcessState
+public enum CrisprProductionPlanState implements ProcessState
 {
     PlanCreated("Plan Created"),
     AttemptInProgress("Attempt In Progress"),
@@ -15,7 +15,7 @@ public enum ProductionPlanState implements ProcessState
 
     private String internalName;
 
-    ProductionPlanState(String internalName)
+    CrisprProductionPlanState(String internalName)
     {
         this.internalName = internalName;
     }
@@ -27,13 +27,13 @@ public enum ProductionPlanState implements ProcessState
 
     public static List<ProcessState> getAllStates()
     {
-        return Arrays.asList(ProductionPlanState.values());
+        return Arrays.asList(CrisprProductionPlanState.values());
     }
 
     public static ProcessState getStateByInternalName(String internalName)
     {
         return EnumStateHelper.getStateByInternalName(
-            Arrays.asList(ProductionPlanState.values()), internalName);
+            Arrays.asList(CrisprProductionPlanState.values()), internalName);
     }
 
     @Override

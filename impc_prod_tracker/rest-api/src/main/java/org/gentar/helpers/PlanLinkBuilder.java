@@ -1,7 +1,7 @@
 package org.gentar.helpers;
 
 import org.gentar.biology.plan.PlanController;
-import org.gentar.biology.project.PlanTypes;
+import org.gentar.biology.plan.type.PlanTypes;
 import org.springframework.hateoas.Link;
 import org.gentar.biology.plan.Plan;
 import org.gentar.biology.project.Project;
