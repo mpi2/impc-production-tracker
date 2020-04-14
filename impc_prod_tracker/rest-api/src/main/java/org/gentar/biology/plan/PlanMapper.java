@@ -4,12 +4,7 @@ import org.gentar.EntityMapper;
 import org.gentar.biology.plan.attempt.AttemptTypeMapper;
 import org.gentar.biology.plan.attempt.AttemptTypes;
 import org.gentar.biology.plan.attempt.crispr.CrisprAttempt;
-import org.gentar.biology.plan.engine.events.BreedingPlanEvent;
-import org.gentar.biology.plan.engine.events.PhenotypePlanEvent;
-import org.gentar.biology.plan.engine.state.BreedingPlanState;
-import org.gentar.biology.plan.engine.state.PhenotypePlanState;
-import org.gentar.biology.plan.engine.events.CrisprProductionPlanEvent;
-import org.gentar.biology.plan.engine.state.CrisprProductionPlanState;
+import org.gentar.biology.plan.engine.PlanStateMachineResolver;
 import org.gentar.biology.plan.attempt.phenotyping.PhenotypingAttemptMapper;
 import org.gentar.biology.plan.production.crispr_attempt.CrisprAttemptDTO;
 import org.gentar.Mapper;
@@ -27,9 +22,8 @@ import org.gentar.organization.funder.Funder;
 import org.gentar.organization.funder.FunderMapper;
 import org.gentar.organization.work_group.WorkGroupMapper;
 import org.gentar.organization.work_unit.WorkUnitMapper;
-import org.gentar.statemachine.EnumStateHelper;
 import org.gentar.statemachine.ProcessEvent;
-import org.gentar.statemachine.ProcessState;
+import org.gentar.statemachine.TransitionMapper;
 import org.springframework.stereotype.Component;
 import org.gentar.biology.plan.attempt.AttemptType;
 import org.gentar.biology.plan.attempt.crispr.CrisprAttemptMapper;
@@ -52,6 +46,8 @@ public class PlanMapper implements Mapper<Plan, PlanDTO>
     private StatusMapper statusMapper;
     private PlanTypeMapper planTypeMapper;
     private ProjectService projectService;
+    private PlanStateMachineResolver planStateMachineResolver;
+    private TransitionMapper transitionMapper;
 
     public PlanMapper(
         EntityMapper entityMapper,
@@ -63,7 +59,9 @@ public class PlanMapper implements Mapper<Plan, PlanDTO>
         WorkGroupMapper workGroupMapper,
         StatusMapper statusMapper,
         PlanTypeMapper planTypeMapper,
-        ProjectService projectService)
+        ProjectService projectService,
+        PlanStateMachineResolver planStateMachineResolver,
+        TransitionMapper transitionMapper)
     {
         this.entityMapper = entityMapper;
         this.crisprAttemptMapper = crisprAttemptMapper;
@@ -75,6 +73,8 @@ public class PlanMapper implements Mapper<Plan, PlanDTO>
         this.statusMapper = statusMapper;
         this.planTypeMapper = planTypeMapper;
         this.projectService = projectService;
+        this.planStateMachineResolver = planStateMachineResolver;
+        this.transitionMapper = transitionMapper;
     }
 
     public PlanDTO toDto(Plan plan)
@@ -197,78 +197,8 @@ public class PlanMapper implements Mapper<Plan, PlanDTO>
 
     private List<TransitionDTO> getTransitionsByPlanType(Plan plan)
     {
-        List<TransitionDTO> transitionDTOS = new ArrayList<>();
-        String currentStatusName = plan.getStatus().getName();
-        PlanType planType = plan.getPlanType();
-        if (planType != null){
-            if (PlanTypes.PRODUCTION.getTypeName().equalsIgnoreCase(planType.getName()))
-            {
-                setProductionPlanTransitions(transitionDTOS, currentStatusName);
-            }
-            else if (PlanTypes.PHENOTYPING.getTypeName().equalsIgnoreCase(planType.getName()))
-            {
-                setPhenotypePlanTransitions(transitionDTOS, currentStatusName);
-            }
-            else if (PlanTypes.BREEDING.getTypeName().equalsIgnoreCase(planType.getName()))
-            {
-                setBreedingPlanTransitions(transitionDTOS, currentStatusName);
-            }
-
-        }
-        return transitionDTOS;
-    }
-
-    private void setProductionPlanTransitions(List<TransitionDTO> transitionDTOS, String currentStatusName) {
-        ProcessState planState = CrisprProductionPlanState.getStateByInternalName(currentStatusName);
-        if (planState != null)
-        {
-            List<ProcessEvent> planEvents =
-                    EnumStateHelper.getAvailableEventsByState(CrisprProductionPlanEvent.getAllEvents(), planState);
-            planEvents.forEach(x -> {
-                TransitionDTO transition = new TransitionDTO();
-                transition.setAction(x.getName());
-                transition.setDescription(x.getDescription());
-                transition.setNextStatus(x.getEndState().getName());
-                transition.setNote(x.getTriggerNote());
-                transition.setAvailable(x.isTriggeredByUser());
-                transitionDTOS.add(transition);
-            });
-        }
-    }
-
-    private void setPhenotypePlanTransitions(List<TransitionDTO> transitionDTOS, String currentStatusName) {
-        ProcessState phenotypePlanState = PhenotypePlanState.getStateByInternalName(currentStatusName);
-        if (phenotypePlanState != null)
-        {
-            List<ProcessEvent> phenotypePlanEvents =
-                    EnumStateHelper.getAvailableEventsByState(PhenotypePlanEvent.getAllEvents(), phenotypePlanState);
-            phenotypePlanEvents.forEach(x -> {
-                TransitionDTO transition = new TransitionDTO();
-                transition.setAction(x.getName());
-                transition.setDescription(x.getDescription());
-                transition.setNextStatus(x.getEndState().getName());
-                transition.setNote(x.getTriggerNote());
-                transition.setAvailable(x.isTriggeredByUser());
-                transitionDTOS.add(transition);
-            });
-        }
-    }
-
-    private void setBreedingPlanTransitions(List<TransitionDTO> transitionDTOS, String currentStatusName) {
-        ProcessState breedingPlanState = BreedingPlanState.getStateByInternalName(currentStatusName);
-        if (breedingPlanState != null)
-        {
-            List<ProcessEvent> breedingPlanEvents =
-                    EnumStateHelper.getAvailableEventsByState(BreedingPlanEvent.getAllEvents(), breedingPlanState);
-            breedingPlanEvents.forEach(x -> {
-                TransitionDTO transition = new TransitionDTO();
-                transition.setAction(x.getName());
-                transition.setDescription(x.getDescription());
-                transition.setNextStatus(x.getEndState().getName());
-                transition.setNote(x.getTriggerNote());
-                transition.setAvailable(x.isTriggeredByUser());
-                transitionDTOS.add(transition);
-            });
-        }
+        List<ProcessEvent> transitions =
+            planStateMachineResolver.getAvailableTransitionsByPlanStatus(plan);
+        return transitionMapper.toDtos(transitions);
     }
 }
