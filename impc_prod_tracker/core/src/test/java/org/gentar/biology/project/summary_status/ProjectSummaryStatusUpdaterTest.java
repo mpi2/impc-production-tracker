@@ -35,7 +35,7 @@ class ProjectSummaryStatusUpdaterTest
     private static final Status STATUS_1 = new Status(1L, "Status1", "Status1", 1, false);
     private static final Status STATUS_2 = new Status(2L, "Status2", "Status2", 2, false);
     private static final Status STATUS_ABORTED =
-        new Status(5L, "Attempt Aborted", "Attempt Aborted", 100, false);
+        new Status(5L, "Attempt Aborted", "Attempt Aborted", 100, true);
 
     @BeforeEach
     public void setup()

@@ -17,6 +17,7 @@ package org.gentar.biology.project;
 
 import org.gentar.audit.history.History;
 import org.gentar.biology.plan.*;
+import org.gentar.biology.plan.type.PlanTypes;
 import org.gentar.exceptions.UserOperationFailedException;
 import org.gentar.helpers.CsvWriter;
 import org.gentar.helpers.PlanLinkBuilder;

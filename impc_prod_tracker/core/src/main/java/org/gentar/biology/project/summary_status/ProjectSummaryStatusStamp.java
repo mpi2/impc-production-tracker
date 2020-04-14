@@ -6,13 +6,12 @@ import lombok.NoArgsConstructor;
 import org.gentar.BaseEntity;
 import org.gentar.biology.project.Project;
 import org.gentar.biology.status.Status;
-
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
-@NoArgsConstructor(access= AccessLevel.PRIVATE, force=true)
+@NoArgsConstructor(access= AccessLevel.PUBLIC, force=true)
 @Data
 @Entity
 public class ProjectSummaryStatusStamp extends BaseEntity implements Serializable {

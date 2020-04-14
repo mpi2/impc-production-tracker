@@ -1,8 +1,6 @@
 package org.gentar.biology.project.assignment;
 
-import org.gentar.audit.history.History;
 import org.gentar.audit.history.HistoryService;
-import org.gentar.biology.plan.status.PlanStatusChecker;
 import org.gentar.biology.project.Project;
 import org.springframework.stereotype.Component;
 import java.time.LocalDateTime;
@@ -19,16 +17,12 @@ public class AssignmentStatusUpdater
 {
     private ConflictsChecker conflictsChecker;
     private AssignmentStatusService assignmentStatusService;
-    private HistoryService<Project> historyService;
 
     public AssignmentStatusUpdater(
-        ConflictsChecker conflictsChecker,
-        AssignmentStatusService assignmentStatusService,
-        HistoryService<Project> historyService)
+        ConflictsChecker conflictsChecker, AssignmentStatusService assignmentStatusService)
     {
         this.conflictsChecker = conflictsChecker;
         this.assignmentStatusService = assignmentStatusService;
-        this.historyService = historyService;
     }
 
     /**
@@ -66,17 +60,7 @@ public class AssignmentStatusUpdater
         {
             newProject.setAssignmentStatus(assignmentStatus);
             registerAssignmentStatusStamp(newProject);
-            saveProjectChangeInHistory(originalProject, newProject);
         }
-    }
-
-    private void saveProjectChangeInHistory(Project originalProject, Project newProject)
-    {
-        History history =
-            historyService.detectTrackOfChanges(
-                originalProject, newProject, originalProject.getId());
-        history = historyService.filterDetailsInNestedEntity(history, "assignmentStatus", "name");
-        historyService.saveTrackOfChanges(history);
     }
 
     /**
@@ -89,7 +73,7 @@ public class AssignmentStatusUpdater
         boolean areAllPlansAborted = false;
         if (plans != null)
         {
-            areAllPlansAborted = plans.stream().allMatch(PlanStatusChecker::planIsAborted);
+            areAllPlansAborted = plans.stream().allMatch(x -> x.getStatus().getIsAbortionStatus());
         }
         if (areAllPlansAborted)
         {

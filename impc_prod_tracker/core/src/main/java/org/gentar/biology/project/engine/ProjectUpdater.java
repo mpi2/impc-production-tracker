@@ -15,17 +15,20 @@ public class ProjectUpdater
     private ProjectRepository projectRepository;
     private AssignmentStatusUpdater assignmentStatusUpdater;
     private ProjectSummaryStatusUpdater projectSummaryStatusUpdater;
+    private ProjectHistoryRecorder projectHistoryRecorder;
 
     public ProjectUpdater(
         HistoryService<Project> historyService,
         ProjectRepository projectRepository,
         AssignmentStatusUpdater assignmentStatusUpdater,
-        ProjectSummaryStatusUpdater projectSummaryStatusUpdater)
+        ProjectSummaryStatusUpdater projectSummaryStatusUpdater,
+        ProjectHistoryRecorder projectHistoryRecorder)
     {
         this.historyService = historyService;
         this.projectRepository = projectRepository;
         this.assignmentStatusUpdater = assignmentStatusUpdater;
         this.projectSummaryStatusUpdater = projectSummaryStatusUpdater;
+        this.projectHistoryRecorder = projectHistoryRecorder;
     }
 
     public History updateProject(Project originalProject, Project newProject)
@@ -53,9 +56,11 @@ public class ProjectUpdater
      */
     public void updateProjectWhenPlanUpdated(Project project)
     {
+        Project original = new Project(project);
         assignmentStatusUpdater.inactivateOrActivateProjectIfNeeded(project);
         assignmentStatusUpdater.updateConflictingProjects(project);
         projectSummaryStatusUpdater.calculateSummaryStatus(project);
+        projectHistoryRecorder.saveProjectChangesInHistory(original, project);
     }
 
     /**

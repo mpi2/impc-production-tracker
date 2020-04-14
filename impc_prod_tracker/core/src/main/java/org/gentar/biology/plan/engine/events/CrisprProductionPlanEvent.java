@@ -1,7 +1,7 @@
 package org.gentar.biology.plan.engine.events;
 
 import org.gentar.biology.plan.engine.PlanProcessor;
-import org.gentar.biology.plan.engine.state.ProductionPlanState;
+import org.gentar.biology.plan.engine.state.CrisprProductionPlanState;
 import org.gentar.biology.plan.engine.processors.PlanAbortProcessor;
 import org.gentar.biology.plan.engine.processors.PlanAbortReverserProcessor;
 import org.gentar.statemachine.ProcessEvent;
@@ -10,12 +10,12 @@ import org.gentar.statemachine.Processor;
 import java.util.Arrays;
 import java.util.List;
 
-public enum ProductionPlanEvent implements ProcessEvent
+public enum CrisprProductionPlanEvent implements ProcessEvent
 {
     abortWhenInProgress(
             "Abort the plan that is in progress",
-            ProductionPlanState.AttemptInProgress,
-            ProductionPlanState.AttemptAborted,
+            CrisprProductionPlanState.AttemptInProgress,
+            CrisprProductionPlanState.AttemptAborted,
             true,
             null)
             {
@@ -27,8 +27,8 @@ public enum ProductionPlanEvent implements ProcessEvent
             },
     abortWhenCreated(
             "Abort the plan that has been created",
-            ProductionPlanState.PlanCreated,
-            ProductionPlanState.AttemptAborted,
+            CrisprProductionPlanState.PlanCreated,
+            CrisprProductionPlanState.AttemptAborted,
             true,
             null)
             {
@@ -40,26 +40,26 @@ public enum ProductionPlanEvent implements ProcessEvent
             },
     inProgress(
             "Attempt in progress",
-            ProductionPlanState.PlanCreated,
-            ProductionPlanState.AttemptInProgress,
+            CrisprProductionPlanState.PlanCreated,
+            CrisprProductionPlanState.AttemptInProgress,
             false,
             "executed by the system when details of the attempt are registered"),
     embryosObtained(
             "Embryos obtained from the attempt",
-            ProductionPlanState.AttemptInProgress,
-            ProductionPlanState.EmbryosObtained,
+            CrisprProductionPlanState.AttemptInProgress,
+            CrisprProductionPlanState.EmbryosObtained,
             false,
             "executed by the system when injected embryos are registered"),
     glt(
             "Germ line transmission obtained for the attempt",
-            ProductionPlanState.EmbryosObtained,
-            ProductionPlanState.GLT,
+            CrisprProductionPlanState.EmbryosObtained,
+            CrisprProductionPlanState.GLT,
             false,
             "executed by the system when germ line transmission is registered."),
     reverseAbortion(
             "Reverse abortion",
-            ProductionPlanState.AttemptAborted,
-            ProductionPlanState.PlanCreated,
+            CrisprProductionPlanState.AttemptAborted,
+            CrisprProductionPlanState.PlanCreated,
             true,
             null)
             {
@@ -71,8 +71,8 @@ public enum ProductionPlanEvent implements ProcessEvent
             },
     abortWhenEmbryosObtained(
             "Abort the plan after embryos obtained",
-            ProductionPlanState.EmbryosObtained,
-            ProductionPlanState.AttemptAborted,
+            CrisprProductionPlanState.EmbryosObtained,
+            CrisprProductionPlanState.AttemptAborted,
             true,
             null)
             {
@@ -84,8 +84,8 @@ public enum ProductionPlanEvent implements ProcessEvent
             },
     abortWhenGLT(
             "Abort the plan after germ line transmission obtained",
-            ProductionPlanState.GLT,
-            ProductionPlanState.AttemptAborted,
+            CrisprProductionPlanState.GLT,
+            CrisprProductionPlanState.AttemptAborted,
             true,
             null)
             {
@@ -96,7 +96,7 @@ public enum ProductionPlanEvent implements ProcessEvent
                 }
             };
 
-    ProductionPlanEvent(
+    CrisprProductionPlanEvent(
         String description,
         ProcessState initialState,
         ProcessState endState,
@@ -110,10 +110,10 @@ public enum ProductionPlanEvent implements ProcessEvent
         this.triggerNote = triggerNote;
     }
 
-    public static ProductionPlanEvent getEventByName(String name)
+    public static CrisprProductionPlanEvent getEventByName(String name)
     {
-        ProductionPlanEvent[] productionPlanEvents = ProductionPlanEvent.values();
-        for (ProductionPlanEvent productionPlanEvent : productionPlanEvents)
+        CrisprProductionPlanEvent[] productionPlanEvents = CrisprProductionPlanEvent.values();
+        for (CrisprProductionPlanEvent productionPlanEvent : productionPlanEvents)
         {
             if (productionPlanEvent.name().equalsIgnoreCase(name))
                 return productionPlanEvent;
@@ -171,6 +171,6 @@ public enum ProductionPlanEvent implements ProcessEvent
 
     public static List<ProcessEvent> getAllEvents()
     {
-        return Arrays.asList(ProductionPlanEvent.values());
+        return Arrays.asList(CrisprProductionPlanEvent.values());
     }
 }

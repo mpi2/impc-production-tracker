@@ -2,20 +2,24 @@ package org.gentar.biology.plan;
 
 import org.gentar.EntityMapper;
 import org.gentar.biology.plan.attempt.AttemptTypeMapper;
+import org.gentar.biology.plan.attempt.AttemptTypes;
 import org.gentar.biology.plan.attempt.crispr.CrisprAttempt;
 import org.gentar.biology.plan.engine.events.BreedingPlanEvent;
 import org.gentar.biology.plan.engine.events.PhenotypePlanEvent;
 import org.gentar.biology.plan.engine.state.BreedingPlanState;
 import org.gentar.biology.plan.engine.state.PhenotypePlanState;
-import org.gentar.biology.plan.engine.events.ProductionPlanEvent;
-import org.gentar.biology.plan.engine.state.ProductionPlanState;
+import org.gentar.biology.plan.engine.events.CrisprProductionPlanEvent;
+import org.gentar.biology.plan.engine.state.CrisprProductionPlanState;
 import org.gentar.biology.plan.attempt.phenotyping.PhenotypingAttemptMapper;
 import org.gentar.biology.plan.production.crispr_attempt.CrisprAttemptDTO;
 import org.gentar.Mapper;
 import org.gentar.biology.plan.status.PlanStatusStamp;
 import org.gentar.biology.plan.type.PlanType;
+import org.gentar.biology.plan.type.PlanTypes;
 import org.gentar.biology.project.*;
+import org.gentar.biology.status.Status;
 import org.gentar.biology.status.StatusMapper;
+import org.gentar.biology.status.StatusNames;
 import org.gentar.biology.status_stamps.StatusStampsDTO;
 import org.gentar.common.state_machine.StatusTransitionDTO;
 import org.gentar.common.state_machine.TransitionDTO;
@@ -77,7 +81,6 @@ public class PlanMapper implements Mapper<Plan, PlanDTO>
     {
         PlanDTO planDTO = entityMapper.toTarget(plan, PlanDTO.class);
         addNoMappedData(planDTO, plan);
-
         return planDTO;
     }
 
@@ -135,39 +138,24 @@ public class PlanMapper implements Mapper<Plan, PlanDTO>
     {
         Plan plan = entityMapper.toTarget(planDTO, Plan.class);
         plan.setProject(projectService.getProjectByTpn(planDTO.getTpn()));
-
-        Set<Funder> funders = new HashSet<Funder>(funderMapper.toEntities(planDTO.getFunderNames()));
+        Set<Funder> funders = new HashSet<>(funderMapper.toEntities(planDTO.getFunderNames()));
         plan.setFunders(funders);
         plan.setWorkUnit(workUnitMapper.toEntity(planDTO.getWorkUnitName()));
         plan.setWorkGroup(workGroupMapper.toEntity(planDTO.getWorkGroupName()));
-
         setCrisprAttempt(plan, planDTO);
         setPlanType(plan, planDTO);
         setAttemptType(plan, planDTO);
-        setPlanStatus(plan, planDTO);
-        setSummaryStatus(plan, planDTO);
+        setStatusAndSummaryStatus(plan);
+        plan.setSummaryStatus(statusMapper.toEntity(StatusNames.PLAN_CREATED));
 
         return plan;
     }
 
-    private void setSummaryStatus(Plan plan, PlanDTO planDTO)
+    private void setStatusAndSummaryStatus(Plan plan)
     {
-        if (planDTO.getSummaryStatusName() == null) {
-            plan.setSummaryStatus(
-                    statusMapper.toEntity("Plan Created"));
-        } else {
-            plan.setSummaryStatus(
-                    statusMapper.toEntity(planDTO.getSummaryStatusName()));
-        }
-    }
-
-    private void setPlanStatus(Plan plan, PlanDTO planDTO)
-    {
-        if (planDTO.getStatusName() == null) {
-            plan.setStatus(statusMapper.toEntity("Plan Created"));
-        } else {
-            plan.setStatus(statusMapper.toEntity(planDTO.getStatusName()));
-        }
+        Status planCreatedStatus = statusMapper.toEntity(StatusNames.PLAN_CREATED);
+        plan.setStatus(planCreatedStatus);
+        plan.setSummaryStatus(planCreatedStatus);
     }
 
     private void setAttemptType(Plan plan, PlanDTO planDTO)
@@ -231,11 +219,11 @@ public class PlanMapper implements Mapper<Plan, PlanDTO>
     }
 
     private void setProductionPlanTransitions(List<TransitionDTO> transitionDTOS, String currentStatusName) {
-        ProcessState planState = ProductionPlanState.getStateByInternalName(currentStatusName);
+        ProcessState planState = CrisprProductionPlanState.getStateByInternalName(currentStatusName);
         if (planState != null)
         {
             List<ProcessEvent> planEvents =
-                    EnumStateHelper.getAvailableEventsByState(ProductionPlanEvent.getAllEvents(), planState);
+                    EnumStateHelper.getAvailableEventsByState(CrisprProductionPlanEvent.getAllEvents(), planState);
             planEvents.forEach(x -> {
                 TransitionDTO transition = new TransitionDTO();
                 transition.setAction(x.getName());
