@@ -15,16 +15,12 @@
  */
 package org.gentar.biology.plan;
 
-import org.gentar.biology.plan.attempt.AttemptType;
-import org.gentar.biology.plan.engine.events.BreedingPlanEvent;
-import org.gentar.biology.plan.engine.events.CrisprProductionPlanEvent;
-import org.gentar.biology.plan.engine.events.PhenotypePlanEvent;
-import org.gentar.biology.plan.type.PlanType;
-import org.gentar.biology.plan.type.PlanTypes;
+import org.gentar.biology.plan.engine.PlanStateMachineResolver;
 import org.gentar.common.state_machine.StatusTransitionDTO;
 import org.gentar.helpers.PaginationHelper;
 import org.gentar.helpers.LinkUtil;
 import org.gentar.common.history.HistoryDTO;
+import org.gentar.statemachine.ProcessEvent;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PagedResourcesAssembler;
@@ -48,17 +44,20 @@ public class PlanController
     private PlanService planService;
     private PlanMapper planMapper;
     private UpdatePlanRequestProcessor updatePlanRequestProcessor;
+    private PlanStateMachineResolver planStateMachineResolver;
 
     public PlanController(
         HistoryMapper historyMapper,
         PlanService planService,
         PlanMapper planMapper,
-        UpdatePlanRequestProcessor updatePlanRequestProcessor)
+        UpdatePlanRequestProcessor updatePlanRequestProcessor,
+        PlanStateMachineResolver planStateMachineResolver)
     {
         this.historyMapper = historyMapper;
         this.planService = planService;
         this.planMapper = planMapper;
         this.updatePlanRequestProcessor = updatePlanRequestProcessor;
+        this.planStateMachineResolver = planStateMachineResolver;
     }
 
     /**
@@ -139,24 +138,14 @@ public class PlanController
 
     private void setEventByPlanType(Plan plan, PlanDTO planDTO)
     {
-        PlanType planType = plan.getPlanType();
-        AttemptType attemptType = plan.getAttemptType();
-
-        if(PlanTypes.PRODUCTION.getTypeName().equalsIgnoreCase(planType.getName()))
+        ProcessEvent processEvent = null;
+        StatusTransitionDTO statusTransitionDTO =  planDTO.getStatusTransitionDTO();
+        if (statusTransitionDTO != null)
         {
-            CrisprProductionPlanEvent CrisprProductionPlanEvent = getCrisprProductionPlanEventFromRequest(planDTO);
-            plan.setEvent(CrisprProductionPlanEvent);
+            String action = statusTransitionDTO.getActionToExecute();
+            processEvent = planStateMachineResolver.getProcessEventByActionName(plan, action);
         }
-        else if (PlanTypes.PHENOTYPING.getTypeName().equalsIgnoreCase(planType.getName()))
-        {
-            PhenotypePlanEvent phenotypePlanEvent = getPhenotypePlanEventFromRequest(planDTO);
-            plan.setEvent(phenotypePlanEvent);
-        }
-        else if (PlanTypes.BREEDING.getTypeName().equalsIgnoreCase(planType.getName()))
-        {
-            BreedingPlanEvent breedingPlanEvent = getBreedingPlanEventFromRequest(planDTO);
-            plan.setEvent(breedingPlanEvent);
-        }
+        plan.setEvent(processEvent);
     }
 
     @PutMapping(value = {"/{pin}"})
@@ -179,41 +168,5 @@ public class PlanController
         Plan currentPlan = getNotNullPlanByPin(pin);
         Plan newPlan = new Plan(currentPlan);
         return updatePlanRequestProcessor.getPlanToUpdate(newPlan, planDTO);
-    }
-
-    private CrisprProductionPlanEvent getCrisprProductionPlanEventFromRequest(PlanDTO planDTO)
-    {
-        CrisprProductionPlanEvent CrisprProductionPlanEvent = null;
-        StatusTransitionDTO statusTransitionDTO =  planDTO.getStatusTransitionDTO();
-        if (statusTransitionDTO != null)
-        {
-            String action = statusTransitionDTO.getActionToExecute();
-            CrisprProductionPlanEvent = CrisprProductionPlanEvent.getEventByName(action);
-        }
-        return CrisprProductionPlanEvent;
-    }
-
-    private PhenotypePlanEvent getPhenotypePlanEventFromRequest(PlanDTO planDTO)
-    {
-        PhenotypePlanEvent phenotypePlanEvent = null;
-        StatusTransitionDTO statusTransitionDTO =  planDTO.getStatusTransitionDTO();
-        if (statusTransitionDTO != null)
-        {
-            String action = statusTransitionDTO.getActionToExecute();
-            phenotypePlanEvent = PhenotypePlanEvent.getEventByName(action);
-        }
-        return phenotypePlanEvent;
-    }
-
-    private BreedingPlanEvent getBreedingPlanEventFromRequest(PlanDTO planDTO)
-    {
-        BreedingPlanEvent breedingPlanEvent = null;
-        StatusTransitionDTO statusTransitionDTO =  planDTO.getStatusTransitionDTO();
-        if (statusTransitionDTO != null)
-        {
-            String action = statusTransitionDTO.getActionToExecute();
-            breedingPlanEvent = BreedingPlanEvent.getEventByName(action);
-        }
-        return breedingPlanEvent;
     }
 }
