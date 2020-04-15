@@ -100,94 +100,94 @@ build_jars:
   
 
 
-# sandbox:
-#   stage: sandbox-deploy
-#   image: dtzar/helm-kubectl:2.13.0
-#   only:
-#     refs:
-#       - master
-#     variables:
-#       - $KUBERNETES_DEPLOYMENT == "true"
-#   script:
-#   # Only deploy from the MPI2 impc-production-tracker repository rather than repository forks
-#   - |
-#     if [ ! -z ${KUBERNETES_ENDPOINT+set} ]; then
+ sandbox:
+   stage: sandbox-deploy
+   image: dtzar/helm-kubectl:2.13.0
+   only:
+     refs:
+       - master
+     variables:
+       - $KUBERNETES_DEPLOYMENT == "true"
+   script:
+   # Only deploy from the MPI2 impc-production-tracker repository rather than repository forks
+   - |
+     if [ ! -z ${KUBERNETES_ENDPOINT+set} ]; then
 
-#       kubectl config set-cluster local --server="${KUBERNETES_ENDPOINT}"
-#       kubectl config set clusters.local.certificate-authority-data "${KUBERNETES_CERTIFICATE_AUTHORITY_DATA}"
-#       kubectl config set-credentials "${KUBERNETES_USER}" --token="${KUBERNETES_USER_TOKEN}"
-#       kubectl config set-context "${KUBERNETES_NAMESPACE}" --cluster=local --user=${KUBERNETES_USER} --namespace="${KUBERNETES_NAMESPACE}"
-#       kubectl config use-context "${KUBERNETES_NAMESPACE}"
-#       kubectl version
+       kubectl config set-cluster local --server="${KUBERNETES_ENDPOINT}"
+       kubectl config set clusters.local.certificate-authority-data "${KUBERNETES_CERTIFICATE_AUTHORITY_DATA}"
+       kubectl config set-credentials "${KUBERNETES_USER}" --token="${KUBERNETES_USER_TOKEN}"
+       kubectl config set-context "${KUBERNETES_NAMESPACE}" --cluster=local --user=${KUBERNETES_USER} --namespace="${KUBERNETES_NAMESPACE}"
+       kubectl config use-context "${KUBERNETES_NAMESPACE}"
+       kubectl version
       
-#       cd impc_prod_tracker
+       cd impc_prod_tracker
       
-#       #
-#       #
-#       # Substitute the "latest" image tag in your deployment template with a more specific tag
-#       # and record the deployment so you can rollback to this particular version.
-#       #
-#       # sed -i "s/latest/${CI_COMMIT_SHA:0:12}/g" kube/sandbox/api-service/api-service-deployment.yaml
-#       sed -i "s/latest/${SANDBOX_API_TAG}/g" kube/sandbox/api-service/api-service-deployment.yaml
-#       sed -i "s/STRING_REPLACED_DURING_REDEPLOY/$(date)/g" kube/sandbox/api-service/api-service-deployment.yaml
+       #
+       #
+       # Substitute the "latest" image tag in your deployment template with a more specific tag
+       # and record the deployment so you can rollback to this particular version.
+       #
+       # sed -i "s/latest/${CI_COMMIT_SHA:0:12}/g" kube/sandbox/api-service/api-service-deployment.yaml
+       sed -i "s/latest/${SANDBOX_API_TAG}/g" kube/sandbox/api-service/api-service-deployment.yaml
+       sed -i "s/STRING_REPLACED_DURING_REDEPLOY/$(date)/g" kube/sandbox/api-service/api-service-deployment.yaml
 
-#       if kubectl apply -f kube/sandbox/api-service/api-service-deployment.yaml --record | grep -q unchanged; then
-#           echo "=> Patching deployment to force image update."
-#           kubectl patch -f kube/sandbox/api-service/api-service-deployment.yaml --record -p "{\"spec\":{\"template\":{\"metadata\":{\"annotations\":{\"ci-last-updated\":\"$(date +'%s')\"}}}}}"
-#       else
-#           echo "=> Deployment apply has changed the object, no need to force image update."
-#       fi
-#       #
-#       #
-#       # Log the status of the application deployment
-#       #
-#       kubectl rollout status -f kube/sandbox/api-service/api-service-deployment.yaml
-#       kubectl get all,ing
-#     fi
-
-
+       if kubectl apply -f kube/sandbox/api-service/api-service-deployment.yaml --record | grep -q unchanged; then
+           echo "=> Patching deployment to force image update."
+           kubectl patch -f kube/sandbox/api-service/api-service-deployment.yaml --record -p "{\"spec\":{\"template\":{\"metadata\":{\"annotations\":{\"ci-last-updated\":\"$(date +'%s')\"}}}}}"
+       else
+           echo "=> Deployment apply has changed the object, no need to force image update."
+       fi
+       #
+       #
+       # Log the status of the application deployment
+       #
+       kubectl rollout status -f kube/sandbox/api-service/api-service-deployment.yaml
+       kubectl get all,ing
+     fi
 
 
-# dev:
-#   stage: dev-deploy
-#   image: dtzar/helm-kubectl:2.13.0
-#   only:
-#     refs:
-#       - master
-#     variables:
-#       - $KUBERNETES_DEPLOYMENT == "true"
-#   script:
-#   # Only deploy from the MPI2 impc-production-tracker repository rather than repository forks
-#   - |
-#     if [ ! -z ${KUBERNETES_ENDPOINT+set} ]; then
 
-#       kubectl config set-cluster local --server="${KUBERNETES_ENDPOINT}"
-#       kubectl config set clusters.local.certificate-authority-data "${KUBERNETES_CERTIFICATE_AUTHORITY_DATA}"
-#       kubectl config set-credentials "${KUBERNETES_DEV_USER}" --token="${KUBERNETES_DEV_USER_TOKEN}"
-#       kubectl config set-context "${KUBERNETES_DEV_NAMESPACE}" --cluster=local --user=${KUBERNETES_DEV_USER} --namespace="${KUBERNETES_DEV_NAMESPACE}"
-#       kubectl config use-context "${KUBERNETES_DEV_NAMESPACE}"
-#       kubectl version
+
+ dev:
+   stage: dev-deploy
+   image: dtzar/helm-kubectl:2.13.0
+   only:
+     refs:
+       - master
+     variables:
+       - $KUBERNETES_DEPLOYMENT == "true"
+   script:
+   # Only deploy from the MPI2 impc-production-tracker repository rather than repository forks
+   - |
+     if [ ! -z ${KUBERNETES_ENDPOINT+set} ]; then
+
+       kubectl config set-cluster local --server="${KUBERNETES_ENDPOINT}"
+       kubectl config set clusters.local.certificate-authority-data "${KUBERNETES_CERTIFICATE_AUTHORITY_DATA}"
+       kubectl config set-credentials "${KUBERNETES_DEV_USER}" --token="${KUBERNETES_DEV_USER_TOKEN}"
+       kubectl config set-context "${KUBERNETES_DEV_NAMESPACE}" --cluster=local --user=${KUBERNETES_DEV_USER} --namespace="${KUBERNETES_DEV_NAMESPACE}"
+       kubectl config use-context "${KUBERNETES_DEV_NAMESPACE}"
+       kubectl version
       
-#       cd impc_prod_tracker
+       cd impc_prod_tracker
       
-#       #
-#       #
-#       # Substitute the "latest" image tag in your deployment template with a more specific tag
-#       # and record the deployment so you can rollback to this particular version.
-#       #
-#       sed -i "s/latest/${CI_COMMIT_SHA:0:12}/g" kube/dev/api-service/api-service-deployment.yaml
-#       sed -i "s/STRING_REPLACED_DURING_REDEPLOY/$(date)/g" kube/dev/api-service/api-service-deployment.yaml
+       #
+       #
+       # Substitute the "latest" image tag in your deployment template with a more specific tag
+       # and record the deployment so you can rollback to this particular version.
+       #
+       sed -i "s/latest/${CI_COMMIT_SHA:0:12}/g" kube/dev/api-service/api-service-deployment.yaml
+       sed -i "s/STRING_REPLACED_DURING_REDEPLOY/$(date)/g" kube/dev/api-service/api-service-deployment.yaml
 
-#       if kubectl apply -f kube/dev/api-service/api-service-deployment.yaml --record | grep -q unchanged; then
-#           echo "=> Patching deployment to force image update."
-#           kubectl patch -f kube/dev/api-service/api-service-deployment.yaml --record -p "{\"spec\":{\"template\":{\"metadata\":{\"annotations\":{\"ci-last-updated\":\"$(date +'%s')\"}}}}}"
-#       else
-#           echo "=> Deployment apply has changed the object, no need to force image update."
-#       fi
-#       #
-#       #
-#       # Log the status of the application deployment
-#       #
-#       kubectl rollout status -f kube/dev/api-service/api-service-deployment.yaml
-#       kubectl get all,ing
-#     fi
+       if kubectl apply -f kube/dev/api-service/api-service-deployment.yaml --record | grep -q unchanged; then
+           echo "=> Patching deployment to force image update."
+           kubectl patch -f kube/dev/api-service/api-service-deployment.yaml --record -p "{\"spec\":{\"template\":{\"metadata\":{\"annotations\":{\"ci-last-updated\":\"$(date +'%s')\"}}}}}"
+       else
+           echo "=> Deployment apply has changed the object, no need to force image update."
+       fi
+       #
+       #
+       # Log the status of the application deployment
+       #
+       kubectl rollout status -f kube/dev/api-service/api-service-deployment.yaml
+       kubectl get all,ing
+     fi
