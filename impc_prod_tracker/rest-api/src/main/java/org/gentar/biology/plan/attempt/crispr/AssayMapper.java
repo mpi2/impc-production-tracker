@@ -44,13 +44,15 @@ public class AssayMapper implements Mapper<Assay, AssayDTO>
     public Assay toEntity(AssayDTO assayDTO)
     {
         Assay assay = entityMapper.toTarget(assayDTO, Assay.class);
-        String assayTypeName = assayDTO.getTypeName();
-        if (assayTypeName != null)
+        if (assay != null)
         {
-            AssayType assayType = crisprAttemptService.getAssayTypeByName(assayTypeName);
-            assay.setAssayType(assayType);
+            String assayTypeName = assayDTO.getTypeName();
+            if (assayTypeName != null)
+            {
+                AssayType assayType = crisprAttemptService.getAssayTypeByName(assayTypeName);
+                assay.setAssayType(assayType);
+            }
         }
-
         return assay;
     }
 }

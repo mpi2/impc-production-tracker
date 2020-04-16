@@ -1,11 +1,11 @@
 package org.gentar.biology.plan.engine;
 
+import org.gentar.biology.plan.PlanStatusManager;
 import org.gentar.biology.plan.Plan_;
 import org.gentar.biology.project.ProjectService;
 import org.gentar.biology.status.Status_;
 import org.gentar.exceptions.UserOperationFailedException;
 import org.gentar.audit.history.HistoryService;
-import org.gentar.statemachine.StateTransitionsManager;
 import org.springframework.stereotype.Component;
 import org.gentar.security.abac.spring.ContextAwarePolicyEnforcement;
 import org.gentar.biology.plan.Plan;
@@ -20,23 +20,23 @@ public class PlanUpdaterImpl implements PlanUpdater
     private ContextAwarePolicyEnforcement policyEnforcement;
     private PlanRepository planRepository;
     private PlanValidator planValidator;
-    private StateTransitionsManager stateTransitionManager;
     private ProjectService projectService;
+    private PlanStatusManager planStatusManager;
 
     public PlanUpdaterImpl(
         HistoryService<Plan> historyService,
         ContextAwarePolicyEnforcement policyEnforcement,
         PlanRepository planRepository,
         PlanValidator planValidator,
-        StateTransitionsManager stateTransitionManager,
-        ProjectService projectService)
+        ProjectService projectService,
+        PlanStatusManager planStatusManager)
     {
         this.historyService = historyService;
         this.policyEnforcement = policyEnforcement;
         this.planRepository = planRepository;
         this.planValidator = planValidator;
-        this.stateTransitionManager = stateTransitionManager;
         this.projectService = projectService;
+        this.planStatusManager = planStatusManager;
     }
 
     @Override
@@ -72,10 +72,7 @@ public class PlanUpdaterImpl implements PlanUpdater
      */
     private void changeStatusIfNeeded(Plan plan)
     {
-        if (plan.getEvent() != null)
-        {
-             stateTransitionManager.processEvent(plan);
-        }
+        planStatusManager.updateStatusIfNeeded(plan);
     }
 
     /**

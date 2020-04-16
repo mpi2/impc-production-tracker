@@ -3,11 +3,8 @@ package org.gentar.biology.plan.engine;
 import org.gentar.audit.history.History;
 import org.gentar.audit.history.HistoryService;
 import org.gentar.biology.plan.Plan;
-import org.gentar.biology.project.Project;
-import org.gentar.biology.project.assignment.AssignmentStatus;
-import org.gentar.biology.status.Status;
+import org.gentar.biology.plan.PlanStatusManager;
 import org.springframework.stereotype.Component;
-
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.transaction.Transactional;
@@ -22,12 +19,16 @@ public class PlanCreator
     @PersistenceContext
     private EntityManager entityManager;
     private HistoryService<Plan> historyService;
+    private PlanStatusManager planStatusManager;
 
-    public PlanCreator(EntityManager entityManager,
-                       HistoryService<Plan> historyService)
+    public PlanCreator(
+        EntityManager entityManager,
+        HistoryService<Plan> historyService,
+        PlanStatusManager planStatusManager)
     {
         this.entityManager = entityManager;
         this.historyService = historyService;
+        this.planStatusManager = planStatusManager;
     }
 
     /**
@@ -37,9 +38,20 @@ public class PlanCreator
      */
     public Plan createPlan(Plan plan)
     {
+        setStatusAndSummaryStatus(plan);
         Plan createdPlan = savePlan(plan);
         registerCreationInHistory(createdPlan);
         return createdPlan;
+    }
+
+    private void setStatusAndSummaryStatus(Plan plan)
+    {
+        // Sets Plan Created for Status
+        planStatusManager.setInitialStatus(plan);
+        // If the data is adequate, move through the state machine (system triggered transitions)
+        planStatusManager.updateStatusIfNeeded(plan);
+        // Once the final state for the plan is calculated, we can calculate the summary status
+        planStatusManager.setSummaryStatus(plan);
     }
 
     private Plan savePlan(Plan plan)

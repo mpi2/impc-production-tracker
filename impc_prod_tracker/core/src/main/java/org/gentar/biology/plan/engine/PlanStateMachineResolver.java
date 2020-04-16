@@ -6,7 +6,9 @@ import org.gentar.biology.plan.engine.events.BreedingPlanEvent;
 import org.gentar.biology.plan.engine.events.CrisprProductionPlanEvent;
 import org.gentar.biology.plan.engine.events.PhenotypePlanEvent;
 import org.gentar.exceptions.SystemOperationFailedException;
+import org.gentar.statemachine.ProcessData;
 import org.gentar.statemachine.ProcessEvent;
+import org.gentar.statemachine.StateMachineResolver;
 import org.springframework.stereotype.Component;
 import java.util.ArrayList;
 import java.util.List;
@@ -15,19 +17,12 @@ import java.util.List;
  * This class handles the different state machines that a plan can have
  */
 @Component
-public class PlanStateMachineResolver
+public class PlanStateMachineResolver implements StateMachineResolver
 {
-    /**
-     * Given a plan and an action, this method returns the event (transition) in the suitable state
-     * machine that can be later be executed on the project.
-     * @param plan Plan that is being evaluate.
-     * @param actionName Action to execute on the plan.
-     * @return a {@link ProcessEvent} object with the description of the transition to execute,
-     * linked to a specific state machine.
-     */
-    public ProcessEvent getProcessEventByActionName(Plan plan, String actionName)
+    @Override
+    public ProcessEvent getProcessEventByActionName(ProcessData processData, String actionName)
     {
-        List<ProcessEvent> allEvents = getProcessEventsByPlan(plan);
+        List<ProcessEvent> allEvents = getProcessEventsByPlan((Plan)processData);
         for (ProcessEvent processEvent : allEvents)
         {
             if (processEvent.getName().equalsIgnoreCase(actionName))
@@ -36,16 +31,11 @@ public class PlanStateMachineResolver
         return null;
     }
 
-    /**
-     * Get the possible transitions for a plan. The type plan or attempt type define the state
-     * machine and the current plan's status defines the available transitions from that state machine.
-     * @param plan Plan being evaluated.
-     * @return A list of {@link ProcessEvent} (transitions) that can be executed in the plan.
-     */
-    public List<ProcessEvent> getAvailableTransitionsByPlanStatus(Plan plan)
+    @Override
+    public List<ProcessEvent> getAvailableTransitionsByEntityStatus(ProcessData processData)
     {
         return getAvailableEventsByStateName(
-            getProcessEventsByPlan(plan), plan.getStatus().getName());
+            getProcessEventsByPlan((Plan)processData), processData.getStatus().getName());
     }
 
     private List<ProcessEvent> getAvailableEventsByStateName(
@@ -79,7 +69,7 @@ public class PlanStateMachineResolver
             case CRISPR:
                 processEvents = CrisprProductionPlanEvent.getAllEvents();
                 break;
-            case ADULT_PHENOTYPING : case HAPLOESSENTIAL_PHENOTYPING:
+            case ADULT_PHENOTYPING: case HAPLOESSENTIAL_PHENOTYPING:
                 processEvents = PhenotypePlanEvent.getAllEvents();
                 break;
             case BREEDING:
@@ -91,4 +81,5 @@ public class PlanStateMachineResolver
         }
         return processEvents;
     }
+
 }

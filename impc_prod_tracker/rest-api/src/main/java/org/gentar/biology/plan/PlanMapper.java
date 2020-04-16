@@ -12,9 +12,6 @@ import org.gentar.biology.plan.status.PlanStatusStamp;
 import org.gentar.biology.plan.type.PlanType;
 import org.gentar.biology.plan.type.PlanTypes;
 import org.gentar.biology.project.*;
-import org.gentar.biology.status.Status;
-import org.gentar.biology.status.StatusMapper;
-import org.gentar.biology.status.StatusNames;
 import org.gentar.biology.status_stamps.StatusStampsDTO;
 import org.gentar.common.state_machine.StatusTransitionDTO;
 import org.gentar.common.state_machine.TransitionDTO;
@@ -43,7 +40,6 @@ public class PlanMapper implements Mapper<Plan, PlanDTO>
     private FunderMapper funderMapper;
     private WorkUnitMapper workUnitMapper;
     private WorkGroupMapper workGroupMapper;
-    private StatusMapper statusMapper;
     private PlanTypeMapper planTypeMapper;
     private ProjectService projectService;
     private PlanStateMachineResolver planStateMachineResolver;
@@ -57,7 +53,6 @@ public class PlanMapper implements Mapper<Plan, PlanDTO>
         FunderMapper funderMapper,
         WorkUnitMapper workUnitMapper,
         WorkGroupMapper workGroupMapper,
-        StatusMapper statusMapper,
         PlanTypeMapper planTypeMapper,
         ProjectService projectService,
         PlanStateMachineResolver planStateMachineResolver,
@@ -70,7 +65,6 @@ public class PlanMapper implements Mapper<Plan, PlanDTO>
         this.funderMapper = funderMapper;
         this.workUnitMapper = workUnitMapper;
         this.workGroupMapper = workGroupMapper;
-        this.statusMapper = statusMapper;
         this.planTypeMapper = planTypeMapper;
         this.projectService = projectService;
         this.planStateMachineResolver = planStateMachineResolver;
@@ -145,17 +139,7 @@ public class PlanMapper implements Mapper<Plan, PlanDTO>
         setCrisprAttempt(plan, planDTO);
         setPlanType(plan, planDTO);
         setAttemptType(plan, planDTO);
-        setStatusAndSummaryStatus(plan);
-        plan.setSummaryStatus(statusMapper.toEntity(StatusNames.PLAN_CREATED));
-
         return plan;
-    }
-
-    private void setStatusAndSummaryStatus(Plan plan)
-    {
-        Status planCreatedStatus = statusMapper.toEntity(StatusNames.PLAN_CREATED);
-        plan.setStatus(planCreatedStatus);
-        plan.setSummaryStatus(planCreatedStatus);
     }
 
     private void setAttemptType(Plan plan, PlanDTO planDTO)
@@ -198,7 +182,7 @@ public class PlanMapper implements Mapper<Plan, PlanDTO>
     private List<TransitionDTO> getTransitionsByPlanType(Plan plan)
     {
         List<ProcessEvent> transitions =
-            planStateMachineResolver.getAvailableTransitionsByPlanStatus(plan);
+            planStateMachineResolver.getAvailableTransitionsByEntityStatus(plan);
         return transitionMapper.toDtos(transitions);
     }
 }

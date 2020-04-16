@@ -4,13 +4,19 @@ import org.gentar.biology.plan.Plan;
 import org.gentar.biology.plan.status.PlanStatusStamp;
 import org.gentar.biology.status.Status;
 import org.gentar.biology.status.StatusService;
+import org.gentar.statemachine.ProcessData;
+import org.gentar.statemachine.StateSetter;
 import org.springframework.stereotype.Component;
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
+/**
+ * Any class wanting to set the status in a plan needs to call this class to do that.
+ * This class sets the new status and registers the action in the stamp table for plan statuses.
+ */
 @Component
-public class PlanStateSetter
+public class PlanStateSetter implements StateSetter
 {
     private StatusService statusService;
 
@@ -19,16 +25,22 @@ public class PlanStateSetter
         this.statusService = statusService;
     }
 
+    @Override
+    public void setStatus(ProcessData entity, Status status)
+    {
+        entity.setStatus(status);
+        registerStatusStamp((Plan)entity);
+    }
+
     /**
      * Sets the status for a plan. It also record the stamp so there is historic information.
-     * @param plan The plan to be updated.
+     * @param entity The entity to be updated.
      * @param statusName A string with the name of the status.
      */
-    public void setStatusByName(Plan plan, String statusName)
+    public void setStatusByName(ProcessData entity, String statusName)
     {
         Status newPlanStatus = statusService.getStatusByName(statusName);
-        plan.setStatus(newPlanStatus);
-        registerStatusStamp(plan);
+        setStatus(entity, newPlanStatus);
     }
 
     private void registerStatusStamp(Plan plan)

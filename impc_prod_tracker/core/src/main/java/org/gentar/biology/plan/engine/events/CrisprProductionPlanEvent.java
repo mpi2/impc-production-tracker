@@ -1,12 +1,15 @@
 package org.gentar.biology.plan.engine.events;
 
 import org.gentar.biology.plan.engine.PlanProcessor;
+import org.gentar.biology.plan.engine.processors.crispr.CrisprPlanAttemptInProgressProcessor;
 import org.gentar.biology.plan.engine.state.CrisprProductionPlanState;
 import org.gentar.biology.plan.engine.processors.PlanAbortProcessor;
 import org.gentar.biology.plan.engine.processors.PlanAbortReverserProcessor;
 import org.gentar.statemachine.ProcessEvent;
 import org.gentar.statemachine.ProcessState;
 import org.gentar.statemachine.Processor;
+import org.gentar.statemachine.StateMachineConstants;
+
 import java.util.Arrays;
 import java.util.List;
 
@@ -16,7 +19,7 @@ public enum CrisprProductionPlanEvent implements ProcessEvent
             "Abort the plan that is in progress",
             CrisprProductionPlanState.AttemptInProgress,
             CrisprProductionPlanState.AttemptAborted,
-            true,
+            StateMachineConstants.TRIGGERED_BY_USER,
             null)
             {
                 @Override
@@ -29,7 +32,7 @@ public enum CrisprProductionPlanEvent implements ProcessEvent
             "Abort the plan that has been created",
             CrisprProductionPlanState.PlanCreated,
             CrisprProductionPlanState.AttemptAborted,
-            true,
+            StateMachineConstants.TRIGGERED_BY_USER,
             null)
             {
                 @Override
@@ -38,29 +41,36 @@ public enum CrisprProductionPlanEvent implements ProcessEvent
                     return PlanAbortProcessor.class;
                 }
             },
-    inProgress(
+    changeToInProgress(
             "Attempt in progress",
             CrisprProductionPlanState.PlanCreated,
             CrisprProductionPlanState.AttemptInProgress,
-            false,
-            "executed by the system when details of the attempt are registered"),
-    embryosObtained(
+            StateMachineConstants.NOT_TRIGGERED_BY_USER,
+            "executed by the system when details of the attempt are registered")
+        {
+            @Override
+            public Class<? extends Processor> getNextStepProcessor()
+            {
+                return CrisprPlanAttemptInProgressProcessor.class;
+            }
+        },
+    changeToEmbryosObtained(
             "Embryos obtained from the attempt",
             CrisprProductionPlanState.AttemptInProgress,
             CrisprProductionPlanState.EmbryosObtained,
-            false,
+            StateMachineConstants.NOT_TRIGGERED_BY_USER,
             "executed by the system when injected embryos are registered"),
-    glt(
+    changeToGlt(
             "Germ line transmission obtained for the attempt",
             CrisprProductionPlanState.EmbryosObtained,
             CrisprProductionPlanState.GLT,
-            false,
+            StateMachineConstants.NOT_TRIGGERED_BY_USER,
             "executed by the system when germ line transmission is registered."),
     reverseAbortion(
             "Reverse abortion",
             CrisprProductionPlanState.AttemptAborted,
             CrisprProductionPlanState.PlanCreated,
-            true,
+            StateMachineConstants.TRIGGERED_BY_USER,
             null)
             {
                 @Override
@@ -73,7 +83,7 @@ public enum CrisprProductionPlanEvent implements ProcessEvent
             "Abort the plan after embryos obtained",
             CrisprProductionPlanState.EmbryosObtained,
             CrisprProductionPlanState.AttemptAborted,
-            true,
+            StateMachineConstants.TRIGGERED_BY_USER,
             null)
             {
                 @Override
@@ -86,7 +96,7 @@ public enum CrisprProductionPlanEvent implements ProcessEvent
             "Abort the plan after germ line transmission obtained",
             CrisprProductionPlanState.GLT,
             CrisprProductionPlanState.AttemptAborted,
-            true,
+            StateMachineConstants.TRIGGERED_BY_USER,
             null)
             {
                 @Override
