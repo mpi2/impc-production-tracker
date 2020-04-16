@@ -19,12 +19,15 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.ToString;
 import org.gentar.audit.diff.IgnoreForAuditingChanges;
 import org.gentar.biology.outcome.Outcome;
 import org.gentar.biology.plan.plan_starting_point.PlanStartingPoint;
 import org.gentar.biology.plan.status.PlanStatusStamp;
+import org.gentar.biology.plan.status.PlanSummaryStatusStamp;
 import org.gentar.biology.plan.type.PlanType;
 import org.gentar.organization.work_group.WorkGroup;
 import org.gentar.security.abac.Resource;
@@ -63,6 +66,8 @@ public class Plan extends BaseEntity implements Resource<Plan>, ProcessData
     private Long id;
 
     @Transient
+    @Getter
+    @Setter
     private ProcessEvent event;
 
     @EqualsAndHashCode.Include
@@ -95,6 +100,12 @@ public class Plan extends BaseEntity implements Resource<Plan>, ProcessData
     @ToString.Exclude
     @OneToMany(cascade= CascadeType.ALL, mappedBy = "plan")
     private Set<PlanStatusStamp> planStatusStamps;
+
+    @IgnoreForAuditingChanges
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
+    @OneToMany(cascade= CascadeType.ALL, mappedBy = "plan")
+    private Set<PlanSummaryStatusStamp> planSummaryStatusStamps;
 
     @NotNull
     @ManyToOne(targetEntity= Status.class)
@@ -198,11 +209,5 @@ public class Plan extends BaseEntity implements Resource<Plan>, ProcessData
     public List<Consortium> getRelatedConsortia()
     {
         return Collections.emptyList();
-    }
-
-    @Override
-    public ProcessEvent getEvent()
-    {
-        return this.event;
     }
 }

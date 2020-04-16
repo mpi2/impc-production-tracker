@@ -5,10 +5,8 @@ import org.gentar.BaseEntity;
 import org.gentar.biology.plan.Plan;
 import org.gentar.biology.plan.attempt.phenotyping.stage.PhenotypingStage;
 import org.gentar.biology.strain.Strain;
-
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import java.util.List;
 import java.util.Set;
 
 @NoArgsConstructor(access= AccessLevel.PUBLIC, force=true)

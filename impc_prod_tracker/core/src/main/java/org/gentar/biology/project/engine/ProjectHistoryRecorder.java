@@ -26,10 +26,13 @@ public class ProjectHistoryRecorder
         History history =
             historyService.detectTrackOfChanges(
                 originalProject, newProject, originalProject.getId());
-        history = historyService.filterDetailsInNestedEntity(
-            history, Project_.ASSIGNMENT_STATUS, AssignmentStatus_.NAME);
-        history = historyService.filterDetailsInNestedEntity(
-            history, Project_.SUMMARY_STATUS, AssignmentStatus_.NAME);
-        historyService.saveTrackOfChanges(history);
+        if (history != null)
+        {
+            history = historyService.filterDetailsInNestedEntity(
+                history, Project_.ASSIGNMENT_STATUS, AssignmentStatus_.NAME);
+            history = historyService.filterDetailsInNestedEntity(
+                history, Project_.SUMMARY_STATUS, AssignmentStatus_.NAME);
+            historyService.saveTrackOfChanges(history);
+        }
     }
 }

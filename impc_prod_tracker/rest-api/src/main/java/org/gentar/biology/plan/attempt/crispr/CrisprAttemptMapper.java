@@ -81,7 +81,7 @@ public class CrisprAttemptMapper implements Mapper<CrisprAttempt, CrisprAttemptD
     public CrisprAttempt toEntity(CrisprAttemptDTO crisprAttemptDTO)
     {
         CrisprAttempt crisprAttempt = modelMapper.map(crisprAttemptDTO, CrisprAttempt.class);
-        setAssayType(crisprAttempt, crisprAttemptDTO);
+        setAssay(crisprAttempt, crisprAttemptDTO);
         setStrain(crisprAttempt, crisprAttemptDTO);
         setGuidesToEntity(crisprAttempt, crisprAttemptDTO);
         setGenotypePrimersToEntity(crisprAttempt, crisprAttemptDTO);
@@ -91,10 +91,13 @@ public class CrisprAttemptMapper implements Mapper<CrisprAttempt, CrisprAttemptD
         return crisprAttempt;
     }
 
-    private void setAssayType(CrisprAttempt crisprAttempt, CrisprAttemptDTO crisprAttemptDTO)
+    private void setAssay(CrisprAttempt crisprAttempt, CrisprAttemptDTO crisprAttemptDTO)
     {
         Assay assay = assayMapper.toEntity(crisprAttemptDTO.getAssay());
-        assay.setCrisprAttempt(crisprAttempt);
+        if (assay != null)
+        {
+            assay.setCrisprAttempt(crisprAttempt);
+        }
         crisprAttempt.setAssay(assay);
     }
 
