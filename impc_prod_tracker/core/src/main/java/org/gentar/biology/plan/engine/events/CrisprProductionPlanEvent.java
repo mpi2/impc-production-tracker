@@ -9,7 +9,6 @@ import org.gentar.statemachine.ProcessEvent;
 import org.gentar.statemachine.ProcessState;
 import org.gentar.statemachine.Processor;
 import org.gentar.statemachine.StateMachineConstants;
-
 import java.util.Arrays;
 import java.util.List;
 
