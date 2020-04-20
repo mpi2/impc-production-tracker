@@ -29,10 +29,16 @@ public class GltProcessor extends AbstractProcessor
         Assay assay = crisprAttempt == null ? null : crisprAttempt.getAssay();
         if (assay != null)
         {
-            result = assay.getNumNhejG0Mutants() > 0
-                || assay.getNumDeletionG0Mutants() > 0
-                || assay.getNumHrG0Mutants() > 0
-                || assay.getNumHdrG0Mutants() > 0;
+            int numNhejG0Mutants =
+                assay.getNumNhejG0Mutants() == null ? 0 : assay.getNumNhejG0Mutants();
+            int numDeletionG0Mutants =
+                assay.getNumDeletionG0Mutants() == null ? 0 : assay.getNumDeletionG0Mutants();
+            int numHrG0Mutants = assay.getNumHrG0Mutants() == null ? 0 : assay.getNumHrG0Mutants();
+            int numHdrG0Mutants = assay.getNumHdrG0Mutants() == null ? 0 : assay.getNumHdrG0Mutants();
+            result = numNhejG0Mutants > 0
+                || numDeletionG0Mutants > 0
+                || numHrG0Mutants > 0
+                || numHdrG0Mutants > 0;
         }
         return result;
     }

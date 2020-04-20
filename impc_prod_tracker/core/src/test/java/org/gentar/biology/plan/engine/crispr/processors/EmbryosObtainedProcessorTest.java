@@ -32,7 +32,21 @@ class EmbryosObtainedProcessorTest
     }
 
     @Test
-    public void testWhenNoEmbryos()
+    public void testWhenNullEmbryos()
+    {
+        Plan plan = new Plan();
+        CrisprAttempt crisprAttempt = new CrisprAttempt();
+        crisprAttempt.setTotalEmbryosInjected(null);
+        crisprAttempt.setTotalEmbryosSurvived(null);
+        plan.setCrisprAttempt(crisprAttempt);
+
+        testInstance.process(plan);
+
+        verify(planStateSetter, times(0)).setStatusByName(any(Plan.class), any(String.class));
+    }
+
+    @Test
+    public void testWhenZeroEmbryos()
     {
         Plan plan = new Plan();
         CrisprAttempt crisprAttempt = new CrisprAttempt();
@@ -54,6 +68,26 @@ class EmbryosObtainedProcessorTest
         CrisprAttempt crisprAttempt = new CrisprAttempt();
         crisprAttempt.setTotalEmbryosInjected(1);
         crisprAttempt.setTotalEmbryosSurvived(0);
+        plan.setCrisprAttempt(crisprAttempt);
+        plan.setEvent(CrisprProductionPlanEvent.changeToEmbryosObtained);
+
+        testInstance.process(plan);
+
+        verify(
+            planStateSetter,
+            times(1)).setStatusByName(any(Plan.class),
+            eq(CrisprProductionPlanEvent.changeToEmbryosObtained.getEndState().getInternalName()));
+    }
+
+    @Test
+    public void testWhenEmbryosSurvived()
+    {
+        Plan plan = PlanBuilder.getInstance()
+            .withStatus(CrisprProductionPlanState.AttemptInProgress.getInternalName())
+            .build();
+        CrisprAttempt crisprAttempt = new CrisprAttempt();
+        crisprAttempt.setTotalEmbryosInjected(0);
+        crisprAttempt.setTotalEmbryosSurvived(1);
         plan.setCrisprAttempt(crisprAttempt);
         plan.setEvent(CrisprProductionPlanEvent.changeToEmbryosObtained);
 

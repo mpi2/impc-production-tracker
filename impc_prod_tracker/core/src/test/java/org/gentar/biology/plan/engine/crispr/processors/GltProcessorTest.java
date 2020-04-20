@@ -32,9 +32,19 @@ class GltProcessorTest
     }
 
     @Test
-    public void testWhenNoMutants()
+    public void testWhenNoAssay()
     {
         testInstance.process(new Plan());
+
+        verify(planStateSetter, times(0)).setStatusByName(any(Plan.class), any(String.class));
+    }
+
+    @Test
+    public void testWhenNoMutants()
+    {
+        Plan plan = buildPlanReadyToMoveToGlt();
+
+        testInstance.process(plan);
 
         verify(planStateSetter, times(0)).setStatusByName(any(Plan.class), any(String.class));
     }
@@ -102,7 +112,6 @@ class GltProcessorTest
             .build();
         CrisprAttempt crisprAttempt = new CrisprAttempt();
         Assay assay = new Assay();
-        assay.setNumNhejG0Mutants(1);
         crisprAttempt.setAssay(assay);
         plan.setCrisprAttempt(crisprAttempt);
         plan.setEvent(CrisprProductionPlanEvent.changeToGlt);
