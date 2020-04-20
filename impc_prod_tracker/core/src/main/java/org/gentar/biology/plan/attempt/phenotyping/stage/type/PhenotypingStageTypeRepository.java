@@ -4,5 +4,5 @@ import org.springframework.data.repository.CrudRepository;
 
 public interface PhenotypingStageTypeRepository extends CrudRepository<PhenotypingStageType, Long>
 {
-    PhenotypingStageType findFirstByNameIgnoreCase(String name);
+    PhenotypingStageType findByNameIgnoreCase(String name);
 }

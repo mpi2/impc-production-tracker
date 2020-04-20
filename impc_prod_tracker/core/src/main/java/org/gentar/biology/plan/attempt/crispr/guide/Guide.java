@@ -14,6 +14,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
+import javax.validation.constraints.NotNull;
 
 
 @NoArgsConstructor(access= AccessLevel.PUBLIC, force=true)
@@ -28,6 +29,7 @@ public class Guide extends BaseEntity
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "guideSeq")
     private Long id;
 
+    @NotNull
     @EqualsAndHashCode.Exclude
     @ManyToOne(targetEntity = CrisprAttempt.class)
     @JoinColumn(name = "attempt_id")

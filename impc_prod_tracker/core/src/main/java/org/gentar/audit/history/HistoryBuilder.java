@@ -4,7 +4,8 @@ import org.gentar.BaseEntity_;
 import org.gentar.security.abac.subject.SubjectRetriever;
 import org.springframework.stereotype.Component;
 import org.gentar.audit.history.detail.HistoryDetail;
-import java.time.LocalDateTime;
+
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -44,7 +45,7 @@ public class HistoryBuilder<T>
         {
             history.setEntityId(id);
             history.setEntityName(originalEntity.getClass().getSimpleName());
-            history.setDate(LocalDateTime.now());
+            history.setDate(LocalDate.now());
             history.setComment(originalEntity.getClass().getSimpleName() + " updated");
             history.setHistoryDetailSet(historyDetails);
             history.setUser(subjectRetriever.getSubject().getLogin());
@@ -66,7 +67,7 @@ public class HistoryBuilder<T>
         History history = new History();
         history.setEntityId(id);
         history.setEntityName(entity.getClass().getSimpleName());
-        history.setDate(LocalDateTime.now());
+        history.setDate(LocalDate.now());
         history.setComment(entity.getClass().getSimpleName() + " created");
         history.setUser(subjectRetriever.getSubject().getLogin());
         return history;

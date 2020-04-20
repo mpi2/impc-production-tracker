@@ -19,11 +19,13 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.gentar.biology.outcome.OutcomeDTO;
 import org.gentar.biology.plan.attempt.phenotyping.PhenotypingAttemptDTO;
+import org.gentar.biology.plan.plan_starting_point.PlanStartingPointDTO;
 import org.gentar.common.state_machine.StatusTransitionDTO;
 import org.springframework.hateoas.RepresentationModel;
-import org.gentar.biology.plan.production.breeding_attempt.BreedingAttemptDTO;
-import org.gentar.biology.plan.production.crispr_attempt.CrisprAttemptDTO;
+import org.gentar.biology.plan.attempt.breeding.BreedingAttemptDTO;
+import org.gentar.biology.plan.attempt.crispr.CrisprAttemptDTO;
 import org.gentar.biology.status_stamps.StatusStampsDTO;
 import java.util.List;
 
@@ -43,13 +45,11 @@ public class PlanDTO extends RepresentationModel
     private String statusName;
     private String summaryStatusName;
 
-    @JsonInclude(JsonInclude.Include.NON_NULL)
     @JsonProperty("statusDates")
     private List<StatusStampsDTO> statusStampsDTOS;
 
     private String comment;
 
-    @JsonInclude(JsonInclude.Include.NON_NULL)
     private Boolean productsAvailableForGeneralPublic;
 
     @JsonProperty("typeName")
@@ -66,10 +66,19 @@ public class PlanDTO extends RepresentationModel
     private BreedingAttemptDTO breedingAttemptDTO;
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    @JsonProperty("phenotypingAttempt")
+    @JsonProperty("phenotypingAttemptDetails")
     private PhenotypingAttemptDTO phenotypingAttemptDTO;
 
-    @JsonInclude(JsonInclude.Include.NON_NULL)
     @JsonProperty("statusTransition")
     private StatusTransitionDTO statusTransitionDTO;
+
+    // Starting point outcome for phenotyping plans
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    @JsonProperty("phenotypingStartingPointDetails")
+    private PlanStartingPointDTO phenotypingStartingPoint;
+
+    // Starting point outcomes for breeding plans
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    @JsonProperty("breedingStartingPointDetails")
+    private List<PlanStartingPointDTO> breedingOutcomeDTOS;
 }

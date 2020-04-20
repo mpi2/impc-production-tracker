@@ -1,4 +1,4 @@
-package org.gentar.biology.plan.production.crispr_attempt;
+package org.gentar.biology.plan.attempt.crispr;
 
 import lombok.Data;
 import lombok.RequiredArgsConstructor;

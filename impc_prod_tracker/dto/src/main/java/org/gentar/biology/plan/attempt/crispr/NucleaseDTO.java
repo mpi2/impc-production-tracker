@@ -13,7 +13,7 @@
  language governing permissions and limitations under the
  License.
  */
-package org.gentar.biology.plan.production.crispr_attempt;
+package org.gentar.biology.plan.attempt.crispr;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;

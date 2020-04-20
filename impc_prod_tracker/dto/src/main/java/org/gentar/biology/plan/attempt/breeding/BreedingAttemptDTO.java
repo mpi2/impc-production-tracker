@@ -1,4 +1,4 @@
-package org.gentar.biology.plan.production.breeding_attempt;
+package org.gentar.biology.plan.attempt.breeding;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
