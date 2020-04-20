@@ -57,12 +57,12 @@ public class PlanDTO extends RepresentationModel
 
     // Starting point outcome for phenotyping plans
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    @JsonProperty("OutcomeTPO")
+    @JsonProperty("outcomeTPO")
     private String tpo;
 
     // Starting point outcomes for breeding plans
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    @JsonProperty("OutcomeTPOs")
+    @JsonProperty("outcomeTPOs")
     private List<String> tpos;
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
