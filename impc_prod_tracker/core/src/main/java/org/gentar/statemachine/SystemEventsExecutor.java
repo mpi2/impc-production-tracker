@@ -45,6 +45,7 @@ public class SystemEventsExecutor
     {
         originalEvent = entity.getEvent();
         executeNextTransitions(entity);
+        clearEvent(entity);
     }
 
     private void executeNextTransitions(ProcessData entity)
@@ -98,5 +99,11 @@ public class SystemEventsExecutor
             throw new UserOperationFailedException(
                 String.format(USER_ACTION_PRESENT_ERROR_MESSAGE, originalEvent.getName()));
         }
+    }
+
+    // Remove any event set in this class
+    private void clearEvent(ProcessData entity)
+    {
+        entity.setEvent(null);
     }
 }

@@ -27,8 +27,13 @@ public class EmbryosObtainedProcessor extends AbstractProcessor
         CrisprAttempt crisprAttempt = plan.getCrisprAttempt();
         if (crisprAttempt != null)
         {
-            result = crisprAttempt.getTotalEmbryosInjected() > 0
-                || crisprAttempt.getTotalEmbryosSurvived() > 0;
+            int totalEmbryosInjected =
+                crisprAttempt.getTotalEmbryosInjected() == null ? 0 :
+                    crisprAttempt.getTotalEmbryosInjected();
+            int totalEmbryosSurvived =
+                crisprAttempt.getTotalEmbryosSurvived() == null ? 0 :
+                    crisprAttempt.getTotalEmbryosSurvived();
+            result = totalEmbryosInjected > 0 || totalEmbryosSurvived > 0;
         }
         return result;
     }
