@@ -131,12 +131,14 @@ public class Plan extends BaseEntity implements Resource<Plan>, ProcessData
             inverseJoinColumns = @JoinColumn(name = "protocol_id"))
     private Set<Protocol> protocols;
 
-    @OneToMany
-    @JoinColumn(name = "plan_id")
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "plan", orphanRemoval=true)
     private Set<Outcome> outcomes;
 
-    @OneToMany
-    @JoinColumn(name = "plan_id")
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "plan", orphanRemoval=true)
     private Set<PlanStartingPoint> planStartingPoints;
 
     // Copy Constructor

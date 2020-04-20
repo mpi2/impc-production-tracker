@@ -1,6 +1,7 @@
 package org.gentar.biology.plan;
 
 import org.gentar.EntityMapper;
+import org.gentar.biology.outcome.Outcome;
 import org.gentar.biology.outcome.OutcomeMapper;
 import org.gentar.biology.plan.attempt.AttemptTypeMapper;
 import org.gentar.biology.plan.attempt.AttemptTypes;
@@ -11,7 +12,6 @@ import org.gentar.biology.plan.attempt.phenotyping.PhenotypingAttemptDTO;
 import org.gentar.biology.plan.attempt.phenotyping.PhenotypingAttemptMapper;
 import org.gentar.biology.plan.attempt.crispr.CrisprAttemptDTO;
 import org.gentar.Mapper;
-import org.gentar.biology.plan.plan_starting_point.PlanStartingPointMapper;
 import org.gentar.biology.plan.starting_point.PlanStartingPoint;
 import org.gentar.biology.plan.status.PlanStatusStamp;
 import org.gentar.biology.plan.type.PlanType;
@@ -50,7 +50,6 @@ public class PlanMapper implements Mapper<Plan, PlanDTO>
     private PlanStateMachineResolver planStateMachineResolver;
     private TransitionMapper transitionMapper;
     private OutcomeMapper outcomeMapper;
-    private PlanStartingPointMapper planStartingPointMapper;
 
     public PlanMapper(
         EntityMapper entityMapper,
@@ -64,8 +63,7 @@ public class PlanMapper implements Mapper<Plan, PlanDTO>
         ProjectService projectService,
         PlanStateMachineResolver planStateMachineResolver,
         TransitionMapper transitionMapper,
-        OutcomeMapper outcomeMapper,
-        PlanStartingPointMapper planStartingPointMapper)
+        OutcomeMapper outcomeMapper)
     {
         this.entityMapper = entityMapper;
         this.crisprAttemptMapper = crisprAttemptMapper;
@@ -79,7 +77,6 @@ public class PlanMapper implements Mapper<Plan, PlanDTO>
         this.planStateMachineResolver = planStateMachineResolver;
         this.transitionMapper = transitionMapper;
         this.outcomeMapper = outcomeMapper;
-        this.planStartingPointMapper = planStartingPointMapper;
     }
 
     public PlanDTO toDto(Plan plan)
@@ -104,10 +101,9 @@ public class PlanMapper implements Mapper<Plan, PlanDTO>
         if (plan.getPlanStartingPoints() != null) {
             Set<PlanStartingPoint> planStartingPoints = plan.getPlanStartingPoints();
             if (planStartingPoints.size() == 1) {
-//                ToDO WITH THE startingpointmapper
-//                PlanStartingPoint planStartingPoint = planStartingPoints.iterator().next();
-//                Outcome outcome = planStartingPoint.getOutcome();
-//                planDTO.setPhenotypingOutcomeDTO(outcomeMapper.toDto(outcome));
+                PlanStartingPoint planStartingPoint = planStartingPoints.iterator().next();
+                Outcome outcome = planStartingPoint.getOutcome();
+                planDTO.setTpo(outcome.getTpo());
             }
         }
     }
@@ -180,7 +176,7 @@ public class PlanMapper implements Mapper<Plan, PlanDTO>
         }
         else if (PlanTypes.PHENOTYPING.getTypeName().equalsIgnoreCase((planType.getName())))
         {
-//            setStartingPoint(plan, planDTO);
+            setStartingPoint(plan, planDTO);
             setPhenotypingAttempt(plan, planDTO);
         }
 
@@ -204,15 +200,18 @@ public class PlanMapper implements Mapper<Plan, PlanDTO>
 
     private void setStartingPoint(Plan plan, PlanDTO planDTO)
     {
-        if (planDTO.getPhenotypingStartingPoint() != null) {
-            PlanStartingPoint planStartingPoint = planStartingPointMapper.toEntity(planDTO.getPhenotypingStartingPoint());
+        if (planDTO.getTpo() != null) {
+            PlanStartingPoint planStartingPoint = new PlanStartingPoint();
+            planStartingPoint.setPlan(plan);
+            Outcome outcome = outcomeMapper.toEntityBytTpo(planDTO.getTpo());
+            planStartingPoint.setOutcome(outcome);
+
             Set<PlanStartingPoint> planStartingPoints =  new HashSet<>();
             planStartingPoints.add(planStartingPoint);
-            plan.setPlanStartingPoints(planStartingPoints);
-            planStartingPoints.forEach(x -> x.setPlan(plan));
+
             plan.setPlanStartingPoints(planStartingPoints);
         }
-//        else if (planDTO.getBreedingOutcomeDTOS() != null) {
+//        else if (planDTO.getTpos() != null) {
 //            // TODO starting point for breeding plans
 //        }
     }

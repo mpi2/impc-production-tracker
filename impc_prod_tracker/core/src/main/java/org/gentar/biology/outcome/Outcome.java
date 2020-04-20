@@ -7,6 +7,7 @@ import org.gentar.biology.colony.Colony;
 import org.gentar.biology.mutation.Mutation;
 import org.gentar.biology.outcome.type.OutcomeType;
 import org.gentar.biology.plan.Plan;
+import org.gentar.biology.plan.starting_point.PlanStartingPoint;
 import org.gentar.biology.specimen.Specimen;
 import org.gentar.organization.consortium.Consortium;
 import org.gentar.organization.work_unit.WorkUnit;
@@ -48,6 +49,11 @@ public class Outcome extends BaseEntity implements Resource<Outcome>
     @ToString.Exclude
     @OneToOne(cascade=CascadeType.ALL, mappedBy = "outcome")
     private Specimen specimen;
+
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "outcome", orphanRemoval=true)
+    private Set<PlanStartingPoint> planStartingPoints;
 
     // Copy Constructor
     public Outcome(Outcome outcome)
