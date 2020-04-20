@@ -96,13 +96,11 @@ public class Plan extends BaseEntity implements Resource<Plan>, ProcessData
     private Status status;
 
     @IgnoreForAuditingChanges
-    @EqualsAndHashCode.Exclude
     @ToString.Exclude
     @OneToMany(cascade= CascadeType.ALL, mappedBy = "plan")
     private Set<PlanStatusStamp> planStatusStamps;
 
     @IgnoreForAuditingChanges
-    @EqualsAndHashCode.Exclude
     @ToString.Exclude
     @OneToMany(cascade= CascadeType.ALL, mappedBy = "plan")
     private Set<PlanSummaryStatusStamp> planSummaryStatusStamps;

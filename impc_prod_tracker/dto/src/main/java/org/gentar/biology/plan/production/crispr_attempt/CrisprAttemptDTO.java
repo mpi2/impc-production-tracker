@@ -50,13 +50,13 @@ public class CrisprAttemptDTO
     @JsonProperty("guidesAttributes")
     private List<GuideDTO> guideDTOS;
 
-    @JsonProperty("mutagenesisDonorsAttributes")
+    @JsonProperty("mutagenesisDonors")
     private List<MutagenesisDonorDTO> mutagenesisDonorDTOS;
 
-    @JsonProperty("reagentsAttributes")
+    @JsonProperty("reagents")
     private List<ReagentDTO> reagentDTOS;
 
-    @JsonProperty("genotypePrimersAttributes")
+    @JsonProperty("genotypePrimers")
     private List<GenotypePrimerDTO> genotypePrimerDTOS;
 
     @JsonProperty("totalEmbryosInjected")
@@ -68,7 +68,7 @@ public class CrisprAttemptDTO
     @JsonProperty("embryo2Cell")
     private String embryo2Cell;
 
-    @JsonProperty("assayAttributes")
+    @JsonProperty("assay")
     private AssayDTO assay;
 
     @JsonProperty("strainInjectedName")
