@@ -1,30 +1,23 @@
 package org.gentar.biology.colony.engine.processors;
 
-import org.gentar.biology.colony.Colony;
-import org.gentar.biology.status.Status;
-import org.gentar.biology.status.StatusService;
+import org.gentar.biology.colony.engine.ColonyStateSetter;
+import org.gentar.statemachine.AbstractProcessor;
 import org.gentar.statemachine.ProcessData;
-import org.gentar.statemachine.ProcessEvent;
-import org.gentar.statemachine.Processor;
 import org.springframework.stereotype.Component;
 
 @Component
-public class ColonyProcessor implements Processor
+public class ColonyProcessor extends AbstractProcessor
 {
-    private StatusService statusService;
 
-    public ColonyProcessor(StatusService statusService)
+    public ColonyProcessor(ColonyStateSetter colonyStateSetter)
     {
-        this.statusService = statusService;
+        super(colonyStateSetter);
     }
 
     @Override
-    public ProcessData process(ProcessData data)
+    protected boolean canExecuteTransition(ProcessData entity)
     {
-        ProcessEvent processEvent = data.getEvent();
-        String statusName = processEvent.getEndState().getInternalName();
-        Status newStatus = statusService.getStatusByName(statusName);
-        ((Colony)data).setStatus(newStatus);
-        return data;
+        // Is there any special condition to check?
+        return true;
     }
 }

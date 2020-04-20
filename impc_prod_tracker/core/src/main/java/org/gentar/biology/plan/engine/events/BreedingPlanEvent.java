@@ -1,6 +1,5 @@
 package org.gentar.biology.plan.engine.events;
 
-import org.gentar.biology.plan.engine.PlanProcessor;
 import org.gentar.biology.plan.engine.processors.BreedingPlanAbortProcessor;
 import org.gentar.biology.plan.engine.processors.BreedingPlanAbortReverserProcessor;
 import org.gentar.biology.plan.engine.state.BreedingPlanState;
@@ -19,13 +18,27 @@ public enum BreedingPlanEvent implements ProcessEvent
             BreedingPlanState.PlanCreated,
             BreedingPlanState.BreedingStarted,
             StateMachineConstants.NOT_TRIGGERED_BY_USER,
-            null),
+            null)
+        {
+            @Override
+            public Class<? extends Processor> getNextStepProcessor()
+            {
+                return null;
+            }
+        },
     breedingComplete(
             "Breeding plan is complete.",
             BreedingPlanState.BreedingStarted,
             BreedingPlanState.BreedingComplete,
             StateMachineConstants.TRIGGERED_BY_USER,
-            null),
+            null)
+        {
+            @Override
+            public Class<? extends Processor> getNextStepProcessor()
+            {
+                return null;
+            }
+        },
     reverseAbortion(
             "Reverse abortion",
             BreedingPlanState.BreedingAborted,
@@ -133,12 +146,6 @@ public enum BreedingPlanEvent implements ProcessEvent
     private ProcessState endState;
     private boolean triggeredByUser;
     private String triggerNote;
-
-    @Override
-    public Class<? extends Processor> getNextStepProcessor()
-    {
-        return PlanProcessor.class;
-    }
 
     @Override
     public String getName()

@@ -1,7 +1,6 @@
 package org.gentar.biology.plan.engine.events;
 
 import org.gentar.biology.plan.engine.state.PhenotypePlanState;
-import org.gentar.biology.plan.engine.PlanProcessor;
 import org.gentar.biology.plan.engine.processors.PhenotypePlanAbortProcessor;
 import org.gentar.biology.plan.engine.processors.PhenotypePlanAbortReverserProcessor;
 import org.gentar.statemachine.ProcessEvent;
@@ -94,12 +93,6 @@ public enum PhenotypePlanEvent implements ProcessEvent
     private ProcessState endState;
     private boolean triggeredByUser;
     private String triggerNote;
-
-    @Override
-    public Class<? extends Processor> getNextStepProcessor()
-    {
-        return PlanProcessor.class;
-    }
 
     @Override
     public String getName()

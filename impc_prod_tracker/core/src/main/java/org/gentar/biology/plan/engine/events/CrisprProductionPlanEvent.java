@@ -1,6 +1,5 @@
 package org.gentar.biology.plan.engine.events;
 
-import org.gentar.biology.plan.engine.PlanProcessor;
 import org.gentar.biology.plan.engine.processors.crispr.CrisprPlanAttemptInProgressProcessor;
 import org.gentar.biology.plan.engine.state.CrisprProductionPlanState;
 import org.gentar.biology.plan.engine.processors.PlanAbortProcessor;
@@ -58,13 +57,27 @@ public enum CrisprProductionPlanEvent implements ProcessEvent
             CrisprProductionPlanState.AttemptInProgress,
             CrisprProductionPlanState.EmbryosObtained,
             StateMachineConstants.NOT_TRIGGERED_BY_USER,
-            "executed by the system when injected embryos are registered"),
+            "executed by the system when injected embryos are registered")
+        {
+            @Override
+            public Class<? extends Processor> getNextStepProcessor()
+            {
+                return null;
+            }
+        },
     changeToGlt(
             "Germ line transmission obtained for the attempt",
             CrisprProductionPlanState.EmbryosObtained,
             CrisprProductionPlanState.GLT,
             StateMachineConstants.NOT_TRIGGERED_BY_USER,
-            "executed by the system when germ line transmission is registered."),
+            "executed by the system when germ line transmission is registered.")
+        {
+            @Override
+            public Class<? extends Processor> getNextStepProcessor()
+            {
+                return null;
+            }
+        },
     reverseAbortion(
             "Reverse abortion",
             CrisprProductionPlanState.AttemptAborted,
@@ -159,12 +172,6 @@ public enum CrisprProductionPlanEvent implements ProcessEvent
     private ProcessState endState;
     private boolean triggeredByUser;
     private String triggerNote;
-
-    @Override
-    public Class<? extends Processor> getNextStepProcessor()
-    {
-        return PlanProcessor.class;
-    }
 
     @Override
     public String getName()
