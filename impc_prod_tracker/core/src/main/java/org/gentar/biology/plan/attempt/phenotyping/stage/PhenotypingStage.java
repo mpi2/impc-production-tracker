@@ -45,8 +45,7 @@ public class PhenotypingStage extends BaseEntity implements ProcessData
 
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
-    @OneToMany
-    @JoinColumn(name = "phenotyping_stage_id")
+    @OneToMany(cascade= CascadeType.ALL, mappedBy = "phenotypingStage", orphanRemoval=true)
     private Set<TissueDistribution> tissueDistributions;
 
     @NotNull

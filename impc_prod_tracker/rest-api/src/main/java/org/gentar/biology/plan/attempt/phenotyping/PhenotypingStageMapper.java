@@ -109,8 +109,9 @@ public class PhenotypingStageMapper implements Mapper<PhenotypingStage, Phenotyp
     }
 
     private void setTissueDistributionCentre(PhenotypingStage phenotypingStage, PhenotypingStageDTO phenotypingStageDTO) {
-//        TissueDistribution tissueDistributions = tissueDistributionMapper.toEntities(phenotypingStageDTO.getTissueDistributionCentreDTOs());
-//        phenotypingStage.setTissueDistributions(tissueDistributions);
+        Set<TissueDistribution> tissueDistributions = tissueDistributionMapper.toEntities(phenotypingStageDTO.getTissueDistributionCentreDTOs());
+        tissueDistributions.forEach(x -> x.setPhenotypingStage(phenotypingStage));
+        phenotypingStage.setTissueDistributions(tissueDistributions);
     }
 
     private StatusTransitionDTO buildStatusTransitionDTO(PhenotypingStage phenotypingStage) {

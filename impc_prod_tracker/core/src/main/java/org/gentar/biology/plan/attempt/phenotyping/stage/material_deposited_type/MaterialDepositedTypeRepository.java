@@ -3,4 +3,5 @@ package org.gentar.biology.plan.attempt.phenotyping.stage.material_deposited_typ
 import org.springframework.data.repository.CrudRepository;
 
 public interface MaterialDepositedTypeRepository extends CrudRepository<MaterialDepositedType, Long> {
+    MaterialDepositedType findByNameIgnoreCase(String name);
 }

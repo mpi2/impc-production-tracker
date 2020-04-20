@@ -25,11 +25,9 @@ public class PhenotypingStageDTO
 
     private String phenotypingTypeName;
 
-    @JsonInclude(JsonInclude.Include.NON_NULL)
     @JsonProperty("statusDates")
     private List<StatusStampsDTO> statusStampsDTOS;
 
-    @JsonInclude(JsonInclude.Include.NON_NULL)
     @JsonProperty("tissueDistribution")
     private List<TissueDistributionDTO> tissueDistributionCentreDTOs;
 
