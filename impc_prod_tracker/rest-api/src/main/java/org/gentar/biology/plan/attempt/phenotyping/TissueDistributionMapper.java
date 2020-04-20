@@ -3,6 +3,7 @@ package org.gentar.biology.plan.attempt.phenotyping;
 import org.gentar.EntityMapper;
 import org.gentar.Mapper;
 import org.gentar.biology.plan.attempt.phenotyping.stage.tissue_distribution.TissueDistribution;
+import org.gentar.organization.work_unit.WorkUnitMapper;
 import org.springframework.stereotype.Component;
 
 import java.util.*;
@@ -11,10 +12,14 @@ import java.util.*;
 public class TissueDistributionMapper implements Mapper<TissueDistribution, TissueDistributionDTO>
 {
     private EntityMapper entityMapper;
+    private WorkUnitMapper workUnitMapper;
+    private MaterialDepositedTypeMapper materialDepositedTypeMapper;
 
-    public TissueDistributionMapper(EntityMapper entityMapper)
+    public TissueDistributionMapper(EntityMapper entityMapper, WorkUnitMapper workUnitMapper, MaterialDepositedTypeMapper materialDepositedTypeMapper)
     {
         this.entityMapper = entityMapper;
+        this.workUnitMapper = workUnitMapper;
+        this.materialDepositedTypeMapper = materialDepositedTypeMapper;
     }
 
     @Override
@@ -36,7 +41,10 @@ public class TissueDistributionMapper implements Mapper<TissueDistribution, Tiss
     @Override
     public TissueDistribution toEntity(TissueDistributionDTO dto)
     {
-        return entityMapper.toTarget(dto, TissueDistribution.class);
+        TissueDistribution tissueDistribution = entityMapper.toTarget(dto, TissueDistribution.class);
+        tissueDistribution.setMaterialDepositedType(materialDepositedTypeMapper.toEntity(dto.getMaterialDepositedTypeName()));
+        tissueDistribution.setWorkUnit(workUnitMapper.toEntity(dto.getWorkUnitName()));
+        return tissueDistribution;
     }
 
     @Override

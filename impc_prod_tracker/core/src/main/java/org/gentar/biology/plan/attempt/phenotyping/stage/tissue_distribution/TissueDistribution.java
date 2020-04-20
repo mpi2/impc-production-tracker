@@ -22,6 +22,7 @@ public class TissueDistribution extends BaseEntity
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "tissueDistributionSeq")
     private Long id;
 
+    @NotNull
     @ManyToOne(targetEntity = PhenotypingStage.class)
     private PhenotypingStage phenotypingStage;
 
@@ -30,10 +31,10 @@ public class TissueDistribution extends BaseEntity
     private LocalDate endDate;
 
     @NotNull
-    @ManyToOne
+    @ManyToOne(targetEntity = MaterialDepositedType.class)
     private MaterialDepositedType materialDepositedType;
 
     @NotNull
-    @ManyToOne
+    @ManyToOne(targetEntity = WorkUnit.class)
     private WorkUnit workUnit;
 }
