@@ -17,46 +17,30 @@ package org.gentar.biology.plan.engine.processors;
 
 import org.gentar.biology.plan.Plan;
 import org.gentar.biology.plan.engine.PlanStateSetter;
-import org.gentar.biology.status.Status;
-import org.gentar.biology.status.StatusService;
+import org.gentar.statemachine.AbstractProcessor;
 import org.gentar.statemachine.ProcessData;
-import org.gentar.statemachine.ProcessEvent;
-import org.gentar.statemachine.Processor;
 import org.springframework.stereotype.Component;
 
 /**
  * Class with the logic to move a Plan back to "Micro-Injection in Process" after being aborted.
  */
 @Component
-public class PlanAbortReverserProcessor implements Processor
+public class PlanAbortReverserProcessor extends AbstractProcessor
 {
-    private PlanStateSetter planStateSetter;
-
     public PlanAbortReverserProcessor(PlanStateSetter planStateSetter)
     {
-        this.planStateSetter = planStateSetter;
+        super(planStateSetter);
     }
 
     @Override
-    public ProcessData process(ProcessData data)
+    protected boolean canExecuteTransition(ProcessData entity)
     {
-        reverseAbortion((Plan)data);
-        return data;
+        return canRevertAbortion((Plan) entity);
     }
 
     private boolean canRevertAbortion(Plan plan)
     {
         // Put here the needed validation before reverting an abortion.
         return true;
-    }
-
-    private void reverseAbortion(Plan plan)
-    {
-        if (canRevertAbortion(plan))
-        {
-            ProcessEvent processEvent = plan.getEvent();
-            String statusName = processEvent.getEndState().getInternalName();
-            planStateSetter.setStatusByName(plan, statusName);
-        }
     }
 }

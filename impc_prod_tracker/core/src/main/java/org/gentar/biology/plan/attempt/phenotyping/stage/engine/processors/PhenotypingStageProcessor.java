@@ -1,31 +1,23 @@
 package org.gentar.biology.plan.attempt.phenotyping.stage.engine.processors;
 
-import org.gentar.biology.plan.attempt.phenotyping.stage.PhenotypingStage;
-import org.gentar.biology.status.Status;
-import org.gentar.biology.status.StatusService;
+import org.gentar.biology.plan.attempt.phenotyping.PhenotypingStageStateSetter;
+import org.gentar.statemachine.AbstractProcessor;
 import org.gentar.statemachine.ProcessData;
-import org.gentar.statemachine.ProcessEvent;
-import org.gentar.statemachine.Processor;
 import org.springframework.stereotype.Component;
 
 @Component
-public class PhenotypingStageProcessor implements Processor
+public class PhenotypingStageProcessor extends AbstractProcessor
 {
-    private StatusService statusService;
-
-    public PhenotypingStageProcessor(StatusService statusService)
+    public PhenotypingStageProcessor(
+        PhenotypingStageStateSetter phenotypingStageStateSetter)
     {
-        this.statusService = statusService;
+        super(phenotypingStageStateSetter);
     }
 
     @Override
-    public ProcessData process(ProcessData data)
+    protected boolean canExecuteTransition(ProcessData entity)
     {
-        ProcessEvent processEvent = data.getEvent();
-        String statusName = processEvent.getEndState().getInternalName();
-        Status newStatus = statusService.getStatusByName(statusName);
-        ((PhenotypingStage)data).setStatus(newStatus);
-        return data;
+        return false;
     }
 }
 
