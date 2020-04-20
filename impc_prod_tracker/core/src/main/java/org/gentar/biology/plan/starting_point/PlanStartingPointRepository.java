@@ -1,4 +1,4 @@
-package org.gentar.biology.plan.plan_starting_point;
+package org.gentar.biology.plan.starting_point;
 
 import org.springframework.data.repository.CrudRepository;
 

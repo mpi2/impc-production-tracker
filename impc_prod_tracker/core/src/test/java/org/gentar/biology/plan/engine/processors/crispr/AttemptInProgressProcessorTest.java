@@ -3,8 +3,9 @@ package org.gentar.biology.plan.engine.processors.crispr;
 import org.gentar.biology.plan.Plan;
 import org.gentar.biology.plan.attempt.crispr.CrisprAttempt;
 import org.gentar.biology.plan.engine.PlanStateSetter;
-import org.gentar.biology.plan.engine.events.CrisprProductionPlanEvent;
-import org.gentar.biology.plan.engine.state.CrisprProductionPlanState;
+import org.gentar.biology.plan.engine.crispr.processors.AttemptInProgressProcessor;
+import org.gentar.biology.plan.engine.crispr.CrisprProductionPlanEvent;
+import org.gentar.biology.plan.engine.crispr.CrisprProductionPlanState;
 import org.gentar.test_util.PlanBuilder;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -18,16 +19,16 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
 @ExtendWith(MockitoExtension.class)
-class CrisprPlanAttemptInProgressProcessorTest
+class AttemptInProgressProcessorTest
 {
-    private CrisprPlanAttemptInProgressProcessor testInstance;
+    private AttemptInProgressProcessor testInstance;
     @Mock
     private PlanStateSetter planStateSetter;
 
     @BeforeEach
     public void setup()
     {
-        testInstance = new CrisprPlanAttemptInProgressProcessor(planStateSetter);
+        testInstance = new AttemptInProgressProcessor(planStateSetter);
     }
 
     @Test

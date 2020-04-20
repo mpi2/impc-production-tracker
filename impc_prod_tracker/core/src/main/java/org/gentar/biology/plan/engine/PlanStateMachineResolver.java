@@ -3,7 +3,7 @@ package org.gentar.biology.plan.engine;
 import org.gentar.biology.plan.Plan;
 import org.gentar.biology.plan.attempt.AttemptTypes;
 import org.gentar.biology.plan.engine.events.BreedingPlanEvent;
-import org.gentar.biology.plan.engine.events.CrisprProductionPlanEvent;
+import org.gentar.biology.plan.engine.crispr.CrisprProductionPlanEvent;
 import org.gentar.biology.plan.engine.events.PhenotypePlanEvent;
 import org.gentar.exceptions.SystemOperationFailedException;
 import org.gentar.statemachine.ProcessData;

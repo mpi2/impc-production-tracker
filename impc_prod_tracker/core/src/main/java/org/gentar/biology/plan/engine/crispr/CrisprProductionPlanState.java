@@ -1,4 +1,4 @@
-package org.gentar.biology.plan.engine.state;
+package org.gentar.biology.plan.engine.crispr;
 
 import org.gentar.statemachine.EnumStateHelper;
 import org.gentar.statemachine.ProcessState;
