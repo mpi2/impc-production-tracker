@@ -12,11 +12,7 @@ import org.gentar.biology.status.StatusService;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Class in charge of setting/updating the summary status in a plan, as well as recording that
@@ -37,7 +33,7 @@ public class PlanSummaryStatusUpdater
         List<Status> statuses = getChildrenStatus(plan);
         statuses.add(plan.getStatus());
         Status mostAdvancedStatus = statuses
-            .stream()
+            .stream().filter(Objects::nonNull)
             .max(Comparator.comparing(Status::getOrdering))
             .orElse(null);
         setSummaryStatus(plan, mostAdvancedStatus);

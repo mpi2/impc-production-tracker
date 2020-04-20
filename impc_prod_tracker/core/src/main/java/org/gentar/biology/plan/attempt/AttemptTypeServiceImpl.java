@@ -8,7 +8,7 @@ public class AttemptTypeServiceImpl implements AttemptTypeService
 {
     private AttemptTypeRepository attemptTypeRepository;
 
-    public AttemptTypeServiceImpl(AttemptTypeRepository attemptTypeRepository)
+    public AttemptTypeServiceImpl (AttemptTypeRepository attemptTypeRepository)
     {
         this.attemptTypeRepository = attemptTypeRepository;
     }
@@ -16,6 +16,6 @@ public class AttemptTypeServiceImpl implements AttemptTypeService
     @Cacheable("attemptTypes")
     public AttemptType getAttemptTypeByName(String attemptTypeName)
     {
-        return attemptTypeRepository.getFirstByNameIgnoreCase(attemptTypeName);
+        return attemptTypeRepository.findByNameIgnoreCase(attemptTypeName);
     }
 }

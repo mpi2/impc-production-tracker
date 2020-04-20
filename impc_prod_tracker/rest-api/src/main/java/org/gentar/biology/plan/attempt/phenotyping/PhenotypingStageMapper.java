@@ -2,6 +2,7 @@ package org.gentar.biology.plan.attempt.phenotyping;
 
 import org.gentar.EntityMapper;
 import org.gentar.Mapper;
+import org.gentar.biology.plan.attempt.crispr.guide.Guide;
 import org.gentar.biology.plan.attempt.phenotyping.stage.PhenotypingStage;
 import org.gentar.biology.plan.attempt.phenotyping.stage.PhenotypingStageTypes;
 import org.gentar.biology.plan.attempt.phenotyping.stage.engine.events.EarlyAdultEvent;
@@ -13,6 +14,7 @@ import org.gentar.biology.plan.attempt.phenotyping.stage.engine.state.EarlyHaplo
 import org.gentar.biology.plan.attempt.phenotyping.stage.engine.state.LateAdultPhenotypingStageState;
 import org.gentar.biology.plan.attempt.phenotyping.stage.engine.state.LateHaploessentialPhenotypingStageState;
 import org.gentar.biology.plan.attempt.phenotyping.stage.status_stamp.PhenotypingStageStatusStamp;
+import org.gentar.biology.plan.attempt.phenotyping.stage.tissue_distribution.TissueDistribution;
 import org.gentar.biology.plan.attempt.phenotyping.stage.type.PhenotypingStageType;
 import org.gentar.biology.status.StatusMapper;
 import org.gentar.biology.status_stamps.StatusStampsDTO;
@@ -74,29 +76,42 @@ public class PhenotypingStageMapper implements Mapper<PhenotypingStage, Phenotyp
     public PhenotypingStage toEntity(PhenotypingStageDTO dto) {
         PhenotypingStage phenotypingStage = entityMapper.toTarget(dto, PhenotypingStage.class);
         setPhenotypingStageType(phenotypingStage, dto);
-        setStatus(phenotypingStage, dto);
         setTissueDistributionCentre(phenotypingStage, dto);
+
+        // TODO check this part. Add the first status programmatically.
+        if (phenotypingStage.getStatus() == null)
+        {
+            if (phenotypingStage.getPhenotypingStageType().getId() == 1)
+            {
+                phenotypingStage.setStatus(statusMapper.toEntity("Phenotyping Production Registered"));
+            } else if (phenotypingStage.getPhenotypingStageType().getId() == 2)
+            {
+                phenotypingStage.setStatus(statusMapper.toEntity("Registered For Late Adult Phenotyping Production"));
+            }
+        }
+
         return phenotypingStage;
+    }
+
+    @Override
+    public Set<PhenotypingStage> toEntities(Collection<PhenotypingStageDTO> dtos) {
+        Set<PhenotypingStage> phenotypingStages = new HashSet<>();
+        if (dtos != null)
+        {
+            dtos.forEach(phenotypingStageDTO -> phenotypingStages.add(toEntity(phenotypingStageDTO)));
+        }
+
+        return phenotypingStages;
     }
 
     private void setPhenotypingStageType(PhenotypingStage phenotypingStage, PhenotypingStageDTO phenotypingStageDTO) {
         phenotypingStage.setPhenotypingStageType(phenotypeStageTypeMapper.toEntity(phenotypingStageDTO.getPhenotypingTypeName()));
     }
 
-    private void setStatus(PhenotypingStage phenotypingStage, PhenotypingStageDTO phenotypingStageDTO) {
-        phenotypingStage.setStatus(statusMapper.toEntity(phenotypingStageDTO.getStatusName()));
-    }
-
     private void setTissueDistributionCentre(PhenotypingStage phenotypingStage, PhenotypingStageDTO phenotypingStageDTO) {
 //        TissueDistribution tissueDistributions = tissueDistributionMapper.toEntities(phenotypingStageDTO.getTissueDistributionCentreDTOs());
 //        phenotypingStage.setTissueDistributions(tissueDistributions);
     }
-
-    @Override
-    public Collection<PhenotypingStage> toEntities(Collection<PhenotypingStageDTO> dtos) {
-        return null;
-    }
-
 
     private StatusTransitionDTO buildStatusTransitionDTO(PhenotypingStage phenotypingStage) {
         StatusTransitionDTO statusTransitionDTO = new StatusTransitionDTO();

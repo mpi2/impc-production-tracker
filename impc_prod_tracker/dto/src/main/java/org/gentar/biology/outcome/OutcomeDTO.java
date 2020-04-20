@@ -17,6 +17,7 @@ import java.util.List;
 public class OutcomeDTO
 {
     private Long id;
+
     @JsonIgnore
     private Long attemptId;
 
@@ -26,7 +27,6 @@ public class OutcomeDTO
 
     private String outcomeTypeName;
 
-    @JsonInclude(JsonInclude.Include.NON_NULL)
     @JsonProperty("mutations")
     private List<MutationDTO> mutationDTOS;
 

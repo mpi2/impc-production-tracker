@@ -16,7 +16,6 @@
 package org.gentar.biology.plan.attempt.crispr;
 
 import org.gentar.Mapper;
-import org.gentar.biology.plan.production.crispr_attempt.CrisprAttemptDTO;
 import org.gentar.biology.strain.StrainMapper;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
@@ -134,6 +133,7 @@ public class CrisprAttemptMapper implements Mapper<CrisprAttempt, CrisprAttemptD
 
     private void setReagentsToEntity(CrisprAttempt crisprAttempt, CrisprAttemptDTO crisprAttemptDTO)
     {
+        // TODO reagents mapper
         Set<CrisprAttemptReagent> crisprAttemptReagents = new HashSet<>();
         crisprAttemptReagents.forEach(x -> x.setCrisprAttempt(crisprAttempt));
         crisprAttempt.setCrisprAttemptReagents(crisprAttemptReagents);

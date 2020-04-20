@@ -3,6 +3,7 @@ package org.gentar.biology.plan.attempt.phenotyping;
 import lombok.*;
 import org.gentar.BaseEntity;
 import org.gentar.biology.plan.Plan;
+import org.gentar.biology.plan.attempt.crispr.guide.Guide;
 import org.gentar.biology.plan.attempt.phenotyping.stage.PhenotypingStage;
 import org.gentar.biology.strain.Strain;
 import javax.persistence.*;
@@ -22,11 +23,9 @@ public class PhenotypingAttempt extends BaseEntity
     @MapsId
     private Plan plan;
 
-    private Long imitsPhenotypeAttemptId;
-
-    private Long imitsPhenotypingProductionId;
-
-    private Long imitsParentColonyId;
+    private Long imitsPhenotypeAttempt;
+    private Long imitsPhenotypingProduction;
+    private Long imitsParentColony;
 
     @NotNull
     @Column(unique = true)
@@ -38,7 +37,6 @@ public class PhenotypingAttempt extends BaseEntity
 
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
-    @OneToMany
-    @JoinColumn(name = "plan_id")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "phenotypingAttempt", orphanRemoval=true)
     private Set<PhenotypingStage> phenotypingStages;
 }

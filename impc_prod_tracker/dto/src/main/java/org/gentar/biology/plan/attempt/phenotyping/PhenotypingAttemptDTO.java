@@ -1,10 +1,10 @@
 package org.gentar.biology.plan.attempt.phenotyping;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
-import org.gentar.biology.outcome.OutcomeDTO;
 
 import java.util.List;
 
@@ -12,26 +12,25 @@ import java.util.List;
 @RequiredArgsConstructor
 public class PhenotypingAttemptDTO
 {
+    @JsonIgnore
     private Long id;
 
-    private String pin;
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    @JsonProperty("imitsPhenotypeAttemptId")
+    private Long imitsPhenotypeAttempt;
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    private Long imitsPhenotypeAttemptId;
+    @JsonProperty("imitsPhenotypingProductionId")
+    private Long imitsPhenotypingProduction;
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    private Long imitsPhenotypingProductionId;
-
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    private Long imitsParentColonyId;
+    @JsonProperty("imitsParentColonyId")
+    private Long imitsParentColony;
 
     private String phenotypingExternalRef;
 
     @JsonProperty("phenotypingBackgroundStrainName")
     private String strainName;
-
-    @JsonProperty("outcomeDetails")
-    private OutcomeDTO outcomeDTO;
 
     @JsonProperty("phenotypingStageDetails")
     private List<PhenotypingStageDTO> phenotypingStageDTOs;

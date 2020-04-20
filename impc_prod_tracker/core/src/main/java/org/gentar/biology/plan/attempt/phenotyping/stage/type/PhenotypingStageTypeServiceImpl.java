@@ -14,6 +14,6 @@ public class PhenotypingStageTypeServiceImpl implements PhenotypingStageTypeServ
 
     public PhenotypingStageType getPhenotypingStageTypeByName(String name)
     {
-        return phenotypingStageTypeRepository.findFirstByNameIgnoreCase(name);
+        return phenotypingStageTypeRepository.findByNameIgnoreCase(name);
     }
 }

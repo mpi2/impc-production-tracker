@@ -30,7 +30,6 @@ public class AttemptTypeMapper implements Mapper<AttemptType, String>
         {
             throw new UserOperationFailedException(String.format(ATTEMPT_TYPE_NOT_FOUND_ERROR, attemptType));
         }
-
         return attemptType;
     }
 }

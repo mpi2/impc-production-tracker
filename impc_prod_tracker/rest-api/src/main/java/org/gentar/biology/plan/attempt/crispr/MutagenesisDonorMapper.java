@@ -2,7 +2,6 @@ package org.gentar.biology.plan.attempt.crispr;
 
 import org.gentar.Mapper;
 import org.gentar.exceptions.UserOperationFailedException;
-import org.gentar.biology.plan.production.crispr_attempt.MutagenesisDonorDTO;
 import org.gentar.EntityMapper;
 import org.springframework.stereotype.Component;
 import org.gentar.biology.plan.attempt.crispr.mutagenesis_donor.MutagenesisDonor;

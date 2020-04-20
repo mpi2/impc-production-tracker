@@ -2,7 +2,6 @@ package org.gentar.biology.plan.attempt.crispr;
 
 import org.gentar.Mapper;
 import org.gentar.biology.plan.attempt.crispr.genotype_primer.GenotypePrimer;
-import org.gentar.biology.plan.production.crispr_attempt.GenotypePrimerDTO;
 import org.gentar.EntityMapper;
 import org.springframework.stereotype.Component;
 import java.util.Collection;
