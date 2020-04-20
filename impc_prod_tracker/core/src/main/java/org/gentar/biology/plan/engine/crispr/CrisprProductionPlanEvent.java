@@ -1,7 +1,7 @@
-package org.gentar.biology.plan.engine.events;
+package org.gentar.biology.plan.engine.crispr;
 
-import org.gentar.biology.plan.engine.processors.crispr.CrisprPlanAttemptInProgressProcessor;
-import org.gentar.biology.plan.engine.state.CrisprProductionPlanState;
+import org.gentar.biology.plan.engine.crispr.processors.AttemptInProgressProcessor;
+import org.gentar.biology.plan.engine.crispr.processors.EmbryosObtainedProcessor;
 import org.gentar.biology.plan.engine.processors.PlanAbortProcessor;
 import org.gentar.biology.plan.engine.processors.PlanAbortReverserProcessor;
 import org.gentar.statemachine.ProcessEvent;
@@ -49,7 +49,7 @@ public enum CrisprProductionPlanEvent implements ProcessEvent
             @Override
             public Class<? extends Processor> getNextStepProcessor()
             {
-                return CrisprPlanAttemptInProgressProcessor.class;
+                return AttemptInProgressProcessor.class;
             }
         },
     changeToEmbryosObtained(
@@ -62,7 +62,7 @@ public enum CrisprProductionPlanEvent implements ProcessEvent
             @Override
             public Class<? extends Processor> getNextStepProcessor()
             {
-                return null;
+                return EmbryosObtainedProcessor.class;
             }
         },
     changeToGlt(

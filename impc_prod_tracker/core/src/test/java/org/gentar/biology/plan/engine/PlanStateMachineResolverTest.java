@@ -2,7 +2,7 @@ package org.gentar.biology.plan.engine;
 
 import org.gentar.biology.plan.Plan;
 import org.gentar.biology.plan.attempt.AttemptTypes;
-import org.gentar.biology.plan.engine.events.CrisprProductionPlanEvent;
+import org.gentar.biology.plan.engine.crispr.CrisprProductionPlanEvent;
 import org.gentar.biology.plan.type.PlanTypes;
 import org.gentar.statemachine.ProcessEvent;
 import org.gentar.test_util.PlanBuilder;

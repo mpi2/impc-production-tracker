@@ -2,8 +2,8 @@ package org.gentar.statemachine;
 
 import org.gentar.biology.plan.Plan;
 import org.gentar.biology.plan.engine.PlanStateSetter;
-import org.gentar.biology.plan.engine.events.CrisprProductionPlanEvent;
-import org.gentar.biology.plan.engine.state.CrisprProductionPlanState;
+import org.gentar.biology.plan.engine.crispr.CrisprProductionPlanEvent;
+import org.gentar.biology.plan.engine.crispr.CrisprProductionPlanState;
 import org.gentar.exceptions.SystemOperationFailedException;
 import org.gentar.test_util.PlanBuilder;
 import org.junit.jupiter.api.BeforeEach;

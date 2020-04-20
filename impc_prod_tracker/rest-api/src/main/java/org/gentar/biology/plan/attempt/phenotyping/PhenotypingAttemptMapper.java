@@ -4,9 +4,8 @@ import org.gentar.EntityMapper;
 import org.gentar.Mapper;
 import org.gentar.biology.outcome.Outcome;
 import org.gentar.biology.outcome.OutcomeMapper;
-import org.gentar.biology.plan.attempt.phenotyping.stage.PhenotypingStage;
 import org.gentar.biology.strain.StrainMapper;
-import org.gentar.biology.plan.plan_starting_point.PlanStartingPoint;
+import org.gentar.biology.plan.starting_point.PlanStartingPoint;
 import org.springframework.stereotype.Component;
 
 import java.util.Set;
