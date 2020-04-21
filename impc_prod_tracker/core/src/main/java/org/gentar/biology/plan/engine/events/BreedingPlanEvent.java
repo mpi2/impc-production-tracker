@@ -1,7 +1,6 @@
 package org.gentar.biology.plan.engine.events;
 
 import org.gentar.biology.plan.engine.processors.BreedingPlanAbortProcessor;
-import org.gentar.biology.plan.engine.processors.BreedingPlanAbortReverserProcessor;
 import org.gentar.biology.plan.engine.state.BreedingPlanState;
 import org.gentar.statemachine.ProcessEvent;
 import org.gentar.statemachine.ProcessState;
@@ -13,8 +12,8 @@ import java.util.List;
 
 public enum BreedingPlanEvent implements ProcessEvent 
 {
-    breedingStarted(
-            "Breeding plan is started.",
+    updateToBreedingStarted(
+            "Update to breeding plan is started.",
             BreedingPlanState.PlanCreated,
             BreedingPlanState.BreedingStarted,
             StateMachineConstants.NOT_TRIGGERED_BY_USER,
@@ -26,8 +25,8 @@ public enum BreedingPlanEvent implements ProcessEvent
                 return null;
             }
         },
-    breedingComplete(
-            "Breeding plan is complete.",
+    updateToBreedingComplete(
+            "Update to breeding plan is complete.",
             BreedingPlanState.BreedingStarted,
             BreedingPlanState.BreedingComplete,
             StateMachineConstants.TRIGGERED_BY_USER,
@@ -39,19 +38,6 @@ public enum BreedingPlanEvent implements ProcessEvent
                 return null;
             }
         },
-    reverseAbortion(
-            "Reverse abortion",
-            BreedingPlanState.BreedingAborted,
-            BreedingPlanState.BreedingStarted,
-            StateMachineConstants.TRIGGERED_BY_USER,
-            null)
-            {
-                @Override
-                public Class<? extends Processor> getNextStepProcessor()
-                {
-                    return BreedingPlanAbortReverserProcessor.class;
-                }
-            },
     abortWhenCreated(
             "Abort a breeding plan that has been created",
             BreedingPlanState.PlanCreated,
