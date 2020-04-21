@@ -15,9 +15,9 @@
  */
 package org.gentar.biology.plan.attempt.crispr;
 
+import org.gentar.EntityMapper;
 import org.gentar.Mapper;
 import org.gentar.biology.strain.StrainMapper;
-import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
 import org.gentar.biology.plan.attempt.crispr.assay.Assay;
 import org.gentar.biology.plan.attempt.crispr.reagent.CrisprAttemptReagent;
@@ -32,7 +32,7 @@ import java.util.Set;
 @Component
 public class CrisprAttemptMapper implements Mapper<CrisprAttempt, CrisprAttemptDTO>
 {
-    private ModelMapper modelMapper;
+    private EntityMapper entityMapper;
     private GuideMapper guideMapper;
     private NucleaseMapper nucleaseMapper;
     private StrainMapper strainMapper;
@@ -42,7 +42,7 @@ public class CrisprAttemptMapper implements Mapper<CrisprAttempt, CrisprAttemptD
     private CrisprAttemptService crisprAttemptService;
 
     public CrisprAttemptMapper(
-        ModelMapper modelMapper,
+        EntityMapper entityMapper,
         GuideMapper guideMapper,
         NucleaseMapper nucleaseMapper,
         StrainMapper strainMapper,
@@ -51,7 +51,7 @@ public class CrisprAttemptMapper implements Mapper<CrisprAttempt, CrisprAttemptD
         AssayMapper assayMapper,
         CrisprAttemptService crisprAttemptService)
     {
-        this.modelMapper = modelMapper;
+        this.entityMapper = entityMapper;
         this.guideMapper = guideMapper;
         this.nucleaseMapper = nucleaseMapper;
         this.strainMapper = strainMapper;
@@ -66,7 +66,7 @@ public class CrisprAttemptMapper implements Mapper<CrisprAttempt, CrisprAttemptD
         CrisprAttemptDTO crisprAttemptDTO = null;
         if (crisprAttempt != null)
         {
-            crisprAttemptDTO = modelMapper.map(crisprAttempt, CrisprAttemptDTO.class);
+            crisprAttemptDTO = entityMapper.toTarget(crisprAttempt, CrisprAttemptDTO.class);
             crisprAttemptDTO.setGuideDTOS(guideMapper.toDtos(crisprAttempt.getGuides()));
             crisprAttemptDTO.setGenotypePrimerDTOS(
                 genotypePrimerMapper.toDtos(crisprAttempt.getPrimers()));
@@ -79,7 +79,7 @@ public class CrisprAttemptMapper implements Mapper<CrisprAttempt, CrisprAttemptD
 
     public CrisprAttempt toEntity(CrisprAttemptDTO crisprAttemptDTO)
     {
-        CrisprAttempt crisprAttempt = modelMapper.map(crisprAttemptDTO, CrisprAttempt.class);
+        CrisprAttempt crisprAttempt = entityMapper.toTarget(crisprAttemptDTO, CrisprAttempt.class);
         setAssay(crisprAttempt, crisprAttemptDTO);
         setStrain(crisprAttempt, crisprAttemptDTO);
         setGuidesToEntity(crisprAttempt, crisprAttemptDTO);

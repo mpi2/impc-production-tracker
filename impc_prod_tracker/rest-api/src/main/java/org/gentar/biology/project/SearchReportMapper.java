@@ -1,11 +1,11 @@
 package org.gentar.biology.project;
 
+import org.gentar.EntityMapper;
 import org.gentar.Mapper;
 import org.gentar.biology.project.search.SearchReport;
 import org.gentar.common.filters.FilterDTO;
 import org.gentar.biology.project.search.SearchReportDTO;
 import org.gentar.biology.project.search.SearchResultDTO;
-import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
 import java.util.ArrayList;
 import java.util.List;
@@ -15,18 +15,18 @@ import java.util.stream.Collectors;
 @Component
 public class SearchReportMapper implements Mapper<SearchReport, SearchReportDTO>
 {
-    private ModelMapper modelMapper;
+    private EntityMapper entityMapper;
     private SearchResultMapper searchResultMapper;
 
-    public SearchReportMapper(ModelMapper modelMapper, SearchResultMapper searchResultMapper)
+    public SearchReportMapper(EntityMapper entityMapper, SearchResultMapper searchResultMapper)
     {
-        this.modelMapper = modelMapper;
+        this.entityMapper = entityMapper;
         this.searchResultMapper = searchResultMapper;
     }
 
     public SearchReportDTO toDto(SearchReport searchReport)
     {
-        SearchReportDTO searchReportDTO = modelMapper.map(searchReport, SearchReportDTO.class);
+        SearchReportDTO searchReportDTO = entityMapper.toTarget(searchReport, SearchReportDTO.class);
         List<SearchResultDTO> searchResultDTOS =
             searchReport.getResults().stream()
                 .map(x -> searchResultMapper.toDto(x))

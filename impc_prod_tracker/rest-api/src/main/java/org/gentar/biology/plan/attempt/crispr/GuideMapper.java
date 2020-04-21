@@ -1,7 +1,7 @@
 package org.gentar.biology.plan.attempt.crispr;
 
+import org.gentar.EntityMapper;
 import org.gentar.Mapper;
-import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
 import org.gentar.biology.plan.attempt.crispr.guide.Guide;
 
@@ -14,16 +14,16 @@ import java.util.Set;
 @Component
 public class GuideMapper implements Mapper<Guide, GuideDTO>
 {
-    private ModelMapper modelMapper;
+    private EntityMapper entityMapper;
 
-    public GuideMapper(ModelMapper modelMapper)
+    public GuideMapper(EntityMapper entityMapper)
     {
-        this.modelMapper = modelMapper;
+        this.entityMapper = entityMapper;
     }
 
     public GuideDTO toDto(Guide guide)
     {
-        GuideDTO guideDTO = modelMapper.map(guide, GuideDTO.class);
+        GuideDTO guideDTO = entityMapper.toTarget(guide, GuideDTO.class);
         return guideDTO;
     }
 
@@ -39,7 +39,7 @@ public class GuideMapper implements Mapper<Guide, GuideDTO>
 
     public Guide toEntity(GuideDTO guideDTO)
     {
-        Guide guide = modelMapper.map(guideDTO, Guide.class);
+        Guide guide = entityMapper.toTarget(guideDTO, Guide.class);
         return guide;
     }
 
