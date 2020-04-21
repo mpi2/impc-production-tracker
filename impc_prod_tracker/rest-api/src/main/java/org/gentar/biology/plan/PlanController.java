@@ -71,10 +71,7 @@ public class PlanController
         Plan planToBeCreated = planMapper.toEntity(planDTO);
         Plan planCreated = planService.createPlan(planToBeCreated);
 
-        System.out.println("Plan created => " + planCreated);
-
         PlanDTO planCreatedDTO = planMapper.toDto(planCreated);
-        System.out.println("Plan Created DTO => " + planCreatedDTO);
 
         return planCreatedDTO;
     }

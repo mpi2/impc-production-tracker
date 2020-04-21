@@ -47,7 +47,7 @@ public class CrisprAttemptDTO
     @JsonProperty("nucleases")
     private List<NucleaseDTO> nucleaseDTOS;
 
-    @JsonProperty("guidesAttributes")
+    @JsonProperty("guides")
     private List<GuideDTO> guideDTOS;
 
     @JsonProperty("mutagenesisDonors")

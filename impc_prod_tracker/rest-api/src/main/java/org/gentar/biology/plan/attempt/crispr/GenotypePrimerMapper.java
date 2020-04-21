@@ -31,25 +31,13 @@ public class GenotypePrimerMapper implements Mapper<GenotypePrimer, GenotypePrim
 
     public GenotypePrimer toEntity(GenotypePrimerDTO genotypePrimerDTO)
     {
-        GenotypePrimer genotypePrimer =
-            entityMapper.toTarget(genotypePrimerDTO, GenotypePrimer.class);
-        removeInvalidId(genotypePrimer);
+        GenotypePrimer genotypePrimer = entityMapper.toTarget(genotypePrimerDTO, GenotypePrimer.class);
         return genotypePrimer;
     }
 
     public Set<GenotypePrimer> toEntities(Collection<GenotypePrimerDTO> genotypePrimerDTOS)
     {
-        Set<GenotypePrimer> genotypePrimers =
-            new HashSet<>(entityMapper.toTargets(genotypePrimerDTOS, GenotypePrimer.class));
-        genotypePrimers.forEach(this::removeInvalidId);
+        Set<GenotypePrimer> genotypePrimers = new HashSet<>(entityMapper.toTargets(genotypePrimerDTOS, GenotypePrimer.class));
         return genotypePrimers;
-    }
-
-    private void removeInvalidId(GenotypePrimer genotypePrimer)
-    {
-        if (genotypePrimer.getId() < 0)
-        {
-            genotypePrimer.setId(null);
-        }
     }
 }

@@ -44,7 +44,6 @@ public class MutagenesisDonorMapper implements Mapper<MutagenesisDonor, Mutagene
         MutagenesisDonor mutagenesisDonor =
             entityMapper.toTarget(mutagenesisDonorDTO, MutagenesisDonor.class);
         setPreparationTypeToEntity(mutagenesisDonor, mutagenesisDonorDTO);
-        removeInvalidId(mutagenesisDonor);
         return mutagenesisDonor;
     }
 
@@ -72,14 +71,6 @@ public class MutagenesisDonorMapper implements Mapper<MutagenesisDonor, Mutagene
                 throw new UserOperationFailedException(errorMessage);
             }
             mutagenesisDonor.setPreparationType(preparationType);
-        }
-    }
-
-    private void removeInvalidId(MutagenesisDonor mutagenesisDonor)
-    {
-        if (mutagenesisDonor.getId() < 0)
-        {
-            mutagenesisDonor.setId(null);
         }
     }
 }
