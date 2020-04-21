@@ -137,18 +137,14 @@ class ProjectController
     {
         Project projectToBeCreated = projectDtoToEntityMapper.toEntity(projectCreationDTO);
         Project createdProject = projectService.createProject(projectToBeCreated);
-        System.out.println("Project created => " + createdProject);
 
         PlanDTO planDTO = projectCreationDTO.getPlanDTO();
         planDTO.setTpn(createdProject.getTpn());
         Plan planToBeCreated = planMapper.toEntity(planDTO);
         Plan planCreated = planService.createPlan(planToBeCreated);
-        System.out.println("Plan created => " + planCreated);
 
         ProjectCreationDTO projectCreatedDTO = projectEntityToDtoMapper.toDtoForProjectCreation(createdProject);
         projectCreatedDTO.setPlanDTO(planMapper.toDto(planCreated));
-        
-        System.out.println("Project Created DTO => " + projectCreatedDTO);
 
         return projectCreatedDTO;
     }

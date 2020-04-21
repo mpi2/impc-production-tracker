@@ -11,19 +11,20 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class MutagenesisDonorDTO
 {
+    @JsonIgnore
     private Long id;
 
     @JsonIgnore
     private Long attemptId;
 
-    @JsonProperty("vector_name")
+    @JsonProperty("vectorName")
     private String vectorName;
+
+    @JsonProperty("oligoSequenceFasta")
+    private String oligoSequenceFasta;
 
     private Double concentration;
 
-    @JsonProperty("preparation")
+    @JsonProperty("preparationTypeName")
     private String preparationTypeName;
-
-    @JsonProperty("oligoSequenceFa")
-    private String oligoSequenceFasta;
 }
