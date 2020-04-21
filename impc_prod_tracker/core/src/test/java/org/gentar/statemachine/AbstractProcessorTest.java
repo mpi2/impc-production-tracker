@@ -78,7 +78,7 @@ class AbstractProcessorTest
         Plan plan = PlanBuilder.getInstance()
             .withStatus(CrisprProductionPlanState.EmbryosObtained.getInternalName())
             .build();
-        plan.setEvent(CrisprProductionPlanEvent.changeToInProgress);
+        plan.setEvent(CrisprProductionPlanEvent.updateToInProgress);
 
         SystemOperationFailedException thrown = assertThrows(SystemOperationFailedException.class,
             () -> testInstance.process(plan),
@@ -86,7 +86,7 @@ class AbstractProcessorTest
         assertThat(
             "Not expected message",
             thrown.getExceptionDetail(),
-            is("Transition [changeToInProgress] cannot be executed because it goes from status " +
+            is("Transition [updateToInProgress] cannot be executed because it goes from status " +
                 "[Plan Created] to [Attempt In Progress] but current status in the entity [Plan]" +
                 " is [Embryos Obtained]"));
     }
@@ -97,14 +97,14 @@ class AbstractProcessorTest
         Plan plan = PlanBuilder.getInstance()
             .withStatus(CrisprProductionPlanState.PlanCreated.getInternalName())
             .build();
-        plan.setEvent(CrisprProductionPlanEvent.changeToInProgress);
+        plan.setEvent(CrisprProductionPlanEvent.updateToInProgress);
 
         testInstance.process(plan);
 
         verify(
             planStateSetter,
             times(1)).setStatusByName(any(Plan.class),
-            eq(CrisprProductionPlanEvent.changeToInProgress.getEndState().getInternalName()));
+            eq(CrisprProductionPlanEvent.updateToInProgress.getEndState().getInternalName()));
     }
 
     static class TestClass extends AbstractProcessor

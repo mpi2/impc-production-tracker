@@ -60,7 +60,7 @@ class GltProcessorTest
         verify(
             planStateSetter,
             times(1)).setStatusByName(any(Plan.class),
-            eq(CrisprProductionPlanEvent.changeToGlt.getEndState().getInternalName()));
+            eq(CrisprProductionPlanEvent.updateToGlt.getEndState().getInternalName()));
     }
 
     @Test
@@ -74,7 +74,7 @@ class GltProcessorTest
         verify(
             planStateSetter,
             times(1)).setStatusByName(any(Plan.class),
-            eq(CrisprProductionPlanEvent.changeToGlt.getEndState().getInternalName()));
+            eq(CrisprProductionPlanEvent.updateToGlt.getEndState().getInternalName()));
     }
 
     @Test
@@ -88,7 +88,7 @@ class GltProcessorTest
         verify(
             planStateSetter,
             times(1)).setStatusByName(any(Plan.class),
-            eq(CrisprProductionPlanEvent.changeToGlt.getEndState().getInternalName()));
+            eq(CrisprProductionPlanEvent.updateToGlt.getEndState().getInternalName()));
     }
 
     @Test
@@ -102,7 +102,7 @@ class GltProcessorTest
         verify(
             planStateSetter,
             times(1)).setStatusByName(any(Plan.class),
-            eq(CrisprProductionPlanEvent.changeToGlt.getEndState().getInternalName()));
+            eq(CrisprProductionPlanEvent.updateToGlt.getEndState().getInternalName()));
     }
 
     private Plan buildPlanReadyToMoveToGlt()
@@ -114,7 +114,7 @@ class GltProcessorTest
         Assay assay = new Assay();
         crisprAttempt.setAssay(assay);
         plan.setCrisprAttempt(crisprAttempt);
-        plan.setEvent(CrisprProductionPlanEvent.changeToGlt);
+        plan.setEvent(CrisprProductionPlanEvent.updateToGlt);
         return plan;
     }
 }
