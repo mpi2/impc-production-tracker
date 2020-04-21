@@ -17,5 +17,7 @@ package org.gentar.biology.plan.attempt.crispr.reagent;
 
 import org.springframework.data.repository.CrudRepository;
 
-public interface ReagentRepository extends CrudRepository<Reagent, Long> {
+public interface ReagentRepository extends CrudRepository<Reagent, Long>
+{
+    Reagent findByNameIgnoreCase(String name);
 }

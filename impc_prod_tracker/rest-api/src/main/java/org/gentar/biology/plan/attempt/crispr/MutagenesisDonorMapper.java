@@ -51,7 +51,9 @@ public class MutagenesisDonorMapper implements Mapper<MutagenesisDonor, Mutagene
     public Set<MutagenesisDonor> toEntities(Collection<MutagenesisDonorDTO> mutagenesisDonorDTOs)
     {
         Set<MutagenesisDonor> mutagenesisDonors = new HashSet<>();
-        mutagenesisDonorDTOs.forEach(x -> mutagenesisDonors.add(toEntity(x)));
+        if (mutagenesisDonorDTOs != null) {
+            mutagenesisDonorDTOs.forEach(x -> mutagenesisDonors.add(toEntity(x)));
+        }
         return mutagenesisDonors;
     }
 

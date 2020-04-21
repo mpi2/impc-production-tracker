@@ -20,6 +20,4 @@ import org.springframework.data.repository.CrudRepository;
 public interface StrainRepository extends CrudRepository<Strain, Long>
 {
     Strain findByNameIgnoreCase (String name);
-
-
 }

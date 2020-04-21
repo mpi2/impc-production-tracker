@@ -70,7 +70,7 @@ public class CrisprAttempt extends BaseEntity
 
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
-    @OneToOne(cascade=CascadeType.ALL, mappedBy = "crisprAttempt")
+    @OneToOne(cascade=CascadeType.ALL, mappedBy = "crisprAttempt", orphanRemoval=true)
     private Assay assay;
 
     @ManyToOne
