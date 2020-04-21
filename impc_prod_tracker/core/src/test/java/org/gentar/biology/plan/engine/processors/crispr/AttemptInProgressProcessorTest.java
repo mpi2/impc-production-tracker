@@ -48,13 +48,13 @@ class AttemptInProgressProcessorTest
         CrisprAttempt crisprAttempt = new CrisprAttempt();
         plan.setCrisprAttempt(crisprAttempt);
         crisprAttempt.setPlan(plan);
-        plan.setEvent(CrisprProductionPlanEvent.changeToInProgress);
+        plan.setEvent(CrisprProductionPlanEvent.updateToInProgress);
 
         testInstance.process(plan);
 
         verify(
             planStateSetter,
             times(1)).setStatusByName(any(Plan.class),
-            eq(CrisprProductionPlanEvent.changeToInProgress.getEndState().getInternalName()));
+            eq(CrisprProductionPlanEvent.updateToInProgress.getEndState().getInternalName()));
     }
 }

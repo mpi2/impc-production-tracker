@@ -69,14 +69,14 @@ class EmbryosObtainedProcessorTest
         crisprAttempt.setTotalEmbryosInjected(1);
         crisprAttempt.setTotalEmbryosSurvived(0);
         plan.setCrisprAttempt(crisprAttempt);
-        plan.setEvent(CrisprProductionPlanEvent.changeToEmbryosObtained);
+        plan.setEvent(CrisprProductionPlanEvent.updateToEmbryosObtained);
 
         testInstance.process(plan);
 
         verify(
             planStateSetter,
             times(1)).setStatusByName(any(Plan.class),
-            eq(CrisprProductionPlanEvent.changeToEmbryosObtained.getEndState().getInternalName()));
+            eq(CrisprProductionPlanEvent.updateToEmbryosObtained.getEndState().getInternalName()));
     }
 
     @Test
@@ -89,13 +89,13 @@ class EmbryosObtainedProcessorTest
         crisprAttempt.setTotalEmbryosInjected(0);
         crisprAttempt.setTotalEmbryosSurvived(1);
         plan.setCrisprAttempt(crisprAttempt);
-        plan.setEvent(CrisprProductionPlanEvent.changeToEmbryosObtained);
+        plan.setEvent(CrisprProductionPlanEvent.updateToEmbryosObtained);
 
         testInstance.process(plan);
 
         verify(
             planStateSetter,
             times(1)).setStatusByName(any(Plan.class),
-            eq(CrisprProductionPlanEvent.changeToEmbryosObtained.getEndState().getInternalName()));
+            eq(CrisprProductionPlanEvent.updateToEmbryosObtained.getEndState().getInternalName()));
     }
 }

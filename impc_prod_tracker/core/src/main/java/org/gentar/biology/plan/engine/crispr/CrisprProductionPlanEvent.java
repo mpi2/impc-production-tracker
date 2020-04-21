@@ -4,7 +4,6 @@ import org.gentar.biology.plan.engine.crispr.processors.AttemptInProgressProcess
 import org.gentar.biology.plan.engine.crispr.processors.EmbryosObtainedProcessor;
 import org.gentar.biology.plan.engine.crispr.processors.GltProcessor;
 import org.gentar.biology.plan.engine.processors.PlanAbortProcessor;
-import org.gentar.biology.plan.engine.processors.PlanAbortReverserProcessor;
 import org.gentar.statemachine.ProcessEvent;
 import org.gentar.statemachine.ProcessState;
 import org.gentar.statemachine.Processor;
@@ -40,8 +39,8 @@ public enum CrisprProductionPlanEvent implements ProcessEvent
                     return PlanAbortProcessor.class;
                 }
             },
-    changeToInProgress(
-            "Attempt in progress",
+    updateToInProgress(
+            "Update to attempt in progress",
             CrisprProductionPlanState.PlanCreated,
             CrisprProductionPlanState.AttemptInProgress,
             StateMachineConstants.NOT_TRIGGERED_BY_USER,
@@ -53,8 +52,8 @@ public enum CrisprProductionPlanEvent implements ProcessEvent
                 return AttemptInProgressProcessor.class;
             }
         },
-    changeToEmbryosObtained(
-            "Embryos obtained from the attempt",
+    updateToEmbryosObtained(
+            "Update to Embryos obtained from the attempt",
             CrisprProductionPlanState.AttemptInProgress,
             CrisprProductionPlanState.EmbryosObtained,
             StateMachineConstants.NOT_TRIGGERED_BY_USER,
@@ -66,8 +65,8 @@ public enum CrisprProductionPlanEvent implements ProcessEvent
                 return EmbryosObtainedProcessor.class;
             }
         },
-    changeToGlt(
-            "Germ line transmission obtained for the attempt",
+    updateToGlt(
+            "Update to Germ line transmission obtained for the attempt",
             CrisprProductionPlanState.EmbryosObtained,
             CrisprProductionPlanState.GLT,
             StateMachineConstants.NOT_TRIGGERED_BY_USER,
@@ -79,19 +78,6 @@ public enum CrisprProductionPlanEvent implements ProcessEvent
                 return GltProcessor.class;
             }
         },
-    reverseAbortion(
-            "Reverse abortion",
-            CrisprProductionPlanState.AttemptAborted,
-            CrisprProductionPlanState.PlanCreated,
-            StateMachineConstants.TRIGGERED_BY_USER,
-            null)
-            {
-                @Override
-                public Class<? extends Processor> getNextStepProcessor()
-                {
-                    return PlanAbortReverserProcessor.class;
-                }
-            },
     abortWhenEmbryosObtained(
             "Abort the plan after embryos obtained",
             CrisprProductionPlanState.EmbryosObtained,
