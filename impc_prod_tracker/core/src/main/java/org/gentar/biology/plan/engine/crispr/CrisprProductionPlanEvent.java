@@ -1,9 +1,10 @@
 package org.gentar.biology.plan.engine.crispr;
 
+import org.gentar.biology.plan.engine.crispr.processors.AbortGltProcessor;
 import org.gentar.biology.plan.engine.crispr.processors.AttemptInProgressProcessor;
 import org.gentar.biology.plan.engine.crispr.processors.EmbryosObtainedProcessor;
 import org.gentar.biology.plan.engine.crispr.processors.GltProcessor;
-import org.gentar.biology.plan.engine.processors.PlanAbortProcessor;
+import org.gentar.biology.plan.engine.processors.PlanAbortProcessorWithoutValidations;
 import org.gentar.statemachine.ProcessEvent;
 import org.gentar.statemachine.ProcessState;
 import org.gentar.statemachine.Processor;
@@ -23,7 +24,7 @@ public enum CrisprProductionPlanEvent implements ProcessEvent
                 @Override
                 public Class<? extends Processor> getNextStepProcessor()
                 {
-                    return PlanAbortProcessor.class;
+                    return PlanAbortProcessorWithoutValidations.class;
                 }
             },
     abortWhenCreated(
@@ -36,7 +37,7 @@ public enum CrisprProductionPlanEvent implements ProcessEvent
                 @Override
                 public Class<? extends Processor> getNextStepProcessor()
                 {
-                    return PlanAbortProcessor.class;
+                    return PlanAbortProcessorWithoutValidations.class;
                 }
             },
     updateToInProgress(
@@ -88,7 +89,7 @@ public enum CrisprProductionPlanEvent implements ProcessEvent
                 @Override
                 public Class<? extends Processor> getNextStepProcessor()
                 {
-                    return PlanAbortProcessor.class;
+                    return PlanAbortProcessorWithoutValidations.class;
                 }
             },
     abortWhenGLT(
@@ -101,7 +102,7 @@ public enum CrisprProductionPlanEvent implements ProcessEvent
                 @Override
                 public Class<? extends Processor> getNextStepProcessor()
                 {
-                    return PlanAbortProcessor.class;
+                    return AbortGltProcessor.class;
                 }
             };
 
@@ -117,17 +118,6 @@ public enum CrisprProductionPlanEvent implements ProcessEvent
         this.endState = endState;
         this.triggeredByUser = triggeredByUser;
         this.triggerNote = triggerNote;
-    }
-
-    public static CrisprProductionPlanEvent getEventByName(String name)
-    {
-        CrisprProductionPlanEvent[] productionPlanEvents = CrisprProductionPlanEvent.values();
-        for (CrisprProductionPlanEvent productionPlanEvent : productionPlanEvents)
-        {
-            if (productionPlanEvent.name().equalsIgnoreCase(name))
-                return productionPlanEvent;
-        }
-        return null;
     }
 
     @Override

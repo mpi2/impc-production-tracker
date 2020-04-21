@@ -133,14 +133,17 @@ public class HistoryServiceImpl<T> implements HistoryService<T>
     public History filterDetailsInNestedEntity(
         History history, String nestedEntityFieldName, String fieldName)
     {
-        List<HistoryDetail> details = history.getHistoryDetailSet();
-        if (details != null)
+        if (history != null)
         {
-            details = details.
-                stream().filter(x -> detailPassesFilter(x, nestedEntityFieldName, fieldName))
-                .collect(Collectors.toList());
+            List<HistoryDetail> details = history.getHistoryDetailSet();
+            if (details != null)
+            {
+                details = details.
+                    stream().filter(x -> detailPassesFilter(x, nestedEntityFieldName, fieldName))
+                    .collect(Collectors.toList());
+            }
+            history.setHistoryDetailSet(details);
         }
-        history.setHistoryDetailSet(details);
         return history;
     }
 

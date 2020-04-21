@@ -104,6 +104,11 @@ public class SystemEventsExecutor
     // Remove any event set in this class
     private void clearEvent(ProcessData entity)
     {
-        entity.setEvent(null);
+        String originalEventName = originalEvent == null ? "" : originalEvent.getName();
+        String lastEvent = entity.getEvent() == null ? "" : entity.getEvent().getName();
+        if (!originalEventName.equals(lastEvent))
+        {
+            entity.setEvent(null);
+        }
     }
 }
