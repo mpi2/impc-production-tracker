@@ -49,7 +49,6 @@ public class PhenotypingAttemptMapper implements Mapper<PhenotypingAttempt, Phen
     {
         PhenotypingAttempt phenotypingAttempt = entityMapper.toTarget(dto, PhenotypingAttempt.class);
         setStrain(phenotypingAttempt, dto);
-        //TODO add stages
         setPhenotypingStagesToEntity(phenotypingAttempt, dto);
 
         return phenotypingAttempt;
