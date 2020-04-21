@@ -133,12 +133,12 @@ public class Plan extends BaseEntity implements Resource<Plan>, ProcessData
 
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "plan", orphanRemoval=true)
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "plan")
     private Set<Outcome> outcomes;
 
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "plan", orphanRemoval=true)
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "plan")
     private Set<PlanStartingPoint> planStartingPoints;
 
     // Copy Constructor
