@@ -54,7 +54,7 @@ public class CrisprAttemptDTO
     private List<MutagenesisDonorDTO> mutagenesisDonorDTOS;
 
     @JsonProperty("reagents")
-    private List<ReagentDTO> reagentDTOS;
+    private List<CrisprAttemptReagentDTO> crisprAttemptReagentDTOS;
 
     @JsonProperty("genotypePrimers")
     private List<GenotypePrimerDTO> genotypePrimerDTOS;

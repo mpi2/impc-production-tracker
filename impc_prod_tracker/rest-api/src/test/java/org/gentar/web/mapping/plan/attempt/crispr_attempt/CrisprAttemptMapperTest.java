@@ -1,14 +1,6 @@
 package org.gentar.web.mapping.plan.attempt.crispr_attempt;
 
-import org.gentar.biology.plan.attempt.crispr.CrisprAttemptService;
-import org.gentar.biology.plan.attempt.crispr.CrisprAttemptMapper;
-import org.gentar.biology.plan.attempt.crispr.AssayDTO;
-import org.gentar.biology.plan.attempt.crispr.CrisprAttemptDTO;
-import org.gentar.biology.plan.attempt.crispr.GenotypePrimerDTO;
-import org.gentar.biology.plan.attempt.crispr.GuideDTO;
-import org.gentar.biology.plan.attempt.crispr.MutagenesisDonorDTO;
-import org.gentar.biology.plan.attempt.crispr.NucleaseDTO;
-import org.gentar.biology.plan.attempt.crispr.ReagentDTO;
+import org.gentar.biology.plan.attempt.crispr.*;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +8,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
-import org.gentar.biology.plan.attempt.crispr.CrisprAttempt;
 import org.gentar.biology.plan.attempt.crispr.assay.Assay;
 import org.gentar.biology.plan.attempt.crispr.assay.AssayType;
 import org.gentar.biology.plan.attempt.crispr.genotype_primer.GenotypePrimer;
@@ -401,7 +392,7 @@ public class CrisprAttemptMapperTest
         addNucleaseDTOs(crisprAttemptDTO);
         addGuideDTOs(crisprAttemptDTO);
         addMutagenesisDonorDTOs(crisprAttemptDTO);
-        addReagentDTOs(crisprAttemptDTO);
+        addCrisprAttemptReagentDTOs(crisprAttemptDTO);
         addGenotypePrimerDTOs(crisprAttemptDTO);
 
         CrisprAttempt crisprAttempt = crisprAttemptMapper.toEntity(crisprAttemptDTO);
@@ -577,22 +568,22 @@ public class CrisprAttemptMapperTest
         return mutagenesisDonorDTO;
     }
 
-    private void addReagentDTOs(CrisprAttemptDTO crisprAttemptDTO)
+    private void addCrisprAttemptReagentDTOs(CrisprAttemptDTO crisprAttemptDTO)
     {
-        List<ReagentDTO> reagentDTOS = new ArrayList<>();
-        reagentDTOS.add(buildReagentDTO(REAGENT_ID_1, REAGENT_CONCENTRATION_1));
-        reagentDTOS.add(buildReagentDTO(REAGENT_ID_2, REAGENT_CONCENTRATION_2));
-        crisprAttemptDTO.setReagentDTOS(reagentDTOS);
+        List<CrisprAttemptReagentDTO> crisprAttemptReagentDTOS = new ArrayList<>();
+        crisprAttemptReagentDTOS.add(buildReagentDTO(REAGENT_ID_1, REAGENT_CONCENTRATION_1));
+        crisprAttemptReagentDTOS.add(buildReagentDTO(REAGENT_ID_2, REAGENT_CONCENTRATION_2));
+        crisprAttemptDTO.setCrisprAttemptReagentDTOS(crisprAttemptReagentDTOS);
     }
 
-    private ReagentDTO buildReagentDTO(Long id, Double concentration)
+    private CrisprAttemptReagentDTO buildReagentDTO(Long id, Double concentration)
     {
-        ReagentDTO reagentDTO = new ReagentDTO();
-        reagentDTO.setId(id);
-        reagentDTO.setName(REAGENT_NAME + id);
-        reagentDTO.setDescription(REAGENT_DESCRIPTION + id);
-        reagentDTO.setConcentration(concentration);
-        return reagentDTO;
+        CrisprAttemptReagentDTO crisprAttemptReagentDTO = new CrisprAttemptReagentDTO();
+        crisprAttemptReagentDTO.setId(id);
+        crisprAttemptReagentDTO.setReagentName(REAGENT_NAME + id);
+        crisprAttemptReagentDTO.setReagentDescription(REAGENT_DESCRIPTION + id);
+        crisprAttemptReagentDTO.setConcentration(concentration);
+        return crisprAttemptReagentDTO;
     }
 
     private void addGenotypePrimerDTOs(CrisprAttemptDTO crisprAttemptDTO)
