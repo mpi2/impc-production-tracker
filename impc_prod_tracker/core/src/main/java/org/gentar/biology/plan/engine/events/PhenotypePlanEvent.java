@@ -2,29 +2,14 @@ package org.gentar.biology.plan.engine.events;
 
 import org.gentar.biology.plan.engine.state.PhenotypePlanState;
 import org.gentar.biology.plan.engine.processors.PhenotypePlanAbortProcessor;
-import org.gentar.biology.plan.engine.processors.PhenotypePlanAbortReverserProcessor;
 import org.gentar.statemachine.ProcessEvent;
 import org.gentar.statemachine.ProcessState;
 import org.gentar.statemachine.Processor;
-
 import java.util.Arrays;
 import java.util.List;
 
 public enum PhenotypePlanEvent implements ProcessEvent
 {
-    reverseAbortion(
-            "Reverse abortion",
-            PhenotypePlanState.PhenotypePlanAborted,
-            PhenotypePlanState.PlanCreated,
-            false,
-            null)
-            {
-                @Override
-                public Class<? extends Processor> getNextStepProcessor()
-                {
-                    return PhenotypePlanAbortReverserProcessor.class;
-                }
-            },
     abortPhenotypingPlan(
             "Abort a phenotyping plan",
             PhenotypePlanState.PlanCreated,
