@@ -20,6 +20,7 @@ import org.gentar.biology.project.*;
 import org.gentar.biology.status_stamps.StatusStampsDTO;
 import org.gentar.common.state_machine.StatusTransitionDTO;
 import org.gentar.common.state_machine.TransitionDTO;
+import org.gentar.exceptions.UserOperationFailedException;
 import org.gentar.organization.funder.Funder;
 import org.gentar.organization.funder.FunderMapper;
 import org.gentar.organization.work_group.WorkGroupMapper;
@@ -50,6 +51,8 @@ public class PlanMapper implements Mapper<Plan, PlanDTO>
     private PlanStateMachineResolver planStateMachineResolver;
     private TransitionMapper transitionMapper;
     private OutcomeMapper outcomeMapper;
+
+    private static final String PHENOTYPING_PLAN_WITHOUT_STARTING_POINT_ERROR = "The starting point for a phenotyping plan cannot be null.";
 
     public PlanMapper(
         EntityMapper entityMapper,
@@ -102,8 +105,10 @@ public class PlanMapper implements Mapper<Plan, PlanDTO>
             Set<PlanStartingPoint> planStartingPoints = plan.getPlanStartingPoints();
             if (planStartingPoints.size() == 1) {
                 PlanStartingPoint planStartingPoint = planStartingPoints.iterator().next();
-                Outcome outcome = planStartingPoint.getOutcome();
-                planDTO.setTpo(outcome.getTpo());
+                PlanStartingPointDTO planStartingPointDTO = new PlanStartingPointDTO();
+                planStartingPointDTO.setId(planStartingPoint.getId());
+                planStartingPointDTO.setTpo(planStartingPoint.getOutcome().getTpo());
+                planDTO.setPlanStartingPointDTO(planStartingPointDTO);
             }
         }
     }
@@ -200,19 +205,24 @@ public class PlanMapper implements Mapper<Plan, PlanDTO>
 
     private void setStartingPoint(Plan plan, PlanDTO planDTO)
     {
-        if (planDTO.getTpo() != null) {
+        // Phenotyping plans
+        if (planDTO.getPlanStartingPointDTO() != null) {
             PlanStartingPoint planStartingPoint = new PlanStartingPoint();
             planStartingPoint.setPlan(plan);
-            Outcome outcome = outcomeMapper.toEntityBytTpo(planDTO.getTpo());
+            Outcome outcome = outcomeMapper.toEntityBytTpo(planDTO.getPlanStartingPointDTO().getTpo());
             planStartingPoint.setOutcome(outcome);
 
             Set<PlanStartingPoint> planStartingPoints =  new HashSet<>();
             planStartingPoints.add(planStartingPoint);
 
             plan.setPlanStartingPoints(planStartingPoints);
+        } else {
+            throw new UserOperationFailedException(String.format(PHENOTYPING_PLAN_WITHOUT_STARTING_POINT_ERROR));
         }
-//        else if (planDTO.getTpos() != null) {
-//            // TODO starting point for breeding plans
+
+        // Breeding plans
+//        if (planDTO.getPlanStartingPointDTOS() != null) {
+//            // TODO starting points for breeding plans
 //        }
     }
 
@@ -261,8 +271,7 @@ public class PlanMapper implements Mapper<Plan, PlanDTO>
 
     private List<TransitionDTO> getTransitionsByPlanType(Plan plan)
     {
-        List<ProcessEvent> transitions =
-            planStateMachineResolver.getAvailableTransitionsByEntityStatus(plan);
+        List<ProcessEvent> transitions = planStateMachineResolver.getAvailableTransitionsByEntityStatus(plan);
         return transitionMapper.toDtos(transitions);
     }
 }
