@@ -1,20 +1,20 @@
-package org.gentar.biology.plan.engine.events;
+package org.gentar.biology.plan.engine.phenotyping;
 
-import org.gentar.biology.plan.engine.state.PhenotypePlanState;
-import org.gentar.biology.plan.engine.processors.PhenotypePlanAbortProcessor;
+import org.gentar.biology.plan.engine.phenotyping.processors.PhenotypePlanAbortProcessor;
 import org.gentar.statemachine.ProcessEvent;
 import org.gentar.statemachine.ProcessState;
 import org.gentar.statemachine.Processor;
+import org.gentar.statemachine.StateMachineConstants;
 import java.util.Arrays;
 import java.util.List;
 
 public enum PhenotypePlanEvent implements ProcessEvent
 {
     abortPhenotypingPlan(
-            "Abort a phenotyping plan",
-            PhenotypePlanState.PlanCreated,
-            PhenotypePlanState.PhenotypePlanAborted,
-            true,
+        "Abort a phenotyping plan",
+        PhenotypePlanState.PlanCreated,
+        PhenotypePlanState.PhenotypePlanAborted,
+        StateMachineConstants.TRIGGERED_BY_USER,
             null)
             {
                 @Override
@@ -36,17 +36,6 @@ public enum PhenotypePlanEvent implements ProcessEvent
         this.endState = endState;
         this.triggeredByUser = triggeredByUser;
         this.triggerNote = triggerNote;
-    }
-
-    public static PhenotypePlanEvent getEventByName(String name)
-    {
-        PhenotypePlanEvent[] phenotypePlanEvents = PhenotypePlanEvent.values();
-        for (PhenotypePlanEvent phenotypePlanEvent : phenotypePlanEvents)
-        {
-            if (phenotypePlanEvent.name().equalsIgnoreCase(name))
-                return phenotypePlanEvent;
-        }
-        return null;
     }
 
     @Override

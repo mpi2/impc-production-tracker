@@ -3,7 +3,6 @@ package org.gentar.biology.plan.engine.crispr;
 import org.gentar.statemachine.EnumStateHelper;
 import org.gentar.statemachine.ProcessState;
 import java.util.Arrays;
-import java.util.List;
 
 public enum CrisprProductionPlanState implements ProcessState
 {
@@ -23,11 +22,6 @@ public enum CrisprProductionPlanState implements ProcessState
     public String getInternalName()
     {
         return internalName;
-    }
-
-    public static List<ProcessState> getAllStates()
-    {
-        return Arrays.asList(CrisprProductionPlanState.values());
     }
 
     public static ProcessState getStateByInternalName(String internalName)
