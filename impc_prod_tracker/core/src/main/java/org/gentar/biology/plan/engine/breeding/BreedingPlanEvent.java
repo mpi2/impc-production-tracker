@@ -91,17 +91,6 @@ public enum BreedingPlanEvent implements ProcessEvent
         this.triggerNote = triggerNote;
     }
 
-    public static BreedingPlanEvent getEventByName(String name)
-    {
-        BreedingPlanEvent[] BreedingPlanEvents = BreedingPlanEvent.values();
-        for (BreedingPlanEvent BreedingPlanEvent : BreedingPlanEvents)
-        {
-            if (BreedingPlanEvent.name().equalsIgnoreCase(name))
-                return BreedingPlanEvent;
-        }
-        return null;
-    }
-
     @Override
     public ProcessState getInitialState()
     {
@@ -148,5 +137,4 @@ public enum BreedingPlanEvent implements ProcessEvent
     {
         return Arrays.asList(BreedingPlanEvent.values());
     }
-
 }
