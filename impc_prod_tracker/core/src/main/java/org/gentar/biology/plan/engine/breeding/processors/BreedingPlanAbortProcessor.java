@@ -1,10 +1,13 @@
 package org.gentar.biology.plan.engine.breeding.processors;
 
+import org.gentar.biology.colony.Colony;
 import org.gentar.biology.plan.Plan;
+import org.gentar.biology.plan.PlanQueryHelper;
 import org.gentar.biology.plan.engine.PlanStateSetter;
 import org.gentar.statemachine.AbstractProcessor;
 import org.gentar.statemachine.ProcessData;
 import org.springframework.stereotype.Component;
+import java.util.List;
 
 /**
  * Class with the logic to move a Breeding Plan to the state "Breeding Aborted"
@@ -20,12 +23,17 @@ public class BreedingPlanAbortProcessor extends AbstractProcessor
     @Override
     protected boolean canExecuteTransition(ProcessData entity)
     {
-        return canAbortPlan((Plan) entity);
+        return areAllColoniesAborted((Plan) entity);
     }
 
-    private boolean canAbortPlan(Plan plan)
+    private boolean areAllColoniesAborted(Plan plan)
     {
-        // Put here the validations before aborting a Breeding Plan.
-        return true;
+        boolean result = true;
+        List<Colony> colonies = PlanQueryHelper.getColoniesByPlan(plan);
+        if (!colonies.isEmpty())
+        {
+            result = colonies.stream().allMatch(x -> x.getStatus().getIsAbortionStatus());
+        }
+        return result;
     }
 }
