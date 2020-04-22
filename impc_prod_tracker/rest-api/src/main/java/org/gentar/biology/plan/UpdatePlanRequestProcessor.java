@@ -15,6 +15,9 @@
  */
 package org.gentar.biology.plan;
 
+import org.gentar.biology.plan.attempt.breeding.BreedingAttempt;
+import org.gentar.biology.plan.attempt.breeding.BreedingAttemptDTO;
+import org.gentar.biology.plan.attempt.breeding.BreedingAttemptMapper;
 import org.gentar.biology.plan.attempt.crispr.CrisprAttemptDTO;
 import org.gentar.biology.plan.attempt.crispr.CrisprAttemptMapper;
 import org.springframework.stereotype.Component;
@@ -28,10 +31,13 @@ import org.gentar.biology.plan.attempt.crispr.CrisprAttempt;
 public class UpdatePlanRequestProcessor
 {
     private CrisprAttemptMapper crisprAttemptMapper;
+    private BreedingAttemptMapper breedingAttemptMapper;
 
-    public UpdatePlanRequestProcessor(CrisprAttemptMapper crisprAttemptMapper)
+    public UpdatePlanRequestProcessor(
+        CrisprAttemptMapper crisprAttemptMapper, BreedingAttemptMapper breedingAttemptMapper)
     {
         this.crisprAttemptMapper = crisprAttemptMapper;
+        this.breedingAttemptMapper = breedingAttemptMapper;
     }
 
     /**
@@ -51,6 +57,10 @@ public class UpdatePlanRequestProcessor
             {
                 setNewCrisprAttempt(plan, planDTO.getCrisprAttemptDTO());
             }
+            else if (planDTO.getBreedingAttemptDTO() != null)
+            {
+                setNewBreedingAttempt(plan, planDTO.getBreedingAttemptDTO());
+            }
         }
         return plan;
     }
@@ -63,6 +73,16 @@ public class UpdatePlanRequestProcessor
         crisprAttempt.setPlan(plan);
         crisprAttempt.setId(plan.getId());
         plan.setCrisprAttempt(crisprAttempt);
+    }
+
+    private void setNewBreedingAttempt(Plan plan, BreedingAttemptDTO breedingAttemptDTO)
+    {
+        breedingAttemptDTO.setPlanId(plan.getId());
+        BreedingAttempt breedingAttempt = breedingAttemptMapper.toEntity(breedingAttemptDTO);
+
+        breedingAttempt.setPlan(plan);
+        breedingAttempt.setId(plan.getId());
+        plan.setBreedingAttempt(breedingAttempt);
     }
 
     private void updateBasicInformation(Plan plan, PlanDTO planDTO)

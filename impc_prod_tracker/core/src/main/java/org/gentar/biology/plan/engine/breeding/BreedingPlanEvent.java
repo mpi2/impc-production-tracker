@@ -1,12 +1,11 @@
-package org.gentar.biology.plan.engine.events;
+package org.gentar.biology.plan.engine.breeding;
 
-import org.gentar.biology.plan.engine.processors.BreedingPlanAbortProcessor;
-import org.gentar.biology.plan.engine.state.BreedingPlanState;
+import org.gentar.biology.plan.engine.breeding.processors.BreedingPlanAbortProcessor;
+import org.gentar.biology.plan.engine.breeding.processors.BreedingStartedProcessor;
 import org.gentar.statemachine.ProcessEvent;
 import org.gentar.statemachine.ProcessState;
 import org.gentar.statemachine.Processor;
 import org.gentar.statemachine.StateMachineConstants;
-
 import java.util.Arrays;
 import java.util.List;
 
@@ -22,7 +21,7 @@ public enum BreedingPlanEvent implements ProcessEvent
             @Override
             public Class<? extends Processor> getNextStepProcessor()
             {
-                return null;
+                return BreedingStartedProcessor.class;
             }
         },
     updateToBreedingComplete(

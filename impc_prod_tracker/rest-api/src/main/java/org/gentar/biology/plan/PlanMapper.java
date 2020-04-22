@@ -5,6 +5,8 @@ import org.gentar.biology.outcome.Outcome;
 import org.gentar.biology.outcome.OutcomeMapper;
 import org.gentar.biology.plan.attempt.AttemptTypeMapper;
 import org.gentar.biology.plan.attempt.AttemptTypes;
+import org.gentar.biology.plan.attempt.breeding.BreedingAttemptDTO;
+import org.gentar.biology.plan.attempt.breeding.BreedingAttemptMapper;
 import org.gentar.biology.plan.attempt.crispr.CrisprAttempt;
 import org.gentar.biology.plan.engine.PlanStateMachineResolver;
 import org.gentar.biology.plan.attempt.phenotyping.PhenotypingAttempt;
@@ -41,6 +43,7 @@ public class PlanMapper implements Mapper<Plan, PlanDTO>
 {
     private EntityMapper entityMapper;
     private CrisprAttemptMapper crisprAttemptMapper;
+    private BreedingAttemptMapper breedingAttemptMapper;
     private PhenotypingAttemptMapper phenotypingAttemptMapper;
     private AttemptTypeMapper attemptTypeMapper;
     private FunderMapper funderMapper;
@@ -52,12 +55,13 @@ public class PlanMapper implements Mapper<Plan, PlanDTO>
     private TransitionMapper transitionMapper;
     private OutcomeMapper outcomeMapper;
 
-    private static final String PHENOTYPING_PLAN_WITHOUT_STARTING_POINT_ERROR = "The starting point for a phenotyping plan cannot be null.";
+    private static final String PHENOTYPING_PLAN_WITHOUT_STARTING_POINT_ERROR =
+        "The starting point for a phenotyping plan cannot be null.";
 
     public PlanMapper(
         EntityMapper entityMapper,
         CrisprAttemptMapper crisprAttemptMapper,
-        PhenotypingAttemptMapper phenotypingAttemptMapper,
+        BreedingAttemptMapper breedingAttemptMapper, PhenotypingAttemptMapper phenotypingAttemptMapper,
         AttemptTypeMapper attemptTypeMapper,
         FunderMapper funderMapper,
         WorkUnitMapper workUnitMapper,
@@ -70,6 +74,7 @@ public class PlanMapper implements Mapper<Plan, PlanDTO>
     {
         this.entityMapper = entityMapper;
         this.crisprAttemptMapper = crisprAttemptMapper;
+        this.breedingAttemptMapper = breedingAttemptMapper;
         this.phenotypingAttemptMapper = phenotypingAttemptMapper;
         this.attemptTypeMapper = attemptTypeMapper;
         this.funderMapper = funderMapper;
@@ -116,21 +121,28 @@ public class PlanMapper implements Mapper<Plan, PlanDTO>
     private void addAttempt(PlanDTO planDTO, Plan plan)
     {
         PlanType planType = plan.getPlanType();
-        if (PlanTypes.PRODUCTION.getTypeName().equalsIgnoreCase(planType.getName()))
+        if (PlanTypes.PRODUCTION.getTypeName().equals(planType.getName()))
         {
             AttemptType attemptType = plan.getAttemptType();
             String attemptTypeName = attemptType == null ? "Not defined" : attemptType.getName();
 
-            if (AttemptTypes.CRISPR.getTypeName().equalsIgnoreCase(attemptTypeName))
+            if (AttemptTypes.CRISPR.getTypeName().equals(attemptTypeName))
             {
                 CrisprAttemptDTO crisprAttemptDTO = crisprAttemptMapper.toDto(plan.getCrisprAttempt());
                 planDTO.setCrisprAttemptDTO(crisprAttemptDTO);
-            } else
+            }
+            else if (AttemptTypes.BREEDING.getTypeName().equals(attemptTypeName))
+            {
+                BreedingAttemptDTO breedingAttemptDTO =
+                    breedingAttemptMapper.toDto(plan.getBreedingAttempt());
+                planDTO.setBreedingAttemptDTO(breedingAttemptDTO);
+            }
+            else
             {
                 //TODO: other attempts
             }
         }
-        else if (PlanTypes.PHENOTYPING.getTypeName().equalsIgnoreCase((planType.getName())))
+        else if (PlanTypes.PHENOTYPING.getTypeName().equals((planType.getName())))
         {
             PhenotypingAttemptDTO phenotypingAttemptDTO = phenotypingAttemptMapper.toDto(plan.getPhenotypingAttempt());
             planDTO.setPhenotypingAttemptDTO(phenotypingAttemptDTO);

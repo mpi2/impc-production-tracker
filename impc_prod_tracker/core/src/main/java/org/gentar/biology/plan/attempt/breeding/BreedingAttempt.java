@@ -7,7 +7,7 @@ import org.gentar.biology.strain.Strain;
 
 import javax.persistence.*;
 
-@NoArgsConstructor(access= AccessLevel.PRIVATE, force=true)
+@NoArgsConstructor(access= AccessLevel.PUBLIC, force=true)
 @Data
 @Entity
 public class BreedingAttempt extends BaseEntity

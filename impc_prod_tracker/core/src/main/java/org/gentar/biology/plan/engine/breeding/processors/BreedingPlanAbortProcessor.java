@@ -1,4 +1,4 @@
-package org.gentar.biology.plan.engine.processors;
+package org.gentar.biology.plan.engine.breeding.processors;
 
 import org.gentar.biology.plan.Plan;
 import org.gentar.biology.plan.engine.PlanStateSetter;
