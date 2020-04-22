@@ -4,6 +4,7 @@ import org.gentar.biology.colony.Colony;
 import org.gentar.biology.plan.Plan;
 import org.gentar.biology.plan.PlanQueryHelper;
 import org.gentar.biology.plan.engine.PlanStateSetter;
+import org.gentar.exceptions.UserOperationFailedException;
 import org.gentar.statemachine.AbstractProcessor;
 import org.gentar.statemachine.ProcessData;
 import org.springframework.stereotype.Component;
@@ -23,7 +24,13 @@ public class BreedingPlanAbortProcessor extends AbstractProcessor
     @Override
     protected boolean canExecuteTransition(ProcessData entity)
     {
-        return areAllColoniesAborted((Plan) entity);
+        if (areAllColoniesAborted((Plan)entity))
+        {
+            return true;
+        }
+        throw new UserOperationFailedException(
+            "Plan cannot be aborted",
+            "The plan has colonies that are not aborted. Please abort them first");
     }
 
     private boolean areAllColoniesAborted(Plan plan)
