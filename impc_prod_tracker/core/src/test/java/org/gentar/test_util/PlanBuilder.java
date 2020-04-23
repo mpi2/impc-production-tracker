@@ -7,9 +7,11 @@ import org.gentar.biology.status.Status;
 
 public class PlanBuilder
 {
+    private Long id;
     private PlanType planType;
     private AttemptType attemptType;
     private Status status;
+    private boolean isStatusAbortion;
     private Status summaryStatus;
     private String pin;
 
@@ -21,12 +23,23 @@ public class PlanBuilder
     public Plan build()
     {
         Plan plan = new Plan();
+        plan.setId(id);
         plan.setPlanType(planType);
         plan.setAttemptType(attemptType);
         plan.setPin(pin);
+        if (status != null)
+        {
+            status.setIsAbortionStatus(isStatusAbortion);
+        }
         plan.setStatus(status);
         plan.setSummaryStatus(summaryStatus);
         return plan;
+    }
+
+    public PlanBuilder withId(Long id)
+    {
+        this.id = id;
+        return this;
     }
 
     public PlanBuilder withPin(String pin)
@@ -56,6 +69,12 @@ public class PlanBuilder
         Status status = new Status();
         status.setName(statusName);
         this.status = status;
+        return this;
+    }
+
+    public PlanBuilder withIsStatusAbortion(boolean isStatusAbortion)
+    {
+        this.isStatusAbortion = isStatusAbortion;
         return this;
     }
 

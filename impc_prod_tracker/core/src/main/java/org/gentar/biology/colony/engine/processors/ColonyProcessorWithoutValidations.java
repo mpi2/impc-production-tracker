@@ -5,11 +5,14 @@ import org.gentar.statemachine.AbstractProcessor;
 import org.gentar.statemachine.ProcessData;
 import org.springframework.stereotype.Component;
 
+/**
+ * Processor to execute actions in a colony that don't require extra validations.
+ */
 @Component
-public class ColonyProcessor extends AbstractProcessor
+public class ColonyProcessorWithoutValidations extends AbstractProcessor
 {
 
-    public ColonyProcessor(ColonyStateSetter colonyStateSetter)
+    public ColonyProcessorWithoutValidations(ColonyStateSetter colonyStateSetter)
     {
         super(colonyStateSetter);
     }
