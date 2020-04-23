@@ -1,20 +1,24 @@
 package org.gentar.biology.specimen;
 
-import lombok.AccessLevel;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.gentar.BaseEntity;
+import org.gentar.audit.diff.IgnoreForAuditingChanges;
 import org.gentar.biology.outcome.Outcome;
+import org.gentar.biology.specimen.status_stamp.SpecimenStatusStamp;
 import org.gentar.biology.specimen.type.SpecimenType;
 import org.gentar.biology.strain.Strain;
+import org.gentar.biology.status.Status;
+import org.gentar.statemachine.ProcessData;
+import org.gentar.statemachine.ProcessEvent;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.util.Set;
 
 @NoArgsConstructor(access= AccessLevel.PUBLIC, force=true)
 @Data
 @Entity
-public class Specimen extends BaseEntity {
+public class Specimen extends BaseEntity implements ProcessData {
 
     @Id
     @Column(name = "id")
@@ -34,5 +38,16 @@ public class Specimen extends BaseEntity {
     @ManyToOne
     private SpecimenType specimenType;
 
+    @NotNull
+    @ManyToOne(targetEntity= Status.class)
+    private Status status;
+
+    @IgnoreForAuditingChanges
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
+    @OneToMany(cascade= CascadeType.ALL, mappedBy = "specimen")
+    private Set<SpecimenStatusStamp> specimenStatusStamps;
+
+    private  transient ProcessEvent event;
 
 }

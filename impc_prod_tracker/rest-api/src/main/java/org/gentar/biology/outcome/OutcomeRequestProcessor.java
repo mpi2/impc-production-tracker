@@ -5,6 +5,7 @@ import org.gentar.biology.colony.engine.ColonyEvent;
 import org.gentar.biology.plan.Plan;
 import org.gentar.biology.plan.PlanService;
 import org.gentar.biology.specimen.SpecimenDTO;
+import org.gentar.biology.specimen.engine.SpecimenEvent;
 import org.gentar.common.state_machine.StatusTransitionDTO;
 import org.gentar.exceptions.UserOperationFailedException;
 import org.gentar.statemachine.EnumStateHelper;
@@ -89,6 +90,15 @@ public class OutcomeRequestProcessor
             {
                 String action = statusTransitionDTO.getActionToExecute();
                 processEvent = EnumStateHelper.getEventByName(ColonyEvent.getAllEvents(), action);
+            }
+        }
+        else if (specimenDTO != null)
+        {
+            statusTransitionDTO = specimenDTO.getStatusTransitionDTO();
+            if (statusTransitionDTO != null)
+            {
+                String action = statusTransitionDTO.getActionToExecute();
+                processEvent = EnumStateHelper.getEventByName(SpecimenEvent.getAllEvents(), action);
             }
         }
         return processEvent;
