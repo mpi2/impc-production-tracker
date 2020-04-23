@@ -2,6 +2,8 @@ package org.gentar.biology.plan.engine.crispr.processors;
 
 import org.gentar.biology.colony.Colony;
 import org.gentar.biology.outcome.Outcome;
+import org.gentar.biology.outcome.type.OutcomeType;
+import org.gentar.biology.outcome.type.OutcomeTypes;
 import org.gentar.biology.plan.Plan;
 import org.gentar.biology.plan.engine.PlanStateSetter;
 import org.gentar.biology.plan.engine.crispr.CrisprProductionPlanEvent;
@@ -86,7 +88,6 @@ class AbortGltProcessorTest
         plan.setEvent(CrisprProductionPlanEvent.abortWhenGLT);
         UserOperationFailedException thrown = assertThrows(UserOperationFailedException.class,
             () -> testInstance.process(plan), "Exception not thrown");
-        System.out.println(thrown.getMessage());
         assertThat("Not expected message", thrown.getMessage(), is("Plan cannot be aborted"));
         assertThat(
             "Not expected message",
@@ -103,6 +104,9 @@ class AbortGltProcessorTest
         Colony colony = new Colony();
         colony.setId(id);
         outcome.setColony(colony);
+        OutcomeType outcomeType = new OutcomeType();
+        outcomeType.setName(OutcomeTypes.COLONY.getLabel());
+        outcome.setOutcomeType(outcomeType);
         Status status = new Status();
         status.setIsAbortionStatus(isAborted);
         colony.setStatus(status);
