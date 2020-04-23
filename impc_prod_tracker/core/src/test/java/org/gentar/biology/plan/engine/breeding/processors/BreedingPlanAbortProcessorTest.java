@@ -2,6 +2,8 @@ package org.gentar.biology.plan.engine.breeding.processors;
 
 import org.gentar.biology.colony.Colony;
 import org.gentar.biology.outcome.Outcome;
+import org.gentar.biology.outcome.type.OutcomeType;
+import org.gentar.biology.outcome.type.OutcomeTypes;
 import org.gentar.biology.plan.Plan;
 import org.gentar.biology.plan.engine.PlanStateSetter;
 import org.gentar.biology.plan.engine.breeding.BreedingPlanEvent;
@@ -100,6 +102,9 @@ class BreedingPlanAbortProcessorTest
     {
         Outcome outcome = new Outcome();
         outcome.setId(id);
+        OutcomeType outcomeType = new OutcomeType();
+        outcomeType.setName(OutcomeTypes.COLONY.getLabel());
+        outcome.setOutcomeType(outcomeType);
         Colony colony = new Colony();
         colony.setId(id);
         outcome.setColony(colony);

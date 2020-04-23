@@ -2,7 +2,7 @@ package org.gentar.biology.colony.engine;
 
 import org.gentar.biology.colony.engine.processors.ColonyAbortProcessor;
 import org.gentar.biology.colony.engine.processors.ColonyAbortReverserProcessor;
-import org.gentar.biology.colony.engine.processors.ColonyProcessor;
+import org.gentar.biology.colony.engine.processors.ColonyProcessorWithoutValidations;
 import org.gentar.statemachine.ProcessEvent;
 import org.gentar.statemachine.ProcessState;
 import org.gentar.statemachine.Processor;
@@ -61,7 +61,7 @@ public enum ColonyEvent implements ProcessEvent
                 @Override
                 public Class<? extends Processor> getNextStepProcessor()
                 {
-                    return ColonyProcessor.class;
+                    return ColonyProcessorWithoutValidations.class;
                 }
             },
     reverseGenotypeConfirmation(
@@ -74,7 +74,7 @@ public enum ColonyEvent implements ProcessEvent
             @Override
             public Class<? extends Processor> getNextStepProcessor()
             {
-                return ColonyProcessor.class;
+                return ColonyProcessorWithoutValidations.class;
             }
         };
 

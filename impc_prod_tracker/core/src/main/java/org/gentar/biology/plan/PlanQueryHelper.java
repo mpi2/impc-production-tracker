@@ -2,6 +2,7 @@ package org.gentar.biology.plan;
 
 import org.gentar.biology.colony.Colony;
 import org.gentar.biology.outcome.Outcome;
+import org.gentar.biology.outcome.type.OutcomeTypes;
 import org.gentar.biology.plan.attempt.phenotyping.PhenotypingAttempt;
 import org.gentar.biology.plan.attempt.phenotyping.stage.PhenotypingStage;
 import org.gentar.biology.status.Status;
@@ -9,8 +10,33 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
+/**
+ * Helper class with common queries for a plan.
+ */
 public class PlanQueryHelper
 {
+    /**
+     * Get all the outcomes of a given type for a plan.
+     * @param plan Plan object.
+     * @param type {@link OutcomeTypes} object with the type of the outcome.
+     * @return A list of {@link Outcome} of type "type".
+     */
+    public static List<Outcome> getOutcomesByPlanAndType(Plan plan, OutcomeTypes type)
+    {
+        List<Outcome> outcomes = new ArrayList<>();
+        Set<Outcome> outcomesSet = plan.getOutcomes();
+        if (outcomesSet != null)
+        {
+            outcomesSet.forEach(x -> {
+                if (x.getOutcomeType().getName().equals(type.getLabel()))
+                {
+                    outcomes.add(x);
+                }
+            });
+        }
+        return outcomes;
+    }
+
     /**
      * Gets all the colonies for a plan.
      * @param plan The plan to query.
@@ -19,16 +45,13 @@ public class PlanQueryHelper
     public static List<Colony> getColoniesByPlan(Plan plan)
     {
         List<Colony> colonies = new ArrayList<>();
-        Set<Outcome> outcomes = plan.getOutcomes();
-        if (outcomes != null)
-        {
-            outcomes.forEach(x -> {
-                if (x.getColony() != null)
-                {
-                    colonies.add(x.getColony());
-                }
-            });
-        }
+        List<Outcome> outcomes = getOutcomesByPlanAndType(plan, OutcomeTypes.COLONY);
+        outcomes.forEach(x -> {
+            if (x.getColony() != null)
+            {
+                colonies.add(x.getColony());
+            }
+        });
         return colonies;
     }
 
