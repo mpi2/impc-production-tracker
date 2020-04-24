@@ -1,7 +1,6 @@
 package org.gentar.biology.colony.engine;
 
 import org.gentar.biology.colony.engine.processors.ColonyAbortProcessor;
-import org.gentar.biology.colony.engine.processors.ColonyAbortReverserProcessor;
 import org.gentar.biology.colony.engine.processors.ColonyProcessorWithoutValidations;
 import org.gentar.statemachine.ProcessEvent;
 import org.gentar.statemachine.ProcessState;
@@ -36,19 +35,6 @@ public enum ColonyEvent implements ProcessEvent
                 public Class<? extends Processor> getNextStepProcessor()
                 {
                     return ColonyAbortProcessor.class;
-                }
-            },
-    reverseAbortion(
-            "Reverse abortion",
-            ColonyState.ColonyAborted,
-            ColonyState.GenotypeNotConfirmed,
-            StateMachineConstants.TRIGGERED_BY_USER,
-            null)
-            {
-                @Override
-                public Class<? extends Processor> getNextStepProcessor()
-                {
-                    return ColonyAbortReverserProcessor.class;
                 }
             },
     confirmGenotype(
