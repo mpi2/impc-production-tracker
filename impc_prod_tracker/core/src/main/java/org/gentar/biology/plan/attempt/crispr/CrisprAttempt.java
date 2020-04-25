@@ -48,7 +48,7 @@ public class CrisprAttempt extends BaseEntity
     @MapsId
     private Plan plan;
 
-    private Long imitsMiAttemptId;
+    private Long imitsMiAttempt;
 
     private LocalDate miDate;
 

@@ -134,7 +134,12 @@ public class CrisprAttemptMapper implements Mapper<CrisprAttempt, CrisprAttemptD
 
     private void setReagentsToEntity(CrisprAttempt crisprAttempt, CrisprAttemptDTO crisprAttemptDTO)
     {
+<<<<<<< Updated upstream
         Set<CrisprAttemptReagent> crisprAttemptReagents = new HashSet<>(crisprAttemptReagentMapper.toEntities(crisprAttemptDTO.getCrisprAttemptReagentDTOS()));
+=======
+        // TODO reagents mapper
+        Set<CrisprAttemptReagent> crisprAttemptReagents = new HashSet<>();
+>>>>>>> Stashed changes
         crisprAttemptReagents.forEach(x -> x.setCrisprAttempt(crisprAttempt));
         crisprAttempt.setCrisprAttemptReagents(crisprAttemptReagents);
     }

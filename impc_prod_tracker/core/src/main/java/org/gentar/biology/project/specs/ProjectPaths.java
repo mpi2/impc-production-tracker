@@ -117,4 +117,9 @@ public class ProjectPaths
         Path<Gene> genePath = projectGenePath.get(ProjectIntentionGene_.gene);
         return genePath.get(Gene_.accId);
     }
+
+    public static Path<Long> getImitsMiPlanPath(Root<Project> root)
+    {
+        return root.get(Project_.imitsMiPlan);
+    }
 }

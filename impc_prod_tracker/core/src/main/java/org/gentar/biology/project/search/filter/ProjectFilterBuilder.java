@@ -106,6 +106,11 @@ public class ProjectFilterBuilder
         return withFilter(FilterTypes.EXTERNAL_REFERENCE, externalReferences);
     }
 
+    public ProjectFilterBuilder withImitsMiPlanId(List<String> imitsMiPlanIds)
+    {
+        return withFilter(FilterTypes.IMITS_MI_PLAN, imitsMiPlanIds);
+    }
+
     private boolean isListValid(List<String> values)
     {
         return values != null && !values.isEmpty();

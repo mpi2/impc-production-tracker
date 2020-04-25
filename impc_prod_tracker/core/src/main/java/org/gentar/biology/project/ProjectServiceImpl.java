@@ -162,7 +162,8 @@ public class ProjectServiceImpl implements ProjectService
                 .and(ProjectSpecs.withConsortia(projectFilter.getConsortiaNames()))
                 .and(ProjectSpecs.withStatuses(projectFilter.getStatusesNames()))
                 .and(ProjectSpecs.withSummaryStatuses(projectFilter.getSummaryStatusNames()))
-                .and(ProjectSpecs.withPrivacies(projectFilter.getPrivaciesNames())));
+                .and(ProjectSpecs.withPrivacies(projectFilter.getPrivaciesNames())))
+                .and(ProjectSpecs.withImitsMiPlans(projectFilter.getImitsMiPlans()));
         return specifications;
     }
 

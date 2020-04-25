@@ -70,6 +70,11 @@ public class PlanController
     {
         Plan planToBeCreated = planMapper.toEntity(planDTO);
         Plan planCreated = planService.createPlan(planToBeCreated);
+<<<<<<< Updated upstream
+=======
+
+        System.out.println("Plan created => " + planCreated);
+>>>>>>> Stashed changes
 
         PlanDTO planCreatedDTO = planMapper.toDto(planCreated);
 

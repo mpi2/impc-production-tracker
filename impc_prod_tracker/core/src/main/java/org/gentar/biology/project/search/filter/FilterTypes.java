@@ -28,7 +28,8 @@ public enum FilterTypes
     ASSIGNMENT_STATUS("assignmentStatus"),
     SUMMARY_STATUS("summaryStatus"),
     EXTERNAL_REFERENCE("externalReference"),
-    PRIVACY_NAME("privacyName");
+    PRIVACY_NAME("privacyName"),
+    IMITS_MI_PLAN("imitMiPlan");
 
     private String name;
 

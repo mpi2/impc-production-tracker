@@ -1,7 +1,10 @@
 package org.gentar.biology.plan;
 
 import org.gentar.EntityMapper;
+<<<<<<< Updated upstream
 import org.gentar.biology.outcome.Outcome;
+=======
+>>>>>>> Stashed changes
 import org.gentar.biology.outcome.OutcomeMapper;
 import org.gentar.biology.plan.attempt.AttemptTypeMapper;
 import org.gentar.biology.plan.attempt.AttemptTypes;
@@ -14,8 +17,13 @@ import org.gentar.biology.plan.attempt.phenotyping.PhenotypingAttemptDTO;
 import org.gentar.biology.plan.attempt.phenotyping.PhenotypingAttemptMapper;
 import org.gentar.biology.plan.attempt.crispr.CrisprAttemptDTO;
 import org.gentar.Mapper;
+<<<<<<< Updated upstream
 import org.gentar.biology.plan.starting_point.PlanStartingPoint;
+=======
+import org.gentar.biology.plan.plan_starting_point.PlanStartingPointMapper;
+>>>>>>> Stashed changes
 import org.gentar.biology.plan.status.PlanStatusStamp;
+import org.gentar.biology.plan.plan_starting_point.PlanStartingPoint;
 import org.gentar.biology.plan.type.PlanType;
 import org.gentar.biology.plan.type.PlanTypes;
 import org.gentar.biology.project.*;
@@ -54,9 +62,13 @@ public class PlanMapper implements Mapper<Plan, PlanDTO>
     private PlanStateMachineResolver planStateMachineResolver;
     private TransitionMapper transitionMapper;
     private OutcomeMapper outcomeMapper;
+<<<<<<< Updated upstream
 
     private static final String PHENOTYPING_PLAN_WITHOUT_STARTING_POINT_ERROR =
         "The starting point for a phenotyping plan cannot be null.";
+=======
+    private PlanStartingPointMapper planStartingPointMapper;
+>>>>>>> Stashed changes
 
     public PlanMapper(
         EntityMapper entityMapper,
@@ -70,7 +82,12 @@ public class PlanMapper implements Mapper<Plan, PlanDTO>
         ProjectService projectService,
         PlanStateMachineResolver planStateMachineResolver,
         TransitionMapper transitionMapper,
+<<<<<<< Updated upstream
         OutcomeMapper outcomeMapper)
+=======
+        OutcomeMapper outcomeMapper,
+        PlanStartingPointMapper planStartingPointMapper)
+>>>>>>> Stashed changes
     {
         this.entityMapper = entityMapper;
         this.crisprAttemptMapper = crisprAttemptMapper;
@@ -85,6 +102,10 @@ public class PlanMapper implements Mapper<Plan, PlanDTO>
         this.planStateMachineResolver = planStateMachineResolver;
         this.transitionMapper = transitionMapper;
         this.outcomeMapper = outcomeMapper;
+<<<<<<< Updated upstream
+=======
+        this.planStartingPointMapper = planStartingPointMapper;
+>>>>>>> Stashed changes
     }
 
     public PlanDTO toDto(Plan plan)
@@ -109,11 +130,18 @@ public class PlanMapper implements Mapper<Plan, PlanDTO>
         if (plan.getPlanStartingPoints() != null) {
             Set<PlanStartingPoint> planStartingPoints = plan.getPlanStartingPoints();
             if (planStartingPoints.size() == 1) {
+<<<<<<< Updated upstream
                 PlanStartingPoint planStartingPoint = planStartingPoints.iterator().next();
                 PlanStartingPointDTO planStartingPointDTO = new PlanStartingPointDTO();
                 planStartingPointDTO.setId(planStartingPoint.getId());
                 planStartingPointDTO.setTpo(planStartingPoint.getOutcome().getTpo());
                 planDTO.setPlanStartingPointDTO(planStartingPointDTO);
+=======
+//                ToDO WITH THE startingpointmapper
+//                PlanStartingPoint planStartingPoint = planStartingPoints.iterator().next();
+//                Outcome outcome = planStartingPoint.getOutcome();
+//                planDTO.setPhenotypingOutcomeDTO(outcomeMapper.toDto(outcome));
+>>>>>>> Stashed changes
             }
         }
     }
@@ -193,7 +221,11 @@ public class PlanMapper implements Mapper<Plan, PlanDTO>
         }
         else if (PlanTypes.PHENOTYPING.getTypeName().equalsIgnoreCase((planType.getName())))
         {
+<<<<<<< Updated upstream
             setStartingPoint(plan, planDTO);
+=======
+//            setStartingPoint(plan, planDTO);
+>>>>>>> Stashed changes
             setPhenotypingAttempt(plan, planDTO);
         }
 
@@ -205,9 +237,15 @@ public class PlanMapper implements Mapper<Plan, PlanDTO>
         if (planDTO.getCrisprAttemptDTO() != null)
         {
             CrisprAttempt crisprAttempt = crisprAttemptMapper.toEntity(planDTO.getCrisprAttemptDTO());
+<<<<<<< Updated upstream
+            if (plan.getCrisprAttempt().getImitsMiAttempt() != null)
+            {
+                crisprAttempt.setImitsMiAttempt(plan.getCrisprAttempt().getImitsMiAttempt());
+=======
             if (plan.getCrisprAttempt().getImitsMiAttemptId() != null)
             {
                 crisprAttempt.setImitsMiAttemptId(plan.getCrisprAttempt().getImitsMiAttemptId());
+>>>>>>> Stashed changes
             }
             crisprAttempt.setPlan(plan);
             crisprAttempt.setId(plan.getId());
@@ -217,6 +255,7 @@ public class PlanMapper implements Mapper<Plan, PlanDTO>
 
     private void setStartingPoint(Plan plan, PlanDTO planDTO)
     {
+<<<<<<< Updated upstream
         // Phenotyping plans
         if (planDTO.getPlanStartingPointDTO() != null) {
             PlanStartingPoint planStartingPoint = new PlanStartingPoint();
@@ -235,6 +274,18 @@ public class PlanMapper implements Mapper<Plan, PlanDTO>
         // Breeding plans
 //        if (planDTO.getPlanStartingPointDTOS() != null) {
 //            // TODO starting points for breeding plans
+=======
+        if (planDTO.getPhenotypingStartingPoint() != null) {
+            PlanStartingPoint planStartingPoint = planStartingPointMapper.toEntity(planDTO.getPhenotypingStartingPoint());
+            Set<PlanStartingPoint> planStartingPoints =  new HashSet<>();
+            planStartingPoints.add(planStartingPoint);
+            plan.setPlanStartingPoints(planStartingPoints);
+            planStartingPoints.forEach(x -> x.setPlan(plan));
+            plan.setPlanStartingPoints(planStartingPoints);
+        }
+//        else if (planDTO.getBreedingOutcomeDTOS() != null) {
+//            // TODO starting point for breeding plans
+>>>>>>> Stashed changes
 //        }
     }
 

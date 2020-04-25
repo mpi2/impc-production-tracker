@@ -83,4 +83,6 @@ public class ProjectFilter
     {
         return filters.getOrDefault(FilterTypes.PRIVACY_NAME, null);
     }
+
+    public List<String> getImitsMiPlans() { return filters.getOrDefault(FilterTypes.IMITS_MI_PLAN, null); }
 }

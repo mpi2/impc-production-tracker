@@ -32,7 +32,8 @@ public class CrisprAttemptDTO
     private Long crisprAttemptId;
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    private Long imitsMiAttemptId;
+    @JsonProperty("imitsMiAttemptId")
+    private Long imitsMiAttempt;
 
     private LocalDate miDate;
 

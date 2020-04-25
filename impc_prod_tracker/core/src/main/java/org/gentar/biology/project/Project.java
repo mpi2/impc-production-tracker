@@ -53,7 +53,7 @@ public class Project extends BaseEntity implements Resource<Project>
     {
         this.id = project.id;
         this.tpn = project.tpn;
-        this.imitsMiPlanId = project.imitsMiPlanId;
+        this.imitsMiPlan = project.imitsMiPlan;
         this.assignmentStatus = project.assignmentStatus;
         this.summaryStatus = project.summaryStatus;
         this.assignmentStatusStamps =
@@ -81,7 +81,7 @@ public class Project extends BaseEntity implements Resource<Project>
     private String tpn;
 
     @Column(unique = true)
-    private Long imitsMiPlanId;
+    private Long imitsMiPlan;
 
     @EqualsAndHashCode.Exclude
     @ToString.Exclude

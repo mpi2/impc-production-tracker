@@ -15,9 +15,12 @@
  */
 package org.gentar.biology.plan;
 
+<<<<<<< Updated upstream
 import org.gentar.biology.plan.attempt.breeding.BreedingAttempt;
 import org.gentar.biology.plan.attempt.breeding.BreedingAttemptDTO;
 import org.gentar.biology.plan.attempt.breeding.BreedingAttemptMapper;
+=======
+>>>>>>> Stashed changes
 import org.gentar.biology.plan.attempt.crispr.CrisprAttemptDTO;
 import org.gentar.biology.plan.attempt.crispr.CrisprAttemptMapper;
 import org.springframework.stereotype.Component;
@@ -69,7 +72,7 @@ public class UpdatePlanRequestProcessor
     {
         crisprAttemptDTO.setCrisprAttemptId(plan.getId());
         CrisprAttempt crisprAttempt = crisprAttemptMapper.toEntity(crisprAttemptDTO);
-        crisprAttempt.setImitsMiAttemptId(plan.getCrisprAttempt().getImitsMiAttemptId());
+        crisprAttempt.setImitsMiAttempt(plan.getCrisprAttempt().getImitsMiAttempt());
         crisprAttempt.setPlan(plan);
         crisprAttempt.setId(plan.getId());
         plan.setCrisprAttempt(crisprAttempt);

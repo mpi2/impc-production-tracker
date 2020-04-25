@@ -1,6 +1,18 @@
 package org.gentar.web.mapping.plan.attempt.crispr_attempt;
 
+<<<<<<< Updated upstream
 import org.gentar.biology.plan.attempt.crispr.*;
+=======
+import org.gentar.biology.plan.attempt.crispr.CrisprAttemptService;
+import org.gentar.biology.plan.attempt.crispr.CrisprAttemptMapper;
+import org.gentar.biology.plan.attempt.crispr.AssayDTO;
+import org.gentar.biology.plan.attempt.crispr.CrisprAttemptDTO;
+import org.gentar.biology.plan.attempt.crispr.GenotypePrimerDTO;
+import org.gentar.biology.plan.attempt.crispr.GuideDTO;
+import org.gentar.biology.plan.attempt.crispr.MutagenesisDonorDTO;
+import org.gentar.biology.plan.attempt.crispr.NucleaseDTO;
+import org.gentar.biology.plan.attempt.crispr.ReagentDTO;
+>>>>>>> Stashed changes
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,7 +48,7 @@ public class CrisprAttemptMapperTest
     @Autowired
     private CrisprAttemptMapper crisprAttemptMapper;
 
-    private static final Long IMITS_MI_ATTEMPT_ID = 1L;
+    private static final Long IMITS_MI_ATTEMPT = 1L;
     private static final LocalDate MI_DATE = LocalDate.of(1900, 1, 1);
     private static final String MI_EXTERNAL_REF = "externalRef";
     private static final Boolean EXPERIMENTAL_TRUE = true;
@@ -127,7 +139,7 @@ public class CrisprAttemptMapperTest
 
     private void validateDto(CrisprAttemptDTO crisprAttemptDTO)
     {
-        assertThat("ImitsMiAttemptId", crisprAttemptDTO.getImitsMiAttemptId(), is(IMITS_MI_ATTEMPT_ID));
+        assertThat("ImitsMiAttemptId", crisprAttemptDTO.getImitsMiAttempt(), is(IMITS_MI_ATTEMPT));
         assertThat(
             "MiDate", crisprAttemptDTO.getMiDate(), is(MI_DATE));
         assertThat("MiExternalRef", crisprAttemptDTO.getMiExternalRef(), is(MI_EXTERNAL_REF));
@@ -330,7 +342,7 @@ public class CrisprAttemptMapperTest
     private CrisprAttempt buildCrisprAttempt()
     {
         CrisprAttempt crisprAttempt = new CrisprAttempt();
-        crisprAttempt.setImitsMiAttemptId(IMITS_MI_ATTEMPT_ID);
+        crisprAttempt.setImitsMiAttempt(IMITS_MI_ATTEMPT);
         crisprAttempt.setMiDate(MI_DATE);
         crisprAttempt.setMiExternalRef(MI_EXTERNAL_REF);
         crisprAttempt.setExperimental(EXPERIMENTAL_TRUE);
@@ -405,7 +417,7 @@ public class CrisprAttemptMapperTest
     private void validateEntity(CrisprAttempt crisprAttempt)
     {
         assertThat("crisprAttempt", crisprAttempt, notNullValue());
-        assertThat("ImitsMiAttemptId", crisprAttempt.getImitsMiAttemptId(), is(IMITS_MI_ATTEMPT_ID));
+        assertThat("ImitsMiAttemptId", crisprAttempt.getImitsMiAttempt(), is(IMITS_MI_ATTEMPT));
         assertThat(
             "MiDate", crisprAttempt.getMiDate(), is(MI_DATE));
         assertThat("MiExternalRef", crisprAttempt.getMiExternalRef(), is(MI_EXTERNAL_REF));
@@ -613,7 +625,7 @@ public class CrisprAttemptMapperTest
     private CrisprAttemptDTO buildCrisprAttemptDto()
     {
         CrisprAttemptDTO crisprAttemptDTO = new CrisprAttemptDTO();
-        crisprAttemptDTO.setImitsMiAttemptId(IMITS_MI_ATTEMPT_ID);
+        crisprAttemptDTO.setImitsMiAttempt(IMITS_MI_ATTEMPT);
         crisprAttemptDTO.setMiDate(MI_DATE);
         crisprAttemptDTO.setMiExternalRef(MI_EXTERNAL_REF);
         crisprAttemptDTO.setExperimental(EXPERIMENTAL_TRUE);
