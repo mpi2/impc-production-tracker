@@ -2,16 +2,9 @@ package org.gentar.biology.plan.attempt.phenotyping;
 
 import org.gentar.EntityMapper;
 import org.gentar.Mapper;
-<<<<<<< Updated upstream
-import org.gentar.biology.outcome.Outcome;
-import org.gentar.biology.outcome.OutcomeMapper;
 import org.gentar.biology.strain.StrainMapper;
-import org.gentar.biology.plan.starting_point.PlanStartingPoint;
-=======
->>>>>>> Stashed changes
 import org.gentar.biology.plan.attempt.phenotyping.stage.PhenotypingStage;
 import org.gentar.biology.strain.Strain;
-import org.gentar.biology.strain.StrainMapper;
 import org.springframework.stereotype.Component;
 
 import java.util.Set;
@@ -52,10 +45,7 @@ public class PhenotypingAttemptMapper implements Mapper<PhenotypingAttempt, Phen
     {
         PhenotypingAttempt phenotypingAttempt = entityMapper.toTarget(dto, PhenotypingAttempt.class);
         setStrain(phenotypingAttempt, dto);
-<<<<<<< Updated upstream
-=======
-        //TODO add stages
->>>>>>> Stashed changes
+
         setPhenotypingStagesToEntity(phenotypingAttempt, dto);
 
         return phenotypingAttempt;

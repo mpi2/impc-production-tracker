@@ -1,18 +1,6 @@
 package org.gentar.web.mapping.plan.attempt.crispr_attempt;
 
-<<<<<<< Updated upstream
 import org.gentar.biology.plan.attempt.crispr.*;
-=======
-import org.gentar.biology.plan.attempt.crispr.CrisprAttemptService;
-import org.gentar.biology.plan.attempt.crispr.CrisprAttemptMapper;
-import org.gentar.biology.plan.attempt.crispr.AssayDTO;
-import org.gentar.biology.plan.attempt.crispr.CrisprAttemptDTO;
-import org.gentar.biology.plan.attempt.crispr.GenotypePrimerDTO;
-import org.gentar.biology.plan.attempt.crispr.GuideDTO;
-import org.gentar.biology.plan.attempt.crispr.MutagenesisDonorDTO;
-import org.gentar.biology.plan.attempt.crispr.NucleaseDTO;
-import org.gentar.biology.plan.attempt.crispr.ReagentDTO;
->>>>>>> Stashed changes
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;

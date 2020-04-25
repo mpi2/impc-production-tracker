@@ -15,12 +15,9 @@
  */
 package org.gentar.biology.plan;
 
-<<<<<<< Updated upstream
 import org.gentar.biology.plan.attempt.breeding.BreedingAttempt;
 import org.gentar.biology.plan.attempt.breeding.BreedingAttemptDTO;
 import org.gentar.biology.plan.attempt.breeding.BreedingAttemptMapper;
-=======
->>>>>>> Stashed changes
 import org.gentar.biology.plan.attempt.crispr.CrisprAttemptDTO;
 import org.gentar.biology.plan.attempt.crispr.CrisprAttemptMapper;
 import org.springframework.stereotype.Component;

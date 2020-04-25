@@ -2,10 +2,6 @@ package org.gentar.biology.plan.attempt.crispr;
 
 import org.gentar.EntityMapper;
 import org.gentar.Mapper;
-<<<<<<< Updated upstream
-=======
-import org.modelmapper.ModelMapper;
->>>>>>> Stashed changes
 import org.springframework.stereotype.Component;
 import org.gentar.biology.plan.attempt.crispr.guide.Guide;
 

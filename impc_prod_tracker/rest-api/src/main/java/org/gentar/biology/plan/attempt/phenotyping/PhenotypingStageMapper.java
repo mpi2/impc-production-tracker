@@ -2,7 +2,6 @@ package org.gentar.biology.plan.attempt.phenotyping;
 
 import org.gentar.EntityMapper;
 import org.gentar.Mapper;
-import org.gentar.biology.plan.attempt.crispr.guide.Guide;
 import org.gentar.biology.plan.attempt.phenotyping.stage.PhenotypingStage;
 import org.gentar.biology.plan.attempt.phenotyping.stage.PhenotypingStageTypes;
 import org.gentar.biology.plan.attempt.phenotyping.stage.engine.events.EarlyAdultEvent;
@@ -100,32 +99,20 @@ public class PhenotypingStageMapper implements Mapper<PhenotypingStage, Phenotyp
         {
             dtos.forEach(phenotypingStageDTO -> phenotypingStages.add(toEntity(phenotypingStageDTO)));
         }
-<<<<<<< Updated upstream
-
-        return phenotypingStages;
-=======
 
         return phenotypingStages;
     }
 
     private void setPhenotypingStageType(PhenotypingStage phenotypingStage, PhenotypingStageDTO phenotypingStageDTO) {
         phenotypingStage.setPhenotypingStageType(phenotypeStageTypeMapper.toEntity(phenotypingStageDTO.getPhenotypingTypeName()));
->>>>>>> Stashed changes
     }
 
-    private void setPhenotypingStageType(PhenotypingStage phenotypingStage, PhenotypingStageDTO phenotypingStageDTO) {
-        phenotypingStage.setPhenotypingStageType(phenotypeStageTypeMapper.toEntity(phenotypingStageDTO.getPhenotypingTypeName()));
-    }
-
-<<<<<<< Updated upstream
     private void setTissueDistributionCentre(PhenotypingStage phenotypingStage, PhenotypingStageDTO phenotypingStageDTO) {
         Set<TissueDistribution> tissueDistributions = tissueDistributionMapper.toEntities(phenotypingStageDTO.getTissueDistributionCentreDTOs());
         tissueDistributions.forEach(x -> x.setPhenotypingStage(phenotypingStage));
         phenotypingStage.setTissueDistributions(tissueDistributions);
     }
 
-=======
->>>>>>> Stashed changes
     private StatusTransitionDTO buildStatusTransitionDTO(PhenotypingStage phenotypingStage) {
         StatusTransitionDTO statusTransitionDTO = new StatusTransitionDTO();
         statusTransitionDTO.setCurrentStatus(phenotypingStage.getStatus().getName());
