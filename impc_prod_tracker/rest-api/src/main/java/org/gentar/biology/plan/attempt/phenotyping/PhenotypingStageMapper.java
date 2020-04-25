@@ -2,7 +2,6 @@ package org.gentar.biology.plan.attempt.phenotyping;
 
 import org.gentar.EntityMapper;
 import org.gentar.Mapper;
-import org.gentar.biology.plan.attempt.crispr.guide.Guide;
 import org.gentar.biology.plan.attempt.phenotyping.stage.PhenotypingStage;
 import org.gentar.biology.plan.attempt.phenotyping.stage.PhenotypingStageTypes;
 import org.gentar.biology.plan.attempt.phenotyping.stage.engine.events.EarlyAdultEvent;

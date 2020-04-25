@@ -194,7 +194,7 @@ public class PlanMapper implements Mapper<Plan, PlanDTO>
         else if (PlanTypes.PHENOTYPING.getTypeName().equalsIgnoreCase((planType.getName())))
         {
             setStartingPoint(plan, planDTO);
-            setPhenotypingAttempt(plan, planDTO);
+//            setStartingPoint(plan, planDTO);
         }
 
         return plan;
@@ -205,9 +205,9 @@ public class PlanMapper implements Mapper<Plan, PlanDTO>
         if (planDTO.getCrisprAttemptDTO() != null)
         {
             CrisprAttempt crisprAttempt = crisprAttemptMapper.toEntity(planDTO.getCrisprAttemptDTO());
-            if (plan.getCrisprAttempt().getImitsMiAttemptId() != null)
+            if (plan.getCrisprAttempt().getImitsMiAttempt() != null)
             {
-                crisprAttempt.setImitsMiAttemptId(plan.getCrisprAttempt().getImitsMiAttemptId());
+                crisprAttempt.setImitsMiAttempt(plan.getCrisprAttempt().getImitsMiAttempt());
             }
             crisprAttempt.setPlan(plan);
             crisprAttempt.setId(plan.getId());

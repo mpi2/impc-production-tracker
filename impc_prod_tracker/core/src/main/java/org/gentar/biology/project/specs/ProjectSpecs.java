@@ -245,4 +245,24 @@ public class ProjectSpecs
         }
         return specification;
     }
+
+    /**
+     * Get all the projects with a specific imitsMiPlanId (or imitsMiPlanIds).
+     *
+     * @param imitsMiPlans List of names of imits mi_plan ids.
+     * @return The found projects. If imitsMiPlanId is null then not filter is applied.
+     */
+    public static Specification<Project> withImitsMiPlans(List<String> imitsMiPlans)
+    {
+        Specification<Project> specification = Specification.where(null);
+        if (imitsMiPlans != null)
+        {
+            specification = (Specification<Project>) (root, query, criteriaBuilder) -> {
+                Path<Long> imitsMiPlanPath = ProjectPaths.getImitsMiPlanPath(root);
+                query.distinct(true);
+                return PredicateBuilder.addLowerLikeOrPredicatesId(criteriaBuilder, imitsMiPlanPath, imitsMiPlans);
+            };
+        }
+        return specification;
+    }
 }

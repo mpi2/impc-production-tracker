@@ -100,7 +100,8 @@ class ProjectController
         @RequestParam(value = "consortiaNames", required = false) List<String> consortia,
         @RequestParam(value = "statuses", required = false) List<String> statuses,
         @RequestParam(value = "privacyNames", required = false) List<String> privaciesNames,
-        @RequestParam(value = "externalReferences", required = false) List<String> externalReferences)
+        @RequestParam(value = "externalReferences", required = false) List<String> externalReferences,
+        @RequestParam(value = "imitsMiPlans", required = false) List<String> imitsMiPlans)
     {
         ProjectFilter projectFilter = ProjectFilterBuilder.getInstance()
             .withTpns(tpns)
@@ -113,6 +114,7 @@ class ProjectController
             .withConsortiaNames(consortia)
             .withWorkGroupNames(workGroupNames)
             .withExternalReference(externalReferences)
+            .withImitsMiPlanId(imitsMiPlans)
             .build();
         Page<Project> projectsPage = projectService.getProjects(projectFilter, pageable);
         Page<ProjectDTO> projectDtos = projectsPage.map(this::getDTO);

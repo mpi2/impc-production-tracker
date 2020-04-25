@@ -78,6 +78,15 @@ public abstract class AbstractFluentProjectFilter<T>
         return this;
     }
 
+    public AbstractFluentProjectFilter<T> withImitsMiPlans(List<String> imitsMiPlans)
+    {
+        if (isListValid(imitsMiPlans))
+        {
+            data = withCondition((ProjectPredicates.inImitsMiPlanIds(imitsMiPlans)));
+        }
+        return this;
+    }
+
     public List<T> getFilteredData()
     {
         return data;

@@ -101,6 +101,7 @@ public class ProjectSearcherServiceImpl implements ProjectSearcherService
             .withMolecularMutationTypeNames(filters.getIntentions())
             .withConsortiaNames(filters.getConsortiaNames())
             .withPrivaciesNames(filters.getPrivaciesNames())
+            .withImitsMiPlans(filters.getImitsMiPlans())
             .getFilteredData();
     }
 

@@ -70,7 +70,6 @@ public class PlanController
     {
         Plan planToBeCreated = planMapper.toEntity(planDTO);
         Plan planCreated = planService.createPlan(planToBeCreated);
-
         PlanDTO planCreatedDTO = planMapper.toDto(planCreated);
 
         return planCreatedDTO;

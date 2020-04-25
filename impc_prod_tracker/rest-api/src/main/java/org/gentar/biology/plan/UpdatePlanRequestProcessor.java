@@ -69,7 +69,7 @@ public class UpdatePlanRequestProcessor
     {
         crisprAttemptDTO.setCrisprAttemptId(plan.getId());
         CrisprAttempt crisprAttempt = crisprAttemptMapper.toEntity(crisprAttemptDTO);
-        crisprAttempt.setImitsMiAttemptId(plan.getCrisprAttempt().getImitsMiAttemptId());
+        crisprAttempt.setImitsMiAttempt(plan.getCrisprAttempt().getImitsMiAttempt());
         crisprAttempt.setPlan(plan);
         crisprAttempt.setId(plan.getId());
         plan.setCrisprAttempt(crisprAttempt);
