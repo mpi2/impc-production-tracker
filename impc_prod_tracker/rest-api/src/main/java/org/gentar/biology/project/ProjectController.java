@@ -101,7 +101,7 @@ class ProjectController
         @RequestParam(value = "statuses", required = false) List<String> statuses,
         @RequestParam(value = "privacyNames", required = false) List<String> privaciesNames,
         @RequestParam(value = "externalReferences", required = false) List<String> externalReferences,
-        @RequestParam(value = "imitsMiPlans", required = false) List<String> imitsMiPlans)
+        @RequestParam(value = "imitsMiPlanIds", required = false) List<String> imitsMiPlans)
     {
         ProjectFilter projectFilter = ProjectFilterBuilder.getInstance()
             .withTpns(tpns)

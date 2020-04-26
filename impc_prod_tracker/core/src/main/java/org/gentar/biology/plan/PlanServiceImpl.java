@@ -59,19 +59,28 @@ public class PlanServiceImpl implements PlanService
     }
 
     @Override
-    public List<Plan> getPlans(List<String> tpns, List<String> workUnitNames)
+    public List<Plan> getPlans(List<String> projectTpns, List<String> workUnitNames, List<String> workGroupNames, List<String> statuses, List<String> pins, List<String> planTypeNames,
+                               List<String> attemptTypeNames, List<String> imitsMiAttempts, List<String> imitsPhenotypeAttempts)
     {
         Specification<Plan> specifications =
-            buildSpecificationsWithCriteria(tpns, workUnitNames);
+            buildSpecificationsWithCriteria(projectTpns, workUnitNames, workGroupNames, statuses, pins, planTypeNames, attemptTypeNames, imitsMiAttempts, imitsPhenotypeAttempts);
         return getCheckedCollection(planRepository.findAll(specifications));
     }
 
     private Specification<Plan> buildSpecificationsWithCriteria(
-        List<String> tpns, List<String> workUnitNames)
+        List<String> tpns, List<String> workUnitNames, List<String> workGroupNames, List<String> summaryStatusNames, List<String> pins, List<String> typeNames,
+        List<String> attemptTypeNames, List<String> imitsMiAttempts, List<String> imitsPhenotypeAttempts)
     {
         Specification<Plan> specifications =
-            Specification.where(PlanSpecs.withTpns(tpns))
-                .and(Specification.where(PlanSpecs.withWorkUnitNames(workUnitNames)));
+            Specification.where(PlanSpecs.withProjectTpns(tpns))
+                .and(Specification.where(PlanSpecs.withWorkUnitNames(workUnitNames)))
+                .and(Specification.where(PlanSpecs.withWorkGroupNames(workGroupNames)))
+                .and(Specification.where(PlanSpecs.withSummaryStatusNames(summaryStatusNames)))
+                .and(Specification.where(PlanSpecs.withPins(pins)))
+                .and(Specification.where(PlanSpecs.withTypeNames(typeNames)))
+                .and(Specification.where(PlanSpecs.withAttemptTypeNames(attemptTypeNames)))
+                .and(Specification.where(PlanSpecs.withImitsMiAttempts(imitsMiAttempts)))
+                .and(Specification.where(PlanSpecs.withImitsPhenotypeAttempts(imitsPhenotypeAttempts)));
         return specifications;
     }
 

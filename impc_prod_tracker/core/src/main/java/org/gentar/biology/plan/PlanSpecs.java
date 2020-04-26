@@ -15,8 +15,18 @@
  */
 package org.gentar.biology.plan;
 
-import org.gentar.biology.plan.Plan;
-import org.gentar.biology.plan.Plan_;
+import org.gentar.biology.plan.attempt.AttemptType;
+import org.gentar.biology.plan.attempt.AttemptType_;
+import org.gentar.biology.plan.attempt.crispr.CrisprAttempt;
+import org.gentar.biology.plan.attempt.crispr.CrisprAttempt_;
+import org.gentar.biology.plan.attempt.phenotyping.PhenotypingAttempt;
+import org.gentar.biology.plan.attempt.phenotyping.PhenotypingAttempt_;
+import org.gentar.biology.plan.type.PlanType;
+import org.gentar.biology.plan.type.PlanType_;
+import org.gentar.biology.status.Status;
+import org.gentar.biology.status.Status_;
+import org.gentar.organization.work_group.WorkGroup;
+import org.gentar.organization.work_group.WorkGroup_;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Component;
 import org.gentar.biology.project.Project;
@@ -32,9 +42,9 @@ import java.util.List;
 public class PlanSpecs
 {
     /**
-     * Get all the projects which plans are related with the work units specified in workUnitNames
+     * Get all the plans that are related with the work units specified in workUnitNames
      * @param workUnitNames List of names of the Work Units
-     * @return The found projects. If workUnitNames is null then not filter is applied.
+     * @return The found plans. If workUnitNames is null then not filter is applied.
      */
     public static Specification<Plan> withWorkUnitNames(List<String> workUnitNames)
     {
@@ -59,10 +69,15 @@ public class PlanSpecs
         return specification;
     }
 
-    public static Specification<Plan> withTpns(List<String> tpns)
+    /**
+     * Get all the plans that are related with the project tpns specified in ProjectTpns
+     * @param ProjectTpns List of names of the tpns
+     * @return The found plans. If ProjectTpns is null then not filter is applied.
+     */
+    public static Specification<Plan> withProjectTpns(List<String> ProjectTpns)
     {
         Specification<Plan> specification;
-        if (tpns == null)
+        if (ProjectTpns == null)
         {
             specification = buildTrueCondition();
         }
@@ -73,11 +88,200 @@ public class PlanSpecs
                 List<Predicate> predicates = new ArrayList<>();
                 Path<Project> projectPath = root.get(Plan_.project);
                 Path<String> tpnPath = projectPath.get(Project_.tpn);
-                predicates.add(tpnPath.in(tpns));
+                predicates.add(tpnPath.in(ProjectTpns));
                 query.distinct(true);
                 return criteriaBuilder.and(predicates.toArray(new Predicate[predicates.size()]));
             };
 
+        }
+        return specification;
+    }
+
+    /**
+     * Get all the plans that are related with the work groups specified in workUnitNames
+     * @param workGroupNames List of names of the Work Groups
+     * @return The found plans. If workGroupNames is null then not filter is applied.
+     */
+    public static Specification<Plan> withWorkGroupNames(List<String> workGroupNames)
+    {
+        Specification<Plan> specification;
+        if (workGroupNames == null)
+        {
+            specification = buildTrueCondition();
+        }
+        else
+        {
+            specification = (Specification<Plan>) (root, query, criteriaBuilder) ->
+            {
+                List<Predicate> predicates = new ArrayList<>();
+                Path<WorkGroup> workGroupPath = root.get(Plan_.workGroup);
+                Path<String> workGroupName = workGroupPath.get(WorkGroup_.name);
+                predicates.add(workGroupName.in(workGroupNames));
+                query.distinct(true);
+                return criteriaBuilder.and(predicates.toArray(new Predicate[predicates.size()]));
+            };
+
+        }
+        return specification;
+    }
+
+    /**
+     * Get all the plans that are related with the work groups specified in summaryStatusNames
+     * @param summaryStatusNames List of names of the Work Groups
+     * @return The found plans. If summaryStatusNames is null then not filter is applied.
+     */
+    public static Specification<Plan> withSummaryStatusNames (List<String> summaryStatusNames)
+    {
+        Specification<Plan> specification;
+        if (summaryStatusNames == null)
+        {
+            specification = buildTrueCondition();
+        }
+        else
+        {
+            specification = (Specification<Plan>) (root, query, criteriaBuilder) ->
+            {
+                List<Predicate> predicates = new ArrayList<>();
+                Path<Status> summaryStatus = root.get(Plan_.summaryStatus);
+                Path<String> statusSummaryNamePath = summaryStatus.get(Status_.name);
+                predicates.add(statusSummaryNamePath.in(summaryStatusNames));
+                query.distinct(true);
+                return criteriaBuilder.and(predicates.toArray(new Predicate[predicates.size()]));
+            };
+        }
+        return specification;
+    }
+
+    /**
+     * Get all the plans that are related with the work groups specified in pins
+     * @param pins List of names of the Work Groups
+     * @return The found plans. If pins is null then not filter is applied.
+     */
+    public static Specification<Plan> withPins (List<String> pins)
+    {
+        Specification<Plan> specification;
+        if (pins == null)
+        {
+            specification = buildTrueCondition();
+        }
+        else
+        {
+            specification = (Specification<Plan>) (root, query, criteriaBuilder) ->
+            {
+                List<Predicate> predicates = new ArrayList<>();
+                Path<String> pinPath = root.get(Plan_.pin);
+                predicates.add(pinPath.in(pins));
+                query.distinct(true);
+                return criteriaBuilder.and(predicates.toArray(new Predicate[predicates.size()]));
+            };
+        }
+        return specification;
+    }
+
+    /**
+     * Get all the plans that are related with the work groups specified in typeNames
+     * @param typeNames List of names of the Work Groups
+     * @return The found plans. If typeNames is null then not filter is applied.
+     */
+    public static Specification<Plan> withTypeNames (List<String> typeNames)
+    {
+        Specification<Plan> specification;
+        if (typeNames == null)
+        {
+            specification = buildTrueCondition();
+        }
+        else
+        {
+            specification = (Specification<Plan>) (root, query, criteriaBuilder) ->
+            {
+                List<Predicate> predicates = new ArrayList<>();
+                Path<PlanType> planTypePath = root.get(Plan_.planType);
+                Path<String> planTypeNamePath = planTypePath.get(PlanType_.name);
+                predicates.add(planTypeNamePath.in(typeNames));
+                query.distinct(true);
+                return criteriaBuilder.and(predicates.toArray(new Predicate[predicates.size()]));
+            };
+        }
+        return specification;
+    }
+
+    /**
+     * Get all the plans that are related with the work groups specified in attemptTypeNames
+     * @param attemptTypeNames List of names of the Work Groups
+     * @return The found plans. If attemptTypeNames is null then not filter is applied.
+     */
+    public static Specification<Plan> withAttemptTypeNames (List<String> attemptTypeNames)
+    {
+        Specification<Plan> specification;
+        if (attemptTypeNames == null)
+        {
+            specification = buildTrueCondition();
+        }
+        else
+        {
+            specification = (Specification<Plan>) (root, query, criteriaBuilder) ->
+            {
+                List<Predicate> predicates = new ArrayList<>();
+                Path<AttemptType> attemptTypePath = root.get(Plan_.attemptType);
+                Path<String> attemptTypeNamePath = attemptTypePath.get(AttemptType_.name);
+                predicates.add(attemptTypeNamePath.in(attemptTypeNames));
+                query.distinct(true);
+                return criteriaBuilder.and(predicates.toArray(new Predicate[predicates.size()]));
+            };
+        }
+        return specification;
+    }
+
+    /**
+     * Get all the plans that are related with the work groups specified in imitsMiAttempts
+     * @param imitsMiAttempts List of names of the Work Groups
+     * @return The found plans. If imitsMiAttempts is null then not filter is applied.
+     */
+    public static Specification<Plan> withImitsMiAttempts (List<String> imitsMiAttempts)
+    {
+        Specification<Plan> specification;
+        if (imitsMiAttempts == null)
+        {
+            specification = buildTrueCondition();
+        }
+        else
+        {
+            specification = (Specification<Plan>) (root, query, criteriaBuilder) ->
+            {
+                List<Predicate> predicates = new ArrayList<>();
+                Path<CrisprAttempt> crisprAttemptPath = root.get(Plan_.crisprAttempt);
+                Path<Long> imitsMiAttemptPath = crisprAttemptPath.get(CrisprAttempt_.imitsMiAttempt);
+                predicates.add(imitsMiAttemptPath.in(imitsMiAttempts));
+                query.distinct(true);
+                return criteriaBuilder.and(predicates.toArray(new Predicate[predicates.size()]));
+            };
+        }
+        return specification;
+    }
+
+    /**
+     * Get all the plans that are related with the work groups specified in imitsPhenotypeAttempts
+     * @param imitsPhenotypeAttempts List of names of the Work Groups
+     * @return The found plans. If imitsPhenotypeAttempts is null then not filter is applied.
+     */
+    public static Specification<Plan> withImitsPhenotypeAttempts (List<String> imitsPhenotypeAttempts)
+    {
+        Specification<Plan> specification;
+        if (imitsPhenotypeAttempts == null)
+        {
+            specification = buildTrueCondition();
+        }
+        else
+        {
+            specification = (Specification<Plan>) (root, query, criteriaBuilder) ->
+            {
+                List<Predicate> predicates = new ArrayList<>();
+                Path<PhenotypingAttempt> phenotypingAttemptPath = root.get(Plan_.phenotypingAttempt);
+                Path<Long> imitsPhenotypingAttemptPath = phenotypingAttemptPath.get(PhenotypingAttempt_.imitsPhenotypeAttempt);
+                predicates.add(imitsPhenotypingAttemptPath.in(imitsPhenotypeAttempts));
+                query.distinct(true);
+                return criteriaBuilder.and(predicates.toArray(new Predicate[predicates.size()]));
+            };
         }
         return specification;
     }
@@ -87,4 +291,6 @@ public class PlanSpecs
         return (Specification<Plan>) (root, query, criteriaBuilder) ->
             criteriaBuilder.isTrue(criteriaBuilder.literal(true));
     }
+
+
 }
