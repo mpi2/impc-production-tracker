@@ -25,7 +25,8 @@ import java.util.List;
 
 public interface PlanService
 {
-    List<Plan> getPlans(List<String> tpns, List<String> workUnitNames);
+    List<Plan> getPlans(List<String> tpns, List<String> workUnitNames, List<String> workGroupNames, List<String> statuses, List<String> pins, List<String> planTypeNames,
+                        List<String> attemptTypeNames, List<String> imitsMiAttempts, List<String> imitsPhenotypeAttempts);
 
     Plan getPlanByPinWithoutCheckPermissions(String pin);
 

@@ -16,7 +16,10 @@
 package org.gentar.biology.plan;
 
 import org.gentar.biology.plan.engine.PlanStateMachineResolver;
+import org.gentar.biology.project.Project;
+import org.gentar.biology.project.ProjectDTO;
 import org.gentar.common.state_machine.StatusTransitionDTO;
+import org.gentar.exceptions.UserOperationFailedException;
 import org.gentar.helpers.PaginationHelper;
 import org.gentar.helpers.LinkUtil;
 import org.gentar.common.history.HistoryDTO;
@@ -24,6 +27,7 @@ import org.gentar.statemachine.ProcessEvent;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PagedResourcesAssembler;
+import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.PagedModel;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -45,6 +49,9 @@ public class PlanController
     private PlanMapper planMapper;
     private UpdatePlanRequestProcessor updatePlanRequestProcessor;
     private PlanStateMachineResolver planStateMachineResolver;
+
+    private static final String PLAN_NOT_EXISTS_ERROR =
+            "The plan[%s] does not exist.";
 
     public PlanController(
         HistoryMapper historyMapper,
@@ -75,14 +82,25 @@ public class PlanController
         return planCreatedDTO;
     }
 
+    /**
+     * Get all the plans in the system.
+     * @return A collection of {@link PlanDTO} objects.
+     */
     @GetMapping
     public ResponseEntity findAll(
         Pageable pageable,
         PagedResourcesAssembler assembler,
-        @RequestParam(value = "tpn", required = false) List<String> tpns,
-        @RequestParam(value = "workUnitName", required = false) List<String> workUnitNames)
+        @RequestParam(value = "projectTpns", required = false) List<String> projectTpns,
+        @RequestParam(value = "workUnitNames", required = false) List<String> workUnitNames,
+        @RequestParam(value = "workGroupNames", required = false) List<String> workGroupNames,
+        @RequestParam(value = "summaryStatusNames", required = false) List<String> summaryStatusNames,
+        @RequestParam(value = "pins", required = false) List<String> pins,
+        @RequestParam(value = "typeNames", required = false) List<String> typeNames,
+        @RequestParam(value = "attemptTypeNames", required = false) List<String> attemptTypeNames,
+        @RequestParam(value = "imitsMiAttemptIds", required = false) List<String> imitsMiAttempts,
+        @RequestParam(value = "imitsPhenotypeAttemptIds", required = false) List<String> imitsPhenotypeAttempts)
     {
-        List<Plan> plans = planService.getPlans(tpns, workUnitNames);
+        List<Plan> plans = planService.getPlans(projectTpns, workUnitNames, workGroupNames, summaryStatusNames, pins, typeNames, attemptTypeNames, imitsMiAttempts, imitsPhenotypeAttempts);
 
         Page<Plan> paginatedContent =
             PaginationHelper.createPage(plans, pageable);
@@ -109,14 +127,29 @@ public class PlanController
         return planDTO;
     }
 
-    @GetMapping(value = {"/{id}"})
-    public PlanDTO findOne(@PathVariable("id") String pin)
+    /**
+     * Get a specific plan.
+     * @param pin Plan identifier.
+     * @return Entity with the plan information.
+     */
+    @GetMapping(value = {"/{pin}"})
+    public EntityModel<?> findOne(@PathVariable String pin)
     {
-        Plan plan = getNotNullPlanByPin(pin);
+        EntityModel<PlanDTO> entityModel;
+        Plan plan = planService.getNotNullPlanByPin(pin);
+        PlanDTO planDTO = getDTO(plan);
 
-        PlanDTO planDTO = planMapper.toDto(plan);
+        if (planDTO != null)
+        {
+            entityModel = new EntityModel<>(planDTO);
+        }
+        else
+        {
+            //TODO: Exception not found
+            throw new UserOperationFailedException(String.format(PLAN_NOT_EXISTS_ERROR, pin));
+        }
 
-        return planDTO;
+        return entityModel;
     }
 
     @GetMapping(value = {"{pin}/history"})
