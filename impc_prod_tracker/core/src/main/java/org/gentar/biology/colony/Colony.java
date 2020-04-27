@@ -26,6 +26,7 @@ import org.gentar.statemachine.ProcessData;
 import org.gentar.statemachine.ProcessEvent;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.util.HashSet;
 import java.util.Set;
 
 @NoArgsConstructor(access= AccessLevel.PUBLIC, force=true)
@@ -60,6 +61,19 @@ public class Colony extends BaseEntity implements ProcessData
     @ToString.Exclude
     @OneToMany(cascade= CascadeType.ALL, mappedBy = "colony")
     private Set<ColonyStatusStamp> colonyStatusStamps;
+
+    // Copy Constructor
+    public Colony(Colony colony)
+    {
+        this.id = colony.id;
+        this.outcome = colony.outcome;
+        this.name = colony.name;
+        this.strain = colony.strain;
+        this.status = colony.status;
+        this.genotypingComment = colony.genotypingComment;
+        this.colonyStatusStamps =
+            colony.colonyStatusStamps == null ? null : new HashSet<>(colony.colonyStatusStamps);
+    }
 
     private transient ProcessEvent event;
 }
