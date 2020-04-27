@@ -17,5 +17,7 @@ package org.gentar.biology.colony;
 
 import org.springframework.data.repository.CrudRepository;
 
-public interface ColonyRepository extends CrudRepository<Colony, Long> {
+public interface ColonyRepository extends CrudRepository<Colony, Long>
+{
+    Colony findByName(String name);
 }

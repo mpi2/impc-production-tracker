@@ -7,7 +7,6 @@ import org.gentar.biology.plan.PlanService;
 import org.gentar.common.history.HistoryDTO;
 import org.gentar.helpers.LinkUtil;
 import org.gentar.helpers.PaginationHelper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PagedResourcesAssembler;
@@ -34,7 +33,6 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 @CrossOrigin(origins="*")
 public class OutcomeController
 {
-    @Autowired
     private OutcomeService outcomeService;
     private OutcomeMapper outcomeMapper;
     private PlanService planService;
@@ -80,8 +78,7 @@ public class OutcomeController
     {
         Plan plan = planService.getNotNullPlanByPin(pin);
         Set<Outcome> outcomes = plan.getOutcomes();
-        List<OutcomeDTO> outcomeDTOS = outcomeMapper.toDtos(outcomes);
-        return outcomeDTOS;
+        return outcomeMapper.toDtos(outcomes);
     }
 
     /**
@@ -98,11 +95,12 @@ public class OutcomeController
     }
 
     @PutMapping(value = {"plans/{pin}/outcomes/{tpo}"})
-    public HistoryDTO update(@PathVariable String pin, @PathVariable String tpo, @RequestBody OutcomeDTO outcomeDTO)
+    public HistoryDTO update(
+        @PathVariable String pin, @PathVariable String tpo, @RequestBody OutcomeDTO outcomeDTO)
     {
         HistoryDTO historyDTO = new HistoryDTO();
         outcomeRequestProcessor.validateAssociation(pin, tpo);
-        Outcome outcome = getOutcomeToUpdate(tpo, outcomeDTO);
+        Outcome outcome = getOutcomeToUpdate(outcomeDTO);
         History history = outcomeService.update(outcome);
 
         if (history != null)
@@ -114,15 +112,12 @@ public class OutcomeController
 
     /**
      * Get an Outcome object based on OutcomeDTO using the fields that can be updated by the user.
-     * @param tpo public id of the outcome.
      * @param outcomeDTO outcome sent by the user.
      * @return The original outcome with the allowed modifications specified in the dto.
      */
-    private Outcome getOutcomeToUpdate(String tpo, OutcomeDTO outcomeDTO)
+    private Outcome getOutcomeToUpdate(OutcomeDTO outcomeDTO)
     {
-        Outcome currentOutcome = outcomeService.getByTpoFailsIfNotFound(tpo);
-        Outcome newOutcome = new Outcome(currentOutcome);
-        return outcomeRequestProcessor.getOutcomeToUpdate(newOutcome, outcomeDTO);
+        Outcome currentOutcome = outcomeService.getByTpoFailsIfNotFound(outcomeDTO.getTpo());
+        return outcomeRequestProcessor.getOutcomeToUpdate(currentOutcome, outcomeDTO);
     }
-
 }

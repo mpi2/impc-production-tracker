@@ -6,7 +6,6 @@ import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.gentar.biology.status_stamps.StatusStampsDTO;
 import org.gentar.common.state_machine.StatusTransitionDTO;
-
 import java.util.List;
 
 @Data
@@ -15,7 +14,7 @@ public class ColonyDTO
 {
     private Long id;
     private String name;
-    private Boolean genotypingComment;
+    private String genotypingComment;
     private String statusName;
 
     @JsonProperty("statusDates")
@@ -25,7 +24,7 @@ public class ColonyDTO
     private String strainName;
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    @JsonProperty("distributionCentresAttributes")
+    @JsonProperty("distributionCentres")
     private List<DistributionCentreDTO> distributionCentreDTOS;
 
     @JsonProperty("statusTransition")

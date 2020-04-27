@@ -1,5 +1,6 @@
 package org.gentar.biology.outcome;
 
+import org.gentar.biology.colony.Colony;
 import org.gentar.biology.colony.ColonyDTO;
 import org.gentar.biology.colony.engine.ColonyEvent;
 import org.gentar.biology.plan.Plan;
@@ -11,43 +12,49 @@ import org.gentar.exceptions.UserOperationFailedException;
 import org.gentar.statemachine.EnumStateHelper;
 import org.gentar.statemachine.ProcessEvent;
 import org.springframework.stereotype.Component;
-
 import java.util.Set;
 
 @Component
 public class OutcomeRequestProcessor
 {
-    private OutcomeMapper outcomeMapper;
     private PlanService planService;
+    private ColonyRequestProcessor colonyRequestProcessor;
 
-    public OutcomeRequestProcessor(OutcomeMapper outcomeMapper, PlanService planService)
+    public OutcomeRequestProcessor(
+        PlanService planService, ColonyRequestProcessor colonyRequestProcessor)
     {
-        this.outcomeMapper = outcomeMapper;
         this.planService = planService;
+        this.colonyRequestProcessor = colonyRequestProcessor;
     }
 
     /**
-     * Updates an outcome with the updatable information in a dto.
-     * @param outcome The original outcome
-     * @param outcomeDTO the dto with the new information
-     * @return the updated outcome
+     * Updates an outcome with the information than can be updated in a dto.
+     * @param originalOutcome The original outcome.
+     * @param outcomeDTO the dto with the new information.
+     * @return the updated outcome.
      */
-    public Outcome getOutcomeToUpdate(Outcome outcome, OutcomeDTO outcomeDTO)
+    public Outcome getOutcomeToUpdate(Outcome originalOutcome, OutcomeDTO outcomeDTO)
     {
-        if (outcome == null || outcomeDTO == null)
+        if (originalOutcome == null || outcomeDTO == null)
         {
             throw new UserOperationFailedException("Cannot update the outcome");
         }
-        Outcome requested = outcomeMapper.toEntity(outcomeDTO);
-        outcome.setColony(requested.getColony());
-        outcome.setSpecimen(requested.getSpecimen());
-        if (outcome.getColony() != null)
+        Outcome newOutcome = new Outcome(originalOutcome);
+        setColony(newOutcome, outcomeDTO.getColonyDTO());
+        if (newOutcome.getColony() != null)
         {
             ProcessEvent processEvent = getEventFromRequest(outcomeDTO);
-            outcome.getColony().setEvent(processEvent);
+            newOutcome.getColony().setEvent(processEvent);
         }
 
-        return outcome;
+        return newOutcome;
+    }
+
+    private void setColony(Outcome newOutcome, ColonyDTO colonyDTO)
+    {
+        Colony originalColony = new Colony(newOutcome.getColony());
+        Colony newColony = colonyRequestProcessor.getColonyToUpdate(originalColony, colonyDTO);
+        newOutcome.setColony(newColony);
     }
 
     /**
