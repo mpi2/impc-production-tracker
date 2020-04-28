@@ -2,7 +2,6 @@ package org.gentar.biology.outcome;
 
 import org.gentar.audit.history.History;
 import org.gentar.biology.outcome.type.OutcomeType;
-
 import java.util.List;
 
 /**
@@ -14,7 +13,6 @@ public interface OutcomeService
      * Find all the outcomes.
      * @return A list of {@link Outcome}
      */
-//    List<Outcome> findAll();
     List<Outcome> getOutcomes();
 
     /**

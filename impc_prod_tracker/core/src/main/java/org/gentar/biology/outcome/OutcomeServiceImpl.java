@@ -10,6 +10,7 @@ import org.gentar.biology.status.StatusService;
 import org.gentar.exceptions.UserOperationFailedException;
 import org.gentar.security.abac.ResourceAccessChecker;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collection;
 import java.util.List;
@@ -81,6 +82,7 @@ public class OutcomeServiceImpl implements OutcomeService
         }
     }
 
+    @Transactional
     public History update(Outcome outcome)
     {
         Outcome originalOutcome = new Outcome(getByTpoFailsIfNotFound(outcome.getTpo()));

@@ -16,17 +16,12 @@
 package org.gentar.biology.strain;
 
 import org.gentar.Mapper;
-import org.gentar.biology.strain.StrainService;
-import org.gentar.exceptions.UserOperationFailedException;
 import org.springframework.stereotype.Component;
-import org.gentar.biology.strain.Strain;
 
 @Component
 public class StrainMapper implements Mapper<Strain, String>
 {
     private StrainService strainService;
-
-    private static final String STRAIN_NOT_FOUND_ERROR = "Strain '%s' does not exist.";
 
     public StrainMapper(StrainService strainService)
     {
@@ -46,13 +41,6 @@ public class StrainMapper implements Mapper<Strain, String>
 
     public Strain toEntity(String strainName)
     {
-        Strain strain = strainService.getStrainByName(strainName);
-
-        if (strain == null)
-        {
-            throw new UserOperationFailedException(String.format(STRAIN_NOT_FOUND_ERROR, strainName));
-        }
-
-        return strain;
+        return strainService.getStrainByNameFailWhenNotFound(strainName);
     }
 }

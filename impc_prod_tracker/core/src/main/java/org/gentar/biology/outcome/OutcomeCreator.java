@@ -1,5 +1,8 @@
 package org.gentar.biology.outcome;
 
+import org.gentar.audit.history.History;
+import org.gentar.audit.history.HistoryService;
+import org.gentar.biology.plan.Plan;
 import org.springframework.stereotype.Component;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -14,11 +17,24 @@ class OutcomeCreator
 {
     @PersistenceContext
     private EntityManager entityManager;
+    private HistoryService<Outcome> historyService;
+
+    OutcomeCreator(HistoryService<Outcome> historyService)
+    {
+        this.historyService = historyService;
+    }
 
     public Outcome create(Outcome outcome)
     {
         Outcome createdOutcome = save(outcome);
+        registerCreationInHistory(createdOutcome);
         return createdOutcome;
+    }
+
+    private void registerCreationInHistory(Outcome outcome)
+    {
+        History history = historyService.buildCreationTrack(outcome, outcome.getId());
+        historyService.saveTrackOfChanges(history);
     }
 
     private Outcome save(Outcome outcome)

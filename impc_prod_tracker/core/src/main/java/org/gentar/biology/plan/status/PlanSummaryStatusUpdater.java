@@ -5,12 +5,8 @@ import org.gentar.biology.outcome.Outcome;
 import org.gentar.biology.plan.Plan;
 import org.gentar.biology.plan.attempt.phenotyping.PhenotypingAttempt;
 import org.gentar.biology.plan.attempt.phenotyping.stage.PhenotypingStage;
-import org.gentar.biology.project.Project;
-import org.gentar.biology.project.summary_status.ProjectSummaryStatusStamp;
 import org.gentar.biology.status.Status;
-import org.gentar.biology.status.StatusService;
 import org.springframework.stereotype.Component;
-
 import java.time.LocalDateTime;
 import java.util.*;
 
@@ -21,13 +17,6 @@ import java.util.*;
 @Component
 public class PlanSummaryStatusUpdater
 {
-    private StatusService statusService;
-
-    public PlanSummaryStatusUpdater(StatusService statusService)
-    {
-        this.statusService = statusService;
-    }
-
     public void setSummaryStatus(Plan plan)
     {
         List<Status> statuses = getChildrenStatus(plan);
@@ -39,7 +28,7 @@ public class PlanSummaryStatusUpdater
         setSummaryStatus(plan, mostAdvancedStatus);
     }
 
-    public List<Status> getChildrenStatus(Plan plan)
+    private List<Status> getChildrenStatus(Plan plan)
     {
         List<Status> statuses = new ArrayList<>();
         statuses.addAll(getOutcomesStatuses(plan));
@@ -47,7 +36,7 @@ public class PlanSummaryStatusUpdater
         return statuses;
     }
 
-    public List<Status> getOutcomesStatuses(Plan plan)
+    private List<Status> getOutcomesStatuses(Plan plan)
     {
         List<Status> outcomeStatuses = new ArrayList<>();
         Set<Outcome> outcomes = plan.getOutcomes();
@@ -55,16 +44,13 @@ public class PlanSummaryStatusUpdater
         {
             outcomes.forEach(x -> {
                 Colony colony = x.getColony();
-                if (colony != null)
-                {
-                    outcomeStatuses.add(colony.getStatus());
-                }
+                outcomeStatuses.add(colony.getStatus());
             });
         }
         return outcomeStatuses;
     }
 
-    public List<Status> getPhenotypingStagesStatuses(Plan plan)
+    private List<Status> getPhenotypingStagesStatuses(Plan plan)
     {
         List<Status> phenotypingStagesStatuses = new ArrayList<>();
         PhenotypingAttempt phenotypingAttempt = plan.getPhenotypingAttempt();

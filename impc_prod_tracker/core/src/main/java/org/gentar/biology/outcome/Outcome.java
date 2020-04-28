@@ -52,7 +52,7 @@ public class Outcome extends BaseEntity implements Resource<Outcome>
 
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "outcome", orphanRemoval=true)
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "outcome")
     private Set<PlanStartingPoint> planStartingPoints;
 
     // Copy Constructor
