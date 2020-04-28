@@ -8,16 +8,8 @@ import org.gentar.biology.mutation.MutationMapper;
 import org.gentar.biology.outcome.type.OutcomeType;
 import org.gentar.biology.plan.Plan;
 import org.gentar.biology.plan.PlanService;
-import org.gentar.biology.plan.attempt.phenotyping.PhenotypingStageDTO;
-import org.gentar.biology.plan.attempt.phenotyping.stage.PhenotypingStage;
-import org.gentar.biology.plan.attempt.phenotyping.stage.material_deposited_type.MaterialDepositedType;
 import org.gentar.biology.specimen.SpecimenMapper;
-import org.gentar.exceptions.UserOperationFailedException;
 import org.springframework.stereotype.Component;
-
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Set;
 
 @Component
 public class OutcomeMapper implements Mapper<Outcome, OutcomeDTO>
@@ -82,30 +74,9 @@ public class OutcomeMapper implements Mapper<Outcome, OutcomeDTO>
         return outcome;
     }
 
-    @Override
-    public Set<Outcome> toEntities(Collection<OutcomeDTO> dtos) {
-        Set<Outcome> outcomes = new HashSet<>();
-        if (dtos != null)
-        {
-            dtos.forEach(outcomeDTO -> outcomes.add(toEntity(outcomeDTO)));
-        }
-
-        return outcomes;
-    }
-
     public Outcome toEntityBytTpo(String tpo)
     {
         Outcome outcome = outcomeService.getByTpoFailsIfNotFound(tpo);
         return outcome;
-    }
-
-    public Set<Outcome> toEntitiesBytTpo(Collection<String> tpos) {
-        Set<Outcome> outcomes = new HashSet<>();
-        if (tpos != null)
-        {
-            tpos.forEach(tpo -> outcomes.add(toEntityBytTpo(tpo)));
-        }
-
-        return outcomes;
     }
 }

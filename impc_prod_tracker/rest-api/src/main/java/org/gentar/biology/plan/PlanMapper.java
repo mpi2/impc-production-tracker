@@ -61,7 +61,8 @@ public class PlanMapper implements Mapper<Plan, PlanDTO>
     public PlanMapper(
         EntityMapper entityMapper,
         CrisprAttemptMapper crisprAttemptMapper,
-        BreedingAttemptMapper breedingAttemptMapper, PhenotypingAttemptMapper phenotypingAttemptMapper,
+        BreedingAttemptMapper breedingAttemptMapper,
+        PhenotypingAttemptMapper phenotypingAttemptMapper,
         AttemptTypeMapper attemptTypeMapper,
         FunderMapper funderMapper,
         WorkUnitMapper workUnitMapper,

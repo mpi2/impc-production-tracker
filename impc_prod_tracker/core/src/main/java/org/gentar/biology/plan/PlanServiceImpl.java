@@ -16,7 +16,6 @@
 package org.gentar.biology.plan;
 
 import org.gentar.biology.plan.engine.PlanCreator;
-import org.gentar.biology.project.Project;
 import org.gentar.exceptions.UserOperationFailedException;
 import org.gentar.audit.history.HistoryService;
 import org.gentar.security.abac.ResourceAccessChecker;
@@ -39,6 +38,7 @@ public class PlanServiceImpl implements PlanService
     private PlanUpdater planUpdater;
     private HistoryService historyService;
     private PlanCreator planCreator;
+    private PlanStatusManager planStatusManager;
 
     private static final String READ_PLAN_ACTION = "READ_PLAN";
     private static final String PLAN_NOT_EXISTS_ERROR =
@@ -49,13 +49,14 @@ public class PlanServiceImpl implements PlanService
         ResourceAccessChecker<Plan> resourceAccessChecker,
         PlanUpdater planUpdater,
         HistoryService historyService,
-        PlanCreator planCreator)
+        PlanCreator planCreator, PlanStatusManager planStatusManager)
     {
         this.planRepository = planRepository;
         this.resourceAccessChecker = resourceAccessChecker;
         this.planUpdater = planUpdater;
         this.historyService = historyService;
         this.planCreator = planCreator;
+        this.planStatusManager = planStatusManager;
     }
 
     @Override
@@ -138,5 +139,11 @@ public class PlanServiceImpl implements PlanService
     public Plan createPlan(Plan plan)
     {
         return planCreator.createPlan(plan);
+    }
+
+    @Override
+    public void updateStatusIfNeeded(Plan plan)
+    {
+        planStatusManager.updateStatusIfNeeded(plan);
     }
 }

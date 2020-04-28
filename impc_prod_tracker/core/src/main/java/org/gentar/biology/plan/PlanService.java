@@ -49,4 +49,6 @@ public interface PlanService
     List<History> getPlanHistory(Plan plan);
 
     Plan createPlan(Plan plan);
+
+    void updateStatusIfNeeded(Plan plan);
 }
