@@ -1,6 +1,8 @@
 package org.gentar.biology.plan.engine.phenotyping;
 
 import org.gentar.biology.plan.engine.phenotyping.processors.PhenotypePlanAbortProcessor;
+import org.gentar.biology.plan.engine.phenotyping.processors.PhenotypingInProgressProcessor;
+import org.gentar.biology.plan.engine.processors.PlanProcessorWithoutValidations;
 import org.gentar.statemachine.ProcessEvent;
 import org.gentar.statemachine.ProcessState;
 import org.gentar.statemachine.Processor;
@@ -10,9 +12,35 @@ import java.util.List;
 
 public enum PhenotypePlanEvent implements ProcessEvent
 {
+    abandonWhenCreated(
+            "Abandon the phenotyping plan that has been created",
+            PhenotypePlanState.PlanCreated,
+            PhenotypePlanState.PlanAbandoned,
+            StateMachineConstants.TRIGGERED_BY_USER,
+            null)
+            {
+                @Override
+                public Class<? extends Processor> getNextStepProcessor()
+                {
+                    return PlanProcessorWithoutValidations.class;
+                }
+            },
+    updateToInProgress(
+            "Update to phenotyping in progress",
+            PhenotypePlanState.PlanCreated,
+            PhenotypePlanState.PhenotypingInProgress,
+            StateMachineConstants.NOT_TRIGGERED_BY_USER,
+            "executed by the system when phenotyping details are registered")
+            {
+                @Override
+                public Class<? extends Processor> getNextStepProcessor()
+                {
+                    return PhenotypingInProgressProcessor.class;
+                }
+            },
     abortPhenotypingPlan(
-        "Abort a phenotyping plan",
-        PhenotypePlanState.PlanCreated,
+        "Abort a phenotyping plan that is in progress",
+        PhenotypePlanState.PhenotypingInProgress,
         PhenotypePlanState.PhenotypePlanAborted,
         StateMachineConstants.TRIGGERED_BY_USER,
             null)
