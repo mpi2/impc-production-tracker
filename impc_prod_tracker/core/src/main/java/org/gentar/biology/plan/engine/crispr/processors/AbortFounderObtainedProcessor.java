@@ -11,9 +11,9 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 
 @Component
-public class AbortGltProcessor extends AbstractProcessor
+public class AbortFounderObtainedProcessor extends AbstractProcessor
 {
-    public AbortGltProcessor(PlanStateSetter planStateSetter)
+    public AbortFounderObtainedProcessor(PlanStateSetter planStateSetter)
     {
         super(planStateSetter);
     }

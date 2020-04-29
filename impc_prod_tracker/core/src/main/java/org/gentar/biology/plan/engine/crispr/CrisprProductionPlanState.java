@@ -9,7 +9,7 @@ public enum CrisprProductionPlanState implements ProcessState
     PlanCreated("Plan Created"),
     AttemptInProgress("Attempt In Progress"),
     EmbryosObtained("Embryos Obtained"),
-    GLT("GLT"),
+    FounderObtained("Founder Obtained"),
     AttemptAborted("Attempt Aborted");
 
     private String internalName;
