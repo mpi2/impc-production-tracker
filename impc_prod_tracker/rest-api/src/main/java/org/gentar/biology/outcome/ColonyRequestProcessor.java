@@ -25,6 +25,7 @@ public class ColonyRequestProcessor
     public Colony getColonyToUpdate(Colony originalColony, ColonyDTO colonyDTO)
     {
         Colony colonyToUpdate = colonyMapper.toEntity(colonyDTO);
+        colonyToUpdate.setOutcome(originalColony.getOutcome());
         colonyToUpdate.setStatus(originalColony.getStatus());
         colonyToUpdate.setGenotypingComment(colonyDTO.getGenotypingComment());
         modifyStrainIfNeeded(colonyToUpdate, colonyDTO);
