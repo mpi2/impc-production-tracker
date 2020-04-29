@@ -64,7 +64,7 @@ public class PlanQueryHelper
     public static List<Specimen> getSpecimensByPlan(Plan plan)
     {
         List<Specimen> specimens = new ArrayList<>();
-        List<Outcome> outcomes = getOutcomesByPlanAndType(plan, OutcomeTypes.SPECIMEN);
+        List<Outcome> outcomes = getOutcomesByPlanAndType(plan, OutcomeTypeName.SPECIMEN);
         outcomes.forEach(x -> {
             if (x.getSpecimen() != null)
             {
