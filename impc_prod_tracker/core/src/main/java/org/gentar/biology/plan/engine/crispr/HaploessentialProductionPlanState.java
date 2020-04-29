@@ -8,6 +8,7 @@ import java.util.Arrays;
 public enum HaploessentialProductionPlanState implements ProcessState
 {
     PlanCreated("Plan Created"),
+    PlanAbandoned("Plan Abandoned"),
     AttemptInProgress("Attempt In Progress"),
     EmbryosObtained("Embryos Obtained"),
     AttemptAborted("Attempt Aborted");

@@ -1,7 +1,7 @@
 package org.gentar.biology.plan.engine.crispr;
 
 import org.gentar.biology.plan.engine.crispr.processors.*;
-import org.gentar.biology.plan.engine.processors.PlanAbortProcessorWithoutValidations;
+import org.gentar.biology.plan.engine.processors.PlanProcessorWithoutValidations;
 import org.gentar.statemachine.ProcessEvent;
 import org.gentar.statemachine.ProcessState;
 import org.gentar.statemachine.Processor;
@@ -22,20 +22,20 @@ public enum HaploessentialProductionPlanEvent implements ProcessEvent
                 @Override
                 public Class<? extends Processor> getNextStepProcessor()
                 {
-                    return PlanAbortProcessorWithoutValidations.class;
+                    return PlanProcessorWithoutValidations.class;
                 }
             },
-    abortWhenCreated(
-            "Abort the plan that has been created",
+    abandonWhenCreated(
+            "Abandon the plan that has been created",
             HaploessentialProductionPlanState.PlanCreated,
-            HaploessentialProductionPlanState.AttemptAborted,
+            HaploessentialProductionPlanState.PlanAbandoned,
             StateMachineConstants.TRIGGERED_BY_USER,
             null)
             {
                 @Override
                 public Class<? extends Processor> getNextStepProcessor()
                 {
-                    return PlanAbortProcessorWithoutValidations.class;
+                    return PlanProcessorWithoutValidations.class;
                 }
             },
     updateToInProgress(
@@ -52,7 +52,7 @@ public enum HaploessentialProductionPlanEvent implements ProcessEvent
                 }
             },
     updateToEmbryosObtained(
-            "Update to Embryos obtained from the attempt",
+            "Update to embryos obtained for the attempt",
             HaploessentialProductionPlanState.AttemptInProgress,
             HaploessentialProductionPlanState.EmbryosObtained,
             StateMachineConstants.NOT_TRIGGERED_BY_USER,
