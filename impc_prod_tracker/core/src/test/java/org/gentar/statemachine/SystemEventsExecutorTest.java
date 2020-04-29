@@ -120,7 +120,7 @@ class SystemEventsExecutorTest
         when(stateTransitionsManager.processEvent(any(Plan.class)))
             .thenReturn(planWithAttemptInProgress);
 
-        planCreated.setEvent(CrisprProductionPlanEvent.abortWhenCreated);
+        planCreated.setEvent(CrisprProductionPlanEvent.abandonWhenCreated);
 
         UserOperationFailedException thrown = assertThrows(UserOperationFailedException.class,
             () -> testInstance.execute(planCreated),
@@ -128,7 +128,7 @@ class SystemEventsExecutorTest
         assertThat(
             "Not expected message",
             thrown.getMessage(),
-            is("Trying to execute action [abortWhenCreated] but also modifying data that causes a change in status. " +
+            is("Trying to execute action [abandonWhenCreated] but also modifying data that causes a change in status. " +
                 "Please do this in two different steps."));
     }
 }

@@ -31,7 +31,7 @@ class PlanStateMachineResolverTest
             .build();
         ProcessEvent processEvent =
             testInstance.getProcessEventByActionName(
-                plan, CrisprProductionPlanEvent.abortWhenCreated.getName());
+                plan, CrisprProductionPlanEvent.abandonWhenCreated.getName());
         assertThat(
             "Invalid state machine",
             (processEvent instanceof CrisprProductionPlanEvent),
@@ -39,7 +39,7 @@ class PlanStateMachineResolverTest
         assertThat(
             "Invalid event",
             processEvent.getName(),
-            is(CrisprProductionPlanEvent.abortWhenCreated.getName()));
+            is(CrisprProductionPlanEvent.abandonWhenCreated.getName()));
         System.out.println(processEvent);
     }
 }

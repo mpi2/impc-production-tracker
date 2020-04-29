@@ -37,10 +37,10 @@ public enum BreedingPlanEvent implements ProcessEvent
                 return null;
             }
         },
-    abortWhenCreated(
-            "Abort a breeding plan that has been created",
+    abandonWhenCreated(
+            "Abandon a breeding plan that has been created",
             BreedingPlanState.PlanCreated,
-            BreedingPlanState.BreedingAborted,
+            BreedingPlanState.PlanAbandoned,
             StateMachineConstants.TRIGGERED_BY_USER,
             null)
             {

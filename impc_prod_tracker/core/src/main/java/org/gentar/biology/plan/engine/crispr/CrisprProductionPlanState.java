@@ -7,6 +7,7 @@ import java.util.Arrays;
 public enum CrisprProductionPlanState implements ProcessState
 {
     PlanCreated("Plan Created"),
+    PlanAbandoned("Plan Abandoned"),
     AttemptInProgress("Attempt In Progress"),
     EmbryosObtained("Embryos Obtained"),
     FounderObtained("Founder Obtained"),

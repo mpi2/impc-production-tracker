@@ -4,7 +4,7 @@ import org.gentar.biology.plan.engine.crispr.processors.AbortFounderObtainedProc
 import org.gentar.biology.plan.engine.crispr.processors.AttemptInProgressProcessor;
 import org.gentar.biology.plan.engine.crispr.processors.EmbryosObtainedProcessor;
 import org.gentar.biology.plan.engine.crispr.processors.FounderObtainedProcessor;
-import org.gentar.biology.plan.engine.processors.PlanAbortProcessorWithoutValidations;
+import org.gentar.biology.plan.engine.processors.PlanProcessorWithoutValidations;
 import org.gentar.statemachine.ProcessEvent;
 import org.gentar.statemachine.ProcessState;
 import org.gentar.statemachine.Processor;
@@ -24,20 +24,20 @@ public enum CrisprProductionPlanEvent implements ProcessEvent
                 @Override
                 public Class<? extends Processor> getNextStepProcessor()
                 {
-                    return PlanAbortProcessorWithoutValidations.class;
+                    return PlanProcessorWithoutValidations.class;
                 }
             },
-    abortWhenCreated(
-            "Abort the plan that has been created",
+    abandonWhenCreated(
+            "Abandon the plan that has been created",
             CrisprProductionPlanState.PlanCreated,
-            CrisprProductionPlanState.AttemptAborted,
+            CrisprProductionPlanState.PlanAbandoned,
             StateMachineConstants.TRIGGERED_BY_USER,
             null)
             {
                 @Override
                 public Class<? extends Processor> getNextStepProcessor()
                 {
-                    return PlanAbortProcessorWithoutValidations.class;
+                    return PlanProcessorWithoutValidations.class;
                 }
             },
     updateToInProgress(
@@ -54,7 +54,7 @@ public enum CrisprProductionPlanEvent implements ProcessEvent
             }
         },
     updateToEmbryosObtained(
-            "Update to Embryos obtained from the attempt",
+            "Update to embryos obtained for the attempt",
             CrisprProductionPlanState.AttemptInProgress,
             CrisprProductionPlanState.EmbryosObtained,
             StateMachineConstants.NOT_TRIGGERED_BY_USER,
@@ -67,11 +67,11 @@ public enum CrisprProductionPlanEvent implements ProcessEvent
             }
         },
     updateToFounderObtained(
-            "Update to Germ line transmission obtained for the attempt",
+            "Update to founder obtained for the attempt",
             CrisprProductionPlanState.EmbryosObtained,
             CrisprProductionPlanState.FounderObtained,
             StateMachineConstants.NOT_TRIGGERED_BY_USER,
-            "executed by the system when germ line transmission is registered.")
+            "executed by the system when a founder is registered.")
         {
             @Override
             public Class<? extends Processor> getNextStepProcessor()
@@ -89,11 +89,11 @@ public enum CrisprProductionPlanEvent implements ProcessEvent
                 @Override
                 public Class<? extends Processor> getNextStepProcessor()
                 {
-                    return PlanAbortProcessorWithoutValidations.class;
+                    return PlanProcessorWithoutValidations.class;
                 }
             },
     abortWhenFounderObtained(
-            "Abort the plan after germ line transmission obtained",
+            "Abort the plan after a founder obtained",
             CrisprProductionPlanState.FounderObtained,
             CrisprProductionPlanState.AttemptAborted,
             StateMachineConstants.TRIGGERED_BY_USER,

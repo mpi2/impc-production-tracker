@@ -24,9 +24,9 @@ import org.springframework.stereotype.Component;
  * Abort a plan when no validations are needed
  */
 @Component
-public class PlanAbortProcessorWithoutValidations extends AbstractProcessor
+public class PlanProcessorWithoutValidations extends AbstractProcessor
 {
-    public PlanAbortProcessorWithoutValidations(PlanStateSetter planStateSetter)
+    public PlanProcessorWithoutValidations(PlanStateSetter planStateSetter)
     {
         super(planStateSetter);
     }
