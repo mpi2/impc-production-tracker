@@ -5,14 +5,10 @@ import org.gentar.statemachine.AbstractProcessor;
 import org.gentar.statemachine.ProcessData;
 import org.springframework.stereotype.Component;
 
-/**
- * Processor to execute actions in a colony that don't require extra validations.
- */
 @Component
-public class ColonyProcessorWithoutValidations extends AbstractProcessor
+public class ConfirmGenotypeProcessor extends AbstractProcessor
 {
-
-    public ColonyProcessorWithoutValidations(ColonyStateSetter colonyStateSetter)
+    public ConfirmGenotypeProcessor(ColonyStateSetter colonyStateSetter)
     {
         super(colonyStateSetter);
     }
@@ -20,6 +16,7 @@ public class ColonyProcessorWithoutValidations extends AbstractProcessor
     @Override
     protected boolean canExecuteTransition(ProcessData entity)
     {
+        //TODO: Validates a sequence must have been uploaded and the allele validated
         return true;
     }
 }
