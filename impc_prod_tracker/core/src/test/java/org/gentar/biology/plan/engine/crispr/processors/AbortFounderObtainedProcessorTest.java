@@ -27,9 +27,9 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
 @ExtendWith(MockitoExtension.class)
-class AbortGltProcessorTest
+class AbortFounderObtainedProcessorTest
 {
-    private AbortGltProcessor testInstance;
+    private AbortFounderObtainedProcessor testInstance;
 
     @Mock
     private PlanStateSetter planStateSetter;
@@ -37,17 +37,17 @@ class AbortGltProcessorTest
     @BeforeEach
     void setUp()
     {
-        testInstance = new AbortGltProcessor(planStateSetter);
+        testInstance = new AbortFounderObtainedProcessor(planStateSetter);
     }
 
     @Test
     public void testWhenNoColonies()
     {
         Plan plan = PlanBuilder.getInstance()
-            .withStatus(CrisprProductionPlanState.GLT.getInternalName())
+            .withStatus(CrisprProductionPlanState.FounderObtained.getInternalName())
             .build();
 
-        plan.setEvent(CrisprProductionPlanEvent.abortWhenGLT);
+        plan.setEvent(CrisprProductionPlanEvent.abortWhenFounderObtained);
         testInstance.process(plan);
 
         verify(planStateSetter, times(1)).setStatusByName(any(Plan.class), any(String.class));
@@ -57,7 +57,7 @@ class AbortGltProcessorTest
     public void testWhenAllColoniesAborted()
     {
         Plan plan = PlanBuilder.getInstance()
-            .withStatus(CrisprProductionPlanState.GLT.getInternalName())
+            .withStatus(CrisprProductionPlanState.FounderObtained.getInternalName())
             .build();
         Set<Outcome> outcomes = new HashSet<>();
         Outcome outcome1 = buildOutcomeColony(1L, true);
@@ -66,7 +66,7 @@ class AbortGltProcessorTest
         outcomes.add(outcome2);
         plan.setOutcomes(outcomes);
 
-        plan.setEvent(CrisprProductionPlanEvent.abortWhenGLT);
+        plan.setEvent(CrisprProductionPlanEvent.abortWhenFounderObtained);
         testInstance.process(plan);
 
         verify(planStateSetter, times(1)).setStatusByName(any(Plan.class), any(String.class));
@@ -76,7 +76,7 @@ class AbortGltProcessorTest
     public void testWhenNotAllColoniesAborted()
     {
         Plan plan = PlanBuilder.getInstance()
-            .withStatus(CrisprProductionPlanState.GLT.getInternalName())
+            .withStatus(CrisprProductionPlanState.FounderObtained.getInternalName())
             .build();
         Set<Outcome> outcomes = new HashSet<>();
         Outcome outcome1 = buildOutcomeColony(1L, true);
@@ -85,7 +85,7 @@ class AbortGltProcessorTest
         outcomes.add(outcome2);
         plan.setOutcomes(outcomes);
 
-        plan.setEvent(CrisprProductionPlanEvent.abortWhenGLT);
+        plan.setEvent(CrisprProductionPlanEvent.abortWhenFounderObtained);
         UserOperationFailedException thrown = assertThrows(UserOperationFailedException.class,
             () -> testInstance.process(plan), "Exception not thrown");
         assertThat("Not expected message", thrown.getMessage(), is("Plan cannot be aborted"));

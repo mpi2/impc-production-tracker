@@ -19,16 +19,16 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
 @ExtendWith(MockitoExtension.class)
-class GltProcessorTest
+class FounderObtainedProcessorTest
 {
-    private GltProcessor testInstance;
+    private FounderObtainedProcessor testInstance;
     @Mock
     private PlanStateSetter planStateSetter;
 
     @BeforeEach
     void setUp()
     {
-        testInstance = new GltProcessor(planStateSetter);
+        testInstance = new FounderObtainedProcessor(planStateSetter);
     }
 
     @Test
@@ -42,7 +42,7 @@ class GltProcessorTest
     @Test
     public void testWhenNoMutants()
     {
-        Plan plan = buildPlanReadyToMoveToGlt();
+        Plan plan = buildPlanReadyToMoveToFounderObtained();
 
         testInstance.process(plan);
 
@@ -52,7 +52,7 @@ class GltProcessorTest
     @Test
     public void testWhenNhejG0Mutants()
     {
-        Plan plan = buildPlanReadyToMoveToGlt();
+        Plan plan = buildPlanReadyToMoveToFounderObtained();
         plan.getCrisprAttempt().getAssay().setNumNhejG0Mutants(1);
 
         testInstance.process(plan);
@@ -60,13 +60,13 @@ class GltProcessorTest
         verify(
             planStateSetter,
             times(1)).setStatusByName(any(Plan.class),
-            eq(CrisprProductionPlanEvent.updateToGlt.getEndState().getInternalName()));
+            eq(CrisprProductionPlanEvent.updateToFounderObtained.getEndState().getInternalName()));
     }
 
     @Test
     public void testWhenNumDeletionG0Mutants()
     {
-        Plan plan = buildPlanReadyToMoveToGlt();
+        Plan plan = buildPlanReadyToMoveToFounderObtained();
         plan.getCrisprAttempt().getAssay().setNumDeletionG0Mutants(1);
 
         testInstance.process(plan);
@@ -74,13 +74,13 @@ class GltProcessorTest
         verify(
             planStateSetter,
             times(1)).setStatusByName(any(Plan.class),
-            eq(CrisprProductionPlanEvent.updateToGlt.getEndState().getInternalName()));
+            eq(CrisprProductionPlanEvent.updateToFounderObtained.getEndState().getInternalName()));
     }
 
     @Test
     public void testWhenNumHrG0Mutants()
     {
-        Plan plan = buildPlanReadyToMoveToGlt();
+        Plan plan = buildPlanReadyToMoveToFounderObtained();
         plan.getCrisprAttempt().getAssay().setNumHrG0Mutants(1);
 
         testInstance.process(plan);
@@ -88,13 +88,13 @@ class GltProcessorTest
         verify(
             planStateSetter,
             times(1)).setStatusByName(any(Plan.class),
-            eq(CrisprProductionPlanEvent.updateToGlt.getEndState().getInternalName()));
+            eq(CrisprProductionPlanEvent.updateToFounderObtained.getEndState().getInternalName()));
     }
 
     @Test
     public void testWhenNumHdrG0Mutants()
     {
-        Plan plan = buildPlanReadyToMoveToGlt();
+        Plan plan = buildPlanReadyToMoveToFounderObtained();
         plan.getCrisprAttempt().getAssay().setNumHdrG0Mutants(1);
 
         testInstance.process(plan);
@@ -102,10 +102,10 @@ class GltProcessorTest
         verify(
             planStateSetter,
             times(1)).setStatusByName(any(Plan.class),
-            eq(CrisprProductionPlanEvent.updateToGlt.getEndState().getInternalName()));
+            eq(CrisprProductionPlanEvent.updateToFounderObtained.getEndState().getInternalName()));
     }
 
-    private Plan buildPlanReadyToMoveToGlt()
+    private Plan buildPlanReadyToMoveToFounderObtained()
     {
         Plan plan = PlanBuilder.getInstance()
             .withStatus(CrisprProductionPlanState.EmbryosObtained.getInternalName())
@@ -114,7 +114,7 @@ class GltProcessorTest
         Assay assay = new Assay();
         crisprAttempt.setAssay(assay);
         plan.setCrisprAttempt(crisprAttempt);
-        plan.setEvent(CrisprProductionPlanEvent.updateToGlt);
+        plan.setEvent(CrisprProductionPlanEvent.updateToFounderObtained);
         return plan;
     }
 }

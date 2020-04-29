@@ -9,9 +9,9 @@ import org.gentar.statemachine.ProcessData;
 import org.springframework.stereotype.Component;
 
 @Component
-public class GltProcessor extends AbstractProcessor
+public class FounderObtainedProcessor extends AbstractProcessor
 {
-    public GltProcessor(PlanStateSetter planStateSetter)
+    public FounderObtainedProcessor(PlanStateSetter planStateSetter)
     {
         super(planStateSetter);
     }
