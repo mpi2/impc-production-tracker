@@ -4,6 +4,7 @@ import org.gentar.biology.plan.Plan;
 import org.gentar.biology.plan.attempt.AttemptTypes;
 import org.gentar.biology.plan.engine.breeding.BreedingPlanEvent;
 import org.gentar.biology.plan.engine.crispr.CrisprProductionPlanEvent;
+import org.gentar.biology.plan.engine.crispr.HaploessentialProductionPlanEvent;
 import org.gentar.biology.plan.engine.phenotyping.PhenotypePlanEvent;
 import org.gentar.exceptions.SystemOperationFailedException;
 import org.gentar.statemachine.ProcessData;
@@ -68,6 +69,9 @@ public class PlanStateMachineResolver implements StateMachineResolver
         {
             case CRISPR:
                 processEvents = CrisprProductionPlanEvent.getAllEvents();
+                break;
+            case HAPLOESSENTIAL_CRISPR:
+                processEvents = HaploessentialProductionPlanEvent.getAllEvents();
                 break;
             case ADULT_PHENOTYPING: case HAPLOESSENTIAL_PHENOTYPING:
                 processEvents = PhenotypePlanEvent.getAllEvents();

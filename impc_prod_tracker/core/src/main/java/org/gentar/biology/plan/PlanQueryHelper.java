@@ -5,6 +5,7 @@ import org.gentar.biology.outcome.Outcome;
 import org.gentar.biology.outcome.type.OutcomeTypeName;
 import org.gentar.biology.plan.attempt.phenotyping.PhenotypingAttempt;
 import org.gentar.biology.plan.attempt.phenotyping.stage.PhenotypingStage;
+import org.gentar.biology.specimen.Specimen;
 import org.gentar.biology.status.Status;
 import java.util.ArrayList;
 import java.util.List;
@@ -53,6 +54,24 @@ public class PlanQueryHelper
             }
         });
         return colonies;
+    }
+
+    /**
+     * Gets all the specimens for a plan.
+     * @param plan The plan to query.
+     * @return List of {@link Specimen} corresponding to outcomes that have a specimen in the plan.
+     */
+    public static List<Specimen> getSpecimensByPlan(Plan plan)
+    {
+        List<Specimen> specimens = new ArrayList<>();
+        List<Outcome> outcomes = getOutcomesByPlanAndType(plan, OutcomeTypeName.SPECIMEN);
+        outcomes.forEach(x -> {
+            if (x.getSpecimen() != null)
+            {
+                specimens.add(x.getSpecimen());
+            }
+        });
+        return specimens;
     }
 
     /**
