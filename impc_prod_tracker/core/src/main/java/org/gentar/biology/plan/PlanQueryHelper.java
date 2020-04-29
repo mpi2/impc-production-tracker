@@ -2,7 +2,7 @@ package org.gentar.biology.plan;
 
 import org.gentar.biology.colony.Colony;
 import org.gentar.biology.outcome.Outcome;
-import org.gentar.biology.outcome.type.OutcomeTypes;
+import org.gentar.biology.outcome.type.OutcomeTypeName;
 import org.gentar.biology.plan.attempt.phenotyping.PhenotypingAttempt;
 import org.gentar.biology.plan.attempt.phenotyping.stage.PhenotypingStage;
 import org.gentar.biology.specimen.Specimen;
@@ -19,10 +19,10 @@ public class PlanQueryHelper
     /**
      * Get all the outcomes of a given type for a plan.
      * @param plan Plan object.
-     * @param type {@link OutcomeTypes} object with the type of the outcome.
+     * @param type {@link OutcomeTypeName} object with the type of the outcome.
      * @return A list of {@link Outcome} of type "type".
      */
-    public static List<Outcome> getOutcomesByPlanAndType(Plan plan, OutcomeTypes type)
+    public static List<Outcome> getOutcomesByPlanAndType(Plan plan, OutcomeTypeName type)
     {
         List<Outcome> outcomes = new ArrayList<>();
         Set<Outcome> outcomesSet = plan.getOutcomes();
@@ -46,7 +46,7 @@ public class PlanQueryHelper
     public static List<Colony> getColoniesByPlan(Plan plan)
     {
         List<Colony> colonies = new ArrayList<>();
-        List<Outcome> outcomes = getOutcomesByPlanAndType(plan, OutcomeTypes.COLONY);
+        List<Outcome> outcomes = getOutcomesByPlanAndType(plan, OutcomeTypeName.COLONY);
         outcomes.forEach(x -> {
             if (x.getColony() != null)
             {

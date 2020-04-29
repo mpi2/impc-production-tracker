@@ -6,6 +6,7 @@ import org.gentar.biology.plan.Plan;
 import org.gentar.biology.plan.attempt.phenotyping.PhenotypingAttempt;
 import org.gentar.biology.plan.attempt.phenotyping.stage.PhenotypingStage;
 import org.gentar.biology.status.Status;
+import org.gentar.exceptions.SystemOperationFailedException;
 import org.springframework.stereotype.Component;
 import java.time.LocalDateTime;
 import java.util.*;
@@ -21,11 +22,18 @@ public class PlanSummaryStatusUpdater
     {
         List<Status> statuses = getChildrenStatus(plan);
         statuses.add(plan.getStatus());
-        Status mostAdvancedStatus = statuses
-            .stream().filter(Objects::nonNull)
+        Status mostAdvancedStatus = getMostAdvanceStatusIgnoringAborted(statuses);
+        setSummaryStatus(plan, mostAdvancedStatus);
+    }
+
+    private Status getMostAdvanceStatusIgnoringAborted(List<Status> statuses)
+    {
+        return statuses
+            .stream()
+            .filter(Objects::nonNull)
+            .filter(x -> !x.getIsAbortionStatus())
             .max(Comparator.comparing(Status::getOrdering))
             .orElse(null);
-        setSummaryStatus(plan, mostAdvancedStatus);
     }
 
     private List<Status> getChildrenStatus(Plan plan)
@@ -67,6 +75,12 @@ public class PlanSummaryStatusUpdater
 
     private void setSummaryStatus(Plan plan, Status summaryStatus)
     {
+        if (summaryStatus == null)
+        {
+            throw new SystemOperationFailedException(
+                "Summary status cannot be set",
+                "The summary status for plan " + plan.toString() + " was null");
+        }
         String originalStatusName =
             plan.getSummaryStatus() == null ? "" : plan.getSummaryStatus().getName();
         if (!originalStatusName.equals(summaryStatus.getName()))
