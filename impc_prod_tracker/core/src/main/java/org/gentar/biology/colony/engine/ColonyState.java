@@ -1,15 +1,26 @@
 package org.gentar.biology.colony.engine;
 
-import org.gentar.statemachine.EnumStateHelper;
 import org.gentar.statemachine.ProcessState;
-import java.util.Arrays;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 public enum ColonyState implements ProcessState
 {
+    GenotypeInProgress("Genotype In Progress"),
     GenotypeNotConfirmed("Genotype Not Confirmed"),
     GenotypeConfirmed("Genotype Confirmed"),
+    GenotypeExtinct("Genotype Extinct"),
     ColonyAborted("Colony Aborted");
+
+    private static final Map<String, ColonyState> BY_INTERNAL_NAME = new HashMap<>();
+
+    static
+    {
+        for (ColonyState e: values())
+        {
+            BY_INTERNAL_NAME.put(e.internalName, e);
+        }
+    }
 
     private String internalName;
 
@@ -18,16 +29,11 @@ public enum ColonyState implements ProcessState
         this.internalName = internalName;
     }
 
-    public static List<ProcessState> getAllStates()
-    {
-        return Arrays.asList(ColonyState.values());
-    }
-
     public static ProcessState getStateByInternalName(String internalName)
     {
-        return EnumStateHelper.getStateByInternalName(
-            Arrays.asList(ColonyState.values()), internalName);
+        return BY_INTERNAL_NAME.get(internalName);
     }
+
     @Override
     public String getName()
     {

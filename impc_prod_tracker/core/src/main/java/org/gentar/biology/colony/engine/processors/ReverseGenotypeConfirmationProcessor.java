@@ -5,14 +5,10 @@ import org.gentar.statemachine.AbstractProcessor;
 import org.gentar.statemachine.ProcessData;
 import org.springframework.stereotype.Component;
 
-/**
- * Processor to execute actions in a colony that don't require extra validations.
- */
 @Component
-public class ColonyProcessorWithoutValidations extends AbstractProcessor
+public class ReverseGenotypeConfirmationProcessor extends AbstractProcessor
 {
-
-    public ColonyProcessorWithoutValidations(ColonyStateSetter colonyStateSetter)
+    public ReverseGenotypeConfirmationProcessor(ColonyStateSetter colonyStateSetter)
     {
         super(colonyStateSetter);
     }
@@ -20,6 +16,7 @@ public class ColonyProcessorWithoutValidations extends AbstractProcessor
     @Override
     protected boolean canExecuteTransition(ProcessData entity)
     {
-        return true;
+        // TODO: Can be done only by CDA or DCC
+        return false;
     }
 }
