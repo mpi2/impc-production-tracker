@@ -2,6 +2,7 @@ package org.gentar.biology.plan.attempt;
 
 public enum AttemptTypes {
     CRISPR("crispr"),
+    HAPLOESSENTIAL_CRISPR("haplo-essential crispr"),
     BREEDING("breeding"),
     ADULT_PHENOTYPING("adult phenotyping"),
     HAPLOESSENTIAL_PHENOTYPING("haplo-essential phenotyping");
