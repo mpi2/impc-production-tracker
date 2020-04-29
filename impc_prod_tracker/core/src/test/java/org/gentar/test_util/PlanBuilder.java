@@ -12,6 +12,7 @@ public class PlanBuilder
     private AttemptType attemptType;
     private Status status;
     private boolean isStatusAbortion;
+    private int statusOrder;
     private Status summaryStatus;
     private String pin;
 
@@ -30,6 +31,7 @@ public class PlanBuilder
         if (status != null)
         {
             status.setIsAbortionStatus(isStatusAbortion);
+            status.setOrdering(statusOrder);
         }
         plan.setStatus(status);
         plan.setSummaryStatus(summaryStatus);
@@ -69,6 +71,15 @@ public class PlanBuilder
         Status status = new Status();
         status.setName(statusName);
         this.status = status;
+        return this;
+    }
+
+    public PlanBuilder withStatusAndOrder(String statusName, int order)
+    {
+        Status status = new Status();
+        status.setName(statusName);
+        this.status = status;
+        this.statusOrder = order;
         return this;
     }
 

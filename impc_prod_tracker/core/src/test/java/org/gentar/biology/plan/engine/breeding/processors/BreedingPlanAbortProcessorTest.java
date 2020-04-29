@@ -3,7 +3,7 @@ package org.gentar.biology.plan.engine.breeding.processors;
 import org.gentar.biology.colony.Colony;
 import org.gentar.biology.outcome.Outcome;
 import org.gentar.biology.outcome.type.OutcomeType;
-import org.gentar.biology.outcome.type.OutcomeTypes;
+import org.gentar.biology.outcome.type.OutcomeTypeName;
 import org.gentar.biology.plan.Plan;
 import org.gentar.biology.plan.engine.PlanStateSetter;
 import org.gentar.biology.plan.engine.breeding.BreedingPlanEvent;
@@ -86,6 +86,7 @@ class BreedingPlanAbortProcessorTest
         plan.setOutcomes(outcomes);
 
         plan.setEvent(BreedingPlanEvent.abortWhenBreedingComplete);
+
         UserOperationFailedException thrown = assertThrows(UserOperationFailedException.class,
             () -> testInstance.process(plan), "Exception not thrown");
         System.out.println(thrown.getMessage());
@@ -94,7 +95,6 @@ class BreedingPlanAbortProcessorTest
             "Not expected message",
             thrown.getDebugMessage(),
             is("The plan has colonies that are not aborted. Please abort them first"));
-
         verify(planStateSetter, times(0)).setStatusByName(any(Plan.class), any(String.class));
     }
 
@@ -103,7 +103,7 @@ class BreedingPlanAbortProcessorTest
         Outcome outcome = new Outcome();
         outcome.setId(id);
         OutcomeType outcomeType = new OutcomeType();
-        outcomeType.setName(OutcomeTypes.COLONY.getLabel());
+        outcomeType.setName(OutcomeTypeName.COLONY.getLabel());
         outcome.setOutcomeType(outcomeType);
         Colony colony = new Colony();
         colony.setId(id);

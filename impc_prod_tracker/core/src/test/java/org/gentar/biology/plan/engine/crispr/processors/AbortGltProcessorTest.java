@@ -3,7 +3,7 @@ package org.gentar.biology.plan.engine.crispr.processors;
 import org.gentar.biology.colony.Colony;
 import org.gentar.biology.outcome.Outcome;
 import org.gentar.biology.outcome.type.OutcomeType;
-import org.gentar.biology.outcome.type.OutcomeTypes;
+import org.gentar.biology.outcome.type.OutcomeTypeName;
 import org.gentar.biology.plan.Plan;
 import org.gentar.biology.plan.engine.PlanStateSetter;
 import org.gentar.biology.plan.engine.crispr.CrisprProductionPlanEvent;
@@ -105,7 +105,7 @@ class AbortGltProcessorTest
         colony.setId(id);
         outcome.setColony(colony);
         OutcomeType outcomeType = new OutcomeType();
-        outcomeType.setName(OutcomeTypes.COLONY.getLabel());
+        outcomeType.setName(OutcomeTypeName.COLONY.getLabel());
         outcome.setOutcomeType(outcomeType);
         Status status = new Status();
         status.setIsAbortionStatus(isAborted);
