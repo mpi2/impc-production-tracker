@@ -1,6 +1,8 @@
 package org.gentar.biology.plan.engine.phenotyping;
 
+import org.gentar.biology.plan.engine.phenotyping.processors.PhenotypePlanAbandonProcessor;
 import org.gentar.biology.plan.engine.phenotyping.processors.PhenotypePlanAbortProcessor;
+import org.gentar.biology.plan.engine.processors.PlanProcessorWithoutValidations;
 import org.gentar.statemachine.ProcessEvent;
 import org.gentar.statemachine.ProcessState;
 import org.gentar.statemachine.Processor;
@@ -10,8 +12,21 @@ import java.util.List;
 
 public enum PhenotypePlanEvent implements ProcessEvent
 {
+    abandonWhenCreated(
+            "Abandon a phenotyping plan that has no associated phenotyping stage information",
+            PhenotypePlanState.PlanCreated,
+            PhenotypePlanState.PlanAbandoned,
+            StateMachineConstants.TRIGGERED_BY_USER,
+            null)
+            {
+                @Override
+                public Class<? extends Processor> getNextStepProcessor()
+                {
+                    return PhenotypePlanAbandonProcessor.class;
+                }
+            },
     abortPhenotypingPlan(
-        "Abort a phenotyping plan",
+        "Abort a phenotyping plan that has associated aborted phenotyping stage information",
         PhenotypePlanState.PlanCreated,
         PhenotypePlanState.PhenotypePlanAborted,
         StateMachineConstants.TRIGGERED_BY_USER,

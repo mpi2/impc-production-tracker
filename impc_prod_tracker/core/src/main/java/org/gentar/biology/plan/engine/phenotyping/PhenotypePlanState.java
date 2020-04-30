@@ -9,6 +9,7 @@ import java.util.List;
 public enum PhenotypePlanState implements ProcessState
 {
     PlanCreated("Plan Created"),
+    PlanAbandoned("Plan Abandoned"),
     PhenotypePlanAborted("Phenotyping Plan Aborted");
 
     private String internalName;
