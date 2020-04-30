@@ -98,7 +98,8 @@ class ProjectController
         @RequestParam(value = "workUnitNames", required = false) List<String> workUnitNames,
         @RequestParam(value = "workGroupNames", required = false) List<String> workGroupNames,
         @RequestParam(value = "consortiaNames", required = false) List<String> consortia,
-        @RequestParam(value = "statuses", required = false) List<String> statuses,
+        @RequestParam(value = "assignmentNames", required = false) List<String> assignmentNames,
+        @RequestParam(value = "summaryStatusNames", required = false) List<String> summaryStatusNames,
         @RequestParam(value = "privacyNames", required = false) List<String> privaciesNames,
         @RequestParam(value = "externalReferences", required = false) List<String> externalReferences,
         @RequestParam(value = "imitsMiPlanIds", required = false) List<String> imitsMiPlans)
@@ -108,7 +109,8 @@ class ProjectController
             .withMarkerSymbols(markerSymbols)
             .withIntentions(intentions)
             .withGenes(genes)
-            .withStatuses(statuses)
+            .withAssignments(assignmentNames)
+            .withSummaryStatusNames(summaryStatusNames)
             .withPrivacies(privaciesNames)
             .withWorkUnitNames(workUnitNames)
             .withConsortiaNames(consortia)
@@ -194,7 +196,7 @@ class ProjectController
             .withMarkerSymbols(markerSymbols)
             .withIntentions(intentions)
             .withGenes(genes)
-            .withStatuses(statuses)
+            .withAssignments(statuses)
             .withPrivacies(privaciesNames)
             .withWorkUnitNames(workUnitNames)
             .withWorkGroupNames(workGroupNames)

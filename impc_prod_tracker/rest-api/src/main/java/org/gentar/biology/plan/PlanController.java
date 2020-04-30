@@ -100,7 +100,8 @@ public class PlanController
         @RequestParam(value = "imitsMiAttemptIds", required = false) List<String> imitsMiAttempts,
         @RequestParam(value = "imitsPhenotypeAttemptIds", required = false) List<String> imitsPhenotypeAttempts)
     {
-        List<Plan> plans = planService.getPlans(projectTpns, workUnitNames, workGroupNames, summaryStatusNames, pins, typeNames, attemptTypeNames, imitsMiAttempts, imitsPhenotypeAttempts);
+        List<Plan> plans = planService.getPlans(projectTpns, workUnitNames, workGroupNames, summaryStatusNames, pins, typeNames,
+                attemptTypeNames, imitsMiAttempts, imitsPhenotypeAttempts);
 
         Page<Plan> paginatedContent =
             PaginationHelper.createPage(plans, pageable);

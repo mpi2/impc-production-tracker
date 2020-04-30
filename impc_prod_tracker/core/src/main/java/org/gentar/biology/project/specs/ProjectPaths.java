@@ -50,7 +50,7 @@ public class ProjectPaths
         return privacy.get(Privacy_.name);
     }
 
-    public static Path<String> getAssignmentStatusNamePath(Root<Project> root)
+    public static Path<String> getAssignmentNamePath(Root<Project> root)
     {
         Path<AssignmentStatus> status = root.get(Project_.assignmentStatus);
         return status.get(AssignmentStatus_.name);
