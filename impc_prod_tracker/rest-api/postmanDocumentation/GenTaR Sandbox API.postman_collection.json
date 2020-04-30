@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "e6220c1b-041a-4192-9d58-f485592529f1",
+		"_postman_id": "d6792533-bb4a-4d09-8ddc-864ab0aa1dde",
 		"name": "GenTaR Sandbox API",
 		"description": "#### Description\n\nThis is a sandbox to show the main endpoints of GenTaR.\n\n#### Usage of HTTP Verbs\n\nThe following table describes the HTTP verbs used in the application:\n\n| HTTP verb | Usage                                                                                                                      |\n|-----------|----------------------------------------------------------------------------------------------------------------------------|\n| `GET`       | GET is used to retrieve information without changing the state of the system.                                              |\n| `POST`     | POST is used to submit an entity to the specified resource, often causing a change in state or side effects on the system. |\n| `PUT`      | PUT method replaces all current representations of the target resource with the request payload.                           |\n| `DELETE`    | DELETE deletes the specified resource.                                                                                     |\n\n####  Privileges\nThe permission to see and edit information depends on the *role* of the user and the user's association with work units and consortia. \n\n###### Roles, work units and consortia\nA user can be related to one or several work units and consortia. In each one of those associations, the user has a role: *manager* or *general*\n\n- _manager_: A user with administrative privileges.\n- _general_: A user with permission to see information and edit it (depending also on conditions like the privacy of the resource).\n\n \n####  Users and credentials\n\nThere are some users created in the sandbox. They have different roles and belong to different work units and consortia so you can try them with different endpoints. To use them, use the email and passoword to get a token (as explained in _Authentication_ section).\n\nThese are the credentials:\n\n| Name        | Email                 | Password    | Work Unit | Work Unit Role | Consortium | Consortium Role |\n|-------------|-----------------------|-------------|-----------|----------------|------------|-----------------|\n| CMG Manager | cmg-manager@ebi.ac.uk | cmg-manager |           |                | CMG        | Manager         |\n| CMG         | cmg@ebi.ac.uk         | cmg         |           |                | CMG        | General         |\n| BCM Manager | bcm-manager@ebi.ac.uk | bcm-manager | BCM       | Manager        |            |                 |\n| BCM         | bcm@ebi.ac.uk         | bcm         | BCM       | General        |            |                 |\n| TCP         | tcp@ebi.ac.uk         | tcp         | TCP       | General        |            |                 |\n\n",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
@@ -182,7 +182,7 @@
 				{
 					"listen": "prerequest",
 					"script": {
-						"id": "63f19e98-b5bf-4ffc-b71b-956bc12c1fab",
+						"id": "885199f3-691b-4a4c-8835-d375017c9ae2",
 						"type": "text/javascript",
 						"exec": [
 							""
@@ -192,7 +192,7 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "89797ad0-b2e0-41ca-8089-c2084dd57ac0",
+						"id": "5d2d2eb5-5143-41ff-b84a-39396bfa7e22",
 						"type": "text/javascript",
 						"exec": [
 							""
@@ -472,7 +472,7 @@
 				{
 					"listen": "prerequest",
 					"script": {
-						"id": "02d203d7-3f8a-4ffb-af7a-7f1f1efab7c1",
+						"id": "21b74f20-d031-4c75-bdbe-034344c94de0",
 						"type": "text/javascript",
 						"exec": [
 							""
@@ -482,7 +482,7 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "a87f52be-3c00-4f3a-9be3-dc15c0fe5179",
+						"id": "b8428233-2264-4285-8791-b63b7194b126",
 						"type": "text/javascript",
 						"exec": [
 							""
@@ -743,7 +743,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{url}}/api/projects?markerSymbol=Atrx&workUnitName=BCM&tpn=TPN:000000001",
+							"raw": "{{url}}/api/projects?tpns=TPN:000000013&intentions=Deletion&markerSymbols=Vps37a&genes=MGI:1261835&workUnitNames=TCP&workGroupNames=DTCC&consortiaNames=CMG&assignmentNames=Assigned&summaryStatusNames=Plan Created&privacyNames=public&externalReferences&imitsMiPlanIds=25140",
 							"host": [
 								"{{url}}"
 							],
@@ -753,19 +753,64 @@
 							],
 							"query": [
 								{
-									"key": "markerSymbol",
-									"value": "Atrx",
-									"description": "Marker symbol to be used as a filter."
+									"key": "tpns",
+									"value": "TPN:000000013",
+									"description": "TPN(s) to be used as a filter."
 								},
 								{
-									"key": "workUnitName",
-									"value": "BCM",
-									"description": "Work unit name to be used as a filter"
+									"key": "intentions",
+									"value": "Deletion",
+									"description": "Intention(s) to be used as a filter."
 								},
 								{
-									"key": "tpn",
-									"value": "TPN:000000001",
-									"description": "TPN to be used as a filter."
+									"key": "markerSymbols",
+									"value": "Vps37a",
+									"description": "Marker symbol(s)  to be used as a filter."
+								},
+								{
+									"key": "genes",
+									"value": "MGI:1261835",
+									"description": "Gene name(s) or id(s)  to be used as a filter."
+								},
+								{
+									"key": "workUnitNames",
+									"value": "TCP",
+									"description": "Work unit name(s) to be used as a filter."
+								},
+								{
+									"key": "workGroupNames",
+									"value": "DTCC",
+									"description": "Work group name(s) to be used as a filter."
+								},
+								{
+									"key": "consortiaNames",
+									"value": "CMG",
+									"description": "Consortium name(s)  to be used as a filter."
+								},
+								{
+									"key": "assignmentNames",
+									"value": "Assigned",
+									"description": "Assignment name(s) to be used as a filter."
+								},
+								{
+									"key": "summaryStatusNames",
+									"value": "Plan Created",
+									"description": "Summary status name(s) to be used as a filter."
+								},
+								{
+									"key": "privacyNames",
+									"value": "public",
+									"description": "Privacy name(s) to be used as a filter."
+								},
+								{
+									"key": "externalReferences",
+									"value": null,
+									"description": "External Reference id(s) to be used as a filter."
+								},
+								{
+									"key": "imitsMiPlanIds",
+									"value": "25140",
+									"description": "iMits MiPlan id(s) to be used as a filter."
 								}
 							]
 						},
@@ -1039,7 +1084,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"assignmentStatusName\": \"Assigned\",\n    \"withdrawn\": false,\n    \"recovery\": false,\n    \"comment\": \"Initial comment\",\n    \"externalReference\": \"Id in internal system\",\n    \"projectIntentions\": [\n        {\n            \"alleleTypeName\": \"Null\",\n            \"molecularMutationTypeName\": \"Deletion\",\n            \"intentionTypeName\": \"gene\",\n            \"alleleCategorizations\": [],\n            \"intentionByGene\": {\n                \"gene\": {\n                    \"accessionId\": \"MGI:103067\"\n                }\n            }\n        }\n    ],\n    \"isActive\": true,\n    \"privacyName\": \"restricted\",\n    \"speciesAttributes\": [],\n    \"consortia\": [\n        {\n            \"consortiumName\": \"CMG\",\n            \"institutes\": []\n        }\n    ]\n}",
+							"raw": "{\n\t\"withdrawn\": true,\n\t\"recovery\": false,\n\t\"comment\": \"Initial comment 1\",\n\t\"externalReference\": \"Id in internal system\",\n\t\"privacyName\": \"restricted\",\n\t\"speciesNames\": [\"Mus musculus\", \"Homo sapiens\"],\n\t\"consortia\": [{\n\t\t\"consortiumName\": \"CMG\",\n\t\t\"institutes\": [\"Broad\", \"Yale\"]\n\t}],\n\t\"projectIntentions\": [{\n\t\t\"molecularMutationTypeName\": \"Point Mutation\",\n\t\t\"mutationCategorizations\": [{\n\t\t\t\"name\": \"Null Reporter\",\n\t\t\t\"typeName\": \"allele_category\"\n\t\t}],\n\t\t\"intentionByGene\": {\n\t\t\t\"gene\": {\n\t\t\t\t\"accessionId\": \"MGI:103067\",\n\t\t\t\t\"symbol\": \"Atrx\",\n\t\t\t\t\"speciesName\": \"Mus musculus\"\n\t\t\t}\n\t\t},\n\t\t\"intentionBySequence\": [{\n\t\t\t\t\"sequenceAttributes\": {\n\t\t\t\t\t\"sequence\": \">Gpr173 Cas9 high_Gpr173_11766 \\n GATGGTTTGAGAGCCTGGACTGAAGCTTGAAAGAGAAGGCTTCTGTATGGGTCCCACCCTTCCCCTGCTGCTGGCCCCCGTATGGTGATTCTGACTTTCCCCCTGCCTATGATCAGTCCCAGCAGCACCAGCTTCACATAAGCCGATGCTGATGGCAGAGACAGTGCGCCGCTCACCTCTTCGGGCTCTCCGGTGGTGTTGGCCATACTGAGGGGCAAAGGCTACCCCCAACCCTAGGGGATTGGCCAGTTCAGTATTTGATGGGCCCTGGCGGACTCCATCAGTTTTCTTGCTGAGCTACACCTGCAAATGGGAACA\",\n\t\t\t\t\t\"typeName\": \"partial\",\n\t\t\t\t\t\"categoryName\": \"original starting sequence\",\n\t\t\t\t\t\"sequenceLocations\": [{\n\t\t\t\t\t\t\"locationIndex\": 1,\n\t\t\t\t\t\t\"location\": {\n\t\t\t\t\t\t\t\"chr\": \"2\",\n\t\t\t\t\t\t\t\"start\": 123456,\n\t\t\t\t\t\t\t\"stop\": 654321,\n\t\t\t\t\t\t\t\"strand\": \"+\",\n\t\t\t\t\t\t\t\"genomeBuild\": \"GRCm38\",\n\t\t\t\t\t\t\t\"speciesName\": \"Mus musculus\",\n\t\t\t\t\t\t\t\"strainName\": \"C57BL/6N\"\n\t\t\t\t\t\t}\n\t\t\t\t\t}]\n\t\t\t\t},\n\t\t\t\t\"index\": 1\n\t\t\t},\n\t\t\t{\n\t\t\t\t\"sequenceAttributes\": {\n\t\t\t\t\t\"sequence\": \">Bbox1 Cas9 high_Bbox1_11766 \\n GATGGTTTGAGAGCCTGGACTGAAGCTTGAAAGAGAAGGCTTCTGTATGGGTCCCACCCTTCCCCTGCTGCTGGCCCCCGTATGGTGATTCTGACTTTCCCCCTGCCTATGATCAGTCCCAGCAGCACCAGCTTCACATAAGCCGATGCTGATGGCAGAGACAGTGCGCCGCTCACCTCTTCGGGCTCTCCGGTGGTGTTGGCCATACTGAGGGGCAAAGGCTACCCCCAACCCTAGGGGATTGGCCAGTTCAGTATTTGATGGGCCCTGGCGGACTCCATCAGTTTTCTTGCTGAGCTACACCTGCAAATGGGAACA\",\n\t\t\t\t\t\"typeName\": \"partial\",\n\t\t\t\t\t\"categoryName\": \"original starting sequence\",\n\t\t\t\t\t\"sequenceLocations\": [{\n\t\t\t\t\t\t\"locationIndex\": 2,\n\t\t\t\t\t\t\"location\": {\n\t\t\t\t\t\t\t\"chr\": \"2\",\n\t\t\t\t\t\t\t\"start\": 1234567,\n\t\t\t\t\t\t\t\"stop\": 7654321,\n\t\t\t\t\t\t\t\"strand\": \"+\",\n\t\t\t\t\t\t\t\"genomeBuild\": \"GRCm38\",\n\t\t\t\t\t\t\t\"speciesName\": \"Mus musculus\",\n\t\t\t\t\t\t\t\"strainName\": \"C57BL/6NJ\"\n\t\t\t\t\t\t}\n\t\t\t\t\t}]\n\t\t\t\t},\n\t\t\t\t\"index\": 2\n\t\t\t}\n\t\t]\n\t}],\n\t\"planDetails\": {\n\t\t\"funderNames\": [\"KOMP\"],\n\t\t\"workUnitName\": \"UCD\",\n\t\t\"workGroupName\": \"UCD-KOMP\"\n\t}\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -1188,7 +1233,7 @@
 				{
 					"listen": "prerequest",
 					"script": {
-						"id": "872122f2-a25c-4bf4-86f8-8d7dc03799aa",
+						"id": "e073faa2-22c3-4bab-b3b2-08691fff2e5a",
 						"type": "text/javascript",
 						"exec": [
 							""
@@ -1198,7 +1243,7 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "ecb33a01-fa7a-43f1-b3fa-c10305153dad",
+						"id": "2b5212cc-703f-429f-b2b3-d7fb18358135",
 						"type": "text/javascript",
 						"exec": [
 							""
@@ -1347,7 +1392,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{url}}/api/plans?workUnitName=BCM&tpn=TPN:000000001",
+							"raw": "{{url}}/api/plans?pins=PIN:0000000014&projectTpns=TPN:000000008&workUnitNames=TCP&workGroupNames=DTCC&summaryStatusNames&typeNames&attemptTypeNames&imitsMiAttemptIds&imitsPhenotypeAttemptIds",
 							"host": [
 								"{{url}}"
 							],
@@ -1357,14 +1402,49 @@
 							],
 							"query": [
 								{
-									"key": "workUnitName",
-									"value": "BCM",
-									"description": "Work unit to be used as a filter."
+									"key": "pins",
+									"value": "PIN:0000000014",
+									"description": "Pin(s) to be used as a filter."
 								},
 								{
-									"key": "tpn",
-									"value": "TPN:000000001",
-									"description": "Tpn to be used as a filter."
+									"key": "projectTpns",
+									"value": "TPN:000000008",
+									"description": "Tpn(s) to be used as a filter."
+								},
+								{
+									"key": "workUnitNames",
+									"value": "TCP",
+									"description": "Work unit name(s) to be used as a filter."
+								},
+								{
+									"key": "workGroupNames",
+									"value": "DTCC",
+									"description": "Work group name(s) to be used as a filter."
+								},
+								{
+									"key": "summaryStatusNames",
+									"value": null,
+									"description": "Summary status name(s) to be used as a filter."
+								},
+								{
+									"key": "typeNames",
+									"value": null,
+									"description": "Plan type name(s) to be used as a filter."
+								},
+								{
+									"key": "attemptTypeNames",
+									"value": null,
+									"description": "Attempt typ name(s) to be used as a filter."
+								},
+								{
+									"key": "imitsMiAttemptIds",
+									"value": null,
+									"description": "iMits MiAttempt id(s) to be used as a filter."
+								},
+								{
+									"key": "imitsPhenotypeAttemptIds",
+									"value": null,
+									"description": "iMits phenotype attempt(s) to be used as a filter."
 								}
 							]
 						},
@@ -1909,6 +1989,84 @@
 							"body": "[\n    {\n        \"id\": 1,\n        \"user\": \"bcm-manager@ebi.ac.uk\",\n        \"date\": \"2019-11-13T15:50:55.086353\",\n        \"action\": null,\n        \"comment\": \"Plan updated\",\n        \"details\": [\n            {\n                \"field\": \"comment\",\n                \"oldValue\": \"Comment(1)\",\n                \"newValue\": \"Comment(2)\"\n            }\n        ]\n    },\n    {\n        \"id\": 2,\n        \"user\": \"bcm-manager@ebi.ac.uk\",\n        \"date\": \"2019-11-13T15:51:13.118407\",\n        \"action\": null,\n        \"comment\": \"Plan updated\",\n        \"details\": [\n            {\n                \"field\": \"crisprAttempt.voltage\",\n                \"oldValue\": \"30.0\",\n                \"newValue\": \"31.0\"\n            },\n            {\n                \"field\": \"comment\",\n                \"oldValue\": \"Comment(2)\",\n                \"newValue\": \"Comment(1)\"\n            }\n        ]\n    }\n]"
 						}
 					]
+				},
+				{
+					"name": "Create a crispr plan",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJSUzI1NiJ9.eyJpc3MiOiJodHRwczovL2V4cGxvcmUuYWFpLmViaS5hYy51ay9zcCIsImp0aSI6IjlNOHh0azlzQk1hSVdpSFNaU0JTSkEiLCJpYXQiOjE1ODgyNDM1NjIsInN1YiI6InVzci0xMzc1NTZkZC1kZjY4LTRhMDEtOTVkYS00MmVkNjU2ZmVkOWYiLCJlbWFpbCI6ImFsYmFnb21lekBlYmkuYWMudWsiLCJuaWNrbmFtZSI6ImFsYmFnb21lekBlYmkuYWMudWsiLCJuYW1lIjoiQWxiYSBHb21leiIsImRvbWFpbnMiOlsic2VsZi5nZW50YXItbWFpbnRhaW5lci1kb21haW4iXSwiZXhwIjoxNTg4MjQ3MTYyfQ.l0KmX8n4CJtJv6Wmy8rKFmn3ZhQzKE3tJdJ-faV3oeDEIvAbUq-3IUBC--M15xZTahxqS3TqqkGDZE0Lc5q0fzQzgh9kQ7al8QbRyRPWGo1-yIQNfFm7KbW-BYOaIqpQDGorTT10DvvGlqEkMrx0L0yCnuqP-jAPh_1Rzmeuh7ivGvT1tlGOZ8UNPpSXeBGcVE--KXIvcw04poxhZ9JGgg3StDzyF57JYWwt7CTWBOY03xd-zxWlu9VsZfTD73iqpod03PajC_KBeyVGC5W-z6JqfWD-pIdeJEFAyqK5pEG-yXn98SK-Ks8lnNUGfPyalG5Fy2-gEF3YnFtzSZPUSQ",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"tpn\": \"TPN:000000001\",\n    \"funderNames\": [\n        \"KOMP2\"\n    ],\n    \"workUnitName\": \"UCD\",\n    \"workGroupName\": \"DTCC\",\n    \"comment\": null,\n    \"productsAvailableForGeneralPublic\": true,\n    \"attemptTypeName\": \"crispr\",\n    \"typeName\": \"production\",\n    \"crisprAttempt\": {\n        \"miDate\": \"2020-02-29\",\n        \"experimental\": false,\n        \"comment\": null,\n        \"mutagenesisExternalRef\": \"MF-26326\",\n        \"attemptExternalRef\": \"Otog_118899\",\n        \"nucleases\": [\n            {\n                \"typeName\": \"CAS9\",\n                \"concentration\": 250.0,\n                \"className\": \"protein\"\n            }\n        ],\n        \"guides\": [\n            {\n                \"chr\": null,\n                \"start\": 46245625,\n                \"stop\": 46245647,\n                \"grnaConcentration\": 300.0,\n                \"sequence\": \"TCTTGCTTCCTACTTCCAGTGGG\",\n                \"truncatedGuide\": false,\n                \"strand\": null,\n                \"genomeBuild\": \"GRCm38\",\n                \"pam3\": null,\n                \"pam5\": null,\n                \"protospacerSequence\": null\n            },\n            {\n                \"chr\": null,\n                \"start\": 46245139,\n                \"stop\": 46245161,\n                \"grnaConcentration\": 300.0,\n                \"sequence\": \"CTTCACGTACCAAGGAGGGGTGG\",\n                \"truncatedGuide\": false,\n                \"strand\": null,\n                \"genomeBuild\": \"GRCm38\",\n                \"pam3\": null,\n                \"pam5\": null,\n                \"protospacerSequence\": null\n            }\n        ],\n        \"genotypePrimers\": [\n\t        {\n\t        \t\"genomicStartCoordinate\": 1,\n\t        \t\"genomicEndCoordinate\": 5,\n\t        \t\"name\": \"Prex2   KO F\",\n\t        \t\"sequence\": \"TGGTGTGCTCTTAACTAGGGA\"\n\t        },\n\t        {\n\t        \t\"genomicStartCoordinate\": 6,\n\t        \t\"genomicEndCoordinate\": 15,\n\t        \t\"name\": \"Prex2   KO R\",\n\t        \t\"sequence\": \"GCCTGGATGATGACAGAAGC\"\n\t        }\n        ],\n        \"reagents\": [\n        \t{\n        \t\t\"reagentName\": \"Ligase IV\",\n        \t\t\"concentration\": 100\n        \t},\n        \t{\n        \t\t\"reagentName\": \"Xrcc5\",\n        \t\t\"concentration\": 100\n        \t}\n        ],\n        \"mutagenesisDonors\": [\n        \t{\n        \t\t\"vectorName\":\"\",\n        \t\t\"concentration\":10,\n        \t\t\"preparationTypeName\":\"Oligo\",\n        \t\t\"oligoSequenceFasta\": \"GTGCACTGTATTCACAGTGGGATTGCTGGAGGGCAGGGGTCGCTCGCTCACTGTGATTCTGCTTCAGTGCCATCTGAGGGACATGACGTACTCCGCCCCAATCACAGTGGACATTGAGTATACCCGAGGCAGCCAGAGGA\"\n        \t},\n        \t{\n        \t\t\"vectorName\":\"Pak2_tm1c_shortarms\",\n        \t\t\"concentration\":20,\n        \t\t\"preparationTypeName\":\"Circular\",\n        \t\t\"oligoSequenceFasta\":\"\"\n        \t}\n        ],\n        \"totalEmbryosInjected\": 72,\n        \"totalEmbryosSurvived\": null,\n        \"embryo2Cell\": null,\n        \"assay\": {\n            \"typeName\": \"PCR\",\n            \"numFounderPups\": 26,\n            \"numFounderSelectedForBreeding\": 1,\n            \"founderNumAssays\": 26,\n            \"numDeletionG0Mutants\": 1,\n            \"numG0WhereMutationDetected\": 1,\n            \"numHdrG0Mutants\": null,\n            \"numHdrG0MutantsAllDonorsInserted\": null,\n            \"numHdrG0MutantsSubsetDonorsInserted\": null,\n            \"numHrG0Mutants\": null,\n            \"numNhejG0Mutants\": null,\n            \"embryoTransferDay\": \"Same Day\",\n            \"totalTransferred\": 72\n        },\n        \"strainInjectedName\": \"C57BL/6NJ\"\n    }\n}"
+						},
+						"url": {
+							"raw": "{{url}}/api/plans/",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"plans",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create a phenotyping plan",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJSUzI1NiJ9.eyJpc3MiOiJodHRwczovL2V4cGxvcmUuYWFpLmViaS5hYy51ay9zcCIsImp0aSI6IjlNOHh0azlzQk1hSVdpSFNaU0JTSkEiLCJpYXQiOjE1ODgyNDM1NjIsInN1YiI6InVzci0xMzc1NTZkZC1kZjY4LTRhMDEtOTVkYS00MmVkNjU2ZmVkOWYiLCJlbWFpbCI6ImFsYmFnb21lekBlYmkuYWMudWsiLCJuaWNrbmFtZSI6ImFsYmFnb21lekBlYmkuYWMudWsiLCJuYW1lIjoiQWxiYSBHb21leiIsImRvbWFpbnMiOlsic2VsZi5nZW50YXItbWFpbnRhaW5lci1kb21haW4iXSwiZXhwIjoxNTg4MjQ3MTYyfQ.l0KmX8n4CJtJv6Wmy8rKFmn3ZhQzKE3tJdJ-faV3oeDEIvAbUq-3IUBC--M15xZTahxqS3TqqkGDZE0Lc5q0fzQzgh9kQ7al8QbRyRPWGo1-yIQNfFm7KbW-BYOaIqpQDGorTT10DvvGlqEkMrx0L0yCnuqP-jAPh_1Rzmeuh7ivGvT1tlGOZ8UNPpSXeBGcVE--KXIvcw04poxhZ9JGgg3StDzyF57JYWwt7CTWBOY03xd-zxWlu9VsZfTD73iqpod03PajC_KBeyVGC5W-z6JqfWD-pIdeJEFAyqK5pEG-yXn98SK-Ks8lnNUGfPyalG5Fy2-gEF3YnFtzSZPUSQ",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"tpn\":\"TPN:000000005\",\n\t\"funderNames\":[\"KOMP2\"],\n\t\"workUnitName\":\"UCD\",\n\t\"workGroupName\":\"DTCC\",\n\t\"statusName\":\"Plan Created\",\n\t\"summaryStatusName\":\"Phenotyping Started\",\n\t\"comment\":null,\n\t\"productsAvailableForGeneralPublic\":true,\n\t\"attemptTypeName\":\"adult phenotyping\",\n\t\"typeName\":\"phenotyping\",\n\t\"phenotypingStartingPoint\": {\n\t\t\"outcomeTpo\":\"TPO:000000000004\"\n\t},\n\t\"phenotypingAttemptDetails\":{\n\t\t\"phenotypingExternalRef\":\"CR10135\",\n\t\t\"phenotypingBackgroundStrainName\":\"C57BL/6NCrl\",\n\t\t\"phenotypingStageDetails\":[\n\t\t\t{\n\t\t\t\t\"phenotypingExperimentsStarted\":\"2019-07-01\",\n\t\t\t\t\"doNotCountTowardsCompleteness\":false,\n\t\t\t\t\"phenotypingTypeName\":\"early adult\",\n\t\t\t\t\"tissueDistribution\":[\n\t\t\t\t\t{\n\t\t\t\t\t\t\"startDate\": \"2019-08-01\",\n\t\t\t\t\t\t\"endDate\": \"\",\n\t\t\t\t\t\t\"workUnitName\": \"UCD\",\n\t\t\t\t\t\t\"materialDepositedTypeName\": \"Fixed Tissue\"\n\t\t\t\t\t},\n\t\t\t\t\t{\n\t\t\t\t\t\t\"startDate\": \"2019-08-01\",\n\t\t\t\t\t\t\"endDate\": \"\",\n\t\t\t\t\t\t\"workUnitName\": \"UCD\",\n\t\t\t\t\t\t\"materialDepositedTypeName\": \"Paraffin-embedded Sections\"\n\t\t\t\t\t}\n\t\t\t\t]\n\t\t\t},\n\t\t\t{\n\t\t\t\t\"phenotypingExperimentsStarted\":\"2019-07-01\",\n\t\t\t\t\"doNotCountTowardsCompleteness\":false,\n\t\t\t\t\"phenotypingTypeName\":\"late adult\",\n\t\t\t\t\"tissueDistribution\":[]\n\t\t\t}\n\t\t]\n\t}\n}"
+						},
+						"url": {
+							"raw": "{{url}}/api/plans/",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"plans",
+								""
+							]
+						}
+					},
+					"response": []
 				}
 			],
 			"description": "Endpoints to list and modify plans if the user has the right privileges.",
@@ -1948,121 +2106,6 @@
 						"description": "Search all the projects associated with a gene."
 					},
 					"response": [
-						{
-							"name": "Search by gene using an invalid symbol or synonym",
-							"originalRequest": {
-								"method": "GET",
-								"header": [],
-								"url": {
-									"raw": "{{url}}/api/projects/search?searchTypeName=gene&input=random",
-									"host": [
-										"{{url}}"
-									],
-									"path": [
-										"api",
-										"projects",
-										"search"
-									],
-									"query": [
-										{
-											"key": "searchTypeName",
-											"value": "gene"
-										},
-										{
-											"key": "input",
-											"value": "random"
-										}
-									]
-								}
-							},
-							"status": "OK",
-							"code": 200,
-							"_postman_previewlanguage": "json",
-							"header": [
-								{
-									"key": "Access-Control-Allow-Origin",
-									"value": "*"
-								},
-								{
-									"key": "Access-Control-Allow-Credentials",
-									"value": "true"
-								},
-								{
-									"key": "Access-Control-Allow-Methods",
-									"value": "POST, GET, PUT, OPTIONS, DELETE"
-								},
-								{
-									"key": "Access-Control-Max-Age",
-									"value": "3600"
-								},
-								{
-									"key": "Access-Control-Allow-Headers",
-									"value": "X-Requested-With, Content-Type, Authorization, Origin, Accept, Access-Control-Request-DeliveryMethodType, Access-Control-Request-Headers"
-								},
-								{
-									"key": "Vary",
-									"value": "Origin"
-								},
-								{
-									"key": "Vary",
-									"value": "Access-Control-Request-Method"
-								},
-								{
-									"key": "Vary",
-									"value": "Access-Control-Request-Headers"
-								},
-								{
-									"key": "Vary",
-									"value": "Origin"
-								},
-								{
-									"key": "Vary",
-									"value": "Access-Control-Request-Method"
-								},
-								{
-									"key": "Vary",
-									"value": "Access-Control-Request-Headers"
-								},
-								{
-									"key": "X-Content-Type-Options",
-									"value": "nosniff"
-								},
-								{
-									"key": "X-XSS-Protection",
-									"value": "1; mode=block"
-								},
-								{
-									"key": "Cache-Control",
-									"value": "no-cache, no-store, max-age=0, must-revalidate"
-								},
-								{
-									"key": "Pragma",
-									"value": "no-cache"
-								},
-								{
-									"key": "Expires",
-									"value": "0"
-								},
-								{
-									"key": "X-Frame-Options",
-									"value": "DENY"
-								},
-								{
-									"key": "Content-Type",
-									"value": "application/hal+json"
-								},
-								{
-									"key": "Transfer-Encoding",
-									"value": "chunked"
-								},
-								{
-									"key": "Date",
-									"value": "Wed, 13 Nov 2019 16:07:24 GMT"
-								}
-							],
-							"cookie": [],
-							"body": "{\n    \"date\": \"2019-11-13T16:07:24.753533\",\n    \"searchTypeName\": \"gene\",\n    \"inputs\": [\n        \"random\"\n    ],\n    \"filters\": [],\n    \"results\": [\n        {\n            \"input\": \"random\",\n            \"project\": null,\n            \"comment\": \"Not a gene symbol or synonym\"\n        }\n    ],\n    \"page\": {\n        \"size\": 20,\n        \"totalElements\": 1,\n        \"totalPages\": 1,\n        \"number\": 0\n    }\n}"
-						},
 						{
 							"name": "Search by gene using a valid MGI as input",
 							"originalRequest": {
@@ -2181,123 +2224,6 @@
 							"body": "{\n    \"date\": \"2019-11-13T15:59:52.199623\",\n    \"searchTypeName\": \"gene\",\n    \"inputs\": [\n        \"MGI:103067\"\n    ],\n    \"filters\": [],\n    \"results\": [\n        {\n            \"input\": \"MGI:103067\",\n            \"project\": {\n                \"tpn\": \"TPN:000000001\",\n                \"assignmentStatusName\": \"Assigned\",\n                \"withdrawn\": false,\n                \"recovery\": false,\n                \"comment\": null,\n                \"assignmentStatusStamps\": [\n                    {\n                        \"statusName\": \"Assigned\",\n                        \"date\": \"2017-12-11T02:17:27.317267\"\n                    }\n                ],\n                \"externalReference\": null,\n                \"projectIntentions\": [\n                    {\n                        \"alleleTypeName\": \"Null\",\n                        \"molecularMutationTypeName\": \"Deletion\",\n                        \"intentionTypeName\": \"gene\",\n                        \"alleleCategorizations\": [],\n                        \"intentionByGene\": {\n                            \"gene\": {\n                                \"id\": 1,\n                                \"name\": \"ATRX, chromatin remodeler\",\n                                \"symbol\": \"Atrx\",\n                                \"speciesName\": \"Mus musculus\",\n                                \"externalLink\": \"http://www.mousephenotype.org/data/genes/MGI:103067\",\n                                \"accessionId\": \"MGI:103067\"\n                            }\n                        }\n                    }\n                ],\n                \"isActive\": true,\n                \"privacyName\": \"restricted\",\n                \"speciesAttributes\": [],\n                \"consortia\": [\n                    {\n                        \"consortiumName\": \"CMG\",\n                        \"institutes\": []\n                    }\n                ]\n            },\n            \"comment\": null\n        },\n        {\n            \"input\": \"MGI:103067\",\n            \"project\": {\n                \"tpn\": \"TPN:000000302\",\n                \"assignmentStatusName\": \"Assigned\",\n                \"withdrawn\": false,\n                \"recovery\": false,\n                \"comment\": \"Initial comment\",\n                \"assignmentStatusStamps\": [],\n                \"externalReference\": \"Id in internal system\",\n                \"projectIntentions\": [\n                    {\n                        \"alleleTypeName\": \"Null\",\n                        \"molecularMutationTypeName\": \"Deletion\",\n                        \"intentionTypeName\": \"gene\",\n                        \"alleleCategorizations\": [],\n                        \"intentionByGene\": {\n                            \"gene\": {\n                                \"id\": 1,\n                                \"name\": \"ATRX, chromatin remodeler\",\n                                \"symbol\": \"Atrx\",\n                                \"speciesName\": \"Mus musculus\",\n                                \"externalLink\": \"http://www.mousephenotype.org/data/genes/MGI:103067\",\n                                \"accessionId\": \"MGI:103067\"\n                            }\n                        }\n                    }\n                ],\n                \"isActive\": true,\n                \"privacyName\": \"restricted\",\n                \"speciesAttributes\": [],\n                \"consortia\": [\n                    {\n                        \"consortiumName\": \"CMG\",\n                        \"institutes\": []\n                    }\n                ]\n            },\n            \"comment\": null\n        },\n        {\n            \"input\": \"MGI:103067\",\n            \"project\": {\n                \"tpn\": \"TPN:000000352\",\n                \"assignmentStatusName\": \"Assigned\",\n                \"withdrawn\": false,\n                \"recovery\": false,\n                \"comment\": \"Initial comment\",\n                \"assignmentStatusStamps\": [],\n                \"externalReference\": \"Id in internal system\",\n                \"projectIntentions\": [\n                    {\n                        \"alleleTypeName\": \"Null\",\n                        \"molecularMutationTypeName\": \"Deletion\",\n                        \"intentionTypeName\": \"gene\",\n                        \"alleleCategorizations\": [],\n                        \"intentionByGene\": {\n                            \"gene\": {\n                                \"id\": 1,\n                                \"name\": \"ATRX, chromatin remodeler\",\n                                \"symbol\": \"Atrx\",\n                                \"speciesName\": \"Mus musculus\",\n                                \"externalLink\": \"http://www.mousephenotype.org/data/genes/MGI:103067\",\n                                \"accessionId\": \"MGI:103067\"\n                            }\n                        }\n                    }\n                ],\n                \"isActive\": true,\n                \"privacyName\": \"restricted\",\n                \"speciesAttributes\": [],\n                \"consortia\": [\n                    {\n                        \"consortiumName\": \"CMG\",\n                        \"institutes\": []\n                    }\n                ]\n            },\n            \"comment\": null\n        },\n        {\n            \"input\": \"MGI:103067\",\n            \"project\": {\n                \"tpn\": \"TPN:000000402\",\n                \"assignmentStatusName\": \"Assigned\",\n                \"withdrawn\": false,\n                \"recovery\": false,\n                \"comment\": \"Initial comment\",\n                \"assignmentStatusStamps\": [],\n                \"externalReference\": \"Id in internal system\",\n                \"projectIntentions\": [\n                    {\n                        \"alleleTypeName\": \"Null\",\n                        \"molecularMutationTypeName\": \"Deletion\",\n                        \"intentionTypeName\": \"gene\",\n                        \"alleleCategorizations\": [],\n                        \"intentionByGene\": {\n                            \"gene\": {\n                                \"id\": 1,\n                                \"name\": \"ATRX, chromatin remodeler\",\n                                \"symbol\": \"Atrx\",\n                                \"speciesName\": \"Mus musculus\",\n                                \"externalLink\": \"http://www.mousephenotype.org/data/genes/MGI:103067\",\n                                \"accessionId\": \"MGI:103067\"\n                            }\n                        }\n                    }\n                ],\n                \"isActive\": true,\n                \"privacyName\": \"restricted\",\n                \"speciesAttributes\": [],\n                \"consortia\": [\n                    {\n                        \"consortiumName\": \"CMG\",\n                        \"institutes\": []\n                    }\n                ]\n            },\n            \"comment\": null\n        }\n    ],\n    \"page\": {\n        \"size\": 20,\n        \"totalElements\": 4,\n        \"totalPages\": 1,\n        \"number\": 0\n    }\n}"
 						},
 						{
-							"name": "Search by gene using a valid gene symbol as input ",
-							"originalRequest": {
-								"method": "GET",
-								"header": [],
-								"url": {
-									"raw": "{{url}}/api/projects/search?searchTypeName=gene&input=Atrx",
-									"host": [
-										"{{url}}"
-									],
-									"path": [
-										"api",
-										"projects",
-										"search"
-									],
-									"query": [
-										{
-											"key": "searchTypeName",
-											"value": "gene",
-											"description": "Search type (Currently only 'gene')."
-										},
-										{
-											"key": "input",
-											"value": "Atrx",
-											"description": "The value to be searched."
-										}
-									]
-								}
-							},
-							"status": "OK",
-							"code": 200,
-							"_postman_previewlanguage": "json",
-							"header": [
-								{
-									"key": "Access-Control-Allow-Origin",
-									"value": "*"
-								},
-								{
-									"key": "Access-Control-Allow-Credentials",
-									"value": "true"
-								},
-								{
-									"key": "Access-Control-Allow-Methods",
-									"value": "POST, GET, PUT, OPTIONS, DELETE"
-								},
-								{
-									"key": "Access-Control-Max-Age",
-									"value": "3600"
-								},
-								{
-									"key": "Access-Control-Allow-Headers",
-									"value": "X-Requested-With, Content-Type, Authorization, Origin, Accept, Access-Control-Request-DeliveryMethodType, Access-Control-Request-Headers"
-								},
-								{
-									"key": "Vary",
-									"value": "Origin"
-								},
-								{
-									"key": "Vary",
-									"value": "Access-Control-Request-Method"
-								},
-								{
-									"key": "Vary",
-									"value": "Access-Control-Request-Headers"
-								},
-								{
-									"key": "Vary",
-									"value": "Origin"
-								},
-								{
-									"key": "Vary",
-									"value": "Access-Control-Request-Method"
-								},
-								{
-									"key": "Vary",
-									"value": "Access-Control-Request-Headers"
-								},
-								{
-									"key": "X-Content-Type-Options",
-									"value": "nosniff"
-								},
-								{
-									"key": "X-XSS-Protection",
-									"value": "1; mode=block"
-								},
-								{
-									"key": "Cache-Control",
-									"value": "no-cache, no-store, max-age=0, must-revalidate"
-								},
-								{
-									"key": "Pragma",
-									"value": "no-cache"
-								},
-								{
-									"key": "Expires",
-									"value": "0"
-								},
-								{
-									"key": "X-Frame-Options",
-									"value": "DENY"
-								},
-								{
-									"key": "Content-Type",
-									"value": "application/hal+json"
-								},
-								{
-									"key": "Transfer-Encoding",
-									"value": "chunked"
-								},
-								{
-									"key": "Date",
-									"value": "Wed, 13 Nov 2019 15:58:54 GMT"
-								}
-							],
-							"cookie": [],
-							"body": "{\n    \"date\": \"2019-11-13T15:58:54.378261\",\n    \"searchTypeName\": \"gene\",\n    \"inputs\": [\n        \"Atrx\"\n    ],\n    \"filters\": [],\n    \"results\": [\n        {\n            \"input\": \"Atrx\",\n            \"project\": {\n                \"tpn\": \"TPN:000000001\",\n                \"assignmentStatusName\": \"Assigned\",\n                \"withdrawn\": false,\n                \"recovery\": false,\n                \"comment\": null,\n                \"assignmentStatusStamps\": [\n                    {\n                        \"statusName\": \"Assigned\",\n                        \"date\": \"2017-12-11T02:17:27.317267\"\n                    }\n                ],\n                \"externalReference\": null,\n                \"projectIntentions\": [\n                    {\n                        \"alleleTypeName\": \"Null\",\n                        \"molecularMutationTypeName\": \"Deletion\",\n                        \"intentionTypeName\": \"gene\",\n                        \"alleleCategorizations\": [],\n                        \"intentionByGene\": {\n                            \"gene\": {\n                                \"id\": 1,\n                                \"name\": \"ATRX, chromatin remodeler\",\n                                \"symbol\": \"Atrx\",\n                                \"speciesName\": \"Mus musculus\",\n                                \"externalLink\": \"http://www.mousephenotype.org/data/genes/MGI:103067\",\n                                \"accessionId\": \"MGI:103067\"\n                            }\n                        }\n                    }\n                ],\n                \"isActive\": true,\n                \"privacyName\": \"restricted\",\n                \"speciesAttributes\": [],\n                \"consortia\": [\n                    {\n                        \"consortiumName\": \"CMG\",\n                        \"institutes\": []\n                    }\n                ]\n            },\n            \"comment\": null\n        },\n        {\n            \"input\": \"Atrx\",\n            \"project\": {\n                \"tpn\": \"TPN:000000302\",\n                \"assignmentStatusName\": \"Assigned\",\n                \"withdrawn\": false,\n                \"recovery\": false,\n                \"comment\": \"Initial comment\",\n                \"assignmentStatusStamps\": [],\n                \"externalReference\": \"Id in internal system\",\n                \"projectIntentions\": [\n                    {\n                        \"alleleTypeName\": \"Null\",\n                        \"molecularMutationTypeName\": \"Deletion\",\n                        \"intentionTypeName\": \"gene\",\n                        \"alleleCategorizations\": [],\n                        \"intentionByGene\": {\n                            \"gene\": {\n                                \"id\": 1,\n                                \"name\": \"ATRX, chromatin remodeler\",\n                                \"symbol\": \"Atrx\",\n                                \"speciesName\": \"Mus musculus\",\n                                \"externalLink\": \"http://www.mousephenotype.org/data/genes/MGI:103067\",\n                                \"accessionId\": \"MGI:103067\"\n                            }\n                        }\n                    }\n                ],\n                \"isActive\": true,\n                \"privacyName\": \"restricted\",\n                \"speciesAttributes\": [],\n                \"consortia\": [\n                    {\n                        \"consortiumName\": \"CMG\",\n                        \"institutes\": []\n                    }\n                ]\n            },\n            \"comment\": null\n        },\n        {\n            \"input\": \"Atrx\",\n            \"project\": {\n                \"tpn\": \"TPN:000000352\",\n                \"assignmentStatusName\": \"Assigned\",\n                \"withdrawn\": false,\n                \"recovery\": false,\n                \"comment\": \"Initial comment\",\n                \"assignmentStatusStamps\": [],\n                \"externalReference\": \"Id in internal system\",\n                \"projectIntentions\": [\n                    {\n                        \"alleleTypeName\": \"Null\",\n                        \"molecularMutationTypeName\": \"Deletion\",\n                        \"intentionTypeName\": \"gene\",\n                        \"alleleCategorizations\": [],\n                        \"intentionByGene\": {\n                            \"gene\": {\n                                \"id\": 1,\n                                \"name\": \"ATRX, chromatin remodeler\",\n                                \"symbol\": \"Atrx\",\n                                \"speciesName\": \"Mus musculus\",\n                                \"externalLink\": \"http://www.mousephenotype.org/data/genes/MGI:103067\",\n                                \"accessionId\": \"MGI:103067\"\n                            }\n                        }\n                    }\n                ],\n                \"isActive\": true,\n                \"privacyName\": \"restricted\",\n                \"speciesAttributes\": [],\n                \"consortia\": [\n                    {\n                        \"consortiumName\": \"CMG\",\n                        \"institutes\": []\n                    }\n                ]\n            },\n            \"comment\": null\n        },\n        {\n            \"input\": \"Atrx\",\n            \"project\": {\n                \"tpn\": \"TPN:000000402\",\n                \"assignmentStatusName\": \"Assigned\",\n                \"withdrawn\": false,\n                \"recovery\": false,\n                \"comment\": \"Initial comment\",\n                \"assignmentStatusStamps\": [],\n                \"externalReference\": \"Id in internal system\",\n                \"projectIntentions\": [\n                    {\n                        \"alleleTypeName\": \"Null\",\n                        \"molecularMutationTypeName\": \"Deletion\",\n                        \"intentionTypeName\": \"gene\",\n                        \"alleleCategorizations\": [],\n                        \"intentionByGene\": {\n                            \"gene\": {\n                                \"id\": 1,\n                                \"name\": \"ATRX, chromatin remodeler\",\n                                \"symbol\": \"Atrx\",\n                                \"speciesName\": \"Mus musculus\",\n                                \"externalLink\": \"http://www.mousephenotype.org/data/genes/MGI:103067\",\n                                \"accessionId\": \"MGI:103067\"\n                            }\n                        }\n                    }\n                ],\n                \"isActive\": true,\n                \"privacyName\": \"restricted\",\n                \"speciesAttributes\": [],\n                \"consortia\": [\n                    {\n                        \"consortiumName\": \"CMG\",\n                        \"institutes\": []\n                    }\n                ]\n            },\n            \"comment\": null\n        }\n    ],\n    \"page\": {\n        \"size\": 20,\n        \"totalElements\": 4,\n        \"totalPages\": 1,\n        \"number\": 0\n    }\n}"
-						},
-						{
 							"name": "Search by gene using a synonym (with associated projects)",
 							"originalRequest": {
 								"method": "GET",
@@ -2413,12 +2339,12 @@
 							"body": "{\n    \"date\": \"2019-11-13T16:04:52.501463\",\n    \"searchTypeName\": \"gene\",\n    \"inputs\": [\n        \"Dnahc10\"\n    ],\n    \"filters\": [],\n    \"results\": [\n        {\n            \"input\": \"Dnahc10\",\n            \"project\": {\n                \"tpn\": \"TPN:000000009\",\n                \"assignmentStatusName\": \"Assigned\",\n                \"withdrawn\": false,\n                \"recovery\": false,\n                \"comment\": null,\n                \"assignmentStatusStamps\": [\n                    {\n                        \"statusName\": \"Assigned\",\n                        \"date\": \"2017-11-08T20:53:30.991199\"\n                    }\n                ],\n                \"externalReference\": null,\n                \"projectIntentions\": [\n                    {\n                        \"alleleTypeName\": \"Null\",\n                        \"molecularMutationTypeName\": \"Deletion\",\n                        \"intentionTypeName\": \"gene\",\n                        \"alleleCategorizations\": [],\n                        \"intentionByGene\": {\n                            \"gene\": {\n                                \"id\": 9,\n                                \"name\": \"dynein, axonemal, heavy chain 10\",\n                                \"symbol\": \"Dnah10\",\n                                \"speciesName\": \"Mus musculus\",\n                                \"externalLink\": \"http://www.mousephenotype.org/data/genes/MGI:1860299\",\n                                \"accessionId\": \"MGI:1860299\"\n                            }\n                        }\n                    }\n                ],\n                \"isActive\": true,\n                \"privacyName\": \"public\",\n                \"speciesAttributes\": [],\n                \"consortia\": [\n                    {\n                        \"consortiumName\": \"CMG\",\n                        \"institutes\": []\n                    }\n                ]\n            },\n            \"comment\": \"Synonym of Dnah10\"\n        }\n    ],\n    \"page\": {\n        \"size\": 20,\n        \"totalElements\": 1,\n        \"totalPages\": 1,\n        \"number\": 0\n    }\n}"
 						},
 						{
-							"name": "Search by gene using a valid gene symbol but without associate projects",
+							"name": "Search by gene using an invalid symbol or synonym",
 							"originalRequest": {
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "{{url}}/api/projects/search?searchTypeName=gene&input=Add2",
+									"raw": "{{url}}/api/projects/search?searchTypeName=gene&input=random",
 									"host": [
 										"{{url}}"
 									],
@@ -2434,7 +2360,7 @@
 										},
 										{
 											"key": "input",
-											"value": "Add2"
+											"value": "random"
 										}
 									]
 								}
@@ -2521,11 +2447,11 @@
 								},
 								{
 									"key": "Date",
-									"value": "Wed, 13 Nov 2019 16:02:32 GMT"
+									"value": "Wed, 13 Nov 2019 16:07:24 GMT"
 								}
 							],
 							"cookie": [],
-							"body": "{\n    \"date\": \"2019-11-13T16:02:32.17849\",\n    \"searchTypeName\": \"gene\",\n    \"inputs\": [\n        \"Srebf1\"\n    ],\n    \"filters\": [],\n    \"results\": [\n        {\n            \"input\": \"Srebf1\",\n            \"project\": null,\n            \"comment\": null\n        }\n    ],\n    \"page\": {\n        \"size\": 20,\n        \"totalElements\": 1,\n        \"totalPages\": 1,\n        \"number\": 0\n    }\n}"
+							"body": "{\n    \"date\": \"2019-11-13T16:07:24.753533\",\n    \"searchTypeName\": \"gene\",\n    \"inputs\": [\n        \"random\"\n    ],\n    \"filters\": [],\n    \"results\": [\n        {\n            \"input\": \"random\",\n            \"project\": null,\n            \"comment\": \"Not a gene symbol or synonym\"\n        }\n    ],\n    \"page\": {\n        \"size\": 20,\n        \"totalElements\": 1,\n        \"totalPages\": 1,\n        \"number\": 0\n    }\n}"
 						},
 						{
 							"name": "Search by gene with multiple gene symbols",
@@ -2648,6 +2574,238 @@
 							],
 							"cookie": [],
 							"body": "{\n    \"date\": \"2019-11-13T16:01:08.2732\",\n    \"searchTypeName\": \"gene\",\n    \"inputs\": [\n        \"Atrx\",\n        \"Bcor\"\n    ],\n    \"filters\": [],\n    \"results\": [\n        {\n            \"input\": \"Atrx\",\n            \"project\": {\n                \"tpn\": \"TPN:000000001\",\n                \"assignmentStatusName\": \"Assigned\",\n                \"withdrawn\": false,\n                \"recovery\": false,\n                \"comment\": null,\n                \"assignmentStatusStamps\": [\n                    {\n                        \"statusName\": \"Assigned\",\n                        \"date\": \"2017-12-11T02:17:27.317267\"\n                    }\n                ],\n                \"externalReference\": null,\n                \"projectIntentions\": [\n                    {\n                        \"alleleTypeName\": \"Null\",\n                        \"molecularMutationTypeName\": \"Deletion\",\n                        \"intentionTypeName\": \"gene\",\n                        \"alleleCategorizations\": [],\n                        \"intentionByGene\": {\n                            \"gene\": {\n                                \"id\": 1,\n                                \"name\": \"ATRX, chromatin remodeler\",\n                                \"symbol\": \"Atrx\",\n                                \"speciesName\": \"Mus musculus\",\n                                \"externalLink\": \"http://www.mousephenotype.org/data/genes/MGI:103067\",\n                                \"accessionId\": \"MGI:103067\"\n                            }\n                        }\n                    }\n                ],\n                \"isActive\": true,\n                \"privacyName\": \"restricted\",\n                \"speciesAttributes\": [],\n                \"consortia\": [\n                    {\n                        \"consortiumName\": \"CMG\",\n                        \"institutes\": []\n                    }\n                ]\n            },\n            \"comment\": null\n        },\n        {\n            \"input\": \"Atrx\",\n            \"project\": {\n                \"tpn\": \"TPN:000000302\",\n                \"assignmentStatusName\": \"Assigned\",\n                \"withdrawn\": false,\n                \"recovery\": false,\n                \"comment\": \"Initial comment\",\n                \"assignmentStatusStamps\": [],\n                \"externalReference\": \"Id in internal system\",\n                \"projectIntentions\": [\n                    {\n                        \"alleleTypeName\": \"Null\",\n                        \"molecularMutationTypeName\": \"Deletion\",\n                        \"intentionTypeName\": \"gene\",\n                        \"alleleCategorizations\": [],\n                        \"intentionByGene\": {\n                            \"gene\": {\n                                \"id\": 1,\n                                \"name\": \"ATRX, chromatin remodeler\",\n                                \"symbol\": \"Atrx\",\n                                \"speciesName\": \"Mus musculus\",\n                                \"externalLink\": \"http://www.mousephenotype.org/data/genes/MGI:103067\",\n                                \"accessionId\": \"MGI:103067\"\n                            }\n                        }\n                    }\n                ],\n                \"isActive\": true,\n                \"privacyName\": \"restricted\",\n                \"speciesAttributes\": [],\n                \"consortia\": [\n                    {\n                        \"consortiumName\": \"CMG\",\n                        \"institutes\": []\n                    }\n                ]\n            },\n            \"comment\": null\n        },\n        {\n            \"input\": \"Atrx\",\n            \"project\": {\n                \"tpn\": \"TPN:000000352\",\n                \"assignmentStatusName\": \"Assigned\",\n                \"withdrawn\": false,\n                \"recovery\": false,\n                \"comment\": \"Initial comment\",\n                \"assignmentStatusStamps\": [],\n                \"externalReference\": \"Id in internal system\",\n                \"projectIntentions\": [\n                    {\n                        \"alleleTypeName\": \"Null\",\n                        \"molecularMutationTypeName\": \"Deletion\",\n                        \"intentionTypeName\": \"gene\",\n                        \"alleleCategorizations\": [],\n                        \"intentionByGene\": {\n                            \"gene\": {\n                                \"id\": 1,\n                                \"name\": \"ATRX, chromatin remodeler\",\n                                \"symbol\": \"Atrx\",\n                                \"speciesName\": \"Mus musculus\",\n                                \"externalLink\": \"http://www.mousephenotype.org/data/genes/MGI:103067\",\n                                \"accessionId\": \"MGI:103067\"\n                            }\n                        }\n                    }\n                ],\n                \"isActive\": true,\n                \"privacyName\": \"restricted\",\n                \"speciesAttributes\": [],\n                \"consortia\": [\n                    {\n                        \"consortiumName\": \"CMG\",\n                        \"institutes\": []\n                    }\n                ]\n            },\n            \"comment\": null\n        },\n        {\n            \"input\": \"Atrx\",\n            \"project\": {\n                \"tpn\": \"TPN:000000402\",\n                \"assignmentStatusName\": \"Assigned\",\n                \"withdrawn\": false,\n                \"recovery\": false,\n                \"comment\": \"Initial comment\",\n                \"assignmentStatusStamps\": [],\n                \"externalReference\": \"Id in internal system\",\n                \"projectIntentions\": [\n                    {\n                        \"alleleTypeName\": \"Null\",\n                        \"molecularMutationTypeName\": \"Deletion\",\n                        \"intentionTypeName\": \"gene\",\n                        \"alleleCategorizations\": [],\n                        \"intentionByGene\": {\n                            \"gene\": {\n                                \"id\": 1,\n                                \"name\": \"ATRX, chromatin remodeler\",\n                                \"symbol\": \"Atrx\",\n                                \"speciesName\": \"Mus musculus\",\n                                \"externalLink\": \"http://www.mousephenotype.org/data/genes/MGI:103067\",\n                                \"accessionId\": \"MGI:103067\"\n                            }\n                        }\n                    }\n                ],\n                \"isActive\": true,\n                \"privacyName\": \"restricted\",\n                \"speciesAttributes\": [],\n                \"consortia\": [\n                    {\n                        \"consortiumName\": \"CMG\",\n                        \"institutes\": []\n                    }\n                ]\n            },\n            \"comment\": null\n        },\n        {\n            \"input\": \"Bcor\",\n            \"project\": {\n                \"tpn\": \"TPN:000000002\",\n                \"assignmentStatusName\": \"Inspect - Conflict\",\n                \"withdrawn\": false,\n                \"recovery\": false,\n                \"comment\": null,\n                \"assignmentStatusStamps\": [\n                    {\n                        \"statusName\": \"Inspect - Conflict\",\n                        \"date\": \"2017-12-11T02:17:27.320948\"\n                    }\n                ],\n                \"externalReference\": null,\n                \"projectIntentions\": [\n                    {\n                        \"alleleTypeName\": \"Null\",\n                        \"molecularMutationTypeName\": \"Deletion\",\n                        \"intentionTypeName\": \"gene\",\n                        \"alleleCategorizations\": [],\n                        \"intentionByGene\": {\n                            \"gene\": {\n                                \"id\": 2,\n                                \"name\": \"BCL6 interacting corepressor\",\n                                \"symbol\": \"Bcor\",\n                                \"speciesName\": \"Mus musculus\",\n                                \"externalLink\": \"http://www.mousephenotype.org/data/genes/MGI:1918708\",\n                                \"accessionId\": \"MGI:1918708\"\n                            }\n                        }\n                    }\n                ],\n                \"isActive\": true,\n                \"privacyName\": \"protected\",\n                \"speciesAttributes\": [],\n                \"consortia\": [\n                    {\n                        \"consortiumName\": \"CMG\",\n                        \"institutes\": []\n                    }\n                ]\n            },\n            \"comment\": null\n        }\n    ],\n    \"page\": {\n        \"size\": 20,\n        \"totalElements\": 5,\n        \"totalPages\": 1,\n        \"number\": 0\n    }\n}"
+						},
+						{
+							"name": "Search by gene using a valid gene symbol but without associate projects",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/api/projects/search?searchTypeName=gene&input=Add2",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"api",
+										"projects",
+										"search"
+									],
+									"query": [
+										{
+											"key": "searchTypeName",
+											"value": "gene"
+										},
+										{
+											"key": "input",
+											"value": "Add2"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Access-Control-Allow-Credentials",
+									"value": "true"
+								},
+								{
+									"key": "Access-Control-Allow-Methods",
+									"value": "POST, GET, PUT, OPTIONS, DELETE"
+								},
+								{
+									"key": "Access-Control-Max-Age",
+									"value": "3600"
+								},
+								{
+									"key": "Access-Control-Allow-Headers",
+									"value": "X-Requested-With, Content-Type, Authorization, Origin, Accept, Access-Control-Request-DeliveryMethodType, Access-Control-Request-Headers"
+								},
+								{
+									"key": "Vary",
+									"value": "Origin"
+								},
+								{
+									"key": "Vary",
+									"value": "Access-Control-Request-Method"
+								},
+								{
+									"key": "Vary",
+									"value": "Access-Control-Request-Headers"
+								},
+								{
+									"key": "Vary",
+									"value": "Origin"
+								},
+								{
+									"key": "Vary",
+									"value": "Access-Control-Request-Method"
+								},
+								{
+									"key": "Vary",
+									"value": "Access-Control-Request-Headers"
+								},
+								{
+									"key": "X-Content-Type-Options",
+									"value": "nosniff"
+								},
+								{
+									"key": "X-XSS-Protection",
+									"value": "1; mode=block"
+								},
+								{
+									"key": "Cache-Control",
+									"value": "no-cache, no-store, max-age=0, must-revalidate"
+								},
+								{
+									"key": "Pragma",
+									"value": "no-cache"
+								},
+								{
+									"key": "Expires",
+									"value": "0"
+								},
+								{
+									"key": "X-Frame-Options",
+									"value": "DENY"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/hal+json"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Date",
+									"value": "Wed, 13 Nov 2019 16:02:32 GMT"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"date\": \"2019-11-13T16:02:32.17849\",\n    \"searchTypeName\": \"gene\",\n    \"inputs\": [\n        \"Srebf1\"\n    ],\n    \"filters\": [],\n    \"results\": [\n        {\n            \"input\": \"Srebf1\",\n            \"project\": null,\n            \"comment\": null\n        }\n    ],\n    \"page\": {\n        \"size\": 20,\n        \"totalElements\": 1,\n        \"totalPages\": 1,\n        \"number\": 0\n    }\n}"
+						},
+						{
+							"name": "Search by gene using a valid gene symbol as input ",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/api/projects/search?searchTypeName=gene&input=Atrx",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"api",
+										"projects",
+										"search"
+									],
+									"query": [
+										{
+											"key": "searchTypeName",
+											"value": "gene",
+											"description": "Search type (Currently only 'gene')."
+										},
+										{
+											"key": "input",
+											"value": "Atrx",
+											"description": "The value to be searched."
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Access-Control-Allow-Credentials",
+									"value": "true"
+								},
+								{
+									"key": "Access-Control-Allow-Methods",
+									"value": "POST, GET, PUT, OPTIONS, DELETE"
+								},
+								{
+									"key": "Access-Control-Max-Age",
+									"value": "3600"
+								},
+								{
+									"key": "Access-Control-Allow-Headers",
+									"value": "X-Requested-With, Content-Type, Authorization, Origin, Accept, Access-Control-Request-DeliveryMethodType, Access-Control-Request-Headers"
+								},
+								{
+									"key": "Vary",
+									"value": "Origin"
+								},
+								{
+									"key": "Vary",
+									"value": "Access-Control-Request-Method"
+								},
+								{
+									"key": "Vary",
+									"value": "Access-Control-Request-Headers"
+								},
+								{
+									"key": "Vary",
+									"value": "Origin"
+								},
+								{
+									"key": "Vary",
+									"value": "Access-Control-Request-Method"
+								},
+								{
+									"key": "Vary",
+									"value": "Access-Control-Request-Headers"
+								},
+								{
+									"key": "X-Content-Type-Options",
+									"value": "nosniff"
+								},
+								{
+									"key": "X-XSS-Protection",
+									"value": "1; mode=block"
+								},
+								{
+									"key": "Cache-Control",
+									"value": "no-cache, no-store, max-age=0, must-revalidate"
+								},
+								{
+									"key": "Pragma",
+									"value": "no-cache"
+								},
+								{
+									"key": "Expires",
+									"value": "0"
+								},
+								{
+									"key": "X-Frame-Options",
+									"value": "DENY"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/hal+json"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Date",
+									"value": "Wed, 13 Nov 2019 15:58:54 GMT"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"date\": \"2019-11-13T15:58:54.378261\",\n    \"searchTypeName\": \"gene\",\n    \"inputs\": [\n        \"Atrx\"\n    ],\n    \"filters\": [],\n    \"results\": [\n        {\n            \"input\": \"Atrx\",\n            \"project\": {\n                \"tpn\": \"TPN:000000001\",\n                \"assignmentStatusName\": \"Assigned\",\n                \"withdrawn\": false,\n                \"recovery\": false,\n                \"comment\": null,\n                \"assignmentStatusStamps\": [\n                    {\n                        \"statusName\": \"Assigned\",\n                        \"date\": \"2017-12-11T02:17:27.317267\"\n                    }\n                ],\n                \"externalReference\": null,\n                \"projectIntentions\": [\n                    {\n                        \"alleleTypeName\": \"Null\",\n                        \"molecularMutationTypeName\": \"Deletion\",\n                        \"intentionTypeName\": \"gene\",\n                        \"alleleCategorizations\": [],\n                        \"intentionByGene\": {\n                            \"gene\": {\n                                \"id\": 1,\n                                \"name\": \"ATRX, chromatin remodeler\",\n                                \"symbol\": \"Atrx\",\n                                \"speciesName\": \"Mus musculus\",\n                                \"externalLink\": \"http://www.mousephenotype.org/data/genes/MGI:103067\",\n                                \"accessionId\": \"MGI:103067\"\n                            }\n                        }\n                    }\n                ],\n                \"isActive\": true,\n                \"privacyName\": \"restricted\",\n                \"speciesAttributes\": [],\n                \"consortia\": [\n                    {\n                        \"consortiumName\": \"CMG\",\n                        \"institutes\": []\n                    }\n                ]\n            },\n            \"comment\": null\n        },\n        {\n            \"input\": \"Atrx\",\n            \"project\": {\n                \"tpn\": \"TPN:000000302\",\n                \"assignmentStatusName\": \"Assigned\",\n                \"withdrawn\": false,\n                \"recovery\": false,\n                \"comment\": \"Initial comment\",\n                \"assignmentStatusStamps\": [],\n                \"externalReference\": \"Id in internal system\",\n                \"projectIntentions\": [\n                    {\n                        \"alleleTypeName\": \"Null\",\n                        \"molecularMutationTypeName\": \"Deletion\",\n                        \"intentionTypeName\": \"gene\",\n                        \"alleleCategorizations\": [],\n                        \"intentionByGene\": {\n                            \"gene\": {\n                                \"id\": 1,\n                                \"name\": \"ATRX, chromatin remodeler\",\n                                \"symbol\": \"Atrx\",\n                                \"speciesName\": \"Mus musculus\",\n                                \"externalLink\": \"http://www.mousephenotype.org/data/genes/MGI:103067\",\n                                \"accessionId\": \"MGI:103067\"\n                            }\n                        }\n                    }\n                ],\n                \"isActive\": true,\n                \"privacyName\": \"restricted\",\n                \"speciesAttributes\": [],\n                \"consortia\": [\n                    {\n                        \"consortiumName\": \"CMG\",\n                        \"institutes\": []\n                    }\n                ]\n            },\n            \"comment\": null\n        },\n        {\n            \"input\": \"Atrx\",\n            \"project\": {\n                \"tpn\": \"TPN:000000352\",\n                \"assignmentStatusName\": \"Assigned\",\n                \"withdrawn\": false,\n                \"recovery\": false,\n                \"comment\": \"Initial comment\",\n                \"assignmentStatusStamps\": [],\n                \"externalReference\": \"Id in internal system\",\n                \"projectIntentions\": [\n                    {\n                        \"alleleTypeName\": \"Null\",\n                        \"molecularMutationTypeName\": \"Deletion\",\n                        \"intentionTypeName\": \"gene\",\n                        \"alleleCategorizations\": [],\n                        \"intentionByGene\": {\n                            \"gene\": {\n                                \"id\": 1,\n                                \"name\": \"ATRX, chromatin remodeler\",\n                                \"symbol\": \"Atrx\",\n                                \"speciesName\": \"Mus musculus\",\n                                \"externalLink\": \"http://www.mousephenotype.org/data/genes/MGI:103067\",\n                                \"accessionId\": \"MGI:103067\"\n                            }\n                        }\n                    }\n                ],\n                \"isActive\": true,\n                \"privacyName\": \"restricted\",\n                \"speciesAttributes\": [],\n                \"consortia\": [\n                    {\n                        \"consortiumName\": \"CMG\",\n                        \"institutes\": []\n                    }\n                ]\n            },\n            \"comment\": null\n        },\n        {\n            \"input\": \"Atrx\",\n            \"project\": {\n                \"tpn\": \"TPN:000000402\",\n                \"assignmentStatusName\": \"Assigned\",\n                \"withdrawn\": false,\n                \"recovery\": false,\n                \"comment\": \"Initial comment\",\n                \"assignmentStatusStamps\": [],\n                \"externalReference\": \"Id in internal system\",\n                \"projectIntentions\": [\n                    {\n                        \"alleleTypeName\": \"Null\",\n                        \"molecularMutationTypeName\": \"Deletion\",\n                        \"intentionTypeName\": \"gene\",\n                        \"alleleCategorizations\": [],\n                        \"intentionByGene\": {\n                            \"gene\": {\n                                \"id\": 1,\n                                \"name\": \"ATRX, chromatin remodeler\",\n                                \"symbol\": \"Atrx\",\n                                \"speciesName\": \"Mus musculus\",\n                                \"externalLink\": \"http://www.mousephenotype.org/data/genes/MGI:103067\",\n                                \"accessionId\": \"MGI:103067\"\n                            }\n                        }\n                    }\n                ],\n                \"isActive\": true,\n                \"privacyName\": \"restricted\",\n                \"speciesAttributes\": [],\n                \"consortia\": [\n                    {\n                        \"consortiumName\": \"CMG\",\n                        \"institutes\": []\n                    }\n                ]\n            },\n            \"comment\": null\n        }\n    ],\n    \"page\": {\n        \"size\": 20,\n        \"totalElements\": 4,\n        \"totalPages\": 1,\n        \"number\": 0\n    }\n}"
 						}
 					]
 				}
@@ -2917,7 +3075,7 @@
 				{
 					"listen": "prerequest",
 					"script": {
-						"id": "9a7ece59-f170-4973-813d-237f9700462d",
+						"id": "81bb19c7-250d-4b13-a020-01e0e59f9349",
 						"type": "text/javascript",
 						"exec": [
 							""
@@ -2927,7 +3085,7 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "667607e4-f2e6-4147-8dfc-ff3e5d3e3010",
+						"id": "0957aac8-4024-4f6a-a711-b575d74a530c",
 						"type": "text/javascript",
 						"exec": [
 							""
@@ -2952,7 +3110,7 @@
 		{
 			"listen": "prerequest",
 			"script": {
-				"id": "fb0c53c6-9a4a-43ad-8912-3bc09c979480",
+				"id": "0df004e1-224f-4a02-99d0-c41aec9fcb40",
 				"type": "text/javascript",
 				"exec": [
 					""
@@ -2962,7 +3120,7 @@
 		{
 			"listen": "test",
 			"script": {
-				"id": "2dd0a947-a4f0-47c7-9aa7-8a1ac7afc526",
+				"id": "ba8f7df3-fed6-402f-bb38-5deeb48e46a3",
 				"type": "text/javascript",
 				"exec": [
 					""

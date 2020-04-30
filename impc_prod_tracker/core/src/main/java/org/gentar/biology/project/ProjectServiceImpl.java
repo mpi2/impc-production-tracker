@@ -160,7 +160,7 @@ public class ProjectServiceImpl implements ProjectService
                 .and(ProjectSpecs.withPlansInWorkUnitsNames(projectFilter.getWorkUnitNames()))
                 .and(ProjectSpecs.withPlansInWorkGroupNames(projectFilter.getWorGroupNames()))
                 .and(ProjectSpecs.withConsortia(projectFilter.getConsortiaNames()))
-                .and(ProjectSpecs.withStatuses(projectFilter.getStatusesNames()))
+                .and(ProjectSpecs.withAssignments(projectFilter.getAssginmentNames()))
                 .and(ProjectSpecs.withSummaryStatuses(projectFilter.getSummaryStatusNames()))
                 .and(ProjectSpecs.withPrivacies(projectFilter.getPrivaciesNames())))
                 .and(ProjectSpecs.withImitsMiPlans(projectFilter.getImitsMiPlans()));

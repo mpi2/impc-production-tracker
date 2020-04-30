@@ -76,9 +76,9 @@ public class ProjectFilterBuilder
         return withFilter(FilterTypes.PRIVACY_NAME, privacies);
     }
 
-    public ProjectFilterBuilder withStatuses(List<String> statuses)
+    public ProjectFilterBuilder withAssignments(List<String> assignmentNames)
     {
-        return withFilter(FilterTypes.ASSIGNMENT_STATUS, statuses);
+        return withFilter(FilterTypes.ASSIGNMENT, assignmentNames);
     }
 
     public ProjectFilterBuilder withWorkUnitNames(List<String> workUnitNames)
