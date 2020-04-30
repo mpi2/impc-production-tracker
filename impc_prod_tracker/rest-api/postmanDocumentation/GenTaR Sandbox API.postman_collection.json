@@ -743,7 +743,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{url}}/api/projects?tpns=TPN:000000013&intentions=Deletion&markerSymbols=Vps37a&genes=?????&workUnitNames=TCP&workGroupNames=DTCC&consortiaNames=CMG&assignmentNames=Assigned&summaryStatusNames=Plan Created&privacyNames=public&externalReferences&imitsMiPlanIds=25140",
+							"raw": "{{url}}/api/projects?tpns=TPN:000000013&intentions=Deletion&markerSymbols=Vps37a&genes=MGI:1261835&workUnitNames=TCP&workGroupNames=DTCC&consortiaNames=CMG&assignmentNames=Assigned&summaryStatusNames=Plan Created&privacyNames=public&externalReferences&imitsMiPlanIds=25140",
 							"host": [
 								"{{url}}"
 							],
@@ -769,8 +769,8 @@
 								},
 								{
 									"key": "genes",
-									"value": "?????",
-									"description": "Gene(s) ????  to be used as a filter."
+									"value": "MGI:1261835",
+									"description": "Gene name(s) or id(s)  to be used as a filter."
 								},
 								{
 									"key": "workUnitNames",
