@@ -10,7 +10,6 @@ public enum PhenotypePlanState implements ProcessState
 {
     PlanCreated("Plan Created"),
     PlanAbandoned("Plan Abandoned"),
-    PhenotypingInProgress("Phenotyping In Progress"),
     PhenotypePlanAborted("Phenotyping Plan Aborted");
 
     private String internalName;

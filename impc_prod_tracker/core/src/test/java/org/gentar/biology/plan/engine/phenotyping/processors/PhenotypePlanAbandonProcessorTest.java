@@ -14,20 +14,21 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+
 import java.util.HashSet;
 import java.util.Set;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
 @ExtendWith(MockitoExtension.class)
-class PhenotypePlanAbortProcessorTest
-{
-    private PhenotypePlanAbortProcessor testInstance;
+public class PhenotypePlanAbandonProcessorTest {
+
+    private PhenotypePlanAbandonProcessor testInstance;
 
     @Mock
     private PlanStateSetter planStateSetter;
@@ -35,11 +36,11 @@ class PhenotypePlanAbortProcessorTest
     @BeforeEach
     void setUp()
     {
-        testInstance = new PhenotypePlanAbortProcessor(planStateSetter);
+        testInstance = new PhenotypePlanAbandonProcessor(planStateSetter);
     }
 
     @Test
-    public void testAbortWhenNoPhenotypingStages()
+    public void testAbandonWhenNoPhenotypingStagesAndNoPhenotypingAttempt()
     {
         Plan plan = PlanBuilder.getInstance()
                 .withStatus(PhenotypePlanState.PlanCreated.getInternalName())
@@ -52,11 +53,28 @@ class PhenotypePlanAbortProcessorTest
     }
 
     @Test
-    public void testAbortWhenAllPhenotypingStagesAborted()
+    public void testAbandonWhenNoPhenotypingStagesButPhenotypingAttempt()
     {
         Plan plan = PlanBuilder.getInstance()
-            .withStatus(PhenotypePlanState.PlanCreated.getInternalName())
-            .build();
+                .withStatus(PhenotypePlanState.PlanCreated.getInternalName())
+                .build();
+
+        PhenotypingAttempt phenotypingAttempt = new PhenotypingAttempt();
+        plan.setPhenotypingAttempt(phenotypingAttempt);
+
+        plan.setEvent(PhenotypePlanEvent.abortPhenotypingPlan);
+        testInstance.process(plan);
+
+        verify(planStateSetter, times(1)).setStatusByName(any(Plan.class), any(String.class));
+    }
+
+    @Test
+    public void testAbandonWhenPhenotypingStages()
+    {
+        Plan plan = PlanBuilder.getInstance()
+                .withStatus(PhenotypePlanState.PlanCreated.getInternalName())
+                .build();
+
         Set<PhenotypingStage> phenotypingStages = new HashSet<>();
         PhenotypingStage phenotypingStage1 = buildPhenotypingStage(true);
         PhenotypingStage phenotypingStage2 = buildPhenotypingStage(true);
@@ -67,35 +85,15 @@ class PhenotypePlanAbortProcessorTest
         plan.setPhenotypingAttempt(phenotypingAttempt);
 
         plan.setEvent(PhenotypePlanEvent.abortPhenotypingPlan);
-        testInstance.process(plan);
 
-        verify(planStateSetter, times(1)).setStatusByName(any(Plan.class), any(String.class));
-    }
-
-    @Test
-    public void testAbortWhenNotAllPhenotypingStagesAborted()
-    {
-        Plan plan = PlanBuilder.getInstance()
-            .withStatus(PhenotypePlanState.PlanCreated.getInternalName())
-            .build();
-        Set<PhenotypingStage> phenotypingStages = new HashSet<>();
-        PhenotypingStage phenotypingStage1 = buildPhenotypingStage(true);
-        PhenotypingStage phenotypingStage2 = buildPhenotypingStage(false);
-        phenotypingStages.add(phenotypingStage1);
-        phenotypingStages.add(phenotypingStage2);
-        PhenotypingAttempt phenotypingAttempt = new PhenotypingAttempt();
-        phenotypingAttempt.setPhenotypingStages(phenotypingStages);
-        plan.setPhenotypingAttempt(phenotypingAttempt);
-
-        plan.setEvent(PhenotypePlanEvent.abortPhenotypingPlan);
         UserOperationFailedException thrown = assertThrows(UserOperationFailedException.class,
-            () -> testInstance.process(plan), "Exception not thrown");
+                () -> testInstance.process(plan), "Exception not thrown");
         System.out.println(thrown.getMessage());
-        assertThat("Not expected message", thrown.getMessage(), is("Plan cannot be aborted"));
+        assertThat("Not expected message", thrown.getMessage(), is("Plan cannot be abandoned"));
         assertThat(
-            "Not expected message",
-            thrown.getDebugMessage(),
-            is("The plan has phenotyping stages that are not aborted. Please abort them first"));
+                "Not expected message",
+                thrown.getDebugMessage(),
+                is("The plan already has phenotyping stages. Please abort the plan."));
 
         verify(planStateSetter, times(0)).setStatusByName(any(Plan.class), any(String.class));
     }
@@ -108,4 +106,5 @@ class PhenotypePlanAbortProcessorTest
         phenotypingStage.setStatus(status);
         return phenotypingStage;
     }
+
 }

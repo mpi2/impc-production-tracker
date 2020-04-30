@@ -11,22 +11,41 @@ import org.gentar.statemachine.ProcessData;
 
 import java.util.List;
 
-public class PhenotypingInProgressProcessor  extends AbstractProcessor {
+public class PhenotypePlanAbandonProcessor extends AbstractProcessor {
 
-    public PhenotypingInProgressProcessor(PlanStateSetter planStateSetter) {
+    public PhenotypePlanAbandonProcessor(PlanStateSetter planStateSetter) {
         super(planStateSetter);
     }
 
     @Override
     protected boolean canExecuteTransition(ProcessData entity)
     {
-        Plan plan = (Plan)entity;
-        PhenotypingAttempt phenotypingAttempt = plan.getPhenotypingAttempt();
-        if (phenotypingAttempt != null) {
-            return phenotypingAttempt.getPhenotypingStages() != null;
-        }
-        else {
-            return false;
-        }
+        return canAbandonPlan((Plan) entity);
     }
+
+    private boolean canAbandonPlan(Plan plan)
+    {
+        if (PhenotypingStagesDoNotExist(plan))
+        {
+            return true;
+        }
+        throw new UserOperationFailedException(
+                "Plan cannot be abandoned",
+                "The plan already has phenotyping stages. Please abort the plan.");
+    }
+
+    private boolean PhenotypingStagesDoNotExist(Plan plan){
+
+        boolean result = true;
+
+        PhenotypingAttempt phenotypingAttempt = plan.getPhenotypingAttempt();
+
+        if (phenotypingAttempt != null) {
+            result = phenotypingAttempt.getPhenotypingStages() == null;
+        }
+        return result;
+
+
+    }
+
 }

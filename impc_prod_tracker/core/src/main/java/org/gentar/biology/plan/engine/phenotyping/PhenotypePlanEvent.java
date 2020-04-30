@@ -1,7 +1,7 @@
 package org.gentar.biology.plan.engine.phenotyping;
 
+import org.gentar.biology.plan.engine.phenotyping.processors.PhenotypePlanAbandonProcessor;
 import org.gentar.biology.plan.engine.phenotyping.processors.PhenotypePlanAbortProcessor;
-import org.gentar.biology.plan.engine.phenotyping.processors.PhenotypingInProgressProcessor;
 import org.gentar.biology.plan.engine.processors.PlanProcessorWithoutValidations;
 import org.gentar.statemachine.ProcessEvent;
 import org.gentar.statemachine.ProcessState;
@@ -13,7 +13,7 @@ import java.util.List;
 public enum PhenotypePlanEvent implements ProcessEvent
 {
     abandonWhenCreated(
-            "Abandon the phenotyping plan that has been created",
+            "Abandon a phenotyping plan that has no associated phenotyping stage information",
             PhenotypePlanState.PlanCreated,
             PhenotypePlanState.PlanAbandoned,
             StateMachineConstants.TRIGGERED_BY_USER,
@@ -22,25 +22,12 @@ public enum PhenotypePlanEvent implements ProcessEvent
                 @Override
                 public Class<? extends Processor> getNextStepProcessor()
                 {
-                    return PlanProcessorWithoutValidations.class;
-                }
-            },
-    updateToInProgress(
-            "Update to phenotyping in progress",
-            PhenotypePlanState.PlanCreated,
-            PhenotypePlanState.PhenotypingInProgress,
-            StateMachineConstants.NOT_TRIGGERED_BY_USER,
-            "executed by the system when phenotyping details are registered")
-            {
-                @Override
-                public Class<? extends Processor> getNextStepProcessor()
-                {
-                    return PhenotypingInProgressProcessor.class;
+                    return PhenotypePlanAbandonProcessor.class;
                 }
             },
     abortPhenotypingPlan(
-        "Abort a phenotyping plan that is in progress",
-        PhenotypePlanState.PhenotypingInProgress,
+        "Abort a phenotyping plan that has associated aborted phenotyping stage information",
+        PhenotypePlanState.PlanCreated,
         PhenotypePlanState.PhenotypePlanAborted,
         StateMachineConstants.TRIGGERED_BY_USER,
             null)
