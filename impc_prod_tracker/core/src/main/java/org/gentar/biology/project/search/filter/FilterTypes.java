@@ -25,7 +25,7 @@ public enum FilterTypes
     MARKER_SYMBOL("markerSymbol"),
     INTENTION("intention"),
     CONSORTIUM("consortium"),
-    ASSIGNMENT_STATUS("assignmentStatus"),
+    ASSIGNMENT("assignmentStatus"),
     SUMMARY_STATUS("summaryStatus"),
     EXTERNAL_REFERENCE("externalReference"),
     PRIVACY_NAME("privacyName"),

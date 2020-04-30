@@ -69,9 +69,9 @@ public class ProjectFilter
         return filters.getOrDefault(FilterTypes.CONSORTIUM, null);
     }
 
-    public List<String> getStatusesNames()
+    public List<String> getAssginmentNames()
     {
-        return filters.getOrDefault(FilterTypes.ASSIGNMENT_STATUS, null);
+        return filters.getOrDefault(FilterTypes.ASSIGNMENT, null);
     }
 
     public List<String> getSummaryStatusNames()

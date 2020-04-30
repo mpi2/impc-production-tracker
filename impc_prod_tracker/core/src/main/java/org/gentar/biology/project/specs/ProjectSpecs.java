@@ -136,13 +136,13 @@ public class ProjectSpecs
      * @param statuses List of names of statuses.
      * @return The found projects. If statuses is null then not filter is applied.
      */
-    public static Specification<Project> withStatuses(List<String> statuses)
+    public static Specification<Project> withAssignments(List<String> statuses)
     {
         Specification<Project> specification = Specification.where(null);
         if (statuses != null)
         {
             specification = (Specification<Project>) (root, query, criteriaBuilder) -> {
-                Path<String> statusNamePath = ProjectPaths.getAssignmentStatusNamePath(root);
+                Path<String> statusNamePath = ProjectPaths.getAssignmentNamePath(root);
                 query.distinct(true);
                 return PredicateBuilder.addInPredicates(criteriaBuilder, statusNamePath, statuses);
             };
