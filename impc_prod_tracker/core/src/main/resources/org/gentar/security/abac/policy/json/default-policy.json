@@ -112,6 +112,13 @@
     "description": "A user can manage target gene lists if they are manager in any consortium",
     "target": "action == 'MANAGE_GENE_LISTS'",
     "condition": "subject.whereUserHasRole('manager').getConsortia().size() > 0"
+  },
+
+  {
+    "name": "Reverse Genotype Confirmation",
+    "description": "CDA and DCC can move a colony from Genotype Confirmed to Genotype Not Confirmed",
+    "target": "action == 'REVERSE_GENOTYPE_CONFIRMATION'",
+    "condition": "subject.isUserByKey('cda_user_key') OR subject.isUserByKey('dcc_user_key')"
   }
 
 ]

@@ -15,13 +15,13 @@
  */
 package org.gentar.security.abac.subject;
 
-import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.gentar.exceptions.UserOperationFailedException;
 import org.gentar.organization.person.associations.FluentPersonRoleConsortiumList;
 import org.gentar.organization.person.associations.FluentPersonRoleWorkUnitList;
 import org.gentar.organization.work_unit.WorkUnitService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.gentar.organization.consortium.Consortium;
 import org.gentar.organization.person.Person;
@@ -57,6 +57,16 @@ public class AapSystemSubject implements SystemSubject
     private List<PersonRoleConsortium> roleConsortia;
     private WorkUnitService workUnitService;
 
+    @Value("${cda_user_key}")
+    private String CDA_USER_VALUE;
+
+    @Value("${dcc_user_key}")
+    private String DCC_USER_VALUE;
+
+    private final static String CDA_USER_KEY = "cda_user_key";
+
+    private final static String DCC_USER_KEY = "dcc_user_key";
+
     private final static String NOT_USER_INFORMATION_MESSAGE = "There is not associated information in the system for " +
         "the user [%s].";
     private final static String NULL_AUTH_ID_MESSAGE = "AuthId cannot be null. The jwt token may not have" +
@@ -72,7 +82,8 @@ public class AapSystemSubject implements SystemSubject
         this.workUnitService = workUnitService;
     }
 
-    public AapSystemSubject(PersonRepository personRepository, WorkUnitService workUnitService, Person person)
+    public AapSystemSubject(
+        PersonRepository personRepository, WorkUnitService workUnitService, Person person)
     {
         this.personRepository = personRepository;
         this.workUnitService = workUnitService;
@@ -265,6 +276,28 @@ public class AapSystemSubject implements SystemSubject
     public FluentPersonRoleConsortiumList whereUserHasRole(String role)
     {
         return getFluentRoleConsortia().whereUserHasRole(role);
+    }
+
+    @Override
+    public boolean isUserByKey(String key)
+    {
+        boolean result = false;
+        String configuredLogin = null;
+        if (key.equals(CDA_USER_KEY))
+        {
+            configuredLogin = CDA_USER_VALUE;
+        }
+        else if (key.equals(DCC_USER_KEY))
+        {
+            configuredLogin = DCC_USER_VALUE;
+        }
+
+        if (configuredLogin != null)
+        {
+            result = login.equals(configuredLogin);
+        }
+
+        return result;
     }
 
     public SystemSubject buildSystemSubjectByPerson(Person person)

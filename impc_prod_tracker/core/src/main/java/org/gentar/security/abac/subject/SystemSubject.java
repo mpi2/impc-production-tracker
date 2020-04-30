@@ -64,4 +64,12 @@ public interface SystemSubject
     boolean managesAnyConsortia(Collection<Consortium> consortia);
 
     FluentPersonRoleConsortiumList whereUserHasRole(String role);
+
+    /**
+     * Checks if the subject is the same as the one that is mapped to the key parameter in a
+     * property file.
+     * @param key The key in properties file that maps to a user in GenTaR.
+     * @return True if the current user is the user mapped by the 'key' parameter.
+     */
+    boolean isUserByKey(String key);
 }
