@@ -15,8 +15,6 @@ import org.gentar.biology.plan.attempt.crispr.CrisprAttemptDTO;
 import org.gentar.Mapper;
 import org.gentar.biology.plan.starting_point.PlanStartingPoint;
 import org.gentar.biology.plan.status.PlanStatusStamp;
-import org.gentar.biology.plan.type.PlanType;
-import org.gentar.biology.plan.type.PlanTypes;
 import org.gentar.biology.project.*;
 import org.gentar.biology.status_stamps.StatusStampsDTO;
 import org.gentar.common.state_machine.StatusTransitionDTO;
@@ -36,8 +34,6 @@ import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-
-import static org.gentar.biology.plan.attempt.AttemptTypesName.CRISPR;
 
 @Component
 public class PlanMapper implements Mapper<Plan, PlanDTO>
@@ -98,15 +94,15 @@ public class PlanMapper implements Mapper<Plan, PlanDTO>
 
     private void addNoMappedData(PlanDTO planDTO, Plan plan)
     {
-        addStartingPoint(planDTO, plan);
-        addAttemptDto(planDTO, plan);
+        setStartingPointDto(planDTO, plan);
+        setAttemptDto(planDTO, plan);
         addStatusStamps(planDTO, plan);
         planDTO.setTpn(plan.getProject().getTpn());
         planDTO.setFunderNames(funderMapper.toDtos(plan.getFunders()));
         planDTO.setStatusTransitionDTO(buildStatusTransitionDTO(plan));
     }
 
-    private void addStartingPoint(PlanDTO planDTO, Plan plan)
+    private void setStartingPointDto(PlanDTO planDTO, Plan plan)
     {
         if (plan.getPlanStartingPoints() != null) {
             Set<PlanStartingPoint> planStartingPoints = plan.getPlanStartingPoints();
@@ -120,36 +116,51 @@ public class PlanMapper implements Mapper<Plan, PlanDTO>
         }
     }
 
-    private void addAttemptDto(PlanDTO planDTO, Plan plan)
+    private AttemptTypesName getAttemptTypesName(AttemptType attemptType)
     {
-        PlanType planType = plan.getPlanType();
-        if (PlanTypes.PRODUCTION.getTypeName().equals(planType.getName()))
-        {
-            AttemptType attemptType = plan.getAttemptType();
-            String attemptTypeName = attemptType == null ? "Not defined" : attemptType.getName();
+        String attemptTypeName = attemptType == null ? "Not defined" : attemptType.getName();
+        return AttemptTypesName.valueOfLabel(attemptTypeName);
+    }
 
-            if (CRISPR.getLabel().equals(attemptTypeName))
-            {
-                CrisprAttemptDTO crisprAttemptDTO = crisprAttemptMapper.toDto(plan.getCrisprAttempt());
-                planDTO.setCrisprAttemptDTO(crisprAttemptDTO);
-            }
-            else if (AttemptTypesName.BREEDING.getLabel().equals(attemptTypeName))
-            {
-                BreedingAttemptDTO breedingAttemptDTO =
-                    breedingAttemptMapper.toDto(plan.getBreedingAttempt());
-                planDTO.setBreedingAttemptDTO(breedingAttemptDTO);
-            }
-            else
-            {
-                //TODO: other attempts
-            }
-        }
-        else if (PlanTypes.PHENOTYPING.getTypeName().equals((planType.getName())))
+    private void setAttemptDto(PlanDTO planDTO, Plan plan)
+    {
+        AttemptTypesName attemptTypesName = getAttemptTypesName(plan.getAttemptType());
+        switch (attemptTypesName)
         {
-            PhenotypingAttemptDTO phenotypingAttemptDTO =
-                phenotypingAttemptMapper.toDto(plan.getPhenotypingAttempt());
-            planDTO.setPhenotypingAttemptDTO(phenotypingAttemptDTO);
+            case CRISPR:
+                setCrisprAttemptDto(planDTO, plan);
+                break;
+            case HAPLOESSENTIAL_CRISPR:
+                //TODO: set the happloessential crispr attempt
+                break;
+            case ADULT_PHENOTYPING: case HAPLOESSENTIAL_PHENOTYPING:
+                setPhenotypingAttemptDto(planDTO, plan);
+            break;
+            case BREEDING:
+                setBreedingAttemptDto(planDTO, plan);
+                break;
+            default:
         }
+    }
+
+    private void setCrisprAttemptDto(PlanDTO planDTO, Plan plan)
+    {
+        CrisprAttemptDTO crisprAttemptDTO = crisprAttemptMapper.toDto(plan.getCrisprAttempt());
+        planDTO.setCrisprAttemptDTO(crisprAttemptDTO);
+    }
+
+    private void setPhenotypingAttemptDto(PlanDTO planDTO, Plan plan)
+    {
+        PhenotypingAttemptDTO phenotypingAttemptDTO =
+            phenotypingAttemptMapper.toDto(plan.getPhenotypingAttempt());
+        planDTO.setPhenotypingAttemptDTO(phenotypingAttemptDTO);
+    }
+
+    private void setBreedingAttemptDto(PlanDTO planDTO, Plan plan)
+    {
+        BreedingAttemptDTO breedingAttemptDTO =
+            breedingAttemptMapper.toDto(plan.getBreedingAttempt());
+        planDTO.setBreedingAttemptDTO(breedingAttemptDTO);
     }
 
     private void addStatusStamps(PlanDTO planDTO, Plan plan)
@@ -186,9 +197,7 @@ public class PlanMapper implements Mapper<Plan, PlanDTO>
 
     private void setAttempt(Plan plan, PlanDTO planDTO)
     {
-        AttemptType attemptType = plan.getAttemptType();
-        String attemptTypeName = attemptType == null ? "Not defined" : attemptType.getName();
-        AttemptTypesName attemptTypesName = AttemptTypesName.valueOfLabel(attemptTypeName);
+        AttemptTypesName attemptTypesName = getAttemptTypesName(plan.getAttemptType());
         switch (attemptTypesName)
         {
             case CRISPR:
