@@ -16,6 +16,8 @@
 package org.gentar.biology.plan;
 
 import org.gentar.biology.plan.engine.PlanStateMachineResolver;
+import org.gentar.biology.plan.filter.PlanFilter;
+import org.gentar.biology.plan.filter.PlanFilterBuilder;
 import org.gentar.biology.project.Project;
 import org.gentar.biology.project.ProjectDTO;
 import org.gentar.common.state_machine.StatusTransitionDTO;
@@ -100,8 +102,18 @@ public class PlanController
         @RequestParam(value = "imitsMiAttemptIds", required = false) List<String> imitsMiAttempts,
         @RequestParam(value = "imitsPhenotypeAttemptIds", required = false) List<String> imitsPhenotypeAttempts)
     {
-        List<Plan> plans = planService.getPlans(projectTpns, workUnitNames, workGroupNames, summaryStatusNames, pins, typeNames,
-                attemptTypeNames, imitsMiAttempts, imitsPhenotypeAttempts);
+        PlanFilter planFilter = PlanFilterBuilder.getInstance()
+            .withTpns(projectTpns)
+            .withWorkUnitNames(workUnitNames)
+            .withWorkGroupNames(workGroupNames)
+            .withSummaryStatusNames(summaryStatusNames)
+            .withPins(pins)
+            .withPlanTypeNames(typeNames)
+            .withAttemptTypeNames(attemptTypeNames)
+            .withImitsMiAttemptIds(imitsMiAttempts)
+            .withImitsPhenotypeAttemptIds(imitsPhenotypeAttempts)
+            .build();
+        List<Plan> plans = planService.getPlans(planFilter);
 
         Page<Plan> paginatedContent =
             PaginationHelper.createPage(plans, pageable);

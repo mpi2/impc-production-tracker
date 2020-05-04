@@ -16,14 +16,14 @@
 package org.gentar.biology.plan;
 
 import org.gentar.audit.history.History;
+import org.gentar.biology.plan.filter.PlanFilter;
 import org.gentar.statemachine.TransitionEvaluation;
 
 import java.util.List;
 
 public interface PlanService
 {
-    List<Plan> getPlans(List<String> tpns, List<String> workUnitNames, List<String> workGroupNames, List<String> statuses, List<String> pins, List<String> planTypeNames,
-                        List<String> attemptTypeNames, List<String> imitsMiAttempts, List<String> imitsPhenotypeAttempts);
+    List<Plan> getPlans(PlanFilter planFilter);
 
     Plan getPlanByPinWithoutCheckPermissions(String pin);
 
