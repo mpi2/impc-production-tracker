@@ -2,6 +2,7 @@ package org.gentar.statemachine;
 
 import lombok.Data;
 import org.gentar.exceptions.SystemOperationFailedException;
+import org.gentar.exceptions.UserOperationFailedException;
 
 /**
  * Define the abstract methods for a processor: the logic to change state in a state machine.
@@ -27,6 +28,10 @@ public abstract class AbstractProcessor implements Processor
         return entity;
     }
 
+    @Override
+    public abstract TransitionEvaluation evaluateTransition(
+        ProcessEvent transition, ProcessData data);
+
     private void checkEntityIsNotNull(ProcessData entity)
     {
         if (entity == null)
@@ -38,15 +43,14 @@ public abstract class AbstractProcessor implements Processor
 
     private void tryToExecuteTransition(ProcessData entity)
     {
-        if (canExecuteTransition(entity))
+
+        ProcessEvent processEvent = entity.getEvent();
+        if (processEvent != null)
         {
-            ProcessEvent processEvent = entity.getEvent();
-            if (processEvent != null)
-            {
-                ProcessState endState = getValidatedEndState(entity, processEvent);
-                String statusName = endState.getInternalName();
-                stateSetter.setStatusByName(entity, statusName);
-            }
+            validateTransitionCanBeExecuted(processEvent, entity);
+            ProcessState endState = getValidatedEndState(entity, processEvent);
+            String statusName = endState.getInternalName();
+            stateSetter.setStatusByName(entity, statusName);
         }
     }
 
@@ -70,10 +74,13 @@ public abstract class AbstractProcessor implements Processor
         return transition.getEndState();
     }
 
-    /**
-     * Each concrete processor has to define the logic to decide if a transition can be done or not.
-     * @param entity Entity to be processed.
-     * @return True if the transition can be executed. False if not.
-     */
-    protected abstract boolean canExecuteTransition(ProcessData entity);
+    private void validateTransitionCanBeExecuted(ProcessEvent transition, ProcessData entity)
+    {
+        TransitionEvaluation transitionEvaluation = evaluateTransition(transition, entity);
+        if (!transitionEvaluation.isExecutable())
+        {
+            throw new UserOperationFailedException(
+                "Transition cannot be executed", transitionEvaluation.getNote());
+        }
+    }
 }

@@ -16,11 +16,13 @@
 package org.gentar.biology.plan;
 
 import org.gentar.biology.plan.engine.PlanCreator;
+import org.gentar.biology.plan.engine.PlanStateMachineResolver;
 import org.gentar.exceptions.UserOperationFailedException;
 import org.gentar.audit.history.HistoryService;
 import org.gentar.security.abac.ResourceAccessChecker;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
+import org.gentar.statemachine.ProcessEvent;
+import org.gentar.statemachine.TransitionAvailabilityEvaluator;
+import org.gentar.statemachine.TransitionEvaluation;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Component;
 import org.gentar.audit.history.History;
@@ -38,7 +40,8 @@ public class PlanServiceImpl implements PlanService
     private PlanUpdater planUpdater;
     private HistoryService historyService;
     private PlanCreator planCreator;
-    private PlanStatusManager planStatusManager;
+    private PlanStateMachineResolver planStateMachineResolver;
+    private TransitionAvailabilityEvaluator transitionAvailabilityEvaluator;
 
     private static final String READ_PLAN_ACTION = "READ_PLAN";
     private static final String PLAN_NOT_EXISTS_ERROR =
@@ -49,14 +52,17 @@ public class PlanServiceImpl implements PlanService
         ResourceAccessChecker<Plan> resourceAccessChecker,
         PlanUpdater planUpdater,
         HistoryService historyService,
-        PlanCreator planCreator, PlanStatusManager planStatusManager)
+        PlanCreator planCreator,
+        PlanStateMachineResolver planStateMachineResolver,
+        TransitionAvailabilityEvaluator transitionAvailabilityEvaluator)
     {
         this.planRepository = planRepository;
         this.resourceAccessChecker = resourceAccessChecker;
         this.planUpdater = planUpdater;
         this.historyService = historyService;
         this.planCreator = planCreator;
-        this.planStatusManager = planStatusManager;
+        this.planStateMachineResolver = planStateMachineResolver;
+        this.transitionAvailabilityEvaluator = transitionAvailabilityEvaluator;
     }
 
     @Override
@@ -83,12 +89,6 @@ public class PlanServiceImpl implements PlanService
                 .and(Specification.where(PlanSpecs.withImitsMiAttempts(imitsMiAttempts)))
                 .and(Specification.where(PlanSpecs.withImitsPhenotypeAttempts(imitsPhenotypeAttempts)));
         return specifications;
-    }
-
-    @Override
-    public Page<Plan> getPlansBySpec(Specification<Plan> specification, Pageable pageable)
-    {
-        return planRepository.findAll(specification, pageable);
     }
 
     @Override
@@ -142,8 +142,10 @@ public class PlanServiceImpl implements PlanService
     }
 
     @Override
-    public void updateStatusIfNeeded(Plan plan)
+    public List<TransitionEvaluation> evaluateNextTransitions(Plan plan)
     {
-        planStatusManager.updateStatusIfNeeded(plan);
+        List<ProcessEvent> transitions =
+            planStateMachineResolver.getAvailableTransitionsByEntityStatus(plan);
+        return transitionAvailabilityEvaluator.evaluate(transitions, plan);
     }
 }

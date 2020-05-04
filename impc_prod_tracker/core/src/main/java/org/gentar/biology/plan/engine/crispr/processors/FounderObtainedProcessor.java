@@ -6,6 +6,8 @@ import org.gentar.biology.plan.attempt.crispr.assay.Assay;
 import org.gentar.biology.plan.engine.PlanStateSetter;
 import org.gentar.statemachine.AbstractProcessor;
 import org.gentar.statemachine.ProcessData;
+import org.gentar.statemachine.ProcessEvent;
+import org.gentar.statemachine.TransitionEvaluation;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -17,9 +19,17 @@ public class FounderObtainedProcessor extends AbstractProcessor
     }
 
     @Override
-    protected boolean canExecuteTransition(ProcessData entity)
+    public TransitionEvaluation evaluateTransition(ProcessEvent transition, ProcessData data)
     {
-        return mutantsExist((Plan) entity);
+        TransitionEvaluation transitionEvaluation = new TransitionEvaluation();
+        transitionEvaluation.setTransition(transition);
+        boolean mutantsExist = mutantsExist((Plan) data);
+        transitionEvaluation.setExecutable(mutantsExist);
+        if (!mutantsExist)
+        {
+            transitionEvaluation.setNote("There is not mutants information.");
+        }
+        return transitionEvaluation;
     }
 
     private boolean mutantsExist(Plan plan)

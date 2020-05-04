@@ -114,7 +114,8 @@ class ColonyAbortProcessorTest
         colony.setEvent(ColonyEvent.abortGenotypeNotConfirmed);
         UserOperationFailedException thrown = assertThrows(UserOperationFailedException.class,
             () -> testInstance.process(colony), "Exception not thrown");
-        assertThat("Not expected message", thrown.getMessage(), is("Colony cannot be aborted"));
+        assertThat(
+            "Not expected message", thrown.getMessage(), is("Transition cannot be executed"));
         assertThat(
             "Not expected message",
             thrown.getDebugMessage(),

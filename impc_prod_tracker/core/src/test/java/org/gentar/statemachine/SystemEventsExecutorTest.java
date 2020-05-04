@@ -1,7 +1,7 @@
 package org.gentar.statemachine;
 
 import org.gentar.biology.plan.Plan;
-import org.gentar.biology.plan.attempt.AttemptTypes;
+import org.gentar.biology.plan.attempt.AttemptTypesName;
 import org.gentar.biology.plan.engine.PlanStateMachineResolver;
 import org.gentar.biology.plan.engine.crispr.CrisprProductionPlanEvent;
 import org.gentar.biology.plan.engine.crispr.CrisprProductionPlanState;
@@ -42,11 +42,11 @@ class SystemEventsExecutorTest
     {
         Plan planCreated = PlanBuilder.getInstance()
             .withStatus(CrisprProductionPlanState.PlanCreated.getInternalName())
-            .withAttemptType(AttemptTypes.CRISPR.getTypeName())
+            .withAttemptType(AttemptTypesName.CRISPR.getLabel())
             .build();
         Plan planWithAttemptInProgress = PlanBuilder.getInstance()
             .withStatus(CrisprProductionPlanState.AttemptInProgress.getInternalName())
-            .withAttemptType(AttemptTypes.CRISPR.getTypeName())
+            .withAttemptType(AttemptTypesName.CRISPR.getLabel())
             .build();
 
         testInstance.setStateMachineResolver(planStateMachineResolver);
@@ -67,15 +67,15 @@ class SystemEventsExecutorTest
     {
         Plan planCreated = PlanBuilder.getInstance()
             .withStatus(CrisprProductionPlanState.PlanCreated.getInternalName())
-            .withAttemptType(AttemptTypes.CRISPR.getTypeName())
+            .withAttemptType(AttemptTypesName.CRISPR.getLabel())
             .build();
         Plan planWithAttemptInProgress = PlanBuilder.getInstance()
             .withStatus(CrisprProductionPlanState.AttemptInProgress.getInternalName())
-            .withAttemptType(AttemptTypes.CRISPR.getTypeName())
+            .withAttemptType(AttemptTypesName.CRISPR.getLabel())
             .build();
         Plan planWithEmbryosObtained = PlanBuilder.getInstance()
             .withStatus(CrisprProductionPlanState.EmbryosObtained.getInternalName())
-            .withAttemptType(AttemptTypes.CRISPR.getTypeName())
+            .withAttemptType(AttemptTypesName.CRISPR.getLabel())
             .build();
 
         PlanStateMachineResolver planStateMachineResolver = new PlanStateMachineResolver();
@@ -109,11 +109,11 @@ class SystemEventsExecutorTest
     {
         Plan planCreated = PlanBuilder.getInstance()
             .withStatus(CrisprProductionPlanState.PlanCreated.getInternalName())
-            .withAttemptType(AttemptTypes.CRISPR.getTypeName())
+            .withAttemptType(AttemptTypesName.CRISPR.getLabel())
             .build();
         Plan planWithAttemptInProgress = PlanBuilder.getInstance()
             .withStatus(CrisprProductionPlanState.AttemptInProgress.getInternalName())
-            .withAttemptType(AttemptTypes.CRISPR.getTypeName())
+            .withAttemptType(AttemptTypesName.CRISPR.getLabel())
             .build();
 
         testInstance.setStateMachineResolver(planStateMachineResolver);

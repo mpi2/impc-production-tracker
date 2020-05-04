@@ -4,6 +4,8 @@ import org.gentar.biology.plan.attempt.phenotyping.PhenotypingStageStateSetter;
 import org.gentar.biology.plan.attempt.phenotyping.stage.PhenotypingStage;
 import org.gentar.statemachine.AbstractProcessor;
 import org.gentar.statemachine.ProcessData;
+import org.gentar.statemachine.ProcessEvent;
+import org.gentar.statemachine.TransitionEvaluation;
 
 public class EarlyHaploessentialPhenotypingAbortProcessor extends AbstractProcessor
 {
@@ -14,9 +16,17 @@ public class EarlyHaploessentialPhenotypingAbortProcessor extends AbstractProces
     }
 
     @Override
-    protected boolean canExecuteTransition(ProcessData entity)
+    public TransitionEvaluation evaluateTransition(ProcessEvent transition, ProcessData data)
     {
-        return canAbortPhenotypingStage((PhenotypingStage) entity);
+        TransitionEvaluation transitionEvaluation = new TransitionEvaluation();
+        transitionEvaluation.setTransition(transition);
+        boolean canAbortPhenotypingStage = canAbortPhenotypingStage((PhenotypingStage) data);
+        transitionEvaluation.setExecutable(canAbortPhenotypingStage);
+        if (!canAbortPhenotypingStage)
+        {
+            transitionEvaluation.setNote("Phenotyping stage cannot be aborted");
+        }
+        return transitionEvaluation;
     }
 
     private boolean canAbortPhenotypingStage(PhenotypingStage phenotypingStage) {

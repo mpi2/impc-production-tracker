@@ -5,6 +5,8 @@ import org.gentar.biology.plan.attempt.crispr.CrisprAttempt;
 import org.gentar.biology.plan.engine.PlanStateSetter;
 import org.gentar.statemachine.AbstractProcessor;
 import org.gentar.statemachine.ProcessData;
+import org.gentar.statemachine.ProcessEvent;
+import org.gentar.statemachine.TransitionEvaluation;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -16,9 +18,18 @@ public class EmbryosObtainedProcessor extends AbstractProcessor
     }
 
     @Override
-    protected boolean canExecuteTransition(ProcessData entity)
+    public TransitionEvaluation evaluateTransition(ProcessEvent transition, ProcessData data)
     {
-        return areThereEmbryos((Plan) entity);
+        TransitionEvaluation transitionEvaluation = new TransitionEvaluation();
+        transitionEvaluation.setTransition(transition);
+        boolean areThereEmbryos = areThereEmbryos((Plan) data);
+        transitionEvaluation.setExecutable(areThereEmbryos);
+        if (!areThereEmbryos)
+        {
+            transitionEvaluation.setNote(
+                "There is not embryos information yet");
+        }
+        return transitionEvaluation;
     }
 
     private boolean areThereEmbryos(Plan plan)

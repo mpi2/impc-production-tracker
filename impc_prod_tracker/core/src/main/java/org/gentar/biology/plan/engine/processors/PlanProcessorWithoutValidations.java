@@ -15,9 +15,12 @@
  */
 package org.gentar.biology.plan.engine.processors;
 
+import org.gentar.biology.plan.Plan;
 import org.gentar.biology.plan.engine.PlanStateSetter;
 import org.gentar.statemachine.AbstractProcessor;
 import org.gentar.statemachine.ProcessData;
+import org.gentar.statemachine.ProcessEvent;
+import org.gentar.statemachine.TransitionEvaluation;
 import org.springframework.stereotype.Component;
 
 /**
@@ -32,7 +35,21 @@ public class PlanProcessorWithoutValidations extends AbstractProcessor
     }
 
     @Override
-    protected boolean canExecuteTransition(ProcessData entity)
+    public TransitionEvaluation evaluateTransition(ProcessEvent transition, ProcessData data)
+    {
+        TransitionEvaluation transitionEvaluation = new TransitionEvaluation();
+        transitionEvaluation.setTransition(transition);
+        boolean canExecuteTransition = canExecuteTransition((Plan)data);
+        transitionEvaluation.setExecutable(canExecuteTransition);
+        if (!canExecuteTransition)
+        {
+            transitionEvaluation.setNote(
+                "Transition cannot be executed");
+        }
+        return transitionEvaluation;
+    }
+
+    public boolean canExecuteTransition(Plan plan)
     {
         return true;
     }

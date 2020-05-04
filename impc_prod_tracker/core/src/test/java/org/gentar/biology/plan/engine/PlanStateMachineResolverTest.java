@@ -1,7 +1,7 @@
 package org.gentar.biology.plan.engine;
 
 import org.gentar.biology.plan.Plan;
-import org.gentar.biology.plan.attempt.AttemptTypes;
+import org.gentar.biology.plan.attempt.AttemptTypesName;
 import org.gentar.biology.plan.engine.crispr.CrisprProductionPlanEvent;
 import org.gentar.biology.plan.type.PlanTypes;
 import org.gentar.statemachine.ProcessEvent;
@@ -27,7 +27,7 @@ class PlanStateMachineResolverTest
     {
         Plan plan = PlanBuilder.getInstance()
             .withPlanType(PlanTypes.PRODUCTION.getTypeName())
-            .withAttemptType(AttemptTypes.CRISPR.getTypeName())
+            .withAttemptType(AttemptTypesName.CRISPR.getLabel())
             .build();
         ProcessEvent processEvent =
             testInstance.getProcessEventByActionName(

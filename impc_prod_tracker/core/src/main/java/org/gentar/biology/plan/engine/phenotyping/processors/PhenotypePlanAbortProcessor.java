@@ -7,6 +7,8 @@ import org.gentar.biology.status.Status;
 import org.gentar.exceptions.UserOperationFailedException;
 import org.gentar.statemachine.AbstractProcessor;
 import org.gentar.statemachine.ProcessData;
+import org.gentar.statemachine.ProcessEvent;
+import org.gentar.statemachine.TransitionEvaluation;
 import org.springframework.stereotype.Component;
 import java.util.List;
 
@@ -22,20 +24,18 @@ public class PhenotypePlanAbortProcessor extends AbstractProcessor
     }
 
     @Override
-    protected boolean canExecuteTransition(ProcessData entity)
+    public TransitionEvaluation evaluateTransition(ProcessEvent transition, ProcessData data)
     {
-        return canAbortPlan((Plan) entity);
-    }
-
-    private boolean canAbortPlan(Plan plan)
-    {
-        if (areAllPhenotypingStagesAborted(plan))
+        TransitionEvaluation transitionEvaluation = new TransitionEvaluation();
+        transitionEvaluation.setTransition(transition);
+        boolean areAllPhenotypingStagesAborted = areAllPhenotypingStagesAborted((Plan) data);
+        transitionEvaluation.setExecutable(areAllPhenotypingStagesAborted);
+        if (!areAllPhenotypingStagesAborted)
         {
-            return true;
+            transitionEvaluation.setNote(
+                "The plan has phenotyping stages that are not aborted. Please abort them first.");
         }
-        throw new UserOperationFailedException(
-            "Plan cannot be aborted",
-            "The plan has phenotyping stages that are not aborted. Please abort them first");
+        return transitionEvaluation;
     }
 
     private boolean areAllPhenotypingStagesAborted(Plan plan)

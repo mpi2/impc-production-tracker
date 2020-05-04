@@ -17,10 +17,8 @@ import static org.hamcrest.Matchers.is;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 class AbstractProcessorTest
@@ -64,8 +62,6 @@ class AbstractProcessorTest
     {
         Plan plan = new Plan();
         plan.setEvent(null);
-        testInstance = spy(testInstance);
-        when(testInstance.canExecuteTransition(any(Plan.class))).thenReturn(false);
 
         testInstance.process(plan);
 
@@ -109,6 +105,8 @@ class AbstractProcessorTest
 
     static class TestClass extends AbstractProcessor
     {
+        @Mock
+        private ProcessEvent processEvent;
 
         public TestClass(PlanStateSetter planStateSetter)
         {
@@ -116,9 +114,12 @@ class AbstractProcessorTest
         }
 
         @Override
-        protected boolean canExecuteTransition(ProcessData entity)
+        public TransitionEvaluation evaluateTransition(ProcessEvent transition, ProcessData data)
         {
-            return true;
+            TransitionEvaluation transitionEvaluation = new TransitionEvaluation();
+            transitionEvaluation.setTransition(processEvent);
+            transitionEvaluation.setExecutable(true);
+            return transitionEvaluation;
         }
     }
 }
