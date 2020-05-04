@@ -9,9 +9,9 @@ import org.gentar.statemachine.TransitionEvaluation;
 import org.springframework.stereotype.Component;
 
 @Component
-public class LateHaploessentialPhenotypingAbortReverserProcessor extends AbstractProcessor
+public class HaploessentialPhenotypingAbortReverserProcessor extends AbstractProcessor
 {
-    public LateHaploessentialPhenotypingAbortReverserProcessor(
+    public HaploessentialPhenotypingAbortReverserProcessor(
         PhenotypingStageStateSetter phenotypingStageStateSetter)
     {
         super(phenotypingStageStateSetter);

@@ -18,15 +18,9 @@ public enum LateAdultEvent implements ProcessEvent {
             LateAdultPhenotypingStageState.LateAdultPhenotypingStarted,
             true,
             "executed by the DCC when late adult phenotyping is started."),
-    lateAdultPhenotypingDataReceived(
-            "The CDA has received late adult phenotype data",
-            LateAdultPhenotypingStageState.LateAdultPhenotypingStarted,
-            LateAdultPhenotypingStageState.LateAdultPhenotypingDataReceived,
-            true,
-            "executed by the CDA when late adult phenotyping data received."),
     lateAdultPhenotypingAllDataSent(
             "No more late adult phenotype data will be sent to the DCC.",
-            LateAdultPhenotypingStageState.LateAdultPhenotypingDataReceived,
+            LateAdultPhenotypingStageState.LateAdultPhenotypingStarted,
             LateAdultPhenotypingStageState.LateAdultPhenotypingAllDataSent,
             true,
             "Used to indicate all late adult phenotype data has been sent to the DCC."),
@@ -45,13 +39,13 @@ public enum LateAdultEvent implements ProcessEvent {
     rollbackLateAdultPhenotypingAllDataSent(
             "Rollback the state of late adult phenotyping marked as having all phenotype data sent to allow data entry.",
             LateAdultPhenotypingStageState.LateAdultPhenotypingAllDataSent,
-            LateAdultPhenotypingStageState.LateAdultPhenotypingDataReceived,
+            LateAdultPhenotypingStageState.LateAdultPhenotypingStarted,
             true,
             "Allows more data to be sent."),
     rollbackLateAdultPhenotypingAllDataProcessed(
             "Rollback the state of late adult phenotyping marked as having all phenotype data processed to allow data entry.",
             LateAdultPhenotypingStageState.LateAdultPhenotypingAllDataProcessed,
-            LateAdultPhenotypingStageState.LateAdultPhenotypingDataReceived,
+            LateAdultPhenotypingStageState.LateAdultPhenotypingStarted,
             true,
             "Executed by the DCC and used when more data needs to be sent."),
     rollbackLateAdultPhenotypingFinished(
@@ -85,17 +79,6 @@ public enum LateAdultEvent implements ProcessEvent {
     abortWhenLateAdultPhenotypingStarted(
             "Abort late adult phenotyping when phenotyping has been started",
             LateAdultPhenotypingStageState.LateAdultPhenotypingStarted,
-            LateAdultPhenotypingStageState.LateAdultPhenotypeProductionAborted,
-            true,
-            null) {
-        @Override
-        public Class<? extends Processor> getNextStepProcessor() {
-            return LateAdultPhenotypingAbortProcessor.class;
-        }
-    },
-    abortWhenLateAdultPhenotypingDataReceived(
-            "Abort late adult phenotyping when data has been received by the CDA.",
-            LateAdultPhenotypingStageState.LateAdultPhenotypingDataReceived,
             LateAdultPhenotypingStageState.LateAdultPhenotypeProductionAborted,
             true,
             null) {
@@ -152,10 +135,10 @@ public enum LateAdultEvent implements ProcessEvent {
     }
 
     public static LateAdultEvent getEventByName(String name) {
-        LateAdultEvent[] LateAdultEvents = LateAdultEvent.values();
-        for (LateAdultEvent LateAdultEvent : LateAdultEvents) {
-            if (LateAdultEvent.name().equalsIgnoreCase(name))
-                return LateAdultEvent;
+        LateAdultEvent[] lateAdultEvents = LateAdultEvent.values();
+        for (LateAdultEvent lateAdultEvent : lateAdultEvents) {
+            if (lateAdultEvent.name().equalsIgnoreCase(name))
+                return lateAdultEvent;
         }
         return null;
     }

@@ -9,9 +9,9 @@ import org.gentar.statemachine.TransitionEvaluation;
 import org.springframework.stereotype.Component;
 
 @Component
-public class EarlyHaploessentialPhenotypingAbortReverserProcessor extends AbstractProcessor
+public class EmbryoPhenotypingAbortProcessor extends AbstractProcessor
 {
-    public EarlyHaploessentialPhenotypingAbortReverserProcessor(
+    public EmbryoPhenotypingAbortProcessor(
         PhenotypingStageStateSetter phenotypingStageStateSetter)
     {
         super(phenotypingStageStateSetter);
@@ -22,18 +22,17 @@ public class EarlyHaploessentialPhenotypingAbortReverserProcessor extends Abstra
     {
         TransitionEvaluation transitionEvaluation = new TransitionEvaluation();
         transitionEvaluation.setTransition(transition);
-        boolean canRevertAbortion = canRevertAbortion((PhenotypingStage) data);
-        transitionEvaluation.setExecutable(canRevertAbortion);
-        if (!canRevertAbortion)
+        boolean canAbortPhenotypingStage = canAbortPhenotypingStage((PhenotypingStage) data);
+        transitionEvaluation.setExecutable(canAbortPhenotypingStage);
+        if (!canAbortPhenotypingStage)
         {
-            transitionEvaluation.setNote("Phenotyping stage abortion cannot be reversed");
+            transitionEvaluation.setNote("Phenotyping stage cannot be aborted");
         }
         return transitionEvaluation;
     }
 
-    private boolean canRevertAbortion(PhenotypingStage phenotypingStage)
-    {
-        // Put here the needed validation before reverting an abortion.
+    private boolean canAbortPhenotypingStage(PhenotypingStage phenotypingStage) {
+        // Put here the validations before aborting a Phenotyping Stage.
         return true;
     }
 }

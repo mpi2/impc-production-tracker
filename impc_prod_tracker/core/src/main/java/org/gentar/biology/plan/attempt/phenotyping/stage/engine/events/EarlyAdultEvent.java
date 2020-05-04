@@ -12,39 +12,33 @@ import java.util.Arrays;
 import java.util.List;
 
 public enum EarlyAdultEvent implements ProcessEvent {
-    rederivationStarted(
+    updateToRederivationStarted(
             "Started rederivation of the colony for phenotyping",
             EarlyAdultPhenotypingStageState.PhenotypingProductionRegistered,
             EarlyAdultPhenotypingStageState.RederivationStarted,
             true,
             "executed by the user when rederivation is started."),
-    rederivationComplete(
+    updateToRederivationComplete(
             "Completed rederivation of the colony for phenotyping",
             EarlyAdultPhenotypingStageState.RederivationStarted,
             EarlyAdultPhenotypingStageState.RederivationComplete,
             true,
             "executed by the user when rederivation is complete."),
-    phenotypingStartedAfterRederivation(
+    updateToPhenotypingStartedAfterRederivation(
             "Marked as started when the DCC recieves phenotype data following a rederivation step",
             EarlyAdultPhenotypingStageState.RederivationComplete,
             EarlyAdultPhenotypingStageState.PhenotypingStarted,
             true,
             "executed by the DCC following completion of rederivation."),
-    phenotypingStarted(
+    updateToPhenotypingStarted(
             "Marked as started when the DCC receives phenotype data",
             EarlyAdultPhenotypingStageState.PhenotypingProductionRegistered,
             EarlyAdultPhenotypingStageState.PhenotypingStarted,
             true,
             "executed by the DCC when phenotyping is started."),
-    phenotypingDataReceived(
-            "The CDA has received phenotype data",
-            EarlyAdultPhenotypingStageState.PhenotypingStarted,
-            EarlyAdultPhenotypingStageState.PhenotypingDataReceived,
-            true,
-            "executed by the CDA when phenotyping data received."),
     phenotypingAllDataSent(
             "No more phenotype data will be sent to the DCC.",
-            EarlyAdultPhenotypingStageState.PhenotypingDataReceived,
+            EarlyAdultPhenotypingStageState.PhenotypingStarted,
             EarlyAdultPhenotypingStageState.PhenotypingAllDataSent,
             true,
             "Used to indicate all phenotype data has been sent to the DCC."),
@@ -63,13 +57,13 @@ public enum EarlyAdultEvent implements ProcessEvent {
     rollbackPhenotypingAllDataSent(
             "Rollback the state of phenotyping marked as having all phenotype data sent to allow data entry.",
             EarlyAdultPhenotypingStageState.PhenotypingAllDataSent,
-            EarlyAdultPhenotypingStageState.PhenotypingDataReceived,
+            EarlyAdultPhenotypingStageState.PhenotypingStarted,
             true,
             "Allows more data to be sent."),
     rollbackPhenotypingAllDataProcessed(
             "Rollback the state of phenotyping marked as having all phenotype data processed to allow data entry.",
             EarlyAdultPhenotypingStageState.PhenotypingAllDataProcessed,
-            EarlyAdultPhenotypingStageState.PhenotypingDataReceived,
+            EarlyAdultPhenotypingStageState.PhenotypingStarted,
             true,
             "Executed by the DCC and used when more data needs to be sent."),
     rollbackPhenotypingFinished(
@@ -133,17 +127,6 @@ public enum EarlyAdultEvent implements ProcessEvent {
             return EarlyAdultPhenotypingAbortProcessor.class;
         }
     },
-    abortWhenPhenotypingDataReceived(
-            "Abort phenotyping when data has been received by the CDA.",
-            EarlyAdultPhenotypingStageState.PhenotypingDataReceived,
-            EarlyAdultPhenotypingStageState.PhenotypeProductionAborted,
-            true,
-            null) {
-        @Override
-        public Class<? extends Processor> getNextStepProcessor() {
-            return EarlyAdultPhenotypingAbortProcessor.class;
-        }
-    },
     abortWhenPhenotypingAllDataSent(
             "Abort phenotyping when all phenotype data has been sent to the DCC",
             EarlyAdultPhenotypingStageState.PhenotypingAllDataSent,
@@ -192,10 +175,10 @@ public enum EarlyAdultEvent implements ProcessEvent {
     }
 
     public static EarlyAdultEvent getEventByName(String name) {
-        EarlyAdultEvent[] EarlyAdultEvents = EarlyAdultEvent.values();
-        for (EarlyAdultEvent EarlyAdultEvent : EarlyAdultEvents) {
-            if (EarlyAdultEvent.name().equalsIgnoreCase(name))
-                return EarlyAdultEvent;
+        EarlyAdultEvent[] earlyAdultEvents = EarlyAdultEvent.values();
+        for (EarlyAdultEvent earlyAdultEvent : earlyAdultEvents) {
+            if (earlyAdultEvent.name().equalsIgnoreCase(name))
+                return earlyAdultEvent;
         }
         return null;
     }

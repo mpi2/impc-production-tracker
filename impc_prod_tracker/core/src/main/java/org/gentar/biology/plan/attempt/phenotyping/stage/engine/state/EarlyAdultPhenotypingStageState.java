@@ -12,7 +12,6 @@ public enum EarlyAdultPhenotypingStageState implements ProcessState
     RederivationStarted("Rederivation Started"),
     RederivationComplete("Rederivation Complete"),
     PhenotypingStarted("Phenotyping Started"),
-    PhenotypingDataReceived("Phenotyping Data Received"),
     PhenotypingAllDataSent("Phenotyping All Data Sent"),
     PhenotypingAllDataProcessed("Phenotyping All Data Processed"),
     PhenotypingFinished("Phenotyping Finished"),
