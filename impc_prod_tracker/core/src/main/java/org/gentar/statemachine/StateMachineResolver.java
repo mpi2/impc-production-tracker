@@ -1,6 +1,7 @@
 package org.gentar.statemachine;
 
 
+import java.util.ArrayList;
 import java.util.List;
 
 public interface StateMachineResolver
@@ -22,4 +23,25 @@ public interface StateMachineResolver
      * @return A list of {@link ProcessEvent} (transitions) that can be executed in the entity.
      */
     List<ProcessEvent> getAvailableTransitionsByEntityStatus(ProcessData processData);
+
+    /**
+     * Gets a list of transitions (processEvents) available given a status.
+     * @param processEvents List of transitions.
+     * @param processStateName The status to check.
+     * @return List of {@link ProcessEvent} with the transitions that can be reached from the
+     * status 'processStateName'.
+     */
+    default List<ProcessEvent> getAvailableEventsByStateName(
+        List<ProcessEvent> processEvents, String processStateName)
+    {
+        List<ProcessEvent> allEvents = new ArrayList<>();
+        for (ProcessEvent processEventValue : processEvents)
+        {
+            if (processEventValue.getInitialState().getInternalName().equals(processStateName))
+            {
+                allEvents.add(processEventValue);
+            }
+        }
+        return allEvents;
+    }
 }
