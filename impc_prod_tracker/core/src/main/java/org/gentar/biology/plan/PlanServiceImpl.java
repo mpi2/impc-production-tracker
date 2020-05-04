@@ -17,6 +17,7 @@ package org.gentar.biology.plan;
 
 import org.gentar.biology.plan.engine.PlanCreator;
 import org.gentar.biology.plan.engine.PlanStateMachineResolver;
+import org.gentar.biology.plan.filter.PlanFilter;
 import org.gentar.exceptions.UserOperationFailedException;
 import org.gentar.audit.history.HistoryService;
 import org.gentar.security.abac.ResourceAccessChecker;
@@ -66,32 +67,6 @@ public class PlanServiceImpl implements PlanService
     }
 
     @Override
-    public List<Plan> getPlans(List<String> projectTpns, List<String> workUnitNames, List<String> workGroupNames, List<String> statuses, List<String> pins, List<String> planTypeNames,
-                               List<String> attemptTypeNames, List<String> imitsMiAttempts, List<String> imitsPhenotypeAttempts)
-    {
-        Specification<Plan> specifications =
-            buildSpecificationsWithCriteria(projectTpns, workUnitNames, workGroupNames, statuses, pins, planTypeNames, attemptTypeNames, imitsMiAttempts, imitsPhenotypeAttempts);
-        return getCheckedCollection(planRepository.findAll(specifications));
-    }
-
-    private Specification<Plan> buildSpecificationsWithCriteria(
-        List<String> tpns, List<String> workUnitNames, List<String> workGroupNames, List<String> summaryStatusNames, List<String> pins, List<String> typeNames,
-        List<String> attemptTypeNames, List<String> imitsMiAttempts, List<String> imitsPhenotypeAttempts)
-    {
-        Specification<Plan> specifications =
-            Specification.where(PlanSpecs.withProjectTpns(tpns))
-                .and(Specification.where(PlanSpecs.withWorkUnitNames(workUnitNames)))
-                .and(Specification.where(PlanSpecs.withWorkGroupNames(workGroupNames)))
-                .and(Specification.where(PlanSpecs.withSummaryStatusNames(summaryStatusNames)))
-                .and(Specification.where(PlanSpecs.withPins(pins)))
-                .and(Specification.where(PlanSpecs.withTypeNames(typeNames)))
-                .and(Specification.where(PlanSpecs.withAttemptTypeNames(attemptTypeNames)))
-                .and(Specification.where(PlanSpecs.withImitsMiAttempts(imitsMiAttempts)))
-                .and(Specification.where(PlanSpecs.withImitsPhenotypeAttempts(imitsPhenotypeAttempts)));
-        return specifications;
-    }
-
-    @Override
     public Plan getNotNullPlanByPin(String pin)
     throws UserOperationFailedException
     {
@@ -101,6 +76,32 @@ public class PlanServiceImpl implements PlanService
             throw new UserOperationFailedException(String.format(PLAN_NOT_EXISTS_ERROR, pin));
         }
         return plan;
+    }
+
+    @Override
+    public List<Plan> getPlans(PlanFilter planFilter)
+    {
+        Specification<Plan> specifications = buildSpecificationsWithCriteria(planFilter);
+        return getCheckedCollection(planRepository.findAll(specifications));
+    }
+
+    private Specification<Plan> buildSpecificationsWithCriteria(PlanFilter planFilter)
+    {
+        Specification<Plan> specifications =
+            Specification.where(PlanSpecs.withProjectTpns(planFilter.getTpns()))
+                .and(Specification.where(PlanSpecs.withWorkUnitNames(planFilter.getWorkUnitNames())))
+                .and(Specification.where(PlanSpecs.withWorkGroupNames(planFilter.getWorGroupNames())))
+                .and(Specification.where(
+                    PlanSpecs.withSummaryStatusNames(planFilter.getSummaryStatusNames())))
+                .and(Specification.where(PlanSpecs.withPins(planFilter.getPins())))
+                .and(Specification.where(PlanSpecs.withTypeNames(planFilter.getPlanTypeNames())))
+                .and(Specification.where(
+                    PlanSpecs.withAttemptTypeNames(planFilter.getAttemptTypeNames())))
+                .and(Specification.where(
+                    PlanSpecs.withImitsMiAttempts(planFilter.getImitsMiAttemptIds())))
+                .and(Specification.where(
+                    PlanSpecs.withImitsPhenotypeAttempts(planFilter.getImitsPhenotypeAttemptIds())));
+        return specifications;
     }
 
     @Override

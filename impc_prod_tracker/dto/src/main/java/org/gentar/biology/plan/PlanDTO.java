@@ -25,8 +25,6 @@ import org.springframework.hateoas.RepresentationModel;
 import org.gentar.biology.plan.attempt.breeding.BreedingAttemptDTO;
 import org.gentar.biology.plan.attempt.crispr.CrisprAttemptDTO;
 import org.gentar.biology.status_stamps.StatusStampsDTO;
-
-import javax.validation.constraints.NotNull;
 import java.util.List;
 
 @Data
@@ -76,11 +74,9 @@ public class PlanDTO extends RepresentationModel
     private BreedingAttemptDTO breedingAttemptDTO;
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    @JsonProperty("phenotypingAttemptDetails")
+    @JsonProperty("phenotypingAttempt")
     private PhenotypingAttemptDTO phenotypingAttemptDTO;
 
     @JsonProperty("statusTransition")
     private StatusTransitionDTO statusTransitionDTO;
-
-
 }

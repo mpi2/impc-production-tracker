@@ -5,7 +5,6 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
-
 import java.util.List;
 
 @Data
@@ -32,6 +31,6 @@ public class PhenotypingAttemptDTO
     @JsonProperty("phenotypingBackgroundStrainName")
     private String strainName;
 
-    @JsonProperty("phenotypingStageDetails")
+    @JsonProperty("phenotypingStages")
     private List<PhenotypingStageDTO> phenotypingStageDTOs;
 }
