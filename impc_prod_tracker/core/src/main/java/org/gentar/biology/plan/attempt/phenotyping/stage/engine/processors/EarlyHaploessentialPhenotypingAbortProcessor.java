@@ -6,7 +6,9 @@ import org.gentar.statemachine.AbstractProcessor;
 import org.gentar.statemachine.ProcessData;
 import org.gentar.statemachine.ProcessEvent;
 import org.gentar.statemachine.TransitionEvaluation;
+import org.springframework.stereotype.Component;
 
+@Component
 public class EarlyHaploessentialPhenotypingAbortProcessor extends AbstractProcessor
 {
     public EarlyHaploessentialPhenotypingAbortProcessor(

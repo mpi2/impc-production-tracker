@@ -3,15 +3,17 @@ package org.gentar.biology.plan.engine.phenotyping.processors;
 import org.gentar.biology.plan.Plan;
 import org.gentar.biology.plan.attempt.phenotyping.PhenotypingAttempt;
 import org.gentar.biology.plan.engine.PlanStateSetter;
-import org.gentar.exceptions.UserOperationFailedException;
 import org.gentar.statemachine.AbstractProcessor;
 import org.gentar.statemachine.ProcessData;
 import org.gentar.statemachine.ProcessEvent;
 import org.gentar.statemachine.TransitionEvaluation;
+import org.springframework.stereotype.Component;
 
-public class PhenotypePlanAbandonProcessor extends AbstractProcessor {
-
-    public PhenotypePlanAbandonProcessor(PlanStateSetter planStateSetter) {
+@Component
+public class PhenotypePlanAbandonProcessor extends AbstractProcessor
+{
+    public PhenotypePlanAbandonProcessor(PlanStateSetter planStateSetter)
+    {
         super(planStateSetter);
     }
 
@@ -20,25 +22,14 @@ public class PhenotypePlanAbandonProcessor extends AbstractProcessor {
     {
         TransitionEvaluation transitionEvaluation = new TransitionEvaluation();
         transitionEvaluation.setTransition(transition);
-        boolean canAbandonPlan = canAbandonPlan((Plan) data);
-        transitionEvaluation.setExecutable(canAbandonPlan);
-        if (!canAbandonPlan)
+        boolean phenotypingStagesDoNotExist = phenotypingStagesDoNotExist((Plan) data);
+        transitionEvaluation.setExecutable(phenotypingStagesDoNotExist);
+        if (!phenotypingStagesDoNotExist)
         {
             transitionEvaluation.setNote(
                 "The plan already has phenotyping stages. Please abort the plan.");
         }
         return transitionEvaluation;
-    }
-
-    private boolean canAbandonPlan(Plan plan)
-    {
-        if (phenotypingStagesDoNotExist(plan))
-        {
-            return true;
-        }
-        throw new UserOperationFailedException(
-                "Plan cannot be abandoned",
-                "The plan already has phenotyping stages. Please abort the plan.");
     }
 
     private boolean phenotypingStagesDoNotExist(Plan plan){
@@ -51,8 +42,5 @@ public class PhenotypePlanAbandonProcessor extends AbstractProcessor {
             result = phenotypingAttempt.getPhenotypingStages() == null;
         }
         return result;
-
-
     }
-
 }

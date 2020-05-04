@@ -15,7 +15,6 @@
  *******************************************************************************/
 package org.gentar.biology.plan.attempt.crispr;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
