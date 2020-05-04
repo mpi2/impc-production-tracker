@@ -11,7 +11,6 @@ import org.gentar.statemachine.ProcessData;
 import org.gentar.statemachine.ProcessEvent;
 import org.gentar.statemachine.StateMachineResolver;
 import org.springframework.stereotype.Component;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -38,20 +37,6 @@ public class PlanStateMachineResolver implements StateMachineResolver
         List<ProcessEvent> allTransitionsByPlanType = getAvailableEventsByStateName(
             getProcessEventsByPlan((Plan)processData), processData.getStatus().getName());
         return allTransitionsByPlanType;
-    }
-
-    private List<ProcessEvent> getAvailableEventsByStateName(
-        List<ProcessEvent> processEvents, String processStateName)
-    {
-        List<ProcessEvent> allEvents = new ArrayList<>();
-        for (ProcessEvent processEventValue : processEvents)
-        {
-            if (processEventValue.getInitialState().getInternalName().equals(processStateName))
-            {
-                allEvents.add(processEventValue);
-            }
-        }
-        return allEvents;
     }
 
     /**
@@ -85,5 +70,4 @@ public class PlanStateMachineResolver implements StateMachineResolver
         }
         return processEvents;
     }
-
 }

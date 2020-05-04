@@ -2,17 +2,13 @@ package org.gentar.biology.colony;
 
 import org.gentar.EntityMapper;
 import org.gentar.Mapper;
-import org.gentar.biology.colony.engine.ColonyEvent;
-import org.gentar.biology.colony.engine.ColonyState;
 import org.gentar.biology.strain.StrainMapper;
 import org.gentar.biology.status.StatusService;
 import org.gentar.common.state_machine.StatusTransitionDTO;
 import org.gentar.common.state_machine.TransitionDTO;
-import org.gentar.statemachine.EnumStateHelper;
-import org.gentar.statemachine.ProcessEvent;
-import org.gentar.statemachine.ProcessState;
+import org.gentar.statemachine.TransitionEvaluation;
+import org.gentar.statemachine.TransitionMapper;
 import org.springframework.stereotype.Component;
-import java.util.ArrayList;
 import java.util.List;
 
 @Component
@@ -21,13 +17,21 @@ public class ColonyMapper implements Mapper<Colony, ColonyDTO>
     private EntityMapper entityMapper;
     private StatusService statusService;
     private StrainMapper strainMapper;
+    private ColonyService colonyService;
+    private TransitionMapper transitionMapper;
 
     public ColonyMapper(
-        EntityMapper entityMapper, StatusService statusService, StrainMapper strainMapper)
+        EntityMapper entityMapper,
+        StatusService statusService,
+        StrainMapper strainMapper,
+        ColonyService colonyService,
+        TransitionMapper transitionMapper)
     {
         this.entityMapper = entityMapper;
         this.statusService = statusService;
         this.strainMapper = strainMapper;
+        this.colonyService = colonyService;
+        this.transitionMapper = transitionMapper;
     }
 
     @Override
@@ -58,23 +62,8 @@ public class ColonyMapper implements Mapper<Colony, ColonyDTO>
 
     private List<TransitionDTO> getTransitions(Colony colony)
     {
-        List<TransitionDTO> transitionDTOS = new ArrayList<>();
-        String currentStatusName = colony.getStatus().getName();
-        ProcessState processState = ColonyState.getStateByInternalName(currentStatusName);
-        if (processState != null)
-        {
-            List<ProcessEvent> colonyEvents =
-                EnumStateHelper.getAvailableEventsByState(ColonyEvent.getAllEvents(), processState);
-            colonyEvents.forEach(x -> {
-                TransitionDTO transition = new TransitionDTO();
-                transition.setAction(x.getName());
-                transition.setDescription(x.getDescription());
-                transition.setNextStatus(x.getEndState().getName());
-                transition.setNote(x.getTriggerNote());
-                transition.setAvailable(x.isTriggeredByUser());
-                transitionDTOS.add(transition);
-            });
-        }
-        return transitionDTOS;
+        List<TransitionEvaluation> transitionEvaluations =
+            colonyService.evaluateNextTransitions(colony);
+        return transitionMapper.toDtos(transitionEvaluations);
     }
 }
