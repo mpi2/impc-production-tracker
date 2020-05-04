@@ -37,6 +37,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import static org.gentar.biology.plan.attempt.AttemptTypesName.CRISPR;
+
 @Component
 public class PlanMapper implements Mapper<Plan, PlanDTO>
 {
@@ -69,7 +71,8 @@ public class PlanMapper implements Mapper<Plan, PlanDTO>
         PlanTypeMapper planTypeMapper,
         ProjectService projectService,
         TransitionMapper transitionMapper,
-        OutcomeMapper outcomeMapper, PlanService planService)
+        OutcomeMapper outcomeMapper,
+        PlanService planService)
     {
         this.entityMapper = entityMapper;
         this.crisprAttemptMapper = crisprAttemptMapper;
@@ -96,7 +99,7 @@ public class PlanMapper implements Mapper<Plan, PlanDTO>
     private void addNoMappedData(PlanDTO planDTO, Plan plan)
     {
         addStartingPoint(planDTO, plan);
-        addAttempt(planDTO, plan);
+        addAttemptDto(planDTO, plan);
         addStatusStamps(planDTO, plan);
         planDTO.setTpn(plan.getProject().getTpn());
         planDTO.setFunderNames(funderMapper.toDtos(plan.getFunders()));
@@ -117,7 +120,7 @@ public class PlanMapper implements Mapper<Plan, PlanDTO>
         }
     }
 
-    private void addAttempt(PlanDTO planDTO, Plan plan)
+    private void addAttemptDto(PlanDTO planDTO, Plan plan)
     {
         PlanType planType = plan.getPlanType();
         if (PlanTypes.PRODUCTION.getTypeName().equals(planType.getName()))
@@ -125,7 +128,7 @@ public class PlanMapper implements Mapper<Plan, PlanDTO>
             AttemptType attemptType = plan.getAttemptType();
             String attemptTypeName = attemptType == null ? "Not defined" : attemptType.getName();
 
-            if (AttemptTypesName.CRISPR.getLabel().equals(attemptTypeName))
+            if (CRISPR.getLabel().equals(attemptTypeName))
             {
                 CrisprAttemptDTO crisprAttemptDTO = crisprAttemptMapper.toDto(plan.getCrisprAttempt());
                 planDTO.setCrisprAttemptDTO(crisprAttemptDTO);
@@ -143,7 +146,8 @@ public class PlanMapper implements Mapper<Plan, PlanDTO>
         }
         else if (PlanTypes.PHENOTYPING.getTypeName().equals((planType.getName())))
         {
-            PhenotypingAttemptDTO phenotypingAttemptDTO = phenotypingAttemptMapper.toDto(plan.getPhenotypingAttempt());
+            PhenotypingAttemptDTO phenotypingAttemptDTO =
+                phenotypingAttemptMapper.toDto(plan.getPhenotypingAttempt());
             planDTO.setPhenotypingAttemptDTO(phenotypingAttemptDTO);
         }
     }
@@ -176,27 +180,32 @@ public class PlanMapper implements Mapper<Plan, PlanDTO>
         plan.setWorkGroup(workGroupMapper.toEntity(planDTO.getWorkGroupName()));
         setPlanType(plan, planDTO);
         setAttemptType(plan, planDTO);
-
-        PlanType planType = plan.getPlanType();
-        if (PlanTypes.PRODUCTION.getTypeName().equalsIgnoreCase(planType.getName()))
-        {
-            AttemptType attemptType = plan.getAttemptType();
-            String attemptTypeName = attemptType == null ? "Not defined" : attemptType.getName();
-            if (AttemptTypesName.CRISPR.getLabel().equalsIgnoreCase(attemptTypeName))
-            {
-                setCrisprAttempt(plan, planDTO);
-            } else
-            {
-                //TODO: other attempts
-            }
-        }
-        else if (PlanTypes.PHENOTYPING.getTypeName().equalsIgnoreCase((planType.getName())))
-        {
-            setStartingPoint(plan, planDTO);
-//            setStartingPoint(plan, planDTO);
-        }
-
+        setAttempt(plan, planDTO);
         return plan;
+    }
+
+    private void setAttempt(Plan plan, PlanDTO planDTO)
+    {
+        AttemptType attemptType = plan.getAttemptType();
+        String attemptTypeName = attemptType == null ? "Not defined" : attemptType.getName();
+        AttemptTypesName attemptTypesName = AttemptTypesName.valueOfLabel(attemptTypeName);
+        switch (attemptTypesName)
+        {
+            case CRISPR:
+                setCrisprAttempt(plan, planDTO);
+                break;
+            case HAPLOESSENTIAL_CRISPR:
+                //TODO: set the happloessential crispr attempt
+                break;
+            case ADULT_PHENOTYPING: case HAPLOESSENTIAL_PHENOTYPING:
+                setPhenotypingAttempt(plan, planDTO);
+                setStartingPoint(plan, planDTO);
+                break;
+            case BREEDING:
+                //TODO: set the breeding attempt
+                break;
+            default:
+        }
     }
 
     private void setCrisprAttempt(Plan plan, PlanDTO planDTO)
@@ -216,8 +225,8 @@ public class PlanMapper implements Mapper<Plan, PlanDTO>
 
     private void setStartingPoint(Plan plan, PlanDTO planDTO)
     {
-        // Phenotyping plans
-        if (planDTO.getPlanStartingPointDTO() != null) {
+        if (planDTO.getPlanStartingPointDTO() != null)
+        {
             PlanStartingPoint planStartingPoint = new PlanStartingPoint();
             planStartingPoint.setPlan(plan);
             Outcome outcome = outcomeMapper.toEntityBytTpo(planDTO.getPlanStartingPointDTO().getTpo());
@@ -227,29 +236,23 @@ public class PlanMapper implements Mapper<Plan, PlanDTO>
             planStartingPoints.add(planStartingPoint);
 
             plan.setPlanStartingPoints(planStartingPoints);
-        } else {
-            throw new UserOperationFailedException(String.format(PHENOTYPING_PLAN_WITHOUT_STARTING_POINT_ERROR));
         }
-
-        // Breeding plans
-//        if (planDTO.getPlanStartingPointDTOS() != null) {
-//            // TODO starting points for breeding plans
-//        }
+        else
+        {
+            throw new UserOperationFailedException(PHENOTYPING_PLAN_WITHOUT_STARTING_POINT_ERROR);
+        }
     }
 
     private void setPhenotypingAttempt(Plan plan, PlanDTO planDTO)
     {
         if (planDTO.getPhenotypingAttemptDTO() != null)
         {
-            PhenotypingAttempt phenotypingAttempt = phenotypingAttemptMapper.toEntity(planDTO.getPhenotypingAttemptDTO());
-            if (plan.getPhenotypingAttempt().getImitsPhenotypeAttempt() != null)
-            {
-                phenotypingAttempt.setImitsPhenotypeAttempt(plan.getPhenotypingAttempt().getImitsPhenotypeAttempt());
-            }
-            if (plan.getPhenotypingAttempt().getImitsPhenotypingProduction() != null)
-            {
-                phenotypingAttempt.setImitsPhenotypingProduction(plan.getPhenotypingAttempt().getImitsPhenotypingProduction());
-            }
+            PhenotypingAttempt phenotypingAttempt =
+                phenotypingAttemptMapper.toEntity(planDTO.getPhenotypingAttemptDTO());
+            phenotypingAttempt.setImitsPhenotypeAttempt(
+                plan.getPhenotypingAttempt().getImitsPhenotypeAttempt());
+            phenotypingAttempt.setImitsPhenotypingProduction(
+                plan.getPhenotypingAttempt().getImitsPhenotypingProduction());
             phenotypingAttempt.setPlan(plan);
             phenotypingAttempt.setId(plan.getId());
             plan.setPhenotypingAttempt(phenotypingAttempt);

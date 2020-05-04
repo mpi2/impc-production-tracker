@@ -14,7 +14,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-
 import java.util.HashSet;
 import java.util.Set;
 
@@ -89,7 +88,7 @@ public class PhenotypePlanAbandonProcessorTest {
         UserOperationFailedException thrown = assertThrows(UserOperationFailedException.class,
                 () -> testInstance.process(plan), "Exception not thrown");
         System.out.println(thrown.getMessage());
-        assertThat("Not expected message", thrown.getMessage(), is("Plan cannot be abandoned"));
+        assertThat("Not expected message", thrown.getMessage(), is("Transition cannot be executed"));
         assertThat(
                 "Not expected message",
                 thrown.getDebugMessage(),

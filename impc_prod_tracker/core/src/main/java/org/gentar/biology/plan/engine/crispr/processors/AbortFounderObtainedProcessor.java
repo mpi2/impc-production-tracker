@@ -1,16 +1,13 @@
 package org.gentar.biology.plan.engine.crispr.processors;
 
-import org.gentar.biology.colony.Colony;
 import org.gentar.biology.plan.Plan;
 import org.gentar.biology.plan.PlanQueryHelper;
 import org.gentar.biology.plan.engine.PlanStateSetter;
-import org.gentar.exceptions.UserOperationFailedException;
 import org.gentar.statemachine.AbstractProcessor;
 import org.gentar.statemachine.ProcessData;
 import org.gentar.statemachine.ProcessEvent;
 import org.gentar.statemachine.TransitionEvaluation;
 import org.springframework.stereotype.Component;
-import java.util.List;
 
 @Component
 public class AbortFounderObtainedProcessor extends AbstractProcessor
