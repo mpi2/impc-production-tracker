@@ -4,9 +4,10 @@ import org.gentar.biology.colony.Colony;
 import org.gentar.biology.plan.Plan;
 import org.gentar.biology.plan.PlanQueryHelper;
 import org.gentar.biology.plan.engine.PlanStateSetter;
-import org.gentar.exceptions.UserOperationFailedException;
 import org.gentar.statemachine.AbstractProcessor;
 import org.gentar.statemachine.ProcessData;
+import org.gentar.statemachine.ProcessEvent;
+import org.gentar.statemachine.TransitionEvaluation;
 import org.springframework.stereotype.Component;
 import java.util.List;
 
@@ -22,25 +23,22 @@ public class BreedingPlanAbortProcessor extends AbstractProcessor
     }
 
     @Override
-    protected boolean canExecuteTransition(ProcessData entity)
+    public TransitionEvaluation evaluateTransition(ProcessEvent transition, ProcessData data)
     {
-        if (areAllColoniesAborted((Plan)entity))
+        TransitionEvaluation transitionEvaluation = new TransitionEvaluation();
+        transitionEvaluation.setTransition(transition);
+        boolean areAllColoniesAborted = areAllColoniesAborted((Plan) data);
+        transitionEvaluation.setExecutable(areAllColoniesAborted);
+        if (!areAllColoniesAborted)
         {
-            return true;
+            transitionEvaluation.setNote(
+                "The plan has colonies that are not aborted. Please abort them first");
         }
-        throw new UserOperationFailedException(
-            "Plan cannot be aborted",
-            "The plan has colonies that are not aborted. Please abort them first");
+        return transitionEvaluation;
     }
 
     private boolean areAllColoniesAborted(Plan plan)
     {
-        boolean result = true;
-        List<Colony> colonies = PlanQueryHelper.getColoniesByPlan(plan);
-        if (!colonies.isEmpty())
-        {
-            result = colonies.stream().allMatch(x -> x.getStatus().getIsAbortionStatus());
-        }
-        return result;
+        return PlanQueryHelper.areAllColoniesByPlanAborted(plan);
     }
 }

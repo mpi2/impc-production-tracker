@@ -6,6 +6,7 @@ import org.gentar.biology.plan.attempt.crispr.assay.Assay;
 import org.gentar.biology.plan.engine.PlanStateSetter;
 import org.gentar.biology.plan.engine.crispr.CrisprProductionPlanEvent;
 import org.gentar.biology.plan.engine.crispr.CrisprProductionPlanState;
+import org.gentar.exceptions.UserOperationFailedException;
 import org.gentar.test_util.PlanBuilder;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -13,6 +14,9 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.is;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.times;
@@ -44,7 +48,14 @@ class FounderObtainedProcessorTest
     {
         Plan plan = buildPlanReadyToMoveToFounderObtained();
 
-        testInstance.process(plan);
+        UserOperationFailedException thrown = assertThrows(UserOperationFailedException.class,
+            () -> testInstance.process(plan), "Exception not thrown");
+        assertThat(
+            "Not expected message", thrown.getMessage(), is("Transition cannot be executed"));
+        assertThat(
+            "Not expected message",
+            thrown.getDebugMessage(),
+            is("There is not mutants information."));
 
         verify(planStateSetter, times(0)).setStatusByName(any(Plan.class), any(String.class));
     }

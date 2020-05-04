@@ -4,6 +4,8 @@ import org.gentar.biology.plan.attempt.phenotyping.PhenotypingStageStateSetter;
 import org.gentar.biology.plan.attempt.phenotyping.stage.PhenotypingStage;
 import org.gentar.statemachine.AbstractProcessor;
 import org.gentar.statemachine.ProcessData;
+import org.gentar.statemachine.ProcessEvent;
+import org.gentar.statemachine.TransitionEvaluation;
 
 public class LateHaploessentialPhenotypingAbortReverserProcessor extends AbstractProcessor
 {
@@ -14,9 +16,17 @@ public class LateHaploessentialPhenotypingAbortReverserProcessor extends Abstrac
     }
 
     @Override
-    protected boolean canExecuteTransition(ProcessData entity)
+    public TransitionEvaluation evaluateTransition(ProcessEvent transition, ProcessData data)
     {
-        return canRevertAbortion((PhenotypingStage) entity);
+        TransitionEvaluation transitionEvaluation = new TransitionEvaluation();
+        transitionEvaluation.setTransition(transition);
+        boolean canRevertAbortion = canRevertAbortion((PhenotypingStage) data);
+        transitionEvaluation.setExecutable(canRevertAbortion);
+        if (!canRevertAbortion)
+        {
+            transitionEvaluation.setNote("Phenotyping stage abortion cannot be reversed");
+        }
+        return transitionEvaluation;
     }
 
     private boolean canRevertAbortion(PhenotypingStage phenotypingStage)

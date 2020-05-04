@@ -56,6 +56,17 @@ public class PlanQueryHelper
         return colonies;
     }
 
+    public static boolean areAllColoniesByPlanAborted(Plan plan)
+    {
+        boolean result = true;
+        List<Colony> colonies = getColoniesByPlan(plan);
+        if (!colonies.isEmpty())
+        {
+            result = colonies.stream().allMatch(x -> x.getStatus().getIsAbortionStatus());
+        }
+        return result;
+    }
+
     /**
      * Gets all the specimens for a plan.
      * @param plan The plan to query.
@@ -72,6 +83,17 @@ public class PlanQueryHelper
             }
         });
         return specimens;
+    }
+
+    public static boolean areAllSpecimensByPlanAborted(Plan plan)
+    {
+        boolean result = true;
+        List<Specimen> specimens = getSpecimensByPlan(plan);
+        if (!specimens.isEmpty())
+        {
+            result = specimens.stream().allMatch(x -> x.getStatus().getIsAbortionStatus());
+        }
+        return result;
     }
 
     /**

@@ -4,11 +4,10 @@ import org.gentar.EntityMapper;
 import org.gentar.biology.outcome.Outcome;
 import org.gentar.biology.outcome.OutcomeMapper;
 import org.gentar.biology.plan.attempt.AttemptTypeMapper;
-import org.gentar.biology.plan.attempt.AttemptTypes;
+import org.gentar.biology.plan.attempt.AttemptTypesName;
 import org.gentar.biology.plan.attempt.breeding.BreedingAttemptDTO;
 import org.gentar.biology.plan.attempt.breeding.BreedingAttemptMapper;
 import org.gentar.biology.plan.attempt.crispr.CrisprAttempt;
-import org.gentar.biology.plan.engine.PlanStateMachineResolver;
 import org.gentar.biology.plan.attempt.phenotyping.PhenotypingAttempt;
 import org.gentar.biology.plan.attempt.phenotyping.PhenotypingAttemptDTO;
 import org.gentar.biology.plan.attempt.phenotyping.PhenotypingAttemptMapper;
@@ -27,7 +26,7 @@ import org.gentar.organization.funder.Funder;
 import org.gentar.organization.funder.FunderMapper;
 import org.gentar.organization.work_group.WorkGroupMapper;
 import org.gentar.organization.work_unit.WorkUnitMapper;
-import org.gentar.statemachine.ProcessEvent;
+import org.gentar.statemachine.TransitionEvaluation;
 import org.gentar.statemachine.TransitionMapper;
 import org.springframework.stereotype.Component;
 import org.gentar.biology.plan.attempt.AttemptType;
@@ -51,9 +50,9 @@ public class PlanMapper implements Mapper<Plan, PlanDTO>
     private WorkGroupMapper workGroupMapper;
     private PlanTypeMapper planTypeMapper;
     private ProjectService projectService;
-    private PlanStateMachineResolver planStateMachineResolver;
     private TransitionMapper transitionMapper;
     private OutcomeMapper outcomeMapper;
+    private PlanService planService;
 
     private static final String PHENOTYPING_PLAN_WITHOUT_STARTING_POINT_ERROR =
         "The starting point for a phenotyping plan cannot be null.";
@@ -69,9 +68,8 @@ public class PlanMapper implements Mapper<Plan, PlanDTO>
         WorkGroupMapper workGroupMapper,
         PlanTypeMapper planTypeMapper,
         ProjectService projectService,
-        PlanStateMachineResolver planStateMachineResolver,
         TransitionMapper transitionMapper,
-        OutcomeMapper outcomeMapper)
+        OutcomeMapper outcomeMapper, PlanService planService)
     {
         this.entityMapper = entityMapper;
         this.crisprAttemptMapper = crisprAttemptMapper;
@@ -83,9 +81,9 @@ public class PlanMapper implements Mapper<Plan, PlanDTO>
         this.workGroupMapper = workGroupMapper;
         this.planTypeMapper = planTypeMapper;
         this.projectService = projectService;
-        this.planStateMachineResolver = planStateMachineResolver;
         this.transitionMapper = transitionMapper;
         this.outcomeMapper = outcomeMapper;
+        this.planService = planService;
     }
 
     public PlanDTO toDto(Plan plan)
@@ -127,12 +125,12 @@ public class PlanMapper implements Mapper<Plan, PlanDTO>
             AttemptType attemptType = plan.getAttemptType();
             String attemptTypeName = attemptType == null ? "Not defined" : attemptType.getName();
 
-            if (AttemptTypes.CRISPR.getTypeName().equals(attemptTypeName))
+            if (AttemptTypesName.CRISPR.getLabel().equals(attemptTypeName))
             {
                 CrisprAttemptDTO crisprAttemptDTO = crisprAttemptMapper.toDto(plan.getCrisprAttempt());
                 planDTO.setCrisprAttemptDTO(crisprAttemptDTO);
             }
-            else if (AttemptTypes.BREEDING.getTypeName().equals(attemptTypeName))
+            else if (AttemptTypesName.BREEDING.getLabel().equals(attemptTypeName))
             {
                 BreedingAttemptDTO breedingAttemptDTO =
                     breedingAttemptMapper.toDto(plan.getBreedingAttempt());
@@ -184,7 +182,7 @@ public class PlanMapper implements Mapper<Plan, PlanDTO>
         {
             AttemptType attemptType = plan.getAttemptType();
             String attemptTypeName = attemptType == null ? "Not defined" : attemptType.getName();
-            if (AttemptTypes.CRISPR.getTypeName().equalsIgnoreCase(attemptTypeName))
+            if (AttemptTypesName.CRISPR.getLabel().equalsIgnoreCase(attemptTypeName))
             {
                 setCrisprAttempt(plan, planDTO);
             } else
@@ -284,7 +282,8 @@ public class PlanMapper implements Mapper<Plan, PlanDTO>
 
     private List<TransitionDTO> getTransitionsByPlanType(Plan plan)
     {
-        List<ProcessEvent> transitions = planStateMachineResolver.getAvailableTransitionsByEntityStatus(plan);
-        return transitionMapper.toDtos(transitions);
+        List<TransitionEvaluation> transitionEvaluations =
+            planService.evaluateNextTransitions(plan);
+        return transitionMapper.toDtos(transitionEvaluations);
     }
 }
