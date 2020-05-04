@@ -5,9 +5,9 @@ import org.gentar.biology.plan.attempt.phenotyping.stage.PhenotypingStage;
 import org.gentar.statemachine.AbstractProcessor;
 import org.gentar.statemachine.ProcessData;
 
-public class LateHaploessentialPhenotypingAbortProcessor extends AbstractProcessor
+public class EmbryoPhenotypingAbortReverserProcessor extends AbstractProcessor
 {
-    public LateHaploessentialPhenotypingAbortProcessor(
+    public EmbryoPhenotypingAbortReverserProcessor(
         PhenotypingStageStateSetter phenotypingStageStateSetter)
     {
         super(phenotypingStageStateSetter);
@@ -16,11 +16,12 @@ public class LateHaploessentialPhenotypingAbortProcessor extends AbstractProcess
     @Override
     protected boolean canExecuteTransition(ProcessData entity)
     {
-        return canAbortPhenotypingStage((PhenotypingStage) entity);
+        return canRevertAbortion((PhenotypingStage) entity);
     }
 
-    private boolean canAbortPhenotypingStage(PhenotypingStage phenotypingStage) {
-        // Put here the validations before aborting a Phenotyping Stage.
+    private boolean canRevertAbortion(PhenotypingStage phenotypingStage)
+    {
+        // Put here the needed validation before reverting an abortion.
         return true;
     }
 }

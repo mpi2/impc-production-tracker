@@ -10,7 +10,6 @@ public enum LateAdultPhenotypingStageState implements ProcessState
 {
     RegisteredForLateAdultPhenotypingProduction("Registered For Late Adult Phenotyping Production"),
     LateAdultPhenotypingStarted("Late Adult Phenotyping Started"),
-    LateAdultPhenotypingDataReceived("Late Adult Phenotyping Data Received"),
     LateAdultPhenotypingAllDataSent("Late Adult Phenotyping All Data Sent"),
     LateAdultPhenotypingAllDataProcessed("Late Adult Phenotyping All Data Processed"),
     LateAdultPhenotypingFinished("Late Adult Phenotyping Finished"),
