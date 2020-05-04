@@ -5,9 +5,10 @@ import org.gentar.biology.colony.engine.ColonyStateSetter;
 import org.gentar.biology.outcome.Outcome;
 import org.gentar.biology.plan.Plan;
 import org.gentar.biology.plan.starting_point.PlanStartingPoint;
-import org.gentar.exceptions.UserOperationFailedException;
 import org.gentar.statemachine.AbstractProcessor;
 import org.gentar.statemachine.ProcessData;
+import org.gentar.statemachine.ProcessEvent;
+import org.gentar.statemachine.TransitionEvaluation;
 import org.springframework.stereotype.Component;
 import java.util.ArrayList;
 import java.util.List;
@@ -25,15 +26,17 @@ public class ColonyAbortProcessor extends AbstractProcessor
     }
 
     @Override
-    protected boolean canExecuteTransition(ProcessData entity)
+    public TransitionEvaluation evaluateTransition(ProcessEvent transition, ProcessData data)
     {
-        if (areAllDependantPlansAborted((Colony) entity))
+        TransitionEvaluation transitionEvaluation = new TransitionEvaluation();
+        transitionEvaluation.setTransition(transition);
+        boolean areAllDependantPlansAborted = areAllDependantPlansAborted((Colony) data);
+        transitionEvaluation.setExecutable(areAllDependantPlansAborted);
+        if (!areAllDependantPlansAborted)
         {
-            return true;
+            transitionEvaluation.setNote("The colony is used in plans that are not aborted");
         }
-        throw new UserOperationFailedException(
-            "Colony cannot be aborted",
-            "The colony is used in plans that are not aborted");
+        return transitionEvaluation;
     }
 
     private boolean areAllDependantPlansAborted(Colony colony)

@@ -1,7 +1,7 @@
 package org.gentar.biology.plan.engine;
 
 import org.gentar.biology.plan.Plan;
-import org.gentar.biology.plan.attempt.AttemptTypes;
+import org.gentar.biology.plan.attempt.AttemptTypesName;
 import org.gentar.biology.plan.engine.breeding.BreedingPlanEvent;
 import org.gentar.biology.plan.engine.crispr.CrisprProductionPlanEvent;
 import org.gentar.biology.plan.engine.crispr.HaploessentialProductionPlanEvent;
@@ -35,8 +35,9 @@ public class PlanStateMachineResolver implements StateMachineResolver
     @Override
     public List<ProcessEvent> getAvailableTransitionsByEntityStatus(ProcessData processData)
     {
-        return getAvailableEventsByStateName(
+        List<ProcessEvent> allTransitionsByPlanType = getAvailableEventsByStateName(
             getProcessEventsByPlan((Plan)processData), processData.getStatus().getName());
+        return allTransitionsByPlanType;
     }
 
     private List<ProcessEvent> getAvailableEventsByStateName(
@@ -63,8 +64,7 @@ public class PlanStateMachineResolver implements StateMachineResolver
     private List<ProcessEvent> getProcessEventsByPlan(Plan plan)
     {
         List<ProcessEvent> processEvents;
-        AttemptTypes attemptType =
-            AttemptTypes.getAttemptTypeEnumByName(plan.getAttemptType().getName());
+        AttemptTypesName attemptType = AttemptTypesName.valueOfLabel(plan.getAttemptType().getName());
         switch (attemptType)
         {
             case CRISPR:

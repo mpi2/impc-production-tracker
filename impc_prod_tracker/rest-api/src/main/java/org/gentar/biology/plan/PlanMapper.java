@@ -4,11 +4,10 @@ import org.gentar.EntityMapper;
 import org.gentar.biology.outcome.Outcome;
 import org.gentar.biology.outcome.OutcomeMapper;
 import org.gentar.biology.plan.attempt.AttemptTypeMapper;
-import org.gentar.biology.plan.attempt.AttemptTypes;
+import org.gentar.biology.plan.attempt.AttemptTypesName;
 import org.gentar.biology.plan.attempt.breeding.BreedingAttemptDTO;
 import org.gentar.biology.plan.attempt.breeding.BreedingAttemptMapper;
 import org.gentar.biology.plan.attempt.crispr.CrisprAttempt;
-import org.gentar.biology.plan.engine.PlanStateMachineResolver;
 import org.gentar.biology.plan.attempt.phenotyping.PhenotypingAttempt;
 import org.gentar.biology.plan.attempt.phenotyping.PhenotypingAttemptDTO;
 import org.gentar.biology.plan.attempt.phenotyping.PhenotypingAttemptMapper;
@@ -16,8 +15,6 @@ import org.gentar.biology.plan.attempt.crispr.CrisprAttemptDTO;
 import org.gentar.Mapper;
 import org.gentar.biology.plan.starting_point.PlanStartingPoint;
 import org.gentar.biology.plan.status.PlanStatusStamp;
-import org.gentar.biology.plan.type.PlanType;
-import org.gentar.biology.plan.type.PlanTypes;
 import org.gentar.biology.project.*;
 import org.gentar.biology.status_stamps.StatusStampsDTO;
 import org.gentar.common.state_machine.StatusTransitionDTO;
@@ -27,7 +24,7 @@ import org.gentar.organization.funder.Funder;
 import org.gentar.organization.funder.FunderMapper;
 import org.gentar.organization.work_group.WorkGroupMapper;
 import org.gentar.organization.work_unit.WorkUnitMapper;
-import org.gentar.statemachine.ProcessEvent;
+import org.gentar.statemachine.TransitionEvaluation;
 import org.gentar.statemachine.TransitionMapper;
 import org.springframework.stereotype.Component;
 import org.gentar.biology.plan.attempt.AttemptType;
@@ -51,9 +48,9 @@ public class PlanMapper implements Mapper<Plan, PlanDTO>
     private WorkGroupMapper workGroupMapper;
     private PlanTypeMapper planTypeMapper;
     private ProjectService projectService;
-    private PlanStateMachineResolver planStateMachineResolver;
     private TransitionMapper transitionMapper;
     private OutcomeMapper outcomeMapper;
+    private PlanService planService;
 
     private static final String PHENOTYPING_PLAN_WITHOUT_STARTING_POINT_ERROR =
         "The starting point for a phenotyping plan cannot be null.";
@@ -69,9 +66,9 @@ public class PlanMapper implements Mapper<Plan, PlanDTO>
         WorkGroupMapper workGroupMapper,
         PlanTypeMapper planTypeMapper,
         ProjectService projectService,
-        PlanStateMachineResolver planStateMachineResolver,
         TransitionMapper transitionMapper,
-        OutcomeMapper outcomeMapper)
+        OutcomeMapper outcomeMapper,
+        PlanService planService)
     {
         this.entityMapper = entityMapper;
         this.crisprAttemptMapper = crisprAttemptMapper;
@@ -83,9 +80,9 @@ public class PlanMapper implements Mapper<Plan, PlanDTO>
         this.workGroupMapper = workGroupMapper;
         this.planTypeMapper = planTypeMapper;
         this.projectService = projectService;
-        this.planStateMachineResolver = planStateMachineResolver;
         this.transitionMapper = transitionMapper;
         this.outcomeMapper = outcomeMapper;
+        this.planService = planService;
     }
 
     public PlanDTO toDto(Plan plan)
@@ -97,15 +94,15 @@ public class PlanMapper implements Mapper<Plan, PlanDTO>
 
     private void addNoMappedData(PlanDTO planDTO, Plan plan)
     {
-        addStartingPoint(planDTO, plan);
-        addAttempt(planDTO, plan);
+        setStartingPointDto(planDTO, plan);
+        setAttemptDto(planDTO, plan);
         addStatusStamps(planDTO, plan);
         planDTO.setTpn(plan.getProject().getTpn());
         planDTO.setFunderNames(funderMapper.toDtos(plan.getFunders()));
         planDTO.setStatusTransitionDTO(buildStatusTransitionDTO(plan));
     }
 
-    private void addStartingPoint(PlanDTO planDTO, Plan plan)
+    private void setStartingPointDto(PlanDTO planDTO, Plan plan)
     {
         if (plan.getPlanStartingPoints() != null) {
             Set<PlanStartingPoint> planStartingPoints = plan.getPlanStartingPoints();
@@ -119,35 +116,51 @@ public class PlanMapper implements Mapper<Plan, PlanDTO>
         }
     }
 
-    private void addAttempt(PlanDTO planDTO, Plan plan)
+    private AttemptTypesName getAttemptTypesName(AttemptType attemptType)
     {
-        PlanType planType = plan.getPlanType();
-        if (PlanTypes.PRODUCTION.getTypeName().equals(planType.getName()))
-        {
-            AttemptType attemptType = plan.getAttemptType();
-            String attemptTypeName = attemptType == null ? "Not defined" : attemptType.getName();
+        String attemptTypeName = attemptType == null ? "Not defined" : attemptType.getName();
+        return AttemptTypesName.valueOfLabel(attemptTypeName);
+    }
 
-            if (AttemptTypes.CRISPR.getTypeName().equals(attemptTypeName))
-            {
-                CrisprAttemptDTO crisprAttemptDTO = crisprAttemptMapper.toDto(plan.getCrisprAttempt());
-                planDTO.setCrisprAttemptDTO(crisprAttemptDTO);
-            }
-            else if (AttemptTypes.BREEDING.getTypeName().equals(attemptTypeName))
-            {
-                BreedingAttemptDTO breedingAttemptDTO =
-                    breedingAttemptMapper.toDto(plan.getBreedingAttempt());
-                planDTO.setBreedingAttemptDTO(breedingAttemptDTO);
-            }
-            else
-            {
-                //TODO: other attempts
-            }
-        }
-        else if (PlanTypes.PHENOTYPING.getTypeName().equals((planType.getName())))
+    private void setAttemptDto(PlanDTO planDTO, Plan plan)
+    {
+        AttemptTypesName attemptTypesName = getAttemptTypesName(plan.getAttemptType());
+        switch (attemptTypesName)
         {
-            PhenotypingAttemptDTO phenotypingAttemptDTO = phenotypingAttemptMapper.toDto(plan.getPhenotypingAttempt());
-            planDTO.setPhenotypingAttemptDTO(phenotypingAttemptDTO);
+            case CRISPR:
+                setCrisprAttemptDto(planDTO, plan);
+                break;
+            case HAPLOESSENTIAL_CRISPR:
+                //TODO: set the happloessential crispr attempt
+                break;
+            case ADULT_PHENOTYPING: case HAPLOESSENTIAL_PHENOTYPING:
+                setPhenotypingAttemptDto(planDTO, plan);
+            break;
+            case BREEDING:
+                setBreedingAttemptDto(planDTO, plan);
+                break;
+            default:
         }
+    }
+
+    private void setCrisprAttemptDto(PlanDTO planDTO, Plan plan)
+    {
+        CrisprAttemptDTO crisprAttemptDTO = crisprAttemptMapper.toDto(plan.getCrisprAttempt());
+        planDTO.setCrisprAttemptDTO(crisprAttemptDTO);
+    }
+
+    private void setPhenotypingAttemptDto(PlanDTO planDTO, Plan plan)
+    {
+        PhenotypingAttemptDTO phenotypingAttemptDTO =
+            phenotypingAttemptMapper.toDto(plan.getPhenotypingAttempt());
+        planDTO.setPhenotypingAttemptDTO(phenotypingAttemptDTO);
+    }
+
+    private void setBreedingAttemptDto(PlanDTO planDTO, Plan plan)
+    {
+        BreedingAttemptDTO breedingAttemptDTO =
+            breedingAttemptMapper.toDto(plan.getBreedingAttempt());
+        planDTO.setBreedingAttemptDTO(breedingAttemptDTO);
     }
 
     private void addStatusStamps(PlanDTO planDTO, Plan plan)
@@ -178,27 +191,30 @@ public class PlanMapper implements Mapper<Plan, PlanDTO>
         plan.setWorkGroup(workGroupMapper.toEntity(planDTO.getWorkGroupName()));
         setPlanType(plan, planDTO);
         setAttemptType(plan, planDTO);
-
-        PlanType planType = plan.getPlanType();
-        if (PlanTypes.PRODUCTION.getTypeName().equalsIgnoreCase(planType.getName()))
-        {
-            AttemptType attemptType = plan.getAttemptType();
-            String attemptTypeName = attemptType == null ? "Not defined" : attemptType.getName();
-            if (AttemptTypes.CRISPR.getTypeName().equalsIgnoreCase(attemptTypeName))
-            {
-                setCrisprAttempt(plan, planDTO);
-            } else
-            {
-                //TODO: other attempts
-            }
-        }
-        else if (PlanTypes.PHENOTYPING.getTypeName().equalsIgnoreCase((planType.getName())))
-        {
-            setStartingPoint(plan, planDTO);
-//            setStartingPoint(plan, planDTO);
-        }
-
+        setAttempt(plan, planDTO);
         return plan;
+    }
+
+    private void setAttempt(Plan plan, PlanDTO planDTO)
+    {
+        AttemptTypesName attemptTypesName = getAttemptTypesName(plan.getAttemptType());
+        switch (attemptTypesName)
+        {
+            case CRISPR:
+                setCrisprAttempt(plan, planDTO);
+                break;
+            case HAPLOESSENTIAL_CRISPR:
+                //TODO: set the happloessential crispr attempt
+                break;
+            case ADULT_PHENOTYPING: case HAPLOESSENTIAL_PHENOTYPING:
+                setPhenotypingAttempt(plan, planDTO);
+                setStartingPoint(plan, planDTO);
+                break;
+            case BREEDING:
+                //TODO: set the breeding attempt
+                break;
+            default:
+        }
     }
 
     private void setCrisprAttempt(Plan plan, PlanDTO planDTO)
@@ -218,8 +234,8 @@ public class PlanMapper implements Mapper<Plan, PlanDTO>
 
     private void setStartingPoint(Plan plan, PlanDTO planDTO)
     {
-        // Phenotyping plans
-        if (planDTO.getPlanStartingPointDTO() != null) {
+        if (planDTO.getPlanStartingPointDTO() != null)
+        {
             PlanStartingPoint planStartingPoint = new PlanStartingPoint();
             planStartingPoint.setPlan(plan);
             Outcome outcome = outcomeMapper.toEntityBytTpo(planDTO.getPlanStartingPointDTO().getTpo());
@@ -229,29 +245,23 @@ public class PlanMapper implements Mapper<Plan, PlanDTO>
             planStartingPoints.add(planStartingPoint);
 
             plan.setPlanStartingPoints(planStartingPoints);
-        } else {
-            throw new UserOperationFailedException(String.format(PHENOTYPING_PLAN_WITHOUT_STARTING_POINT_ERROR));
         }
-
-        // Breeding plans
-//        if (planDTO.getPlanStartingPointDTOS() != null) {
-//            // TODO starting points for breeding plans
-//        }
+        else
+        {
+            throw new UserOperationFailedException(PHENOTYPING_PLAN_WITHOUT_STARTING_POINT_ERROR);
+        }
     }
 
     private void setPhenotypingAttempt(Plan plan, PlanDTO planDTO)
     {
         if (planDTO.getPhenotypingAttemptDTO() != null)
         {
-            PhenotypingAttempt phenotypingAttempt = phenotypingAttemptMapper.toEntity(planDTO.getPhenotypingAttemptDTO());
-            if (plan.getPhenotypingAttempt().getImitsPhenotypeAttempt() != null)
-            {
-                phenotypingAttempt.setImitsPhenotypeAttempt(plan.getPhenotypingAttempt().getImitsPhenotypeAttempt());
-            }
-            if (plan.getPhenotypingAttempt().getImitsPhenotypingProduction() != null)
-            {
-                phenotypingAttempt.setImitsPhenotypingProduction(plan.getPhenotypingAttempt().getImitsPhenotypingProduction());
-            }
+            PhenotypingAttempt phenotypingAttempt =
+                phenotypingAttemptMapper.toEntity(planDTO.getPhenotypingAttemptDTO());
+            phenotypingAttempt.setImitsPhenotypeAttempt(
+                plan.getPhenotypingAttempt().getImitsPhenotypeAttempt());
+            phenotypingAttempt.setImitsPhenotypingProduction(
+                plan.getPhenotypingAttempt().getImitsPhenotypingProduction());
             phenotypingAttempt.setPlan(plan);
             phenotypingAttempt.setId(plan.getId());
             plan.setPhenotypingAttempt(phenotypingAttempt);
@@ -284,7 +294,8 @@ public class PlanMapper implements Mapper<Plan, PlanDTO>
 
     private List<TransitionDTO> getTransitionsByPlanType(Plan plan)
     {
-        List<ProcessEvent> transitions = planStateMachineResolver.getAvailableTransitionsByEntityStatus(plan);
-        return transitionMapper.toDtos(transitions);
+        List<TransitionEvaluation> transitionEvaluations =
+            planService.evaluateNextTransitions(plan);
+        return transitionMapper.toDtos(transitionEvaluations);
     }
 }

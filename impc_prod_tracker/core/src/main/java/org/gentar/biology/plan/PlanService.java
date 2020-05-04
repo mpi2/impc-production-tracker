@@ -15,11 +15,8 @@
  */
 package org.gentar.biology.plan;
 
-import org.gentar.biology.project.Project;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.domain.Specification;
 import org.gentar.audit.history.History;
+import org.gentar.statemachine.TransitionEvaluation;
 
 import java.util.List;
 
@@ -29,8 +26,6 @@ public interface PlanService
                         List<String> attemptTypeNames, List<String> imitsMiAttempts, List<String> imitsPhenotypeAttempts);
 
     Plan getPlanByPinWithoutCheckPermissions(String pin);
-
-    Page<Plan> getPlansBySpec(Specification<Plan> specification, Pageable pageable);
 
     Plan getNotNullPlanByPin(String pin);
 
@@ -50,5 +45,14 @@ public interface PlanService
 
     Plan createPlan(Plan plan);
 
-    void updateStatusIfNeeded(Plan plan);
+    /**
+     * Evaluates the transitions for a plan given its current status. To do that, this
+     * method resolves the correct state machine for this plan and then checks what are the
+     * possible transitions, evaluating each one and seeing if they could be executed
+     * by the user or not.
+     * @param plan Plan to evaluate.
+     * @return The list of TransitionEvaluation that informs for each transition if it can
+     * be executed or not, as long as a note explaining why in case it cannot be executed.
+     */
+    List<TransitionEvaluation> evaluateNextTransitions(Plan plan);
 }

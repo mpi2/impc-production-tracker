@@ -18,17 +18,20 @@ public class PlanStatusManager
     private SystemEventsExecutor systemEventsExecutor;
     private PlanStateSetter planStateSetter;
     private PlanSummaryStatusUpdater planSummaryStatusUpdater;
+    private PlanStateMachineResolver planStateMachineResolver;
 
     public PlanStatusManager(
         StateTransitionsManager stateTransitionManager,
         SystemEventsExecutor systemEventsExecutor,
         PlanStateSetter planStateSetter,
-        PlanSummaryStatusUpdater planSummaryStatusUpdater)
+        PlanSummaryStatusUpdater planSummaryStatusUpdater,
+        PlanStateMachineResolver planStateMachineResolver)
     {
         this.stateTransitionManager = stateTransitionManager;
         this.systemEventsExecutor = systemEventsExecutor;
         this.planStateSetter = planStateSetter;
         this.planSummaryStatusUpdater = planSummaryStatusUpdater;
+        this.planStateMachineResolver = planStateMachineResolver;
     }
 
     public void setInitialStatus(Plan plan)
@@ -53,7 +56,7 @@ public class PlanStatusManager
 
     private void executeSystemTriggeredTransitions(Plan plan)
     {
-        systemEventsExecutor.setStateMachineResolver(new PlanStateMachineResolver());
+        systemEventsExecutor.setStateMachineResolver(planStateMachineResolver);
         systemEventsExecutor.execute(plan);
     }
 
