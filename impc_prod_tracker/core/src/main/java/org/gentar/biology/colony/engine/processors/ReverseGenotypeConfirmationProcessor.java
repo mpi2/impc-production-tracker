@@ -2,7 +2,6 @@ package org.gentar.biology.colony.engine.processors;
 
 import org.gentar.biology.colony.Colony;
 import org.gentar.biology.colony.engine.ColonyStateSetter;
-import org.gentar.exceptions.UserOperationFailedException;
 import org.gentar.security.abac.spring.ContextAwarePolicyEnforcement;
 import org.gentar.statemachine.AbstractProcessor;
 import org.gentar.statemachine.ProcessData;
