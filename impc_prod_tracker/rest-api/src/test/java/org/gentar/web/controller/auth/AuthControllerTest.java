@@ -18,7 +18,6 @@ package org.gentar.web.controller.auth;
 import com.github.springtestdbunit.annotation.DatabaseSetup;
 import org.gentar.framework.ControllerTestTemplate;
 import org.gentar.security.auth.AuthenticationRequest;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.ResultHandler;
@@ -37,7 +36,6 @@ public class AuthControllerTest extends ControllerTestTemplate
         "Invalid User/Password provided.";
 
     @Test
-    @Disabled
     @DatabaseSetup("/dbunit/auth/createUser.xml")
     public void testSignIn() throws Exception
     {
@@ -52,7 +50,8 @@ public class AuthControllerTest extends ControllerTestTemplate
             .andDo(documentSignIn());
     }
     
-    private ResultHandler documentSignIn() {
+    private ResultHandler documentSignIn()
+    {
         ConstrainedFields fields = fields(AuthenticationRequest.class);
         return document(
             "auth/signin",
@@ -71,7 +70,6 @@ public class AuthControllerTest extends ControllerTestTemplate
     }
 
     @Test
-    @Disabled
     public void testSignInWhenUserNotInAuthenticationSystem()
     throws Exception
     {

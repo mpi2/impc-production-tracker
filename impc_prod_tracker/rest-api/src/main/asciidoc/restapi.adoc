@@ -1,4 +1,4 @@
-= iMITS2 REST API
+= GenTaR REST API
 v{version}, {date}
 :doctype: book
 :icons: font
@@ -12,11 +12,11 @@ v{version}, {date}
 [introduction]
 == Introduction
 
-iMITS2 is designed to coordinate the production of transgenic mice between high-throughput
+GenTaR is designed to coordinate the production of transgenic mice between high-throughput
 mouse production facilities and consortia of clinicians and human geneticists
-while minimizing the overlap	and	maximizing	efficiencies. iMITS2 captures the intention	of
+while minimizing the overlap	and	maximizing	efficiencies. GenTaR captures the intention	of
 a particular consortium	to produce mutant mice on a	particular	gene, the	progress	of
-mouse	production	and	modified	mutation	creation	on	the	original	mouse,	and	the	capture
+mouse	production	and	modified mutation creation on the	original mouse,	and	the	capture
 of	phenotype	data	on	the	mouse.
 
 This is a secure resource that can house various types of mutations linked to genes,
@@ -25,7 +25,7 @@ and will provide different data access policies to users.
 
 This guide is aimed at developers of such applications.
 
-=== Usage of HTTP Verbs
+== Usage of HTTP Verbs
 
 The following table describes how the coderadar API interprets the HTTP verbs.
 
@@ -34,19 +34,14 @@ The following table describes how the coderadar API interprets the HTTP verbs.
 |HTTP Verb | Usage
 
 |GET
-|GET is used to retrieve information.
+|GET is used to retrieve information without changing the state of the system.
 
 |POST
-|POST is used to create and update resources.
-
-|DELETE
-|DELETE is used to delete resources.
+|POST is used to submit an entity to the specified resource, often causing a change in state or side effects on the system.
 
 |PUT
-|PUT is not used at this time.
+|PUT method replaces all current representations of the target resource with the request payload.
 
-|PATCH
-|PATCH is not used at this time.
 |===
 
 
