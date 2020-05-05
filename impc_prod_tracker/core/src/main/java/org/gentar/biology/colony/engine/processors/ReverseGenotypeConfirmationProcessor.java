@@ -2,6 +2,7 @@ package org.gentar.biology.colony.engine.processors;
 
 import org.gentar.biology.colony.Colony;
 import org.gentar.biology.colony.engine.ColonyStateSetter;
+import org.gentar.security.abac.spring.ContextAwarePolicyEnforcement;
 import org.gentar.statemachine.AbstractProcessor;
 import org.gentar.statemachine.ProcessData;
 import org.gentar.statemachine.ProcessEvent;
@@ -11,9 +12,13 @@ import org.springframework.stereotype.Component;
 @Component
 public class ReverseGenotypeConfirmationProcessor extends AbstractProcessor
 {
-    public ReverseGenotypeConfirmationProcessor(ColonyStateSetter colonyStateSetter)
+    private ContextAwarePolicyEnforcement policyEnforcement;
+
+    public ReverseGenotypeConfirmationProcessor(
+        ColonyStateSetter colonyStateSetter, ContextAwarePolicyEnforcement policyEnforcement)
     {
         super(colonyStateSetter);
+        this.policyEnforcement = policyEnforcement;
     }
 
     @Override
@@ -32,7 +37,6 @@ public class ReverseGenotypeConfirmationProcessor extends AbstractProcessor
 
     public boolean canExecuteTransition(Colony colony)
     {
-        // TODO: Can be done only by CDA or DCC
-        return false;
+        return policyEnforcement.hasPermission(colony, "REVERSE_GENOTYPE_CONFIRMATION");
     }
 }
