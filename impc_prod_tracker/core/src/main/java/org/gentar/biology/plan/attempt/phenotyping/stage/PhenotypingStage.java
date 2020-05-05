@@ -52,6 +52,8 @@ public class PhenotypingStage extends BaseEntity implements ProcessData
     @ManyToOne(targetEntity= Status.class)
     private Status status;
 
+    private LocalDate initialDataReleaseDate;
+
     @IgnoreForAuditingChanges
     @EqualsAndHashCode.Exclude
     @ToString.Exclude

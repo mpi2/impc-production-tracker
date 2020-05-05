@@ -18,6 +18,7 @@ public class PhenotypingStageDTO
 
     private LocalDate phenotypingExperimentsStarted;
     private Boolean doNotCountTowardsCompleteness;
+    private LocalDate initialDataReleaseDate;
 
     private String statusName;
 
