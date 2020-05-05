@@ -20,13 +20,13 @@ import lombok.*;
 import org.gentar.biology.mutation.categorizarion.MutationCategorization;
 import org.gentar.biology.mutation.genetic_type.GeneticMutationType;
 import org.gentar.biology.mutation.qc_results.MutationQcResult;
+import org.gentar.biology.mutation.sequence.MutationSequence;
 import org.hibernate.annotations.Type;
 import org.gentar.BaseEntity;
 import org.gentar.biology.mutation.genbank_file.GenbankFile;
 import org.gentar.biology.gene.Gene;
 import org.gentar.biology.mutation.molecular_type.MolecularMutationType;
 import org.gentar.biology.outcome.Outcome;
-
 import javax.persistence.*;
 import java.util.Set;
 
@@ -36,7 +36,8 @@ import java.util.Set;
 public class Mutation extends BaseEntity
 {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @SequenceGenerator(name = "mutationSeq", sequenceName = "MUTATION_SEQ")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "mutationSeq")
     @Column(name = "id", updatable=false)
     private Long id;
 
@@ -123,4 +124,8 @@ public class Mutation extends BaseEntity
     @JoinColumn(name = "mutation_id")
     private Set<MutationQcResult> mutationQcResults;
 
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
+    @OneToMany(mappedBy = "mutation")
+    private Set<MutationSequence> mutationSequences;
 }
