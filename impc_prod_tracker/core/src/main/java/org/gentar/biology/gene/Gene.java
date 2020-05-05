@@ -33,8 +33,8 @@ import java.util.Set;
 public class Gene extends BaseEntity
 {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", updatable=false)
+    @SequenceGenerator(name = "geneSeq", sequenceName = "GENE_SEQ")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "geneSeq")
     private Long id;
 
     private String symbol;
