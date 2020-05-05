@@ -294,7 +294,7 @@ public class AapSystemSubject implements SystemSubject
 
         if (configuredLogin != null)
         {
-            result = login.equals(configuredLogin);
+            result = person.getEmail().equals(configuredLogin);
         }
 
         return result;
