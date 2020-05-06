@@ -61,7 +61,7 @@ public class Mutation extends BaseEntity
     private String autoDescription;
 
     @Column(unique = true)
-    private Long imitsAlleleId;
+    private Long imitsAllele;
 
     @ManyToOne(targetEntity= GeneticMutationType.class)
     private GeneticMutationType geneticMutationType;
