@@ -20,7 +20,7 @@ public class BreedingAttempt extends BaseEntity
     @MapsId
     private Plan plan;
 
-    private Long imitsMouseAlleleModId;
+    private Long imitsMouseAlleleMod;
 
     @Column(name = "number_of_cre_matings_started")
     private Integer numberOfCreMatingsStarted;

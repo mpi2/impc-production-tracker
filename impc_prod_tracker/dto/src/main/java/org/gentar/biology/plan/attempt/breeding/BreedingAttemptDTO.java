@@ -10,8 +10,10 @@ public class BreedingAttemptDTO
 {
     @JsonIgnore
     private Long planId;
+
     @JsonIgnore
-    private Long imitsMiMouseAlleleModId;
+    private Long imitsMouseAlleleMod;
+
     private Integer numberOfCreMatingsStarted;
     private Integer numberOfCreMatingsSuccessful;
     private Boolean creExcesion;
