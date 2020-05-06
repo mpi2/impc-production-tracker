@@ -11,7 +11,8 @@ import java.io.Serializable;
 @NoArgsConstructor(access= AccessLevel.PUBLIC, force=true)
 @Data
 @Entity
-public class MutationSequence extends BaseEntity implements Serializable {
+public class MutationSequence extends BaseEntity implements Serializable
+{
     @Id
     @SequenceGenerator(name = "mutationSequenceSeq", sequenceName = "MUTATION_SEQUENCE_SEQ")
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "mutationSequenceSeq")

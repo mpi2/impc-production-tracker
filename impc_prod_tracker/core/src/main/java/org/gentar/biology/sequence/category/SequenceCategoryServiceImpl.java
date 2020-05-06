@@ -12,5 +12,8 @@ public class SequenceCategoryServiceImpl implements SequenceCategoryService
         this.sequenceCategoryRepository = sequenceCategoryRepository;
     }
 
-    public SequenceCategory getSequenceCategoryByName(String name) { return sequenceCategoryRepository.findByNameIgnoreCase(name); };
+    public SequenceCategory getSequenceCategoryByName(String name)
+    {
+        return sequenceCategoryRepository.findByNameIgnoreCase(name);
+    }
 }

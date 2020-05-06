@@ -6,15 +6,14 @@ import org.gentar.biology.intention.project_intention_sequence.ProjectIntentionS
 import org.gentar.biology.sequence.category.SequenceCategory;
 import org.gentar.biology.sequence.type.SequenceType;
 import org.gentar.biology.sequence_location.SequenceLocation;
-
 import javax.persistence.*;
 import java.util.List;
 
-@NoArgsConstructor(access= AccessLevel.PRIVATE, force=true)
+@NoArgsConstructor(access= AccessLevel.PUBLIC, force=true)
 @Data
 @Entity
-public class Sequence extends BaseEntity {
-
+public class Sequence extends BaseEntity
+{
     @Id
     @SequenceGenerator(name = "sequenceSeq", sequenceName = "SEQUENCE_SEQ")
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequenceSeq")
@@ -39,6 +38,4 @@ public class Sequence extends BaseEntity {
     @ToString.Exclude
     @OneToMany(cascade=CascadeType.ALL, mappedBy = "sequence")
     private List<ProjectIntentionSequence> projectIntentionSequences;
-
-
 }
