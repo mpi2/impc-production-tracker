@@ -8,7 +8,7 @@ import java.util.List;
 
 public enum SpecimenState implements ProcessState
 {
-    SpecimenGroupCreated("Specimen Group Created"),
+    SpecimenGroupInProgress("Specimen Group In Progress"),
     SpecimenGroupAborted("Specimen Group Aborted");
 
     private String internalName;
