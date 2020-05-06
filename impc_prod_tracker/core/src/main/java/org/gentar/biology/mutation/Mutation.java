@@ -75,22 +75,22 @@ public class Mutation extends BaseEntity
     @Lob
     @Column(name="bam_file")
     @Type(type="org.hibernate.type.BinaryType")
-    private byte[] bam_file;
+    private byte[] bamFile;
 
     @Lob
     @Column(name="bam_file_index")
     @Type(type="org.hibernate.type.BinaryType")
-    private byte[] bam_file_index;
+    private byte[] bamFileIndex;
 
     @Lob
     @Column(name="vcf_file")
     @Type(type="org.hibernate.type.BinaryType")
-    private byte[] vcf_file;
+    private byte[] vcfFile;
 
     @Lob
     @Column(name="vcf_file_index")
     @Type(type="org.hibernate.type.BinaryType")
-    private byte[] vcf_file_index;
+    private byte[] vcfFileIndex;
 
     @ToString.Exclude
     @JsonIgnore
