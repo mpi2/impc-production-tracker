@@ -128,8 +128,7 @@ class ConfirmGenotypeProcessorTest
         assertThat(
             "Not expected message",
             thrown.getDebugMessage(),
-            is("Please check that a sequence is associated or that there is information" +
-                " for the vcf or bam file."));
+            is("A sequence and mgi allele symbol must exist."));
         verify(colonyStateSetter, times(0)).setStatusByName(any(Colony.class), any(String.class));
     }
 
