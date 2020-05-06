@@ -93,14 +93,11 @@ class ConfirmGenotypeProcessorTest
     }
 
     @Test
-    public void testWhenSequenceExistsAndVcfFileAndVcfIndexExist()
+    public void testWhenSequenceExistsAndMgiAlleleSymbolExists()
     {
         Colony colony = buildColonyWithOutcomeSequence(1L);
         Mutation mutation = colony.getOutcome().getMutations().iterator().next();
-        byte[] vcfFile = "vcf file content".getBytes();
-        byte[] vcfIndex = "vcf index content".getBytes();
-        mutation.setVcfFile(vcfFile);
-        mutation.setVcfFileIndex(vcfIndex);
+        mutation.setMgiAlleleSymbol("mgiAlleleSymbol");
         colony.setEvent(ColonyEvent.confirmGenotypeWhenInProgress);
 
         testInstance.process(colony);
@@ -109,91 +106,19 @@ class ConfirmGenotypeProcessorTest
     }
 
     @Test
-    public void testWhenSequenceExistsAndVcfFileExistsAndVcfIndexDoesNotExist()
+    public void testWhenSequenceDoesNotExistsAndMgiAlleleSymbolExists()
     {
-        Colony colony = buildColonyWithOutcomeSequence(1L);
-        Mutation mutation = colony.getOutcome().getMutations().iterator().next();
-        byte[] byteContent = "vcf content".getBytes();
-        mutation.setVcfFile(byteContent);
+        Colony colony = buildColony(1L, ColonyState.GenotypeInProgress.getInternalName());
+        Mutation mutation = new Mutation();
+        Set<Mutation> mutations = new HashSet<>();
+        mutations.add(mutation);
+        colony.getOutcome().setMutations(mutations);
+        mutation.setMgiAlleleSymbol("mgiAlleleSymbol");
         colony.setEvent(ColonyEvent.confirmGenotypeWhenInProgress);
 
         UserOperationFailedException thrown = assertThrows(UserOperationFailedException.class,
             () -> testInstance.process(colony), "Exception not thrown");
         assertTransitionCannotBeExecuted(thrown);
-    }
-
-    @Test
-    public void testWhenSequenceExistsAndVcfFileDoesNotExistsAndVcfIndexExist()
-    {
-        Colony colony = buildColonyWithOutcomeSequence(1L);
-        Mutation mutation = colony.getOutcome().getMutations().iterator().next();
-        byte[] byteContent = "vcf index content".getBytes();
-        mutation.setVcfFileIndex(byteContent);
-        colony.setEvent(ColonyEvent.confirmGenotypeWhenInProgress);
-
-        UserOperationFailedException thrown = assertThrows(UserOperationFailedException.class,
-            () -> testInstance.process(colony), "Exception not thrown");
-        assertTransitionCannotBeExecuted(thrown);
-    }
-
-    @Test
-    public void testWhenSequenceExistsAndVcfFileExistsAndVcfIndexExist()
-    {
-        Colony colony = buildColonyWithOutcomeSequence(1L);
-        Mutation mutation = colony.getOutcome().getMutations().iterator().next();
-        byte[] vcfFile = "vcf file content".getBytes();
-        byte[] vcfIndex = "vcf index content".getBytes();
-        mutation.setVcfFile(vcfFile);
-        mutation.setVcfFileIndex(vcfIndex);
-        colony.setEvent(ColonyEvent.confirmGenotypeWhenInProgress);
-
-        testInstance.process(colony);
-
-        verify(colonyStateSetter, times(1)).setStatusByName(any(Colony.class), any(String.class));
-    }
-
-    @Test
-    public void testWhenSequenceExistsAndBamFileExistsAndBamIndexDoesNotExist()
-    {
-        Colony colony = buildColonyWithOutcomeSequence(1L);
-        Mutation mutation = colony.getOutcome().getMutations().iterator().next();
-        byte[] byteContent = "bam content".getBytes();
-        mutation.setBamFile(byteContent);
-        colony.setEvent(ColonyEvent.confirmGenotypeWhenInProgress);
-
-        UserOperationFailedException thrown = assertThrows(UserOperationFailedException.class,
-            () -> testInstance.process(colony), "Exception not thrown");
-        assertTransitionCannotBeExecuted(thrown);
-    }
-
-    @Test
-    public void testSequenceExistsAndWhenBamFileDoesNotExistsAndBamIndexExist()
-    {
-        Colony colony = buildColonyWithOutcomeSequence(1L);
-        Mutation mutation = colony.getOutcome().getMutations().iterator().next();
-        byte[] byteContent = "bam index content".getBytes();
-        mutation.setBamFileIndex(byteContent);
-        colony.setEvent(ColonyEvent.confirmGenotypeWhenInProgress);
-
-        UserOperationFailedException thrown = assertThrows(UserOperationFailedException.class,
-            () -> testInstance.process(colony), "Exception not thrown");
-        assertTransitionCannotBeExecuted(thrown);
-    }
-
-    @Test
-    public void testWhenSequenceExistsAndBamFileAndVBamIndexExist()
-    {
-        Colony colony = buildColonyWithOutcomeSequence(1L);
-        Mutation mutation = colony.getOutcome().getMutations().iterator().next();
-        byte[] bamFile = "bam file content".getBytes();
-        byte[] bamIndex = "bam index content".getBytes();
-        mutation.setBamFile(bamFile);
-        mutation.setBamFileIndex(bamIndex);
-        colony.setEvent(ColonyEvent.confirmGenotypeWhenInProgress);
-
-        testInstance.process(colony);
-
-        verify(colonyStateSetter, times(1)).setStatusByName(any(Colony.class), any(String.class));
     }
 
     private void assertTransitionCannotBeExecuted(UserOperationFailedException thrown)
@@ -203,8 +128,7 @@ class ConfirmGenotypeProcessorTest
         assertThat(
             "Not expected message",
             thrown.getDebugMessage(),
-            is("Please check that a sequence is associated or that there is information" +
-                " for the vcf or bam file."));
+            is("A sequence and mgi allele symbol must exist."));
         verify(colonyStateSetter, times(0)).setStatusByName(any(Colony.class), any(String.class));
     }
 

@@ -35,9 +35,7 @@ public class ConfirmGenotypeProcessor extends AbstractProcessor
         transitionEvaluation.setExecutable(canExecuteTransition);
         if (!canExecuteTransition)
         {
-            transitionEvaluation.setNote(
-                "Please check that a sequence is associated or that there is information " +
-                    "for the vcf or bam file.");
+            transitionEvaluation.setNote("A sequence and mgi allele symbol must exist.");
         }
         return transitionEvaluation;
     }
@@ -56,8 +54,7 @@ public class ConfirmGenotypeProcessor extends AbstractProcessor
             for (Mutation mutation : mutations)
             {
                 informationIsValidated = atLeastOneOutcomeSequenceExist(mutation)
-                    && vcfFileInformationExists(mutation)
-                    || bamFileInformationExists(mutation);
+                    && mgiAlleleSymbolExists(mutation);
                 if (informationIsValidated)
                 {
                     break;
@@ -80,13 +77,8 @@ public class ConfirmGenotypeProcessor extends AbstractProcessor
         return atLeastOneOutcomeSequenceExist;
     }
 
-    private boolean vcfFileInformationExists(Mutation mutation)
+    private boolean mgiAlleleSymbolExists(Mutation mutation)
     {
-        return mutation.getVcfFile() != null && mutation.getVcfFileIndex() != null;
-    }
-
-    private boolean bamFileInformationExists(Mutation mutation)
-    {
-        return mutation.getBamFile() != null && mutation.getBamFileIndex() != null;
+        return mutation.getMgiAlleleSymbol() != null;
     }
 }
