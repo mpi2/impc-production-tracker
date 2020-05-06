@@ -8,7 +8,7 @@ import java.util.List;
 
 public enum EmbryoPhenotypingStageState implements ProcessState
 {
-    EmbryoPhenotypingProductionRegistered("Registered For Embryo Phenotyping"),
+    EmbryoPhenotypingProductionRegistered("Embryo Phenotyping Registered"),
     EmbryoPhenotypingStarted("Embryo Phenotyping Started"),
     EmbryoPhenotypingAllDataSent("Embryo Phenotyping All Data Sent"),
     EmbryoPhenotypingAllDataProcessed("Embryo Phenotyping All Data Processed"),

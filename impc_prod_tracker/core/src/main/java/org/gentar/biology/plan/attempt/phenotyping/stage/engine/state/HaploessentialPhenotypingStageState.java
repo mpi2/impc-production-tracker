@@ -8,7 +8,7 @@ import java.util.List;
 
 public enum HaploessentialPhenotypingStageState implements ProcessState
 {
-    HaploessentialPhenotypingProductionRegistered("Registered For Haplo-Essential Phenotyping"),
+    HaploessentialPhenotypingProductionRegistered("Haplo-Essential Phenotyping Registered"),
     HaploessentialPhenotypingStarted("Haplo-Essential Phenotyping Started"),
     HaploessentialPhenotypingAllDataSent("Haplo-Essential Phenotyping All Data Sent"),
     HaploessentialPhenotypingAllDataProcessed("Haplo-Essential Phenotyping All Data Processed"),
