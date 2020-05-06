@@ -13,7 +13,7 @@ public enum SpecimenEvent implements ProcessEvent
 {
     abortSpecimenGroup(
             "Abort a specimen group",
-            SpecimenState.SpecimenGroupCreated,
+            SpecimenState.SpecimenGroupInProgress,
             SpecimenState.SpecimenGroupAborted,
             StateMachineConstants.TRIGGERED_BY_USER,
             null)
