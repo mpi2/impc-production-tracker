@@ -56,8 +56,7 @@ public class ConfirmGenotypeProcessor extends AbstractProcessor
             for (Mutation mutation : mutations)
             {
                 informationIsValidated = atLeastOneOutcomeSequenceExist(mutation)
-                    && vcfFileInformationExists(mutation)
-                    || bamFileInformationExists(mutation);
+                    && mgiAlleleSymbolExists(mutation);
                 if (informationIsValidated)
                 {
                     break;
@@ -80,13 +79,8 @@ public class ConfirmGenotypeProcessor extends AbstractProcessor
         return atLeastOneOutcomeSequenceExist;
     }
 
-    private boolean vcfFileInformationExists(Mutation mutation)
+    private boolean mgiAlleleSymbolExists(Mutation mutation)
     {
-        return mutation.getVcfFile() != null && mutation.getVcfFileIndex() != null;
-    }
-
-    private boolean bamFileInformationExists(Mutation mutation)
-    {
-        return mutation.getBamFile() != null && mutation.getBamFileIndex() != null;
+        return mutation.getMgiAlleleSymbol() != null;
     }
 }
