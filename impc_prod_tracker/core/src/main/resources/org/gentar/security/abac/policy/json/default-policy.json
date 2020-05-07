@@ -119,6 +119,42 @@
     "description": "CDA and DCC can move a colony from Genotype Confirmed to Genotype Not Confirmed",
     "target": "action == 'REVERSE_GENOTYPE_CONFIRMATION'",
     "condition": "subject.isUserByKey('cda_user_key') OR subject.isUserByKey('dcc_user_key')"
+  },
+  {
+    "name": "Update from Phenotyping Production Registered to Phenotyping Started",
+    "description": "DCC can update a phenotyping stage from Phenotyping Production Registered to Phenotyping Started",
+    "target": "action == 'UPDATE_PHENOTYPING_REGISTERED_TO_PHENOTYPING_STARTED'",
+    "condition": "subject.isUserByKey('dcc_user_key')"
+  },
+  {
+    "name": "Update to Phenotyping Started",
+    "description": "DCC can update a phenotyping stage to Phenotyping Started",
+    "target": "action == 'UPDATE_TO_PHENOTYPING_STARTED'",
+    "condition": "subject.isUserByKey('dcc_user_key')"
+  },
+  {
+    "name": "Update from All Data Sent to All Data Processed",
+    "description": "DCC can update a phenotyping stage from All Data Sent to All Data Processed",
+    "target": "action == 'UPDATE_FROM_ALL_DATA_SENT_TO_ALL_DATA_PROCESSED'",
+    "condition": "subject.isUserByKey('dcc_user_key')"
+  },
+  {
+    "name": "Reverse from All Data Processed to All Data Sent",
+    "description": "DCC can reverse a phenotyping stage from All Data Processed to All Data Sent",
+    "target": "action == 'REVERSE_FROM_ALL_DATA_PROCESSED_TO_ALL_DATA_SENT'",
+    "condition": "subject.isUserByKey('dcc_user_key')"
+  },
+  {
+    "name": "Update from All Data Processed to Phenotyping Finished",
+    "description": "CDA can update a phenotyping stage from All Data Processed to Phenotyping Finished",
+    "target": "action == 'UPDATE_FROM_ALL_DATA_PROCESSED_TO_PHENOTYPING_FINISHED'",
+    "condition": "subject.isUserByKey('cda_user_key')"
+  },
+  {
+    "name": "Reverse from Phenotyping Finished to All Data Processed",
+    "description": "DCC or CDA can update a phenotyping stage from Phenotyping Finished to All Data Processed",
+    "target": "action == 'REVERSE_FROM_PHENOTYPING_FINISHED_TO_ALL_DATA_PROCESSED'",
+    "condition": "subject.isUserByKey('cda_user_key') OR subject.isUserByKey('dcc_user_key')"
   }
 
 ]
