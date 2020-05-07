@@ -1,6 +1,5 @@
-package org.gentar.biology.plan.attempt.phenotyping;
+package org.gentar.biology.plan.attempt.phenotyping.stage;
 
-import org.gentar.biology.plan.attempt.phenotyping.stage.PhenotypingStage;
 import org.gentar.biology.plan.attempt.phenotyping.stage.status_stamp.PhenotypingStageStatusStamp;
 import org.gentar.biology.status.Status;
 import org.gentar.biology.status.StatusService;
