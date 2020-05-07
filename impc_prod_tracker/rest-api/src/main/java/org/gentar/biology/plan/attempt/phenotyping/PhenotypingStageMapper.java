@@ -3,46 +3,42 @@ package org.gentar.biology.plan.attempt.phenotyping;
 import org.gentar.EntityMapper;
 import org.gentar.Mapper;
 import org.gentar.biology.plan.attempt.phenotyping.stage.PhenotypingStage;
-import org.gentar.biology.plan.attempt.phenotyping.stage.PhenotypingStageTypes;
-import org.gentar.biology.plan.attempt.phenotyping.stage.engine.events.EarlyAdultEvent;
-import org.gentar.biology.plan.attempt.phenotyping.stage.engine.events.HaploessentialEvent;
-import org.gentar.biology.plan.attempt.phenotyping.stage.engine.events.LateAdultEvent;
-import org.gentar.biology.plan.attempt.phenotyping.stage.engine.events.EmbryoEvent;
-import org.gentar.biology.plan.attempt.phenotyping.stage.engine.state.EarlyAdultPhenotypingStageState;
-import org.gentar.biology.plan.attempt.phenotyping.stage.engine.state.HaploessentialPhenotypingStageState;
-import org.gentar.biology.plan.attempt.phenotyping.stage.engine.state.LateAdultPhenotypingStageState;
-import org.gentar.biology.plan.attempt.phenotyping.stage.engine.state.EmbryoPhenotypingStageState;
+import org.gentar.biology.plan.attempt.phenotyping.stage.PhenotypingStageService;
 import org.gentar.biology.plan.attempt.phenotyping.stage.status_stamp.PhenotypingStageStatusStamp;
 import org.gentar.biology.plan.attempt.phenotyping.stage.tissue_distribution.TissueDistribution;
-import org.gentar.biology.plan.attempt.phenotyping.stage.type.PhenotypingStageType;
 import org.gentar.biology.status.StatusMapper;
 import org.gentar.biology.status_stamps.StatusStampsDTO;
 import org.gentar.common.state_machine.StatusTransitionDTO;
 import org.gentar.common.state_machine.TransitionDTO;
-import org.gentar.statemachine.EnumStateHelper;
-import org.gentar.statemachine.ProcessEvent;
-import org.gentar.statemachine.ProcessState;
+import org.gentar.statemachine.TransitionEvaluation;
+import org.gentar.statemachine.TransitionMapper;
 import org.springframework.stereotype.Component;
-
 import java.util.*;
 
 @Component
-public class PhenotypingStageMapper implements Mapper<PhenotypingStage, PhenotypingStageDTO> {
+public class PhenotypingStageMapper implements Mapper<PhenotypingStage, PhenotypingStageDTO>
+{
     private EntityMapper entityMapper;
     private TissueDistributionMapper tissueDistributionMapper;
     private StatusMapper statusMapper;
     private PhenotypingStageTypeMapper phenotypeStageTypeMapper;
+    private PhenotypingStageService phenotypingStageService;
+    private TransitionMapper transitionMapper;
 
     public PhenotypingStageMapper(
-            EntityMapper entityMapper,
-            TissueDistributionMapper tissueDistributionMapper,
-            StatusMapper statusMapper,
-            PhenotypingStageTypeMapper phenotypeStageTypeMapper
-    ) {
+        EntityMapper entityMapper,
+        TissueDistributionMapper tissueDistributionMapper,
+        StatusMapper statusMapper,
+        PhenotypingStageTypeMapper phenotypeStageTypeMapper,
+        PhenotypingStageService phenotypingStageService,
+        TransitionMapper transitionMapper)
+    {
         this.entityMapper = entityMapper;
         this.tissueDistributionMapper = tissueDistributionMapper;
         this.statusMapper = statusMapper;
         this.phenotypeStageTypeMapper = phenotypeStageTypeMapper;
+        this.phenotypingStageService = phenotypingStageService;
+        this.transitionMapper = transitionMapper;
     }
 
     @Override
@@ -113,84 +109,19 @@ public class PhenotypingStageMapper implements Mapper<PhenotypingStage, Phenotyp
         phenotypingStage.setTissueDistributions(tissueDistributions);
     }
 
-    private StatusTransitionDTO buildStatusTransitionDTO(PhenotypingStage phenotypingStage) {
+    private StatusTransitionDTO buildStatusTransitionDTO(PhenotypingStage phenotypingStage)
+    {
         StatusTransitionDTO statusTransitionDTO = new StatusTransitionDTO();
         statusTransitionDTO.setCurrentStatus(phenotypingStage.getStatus().getName());
-        statusTransitionDTO.setTransitions(getTransitionsByPhenotypingStageType(phenotypingStage));
+        statusTransitionDTO.setTransitions(getTransitions(phenotypingStage));
         return statusTransitionDTO;
     }
 
-    private List<TransitionDTO> getTransitionsByPhenotypingStageType(PhenotypingStage phenotypingStage) {
-        List<TransitionDTO> transitionDTOS = new ArrayList<>();
-        String currentStatusName = phenotypingStage.getStatus().getName();
-        PhenotypingStageType phenotypingStageType = phenotypingStage.getPhenotypingStageType();
-
-        if (phenotypingStageType != null) {
-
-            if (PhenotypingStageTypes.EARLY_ADULT.getTypeName().equalsIgnoreCase(phenotypingStageType.getName())) {
-                setEarlyAdultPhenotypingStageTransitions(transitionDTOS, currentStatusName);
-            } else if (PhenotypingStageTypes.LATE_ADULT.getTypeName().equalsIgnoreCase(phenotypingStageType.getName())) {
-                setLateAdultPhenotypingStageTransitions(transitionDTOS, currentStatusName);
-            } else if (PhenotypingStageTypes.HAPLOESSENTIAL.getTypeName().equalsIgnoreCase(phenotypingStageType.getName())) {
-                setHaploessentialPhenotypingStageTransitions(transitionDTOS, currentStatusName);
-            } else if (PhenotypingStageTypes.EMBRYO.getTypeName().equalsIgnoreCase(phenotypingStageType.getName())) {
-                setLateHaploessentialPhenotypingStageTransitions(transitionDTOS, currentStatusName);
-            }
-
-        }
-        return transitionDTOS;
-    }
-
-    private void setEarlyAdultPhenotypingStageTransitions(List<TransitionDTO> transitionDTOS, String currentStatusName) {
-
-        ProcessState phenotypingStageState = EarlyAdultPhenotypingStageState.getStateByInternalName(currentStatusName);
-        if (phenotypingStageState != null) {
-            List<ProcessEvent> phenotypingStageEvents = EnumStateHelper.getAvailableEventsByState(
-                    EarlyAdultEvent.getAllEvents(), phenotypingStageState);
-            setTransitions(transitionDTOS, phenotypingStageEvents);
-        }
-    }
-
-    private void setLateAdultPhenotypingStageTransitions(List<TransitionDTO> transitionDTOS, String currentStatusName) {
-
-        ProcessState phenotypingStageState = LateAdultPhenotypingStageState.getStateByInternalName(currentStatusName);
-        if (phenotypingStageState != null) {
-            List<ProcessEvent> phenotypingStageEvents = EnumStateHelper.getAvailableEventsByState(
-                    LateAdultEvent.getAllEvents(), phenotypingStageState);
-            setTransitions(transitionDTOS, phenotypingStageEvents);
-        }
-    }
-
-    private void setHaploessentialPhenotypingStageTransitions(List<TransitionDTO> transitionDTOS, String currentStatusName) {
-
-        ProcessState phenotypingStageState = HaploessentialPhenotypingStageState.getStateByInternalName(currentStatusName);
-        if (phenotypingStageState != null) {
-            List<ProcessEvent> phenotypingStageEvents = EnumStateHelper.getAvailableEventsByState(
-                    HaploessentialEvent.getAllEvents(), phenotypingStageState);
-            setTransitions(transitionDTOS, phenotypingStageEvents);
-        }
-    }
-
-    private void setLateHaploessentialPhenotypingStageTransitions(List<TransitionDTO> transitionDTOS, String currentStatusName) {
-
-        ProcessState phenotypingStageState = EmbryoPhenotypingStageState.getStateByInternalName(currentStatusName);
-        if (phenotypingStageState != null) {
-            List<ProcessEvent> phenotypingStageEvents = EnumStateHelper.getAvailableEventsByState(
-                    EmbryoEvent.getAllEvents(), phenotypingStageState);
-            setTransitions(transitionDTOS, phenotypingStageEvents);
-        }
-    }
-
-    private void setTransitions(List<TransitionDTO> transitionDTOS, List<ProcessEvent> phenotypingStageEvents) {
-        phenotypingStageEvents.forEach(x -> {
-            TransitionDTO transition = new TransitionDTO();
-            transition.setAction(x.getName());
-            transition.setDescription(x.getDescription());
-            transition.setNextStatus(x.getEndState().getName());
-            transition.setNote(x.getTriggerNote());
-            transition.setAvailable(x.isTriggeredByUser());
-            transitionDTOS.add(transition);
-        });
+    private List<TransitionDTO> getTransitions(PhenotypingStage phenotypingStage)
+    {
+        List<TransitionEvaluation> transitionEvaluations =
+            phenotypingStageService.evaluateNextTransitions(phenotypingStage);
+        return transitionMapper.toDtos(transitionEvaluations);
     }
 }
 

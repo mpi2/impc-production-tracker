@@ -8,8 +8,6 @@ import org.gentar.biology.status.StatusService;
 import org.gentar.statemachine.ProcessData;
 import org.gentar.statemachine.StateSetter;
 import org.springframework.stereotype.Component;
-import org.springframework.util.StringUtils;
-
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.HashSet;
