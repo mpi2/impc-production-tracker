@@ -12,8 +12,8 @@ import org.gentar.statemachine.Processor;
 import java.util.Arrays;
 import java.util.List;
 
-
-public enum HaploessentialEvent implements ProcessEvent {
+public enum HaploessentialEvent implements ProcessEvent
+{
     haploessentialPhenotypingStarted(
             "Marked as started when the DCC receives haplo-essential phenotype data",
             HaploessentialPhenotypingStageState.HaploessentialPhenotypingProductionRegistered,
