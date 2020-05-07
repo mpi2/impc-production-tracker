@@ -1,6 +1,6 @@
 package org.gentar.biology.plan.attempt.phenotyping.stage.engine.processors;
 
-import org.gentar.biology.plan.attempt.phenotyping.PhenotypingStageStateSetter;
+import org.gentar.biology.plan.attempt.phenotyping.stage.PhenotypingStageStateSetter;
 import org.gentar.biology.plan.attempt.phenotyping.stage.PhenotypingStage;
 import org.gentar.statemachine.AbstractProcessor;
 import org.gentar.statemachine.ProcessData;
