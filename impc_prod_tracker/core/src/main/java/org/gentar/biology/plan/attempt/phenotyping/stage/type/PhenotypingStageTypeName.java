@@ -8,7 +8,7 @@ public enum PhenotypingStageTypeName implements LabeledType
 {
     EARLY_ADULT("early adult"),
     LATE_ADULT("late adult"),
-    HAPPLOESSENTIAL("haplo-essential"),
+    HAPLOESSENTIAL("haplo-essential"),
     EMBRYO("Embryo");
 
     private static final Map<String, PhenotypingStageTypeName> BY_LABEL = new HashMap<>();
