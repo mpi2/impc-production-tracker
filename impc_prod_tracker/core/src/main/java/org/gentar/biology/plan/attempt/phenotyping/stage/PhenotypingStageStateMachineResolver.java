@@ -1,7 +1,7 @@
 package org.gentar.biology.plan.attempt.phenotyping.stage;
 
 import org.gentar.biology.plan.attempt.phenotyping.stage.engine.PhenotypingStageEvent;
-import org.gentar.biology.plan.attempt.phenotyping.stage.engine.events.EarlyAdultEvent;
+import org.gentar.biology.plan.attempt.phenotyping.stage.engine.EarlyAdultEvent;
 import org.gentar.biology.plan.attempt.phenotyping.stage.type.PhenotypingStageType;
 import org.gentar.biology.plan.attempt.phenotyping.stage.type.PhenotypingStageTypeName;
 import org.gentar.statemachine.ProcessData;

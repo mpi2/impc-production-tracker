@@ -1,7 +1,7 @@
 package org.gentar.biology.plan.attempt.phenotyping.stage.engine.processors;
 
 import org.gentar.biology.plan.attempt.phenotyping.stage.PhenotypingStageStateSetter;
-import org.gentar.biology.plan.attempt.phenotyping.stage.PhenotypingStage;
+import org.gentar.security.abac.spring.ContextAwarePolicyEnforcement;
 import org.gentar.statemachine.AbstractProcessor;
 import org.gentar.statemachine.ProcessData;
 import org.gentar.statemachine.ProcessEvent;
@@ -9,12 +9,16 @@ import org.gentar.statemachine.TransitionEvaluation;
 import org.springframework.stereotype.Component;
 
 @Component
-public class EarlyAdultPhenotypingAbortProcessor extends AbstractProcessor
+public class RollbackToAllDataProcessedProcessor extends AbstractProcessor
 {
-    public EarlyAdultPhenotypingAbortProcessor(
-        PhenotypingStageStateSetter phenotypingStageStateSetter)
+    private ContextAwarePolicyEnforcement policyEnforcement;
+
+    public RollbackToAllDataProcessedProcessor(
+        PhenotypingStageStateSetter phenotypingStageStateSetter,
+        ContextAwarePolicyEnforcement policyEnforcement)
     {
         super(phenotypingStageStateSetter);
+        this.policyEnforcement = policyEnforcement;
     }
 
     @Override
@@ -22,17 +26,19 @@ public class EarlyAdultPhenotypingAbortProcessor extends AbstractProcessor
     {
         TransitionEvaluation transitionEvaluation = new TransitionEvaluation();
         transitionEvaluation.setTransition(transition);
-        boolean canAbortPhenotypingStage = canAbortPhenotypingStage((PhenotypingStage) data);
+        boolean canAbortPhenotypingStage = canExecuteTransition();
         transitionEvaluation.setExecutable(canAbortPhenotypingStage);
         if (!canAbortPhenotypingStage)
         {
-            transitionEvaluation.setNote("Phenotyping stage cannot be aborted");
+            transitionEvaluation.setNote("The current user does not have permission to rollback " +
+                "to 'Phenotyping All Data Processed'");
         }
         return transitionEvaluation;
     }
 
-    private boolean canAbortPhenotypingStage(PhenotypingStage phenotypingStage) {
-        // Put here the validations before aborting a Phenotyping Stage.
-        return true;
+    private boolean canExecuteTransition()
+    {
+        return policyEnforcement.hasPermission(
+            null, "REVERSE_FROM_PHENOTYPING_FINISHED_TO_ALL_DATA_PROCESSED");
     }
 }
