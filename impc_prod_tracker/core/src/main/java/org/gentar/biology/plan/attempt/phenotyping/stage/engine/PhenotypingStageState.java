@@ -1,9 +1,6 @@
 package org.gentar.biology.plan.attempt.phenotyping.stage.engine;
 
-import org.gentar.biology.plan.attempt.phenotyping.stage.engine.state.EmbryoPhenotypingStageState;
-import org.gentar.statemachine.EnumStateHelper;
 import org.gentar.statemachine.ProcessState;
-import java.util.Arrays;
 
 public enum PhenotypingStageState implements ProcessState
 {
@@ -21,11 +18,6 @@ public enum PhenotypingStageState implements ProcessState
         this.internalName = internalName;
     }
 
-    public static ProcessState getStateByInternalName(String internalName)
-    {
-        return EnumStateHelper.getStateByInternalName(
-            Arrays.asList(EmbryoPhenotypingStageState.values()), internalName);
-    }
     @Override
     public String getName()
     {
