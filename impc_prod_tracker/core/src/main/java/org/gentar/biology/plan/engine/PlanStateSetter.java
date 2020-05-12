@@ -3,6 +3,7 @@ package org.gentar.biology.plan.engine;
 import org.gentar.biology.plan.Plan;
 import org.gentar.biology.plan.status.PlanStatusStamp;
 import org.gentar.biology.status.Status;
+import org.gentar.biology.status.StatusNames;
 import org.gentar.biology.status.StatusService;
 import org.gentar.statemachine.ProcessData;
 import org.gentar.statemachine.StateSetter;
@@ -41,6 +42,12 @@ public class PlanStateSetter implements StateSetter
     {
         Status newPlanStatus = statusService.getStatusByName(statusName);
         setStatus(entity, newPlanStatus);
+    }
+
+    @Override
+    public void setInitialStatus(ProcessData entity)
+    {
+        setStatusByName(entity, StatusNames.PLAN_CREATED);
     }
 
     private void registerStatusStamp(Plan plan)

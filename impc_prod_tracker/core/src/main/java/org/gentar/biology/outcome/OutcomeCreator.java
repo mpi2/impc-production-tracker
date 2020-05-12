@@ -2,7 +2,9 @@ package org.gentar.biology.outcome;
 
 import org.gentar.audit.history.History;
 import org.gentar.audit.history.HistoryService;
-import org.gentar.biology.plan.Plan;
+import org.gentar.biology.colony.engine.ColonyStateSetter;
+import org.gentar.biology.outcome.type.OutcomeTypeName;
+import org.gentar.biology.specimen.engine.SpecimenStateSetter;
 import org.springframework.stereotype.Component;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -18,17 +20,39 @@ class OutcomeCreator
     @PersistenceContext
     private EntityManager entityManager;
     private HistoryService<Outcome> historyService;
+    private ColonyStateSetter colonyStateSetter;
+    private SpecimenStateSetter specimenStateSetter;
 
-    OutcomeCreator(HistoryService<Outcome> historyService)
+    OutcomeCreator(
+        HistoryService<Outcome> historyService,
+        ColonyStateSetter colonyStateSetter,
+        SpecimenStateSetter specimenStateSetter)
     {
         this.historyService = historyService;
+        this.colonyStateSetter = colonyStateSetter;
+        this.specimenStateSetter = specimenStateSetter;
     }
 
     public Outcome create(Outcome outcome)
     {
+        setInitialStatus(outcome);
         Outcome createdOutcome = save(outcome);
         registerCreationInHistory(createdOutcome);
         return createdOutcome;
+    }
+
+    private void setInitialStatus(Outcome outcome)
+    {
+        String outcomeTypeName =
+            outcome.getOutcomeType() == null ? "" : outcome.getOutcomeType().getName();
+        if (OutcomeTypeName.COLONY.getLabel().equals(outcomeTypeName))
+        {
+            colonyStateSetter.setInitialStatus(outcome.getColony());
+        }
+        else if (OutcomeTypeName.SPECIMEN.getLabel().equals(outcomeTypeName))
+        {
+            specimenStateSetter.setInitialStatus(outcome.getSpecimen());
+        }
     }
 
     private void registerCreationInHistory(Outcome outcome)

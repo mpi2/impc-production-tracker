@@ -16,4 +16,10 @@ public interface StateSetter
      * @param statusName A string with the name of the status.
      */
     void setStatusByName(ProcessData entity, String statusName);
+
+    /**
+     * Sets the initial status for a entity.
+     * @param entity Entity to which a first status needs to be assigned.
+     */
+    void setInitialStatus(ProcessData entity);
 }

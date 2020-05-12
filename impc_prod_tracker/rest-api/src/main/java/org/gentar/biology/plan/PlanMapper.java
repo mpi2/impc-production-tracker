@@ -24,6 +24,7 @@ import org.gentar.organization.funder.Funder;
 import org.gentar.organization.funder.FunderMapper;
 import org.gentar.organization.work_group.WorkGroupMapper;
 import org.gentar.organization.work_unit.WorkUnitMapper;
+import org.gentar.statemachine.ProcessEvent;
 import org.gentar.statemachine.TransitionEvaluation;
 import org.gentar.statemachine.TransitionMapper;
 import org.springframework.stereotype.Component;
@@ -184,6 +185,7 @@ public class PlanMapper implements Mapper<Plan, PlanDTO>
     public Plan toEntity(PlanDTO planDTO)
     {
         Plan plan = entityMapper.toTarget(planDTO, Plan.class);
+        setEvent(plan, planDTO);
         plan.setProject(projectService.getProjectByTpn(planDTO.getTpn()));
         Set<Funder> funders = new HashSet<>(funderMapper.toEntities(planDTO.getFunderNames()));
         plan.setFunders(funders);
@@ -193,6 +195,18 @@ public class PlanMapper implements Mapper<Plan, PlanDTO>
         setAttemptType(plan, planDTO);
         setAttempt(plan, planDTO);
         return plan;
+    }
+
+    private void setEvent(Plan plan, PlanDTO planDTO)
+    {
+        ProcessEvent processEvent = null;
+        StatusTransitionDTO statusTransitionDTO = planDTO.getStatusTransitionDTO();
+        if (statusTransitionDTO != null)
+        {
+            String action = statusTransitionDTO.getActionToExecute();
+            processEvent = planService.getProcessEventByName(plan, action);
+        }
+        plan.setEvent(processEvent);
     }
 
     private void setAttempt(Plan plan, PlanDTO planDTO)
@@ -277,9 +291,12 @@ public class PlanMapper implements Mapper<Plan, PlanDTO>
 
     private void setPlanType(Plan plan, PlanDTO planDTO)
     {
-        if (planDTO.getPlanTypeName() == null) {
+        if (planDTO.getPlanTypeName() == null)
+        {
             plan.setPlanType(planTypeMapper.toEntity("Production"));
-        } else {
+        }
+        else
+        {
             plan.setPlanType(planTypeMapper.toEntity(planDTO.getPlanTypeName()));
         }
     }

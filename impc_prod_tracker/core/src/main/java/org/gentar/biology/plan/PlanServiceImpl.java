@@ -149,4 +149,10 @@ public class PlanServiceImpl implements PlanService
             planStateMachineResolver.getAvailableTransitionsByEntityStatus(plan);
         return transitionAvailabilityEvaluator.evaluate(transitions, plan);
     }
+
+    @Override
+    public ProcessEvent getProcessEventByName(Plan plan, String name)
+    {
+        return planStateMachineResolver.getProcessEventByActionName(plan, name);
+    }
 }

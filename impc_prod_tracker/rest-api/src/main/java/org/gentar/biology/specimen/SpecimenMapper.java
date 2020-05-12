@@ -2,18 +2,10 @@ package org.gentar.biology.specimen;
 
 import org.gentar.EntityMapper;
 import org.gentar.Mapper;
-import org.gentar.biology.specimen.engine.SpecimenEvent;
-import org.gentar.biology.specimen.engine.SpecimenState;
 import org.gentar.biology.strain.StrainMapper;
 import org.gentar.common.state_machine.StatusTransitionDTO;
-import org.gentar.common.state_machine.TransitionDTO;
-import org.gentar.statemachine.EnumStateHelper;
 import org.gentar.statemachine.ProcessEvent;
-import org.gentar.statemachine.ProcessState;
 import org.springframework.stereotype.Component;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @Component
 public class SpecimenMapper implements Mapper<Specimen, SpecimenDTO>
@@ -22,7 +14,8 @@ public class SpecimenMapper implements Mapper<Specimen, SpecimenDTO>
     private SpecimenService specimenService;
     private StrainMapper strainMapper;
 
-    public SpecimenMapper(EntityMapper entityMapper, SpecimenService specimenService, StrainMapper strainMapper)
+    public SpecimenMapper(
+        EntityMapper entityMapper, SpecimenService specimenService, StrainMapper strainMapper)
     {
         this.entityMapper = entityMapper;
         this.specimenService = specimenService;
@@ -40,41 +33,25 @@ public class SpecimenMapper implements Mapper<Specimen, SpecimenDTO>
     }
 
     @Override
-    public Specimen toEntity(SpecimenDTO dto)
+    //TODO: Why we are not showing the state machine for specimen?
+    public Specimen toEntity(SpecimenDTO specimenDTO)
     {
-        Specimen specimen = entityMapper.toTarget(dto, Specimen.class);
-        specimen.setSpecimenType(specimenService.getSpecimenTypeByName(dto.getSpecimenTypeName()));
-        specimen.setStrain(strainMapper.toEntity(dto.getStrainName()));
+        Specimen specimen = entityMapper.toTarget(specimenDTO, Specimen.class);
+        setEvent(specimen, specimenDTO);
+        specimen.setSpecimenType(specimenService.getSpecimenTypeByName(specimenDTO.getSpecimenTypeName()));
+        specimen.setStrain(strainMapper.toEntity(specimenDTO.getStrainName()));
         return specimen;
     }
 
-    private StatusTransitionDTO buildStatusTransitionDTO(Specimen specimen)
+    private void setEvent(Specimen specimen, SpecimenDTO specimenDTO)
     {
-        StatusTransitionDTO statusTransitionDTO = new StatusTransitionDTO();
-        statusTransitionDTO.setCurrentStatus(specimen.getStatus().getName());
-        statusTransitionDTO.setTransitions(getTransitions(specimen));
-        return statusTransitionDTO;
-    }
-
-    private List<TransitionDTO> getTransitions(Specimen specimen)
-    {
-        List<TransitionDTO> transitionDTOS = new ArrayList<>();
-        String currentStatusName = specimen.getStatus().getName();
-        ProcessState processState = SpecimenState.getStateByInternalName(currentStatusName);
-        if (processState != null)
+        ProcessEvent processEvent = null;
+        StatusTransitionDTO statusTransitionDTO = specimenDTO.getStatusTransitionDTO();
+        if (statusTransitionDTO != null)
         {
-            List<ProcessEvent> specimenEvents =
-                    EnumStateHelper.getAvailableEventsByState(SpecimenEvent.getAllEvents(), processState);
-            specimenEvents.forEach(x -> {
-                TransitionDTO transition = new TransitionDTO();
-                transition.setAction(x.getName());
-                transition.setDescription(x.getDescription());
-                transition.setNextStatus(x.getEndState().getName());
-                transition.setNote(x.getTriggerNote());
-                transition.setAvailable(x.isTriggeredByUser());
-                transitionDTOS.add(transition);
-            });
+            String action = statusTransitionDTO.getActionToExecute();
+            processEvent = specimenService.getProcessEventByName(specimen, action);
         }
-        return transitionDTOS;
+        specimen.setEvent(processEvent);
     }
 }

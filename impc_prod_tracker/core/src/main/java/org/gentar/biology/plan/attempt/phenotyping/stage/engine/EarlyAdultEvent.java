@@ -52,13 +52,13 @@ public enum EarlyAdultEvent implements ProcessEvent
                 return UpdateToPhenotypingStartedProcessor.class;
             }
         },
-    phenotypingAllDataSent(
+    updateToPhenotypingAllDataSent(
         "No more phenotype data will be sent to the DCC.",
         EarlyAdultState.PhenotypingStarted,
         EarlyAdultState.PhenotypingAllDataSent,
         StateMachineConstants.TRIGGERED_BY_USER,
         "Used to indicate all phenotype data has been sent to the DCC."),
-    PhenotypingAllDataProcessed(
+    updateToPhenotypingAllDataProcessed(
         "Set by the DCC when all phenotype data received and processed.",
         EarlyAdultState.PhenotypingAllDataSent,
         EarlyAdultState.PhenotypingAllDataProcessed,
@@ -71,7 +71,7 @@ public enum EarlyAdultEvent implements ProcessEvent
                 return AllDataSentToAllDataProcessedProcessor.class;
             }
         },
-    phenotypingFinished(
+    updateToPhenotypingFinished(
         "Marked as finished by the CDA when all phenotype data published",
         EarlyAdultState.PhenotypingAllDataProcessed,
         EarlyAdultState.PhenotypingFinished,

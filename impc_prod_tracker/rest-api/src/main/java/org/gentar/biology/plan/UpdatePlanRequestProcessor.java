@@ -15,13 +15,7 @@
  */
 package org.gentar.biology.plan;
 
-import org.gentar.biology.plan.attempt.breeding.BreedingAttempt;
-import org.gentar.biology.plan.attempt.breeding.BreedingAttemptDTO;
-import org.gentar.biology.plan.attempt.breeding.BreedingAttemptMapper;
-import org.gentar.biology.plan.attempt.crispr.CrisprAttemptDTO;
-import org.gentar.biology.plan.attempt.crispr.CrisprAttemptMapper;
 import org.springframework.stereotype.Component;
-import org.gentar.biology.plan.attempt.crispr.CrisprAttempt;
 
 /**
  * Class in charge of analysing a PlanDTO object and retrieve the Plan object
@@ -30,14 +24,11 @@ import org.gentar.biology.plan.attempt.crispr.CrisprAttempt;
 @Component
 public class UpdatePlanRequestProcessor
 {
-    private CrisprAttemptMapper crisprAttemptMapper;
-    private BreedingAttemptMapper breedingAttemptMapper;
+    private PlanMapper planMapper;
 
-    public UpdatePlanRequestProcessor(
-        CrisprAttemptMapper crisprAttemptMapper, BreedingAttemptMapper breedingAttemptMapper)
+    public UpdatePlanRequestProcessor(PlanMapper planMapper)
     {
-        this.crisprAttemptMapper = crisprAttemptMapper;
-        this.breedingAttemptMapper = breedingAttemptMapper;
+        this.planMapper = planMapper;
     }
 
     /**
@@ -51,46 +42,12 @@ public class UpdatePlanRequestProcessor
     {
         if (planDTO != null)
         {
-            updateBasicInformation(plan, planDTO);
-
-            if (planDTO.getCrisprAttemptDTO() != null)
-            {
-                setNewCrisprAttempt(plan, planDTO.getCrisprAttemptDTO());
-            }
-            else if (planDTO.getBreedingAttemptDTO() != null)
-            {
-                setNewBreedingAttempt(plan, planDTO.getBreedingAttemptDTO());
-            }
+            Plan mappedPlan = planMapper.toEntity(planDTO);
+            plan.setComment(mappedPlan.getComment());
+            plan.setCrisprAttempt(mappedPlan.getCrisprAttempt());
+            plan.setPhenotypingAttempt(mappedPlan.getPhenotypingAttempt());
+            plan.setBreedingAttempt(mappedPlan.getBreedingAttempt());
         }
         return plan;
-    }
-
-    private void setNewCrisprAttempt(Plan plan, CrisprAttemptDTO crisprAttemptDTO)
-    {
-        crisprAttemptDTO.setCrisprAttemptId(plan.getId());
-        CrisprAttempt crisprAttempt = crisprAttemptMapper.toEntity(crisprAttemptDTO);
-        crisprAttempt.setImitsMiAttempt(plan.getCrisprAttempt().getImitsMiAttempt());
-        crisprAttempt.setPlan(plan);
-        crisprAttempt.setId(plan.getId());
-        plan.setCrisprAttempt(crisprAttempt);
-    }
-
-    private void setNewBreedingAttempt(Plan plan, BreedingAttemptDTO breedingAttemptDTO)
-    {
-        breedingAttemptDTO.setPlanId(plan.getId());
-        BreedingAttempt breedingAttempt = breedingAttemptMapper.toEntity(breedingAttemptDTO);
-
-        breedingAttempt.setPlan(plan);
-        breedingAttempt.setId(plan.getId());
-        plan.setBreedingAttempt(breedingAttempt);
-    }
-
-    private void updateBasicInformation(Plan plan, PlanDTO planDTO)
-    {
-        String newComment = planDTO.getComment();
-        if (newComment != null)
-        {
-            plan.setComment(newComment);
-        }
     }
 }

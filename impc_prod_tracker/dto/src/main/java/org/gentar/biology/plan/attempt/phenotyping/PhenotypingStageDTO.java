@@ -1,6 +1,5 @@
 package org.gentar.biology.plan.attempt.phenotyping;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
@@ -13,15 +12,11 @@ import java.util.List;
 @RequiredArgsConstructor
 public class PhenotypingStageDTO
 {
-    @JsonIgnore
     private Long id;
-
     private LocalDate phenotypingExperimentsStarted;
     private Boolean doNotCountTowardsCompleteness;
     private LocalDate initialDataReleaseDate;
-
     private String statusName;
-
     private String phenotypingTypeName;
 
     @JsonProperty("statusDates")

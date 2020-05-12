@@ -7,6 +7,7 @@ import org.gentar.biology.plan.attempt.phenotyping.stage.PhenotypingStage;
 import org.gentar.biology.strain.Strain;
 import org.springframework.stereotype.Component;
 
+import java.util.HashSet;
 import java.util.Set;
 
 @Component
@@ -14,7 +15,6 @@ public class PhenotypingAttemptMapper implements Mapper<PhenotypingAttempt, Phen
 {
     private EntityMapper entityMapper;
     private StrainMapper strainMapper;
-
     private PhenotypingStageMapper phenotypingStageMapper;
 
     public PhenotypingAttemptMapper(
@@ -33,9 +33,11 @@ public class PhenotypingAttemptMapper implements Mapper<PhenotypingAttempt, Phen
         PhenotypingAttemptDTO phenotypingAttemptDTO = null;
         if (phenotypingAttempt != null)
         {
-            phenotypingAttemptDTO = entityMapper.toTarget(phenotypingAttempt, PhenotypingAttemptDTO.class);
+            phenotypingAttemptDTO =
+                entityMapper.toTarget(phenotypingAttempt, PhenotypingAttemptDTO.class);
             phenotypingAttemptDTO.setStrainName(strainMapper.toDto(phenotypingAttempt.getStrain()));
-            phenotypingAttemptDTO.setPhenotypingStageDTOs(phenotypingStageMapper.toDtos(phenotypingAttempt.getPhenotypingStages()));
+            phenotypingAttemptDTO.setPhenotypingStageDTOs(
+                phenotypingStageMapper.toDtos(phenotypingAttempt.getPhenotypingStages()));
         }
         return phenotypingAttemptDTO;
     }
@@ -45,17 +47,16 @@ public class PhenotypingAttemptMapper implements Mapper<PhenotypingAttempt, Phen
     {
         PhenotypingAttempt phenotypingAttempt = entityMapper.toTarget(dto, PhenotypingAttempt.class);
         setStrain(phenotypingAttempt, dto);
-
         setPhenotypingStagesToEntity(phenotypingAttempt, dto);
-
         return phenotypingAttempt;
     }
 
-    private void setPhenotypingStagesToEntity(PhenotypingAttempt phenotypingAttempt, PhenotypingAttemptDTO dto)
+    private void setPhenotypingStagesToEntity(
+        PhenotypingAttempt phenotypingAttempt, PhenotypingAttemptDTO dto)
     {
-        Set<PhenotypingStage> phenotypingStages = phenotypingStageMapper.toEntities(dto.getPhenotypingStageDTOs());
+        Set<PhenotypingStage> phenotypingStages = new HashSet<>(
+            phenotypingStageMapper.toEntities(dto.getPhenotypingStageDTOs()));
         phenotypingStages.forEach(x -> x.setPhenotypingAttempt(phenotypingAttempt));
-
         phenotypingAttempt.setPhenotypingStages(phenotypingStages);
     }
 

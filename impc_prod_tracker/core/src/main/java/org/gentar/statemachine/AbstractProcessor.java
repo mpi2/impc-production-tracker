@@ -43,7 +43,6 @@ public abstract class AbstractProcessor implements Processor
 
     private void tryToExecuteTransition(ProcessData entity)
     {
-
         ProcessEvent processEvent = entity.getEvent();
         if (processEvent != null)
         {
@@ -54,13 +53,25 @@ public abstract class AbstractProcessor implements Processor
         }
     }
 
+    /**
+     * Gets the end state for the transition after validating that the entity has the status that
+     * the transition has as initial state.
+     * @param entity Entity to check.
+     * @param transition Transition to check
+     * @return The end status of the transition if the transition can be executed according the
+     * status of the entity and the initial status of the transition.
+     */
     private ProcessState getValidatedEndState(ProcessData entity, ProcessEvent transition)
     {
         String currentStatusName = entity.getStatus().getName();
         String initialStatusTransitionName = transition.getInitialState().getInternalName();
-        if (!currentStatusName.equals(initialStatusTransitionName))
+        // Using 'contains' to handle the case of generic state machines which initial state is
+        // a more generic name that the status in the entity.
+        // i.e: 'Late Adult Phenotyping Registered' (Status in entity) and 'Phenotyping Registered'
+        // (status in state machine).
+        if (!currentStatusName.contains(initialStatusTransitionName))
         {
-            throw new SystemOperationFailedException(
+            throw new UserOperationFailedException(
                 "Invalid transition",
                 String.format(
                     TRANSITION_ERROR,
