@@ -5,6 +5,7 @@ import org.gentar.biology.plan.engine.PlanStateSetter;
 import org.gentar.biology.plan.engine.crispr.CrisprProductionPlanEvent;
 import org.gentar.biology.plan.engine.crispr.CrisprProductionPlanState;
 import org.gentar.exceptions.SystemOperationFailedException;
+import org.gentar.exceptions.UserOperationFailedException;
 import org.gentar.test_util.PlanBuilder;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -76,12 +77,12 @@ class AbstractProcessorTest
             .build();
         plan.setEvent(CrisprProductionPlanEvent.updateToInProgress);
 
-        SystemOperationFailedException thrown = assertThrows(SystemOperationFailedException.class,
+        UserOperationFailedException thrown = assertThrows(UserOperationFailedException.class,
             () -> testInstance.process(plan),
             "Exception not thrown");
         assertThat(
             "Not expected message",
-            thrown.getExceptionDetail(),
+            thrown.getDebugMessage(),
             is("Transition [updateToInProgress] cannot be executed because it goes from status " +
                 "[Plan Created] to [Attempt In Progress] but current status in the entity [Plan]" +
                 " is [Embryos Obtained]"));

@@ -13,12 +13,16 @@ import org.gentar.statemachine.ProcessEvent;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 @NoArgsConstructor(access= AccessLevel.PUBLIC, force=true)
 @Data
 @Entity
-@Table(name="PHENOTYPING_STAGE", uniqueConstraints=@UniqueConstraint(columnNames={"plan_id", "phenotyping_stage_type_id"}))
+@Table(
+    name="PHENOTYPING_STAGE",
+    uniqueConstraints=@UniqueConstraint(columnNames={"plan_id", "phenotyping_stage_type_id"}))
 public class PhenotypingStage extends BaseEntity implements ProcessData
 {
     @Id
@@ -59,4 +63,15 @@ public class PhenotypingStage extends BaseEntity implements ProcessData
     @ToString.Exclude
     @OneToMany(cascade= CascadeType.ALL, mappedBy = "phenotypingStage")
     private Set<PhenotypingStageStatusStamp> phenotypingStageStatusStamps;
+
+    public String toString()
+    {
+        List<String> values = new ArrayList<>();
+        values.add("id=" + id);
+        values.add("phenotypingStageType=" + phenotypingStageType.getName());
+        values.add("phenotypingExperimentsStarted=" + phenotypingExperimentsStarted);
+        values.add("statusName=" + status.getName());
+        values.add("initialDataReleaseDate=" + initialDataReleaseDate);
+        return String.join(",", values);
+    }
 }

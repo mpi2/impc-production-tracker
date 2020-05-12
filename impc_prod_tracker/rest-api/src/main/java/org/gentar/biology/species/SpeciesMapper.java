@@ -3,11 +3,8 @@ package org.gentar.biology.species;
 import org.gentar.Mapper;
 import org.gentar.exceptions.UserOperationFailedException;
 import org.springframework.stereotype.Component;
-
 import java.util.Collection;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 @Component
 public class SpeciesMapper implements Mapper<Species, String>
@@ -40,16 +37,5 @@ public class SpeciesMapper implements Mapper<Species, String>
             throw new UserOperationFailedException(String.format(SPECIES_NOT_FOUND_ERROR, name));
         }
         return species;
-    }
-
-    public Set<Species> toEntities(List<String> speciesNames)
-    {
-        Set<Species> species = new HashSet<>();
-        if(speciesNames != null)
-        {
-            speciesNames.forEach(x -> species.add(toEntity(x)));
-        }
-
-        return  species;
     }
 }

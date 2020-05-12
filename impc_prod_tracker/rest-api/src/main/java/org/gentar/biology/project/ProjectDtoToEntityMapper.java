@@ -16,9 +16,6 @@
 package org.gentar.biology.project;
 
 import org.gentar.EntityMapper;
-import org.gentar.biology.plan.Plan;
-import org.gentar.biology.plan.PlanDTO;
-import org.gentar.biology.plan.PlanMapper;
 import org.gentar.biology.project.consortium.ProjectConsortium;
 import org.gentar.biology.intention.project_intention.ProjectIntention;
 import org.gentar.biology.species.SpeciesMapper;
@@ -28,6 +25,7 @@ import org.springframework.stereotype.Component;
 import org.gentar.biology.project.privacy.Privacy;
 import org.gentar.biology.project.consortium.ProjectConsortiumMapper;
 import org.gentar.biology.intention.ProjectIntentionMapper;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -73,8 +71,7 @@ public class ProjectDtoToEntityMapper
 
     private void setSpecies(Project project, ProjectDTO projectDTO)
     {
-        Set<Species> species =
-                speciesMapper.toEntities(projectDTO.getSpeciesNames());
+        Set<Species> species = new HashSet<>(speciesMapper.toEntities(projectDTO.getSpeciesNames()));
         project.setSpecies(species);
     }
 
@@ -105,7 +102,8 @@ public class ProjectDtoToEntityMapper
 
     private void setConsortia(Project project, ProjectDTO projectDTO)
     {
-        Set<ProjectConsortium> projectConsortia = projectConsortiumMapper.toEntities(projectDTO.getProjectConsortiumDTOS());
+        Set<ProjectConsortium> projectConsortia =
+            projectConsortiumMapper.toEntities(projectDTO.getProjectConsortiumDTOS());
         projectConsortia.forEach(x -> x.setProject(project));
         project.setProjectConsortia(projectConsortia);
     }

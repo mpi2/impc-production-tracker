@@ -15,17 +15,12 @@
  */
 package org.gentar.biology.plan;
 
-import org.gentar.biology.plan.engine.PlanStateMachineResolver;
 import org.gentar.biology.plan.filter.PlanFilter;
 import org.gentar.biology.plan.filter.PlanFilterBuilder;
-import org.gentar.biology.project.Project;
-import org.gentar.biology.project.ProjectDTO;
-import org.gentar.common.state_machine.StatusTransitionDTO;
 import org.gentar.exceptions.UserOperationFailedException;
 import org.gentar.helpers.PaginationHelper;
 import org.gentar.helpers.LinkUtil;
 import org.gentar.common.history.HistoryDTO;
-import org.gentar.statemachine.ProcessEvent;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PagedResourcesAssembler;
@@ -50,7 +45,6 @@ public class PlanController
     private PlanService planService;
     private PlanMapper planMapper;
     private UpdatePlanRequestProcessor updatePlanRequestProcessor;
-    private PlanStateMachineResolver planStateMachineResolver;
 
     private static final String PLAN_NOT_EXISTS_ERROR =
             "The plan[%s] does not exist.";
@@ -59,14 +53,12 @@ public class PlanController
         HistoryMapper historyMapper,
         PlanService planService,
         PlanMapper planMapper,
-        UpdatePlanRequestProcessor updatePlanRequestProcessor,
-        PlanStateMachineResolver planStateMachineResolver)
+        UpdatePlanRequestProcessor updatePlanRequestProcessor)
     {
         this.historyMapper = historyMapper;
         this.planService = planService;
         this.planMapper = planMapper;
         this.updatePlanRequestProcessor = updatePlanRequestProcessor;
-        this.planStateMachineResolver = planStateMachineResolver;
     }
 
     /**
@@ -179,24 +171,10 @@ public class PlanController
         return plan;
     }
 
-    private void setEventByPlanType(Plan plan, PlanDTO planDTO)
-    {
-        ProcessEvent processEvent = null;
-        StatusTransitionDTO statusTransitionDTO =  planDTO.getStatusTransitionDTO();
-        if (statusTransitionDTO != null)
-        {
-            String action = statusTransitionDTO.getActionToExecute();
-            processEvent = planStateMachineResolver.getProcessEventByActionName(plan, action);
-        }
-        plan.setEvent(processEvent);
-    }
-
     @PutMapping(value = {"/{pin}"})
-    public HistoryDTO updatePlan(
-        @PathVariable String pin, @RequestBody PlanDTO planDTO)
+    public HistoryDTO updatePlan(@PathVariable String pin, @RequestBody PlanDTO planDTO)
     {
         Plan plan = getPlanToUpdate(pin, planDTO);
-        setEventByPlanType(plan, planDTO);
         History history = planService.updatePlan(pin, plan);
         HistoryDTO historyDTO = new HistoryDTO();
         if (history != null)
