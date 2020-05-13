@@ -1,6 +1,62 @@
 <dataset>
+    <PRIVACY    ID="1"
+                NAME="public"/>
+    <PRIVACY    ID="2"
+                NAME="protected"/>
+    <PRIVACY    ID="3"
+                NAME="restricted"/>
+
+    <ASSIGNMENT_STATUS  ID="1"
+                        NAME="Assigned"/>
+    <ASSIGNMENT_STATUS  ID="2"
+                        NAME="Inspect - Conflict"/>
+
+    <PLAN_TYPE  ID="1"
+                NAME="production"/>
+    <PLAN_TYPE  ID="2"
+                NAME="phenotyping"/>
+
+    <STATUS     ID="1"
+                NAME="Plan Created"/>
+    <STATUS     ID="2"
+                NAME="Attempt In Progress"/>
+
     <PROJECT    ID="1"
-                TPN="TPN01"/>
+                TPN="TPN:01"
+                PRIVACY_ID="1"
+                ASSIGNMENT_STATUS_ID="1"
+                SUMMARY_STATUS_ID="1"/>
     <PROJECT    ID="2"
-                TPN="TPN02"/>
+                TPN="TPN:02"
+                PRIVACY_ID="1"
+                ASSIGNMENT_STATUS_ID="2"
+                SUMMARY_STATUS_ID="2"/>
+    <PROJECT    ID="3"
+                TPN="TPN:03"
+                PRIVACY_ID="1"
+                ASSIGNMENT_STATUS_ID="1"
+                SUMMARY_STATUS_ID="1"/>
+    <PROJECT    ID="4"
+                TPN="TPN:04"
+                PRIVACY_ID="2"
+                ASSIGNMENT_STATUS_ID="2"
+                SUMMARY_STATUS_ID="2"/>
+    <PROJECT    ID="5"
+                TPN="TPN:05"
+                PRIVACY_ID="3"
+                ASSIGNMENT_STATUS_ID="1"
+                SUMMARY_STATUS_ID="1"/>
+
+    <PLAN       ID="1"
+                PIN="PIN:001"
+                PROJECT_ID="1"
+                PLAN_TYPE_ID="1"
+                STATUS_ID="1"
+                SUMMARY_STATUS_ID="1"/>
+
+    <PERSON     ID="123"
+                EMAIL="imits2test@test.com"
+                AUTH_ID="usr-dde67fbd-c3c2-42eb-aa81-f1a225f047c7"/>
+    <PERSON_ROLE_WORK_UNIT/>
+    <PERSON_ROLE_CONSORTIUM/>
 </dataset>

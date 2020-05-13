@@ -1,10 +1,13 @@
 package org.gentar.framework;
 
+import org.gentar.security.auth.AuthenticationRequest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.json.JacksonJsonParser;
+import org.springframework.http.MediaType;
 import org.springframework.restdocs.RestDocumentationContextProvider;
 import org.springframework.restdocs.RestDocumentationExtension;
 import org.springframework.restdocs.constraints.ConstraintDescriptions;
@@ -12,8 +15,12 @@ import org.springframework.restdocs.mockmvc.MockMvcRestDocumentation;
 import org.springframework.restdocs.mockmvc.RestDocumentationResultHandler;
 import org.springframework.restdocs.payload.FieldDescriptor;
 import org.springframework.restdocs.snippet.Snippet;
+import org.springframework.security.web.FilterChainProxy;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 import org.springframework.util.StringUtils;
 import org.springframework.web.context.WebApplicationContext;
 
@@ -21,11 +28,15 @@ import java.io.IOException;
 import java.util.Collections;
 import java.util.Properties;
 
+import static org.gentar.util.JsonHelper.toJson;
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.preprocessRequest;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.preprocessResponse;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.prettyPrint;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.restdocs.snippet.Attributes.key;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @ExtendWith(RestDocumentationExtension.class)
 @Tag(ControllerTestTemplate.TAG)
@@ -36,12 +47,16 @@ public class ControllerTestTemplate extends IntegrationTestTemplate
     private MockMvc mvc;
 
     @Autowired
+    private FilterChainProxy springSecurityFilterChain;
+
+    @Autowired
     private WebApplicationContext applicationContext;
 
     //@Autowired private SequenceResetter sequenceResetter;
 
     @BeforeEach
-    public void setup(RestDocumentationContextProvider restDocumentation) {
+    public void setup(RestDocumentationContextProvider restDocumentation)
+    {
         MockitoAnnotations.initMocks(this);
         mvc =
             MockMvcBuilders.webAppContextSetup(applicationContext)
@@ -132,4 +147,21 @@ public class ControllerTestTemplate extends IntegrationTestTemplate
     protected LinksSnippet linksInPath(String jsonPath, LinkDescriptor... linkDescriptors) {
         return new JsonPathLinksSnippet(jsonPath, linkDescriptors);
     }*/
+
+    protected String getAccessTokenForTestsUser() throws Exception
+    {
+
+        AuthenticationRequest authenticationRequest =
+            new AuthenticationRequest("imits2test", "imits2test");
+        ResultActions result
+            = mvc().perform(post("/auth/signin")
+            .content(toJson(authenticationRequest))
+            .contentType(MediaType.APPLICATION_JSON)
+            .accept("application/json;charset=UTF-8"))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType("application/json;charset=UTF-8"));
+        String resultString = result.andReturn().getResponse().getContentAsString();
+        JacksonJsonParser jsonParser = new JacksonJsonParser();
+        return jsonParser.parseMap(resultString).get("accessToken").toString();
+    }
 }

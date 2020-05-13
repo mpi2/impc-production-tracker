@@ -51,21 +51,21 @@ public class ProjectSpecs
         return specification;
     }
 
-    public static Specification<Project> withGenes(List<String> genesNameOrIds)
+    public static Specification<Project> withMarkerSymbolOrAccId(List<String> genesNameOrIds)
     {
         Specification<Project> specification = Specification.where(null);
         if (genesNameOrIds != null)
         {
             specification = (Specification<Project>) (root, query, criteriaBuilder) -> {
-                List<String> lowerCaseGenesNameOrIds =
+                List<String> lowerCaseMarkerSymbolsOrIds =
                     genesNameOrIds.stream().map(String::toLowerCase).collect(Collectors.toList());
                 Path<String> symbolNamePath = ProjectPaths.getMarkerSymbolPath(root);
                 Path<String> accIdPath = ProjectPaths.getAccIdPath(root);
 
                 query.distinct(true);
                 return criteriaBuilder.or(
-                    criteriaBuilder.lower(symbolNamePath).in(lowerCaseGenesNameOrIds),
-                    criteriaBuilder.lower(accIdPath).in(lowerCaseGenesNameOrIds)
+                    criteriaBuilder.lower(symbolNamePath).in(lowerCaseMarkerSymbolsOrIds),
+                    criteriaBuilder.lower(accIdPath).in(lowerCaseMarkerSymbolsOrIds)
                 );
             };
         }

@@ -45,7 +45,7 @@ public class ProjectIntentionService
 
     List<Project> getProjectsWithGenes(List<String> accIds)
     {
-        Specification<Project> specifications = Specification.where(ProjectSpecs.withGenes(accIds));
+        Specification<Project> specifications = Specification.where(ProjectSpecs.withMarkerSymbolOrAccId(accIds));
         List<Project> projects = projectRepository.findAll(specifications);
         return projects;
     }

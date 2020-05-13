@@ -155,7 +155,7 @@ public class ProjectServiceImpl implements ProjectService
                 ProjectSpecs.withTpns(projectFilter.getTpns())
                 .and(ProjectSpecs.withExternalReferences(projectFilter.getExternalReferences()))
                 .and(ProjectSpecs.withMarkerSymbols(projectFilter.getMarkerSymbols()))
-                .and(ProjectSpecs.withGenes(projectFilter.getGenes()))
+                .and(ProjectSpecs.withMarkerSymbolOrAccId(projectFilter.getGenes()))
                 .and(ProjectSpecs.withIntentions(projectFilter.getIntentions()))
                 .and(ProjectSpecs.withPlansInWorkUnitsNames(projectFilter.getWorkUnitNames()))
                 .and(ProjectSpecs.withPlansInWorkGroupNames(projectFilter.getWorGroupNames()))
