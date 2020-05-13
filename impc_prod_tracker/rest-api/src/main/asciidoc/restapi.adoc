@@ -22,7 +22,6 @@ of	phenotype	data	on	the	mouse.
 This is a secure resource that can house various types of mutations linked to genes,
 and will provide different data access policies to users.
 
-
 This guide is aimed at developers of such applications.
 
 == Usage of HTTP Verbs
@@ -49,10 +48,7 @@ The following table describes how the coderadar API interprets the HTTP verbs.
 == Authentication
 anchor:login[]
 A user has to log in to use other endpoints.
-If the log in is successful, user obtains two JSON Web Tokens https://jwt.io
-
-* an access token
-* a refresh token.
+If the log in is successful, user obtains a JSON Web Token https://jwt.io
 
 How to use the tokens is described in <<authentication, Authentication>>
 
@@ -64,6 +60,7 @@ include::{snippets}/auth/signin/http-request.adoc[]
 
 ===== Example Response
 include::{snippets}/auth/signin/http-response.adoc[]
+
 ===== Response Structure
 include::{snippets}/auth/signin/response-fields.adoc[]
 
@@ -78,15 +75,6 @@ include::{snippets}/auth/signin/no-valid-user-password/http-request.adoc[]
 .response
 include::{snippets}/auth/signin/no-valid-user-password/http-response.adoc[]
 
-===== Error when there is not information in the system for the logged user:
-If the user could be logged into the application but there is not further information related to
-them (like the role or organisation information), a error is shown:
-
-Request
-include::{snippets}/auth/signin/no-info-for-user/http-request.adoc[]
-
-Response
-include::{snippets}/auth/signin/no-info-for-user/http-response.adoc[]
 
 ==== Authentication
 After a user registered, he or she can start working with iMits2.
@@ -112,22 +100,114 @@ See more: https://auth0.com/docs/tokens/refresh-token and https://auth0.com/blog
 
 
 
-
-
-== Projects Management
+== Projects
 anchor:chapter-configure[]
 This section describes the REST endpoints for projects in the system.
 
-=== Project
+A project in GenTaR is the container for the intention and has one or more plans with the attempt
+information.
 
-A project defines some metadata about the project you want coderadar to analyze. With a project resource
-and its sub-resources you provide coderadar with the information it needs to analyze the source code.
+=== GET
 
+You can get a collection of projects or a specific one. If you use the endpoint to get all the projects
+you can use filters to refine your results.
+
+==== Get a specific project
+
+This endpoint shows a project in the system.
 
 ===== Example Request
 
-include::{snippets}/projectSummaries/http-request.adoc[]
+Curl:
+include::{snippets}/projects/getProject/curl-request.adoc[]
 
 ===== Example Response
 
-include::{snippets}/projectSummaries/http-response.adoc[]
+include::{snippets}/projects/getProject/http-response.adoc[]
+
+===== Response fields
+
+include::{snippets}/projects/getProject/response-fields.adoc[]
+
+==== Get all Projects
+This endpoint shows all the projects the user has permission to see.
+
+===== Example Request
+
+Curl:
+include::{snippets}/projects/allProjects/curl-request.adoc[]
+
+===== Example Response
+
+include::{snippets}/projects/allProjects/http-response.adoc[]
+
+==== Get all Projects using filters.
+
+You can also apply filters to the endpoint to refine the search. This is a list of the filters you can
+use. Each filter admits several values separated by comma.
+
+.Filters for projects
+|===
+|Filter name | Description
+
+|tpns
+|TPN(s) to be used as a filter. Eg: TPN:000000013.
+
+|intentions
+a|Name of the intention. Possible values:
+
+- Point Mutation
+- Deletion
+- Exon Deletion
+- Intra-exon deletion
+- Inter-exon deletion
+- Whole-gene deletion
+- Copy Number Variant
+- SNP
+- Insertion
+- Inverted insertion
+- Inversion
+- Indel
+- Complex rearrangement
+
+|genes
+|Marker symbol or accession id(s). Eg.Vps37a,MGI:1261835
+
+|workUnitNames
+|Name of the work unit(s) associated with any of the plans in the project.
+
+|workGroupNames
+|Name of the work group(s) associated with any of the plans in the project.
+
+|assignmentNames
+a|Assignment Name. Possible values:
+
+* Assigned
+* Inspect - Conflict
+* Inactive
+* Abandoned
+* Inspect - Attempt
+* Inspect - GLT Mouse
+
+|summaryStatusNames
+|Summary Status of the project. Eg: Plan Created.
+
+|privacyNames
+|The privacy of the project. Any of: public, protected, restricted.
+
+|externalReferences
+|External reference for the project.
+
+|imitsMiPlanIds
+|Ids in iMits (if the project was migrated from there).
+
+|===
+
+===== Example Request
+
+Curl:
+include::{snippets}/projects/allProjectsWithFilter/http-request.adoc[]
+
+===== Example Response
+
+include::{snippets}/projects/allProjectsWithFilter/http-response.adoc[]
