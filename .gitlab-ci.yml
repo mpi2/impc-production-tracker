@@ -86,17 +86,17 @@ build_image:
             - "$MOUNT_POINT/"
 
 
-build_jars:
-  stage: build
-  image: maven:3.6.3-jdk-11
-  script:
-    - 'mvn -f impc_prod_tracker/pom.xml -s .gitlab-ci_settings.xml clean deploy'
-  only:
-    - master
-  except:
-    - schedules
-    - triggers
-    - pipelines
+# build_jars:
+#   stage: build
+#   image: maven:3.6.3-jdk-11
+#   script:
+#     - 'mvn -f impc_prod_tracker/pom.xml -s .gitlab-ci_settings.xml clean deploy'
+#   only:
+#     - master
+#   except:
+#     - schedules
+#     - triggers
+#     - pipelines
   
 
 
