@@ -11,23 +11,6 @@
 	<url>http://www.gentar.org</url>
 	<packaging>pom</packaging>
 
-	<repositories>
-		<repository>
-			<id>ebi-gitlab-maven</id>
-			<url>https://gitlab.ebi.ac.uk/api/v4/projects/${env.CI_PROJECT_ID}/packages/maven</url>
-		</repository>
-	</repositories>
-	<distributionManagement>
-		<repository>
-			<id>ebi-gitlab-maven</id>
-			<url>https://gitlab.ebi.ac.uk/api/v4/projects/${env.CI_PROJECT_ID}/packages/maven</url>
-		</repository>
-		<snapshotRepository>
-			<id>ebi-gitlab-maven</id>
-			<url>https://gitlab.ebi.ac.uk/api/v4/projects/${env.CI_PROJECT_ID}/packages/maven</url>
-		</snapshotRepository>
-	</distributionManagement>
-
 	<modules>
 		<module>core</module>
 		<module>dto</module>
