@@ -107,44 +107,14 @@ This section describes the REST endpoints for projects in the system.
 A project in GenTaR is the container for the intention and has one or more plans with the attempt
 information.
 
-=== GET
-
-You can get a collection of projects or a specific one. If you use the endpoint to get all the projects
-you can use filters to refine your results.
-
-==== Get a specific project
-
-This endpoint shows a project in the system.
-
-===== Example Request
-
-Curl:
-include::{snippets}/projects/getProject/curl-request.adoc[]
-
-===== Example Response
-
-include::{snippets}/projects/getProject/http-response.adoc[]
-
-===== Response fields
-
+=== Fields
+These are the fields you are going to see in the body of a request in a GET or in the payload for POST or PUT
+operations.
 include::{snippets}/projects/getProject/response-fields.adoc[]
 
-==== Get all Projects
-This endpoint shows all the projects the user has permission to see.
-
-===== Example Request
-
-Curl:
-include::{snippets}/projects/allProjects/curl-request.adoc[]
-
-===== Example Response
-
-include::{snippets}/projects/allProjects/http-response.adoc[]
-
-==== Get all Projects using filters.
-
-You can also apply filters to the endpoint to refine the search. This is a list of the filters you can
-use. Each filter admits several values separated by comma.
+=== Filters
+When you use the endpoint to get all the projects, you can also use filters to reduce the results.
+This is the list of filters you can use:
 
 .Filters for projects
 |===
@@ -203,6 +173,40 @@ a|Assignment Name. Possible values:
 
 |===
 
+=== GET
+==== Get a specific project
+
+This endpoint shows a project in the system.
+
+===== Example Request
+
+Curl:
+include::{snippets}/projects/getProject/curl-request.adoc[]
+
+===== Example Response
+
+include::{snippets}/projects/getProject/http-response.adoc[]
+
+
+==== Get all Projects
+This endpoint shows all the projects the user has permission to see.
+
+===== Example Request
+
+Curl:
+include::{snippets}/projects/allProjects/curl-request.adoc[]
+
+===== Example Response
+
+include::{snippets}/projects/allProjects/http-response.adoc[]
+
+==== Get all Projects using filters.
+
+You can also apply filters to the endpoint to refine the search. This is a list of the filters you can
+use. Each filter admits several values separated by comma.
+
+
+
 ===== Example Request
 
 Curl:
@@ -211,3 +215,18 @@ include::{snippets}/projects/allProjectsWithFilter/http-request.adoc[]
 ===== Example Response
 
 include::{snippets}/projects/allProjectsWithFilter/http-response.adoc[]
+
+=== POST
+
+==== Create a project
+
+Currently the rules to be able to create a project are:
+
+TODO!!!: <<Verify which rules still aply>>
+
+- A user from a consortium can create a project without a plan associated with it.
+- A user from a work unit can create a project with a plan associated with it.
+
+
+
+

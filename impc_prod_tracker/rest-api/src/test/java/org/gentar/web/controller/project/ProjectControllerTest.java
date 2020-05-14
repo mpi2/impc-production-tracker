@@ -1,19 +1,11 @@
 package org.gentar.web.controller.project;
 
 import com.github.springtestdbunit.annotation.DatabaseSetup;
-import org.gentar.biology.project.ProjectRepository;
-import org.gentar.biology.project.ProjectService;
 import org.gentar.framework.ControllerTestTemplate;
 import org.gentar.framework.db.Paths;
-import org.gentar.organization.person.PersonRepository;
-import org.gentar.security.abac.subject.SystemSubject;
 import org.gentar.security.auth.AuthenticationRequest;
-import org.gentar.security.jwt.JwtTokenProvider;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.test.web.servlet.ResultHandler;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
@@ -21,22 +13,16 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 class ProjectControllerTest extends ControllerTestTemplate
 {
-    @Autowired
-    PersonRepository personRepository;
-    @Autowired
-    ProjectRepository projectRepository;
-    @Autowired
-    ProjectService projectService;
-    @Autowired private JwtTokenProvider jwtTokenProvider;
+    @BeforeEach
+    public void setup() throws Exception
+    {
+        setTestUserSecurityContext();
+    }
 
     @Test
     @DatabaseSetup(Paths.MULTIPLE_PROJECTS)
     void testGetOneProject() throws Exception
     {
-        String accessToken = getAccessTokenForTestsUser();
-        SystemSubject systemSubject = jwtTokenProvider.getSystemSubject(accessToken);
-        Authentication auth = new UsernamePasswordAuthenticationToken(systemSubject, "", null);
-        SecurityContextHolder.getContext().setAuthentication(auth);
         mvc().perform(MockMvcRequestBuilders
             .get("/api/projects/TPN:01")
             .header("Authorization", accessToken))
@@ -108,10 +94,6 @@ class ProjectControllerTest extends ControllerTestTemplate
     @DatabaseSetup(Paths.MULTIPLE_PROJECTS)
     void testGetAllProjects() throws Exception
     {
-        String accessToken = getAccessTokenForTestsUser();
-        SystemSubject systemSubject = jwtTokenProvider.getSystemSubject(accessToken);
-        Authentication auth = new UsernamePasswordAuthenticationToken(systemSubject, "", null);
-        SecurityContextHolder.getContext().setAuthentication(auth);
         mvc().perform(MockMvcRequestBuilders
             .get("/api/projects")
             .header("Authorization", accessToken))
@@ -123,15 +105,10 @@ class ProjectControllerTest extends ControllerTestTemplate
     @DatabaseSetup(Paths.MULTIPLE_PROJECTS)
     void testGetAllProjectsWithFilter() throws Exception
     {
-        String accessToken = getAccessTokenForTestsUser();
-        SystemSubject systemSubject = jwtTokenProvider.getSystemSubject(accessToken);
-        Authentication auth = new UsernamePasswordAuthenticationToken(systemSubject, "", null);
-        SecurityContextHolder.getContext().setAuthentication(auth);
         mvc().perform(MockMvcRequestBuilders
             .get("/api/projects?tpns=TPN:01,TPN:02")
             .header("Authorization", accessToken))
             .andExpect(status().isOk())
             .andDo(document("projects/allProjectsWithFilter"));
     }
-
 }

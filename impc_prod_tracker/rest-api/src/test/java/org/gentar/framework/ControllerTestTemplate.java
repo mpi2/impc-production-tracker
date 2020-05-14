@@ -1,6 +1,8 @@
 package org.gentar.framework;
 
+import org.gentar.security.abac.subject.SystemSubject;
 import org.gentar.security.auth.AuthenticationRequest;
+import org.gentar.security.jwt.JwtTokenProvider;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -15,12 +17,12 @@ import org.springframework.restdocs.mockmvc.MockMvcRestDocumentation;
 import org.springframework.restdocs.mockmvc.RestDocumentationResultHandler;
 import org.springframework.restdocs.payload.FieldDescriptor;
 import org.springframework.restdocs.snippet.Snippet;
-import org.springframework.security.web.FilterChainProxy;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import org.springframework.util.LinkedMultiValueMap;
-import org.springframework.util.MultiValueMap;
 import org.springframework.util.StringUtils;
 import org.springframework.web.context.WebApplicationContext;
 
@@ -42,26 +44,40 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @Tag(ControllerTestTemplate.TAG)
 public class ControllerTestTemplate extends IntegrationTestTemplate
 {
+
+    @Autowired private JwtTokenProvider jwtTokenProvider;
     public static final String TAG = "ControllerTest";
 
     private MockMvc mvc;
 
     @Autowired
-    private FilterChainProxy springSecurityFilterChain;
-
-    @Autowired
     private WebApplicationContext applicationContext;
 
-    //@Autowired private SequenceResetter sequenceResetter;
+    protected Authentication authenticationForTestUser = null;
+    protected String accessToken = null;
 
     @BeforeEach
-    public void setup(RestDocumentationContextProvider restDocumentation)
+    public void setup(RestDocumentationContextProvider restDocumentation) throws Exception
     {
         MockitoAnnotations.initMocks(this);
         mvc =
             MockMvcBuilders.webAppContextSetup(applicationContext)
                 .apply(MockMvcRestDocumentation.documentationConfiguration(restDocumentation))
                 .build();
+    }
+
+    protected void setTestUserSecurityContext() throws Exception
+    {
+        if (accessToken == null)
+        {
+            accessToken = getAccessTokenForTestsUser();
+        }
+        if (authenticationForTestUser == null)
+        {
+            SystemSubject systemSubject = jwtTokenProvider.getSystemSubject(accessToken);
+            Authentication auth = new UsernamePasswordAuthenticationToken(systemSubject, "", null);
+            SecurityContextHolder.getContext().setAuthentication(auth);
+        }
     }
 
 //    @AfterEach
