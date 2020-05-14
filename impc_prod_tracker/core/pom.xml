@@ -18,6 +18,23 @@
 		<java.version>11</java.version>
 	</properties>
 
+	<repositories>
+		<repository>
+			<id>ebi-gitlab-maven</id>
+			<url>https://gitlab.ebi.ac.uk/api/v4/projects/${env.CI_PROJECT_ID}/packages/maven</url>
+		</repository>
+	</repositories>
+	<distributionManagement>
+		<repository>
+			<id>ebi-gitlab-maven</id>
+			<url>https://gitlab.ebi.ac.uk/api/v4/projects/${env.CI_PROJECT_ID}/packages/maven</url>
+		</repository>
+		<snapshotRepository>
+			<id>ebi-gitlab-maven</id>
+			<url>https://gitlab.ebi.ac.uk/api/v4/projects/${env.CI_PROJECT_ID}/packages/maven</url>
+		</snapshotRepository>
+	</distributionManagement>
+
 	<dependencies>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
