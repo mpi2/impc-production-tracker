@@ -64,16 +64,23 @@ public class SystemEventsExecutor
 
     private boolean tryToExecuteTransition(ProcessEvent transition, ProcessData entity)
     {
+        boolean statusChanged = false;
         String statusNameBeforeTransition = entity.getStatus().getName();
         entity.setEvent(transition);
-        Status newStatus = stateTransitionManager.processEvent(entity).getStatus();
-        boolean statusChanged = !statusNameBeforeTransition.equals(newStatus.getName());
-        // Already set in processor, needed here because assignation is lost in tests
-        entity.setStatus(newStatus);
-        if (statusChanged)
+        TransitionEvaluation transitionEvaluation =
+            stateTransitionManager.evaluateTransition(transition, entity);
+        if (transitionEvaluation.isExecutable())
         {
-            validateNoUserTriggeredTransitionIsPresent();
+            Status newStatus = stateTransitionManager.processEvent(entity).getStatus();
+            statusChanged = !statusNameBeforeTransition.equals(newStatus.getName());
+            // Already set in processor, needed here because assignation is lost in tests
+            entity.setStatus(newStatus);
+            if (statusChanged)
+            {
+                validateNoUserTriggeredTransitionIsPresent();
+            }
         }
+
         return statusChanged;
     }
 

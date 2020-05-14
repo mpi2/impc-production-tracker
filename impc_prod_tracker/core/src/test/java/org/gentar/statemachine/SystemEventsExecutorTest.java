@@ -52,6 +52,10 @@ class SystemEventsExecutorTest
         testInstance.setStateMachineResolver(planStateMachineResolver);
         when(stateTransitionsManager.processEvent(any(Plan.class)))
             .thenReturn(planWithAttemptInProgress);
+        TransitionEvaluation validTransitionEvaluation = new TransitionEvaluation();
+        validTransitionEvaluation.setExecutable(true);
+        when(stateTransitionsManager.evaluateTransition(any(ProcessEvent.class), any(Plan.class)))
+            .thenReturn(validTransitionEvaluation);
 
         testInstance.execute(planCreated);
 
@@ -82,6 +86,10 @@ class SystemEventsExecutorTest
         testInstance.setStateMachineResolver(planStateMachineResolver);
         when(stateTransitionsManager.processEvent(any(Plan.class)))
             .thenReturn(planWithAttemptInProgress, planWithEmbryosObtained);
+        TransitionEvaluation validTransitionEvaluation = new TransitionEvaluation();
+        validTransitionEvaluation.setExecutable(true);
+        when(stateTransitionsManager.evaluateTransition(any(ProcessEvent.class), any(Plan.class)))
+            .thenReturn(validTransitionEvaluation);
 
         testInstance.execute(planCreated);
 
@@ -119,6 +127,11 @@ class SystemEventsExecutorTest
         testInstance.setStateMachineResolver(planStateMachineResolver);
         when(stateTransitionsManager.processEvent(any(Plan.class)))
             .thenReturn(planWithAttemptInProgress);
+        TransitionEvaluation validTransitionEvaluation = new TransitionEvaluation();
+        validTransitionEvaluation.setExecutable(true);
+        when(stateTransitionsManager.evaluateTransition(any(ProcessEvent.class), any(Plan.class)))
+            .thenReturn(validTransitionEvaluation);
+
 
         planCreated.setEvent(CrisprProductionPlanEvent.abandonWhenCreated);
 
