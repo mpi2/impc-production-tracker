@@ -29,7 +29,8 @@ import org.springframework.test.context.web.WebAppConfiguration;
 public abstract class IntegrationTestTemplate
 {
     @BeforeEach
-    public void setup() {
+    public void setup() throws Exception
+    {
         MockitoAnnotations.initMocks(this);
     }
 }
