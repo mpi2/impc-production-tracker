@@ -3,6 +3,10 @@ package org.gentar.biology.project;
 import org.gentar.biology.project.specs.ProjectSpecs;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Component;
+import org.springframework.util.CollectionUtils;
+import org.springframework.util.StringUtils;
+
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -45,8 +49,12 @@ public class ProjectIntentionService
 
     List<Project> getProjectsWithGenes(List<String> accIds)
     {
-        Specification<Project> specifications = Specification.where(ProjectSpecs.withMarkerSymbolOrAccId(accIds));
-        List<Project> projects = projectRepository.findAll(specifications);
+        List<Project> projects = new ArrayList<>();
+        if (!CollectionUtils.isEmpty(accIds))
+        {
+            Specification<Project> specifications = Specification.where(ProjectSpecs.withMarkerSymbolOrAccId(accIds));
+            projects = projectRepository.findAll(specifications);
+        }
         return projects;
     }
 }

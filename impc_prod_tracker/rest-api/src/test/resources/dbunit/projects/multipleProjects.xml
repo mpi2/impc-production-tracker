@@ -16,40 +16,60 @@
     <PLAN_TYPE  ID="2"
                 NAME="phenotyping"/>
 
+    <ATTEMPT_TYPE   ID="1"
+                    NAME="crispr"/>
+    <ATTEMPT_TYPE   ID="2"
+                    NAME="haplo-essential crispr"/>
+    <ATTEMPT_TYPE   ID="3"
+                    NAME="breeding"/>
+    <ATTEMPT_TYPE   ID="4"
+                    NAME="adult phenotyping"/>
+    <ATTEMPT_TYPE   ID="5"
+                    NAME="haplo-essential phenotyping"/>
+
+    <WORK_UNIT  ID="1"
+                NAME="BCM"/>
+    <WORK_UNIT  ID="2"
+                NAME="TCP"/>
+    <WORK_GROUP ID="1"
+                NAME="BaSH"/>
+    <WORK_GROUP  ID="2"
+                NAME="DTCC"/>
+
     <STATUS     ID="1"
                 NAME="Plan Created"/>
     <STATUS     ID="2"
                 NAME="Attempt In Progress"/>
 
-    <PROJECT    ID="1"
+    <PROJECT    ID="101"
                 TPN="TPN:01"
                 PRIVACY_ID="1"
                 ASSIGNMENT_STATUS_ID="1"
                 SUMMARY_STATUS_ID="1"/>
-    <PROJECT    ID="2"
+    <PROJECT    ID="102"
                 TPN="TPN:02"
                 PRIVACY_ID="1"
                 ASSIGNMENT_STATUS_ID="2"
                 SUMMARY_STATUS_ID="2"/>
-    <PROJECT    ID="3"
+    <PROJECT    ID="103"
                 TPN="TPN:03"
                 PRIVACY_ID="1"
                 ASSIGNMENT_STATUS_ID="1"
                 SUMMARY_STATUS_ID="1"/>
-    <PROJECT    ID="4"
+    <PROJECT    ID="104"
                 TPN="TPN:04"
                 PRIVACY_ID="2"
                 ASSIGNMENT_STATUS_ID="2"
                 SUMMARY_STATUS_ID="2"/>
-    <PROJECT    ID="5"
+    <PROJECT    ID="105"
                 TPN="TPN:05"
                 PRIVACY_ID="3"
                 ASSIGNMENT_STATUS_ID="1"
                 SUMMARY_STATUS_ID="1"/>
 
-    <PLAN       ID="1"
-                PIN="PIN:001"
-                PROJECT_ID="1"
+    <PLAN       ID="10001"
+                PIN="PIN:10001"
+                PROJECT_ID="101"
                 PLAN_TYPE_ID="1"
                 STATUS_ID="1"
                 SUMMARY_STATUS_ID="1"/>
@@ -59,4 +79,7 @@
                 AUTH_ID="usr-dde67fbd-c3c2-42eb-aa81-f1a225f047c7"/>
     <PERSON_ROLE_WORK_UNIT/>
     <PERSON_ROLE_CONSORTIUM/>
+    <PLAN_STATUS_STAMP/>
+    <PLAN_SUMMARY_STATUS_STAMP/>
+    <ASSIGNMENT_STATUS_STAMP/>
 </dataset>

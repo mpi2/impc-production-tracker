@@ -55,8 +55,10 @@ public class AssignmentStatusUpdater
     private void setAndLogNewAssignmentStatus(
         Project originalProject, Project newProject, AssignmentStatus assignmentStatus)
     {
-        AssignmentStatus currentAssignmentStatus = originalProject.getAssignmentStatus();
-        if (!currentAssignmentStatus.getName().equals(assignmentStatus.getName()))
+        String currentAssignmentStatusName =
+            originalProject.getAssignmentStatus() == null ? "" :
+                originalProject.getAssignmentStatus().getName();
+        if (!currentAssignmentStatusName.equals(assignmentStatus.getName()))
         {
             newProject.setAssignmentStatus(assignmentStatus);
             registerAssignmentStatusStamp(newProject);
