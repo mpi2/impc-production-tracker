@@ -121,12 +121,6 @@
     "condition": "subject.isUserByKey('cda_user_key') OR subject.isUserByKey('dcc_user_key')"
   },
   {
-    "name": "Update from Phenotyping Production Registered to Phenotyping Started",
-    "description": "DCC can update a phenotyping stage from Phenotyping Production Registered to Phenotyping Started",
-    "target": "action == 'UPDATE_PHENOTYPING_REGISTERED_TO_PHENOTYPING_STARTED'",
-    "condition": "subject.isUserByKey('dcc_user_key')"
-  },
-  {
     "name": "Update to Phenotyping Started",
     "description": "DCC can update a phenotyping stage to Phenotyping Started",
     "target": "action == 'UPDATE_TO_PHENOTYPING_STARTED'",

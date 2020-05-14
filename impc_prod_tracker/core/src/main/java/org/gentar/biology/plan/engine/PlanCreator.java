@@ -4,10 +4,13 @@ import org.gentar.audit.history.History;
 import org.gentar.audit.history.HistoryService;
 import org.gentar.biology.plan.Plan;
 import org.gentar.biology.plan.PlanStatusManager;
+import org.gentar.biology.plan.attempt.phenotyping.PhenotypingAttempt;
+import org.gentar.biology.plan.attempt.phenotyping.stage.PhenotypingStage;
 import org.springframework.stereotype.Component;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.transaction.Transactional;
+import java.util.Set;
 
 /**
  * Class with the logic to save a plan in the system.
@@ -48,6 +51,8 @@ public class PlanCreator
     {
         // Sets Plan Created for Status
         planStatusManager.setInitialStatus(plan);
+        // Sets the correct initial statuses for the nested objects in plan.
+        planStatusManager.setChildrenInitialStatuses(plan);
         // If the data is adequate, move through the state machine (system triggered transitions)
         planStatusManager.updateStatusIfNeeded(plan);
         // Once the final state for the plan is calculated, we can calculate the summary status

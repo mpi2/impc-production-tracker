@@ -3,9 +3,9 @@ package org.gentar.biology.colony;
 import org.gentar.EntityMapper;
 import org.gentar.Mapper;
 import org.gentar.biology.strain.StrainMapper;
-import org.gentar.biology.status.StatusService;
 import org.gentar.common.state_machine.StatusTransitionDTO;
 import org.gentar.common.state_machine.TransitionDTO;
+import org.gentar.statemachine.ProcessEvent;
 import org.gentar.statemachine.TransitionEvaluation;
 import org.gentar.statemachine.TransitionMapper;
 import org.springframework.stereotype.Component;
@@ -15,20 +15,17 @@ import java.util.List;
 public class ColonyMapper implements Mapper<Colony, ColonyDTO>
 {
     private EntityMapper entityMapper;
-    private StatusService statusService;
     private StrainMapper strainMapper;
     private ColonyService colonyService;
     private TransitionMapper transitionMapper;
 
     public ColonyMapper(
         EntityMapper entityMapper,
-        StatusService statusService,
         StrainMapper strainMapper,
         ColonyService colonyService,
         TransitionMapper transitionMapper)
     {
         this.entityMapper = entityMapper;
-        this.statusService = statusService;
         this.strainMapper = strainMapper;
         this.colonyService = colonyService;
         this.transitionMapper = transitionMapper;
@@ -44,12 +41,24 @@ public class ColonyMapper implements Mapper<Colony, ColonyDTO>
     }
 
     @Override
-    public Colony toEntity(ColonyDTO dto)
+    public Colony toEntity(ColonyDTO colonyDTO)
     {
-        Colony colony = entityMapper.toTarget(dto, Colony.class);
-        colony.setStrain(strainMapper.toEntity(dto.getStrainName()));
-        colony.setStatus(statusService.getStatusByName(dto.getStatusName()));
+        Colony colony = entityMapper.toTarget(colonyDTO, Colony.class);
+        setEvent(colony, colonyDTO);
+        colony.setStrain(strainMapper.toEntity(colonyDTO.getStrainName()));
         return colony;
+    }
+
+    private void setEvent(Colony colony, ColonyDTO colonyDTO)
+    {
+        ProcessEvent processEvent = null;
+        StatusTransitionDTO statusTransitionDTO = colonyDTO.getStatusTransitionDTO();
+        if (statusTransitionDTO != null)
+        {
+            String action = statusTransitionDTO.getActionToExecute();
+            processEvent = colonyService.getProcessEventByName(colony, action);
+        }
+        colony.setEvent(processEvent);
     }
 
     private StatusTransitionDTO buildStatusTransitionDTO(Colony colony)

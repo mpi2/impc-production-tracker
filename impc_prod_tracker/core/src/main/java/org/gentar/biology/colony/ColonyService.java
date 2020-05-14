@@ -1,25 +1,11 @@
 package org.gentar.biology.colony;
 
 import org.gentar.statemachine.ProcessEvent;
-import org.gentar.statemachine.TransitionAvailabilityEvaluator;
 import org.gentar.statemachine.TransitionEvaluation;
-import org.springframework.stereotype.Component;
 import java.util.List;
 
-@Component
-public class ColonyService
+public interface ColonyService
 {
-    private ColonyStateMachineResolver colonyStateMachineResolver;
-    private TransitionAvailabilityEvaluator transitionAvailabilityEvaluator;
-
-    public ColonyService(
-        ColonyStateMachineResolver colonyStateMachineResolver,
-        TransitionAvailabilityEvaluator transitionAvailabilityEvaluator)
-    {
-        this.colonyStateMachineResolver = colonyStateMachineResolver;
-        this.transitionAvailabilityEvaluator = transitionAvailabilityEvaluator;
-    }
-
     /**
      * Evaluates the transitions for a colony given its current status. To do that, this
      * method resolves the correct state machine for this plan and then checks what are the
@@ -29,10 +15,13 @@ public class ColonyService
      * @return The list of TransitionEvaluation that informs for each transition if it can
      * be executed or not, as long as a note explaining why in case it cannot be executed.
      */
-    public List<TransitionEvaluation> evaluateNextTransitions(Colony colony)
-    {
-        List<ProcessEvent> transitions =
-            colonyStateMachineResolver.getAvailableTransitionsByEntityStatus(colony);
-        return transitionAvailabilityEvaluator.evaluate(transitions, colony);
-    }
+    List<TransitionEvaluation> evaluateNextTransitions(Colony colony);
+
+    /**
+     * Gets the Process event that corresponds to the name of the transition 'name'.
+     * @param colony colony to evaluate.
+     * @param name The name of the transition that is going to be evaluated on the colony.
+     * @return A {@link ProcessEvent} corresponding to the given 'name'.
+     */
+    ProcessEvent getProcessEventByName(Colony colony, String name);
 }

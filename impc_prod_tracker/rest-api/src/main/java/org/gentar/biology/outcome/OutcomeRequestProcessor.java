@@ -2,15 +2,9 @@ package org.gentar.biology.outcome;
 
 import org.gentar.biology.colony.Colony;
 import org.gentar.biology.colony.ColonyDTO;
-import org.gentar.biology.colony.engine.ColonyEvent;
 import org.gentar.biology.plan.Plan;
 import org.gentar.biology.plan.PlanService;
-import org.gentar.biology.specimen.SpecimenDTO;
-import org.gentar.biology.specimen.engine.SpecimenEvent;
-import org.gentar.common.state_machine.StatusTransitionDTO;
 import org.gentar.exceptions.UserOperationFailedException;
-import org.gentar.statemachine.EnumStateHelper;
-import org.gentar.statemachine.ProcessEvent;
 import org.springframework.stereotype.Component;
 import java.util.Set;
 
@@ -41,12 +35,6 @@ public class OutcomeRequestProcessor
         }
         Outcome newOutcome = new Outcome(originalOutcome);
         setColony(newOutcome, outcomeDTO.getColonyDTO());
-        if (newOutcome.getColony() != null)
-        {
-            ProcessEvent processEvent = getEventFromRequest(outcomeDTO);
-            newOutcome.getColony().setEvent(processEvent);
-        }
-
         return newOutcome;
     }
 
@@ -82,32 +70,5 @@ public class OutcomeRequestProcessor
         {
             throw new UserOperationFailedException("Plan " + pin + " does not have an outcome "+ tpo);
         }
-    }
-
-    private ProcessEvent getEventFromRequest(OutcomeDTO outcomeDTO)
-    {
-        StatusTransitionDTO statusTransitionDTO;
-        ProcessEvent processEvent = null;
-        ColonyDTO colonyDTO = outcomeDTO.getColonyDTO();
-        SpecimenDTO specimenDTO = outcomeDTO.getSpecimenDTO();
-        if (colonyDTO != null)
-        {
-            statusTransitionDTO = colonyDTO.getStatusTransitionDTO();
-            if (statusTransitionDTO != null)
-            {
-                String action = statusTransitionDTO.getActionToExecute();
-                processEvent = EnumStateHelper.getEventByName(ColonyEvent.getAllEvents(), action);
-            }
-        }
-        else if (specimenDTO != null)
-        {
-            statusTransitionDTO = specimenDTO.getStatusTransitionDTO();
-            if (statusTransitionDTO != null)
-            {
-                String action = statusTransitionDTO.getActionToExecute();
-                processEvent = EnumStateHelper.getEventByName(SpecimenEvent.getAllEvents(), action);
-            }
-        }
-        return processEvent;
     }
 }

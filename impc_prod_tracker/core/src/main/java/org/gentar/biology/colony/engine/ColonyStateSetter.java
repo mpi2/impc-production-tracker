@@ -35,6 +35,12 @@ public class ColonyStateSetter implements StateSetter
         setStatus(entity, newPlanStatus);
     }
 
+    @Override
+    public void setInitialStatus(ProcessData entity)
+    {
+        setStatusByName(entity, ColonyState.GenotypeInProgress.getInternalName());
+    }
+
     private void registerStatusStamp(Colony colony)
     {
         Set<ColonyStatusStamp> stamps = colony.getColonyStatusStamps();

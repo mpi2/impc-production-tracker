@@ -35,6 +35,12 @@ public class SpecimenStateSetter implements StateSetter
         setStatus(entity, newStatus);
     }
 
+    @Override
+    public void setInitialStatus(ProcessData entity)
+    {
+        setStatusByName(entity, SpecimenState.SpecimenGroupInProgress.getInternalName());
+    }
+
     private void registerStatusStamp(Specimen Specimen)
     {
         Set<SpecimenStatusStamp> stamps = Specimen.getSpecimenStatusStamps();

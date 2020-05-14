@@ -1,13 +1,14 @@
 package org.gentar.biology.plan.attempt.phenotyping.stage;
 
 import org.gentar.biology.plan.attempt.phenotyping.stage.engine.PhenotypingStageEvent;
-import org.gentar.biology.plan.attempt.phenotyping.stage.engine.events.EarlyAdultEvent;
+import org.gentar.biology.plan.attempt.phenotyping.stage.engine.EarlyAdultEvent;
 import org.gentar.biology.plan.attempt.phenotyping.stage.type.PhenotypingStageType;
 import org.gentar.biology.plan.attempt.phenotyping.stage.type.PhenotypingStageTypeName;
 import org.gentar.statemachine.ProcessData;
 import org.gentar.statemachine.ProcessEvent;
 import org.gentar.statemachine.StateMachineResolver;
 import org.springframework.stereotype.Component;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -16,6 +17,7 @@ import java.util.List;
 @Component
 public class PhenotypingStageStateMachineResolver implements StateMachineResolver
 {
+
     @Override
     public ProcessEvent getProcessEventByActionName(ProcessData processData, String actionName)
     {
@@ -58,5 +60,21 @@ public class PhenotypingStageStateMachineResolver implements StateMachineResolve
             getProcessEventsByPhenotypingStage(
                 (PhenotypingStage)processData), processData.getStatus().getName());
         return allTransitionsByPlanType;
+    }
+
+    // This needs to be overridden because we need a special logic to match the names of the statuses.
+    @Override
+    public List<ProcessEvent> getAvailableEventsByStateName(
+        List<ProcessEvent> processEvents, String processStateName)
+    {
+        List<ProcessEvent> allEvents = new ArrayList<>();
+        for (ProcessEvent processEventValue : processEvents)
+        {
+            if (processStateName.endsWith(processEventValue.getInitialState().getInternalName()))
+            {
+                allEvents.add(processEventValue);
+            }
+        }
+        return allEvents;
     }
 }

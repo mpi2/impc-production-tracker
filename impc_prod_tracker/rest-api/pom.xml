@@ -232,7 +232,7 @@
 							<attributes>
 								<snippets>${project.build.directory}/generated-snippets</snippets>
 								<stylesheet>themes/riak.css</stylesheet>
-								<version>${version}</version>
+								<version>${project.version}</version>
 								<date>${maven.build.timestamp}</date>
 							</attributes>
 						</configuration>
