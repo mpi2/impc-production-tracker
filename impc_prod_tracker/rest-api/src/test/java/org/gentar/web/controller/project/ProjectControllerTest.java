@@ -3,11 +3,12 @@ package org.gentar.web.controller.project;
 import com.github.springtestdbunit.annotation.DatabaseSetup;
 import org.gentar.framework.ControllerTestTemplate;
 import org.gentar.framework.db.Paths;
-import org.gentar.security.auth.AuthenticationRequest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.test.web.servlet.ResultHandler;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+
+import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -32,60 +33,42 @@ class ProjectControllerTest extends ControllerTestTemplate
 
     private ResultHandler documentSingleProject()
     {
-        ConstrainedFields fields = fields(AuthenticationRequest.class);
         return document(
             "projects/getProject",
             responseFields(
-                fields
-                    .withPath("tpn").description("Public identifier for the project. Read only."),
-                fields
-                    .withPath("assignmentStatusName")
+                fieldWithPath("tpn").description("Public identifier for the project. Read only."),
+                fieldWithPath("assignmentStatusName")
                     .description("Assignment Status for the project. It would be a conflict if " +
                         "existing projects are working in the same gene. Read only."),
-                fields
-                    .withPath("summaryStatusName")
+                fieldWithPath("summaryStatusName")
                     .description("A status summarising the global status based on the statuses of " +
                         "the plans in the project. Read only."),
-                fields
-                    .withPath("reactivationDate")
+                fieldWithPath("reactivationDate")
                     .description("Date on which the project was activated again" +
                         "(assignment Status changed from inactive). Read only."),
-                fields
-                    .withPath("recovery").description("To be validated"),
-                fields
-                    .withPath("comment").description("Comment on this project."),
-                fields
-                    .withPath("relatedWorkUnitNames")
+                fieldWithPath("recovery").description("To be validated"),
+                fieldWithPath("comment").description("Comment on this project."),
+                fieldWithPath("relatedWorkUnitNames")
                     .description("Work units associated with the project."),
-                fields
-                    .withPath("relatedWorkGroupNames")
+                fieldWithPath("relatedWorkGroupNames")
                     .description("Work groups associated with the project."),
-                fields
-                    .withPath("assignmentStatusStamps")
+                fieldWithPath("assignmentStatusStamps")
                     .description("Stamps for the changes of Assignment Status. Read only."),
-                fields
-                    .withPath("externalReference")
+                fieldWithPath("externalReference")
                     .description("External reference for the project. Read only."),
-                fields
-                    .withPath("projectIntentions")
+                fieldWithPath("projectIntentions")
                     .description("Intentions for the project"),
-                fields
-                    .withPath("privacyName")
+                fieldWithPath("privacyName")
                     .description("Privacy level for the project (public, protected or restricted)"),
-                fields
-                    .withPath("speciesNames")
+                fieldWithPath("speciesNames")
                     .description("Species associated with the project."),
-                fields
-                    .withPath("consortia")
+                fieldWithPath("consortia")
                     .description("Consortia associated with the project."),
-                fields
-                    .withPath("_links")
+                fieldWithPath("_links")
                     .description("Links for project"),
-                fields
-                    .withPath("_links.productionPlans")
+                fieldWithPath("_links.productionPlans")
                     .description("Links to production plans"),
-                fields
-                    .withPath("_links.productionPlans.href")
+                fieldWithPath("_links.productionPlans.href")
                     .description("Link to a specific production plan")
             ));
     }
