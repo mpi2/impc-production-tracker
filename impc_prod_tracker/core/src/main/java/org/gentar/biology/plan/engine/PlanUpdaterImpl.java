@@ -49,7 +49,7 @@ public class PlanUpdaterImpl implements PlanUpdater
         History history = detectTrackOfChanges(originalPlan, newPlan);
         saveChanges(newPlan);
         saveTrackOfChanges(history);
-        projectService.checkForUpdates(newPlan.getProject());
+        updateProjectDueToChangesInChild(newPlan);
         return history;
     }
 
@@ -112,5 +112,15 @@ public class PlanUpdaterImpl implements PlanUpdater
     private void saveTrackOfChanges(History history)
     {
         historyService.saveTrackOfChanges(history);
+    }
+
+    /**
+     * The modification in the plan can lead to changes in the project (summary status or
+     * assignment status, for instance). So we need to notify the project about this.
+     * @param plan Plan that was updated.
+     */
+    private void updateProjectDueToChangesInChild(Plan plan)
+    {
+        projectService.checkForUpdates(plan.getProject());
     }
 }

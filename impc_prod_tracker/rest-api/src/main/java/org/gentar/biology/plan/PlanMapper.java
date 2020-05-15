@@ -186,7 +186,17 @@ public class PlanMapper implements Mapper<Plan, PlanDTO>
     {
         Plan plan = entityMapper.toTarget(planDTO, Plan.class);
         setEvent(plan, planDTO);
-        plan.setProject(projectService.getProjectByTpn(planDTO.getTpn()));
+        Project project = projectService.getProjectByTpn(planDTO.getTpn());
+        plan.setProject(project);
+        // Making the association explicit.
+        if (project.getPlans() == null)
+        {
+            Set<Plan> plans = new HashSet<>();
+
+            project.setPlans(plans);
+        }
+        project.getPlans().add(plan);
+
         Set<Funder> funders = new HashSet<>(funderMapper.toEntities(planDTO.getFunderNames()));
         plan.setFunders(funders);
         plan.setWorkUnit(workUnitMapper.toEntity(planDTO.getWorkUnitName()));
