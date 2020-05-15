@@ -61,7 +61,6 @@ public class ProjectDtoToEntityMapper
     public Project toEntity(ProjectDTO projectDTO)
     {
         Project project = entityMapper.toTarget(projectDTO, Project.class);
-        setSummaryStatus(project, projectDTO);
         setProjectIntention(project, projectDTO);
         setPrivacy(project, projectDTO);
         setConsortia(project, projectDTO);
@@ -73,17 +72,6 @@ public class ProjectDtoToEntityMapper
     {
         Set<Species> species = new HashSet<>(speciesMapper.toEntities(projectDTO.getSpeciesNames()));
         project.setSpecies(species);
-    }
-
-    private void setSummaryStatus(Project project, ProjectDTO projectDTO)
-    {
-        if (projectDTO.getSummaryStatusName() == null) {
-            project.setSummaryStatus(
-                    summaryStatusMapper.toEntity("Plan Created"));
-        } else {
-            project.setSummaryStatus(
-                    summaryStatusMapper.toEntity(projectDTO.getSummaryStatusName()));
-        }
     }
 
     private void setProjectIntention(Project project, ProjectDTO projectDTO)

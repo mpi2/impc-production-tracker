@@ -220,12 +220,13 @@ include::{snippets}/projects/allProjectsWithFilter/http-response.adoc[]
 
 ==== Create a project
 
-Currently the rules to be able to create a project are:
+In order to create a project, it's necessary to create also a plan attached to it.
 
-TODO!!!: <<Verify which rules still aply>>
+===== Example Request
 
-- A user from a consortium can create a project without a plan associated with it.
-- A user from a work unit can create a project with a plan associated with it.
+Curl:
+include::{snippets}/projects/createProject/request-body.adoc[]
+
 
 
 

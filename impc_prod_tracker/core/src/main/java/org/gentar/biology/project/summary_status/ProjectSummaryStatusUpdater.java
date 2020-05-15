@@ -43,7 +43,10 @@ public class ProjectSummaryStatusUpdater
         {
             summaryStatus = getMostAdvancedSummaryStatusFromPlans(project);
         }
-        setAndLogNewSummaryStatus(project, summaryStatus);
+        if (summaryStatus != null)
+        {
+            setAndLogNewSummaryStatus(project, summaryStatus);
+        }
     }
 
     private Status getMostAdvancedSummaryStatusFromPlans(Project project)
