@@ -1,7 +1,7 @@
 package org.gentar.helpers;
 
 import org.gentar.biology.plan.PlanController;
-import org.gentar.biology.plan.type.PlanTypes;
+import org.gentar.biology.plan.type.PlanTypeName;
 import org.springframework.hateoas.Link;
 import org.gentar.biology.plan.Plan;
 import org.gentar.biology.project.Project;
@@ -18,7 +18,7 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
  */
 public class PlanLinkBuilder
 {
-    public static List<Link> buildPlanLinks(Project project, PlanTypes planType, String groupOfLinksName)
+    public static List<Link> buildPlanLinks(Project project, PlanTypeName planType, String groupOfLinksName)
     {
 
         List<Link> links = new ArrayList<>();
@@ -27,7 +27,7 @@ public class PlanLinkBuilder
         {
             List<Plan> plansByType =
                 plans.stream().filter(
-                    x -> planType.getTypeName().equalsIgnoreCase(x.getPlanType().getName()))
+                    x -> planType.getLabel().equalsIgnoreCase(x.getPlanType().getName()))
                     .collect(Collectors.toList());
             plansByType.forEach(
                 x -> links.add(

@@ -7,7 +7,6 @@ import org.gentar.EntityMapper;
 import org.gentar.organization.institute.Institute;
 import org.springframework.stereotype.Component;
 import org.gentar.biology.project.consortium.institute.ProjectConsortiumInstituteMapper;
-
 import java.util.*;
 
 @Component
@@ -17,7 +16,10 @@ public class ProjectConsortiumMapper implements Mapper<ProjectConsortium, Projec
     private ConsortiumService consortiumService;
     private ProjectConsortiumInstituteMapper projectConsortiumInstituteMapper;
 
-    public ProjectConsortiumMapper(ConsortiumService consortiumService, EntityMapper entityMapper, ProjectConsortiumInstituteMapper projectConsortiumInstituteMapper)
+    public ProjectConsortiumMapper(
+        ConsortiumService consortiumService,
+        EntityMapper entityMapper,
+        ProjectConsortiumInstituteMapper projectConsortiumInstituteMapper)
     {
         this.entityMapper = entityMapper;
         this.consortiumService = consortiumService;
@@ -28,51 +30,34 @@ public class ProjectConsortiumMapper implements Mapper<ProjectConsortium, Projec
     {
         ProjectConsortium projectConsortium = new ProjectConsortium();
         String consortiumName = projectConsortiumDTO.getConsortiumName();
-        projectConsortium.setConsortium(consortiumService.getConsortiumByNameOrThrowException(consortiumName));
-        projectConsortium.setInstitutes(addProjectConsortiumInstituteFromEntity(projectConsortiumDTO));
+        projectConsortium.setConsortium(
+            consortiumService.getConsortiumByNameOrThrowException(consortiumName));
+        projectConsortium.setInstitutes(
+            addProjectConsortiumInstituteFromEntity(projectConsortiumDTO));
 
         return projectConsortium;
     }
 
-    public Set<ProjectConsortium> toEntities(Collection<ProjectConsortiumDTO> projectConsortiumDTOS)
-    {
-        Set<ProjectConsortium> projectConsortia = new HashSet<>();
-        if (projectConsortiumDTOS != null)
-        {
-            projectConsortiumDTOS.forEach(x -> projectConsortia.add(toEntity(x)));
-        }
-        return projectConsortia;
-    }
-
     public ProjectConsortiumDTO toDto(ProjectConsortium projectConsortium)
     {
-        ProjectConsortiumDTO projectConsortiumDTO = entityMapper.toTarget(projectConsortium, ProjectConsortiumDTO.class);
+        ProjectConsortiumDTO projectConsortiumDTO =
+            entityMapper.toTarget(projectConsortium, ProjectConsortiumDTO.class);
         addProjectConsortiumInstituteFromDto(projectConsortium, projectConsortiumDTO);
         return projectConsortiumDTO;
     }
 
-    public List<ProjectConsortiumDTO> toDtos(Collection<ProjectConsortium> projectConsortium)
-    {
-        List<ProjectConsortiumDTO> consortiumDTOS = new ArrayList<>();
-        if (projectConsortium != null)
-        {
-            projectConsortium.forEach(x -> consortiumDTOS.add(toDto(x)));
-        }
-        return consortiumDTOS;
-    }
-
-    private void addProjectConsortiumInstituteFromDto(ProjectConsortium projectConsortium, ProjectConsortiumDTO projectConsortiumDTO)
+    private void addProjectConsortiumInstituteFromDto(
+        ProjectConsortium projectConsortium, ProjectConsortiumDTO projectConsortiumDTO)
     {
         List<String> projectConsortiumInstituteNames =
                 projectConsortiumInstituteMapper.toDtos(projectConsortium.getInstitutes());
         projectConsortiumDTO.setProjectConsortiumInstituteNames(projectConsortiumInstituteNames);
     }
 
-    private Set<Institute> addProjectConsortiumInstituteFromEntity(ProjectConsortiumDTO projectConsortiumDTO)
+    private Set<Institute> addProjectConsortiumInstituteFromEntity(
+        ProjectConsortiumDTO projectConsortiumDTO)
     {
-        Set<Institute> institutes = projectConsortiumInstituteMapper.toEntities(projectConsortiumDTO.getProjectConsortiumInstituteNames());
-
-        return institutes;
+        return projectConsortiumInstituteMapper.toEntities(
+            projectConsortiumDTO.getProjectConsortiumInstituteNames());
     }
-
 }

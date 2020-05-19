@@ -3,7 +3,6 @@ package org.gentar.organization.consortium;
 import org.gentar.exceptions.UserOperationFailedException;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Component;
-
 import java.util.List;
 
 @Component
@@ -30,7 +29,7 @@ public class ConsortiumServiceImpl implements ConsortiumService
         if (consortium == null)
         {
             throw new UserOperationFailedException(
-                    String.format(CONSORTIUM_NOT_EXISTS_ERROR, consortiumName));
+                String.format(CONSORTIUM_NOT_EXISTS_ERROR, consortiumName));
         }
         return consortium;
     }

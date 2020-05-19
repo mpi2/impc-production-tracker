@@ -1,6 +1,5 @@
 package org.gentar.biology.project;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -10,18 +9,13 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 /**
- * This class has the information that is common to every Project*DTO
+ * This class has the information that is common to every Project*DTO.
+ * Class is package protected because it should be used only internally.
  */
 public class ProjectCommonDataDTO
 {
-    // Public identifier of the project. No editable.
-    private String tpn;
-
-    // Id of the project in the iMits system where the equivalent for a project is a plan.
-    // No editable.
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    @JsonProperty("imitsMiPlanId")
-    private Long imitsMiPlan;
+    @JsonProperty("privacyName")
+    private String privacyName;
 
     // Reference for the project in the internal systems of the client.
     @JsonProperty("externalReference")
@@ -35,9 +29,6 @@ public class ProjectCommonDataDTO
 
     // Any comment about this project.
     private String comment;
-
-    @JsonProperty("privacyName")
-    private String privacyName;
 
     @JsonProperty("speciesNames")
     private List<String> speciesNames;

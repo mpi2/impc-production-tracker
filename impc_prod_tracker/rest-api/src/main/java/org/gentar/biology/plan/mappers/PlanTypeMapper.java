@@ -1,4 +1,4 @@
-package org.gentar.biology.plan;
+package org.gentar.biology.plan.mappers;
 
 import org.gentar.Mapper;
 import org.gentar.biology.plan.type.PlanType;

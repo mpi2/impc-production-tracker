@@ -1,20 +1,17 @@
 package org.gentar.biology.plan.plan_starting_point;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
-import lombok.RequiredArgsConstructor;
+import lombok.NoArgsConstructor;
 
 @Data
-@RequiredArgsConstructor
+@NoArgsConstructor
 public class PlanStartingPointDTO
 {
     @JsonIgnore
     private Long id;
 
-    @JsonIgnore
-    private Long planId;
-
-    private String outcomeTypeName;
-    private String colonyName;
-    private String backgroundStrainName;
+    @JsonProperty("outcomeTpo")
+    private String tpo;
 }

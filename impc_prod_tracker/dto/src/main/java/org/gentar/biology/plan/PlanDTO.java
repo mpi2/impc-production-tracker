@@ -20,6 +20,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.gentar.biology.plan.attempt.phenotyping.PhenotypingAttemptDTO;
+import org.gentar.biology.plan.plan_starting_point.PlanStartingPointDTO;
 import org.gentar.common.state_machine.StatusTransitionDTO;
 import org.springframework.hateoas.RepresentationModel;
 import org.gentar.biology.plan.attempt.breeding.BreedingAttemptDTO;

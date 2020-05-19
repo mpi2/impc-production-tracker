@@ -4,6 +4,7 @@ import lombok.*;
 import org.gentar.BaseEntity;
 import org.gentar.biology.plan.Plan;
 import org.gentar.biology.status.Status;
+import org.gentar.biology.status.StatusStamp;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -13,7 +14,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor(access= AccessLevel.PUBLIC, force=true)
 @Data
 @Entity
-public class PlanStatusStamp extends BaseEntity implements Serializable
+public class PlanStatusStamp extends BaseEntity implements Serializable, StatusStamp
 {
     @Id
     @SequenceGenerator(name = "planStatusStampSeq", sequenceName = "PLAN_STATUS_STAMP_SEQ")
@@ -30,4 +31,10 @@ public class PlanStatusStamp extends BaseEntity implements Serializable
 
     @NotNull
     private LocalDateTime date;
+
+    @Override
+    public String getStatusName()
+    {
+        return status.getName();
+    }
 }

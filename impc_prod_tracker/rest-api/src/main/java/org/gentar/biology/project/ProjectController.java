@@ -17,7 +17,8 @@ package org.gentar.biology.project;
 
 import org.gentar.audit.history.History;
 import org.gentar.biology.plan.*;
-import org.gentar.biology.plan.type.PlanTypes;
+import org.gentar.biology.plan.mappers.PlanMapper;
+import org.gentar.biology.plan.type.PlanTypeName;
 import org.gentar.exceptions.UserOperationFailedException;
 import org.gentar.helpers.CsvWriter;
 import org.gentar.helpers.PlanLinkBuilder;
@@ -139,18 +140,20 @@ class ProjectController
     @PostMapping
     public ProjectDTO createProject(@RequestBody ProjectCreationDTO projectCreationDTO)
     {
-        Project projectToBeCreated = projectDtoToEntityMapper.toEntity(projectCreationDTO);
-        Project createdProject = projectService.createProject(projectToBeCreated);
-
-        PlanDTO planDTO = projectCreationDTO.getPlanDTO();
-        planDTO.setTpn(createdProject.getTpn());
-        Plan planToBeCreated = planMapper.toEntity(planDTO);
-        Plan planCreated = planService.createPlan(planToBeCreated);
-
-        ProjectCreationDTO projectCreatedDTO = projectEntityToDtoMapper.toDtoForProjectCreation(createdProject);
-        projectCreatedDTO.setPlanDTO(planMapper.toDto(planCreated));
-
-        return projectCreatedDTO;
+//        Project projectToBeCreated = projectDtoToEntityMapper.toEntity(projectCreationDTO);
+////        Project projectToBeCreated = new Project();
+////        Project createdProject = projectService.createProject(projectToBeCreated);
+////
+////        PlanDTO planDTO = projectCreationDTO.getPlanDTO();
+////        planDTO.setTpn(createdProject.getTpn());
+////        Plan planToBeCreated = planMapper.toEntity(planDTO);
+////        Plan planCreated = planService.createPlan(planToBeCreated);
+////
+////        ProjectCreationDTO projectCreatedDTO = projectEntityToDtoMapper.toDtoForProjectCreation(createdProject);
+////        projectCreatedDTO.setPlanDTO(planMapper.toDto(planCreated));
+////
+////        return projectCreatedDTO;
+        return null;
     }
 
     @PutMapping(value = {"/{tpn}"})
@@ -215,9 +218,9 @@ class ProjectController
         {
             projectDTO = projectEntityToDtoMapper.toDto(project);
             projectDTO.add(
-                PlanLinkBuilder.buildPlanLinks(project, PlanTypes.PRODUCTION, "productionPlans"));
+                PlanLinkBuilder.buildPlanLinks(project, PlanTypeName.PRODUCTION, "productionPlans"));
             projectDTO.add(
-                PlanLinkBuilder.buildPlanLinks(project, PlanTypes.PHENOTYPING, "phenotypingPlans"));
+                PlanLinkBuilder.buildPlanLinks(project, PlanTypeName.PHENOTYPING, "phenotypingPlans"));
         }
         return projectDTO;
     }

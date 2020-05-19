@@ -1,8 +1,11 @@
-package org.gentar.biology.plan;
+package org.gentar.biology.plan.mappers;
 
 import org.gentar.EntityMapper;
 import org.gentar.biology.outcome.Outcome;
 import org.gentar.biology.outcome.OutcomeMapper;
+import org.gentar.biology.plan.Plan;
+import org.gentar.biology.plan.PlanDTO;
+import org.gentar.biology.plan.PlanService;
 import org.gentar.biology.plan.attempt.AttemptTypeMapper;
 import org.gentar.biology.plan.attempt.AttemptTypesName;
 import org.gentar.biology.plan.attempt.breeding.BreedingAttemptDTO;
@@ -13,6 +16,8 @@ import org.gentar.biology.plan.attempt.phenotyping.PhenotypingAttemptDTO;
 import org.gentar.biology.plan.attempt.phenotyping.PhenotypingAttemptMapper;
 import org.gentar.biology.plan.attempt.crispr.CrisprAttemptDTO;
 import org.gentar.Mapper;
+import org.gentar.biology.plan.mappers.PlanTypeMapper;
+import org.gentar.biology.plan.plan_starting_point.PlanStartingPointDTO;
 import org.gentar.biology.plan.starting_point.PlanStartingPoint;
 import org.gentar.biology.plan.status.PlanStatusStamp;
 import org.gentar.biology.project.*;

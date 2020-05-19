@@ -3,7 +3,7 @@ package org.gentar.biology.plan.engine;
 import org.gentar.biology.plan.Plan;
 import org.gentar.biology.plan.attempt.AttemptTypesName;
 import org.gentar.biology.plan.engine.crispr.CrisprProductionPlanEvent;
-import org.gentar.biology.plan.type.PlanTypes;
+import org.gentar.biology.plan.type.PlanTypeName;
 import org.gentar.statemachine.ProcessEvent;
 import org.gentar.test_util.PlanBuilder;
 import org.junit.jupiter.api.BeforeEach;
@@ -26,7 +26,7 @@ class PlanStateMachineResolverTest
     public void testWhenCrispr()
     {
         Plan plan = PlanBuilder.getInstance()
-            .withPlanType(PlanTypes.PRODUCTION.getTypeName())
+            .withPlanType(PlanTypeName.PRODUCTION.getLabel())
             .withAttemptType(AttemptTypesName.CRISPR.getLabel())
             .build();
         ProcessEvent processEvent =

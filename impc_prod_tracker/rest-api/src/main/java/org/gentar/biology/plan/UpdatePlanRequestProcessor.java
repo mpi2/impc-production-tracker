@@ -15,6 +15,7 @@
  */
 package org.gentar.biology.plan;
 
+import org.gentar.biology.plan.mappers.PlanMapper;
 import org.springframework.stereotype.Component;
 
 /**

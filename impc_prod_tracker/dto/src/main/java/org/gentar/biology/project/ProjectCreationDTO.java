@@ -1,9 +1,10 @@
 package org.gentar.biology.project;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonUnwrapped;
 import lombok.Data;
 import org.gentar.biology.intention.ProjectIntentionDTO;
-import org.gentar.biology.plan.PlanDTO;
+import org.gentar.biology.plan.PlanMinimumCreationDTO;
 import java.util.List;
 
 /**
@@ -12,11 +13,14 @@ import java.util.List;
  * linked to the project and the intentions information.
  */
 @Data
-public class ProjectCreationDTO extends ProjectCommonDataDTO
+public class ProjectCreationDTO
 {
-    // Plan with minimum information to be created as the firs plan for rhe project.
+    @JsonUnwrapped
+    private ProjectCommonDataDTO projectCommonDataDTO;
+
+    // Plan with minimum information to be created as the firs plan for the project.
     @JsonProperty("planDetails")
-    private PlanDTO planDTO;
+    private PlanMinimumCreationDTO planMinimumCreationDTO;
 
     // Intentions for the project.
     @JsonProperty("projectIntentions")

@@ -1,7 +1,8 @@
-package org.gentar.biology.project.search;
+package org.gentar.biology.project;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonUnwrapped;
 import org.gentar.biology.intention.ProjectIntentionDTO;
 import org.gentar.biology.project.ProjectCommonDataDTO;
 import org.gentar.biology.status_stamps.StatusStampsDTO;
@@ -14,6 +15,18 @@ import java.util.Set;
  */
 public class ProjectResponseDTO extends ProjectCommonDataDTO
 {
+    // Public identifier of the project. No editable.
+    private String tpn;
+
+    // Id of the project in the iMits system where the equivalent for a project is a plan.
+    // No editable.
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    @JsonProperty("imitsMiPlanId")
+    private Long imitsMiPlan;
+
+    @JsonUnwrapped
+    private ProjectCommonDataDTO projectCommonDataDTO;
+
     // Name of the assignment status for the project.
     private String assignmentStatusName;
 

@@ -1,11 +1,19 @@
 package org.gentar.biology.project;
 
+import com.fasterxml.jackson.annotation.JsonUnwrapped;
+import lombok.Data;
+
 /**
  * Class to keep the information the user can send in order to update a project.
  * As in this case the only editable information is the ProjectCommonDataDTO object, for now this
  * class does not add more information.
  */
-public class ProjectUpdateDTO extends ProjectCommonDataDTO
+@Data
+public class ProjectUpdateDTO
 {
-    // Empty if only the ProjectCommonDataDTO data is what can be modified in the project.
+    // Public identifier of the project. No editable.
+    private String tpn;
+
+    @JsonUnwrapped
+    private ProjectCommonDataDTO projectCommonDataDTO;
 }

@@ -72,12 +72,12 @@ public class ProjectEntityToDtoMapper
         if (project != null)
         {
             projectCreationDTO = entityMapper.toTarget(project, ProjectCreationDTO.class);
-            addStatusStampsDTO(project, projectCreationDTO);
-            addProjectIntentions(project, projectCreationDTO);
-            addSpeciesDTO(project, projectCreationDTO);
-            addProjectConsortia(project, projectCreationDTO);
-            addRelatedWorkUnits(project, projectCreationDTO);
-            addRelatedWorkGroups(project, projectCreationDTO);
+//            addStatusStampsDTO(project, projectCreationDTO);
+//            addProjectIntentions(project, projectCreationDTO);
+//            addSpeciesDTO(project, projectCreationDTO);
+//            addProjectConsortia(project, projectCreationDTO);
+//            addRelatedWorkUnits(project, projectCreationDTO);
+//            addRelatedWorkGroups(project, projectCreationDTO);
         }
         return projectCreationDTO;
     }
