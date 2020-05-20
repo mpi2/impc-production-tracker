@@ -9,7 +9,7 @@ COPY dto/src /usr/src/gentar/dto/src
 COPY core/src /usr/src/gentar/core/src
 COPY rest-api/src /usr/src/gentar/rest-api/src
 
-RUN mvn -f /usr/src/gentar/pom.xml clean package
+RUN mvn -f /usr/src/gentar/pom.xml clean package -P test
 
 
 # The final image should have a minimal number of layers

@@ -10,5 +10,5 @@ jdk: openjdk11
       
 script: 
   -   cd impc_prod_tracker
-  -   mvn clean test
+  -   mvn clean test -P test
 
