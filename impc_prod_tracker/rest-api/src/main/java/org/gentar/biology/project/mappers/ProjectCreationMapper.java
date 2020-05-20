@@ -1,8 +1,11 @@
-package org.gentar.biology.project;
+package org.gentar.biology.project.mappers;
 
 import org.gentar.Mapper;
 import org.gentar.biology.intention.ProjectIntentionMapper;
 import org.gentar.biology.intention.project_intention.ProjectIntention;
+import org.gentar.biology.project.Project;
+import org.gentar.biology.project.ProjectCreationDTO;
+import org.gentar.biology.project.mappers.ProjectCommonDataMapper;
 import org.springframework.stereotype.Component;
 import java.util.List;
 

@@ -1,6 +1,8 @@
-package org.gentar.biology.project;
+package org.gentar.biology.project.mappers;
 
 import org.gentar.Mapper;
+import org.gentar.biology.project.Project;
+import org.gentar.biology.project.ProjectQueryHelper;
 import org.gentar.helpers.ProjectCsvRecord;
 import org.springframework.stereotype.Component;
 

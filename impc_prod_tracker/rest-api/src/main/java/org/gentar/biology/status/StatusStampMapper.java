@@ -6,6 +6,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
+/**
+ * Class to map any class implementing StatusStamp into a StatusStampsDTO.
+ * The class does not implement {@link org.gentar.Mapper} because only the conversion to dto is
+ * needed.
+ */
 @Component
 public class StatusStampMapper
 {
@@ -17,10 +22,14 @@ public class StatusStampMapper
         return statusStampsDTO;
     }
 
-    public List<StatusStampsDTO> toDtos ( Set<? extends StatusStamp> statusStamps)
+    public List<StatusStampsDTO> toDtos (Set<? extends StatusStamp> statusStamps)
     {
         List<StatusStampsDTO> statusStampsDTOS = new ArrayList<>();
-        statusStamps.forEach(statusStamp -> statusStampsDTOS.add(toDto(statusStamp)));
+        if (statusStamps != null)
+        {
+            statusStamps.forEach(statusStamp -> statusStampsDTOS.add(toDto(statusStamp)));
+        }
         return statusStampsDTOS;
     }
 }
+

@@ -1,4 +1,4 @@
-package org.gentar.biology.project;
+package org.gentar.biology.project.mappers;
 
 import org.gentar.EntityMapper;
 import org.gentar.Mapper;

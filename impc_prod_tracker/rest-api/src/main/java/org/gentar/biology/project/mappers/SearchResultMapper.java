@@ -13,9 +13,10 @@
  * language governing permissions and limitations under the
  * License.
  *******************************************************************************/
-package org.gentar.biology.project;
+package org.gentar.biology.project.mappers;
 
 import org.gentar.Mapper;
+import org.gentar.biology.project.mappers.ProjectEntityToDtoMapper;
 import org.gentar.biology.project.search.SearchResult;
 import org.gentar.biology.project.search.SearchResultDTO;
 import org.springframework.stereotype.Component;

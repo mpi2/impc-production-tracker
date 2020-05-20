@@ -1,7 +1,11 @@
-package org.gentar.biology.project;
+package org.gentar.biology.project.mappers;
 
 import org.gentar.biology.intention.ProjectIntentionMapper;
+import org.gentar.biology.project.Project;
+import org.gentar.biology.project.ProjectCreationDTO;
 import org.gentar.biology.project.consortium.ProjectConsortium;
+import org.gentar.biology.project.mappers.ProjectCommonDataMapper;
+import org.gentar.biology.project.mappers.ProjectCreationMapper;
 import org.gentar.biology.project.privacy.Privacy;
 import org.gentar.organization.consortium.Consortium;
 import org.gentar.organization.institute.Institute;

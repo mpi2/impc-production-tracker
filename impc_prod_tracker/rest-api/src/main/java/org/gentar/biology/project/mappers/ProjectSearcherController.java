@@ -13,7 +13,7 @@
  language governing permissions and limitations under the
  License.
  */
-package org.gentar.biology.project;
+package org.gentar.biology.project.mappers;
 
 import org.gentar.biology.project.search.ProjectSearcherService;
 import org.gentar.biology.project.search.Search;
@@ -40,7 +40,6 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 @RestController
 @RequestMapping("/api/projects/search")
