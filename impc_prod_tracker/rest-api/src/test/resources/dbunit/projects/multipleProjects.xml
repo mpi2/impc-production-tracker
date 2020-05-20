@@ -6,6 +6,12 @@
     <PRIVACY    ID="3"
                 NAME="restricted"/>
 
+    <SPECIES    ID="1"
+                NAME="Mus musculus"/>
+    <SPECIES    ID="2"
+                NAME="Homo sapiens"/>
+
+
     <ASSIGNMENT_STATUS  ID="1"
                         NAME="Assigned"/>
     <ASSIGNMENT_STATUS  ID="2"
@@ -41,11 +47,22 @@
     <STATUS     ID="2"
                 NAME="Attempt In Progress"/>
 
+    <CONSORTIUM ID="1"
+                NAME="CMG"/>
+
+    <INSTITUTE  ID="1"
+                NAME="Broad"/>
+    <INSTITUTE  ID="2"
+                NAME="Yale"/>
+
     <PROJECT    ID="101"
                 TPN="TPN:01"
                 PRIVACY_ID="1"
                 ASSIGNMENT_STATUS_ID="1"
-                SUMMARY_STATUS_ID="1"/>
+                SUMMARY_STATUS_ID="1"
+                RECOVERY="false"
+                COMMENT="Comment test"
+                PROJECT_EXTERNAL_REF="External reference 01"/>
     <PROJECT    ID="102"
                 TPN="TPN:02"
                 PRIVACY_ID="1"
@@ -72,7 +89,39 @@
                 PROJECT_ID="101"
                 PLAN_TYPE_ID="1"
                 STATUS_ID="1"
+                WORK_UNIT_ID="1"
+                WORK_GROUP_ID="1"
                 SUMMARY_STATUS_ID="1"/>
+
+    <PROJECT_SPECIES    PROJECT_ID="101"
+                        SPECIES_ID="1"/>
+    <PROJECT_SPECIES    PROJECT_ID="102"
+                        SPECIES_ID="2"/>
+
+    <PROJECT_CONSORTIUM ID="1"
+                        PROJECT_ID="101"
+                        CONSORTIUM_ID="1"/>
+    <PROJECT_CONSORTIUM ID="2"
+                        PROJECT_ID="102"
+                        CONSORTIUM_ID="1"/>
+    <PROJECT_CONSORTIUM ID="3"
+                        PROJECT_ID="103"
+                        CONSORTIUM_ID="1"/>
+    <PROJECT_CONSORTIUM ID="4"
+                        PROJECT_ID="104"
+                        CONSORTIUM_ID="1"/>
+    <PROJECT_CONSORTIUM ID="5"
+                        PROJECT_ID="105"
+                        CONSORTIUM_ID="1"/>
+
+    <PROJECT_CONSORTIUM_INSTITUTE   PROJECT_CONSORTIUM_ID="1"
+                                    INSTITUTE_ID="1"/>
+    <PROJECT_CONSORTIUM_INSTITUTE   PROJECT_CONSORTIUM_ID="1"
+                                    INSTITUTE_ID="2"/>
+    <PROJECT_CONSORTIUM_INSTITUTE   PROJECT_CONSORTIUM_ID="2"
+                                    INSTITUTE_ID="1"/>
+    <PROJECT_CONSORTIUM_INSTITUTE   PROJECT_CONSORTIUM_ID="3"
+                                    INSTITUTE_ID="2"/>
 
     <PERSON     ID="123"
                 EMAIL="imits2test@test.com"
