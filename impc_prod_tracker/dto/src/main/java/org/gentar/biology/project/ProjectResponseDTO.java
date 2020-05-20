@@ -3,9 +3,13 @@ package org.gentar.biology.project;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonUnwrapped;
+import lombok.Data;
 import org.gentar.biology.intention.ProjectIntentionDTO;
 import org.gentar.biology.project.ProjectCommonDataDTO;
 import org.gentar.biology.status_stamps.StatusStampsDTO;
+import org.springframework.hateoas.RepresentationModel;
+import org.springframework.hateoas.server.core.Relation;
+
 import java.util.List;
 import java.util.Set;
 
@@ -13,7 +17,9 @@ import java.util.Set;
  * Class to represent the response to return in a endpoint requesting information about a project.
  * The fields added in this class correspond to read only information.
  */
-public class ProjectResponseDTO extends ProjectCommonDataDTO
+@Relation(collectionRelation = "projects")
+@Data
+public class ProjectResponseDTO extends RepresentationModel<ProjectResponseDTO>
 {
     // Public identifier of the project. No editable.
     private String tpn;

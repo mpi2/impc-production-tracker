@@ -1,9 +1,13 @@
-package org.gentar.biology.project;
+package org.gentar.biology.project.mappers;
 
 import org.gentar.EntityMapper;
 import org.gentar.Mapper;
+import org.gentar.biology.project.Project;
+import org.gentar.biology.project.ProjectCommonDataDTO;
+import org.gentar.biology.project.ProjectConsortiumDTO;
 import org.gentar.biology.project.consortium.ProjectConsortium;
 import org.gentar.biology.project.consortium.ProjectConsortiumMapper;
+import org.gentar.biology.project.mappers.PrivacyMapper;
 import org.gentar.biology.project.privacy.Privacy;
 import org.gentar.biology.species.Species;
 import org.gentar.biology.species.SpeciesMapper;

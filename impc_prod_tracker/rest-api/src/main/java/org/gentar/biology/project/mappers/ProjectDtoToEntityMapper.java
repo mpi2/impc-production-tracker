@@ -13,11 +13,14 @@
  language governing permissions and limitations under the
  License.
  */
-package org.gentar.biology.project;
+package org.gentar.biology.project.mappers;
 
 import org.gentar.EntityMapper;
+import org.gentar.biology.project.Project;
+import org.gentar.biology.project.ProjectDTO;
 import org.gentar.biology.project.consortium.ProjectConsortium;
 import org.gentar.biology.intention.project_intention.ProjectIntention;
+import org.gentar.biology.project.mappers.PrivacyMapper;
 import org.gentar.biology.species.SpeciesMapper;
 import org.gentar.biology.species.Species;
 import org.gentar.biology.status.StatusMapper;

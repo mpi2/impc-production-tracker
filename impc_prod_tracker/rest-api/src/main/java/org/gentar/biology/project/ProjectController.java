@@ -20,6 +20,11 @@ import org.gentar.biology.plan.*;
 import org.gentar.biology.plan.mappers.PlanMapper;
 import org.gentar.biology.plan.mappers.PlanMinimumCreationMapper;
 import org.gentar.biology.plan.type.PlanTypeName;
+import org.gentar.biology.project.mappers.ProjectCreationMapper;
+import org.gentar.biology.project.mappers.ProjectCsvRecordMapper;
+import org.gentar.biology.project.mappers.ProjectDtoToEntityMapper;
+import org.gentar.biology.project.mappers.ProjectEntityToDtoMapper;
+import org.gentar.biology.project.mappers.ProjectResponseMapper;
 import org.gentar.exceptions.UserOperationFailedException;
 import org.gentar.helpers.CsvWriter;
 import org.gentar.helpers.PlanLinkBuilder;
@@ -61,6 +66,8 @@ class ProjectController
     private PlanService planService;
     private ProjectCreationMapper projectCreationMapper;
     private PlanMinimumCreationMapper planMinimumCreationMapper;
+    private ProjectResponseMapper projectResponseMapper;
+
 
     private static final String PROJECT_NOT_FOUND_ERROR =
         "Project %s does not exist or you don't have access to it.";
@@ -74,7 +81,10 @@ class ProjectController
         ProjectCsvRecordMapper projectCsvRecordMapper,
         UpdateProjectRequestProcessor updateProjectRequestProcessor,
         PlanMapper planMapper,
-        PlanService planService, ProjectCreationMapper projectCreationMapper, PlanMinimumCreationMapper planMinimumCreationMapper)
+        PlanService planService,
+        ProjectCreationMapper projectCreationMapper,
+        PlanMinimumCreationMapper planMinimumCreationMapper,
+        ProjectResponseMapper projectResponseMapper)
     {
         this.projectService = projectService;
         this.projectEntityToDtoMapper = projectEntityToDtoMapper;
@@ -87,6 +97,7 @@ class ProjectController
         this.planService = planService;
         this.projectCreationMapper = projectCreationMapper;
         this.planMinimumCreationMapper = planMinimumCreationMapper;
+        this.projectResponseMapper = projectResponseMapper;
     }
 
     /**
@@ -125,7 +136,7 @@ class ProjectController
             .withImitsMiPlanId(imitsMiPlans)
             .build();
         Page<Project> projectsPage = projectService.getProjects(projectFilter, pageable);
-        Page<ProjectDTO> projectDtos = projectsPage.map(this::getDTO);
+        Page<ProjectResponseDTO> projectDtos = projectsPage.map(this::getDTO);
         PagedModel pr =
             assembler.toModel(
                 projectDtos,
@@ -210,18 +221,18 @@ class ProjectController
         csvWriter.writeListToCsv(response.getWriter(), projectCsvRecords, ProjectCsvRecord.HEADERS);
     }
 
-    private ProjectDTO getDTO(Project project)
+    private ProjectResponseDTO getDTO(Project project)
     {
-        ProjectDTO projectDTO = new ProjectDTO();
+        ProjectResponseDTO projectResponseDTO = new ProjectResponseDTO();
         if (project != null)
         {
-            projectDTO = projectEntityToDtoMapper.toDto(project);
-            projectDTO.add(
+            projectResponseDTO = projectResponseMapper.toDto(project);
+            projectResponseDTO.add(
                 PlanLinkBuilder.buildPlanLinks(project, PlanTypeName.PRODUCTION, "productionPlans"));
-            projectDTO.add(
+            projectResponseDTO.add(
                 PlanLinkBuilder.buildPlanLinks(project, PlanTypeName.PHENOTYPING, "phenotypingPlans"));
         }
-        return projectDTO;
+        return projectResponseDTO;
     }
 
     /**
@@ -232,13 +243,13 @@ class ProjectController
     @GetMapping(value = {"/{tpn}"})
     public EntityModel<?> findOne(@PathVariable String tpn)
     {
-        EntityModel<ProjectDTO> entityModel;
+        EntityModel<ProjectResponseDTO> entityModel = null;
         Project project = projectService.getProjectByTpn(tpn);
-        ProjectDTO projectDTO = getDTO(project);
+        ProjectResponseDTO projectResponseDTO = getDTO(project);
 
-        if (projectDTO != null)
+        if (projectResponseDTO != null)
         {
-            entityModel = new EntityModel<>(projectDTO);
+            entityModel = new EntityModel<>(projectResponseDTO);
         }
         else
         {
