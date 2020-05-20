@@ -109,45 +109,4 @@ class ProjectControllerTest extends ControllerTestTemplate
             .andExpect(status().isOk())
             .andDo(document("projects/allProjectsWithFilter"));
     }
-
-    @Test
-    @DatabaseSetup(Paths.MULTIPLE_PROJECTS)
-    void testCreatingAProject() throws Exception
-    {
-//        ProjectCreationDTO projectDTO = new ProjectCreationDTO();
-//        ProjectCommonDataDTO projectCommonDataDTO = new ProjectCommonDataDTO();
-//
-//        projectCommonDataDTO.setPrivacyName("public");
-//        projectCommonDataDTO.setComment("This is a test comment");
-//        PlanMinimumCreationDTO planMinimumCreationDTO = new PlanMinimumCreationDTO();
-//        planMinimumCreationDTO.setPlanTypeName("production");
-//        planMinimumCreationDTO.setAttemptTypeName("crispr");
-//        PlanCommonDataDTO planCommonDataDTO = new PlanCommonDataDTO();
-//        planCommonDataDTO.setWorkUnitName("BCM");
-//        planCommonDataDTO.setWorkGroupName("BaSH");
-//        planMinimumCreationDTO.setPlanCommonDataDTO(planCommonDataDTO);
-//        projectDTO.setPlanMinimumCreationDTO(planMinimumCreationDTO);
-//
-//        ResultActions resultActions = mvc().perform(MockMvcRequestBuilders
-//            .post("/api/projects")
-//            .header("Authorization", accessToken)
-//            .content(toJson(projectDTO))
-//            .contentType(MediaType.APPLICATION_JSON))
-//            .andExpect(status().isOk())
-//            .andDo(document("projects/createProject"));
-//
-//        MvcResult result = resultActions.andReturn();
-//        String contentAsString = result.getResponse().getContentAsString();
-//
-//        ProjectDTO response = JsonHelper.fromJson(contentAsString, ProjectDTO.class);
-//        assertThat(response.getTpn(), is(notNullValue()));
-//        assertThat(response.getAssignmentStatusName(), is("Assigned"));
-//        assertThat(response.getSummaryStatusName(), is("Plan Created"));
-//        assertThat(response.getStatusStampsDTOS().size(), is(1));
-//        assertThat(response.getProjectExternalRef(), is(nullValue()));
-//        assertThat(response.getReactivationDate(), is(nullValue()));
-//        assertThat(response.getRecovery(), is(nullValue()));
-//        assertThat(response.getComment(), is("This is a test comment"));
-//        assertThat(response.getPrivacyName(), is("public"));
-    }
 }
