@@ -3,9 +3,7 @@ package org.gentar.audit.history;
 import org.gentar.common.history.HistoryDTO;
 import org.gentar.common.history.HistoryDetailDTO;
 import org.springframework.stereotype.Component;
-import org.gentar.audit.history.History;
 import org.gentar.audit.history.detail.HistoryDetail;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;

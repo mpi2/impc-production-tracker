@@ -7,6 +7,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
 import java.io.IOException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 
 /** Collection of utility methods to work with JSON strings. */
 public class JsonHelper
@@ -18,6 +20,8 @@ public class JsonHelper
     objectMapper = new ObjectMapper();
     objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
     objectMapper.registerModule(new JavaTimeModule());
+    DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss a z");
+    objectMapper.setDateFormat(df);
   }
 
   private JsonHelper() {}
@@ -50,16 +54,13 @@ public class JsonHelper
    *     type.
    */
   public static <T> T fromJson(String json, TypeReference<T> typeReference) throws IOException {
-    ObjectMapper mapper = new ObjectMapper();
-    mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-    return mapper.readValue(json, typeReference);
+    return objectMapper.readValue(json, typeReference);
   }
 
   /** Maps the given object to JSON using a standard Jackson mapper. */
   public static <T> String toJson(T object) throws JsonProcessingException
   {
-    ObjectMapper mapper = new ObjectMapper();
-    return mapper.writeValueAsString(object);
+    return objectMapper.writeValueAsString(object);
   }
 
 }

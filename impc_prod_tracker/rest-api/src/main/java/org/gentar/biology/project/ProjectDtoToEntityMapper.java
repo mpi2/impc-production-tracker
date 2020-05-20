@@ -90,8 +90,8 @@ public class ProjectDtoToEntityMapper
 
     private void setConsortia(Project project, ProjectDTO projectDTO)
     {
-        Set<ProjectConsortium> projectConsortia =
-            projectConsortiumMapper.toEntities(projectDTO.getProjectConsortiumDTOS());
+        Set<ProjectConsortium> projectConsortia = new HashSet<>(
+            projectConsortiumMapper.toEntities(projectDTO.getProjectConsortiumDTOS()));
         projectConsortia.forEach(x -> x.setProject(project));
         project.setProjectConsortia(projectConsortia);
     }

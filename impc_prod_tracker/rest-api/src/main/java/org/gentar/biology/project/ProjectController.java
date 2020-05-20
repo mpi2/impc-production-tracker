@@ -17,7 +17,9 @@ package org.gentar.biology.project;
 
 import org.gentar.audit.history.History;
 import org.gentar.biology.plan.*;
-import org.gentar.biology.plan.type.PlanTypes;
+import org.gentar.biology.plan.mappers.PlanMapper;
+import org.gentar.biology.plan.mappers.PlanMinimumCreationMapper;
+import org.gentar.biology.plan.type.PlanTypeName;
 import org.gentar.exceptions.UserOperationFailedException;
 import org.gentar.helpers.CsvWriter;
 import org.gentar.helpers.PlanLinkBuilder;
@@ -57,6 +59,8 @@ class ProjectController
     private UpdateProjectRequestProcessor updateProjectRequestProcessor;
     private PlanMapper planMapper;
     private PlanService planService;
+    private ProjectCreationMapper projectCreationMapper;
+    private PlanMinimumCreationMapper planMinimumCreationMapper;
 
     private static final String PROJECT_NOT_FOUND_ERROR =
         "Project %s does not exist or you don't have access to it.";
@@ -70,7 +74,7 @@ class ProjectController
         ProjectCsvRecordMapper projectCsvRecordMapper,
         UpdateProjectRequestProcessor updateProjectRequestProcessor,
         PlanMapper planMapper,
-        PlanService planService)
+        PlanService planService, ProjectCreationMapper projectCreationMapper, PlanMinimumCreationMapper planMinimumCreationMapper)
     {
         this.projectService = projectService;
         this.projectEntityToDtoMapper = projectEntityToDtoMapper;
@@ -81,6 +85,8 @@ class ProjectController
         this.updateProjectRequestProcessor = updateProjectRequestProcessor;
         this.planMapper = planMapper;
         this.planService = planService;
+        this.projectCreationMapper = projectCreationMapper;
+        this.planMinimumCreationMapper = planMinimumCreationMapper;
     }
 
     /**
@@ -139,18 +145,14 @@ class ProjectController
     @PostMapping
     public ProjectDTO createProject(@RequestBody ProjectCreationDTO projectCreationDTO)
     {
-        Project projectToBeCreated = projectDtoToEntityMapper.toEntity(projectCreationDTO);
+        Project projectToBeCreated = projectCreationMapper.toEntity(projectCreationDTO);
         Project createdProject = projectService.createProject(projectToBeCreated);
-
-        PlanDTO planDTO = projectCreationDTO.getPlanDTO();
-        planDTO.setTpn(createdProject.getTpn());
-        Plan planToBeCreated = planMapper.toEntity(planDTO);
+        PlanMinimumCreationDTO planMinimumCreationDTO =
+            projectCreationDTO.getPlanMinimumCreationDTO();
+        Plan planToBeCreated = planMinimumCreationMapper.toEntity(
+            projectCreationDTO.getPlanMinimumCreationDTO());
         Plan planCreated = planService.createPlan(planToBeCreated);
-
-        ProjectCreationDTO projectCreatedDTO = projectEntityToDtoMapper.toDtoForProjectCreation(createdProject);
-        projectCreatedDTO.setPlanDTO(planMapper.toDto(planCreated));
-
-        return projectCreatedDTO;
+        return null;
     }
 
     @PutMapping(value = {"/{tpn}"})
@@ -215,9 +217,9 @@ class ProjectController
         {
             projectDTO = projectEntityToDtoMapper.toDto(project);
             projectDTO.add(
-                PlanLinkBuilder.buildPlanLinks(project, PlanTypes.PRODUCTION, "productionPlans"));
+                PlanLinkBuilder.buildPlanLinks(project, PlanTypeName.PRODUCTION, "productionPlans"));
             projectDTO.add(
-                PlanLinkBuilder.buildPlanLinks(project, PlanTypes.PHENOTYPING, "phenotypingPlans"));
+                PlanLinkBuilder.buildPlanLinks(project, PlanTypeName.PHENOTYPING, "phenotypingPlans"));
         }
         return projectDTO;
     }

@@ -28,6 +28,9 @@ hs_err_pid*
 # IntelliJ
 .idea/
 
+# Maven
+.mvn/
+
 # Build folders to ignore
 target/
 impc_prod_tracker/target/

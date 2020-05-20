@@ -1,29 +1,26 @@
 package org.gentar.biology.status;
 
-import org.gentar.Mapper;
 import org.gentar.biology.status_stamps.StatusStampsDTO;
 import org.springframework.stereotype.Component;
-import org.gentar.biology.project.assignment.AssignmentStatusStamp;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
 @Component
-public class StatusStampMapper implements Mapper<AssignmentStatusStamp, StatusStampsDTO>
+public class StatusStampMapper
 {
-    public StatusStampsDTO toDto (AssignmentStatusStamp assignmentStatusStamp)
+    public StatusStampsDTO toDto(StatusStamp statusStamp)
     {
         StatusStampsDTO statusStampsDTO = new StatusStampsDTO();
-        statusStampsDTO.setStatusName(assignmentStatusStamp.getAssignmentStatus().getName());
-        statusStampsDTO.setDate(assignmentStatusStamp.getDate());
+        statusStampsDTO.setStatusName(statusStamp.getStatusName());
+        statusStampsDTO.setDate(statusStamp.getDate());
         return statusStampsDTO;
     }
 
-    public List<StatusStampsDTO> toDtos (Set<AssignmentStatusStamp> assignmentStatusStamps)
+    public List<StatusStampsDTO> toDtos ( Set<? extends StatusStamp> statusStamps)
     {
         List<StatusStampsDTO> statusStampsDTOS = new ArrayList<>();
-        assignmentStatusStamps.forEach(assignmentStatusStamp -> statusStampsDTOS.add(toDto(assignmentStatusStamp)));
+        statusStamps.forEach(statusStamp -> statusStampsDTOS.add(toDto(statusStamp)));
         return statusStampsDTOS;
     }
 }

@@ -1,7 +1,10 @@
 package org.gentar.web.controller.project;
 
 import com.github.springtestdbunit.annotation.DatabaseSetup;
+import org.gentar.biology.plan.PlanCommonDataDTO;
 import org.gentar.biology.plan.PlanDTO;
+import org.gentar.biology.plan.PlanMinimumCreationDTO;
+import org.gentar.biology.project.ProjectCommonDataDTO;
 import org.gentar.biology.project.ProjectCreationDTO;
 import org.gentar.biology.project.ProjectDTO;
 import org.gentar.framework.ControllerTestTemplate;
@@ -105,43 +108,5 @@ class ProjectControllerTest extends ControllerTestTemplate
             .header("Authorization", accessToken))
             .andExpect(status().isOk())
             .andDo(document("projects/allProjectsWithFilter"));
-    }
-
-    @Test
-    @DatabaseSetup(Paths.MULTIPLE_PROJECTS)
-    void testCreatingAProject() throws Exception
-    {
-        ProjectCreationDTO projectDTO = new ProjectCreationDTO();
-        projectDTO.setPrivacyName("public");
-        projectDTO.setComment("This is a test comment");
-        PlanDTO planDTO = new PlanDTO();
-        planDTO.setPlanTypeName("production");
-        planDTO.setAttemptTypeName("crispr");
-        planDTO.setWorkUnitName("BCM");
-        planDTO.setWorkGroupName("BaSH");
-        projectDTO.setPlanDTO(planDTO);
-
-        ResultActions resultActions = mvc().perform(MockMvcRequestBuilders
-            .post("/api/projects")
-            .header("Authorization", accessToken)
-            .content(toJson(projectDTO))
-            .contentType(MediaType.APPLICATION_JSON))
-            .andExpect(status().isOk())
-            .andDo(document("projects/createProject"));
-
-        MvcResult result = resultActions.andReturn();
-        String contentAsString = result.getResponse().getContentAsString();
-
-        ProjectDTO response = JsonHelper.fromJson(contentAsString, ProjectDTO.class);
-        assertThat(response.getTpn(), is(notNullValue()));
-        assertThat(response.getAssignmentStatusName(), is("Assigned"));
-        assertThat(response.getSummaryStatusName(), is("Plan Created"));
-        assertThat(response.getStatusStampsDTOS().size(), is(1));
-        assertThat(response.getProjectExternalRef(), is(nullValue()));
-        assertThat(response.getReactivationDate(), is(nullValue()));
-        assertThat(response.getRecovery(), is(nullValue()));
-        assertThat(response.getComment(), is("This is a test comment"));
-        assertThat(response.getPrivacyName(), is("public"));
-        System.out.println(response);
     }
 }

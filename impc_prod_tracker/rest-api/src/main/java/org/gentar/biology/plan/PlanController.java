@@ -15,12 +15,16 @@
  */
 package org.gentar.biology.plan;
 
+import org.gentar.audit.history.History;
+import org.gentar.audit.history.HistoryMapper;
 import org.gentar.biology.plan.filter.PlanFilter;
 import org.gentar.biology.plan.filter.PlanFilterBuilder;
-import org.gentar.exceptions.UserOperationFailedException;
-import org.gentar.helpers.PaginationHelper;
-import org.gentar.helpers.LinkUtil;
+import org.gentar.biology.plan.mappers.PlanMapper;
+import org.gentar.biology.plan.mappers.PlanResponseMapper;
 import org.gentar.common.history.HistoryDTO;
+import org.gentar.exceptions.UserOperationFailedException;
+import org.gentar.helpers.LinkUtil;
+import org.gentar.helpers.PaginationHelper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PagedResourcesAssembler;
@@ -29,9 +33,15 @@ import org.springframework.hateoas.PagedModel;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-import org.gentar.audit.history.History;
-import org.gentar.audit.history.HistoryMapper;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
@@ -44,6 +54,7 @@ public class PlanController
     private HistoryMapper historyMapper;
     private PlanService planService;
     private PlanMapper planMapper;
+    private PlanResponseMapper planResponseMapper;
     private UpdatePlanRequestProcessor updatePlanRequestProcessor;
 
     private static final String PLAN_NOT_EXISTS_ERROR =
@@ -53,11 +64,12 @@ public class PlanController
         HistoryMapper historyMapper,
         PlanService planService,
         PlanMapper planMapper,
-        UpdatePlanRequestProcessor updatePlanRequestProcessor)
+        PlanResponseMapper planResponseMapper, UpdatePlanRequestProcessor updatePlanRequestProcessor)
     {
         this.historyMapper = historyMapper;
         this.planService = planService;
         this.planMapper = planMapper;
+        this.planResponseMapper = planResponseMapper;
         this.updatePlanRequestProcessor = updatePlanRequestProcessor;
     }
 
@@ -109,7 +121,8 @@ public class PlanController
 
         Page<Plan> paginatedContent =
             PaginationHelper.createPage(plans, pageable);
-        Page<PlanDTO> planDTOSPage = paginatedContent.map(this::getDTO);
+        //Page<PlanResponseDTO> planDTOSPage = paginatedContent.map(this::getDTO);
+        Page<PlanResponseDTO> planDTOSPage = null;
 
         PagedModel pr =
             assembler.toModel(
@@ -122,15 +135,15 @@ public class PlanController
         return new ResponseEntity<>(pr, responseHeaders, HttpStatus.OK);
     }
 
-    private PlanDTO getDTO(Plan plan)
-    {
-        PlanDTO planDTO = new PlanDTO();
-        if (plan != null)
-        {
-            planDTO = planMapper.toDto(plan);
-        }
-        return planDTO;
-    }
+//    private PlanResponseDTO getDTO(Plan plan)
+//    {
+//        PlanResponseDTO planResponseDTO = new PlanResponseDTO();
+//        if (plan != null)
+//        {
+//            planResponseDTO = planResponseMapper.toDto(plan);
+//        }
+//        return planResponseDTO;
+//    }
 
     /**
      * Get a specific plan.
@@ -140,13 +153,14 @@ public class PlanController
     @GetMapping(value = {"/{pin}"})
     public EntityModel<?> findOne(@PathVariable String pin)
     {
-        EntityModel<PlanDTO> entityModel;
+        EntityModel<PlanResponseDTO> entityModel;
         Plan plan = planService.getNotNullPlanByPin(pin);
-        PlanDTO planDTO = getDTO(plan);
+        //PlanResponseDTO planResponseDTO = getDTO(plan);
+        PlanResponseDTO planResponseDTO = null;
 
-        if (planDTO != null)
+        if (planResponseDTO != null)
         {
-            entityModel = new EntityModel<>(planDTO);
+            entityModel = new EntityModel<>(planResponseDTO);
         }
         else
         {

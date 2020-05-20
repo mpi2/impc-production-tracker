@@ -2,7 +2,6 @@ package org.gentar.biology.status_stamps;
 
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
-
 import java.time.LocalDateTime;
 
 @Data
@@ -10,5 +9,6 @@ import java.time.LocalDateTime;
 public class StatusStampsDTO
 {
     private String statusName;
+
     private LocalDateTime date;
 }
