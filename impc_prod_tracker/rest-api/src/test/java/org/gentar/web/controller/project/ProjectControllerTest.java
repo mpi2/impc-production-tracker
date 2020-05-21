@@ -57,17 +57,6 @@ class ProjectControllerTest extends ControllerTestTemplate
         assertThat(projectResponseDTO.getTpn(), is("TPN:01"));
     }
 
-    @Test
-    @DatabaseSetup(Paths.MULTIPLE_PROJECTS)
-    @DatabaseTearDown(type = DatabaseOperation.DELETE_ALL, value = Paths.MULTIPLE_PROJECTS)
-    void testGetOneProjectNotExisting() throws Exception
-    {
-        mvc().perform(MockMvcRequestBuilders
-            .get("/api/projects/TPN:01X")
-            .header("Authorization", accessToken))
-            .andExpect(status().is5xxServerError());
-    }
-
     private ResultHandler documentSingleProject()
     {
         return document(
@@ -95,6 +84,38 @@ class ProjectControllerTest extends ControllerTestTemplate
                     .description("External reference for the project. Read only."),
                 fieldWithPath("projectIntentions")
                     .description("Intentions for the project"),
+                fieldWithPath("projectIntentions[].molecularMutationTypeName")
+                    .description("Name of thr molecular mutation."),
+                fieldWithPath("projectIntentions[].mutationCategorizations")
+                    .description("Mutation categorizations linked to the project intention."),
+                fieldWithPath("projectIntentions[].mutationCategorizations[].name")
+                    .description("Name of the mutation categorization."),
+                fieldWithPath("projectIntentions[].mutationCategorizations[].description")
+                    .description("Description of the mutation categorization."),
+                fieldWithPath("projectIntentions[].mutationCategorizations[].typeName")
+                    .description("Name of type of the mutation categorization."),
+                fieldWithPath("projectIntentions[].intentionByGene")
+                    .description("Gene in the intention."),
+                fieldWithPath("projectIntentions[].intentionByGene.bestOrthologs[]")
+                    .description("A list of best orthologs for the gene (Support count > 4)."),
+                fieldWithPath("projectIntentions[].intentionByGene.allOrthologs[]")
+                    .description("A list of all orthologs for the gene."),
+                fieldWithPath("projectIntentions[].intentionByGene.gene")
+                    .description("Gene information."),
+                fieldWithPath("projectIntentions[].intentionByGene.gene.id")
+                    .description("Internal id of the gene in GenTaR."),
+                fieldWithPath("projectIntentions[].intentionByGene.gene.name")
+                    .description("Name of the gene."),
+                fieldWithPath("projectIntentions[].intentionByGene.gene.symbol")
+                    .description("Symbol of the gene."),
+                fieldWithPath("projectIntentions[].intentionByGene.gene.externalLink")
+                    .description("External link for the gene"),
+                fieldWithPath("projectIntentions[].intentionByGene.gene.accessionId")
+                    .description("Accession id for the gene, e.g MGI"),
+                fieldWithPath("projectIntentions[].intentionByGene.gene.species")
+                    .description("Species associated with the gene"),
+                fieldWithPath("projectIntentions[].intentionBySequence[]")
+                    .description("Sequence information"),
                 fieldWithPath("privacyName")
                     .description("Privacy level for the project (public, protected or restricted)"),
                 fieldWithPath("speciesNames")
@@ -112,6 +133,17 @@ class ProjectControllerTest extends ControllerTestTemplate
                 fieldWithPath("_links.productionPlans.href")
                     .description("Link to a specific production plan")
             ));
+    }
+
+    @Test
+    @DatabaseSetup(Paths.MULTIPLE_PROJECTS)
+    @DatabaseTearDown(type = DatabaseOperation.DELETE_ALL, value = Paths.MULTIPLE_PROJECTS)
+    void testGetOneProjectNotExisting() throws Exception
+    {
+        mvc().perform(MockMvcRequestBuilders
+            .get("/api/projects/TPN:01X")
+            .header("Authorization", accessToken))
+            .andExpect(status().is5xxServerError());
     }
 
     @Test
