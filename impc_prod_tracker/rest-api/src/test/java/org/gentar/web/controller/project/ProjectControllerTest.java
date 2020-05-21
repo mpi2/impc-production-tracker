@@ -1,12 +1,15 @@
 package org.gentar.web.controller.project;
 
+import com.github.springtestdbunit.annotation.DatabaseOperation;
 import com.github.springtestdbunit.annotation.DatabaseSetup;
+import com.github.springtestdbunit.annotation.DatabaseTearDown;
 import org.gentar.biology.plan.PlanCommonDataDTO;
 import org.gentar.biology.plan.PlanDTO;
 import org.gentar.biology.plan.PlanMinimumCreationDTO;
 import org.gentar.biology.project.ProjectCommonDataDTO;
 import org.gentar.biology.project.ProjectCreationDTO;
 import org.gentar.biology.project.ProjectDTO;
+import org.gentar.biology.project.ProjectResponseDTO;
 import org.gentar.framework.ControllerTestTemplate;
 import org.gentar.framework.db.Paths;
 import org.gentar.util.JsonHelper;
@@ -37,13 +40,32 @@ class ProjectControllerTest extends ControllerTestTemplate
 
     @Test
     @DatabaseSetup(Paths.MULTIPLE_PROJECTS)
+    @DatabaseTearDown(type = DatabaseOperation.DELETE_ALL, value = Paths.MULTIPLE_PROJECTS)
     void testGetOneProject() throws Exception
     {
-        mvc().perform(MockMvcRequestBuilders
+        ResultActions resultActions = mvc().perform(MockMvcRequestBuilders
             .get("/api/projects/TPN:01")
             .header("Authorization", accessToken))
             .andExpect(status().isOk())
             .andDo(documentSingleProject());
+
+        MvcResult result = resultActions.andReturn();
+        String contentAsString = result.getResponse().getContentAsString();
+        ProjectResponseDTO projectResponseDTO =
+            JsonHelper.fromJson(contentAsString, ProjectResponseDTO.class);
+        System.out.println(projectResponseDTO);
+        assertThat(projectResponseDTO.getTpn(), is("TPN:01"));
+    }
+
+    @Test
+    @DatabaseSetup(Paths.MULTIPLE_PROJECTS)
+    @DatabaseTearDown(type = DatabaseOperation.DELETE_ALL, value = Paths.MULTIPLE_PROJECTS)
+    void testGetOneProjectNotExisting() throws Exception
+    {
+        mvc().perform(MockMvcRequestBuilders
+            .get("/api/projects/TPN:01X")
+            .header("Authorization", accessToken))
+            .andExpect(status().is5xxServerError());
     }
 
     private ResultHandler documentSingleProject()
@@ -79,6 +101,10 @@ class ProjectControllerTest extends ControllerTestTemplate
                     .description("Species associated with the project."),
                 fieldWithPath("consortia")
                     .description("Consortia associated with the project."),
+                fieldWithPath("consortia[].consortiumName")
+                    .description("Name of the consortium."),
+                fieldWithPath("consortia[].institutes")
+                    .description("Institutes associated with the project - consortium"),
                 fieldWithPath("_links")
                     .description("Links for project"),
                 fieldWithPath("_links.productionPlans")
@@ -90,6 +116,7 @@ class ProjectControllerTest extends ControllerTestTemplate
 
     @Test
     @DatabaseSetup(Paths.MULTIPLE_PROJECTS)
+    @DatabaseTearDown(type = DatabaseOperation.DELETE_ALL, value = Paths.MULTIPLE_PROJECTS)
     void testGetAllProjects() throws Exception
     {
         mvc().perform(MockMvcRequestBuilders
@@ -101,6 +128,7 @@ class ProjectControllerTest extends ControllerTestTemplate
 
     @Test
     @DatabaseSetup(Paths.MULTIPLE_PROJECTS)
+    @DatabaseTearDown(type = DatabaseOperation.DELETE_ALL, value = Paths.MULTIPLE_PROJECTS)
     void testGetAllProjectsWithFilter() throws Exception
     {
         mvc().perform(MockMvcRequestBuilders

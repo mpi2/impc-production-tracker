@@ -3,8 +3,6 @@ package org.gentar.biology.species;
 import org.gentar.Mapper;
 import org.gentar.exceptions.UserOperationFailedException;
 import org.springframework.stereotype.Component;
-import java.util.Collection;
-import java.util.List;
 
 @Component
 public class SpeciesMapper implements Mapper<Species, String>
@@ -19,13 +17,14 @@ public class SpeciesMapper implements Mapper<Species, String>
     }
 
     @Override
-    public String toDto(Species entity) {
-        return null;
-    }
-
-    @Override
-    public List<String> toDtos(Collection<Species> entities) {
-        return null;
+    public String toDto(Species species)
+    {
+        String speciesName = null;
+        if (species != null)
+        {
+            speciesName = species.getName();
+        }
+        return speciesName;
     }
 
     @Override

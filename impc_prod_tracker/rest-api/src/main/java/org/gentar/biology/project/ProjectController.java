@@ -223,7 +223,7 @@ class ProjectController
 
     private ProjectResponseDTO getDTO(Project project)
     {
-        ProjectResponseDTO projectResponseDTO = new ProjectResponseDTO();
+        ProjectResponseDTO projectResponseDTO = null;
         if (project != null)
         {
             projectResponseDTO = projectResponseMapper.toDto(project);
