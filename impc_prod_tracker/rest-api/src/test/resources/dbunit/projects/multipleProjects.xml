@@ -55,6 +55,11 @@
     <INSTITUTE  ID="2"
                 NAME="Yale"/>
 
+    <MOLECULAR_MUTATION_TYPE    ID="1"
+                                NAME="Point Mutation"/>
+    <MOLECULAR_MUTATION_TYPE    ID="2"
+                                NAME="Deletion"/>
+
     <PROJECT    ID="101"
                 TPN="TPN:01"
                 PRIVACY_ID="1"
@@ -92,6 +97,32 @@
                 WORK_UNIT_ID="1"
                 WORK_GROUP_ID="1"
                 SUMMARY_STATUS_ID="1"/>
+
+    <PROJECT_INTENTION  ID="1"
+                        MOLECULAR_MUTATION_TYPE_ID="1"
+                        PROJECT_ID="101"/>
+
+    <MUTATION_CATEGORIZATION_TYPE   ID="1"
+                                    NAME="allele_category"/>
+
+    <MUTATION_CATEGORIZATION    ID="1"
+                                NAME="Null Reporter"
+                                MUTATION_CATEGORIZATION_TYPE_ID="1"/>
+
+    <GENE   ID="1"
+            SYMBOL="Serpinb10"
+            NAME="serine (or cysteine) peptidase inhibitor, clade B (ovalbumin), member 10"
+            SPECIES_ID="1"
+            ACC_ID="MGI:2138648"
+            MGI_START="107529003"
+            MGI_STOP="107549271"
+            MGI_STRAND="+"/>
+
+    <PROJECT_INTENTION_GENE PROJECT_INTENTION_ID="1"
+                            GENE_ID="1"/>
+
+    <PROJECT_INTENTION_MUTATION_CATEGORIZATION PROJECT_INTENTION_ID="1"
+                                               MUTATION_CATEGORIZATION_ID="1"/>
 
     <PROJECT_SPECIES    PROJECT_ID="101"
                         SPECIES_ID="1"/>
