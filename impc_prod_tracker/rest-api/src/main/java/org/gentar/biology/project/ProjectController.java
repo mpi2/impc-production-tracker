@@ -16,14 +16,12 @@
 package org.gentar.biology.project;
 
 import org.gentar.audit.history.History;
+import org.gentar.biology.ChangeResponse;
 import org.gentar.biology.plan.*;
-import org.gentar.biology.plan.mappers.PlanMapper;
 import org.gentar.biology.plan.mappers.PlanMinimumCreationMapper;
 import org.gentar.biology.plan.type.PlanTypeName;
 import org.gentar.biology.project.mappers.ProjectCreationMapper;
 import org.gentar.biology.project.mappers.ProjectCsvRecordMapper;
-import org.gentar.biology.project.mappers.ProjectDtoToEntityMapper;
-import org.gentar.biology.project.mappers.ProjectEntityToDtoMapper;
 import org.gentar.biology.project.mappers.ProjectResponseMapper;
 import org.gentar.exceptions.UserOperationFailedException;
 import org.gentar.helpers.CsvWriter;
@@ -36,6 +34,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PagedResourcesAssembler;
 import org.springframework.hateoas.EntityModel;
+import org.springframework.hateoas.Link;
 import org.springframework.hateoas.PagedModel;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -46,7 +45,10 @@ import org.gentar.biology.project.search.filter.ProjectFilterBuilder;
 import org.gentar.biology.project.helper.ProjectUtilities;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 
@@ -56,13 +58,10 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 class ProjectController
 {
     private ProjectService projectService;
-    private ProjectEntityToDtoMapper projectEntityToDtoMapper;
     private HistoryMapper historyMapper;
-    private ProjectDtoToEntityMapper projectDtoToEntityMapper;
     private CsvWriter<ProjectCsvRecord> csvWriter;
     private ProjectCsvRecordMapper projectCsvRecordMapper;
     private UpdateProjectRequestProcessor updateProjectRequestProcessor;
-    private PlanMapper planMapper;
     private PlanService planService;
     private ProjectCreationMapper projectCreationMapper;
     private PlanMinimumCreationMapper planMinimumCreationMapper;
@@ -74,26 +73,20 @@ class ProjectController
 
     ProjectController(
         ProjectService projectService,
-        ProjectEntityToDtoMapper projectEntityToDtoMapper,
         HistoryMapper historyMapper,
-        ProjectDtoToEntityMapper projectDtoToEntityMapper,
         CsvWriter<ProjectCsvRecord> csvWriter,
         ProjectCsvRecordMapper projectCsvRecordMapper,
         UpdateProjectRequestProcessor updateProjectRequestProcessor,
-        PlanMapper planMapper,
         PlanService planService,
         ProjectCreationMapper projectCreationMapper,
         PlanMinimumCreationMapper planMinimumCreationMapper,
         ProjectResponseMapper projectResponseMapper)
     {
         this.projectService = projectService;
-        this.projectEntityToDtoMapper = projectEntityToDtoMapper;
         this.historyMapper = historyMapper;
-        this.projectDtoToEntityMapper = projectDtoToEntityMapper;
         this.csvWriter = csvWriter;
         this.projectCsvRecordMapper = projectCsvRecordMapper;
         this.updateProjectRequestProcessor = updateProjectRequestProcessor;
-        this.planMapper = planMapper;
         this.planService = planService;
         this.projectCreationMapper = projectCreationMapper;
         this.planMinimumCreationMapper = planMinimumCreationMapper;
@@ -154,15 +147,29 @@ class ProjectController
      * @return {@link ProjectDTO} representing the project created in the system.
      */
     @PostMapping
-    public ProjectDTO createProject(@RequestBody ProjectCreationDTO projectCreationDTO)
+    public ChangeResponse createProject(@RequestBody ProjectCreationDTO projectCreationDTO)
     {
         Project projectToBeCreated = projectCreationMapper.toEntity(projectCreationDTO);
         Project createdProject = projectService.createProject(projectToBeCreated);
         Plan planToBeCreated = planMinimumCreationMapper.toEntity(
             projectCreationDTO.getPlanMinimumCreationDTO());
         projectService.associatePlanToProject(planToBeCreated, createdProject);
-        Plan planCreated = planService.createPlan(planToBeCreated);
-        return null;
+        planService.createPlan(planToBeCreated);
+        return buildChangeResponse(createdProject);
+    }
+
+    private ChangeResponse buildChangeResponse(Project project)
+    {
+        List<HistoryDTO> historyList = historyMapper.toDtos(projectService.getProjectHistory(project));
+        return buildChangeResponse(project, historyList);
+    }
+    private ChangeResponse buildChangeResponse(Project project, List<HistoryDTO> historyList)
+    {
+        ChangeResponse changeResponse = new ChangeResponse();
+        changeResponse.setHistoryDTOs(historyList);
+
+        changeResponse.add(linkTo(ProjectController.class).slash(project.getTpn()).withSelfRel());
+        return changeResponse;
     }
 
     @PutMapping(value = {"/{tpn}"})
@@ -252,7 +259,6 @@ class ProjectController
         }
         else
         {
-            //TODO: Exception not found
             throw new UserOperationFailedException(String.format(PROJECT_NOT_FOUND_ERROR, tpn));
         }
 
