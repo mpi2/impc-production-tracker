@@ -1,36 +1,38 @@
 <dataset>
-    <role
+    <ROLE
             id="1"
             name="general"
     />
-    <work_unit
+    <WORK_UNIT
             id="1"
             name="UCD"
     />
-    <consortium
+    <CONSORTIUM
             id="1"
             name="BaSH"
     />
-    <institute
+    <INSTITUTE
             id="1"
             name="Yale"
     />
-    <person
+    
+    <PERSON
             id="1"
             email="imits2test@test.com"
             auth_id="usr-dde67fbd-c3c2-42eb-aa81-f1a225f047c7"
     />
-    <person_role_work_unit
+    <PERSON_ROLE_WORK_UNIT
             id="1"
             person_id="1"
             role_id="1"
             work_unit_id="1"
     />
-    <person_role_consortium
+    <PERSON_ROLE_CONSORTIUM
             id="1"
             person_id="1"
             role_id="1"
             consortium_id="1"
     />
+    <PROJECT_CONSORTIUM_INSTITUTE/>
 
 </dataset>

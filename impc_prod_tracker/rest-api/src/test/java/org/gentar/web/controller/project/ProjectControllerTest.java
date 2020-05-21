@@ -1,6 +1,8 @@
 package org.gentar.web.controller.project;
 
+import com.github.springtestdbunit.annotation.DatabaseOperation;
 import com.github.springtestdbunit.annotation.DatabaseSetup;
+import com.github.springtestdbunit.annotation.DatabaseTearDown;
 import org.gentar.biology.plan.PlanCommonDataDTO;
 import org.gentar.biology.plan.PlanDTO;
 import org.gentar.biology.plan.PlanMinimumCreationDTO;
@@ -38,6 +40,7 @@ class ProjectControllerTest extends ControllerTestTemplate
 
     @Test
     @DatabaseSetup(Paths.MULTIPLE_PROJECTS)
+    @DatabaseTearDown(type = DatabaseOperation.DELETE_ALL, value = Paths.MULTIPLE_PROJECTS)
     void testGetOneProject() throws Exception
     {
         ResultActions resultActions = mvc().perform(MockMvcRequestBuilders
@@ -56,6 +59,7 @@ class ProjectControllerTest extends ControllerTestTemplate
 
     @Test
     @DatabaseSetup(Paths.MULTIPLE_PROJECTS)
+    @DatabaseTearDown(type = DatabaseOperation.DELETE_ALL, value = Paths.MULTIPLE_PROJECTS)
     void testGetOneProjectNotExisting() throws Exception
     {
         mvc().perform(MockMvcRequestBuilders
@@ -112,6 +116,7 @@ class ProjectControllerTest extends ControllerTestTemplate
 
     @Test
     @DatabaseSetup(Paths.MULTIPLE_PROJECTS)
+    @DatabaseTearDown(type = DatabaseOperation.DELETE_ALL, value = Paths.MULTIPLE_PROJECTS)
     void testGetAllProjects() throws Exception
     {
         mvc().perform(MockMvcRequestBuilders
@@ -123,6 +128,7 @@ class ProjectControllerTest extends ControllerTestTemplate
 
     @Test
     @DatabaseSetup(Paths.MULTIPLE_PROJECTS)
+    @DatabaseTearDown(type = DatabaseOperation.DELETE_ALL, value = Paths.MULTIPLE_PROJECTS)
     void testGetAllProjectsWithFilter() throws Exception
     {
         mvc().perform(MockMvcRequestBuilders
