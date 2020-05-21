@@ -1,6 +1,7 @@
 package org.gentar.biology.plan;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonUnwrapped;
 import lombok.Data;
 
 /**
@@ -12,6 +13,7 @@ import lombok.Data;
 @Data
 public class PlanMinimumCreationDTO
 {
+    @JsonUnwrapped
     private PlanCommonDataDTO planCommonDataDTO;
 
     @JsonProperty("typeName")

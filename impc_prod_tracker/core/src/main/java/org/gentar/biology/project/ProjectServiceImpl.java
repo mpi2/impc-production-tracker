@@ -19,6 +19,7 @@ import org.gentar.audit.history.HistoryService;
 import org.gentar.biology.ortholog.Ortholog;
 import org.gentar.biology.ortholog.OrthologService;
 import org.gentar.biology.intention.project_intention_gene.ProjectIntentionGene;
+import org.gentar.biology.plan.Plan;
 import org.gentar.biology.project.engine.ProjectUpdater;
 import org.gentar.biology.project.specs.ProjectSpecs;
 import org.gentar.exceptions.UserOperationFailedException;
@@ -33,9 +34,11 @@ import org.gentar.biology.project.engine.ProjectCreator;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Component
@@ -189,5 +192,27 @@ public class ProjectServiceImpl implements ProjectService
     public void checkForUpdates(Project project)
     {
         projectUpdater.updateProjectWhenPlanUpdated(project);
+    }
+
+    @Override
+    public void associatePlanToProject(Plan plan, Project project)
+    {
+        if (project == null)
+        {
+            throw new UserOperationFailedException(
+                "The plan cannot be associated with the project because the project is null");
+        }
+        if (plan == null)
+        {
+            throw new UserOperationFailedException(
+                "The plan cannot be associated with the project because the plan is null");
+        }
+        Set<Plan> plans = project.getPlans();
+        if (plans == null)
+        {
+            plans = new HashSet<>();
+        }
+        plans.add(plan);
+        plan.setProject(project);
     }
 }

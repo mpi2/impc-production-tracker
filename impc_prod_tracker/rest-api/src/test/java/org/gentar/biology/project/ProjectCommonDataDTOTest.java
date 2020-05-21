@@ -46,13 +46,12 @@ class ProjectCommonDataDTOTest
         projectCommonDataDTO.setProjectConsortiumDTOS(projectConsortiumDTOS);
 
         String json = JsonHelper.toJson(projectCommonDataDTO);
-        System.out.println(json);
 
         assertThat(json, is(notNullValue()));
-//        assertThat(json, is("{\"funderNames\":null,\"workUnitName\":null,\"workGroupName\":null," +
-//            "\"comment\":null,\"productsAvailableForGeneralPublic\":null," +
-//            "\"phenotypingStartingPoint\":{\"outcomeTpo\":null}," +
-//            "\"phenotypingAttempt\":{\"phenotypingExternalRef\":null," +
-//            "\"phenotypingBackgroundStrainName\":null,\"phenotypingStages\":null}}"));
+        assertThat(json, is("{\"reactivationDate\":\"2020-01-01T01:01:00\",\"recovery\":false," +
+            "\"comment\":\"comment\",\"privacyName\":\"public\"," +
+            "\"externalReference\":\"externalRef\",\"speciesNames\":[\"species1\"]," +
+            "\"consortia\":[{\"consortiumName\":\"consortiumName\"," +
+            "\"institutes\":[\"institute1\"]}]}"));
     }
 }

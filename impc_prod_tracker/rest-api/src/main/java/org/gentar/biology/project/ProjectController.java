@@ -158,10 +158,9 @@ class ProjectController
     {
         Project projectToBeCreated = projectCreationMapper.toEntity(projectCreationDTO);
         Project createdProject = projectService.createProject(projectToBeCreated);
-        PlanMinimumCreationDTO planMinimumCreationDTO =
-            projectCreationDTO.getPlanMinimumCreationDTO();
         Plan planToBeCreated = planMinimumCreationMapper.toEntity(
             projectCreationDTO.getPlanMinimumCreationDTO());
+        projectService.associatePlanToProject(planToBeCreated, createdProject);
         Plan planCreated = planService.createPlan(planToBeCreated);
         return null;
     }

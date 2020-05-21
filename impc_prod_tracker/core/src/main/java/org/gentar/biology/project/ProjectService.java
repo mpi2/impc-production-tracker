@@ -16,6 +16,7 @@
 package org.gentar.biology.project;
 
 import org.gentar.audit.history.History;
+import org.gentar.biology.plan.Plan;
 import org.gentar.biology.project.search.filter.ProjectFilter;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -50,4 +51,11 @@ public interface ProjectService
      * @param project The project to check
      */
     void checkForUpdates(Project project);
+
+    /**
+     * Associates the {@link Plan} 'plan' with the {@link Project} 'project'.
+     * @param plan Plan object.
+     * @param project Project object.
+     */
+    void associatePlanToProject(Plan plan, Project project);
 }

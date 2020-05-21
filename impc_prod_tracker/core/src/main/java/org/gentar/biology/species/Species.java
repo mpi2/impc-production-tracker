@@ -17,9 +17,7 @@ package org.gentar.biology.species;
 
 import lombok.*;
 import org.gentar.BaseEntity;
-import org.gentar.biology.mutation.Mutation;
 import org.gentar.biology.project.Project;
-
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.Set;
