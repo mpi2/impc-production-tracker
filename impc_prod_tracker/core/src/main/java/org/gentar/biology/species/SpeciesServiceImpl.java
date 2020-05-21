@@ -1,5 +1,6 @@
 package org.gentar.biology.species;
 
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -12,6 +13,7 @@ public class SpeciesServiceImpl implements SpeciesService
     }
 
     @Override
+    @Cacheable("speciesNames")
     public Species getSpeciesByName(String name)
     {
         return speciesRepository.findSpeciesByNameIgnoreCase(name);

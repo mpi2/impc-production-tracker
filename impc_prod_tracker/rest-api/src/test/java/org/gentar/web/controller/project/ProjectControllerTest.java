@@ -112,7 +112,7 @@ class ProjectControllerTest extends ControllerTestTemplate
                     .description("External link for the gene"),
                 fieldWithPath("projectIntentions[].intentionByGene.gene.accessionId")
                     .description("Accession id for the gene, e.g MGI"),
-                fieldWithPath("projectIntentions[].intentionByGene.gene.species")
+                fieldWithPath("projectIntentions[].intentionByGene.gene.speciesName")
                     .description("Species associated with the gene"),
                 fieldWithPath("projectIntentions[].intentionBySequence[]")
                     .description("Sequence information"),

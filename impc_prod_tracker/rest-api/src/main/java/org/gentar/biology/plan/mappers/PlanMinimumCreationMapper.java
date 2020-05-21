@@ -61,7 +61,8 @@ public class PlanMinimumCreationMapper implements Mapper<Plan, PlanMinimumCreati
 
     private void setPlanTypeToEntity(Plan plan, PlanMinimumCreationDTO minimumPlanCreationDTO)
     {
-        plan.setPlanType(planTypeMapper.toEntity(minimumPlanCreationDTO.getPlanTypeName()));
+        String planTypeName = minimumPlanCreationDTO.getPlanTypeName();
+        plan.setPlanType(planTypeMapper.toEntity(planTypeName));
     }
 
     private void setAttemptTypeToEntity(Plan plan, PlanMinimumCreationDTO minimumPlanCreationDTO)

@@ -15,9 +15,6 @@ public class GeneDTO
 
     private String name;
     private String symbol;
-
-    @JsonProperty("species")
     private String speciesName;
-
     private String externalLink;
 }
