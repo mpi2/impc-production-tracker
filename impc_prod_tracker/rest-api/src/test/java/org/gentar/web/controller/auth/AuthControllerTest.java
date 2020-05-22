@@ -19,7 +19,7 @@ import com.github.springtestdbunit.annotation.DatabaseOperation;
 import com.github.springtestdbunit.annotation.DatabaseSetup;
 import com.github.springtestdbunit.annotation.DatabaseTearDown;
 import org.gentar.framework.ControllerTestTemplate;
-import org.gentar.framework.db.Paths;
+import org.gentar.framework.db.DBSetupFilesPaths;
 import org.gentar.security.auth.AuthenticationRequest;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.MediaType;
@@ -39,8 +39,8 @@ public class AuthControllerTest extends ControllerTestTemplate
         "Invalid User/Password provided.";
 
     @Test
-    @DatabaseSetup(Paths.CREATE_USER)
-    @DatabaseTearDown(type = DatabaseOperation.DELETE_ALL, value = Paths.CREATE_USER)
+    @DatabaseSetup(DBSetupFilesPaths.CREATE_USER)
+    @DatabaseTearDown(type = DatabaseOperation.DELETE_ALL, value = DBSetupFilesPaths.CREATE_USER)
     public void testSignIn() throws Exception
     {
         AuthenticationRequest authenticationRequest =

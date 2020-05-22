@@ -44,7 +44,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @Tag(ControllerTestTemplate.TAG)
 public class ControllerTestTemplate extends IntegrationTestTemplate
 {
-
     @Autowired private JwtTokenProvider jwtTokenProvider;
     public static final String TAG = "ControllerTest";
 
@@ -55,6 +54,7 @@ public class ControllerTestTemplate extends IntegrationTestTemplate
 
     protected Authentication authenticationForTestUser = null;
     protected String accessToken = null;
+    protected static final String INTEGRATION_TESTS_RESOURCE_PATH = "/integration-tests/";
 
     @BeforeEach
     public void setup(RestDocumentationContextProvider restDocumentation) throws Exception
