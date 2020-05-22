@@ -35,14 +35,9 @@ public class PropertyChecker
     {
         List<String> propertyNamesList = new ArrayList<>();
         Field[] fields = type.getDeclaredFields();
-        System.out.println(fields);
-
         Arrays.asList(fields).stream()
             .filter(x -> !x.getName().startsWith("this$"))
-            .forEach(x ->
-            {
-                propertyNamesList.add(x.getName());
-            });
+            .forEach(x -> propertyNamesList.add(x.getName()));
 
         return propertyNamesList;
     }

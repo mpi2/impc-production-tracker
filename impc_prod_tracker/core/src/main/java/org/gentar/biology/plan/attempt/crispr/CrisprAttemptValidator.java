@@ -21,6 +21,5 @@ public class CrisprAttemptValidator
         // Consider throwing an org.gentar.exceptions.UserOperationFailedException
         // e.g. throw new UserOperationFailedException(errorMessage);
 
-        // System.out.println("Validating Crispr Attempt");
     }
 }

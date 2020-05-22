@@ -2,7 +2,6 @@ package org.gentar.audit.diff;
 
 import lombok.Data;
 import org.junit.jupiter.api.Test;
-
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -30,15 +29,12 @@ public class PropertyCheckerTest
     public void testGetPropertiesByType()
     {
         List<String> props = PropertyChecker.getPropertiesByType(classA.getClass());
-        System.out.println(props);
         assertThat("", props.size(), is(4));
         assertThat("", props.contains("p1"), is(true));
         assertThat("", props.contains("p2"), is(true));
         assertThat("", props.contains("p3"), is(true));
         assertThat("", props.contains("p4"), is(true));
     }
-
-
 
     @Test
     public void testGetPropertyType()

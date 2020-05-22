@@ -208,7 +208,6 @@ class ProjectControllerTest extends ControllerTestTemplate
 
         MvcResult result = resultActions.andReturn();
         String contentAsString = result.getResponse().getContentAsString();
-        System.out.println(contentAsString);
     }
 
     private ProjectCreationDTO buildProjectCreationDTO()

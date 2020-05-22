@@ -121,7 +121,6 @@ public class JwtTokenProvider
         }
         catch (JwtException | IllegalArgumentException e)
         {
-            System.out.println(e.getMessage());
             throw new UserOperationFailedException(INVALID_TOKEN_MESSAGE, INVALID_TOKEN_DEBUG_MESSAGE);
         }
     }

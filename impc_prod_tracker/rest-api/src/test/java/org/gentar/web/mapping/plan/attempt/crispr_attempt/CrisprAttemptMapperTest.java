@@ -223,7 +223,6 @@ public class CrisprAttemptMapperTest
             guideDTO2.getProtospacerSequence(),
             is(GUIDE_PROTOSPACER_SEQUENCE + GUIDE_ID_2));
 
-        System.out.println("----"+crisprAttemptDTO.getGenotypePrimerDTOS());
         GenotypePrimerDTO genotypePrimerDTO1 =
             findGenotypePrimerDTOById(crisprAttemptDTO.getGenotypePrimerDTOS(), GENOTYPE_PRIMER_ID_1);
         assertThat("Genotype Primer 1", genotypePrimerDTO1, notNullValue());
@@ -396,8 +395,6 @@ public class CrisprAttemptMapperTest
         addGenotypePrimerDTOs(crisprAttemptDTO);
 
         CrisprAttempt crisprAttempt = crisprAttemptMapper.toEntity(crisprAttemptDTO);
-
-        System.out.println(crisprAttempt);
 
         validateEntity(crisprAttempt);
     }

@@ -7,7 +7,7 @@ import java.util.Map;
 
 /**
  * Class in charge of inspecting an object and retrieve its properties and the values of those
- * properties. It also
+ * properties.
  */
 class ObjectInspector
 {
@@ -23,10 +23,15 @@ class ObjectInspector
         this.checkedClassesTree = new CheckedClassesTree();
         map = new HashMap<>();
         checkedClassesTree.setRootClass(object.getClass());
-
         check(object.getClass(), object, null);
     }
 
+    /**
+     * Analysis the properties (fields) and its values in an object
+     * @param type The type of the object.
+     * @param object Object to analyse.
+     * @param parentData Parent object if the object is a nested one.
+     */
     private void check(Class<?> type, Object object, PropertyDefinition parentData)
     {
         List<PropertyDefinition> properties = PropertyChecker.getPropertiesDataByType(type);

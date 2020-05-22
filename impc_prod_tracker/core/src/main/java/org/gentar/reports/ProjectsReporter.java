@@ -32,7 +32,6 @@ public class ProjectsReporter {
                 CSVWriter.DEFAULT_LINE_END);
         csvWriter.writeAll(rs, true);//note looks like no newlines in browser but they are there.
         csvWriter.close();
-        //System.out.println(writer.toString());
         statement.close();
         conn.close();
     }

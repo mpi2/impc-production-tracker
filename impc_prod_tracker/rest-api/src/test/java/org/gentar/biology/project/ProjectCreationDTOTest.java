@@ -41,7 +41,6 @@ class ProjectCreationDTOTest
         projectCreationDTO.setProjectIntentionDTOS(projectIntentionDTOS);
 
         String json = JsonHelper.toJson(projectCreationDTO);
-        System.out.println(json);
 
         assertThat(json, is(notNullValue()));
         assertThat(json, is("{\"reactivationDate\":null,\"recovery\":null,\"comment\":\"comment\"," +

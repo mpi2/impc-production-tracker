@@ -88,7 +88,6 @@ public class CollectionsComparatorTest
             new CollectionsComparator<>("collection", set1, set2);
 
         List<ChangeEntry> changes = collectionsComparator.getChanges();
-        System.out.println(changes);
 
         assertThat("Exactly one change is expected:", changes.size(), is(1));
         ChangeEntry change = changes.get(0);
@@ -207,7 +206,6 @@ public class CollectionsComparatorTest
             new CollectionsComparator<>("collection", set1, set2);
 
         List<ChangeEntry> changes = collectionsComparator.getChanges();
-        System.out.println(changes);
 
         assertThat("Exactly 2 change is expected:", changes.size(), is(2));
 
@@ -236,7 +234,6 @@ public class CollectionsComparatorTest
             new CollectionsComparator<>("collection", set1, set2);
 
         List<ChangeEntry> changes = collectionsComparator.getChanges();
-        System.out.println(changes);
 
         assertThat("Exactly 1 change is expected:", changes.size(), is(1));
         ChangeEntry change = getChange("collection#1", changes);

@@ -19,7 +19,6 @@ class PlanCreationDTOTest
         planCreationDTO.setAttemptTypeName("attemptTypeName");
 
         String json = JsonHelper.toJson(planCreationDTO);
-        System.out.println(json);
         assertThat(json, is(notNullValue()));
         assertThat(json, is("{\"planTypeName\":\"planTypeName\"," +
             "\"attemptTypeName\":\"attemptTypeName\"}"));
