@@ -3,35 +3,48 @@ package org.gentar.web.controller.project;
 import com.github.springtestdbunit.annotation.DatabaseOperation;
 import com.github.springtestdbunit.annotation.DatabaseSetup;
 import com.github.springtestdbunit.annotation.DatabaseTearDown;
+import org.gentar.biology.gene.GeneDTO;
+import org.gentar.biology.gene.ProjectIntentionGeneDTO;
+import org.gentar.biology.intention.ProjectIntentionDTO;
+import org.gentar.biology.mutation.MutationCategorizationDTO;
 import org.gentar.biology.plan.PlanCommonDataDTO;
-import org.gentar.biology.plan.PlanDTO;
 import org.gentar.biology.plan.PlanMinimumCreationDTO;
 import org.gentar.biology.project.ProjectCommonDataDTO;
+import org.gentar.biology.project.ProjectConsortiumDTO;
 import org.gentar.biology.project.ProjectCreationDTO;
-import org.gentar.biology.project.ProjectDTO;
 import org.gentar.biology.project.ProjectResponseDTO;
+import org.gentar.biology.project.ProjectTestHelper;
 import org.gentar.framework.ControllerTestTemplate;
-import org.gentar.framework.db.Paths;
+import org.gentar.framework.SequenceResetter;
+import org.gentar.framework.TestResourceLoader;
+import org.gentar.framework.db.DBSetupFilesPaths;
 import org.gentar.util.JsonHelper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.ResultHandler;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 import static org.gentar.util.JsonHelper.toJson;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.notNullValue;
-import static org.hamcrest.Matchers.nullValue;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 class ProjectControllerTest extends ControllerTestTemplate
 {
+    private static final String TEST_RESOURCES_FOLDER = INTEGRATION_TESTS_RESOURCE_PATH + "projects/";
+
+    @Autowired
+    private SequenceResetter sequenceResetter;
+
     @BeforeEach
     public void setup() throws Exception
     {
@@ -39,8 +52,8 @@ class ProjectControllerTest extends ControllerTestTemplate
     }
 
     @Test
-    @DatabaseSetup(Paths.MULTIPLE_PROJECTS)
-    @DatabaseTearDown(type = DatabaseOperation.DELETE_ALL, value = Paths.MULTIPLE_PROJECTS)
+    @DatabaseSetup(DBSetupFilesPaths.MULTIPLE_PROJECTS)
+    @DatabaseTearDown(type = DatabaseOperation.DELETE_ALL, value = DBSetupFilesPaths.MULTIPLE_PROJECTS)
     void testGetOneProject() throws Exception
     {
         ResultActions resultActions = mvc().perform(MockMvcRequestBuilders
@@ -48,13 +61,20 @@ class ProjectControllerTest extends ControllerTestTemplate
             .header("Authorization", accessToken))
             .andExpect(status().isOk())
             .andDo(documentSingleProject());
-
         MvcResult result = resultActions.andReturn();
         String contentAsString = result.getResponse().getContentAsString();
-        ProjectResponseDTO projectResponseDTO =
-            JsonHelper.fromJson(contentAsString, ProjectResponseDTO.class);
-        System.out.println(projectResponseDTO);
-        assertThat(projectResponseDTO.getTpn(), is("TPN:01"));
+
+        ProjectResponseDTO obtained = JsonHelper.fromJson(contentAsString, ProjectResponseDTO.class);
+        ProjectResponseDTO expected = loadExpectedResponseFromResource("expectedProjectTPN_01.json");
+
+        ProjectTestHelper.assertProjectResponseDTOIsTheExpected(obtained, expected);
+    }
+
+    private ProjectResponseDTO loadExpectedResponseFromResource(String resourceName)
+    throws IOException
+    {
+        String completeResourcePath = TEST_RESOURCES_FOLDER + resourceName;
+        return TestResourceLoader.loadTestResource(completeResourcePath, ProjectResponseDTO.class);
     }
 
     private ResultHandler documentSingleProject()
@@ -136,8 +156,8 @@ class ProjectControllerTest extends ControllerTestTemplate
     }
 
     @Test
-    @DatabaseSetup(Paths.MULTIPLE_PROJECTS)
-    @DatabaseTearDown(type = DatabaseOperation.DELETE_ALL, value = Paths.MULTIPLE_PROJECTS)
+    @DatabaseSetup(DBSetupFilesPaths.MULTIPLE_PROJECTS)
+    @DatabaseTearDown(type = DatabaseOperation.DELETE_ALL, value = DBSetupFilesPaths.MULTIPLE_PROJECTS)
     void testGetOneProjectNotExisting() throws Exception
     {
         mvc().perform(MockMvcRequestBuilders
@@ -147,8 +167,8 @@ class ProjectControllerTest extends ControllerTestTemplate
     }
 
     @Test
-    @DatabaseSetup(Paths.MULTIPLE_PROJECTS)
-    @DatabaseTearDown(type = DatabaseOperation.DELETE_ALL, value = Paths.MULTIPLE_PROJECTS)
+    @DatabaseSetup(DBSetupFilesPaths.MULTIPLE_PROJECTS)
+    @DatabaseTearDown(type = DatabaseOperation.DELETE_ALL, value = DBSetupFilesPaths.MULTIPLE_PROJECTS)
     void testGetAllProjects() throws Exception
     {
         mvc().perform(MockMvcRequestBuilders
@@ -159,8 +179,8 @@ class ProjectControllerTest extends ControllerTestTemplate
     }
 
     @Test
-    @DatabaseSetup(Paths.MULTIPLE_PROJECTS)
-    @DatabaseTearDown(type = DatabaseOperation.DELETE_ALL, value = Paths.MULTIPLE_PROJECTS)
+    @DatabaseSetup(DBSetupFilesPaths.MULTIPLE_PROJECTS)
+    @DatabaseTearDown(type = DatabaseOperation.DELETE_ALL, value = DBSetupFilesPaths.MULTIPLE_PROJECTS)
     void testGetAllProjectsWithFilter() throws Exception
     {
         mvc().perform(MockMvcRequestBuilders
@@ -168,5 +188,99 @@ class ProjectControllerTest extends ControllerTestTemplate
             .header("Authorization", accessToken))
             .andExpect(status().isOk())
             .andDo(document("projects/allProjectsWithFilter"));
+    }
+
+    @Test
+    @DatabaseSetup(DBSetupFilesPaths.MULTIPLE_PROJECTS)
+    @DatabaseTearDown(type = DatabaseOperation.DELETE_ALL, value = DBSetupFilesPaths.MULTIPLE_PROJECTS)
+    void testCreatProject() throws Exception
+    {
+        sequenceResetter.syncSequence("PROJECT_CONSORTIUM_SEQ", "PROJECT_CONSORTIUM");
+        sequenceResetter.syncSequence("PROJECT_INTENTION_SEQ", "PROJECT_INTENTION");
+
+        ProjectCreationDTO projectCreationDTO = buildProjectCreationDTO();
+        ResultActions resultActions = mvc().perform(MockMvcRequestBuilders
+            .post("/api/projects")
+            .header("Authorization", accessToken)
+            .content(toJson(projectCreationDTO))
+            .contentType(MediaType.APPLICATION_JSON))
+            .andExpect(status().isOk());
+
+        MvcResult result = resultActions.andReturn();
+        String contentAsString = result.getResponse().getContentAsString();
+        System.out.println(contentAsString);
+    }
+
+    private ProjectCreationDTO buildProjectCreationDTO()
+    {
+        ProjectCreationDTO projectCreationDTO = new ProjectCreationDTO();
+
+        ProjectCommonDataDTO projectCommonDataDTO = buildProjectCommonDataDTO();
+        projectCreationDTO.setProjectCommonDataDTO(projectCommonDataDTO);
+
+        PlanMinimumCreationDTO planMinimumCreationDTO = buildPlanMinimumCreationDTO();
+        projectCreationDTO.setPlanMinimumCreationDTO(planMinimumCreationDTO);
+
+        ProjectIntentionDTO projectIntentionDTO = buildProjectIntentionDTO();
+        List<ProjectIntentionDTO> projectIntentionDTOS = new ArrayList<>();
+        projectIntentionDTOS.add(projectIntentionDTO);
+        projectCreationDTO.setProjectIntentionDTOS(projectIntentionDTOS);
+        return projectCreationDTO;
+    }
+
+    private PlanMinimumCreationDTO buildPlanMinimumCreationDTO()
+    {
+        PlanMinimumCreationDTO planMinimumCreationDTO = new PlanMinimumCreationDTO();
+        planMinimumCreationDTO.setPlanTypeName("production");
+        planMinimumCreationDTO.setAttemptTypeName("crispr");
+        PlanCommonDataDTO planCommonDataDTO = new PlanCommonDataDTO();
+        planCommonDataDTO.setComment("Plan comment");
+        planCommonDataDTO.setWorkUnitName("BCM");
+        planCommonDataDTO.setWorkGroupName("BaSH");
+        planMinimumCreationDTO.setPlanCommonDataDTO(planCommonDataDTO);
+        return planMinimumCreationDTO;
+
+    }
+
+    private ProjectCommonDataDTO buildProjectCommonDataDTO()
+    {
+        ProjectCommonDataDTO projectCommonDataDTO = new ProjectCommonDataDTO();
+        projectCommonDataDTO.setComment("comment");
+        projectCommonDataDTO.setPrivacyName("public");
+        projectCommonDataDTO.setProjectExternalRef("externalRef");
+        projectCommonDataDTO.setRecovery(false);
+        projectCommonDataDTO.setSpeciesNames(Collections.singletonList("Mus musculus"));
+        List<ProjectConsortiumDTO> projectConsortiumDTOS = new ArrayList<>();
+        ProjectConsortiumDTO projectConsortiumDTO = new ProjectConsortiumDTO();
+        projectConsortiumDTO.setConsortiumName("CMG");
+        projectConsortiumDTO.setProjectConsortiumInstituteNames(Collections.singletonList("Broad"));
+        projectConsortiumDTOS.add(projectConsortiumDTO);
+        projectCommonDataDTO.setProjectConsortiumDTOS(projectConsortiumDTOS);
+        return projectCommonDataDTO;
+    }
+
+    private ProjectIntentionDTO buildProjectIntentionDTO()
+    {
+        ProjectIntentionDTO projectIntentionDTO = new ProjectIntentionDTO();
+        ProjectIntentionGeneDTO projectIntentionGeneDTO = new ProjectIntentionGeneDTO();
+        GeneDTO geneDTO = buildGeneDTO("Serpinb10", "MGI:2138648");
+        projectIntentionGeneDTO.setGeneDTO(geneDTO);
+        projectIntentionDTO.setProjectIntentionGeneDTO(projectIntentionGeneDTO);
+        projectIntentionDTO.setMolecularMutationTypeName("Point Mutation");
+        List<MutationCategorizationDTO> mutationCategorizationDTOS = new ArrayList<>();
+        MutationCategorizationDTO mutationCategorizationDTO = new MutationCategorizationDTO();
+        mutationCategorizationDTO.setName("Null Reporter");
+        mutationCategorizationDTO.setMutationCategorizationTypeName("allele_category");
+        mutationCategorizationDTOS.add(mutationCategorizationDTO);
+        projectIntentionDTO.setMutationCategorizationDTOS(mutationCategorizationDTOS);
+        return projectIntentionDTO;
+    }
+
+    private GeneDTO buildGeneDTO(String symbol, String accId)
+    {
+        GeneDTO geneDTO = new GeneDTO();
+        geneDTO.setSymbol(symbol);
+        geneDTO.setAccId(accId);
+        return geneDTO;
     }
 }

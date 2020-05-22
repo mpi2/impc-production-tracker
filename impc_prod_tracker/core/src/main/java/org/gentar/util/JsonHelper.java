@@ -7,6 +7,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 
@@ -55,6 +56,10 @@ public class JsonHelper
    */
   public static <T> T fromJson(String json, TypeReference<T> typeReference) throws IOException {
     return objectMapper.readValue(json, typeReference);
+  }
+
+  public static <T> T fromJson(InputStream is, Class<T> toClass) throws IOException {
+    return objectMapper.readValue(is, toClass);
   }
 
   /** Maps the given object to JSON using a standard Jackson mapper. */
