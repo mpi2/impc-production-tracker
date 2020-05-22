@@ -15,6 +15,5 @@ class QueryBuilderTest
             .withColumnInLikeValuesIgnoreCase("symbol", Arrays.asList("Acc%","Anx%"))
             .withFields(Arrays.asList("mgi_gene_acc_id", "symbol"))
             .build();
-        System.out.println(query);
     }
 }

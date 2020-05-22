@@ -36,7 +36,6 @@ class PlanResponseDTOTest
         planResponseDTO.setStatusStampsDTOS(buildStatusStampsDTOS());
         planResponseDTO.setStatusTransitionDTO(buildStatusTransitionDTO());
         String json = JsonHelper.toJson(planResponseDTO);
-        System.out.println(json);
         assertThat(json, is(notNullValue()));
         assertThat(json, is("{\"pin\":\"pin\",\"tpn\":\"tpn\",\"statusName\":\"status name\"," +
             "\"summaryStatusName\":\"summary status name\",\"planTypeName\":null," +

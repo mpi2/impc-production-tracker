@@ -18,7 +18,6 @@ class StatusStampsDTOTest
         statusStampsDTO.setStatusName("status name");
         statusStampsDTO.setDate(LocalDateTime.of(2020, 1, 1, 1, 1));
         String json = JsonHelper.toJson(statusStampsDTO);
-        System.out.println(json);
         assertThat(json, is(notNullValue()));
         assertThat(json, is("{\"statusName\":\"status name\",\"date\":\"2020-01-01T01:01:00\"}"));
     }

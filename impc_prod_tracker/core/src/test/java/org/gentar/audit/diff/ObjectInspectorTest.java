@@ -5,13 +5,14 @@ import org.hamcrest.Matchers;
 import org.gentar.biology.plan.Plan;
 import org.gentar.organization.work_unit.WorkUnit;
 import org.junit.jupiter.api.Test;
-
 import java.time.LocalDateTime;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.greaterThan;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.nullValue;
 import static org.hamcrest.core.IsNull.notNullValue;
@@ -34,7 +35,6 @@ public class ObjectInspectorTest
         ObjectInspector objectInspector = new ObjectInspector(classA, Arrays.asList("id"));
 
         Map<String, Object> propertyValueMap = objectInspector.getValuesForSimpleProperties();
-        objectInspector.printSimple();
 
         assertThat("propertyValueMap:", propertyValueMap, is(notNullValue()));
         assertThat("Incorrect value:", propertyValueMap.get("a1"), is("a1"));
@@ -57,7 +57,6 @@ public class ObjectInspectorTest
         objectInspector = new ObjectInspector(classA, Arrays.asList("id"));
         Map<String, PropertyDescription> propertyValueMap = objectInspector.getMap();
 
-
         PropertyDescription expectedResult1 = new PropertyDescription("a1", String.class, "a1", true);
         PropertyDescription expectedResult2 = new PropertyDescription(1, Integer.class, "a2", true);
         PropertyDescription expectedResult3 =
@@ -79,14 +78,28 @@ public class ObjectInspectorTest
     public void testNested()
     {
         ClassC object = new ClassC();
-        objectInspector = new ObjectInspector(object, Arrays.asList(""));
+        objectInspector = new ObjectInspector(object, Collections.singletonList(""));
         Map<String, PropertyDescription> map = objectInspector.getMap();
 
-        assertThat("Size:", map.size(), is(3));
-        assertThat("Size:", map.get("c1"), is(notNullValue()));
-        assertThat("Size:", map.get("c1.d1"), is(notNullValue()));
-        assertThat("Size:", map.get("c1.d1.e1"), is(notNullValue()));
-        objectInspector.printSimple();
+        assertThat(map.size(), is(3));
+
+        PropertyDescription propertyDescriptionC1 = map.get("c1");
+        assertThat(propertyDescriptionC1.getType(), is(ClassD.class));
+        assertThat(propertyDescriptionC1.getName(), is("c1"));
+        assertThat(propertyDescriptionC1.getValue(), is(nullValue()));
+        assertThat(propertyDescriptionC1.isSimpleValue(), is(false));
+
+        PropertyDescription propertyDescriptionC1D1 = map.get("c1.d1");
+        assertThat(propertyDescriptionC1D1.getType(), is(ClassE.class));
+        assertThat(propertyDescriptionC1D1.getName(), is("c1.d1"));
+        assertThat(propertyDescriptionC1D1.getValue(), is(nullValue()));
+        assertThat(propertyDescriptionC1D1.isSimpleValue(), is(false));
+
+        PropertyDescription propertyDescriptionC1D1E1 = map.get("c1.d1.e1");
+        assertThat(propertyDescriptionC1D1E1.getType(), is(String.class));
+        assertThat(propertyDescriptionC1D1E1.getName(), is("c1.d1.e1"));
+        assertThat(propertyDescriptionC1D1E1.getValue(), is(nullValue()));
+        assertThat(propertyDescriptionC1D1E1.isSimpleValue(), is(true));
     }
 
     @Test
@@ -97,13 +110,15 @@ public class ObjectInspectorTest
         WorkUnit workUnit = new WorkUnit("workUnit_a");
         workUnit.setId(10L);
         plan.setWorkUnit(workUnit);
-        objectInspector = new ObjectInspector(plan, Arrays.asList(""));
+        objectInspector = new ObjectInspector(plan, Collections.singletonList(""));
         Map<String, PropertyDescription> map = objectInspector.getMap();
-
-        for (Map.Entry<String, PropertyDescription> entry : map.entrySet())
-        {
-            System.out.println(entry.getKey() + " -> " + entry.getValue());
-        }
+        assertThat(map, is(notNullValue()));
+        assertThat(map.size(), greaterThan(0));
+        PropertyDescription propertyDescriptionWorkUnit = map.get("workUnit");
+        assertThat(propertyDescriptionWorkUnit.getType(), is(WorkUnit.class));
+        assertThat(propertyDescriptionWorkUnit.getName(), is("workUnit"));
+        assertThat(propertyDescriptionWorkUnit.getValue(), is(workUnit));
+        assertThat(propertyDescriptionWorkUnit.isSimpleValue(), is(false));
     }
 
     @Test
@@ -118,11 +133,49 @@ public class ObjectInspectorTest
         objectInspector = new ObjectInspector(a, Arrays.asList(""));
         Map<String, PropertyDescription> map = objectInspector.getMap();
 
-        for (Map.Entry<String, PropertyDescription> entry : map.entrySet())
-        {
-            System.out.println(entry.getKey() + " -> " + entry.getValue());
-        }
+        assertThat(map.size(), is(7));
 
+        PropertyDescription propertyDescriptionA1 = map.get("a1");
+        assertThat(propertyDescriptionA1.getType(), is(String.class));
+        assertThat(propertyDescriptionA1.getName(), is("a1"));
+        assertThat(propertyDescriptionA1.getValue(), is(nullValue()));
+        assertThat(propertyDescriptionA1.isSimpleValue(), is(true));
+
+        PropertyDescription propertyDescriptionA2 = map.get("a2");
+        assertThat(propertyDescriptionA2.getType(), is(Integer.class));
+        assertThat(propertyDescriptionA2.getName(), is("a2"));
+        assertThat(propertyDescriptionA2.getValue(), is(nullValue()));
+        assertThat(propertyDescriptionA2.isSimpleValue(), is(true));
+
+        PropertyDescription propertyDescriptionA3 = map.get("a3");
+        assertThat(propertyDescriptionA3.getType(), is(LocalDateTime.class));
+        assertThat(propertyDescriptionA3.getName(), is("a3"));
+        assertThat(propertyDescriptionA3.getValue(), is(nullValue()));
+        assertThat(propertyDescriptionA3.isSimpleValue(), is(true));
+
+        PropertyDescription propertyDescriptionA4 = map.get("a4");
+        assertThat(propertyDescriptionA4.getType(), is(ClassB.class));
+        assertThat(propertyDescriptionA4.getName(), is("a4"));
+        assertThat(propertyDescriptionA4.getValue(), is(nullValue()));
+        assertThat(propertyDescriptionA4.isSimpleValue(), is(false));
+
+        PropertyDescription propertyDescriptionA4B2 = map.get("a4.b2");
+        assertThat(propertyDescriptionA4B2.getType(), is(ClassA.class));
+        assertThat(propertyDescriptionA4B2.getName(), is("a4.b2"));
+        assertThat(propertyDescriptionA4B2.getValue(), is(nullValue()));
+        assertThat(propertyDescriptionA4B2.isSimpleValue(), is(false));
+
+        PropertyDescription propertyDescriptionA5 = map.get("a5");
+        assertThat(propertyDescriptionA5.getType(), is(List.class));
+        assertThat(propertyDescriptionA5.getName(), is("a5"));
+        assertThat(propertyDescriptionA5.getValue(), is(list));
+        assertThat(propertyDescriptionA5.isSimpleValue(), is(false));
+
+        PropertyDescription propertyDescriptionA4B1 = map.get("a4.b1");
+        assertThat(propertyDescriptionA4B1.getType(), is(Double.class));
+        assertThat(propertyDescriptionA4B1.getName(), is("a4.b1"));
+        assertThat(propertyDescriptionA4B1.getValue(), is(nullValue()));
+        assertThat(propertyDescriptionA4B1.isSimpleValue(), is(true));
     }
 
     @Data

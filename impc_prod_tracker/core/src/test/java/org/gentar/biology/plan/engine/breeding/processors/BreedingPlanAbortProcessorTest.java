@@ -90,7 +90,7 @@ class BreedingPlanAbortProcessorTest
 
         UserOperationFailedException thrown = assertThrows(UserOperationFailedException.class,
             () -> testInstance.process(plan), "Exception not thrown");
-        System.out.println(thrown.getMessage());
+
         assertThat(
             "Not expected message", thrown.getMessage(), is("Transition cannot be executed"));
         assertThat(

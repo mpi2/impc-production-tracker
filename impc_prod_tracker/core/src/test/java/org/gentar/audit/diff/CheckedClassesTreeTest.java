@@ -95,7 +95,6 @@ public class CheckedClassesTreeTest
         IllegalArgumentException thrown = assertThrows(IllegalArgumentException.class,
             () -> checkedClassesTree.addRelationIfNotExist(ClassA.class, ClassB.class),
             "Exception not thrown");
-        System.out.println(thrown.getMessage());
         assertTrue(thrown.getMessage().contains("Tree parent is null"));
     }
 

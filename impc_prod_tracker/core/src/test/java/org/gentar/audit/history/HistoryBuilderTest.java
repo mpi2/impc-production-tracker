@@ -136,7 +136,6 @@ public class HistoryBuilderTest
             "Unexpected work unit element 4 new value", workUnitElement4HistoryDetail.getNewValue(), is("workUnitMock2B"));
 
         HistoryDetail workUnitListHistoryDetail = getHistoryDetails("workUnitList", historyDetails);
-        System.out.println(workUnitListHistoryDetail);
         assertThat("No change at list level is expected", workUnitListHistoryDetail, is(nullValue()));
     }
 

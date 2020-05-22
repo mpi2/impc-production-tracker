@@ -1,7 +1,6 @@
 package org.gentar.audit.history;
 
-import org.gentar.audit.history.ChangeDescription;
-import org.gentar.audit.history.HistoryChangesAdaptor;
+import org.gentar.biology.plan.type.PlanType;
 import org.hamcrest.Matchers;
 import org.gentar.biology.plan.attempt.crispr.CrisprAttempt;
 import org.gentar.biology.plan.attempt.crispr.genotype_primer.GenotypePrimer;
@@ -11,7 +10,6 @@ import org.gentar.biology.project.privacy.Privacy;
 import org.gentar.biology.project.Project;
 import org.gentar.organization.work_unit.WorkUnit;
 import org.junit.jupiter.api.Test;
-
 import java.util.*;
 
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -22,15 +20,17 @@ import static org.hamcrest.Matchers.*;
  */
 public class HistoryChangesAdaptorUsingPlanObjectTest
 {
+    private HistoryChangesAdaptor<Plan> historyChangesAdaptor;
+
     @Test
     public void testWhenNoChanges()
     {
         Plan originalPlan = buildBasicPlan();
         Plan newPlan = buildBasicPlan();
-        HistoryChangesAdaptor<Plan> historyChangesAdaptor =
-            new HistoryChangesAdaptor<>(Arrays.asList(), originalPlan, newPlan);
+        historyChangesAdaptor = new HistoryChangesAdaptor<>(originalPlan, newPlan);
 
-        List<ChangeDescription> changeDescriptionList =  historyChangesAdaptor.getChanges();
+        List<ChangeDescription> changeDescriptionList = historyChangesAdaptor.getChanges();
+
         assertThat("No changes where expected", changeDescriptionList.isEmpty(), is(true));
     }
 
@@ -40,8 +40,7 @@ public class HistoryChangesAdaptorUsingPlanObjectTest
         Plan originalPlan = buildBasicPlan();
         Plan newPlan = buildBasicPlan();
         newPlan.setComment("a new comment");
-        HistoryChangesAdaptor<Plan> historyChangesAdaptor =
-            new HistoryChangesAdaptor<>(Arrays.asList(), originalPlan, newPlan);
+        historyChangesAdaptor = new HistoryChangesAdaptor<>(originalPlan, newPlan);
 
         List<ChangeDescription> changeDescriptionList =  historyChangesAdaptor.getChanges();
 
@@ -53,53 +52,58 @@ public class HistoryChangesAdaptorUsingPlanObjectTest
     }
 
     @Test
-    public void testWhenPrivacyChanged()
+    public void testWhenPlanTypeChanged()
     {
-        Project originalProject = buildBasicProject();
-        Project newProject = buildBasicProject();
-        Privacy newPrivacy = new Privacy();
-        newPrivacy.setId(2L);
-        newPrivacy.setName("New Privacy");
-        newProject.setPrivacy(newPrivacy);
+        Plan originalPlan = buildBasicPlan();
+        PlanType originalPlanType = new PlanType();
+        originalPlanType.setId(1L);
+        originalPlanType.setName("originalPlanTypeName");
+        originalPlan.setPlanType(originalPlanType);
 
-        HistoryChangesAdaptor<Project> historyChangesAdaptor =
-            new HistoryChangesAdaptor<>(Arrays.asList(), originalProject, newProject);
+        Plan newPlan = buildBasicPlan();
+        PlanType newPlanType = new PlanType();
+        newPlanType.setId(2L);
+        newPlanType.setName("newPlanType");
+        newPlan.setPlanType(newPlanType);
+        historyChangesAdaptor = new HistoryChangesAdaptor<>(originalPlan, newPlan);
 
-        List<ChangeDescription> changeDescriptionList =  historyChangesAdaptor.getChanges();
-        System.out.println(changeDescriptionList);
+        List<ChangeDescription> changeDescriptionList = historyChangesAdaptor.getChanges();
 
         assertThat("Only one change is expected:", changeDescriptionList.size(), is(1));
         ChangeDescription change = changeDescriptionList.get(0);
-        assertThat("No expected property", change.getProperty(), is("privacy.name"));
-        assertThat("No expected old value", change.getOldValue(), is("Privacy1"));
-        assertThat("No expected new value", change.getNewValue(), is("New Privacy"));
+        assertThat("No expected property", change.getProperty(), is("planType.name"));
+        assertThat("No expected old value", change.getOldValue(), is("originalPlanTypeName"));
+        assertThat("No expected new value", change.getNewValue(), is("newPlanType"));
     }
 
     @Test
-    public void testWhenCommentAndPrivacyChanged()
+    public void testWhenCommentAndPlanTypeChanged()
     {
-        Project originalProject = buildBasicProject();
-        Project newProject = buildBasicProject();
-        Privacy newPrivacy = new Privacy();
-        newPrivacy.setId(2L);
-        newPrivacy.setName("New Privacy");
-        newProject.setPrivacy(newPrivacy);
-        newProject.setComment("A comment");
-        HistoryChangesAdaptor<Project> historyChangesAdaptor =
-            new HistoryChangesAdaptor<>(Arrays.asList(), originalProject, newProject);
+        Plan originalPlan = buildBasicPlan();
+        PlanType originalPlanType = new PlanType();
+        originalPlanType.setId(1L);
+        originalPlanType.setName("originalPlanTypeName");
+        originalPlan.setPlanType(originalPlanType);
 
-        List<ChangeDescription> changeDescriptionList =  historyChangesAdaptor.getChanges();
-        System.out.println(changeDescriptionList);
+        Plan newPlan = buildBasicPlan();
+        PlanType newPlanType = new PlanType();
+        newPlanType.setId(2L);
+        newPlanType.setName("newPlanType");
+        newPlan.setPlanType(newPlanType);
+        newPlan.setComment("New comment");
+
+        historyChangesAdaptor = new HistoryChangesAdaptor<>(originalPlan, newPlan);
+        List<ChangeDescription> changeDescriptionList = historyChangesAdaptor.getChanges();
 
         assertThat("Unexpected number of changes:", changeDescriptionList.size(), is(2));
         ChangeDescription change1 = getChange("comment", changeDescriptionList);
         assertThat("Change not found", change1, is(notNullValue()));
         assertThat("No expected old value", change1.getOldValue(), is(nullValue()));
-        assertThat("No expected old value", change1.getNewValue(), is("A comment"));
-        ChangeDescription change2 = getChange("privacy.name", changeDescriptionList);
+        assertThat("No expected old value", change1.getNewValue(), is("New comment"));
+        ChangeDescription change2 = getChange("planType.name", changeDescriptionList);
         assertThat("Change not found", change2, is(notNullValue()));
-        assertThat("No expected old value", change2.getOldValue(), is("Privacy1"));
-        assertThat("No expected old value", change2.getNewValue(), is("New Privacy"));
+        assertThat("No expected old value", change2.getOldValue(), is("originalPlanTypeName"));
+        assertThat("No expected old value", change2.getNewValue(), is("newPlanType"));
     }
 
     @Test
@@ -121,9 +125,11 @@ public class HistoryChangesAdaptorUsingPlanObjectTest
         newPlan.setCrisprAttempt(crisprAttempt1Modified);
 
         List<ChangeDescription> changeDescriptionList = historyChangesAdaptor.getChanges();
-        System.out.println(changeDescriptionList);
         assertThat("Unexpected number of changes:", changeDescriptionList.size(), is(1));
-
+        ChangeDescription change = getChange("crisprAttempt.comment", changeDescriptionList);
+        assertThat("Change not found", change, is(notNullValue()));
+        assertThat("No expected old value", change.getOldValue(), is("a"));
+        assertThat("No expected old value", change.getNewValue(), is("b"));
     }
 
     @Test
@@ -131,8 +137,7 @@ public class HistoryChangesAdaptorUsingPlanObjectTest
     {
         Plan originalPlan = buildBasicPlan();
         Plan newPlan = buildBasicPlan();
-        HistoryChangesAdaptor<Plan> historyChangesAdaptor =
-            new HistoryChangesAdaptor<>(Arrays.asList(), originalPlan, newPlan);
+        historyChangesAdaptor = new HistoryChangesAdaptor<>(originalPlan, newPlan);
 
         CrisprAttempt crisprAttempt1 = new CrisprAttempt();
         crisprAttempt1.setGuides(null);
@@ -143,7 +148,6 @@ public class HistoryChangesAdaptorUsingPlanObjectTest
         newPlan.setCrisprAttempt(crisprAttempt2);
 
         List<ChangeDescription> changeDescriptionList = historyChangesAdaptor.getChanges();
-        System.out.println(changeDescriptionList);
         assertThat(
             "List of changes should be empty [" + changeDescriptionList + "]",
             changeDescriptionList.isEmpty(), is(true));
@@ -154,8 +158,7 @@ public class HistoryChangesAdaptorUsingPlanObjectTest
     {
         Plan originalPlan = buildBasicPlan();
         Plan newPlan = buildBasicPlan();
-        HistoryChangesAdaptor<Plan> historyChangesAdaptor =
-            new HistoryChangesAdaptor<>(Arrays.asList(), originalPlan, newPlan);
+        historyChangesAdaptor = new HistoryChangesAdaptor<>(originalPlan, newPlan);
 
         CrisprAttempt crisprAttempt1 = new CrisprAttempt();
         crisprAttempt1.setGuides(null);
@@ -186,19 +189,29 @@ public class HistoryChangesAdaptorUsingPlanObjectTest
         crisprAttempt2.setGuides(guides);
         newPlan.setCrisprAttempt(crisprAttempt2);
         List<ChangeDescription> changeDescriptionList = historyChangesAdaptor.getChanges();
-        System.out.println(changeDescriptionList);
         assertThat("Unexpected number of changes:", changeDescriptionList.size(), is(2));
-        System.out.println(changeDescriptionList);
 
-        ChangeDescription changeDescriptionElement1 = getChange("crisprAttempt.guides#1", changeDescriptionList);
-        assertThat("Unexpected property:", changeDescriptionElement1.getProperty(), is("crisprAttempt.guides#1"));
-        assertThat("Unexpected old value:", changeDescriptionElement1.getOldValue(), is(nullValue()));
-        assertThat("Unexpected new value:", changeDescriptionElement1.getNewValue(), Matchers.is(guide1));
+        ChangeDescription changeDescriptionElement1 =
+            getChange("crisprAttempt.guides#1", changeDescriptionList);
+        assertThat(
+            "Unexpected property:",
+            changeDescriptionElement1.getProperty(),
+            is("crisprAttempt.guides#1"));
+        assertThat(
+            "Unexpected old value:", changeDescriptionElement1.getOldValue(), is(nullValue()));
+        assertThat(
+            "Unexpected new value:", changeDescriptionElement1.getNewValue(), Matchers.is(guide1));
 
-        ChangeDescription changeDescriptionElement2 = getChange("crisprAttempt.guides#2", changeDescriptionList);
-        assertThat("Unexpected property:", changeDescriptionElement2.getProperty(), is("crisprAttempt.guides#2"));
-        assertThat("Unexpected old value:", changeDescriptionElement2.getOldValue(), is(nullValue()));
-        assertThat("Unexpected new value:", changeDescriptionElement2.getNewValue(), Matchers.is(guide2));
+        ChangeDescription changeDescriptionElement2 =
+            getChange("crisprAttempt.guides#2", changeDescriptionList);
+        assertThat(
+            "Unexpected property:",
+            changeDescriptionElement2.getProperty(),
+            is("crisprAttempt.guides#2"));
+        assertThat(
+            "Unexpected old value:", changeDescriptionElement2.getOldValue(), is(nullValue()));
+        assertThat(
+            "Unexpected new value:", changeDescriptionElement2.getNewValue(), Matchers.is(guide2));
     }
 
     @Test
@@ -206,21 +219,20 @@ public class HistoryChangesAdaptorUsingPlanObjectTest
     {
         Plan originalPlan = buildBasicPlan();
         Plan newPlan = buildBasicPlan();
-        HistoryChangesAdaptor<Plan> historyChangesAdaptor =
-            new HistoryChangesAdaptor<>(Arrays.asList(), originalPlan, newPlan);
+        historyChangesAdaptor = new HistoryChangesAdaptor<>(originalPlan, newPlan);
 
         CrisprAttempt crisprAttempt1 = new CrisprAttempt();
-        crisprAttempt1.setGuides(null);
         originalPlan.setCrisprAttempt(crisprAttempt1);
 
         CrisprAttempt crisprAttempt2 = new CrisprAttempt();
-        Set<Guide> guides = new HashSet<>();
+        newPlan.setCrisprAttempt(crisprAttempt2);
+
         Guide guide1 = new Guide();
         guide1.setId(1L);
-        guide1.setChr("X");
-        guide1.setSequence("GCCTCAATCTGCACAGTATTGGG");
-        guide1.setStart(105880383);
-        guide1.setStop(105880405);
+        guide1.setChr("Y");
+        guide1.setSequence("AGCCTCAATCTGCACAGTATTGGG");
+        guide1.setStart(905880383);
+        guide1.setStop(910880405);
         guide1.setTruncatedGuide(false);
         guide1.setGrnaConcentration(null);
 
@@ -232,14 +244,34 @@ public class HistoryChangesAdaptorUsingPlanObjectTest
         guide2.setStop(105880405);
         guide2.setTruncatedGuide(false);
         guide2.setGrnaConcentration(null);
-        crisprAttempt1.setGuides(null);
-        guides.add(guide1);
-        guides.add(guide2);
-        crisprAttempt2.setGuides(new HashSet<>());
-        newPlan.setCrisprAttempt(crisprAttempt2);
 
-        List<ChangeDescription> changeDescriptionList =  historyChangesAdaptor.getChanges();
-        System.out.println(changeDescriptionList);
+        crisprAttempt1.setGuides(Collections.singleton(guide1));
+        crisprAttempt2.setGuides(Collections.singleton(guide2));
+
+        List<ChangeDescription> changeDescriptionList = historyChangesAdaptor.getChanges();
+        assertThat("Unexpected number of changes:", changeDescriptionList.size(), is(2));
+
+        ChangeDescription changeDescriptionElement1 =
+            getChange("crisprAttempt.guides#1", changeDescriptionList);
+        assertThat(
+            "Unexpected property:",
+            changeDescriptionElement1.getProperty(),
+            is("crisprAttempt.guides#1"));
+        assertThat(
+            "Unexpected old value:", changeDescriptionElement1.getOldValue(), is(guide1));
+        assertThat(
+            "Unexpected new value:", changeDescriptionElement1.getNewValue(), is(nullValue()));
+
+        ChangeDescription changeDescriptionElement2 =
+            getChange("crisprAttempt.guides#2", changeDescriptionList);
+        assertThat(
+            "Unexpected property:",
+            changeDescriptionElement2.getProperty(),
+            is("crisprAttempt.guides#2"));
+        assertThat(
+            "Unexpected old value:", changeDescriptionElement2.getOldValue(), is(nullValue()));
+        assertThat(
+            "Unexpected new value:", changeDescriptionElement2.getNewValue(), Matchers.is(guide2));
     }
 
     @Test
@@ -247,24 +279,36 @@ public class HistoryChangesAdaptorUsingPlanObjectTest
     {
         Plan originalPlan = buildBasicPlan();
         Plan newPlan = buildBasicPlan();
-        HistoryChangesAdaptor<Plan> historyChangesAdaptor =
-            new HistoryChangesAdaptor<>(Arrays.asList(), originalPlan, newPlan);
+        historyChangesAdaptor = new HistoryChangesAdaptor<>(originalPlan, newPlan);
 
         CrisprAttempt crisprAttempt1 = new CrisprAttempt();
         originalPlan.setCrisprAttempt(crisprAttempt1);
 
         CrisprAttempt crisprAttempt2 = new CrisprAttempt();
+        newPlan.setCrisprAttempt(crisprAttempt2);
+
         GenotypePrimer primer1 = new GenotypePrimer();
+        primer1.setId(1L);
         primer1.setSequence("ACACCCCTAGTCTTGTGTCTCA");
         primer1.setName("Dnah10 KO F");
         Set<GenotypePrimer> genotypePrimers = new HashSet<>();
         genotypePrimers.add(primer1);
         crisprAttempt2.setPrimers(genotypePrimers);
-        newPlan.setCrisprAttempt(crisprAttempt2);
 
         List<ChangeDescription> changeDescriptionList = historyChangesAdaptor.getChanges();
-        System.out.println(changeDescriptionList);
+
         assertThat("Unexpected number of changes:", changeDescriptionList.size(), is(1));
+
+        ChangeDescription changeDescriptionElement1 =
+            getChange("crisprAttempt.primers#1", changeDescriptionList);
+        assertThat(
+            "Unexpected property:",
+            changeDescriptionElement1.getProperty(),
+            is("crisprAttempt.primers#1"));
+        assertThat(
+            "Unexpected old value:", changeDescriptionElement1.getOldValue(), is(nullValue()));
+        assertThat(
+            "Unexpected new value:", changeDescriptionElement1.getNewValue(), is(primer1));
     }
 
     private Plan buildBasicPlan()

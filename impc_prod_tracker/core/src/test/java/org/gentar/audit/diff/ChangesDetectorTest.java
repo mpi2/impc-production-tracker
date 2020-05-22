@@ -3,7 +3,6 @@ package org.gentar.audit.diff;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.junit.jupiter.api.Test;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -18,7 +17,6 @@ public class ChangesDetectorTest
     private final ClassTest class3NoNestedDataDifferent = new ClassTest("a", "c");
     private final ClassTest class1NestedData = new ClassTest("a", "b", 1, 2, 5);
     private final ClassTest class2NestedData = new ClassTest("a", "b", 1, 2, 5);
-
 
     @Test
     public void testGetChangesWhenSameSimpleProperties()
@@ -44,7 +42,6 @@ public class ChangesDetectorTest
                 class3NoNestedDataDifferent);
 
         List<ChangeEntry> changeEntryList = changesDetector.getChanges();
-        System.out.println("changeEntryList: "+changeEntryList);
 
         ChangeEntry expectedChangeEntry = getChangeEntry("property2", "b", "c");
 
@@ -121,7 +118,6 @@ public class ChangesDetectorTest
         changesDetector.print();
 
         assertThat("Unexpected number of changes:", changeEntryList.size(), is(16));
-
 
         validateObtainedChangeEntryIsExpected(
             getByPropertyName(changeEntryList, "id"), getChangeEntry("id", 1L, 2L));
@@ -221,7 +217,6 @@ public class ChangesDetectorTest
         planMock2.setWorkUnitList(Arrays.asList(workUnitMock2A, workUnitMock2B));
         planMock2.setPrivacy(privacyMock2);
 
-
         ChangesDetector<PlanMock> changesDetector =
             new ChangesDetector<>(
                 new ArrayList<>(),
@@ -229,9 +224,6 @@ public class ChangesDetectorTest
                 planMock2);
 
         List<ChangeEntry> changeEntryList = changesDetector.getChanges();
-        System.out.println(changeEntryList);
-        System.out.println();
-        changeEntryList.forEach(x -> System.out.println(x.getProperty()));
 
         validateObtainedChangeEntryIsExpected(
             getByPropertyName(changeEntryList, "planName"),
@@ -381,7 +373,6 @@ public class ChangesDetectorTest
     @AllArgsConstructor
     public class ClassTest
     {
-
         private String property1;
         private String property2;
         private InnerClassTest property3;

@@ -7,6 +7,7 @@ import org.gentar.audit.diff.ChangesDetector;
 import org.gentar.audit.diff.PropertyChecker;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -28,6 +29,11 @@ class HistoryChangesAdaptor<T>
     private Map<String, Map<String, ChangeEntry>> groupedChanges;
     private static final String ID_PROPERTY_NAME = "id";
     private static final Logger LOGGER = LoggerFactory.getLogger(HistoryChangesAdaptor.class);
+
+    HistoryChangesAdaptor(T originalEntity, T newEntity)
+    {
+        this(Collections.singletonList(""), originalEntity, newEntity);
+    }
 
     HistoryChangesAdaptor(List<String> fieldsToExclude, T originalEntity, T newEntity)
     {

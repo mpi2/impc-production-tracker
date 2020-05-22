@@ -40,6 +40,5 @@ class PlanStateMachineResolverTest
             "Invalid event",
             processEvent.getName(),
             is(CrisprProductionPlanEvent.abandonWhenCreated.getName()));
-        System.out.println(processEvent);
     }
 }
