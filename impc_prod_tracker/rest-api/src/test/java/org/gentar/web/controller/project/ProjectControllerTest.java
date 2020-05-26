@@ -3,6 +3,7 @@ package org.gentar.web.controller.project;
 import com.github.springtestdbunit.annotation.DatabaseOperation;
 import com.github.springtestdbunit.annotation.DatabaseSetup;
 import com.github.springtestdbunit.annotation.DatabaseTearDown;
+import org.gentar.biology.ChangeResponse;
 import org.gentar.biology.gene.GeneDTO;
 import org.gentar.biology.gene.ProjectIntentionGeneDTO;
 import org.gentar.biology.intention.ProjectIntentionDTO;
@@ -18,7 +19,9 @@ import org.gentar.framework.ControllerTestTemplate;
 import org.gentar.framework.SequenceResetter;
 import org.gentar.framework.TestResourceLoader;
 import org.gentar.framework.db.DBSetupFilesPaths;
+import org.gentar.helpers.LinkUtil;
 import org.gentar.util.JsonHelper;
+import org.json.JSONObject;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,6 +38,7 @@ import java.util.List;
 
 import static org.gentar.util.JsonHelper.toJson;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
+import static org.springframework.restdocs.payload.PayloadDocumentation.requestFields;
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -204,10 +208,96 @@ class ProjectControllerTest extends ControllerTestTemplate
             .header("Authorization", accessToken)
             .content(toJson(projectCreationDTO))
             .contentType(MediaType.APPLICATION_JSON))
-            .andExpect(status().isOk());
+            .andExpect(status().isOk())
+            .andDo(documentCreationOfProject());
 
         MvcResult result = resultActions.andReturn();
         String contentAsString = result.getResponse().getContentAsString();
+        System.out.println(contentAsString);
+        String projectLink = LinkUtil.getSelfHrefLinkStringFromJson(contentAsString);
+
+        ResultActions callGetWithObtainedUrl = mvc().perform(MockMvcRequestBuilders
+            .get(projectLink)
+            .header("Authorization", accessToken))
+            .andExpect(status().isOk());
+        MvcResult obtainedProject = callGetWithObtainedUrl.andReturn();
+        String obtainedProjectAsString = obtainedProject.getResponse().getContentAsString();
+
+        ProjectResponseDTO obtained =
+            JsonHelper.fromJson(obtainedProjectAsString, ProjectResponseDTO.class);
+        ProjectResponseDTO expected =
+            loadExpectedResponseFromResource("expectedCreatedProject.json");
+
+        ProjectTestHelper.assertProjectResponseDTOIsTheExpected(obtained, expected);
+    }
+
+    private ResultHandler documentCreationOfProject()
+    {
+        return document(
+            "projects/postProject",
+            requestFields(
+                fieldWithPath("recovery").description("To be validated"),
+                fieldWithPath("comment").description("Comment on this project."),
+                fieldWithPath("externalReference")
+                    .description("External reference for the project. Read only."),
+                fieldWithPath("projectIntentions")
+                    .description("Intentions for the project"),
+                fieldWithPath("projectIntentions[].molecularMutationTypeName")
+                    .description("Name of thr molecular mutation."),
+                fieldWithPath("projectIntentions[].mutationCategorizations")
+                    .description("Mutation categorizations linked to the project intention."),
+                fieldWithPath("projectIntentions[].mutationCategorizations[].name")
+                    .description("Name of the mutation categorization."),
+                fieldWithPath("projectIntentions[].mutationCategorizations[].description")
+                    .description("Description of the mutation categorization."),
+                fieldWithPath("projectIntentions[].mutationCategorizations[].typeName")
+                    .description("Name of type of the mutation categorization."),
+                fieldWithPath("projectIntentions[].intentionByGene")
+                    .description("Gene in the intention."),
+                fieldWithPath("projectIntentions[].intentionByGene.gene")
+                    .description("Gene information."),
+                fieldWithPath("projectIntentions[].intentionByGene.gene.id")
+                    .description("Internal id of the gene in GenTaR."),
+                fieldWithPath("projectIntentions[].intentionByGene.gene.name")
+                    .description("Name of the gene."),
+                fieldWithPath("projectIntentions[].intentionByGene.gene.symbol")
+                    .description("Symbol of the gene."),
+                fieldWithPath("projectIntentions[].intentionByGene.gene.externalLink")
+                    .description("External link for the gene"),
+                fieldWithPath("projectIntentions[].intentionByGene.gene.accessionId")
+                    .description("Accession id for the gene, e.g MGI"),
+                fieldWithPath("projectIntentions[].intentionByGene.gene.speciesName")
+                    .description("Species associated with the gene"),
+                fieldWithPath("privacyName")
+                    .description("Privacy level for the project (public, protected or restricted)"),
+                fieldWithPath("speciesNames")
+                    .description("Species associated with the project."),
+                fieldWithPath("planDetails").description("..."),
+                fieldWithPath("planDetails.funderNames").description("..."),
+                fieldWithPath("planDetails.workUnitName").description("..."),
+                fieldWithPath("planDetails.workGroupName").description("..."),
+                fieldWithPath("planDetails.comment").description("..."),
+                fieldWithPath("planDetails.productsAvailableForGeneralPublic").description("..."),
+                fieldWithPath("planDetails.attemptTypeName").description("..."),
+                fieldWithPath("planDetails.typeName").description("..."),
+                fieldWithPath("consortia")
+                    .description("Consortia associated with the project."),
+                fieldWithPath("consortia[].consortiumName")
+                    .description("Name of the consortium."),
+                fieldWithPath("consortia[].institutes")
+                    .description("Institutes associated with the project - consortium")),
+
+            responseFields(
+                fieldWithPath("history[]").description("..."),
+                fieldWithPath("history[].id").description("..."),
+                fieldWithPath("history[].user").description("..."),
+                fieldWithPath("history[].date").description("..."),
+                fieldWithPath("history[].comment").description("..."),
+                fieldWithPath("history[].details[]").description("..."),
+                fieldWithPath("_links").description("Links for project"),
+                fieldWithPath("_links.self").description("Links to production plans"),
+                fieldWithPath("_links.self.href").description("Links to production plans")
+            ));
     }
 
     private ProjectCreationDTO buildProjectCreationDTO()
@@ -252,7 +342,7 @@ class ProjectControllerTest extends ControllerTestTemplate
         List<ProjectConsortiumDTO> projectConsortiumDTOS = new ArrayList<>();
         ProjectConsortiumDTO projectConsortiumDTO = new ProjectConsortiumDTO();
         projectConsortiumDTO.setConsortiumName("CMG");
-        projectConsortiumDTO.setProjectConsortiumInstituteNames(Collections.singletonList("Broad"));
+        projectConsortiumDTO.setInstituteNames(Collections.singletonList("Broad"));
         projectConsortiumDTOS.add(projectConsortiumDTO);
         projectCommonDataDTO.setProjectConsortiumDTOS(projectConsortiumDTOS);
         return projectCommonDataDTO;

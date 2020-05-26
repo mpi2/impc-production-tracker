@@ -7,9 +7,10 @@ import java.util.List;
 
 @Data
 @RequiredArgsConstructor
-public class ProjectConsortiumDTO {
+public class ProjectConsortiumDTO
+{
     private String consortiumName;
 
     @JsonProperty("institutes")
-    private List<String> projectConsortiumInstituteNames;
+    private List<String> InstituteNames;
 }

@@ -16,12 +16,12 @@
 package org.gentar.biology.project.search;
 
 import lombok.Data;
-import org.gentar.biology.project.ProjectDTO;
+import org.gentar.biology.project.ProjectResponseDTO;
 
 @Data
 public class SearchResultDTO
 {
     private String input;
-    private ProjectDTO project;
+    private ProjectResponseDTO project;
     private String comment;
 }

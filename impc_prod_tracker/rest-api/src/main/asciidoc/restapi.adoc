@@ -225,7 +225,11 @@ In order to create a project, it's necessary to create also a plan attached to i
 ===== Example Request
 
 Curl:
-include::{snippets}/projects/createProject/request-body.adoc[]
+include::{snippets}/projects/postProject/http-request.adoc[]
+
+===== Example Response
+
+include::{snippets}/projects/postProject/http-response.adoc[]
 
 
 

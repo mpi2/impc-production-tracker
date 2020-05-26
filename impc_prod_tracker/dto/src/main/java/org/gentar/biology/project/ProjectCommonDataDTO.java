@@ -21,9 +21,6 @@ public class ProjectCommonDataDTO
     @JsonProperty("externalReference")
     private String projectExternalRef;
 
-    // Date in which the project as changed to an active assignment status.
-    private LocalDateTime reactivationDate;
-
     // To be validated...
     private Boolean recovery;
 

@@ -10,6 +10,7 @@ import org.gentar.biology.status_stamps.StatusStampsDTO;
 import org.springframework.hateoas.RepresentationModel;
 import org.springframework.hateoas.server.core.Relation;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Set;
 
@@ -60,4 +61,7 @@ public class ProjectResponseDTO extends RepresentationModel<ProjectResponseDTO>
     // A list of work groups that are related with this plan through its plans.
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private Set<String> relatedWorkGroupNames;
+
+    // Date in which the project as changed to an active assignment status.
+    private LocalDateTime reactivationDate;
 }

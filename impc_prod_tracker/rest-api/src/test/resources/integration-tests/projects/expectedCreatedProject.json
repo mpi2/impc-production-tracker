@@ -1,0 +1,68 @@
+{
+  "recovery":false,
+  "comment":"comment",
+  "privacyName":"public",
+  "externalReference":"externalRef",
+  "speciesNames":[
+    "Mus musculus"
+  ],
+  "consortia":[
+    {
+      "consortiumName":"CMG",
+      "institutes":[
+        "Broad"
+      ]
+    }
+  ],
+  "assignmentStatusName":"Assigned",
+  "summaryStatusName":null,
+  "relatedWorkUnitNames":[
+    "BCM"
+  ],
+  "relatedWorkGroupNames":[
+    "BaSH"
+  ],
+  "reactivationDate":null,
+  "_links":{
+    "productionPlans":{
+      "href":"http://localhost:8080/api/plans/PIN:0000000001"
+    }
+  },
+  "assignmentStatusStamps":[
+    {
+      "statusName":"Assigned",
+      "date":"2020-05-26T15:33:24.661314"
+    }
+  ],
+  "projectIntentions":[
+    {
+      "molecularMutationTypeName":"Point Mutation",
+      "mutationCategorizations":[
+        {
+          "name":"Null Reporter",
+          "description":null,
+          "typeName":"allele_category"
+        }
+      ],
+      "intentionByGene":{
+        "bestOrthologs":[
+
+        ],
+        "allOrthologs":[
+
+        ],
+        "gene":{
+          "id":1,
+          "name":"serine (or cysteine) peptidase inhibitor, clade B (ovalbumin), member 10",
+          "symbol":"Serpinb10",
+          "speciesName":"Mus musculus",
+          "externalLink":"http://www.mousephenotype.org/data/genes/MGI:2138648",
+          "accessionId":"MGI:2138648"
+        }
+      },
+      "intentionBySequence":[
+
+      ]
+    }
+  ]
+}
