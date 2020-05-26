@@ -273,13 +273,15 @@ class ProjectControllerTest extends ControllerTestTemplate
                 fieldWithPath("speciesNames")
                     .description("Species associated with the project."),
                 fieldWithPath("planDetails").description("..."),
-                fieldWithPath("planDetails.funderNames").description("..."),
-                fieldWithPath("planDetails.workUnitName").description("..."),
-                fieldWithPath("planDetails.workGroupName").description("..."),
-                fieldWithPath("planDetails.comment").description("..."),
-                fieldWithPath("planDetails.productsAvailableForGeneralPublic").description("..."),
-                fieldWithPath("planDetails.attemptTypeName").description("..."),
-                fieldWithPath("planDetails.typeName").description("..."),
+                fieldWithPath("planDetails.funderNames")
+                    .description("Name of the funders in for the plan"),
+                fieldWithPath("planDetails.workUnitName").description("Work unit of the plan."),
+                fieldWithPath("planDetails.workGroupName").description("Work group of the plan."),
+                fieldWithPath("planDetails.comment").description("Comment in the plan."),
+                fieldWithPath("planDetails.productsAvailableForGeneralPublic")
+                    .description("Whether the product is available to the public."),
+                fieldWithPath("planDetails.attemptTypeName").description("Attempt type name"),
+                fieldWithPath("planDetails.typeName").description("Plan type name"),
                 fieldWithPath("consortia")
                     .description("Consortia associated with the project."),
                 fieldWithPath("consortia[].consortiumName")
@@ -288,15 +290,13 @@ class ProjectControllerTest extends ControllerTestTemplate
                     .description("Institutes associated with the project - consortium")),
 
             responseFields(
-                fieldWithPath("history[]").description("..."),
-                fieldWithPath("history[].id").description("..."),
-                fieldWithPath("history[].user").description("..."),
-                fieldWithPath("history[].date").description("..."),
-                fieldWithPath("history[].comment").description("..."),
-                fieldWithPath("history[].details[]").description("..."),
-                fieldWithPath("_links").description("Links for project"),
-                fieldWithPath("_links.self").description("Links to production plans"),
-                fieldWithPath("_links.self.href").description("Links to production plans")
+                fieldWithPath("history[]").description("Changes in the system."),
+                fieldWithPath("history[].id").description("Id of the change."),
+                fieldWithPath("history[].user").description("User that did the change."),
+                fieldWithPath("history[].date").description("Date of the change."),
+                fieldWithPath("history[].comment").description("Comment describing the change."),
+                fieldWithPath("history[].details[]").description("Additional details of the change."),
+                fieldWithPath("_links.self.href").description("Links to the just created project.")
             ));
     }
 

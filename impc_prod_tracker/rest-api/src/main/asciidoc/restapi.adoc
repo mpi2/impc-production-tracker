@@ -231,6 +231,9 @@ include::{snippets}/projects/postProject/http-request.adoc[]
 
 include::{snippets}/projects/postProject/http-response.adoc[]
 
+===== Fields in Response
+include::{snippets}/projects/postProject/response-fields.adoc[]
+
 
 
 
