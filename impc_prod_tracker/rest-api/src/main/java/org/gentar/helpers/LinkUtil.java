@@ -1,5 +1,6 @@
 package org.gentar.helpers;
 
+import org.json.JSONObject;
 import org.springframework.hateoas.PagedModel;
 
 public class LinkUtil
@@ -22,5 +23,18 @@ public class LinkUtil
     private static String buildLinkHeader(final String uri, final String rel)
     {
         return "<" + uri + ">; rel=\"" + rel + "\"";
+    }
+
+    /**
+     * Gets the self.href link from a json. It expects the json to have that structure.
+     * @param jsonString The json string where the link is.
+     * @return The link in a string representation.
+     */
+    public static String getSelfHrefLinkStringFromJson(String jsonString)
+    {
+        JSONObject jsonResponse = new JSONObject(jsonString);
+        JSONObject links = jsonResponse.getJSONObject("_links");
+        JSONObject self = links.getJSONObject("self");
+        return self.get("href").toString();
     }
 }

@@ -11,7 +11,6 @@ public class HistoryDTO
     private int id;
     private String user;
     private LocalDate date;
-    private String action;
     private String comment;
     private List<HistoryDetailDTO> details;
 }

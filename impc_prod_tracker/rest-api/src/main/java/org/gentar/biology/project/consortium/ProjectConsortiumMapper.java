@@ -51,13 +51,13 @@ public class ProjectConsortiumMapper implements Mapper<ProjectConsortium, Projec
     {
         List<String> projectConsortiumInstituteNames =
                 projectConsortiumInstituteMapper.toDtos(projectConsortium.getInstitutes());
-        projectConsortiumDTO.setProjectConsortiumInstituteNames(projectConsortiumInstituteNames);
+        projectConsortiumDTO.setInstituteNames(projectConsortiumInstituteNames);
     }
 
     private Set<Institute> addProjectConsortiumInstituteFromEntity(
         ProjectConsortiumDTO projectConsortiumDTO)
     {
-        return projectConsortiumInstituteMapper.toEntities(
-            projectConsortiumDTO.getProjectConsortiumInstituteNames());
+        return new HashSet<>(projectConsortiumInstituteMapper.toEntities(
+            projectConsortiumDTO.getInstituteNames()));
     }
 }

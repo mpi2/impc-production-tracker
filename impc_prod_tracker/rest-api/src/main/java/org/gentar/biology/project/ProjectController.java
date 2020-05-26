@@ -44,6 +44,7 @@ import org.gentar.biology.project.search.filter.ProjectFilterBuilder;
 import org.gentar.biology.project.helper.ProjectUtilities;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Collections;
 import java.util.List;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
@@ -62,7 +63,6 @@ class ProjectController
     private ProjectCreationMapper projectCreationMapper;
     private PlanMinimumCreationMapper planMinimumCreationMapper;
     private ProjectResponseMapper projectResponseMapper;
-
 
     private static final String PROJECT_NOT_FOUND_ERROR =
         "Project %s does not exist or you don't have access to it.";
@@ -91,7 +91,7 @@ class ProjectController
 
     /**
      * Get all the projects in the system.
-     * @return A collection of {@link ProjectDTO} objects.
+     * @return A collection of {@link ProjectResponseDTO} objects.
      */
     @GetMapping
     public ResponseEntity findAll(
@@ -140,7 +140,7 @@ class ProjectController
     /**
      * Creates a new project in the system.
      * @param projectCreationDTO Request with data of the project to be created.
-     * @return {@link ProjectDTO} representing the project created in the system.
+     * @return {@link ChangeResponse} object with information about the creation.
      */
     @PostMapping
     public ChangeResponse createProject(@RequestBody ProjectCreationDTO projectCreationDTO)
@@ -169,28 +169,35 @@ class ProjectController
     }
 
     @PutMapping(value = {"/{tpn}"})
-    public HistoryDTO updateProject(@PathVariable String tpn, @RequestBody ProjectDTO projectDTO)
+    public ChangeResponse updateProject(
+        @PathVariable String tpn, @RequestBody ProjectUpdateDTO projectUpdateDTO)
     {
         Project currentProject = projectService.getNotNullProjectByTpn(tpn);
-        Project newProject = getProjectToUpdate(currentProject, projectDTO);
+        Project newProject =
+            updateProjectRequestProcessor.getProjectToUpdate(currentProject, projectUpdateDTO);
         History history = projectService.updateProject(currentProject, newProject);
         HistoryDTO historyDTO = new HistoryDTO();
         if (history != null)
         {
             historyDTO = historyMapper.toDto(history);
         }
-        return historyDTO;
-    }
-
-    private Project getProjectToUpdate(Project currentProject, ProjectDTO projectDTO)
-    {
-        Project newProject = new Project(currentProject);
-        return updateProjectRequestProcessor.getProjectToUpdate(newProject, projectDTO);
+        return buildChangeResponse(newProject, Collections.singletonList(historyDTO));
     }
 
     /**
-     * Get all the projects in the system.
-     * @return A collection of {@link ProjectDTO} objects.
+     * Export the projects to a csv file.
+     * @param response Http response.
+     * @param tpns list of tpns separated by comma.
+     * @param markerSymbols list of marker symbols separated by comma.
+     * @param genes list of marker symbols/accIds separated by comma.
+     * @param intentions list of intention names separated by comma.
+     * @param workUnitNames list of work units names separated by comma.
+     * @param workGroupNames list of work groups names separated by comma.
+     * @param consortia list of consortia names separated by comma.
+     * @param statuses list of statuses names separated by comma.
+     * @param privaciesNames list of privacy names separated by comma.
+     * @param externalReferences list of externalReferences separated by comma.
+     * @throws IOException
      */
     @GetMapping("/exportProjects")
     public void exportProjects(
@@ -204,7 +211,8 @@ class ProjectController
         @RequestParam(value = "consortiaNames", required = false) List<String> consortia,
         @RequestParam(value = "statuses", required = false) List<String> statuses,
         @RequestParam(value = "privacyNames", required = false) List<String> privaciesNames,
-        @RequestParam(value = "externalReferences", required = false) List<String> externalReferences) throws IOException
+        @RequestParam(value = "externalReferences", required = false) List<String> externalReferences)
+        throws IOException
     {
         ProjectFilter projectFilter = ProjectFilterBuilder.getInstance()
             .withTpns(tpns)

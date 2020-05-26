@@ -43,9 +43,8 @@ class ProjectCreationDTOTest
         String json = JsonHelper.toJson(projectCreationDTO);
 
         assertThat(json, is(notNullValue()));
-        assertThat(json, is("{\"reactivationDate\":null,\"recovery\":null,\"comment\":\"comment\"," +
-            "\"privacyName\":\"public\",\"externalReference\":\"externalRef\"," +
-            "\"speciesNames\":null,\"consortia\":null," +
+        assertThat(json, is("{\"recovery\":null,\"comment\":\"comment\",\"privacyName\":\"public\"," +
+            "\"externalReference\":\"externalRef\",\"speciesNames\":null,\"consortia\":null," +
             "\"planDetails\":{\"attemptTypeName\":\"crispr\",\"typeName\":\"production\"}," +
             "\"projectIntentions\":[{\"molecularMutationTypeName\":null," +
             "\"mutationCategorizations\":null,\"intentionByGene\":{\"gene\":{\"id\":null," +

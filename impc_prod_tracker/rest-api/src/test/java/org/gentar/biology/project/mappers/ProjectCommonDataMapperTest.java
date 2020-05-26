@@ -6,8 +6,6 @@ import org.gentar.biology.project.ProjectCommonDataDTO;
 import org.gentar.biology.project.ProjectConsortiumDTO;
 import org.gentar.biology.project.consortium.ProjectConsortium;
 import org.gentar.biology.project.consortium.ProjectConsortiumMapper;
-import org.gentar.biology.project.mappers.PrivacyMapper;
-import org.gentar.biology.project.mappers.ProjectCommonDataMapper;
 import org.gentar.biology.project.privacy.Privacy;
 import org.gentar.biology.species.Species;
 import org.gentar.biology.species.SpeciesMapper;
@@ -111,7 +109,6 @@ class ProjectCommonDataMapperTest
         assertThat(projectDTO, is(notNullValue()));
         assertThat(projectDTO.getPrivacyName(), is(PRIVACY_NAME));
         assertThat(projectDTO.getComment(), is(COMMENT));
-        assertThat(projectDTO.getReactivationDate(), is(REACTIVATION_DATE));
         assertThat(projectDTO.getProjectExternalRef(), is(EXTERNAL_REFERENCE));
         assertThat(projectDTO.getRecovery(), is(RECOVERY));
         assertThat(projectDTO.getSpeciesNames(), is(notNullValue()));
@@ -133,12 +130,11 @@ class ProjectCommonDataMapperTest
         ProjectCommonDataDTO projectCommonDataDTO = new ProjectCommonDataDTO();
         projectCommonDataDTO.setPrivacyName(PRIVACY_NAME);
         projectCommonDataDTO.setComment(COMMENT);
-        projectCommonDataDTO.setReactivationDate(REACTIVATION_DATE);
         projectCommonDataDTO.setProjectExternalRef(EXTERNAL_REFERENCE);
         projectCommonDataDTO.setRecovery(RECOVERY);
         ProjectConsortiumDTO projectConsortiumDTO = new ProjectConsortiumDTO();
         projectConsortiumDTO.setConsortiumName(CONSORTIUM_NAME);
-        projectConsortiumDTO.setProjectConsortiumInstituteNames(Arrays.asList(INSTITUTE_NAME));
+        projectConsortiumDTO.setInstituteNames(Arrays.asList(INSTITUTE_NAME));
         List<ProjectConsortiumDTO> projectConsortiumDTOS = new ArrayList<>();
         projectConsortiumDTOS.add(projectConsortiumDTO);
         projectCommonDataDTO.setProjectConsortiumDTOS(projectConsortiumDTOS);
@@ -151,7 +147,6 @@ class ProjectCommonDataMapperTest
         assertThat(project, is(notNullValue()));
         assertThat(project.getPrivacy().getName(), is(PRIVACY_NAME));
         assertThat(project.getComment(), is(COMMENT));
-        assertThat(project.getReactivationDate(), is(REACTIVATION_DATE));
         assertThat(project.getProjectExternalRef(), is(EXTERNAL_REFERENCE));
         assertThat(project.getRecovery(), is(RECOVERY));
         verify(projectConsortiumMapper, times(1)).toEntities(projectConsortiumDTOS);

@@ -27,16 +27,19 @@ public class ProjectTestHelper
         {
             assertThat(obtained.get(i).getConsortiumName(), is(expected.get(i).getConsortiumName()));
             assertThat(
-                obtained.get(i).getProjectConsortiumInstituteNames(),
-                is(expected.get(i).getProjectConsortiumInstituteNames()));
+                obtained.get(i).getInstituteNames(),
+                is(expected.get(i).getInstituteNames()));
         }
     }
 
     public static void assertProjectResponseDTOIsTheExpected(
         ProjectResponseDTO obtained, ProjectResponseDTO expected)
     {
-        assertThat(
-            obtained.getTpn(), is(expected.getTpn()));
+        if (expected.getTpn() != null)
+        {
+            assertThat(
+                obtained.getTpn(), is(expected.getTpn()));
+        }
         assertThat(
             obtained.getAssignmentStatusName(), is(expected.getAssignmentStatusName()));
         assertThat(

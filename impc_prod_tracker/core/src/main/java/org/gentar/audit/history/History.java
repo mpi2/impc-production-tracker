@@ -38,8 +38,6 @@ public class History extends BaseEntity
 
     private LocalDate date;
 
-    private String action;
-
     private String comment;
 
     @OneToMany(cascade= CascadeType.ALL)

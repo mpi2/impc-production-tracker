@@ -101,7 +101,6 @@ public class HistoryServiceImpl<T> implements HistoryService<T>
                 {
                     History newHistory = new History();
                     newHistory.setUser(h.getUser());
-                    newHistory.setAction(h.getAction());
                     newHistory.setComment(h.getComment());
                     newHistory.setHistoryDetailSet(Arrays.asList(hd));
                     newHistory.setDate(h.getDate());

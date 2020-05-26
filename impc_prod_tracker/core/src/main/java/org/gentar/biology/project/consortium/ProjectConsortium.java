@@ -8,14 +8,14 @@ import lombok.ToString;
 import org.gentar.biology.project.Project;
 import org.gentar.organization.consortium.Consortium;
 import org.gentar.organization.institute.Institute;
-
 import javax.persistence.*;
 import java.util.Set;
 
 @NoArgsConstructor(access= AccessLevel.PUBLIC, force=true)
 @Data
 @Entity
-public class ProjectConsortium  {
+public class ProjectConsortium
+{
     @Id
     @SequenceGenerator(name = "projectConsortiumSeq", sequenceName = "PROJECT_CONSORTIUM_SEQ")
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "projectConsortiumSeq")
