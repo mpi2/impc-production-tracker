@@ -19,11 +19,21 @@ import org.gentar.audit.history.History;
 import org.gentar.biology.plan.filter.PlanFilter;
 import org.gentar.statemachine.ProcessEvent;
 import org.gentar.statemachine.TransitionEvaluation;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+
 import java.util.List;
 
 public interface PlanService
 {
     List<Plan> getPlans(PlanFilter planFilter);
+
+    /**
+     * Get all the plans that have the conditions in planFilter as a pageable result.
+     * @param planFilter Conditions for filtering.
+     * @return A page of plans.
+     */
+    Page<Plan> getPageablePlans(Pageable page, PlanFilter planFilter);
 
     Plan getPlanByPinWithoutCheckPermissions(String pin);
 

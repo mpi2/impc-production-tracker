@@ -15,12 +15,13 @@ class PlanCreationDTOTest
     {
         PlanCreationDTO planCreationDTO = new PlanCreationDTO();
         planCreationDTO.setPlanBasicDataDTO(new PlanBasicDataDTO());
+        planCreationDTO.setTpn("tpn");
         planCreationDTO.setPlanTypeName("planTypeName");
         planCreationDTO.setAttemptTypeName("attemptTypeName");
 
         String json = JsonConverter.toJson(planCreationDTO);
         assertThat(json, is(notNullValue()));
-        assertThat(json, is("{\"planTypeName\":\"planTypeName\"," +
-            "\"attemptTypeName\":\"attemptTypeName\"}"));
+        assertThat(json, is("{\"tpn\":\"tpn\",\"attemptTypeName\":\"attemptTypeName\"," +
+            "\"typeName\":\"planTypeName\"}"));
     }
 }

@@ -24,6 +24,8 @@ import org.gentar.security.abac.ResourceAccessChecker;
 import org.gentar.statemachine.ProcessEvent;
 import org.gentar.statemachine.TransitionAvailabilityEvaluator;
 import org.gentar.statemachine.TransitionEvaluation;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Component;
 import org.gentar.audit.history.History;
@@ -82,7 +84,16 @@ public class PlanServiceImpl implements PlanService
     public List<Plan> getPlans(PlanFilter planFilter)
     {
         Specification<Plan> specifications = buildSpecificationsWithCriteria(planFilter);
-        return getCheckedCollection(planRepository.findAll(specifications));
+        List<Plan> plans = planRepository.findAll(specifications);
+        return getCheckedCollection(plans);
+    }
+
+    @Override
+    public Page<Plan> getPageablePlans(Pageable page, PlanFilter planFilter)
+    {
+        Specification<Plan> specifications = buildSpecificationsWithCriteria(planFilter);
+        Page<Plan> plans = planRepository.findAll(specifications, page);
+        return plans;
     }
 
     private Specification<Plan> buildSpecificationsWithCriteria(PlanFilter planFilter)

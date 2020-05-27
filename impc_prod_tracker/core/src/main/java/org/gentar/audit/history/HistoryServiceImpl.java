@@ -3,6 +3,7 @@ package org.gentar.audit.history;
 import org.springframework.stereotype.Component;
 import org.gentar.audit.history.detail.HistoryDetail;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -83,7 +84,7 @@ public class HistoryServiceImpl<T> implements HistoryService<T>
     }
 
     private List<History> getOlderChangesForReferenceEntity(
-        String field, LocalDate date, String referenceEntity, String entityId)
+        String field, LocalDateTime date, String referenceEntity, String entityId)
     {
         List<History> result = new ArrayList<>();
         if (entityId !=null)

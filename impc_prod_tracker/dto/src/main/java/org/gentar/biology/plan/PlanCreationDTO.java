@@ -1,5 +1,6 @@
 package org.gentar.biology.plan;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonUnwrapped;
 import lombok.Data;
 
@@ -9,7 +10,11 @@ import lombok.Data;
 @Data
 public class PlanCreationDTO
 {
+    // Public identifier of the project for the plan.
+    private String tpn;
+
     // Name of the plan type.
+    @JsonProperty("typeName")
     private String planTypeName;
 
     // Name of the attempt type.

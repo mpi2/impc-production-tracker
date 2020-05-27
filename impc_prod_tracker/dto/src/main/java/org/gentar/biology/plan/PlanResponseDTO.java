@@ -15,17 +15,14 @@ public class PlanResponseDTO extends RepresentationModel
     // Public identifier for the plan.
     private String pin;
 
-    // Public identifier of the project for the plan.
-    private String tpn;
+    @JsonUnwrapped
+    private PlanCreationDTO planCreationDTO;
 
     // Name of the status in the plan.
     private String statusName;
 
     // Name of the summary status.
     private String summaryStatusName;
-
-    @JsonUnwrapped
-    private PlanCreationDTO planCreationDTO;
 
     // List of stamps with all the different statuses this plan has had.
     @JsonProperty("statusDates")

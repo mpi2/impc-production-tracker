@@ -35,8 +35,19 @@ public class PlanCommonDataMapper implements Mapper<Plan, PlanCommonDataDTO>
     @Override
     public PlanCommonDataDTO toDto(Plan plan)
     {
-        PlanCommonDataDTO planCommonDataDTO = entityMapper.toTarget(plan, PlanCommonDataDTO.class);
-        setFundersNamesToDto(planCommonDataDTO, plan);
+        PlanCommonDataDTO planCommonDataDTO = new PlanCommonDataDTO();
+        if (plan != null)
+        {
+            String workUnitName = plan.getWorkUnit() == null ? null : plan.getWorkUnit().getName();
+            String workGroupName = plan.getWorkGroup() == null ? null : plan.getWorkGroup().getName();
+            planCommonDataDTO.setWorkUnitName(workUnitName);
+            planCommonDataDTO.setWorkGroupName(workGroupName);
+            planCommonDataDTO.setComment(plan.getComment());
+            planCommonDataDTO.setProductsAvailableForGeneralPublic(
+                plan.getProductsAvailableForGeneralPublic());
+            setFundersNamesToDto(planCommonDataDTO, plan);
+        }
+
         return planCommonDataDTO;
     }
 
