@@ -2,7 +2,6 @@ package org.gentar.biology.project;
 
 import org.gentar.biology.intention.ProjectIntentionDTO;
 import java.util.List;
-
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 
@@ -11,11 +10,14 @@ public class ProjectTestHelper
     private static void assertProjectCommonDataDTOIsTheExpected(
         ProjectCommonDataDTO obtained, ProjectCommonDataDTO expected)
     {
-        assertThat(obtained.getComment(), is(expected.getComment()));
-        assertThat(obtained.getRecovery(), is(expected.getRecovery()));
-        assertThat(obtained.getSpeciesNames(), is(expected.getSpeciesNames()));
-        assertThat(obtained.getPrivacyName(), is(expected.getPrivacyName()));
-        assertThat(obtained.getProjectExternalRef(), is(expected.getProjectExternalRef()));
+        assertThat("Comment not expected", obtained.getComment(), is(expected.getComment()));
+        assertThat("Recovery not expected", obtained.getRecovery(), is(expected.getRecovery()));
+        assertThat("Species not expected", obtained.getSpeciesNames(), is(expected.getSpeciesNames()));
+        assertThat("Privacy not expected", obtained.getPrivacyName(), is(expected.getPrivacyName()));
+        assertThat(
+            "External reference not expected",
+            obtained.getProjectExternalRef(),
+            is(expected.getProjectExternalRef()));
         assertProjectConsortiumDTOSAreTheExpected(
             obtained.getProjectConsortiumDTOS(), expected.getProjectConsortiumDTOS());
     }
