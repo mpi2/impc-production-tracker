@@ -64,4 +64,11 @@ public class ProjectResponseDTO extends RepresentationModel<ProjectResponseDTO>
 
     // Date in which the project as changed to an active assignment status.
     private LocalDateTime reactivationDate;
+
+    @JsonProperty("speciesNames")
+    private List<String> speciesNames;
+
+    // Consortia information.
+    @JsonProperty("consortia")
+    private List<ProjectConsortiumDTO> projectConsortiumDTOS;
 }

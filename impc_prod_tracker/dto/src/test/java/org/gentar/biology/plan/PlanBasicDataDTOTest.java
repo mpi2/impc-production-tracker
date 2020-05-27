@@ -5,8 +5,8 @@ import org.gentar.biology.plan.attempt.breeding.BreedingAttemptDTO;
 import org.gentar.biology.plan.attempt.crispr.CrisprAttemptDTO;
 import org.gentar.biology.plan.attempt.phenotyping.PhenotypingAttemptDTO;
 import org.gentar.biology.plan.plan_starting_point.PlanStartingPointDTO;
-import org.gentar.util.JsonHelper;
 import org.junit.jupiter.api.Test;
+import org.util.JsonConverter;
 import java.util.Collections;
 
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -23,7 +23,7 @@ class PlanBasicDataDTOTest
         CrisprAttemptDTO crisprAttemptDTO = new CrisprAttemptDTO();
         planBasicDataDTO.setCrisprAttemptDTO(crisprAttemptDTO);
 
-        String json = JsonHelper.toJson(planBasicDataDTO);
+        String json = JsonConverter.toJson(planBasicDataDTO);
         assertThat(json, is(notNullValue()));
         assertThat(json, is("{\"funderNames\":null,\"workUnitName\":null,\"workGroupName\":null," +
             "\"comment\":null,\"productsAvailableForGeneralPublic\":null," +
@@ -43,7 +43,7 @@ class PlanBasicDataDTOTest
         planBasicDataDTO.setBreedingAttemptDTO(breedingAttemptDTO);
         planBasicDataDTO.setPlanStartingPointDTOS(Collections.singletonList(new PlanStartingPointDTO()));
 
-        String json = JsonHelper.toJson(planBasicDataDTO);
+        String json = JsonConverter.toJson(planBasicDataDTO);
         assertThat(json, is(notNullValue()));
         assertThat(json, is("{\"funderNames\":null,\"workUnitName\":null,\"workGroupName\":null," +
             "\"comment\":null,\"productsAvailableForGeneralPublic\":null," +
@@ -62,7 +62,7 @@ class PlanBasicDataDTOTest
         planBasicDataDTO.setPhenotypingAttemptDTO(phenotypingAttemptDTO);
         planBasicDataDTO.setPlanStartingPointDTO(new PlanStartingPointDTO());
 
-        String json = JsonHelper.toJson(planBasicDataDTO);
+        String json = JsonConverter.toJson(planBasicDataDTO);
 
         assertThat(json, is(notNullValue()));
         assertThat(json, is("{\"funderNames\":null,\"workUnitName\":null,\"workGroupName\":null," +

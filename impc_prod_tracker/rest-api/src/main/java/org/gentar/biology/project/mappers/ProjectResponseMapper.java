@@ -4,7 +4,10 @@ import org.gentar.Mapper;
 import org.gentar.biology.intention.ProjectIntentionDTO;
 import org.gentar.biology.intention.ProjectIntentionMapper;
 import org.gentar.biology.project.Project;
+import org.gentar.biology.project.ProjectConsortiumDTO;
 import org.gentar.biology.project.ProjectResponseDTO;
+import org.gentar.biology.project.consortium.ProjectConsortiumMapper;
+import org.gentar.biology.species.SpeciesMapper;
 import org.gentar.biology.status.StatusStampMapper;
 import org.gentar.biology.status_stamps.StatusStampsDTO;
 import org.gentar.organization.work_group.WorkGroup;
@@ -21,15 +24,21 @@ public class ProjectResponseMapper implements Mapper<Project, ProjectResponseDTO
     private ProjectCommonDataMapper projectCommonDataMapper;
     private StatusStampMapper statusStampMapper;
     private ProjectIntentionMapper projectIntentionMapper;
+    private SpeciesMapper speciesMapper;
+    private ProjectConsortiumMapper projectConsortiumMapper;
 
     public ProjectResponseMapper(
         ProjectCommonDataMapper projectCommonDataMapper,
         StatusStampMapper statusStampMapper,
-        ProjectIntentionMapper projectIntentionMapper)
+        ProjectIntentionMapper projectIntentionMapper,
+        SpeciesMapper speciesMapper,
+        ProjectConsortiumMapper projectConsortiumMapper)
     {
         this.projectCommonDataMapper = projectCommonDataMapper;
         this.statusStampMapper = statusStampMapper;
         this.projectIntentionMapper = projectIntentionMapper;
+        this.speciesMapper = speciesMapper;
+        this.projectConsortiumMapper = projectConsortiumMapper;
     }
 
     @Override
@@ -51,6 +60,8 @@ public class ProjectResponseMapper implements Mapper<Project, ProjectResponseDTO
         setProjectIntentionsDTOS(project, projectResponseDTO);
         setRelatedWorkUnitsDTOS(project, projectResponseDTO);
         setRelatedWorkGroupsDTOS(project, projectResponseDTO);
+        setConsortiaToDto(project, projectResponseDTO);
+        setSpeciesToDto(project, projectResponseDTO);
         return projectResponseDTO;
     }
 
@@ -89,6 +100,19 @@ public class ProjectResponseMapper implements Mapper<Project, ProjectResponseDTO
             workGroups.forEach(x -> relatedWorkGroups.add(x.getName()));
         }
         projectResponseDTO.setRelatedWorkGroupNames(new HashSet<>(relatedWorkGroups));
+    }
+
+    private void setConsortiaToDto(Project project, ProjectResponseDTO projectResponseDTO)
+    {
+        List<ProjectConsortiumDTO> projectConsortiumDTOS =
+            projectConsortiumMapper.toDtos(project.getProjectConsortia());
+        projectResponseDTO.setProjectConsortiumDTOS(projectConsortiumDTOS);
+    }
+
+    private void setSpeciesToDto(Project project, ProjectResponseDTO projectResponseDTO)
+    {
+        List<String> speciesNames = speciesMapper.toDtos(project.getSpecies());
+        projectResponseDTO.setSpeciesNames(speciesNames);
     }
 
     @Override

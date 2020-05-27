@@ -12,14 +12,11 @@ public class ProjectTestHelper
     {
         assertThat("Comment not expected", obtained.getComment(), is(expected.getComment()));
         assertThat("Recovery not expected", obtained.getRecovery(), is(expected.getRecovery()));
-        assertThat("Species not expected", obtained.getSpeciesNames(), is(expected.getSpeciesNames()));
         assertThat("Privacy not expected", obtained.getPrivacyName(), is(expected.getPrivacyName()));
         assertThat(
             "External reference not expected",
             obtained.getProjectExternalRef(),
             is(expected.getProjectExternalRef()));
-        assertProjectConsortiumDTOSAreTheExpected(
-            obtained.getProjectConsortiumDTOS(), expected.getProjectConsortiumDTOS());
     }
 
     private static void assertProjectConsortiumDTOSAreTheExpected(

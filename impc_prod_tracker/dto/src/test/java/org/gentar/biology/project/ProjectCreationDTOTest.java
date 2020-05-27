@@ -5,8 +5,8 @@ import org.gentar.biology.gene.GeneDTO;
 import org.gentar.biology.gene.ProjectIntentionGeneDTO;
 import org.gentar.biology.intention.ProjectIntentionDTO;
 import org.gentar.biology.plan.PlanMinimumCreationDTO;
-import org.gentar.util.JsonHelper;
 import org.junit.jupiter.api.Test;
+import org.util.JsonConverter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -40,15 +40,14 @@ class ProjectCreationDTOTest
 
         projectCreationDTO.setProjectIntentionDTOS(projectIntentionDTOS);
 
-        String json = JsonHelper.toJson(projectCreationDTO);
+        String json = JsonConverter.toJson(projectCreationDTO);
 
         assertThat(json, is(notNullValue()));
         assertThat(json, is("{\"recovery\":null,\"comment\":\"comment\",\"privacyName\":\"public\"," +
-            "\"externalReference\":\"externalRef\",\"speciesNames\":null,\"consortia\":null," +
-            "\"planDetails\":{\"attemptTypeName\":\"crispr\",\"typeName\":\"production\"}," +
-            "\"projectIntentions\":[{\"molecularMutationTypeName\":null," +
+            "\"externalReference\":\"externalRef\",\"planDetails\":{\"attemptTypeName\":\"crispr\"," +
+            "\"typeName\":\"production\"},\"projectIntentions\":[{\"molecularMutationTypeName\":null," +
             "\"mutationCategorizations\":null,\"intentionByGene\":{\"gene\":{\"id\":null," +
             "\"name\":null,\"symbol\":\"symbol\",\"speciesName\":null,\"externalLink\":null," +
-            "\"accessionId\":null}}}]}"));
+            "\"accessionId\":null}}}],\"speciesNames\":null,\"consortia\":null}"));
     }
 }

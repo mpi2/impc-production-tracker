@@ -4,7 +4,7 @@
   "recovery":true,
   "comment":"A new comment",
   "privacyName":"protected",
-  "externalReference":"External reference 01",
+  "externalReference":"new external reference",
   "speciesNames":[
     "Mus musculus"
   ],

@@ -206,6 +206,7 @@ class ProjectControllerTest extends ControllerTestTemplate
         ProjectCommonDataDTO projectCommonDataDTO = new ProjectCommonDataDTO();
         projectCommonDataDTO.setPrivacyName("protected");
         projectCommonDataDTO.setComment("A new comment");
+        projectCommonDataDTO.setProjectExternalRef("new external reference");
         projectCommonDataDTO.setRecovery(true);
         projectUpdateDTO.setProjectCommonDataDTO(projectCommonDataDTO);
 
@@ -214,37 +215,82 @@ class ProjectControllerTest extends ControllerTestTemplate
             .header("Authorization", accessToken)
             .content(toJson(projectUpdateDTO))
             .contentType(MediaType.APPLICATION_JSON))
-            .andExpect(status().isOk());
+            .andExpect(status().isOk())
+            .andDo(documentUpdateOfProject());
 
         MvcResult result = resultActions.andReturn();
         String contentAsString = result.getResponse().getContentAsString();
         ChangeResponse changeResponse = JsonHelper.fromJson(contentAsString, ChangeResponse.class);
-        verifyChangeReponse(changeResponse);
+        verifyChangeResponse(changeResponse);
         String projectLink = LinkUtil.getSelfHrefLinkStringFromJson(contentAsString);
 
         verifyGetProjectEqualsJson(projectLink, "expectedUpdatedProjectTPN_01.json");
     }
 
-    private void verifyChangeReponse(ChangeResponse changeResponse)
+    private ResultHandler documentUpdateOfProject()
+    {
+        return document(
+            "projects/putProject",
+            requestFields(
+                fieldWithPath("tpn")
+                    .description("Public identifier for the project. " +
+                        "Not editable, just for reference in the payload"),
+                fieldWithPath("recovery").description("To be validated"),
+                fieldWithPath("comment").description("Comment on this project."),
+                fieldWithPath("externalReference")
+                    .description("External reference for the project. Read only."),
+                fieldWithPath("privacyName")
+                    .description("Privacy level for the project (public, protected or restricted)")),
+            responseFields(
+                fieldWithPath("history[]").description("Changes in the system."),
+                fieldWithPath("history[].id").description("Id of the change."),
+                fieldWithPath("history[].user").description("User that did the change."),
+                fieldWithPath("history[].date").description("Date of the change."),
+                fieldWithPath("history[].comment").description("Comment describing the change."),
+                fieldWithPath("history[].details[]").description("Additional details of the change."),
+                fieldWithPath("history[].details[].field")
+                    .description("Field that changed."),
+                fieldWithPath("history[].details[].oldValue")
+                    .description("Value in the field before the change"),
+                fieldWithPath("history[].details[].newValue")
+                    .description("Value in the field after the change"),
+                fieldWithPath("_links.self.href").description("Links to the just created project.")
+            ));
+    }
+
+    private void verifyChangeResponse(ChangeResponse changeResponse)
     {
         List<HistoryDTO> historyDTOS = changeResponse.getHistoryDTOs();
         assertThat(historyDTOS.size(), is(1));
+
         HistoryDTO historyDTO = historyDTOS.get(0);
         assertThat(historyDTO.getComment(), is("Project updated"));
+
         List<HistoryDetailDTO> historyDetailDTOS = historyDTO.getDetails();
-        assertThat(historyDetailDTOS.size(), is(3));
-        HistoryDetailDTO historyDetailDTO1 = historyDetailDTOS.get(0);
+        assertThat(historyDetailDTOS.size(), is(4));
+
+
+        HistoryDetailDTO historyDetailDTO1 = getHistoryDetailByField(historyDetailDTOS, "comment");
         assertThat(historyDetailDTO1.getField(), is("comment"));
         assertThat(historyDetailDTO1.getOldValue(), is("Comment test"));
         assertThat(historyDetailDTO1.getNewValue(), is("A new comment"));
-        HistoryDetailDTO historyDetailDTO2 = historyDetailDTOS.get(1);
+
+        HistoryDetailDTO historyDetailDTO2 = getHistoryDetailByField(historyDetailDTOS, "recovery");
         assertThat(historyDetailDTO2.getField(), is("recovery"));
         assertThat(historyDetailDTO2.getOldValue(), is("false"));
         assertThat(historyDetailDTO2.getNewValue(), is("true"));
-        HistoryDetailDTO historyDetailDTO3 = historyDetailDTOS.get(2);
+
+        HistoryDetailDTO historyDetailDTO3 =
+            getHistoryDetailByField(historyDetailDTOS, "privacy.name");
         assertThat(historyDetailDTO3.getField(), is("privacy.name"));
         assertThat(historyDetailDTO3.getOldValue(), is("public"));
         assertThat(historyDetailDTO3.getNewValue(), is("protected"));
+
+        HistoryDetailDTO historyDetailDTO4 =
+            getHistoryDetailByField(historyDetailDTOS, "projectExternalRef");
+        assertThat(historyDetailDTO4.getField(), is("projectExternalRef"));
+        assertThat(historyDetailDTO4.getOldValue(), is("External reference 01"));
+        assertThat(historyDetailDTO4.getNewValue(), is("new external reference"));
     }
 
     @Test
@@ -262,30 +308,13 @@ class ProjectControllerTest extends ControllerTestTemplate
             .content(toJson(projectCreationDTO))
             .contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
-            .andDo(documentCreationOfProject());
+            .andDo(documentCreationOfProject())
+            ;
 
         MvcResult result = resultActions.andReturn();
         String contentAsString = result.getResponse().getContentAsString();
         String projectLink = LinkUtil.getSelfHrefLinkStringFromJson(contentAsString);
         verifyGetProjectEqualsJson(projectLink, "expectedCreatedProject.json");
-    }
-
-    private void verifyGetProjectEqualsJson(String linkToProject, String jsonFileName)
-    throws Exception
-    {
-        ResultActions callGetWithObtainedUrl = mvc().perform(MockMvcRequestBuilders
-            .get(linkToProject)
-            .header("Authorization", accessToken))
-            .andExpect(status().isOk());
-        MvcResult obtainedProject = callGetWithObtainedUrl.andReturn();
-        String obtainedProjectAsString = obtainedProject.getResponse().getContentAsString();
-
-        ProjectResponseDTO obtained =
-            JsonHelper.fromJson(obtainedProjectAsString, ProjectResponseDTO.class);
-        ProjectResponseDTO expected =
-            loadExpectedResponseFromResource(jsonFileName);
-
-        ProjectTestHelper.assertProjectResponseDTOIsTheExpected(obtained, expected);
     }
 
     private ResultHandler documentCreationOfProject()
@@ -367,6 +396,14 @@ class ProjectControllerTest extends ControllerTestTemplate
         PlanMinimumCreationDTO planMinimumCreationDTO = buildPlanMinimumCreationDTO();
         projectCreationDTO.setPlanMinimumCreationDTO(planMinimumCreationDTO);
 
+        projectCreationDTO.setSpeciesNames(Collections.singletonList("Mus musculus"));
+        List<ProjectConsortiumDTO> projectConsortiumDTOS = new ArrayList<>();
+        ProjectConsortiumDTO projectConsortiumDTO = new ProjectConsortiumDTO();
+        projectConsortiumDTO.setConsortiumName("CMG");
+        projectConsortiumDTO.setInstituteNames(Collections.singletonList("Broad"));
+        projectConsortiumDTOS.add(projectConsortiumDTO);
+        projectCreationDTO.setProjectConsortiumDTOS(projectConsortiumDTOS);
+
         ProjectIntentionDTO projectIntentionDTO = buildProjectIntentionDTO();
         List<ProjectIntentionDTO> projectIntentionDTOS = new ArrayList<>();
         projectIntentionDTOS.add(projectIntentionDTO);
@@ -395,13 +432,11 @@ class ProjectControllerTest extends ControllerTestTemplate
         projectCommonDataDTO.setPrivacyName("public");
         projectCommonDataDTO.setProjectExternalRef("externalRef");
         projectCommonDataDTO.setRecovery(false);
-        projectCommonDataDTO.setSpeciesNames(Collections.singletonList("Mus musculus"));
         List<ProjectConsortiumDTO> projectConsortiumDTOS = new ArrayList<>();
         ProjectConsortiumDTO projectConsortiumDTO = new ProjectConsortiumDTO();
         projectConsortiumDTO.setConsortiumName("CMG");
         projectConsortiumDTO.setInstituteNames(Collections.singletonList("Broad"));
         projectConsortiumDTOS.add(projectConsortiumDTO);
-        projectCommonDataDTO.setProjectConsortiumDTOS(projectConsortiumDTOS);
         return projectCommonDataDTO;
     }
 
@@ -428,5 +463,37 @@ class ProjectControllerTest extends ControllerTestTemplate
         geneDTO.setSymbol(symbol);
         geneDTO.setAccId(accId);
         return geneDTO;
+    }
+
+    private void verifyGetProjectEqualsJson(String linkToProject, String jsonFileName)
+        throws Exception
+    {
+        ResultActions callGetWithObtainedUrl = mvc().perform(MockMvcRequestBuilders
+            .get(linkToProject)
+            .header("Authorization", accessToken))
+            .andExpect(status().isOk());
+        MvcResult obtainedProject = callGetWithObtainedUrl.andReturn();
+        String obtainedProjectAsString = obtainedProject.getResponse().getContentAsString();
+        System.out.println(obtainedProjectAsString);
+
+        ProjectResponseDTO obtained =
+            JsonHelper.fromJson(obtainedProjectAsString, ProjectResponseDTO.class);
+        ProjectResponseDTO expected =
+            loadExpectedResponseFromResource(jsonFileName);
+
+        ProjectTestHelper.assertProjectResponseDTOIsTheExpected(obtained, expected);
+    }
+
+    private HistoryDetailDTO getHistoryDetailByField(
+        List<HistoryDetailDTO> historyDetailDTOS, String field)
+    {
+        HistoryDetailDTO historyDetailDTO = null;
+        if (historyDetailDTOS != null)
+        {
+            historyDetailDTO = historyDetailDTOS.stream()
+                .filter(x -> x.getField().equals(field))
+                .findFirst().orElse(null);
+        }
+        return historyDetailDTO;
     }
 }
