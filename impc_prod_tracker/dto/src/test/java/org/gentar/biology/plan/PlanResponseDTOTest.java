@@ -30,7 +30,7 @@ class PlanResponseDTOTest
         PlanCreationDTO planCreationDTO = new PlanCreationDTO();
         planCreationDTO.setPlanBasicDataDTO(planBasicDataDTO);
         planResponseDTO.setPlanCreationDTO(planCreationDTO);
-        planResponseDTO.setTpn("tpn");
+        planCreationDTO.setTpn("tpn");
         planResponseDTO.setPin("pin");
         planResponseDTO.setStatusName("status name");
         planResponseDTO.setSummaryStatusName("summary status name");
@@ -38,20 +38,20 @@ class PlanResponseDTOTest
         planResponseDTO.setStatusTransitionDTO(buildStatusTransitionDTO());
         String json = JsonConverter.toJson(planResponseDTO);
         assertThat(json, is(notNullValue()));
-        assertThat(json, is("{\"pin\":\"pin\",\"tpn\":\"tpn\",\"statusName\":\"status name\"," +
-            "\"summaryStatusName\":\"summary status name\",\"planTypeName\":null," +
-            "\"attemptTypeName\":null,\"crisprAttempt\":{\"miDate\":null,\"experimental\":true," +
+        assertThat(json, is("{\"pin\":\"pin\",\"tpn\":\"tpn\",\"attemptTypeName\":null," +
+            "\"crisprAttempt\":{\"miDate\":null,\"experimental\":true," +
             "\"comment\":\"crispr comment\",\"mutagenesisExternalRef\":null," +
             "\"attemptExternalRef\":null,\"nucleases\":null,\"guides\":null," +
             "\"mutagenesisDonors\":null,\"reagents\":null,\"genotypePrimers\":null," +
-            "\"totalEmbryosInjected\":null,\"totalEmbryosSurvived\":null," +
-            "\"embryo2Cell\":null,\"assay\":null,\"strainInjectedName\":null},\"links\":[]," +
-            "\"statusDates\":[{\"statusName\":null,\"date\":\"2020-01-01T01:01:00\"}]," +
+            "\"totalEmbryosInjected\":null,\"totalEmbryosSurvived\":null,\"embryo2Cell\":null," +
+            "\"assay\":null,\"strainInjectedName\":null},\"typeName\":null," +
+            "\"statusName\":\"status name\",\"summaryStatusName\":\"summary status name\"," +
+            "\"links\":[],\"statusDates\":[{\"statusName\":null,\"date\":\"2020-01-01T01:01:00\"}]," +
             "\"summaryStatusDates\":null," +
             "\"statusTransition\":{\"currentStatus\":\"current status name\"," +
             "\"transitions\":[{\"action\":null,\"description\":\"transition description\"," +
-            "\"triggeredByUser\":false,\"available\":false,\"note\":null," +
-            "\"nextStatus\":null}],\"actionToExecute\":null}}"));
+            "\"triggeredByUser\":false,\"available\":false,\"note\":null,\"nextStatus\":null}]," +
+            "\"actionToExecute\":null}}"));
     }
 
     private List<StatusStampsDTO> buildStatusStampsDTOS()

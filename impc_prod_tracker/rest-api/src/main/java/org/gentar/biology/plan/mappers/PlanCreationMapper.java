@@ -33,6 +33,10 @@ public class PlanCreationMapper implements Mapper<Plan, PlanCreationDTO>
     {
         PlanBasicDataDTO planBasicDataDTO = planBasicDataMapper.toDto(plan);
         PlanCreationDTO planCreationDTO = entity.toTarget(planBasicDataDTO, PlanCreationDTO.class);
+        if (plan.getProject() != null)
+        {
+            planCreationDTO.setTpn(plan.getProject().getTpn());
+        }
         setPlanTypeNameToDto(planCreationDTO, plan);
         setAttemptTypeNameToDto(planCreationDTO, plan);
         return planCreationDTO;

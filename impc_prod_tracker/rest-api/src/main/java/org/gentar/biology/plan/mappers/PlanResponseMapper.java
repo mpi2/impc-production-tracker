@@ -40,10 +40,6 @@ public class PlanResponseMapper implements Mapper<Plan, PlanResponseDTO>
         PlanResponseDTO planResponseDTO = new PlanResponseDTO();
         planResponseDTO.setPlanCreationDTO(planCreationMapper.toDto(plan));
         planResponseDTO.setPin(plan.getPin());
-        if (plan.getProject() != null)
-        {
-            planResponseDTO.setTpn(plan.getProject().getTpn());
-        }
         if (plan.getStatus() != null)
         {
             planResponseDTO.setStatusName(plan.getStatus().getName());
