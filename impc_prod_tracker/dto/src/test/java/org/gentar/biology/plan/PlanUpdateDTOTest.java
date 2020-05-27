@@ -3,8 +3,8 @@ package org.gentar.biology.plan;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import org.gentar.biology.plan.attempt.crispr.CrisprAttemptDTO;
 import org.gentar.common.state_machine.StatusTransitionDTO;
-import org.gentar.util.JsonHelper;
 import org.junit.jupiter.api.Test;
+import org.util.JsonConverter;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.notNullValue;
@@ -28,7 +28,7 @@ class PlanUpdateDTOTest
         StatusTransitionDTO statusTransitionDTO = new StatusTransitionDTO();
         statusTransitionDTO.setActionToExecute("actionToExecute");
         planUpdateDTO.setStatusTransitionDTO(statusTransitionDTO);
-        String json = JsonHelper.toJson(planUpdateDTO);
+        String json = JsonConverter.toJson(planUpdateDTO);
         assertThat(json, is(notNullValue()));
         assertThat(json, is("{\"pin\":null,\"tpn\":null,\"funderNames\":null,\"workUnitName\":null," +
             "\"workGroupName\":null,\"comment\":\"plan comment\"," +

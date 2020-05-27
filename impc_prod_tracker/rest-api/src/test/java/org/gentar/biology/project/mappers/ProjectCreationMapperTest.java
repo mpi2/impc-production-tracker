@@ -4,9 +4,9 @@ import org.gentar.biology.intention.ProjectIntentionMapper;
 import org.gentar.biology.project.Project;
 import org.gentar.biology.project.ProjectCreationDTO;
 import org.gentar.biology.project.consortium.ProjectConsortium;
-import org.gentar.biology.project.mappers.ProjectCommonDataMapper;
-import org.gentar.biology.project.mappers.ProjectCreationMapper;
+import org.gentar.biology.project.consortium.ProjectConsortiumMapper;
 import org.gentar.biology.project.privacy.Privacy;
+import org.gentar.biology.species.SpeciesMapper;
 import org.gentar.organization.consortium.Consortium;
 import org.gentar.organization.institute.Institute;
 import org.junit.jupiter.api.BeforeEach;
@@ -48,11 +48,20 @@ class ProjectCreationMapperTest
     @Mock
     private ProjectIntentionMapper projectIntentionMapper;
 
+    @Mock
+    private SpeciesMapper speciesMapper;
+    @Mock
+    private ProjectConsortiumMapper projectConsortiumMapper;
+
     @BeforeEach
     void setUp()
     {
         testInstance =
-            new ProjectCreationMapper(projectCommonDataMapper, projectIntentionMapper);
+            new ProjectCreationMapper(
+                projectCommonDataMapper,
+                projectIntentionMapper,
+                speciesMapper,
+                projectConsortiumMapper);
     }
 
     @Test

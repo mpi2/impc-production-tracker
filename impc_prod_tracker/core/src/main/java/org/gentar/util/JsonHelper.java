@@ -5,7 +5,6 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.text.DateFormat;
@@ -14,7 +13,6 @@ import java.text.SimpleDateFormat;
 /** Collection of utility methods to work with JSON strings. */
 public class JsonHelper
 {
-
   private static ObjectMapper objectMapper;
 
   static {

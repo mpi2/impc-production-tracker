@@ -1,8 +1,8 @@
 package org.gentar.biology.plan;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import org.gentar.util.JsonHelper;
 import org.junit.jupiter.api.Test;
+import org.util.JsonConverter;
 import java.util.Arrays;
 
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -27,7 +27,7 @@ class PlanCommonDataDTOTest
         planCommonDataDTO.setFunderNames(Arrays.asList(FUNDER_NAME));
         planCommonDataDTO.setComment(COMMENT);
         planCommonDataDTO.setProductsAvailableForGeneralPublic(PRODUCTS_AVAILABLE_FOR_GENERAL_PUBLIC);
-        String json = JsonHelper.toJson(planCommonDataDTO);
+        String json = JsonConverter.toJson(planCommonDataDTO);
         assertThat(json, is(notNullValue()));
         assertThat(json, is("{\"funderNames\":[\"funderName\"],\"workUnitName\":\"workUnitName\"," +
             "\"workGroupName\":\"workGroupName\",\"comment\":\"comment\"," +

@@ -234,6 +234,25 @@ include::{snippets}/projects/postProject/http-response.adoc[]
 ===== Fields in Response
 include::{snippets}/projects/postProject/response-fields.adoc[]
 
+=== PUT
+
+==== Update a project
+
+You can update some information in a project if you are related with any of the
+work units in the plans for the project.
+
+===== Example Request
+
+Curl:
+include::{snippets}/projects/putProject/http-request.adoc[]
+
+===== Example Response
+
+include::{snippets}/projects/putProject/http-response.adoc[]
+
+===== Fields in Response
+include::{snippets}/projects/putProject/response-fields.adoc[]
+
 
 
 

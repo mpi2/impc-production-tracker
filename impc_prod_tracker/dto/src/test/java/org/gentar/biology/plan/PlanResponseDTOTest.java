@@ -5,8 +5,9 @@ import org.gentar.biology.plan.attempt.crispr.CrisprAttemptDTO;
 import org.gentar.biology.status_stamps.StatusStampsDTO;
 import org.gentar.common.state_machine.StatusTransitionDTO;
 import org.gentar.common.state_machine.TransitionDTO;
-import org.gentar.util.JsonHelper;
 import org.junit.jupiter.api.Test;
+import org.util.JsonConverter;
+
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -35,7 +36,7 @@ class PlanResponseDTOTest
         planResponseDTO.setSummaryStatusName("summary status name");
         planResponseDTO.setStatusStampsDTOS(buildStatusStampsDTOS());
         planResponseDTO.setStatusTransitionDTO(buildStatusTransitionDTO());
-        String json = JsonHelper.toJson(planResponseDTO);
+        String json = JsonConverter.toJson(planResponseDTO);
         assertThat(json, is(notNullValue()));
         assertThat(json, is("{\"pin\":\"pin\",\"tpn\":\"tpn\",\"statusName\":\"status name\"," +
             "\"summaryStatusName\":\"summary status name\",\"planTypeName\":null," +

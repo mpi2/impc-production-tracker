@@ -3,8 +3,6 @@ package org.gentar.biology.project;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import java.time.LocalDateTime;
-import java.util.List;
 
 @Data
 @NoArgsConstructor
@@ -26,11 +24,4 @@ public class ProjectCommonDataDTO
 
     // Any comment about this project.
     private String comment;
-
-    @JsonProperty("speciesNames")
-    private List<String> speciesNames;
-
-    // Consortia information.
-    @JsonProperty("consortia")
-    private List<ProjectConsortiumDTO> projectConsortiumDTOS;
 }

@@ -1,8 +1,8 @@
 package org.gentar.biology.plan;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import org.gentar.util.JsonHelper;
 import org.junit.jupiter.api.Test;
+import org.util.JsonConverter;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.notNullValue;
@@ -18,7 +18,7 @@ class PlanCreationDTOTest
         planCreationDTO.setPlanTypeName("planTypeName");
         planCreationDTO.setAttemptTypeName("attemptTypeName");
 
-        String json = JsonHelper.toJson(planCreationDTO);
+        String json = JsonConverter.toJson(planCreationDTO);
         assertThat(json, is(notNullValue()));
         assertThat(json, is("{\"planTypeName\":\"planTypeName\"," +
             "\"attemptTypeName\":\"attemptTypeName\"}"));

@@ -5,10 +5,8 @@ import org.gentar.biology.project.Project;
 import org.gentar.biology.project.ProjectCommonDataDTO;
 import org.gentar.biology.project.ProjectConsortiumDTO;
 import org.gentar.biology.project.consortium.ProjectConsortium;
-import org.gentar.biology.project.consortium.ProjectConsortiumMapper;
 import org.gentar.biology.project.privacy.Privacy;
 import org.gentar.biology.species.Species;
-import org.gentar.biology.species.SpeciesMapper;
 import org.gentar.organization.consortium.Consortium;
 import org.gentar.organization.institute.Institute;
 import org.junit.jupiter.api.BeforeEach;
@@ -28,8 +26,6 @@ import java.util.Set;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.notNullValue;
 import static org.hamcrest.core.Is.is;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @SpringBootTest
@@ -52,18 +48,10 @@ class ProjectCommonDataMapperTest
     @Mock
     PrivacyMapper privacyMapper;
 
-    @Mock
-    SpeciesMapper speciesMapper;
-
-    @Mock
-    ProjectConsortiumMapper projectConsortiumMapper;
-
-
     @BeforeEach
     void setUp()
     {
-        testInstance = new ProjectCommonDataMapper(
-            entityMapper, privacyMapper, speciesMapper, projectConsortiumMapper);
+        testInstance = new ProjectCommonDataMapper(entityMapper, privacyMapper);
     }
 
     @Test
@@ -102,7 +90,6 @@ class ProjectCommonDataMapperTest
         Set<Species> speciesSet = new HashSet<>();
         speciesSet.add(species);
         project.setSpecies(speciesSet);
-        when(speciesMapper.toDtos(speciesSet)).thenReturn(Arrays.asList(SPECIE_NAME));
 
         ProjectCommonDataDTO projectDTO = testInstance.toDto(project);
 
@@ -111,9 +98,6 @@ class ProjectCommonDataMapperTest
         assertThat(projectDTO.getComment(), is(COMMENT));
         assertThat(projectDTO.getProjectExternalRef(), is(EXTERNAL_REFERENCE));
         assertThat(projectDTO.getRecovery(), is(RECOVERY));
-        assertThat(projectDTO.getSpeciesNames(), is(notNullValue()));
-        assertThat(projectDTO.getSpeciesNames().get(0), is(SPECIE_NAME));
-        verify(projectConsortiumMapper, times(1)).toDtos(projectConsortia);
     }
 
     @Test
@@ -137,7 +121,6 @@ class ProjectCommonDataMapperTest
         projectConsortiumDTO.setInstituteNames(Arrays.asList(INSTITUTE_NAME));
         List<ProjectConsortiumDTO> projectConsortiumDTOS = new ArrayList<>();
         projectConsortiumDTOS.add(projectConsortiumDTO);
-        projectCommonDataDTO.setProjectConsortiumDTOS(projectConsortiumDTOS);
         Privacy privacy = new Privacy();
         privacy.setName(PRIVACY_NAME);
         when(privacyMapper.toEntity(PRIVACY_NAME)).thenReturn(privacy);
@@ -149,6 +132,5 @@ class ProjectCommonDataMapperTest
         assertThat(project.getComment(), is(COMMENT));
         assertThat(project.getProjectExternalRef(), is(EXTERNAL_REFERENCE));
         assertThat(project.getRecovery(), is(RECOVERY));
-        verify(projectConsortiumMapper, times(1)).toEntities(projectConsortiumDTOS);
     }
 }
