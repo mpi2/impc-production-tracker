@@ -15,13 +15,15 @@ import org.gentar.biology.project.ProjectConsortiumDTO;
 import org.gentar.biology.project.ProjectCreationDTO;
 import org.gentar.biology.project.ProjectResponseDTO;
 import org.gentar.biology.project.ProjectTestHelper;
+import org.gentar.biology.project.ProjectUpdateDTO;
+import org.gentar.common.history.HistoryDTO;
+import org.gentar.common.history.HistoryDetailDTO;
 import org.gentar.framework.ControllerTestTemplate;
 import org.gentar.framework.SequenceResetter;
 import org.gentar.framework.TestResourceLoader;
 import org.gentar.framework.db.DBSetupFilesPaths;
 import org.gentar.helpers.LinkUtil;
 import org.gentar.util.JsonHelper;
-import org.json.JSONObject;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,13 +32,14 @@ import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.ResultHandler;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
 import static org.gentar.util.JsonHelper.toJson;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.is;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.restdocs.payload.PayloadDocumentation.requestFields;
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
@@ -197,6 +200,56 @@ class ProjectControllerTest extends ControllerTestTemplate
     @Test
     @DatabaseSetup(DBSetupFilesPaths.MULTIPLE_PROJECTS)
     @DatabaseTearDown(type = DatabaseOperation.DELETE_ALL, value = DBSetupFilesPaths.MULTIPLE_PROJECTS)
+    void testUpdateProject() throws Exception
+    {
+        ProjectUpdateDTO projectUpdateDTO = new ProjectUpdateDTO();
+        ProjectCommonDataDTO projectCommonDataDTO = new ProjectCommonDataDTO();
+        projectCommonDataDTO.setPrivacyName("protected");
+        projectCommonDataDTO.setComment("A new comment");
+        projectCommonDataDTO.setRecovery(true);
+        projectUpdateDTO.setProjectCommonDataDTO(projectCommonDataDTO);
+
+        ResultActions resultActions = mvc().perform(MockMvcRequestBuilders
+            .put("/api/projects/TPN:01")
+            .header("Authorization", accessToken)
+            .content(toJson(projectUpdateDTO))
+            .contentType(MediaType.APPLICATION_JSON))
+            .andExpect(status().isOk());
+
+        MvcResult result = resultActions.andReturn();
+        String contentAsString = result.getResponse().getContentAsString();
+        ChangeResponse changeResponse = JsonHelper.fromJson(contentAsString, ChangeResponse.class);
+        verifyChangeReponse(changeResponse);
+        String projectLink = LinkUtil.getSelfHrefLinkStringFromJson(contentAsString);
+
+        verifyGetProjectEqualsJson(projectLink, "expectedUpdatedProjectTPN_01.json");
+    }
+
+    private void verifyChangeReponse(ChangeResponse changeResponse)
+    {
+        List<HistoryDTO> historyDTOS = changeResponse.getHistoryDTOs();
+        assertThat(historyDTOS.size(), is(1));
+        HistoryDTO historyDTO = historyDTOS.get(0);
+        assertThat(historyDTO.getComment(), is("Project updated"));
+        List<HistoryDetailDTO> historyDetailDTOS = historyDTO.getDetails();
+        assertThat(historyDetailDTOS.size(), is(3));
+        HistoryDetailDTO historyDetailDTO1 = historyDetailDTOS.get(0);
+        assertThat(historyDetailDTO1.getField(), is("comment"));
+        assertThat(historyDetailDTO1.getOldValue(), is("Comment test"));
+        assertThat(historyDetailDTO1.getNewValue(), is("A new comment"));
+        HistoryDetailDTO historyDetailDTO2 = historyDetailDTOS.get(1);
+        assertThat(historyDetailDTO2.getField(), is("recovery"));
+        assertThat(historyDetailDTO2.getOldValue(), is("false"));
+        assertThat(historyDetailDTO2.getNewValue(), is("true"));
+        HistoryDetailDTO historyDetailDTO3 = historyDetailDTOS.get(2);
+        assertThat(historyDetailDTO3.getField(), is("privacy.name"));
+        assertThat(historyDetailDTO3.getOldValue(), is("public"));
+        assertThat(historyDetailDTO3.getNewValue(), is("protected"));
+    }
+
+    @Test
+    @DatabaseSetup(DBSetupFilesPaths.MULTIPLE_PROJECTS)
+    @DatabaseTearDown(type = DatabaseOperation.DELETE_ALL, value = DBSetupFilesPaths.MULTIPLE_PROJECTS)
     void testCreatProject() throws Exception
     {
         sequenceResetter.syncSequence("PROJECT_CONSORTIUM_SEQ", "PROJECT_CONSORTIUM");
@@ -213,11 +266,15 @@ class ProjectControllerTest extends ControllerTestTemplate
 
         MvcResult result = resultActions.andReturn();
         String contentAsString = result.getResponse().getContentAsString();
-        System.out.println(contentAsString);
         String projectLink = LinkUtil.getSelfHrefLinkStringFromJson(contentAsString);
+        verifyGetProjectEqualsJson(projectLink, "expectedCreatedProject.json");
+    }
 
+    private void verifyGetProjectEqualsJson(String linkToProject, String jsonFileName)
+    throws Exception
+    {
         ResultActions callGetWithObtainedUrl = mvc().perform(MockMvcRequestBuilders
-            .get(projectLink)
+            .get(linkToProject)
             .header("Authorization", accessToken))
             .andExpect(status().isOk());
         MvcResult obtainedProject = callGetWithObtainedUrl.andReturn();
@@ -226,7 +283,7 @@ class ProjectControllerTest extends ControllerTestTemplate
         ProjectResponseDTO obtained =
             JsonHelper.fromJson(obtainedProjectAsString, ProjectResponseDTO.class);
         ProjectResponseDTO expected =
-            loadExpectedResponseFromResource("expectedCreatedProject.json");
+            loadExpectedResponseFromResource(jsonFileName);
 
         ProjectTestHelper.assertProjectResponseDTOIsTheExpected(obtained, expected);
     }
