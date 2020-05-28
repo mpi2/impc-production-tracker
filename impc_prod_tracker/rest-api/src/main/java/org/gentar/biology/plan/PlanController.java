@@ -42,6 +42,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import java.util.Collections;
 import java.util.List;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
@@ -172,7 +173,7 @@ public class PlanController
     }
 
     @PutMapping(value = {"/{pin}"})
-    public HistoryDTO updatePlan(@PathVariable String pin, @RequestBody PlanUpdateDTO planUpdateDTO)
+    public ChangeResponse updatePlan(@PathVariable String pin, @RequestBody PlanUpdateDTO planUpdateDTO)
     {
         Plan plan = getPlanToUpdate(pin, planUpdateDTO);
         History history = planService.updatePlan(pin, plan);
@@ -181,7 +182,7 @@ public class PlanController
         {
             historyDTO = historyMapper.toDto(history);
         }
-        return historyDTO;
+        return buildChangeResponse(plan, Collections.singletonList(historyDTO));
     }
 
     private Plan getPlanToUpdate(String pin, PlanUpdateDTO planUpdateDTO)
@@ -196,12 +197,12 @@ public class PlanController
         List<HistoryDTO> historyList = historyMapper.toDtos(planService.getPlanHistory(plan));
         return buildChangeResponse(plan, historyList);
     }
-    private ChangeResponse buildChangeResponse(Plan pl, List<HistoryDTO> historyList)
+    private ChangeResponse buildChangeResponse(Plan plan, List<HistoryDTO> historyList)
     {
         ChangeResponse changeResponse = new ChangeResponse();
         changeResponse.setHistoryDTOs(historyList);
 
-        changeResponse.add(linkTo(PlanController.class).slash(pl.getPin()).withSelfRel());
+        changeResponse.add(linkTo(PlanController.class).slash(plan.getPin()).withSelfRel());
         return changeResponse;
     }
 }
