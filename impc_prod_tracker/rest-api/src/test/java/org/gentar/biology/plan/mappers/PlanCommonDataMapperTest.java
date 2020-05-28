@@ -1,6 +1,5 @@
 package org.gentar.biology.plan.mappers;
 
-import org.gentar.EntityMapper;
 import org.gentar.biology.plan.Plan;
 import org.gentar.biology.plan.PlanCommonDataDTO;
 import org.gentar.biology.plan.attempt.AttemptType;
@@ -18,7 +17,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import java.util.HashSet;
 import java.util.Set;
@@ -40,8 +38,6 @@ class PlanCommonDataMapperTest
     public static final boolean PRODUCTS_AVAILABLE_FOR_GENERAL_PUBLIC = true;
     private PlanCommonDataMapper testInstance;
 
-    @Autowired
-    private EntityMapper entityMapper;
     @Mock
     private FunderMapper funderMapper;
     @Mock
@@ -53,7 +49,7 @@ class PlanCommonDataMapperTest
     void setUp()
     {
         testInstance =
-            new PlanCommonDataMapper(entityMapper, funderMapper, workUnitMapper, workGroupMapper);
+            new PlanCommonDataMapper(funderMapper, workUnitMapper, workGroupMapper);
     }
 
     @Test

@@ -7,7 +7,6 @@ import org.gentar.common.state_machine.StatusTransitionDTO;
 import org.gentar.common.state_machine.TransitionDTO;
 import org.junit.jupiter.api.Test;
 import org.util.JsonConverter;
-
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;

@@ -208,6 +208,7 @@ class ProjectControllerTest extends ControllerTestTemplate
         projectCommonDataDTO.setComment("A new comment");
         projectCommonDataDTO.setProjectExternalRef("new external reference");
         projectCommonDataDTO.setRecovery(true);
+        projectUpdateDTO.setTpn("TPN:01");
         projectUpdateDTO.setProjectCommonDataDTO(projectCommonDataDTO);
 
         ResultActions resultActions = mvc().perform(MockMvcRequestBuilders

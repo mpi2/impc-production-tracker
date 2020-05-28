@@ -1,5 +1,6 @@
 package org.gentar.biology.plan;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonUnwrapped;
@@ -17,6 +18,10 @@ import java.util.List;
  */
 public class PlanBasicDataDTO
 {
+    @JsonIgnore
+    // Internal id useful keep the id accessible in all the plan DTOS.
+    private Long id;
+
     // Common information for all plan dtos.
     @JsonUnwrapped
     private PlanCommonDataDTO planCommonDataDTO;

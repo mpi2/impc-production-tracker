@@ -1,6 +1,5 @@
 package org.gentar.biology.plan.mappers;
 
-import org.gentar.EntityMapper;
 import org.gentar.Mapper;
 import org.gentar.biology.plan.Plan;
 import org.gentar.biology.plan.PlanBasicDataDTO;
@@ -11,18 +10,15 @@ import org.springframework.stereotype.Component;
 @Component
 public class PlanCreationMapper implements Mapper<Plan, PlanCreationDTO>
 {
-    private EntityMapper entity;
     private PlanBasicDataMapper planBasicDataMapper;
     private PlanTypeMapper planTypeMapper;
     private AttemptTypeMapper attemptTypeMapper;
 
     public PlanCreationMapper(
-        EntityMapper entity,
         PlanBasicDataMapper planBasicDataMapper,
         PlanTypeMapper planTypeMapper,
         AttemptTypeMapper attemptTypeMapper)
     {
-        this.entity = entity;
         this.planBasicDataMapper = planBasicDataMapper;
         this.planTypeMapper = planTypeMapper;
         this.attemptTypeMapper = attemptTypeMapper;
@@ -32,7 +28,8 @@ public class PlanCreationMapper implements Mapper<Plan, PlanCreationDTO>
     public PlanCreationDTO toDto(Plan plan)
     {
         PlanBasicDataDTO planBasicDataDTO = planBasicDataMapper.toDto(plan);
-        PlanCreationDTO planCreationDTO = entity.toTarget(planBasicDataDTO, PlanCreationDTO.class);
+        PlanCreationDTO planCreationDTO = new PlanCreationDTO();
+        planCreationDTO.setPlanBasicDataDTO(planBasicDataDTO);
         if (plan.getProject() != null)
         {
             planCreationDTO.setTpn(plan.getProject().getTpn());

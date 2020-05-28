@@ -1,6 +1,5 @@
 package org.gentar.biology.plan.mappers;
 
-import org.gentar.EntityMapper;
 import org.gentar.Mapper;
 import org.gentar.biology.plan.Plan;
 import org.gentar.biology.plan.PlanCommonDataDTO;
@@ -15,18 +14,15 @@ import java.util.Set;
 @Component
 public class PlanCommonDataMapper implements Mapper<Plan, PlanCommonDataDTO>
 {
-    private EntityMapper entityMapper;
     private FunderMapper funderMapper;
     private WorkUnitMapper workUnitMapper;
     private WorkGroupMapper workGroupMapper;
 
     public PlanCommonDataMapper(
-        EntityMapper entityMapper,
         FunderMapper funderMapper,
         WorkUnitMapper workUnitMapper,
         WorkGroupMapper workGroupMapper)
     {
-        this.entityMapper = entityMapper;
         this.funderMapper = funderMapper;
         this.workUnitMapper = workUnitMapper;
         this.workGroupMapper = workGroupMapper;
@@ -59,7 +55,10 @@ public class PlanCommonDataMapper implements Mapper<Plan, PlanCommonDataDTO>
     @Override
     public Plan toEntity(PlanCommonDataDTO planCommonDataDTO)
     {
-        Plan plan = entityMapper.toTarget(planCommonDataDTO, Plan.class);
+        Plan plan = new Plan();
+        plan.setComment(planCommonDataDTO.getComment());
+        plan.setProductsAvailableForGeneralPublic(
+            planCommonDataDTO.getProductsAvailableForGeneralPublic());
         Set<Funder> funders =
             new HashSet<>(funderMapper.toEntities(planCommonDataDTO.getFunderNames()));
         plan.setFunders(funders);

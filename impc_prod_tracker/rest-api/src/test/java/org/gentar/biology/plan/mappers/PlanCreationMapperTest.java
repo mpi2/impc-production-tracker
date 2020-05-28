@@ -1,6 +1,5 @@
 package org.gentar.biology.plan.mappers;
 
-import org.gentar.EntityMapper;
 import org.gentar.biology.plan.Plan;
 import org.gentar.biology.plan.PlanBasicDataDTO;
 import org.gentar.biology.plan.PlanCommonDataDTO;
@@ -15,7 +14,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import static org.mockito.Mockito.times;
@@ -28,8 +26,6 @@ class PlanCreationMapperTest
 {
     private PlanCreationMapper testInstance;
 
-    @Autowired
-    private EntityMapper entityMapper;
     @Mock
     private PlanBasicDataMapper planBasicDataMapper;
     @Mock
@@ -41,7 +37,7 @@ class PlanCreationMapperTest
     public void setup()
     {
         testInstance =
-            new PlanCreationMapper(entityMapper, planBasicDataMapper, planTypeMapper, attemptTypeMapper);
+            new PlanCreationMapper(planBasicDataMapper, planTypeMapper, attemptTypeMapper);
     }
 
     @Test

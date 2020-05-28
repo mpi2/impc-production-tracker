@@ -16,6 +16,8 @@
 package org.gentar.biology.plan;
 
 import org.gentar.biology.plan.mappers.PlanMapper;
+import org.gentar.biology.plan.mappers.PlanUpdateMapper;
+import org.gentar.statemachine.ProcessEvent;
 import org.springframework.stereotype.Component;
 
 /**
@@ -26,29 +28,47 @@ import org.springframework.stereotype.Component;
 public class UpdatePlanRequestProcessor
 {
     private PlanMapper planMapper;
+    private PlanUpdateMapper planUpdateMapper;
+    private PlanService planService;
 
-    public UpdatePlanRequestProcessor(PlanMapper planMapper)
+    public UpdatePlanRequestProcessor(PlanMapper planMapper, PlanUpdateMapper planUpdateMapper, PlanService planService)
     {
         this.planMapper = planMapper;
+        this.planUpdateMapper = planUpdateMapper;
+        this.planService = planService;
     }
 
     /**
      *
      * @param plan An Existing plan in the system.
-     * @param planDTO New information for plan.
+     * @param planUpdateDTO New information for plan.
      * @return The plan object with the new information that is requested in updatePlanRequestDTO.
      * This is only modifications in the object. No database changes here.
      */
-    public Plan getPlanToUpdate(Plan plan, PlanDTO planDTO)
+    public Plan getPlanToUpdate(Plan plan, PlanUpdateDTO planUpdateDTO)
     {
-        if (planDTO != null)
+        if (planUpdateDTO != null)
         {
-            Plan mappedPlan = planMapper.toEntity(planDTO);
+            // Assign id to the dto to propagate it where needed
+            planUpdateDTO.setId(plan.getId());
+
+            Plan mappedPlan = planUpdateMapper.toEntity(planUpdateDTO);
             plan.setComment(mappedPlan.getComment());
             plan.setCrisprAttempt(mappedPlan.getCrisprAttempt());
             plan.setPhenotypingAttempt(mappedPlan.getPhenotypingAttempt());
             plan.setBreedingAttempt(mappedPlan.getBreedingAttempt());
+            setEvent(plan, planUpdateDTO);
         }
         return plan;
+    }
+
+    private void setEvent(Plan plan, PlanUpdateDTO planUpdateDTO)
+    {
+        String action = planUpdateDTO.getStatusTransitionDTO().getActionToExecute();
+        if (action != null)
+        {
+            ProcessEvent processEvent = planService.getProcessEventByName(plan, action);
+            plan.setEvent(processEvent);
+        }
     }
 }
