@@ -28,9 +28,11 @@ public class DBUnitConfig
     @Bean
     public DatabaseDataSourceConnectionFactoryBean dbUnitDatabaseConnection() {
         DatabaseConfigBean bean = new DatabaseConfigBean();
+        bean.setAllowEmptyFields(true);
         bean.setDatatypeFactory(new H2DataTypeFactory());
 
-        DatabaseDataSourceConnectionFactoryBean dbConnectionFactory = new DatabaseDataSourceConnectionFactoryBean(dataSource);
+        DatabaseDataSourceConnectionFactoryBean dbConnectionFactory =
+            new DatabaseDataSourceConnectionFactoryBean(dataSource);
         dbConnectionFactory.setDatabaseConfig(bean);
         return dbConnectionFactory;
     }

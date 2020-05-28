@@ -1,0 +1,221 @@
+<dataset>
+    <PRIVACY    ID="1"
+                NAME="public"/>
+    <PRIVACY    ID="2"
+                NAME="protected"/>
+    <PRIVACY    ID="3"
+                NAME="restricted"/>
+
+    <SPECIES    ID="1"
+                NAME="Mus musculus"/>
+    <SPECIES    ID="2"
+                NAME="Homo sapiens"/>
+
+    <ASSIGNMENT_STATUS  ID="1"
+                        NAME="Assigned"/>
+    <ASSIGNMENT_STATUS  ID="2"
+                        NAME="Inspect - Conflict"/>
+
+    <PLAN_TYPE  ID="1"
+                NAME="production"/>
+    <PLAN_TYPE  ID="2"
+                NAME="phenotyping"/>
+
+    <ATTEMPT_TYPE   ID="1"
+                    NAME="crispr"/>
+    <ATTEMPT_TYPE   ID="2"
+                    NAME="haplo-essential crispr"/>
+    <ATTEMPT_TYPE   ID="3"
+                    NAME="breeding"/>
+    <ATTEMPT_TYPE   ID="4"
+                    NAME="adult phenotyping"/>
+    <ATTEMPT_TYPE   ID="5"
+                    NAME="haplo-essential phenotyping"/>
+
+    <ASSAY_TYPE ID="1"
+                NAME="T7EN1"/>
+    <ASSAY_TYPE ID="2"
+                NAME="LOA"/>
+    <ASSAY_TYPE ID="3"
+                NAME="PCR"/>
+    <ASSAY_TYPE ID="4"
+                NAME="Surveyor"/>
+
+    <NUCLEASE_CLASS ID="1"
+                    NAME="protein"/>
+    <NUCLEASE_CLASS ID="2"
+                    NAME="mRNA"/>
+
+    <NUCLEASE_TYPE ID="1"
+                    NAME="CAS9"/>
+    <NUCLEASE_TYPE ID="2"
+                   NAME="D10A"/>
+    <NUCLEASE_TYPE ID="3"
+                   NAME="Cpf1"/>
+    <NUCLEASE_TYPE ID="4"
+                   NAME="protein"/>
+
+    <WORK_UNIT  ID="1"
+                NAME="BCM"/>
+    <WORK_UNIT  ID="2"
+                NAME="TCP"/>
+    <WORK_GROUP ID="1"
+                NAME="BaSH"/>
+    <WORK_GROUP  ID="2"
+                 NAME="DTCC"/>
+
+    <STATUS     ID="1"
+                NAME="Plan Created"/>
+    <STATUS     ID="2"
+                NAME="Attempt In Progress"/>
+
+    <CONSORTIUM ID="1"
+                NAME="CMG"/>
+
+    <INSTITUTE  ID="1"
+                NAME="Broad"/>
+    <INSTITUTE  ID="2"
+                NAME="Yale"/>
+
+    <MOLECULAR_MUTATION_TYPE    ID="1"
+                                NAME="Point Mutation"/>
+    <MOLECULAR_MUTATION_TYPE    ID="2"
+                                NAME="Deletion"/>
+
+    <STRAIN  ID="1"
+             NAME="C57BL/6NJ"
+             MGI_STRAIN_ACC_ID="MGI:3056279"/>
+
+    <PREPARATION_TYPE   ID="1"
+                        NAME="Circular"/>
+    <PREPARATION_TYPE   ID="2"
+                        NAME="Linearized"/>
+    <PREPARATION_TYPE   ID="3"
+                        NAME="Supercoiled"/>
+    <PREPARATION_TYPE   ID="4"
+                        NAME="Oligo"/>
+    <PREPARATION_TYPE   ID="5"
+                        NAME="ssDNA Oligo"/>
+
+    <REAGENT    ID="1"
+                NAME="Ligase IV"
+                DESCRIPTION="NHEJ Inhibitor"/>
+    <REAGENT    ID="2"
+                NAME="Xrcc5"
+                DESCRIPTION="NHEJ Inhibitor"/>
+
+    <PROJECT    ID="1"
+                TPN="TPN:000000001"
+                PRIVACY_ID="1"
+                ASSIGNMENT_STATUS_ID="1"
+                SUMMARY_STATUS_ID="1"
+                RECOVERY="false"
+                COMMENT="Comment test"
+                PROJECT_EXTERNAL_REF="External reference 01"/>
+    <PROJECT    ID="2"
+                TPN="TPN:000000002"
+                PRIVACY_ID="1"
+                ASSIGNMENT_STATUS_ID="2"
+                SUMMARY_STATUS_ID="2"/>
+
+    <PLAN       ID="1"
+                PIN="PIN:0000000001"
+                PROJECT_ID="1"
+                PLAN_TYPE_ID="1"
+                ATTEMPT_TYPE_ID="1"
+                STATUS_ID="1"
+                WORK_UNIT_ID="1"
+                WORK_GROUP_ID="1"
+                SUMMARY_STATUS_ID="1"/>
+    <PLAN       ID="2"
+                PIN="PIN:0000000002"
+                PROJECT_ID="1"
+                PLAN_TYPE_ID="1"
+                ATTEMPT_TYPE_ID="1"
+                STATUS_ID="1"
+                WORK_UNIT_ID="1"
+                WORK_GROUP_ID="1"
+                SUMMARY_STATUS_ID="1"/>
+    <PLAN       ID="3"
+                PIN="PIN:0000000003"
+                PROJECT_ID="1"
+                PLAN_TYPE_ID="1"
+                ATTEMPT_TYPE_ID="1"
+                STATUS_ID="1"
+                WORK_UNIT_ID="1"
+                WORK_GROUP_ID="1"
+                SUMMARY_STATUS_ID="1"/>
+
+    <CRISPR_ATTEMPT PLAN_ID="1"
+                    MI_DATE="2019-02-26"
+                    MUTAGENESIS_EXTERNAL_REF="MF-26326"
+                    EXPERIMENTAL="true"
+                    STRAIN_ID="1"
+                    COMMENT="crispr plan comment"
+                    TOTAL_EMBRYOS_INJECTED="72"
+                    TOTAL_EMBRYOS_SURVIVED="70"
+                    IMITS_MI_ATTEMPT="20043"
+                    EMBRYO_2_CELL="20043"/>
+
+    <NUCLEASE   ID="1"
+                ATTEMPT_ID="1"
+                CONCENTRATION="250"
+                NUCLEASE_CLASS_ID="1"
+                NUCLEASE_TYPE_ID="1"/>
+
+    <GUIDE  ID="1"
+            ATTEMPT_ID="1"
+            TRUNCATED_GUIDE="true"
+            SEQUENCE="CTTCACGTACCAAGGAGGGGTGG"
+            STRAND=""
+            START="46245139"
+            STOP="46245161"
+            PROTOSPACER_SEQUENCE="NGG"
+            PAM3=""
+            PAM5=""
+            GRNA_CONCENTRATION="300"
+            GENOME_BUILD="GRCm38"
+            CHR=""/>
+
+    <MUTAGENESIS_DONOR  ID="1"
+                        ATTEMPT_ID="1"
+                        VECTOR_NAME="pUC18_Ikzf2_conditional"
+                        OLIGO_SEQUENCE_FASTA="ATAATTGGCAGCCTGATTAGAAGAATGCCCATCTTGTCTAGTGACACATTAGAACAATGAGTAATTGCTCGATGCGGATCCATAACTTCGTATAGCATACATTATACGAAGTTATTCTCTGGGATTAAGAAAAAACTAACATATGAAACAGAAGCCCAGACATCTAAAACCACAAAGA"
+                        CONCENTRATION="5"
+                        PREPARATION_TYPE_ID="1"/>
+
+    <CRISPR_ATTEMPT_REAGENT ID="1"
+                            ATTEMPT_ID="1"
+                            REAGENT_ID="1"
+                            CONCENTRATION="334"/>
+
+    <GENOTYPE_PRIMER    ID="1"
+                        ATTEMPT_ID="1"
+                        SEQUENCE="GTAGAGGGACAGGCAGTTGG"
+                        NAME="Gpr68wtR"
+                        GENOMIC_START_COORDINATE="1"
+                        GENOMIC_END_COORDINATE="200"/>
+
+    <ASSAY  ATTEMPT_ID="1"
+            ASSAY_TYPE_ID="1"
+            EMBRYO_TRANSFER_DAY="Same Day"
+            FOUNDER_NUM_ASSAYS="26"
+            NUM_DELETION_G0_MUTANTS="1"
+            NUM_FOUNDER_PUPS="26"
+            NUM_FOUNDER_SELECTED_FOR_BREEDING="1"
+            NUM_G0_WHERE_MUTATION_DETECTED="1"
+            NUM_HDR_G0_MUTANTS="1"
+            NUM_HDR_G0_MUTANTS_ALL_DONORS_INSERTED="0"
+            NUM_HDR_G0_MUTANTS_SUBSET_DONORS_INSERTED="0"
+            NUM_HR_G0_MUTANTS="0"
+            NUM_NHEJ_G0_MUTANTS="0"
+            TOTAL_TRANSFERRED="72"/>
+
+    <PERSON     ID="123"
+                EMAIL="imits2test@test.com"
+                AUTH_ID="usr-dde67fbd-c3c2-42eb-aa81-f1a225f047c7"/>
+    <PERSON_ROLE_WORK_UNIT/>
+    <PERSON_ROLE_CONSORTIUM/>
+    <PLAN_STATUS_STAMP/>
+    <PLAN_SUMMARY_STATUS_STAMP/>
+</dataset>

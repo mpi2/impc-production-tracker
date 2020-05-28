@@ -17,6 +17,7 @@ import org.gentar.biology.plan.attempt.phenotyping.PhenotypingAttemptMapper;
 import org.gentar.biology.plan.plan_starting_point.PlanStartingPointDTO;
 import org.gentar.biology.plan.starting_point.PlanStartingPoint;
 import org.gentar.biology.starting_point.PlanStartingPointMapper;
+import org.gentar.exceptions.UserOperationFailedException;
 import org.springframework.stereotype.Component;
 import java.util.HashSet;
 import java.util.List;
@@ -57,7 +58,10 @@ public class PlanBasicDataMapper implements Mapper<Plan, PlanBasicDataDTO>
 
     private void setAttemptDto(PlanBasicDataDTO planBasicDataDTO, Plan plan)
     {
-        assert plan.getAttemptType() != null : "Attempt type is null";
+        if (plan.getAttemptType() == null)
+        {
+            throw new UserOperationFailedException("Attempt type is null");
+        }
         AttemptTypesName attemptTypesName = getAttemptTypesName(plan.getAttemptType());
         switch (attemptTypesName)
         {
@@ -179,10 +183,6 @@ public class PlanBasicDataMapper implements Mapper<Plan, PlanBasicDataDTO>
         {
             PhenotypingAttempt phenotypingAttempt =
                 phenotypingAttemptMapper.toEntity(planBasicDataDTO.getPhenotypingAttemptDTO());
-            phenotypingAttempt.setImitsPhenotypeAttempt(
-                plan.getPhenotypingAttempt().getImitsPhenotypeAttempt());
-            phenotypingAttempt.setImitsPhenotypingProduction(
-                plan.getPhenotypingAttempt().getImitsPhenotypingProduction());
             phenotypingAttempt.setPlan(plan);
             phenotypingAttempt.setId(plan.getId());
             plan.setPhenotypingAttempt(phenotypingAttempt);
