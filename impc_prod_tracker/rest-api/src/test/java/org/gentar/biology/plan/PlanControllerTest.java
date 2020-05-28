@@ -3,14 +3,21 @@ package org.gentar.biology.plan;
 import com.github.springtestdbunit.annotation.DatabaseOperation;
 import com.github.springtestdbunit.annotation.DatabaseSetup;
 import com.github.springtestdbunit.annotation.DatabaseTearDown;
+import org.gentar.biology.project.ProjectResponseDTO;
 import org.gentar.framework.ControllerTestTemplate;
+import org.gentar.framework.TestResourceLoader;
 import org.gentar.framework.db.DBSetupFilesPaths;
+import org.gentar.util.JsonHelper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
+import java.io.IOException;
+
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.is;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 class PlanControllerTest extends ControllerTestTemplate
@@ -34,6 +41,18 @@ class PlanControllerTest extends ControllerTestTemplate
             .andExpect(status().isOk());
         MvcResult result = resultActions.andReturn();
         String contentAsString = result.getResponse().getContentAsString();
-        System.out.println(contentAsString);
+        PlanResponseDTO obtained = JsonHelper.fromJson(contentAsString, PlanResponseDTO.class);
+        String expectedOutputAsString =
+            loadExpectedResponseFromResource("expectedPlanGetPIN_0000000001.json");
+        assertThat(
+            JsonHelper.getJsonStringAsObject(contentAsString),
+            is(JsonHelper.getJsonStringAsObject(expectedOutputAsString)));
+    }
+
+    private String loadExpectedResponseFromResource(String resourceName)
+        throws IOException
+    {
+        String completeResourcePath = TEST_RESOURCES_FOLDER + resourceName;
+        return TestResourceLoader.loadJsonFromResource(completeResourcePath);
     }
 }
