@@ -3,6 +3,7 @@ package org.gentar.util;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import java.io.IOException;
@@ -64,6 +65,11 @@ public class JsonHelper
   public static <T> String toJson(T object) throws JsonProcessingException
   {
     return objectMapper.writeValueAsString(object);
+  }
+
+  public static Object getJsonStringAsObject(String jsonString) throws JsonProcessingException
+  {
+    return objectMapper.readTree(jsonString);
   }
 
 }
