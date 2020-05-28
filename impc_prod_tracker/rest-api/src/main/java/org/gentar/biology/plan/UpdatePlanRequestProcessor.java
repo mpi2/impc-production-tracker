@@ -15,7 +15,6 @@
  */
 package org.gentar.biology.plan;
 
-import org.gentar.biology.plan.mappers.PlanMapper;
 import org.gentar.biology.plan.mappers.PlanUpdateMapper;
 import org.gentar.statemachine.ProcessEvent;
 import org.springframework.stereotype.Component;
@@ -27,13 +26,11 @@ import org.springframework.stereotype.Component;
 @Component
 public class UpdatePlanRequestProcessor
 {
-    private PlanMapper planMapper;
     private PlanUpdateMapper planUpdateMapper;
     private PlanService planService;
 
-    public UpdatePlanRequestProcessor(PlanMapper planMapper, PlanUpdateMapper planUpdateMapper, PlanService planService)
+    public UpdatePlanRequestProcessor(PlanUpdateMapper planUpdateMapper, PlanService planService)
     {
-        this.planMapper = planMapper;
         this.planUpdateMapper = planUpdateMapper;
         this.planService = planService;
     }
