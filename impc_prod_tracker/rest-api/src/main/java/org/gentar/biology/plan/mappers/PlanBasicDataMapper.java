@@ -17,7 +17,6 @@ import org.gentar.biology.plan.attempt.phenotyping.PhenotypingAttemptMapper;
 import org.gentar.biology.plan.plan_starting_point.PlanStartingPointDTO;
 import org.gentar.biology.plan.starting_point.PlanStartingPoint;
 import org.gentar.biology.starting_point.PlanStartingPointMapper;
-import org.gentar.exceptions.UserOperationFailedException;
 import org.springframework.stereotype.Component;
 import java.util.HashSet;
 import java.util.List;
@@ -127,9 +126,12 @@ public class PlanBasicDataMapper implements Mapper<Plan, PlanBasicDataDTO>
             if (planBasicDataDTO!= null && planBasicDataDTO.getPlanCommonDataDTO() != null)
             {
                 plan = planCommonDataMapper.toEntity(planBasicDataDTO.getPlanCommonDataDTO());
+                // Set id to plan. If the object is new the id will be null.
+                plan.setId(planBasicDataDTO.getId());
+
+                setAttempt(plan, planBasicDataDTO);
             }
         }
-        setAttempt(plan, planBasicDataDTO);
         return plan;
     }
 
@@ -156,10 +158,6 @@ public class PlanBasicDataMapper implements Mapper<Plan, PlanBasicDataDTO>
         {
             CrisprAttempt crisprAttempt =
                 crisprAttemptMapper.toEntity(planBasicDataDTO.getCrisprAttemptDTO());
-            if (plan.getCrisprAttempt().getImitsMiAttempt() != null)
-            {
-                crisprAttempt.setImitsMiAttempt(plan.getCrisprAttempt().getImitsMiAttempt());
-            }
             crisprAttempt.setPlan(plan);
             crisprAttempt.setId(plan.getId());
             plan.setCrisprAttempt(crisprAttempt);

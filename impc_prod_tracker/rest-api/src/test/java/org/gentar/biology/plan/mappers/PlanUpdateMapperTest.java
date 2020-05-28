@@ -1,23 +1,20 @@
 package org.gentar.biology.plan.mappers;
 
-import org.gentar.EntityMapper;
 import org.gentar.biology.plan.Plan;
-import org.gentar.biology.plan.PlanService;
+import org.gentar.biology.plan.PlanBasicDataDTO;
 import org.gentar.biology.plan.PlanUpdateDTO;
-import org.gentar.common.state_machine.StatusTransitionDTO;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.boot.test.context.SpringBootTest;
 
-import static org.mockito.ArgumentMatchers.any;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.is;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-@SpringBootTest
 @ExtendWith(MockitoExtension.class)
 class PlanUpdateMapperTest
 {
@@ -26,13 +23,10 @@ class PlanUpdateMapperTest
     @Mock
     private PlanBasicDataMapper planBasicDataMapper;
 
-    @Mock
-    private PlanService planService;
-
     @BeforeEach
     void setUp()
     {
-        testInstance = new PlanUpdateMapper(planBasicDataMapper, planService);
+        testInstance = new PlanUpdateMapper(planBasicDataMapper);
     }
 
     @Test
@@ -48,14 +42,14 @@ class PlanUpdateMapperTest
     void toEntity()
     {
         PlanUpdateDTO planUpdateDTO = new PlanUpdateDTO();
-        StatusTransitionDTO statusTransitionDTO = new StatusTransitionDTO();
-        statusTransitionDTO.setActionToExecute("abandonWhenCreated");
-        planUpdateDTO.setStatusTransitionDTO(statusTransitionDTO);
-        Plan plan = new Plan();
-        when(planBasicDataMapper.toEntity(any())).thenReturn(plan);
+        planUpdateDTO.setId(1L);
+        PlanBasicDataDTO planBasicDataDTO = new PlanBasicDataDTO();
+        planUpdateDTO.setPlanBasicDataDTO(planBasicDataDTO);
+        when(planBasicDataMapper.toEntity(planBasicDataDTO)).thenReturn(new Plan());
 
-        testInstance.toEntity(planUpdateDTO);
+        Plan plan = testInstance.toEntity(planUpdateDTO);
 
-        verify(planService, times(1)).getProcessEventByName(plan, "abandonWhenCreated");
+        verify(planBasicDataMapper, times(1)).toEntity(planUpdateDTO.getPlanBasicDataDTO());
+        assertThat(plan.getId(), is(planUpdateDTO.getId()));
     }
 }

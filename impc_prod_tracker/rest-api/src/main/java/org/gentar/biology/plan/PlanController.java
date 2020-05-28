@@ -21,7 +21,6 @@ import org.gentar.biology.ChangeResponse;
 import org.gentar.biology.plan.filter.PlanFilter;
 import org.gentar.biology.plan.filter.PlanFilterBuilder;
 import org.gentar.biology.plan.mappers.PlanCreationMapper;
-import org.gentar.biology.plan.mappers.PlanMapper;
 import org.gentar.biology.plan.mappers.PlanResponseMapper;
 import org.gentar.biology.project.ProjectService;
 import org.gentar.common.history.HistoryDTO;
@@ -54,7 +53,6 @@ public class PlanController
 {
     private HistoryMapper historyMapper;
     private PlanService planService;
-    private PlanMapper planMapper;
     private PlanCreationMapper planCreationMapper;
     private PlanResponseMapper planResponseMapper;
     private UpdatePlanRequestProcessor updatePlanRequestProcessor;
@@ -63,14 +61,13 @@ public class PlanController
     public PlanController(
         HistoryMapper historyMapper,
         PlanService planService,
-        PlanMapper planMapper,
         PlanCreationMapper planCreationMapper,
         PlanResponseMapper planResponseMapper,
-        UpdatePlanRequestProcessor updatePlanRequestProcessor, ProjectService projectService)
+        UpdatePlanRequestProcessor updatePlanRequestProcessor,
+        ProjectService projectService)
     {
         this.historyMapper = historyMapper;
         this.planService = planService;
-        this.planMapper = planMapper;
         this.planCreationMapper = planCreationMapper;
         this.planResponseMapper = planResponseMapper;
         this.updatePlanRequestProcessor = updatePlanRequestProcessor;
@@ -175,9 +172,9 @@ public class PlanController
     }
 
     @PutMapping(value = {"/{pin}"})
-    public HistoryDTO updatePlan(@PathVariable String pin, @RequestBody PlanDTO planDTO)
+    public HistoryDTO updatePlan(@PathVariable String pin, @RequestBody PlanUpdateDTO planUpdateDTO)
     {
-        Plan plan = getPlanToUpdate(pin, planDTO);
+        Plan plan = getPlanToUpdate(pin, planUpdateDTO);
         History history = planService.updatePlan(pin, plan);
         HistoryDTO historyDTO = new HistoryDTO();
         if (history != null)
@@ -187,11 +184,11 @@ public class PlanController
         return historyDTO;
     }
 
-    private Plan getPlanToUpdate(String pin, PlanDTO planDTO)
+    private Plan getPlanToUpdate(String pin, PlanUpdateDTO planUpdateDTO)
     {
         Plan currentPlan = getNotNullPlanByPin(pin);
         Plan newPlan = new Plan(currentPlan);
-        return updatePlanRequestProcessor.getPlanToUpdate(newPlan, planDTO);
+        return updatePlanRequestProcessor.getPlanToUpdate(newPlan, planUpdateDTO);
     }
 
     private ChangeResponse buildChangeResponse(Plan plan)

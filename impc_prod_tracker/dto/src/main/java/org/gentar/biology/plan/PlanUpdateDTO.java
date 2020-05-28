@@ -1,5 +1,6 @@
 package org.gentar.biology.plan;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonUnwrapped;
 import lombok.Data;
@@ -12,6 +13,10 @@ import org.gentar.common.state_machine.StatusTransitionDTO;
 @Data
 public class PlanUpdateDTO
 {
+    @JsonIgnore
+    // Internal id useful keep the id accessible in all the plan DTOS.
+    private Long id;
+
     // Public identifier for the plan.
     private String pin;
 

@@ -45,7 +45,7 @@ public class SystemEventsExecutor
     {
         originalEvent = entity.getEvent();
         executeNextTransitions(entity);
-        clearEvent(entity);
+        resetOriginalEvent(entity);
     }
 
     private void executeNextTransitions(ProcessData entity)
@@ -108,14 +108,9 @@ public class SystemEventsExecutor
         }
     }
 
-    // Remove any event set in this class
-    private void clearEvent(ProcessData entity)
+    // Set the original event the plan had before any system transition was performed.
+    private void resetOriginalEvent(ProcessData entity)
     {
-        String originalEventName = originalEvent == null ? "" : originalEvent.getName();
-        String lastEvent = entity.getEvent() == null ? "" : entity.getEvent().getName();
-        if (!originalEventName.equals(lastEvent))
-        {
-            entity.setEvent(null);
-        }
+        entity.setEvent(originalEvent);
     }
 }
