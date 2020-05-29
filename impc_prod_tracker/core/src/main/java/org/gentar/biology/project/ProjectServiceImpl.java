@@ -113,9 +113,7 @@ public class ProjectServiceImpl implements ProjectService
     private void addOrthologs(List<Project> projects)
     {
         List<String> accIds = new ArrayList<>();
-        projects.forEach(x -> {
-            accIds.addAll(projectQueryHelper.getAccIdsByProject(x));
-        });
+        projects.forEach(x -> accIds.addAll(projectQueryHelper.getAccIdsByProject(x)));
         Map<String, List<Ortholog>> orthologs = orthologService.getOrthologsByAccIds(accIds);
         List<ProjectIntentionGene> projectIntentionGenes = getIntentionGenesByProjects(projects);
         projectIntentionGenes.forEach(i -> {
