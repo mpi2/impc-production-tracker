@@ -1,5 +1,6 @@
 package org.gentar.biology.ortholog;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.gentar.graphql.GraphQLConsumer;
 import org.springframework.stereotype.Component;
 
@@ -70,21 +71,24 @@ public class OrthologServiceImpl implements OrthologService
     public List<Ortholog> calculateBestOrthologs(List<Ortholog> orthologs)
     {
         List<Ortholog> bestOrthologs = new ArrayList<>();
-        Map<Integer, List<Ortholog>> mappedBySupportCount = new HashMap<>();
-        orthologs.forEach(x -> {
-            List<Ortholog> elementsWithSameCount = mappedBySupportCount.get(x.getSupportCount());
-            if (elementsWithSameCount == null)
-            {
-                elementsWithSameCount = new ArrayList<>();
-            }
-            elementsWithSameCount.add(x);
-            mappedBySupportCount.put(x.getSupportCount(), elementsWithSameCount);
-        });
-        Set<Integer> keys = mappedBySupportCount.keySet();
-        Integer max = Collections.max(keys);
-        if (max > THRESHOLD_SUPPORT_COUNT)
+        if (!CollectionUtils.isEmpty(orthologs))
         {
-            bestOrthologs =  mappedBySupportCount.get(max);
+            Map<Integer, List<Ortholog>> mappedBySupportCount = new HashMap<>();
+            orthologs.forEach(x -> {
+                List<Ortholog> elementsWithSameCount = mappedBySupportCount.get(x.getSupportCount());
+                if (elementsWithSameCount == null)
+                {
+                    elementsWithSameCount = new ArrayList<>();
+                }
+                elementsWithSameCount.add(x);
+                mappedBySupportCount.put(x.getSupportCount(), elementsWithSameCount);
+            });
+            Set<Integer> keys = mappedBySupportCount.keySet();
+            Integer max = Collections.max(keys);
+            if (max > THRESHOLD_SUPPORT_COUNT)
+            {
+                bestOrthologs =  mappedBySupportCount.get(max);
+            }
         }
         return bestOrthologs;
     }

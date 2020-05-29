@@ -1,14 +1,13 @@
 package org.gentar.biology.project;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.gentar.biology.ortholog.Ortholog;
-import org.gentar.biology.ortholog.OrthologService;
 import org.gentar.biology.intention.project_intention.ProjectIntention;
 import org.gentar.biology.intention.project_intention_gene.ProjectIntentionGene;
 import org.springframework.stereotype.Component;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 /**
@@ -17,23 +16,20 @@ import java.util.Set;
 @Component
 public class ProjectQueryHelper
 {
-    private OrthologService orthologService;
-
-    public ProjectQueryHelper(OrthologService orthologService)
-    {
-        this.orthologService = orthologService;
-    }
-
     public List<String> getBestOrthologsSymbols(Project project)
     {
-        List<String> bestOrthologsAccIdsByProject = new ArrayList<>();
-        List<String> accIds = getAccIdsByProject(project);
-        Map<String, List<Ortholog>> orthologsByAccIds = orthologService.getOrthologsByAccIds(accIds);
-        List<Ortholog> allOrthologs = new ArrayList<>();
-        orthologsByAccIds.forEach( (k, v) -> allOrthologs.addAll(v));
-        List<Ortholog> bestOrthologs = orthologService.calculateBestOrthologs(allOrthologs);
-        bestOrthologs.forEach(x -> bestOrthologsAccIdsByProject.add(x.getSymbol()));
-        return bestOrthologsAccIdsByProject;
+        List<String> bestOrthologsSymbols = new ArrayList<>();
+        List<ProjectIntentionGene> intentionGenes = getIntentionGenesByProject(project);
+        if (!CollectionUtils.isEmpty(intentionGenes))
+        {
+            ProjectIntentionGene projectIntentionGene = intentionGenes.get(0);
+            List<Ortholog> bestOrthologs = projectIntentionGene.getBestOrthologs();
+            if (!CollectionUtils.isEmpty(bestOrthologs))
+            {
+                bestOrthologs.forEach(x -> bestOrthologsSymbols.add(x.getSymbol()));
+            }
+        }
+        return bestOrthologsSymbols;
     }
 
     public List<ProjectIntentionGene> getIntentionGenesByProject(Project project)
