@@ -11,8 +11,6 @@ public class PlanFieldsDescriptors
     public static List<FieldDescriptor> getSharedFieldDescriptions()
     {
         List<FieldDescriptor> sharedFieldDescriptions = new ArrayList<>();
-        addField(sharedFieldDescriptions, "crisprAttempt", "Information about the Crispr attempt.");
-
         addField(sharedFieldDescriptions,"pin", "Public identifier for the plan.");
         addField(sharedFieldDescriptions, "tpn", "Public identifier for the project.");
         addField(sharedFieldDescriptions, "typeName", "Plan type.");
@@ -70,7 +68,6 @@ public class PlanFieldsDescriptors
             sharedFieldDescriptions,
             "statusTransition.actionToExecute",
             "Name of the transition (action) to execute.");
-
         return sharedFieldDescriptions;
     }
 

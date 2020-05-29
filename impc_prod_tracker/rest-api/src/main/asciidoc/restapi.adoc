@@ -47,38 +47,9 @@ The following table describes how the coderadar API interprets the HTTP verbs.
 
 == Authentication
 anchor:login[]
-A user has to log in to use other endpoints.
-If the log in is successful, user obtains a JSON Web Token https://jwt.io
 
-How to use the tokens is described in <<authentication, Authentication>>
-
-===== Login Data Structure
-include::{snippets}/auth/signin/request-fields.adoc[]
-
-===== Example Request
-include::{snippets}/auth/signin/http-request.adoc[]
-
-===== Example Response
-include::{snippets}/auth/signin/http-response.adoc[]
-
-===== Response Structure
-include::{snippets}/auth/signin/response-fields.adoc[]
-
-==== Errors
-===== Error when user/password is incorrect:
-When trying to sign in with an incorrect user/password the system will inform about it returning
-an error message.
-
-.request
-include::{snippets}/auth/signin/no-valid-user-password/http-request.adoc[]
-
-.response
-include::{snippets}/auth/signin/no-valid-user-password/http-response.adoc[]
-
-
-==== Authentication
-After a user registered, he or she can start working with iMits2.
-The first step is login. To log in in iMits2 use the <<login, Login>> endpoint. The user must use the username and the password
+After a user registered, he or she can start working with GenTaR.
+The first step is login. To log in in GenTaR use the /auth/signin endpoint. The user must use the username and the password
 specified at registration. If the login was successful user gets a JSON Web Token (see https://jwt.io):
 
 After that the user has to use the access token for authentication with each request to a protected route or resource.
@@ -98,6 +69,31 @@ A typical work flow looks like this:
 
 See more: https://auth0.com/docs/tokens/refresh-token and https://auth0.com/blog/refresh-tokens-what-are-they-and-when-to-use-them/
 
+
+=== POST
+==== Successful authentication
+
+===== Login Data Structure
+include::{snippets}/auth/signin/request-fields.adoc[]
+
+===== Example Request
+include::{snippets}/auth/signin/http-request.adoc[]
+
+===== Example Response
+include::{snippets}/auth/signin/http-response.adoc[]
+
+===== Response Structure
+include::{snippets}/auth/signin/response-fields.adoc[]
+
+==== Error in authentication: user/password is incorrect
+When trying to sign in with an incorrect user/password the system will inform about it returning
+an error message.
+
+.request
+include::{snippets}/auth/signin/no-valid-user-password/http-request.adoc[]
+
+.response
+include::{snippets}/auth/signin/no-valid-user-password/http-response.adoc[]
 
 
 == Projects
@@ -252,6 +248,79 @@ include::{snippets}/projects/putProject/http-response.adoc[]
 
 ===== Fields in Response
 include::{snippets}/projects/putProject/response-fields.adoc[]
+
+== Plans
+anchor:chapter-configure[]
+This section describes the REST endpoints for plans in the system.
+
+
+=== Fields
+These are the fields you are going to see in the body of a request in a GET or in the payload for POST or PUT
+operations. This is an example of a Crispr plan.
+include::{snippets}/plans/getCrisprPlan/response-fields.adoc[]
+
+=== Filters
+When you use the endpoint to get all the plans, you can also use filters to reduce the results.
+This is the list of filters you can use:
+
+.Filters for plans
+|===
+|Filter name | Description
+
+|pin
+|PIN(s) to be used as a filter. Eg: PIN:0000000014.
+
+|tpn
+|TPN(s) to be used as a filter. Eg: TPN:000000001.
+
+|workUnitName
+|Name of the work unit associated with the plan.
+
+|workGroup
+|Name of the work group associated with the plan.
+
+|summaryStatusName
+|Name of the summary status in the plan.
+
+|typeName
+a|Name of the type of the plan. Possible values are:
+
+- production
+- phenotyping
+
+|attemptTypeName
+
+a|Attempt type. Possible values are:
+
+- crispr
+- haplo-essential crispr
+- haplo-essential crispr
+- breeding
+- adult phenotyping
+- haplo-essential phenotyping
+
+|imitsMiAttemptIds
+|iMits attempt id.
+
+|imitsPhenotypeAttemptIds
+|iMits phenotyping attempt id.
+
+
+|===
+
+=== GET
+==== Get a specific plan
+
+This endpoint shows a plan in the system.
+
+===== Example Request
+
+Curl:
+include::{snippets}/plans/getCrisprPlan/curl-request.adoc[]
+
+===== Example Response
+
+include::{snippets}/plans/getCrisprPlan/http-response.adoc[]
 
 
 
