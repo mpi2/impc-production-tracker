@@ -98,14 +98,14 @@ public class PlanController
     public ResponseEntity findAll(
         Pageable pageable,
         PagedResourcesAssembler assembler,
-        @RequestParam(value = "projectTpns", required = false) List<String> projectTpns,
-        @RequestParam(value = "workUnitNames", required = false) List<String> workUnitNames,
-        @RequestParam(value = "workGroupNames", required = false) List<String> workGroupNames,
-        @RequestParam(value = "summaryStatusNames", required = false) List<String> summaryStatusNames,
-        @RequestParam(value = "pins", required = false) List<String> pins,
-        @RequestParam(value = "typeNames", required = false) List<String> typeNames,
-        @RequestParam(value = "attemptTypeNames", required = false) List<String> attemptTypeNames,
-        @RequestParam(value = "imitsMiAttemptIds", required = false) List<String> imitsMiAttempts,
+        @RequestParam(value = "pin", required = false) List<String> pins,
+        @RequestParam(value = "tpn", required = false) List<String> projectTpns,
+        @RequestParam(value = "workUnitName", required = false) List<String> workUnitNames,
+        @RequestParam(value = "workGroupName", required = false) List<String> workGroupNames,
+        @RequestParam(value = "summaryStatusName", required = false) List<String> summaryStatusNames,
+        @RequestParam(value = "typeName", required = false) List<String> typeNames,
+        @RequestParam(value = "attemptTypeName", required = false) List<String> attemptTypeNames,
+        @RequestParam(value = "imitsMiAttemptId", required = false) List<String> imitsMiAttempts,
         @RequestParam(value = "imitsPhenotypeAttemptIds", required = false) List<String> imitsPhenotypeAttempts)
     {
         PlanFilter planFilter = PlanFilterBuilder.getInstance()
