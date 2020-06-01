@@ -11,6 +11,9 @@
     <SPECIES    ID="2"
                 NAME="Homo sapiens"/>
 
+    <FUNDER ID="1"
+            NAME="KOMP"/>
+
     <ASSIGNMENT_STATUS  ID="1"
                         NAME="Assigned"/>
     <ASSIGNMENT_STATUS  ID="2"
@@ -146,6 +149,9 @@
                 WORK_GROUP_ID="1"
                 SUMMARY_STATUS_ID="1"/>
 
+    <PLAN_FUNDER    PLAN_ID="1"
+                    FUNDER_ID="1"/>
+
     <CRISPR_ATTEMPT PLAN_ID="1"
                     MI_DATE="2019-02-26"
                     MUTAGENESIS_EXTERNAL_REF="MF-26326"
@@ -167,15 +173,15 @@
             ATTEMPT_ID="1"
             TRUNCATED_GUIDE="true"
             SEQUENCE="CTTCACGTACCAAGGAGGGGTGG"
-            STRAND=""
+            STRAND="+"
             START="46245139"
             STOP="46245161"
-            PROTOSPACER_SEQUENCE="NGG"
-            PAM3=""
-            PAM5=""
+            PROTOSPACER_SEQUENCE="CTTCACGTACCAAGGAGGGG"
+            PAM3="AGG"
+            PAM5="CCT"
             GRNA_CONCENTRATION="300"
             GENOME_BUILD="GRCm38"
-            CHR=""/>
+            CHR="X"/>
 
     <MUTAGENESIS_DONOR  ID="1"
                         ATTEMPT_ID="1"
