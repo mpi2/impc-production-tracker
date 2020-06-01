@@ -322,6 +322,18 @@ include::{snippets}/plans/getCrisprPlan/curl-request.adoc[]
 
 include::{snippets}/plans/getCrisprPlan/http-response.adoc[]
 
+==== Get all Plans
+This endpoint shows all the plans the user has permission to see.
+
+===== Example Request
+
+Curl:
+include::{snippets}/plans/allPlans/curl-request.adoc[]
+
+===== Example Response
+
+include::{snippets}/plans/allPlans/http-response.adoc[]
+
 
 
 

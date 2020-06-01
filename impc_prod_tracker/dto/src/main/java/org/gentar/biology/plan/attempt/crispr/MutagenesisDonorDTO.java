@@ -11,7 +11,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class MutagenesisDonorDTO
 {
-    @JsonIgnore
     private Long id;
 
     @JsonIgnore

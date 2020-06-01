@@ -7,15 +7,15 @@
   ],
   "workUnitName":"BCM",
   "workGroupName":"BaSH",
-  "comment":null,
+  "comment":"New Plan comment",
   "productsAvailableForGeneralPublic":null,
   "crisprAttempt":{
     "miDate":"2019-02-26",
-    "experimental":true,
-    "comment":"crispr plan comment",
+    "experimental":false,
+    "comment":"New Crispr Comment",
     "mutagenesisExternalRef":"MF-26326",
     "imitsMiAttemptId":20043,
-    "attemptExternalRef":null,
+    "attemptExternalRef":"New external reference",
     "nucleases":[
       {
         "id":1,
@@ -66,8 +66,8 @@
         "sequence":"GTAGAGGGACAGGCAGTTGG"
       }
     ],
-    "totalEmbryosInjected":72,
-    "totalEmbryosSurvived":70,
+    "totalEmbryosInjected":10,
+    "totalEmbryosSurvived":5,
     "embryo2Cell":"20043",
     "assay":{
       "id":1,

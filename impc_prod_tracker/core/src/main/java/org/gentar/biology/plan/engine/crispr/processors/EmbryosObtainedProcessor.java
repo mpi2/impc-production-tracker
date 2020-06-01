@@ -26,8 +26,7 @@ public class EmbryosObtainedProcessor extends AbstractProcessor
         transitionEvaluation.setExecutable(areThereEmbryos);
         if (!areThereEmbryos)
         {
-            transitionEvaluation.setNote(
-                "There is not embryos information yet");
+            transitionEvaluation.setNote("There is not embryos information yet");
         }
         return transitionEvaluation;
     }

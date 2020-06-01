@@ -71,6 +71,10 @@
                 NAME="Plan Created"/>
     <STATUS     ID="2"
                 NAME="Attempt In Progress"/>
+    <STATUS     ID="3"
+                NAME="Embryos Obtained"/>
+    <STATUS     ID="4"
+                NAME="Founder Obtained"/>
 
     <CONSORTIUM ID="1"
                 NAME="CMG"/>
@@ -126,10 +130,10 @@
                 PROJECT_ID="1"
                 PLAN_TYPE_ID="1"
                 ATTEMPT_TYPE_ID="1"
-                STATUS_ID="1"
+                STATUS_ID="4"
                 WORK_UNIT_ID="1"
                 WORK_GROUP_ID="1"
-                SUMMARY_STATUS_ID="1"/>
+                SUMMARY_STATUS_ID="4"/>
     <PLAN       ID="2"
                 PIN="PIN:0000000002"
                 PROJECT_ID="1"
@@ -220,8 +224,19 @@
     <PERSON     ID="123"
                 EMAIL="imits2test@test.com"
                 AUTH_ID="usr-dde67fbd-c3c2-42eb-aa81-f1a225f047c7"/>
-    <PERSON_ROLE_WORK_UNIT/>
+
+    <ROLE   ID="1"
+            NAME="manager"/>
+    <ROLE   ID="2"
+            NAME="general"/>
+
+    <PERSON_ROLE_WORK_UNIT  ID="1"
+                            PERSON_ID="123"
+                            ROLE_ID="2"
+                            WORK_UNIT_ID="1"/>
+
     <PERSON_ROLE_CONSORTIUM/>
     <PLAN_STATUS_STAMP/>
     <PLAN_SUMMARY_STATUS_STAMP/>
+    <PROJECT_SUMMARY_STATUS_STAMP/>
 </dataset>
