@@ -312,8 +312,7 @@ class ProjectControllerTest extends ControllerTestTemplate
             .content(toJson(projectCreationDTO))
             .contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
-            .andDo(documentCreationOfProject())
-            ;
+            .andDo(documentCreationOfProject());
 
         MvcResult result = resultActions.andReturn();
         String contentAsString = result.getResponse().getContentAsString();

@@ -138,6 +138,8 @@ public class PlanFieldsDescriptors
             "crisprAttempt.mutagenesisDonors",
             "Information about the mutagenesis donors.");
         addField(
+            crisprFields, "crisprAttempt.mutagenesisDonors[].id", "Id of the record in the system.");
+        addField(
             crisprFields,
             "crisprAttempt.mutagenesisDonors[].concentration",
             "Mutagenesis donor's concentration.");
@@ -153,6 +155,7 @@ public class PlanFieldsDescriptors
 
         // Reagents
         addField(crisprFields, "crisprAttempt.reagents", "Information about the reagents.");
+        addField(crisprFields, "crisprAttempt.reagents[].id", "Id of the record in the system.");
         addField(crisprFields, "crisprAttempt.reagents[].reagentName", "Reagent's name.");
         addField(
             crisprFields, "crisprAttempt.reagents[].reagentDescription", "Reagent's description.");

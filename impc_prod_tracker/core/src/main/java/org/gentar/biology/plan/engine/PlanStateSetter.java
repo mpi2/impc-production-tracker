@@ -40,7 +40,7 @@ public class PlanStateSetter implements StateSetter
      */
     public void setStatusByName(ProcessData entity, String statusName)
     {
-        Status newPlanStatus = statusService.getStatusByName(statusName);
+        Status newPlanStatus = statusService.getStatusByNameFailWhenNotFound(statusName);
         setStatus(entity, newPlanStatus);
     }
 
