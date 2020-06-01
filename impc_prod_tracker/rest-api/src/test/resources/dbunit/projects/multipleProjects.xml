@@ -11,6 +11,8 @@
     <SPECIES    ID="2"
                 NAME="Homo sapiens"/>
 
+    <FUNDER ID="1"
+            NAME="KOMP"/>
 
     <ASSIGNMENT_STATUS  ID="1"
                         NAME="Assigned"/>
@@ -60,38 +62,38 @@
     <MOLECULAR_MUTATION_TYPE    ID="2"
                                 NAME="Deletion"/>
 
-    <PROJECT    ID="101"
-                TPN="TPN:01"
+    <PROJECT    ID="1"
+                TPN="TPN:000000001"
                 PRIVACY_ID="1"
                 ASSIGNMENT_STATUS_ID="1"
                 SUMMARY_STATUS_ID="1"
                 RECOVERY="false"
                 COMMENT="Comment test"
                 PROJECT_EXTERNAL_REF="External reference 01"/>
-    <PROJECT    ID="102"
-                TPN="TPN:02"
+    <PROJECT    ID="2"
+                TPN="TPN:000000002"
                 PRIVACY_ID="1"
                 ASSIGNMENT_STATUS_ID="2"
                 SUMMARY_STATUS_ID="2"/>
-    <PROJECT    ID="103"
-                TPN="TPN:03"
+    <PROJECT    ID="3"
+                TPN="TPN:000000003"
                 PRIVACY_ID="1"
                 ASSIGNMENT_STATUS_ID="1"
                 SUMMARY_STATUS_ID="1"/>
-    <PROJECT    ID="104"
-                TPN="TPN:04"
+    <PROJECT    ID="4"
+                TPN="TPN:000000004"
                 PRIVACY_ID="2"
                 ASSIGNMENT_STATUS_ID="2"
                 SUMMARY_STATUS_ID="2"/>
-    <PROJECT    ID="105"
-                TPN="TPN:05"
+    <PROJECT    ID="5"
+                TPN="TPN:000000005"
                 PRIVACY_ID="3"
                 ASSIGNMENT_STATUS_ID="1"
                 SUMMARY_STATUS_ID="1"/>
 
-    <PLAN       ID="10001"
-                PIN="PIN:10001"
-                PROJECT_ID="101"
+    <PLAN       ID="1"
+                PIN="PIN:0000000001"
+                PROJECT_ID="1"
                 PLAN_TYPE_ID="1"
                 STATUS_ID="1"
                 WORK_UNIT_ID="1"
@@ -100,7 +102,7 @@
 
     <PROJECT_INTENTION  ID="1"
                         MOLECULAR_MUTATION_TYPE_ID="1"
-                        PROJECT_ID="101"/>
+                        PROJECT_ID="1"/>
 
     <MUTATION_CATEGORIZATION_TYPE   ID="1"
                                     NAME="allele_category"/>
@@ -124,25 +126,25 @@
     <PROJECT_INTENTION_MUTATION_CATEGORIZATION PROJECT_INTENTION_ID="1"
                                                MUTATION_CATEGORIZATION_ID="1"/>
 
-    <PROJECT_SPECIES    PROJECT_ID="101"
+    <PROJECT_SPECIES    PROJECT_ID="1"
                         SPECIES_ID="1"/>
-    <PROJECT_SPECIES    PROJECT_ID="102"
+    <PROJECT_SPECIES    PROJECT_ID="2"
                         SPECIES_ID="2"/>
 
     <PROJECT_CONSORTIUM ID="1"
-                        PROJECT_ID="101"
+                        PROJECT_ID="1"
                         CONSORTIUM_ID="1"/>
     <PROJECT_CONSORTIUM ID="2"
-                        PROJECT_ID="102"
+                        PROJECT_ID="2"
                         CONSORTIUM_ID="1"/>
     <PROJECT_CONSORTIUM ID="3"
-                        PROJECT_ID="103"
+                        PROJECT_ID="3"
                         CONSORTIUM_ID="1"/>
     <PROJECT_CONSORTIUM ID="4"
-                        PROJECT_ID="104"
+                        PROJECT_ID="4"
                         CONSORTIUM_ID="1"/>
     <PROJECT_CONSORTIUM ID="5"
-                        PROJECT_ID="105"
+                        PROJECT_ID="5"
                         CONSORTIUM_ID="1"/>
 
     <PROJECT_CONSORTIUM_INSTITUTE   PROJECT_CONSORTIUM_ID="1"
@@ -163,4 +165,5 @@
     <PLAN_SUMMARY_STATUS_STAMP/>
     <ASSIGNMENT_STATUS_STAMP/>
     <PROJECT_SUMMARY_STATUS_STAMP/>
+    <PLAN_FUNDER/>
 </dataset>

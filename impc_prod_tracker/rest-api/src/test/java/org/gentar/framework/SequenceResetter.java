@@ -58,7 +58,6 @@ public class SequenceResetter
                     }
                     String resetSql = String.format(resetSqlTemplate, sequenceName, maxId + 1);
                     statement.execute(resetSql);
-
                 }
             }
         } catch (SQLException e) {

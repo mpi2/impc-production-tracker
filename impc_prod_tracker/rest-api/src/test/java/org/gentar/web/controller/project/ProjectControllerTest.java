@@ -34,6 +34,7 @@ import org.springframework.test.web.servlet.ResultHandler;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -64,7 +65,7 @@ class ProjectControllerTest extends ControllerTestTemplate
     void testGetOneProject() throws Exception
     {
         ResultActions resultActions = mvc().perform(MockMvcRequestBuilders
-            .get("/api/projects/TPN:01")
+            .get("/api/projects/TPN:000000001")
             .header("Authorization", accessToken))
             .andExpect(status().isOk())
             .andDo(documentSingleProject());
@@ -72,7 +73,7 @@ class ProjectControllerTest extends ControllerTestTemplate
         String contentAsString = result.getResponse().getContentAsString();
 
         ProjectResponseDTO obtained = JsonHelper.fromJson(contentAsString, ProjectResponseDTO.class);
-        ProjectResponseDTO expected = loadExpectedResponseFromResource("expectedProjectTPN_01.json");
+        ProjectResponseDTO expected = loadExpectedResponseFromResource("expectedProjectTPN_000000001.json");
 
         ProjectTestHelper.assertProjectResponseDTOIsTheExpected(obtained, expected);
     }
@@ -208,11 +209,11 @@ class ProjectControllerTest extends ControllerTestTemplate
         projectCommonDataDTO.setComment("A new comment");
         projectCommonDataDTO.setProjectExternalRef("new external reference");
         projectCommonDataDTO.setRecovery(true);
-        projectUpdateDTO.setTpn("TPN:01");
+        projectUpdateDTO.setTpn("TPN:000000001");
         projectUpdateDTO.setProjectCommonDataDTO(projectCommonDataDTO);
 
         ResultActions resultActions = mvc().perform(MockMvcRequestBuilders
-            .put("/api/projects/TPN:01")
+            .put("/api/projects/TPN:000000001")
             .header("Authorization", accessToken)
             .content(toJson(projectUpdateDTO))
             .contentType(MediaType.APPLICATION_JSON))
@@ -225,7 +226,7 @@ class ProjectControllerTest extends ControllerTestTemplate
         verifyChangeResponse(changeResponse);
         String projectLink = LinkUtil.getSelfHrefLinkStringFromJson(contentAsString);
 
-        verifyGetProjectEqualsJson(projectLink, "expectedUpdatedProjectTPN_01.json");
+        verifyGetProjectEqualsJson(projectLink, "expectedUpdatedProjectTPN_000000001.json");
     }
 
     private ResultHandler documentUpdateOfProject()
@@ -301,6 +302,8 @@ class ProjectControllerTest extends ControllerTestTemplate
     {
         sequenceResetter.syncSequence("PROJECT_CONSORTIUM_SEQ", "PROJECT_CONSORTIUM");
         sequenceResetter.syncSequence("PROJECT_INTENTION_SEQ", "PROJECT_INTENTION");
+        sequenceResetter.syncSequence("PROJECT_SEQ", "PROJECT");
+        sequenceResetter.syncSequence("PLAN_SEQ", "PLAN");
 
         ProjectCreationDTO projectCreationDTO = buildProjectCreationDTO();
         ResultActions resultActions = mvc().perform(MockMvcRequestBuilders
@@ -421,6 +424,7 @@ class ProjectControllerTest extends ControllerTestTemplate
         planCommonDataDTO.setComment("Plan comment");
         planCommonDataDTO.setWorkUnitName("BCM");
         planCommonDataDTO.setWorkGroupName("BaSH");
+        planCommonDataDTO.setFunderNames(Arrays.asList("KOMP"));
         planMinimumCreationDTO.setPlanCommonDataDTO(planCommonDataDTO);
         return planMinimumCreationDTO;
 
