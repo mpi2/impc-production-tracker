@@ -334,6 +334,18 @@ include::{snippets}/plans/allPlans/curl-request.adoc[]
 
 include::{snippets}/plans/allPlans/http-response.adoc[]
 
+==== Get filtered Plans
+You can also add filters to the request to get more specific results.
+
+===== Example Request
+
+Curl:
+include::{snippets}/plans/filteredPlans/curl-request.adoc[]
+
+===== Example Response
+
+include::{snippets}/plans/filteredPlans/http-response.adoc[]
+
 
 
 

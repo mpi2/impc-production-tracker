@@ -126,8 +126,35 @@ public class PlanSpecs
     }
 
     /**
-     * Get all the plans that are related with the work groups specified in summaryStatusNames
-     * @param summaryStatusNames List of names of the Work Groups
+     * Get all the plans that have the indicated statuses.
+     * @param statusNames List of statuses.
+     * @return The found plans. If statusNames is null then not filter is applied.
+     */
+    public static Specification<Plan> withStatusNames (List<String> statusNames)
+    {
+        Specification<Plan> specification;
+        if (statusNames == null)
+        {
+            specification = buildTrueCondition();
+        }
+        else
+        {
+            specification = (Specification<Plan>) (root, query, criteriaBuilder) ->
+            {
+                List<Predicate> predicates = new ArrayList<>();
+                Path<Status> summaryStatus = root.get(Plan_.status);
+                Path<String> statusSummaryNamePath = summaryStatus.get(Status_.name);
+                predicates.add(statusSummaryNamePath.in(statusNames));
+                query.distinct(true);
+                return criteriaBuilder.and(predicates.toArray(new Predicate[predicates.size()]));
+            };
+        }
+        return specification;
+    }
+
+    /**
+     * Get all the plans that have the indicated summary statuses.
+     * @param summaryStatusNames List of summary statuses.
      * @return The found plans. If summaryStatusNames is null then not filter is applied.
      */
     public static Specification<Plan> withSummaryStatusNames (List<String> summaryStatusNames)
@@ -291,6 +318,4 @@ public class PlanSpecs
         return (Specification<Plan>) (root, query, criteriaBuilder) ->
             criteriaBuilder.isTrue(criteriaBuilder.literal(true));
     }
-
-
 }
