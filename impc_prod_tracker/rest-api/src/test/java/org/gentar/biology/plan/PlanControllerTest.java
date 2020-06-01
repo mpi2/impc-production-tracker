@@ -53,7 +53,6 @@ class PlanControllerTest extends ControllerTestTemplate
 
         MvcResult result = resultActions.andReturn();
         String contentAsString = result.getResponse().getContentAsString();
-        System.out.println(contentAsString);
         String expectedOutputAsString =
             loadExpectedResponseFromResource("expectedPlanGetPIN_0000000001.json");
 
@@ -91,6 +90,28 @@ class PlanControllerTest extends ControllerTestTemplate
         String contentAsString = result.getResponse().getContentAsString();
         String expectedOutputAsString =
             loadExpectedResponseFromResource("expectedAllPlans.json");
+
+        assertThat(
+            JsonHelper.getJsonStringAsObject(contentAsString),
+            is(JsonHelper.getJsonStringAsObject(expectedOutputAsString)));
+    }
+
+    @Test
+    @DatabaseSetup(DBSetupFilesPaths.MULTIPLE_PLANS)
+    @DatabaseTearDown(type = DatabaseOperation.DELETE_ALL, value = DBSetupFilesPaths.MULTIPLE_PLANS)
+    void testGetFilteredPlans() throws Exception
+    {
+        ResultActions resultActions = mvc().perform(MockMvcRequestBuilders
+            .get("/api/plans?statusName=Founder Obtained&attemptTypeName=crispr")
+            .header("Authorization", accessToken))
+            .andExpect(status().isOk())
+            .andDo(document("plans/filteredPlans"));
+
+        MvcResult result = resultActions.andReturn();
+        String contentAsString = result.getResponse().getContentAsString();
+        System.out.println(contentAsString);
+        String expectedOutputAsString =
+            loadExpectedResponseFromResource("expectedFilteredPlans.json");
 
         assertThat(
             JsonHelper.getJsonStringAsObject(contentAsString),

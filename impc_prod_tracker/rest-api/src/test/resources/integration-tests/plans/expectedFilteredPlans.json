@@ -113,104 +113,18 @@
           ],
           "actionToExecute":null
         }
-      },
-      {
-        "pin":"PIN:0000000002",
-        "tpn":"TPN:000000001",
-        "attemptTypeName":"crispr",
-        "funderNames":[
-
-        ],
-        "workUnitName":"BCM",
-        "workGroupName":"BaSH",
-        "comment":null,
-        "productsAvailableForGeneralPublic":null,
-        "typeName":"production",
-        "statusName":"Plan Created",
-        "summaryStatusName":"Plan Created",
-        "statusDates":[
-
-        ],
-        "summaryStatusDates":[
-
-        ],
-        "statusTransition":{
-          "currentStatus":"Plan Created",
-          "transitions":[
-            {
-              "action":"abandonWhenCreated",
-              "description":"Abandon the plan that has been created",
-              "triggeredByUser":true,
-              "available":true,
-              "note":null,
-              "nextStatus":"PlanAbandoned"
-            },
-            {
-              "action":"updateToInProgress",
-              "description":"Update to attempt in progress",
-              "triggeredByUser":false,
-              "available":false,
-              "note":"There is not a crispr attempt yet",
-              "nextStatus":"AttemptInProgress"
-            }
-          ],
-          "actionToExecute":null
-        }
-      },
-      {
-        "pin":"PIN:0000000003",
-        "tpn":"TPN:000000001",
-        "attemptTypeName":"crispr",
-        "funderNames":[
-
-        ],
-        "workUnitName":"BCM",
-        "workGroupName":"BaSH",
-        "comment":null,
-        "productsAvailableForGeneralPublic":null,
-        "typeName":"production",
-        "statusName":"Plan Created",
-        "summaryStatusName":"Plan Created",
-        "statusDates":[
-
-        ],
-        "summaryStatusDates":[
-
-        ],
-        "statusTransition":{
-          "currentStatus":"Plan Created",
-          "transitions":[
-            {
-              "action":"abandonWhenCreated",
-              "description":"Abandon the plan that has been created",
-              "triggeredByUser":true,
-              "available":true,
-              "note":null,
-              "nextStatus":"PlanAbandoned"
-            },
-            {
-              "action":"updateToInProgress",
-              "description":"Update to attempt in progress",
-              "triggeredByUser":false,
-              "available":false,
-              "note":"There is not a crispr attempt yet",
-              "nextStatus":"AttemptInProgress"
-            }
-          ],
-          "actionToExecute":null
-        }
       }
     ]
   },
   "_links":{
     "self":{
-      "href":"http://localhost:8080/api/plans{?pin,tpn,workUnitName,workGroupName,statusName,summaryStatusName,typeName,attemptTypeName,imitsMiAttemptId,imitsPhenotypeAttemptIds}",
+      "href":"http://localhost:8080/api/plans?statusName=Founder%20Obtained&attemptTypeName=crispr{&pin,tpn,workUnitName,workGroupName,summaryStatusName,typeName,imitsMiAttemptId,imitsPhenotypeAttemptIds}",
       "templated":true
     }
   },
   "page":{
     "size":20,
-    "totalElements":3,
+    "totalElements":1,
     "totalPages":1,
     "number":0
   }

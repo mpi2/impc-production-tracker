@@ -102,6 +102,7 @@ public class PlanServiceImpl implements PlanService
             Specification.where(PlanSpecs.withProjectTpns(planFilter.getTpns()))
                 .and(Specification.where(PlanSpecs.withWorkUnitNames(planFilter.getWorkUnitNames())))
                 .and(Specification.where(PlanSpecs.withWorkGroupNames(planFilter.getWorGroupNames())))
+                .and(Specification.where(PlanSpecs.withStatusNames(planFilter.getStatusNames())))
                 .and(Specification.where(
                     PlanSpecs.withSummaryStatusNames(planFilter.getSummaryStatusNames())))
                 .and(Specification.where(PlanSpecs.withPins(planFilter.getPins())))

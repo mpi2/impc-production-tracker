@@ -46,6 +46,7 @@ import java.util.Collections;
 import java.util.List;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 @RestController
 @RequestMapping("/api/plans")
@@ -102,6 +103,7 @@ public class PlanController
         @RequestParam(value = "tpn", required = false) List<String> projectTpns,
         @RequestParam(value = "workUnitName", required = false) List<String> workUnitNames,
         @RequestParam(value = "workGroupName", required = false) List<String> workGroupNames,
+        @RequestParam(value = "statusName", required = false) List<String> statusNames,
         @RequestParam(value = "summaryStatusName", required = false) List<String> summaryStatusNames,
         @RequestParam(value = "typeName", required = false) List<String> typeNames,
         @RequestParam(value = "attemptTypeName", required = false) List<String> attemptTypeNames,
@@ -112,6 +114,7 @@ public class PlanController
             .withTpns(projectTpns)
             .withWorkUnitNames(workUnitNames)
             .withWorkGroupNames(workGroupNames)
+            .withStatusNames(statusNames)
             .withSummaryStatusNames(summaryStatusNames)
             .withPins(pins)
             .withPlanTypeNames(typeNames)
@@ -125,7 +128,10 @@ public class PlanController
         PagedModel pr =
             assembler.toModel(
                 planDTOSPage,
-                linkTo(PlanController.class).withSelfRel());
+                linkTo(methodOn(PlanController.class)
+                    .findAll(pageable, assembler, pins, projectTpns, workUnitNames, workGroupNames,
+                        statusNames, summaryStatusNames, typeNames, attemptTypeNames,
+                        imitsMiAttempts,imitsPhenotypeAttempts)).withSelfRel());
 
         HttpHeaders responseHeaders = new HttpHeaders();
         responseHeaders.add("Link", LinkUtil.createLinkHeader(pr));
