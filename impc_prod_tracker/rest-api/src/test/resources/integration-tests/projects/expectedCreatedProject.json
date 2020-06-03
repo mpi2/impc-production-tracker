@@ -1,4 +1,5 @@
 {
+  "tpn": "any valid value",
   "recovery":false,
   "comment":"comment",
   "privacyName":"public",

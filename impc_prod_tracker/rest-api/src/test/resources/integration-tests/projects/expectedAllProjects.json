@@ -1,0 +1,223 @@
+{
+  "_embedded":{
+    "projects":[
+      {
+        "tpn":"TPN:000000001",
+        "recovery":false,
+        "comment":"Comment test",
+        "privacyName":"public",
+        "externalReference":"External reference 01",
+        "assignmentStatusName":"Assigned",
+        "summaryStatusName":"Plan Created",
+        "relatedWorkUnitNames":[
+          "BCM"
+        ],
+        "relatedWorkGroupNames":[
+          "BaSH"
+        ],
+        "reactivationDate":null,
+        "_links":{
+          "productionPlans":{
+            "href":"http://localhost:8080/api/plans/PIN:0000000001"
+          }
+        },
+        "assignmentStatusStamps":[
+
+        ],
+        "projectIntentions":[
+          {
+            "molecularMutationTypeName":"Point Mutation",
+            "mutationCategorizations":[
+              {
+                "name":"Null Reporter",
+                "description":null,
+                "typeName":"allele_category"
+              }
+            ],
+            "intentionByGene":{
+              "bestOrthologs":[
+                {
+                  "symbol":"SERPINB10",
+                  "category":"MODERATE",
+                  "support":"HGNC,OMA,HomoloGene,Panther,NCBI,Ensembl,Inparanoid",
+                  "supportCount":7,
+                  "link":"https://www.genenames.org/data/gene-symbol-report/#!/hgnc_id/HGNC:8942"
+                }
+              ],
+              "allOrthologs":[
+                {
+                  "symbol":"SERPINB10",
+                  "category":"MODERATE",
+                  "support":"HGNC,OMA,HomoloGene,Panther,NCBI,Ensembl,Inparanoid",
+                  "supportCount":7,
+                  "link":"https://www.genenames.org/data/gene-symbol-report/#!/hgnc_id/HGNC:8942"
+                }
+              ],
+              "gene":{
+                "id":1,
+                "name":"serine (or cysteine) peptidase inhibitor, clade B (ovalbumin), member 10",
+                "symbol":"Serpinb10",
+                "speciesName":"Mus musculus",
+                "externalLink":"http://www.mousephenotype.org/data/genes/MGI:2138648",
+                "accessionId":"MGI:2138648"
+              }
+            },
+            "intentionBySequence":[
+
+            ]
+          }
+        ],
+        "speciesNames":[
+          "Mus musculus"
+        ],
+        "consortia":[
+          {
+            "consortiumName":"CMG",
+            "institutes":[
+              "Yale",
+              "Broad"
+            ]
+          }
+        ]
+      },
+      {
+        "tpn":"TPN:000000002",
+        "recovery":null,
+        "comment":null,
+        "privacyName":"public",
+        "externalReference":null,
+        "assignmentStatusName":"Inspect - Conflict",
+        "summaryStatusName":"Attempt In Progress",
+        "relatedWorkUnitNames":[
+
+        ],
+        "relatedWorkGroupNames":[
+
+        ],
+        "reactivationDate":null,
+        "assignmentStatusStamps":[
+
+        ],
+        "projectIntentions":[
+
+        ],
+        "speciesNames":[
+          "Homo sapiens"
+        ],
+        "consortia":[
+          {
+            "consortiumName":"CMG",
+            "institutes":[
+              "Broad"
+            ]
+          }
+        ]
+      },
+      {
+        "tpn":"TPN:000000003",
+        "recovery":null,
+        "comment":null,
+        "privacyName":"public",
+        "externalReference":null,
+        "assignmentStatusName":"Assigned",
+        "summaryStatusName":"Plan Created",
+        "relatedWorkUnitNames":[
+
+        ],
+        "relatedWorkGroupNames":[
+
+        ],
+        "reactivationDate":null,
+        "assignmentStatusStamps":[
+
+        ],
+        "projectIntentions":[
+
+        ],
+        "speciesNames":[
+
+        ],
+        "consortia":[
+          {
+            "consortiumName":"CMG",
+            "institutes":[
+              "Yale"
+            ]
+          }
+        ]
+      },
+      {
+        "tpn":"TPN:000000004",
+        "recovery":null,
+        "comment":null,
+        "privacyName":"protected",
+        "externalReference":null,
+        "assignmentStatusName":"Inspect - Conflict",
+        "summaryStatusName":"Attempt In Progress",
+        "relatedWorkUnitNames":[
+
+        ],
+        "relatedWorkGroupNames":[
+
+        ],
+        "reactivationDate":null,
+        "assignmentStatusStamps":[
+
+        ],
+        "projectIntentions":[
+
+        ],
+        "speciesNames":[
+
+        ],
+        "consortia":[
+          {
+            "consortiumName":"CMG",
+            "institutes":[
+
+            ]
+          }
+        ]
+      },
+      {
+        "tpn":"TPN:000000005",
+        "recovery":null,
+        "comment":null,
+        "privacyName":"restricted",
+        "externalReference":null,
+        "assignmentStatusName":null,
+        "summaryStatusName":null,
+        "relatedWorkUnitNames":[
+
+        ],
+        "relatedWorkGroupNames":[
+
+        ],
+        "reactivationDate":null,
+        "assignmentStatusStamps":[
+
+        ],
+        "projectIntentions":[
+
+        ],
+        "speciesNames":[
+
+        ],
+        "consortia":[
+
+        ]
+      }
+    ]
+  },
+  "_links":{
+    "self":{
+      "href":"http://localhost:8080/api/projects"
+    }
+  },
+  "page":{
+    "size":20,
+    "totalElements":5,
+    "totalPages":1,
+    "number":0
+  }
+}

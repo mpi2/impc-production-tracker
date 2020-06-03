@@ -67,10 +67,7 @@ class PlanControllerTest extends ControllerTestTemplate
         String expectedOutputAsString =
             loadExpectedResponseFromResource("expectedPlanGetPIN_0000000001.json");
 
-        assertThat(
-            JsonHelper.getJsonStringAsObject(contentAsString),
-            is(JsonHelper.getJsonStringAsObject(expectedOutputAsString)));
-        JSONAssert.assertEquals(expectedOutputAsString,contentAsString, JSONCompareMode.STRICT);
+        JSONAssert.assertEquals(expectedOutputAsString, contentAsString, JSONCompareMode.STRICT);
     }
 
     private ResultHandler documentCrisprPlan()
