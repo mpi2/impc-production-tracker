@@ -51,9 +51,18 @@ public class UpdatePlanRequestProcessor
 
             Plan mappedPlan = planUpdateMapper.toEntity(planUpdateDTO);
             plan.setComment(mappedPlan.getComment());
-            plan.setCrisprAttempt(mappedPlan.getCrisprAttempt());
-            plan.setPhenotypingAttempt(mappedPlan.getPhenotypingAttempt());
-            plan.setBreedingAttempt(mappedPlan.getBreedingAttempt());
+            if (mappedPlan.getCrisprAttempt() != null)
+            {
+                plan.setCrisprAttempt(mappedPlan.getCrisprAttempt());
+            }
+            if (mappedPlan.getPhenotypingAttempt() != null)
+            {
+                plan.setPhenotypingAttempt(mappedPlan.getPhenotypingAttempt());
+            }
+            if (mappedPlan.getBreedingAttempt() != null)
+            {
+                plan.setBreedingAttempt(mappedPlan.getBreedingAttempt());
+            }
             setEvent(plan, planUpdateDTO);
         }
         return plan;

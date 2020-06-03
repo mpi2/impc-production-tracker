@@ -23,6 +23,10 @@ public class PlanSummaryStatusUpdater
         List<Status> statuses = getChildrenStatus(plan);
         statuses.add(plan.getStatus());
         Status mostAdvancedStatus = getMostAdvanceStatusIgnoringAborted(statuses);
+        if (mostAdvancedStatus == null)
+        {
+            mostAdvancedStatus = plan.getStatus();
+        }
         setSummaryStatus(plan, mostAdvancedStatus);
     }
 

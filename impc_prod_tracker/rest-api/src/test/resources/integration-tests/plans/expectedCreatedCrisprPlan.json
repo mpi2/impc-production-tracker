@@ -1,0 +1,131 @@
+{
+  "pin":"any valid pin value",
+  "tpn":"TPN:000000001",
+  "attemptTypeName":"crispr",
+  "funderNames":[
+    "KOMP"
+  ],
+  "workUnitName":"BCM",
+  "workGroupName":"BaSH",
+  "comment":"example of crispr plan creation",
+  "productsAvailableForGeneralPublic":false,
+  "crisprAttempt":{
+    "miDate":"2019-02-26",
+    "experimental":true,
+    "comment":"crispr plan comment",
+    "mutagenesisExternalRef":"MF-26326",
+    "imitsMiAttemptId":20043,
+    "attemptExternalRef":"attempt external reference",
+    "nucleases":[
+      {
+        "id":0,
+        "typeName":"CAS9",
+        "concentration":250.0,
+        "className":"protein"
+      }
+    ],
+    "guides":[
+      {
+        "id":0,
+        "chr":"X",
+        "start":46245139,
+        "stop":46245161,
+        "grnaConcentration":300.0,
+        "sequence":"CTTCACGTACCAAGGAGGGGTGG",
+        "truncatedGuide":true,
+        "strand":"+",
+        "genomeBuild":"GRCm38",
+        "pam3":"AGG",
+        "pam5":"CCT",
+        "protospacerSequence":"CTTCACGTACCAAGGAGGGG"
+      }
+    ],
+    "mutagenesisDonors":[
+      {
+        "id":0,
+        "concentration":5.0,
+        "vectorName":"pUC18_Ikzf2_conditional",
+        "oligoSequenceFasta":"ATAATTGGCAGCCTGATTAGAAGAATGCCCATCTTGTCTAGTGACACATTAGAACAATGAGTAATTGCTCGATGCGGATCCATAACTTCGTATAGCATACATTATACGAAGTTATTCTCTGGGATTAAGAAAAAACTAACATATGAAACAGAAGCCCAGACATCTAAAACCACAAAGA",
+        "preparationTypeName":"Circular"
+      }
+    ],
+    "reagents":[
+      {
+        "id":0,
+        "reagentName":"Ligase IV",
+        "reagentDescription":"NHEJ Inhibitor",
+        "concentration":334.0
+      }
+    ],
+    "genotypePrimers":[
+      {
+        "id":0,
+        "genomicStartCoordinate":1,
+        "genomicEndCoordinate":200,
+        "name":"Gpr68wtR",
+        "sequence":"GTAGAGGGACAGGCAGTTGG"
+      }
+    ],
+    "totalEmbryosInjected":72,
+    "totalEmbryosSurvived":70,
+    "embryo2Cell":"20043",
+    "assay":{
+      "id":0,
+      "typeName":"T7EN1",
+      "numFounderPups":26,
+      "numFounderSelectedForBreeding":1,
+      "founderNumAssays":26,
+      "numDeletionG0Mutants":1,
+      "numG0WhereMutationDetected":1,
+      "numHdrG0Mutants":1,
+      "numHdrG0MutantsAllDonorsInserted":0,
+      "numHdrG0MutantsSubsetDonorsInserted":0,
+      "numHrG0Mutants":0,
+      "numNhejG0Mutants":0,
+      "embryoTransferDay":"Same Day",
+      "totalTransferred":72
+    },
+    "strainInjectedName":"C57BL/6NJ"
+  },
+  "typeName":"production",
+  "statusName":"Founder Obtained",
+  "summaryStatusName":"Founder Obtained",
+  "statusDates":[
+    {
+      "statusName":"Plan Created",
+      "date":"2020-06-02T13:34:53.840965"
+    },
+    {
+      "statusName":"Attempt In Progress",
+      "date":"2020-06-02T13:34:53.848572"
+    },
+    {
+      "statusName":"Embryos Obtained",
+      "date":"2020-06-02T13:34:53.851655"
+    },
+    {
+      "statusName":"Founder Obtained",
+      "date":"2020-06-02T13:34:53.85445"
+    }
+  ],
+  "summaryStatusDates":[
+    {
+      "statusName":"Founder Obtained",
+      "date":"2020-06-02T13:34:53.855373"
+    }
+  ],
+  "statusTransition":{
+    "currentStatus":"Founder Obtained",
+    "transitions":[
+      {
+        "action":"abortWhenFounderObtained",
+        "description":"Abort the plan after a founder obtained",
+        "triggeredByUser":true,
+        "available":true,
+        "note":null,
+        "nextStatus":"AttemptAborted"
+      }
+    ],
+    "actionToExecute":null
+  }
+}

@@ -58,6 +58,8 @@ public class SequenceResetter
                     }
                     String resetSql = String.format(resetSqlTemplate, sequenceName, maxId + 1);
                     statement.execute(resetSql);
+                    // calling nextval is preventing hibernate to generate negative ids.
+                    statement.executeQuery(String.format("SELECT nextval('%s')", sequenceName));
                 }
             }
         } catch (SQLException e) {

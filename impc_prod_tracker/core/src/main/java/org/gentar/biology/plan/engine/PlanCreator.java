@@ -58,8 +58,6 @@ public class PlanCreator
         planStatusManager.setChildrenInitialStatuses(plan);
         // If the data is adequate, move through the state machine (system triggered transitions)
         planStatusManager.updateStatusIfNeeded(plan);
-        // Once the final state for the plan is calculated, we can calculate the summary status
-        planStatusManager.setSummaryStatus(plan);
     }
 
     private Plan savePlan(Plan plan)
