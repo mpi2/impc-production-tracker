@@ -359,8 +359,6 @@ include::{snippets}/plans/postCrisprPlan/http-request.adoc[]
 
 include::{snippets}/plans/postCrisprPlan/http-response.adoc[]
 
-//===== Fields in Response
-//include::{snippets}/plans/postCrisprPlan/response-fields.adoc[]
 
 === PUT
 
@@ -465,12 +463,26 @@ as the value _actionToExecute_ in the statusTransition section of the payload.
 
 ===== Example Request
 
+Let's suppose you want to abort a crispr plan that has the status _Founder Obtained_. If we do a _GET_
+to the plan we want to abort, you will see the _statusTransition_ section with a single available
+transition executable by the user: *abortWhenFounderObtained*.
+
+Use the name of the action (abortWhenFounderObtained) as the value in the field *actionToExecute*.
+
+You can use the whole GET response as the payload for the new operation. You can also decide to send
+only the _statusTransition_ information in the payload. The following is an example of the request
+in case you decide to left out the attempt information:
+
 Curl:
-include::{snippets}/plans/putCrisprPlan/http-request.adoc[]
+include::{snippets}/plans/putCrisprPlanStateMachine/http-request.adoc[]
+
 
 ===== Example Response
 
-include::{snippets}/plans/putCrisprPlan/http-response.adoc[]
+The response will indicate what changed in the system, as long as a link to the resource in
+case you need to retrieve the new object.
+
+include::{snippets}/plans/putCrisprPlanStateMachine/http-response.adoc[]
 
 
 

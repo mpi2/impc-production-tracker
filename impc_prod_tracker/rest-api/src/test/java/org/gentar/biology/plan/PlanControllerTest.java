@@ -43,6 +43,8 @@ class PlanControllerTest extends ControllerTestTemplate
     @Autowired
     private SequenceResetter sequenceResetter;
 
+    PlanCustomizations planCustomizations = new PlanCustomizations();
+
     @BeforeEach
     public void setup() throws Exception
     {
@@ -165,7 +167,6 @@ class PlanControllerTest extends ControllerTestTemplate
 
         JSONAssert.assertEquals(expectedOutputAsString, obtainedPlanAsString, JSONCompareMode.STRICT);
     }
-
 
     private void editCrisprPlanWithNewValues(PlanUpdateDTO planUpdateDTO)
     {
@@ -297,10 +298,7 @@ class PlanControllerTest extends ControllerTestTemplate
             .andExpect(status().isOk());
         MvcResult obtainedProject = callGetWithObtainedUrl.andReturn();
         String obtainedPlanAsString = obtainedProject.getResponse().getContentAsString();
-        System.out.println(obtainedPlanAsString);
         String expectedOutputAsString = loadExpectedResponseFromResource(jsonFileName);
-
-        PlanCustomizations planCustomizations = new PlanCustomizations();
 
         JSONAssert.assertEquals(
             expectedOutputAsString,
@@ -340,7 +338,6 @@ class PlanControllerTest extends ControllerTestTemplate
 
         MvcResult result = resultActions.andReturn();
         String contentAsString = result.getResponse().getContentAsString();
-        System.out.println(contentAsString);
         String planLink = LinkUtil.getSelfHrefLinkStringFromJson(contentAsString);
         verifyGetPlantEqualsJsonIgnoringIdsAndPinAndDates(planLink, "expectedCreatedCrisprPlan.json");
     }
@@ -355,10 +352,7 @@ class PlanControllerTest extends ControllerTestTemplate
             .andExpect(status().isOk());
         MvcResult obtainedProject = callGetWithObtainedUrl.andReturn();
         String obtainedPlanAsString = obtainedProject.getResponse().getContentAsString();
-        System.out.println(obtainedPlanAsString);
         String expectedOutputAsString = loadExpectedResponseFromResource(jsonFileName);
-
-        PlanCustomizations planCustomizations = new PlanCustomizations();
 
         JSONAssert.assertEquals(
             expectedOutputAsString,
