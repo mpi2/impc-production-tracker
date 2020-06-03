@@ -102,6 +102,7 @@ public class PlanUpdaterImpl implements PlanUpdater
         History history =
             historyService.detectTrackOfChanges(originalPlan, newPlan, originalPlan.getId());
         history = historyService.filterDetailsInNestedEntity(history, Plan_.STATUS, Status_.NAME);
+        history = historyService.filterDetailsInNestedEntity(history, Plan_.SUMMARY_STATUS, Status_.NAME);
         return history;
     }
 

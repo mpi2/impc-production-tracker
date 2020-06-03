@@ -68,13 +68,25 @@
                  NAME="DTCC"/>
 
     <STATUS     ID="1"
-                NAME="Plan Created"/>
+                NAME="Plan Created"
+                IS_ABORTION_STATUS="false"
+                ORDERING="1000"/>
     <STATUS     ID="2"
-                NAME="Attempt In Progress"/>
+                NAME="Attempt In Progress"
+                IS_ABORTION_STATUS="false"
+                ORDERING="11000"/>
     <STATUS     ID="3"
-                NAME="Embryos Obtained"/>
+                NAME="Embryos Obtained"
+                IS_ABORTION_STATUS="false"
+                ORDERING="12000"/>
     <STATUS     ID="4"
-                NAME="Founder Obtained"/>
+                NAME="Founder Obtained"
+                IS_ABORTION_STATUS="false"
+                ORDERING="13000"/>
+    <STATUS     ID="5"
+                NAME="Attempt Aborted"
+                IS_ABORTION_STATUS="true"
+                ORDERING="14000"/>
 
     <CONSORTIUM ID="1"
                 NAME="CMG"/>

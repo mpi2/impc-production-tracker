@@ -202,7 +202,6 @@ You can also apply filters to the endpoint to refine the search. This is a list 
 use. Each filter admits several values separated by comma.
 
 
-
 ===== Example Request
 
 Curl:
@@ -345,6 +344,134 @@ include::{snippets}/plans/filteredPlans/curl-request.adoc[]
 ===== Example Response
 
 include::{snippets}/plans/filteredPlans/http-response.adoc[]
+
+=== POST
+
+==== Create a plan
+
+
+===== Example Request
+
+Curl:
+include::{snippets}/plans/postCrisprPlan/http-request.adoc[]
+
+===== Example Response
+
+include::{snippets}/plans/postCrisprPlan/http-response.adoc[]
+
+//===== Fields in Response
+//include::{snippets}/plans/postCrisprPlan/response-fields.adoc[]
+
+=== PUT
+
+==== Update a plan
+
+You can update some information in a plan if you are related with any of the
+work units for that plan.
+
+The only fields that can be modified are the ones shown in "Example Request". The exception are
+pin and tpn, which are there just as a reference to the object that is being modified (they are not
+mandatory).
+
+If a value is provided for pin, the system will validate that it matches the pin in the url parameter.
+
+===== Example Request
+
+Curl:
+include::{snippets}/plans/putCrisprPlan/http-request.adoc[]
+
+===== Example Response
+
+include::{snippets}/plans/putCrisprPlan/http-response.adoc[]
+
+== State Machine interaction
+
+==== Structure
+
+Several entities in GenTaR rely in a state machine to control the logic to change from a status
+to another.
+
+When you do a GET to one of those entities, you'll get as part of the response a *statusTransition*
+section, which contains information about the current status and what actions cab be executed in order
+to change that status.
+
+```json
+"statusTransition" : {
+    "currentStatus" : "Founder Obtained",
+    "transitions" : [ {
+    "action" : "abortWhenFounderObtained",
+    "description" : "Abort the plan after a founder obtained",
+    "triggeredByUser" : true,
+    "available" : true,
+    "note" : null,
+    "nextStatus" : "AttemptAborted"
+    } ],
+    "actionToExecute" : null
+```
+
+
+|===
+|Path|Type|Description
+
+|`+statusTransition+`
+|`+Object+`
+|Information about the current state in the state machine for the plan.
+
+|`+statusTransition.currentStatus+`
+|`+String+`
+|Current status in the plan
+
+|`+statusTransition.transitions[]+`
+|`+Array+`
+|Transitions in the state machine given the current state.
+
+|`+statusTransition.transitions[].action+`
+|`+String+`
+|Action or transition's name.
+
+|`+statusTransition.transitions[].description+`
+|`+String+`
+|Transition's description.
+
+|`+statusTransition.transitions[].triggeredByUser+`
+|`+Boolean+`
+|Indicates whether the transition is executed by the user or by the system.
+
+|`+statusTransition.transitions[].available+`
+|`+Boolean+`
+|Indicates if the transition can be executed at the moment.
+
+|`+statusTransition.transitions[].note+`
+|`+Null+`
+|Additional explanation about the availability to execute the transition.
+
+|`+statusTransition.transitions[].nextStatus+`
+|`+String+`
+|Next status that the plan will have if the transition is executed.
+
+|`+statusTransition.actionToExecute+`
+|`+Null+`
+|Name of the transition (action) to execute.
+
+
+|===
+
+
+==== How to execute a change in the state machine?
+To execute a transition in the plan, you need to choose an action that is _triggeredByUser = true_
+and _available = true_ and send a PUT request (as a normal plan update ) passing the name of the action
+as the value _actionToExecute_ in the statusTransition section of the payload.
+
+
+===== Example Request
+
+Curl:
+include::{snippets}/plans/putCrisprPlan/http-request.adoc[]
+
+===== Example Response
+
+include::{snippets}/plans/putCrisprPlan/http-response.adoc[]
+
 
 
 

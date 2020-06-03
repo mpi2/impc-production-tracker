@@ -59,14 +59,24 @@ public class PlanStatusManager
     }
 
     /**
-     * Check if the changes in the plan require a change on the status.
-     * @param plan Plan being updated.
+     * Executes all the status related changes. The changes can be because the user explicitly
+     * requested them in the state machine or because of the data that causes a system triggered
+     * transition.
+     * This method will:
+     * - Execute the system triggered transitions that are needed.
+     * - Execute the user triggered transition that the user specified in the event.
+     * - Update (if needed) the summary status of the plan.
+     * @param plan Plan that is being evaluated.
      */
     public void updateStatusIfNeeded(Plan plan)
     {
+        // This is going to be @deprecated once the phenotyping stages are responsible for processing
+        // their states machines.
         updateChildrenIfNeeded(plan);
         executeSystemTriggeredTransitions(plan);
         executeUserTriggeredTransitions(plan);
+        // Once the final state for the plan is calculated, we can calculate the summary status
+        setSummaryStatus(plan);
     }
 
     private void executeSystemTriggeredTransitions(Plan plan)
