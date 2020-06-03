@@ -13,19 +13,21 @@ import org.gentar.biology.plan.PlanMinimumCreationDTO;
 import org.gentar.biology.project.ProjectCommonDataDTO;
 import org.gentar.biology.project.ProjectConsortiumDTO;
 import org.gentar.biology.project.ProjectCreationDTO;
-import org.gentar.biology.project.ProjectResponseDTO;
-import org.gentar.biology.project.ProjectTestHelper;
 import org.gentar.biology.project.ProjectUpdateDTO;
 import org.gentar.common.history.HistoryDTO;
 import org.gentar.common.history.HistoryDetailDTO;
 import org.gentar.framework.ControllerTestTemplate;
 import org.gentar.framework.SequenceResetter;
 import org.gentar.framework.TestResourceLoader;
+import org.gentar.framework.asserts.json.ProjectCustomizations;
 import org.gentar.framework.db.DBSetupFilesPaths;
 import org.gentar.helpers.LinkUtil;
 import org.gentar.util.JsonHelper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.skyscreamer.jsonassert.JSONAssert;
+import org.skyscreamer.jsonassert.JSONCompareMode;
+import org.skyscreamer.jsonassert.comparator.CustomComparator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MvcResult;
@@ -72,17 +74,17 @@ class ProjectControllerTest extends ControllerTestTemplate
         MvcResult result = resultActions.andReturn();
         String contentAsString = result.getResponse().getContentAsString();
 
-        ProjectResponseDTO obtained = JsonHelper.fromJson(contentAsString, ProjectResponseDTO.class);
-        ProjectResponseDTO expected = loadExpectedResponseFromResource("expectedProjectTPN_000000001.json");
+        String expectedOutputAsString =
+            loadExpectedResponseFromResource("expectedProjectTPN_000000001.json");
 
-        ProjectTestHelper.assertProjectResponseDTOIsTheExpected(obtained, expected);
+        JSONAssert.assertEquals(expectedOutputAsString, contentAsString, JSONCompareMode.STRICT);
     }
 
-    private ProjectResponseDTO loadExpectedResponseFromResource(String resourceName)
-    throws IOException
+    private String loadExpectedResponseFromResource(String resourceName)
+        throws IOException
     {
         String completeResourcePath = TEST_RESOURCES_FOLDER + resourceName;
-        return TestResourceLoader.loadTestResource(completeResourcePath, ProjectResponseDTO.class);
+        return TestResourceLoader.loadJsonFromResource(completeResourcePath);
     }
 
     private ResultHandler documentSingleProject()
@@ -179,11 +181,19 @@ class ProjectControllerTest extends ControllerTestTemplate
     @DatabaseTearDown(type = DatabaseOperation.DELETE_ALL, value = DBSetupFilesPaths.MULTIPLE_PROJECTS)
     void testGetAllProjects() throws Exception
     {
-        mvc().perform(MockMvcRequestBuilders
+        ResultActions resultActions = mvc().perform(MockMvcRequestBuilders
             .get("/api/projects")
             .header("Authorization", accessToken))
             .andExpect(status().isOk())
             .andDo(document("projects/allProjects"));
+
+        MvcResult result = resultActions.andReturn();
+        String contentAsString = result.getResponse().getContentAsString();
+
+        String expectedOutputAsString =
+            loadExpectedResponseFromResource("expectedAllProjects.json");
+
+        JSONAssert.assertEquals(expectedOutputAsString, contentAsString, JSONCompareMode.STRICT);
     }
 
     @Test
@@ -191,11 +201,19 @@ class ProjectControllerTest extends ControllerTestTemplate
     @DatabaseTearDown(type = DatabaseOperation.DELETE_ALL, value = DBSetupFilesPaths.MULTIPLE_PROJECTS)
     void testGetAllProjectsWithFilter() throws Exception
     {
-        mvc().perform(MockMvcRequestBuilders
-            .get("/api/projects?tpns=TPN:01,TPN:02")
+        ResultActions resultActions = mvc().perform(MockMvcRequestBuilders
+            .get("/api/projects?assignmentStatusName=Assigned")
             .header("Authorization", accessToken))
             .andExpect(status().isOk())
             .andDo(document("projects/allProjectsWithFilter"));
+
+        MvcResult result = resultActions.andReturn();
+        String contentAsString = result.getResponse().getContentAsString();
+
+        String expectedOutputAsString =
+            loadExpectedResponseFromResource("expectedFilteredProjects.json");
+
+        JSONAssert.assertEquals(expectedOutputAsString, contentAsString, JSONCompareMode.STRICT);
     }
 
     @Test
@@ -271,7 +289,6 @@ class ProjectControllerTest extends ControllerTestTemplate
         List<HistoryDetailDTO> historyDetailDTOS = historyDTO.getDetails();
         assertThat(historyDetailDTOS.size(), is(4));
 
-
         HistoryDetailDTO historyDetailDTO1 = getHistoryDetailByField(historyDetailDTOS, "comment");
         assertThat(historyDetailDTO1.getField(), is("comment"));
         assertThat(historyDetailDTO1.getOldValue(), is("Comment test"));
@@ -317,7 +334,27 @@ class ProjectControllerTest extends ControllerTestTemplate
         MvcResult result = resultActions.andReturn();
         String contentAsString = result.getResponse().getContentAsString();
         String projectLink = LinkUtil.getSelfHrefLinkStringFromJson(contentAsString);
-        verifyGetProjectEqualsJson(projectLink, "expectedCreatedProject.json");
+        verifyGetProjectEqualsJsonIgnoringIdsAndDates(projectLink, "expectedCreatedProject.json");
+    }
+
+    private void verifyGetProjectEqualsJsonIgnoringIdsAndDates(
+        String projectLink, String jsonFileName) throws Exception
+    {
+        ProjectCustomizations projectCustomizations = new ProjectCustomizations();
+        ResultActions callGetWithObtainedUrl = mvc().perform(MockMvcRequestBuilders
+            .get(projectLink)
+            .header("Authorization", accessToken))
+            .andExpect(status().isOk());
+        MvcResult obtainedProject = callGetWithObtainedUrl.andReturn();
+        String obtainedProjectAsString = obtainedProject.getResponse().getContentAsString();
+
+        String expectedOutputAsString =
+            loadExpectedResponseFromResource(jsonFileName);
+
+        JSONAssert.assertEquals(
+            expectedOutputAsString,
+            obtainedProjectAsString,
+            new CustomComparator(JSONCompareMode.STRICT, projectCustomizations.ignoreIdsAndDates()));
     }
 
     private ResultHandler documentCreationOfProject()
@@ -478,14 +515,11 @@ class ProjectControllerTest extends ControllerTestTemplate
             .andExpect(status().isOk());
         MvcResult obtainedProject = callGetWithObtainedUrl.andReturn();
         String obtainedProjectAsString = obtainedProject.getResponse().getContentAsString();
-        System.out.println(obtainedProjectAsString);
 
-        ProjectResponseDTO obtained =
-            JsonHelper.fromJson(obtainedProjectAsString, ProjectResponseDTO.class);
-        ProjectResponseDTO expected =
+        String expectedOutputAsString =
             loadExpectedResponseFromResource(jsonFileName);
 
-        ProjectTestHelper.assertProjectResponseDTOIsTheExpected(obtained, expected);
+        JSONAssert.assertEquals(expectedOutputAsString, obtainedProjectAsString, JSONCompareMode.STRICT);
     }
 
     private HistoryDetailDTO getHistoryDetailByField(

@@ -27,7 +27,7 @@
   ],
   "_links":{
     "productionPlans":{
-      "href":"http://localhost:8080/api/plans/PIN:10001"
+      "href":"http://localhost:8080/api/plans/PIN:0000000001"
     }
   },
   "assignmentStatusStamps":[
