@@ -81,6 +81,7 @@ public class RootConfiguration extends WebSecurityConfigurerAdapter
             .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
             .and()
             .authorizeRequests()
+            .antMatchers("/docs/**").permitAll()
             .antMatchers("/auth/signin").permitAll()
             .antMatchers("/api/conf").permitAll()
             .antMatchers("/api/plans/**").permitAll()
