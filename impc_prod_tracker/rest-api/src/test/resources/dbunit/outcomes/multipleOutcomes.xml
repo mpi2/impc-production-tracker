@@ -1,0 +1,96 @@
+<dataset>
+    <PRIVACY    ID="1"
+                NAME="public"/>
+    <PRIVACY    ID="2"
+                NAME="protected"/>
+    <PRIVACY    ID="3"
+                NAME="restricted"/>
+
+    <SPECIES    ID="1"
+                NAME="Mus musculus"/>
+    <SPECIES    ID="2"
+                NAME="Homo sapiens"/>
+
+    <ASSIGNMENT_STATUS  ID="1"
+                        NAME="Assigned"/>
+
+    <PLAN_TYPE  ID="1"
+                NAME="production"/>
+    <PLAN_TYPE  ID="2"
+                NAME="phenotyping"/>
+
+    <ATTEMPT_TYPE   ID="1"
+                    NAME="crispr"/>
+
+    <WORK_UNIT  ID="1"
+                NAME="BCM"/>
+    <WORK_UNIT  ID="2"
+                NAME="TCP"/>
+    <WORK_GROUP ID="1"
+                NAME="BaSH"/>
+    <WORK_GROUP  ID="2"
+                 NAME="DTCC"/>
+
+    <STATUS     ID="1"
+                NAME="Plan Created"
+                IS_ABORTION_STATUS="false"
+                ORDERING="1000"/>
+    <STATUS     ID="2"
+                NAME="Attempt In Progress"
+                IS_ABORTION_STATUS="false"
+                ORDERING="11000"/>
+    <STATUS     ID="3"
+                NAME="Embryos Obtained"
+                IS_ABORTION_STATUS="false"
+                ORDERING="12000"/>
+    <STATUS     ID="4"
+                NAME="Founder Obtained"
+                IS_ABORTION_STATUS="false"
+                ORDERING="13000"/>
+    <STATUS     ID="5"
+                NAME="Attempt Aborted"
+                IS_ABORTION_STATUS="true"
+                ORDERING="14000"/>
+
+    <STRAIN  ID="1"
+             NAME="C57BL/6NJ"
+             MGI_STRAIN_ACC_ID="MGI:3056279"/>
+
+    <PROJECT    ID="1"
+                TPN="TPN:000000001"
+                PRIVACY_ID="1"
+                ASSIGNMENT_STATUS_ID="1"
+                SUMMARY_STATUS_ID="1"
+                RECOVERY="false"
+                COMMENT="Comment test"
+                PROJECT_EXTERNAL_REF="External reference 01"/>
+
+    <PLAN       ID="1"
+                PIN="PIN:0000000001"
+                PROJECT_ID="1"
+                PLAN_TYPE_ID="1"
+                ATTEMPT_TYPE_ID="1"
+                STATUS_ID="4"
+                WORK_UNIT_ID="1"
+                WORK_GROUP_ID="1"
+                SUMMARY_STATUS_ID="4"/>
+
+    <PERSON     ID="123"
+                EMAIL="imits2test@test.com"
+                AUTH_ID="usr-dde67fbd-c3c2-42eb-aa81-f1a225f047c7"/>
+
+    <ROLE   ID="1"
+            NAME="manager"/>
+    <ROLE   ID="2"
+            NAME="general"/>
+
+    <PERSON_ROLE_WORK_UNIT  ID="1"
+                            PERSON_ID="123"
+                            ROLE_ID="2"
+                            WORK_UNIT_ID="1"/>
+
+    <PERSON_ROLE_CONSORTIUM/>
+    <PLAN_STATUS_STAMP/>
+    <PLAN_SUMMARY_STATUS_STAMP/>
+    <PROJECT_SUMMARY_STATUS_STAMP/>
+</dataset>
