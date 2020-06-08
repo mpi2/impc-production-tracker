@@ -79,6 +79,14 @@ public class OutcomeController
         return new ResponseEntity(pr, responseHeaders, HttpStatus.OK);
     }
 
+    @GetMapping(value = {"plans/{pin}/outcomes/{tpo}"})
+    public OutcomeResponseDTO findOneByPlanAndTpo(
+        @PathVariable String pin, @PathVariable String tpo)
+    {
+        Outcome outcome = outcomeService.getOutcomeByPinAndTpo(pin, tpo);
+        return outcomeResponseMapper.toDto(outcome);
+    }
+
     @GetMapping(value = {"plans/{pin}/outcomes"})
     public List<OutcomeResponseDTO> findAllByPlan(@PathVariable String pin)
     {
