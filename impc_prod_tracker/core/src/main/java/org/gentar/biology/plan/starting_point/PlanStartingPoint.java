@@ -14,7 +14,6 @@ import java.io.Serializable;
 @Entity
 public class PlanStartingPoint extends BaseEntity implements Serializable
 {
-
     @Id
     @SequenceGenerator(name = "planStartingPointSeq", sequenceName = "PLAN_STARTING_POINT_SEQ")
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "planStartingPointSeq")

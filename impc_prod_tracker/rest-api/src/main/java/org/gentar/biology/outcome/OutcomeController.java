@@ -34,7 +34,6 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 public class OutcomeController
 {
     private OutcomeService outcomeService;
-    private OutcomeMapper outcomeMapper;
     private PlanService planService;
     private OutcomeRequestProcessor outcomeRequestProcessor;
     private HistoryMapper historyMapper;
@@ -43,7 +42,6 @@ public class OutcomeController
 
     public OutcomeController(
         OutcomeService outcomeService,
-        OutcomeMapper outcomeMapper,
         PlanService planService,
         OutcomeRequestProcessor outcomeRequestProcessor,
         HistoryMapper historyMapper,
@@ -51,7 +49,6 @@ public class OutcomeController
         OutcomeCreationMapper outcomeCreationMapper)
     {
         this.outcomeService = outcomeService;
-        this.outcomeMapper = outcomeMapper;
         this.planService = planService;
         this.outcomeRequestProcessor = outcomeRequestProcessor;
         this.historyMapper = historyMapper;

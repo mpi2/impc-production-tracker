@@ -1,7 +1,8 @@
 package org.gentar.biology.starting_point;
 
-import org.gentar.EntityMapper;
 import org.gentar.Mapper;
+import org.gentar.biology.outcome.Outcome;
+import org.gentar.biology.outcome.OutcomeService;
 import org.gentar.biology.plan.plan_starting_point.PlanStartingPointDTO;
 import org.gentar.biology.plan.starting_point.PlanStartingPoint;
 import org.springframework.stereotype.Component;
@@ -9,22 +10,32 @@ import org.springframework.stereotype.Component;
 @Component
 public class PlanStartingPointMapper implements Mapper<PlanStartingPoint, PlanStartingPointDTO>
 {
-    private EntityMapper entityMapper;
+    private OutcomeService outcomeService;
 
-    public PlanStartingPointMapper(EntityMapper entityMapper)
+    public PlanStartingPointMapper(OutcomeService outcomeService)
     {
-        this.entityMapper = entityMapper;
+        this.outcomeService = outcomeService;
     }
 
     @Override
     public PlanStartingPointDTO toDto(PlanStartingPoint planStartingPoint)
     {
-        return entityMapper.toTarget(planStartingPoint, PlanStartingPointDTO.class);
+        PlanStartingPointDTO planStartingPointDTO = new PlanStartingPointDTO();
+        planStartingPointDTO.setId(planStartingPoint.getId());
+        if (planStartingPoint.getOutcome() != null)
+        {
+            planStartingPointDTO.setTpo(planStartingPoint.getOutcome().getTpo());
+        }
+        return planStartingPointDTO;
     }
 
     @Override
     public PlanStartingPoint toEntity(PlanStartingPointDTO planStartingPointDTO)
     {
-        return entityMapper.toTarget(planStartingPointDTO, PlanStartingPoint.class);
+        PlanStartingPoint planStartingPoint = new PlanStartingPoint();
+        planStartingPoint.setId(planStartingPointDTO.getId());
+        Outcome outcome = outcomeService.getByTpoFailsIfNotFound(planStartingPointDTO.getTpo());
+        planStartingPoint.setOutcome(outcome);
+        return planStartingPoint;
     }
 }
