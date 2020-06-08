@@ -80,6 +80,7 @@ public class PhenotypingStage extends BaseEntity implements ProcessData
     {
         List<String> values = new ArrayList<>();
         values.add("id=" + id);
+        values.add("pps=" + pps);
         values.add("phenotypingStageType=" + phenotypingStageType.getName());
         values.add("phenotypingExperimentsStarted=" + phenotypingExperimentsStarted);
         values.add("statusName=" + status.getName());
