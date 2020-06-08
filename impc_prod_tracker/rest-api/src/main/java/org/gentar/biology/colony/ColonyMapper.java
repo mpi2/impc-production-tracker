@@ -2,6 +2,8 @@ package org.gentar.biology.colony;
 
 import org.gentar.EntityMapper;
 import org.gentar.Mapper;
+import org.gentar.biology.status.StatusStampMapper;
+import org.gentar.biology.status_stamps.StatusStampsDTO;
 import org.gentar.biology.strain.StrainMapper;
 import org.gentar.common.state_machine.StatusTransitionDTO;
 import org.gentar.common.state_machine.TransitionDTO;
@@ -9,6 +11,7 @@ import org.gentar.statemachine.ProcessEvent;
 import org.gentar.statemachine.TransitionEvaluation;
 import org.gentar.statemachine.TransitionMapper;
 import org.springframework.stereotype.Component;
+import java.util.Comparator;
 import java.util.List;
 
 @Component
@@ -18,26 +21,38 @@ public class ColonyMapper implements Mapper<Colony, ColonyDTO>
     private StrainMapper strainMapper;
     private ColonyService colonyService;
     private TransitionMapper transitionMapper;
+    private StatusStampMapper statusStampMapper;
 
     public ColonyMapper(
         EntityMapper entityMapper,
         StrainMapper strainMapper,
         ColonyService colonyService,
-        TransitionMapper transitionMapper)
+        TransitionMapper transitionMapper,
+        StatusStampMapper statusStampMapper)
     {
         this.entityMapper = entityMapper;
         this.strainMapper = strainMapper;
         this.colonyService = colonyService;
         this.transitionMapper = transitionMapper;
+        this.statusStampMapper = statusStampMapper;
     }
 
     @Override
-    public ColonyDTO toDto(Colony entity)
+    public ColonyDTO toDto(Colony colony)
     {
-        ColonyDTO colonyDTO = entityMapper.toTarget(entity, ColonyDTO.class);
-        colonyDTO.setStrainName(strainMapper.toDto(entity.getStrain()));
-        colonyDTO.setStatusTransitionDTO(buildStatusTransitionDTO(entity));
+        ColonyDTO colonyDTO = entityMapper.toTarget(colony, ColonyDTO.class);
+        colonyDTO.setStrainName(strainMapper.toDto(colony.getStrain()));
+        colonyDTO.setStatusTransitionDTO(buildStatusTransitionDTO(colony));
+        setStatusStampsDTOS(colonyDTO, colony);
         return colonyDTO;
+    }
+
+    private void setStatusStampsDTOS(ColonyDTO colonyDTO, Colony colony)
+    {
+        List<StatusStampsDTO> statusStampsDTOS =
+            statusStampMapper.toDtos(colony.getColonyStatusStamps());
+        statusStampsDTOS.sort(Comparator.comparing(StatusStampsDTO::getDate));
+        colonyDTO.setStatusStampsDTOS(statusStampsDTOS);
     }
 
     @Override

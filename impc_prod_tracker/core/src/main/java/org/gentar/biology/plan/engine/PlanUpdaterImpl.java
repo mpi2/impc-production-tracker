@@ -6,6 +6,7 @@ import org.gentar.biology.project.ProjectService;
 import org.gentar.biology.status.Status_;
 import org.gentar.exceptions.UserOperationFailedException;
 import org.gentar.audit.history.HistoryService;
+import org.gentar.security.permissions.PermissionService;
 import org.springframework.stereotype.Component;
 import org.gentar.security.abac.spring.ContextAwarePolicyEnforcement;
 import org.gentar.biology.plan.Plan;
@@ -59,7 +60,7 @@ public class PlanUpdaterImpl implements PlanUpdater
      */
     private void validatePermissionToUpdatePlan(Plan plan)
     {
-        if (!policyEnforcement.hasPermission(plan, "UPDATE_PLAN"))
+        if (!policyEnforcement.hasPermission(plan, PermissionService.UPDATE_PLAN_ACTION))
         {
             throw new UserOperationFailedException(
                 "You don't have permission to edit this plan");
