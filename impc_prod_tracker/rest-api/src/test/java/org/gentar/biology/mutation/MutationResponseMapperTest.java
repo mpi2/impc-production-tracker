@@ -6,6 +6,7 @@ import org.gentar.biology.mutation.genbank_file.GenbankFile;
 import org.gentar.biology.mutation.genetic_type.GeneticMutationType;
 import org.gentar.biology.mutation.molecular_type.MolecularMutationType;
 import org.gentar.biology.outcome.Outcome;
+import org.gentar.biology.plan.Plan;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -96,6 +97,9 @@ public class MutationResponseMapperTest
         mutation.setGenes(new HashSet<>(Collections.singletonList(gene)));
         Outcome outcome = new Outcome();
         outcome.setTpo(TPO);
+        Plan plan = new Plan();
+        plan.setPin("pin1");
+        outcome.setPlan(plan);
         mutation.setOutcomes(new HashSet<>(Collections.singletonList(outcome)));
         MutationCategorization mutationCategorization = new MutationCategorization();
         mutationCategorization.setName(MUTATION_CATEGORIZATION);
