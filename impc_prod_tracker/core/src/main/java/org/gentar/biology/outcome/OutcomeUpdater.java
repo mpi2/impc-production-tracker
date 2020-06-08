@@ -6,6 +6,9 @@ import org.gentar.biology.colony.Colony;
 import org.gentar.biology.colony.Colony_;
 import org.gentar.biology.plan.PlanStatusManager;
 import org.gentar.biology.status.Status_;
+import org.gentar.exceptions.UserOperationFailedException;
+import org.gentar.security.abac.spring.ContextAwarePolicyEnforcement;
+import org.gentar.security.permissions.PermissionService;
 import org.gentar.statemachine.StateTransitionsManager;
 import org.springframework.stereotype.Component;
 
@@ -16,16 +19,20 @@ public class OutcomeUpdater
     private StateTransitionsManager stateTransitionsManager;
     private OutcomeRepository outcomeRepository;
     private PlanStatusManager planStatusManager;
+    private ContextAwarePolicyEnforcement policyEnforcement;
 
     public OutcomeUpdater(
         HistoryService historyService,
         StateTransitionsManager stateTransitionsManager,
-        OutcomeRepository outcomeRepository, PlanStatusManager planStatusManager)
+        OutcomeRepository outcomeRepository,
+        PlanStatusManager planStatusManager,
+        ContextAwarePolicyEnforcement policyEnforcement)
     {
         this.historyService = historyService;
         this.stateTransitionsManager = stateTransitionsManager;
         this.outcomeRepository = outcomeRepository;
         this.planStatusManager = planStatusManager;
+        this.policyEnforcement = policyEnforcement;
     }
 
     History update(Outcome originalOutcome, Outcome newOutcome)
@@ -40,9 +47,13 @@ public class OutcomeUpdater
         return history;
     }
 
-    private void validatePermission(Outcome newOutcome)
+    private void validatePermission(Outcome outcome)
     {
-        // Add validations if needed
+        if (!policyEnforcement.hasPermission(outcome.getPlan(), PermissionService.UPDATE_PLAN_ACTION))
+        {
+            throw new UserOperationFailedException(
+                "You don't have permission to edit this outcome");
+        }
     }
 
     private void validateData(Outcome newOutcome)
