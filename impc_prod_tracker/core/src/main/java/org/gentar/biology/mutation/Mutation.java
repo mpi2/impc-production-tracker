@@ -70,7 +70,7 @@ public class Mutation extends BaseEntity
     private MolecularMutationType molecularMutationType;
 
     @OneToOne(targetEntity = GenbankFile.class)
-    private GenbankFile genebankFile;
+    private GenbankFile genbankFile;
 
     @Lob
     @Column(name="bam_file")

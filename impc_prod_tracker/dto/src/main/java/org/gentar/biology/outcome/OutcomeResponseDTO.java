@@ -2,9 +2,10 @@ package org.gentar.biology.outcome;
 
 import com.fasterxml.jackson.annotation.JsonUnwrapped;
 import lombok.Data;
+import org.springframework.hateoas.RepresentationModel;
 
 @Data
-public class OutcomeResponseDTO
+public class OutcomeResponseDTO extends RepresentationModel<OutcomeResponseDTO>
 {
     private Long id;
 

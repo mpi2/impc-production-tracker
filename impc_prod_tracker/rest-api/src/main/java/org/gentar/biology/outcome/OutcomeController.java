@@ -38,31 +38,37 @@ public class OutcomeController
     private PlanService planService;
     private OutcomeRequestProcessor outcomeRequestProcessor;
     private HistoryMapper historyMapper;
+    private OutcomeResponseMapper outcomeResponseMapper;
+    private OutcomeCreationMapper outcomeCreationMapper;
 
     public OutcomeController(
         OutcomeService outcomeService,
         OutcomeMapper outcomeMapper,
         PlanService planService,
         OutcomeRequestProcessor outcomeRequestProcessor,
-        HistoryMapper historyMapper)
+        HistoryMapper historyMapper,
+        OutcomeResponseMapper outcomeResponseMapper,
+        OutcomeCreationMapper outcomeCreationMapper)
     {
         this.outcomeService = outcomeService;
         this.outcomeMapper = outcomeMapper;
         this.planService = planService;
         this.outcomeRequestProcessor = outcomeRequestProcessor;
         this.historyMapper = historyMapper;
+        this.outcomeResponseMapper = outcomeResponseMapper;
+        this.outcomeCreationMapper = outcomeCreationMapper;
     }
 
     @GetMapping(value = {"/outcomes"})
-    public ResponseEntity<OutcomeDTO> findAll(
-        Pageable pageable, PagedResourcesAssembler<OutcomeDTO> assembler)
+    public ResponseEntity<OutcomeResponseDTO> findAll(
+        Pageable pageable, PagedResourcesAssembler<OutcomeResponseDTO> assembler)
     {
         List<Outcome> outcomes = outcomeService.getOutcomes();
 
         Page<Outcome> paginatedContent = PaginationHelper.createPage(outcomes, pageable);
-        Page<OutcomeDTO> outcomeDTOPage = paginatedContent.map(x -> outcomeMapper.toDto(x));
+        Page<OutcomeResponseDTO> outcomeDTOPage = paginatedContent.map(x -> outcomeResponseMapper.toDto(x));
 
-        PagedModel<EntityModel<OutcomeDTO>> pr =
+        PagedModel<EntityModel<OutcomeResponseDTO>> pr =
             assembler.toModel(
                 outcomeDTOPage,
                 linkTo(OutcomeController.class).withSelfRel());
@@ -74,11 +80,11 @@ public class OutcomeController
     }
 
     @GetMapping(value = {"plans/{pin}/outcomes"})
-    public List<OutcomeDTO> findAllByPlan(@PathVariable String pin)
+    public List<OutcomeResponseDTO> findAllByPlan(@PathVariable String pin)
     {
         Plan plan = planService.getNotNullPlanByPin(pin);
         Set<Outcome> outcomes = plan.getOutcomes();
-        return outcomeMapper.toDtos(outcomes);
+        return outcomeResponseMapper.toDtos(outcomes);
     }
 
     /**
@@ -87,11 +93,12 @@ public class OutcomeController
      * @return The DTO with the outcome of the created outcome.
      */
     @PostMapping(value = {"plans/{pin}/outcomes"})
-    public OutcomeDTO create(@RequestBody OutcomeDTO outcomeDTO)
+    public OutcomeDTO create(@RequestBody OutcomeCreationDTO outcomeCreationDTO)
     {
-        Outcome outcome = outcomeMapper.toEntity(outcomeDTO);
-        Outcome createdOutcome = outcomeService.create(outcome);
-        return outcomeMapper.toDto(createdOutcome);
+        Outcome outcome = outcomeCreationMapper.toEntity(outcomeCreationDTO);
+//        Outcome createdOutcome = outcomeService.create(outcome);
+//        return outcomeMapper.toDto(createdOutcome);
+        return null;
     }
 
     @PutMapping(value = {"plans/{pin}/outcomes/{tpo}"})
