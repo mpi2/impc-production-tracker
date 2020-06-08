@@ -1,7 +1,16 @@
 package org.gentar.biology.outcome;
 
 import org.gentar.Mapper;
+import org.gentar.biology.mutation.Mutation;
+import org.gentar.biology.mutation.MutationController;
+import org.springframework.hateoas.Link;
 import org.springframework.stereotype.Component;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
+
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 @Component
 public class OutcomeResponseMapper implements Mapper<Outcome, OutcomeResponseDTO>
@@ -33,7 +42,22 @@ public class OutcomeResponseMapper implements Mapper<Outcome, OutcomeResponseDTO
                 outcomeResponseDTO.setOutcomeTypeName(outcome.getOutcomeType().getName());
             }
         }
+        addMutationLinks(outcomeResponseDTO, outcome);
         return outcomeResponseDTO;
+    }
+
+    private void addMutationLinks(OutcomeResponseDTO outcomeResponseDTO, Outcome outcome)
+    {
+       List<Link> links = new ArrayList<>();
+        Set<Mutation> mutations = outcome.getMutations();
+        if (mutations != null)
+        {
+            mutations.forEach(x ->
+                links.add(linkTo(methodOn(MutationController.class)
+                    .findMutationInOutcomeById(outcome.getPlan().getPin(), outcome.getTpo(), x.getId()))
+                    .withRel("mutations")));
+        }
+        outcomeResponseDTO.add(links);
     }
 
     @Override

@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 import java.util.HashSet;
 
 @Component
-public class MutationMapper implements Mapper<Mutation, MutationDTO>
+public class MutationCommonMapper implements Mapper<Mutation, MutationCommonDTO>
 {
     private EntityMapper entityMapper;
     private MutationQCResultMapper mutationQCResultMapper;
@@ -15,7 +15,7 @@ public class MutationMapper implements Mapper<Mutation, MutationDTO>
     private GeneMapper geneMapper;
     private MutationSequenceMapper mutationSequenceMapper;
 
-    public MutationMapper(
+    public MutationCommonMapper(
         EntityMapper entityMapper,
         MutationQCResultMapper mutationQCResultMapper,
         MutationCategorizationMapper mutationCategorizationMapper,
@@ -30,31 +30,31 @@ public class MutationMapper implements Mapper<Mutation, MutationDTO>
     }
 
     @Override
-    public MutationDTO toDto(Mutation mutation)
+    public MutationCommonDTO toDto(Mutation mutation)
     {
-        MutationDTO mutationDTO = entityMapper.toTarget(mutation, MutationDTO.class);
-        mutationDTO.setMutationQCResultDTOs(
+        MutationCommonDTO mutationCommonDTO = entityMapper.toTarget(mutation, MutationCommonDTO.class);
+        mutationCommonDTO.setMutationQCResultDTOs(
             mutationQCResultMapper.toDtos(mutation.getMutationQcResults()));
-        mutationDTO.setGeneDTOS(geneMapper.toDtos(mutation.getGenes()));
-        mutationDTO.setMutationSequenceDTOS(
+        mutationCommonDTO.setGeneDTOS(geneMapper.toDtos(mutation.getGenes()));
+        mutationCommonDTO.setMutationSequenceDTOS(
             mutationSequenceMapper.toDtos(mutation.getMutationSequences()));
-        mutationDTO.setMutationCategorizationDTOS(
+        mutationCommonDTO.setMutationCategorizationDTOS(
             mutationCategorizationMapper.toDtos(mutation.getMutationCategorizations()));
-        return mutationDTO;
+        return mutationCommonDTO;
     }
 
     @Override
-    public Mutation toEntity(MutationDTO mutationDTO)
+    public Mutation toEntity(MutationCommonDTO mutationCommonDTO)
     {
-        Mutation mutation = entityMapper.toTarget(mutationDTO, Mutation.class);
+        Mutation mutation = entityMapper.toTarget(mutationCommonDTO, Mutation.class);
         mutation.setMutationQcResults(
-            new HashSet<>(mutationQCResultMapper.toEntities(mutationDTO.getMutationQCResultDTOs())));
-        mutation.setGenes(new HashSet<>(geneMapper.toEntities(mutationDTO.getGeneDTOS())));
+            new HashSet<>(mutationQCResultMapper.toEntities(mutationCommonDTO.getMutationQCResultDTOs())));
+        mutation.setGenes(new HashSet<>(geneMapper.toEntities(mutationCommonDTO.getGeneDTOS())));
         mutation.setMutationSequences(
-            new HashSet<>(mutationSequenceMapper.toEntities(mutationDTO.getMutationSequenceDTOS())));
+            new HashSet<>(mutationSequenceMapper.toEntities(mutationCommonDTO.getMutationSequenceDTOS())));
         mutation.setMutationCategorizations(
             new HashSet<>(mutationCategorizationMapper.toEntities(
-                mutationDTO.getMutationCategorizationDTOS())));
+                mutationCommonDTO.getMutationCategorizationDTOS())));
         return mutation;
     }
 }
