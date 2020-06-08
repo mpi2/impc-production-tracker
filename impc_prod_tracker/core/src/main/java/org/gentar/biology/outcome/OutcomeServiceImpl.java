@@ -5,6 +5,8 @@ import org.gentar.biology.colony.Colony;
 import org.gentar.biology.colony.engine.ColonyState;
 import org.gentar.biology.outcome.type.OutcomeType;
 import org.gentar.biology.outcome.type.OutcomeTypeRepository;
+import org.gentar.biology.plan.Plan;
+import org.gentar.biology.plan.PlanService;
 import org.gentar.biology.status.Status;
 import org.gentar.biology.status.StatusService;
 import org.gentar.exceptions.UserOperationFailedException;
@@ -25,6 +27,7 @@ public class OutcomeServiceImpl implements OutcomeService
     private OutcomeCreator outcomeCreator;
     private StatusService statusService;
     private OutcomeUpdater outcomeUpdater;
+    private PlanService planService;
     private ResourceAccessChecker<Outcome> resourceAccessChecker;
 
     public static final String READ_OUTCOME_ACTION = "READ_OUTCOME";
@@ -35,6 +38,7 @@ public class OutcomeServiceImpl implements OutcomeService
         OutcomeCreator outcomeCreator,
         StatusService statusService,
         OutcomeUpdater outcomeUpdater,
+        PlanService planService,
         ResourceAccessChecker<Outcome> resourceAccessChecker)
     {
         this.outcomeRepository = outcomeRepository;
@@ -42,6 +46,7 @@ public class OutcomeServiceImpl implements OutcomeService
         this.outcomeCreator = outcomeCreator;
         this.statusService = statusService;
         this.outcomeUpdater = outcomeUpdater;
+        this.planService = planService;
         this.resourceAccessChecker = resourceAccessChecker;
     }
 
@@ -55,6 +60,19 @@ public class OutcomeServiceImpl implements OutcomeService
     private Outcome getAccessChecked(Outcome outcome)
     {
         return (Outcome) resourceAccessChecker.checkAccess(outcome, READ_OUTCOME_ACTION);
+    }
+
+    @Override
+    public Outcome getOutcomeByPinAndTpo(String pin, String tpo)
+    {
+        Plan plan = planService.getNotNullPlanByPin(pin);
+        Outcome outcome = getByTpoFailsIfNotFound(tpo);
+        if (plan != outcome.getPlan())
+        {
+            throw new UserOperationFailedException(
+                "Plan "+ pin + " is not related with outcome +" + tpo + ".");
+        }
+        return outcome;
     }
 
     public List<Outcome> getOutcomes()

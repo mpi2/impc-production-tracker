@@ -2,6 +2,8 @@ package org.gentar.biology.outcome;
 
 import org.gentar.audit.history.History;
 import org.gentar.biology.outcome.type.OutcomeType;
+import org.gentar.exceptions.UserOperationFailedException;
+
 import java.util.List;
 
 /**
@@ -9,6 +11,16 @@ import java.util.List;
  */
 public interface OutcomeService
 {
+    /**
+     * Get an outcome identified by 'tpo' and belonging to plan 'pin'.
+     * @param pin Public id of the plan.
+     * @param tpo Public id of the outcome.
+     * @return Found outcome.
+     * @throws UserOperationFailedException if the plan, outcome or mutation don't exist or if
+     * they exist but they are not related.
+     */
+    Outcome getOutcomeByPinAndTpo(String pin, String tpo);
+
     /**
      * Find all the outcomes.
      * @return A list of {@link Outcome}
