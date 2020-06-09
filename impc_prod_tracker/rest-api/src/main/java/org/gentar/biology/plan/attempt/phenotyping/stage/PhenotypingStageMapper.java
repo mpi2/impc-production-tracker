@@ -1,9 +1,8 @@
-package org.gentar.biology.plan.attempt.phenotyping;
+package org.gentar.biology.plan.attempt.phenotyping.stage;
 
 import org.gentar.EntityMapper;
 import org.gentar.Mapper;
-import org.gentar.biology.plan.attempt.phenotyping.stage.PhenotypingStage;
-import org.gentar.biology.plan.attempt.phenotyping.stage.PhenotypingStageService;
+import org.gentar.biology.plan.attempt.phenotyping.stage.*;
 import org.gentar.biology.plan.attempt.phenotyping.stage.status_stamp.PhenotypingStageStatusStamp;
 import org.gentar.biology.plan.attempt.phenotyping.stage.tissue_distribution.TissueDistribution;
 import org.gentar.biology.status_stamps.StatusStampsDTO;
@@ -105,7 +104,7 @@ public class PhenotypingStageMapper implements Mapper<PhenotypingStage, Phenotyp
         PhenotypingStage phenotypingStage, PhenotypingStageDTO phenotypingStageDTO)
     {
         PhenotypingStage persisted =
-            phenotypingStageService.getPhenotypingStageById(phenotypingStageDTO.getId());
+            phenotypingStageService.getByPsnFailsIfNotFound(phenotypingStageDTO.getPsn());
         phenotypingStage.setStatus(persisted.getStatus());
         phenotypingStage.setPhenotypingStageStatusStamps(persisted.getPhenotypingStageStatusStamps());
         phenotypingStage.setPhenotypingAttempt(persisted.getPhenotypingAttempt());

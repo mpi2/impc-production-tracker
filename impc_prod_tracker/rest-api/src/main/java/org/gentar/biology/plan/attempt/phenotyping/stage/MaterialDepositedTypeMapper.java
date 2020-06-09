@@ -1,4 +1,4 @@
-package org.gentar.biology.plan.attempt.phenotyping;
+package org.gentar.biology.plan.attempt.phenotyping.stage;
 
 import org.gentar.Mapper;
 import org.gentar.biology.plan.attempt.phenotyping.stage.material_deposited_type.MaterialDepositedType;

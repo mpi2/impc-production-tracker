@@ -13,7 +13,7 @@
  * language governing permissions and limitations under the
  * License.
  *******************************************************************************/
-package org.gentar.biology.plan.attempt.phenotyping;
+package org.gentar.biology.plan.attempt.phenotyping.stage;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
