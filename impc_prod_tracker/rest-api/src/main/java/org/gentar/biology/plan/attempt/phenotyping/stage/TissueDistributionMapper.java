@@ -1,4 +1,4 @@
-package org.gentar.biology.plan.attempt.phenotyping;
+package org.gentar.biology.plan.attempt.phenotyping.stage;
 
 import org.gentar.EntityMapper;
 import org.gentar.Mapper;

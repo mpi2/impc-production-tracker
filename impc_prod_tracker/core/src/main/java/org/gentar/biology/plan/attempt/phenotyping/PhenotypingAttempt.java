@@ -3,7 +3,6 @@ package org.gentar.biology.plan.attempt.phenotyping;
 import lombok.*;
 import org.gentar.BaseEntity;
 import org.gentar.biology.plan.Plan;
-import org.gentar.biology.plan.attempt.crispr.guide.Guide;
 import org.gentar.biology.plan.attempt.phenotyping.stage.PhenotypingStage;
 import org.gentar.biology.strain.Strain;
 import javax.persistence.*;
@@ -37,6 +36,6 @@ public class PhenotypingAttempt extends BaseEntity
 
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "phenotypingAttempt", orphanRemoval=true)
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "phenotypingAttempt")
     private Set<PhenotypingStage> phenotypingStages;
 }
