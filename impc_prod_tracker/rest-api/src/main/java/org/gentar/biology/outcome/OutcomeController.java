@@ -2,27 +2,33 @@ package org.gentar.biology.outcome;
 
 import org.gentar.audit.history.History;
 import org.gentar.audit.history.HistoryMapper;
+import org.gentar.biology.ChangeResponse;
 import org.gentar.biology.plan.Plan;
 import org.gentar.biology.plan.PlanService;
 import org.gentar.common.history.HistoryDTO;
+import org.gentar.helpers.ChangeResponseCreator;
 import org.gentar.helpers.LinkUtil;
 import org.gentar.helpers.PaginationHelper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PagedResourcesAssembler;
 import org.springframework.hateoas.EntityModel;
+import org.springframework.hateoas.Link;
 import org.springframework.hateoas.PagedModel;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
 import java.util.List;
 import java.util.Set;
 
@@ -39,6 +45,7 @@ public class OutcomeController
     private HistoryMapper historyMapper;
     private OutcomeResponseMapper outcomeResponseMapper;
     private OutcomeCreationMapper outcomeCreationMapper;
+    private ChangeResponseCreator changeResponseCreator;
 
     public OutcomeController(
         OutcomeService outcomeService,
@@ -46,7 +53,8 @@ public class OutcomeController
         OutcomeRequestProcessor outcomeRequestProcessor,
         HistoryMapper historyMapper,
         OutcomeResponseMapper outcomeResponseMapper,
-        OutcomeCreationMapper outcomeCreationMapper)
+        OutcomeCreationMapper outcomeCreationMapper,
+        ChangeResponseCreator changeResponseCreator)
     {
         this.outcomeService = outcomeService;
         this.planService = planService;
@@ -54,6 +62,7 @@ public class OutcomeController
         this.historyMapper = historyMapper;
         this.outcomeResponseMapper = outcomeResponseMapper;
         this.outcomeCreationMapper = outcomeCreationMapper;
+        this.changeResponseCreator = changeResponseCreator;
     }
 
     @GetMapping(value = {"/outcomes"})
@@ -122,6 +131,16 @@ public class OutcomeController
         return historyDTO;
     }
 
+    @DeleteMapping(value = {"plans/{pin}/outcomes/{tpo}/mutations"})
+    public ChangeResponse deleteMutationAssociations(
+        @PathVariable String pin,
+        @PathVariable String tpo,
+        @RequestParam(value = "mutationId", required = false) List<Long> mutationIds)
+    {
+        History history = outcomeService.deleteMutationsAssociations(pin, tpo, mutationIds);
+        return buildChangeResponse(tpo, history);
+    }
+
     /**
      * Get an Outcome object based on OutcomeDTO using the fields that can be updated by the user.
      * @param outcomeDTO outcome sent by the user.
@@ -131,5 +150,11 @@ public class OutcomeController
     {
         Outcome currentOutcome = outcomeService.getByTpoFailsIfNotFound(outcomeDTO.getTpo());
         return outcomeRequestProcessor.getOutcomeToUpdate(currentOutcome, outcomeDTO);
+    }
+
+    private ChangeResponse buildChangeResponse(String tpo, History history)
+    {
+        Link link = linkTo(OutcomeController.class).slash(tpo).withSelfRel();
+        return changeResponseCreator.create(link, history);
     }
 }

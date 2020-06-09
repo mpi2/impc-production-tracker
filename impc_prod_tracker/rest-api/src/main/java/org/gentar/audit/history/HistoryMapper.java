@@ -1,5 +1,6 @@
 package org.gentar.audit.history;
 
+import org.gentar.Mapper;
 import org.gentar.common.history.HistoryDTO;
 import org.gentar.common.history.HistoryDetailDTO;
 import org.springframework.stereotype.Component;
@@ -9,32 +10,21 @@ import java.util.Collection;
 import java.util.List;
 
 @Component
-public class HistoryMapper
+public class HistoryMapper implements Mapper<History, HistoryDTO>
 {
     public HistoryDTO toDto(History history)
     {
         HistoryDTO historyDTO = new HistoryDTO();
         historyDTO.setId(1);
-        historyDTO.setComment(history.getComment());
-        historyDTO.setDate(history.getDate());
-        historyDTO.setUser(history.getUser());
-
-        historyDTO.setDetails(buildHistoryDetails(history.getHistoryDetailSet()));
-
-        return historyDTO;
-    }
-
-    public List<HistoryDTO> toDtos(List<History> histories)
-    {
-        int counter = 1;
-        List<HistoryDTO> historyEntryDTOs = new ArrayList<>();
-        for (History historyEntry : histories)
+        if (history != null)
         {
-            HistoryDTO historyDTO = toDto(historyEntry);
-            historyDTO.setId(counter++);
-            historyEntryDTOs.add(historyDTO);
+            historyDTO.setComment(history.getComment());
+            historyDTO.setDate(history.getDate());
+            historyDTO.setUser(history.getUser());
+
+            historyDTO.setDetails(buildHistoryDetails(history.getHistoryDetailSet()));
         }
-        return historyEntryDTOs;
+        return historyDTO;
     }
 
     private List<HistoryDetailDTO> buildHistoryDetails(Collection<HistoryDetail> details)

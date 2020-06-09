@@ -3,6 +3,7 @@ package org.gentar.biology.outcome;
 import org.gentar.audit.history.History;
 import org.gentar.biology.colony.Colony;
 import org.gentar.biology.colony.engine.ColonyState;
+import org.gentar.biology.mutation.Mutation;
 import org.gentar.biology.outcome.type.OutcomeType;
 import org.gentar.biology.outcome.type.OutcomeTypeRepository;
 import org.gentar.biology.plan.Plan;
@@ -17,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Component
@@ -77,8 +79,6 @@ public class OutcomeServiceImpl implements OutcomeService
 
     public List<Outcome> getOutcomes()
     {
-//        return outcomeRepository.findAll();
-
         return getCheckedCollection(outcomeRepository.findAll());
     }
 
@@ -130,8 +130,26 @@ public class OutcomeServiceImpl implements OutcomeService
         Outcome outcome = outcomeRepository.findByTpo(tpo);
         if (outcome == null)
         {
-            throw new UserOperationFailedException("Outocome " + tpo + " does not exist");
+            throw new UserOperationFailedException("Outcome " + tpo + " does not exist");
         }
         return outcome;
+    }
+
+    @Override
+    public History deleteMutationsAssociations(String pin, String tpo, List<Long> mutationIds)
+    {
+        Outcome outcome = getOutcomeByPinAndTpo(pin, tpo);
+        Outcome originalOutcome = new Outcome(outcome);
+        if (outcome.getMutations() != null)
+        {
+            Set<Mutation> mutationsToDelete = outcome.getMutations().stream()
+                .filter(x -> mutationIds.contains(x.getId()))
+                .collect(Collectors.toSet());
+            for (Mutation mutation : mutationsToDelete)
+            {
+                outcome.deleteMutation(mutation);
+            }
+        }
+        return outcomeUpdater.update(originalOutcome, outcome);
     }
 }

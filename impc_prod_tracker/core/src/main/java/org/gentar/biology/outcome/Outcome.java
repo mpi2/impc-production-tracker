@@ -62,9 +62,16 @@ public class Outcome extends BaseEntity implements Resource<Outcome>
         this.tpo = outcome.tpo;
         this.outcomeType = outcome.outcomeType;
         this.plan = outcome.plan;
-        this.mutations = new HashSet<>(outcome.mutations);
+        if (outcome.mutations != null)
+        {
+            this.mutations = new HashSet<>(outcome.mutations);
+        }
         this.colony = outcome.colony;
         this.specimen = outcome.specimen;
+        if (outcome.planStartingPoints != null)
+        {
+            this.planStartingPoints = new HashSet<>(outcome.planStartingPoints);
+        }
     }
 
     @Override
@@ -90,5 +97,41 @@ public class Outcome extends BaseEntity implements Resource<Outcome>
     public List<Consortium> getRelatedConsortia()
     {
         return Collections.emptyList();
+    }
+
+    /**
+     * Utility method to keep synchronised both parts of the relation outcome-mutation when
+     * adding a mutation.
+     * @param mutation
+     */
+    public void addMutation(Mutation mutation)
+    {
+        if (mutations == null)
+        {
+            mutations = new HashSet<>();
+        }
+        this.mutations.add(mutation);
+        if (mutation.getOutcomes() == null)
+        {
+            mutation.setOutcomes(new HashSet<>());
+        }
+        mutation.getOutcomes().add(this);
+    }
+
+    /**
+     * Utility method to keep synchronised both parts of the relation outcome-mutation when
+     * adding a mutation.
+     * @param mutation
+     */
+    public void deleteMutation(Mutation mutation)
+    {
+        if (mutations != null)
+        {
+            mutations.remove(mutation);
+        }
+        if (mutation.getOutcomes() != null)
+        {
+            mutation.getOutcomes().remove(this);
+        }
     }
 }
