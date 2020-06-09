@@ -24,8 +24,8 @@ public class ColonyDTO
     private String strainName;
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    @JsonProperty("distributionCentres")
-    private List<DistributionCentreDTO> distributionCentreDTOS;
+    @JsonProperty("distributionProducts")
+    private List<DistributionProductDTO> distributionProductDTOS;
 
     @JsonProperty("statusTransition")
     private StatusTransitionDTO statusTransitionDTO;

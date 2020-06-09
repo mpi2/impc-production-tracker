@@ -22,19 +22,22 @@ public class ColonyMapper implements Mapper<Colony, ColonyDTO>
     private ColonyService colonyService;
     private TransitionMapper transitionMapper;
     private StatusStampMapper statusStampMapper;
+    private DistributionProductMapper distributionProductMapper;
 
     public ColonyMapper(
         EntityMapper entityMapper,
         StrainMapper strainMapper,
         ColonyService colonyService,
         TransitionMapper transitionMapper,
-        StatusStampMapper statusStampMapper)
+        StatusStampMapper statusStampMapper,
+        DistributionProductMapper distributionProductMapper)
     {
         this.entityMapper = entityMapper;
         this.strainMapper = strainMapper;
         this.colonyService = colonyService;
         this.transitionMapper = transitionMapper;
         this.statusStampMapper = statusStampMapper;
+        this.distributionProductMapper = distributionProductMapper;
     }
 
     @Override
@@ -44,6 +47,7 @@ public class ColonyMapper implements Mapper<Colony, ColonyDTO>
         colonyDTO.setStrainName(strainMapper.toDto(colony.getStrain()));
         colonyDTO.setStatusTransitionDTO(buildStatusTransitionDTO(colony));
         setStatusStampsDTOS(colonyDTO, colony);
+        setDistributionProducts(colonyDTO, colony);
         return colonyDTO;
     }
 
@@ -53,6 +57,12 @@ public class ColonyMapper implements Mapper<Colony, ColonyDTO>
             statusStampMapper.toDtos(colony.getColonyStatusStamps());
         statusStampsDTOS.sort(Comparator.comparing(StatusStampsDTO::getDate));
         colonyDTO.setStatusStampsDTOS(statusStampsDTOS);
+    }
+
+    private void setDistributionProducts(ColonyDTO colonyDTO, Colony colony)
+    {
+        colonyDTO.setDistributionProductDTOS(
+            distributionProductMapper.toDtos(colony.getDistributionProducts()));
     }
 
     @Override

@@ -3,21 +3,17 @@ package org.gentar.biology.colony;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
-
 import java.time.LocalDateTime;
 
 @Data
 @RequiredArgsConstructor
-public class DistributionCentreDTO
+public class DistributionProductDTO
 {
     @JsonIgnore
     private Long id;
-    @JsonIgnore
-    private Long colonyId;
+    private String distributionCentreName;
+    private String productTypeName;
     private String distributionNetworkName;
     private LocalDateTime endDate;
     private LocalDateTime startDate;
-    private String materialDepositedName;
-    private String workUnitName;
-    private Boolean isDistributedByEmma;
 }

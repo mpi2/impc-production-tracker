@@ -6,7 +6,6 @@ import org.gentar.biology.colony.Colony;
 import org.gentar.biology.colony.distribution.distribution_network.DistributionNetwork;
 import org.gentar.biology.colony.distribution.product_type.ProductType;
 import org.gentar.organization.work_unit.WorkUnit;
-
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
@@ -36,7 +35,9 @@ public class DistributionProduct extends BaseEntity
     @OneToOne
     private DistributionNetwork distributionNetwork;
 
-    private LocalDateTime start_date;
+    @Column(name = "start_date")
+    private LocalDateTime startDate;
 
-    private LocalDateTime end_date;
+    @Column(name = "end_date")
+    private LocalDateTime endDate;
 }
