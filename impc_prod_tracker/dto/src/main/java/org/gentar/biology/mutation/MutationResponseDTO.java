@@ -6,9 +6,10 @@ import org.gentar.biology.outcome.OutcomeResponseDTO;
 import org.springframework.hateoas.RepresentationModel;
 
 @Data
-public class MutationResponseDTO extends RepresentationModel<OutcomeResponseDTO>
+public class MutationResponseDTO extends RepresentationModel<MutationResponseDTO>
 {
     private Long id;
+    private String min;
     private String mgiAlleleId;
     private String mgiAlleleSymbol;
     private Boolean mgiAlleleSymbolWithoutImpcAbbreviation;

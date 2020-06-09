@@ -136,14 +136,14 @@ public class OutcomeServiceImpl implements OutcomeService
     }
 
     @Override
-    public History deleteMutationsAssociations(String pin, String tpo, List<Long> mutationIds)
+    public History deleteMutationsAssociations(String pin, String tpo, List<String> mins)
     {
         Outcome outcome = getOutcomeByPinAndTpo(pin, tpo);
         Outcome originalOutcome = new Outcome(outcome);
-        if (outcome.getMutations() != null)
+        if (outcome.getMutations() != null && mins != null)
         {
             Set<Mutation> mutationsToDelete = outcome.getMutations().stream()
-                .filter(x -> mutationIds.contains(x.getId()))
+                .filter(x -> mins.contains(x.getMin()))
                 .collect(Collectors.toSet());
             for (Mutation mutation : mutationsToDelete)
             {

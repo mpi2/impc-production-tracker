@@ -28,15 +28,15 @@ public class MutationController
     /**
      * Gets a mutation in an outcome.
      * @param pin Public identifier of the plan.
-     * @param tpo Public identifier of the outcome
-     * @param id Id of thr mutation.
+     * @param tpo Public identifier of the outcome.
+     * @param min Public identifier of the mutation.
      * @return Mutation DTO
      */
-    @GetMapping(value = {"plans/{pin}/outcomes/{tpo}/mutations/{id}"})
+    @GetMapping(value = {"plans/{pin}/outcomes/{tpo}/mutations/{min}"})
     public MutationResponseDTO findMutationInOutcomeById(
-        @PathVariable String pin, @PathVariable String tpo, @PathVariable Long id)
+        @PathVariable String pin, @PathVariable String tpo, @PathVariable String min)
     {
-        Mutation mutation = mutationService.getMutationByPinTpoAndId(pin, tpo, id);
+        Mutation mutation = mutationService.getMutationByPinTpoAndId(pin, tpo, min);
         return mutationResponseMapper.toDto(mutation);
     }
 }

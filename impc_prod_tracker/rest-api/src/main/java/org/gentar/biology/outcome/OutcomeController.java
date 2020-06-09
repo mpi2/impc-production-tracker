@@ -1,11 +1,9 @@
 package org.gentar.biology.outcome;
 
 import org.gentar.audit.history.History;
-import org.gentar.audit.history.HistoryMapper;
 import org.gentar.biology.ChangeResponse;
 import org.gentar.biology.plan.Plan;
 import org.gentar.biology.plan.PlanService;
-import org.gentar.common.history.HistoryDTO;
 import org.gentar.helpers.ChangeResponseCreator;
 import org.gentar.helpers.LinkUtil;
 import org.gentar.helpers.PaginationHelper;
@@ -42,7 +40,6 @@ public class OutcomeController
     private OutcomeService outcomeService;
     private PlanService planService;
     private OutcomeRequestProcessor outcomeRequestProcessor;
-    private HistoryMapper historyMapper;
     private OutcomeResponseMapper outcomeResponseMapper;
     private OutcomeCreationMapper outcomeCreationMapper;
     private ChangeResponseCreator changeResponseCreator;
@@ -51,7 +48,6 @@ public class OutcomeController
         OutcomeService outcomeService,
         PlanService planService,
         OutcomeRequestProcessor outcomeRequestProcessor,
-        HistoryMapper historyMapper,
         OutcomeResponseMapper outcomeResponseMapper,
         OutcomeCreationMapper outcomeCreationMapper,
         ChangeResponseCreator changeResponseCreator)
@@ -59,7 +55,6 @@ public class OutcomeController
         this.outcomeService = outcomeService;
         this.planService = planService;
         this.outcomeRequestProcessor = outcomeRequestProcessor;
-        this.historyMapper = historyMapper;
         this.outcomeResponseMapper = outcomeResponseMapper;
         this.outcomeCreationMapper = outcomeCreationMapper;
         this.changeResponseCreator = changeResponseCreator;
@@ -116,28 +111,30 @@ public class OutcomeController
     }
 
     @PutMapping(value = {"plans/{pin}/outcomes/{tpo}"})
-    public HistoryDTO update(
+    public ChangeResponse update(
         @PathVariable String pin, @PathVariable String tpo, @RequestBody OutcomeDTO outcomeDTO)
     {
-        HistoryDTO historyDTO = new HistoryDTO();
         outcomeRequestProcessor.validateAssociation(pin, tpo);
         Outcome outcome = getOutcomeToUpdate(outcomeDTO);
         History history = outcomeService.update(outcome);
-
-        if (history != null)
-        {
-            historyDTO = historyMapper.toDto(history);
-        }
-        return historyDTO;
+        return buildChangeResponse(tpo, history);
     }
 
+    /**
+     * Deletes the relationship between an outcome and one or more mutations identified by the
+     * mutationIds values.
+     * @param pin Public identifier of the plan.
+     * @param tpo Public identifier of the outcome.
+     * @param mins List of public mutation ids.
+     * @return ChangeResponse record with the changes.
+     */
     @DeleteMapping(value = {"plans/{pin}/outcomes/{tpo}/mutations"})
     public ChangeResponse deleteMutationAssociations(
         @PathVariable String pin,
         @PathVariable String tpo,
-        @RequestParam(value = "mutationId", required = false) List<Long> mutationIds)
+        @RequestParam(value = "min", required = false) List<String> mins)
     {
-        History history = outcomeService.deleteMutationsAssociations(pin, tpo, mutationIds);
+        History history = outcomeService.deleteMutationsAssociations(pin, tpo, mins);
         return buildChangeResponse(tpo, history);
     }
 
