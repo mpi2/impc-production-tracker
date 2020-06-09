@@ -24,7 +24,7 @@ public class MutationServiceImpl implements MutationService
         this.outcomeService = outcomeService;
     }
 
-    public Mutation getMutationByPinTpoAndId(String pin, String tpo, Long id)
+    public Mutation getMutationByPinTpoAndId(String pin, String tpo, String min)
     {
         Mutation mutation = null;
         Plan plan = planService.getNotNullPlanByPin(pin);
@@ -38,12 +38,12 @@ public class MutationServiceImpl implements MutationService
         if (allMutations != null)
         {
             mutation = allMutations.stream()
-                .filter(x -> x.getId().equals(id))
+                .filter(x -> x.getMin().equals(min))
                 .findFirst().orElse(null);
         }
         if (mutation == null)
         {
-            throw new UserOperationFailedException("Mutation with id " + id + " does not exist.");
+            throw new UserOperationFailedException("Mutation with id " + min + " does not exist.");
         }
         return mutation;
     }

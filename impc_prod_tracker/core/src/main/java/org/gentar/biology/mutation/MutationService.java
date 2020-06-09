@@ -8,8 +8,8 @@ public interface MutationService
      * will be thrown.
      * @param pin Public identifier of the plan.
      * @param tpo Public identifier of the outcome
-     * @param id Id of thr mutation.
+     * @param min Public identifier of the mutation.
      * @return The mutation object identified by id.
      */
-    Mutation getMutationByPinTpoAndId(String pin, String tpo, Long id);
+    Mutation getMutationByPinTpoAndId(String pin, String tpo, String min);
 }

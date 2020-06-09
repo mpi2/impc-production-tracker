@@ -54,7 +54,7 @@ public class OutcomeResponseMapper implements Mapper<Outcome, OutcomeResponseDTO
         {
             mutations.forEach(x ->
                 links.add(linkTo(methodOn(MutationController.class)
-                    .findMutationInOutcomeById(outcome.getPlan().getPin(), outcome.getTpo(), x.getId()))
+                    .findMutationInOutcomeById(outcome.getPlan().getPin(), outcome.getTpo(), x.getMin()))
                     .withRel("mutations")));
         }
         outcomeResponseDTO.add(links);

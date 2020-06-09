@@ -66,8 +66,8 @@ public interface OutcomeService
      * Deletes the associations with mutations.
      * @param pin Public identifier for a plan.
      * @param tpo Public identifier for an outcome.
-     * @param mutationIds List of mutation ids. It does not delete the mutation itself, only the
-     *                    relation with the outcome.
+     * @param mins List of public mutation ids. It does not delete the mutation itself, only the
+     *             relation with the outcome.
      */
-    History deleteMutationsAssociations(String pin, String tpo, List<Long> mutationIds);
+    History deleteMutationsAssociations(String pin, String tpo, List<String> mins);
 }
