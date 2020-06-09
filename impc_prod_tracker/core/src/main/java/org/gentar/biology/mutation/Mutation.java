@@ -41,6 +41,9 @@ public class Mutation extends BaseEntity
     @Column(name = "id", updatable=false)
     private Long id;
 
+    // Public identifier of the mutation.
+    private String min;
+
     private String mgiAlleleId;
 
     private String mgiAlleleSymbol;
