@@ -2,6 +2,7 @@ package org.gentar.biology.plan.attempt.phenotyping;
 
 import org.gentar.EntityMapper;
 import org.gentar.Mapper;
+import org.gentar.biology.plan.attempt.phenotyping.stage.PhenotypingStageMapper;
 import org.gentar.biology.strain.StrainMapper;
 import org.gentar.biology.plan.attempt.phenotyping.stage.PhenotypingStage;
 import org.gentar.biology.strain.Strain;

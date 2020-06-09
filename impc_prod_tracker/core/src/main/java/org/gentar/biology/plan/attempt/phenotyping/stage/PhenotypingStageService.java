@@ -1,5 +1,8 @@
 package org.gentar.biology.plan.attempt.phenotyping.stage;
 
+import org.gentar.audit.history.History;
+import org.gentar.biology.plan.attempt.phenotyping.stage.type.PhenotypingStageType;
+import org.gentar.exceptions.UserOperationFailedException;
 import org.gentar.statemachine.ProcessEvent;
 import org.gentar.statemachine.TransitionEvaluation;
 import java.util.List;
@@ -26,9 +29,60 @@ public interface PhenotypingStageService
     ProcessEvent getProcessEventByName(PhenotypingStage phenotypingStage, String name);
 
     /**
-     * Get a phenotyping stage given its id.
-     * @param id Id of the phenotyping stage
+     * Get a phenotyping stage given its pps id.
+     * @param psn Unique id of the phenotyping stage
      * @return phenotyping stage
      */
-    PhenotypingStage getPhenotypingStageById(Long id);
+    PhenotypingStage getByPsnFailsIfNotFound(String psn);
+
+    /**
+     * Get an phenotyping stage identified by 'pps' and belonging to plan 'pin'.
+     * @param pin Public id of the plan.
+     * @param psn Public id of the phenotyping stage.
+     * @return Found phenotyping stage.
+     * @throws UserOperationFailedException if the plan or phenotyping stage don't exist or if
+     * they exist but they are not related.
+     */
+    PhenotypingStage getPhenotypingStageByPinAndPsn(String pin, String psn);
+
+    /**
+     * Find all the phenotyping stages.
+     * @return A list of {@link PhenotypingStage}
+     */
+    List<PhenotypingStage> getPhenotypingStages();
+
+    /**
+     * Creates a phenotyping stage in the system.
+     * @param phenotypingStage In memory phenotyping stage object. Without ids. Not saved in database yet.
+     * @return The phenotyping stage saved in the database.
+     */
+    PhenotypingStage create(PhenotypingStage phenotypingStage);
+
+    /**
+     * Updates an existing phenotyping stage.
+     * @param phenotypingStage New data for the phenotyping stage.
+     * @return
+     */
+    History update(PhenotypingStage phenotypingStage);
+
+    /**
+     * Gets the history for a phenotyping stage.
+     * @param phenotypingStage The project.
+     * @return List of {@link History} with the trace of the changes for a phenotyping stage.
+     */
+    List<History> getPhenotypingStageHistory(PhenotypingStage phenotypingStage);
+
+    /**
+     * Gets a {@link PhenotypingStageType} object based in its name.
+     * @param name Name of the {@link PhenotypingStageType} object.
+     * @return {@link PhenotypingStageType} object.
+     */
+    PhenotypingStageType getPhenotypingStageTypeByNameFailingWhenNull(String name);
+
+    /**
+     * Gets a {@link PhenotypingStageType} object based in its name.
+     * @param name Name of the {@link PhenotypingStageType} object.
+     * @return {@link PhenotypingStageType} object.
+     */
+    PhenotypingStageType getPhenotypingStageTypeByName(String name);
 }
