@@ -18,6 +18,7 @@ package org.gentar.biology.colony;
 import lombok.*;
 import org.gentar.BaseEntity;
 import org.gentar.audit.diff.IgnoreForAuditingChanges;
+import org.gentar.biology.colony.distribution.DistributionProduct;
 import org.gentar.biology.colony.status_stamp.ColonyStatusStamp;
 import org.gentar.biology.outcome.Outcome;
 import org.gentar.biology.status.Status;
@@ -62,6 +63,11 @@ public class Colony extends BaseEntity implements ProcessData
     @OneToMany(cascade= CascadeType.ALL, mappedBy = "colony")
     private Set<ColonyStatusStamp> colonyStatusStamps;
 
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
+    @OneToMany(cascade= CascadeType.ALL, mappedBy = "colony")
+    private Set<DistributionProduct> distributionProducts;
+
     // Copy Constructor
     public Colony(Colony colony)
     {
@@ -73,6 +79,8 @@ public class Colony extends BaseEntity implements ProcessData
         this.genotypingComment = colony.genotypingComment;
         this.colonyStatusStamps =
             colony.colonyStatusStamps == null ? null : new HashSet<>(colony.colonyStatusStamps);
+        this.distributionProducts =
+            colony.distributionProducts == null ? null : new HashSet<>(colony.distributionProducts);
     }
 
     private transient ProcessEvent event;

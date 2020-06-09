@@ -24,10 +24,10 @@ public class ColonyRequestProcessor
 
     public Colony getColonyToUpdate(Colony originalColony, ColonyDTO colonyDTO)
     {
-        Colony colonyToUpdate = colonyMapper.toEntity(colonyDTO);
-        colonyToUpdate.setOutcome(originalColony.getOutcome());
-        colonyToUpdate.setStatus(originalColony.getStatus());
+        Colony colonyToUpdate = new Colony(originalColony);
+        Colony mappedColony = colonyMapper.toEntity(colonyDTO);
         colonyToUpdate.setGenotypingComment(colonyDTO.getGenotypingComment());
+        colonyToUpdate.setDistributionProducts(mappedColony.getDistributionProducts());
         modifyStrainIfNeeded(colonyToUpdate, colonyDTO);
         return colonyToUpdate;
     }
