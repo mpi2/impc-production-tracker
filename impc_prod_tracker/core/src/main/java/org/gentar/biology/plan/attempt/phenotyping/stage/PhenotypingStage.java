@@ -7,7 +7,6 @@ import org.gentar.biology.plan.attempt.phenotyping.PhenotypingAttempt;
 import org.gentar.biology.plan.attempt.phenotyping.stage.status_stamp.PhenotypingStageStatusStamp;
 import org.gentar.biology.plan.attempt.phenotyping.stage.tissue_distribution.TissueDistribution;
 import org.gentar.biology.plan.attempt.phenotyping.stage.type.PhenotypingStageType;
-import org.gentar.biology.project.Project;
 import org.gentar.biology.status.Status;
 import org.gentar.statemachine.ProcessData;
 import org.gentar.statemachine.ProcessEvent;
@@ -23,7 +22,7 @@ import java.util.Set;
 @Entity
 @Table(
         name="PHENOTYPING_STAGE",
-        uniqueConstraints=@UniqueConstraint(columnNames={"plan_id", "phenotyping_stage_type_id"}))
+        uniqueConstraints={@UniqueConstraint(columnNames={"plan_id", "phenotyping_stage_type_id"})})
 public class PhenotypingStage extends BaseEntity implements ProcessData
 {
     @Id
@@ -32,7 +31,7 @@ public class PhenotypingStage extends BaseEntity implements ProcessData
     private Long id;
 
     @EqualsAndHashCode.Include
-    private String pps;
+    private String psn;
 
     @Transient
     private ProcessEvent event;
