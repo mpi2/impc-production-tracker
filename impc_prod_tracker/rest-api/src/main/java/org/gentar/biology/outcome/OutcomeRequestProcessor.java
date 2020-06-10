@@ -24,17 +24,20 @@ public class OutcomeRequestProcessor
     /**
      * Updates an outcome with the information than can be updated in a dto.
      * @param originalOutcome The original outcome.
-     * @param outcomeDTO the dto with the new information.
+     * @param outcomeUpdateDTO the dto with the new information.
      * @return the updated outcome.
      */
-    public Outcome getOutcomeToUpdate(Outcome originalOutcome, OutcomeDTO outcomeDTO)
+    public Outcome getOutcomeToUpdate(Outcome originalOutcome, OutcomeUpdateDTO outcomeUpdateDTO)
     {
-        if (originalOutcome == null || outcomeDTO == null)
+        if (originalOutcome == null || outcomeUpdateDTO == null)
         {
             throw new UserOperationFailedException("Cannot update the outcome");
         }
         Outcome newOutcome = new Outcome(originalOutcome);
-        setColony(newOutcome, outcomeDTO.getColonyDTO());
+        if (outcomeUpdateDTO.getOutcomeCommonDTO() != null)
+        {
+            setColony(newOutcome, outcomeUpdateDTO.getOutcomeCommonDTO().getColonyDTO());
+        }
         return newOutcome;
     }
 
