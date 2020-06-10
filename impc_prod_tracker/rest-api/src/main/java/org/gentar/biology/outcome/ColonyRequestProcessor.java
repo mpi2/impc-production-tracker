@@ -4,8 +4,12 @@ import org.gentar.biology.colony.Colony;
 import org.gentar.biology.colony.ColonyDTO;
 import org.gentar.biology.colony.ColonyMapper;
 import org.gentar.biology.colony.ColonyService;
+import org.gentar.biology.colony.distribution.DistributionProduct;
 import org.gentar.biology.strain.StrainService;
 import org.springframework.stereotype.Component;
+
+import java.util.Collection;
+import java.util.Set;
 
 @Component
 public class ColonyRequestProcessor
@@ -27,9 +31,19 @@ public class ColonyRequestProcessor
         Colony colonyToUpdate = new Colony(originalColony);
         Colony mappedColony = colonyMapper.toEntity(colonyDTO);
         colonyToUpdate.setGenotypingComment(colonyDTO.getGenotypingComment());
-        colonyToUpdate.setDistributionProducts(mappedColony.getDistributionProducts());
+        associateDistributionProducts(colonyToUpdate, mappedColony.getDistributionProducts());
         modifyStrainIfNeeded(colonyToUpdate, colonyDTO);
         return colonyToUpdate;
+    }
+
+    private void associateDistributionProducts(
+        Colony colonyToUpdate, Set<DistributionProduct> distributionProducts)
+    {
+        if (distributionProducts != null)
+        {
+            distributionProducts.forEach(x -> x.setColony(colonyToUpdate));
+        }
+        colonyToUpdate.setDistributionProducts(distributionProducts);
     }
 
     private void modifyStrainIfNeeded(Colony colony, ColonyDTO colonyDTO)

@@ -68,18 +68,25 @@ public class DistributionProductMapper implements Mapper<DistributionProduct, Di
         DistributionProduct distributionProduct, DistributionProductDTO distributionProductDTO)
     {
         String distributionCentreName = distributionProductDTO.getDistributionCentreName();
-        WorkUnit distributionCentre =
-            workUnitService.getWorkUnitByNameOrThrowException(distributionCentreName);
-        distributionProduct.setDistributionCentre(distributionCentre);
+        if (distributionCentreName != null)
+        {
+            WorkUnit distributionCentre =
+                workUnitService.getWorkUnitByNameOrThrowException(distributionCentreName);
+            distributionProduct.setDistributionCentre(distributionCentre);
+        }
     }
 
     private void setDistributionNetwork(
         DistributionProduct distributionProduct, DistributionProductDTO distributionProductDTO)
     {
         String distributionNetworkName = distributionProductDTO.getDistributionNetworkName();
-        DistributionNetwork distributionNetwork =
-            distributionNetworkService.getDistributionNetworkByNameFailIfNull(distributionNetworkName);
-        distributionProduct.setDistributionNetwork(distributionNetwork);
+        if (distributionNetworkName != null)
+        {
+            DistributionNetwork distributionNetwork =
+                distributionNetworkService.getDistributionNetworkByNameFailIfNull(
+                    distributionNetworkName);
+            distributionProduct.setDistributionNetwork(distributionNetwork);
+        }
     }
 
     private void setProductType(

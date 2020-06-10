@@ -65,7 +65,7 @@ public class Colony extends BaseEntity implements ProcessData
 
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
-    @OneToMany(cascade= CascadeType.ALL, mappedBy = "colony")
+    @OneToMany(cascade= CascadeType.ALL, mappedBy = "colony", orphanRemoval=true)
     private Set<DistributionProduct> distributionProducts;
 
     // Copy Constructor
