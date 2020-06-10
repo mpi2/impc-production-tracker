@@ -17,5 +17,7 @@ package org.gentar.biology.mutation;
 
 import org.springframework.data.repository.CrudRepository;
 
-public interface MutationRepository extends CrudRepository<Mutation, Long> {
+public interface MutationRepository extends CrudRepository<Mutation, Long>
+{
+    Mutation findByMin(String min);
 }

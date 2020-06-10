@@ -1,6 +1,7 @@
 package org.gentar.biology.outcome;
 
 import org.gentar.audit.history.History;
+import org.gentar.biology.mutation.Mutation;
 import org.gentar.biology.outcome.type.OutcomeType;
 import org.gentar.exceptions.UserOperationFailedException;
 
@@ -61,6 +62,25 @@ public interface OutcomeService
     * @return The Outcome
      */
     Outcome getByTpoFailsIfNotFound(String tpo);
+
+    /**
+     * Gets a mutation that belongs to a outcome (tpo) belonging to a plan (pin).
+     * If the plan, outcome or id don't exist or there is not relation between them, an exception
+     * will be thrown.
+     * @param pin Public identifier of the plan.
+     * @param tpo Public identifier of the outcome
+     * @param min Public identifier of the mutation.
+     * @return The mutation object identified by id.
+     */
+    Mutation getMutationByPinTpoAndMin(String pin, String tpo, String min);
+
+    /**
+     * Creates the associations with mutations.
+     * @param pin Public identifier for a plan.
+     * @param tpo Public identifier for an outcome.
+     * @param mins List of public mutation ids (
+     */
+    History createMutationsAssociations(String pin, String tpo, List<String> mins);
 
     /**
      * Deletes the associations with mutations.

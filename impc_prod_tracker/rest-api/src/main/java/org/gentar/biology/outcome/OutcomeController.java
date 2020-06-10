@@ -121,6 +121,24 @@ public class OutcomeController
     }
 
     /**
+     * Creates the relationship between an outcome and one or more mutations identified by the
+     * mutationIds values.
+     * @param pin Public identifier of the plan.
+     * @param tpo Public identifier of the outcome.
+     * @param mins List of public mutation ids.
+     * @return ChangeResponse record with the changes.
+     */
+    @PostMapping(value = {"plans/{pin}/outcomes/{tpo}/mutations"})
+    public ChangeResponse createMutationAssociations(
+        @PathVariable String pin,
+        @PathVariable String tpo,
+        @RequestParam(value = "min", required = false) List<String> mins)
+    {
+        History history = outcomeService.createMutationsAssociations(pin, tpo, mins);
+        return buildChangeResponse(tpo, history);
+    }
+
+    /**
      * Deletes the relationship between an outcome and one or more mutations identified by the
      * mutationIds values.
      * @param pin Public identifier of the plan.
