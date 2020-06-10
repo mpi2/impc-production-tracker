@@ -16,9 +16,7 @@
 package org.gentar.organization.consortium;
 
 import org.gentar.exceptions.UserOperationFailedException;
-import org.gentar.organization.consortium.ConsortiumService;
 import org.springframework.stereotype.Component;
-import org.gentar.organization.consortium.Consortium;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;

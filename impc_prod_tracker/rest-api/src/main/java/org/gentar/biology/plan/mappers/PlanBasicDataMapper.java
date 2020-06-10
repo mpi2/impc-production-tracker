@@ -150,10 +150,6 @@ public class PlanBasicDataMapper implements Mapper<Plan, PlanBasicDataDTO>
             setPhenotypingAttempt(plan, planBasicDataDTO);
             setStartingPoint(plan, planBasicDataDTO);
         }
-        else if (planBasicDataDTO.getBreedingAttemptDTO() != null)
-        {
-            //TODO: set the breeding attempt
-        }
     }
 
     private void setCrisprAttempt(Plan plan, PlanBasicDataDTO planBasicDataDTO)

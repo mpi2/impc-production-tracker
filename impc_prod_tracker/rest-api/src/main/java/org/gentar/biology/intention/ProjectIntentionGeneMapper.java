@@ -36,8 +36,6 @@ public class ProjectIntentionGeneMapper implements Mapper<ProjectIntentionGene, 
     private GeneService geneService;
     private GeneExternalService geneExternalService;
 
-    private static final String GENE_INTENTION_TYPE = "gene";
-
     private static final String GENE_NOT_EXIST_ERROR = "Gene [%s] does not exist.";
 
     public ProjectIntentionGeneMapper(

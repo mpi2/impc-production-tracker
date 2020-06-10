@@ -4,7 +4,6 @@ import org.gentar.audit.history.History;
 import org.gentar.audit.history.HistoryMapper;
 import org.gentar.biology.ChangeResponse;
 import org.gentar.biology.plan.Plan;
-import org.gentar.biology.plan.PlanController;
 import org.gentar.biology.plan.PlanService;
 import org.gentar.common.history.HistoryDTO;
 import org.gentar.helpers.LinkUtil;
@@ -18,7 +17,6 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 import java.util.Set;
 
@@ -97,19 +95,23 @@ public class PhenotypingStageController
     public ChangeResponse create(@PathVariable String pin,
                                  @RequestBody PhenotypingStageCreationDTO phenotypingStageCreationDTO)
     {
-        PhenotypingStage phenotypingStageToBeCreated = phenotypingStageCreationMapper.toEntity(phenotypingStageCreationDTO);
+        PhenotypingStage phenotypingStageToBeCreated =
+            phenotypingStageCreationMapper.toEntity(phenotypingStageCreationDTO);
         Plan plan = planService.getNotNullPlanByPin(pin);
         phenotypingStageToBeCreated.setPhenotypingAttempt(plan.getPhenotypingAttempt());
-        PhenotypingStage createdPhenotypingStage = phenotypingStageService.create(phenotypingStageToBeCreated);
+        PhenotypingStage createdPhenotypingStage =
+            phenotypingStageService.create(phenotypingStageToBeCreated);
         return buildChangeResponse(createdPhenotypingStage);
     }
 
     private ChangeResponse buildChangeResponse(PhenotypingStage phenotypingStage)
     {
-        List<HistoryDTO> historyList = historyMapper.toDtos(phenotypingStageService.getPhenotypingStageHistory(phenotypingStage));
+        List<HistoryDTO> historyList =
+            historyMapper.toDtos(phenotypingStageService.getPhenotypingStageHistory(phenotypingStage));
         return buildChangeResponse(phenotypingStage, historyList);
     }
-    private ChangeResponse buildChangeResponse(PhenotypingStage phenotypingStage, List<HistoryDTO> historyList)
+    private ChangeResponse buildChangeResponse(
+        PhenotypingStage phenotypingStage, List<HistoryDTO> historyList)
     {
         ChangeResponse changeResponse = new ChangeResponse();
         changeResponse.setHistoryDTOs(historyList);
@@ -140,13 +142,17 @@ public class PhenotypingStageController
     }
 
     /**
-     * Get a PhenotypingStage object based on PhenotypingStageUpdateDTO using the fields that can be updated by the user.
+     * Get a PhenotypingStage object based on PhenotypingStageUpdateDTO using the fields that can be
+     * updated by the user.
      * @param phenotypingStageUpdateDTO phenotyping stage sent by the user.
      * @return The original phenotyping stage with the allowed modifications specified in the dto.
      */
-    private PhenotypingStage getPhenotypingStageToUpdate(PhenotypingStageUpdateDTO phenotypingStageUpdateDTO)
+    private PhenotypingStage getPhenotypingStageToUpdate(
+        PhenotypingStageUpdateDTO phenotypingStageUpdateDTO)
     {
-        PhenotypingStage currentPhenotypingStage = phenotypingStageService.getByPsnFailsIfNotFound(phenotypingStageUpdateDTO.getPsn());
-        return phenotypingStageRequestProcessor.getPhenotypingStageToUpdate(currentPhenotypingStage, phenotypingStageUpdateDTO);
+        PhenotypingStage currentPhenotypingStage =
+            phenotypingStageService.getByPsnFailsIfNotFound(phenotypingStageUpdateDTO.getPsn());
+        return phenotypingStageRequestProcessor.getPhenotypingStageToUpdate(
+            currentPhenotypingStage, phenotypingStageUpdateDTO);
     }
 }

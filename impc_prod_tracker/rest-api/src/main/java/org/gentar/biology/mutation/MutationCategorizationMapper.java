@@ -2,7 +2,6 @@ package org.gentar.biology.mutation;
 
 import org.gentar.Mapper;
 import org.gentar.biology.mutation.categorizarion.MutationCategorizationService;
-import org.gentar.biology.mutation.categorizarion.type.MutationCategorizationType;
 import org.springframework.stereotype.Component;
 import org.gentar.biology.mutation.categorizarion.MutationCategorization;
 import org.gentar.EntityMapper;

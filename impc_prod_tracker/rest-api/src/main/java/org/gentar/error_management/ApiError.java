@@ -83,11 +83,6 @@ public class ApiError
             SystemOperationFailedException sofe = (SystemOperationFailedException) exception;
             apiError = buildFromSystemOperationFailedException(sofe);
         }
-        //TODO: Check exception with status
-//        if (exception.getHttpStatus() != null)
-//        {
-//            apiError.setStatus(exception.getHttpStatus());
-//        }
         return apiError;
     }
 
