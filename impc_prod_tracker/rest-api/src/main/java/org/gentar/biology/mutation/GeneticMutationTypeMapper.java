@@ -5,9 +5,6 @@ import org.gentar.biology.mutation.genetic_type.GeneticMutationType;
 import org.gentar.biology.mutation.genetic_type.GeneticMutationTypeService;
 import org.springframework.stereotype.Component;
 
-import java.util.Collection;
-import java.util.List;
-
 @Component
 public class GeneticMutationTypeMapper implements Mapper<GeneticMutationType, String>
 {

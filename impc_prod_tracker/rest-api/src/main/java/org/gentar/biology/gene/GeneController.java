@@ -14,15 +14,12 @@
  *******************************************************************************/
 package org.gentar.biology.gene;
 
-import org.gentar.biology.gene.GeneIdentifierValidator;
-import org.gentar.biology.gene.GeneService;
 import org.gentar.biology.gene.external_ref.GeneExternalService;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import org.gentar.biology.gene.Gene;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;

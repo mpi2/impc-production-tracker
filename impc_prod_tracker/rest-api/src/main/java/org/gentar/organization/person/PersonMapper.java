@@ -71,30 +71,10 @@ public class PersonMapper implements Mapper<Person, PersonDTO>
         return personDTO;
     }
 
-    public List<PersonDTO> toDtos(Collection<Person> people)
-    {
-        List<PersonDTO> personDTOS = new ArrayList<>();
-        if (people != null)
-        {
-            people.forEach(x -> personDTOS.add(toDto(x)));
-        }
-        return personDTOS;
-    }
-
-    private PersonRoleWorkUnitDTO personRoleWorkUnitToDto(PersonRoleWorkUnit personRoleWorkUnit)
-    {
-        return entityMapper.toTarget(personRoleWorkUnit, PersonRoleWorkUnitDTO.class);
-    }
-
     private List<PersonRoleWorkUnitDTO> peopleRoleWorkUnitToDtos(
         Collection<PersonRoleWorkUnit> peopleRoleWorkUnit)
     {
         return entityMapper.toTargets(peopleRoleWorkUnit, PersonRoleWorkUnitDTO.class);
-    }
-
-    private PersonRoleConsortiumDTO personRoleConsortiumToDto(PersonRoleConsortium personRoleConsortium)
-    {
-        return entityMapper.toTarget(personRoleConsortium, PersonRoleConsortiumDTO.class);
     }
 
     private List<PersonRoleConsortiumDTO> peopleRoleConsortiaToDto(

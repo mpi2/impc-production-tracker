@@ -3,12 +3,9 @@ package org.gentar.biology.outcome;
 import org.gentar.biology.colony.Colony;
 import org.gentar.biology.colony.ColonyDTO;
 import org.gentar.biology.colony.ColonyMapper;
-import org.gentar.biology.colony.ColonyService;
 import org.gentar.biology.colony.distribution.DistributionProduct;
 import org.gentar.biology.strain.StrainService;
 import org.springframework.stereotype.Component;
-
-import java.util.Collection;
 import java.util.Set;
 
 @Component

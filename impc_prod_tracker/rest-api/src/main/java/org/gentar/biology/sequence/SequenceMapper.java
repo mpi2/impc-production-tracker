@@ -5,11 +5,9 @@ import org.gentar.Mapper;
 import org.springframework.stereotype.Component;
 import org.gentar.biology.sequence_location.SequenceLocation;
 import org.gentar.biology.sequence_location.SequenceLocationRepository;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.Set;
 
 @Component
 public class SequenceMapper implements Mapper<Sequence, SequenceDTO>
@@ -70,7 +68,8 @@ public class SequenceMapper implements Mapper<Sequence, SequenceDTO>
     {
         if (sequenceDTO.getSequenceLocationDTOS() != null)
         {
-            List<SequenceLocation> sequenceLocations = sequenceLocationMapper.toEntities(sequenceDTO.getSequenceLocationDTOS());
+            List<SequenceLocation> sequenceLocations =
+                sequenceLocationMapper.toEntities(sequenceDTO.getSequenceLocationDTOS());
             sequenceLocations.forEach(x -> x.setSequence(sequence));
             sequence.setSequenceLocations(sequenceLocations);
         }

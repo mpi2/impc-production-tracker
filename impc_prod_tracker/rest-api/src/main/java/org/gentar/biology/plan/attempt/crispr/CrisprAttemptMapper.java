@@ -40,7 +40,6 @@ public class CrisprAttemptMapper implements Mapper<CrisprAttempt, CrisprAttemptD
     private GenotypePrimerMapper genotypePrimerMapper;
     private AssayMapper assayMapper;
     private CrisprAttemptReagentMapper crisprAttemptReagentMapper;
-    private CrisprAttemptService crisprAttemptService;
 
     public CrisprAttemptMapper(
         EntityMapper entityMapper,
@@ -50,8 +49,7 @@ public class CrisprAttemptMapper implements Mapper<CrisprAttempt, CrisprAttemptD
         MutagenesisDonorMapper mutagenesisDonorMapper,
         GenotypePrimerMapper genotypePrimerMapper,
         AssayMapper assayMapper,
-        CrisprAttemptReagentMapper crisprAttemptReagentMapper,
-        CrisprAttemptService crisprAttemptService)
+        CrisprAttemptReagentMapper crisprAttemptReagentMapper)
     {
         this.entityMapper = entityMapper;
         this.guideMapper = guideMapper;
@@ -61,7 +59,6 @@ public class CrisprAttemptMapper implements Mapper<CrisprAttempt, CrisprAttemptD
         this.genotypePrimerMapper = genotypePrimerMapper;
         this.assayMapper = assayMapper;
         this.crisprAttemptReagentMapper = crisprAttemptReagentMapper;
-        this.crisprAttemptService = crisprAttemptService;
     }
 
     public CrisprAttemptDTO toDto(CrisprAttempt crisprAttempt)
@@ -76,7 +73,8 @@ public class CrisprAttemptMapper implements Mapper<CrisprAttempt, CrisprAttemptD
             crisprAttemptDTO.setMutagenesisDonorDTOS(
                 mutagenesisDonorMapper.toDtos(crisprAttempt.getMutagenesisDonors()));
             crisprAttemptDTO.setNucleaseDTOS(nucleaseMapper.toDtos(crisprAttempt.getNucleases()));
-            crisprAttemptDTO.setCrisprAttemptReagentDTOS((crisprAttemptReagentMapper.toDtos(crisprAttempt.getCrisprAttemptReagents())));
+            crisprAttemptDTO.setCrisprAttemptReagentDTOS(
+                crisprAttemptReagentMapper.toDtos(crisprAttempt.getCrisprAttemptReagents()));
         }
         return crisprAttemptDTO;
     }
@@ -117,9 +115,11 @@ public class CrisprAttemptMapper implements Mapper<CrisprAttempt, CrisprAttemptD
         crisprAttempt.setGuides(guides);
     }
 
-    private void setGenotypePrimersToEntity(CrisprAttempt crisprAttempt, CrisprAttemptDTO crisprAttemptDTO)
+    private void setGenotypePrimersToEntity(
+        CrisprAttempt crisprAttempt, CrisprAttemptDTO crisprAttemptDTO)
     {
-        Set<GenotypePrimer> genotypePrimers = genotypePrimerMapper.toEntities(crisprAttemptDTO.getGenotypePrimerDTOS());
+        Set<GenotypePrimer> genotypePrimers =
+            genotypePrimerMapper.toEntities(crisprAttemptDTO.getGenotypePrimerDTOS());
         genotypePrimers.forEach(x -> x.setCrisprAttempt(crisprAttempt));
         crisprAttempt.setPrimers(genotypePrimers);
     }
@@ -127,21 +127,25 @@ public class CrisprAttemptMapper implements Mapper<CrisprAttempt, CrisprAttemptD
     private void setMutagenesisDonorsToEntity(
         CrisprAttempt crisprAttempt, CrisprAttemptDTO crisprAttemptDTO)
     {
-        Set<MutagenesisDonor> mutagenesisDonors = mutagenesisDonorMapper.toEntities(crisprAttemptDTO.getMutagenesisDonorDTOS());
+        Set<MutagenesisDonor> mutagenesisDonors =
+            mutagenesisDonorMapper.toEntities(crisprAttemptDTO.getMutagenesisDonorDTOS());
         mutagenesisDonors.forEach(x -> x.setCrisprAttempt(crisprAttempt));
         crisprAttempt.setMutagenesisDonors(mutagenesisDonors);
     }
 
     private void setReagentsToEntity(CrisprAttempt crisprAttempt, CrisprAttemptDTO crisprAttemptDTO)
     {
-        Set<CrisprAttemptReagent> crisprAttemptReagents = new HashSet<>(crisprAttemptReagentMapper.toEntities(crisprAttemptDTO.getCrisprAttemptReagentDTOS()));
+        Set<CrisprAttemptReagent> crisprAttemptReagents =
+            new HashSet<>(
+                crisprAttemptReagentMapper.toEntities(crisprAttemptDTO.getCrisprAttemptReagentDTOS()));
         crisprAttemptReagents.forEach(x -> x.setCrisprAttempt(crisprAttempt));
         crisprAttempt.setCrisprAttemptReagents(crisprAttemptReagents);
     }
 
     private void setNucleasesToEntity(CrisprAttempt crisprAttempt, CrisprAttemptDTO crisprAttemptDTO)
     {
-        Set<Nuclease> nucleases = new HashSet<>(nucleaseMapper.toEntities(crisprAttemptDTO.getNucleaseDTOS()));
+        Set<Nuclease> nucleases =
+            new HashSet<>(nucleaseMapper.toEntities(crisprAttemptDTO.getNucleaseDTOS()));
         nucleases.forEach(x -> x.setCrisprAttempt(crisprAttempt));
         crisprAttempt.setNucleases(nucleases);
     }

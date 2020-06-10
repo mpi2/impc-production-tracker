@@ -38,7 +38,7 @@ import org.springframework.web.context.request.ServletWebRequest;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 import org.springframework.web.servlet.NoHandlerFoundException;
-import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;;
+import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 import javax.persistence.EntityNotFoundException;
 import javax.validation.ConstraintViolationException;
 
@@ -217,7 +217,7 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler
         ApiError apiError = null;
         String error = "Malformed JSON request";
         if (ex.getCause() instanceof JsonParseException
-            || (ex.getCause() instanceof JsonMappingException))
+            || ex.getCause() instanceof JsonMappingException)
         {
             apiError = new ApiError(BAD_REQUEST, new JsonPayloadExceptionFormatter(ex.getCause()));
         }

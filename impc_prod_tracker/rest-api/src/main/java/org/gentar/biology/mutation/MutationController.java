@@ -12,21 +12,14 @@ import org.springframework.web.bind.annotation.RestController;
 @CrossOrigin(origins="*")
 public class MutationController
 {
-    private MutationMapper mutationMapper;
     private OutcomeService outcomeService;
     private MutationResponseMapper mutationResponseMapper;
-    private MutationService mutationService;
 
     public MutationController(
-        MutationMapper mutationMapper,
-        OutcomeService outcomeService,
-        MutationResponseMapper mutationResponseMapper,
-        MutationService mutationService)
+        OutcomeService outcomeService, MutationResponseMapper mutationResponseMapper)
     {
-        this.mutationMapper = mutationMapper;
         this.outcomeService = outcomeService;
         this.mutationResponseMapper = mutationResponseMapper;
-        this.mutationService = mutationService;
     }
 
     /**

@@ -1,7 +1,6 @@
 package org.gentar.organization.funder;
 
 import org.gentar.Mapper;
-import org.gentar.biology.status_stamps.StatusStampsDTO;
 import org.gentar.exceptions.UserOperationFailedException;
 import org.springframework.stereotype.Service;
 
