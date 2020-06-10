@@ -44,8 +44,6 @@ public class OutcomeCreationMapper implements Mapper<Outcome, OutcomeCreationDTO
         outcome.setOutcomeType(outcomeType);
         outcome.setMutations(
             new HashSet<>(mutationMapper.toEntities(outcomeCreationDTO.getMutationDTOS())));
-
-
         return outcome;
     }
 }

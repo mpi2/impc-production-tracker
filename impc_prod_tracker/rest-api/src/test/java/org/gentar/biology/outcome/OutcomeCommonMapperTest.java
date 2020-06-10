@@ -15,6 +15,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 class OutcomeCommonMapperTest
@@ -64,6 +65,7 @@ class OutcomeCommonMapperTest
         OutcomeCommonDTO outcomeCommonDTO = new OutcomeCommonDTO();
         ColonyDTO colonyDTO = new ColonyDTO();
         outcomeCommonDTO.setColonyDTO(colonyDTO);
+        when(colonyMapper.toEntity(colonyDTO)).thenReturn(new Colony());
 
         testInstance.toEntity(outcomeCommonDTO);
 
@@ -77,6 +79,7 @@ class OutcomeCommonMapperTest
         OutcomeCommonDTO outcomeCommonDTO = new OutcomeCommonDTO();
         SpecimenDTO specimenDTO = new SpecimenDTO();
         outcomeCommonDTO.setSpecimenDTO(specimenDTO);
+        when(specimenMapper.toEntity(specimenDTO)).thenReturn(new Specimen());
 
         testInstance.toEntity(outcomeCommonDTO);
 

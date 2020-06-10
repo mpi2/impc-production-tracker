@@ -1,6 +1,7 @@
 package org.gentar.biology.outcome;
 
 import org.gentar.audit.history.History;
+import org.gentar.audit.history.HistoryService;
 import org.gentar.biology.colony.Colony;
 import org.gentar.biology.colony.engine.ColonyState;
 import org.gentar.biology.mutation.Mutation;
@@ -17,6 +18,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
@@ -33,6 +35,7 @@ public class OutcomeServiceImpl implements OutcomeService
     private PlanService planService;
     private MutationService mutationService;
     private ResourceAccessChecker<Outcome> resourceAccessChecker;
+    private HistoryService<Outcome> historyService;
 
     public static final String READ_OUTCOME_ACTION = "READ_OUTCOME";
 
@@ -44,7 +47,8 @@ public class OutcomeServiceImpl implements OutcomeService
         OutcomeUpdater outcomeUpdater,
         PlanService planService,
         MutationService mutationService,
-        ResourceAccessChecker<Outcome> resourceAccessChecker)
+        ResourceAccessChecker<Outcome> resourceAccessChecker,
+        HistoryService<Outcome> historyService)
     {
         this.outcomeRepository = outcomeRepository;
         this.outcomeTypeRepository = outcomeTypeRepository;
@@ -54,6 +58,7 @@ public class OutcomeServiceImpl implements OutcomeService
         this.planService = planService;
         this.mutationService = mutationService;
         this.resourceAccessChecker = resourceAccessChecker;
+        this.historyService = historyService;
     }
 
     private List<Outcome> getCheckedCollection(Collection<Outcome> outcomes)
@@ -195,5 +200,23 @@ public class OutcomeServiceImpl implements OutcomeService
             }
         }
         return outcomeUpdater.update(originalOutcome, outcome);
+    }
+
+    @Override
+    public List<History> getOutcomeHistory(Outcome outcome)
+    {
+        return historyService.getHistoryByEntityNameAndEntityId("Outcome", outcome.getId());
+    }
+
+    @Override
+    public void associateOutcomeToPlan(Outcome outcome, String pin)
+    {
+        Plan plan = planService.getNotNullPlanByPin(pin);
+        if (plan.getOutcomes() == null)
+        {
+            plan.setOutcomes(new HashSet<>());
+        }
+        plan.getOutcomes().add(outcome);
+        outcome.setPlan(plan);
     }
 }

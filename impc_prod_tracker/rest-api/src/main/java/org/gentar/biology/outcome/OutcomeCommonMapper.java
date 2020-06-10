@@ -1,7 +1,9 @@
 package org.gentar.biology.outcome;
 
 import org.gentar.Mapper;
+import org.gentar.biology.colony.Colony;
 import org.gentar.biology.colony.ColonyMapper;
+import org.gentar.biology.specimen.Specimen;
 import org.gentar.biology.specimen.SpecimenMapper;
 import org.springframework.stereotype.Component;
 
@@ -49,11 +51,15 @@ public class OutcomeCommonMapper implements Mapper<Outcome, OutcomeCommonDTO>
     {
         if (outcomeCommonDTO.getColonyDTO() != null)
         {
-            outcome.setColony(colonyMapper.toEntity(outcomeCommonDTO.getColonyDTO()));
+            Colony colony = colonyMapper.toEntity(outcomeCommonDTO.getColonyDTO());
+            colony.setOutcome(outcome);
+            outcome.setColony(colony);
         }
         else if (outcomeCommonDTO.getSpecimenDTO() != null)
         {
-            outcome.setSpecimen(specimenMapper.toEntity(outcomeCommonDTO.getSpecimenDTO()));
+            Specimen specimen = specimenMapper.toEntity(outcomeCommonDTO.getSpecimenDTO());
+            specimen.setOutcome(outcome);
+            outcome.setSpecimen(specimen);
         }
     }
 }
