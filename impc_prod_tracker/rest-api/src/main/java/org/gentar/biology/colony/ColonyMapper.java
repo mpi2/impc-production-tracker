@@ -2,6 +2,7 @@ package org.gentar.biology.colony;
 
 import org.gentar.EntityMapper;
 import org.gentar.Mapper;
+import org.gentar.biology.colony.distribution.DistributionProduct;
 import org.gentar.biology.status.StatusStampMapper;
 import org.gentar.biology.status_stamps.StatusStampsDTO;
 import org.gentar.biology.strain.StrainMapper;
@@ -12,7 +13,9 @@ import org.gentar.statemachine.TransitionEvaluation;
 import org.gentar.statemachine.TransitionMapper;
 import org.springframework.stereotype.Component;
 import java.util.Comparator;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Component
 public class ColonyMapper implements Mapper<Colony, ColonyDTO>
@@ -47,7 +50,7 @@ public class ColonyMapper implements Mapper<Colony, ColonyDTO>
         colonyDTO.setStrainName(strainMapper.toDto(colony.getStrain()));
         colonyDTO.setStatusTransitionDTO(buildStatusTransitionDTO(colony));
         setStatusStampsDTOS(colonyDTO, colony);
-        setDistributionProducts(colonyDTO, colony);
+        setDistributionProductsDtos(colonyDTO, colony);
         return colonyDTO;
     }
 
@@ -59,7 +62,7 @@ public class ColonyMapper implements Mapper<Colony, ColonyDTO>
         colonyDTO.setStatusStampsDTOS(statusStampsDTOS);
     }
 
-    private void setDistributionProducts(ColonyDTO colonyDTO, Colony colony)
+    private void setDistributionProductsDtos(ColonyDTO colonyDTO, Colony colony)
     {
         colonyDTO.setDistributionProductDTOS(
             distributionProductMapper.toDtos(colony.getDistributionProducts()));
@@ -71,7 +74,19 @@ public class ColonyMapper implements Mapper<Colony, ColonyDTO>
         Colony colony = entityMapper.toTarget(colonyDTO, Colony.class);
         setEvent(colony, colonyDTO);
         colony.setStrain(strainMapper.toEntity(colonyDTO.getStrainName()));
+        setDistributionProducts(colony, colonyDTO);
         return colony;
+    }
+
+    private void setDistributionProducts(Colony colony, ColonyDTO colonyDTO)
+    {
+        if (colonyDTO.getDistributionProductDTOS() != null)
+        {
+            Set<DistributionProduct> distributionProducts =
+                new HashSet<>(
+                    distributionProductMapper.toEntities(colonyDTO.getDistributionProductDTOS()));
+            colony.setDistributionProducts(distributionProducts);
+        }
     }
 
     private void setEvent(Colony colony, ColonyDTO colonyDTO)

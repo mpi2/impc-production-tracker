@@ -40,4 +40,16 @@ public class DistributionProduct extends BaseEntity
 
     @Column(name = "end_date")
     private LocalDateTime endDate;
+
+    public String toString()
+    {
+        String distributionCentreName =
+            distributionCentre == null ? "Not defined" : distributionCentre.getName();
+        String productTypeName = productType == null ? "Not defined" : productType.getName();
+        String distributionNetworkName =
+            distributionNetwork == null ? "Not defined" : distributionNetwork.getName();
+        return "id:" +id + ", distributionCentre:" + distributionCentreName + ", productType: "
+            + productTypeName + ", distributionNetworkName:" +distributionNetworkName
+            + ", startDate: " + startDate + ", endDate:" + endDate;
+    }
 }
