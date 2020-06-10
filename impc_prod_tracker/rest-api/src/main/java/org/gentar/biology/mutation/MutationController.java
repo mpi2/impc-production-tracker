@@ -1,5 +1,6 @@
 package org.gentar.biology.mutation;
 
+import org.gentar.biology.outcome.OutcomeService;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -12,15 +13,18 @@ import org.springframework.web.bind.annotation.RestController;
 public class MutationController
 {
     private MutationMapper mutationMapper;
+    private OutcomeService outcomeService;
     private MutationResponseMapper mutationResponseMapper;
     private MutationService mutationService;
 
     public MutationController(
         MutationMapper mutationMapper,
+        OutcomeService outcomeService,
         MutationResponseMapper mutationResponseMapper,
         MutationService mutationService)
     {
         this.mutationMapper = mutationMapper;
+        this.outcomeService = outcomeService;
         this.mutationResponseMapper = mutationResponseMapper;
         this.mutationService = mutationService;
     }
@@ -36,7 +40,7 @@ public class MutationController
     public MutationResponseDTO findMutationInOutcomeById(
         @PathVariable String pin, @PathVariable String tpo, @PathVariable String min)
     {
-        Mutation mutation = mutationService.getMutationByPinTpoAndId(pin, tpo, min);
+        Mutation mutation = outcomeService.getMutationByPinTpoAndMin(pin, tpo, min);
         return mutationResponseMapper.toDto(mutation);
     }
 }
