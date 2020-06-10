@@ -3,20 +3,9 @@ package org.gentar.biology.outcome;
 import org.gentar.audit.history.History;
 import org.gentar.biology.ChangeResponse;
 import org.gentar.biology.plan.Plan;
-import org.gentar.biology.plan.PlanController;
 import org.gentar.biology.plan.PlanService;
 import org.gentar.helpers.ChangeResponseCreator;
-import org.gentar.helpers.LinkUtil;
-import org.gentar.helpers.PaginationHelper;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.web.PagedResourcesAssembler;
-import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.Link;
-import org.springframework.hateoas.PagedModel;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -27,7 +16,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
 import java.util.Collection;
 import java.util.List;
 import java.util.Set;
@@ -61,26 +49,6 @@ public class OutcomeController
         this.outcomeResponseMapper = outcomeResponseMapper;
         this.outcomeCreationMapper = outcomeCreationMapper;
         this.changeResponseCreator = changeResponseCreator;
-    }
-
-    @GetMapping(value = {"/outcomes"})
-    public ResponseEntity<OutcomeResponseDTO> findAll(
-        Pageable pageable, PagedResourcesAssembler<OutcomeResponseDTO> assembler)
-    {
-        List<Outcome> outcomes = outcomeService.getOutcomes();
-
-        Page<Outcome> paginatedContent = PaginationHelper.createPage(outcomes, pageable);
-        Page<OutcomeResponseDTO> outcomeDTOPage = paginatedContent.map(x -> outcomeResponseMapper.toDto(x));
-
-        PagedModel<EntityModel<OutcomeResponseDTO>> pr =
-            assembler.toModel(
-                outcomeDTOPage,
-                linkTo(OutcomeController.class).withSelfRel());
-
-        HttpHeaders responseHeaders = new HttpHeaders();
-        responseHeaders.add("Link", LinkUtil.createLinkHeader(pr));
-
-        return new ResponseEntity(pr, responseHeaders, HttpStatus.OK);
     }
 
     @GetMapping(value = {"plans/{pin}/outcomes/{tpo}"})
