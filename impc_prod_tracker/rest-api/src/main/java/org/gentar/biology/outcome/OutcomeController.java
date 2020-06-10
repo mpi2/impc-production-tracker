@@ -3,6 +3,7 @@ package org.gentar.biology.outcome;
 import org.gentar.audit.history.History;
 import org.gentar.biology.ChangeResponse;
 import org.gentar.biology.plan.Plan;
+import org.gentar.biology.plan.PlanController;
 import org.gentar.biology.plan.PlanService;
 import org.gentar.helpers.ChangeResponseCreator;
 import org.gentar.helpers.LinkUtil;
@@ -27,10 +28,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 @RestController
 @RequestMapping("/api")
@@ -98,16 +101,19 @@ public class OutcomeController
 
     /**
      * Create an outcome in the system.
-     * @param outcomeDTO DTO with the representation of the outcome.
+     * @param pin Public identifier for the plan.
+     * @param outcomeCreationDTO DTO with request to creation of an outcome.
      * @return The DTO with the outcome of the created outcome.
      */
     @PostMapping(value = {"plans/{pin}/outcomes"})
-    public OutcomeDTO create(@RequestBody OutcomeCreationDTO outcomeCreationDTO)
+    public ChangeResponse create(
+        @PathVariable String pin, @RequestBody OutcomeCreationDTO outcomeCreationDTO)
     {
         Outcome outcome = outcomeCreationMapper.toEntity(outcomeCreationDTO);
-//        Outcome createdOutcome = outcomeService.create(outcome);
-//        return outcomeMapper.toDto(createdOutcome);
-        return null;
+        outcomeService.associateOutcomeToPlan(outcome, pin);
+        Outcome createdOutcome = outcomeService.create(outcome);
+        return buildChangeResponse(
+            pin, createdOutcome.getTpo(), outcomeService.getOutcomeHistory(createdOutcome));
     }
 
     @PutMapping(value = {"plans/{pin}/outcomes/{tpo}"})
@@ -117,7 +123,7 @@ public class OutcomeController
         outcomeRequestProcessor.validateAssociation(pin, tpo);
         Outcome outcome = getOutcomeToUpdate(outcomeDTO);
         History history = outcomeService.update(outcome);
-        return buildChangeResponse(tpo, history);
+        return buildChangeResponse(pin, tpo, history);
     }
 
     /**
@@ -135,7 +141,7 @@ public class OutcomeController
         @RequestParam(value = "min", required = false) List<String> mins)
     {
         History history = outcomeService.createMutationsAssociations(pin, tpo, mins);
-        return buildChangeResponse(tpo, history);
+        return buildChangeResponse(pin, tpo, history);
     }
 
     /**
@@ -153,7 +159,7 @@ public class OutcomeController
         @RequestParam(value = "min", required = false) List<String> mins)
     {
         History history = outcomeService.deleteMutationsAssociations(pin, tpo, mins);
-        return buildChangeResponse(tpo, history);
+        return buildChangeResponse(pin, tpo, history);
     }
 
     /**
@@ -167,9 +173,20 @@ public class OutcomeController
         return outcomeRequestProcessor.getOutcomeToUpdate(currentOutcome, outcomeDTO);
     }
 
-    private ChangeResponse buildChangeResponse(String tpo, History history)
+    private ChangeResponse buildChangeResponse(String pin, String tpo, History history)
     {
-        Link link = linkTo(OutcomeController.class).slash(tpo).withSelfRel();
+        Link link = buildOutcomeLink(pin, tpo);
         return changeResponseCreator.create(link, history);
+    }
+
+    private ChangeResponse buildChangeResponse(String pin, String tpo, Collection<History> histories)
+    {
+        Link link = buildOutcomeLink(pin, tpo);
+        return changeResponseCreator.create(link, histories);
+    }
+
+    private Link buildOutcomeLink(String pin, String tpo)
+    {
+        return linkTo(methodOn(OutcomeController.class).findOneByPlanAndTpo(pin, tpo)).withSelfRel();
     }
 }

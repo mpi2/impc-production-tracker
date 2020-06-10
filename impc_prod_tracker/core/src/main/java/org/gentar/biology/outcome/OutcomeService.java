@@ -3,6 +3,7 @@ package org.gentar.biology.outcome;
 import org.gentar.audit.history.History;
 import org.gentar.biology.mutation.Mutation;
 import org.gentar.biology.outcome.type.OutcomeType;
+import org.gentar.biology.project.Project;
 import org.gentar.exceptions.UserOperationFailedException;
 
 import java.util.List;
@@ -90,4 +91,13 @@ public interface OutcomeService
      *             relation with the outcome.
      */
     History deleteMutationsAssociations(String pin, String tpo, List<String> mins);
+
+    /**
+     * Gets the history for a outcome
+     * @param outcome The outcome.
+     * @return List of {@link History} with the trace of the changes for a outcome.
+     */
+    List<History> getOutcomeHistory(Outcome outcome);
+
+    void associateOutcomeToPlan(Outcome outcome, String pin);
 }
