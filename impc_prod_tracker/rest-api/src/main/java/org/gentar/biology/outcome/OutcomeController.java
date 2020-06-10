@@ -86,10 +86,12 @@ public class OutcomeController
 
     @PutMapping(value = {"plans/{pin}/outcomes/{tpo}"})
     public ChangeResponse update(
-        @PathVariable String pin, @PathVariable String tpo, @RequestBody OutcomeDTO outcomeDTO)
+        @PathVariable String pin,
+        @PathVariable String tpo,
+        @RequestBody OutcomeUpdateDTO outcomeUpdateDTO)
     {
         outcomeRequestProcessor.validateAssociation(pin, tpo);
-        Outcome outcome = getOutcomeToUpdate(outcomeDTO);
+        Outcome outcome = getOutcomeToUpdate(tpo, outcomeUpdateDTO);
         History history = outcomeService.update(outcome);
         return buildChangeResponse(pin, tpo, history);
     }
@@ -135,10 +137,10 @@ public class OutcomeController
      * @param outcomeDTO outcome sent by the user.
      * @return The original outcome with the allowed modifications specified in the dto.
      */
-    private Outcome getOutcomeToUpdate(OutcomeDTO outcomeDTO)
+    private Outcome getOutcomeToUpdate(String tpo, OutcomeUpdateDTO outcomeUpdateDTO)
     {
-        Outcome currentOutcome = outcomeService.getByTpoFailsIfNotFound(outcomeDTO.getTpo());
-        return outcomeRequestProcessor.getOutcomeToUpdate(currentOutcome, outcomeDTO);
+        Outcome currentOutcome = outcomeService.getByTpoFailsIfNotFound(tpo);
+        return outcomeRequestProcessor.getOutcomeToUpdate(currentOutcome, outcomeUpdateDTO);
     }
 
     private ChangeResponse buildChangeResponse(String pin, String tpo, History history)

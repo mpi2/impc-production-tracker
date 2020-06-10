@@ -14,14 +14,11 @@ import java.util.Set;
 @Component
 public class ColonyRequestProcessor
 {
-    private ColonyService colonyService;
     private StrainService strainService;
     private ColonyMapper colonyMapper;
 
-    public ColonyRequestProcessor(
-        ColonyService colonyService, StrainService strainService, ColonyMapper colonyMapper)
+    public ColonyRequestProcessor(StrainService strainService, ColonyMapper colonyMapper)
     {
-        this.colonyService = colonyService;
         this.strainService = strainService;
         this.colonyMapper = colonyMapper;
     }
