@@ -85,6 +85,7 @@ public class ColonyMapper implements Mapper<Colony, ColonyDTO>
             Set<DistributionProduct> distributionProducts =
                 new HashSet<>(
                     distributionProductMapper.toEntities(colonyDTO.getDistributionProductDTOS()));
+            distributionProducts.forEach(x -> x.setColony(colony));
             colony.setDistributionProducts(distributionProducts);
         }
     }
