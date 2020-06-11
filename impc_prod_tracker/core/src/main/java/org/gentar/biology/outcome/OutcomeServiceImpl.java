@@ -2,21 +2,17 @@ package org.gentar.biology.outcome;
 
 import org.gentar.audit.history.History;
 import org.gentar.audit.history.HistoryService;
-import org.gentar.biology.colony.Colony;
-import org.gentar.biology.colony.engine.ColonyState;
 import org.gentar.biology.mutation.Mutation;
 import org.gentar.biology.mutation.MutationService;
 import org.gentar.biology.outcome.type.OutcomeType;
 import org.gentar.biology.outcome.type.OutcomeTypeRepository;
 import org.gentar.biology.plan.Plan;
 import org.gentar.biology.plan.PlanService;
-import org.gentar.biology.status.Status;
 import org.gentar.biology.status.StatusService;
 import org.gentar.exceptions.UserOperationFailedException;
 import org.gentar.security.abac.ResourceAccessChecker;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
-
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
@@ -30,7 +26,6 @@ public class OutcomeServiceImpl implements OutcomeService
     private OutcomeRepository outcomeRepository;
     private OutcomeTypeRepository outcomeTypeRepository;
     private OutcomeCreator outcomeCreator;
-    private StatusService statusService;
     private OutcomeUpdater outcomeUpdater;
     private PlanService planService;
     private MutationService mutationService;
@@ -53,7 +48,6 @@ public class OutcomeServiceImpl implements OutcomeService
         this.outcomeRepository = outcomeRepository;
         this.outcomeTypeRepository = outcomeTypeRepository;
         this.outcomeCreator = outcomeCreator;
-        this.statusService = statusService;
         this.outcomeUpdater = outcomeUpdater;
         this.planService = planService;
         this.mutationService = mutationService;
@@ -91,22 +85,10 @@ public class OutcomeServiceImpl implements OutcomeService
         return getCheckedCollection(outcomeRepository.findAll());
     }
 
+    @Transactional
     public Outcome create(Outcome outcome)
     {
-        setInitialStatus(outcome);
-        Outcome createdOutcome = outcomeCreator.create(outcome);
-        return createdOutcome;
-    }
-
-    private void setInitialStatus(Outcome outcome)
-    {
-        Colony colony = outcome.getColony();
-        if (colony != null)
-        {
-            Status colonyStatus =
-                statusService.getStatusByName(ColonyState.GenotypeNotConfirmed.getInternalName());
-            colony.setStatus(colonyStatus);
-        }
+        return outcomeCreator.create(outcome);
     }
 
     @Transactional

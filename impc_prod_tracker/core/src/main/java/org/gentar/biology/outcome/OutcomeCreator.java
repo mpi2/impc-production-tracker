@@ -3,18 +3,20 @@ package org.gentar.biology.outcome;
 import org.gentar.audit.history.History;
 import org.gentar.audit.history.HistoryService;
 import org.gentar.biology.colony.engine.ColonyStateSetter;
+import org.gentar.biology.mutation.Mutation;
+import org.gentar.biology.mutation.MutationService;
 import org.gentar.biology.outcome.type.OutcomeTypeName;
 import org.gentar.biology.specimen.engine.SpecimenStateSetter;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.transaction.Transactional;
+import java.util.Set;
 
 /**
  * Logic to create an outcome in the system.
  */
 @Component
-@Transactional
 class OutcomeCreator
 {
     @PersistenceContext
@@ -22,21 +24,26 @@ class OutcomeCreator
     private HistoryService<Outcome> historyService;
     private ColonyStateSetter colonyStateSetter;
     private SpecimenStateSetter specimenStateSetter;
+    private MutationService mutationService;
 
     OutcomeCreator(
         HistoryService<Outcome> historyService,
         ColonyStateSetter colonyStateSetter,
-        SpecimenStateSetter specimenStateSetter)
+        SpecimenStateSetter specimenStateSetter,
+        MutationService mutationService)
     {
         this.historyService = historyService;
         this.colonyStateSetter = colonyStateSetter;
         this.specimenStateSetter = specimenStateSetter;
+        this.mutationService = mutationService;
     }
 
+    @Transactional
     public Outcome create(Outcome outcome)
     {
         setInitialStatus(outcome);
         Outcome createdOutcome = save(outcome);
+        saveMutations(createdOutcome);
         registerCreationInHistory(createdOutcome);
         return createdOutcome;
     }
@@ -66,6 +73,15 @@ class OutcomeCreator
         entityManager.persist(outcome);
         outcome.setTpo(buildTpo(outcome.getId()));
         return outcome;
+    }
+
+    private void saveMutations(Outcome outcome)
+    {
+        Set<Mutation> mutations = outcome.getMutations();
+        if (mutations != null)
+        {
+            mutations.forEach(x -> mutationService.createMutation(x));
+        }
     }
 
     private String buildTpo(Long id)

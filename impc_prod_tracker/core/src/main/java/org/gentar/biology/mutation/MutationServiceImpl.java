@@ -25,4 +25,19 @@ public class MutationServiceImpl implements MutationService
         }
         return mutation;
     }
+
+    @Override
+    public Mutation createMutation(Mutation mutation)
+    {
+        Mutation createdMutation = mutationRepository.save(mutation);
+        createdMutation.setMin(buildMin(createdMutation.getId()));
+        return createdMutation;
+    }
+
+    private String buildMin(Long id)
+    {
+        String identifier = String.format("%0" + 12 + "d", id);
+        identifier = "MIN:" + identifier;
+        return identifier;
+    }
 }

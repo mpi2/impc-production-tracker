@@ -26,6 +26,7 @@ public class GeneticMutationTypeMapper implements Mapper<GeneticMutationType, St
 
     public GeneticMutationType toEntity(String geneticMutationTypeName)
     {
-        return geneticMutationTypeService.getGeneticMutationTypeByName(geneticMutationTypeName);
+        return geneticMutationTypeService.getGeneticMutationTypeByNameFailsIfNull(
+            geneticMutationTypeName);
     }
 }

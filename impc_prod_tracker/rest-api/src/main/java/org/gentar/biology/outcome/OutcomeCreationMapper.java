@@ -1,27 +1,30 @@
 package org.gentar.biology.outcome;
 
 import org.gentar.Mapper;
-import org.gentar.biology.mutation.MutationMapper;
+import org.gentar.biology.mutation.Mutation;
+import org.gentar.biology.mutation.MutationCreationDTO;
+import org.gentar.biology.mutation.MutationCreationMapper;
 import org.gentar.biology.outcome.type.OutcomeType;
 import org.springframework.stereotype.Component;
-
 import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 @Component
 public class OutcomeCreationMapper implements Mapper<Outcome, OutcomeCreationDTO>
 {
     private OutcomeCommonMapper outcomeCommonMapper;
     private OutcomeService outcomeService;
-    private MutationMapper mutationMapper;
+    private MutationCreationMapper mutationCreationMapper;
 
     public OutcomeCreationMapper(
         OutcomeCommonMapper outcomeCommonMapper,
         OutcomeService outcomeService,
-        MutationMapper mutationMapper)
+        MutationCreationMapper mutationCreationMapper)
     {
         this.outcomeCommonMapper = outcomeCommonMapper;
         this.outcomeService = outcomeService;
-        this.mutationMapper = mutationMapper;
+        this.mutationCreationMapper = mutationCreationMapper;
     }
 
     @Override
@@ -42,8 +45,18 @@ public class OutcomeCreationMapper implements Mapper<Outcome, OutcomeCreationDTO
         String outcomeTypeName = outcomeCreationDTO.getOutcomeTypeName();
         OutcomeType outcomeType = outcomeService.getOutcomeTypeByNameFailingWhenNull(outcomeTypeName);
         outcome.setOutcomeType(outcomeType);
-        outcome.setMutations(
-            new HashSet<>(mutationMapper.toEntities(outcomeCreationDTO.getMutationDTOS())));
+        setMutations(outcome, outcomeCreationDTO);
         return outcome;
+    }
+
+    private void setMutations(Outcome outcome, OutcomeCreationDTO outcomeCreationDTO)
+    {
+        List<MutationCreationDTO> mutationCreationDTOS = outcomeCreationDTO.getMutationCreationDTOS();
+        Set<Mutation> mutations;
+        if (mutationCreationDTOS != null)
+        {
+            mutations = new HashSet<>(mutationCreationMapper.toEntities(mutationCreationDTOS));
+            mutations.forEach(outcome::addMutation);
+        }
     }
 }

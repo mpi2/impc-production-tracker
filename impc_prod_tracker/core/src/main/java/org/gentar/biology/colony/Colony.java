@@ -52,7 +52,7 @@ public class Colony extends BaseEntity implements ProcessData
     private Strain strain;
 
     @NotNull
-    @ManyToOne(targetEntity= Status.class)
+    @ManyToOne
     private Status status;
 
     private String genotypingComment;
