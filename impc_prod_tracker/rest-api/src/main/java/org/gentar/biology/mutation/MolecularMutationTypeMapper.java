@@ -42,6 +42,7 @@ public class MolecularMutationTypeMapper implements Mapper<MolecularMutationType
 
     public MolecularMutationType toEntity(String molecularMutationTypeName)
     {
-        return molecularMutationTypeService.getMolecularMutationTypeByNameFailingWhenNull(molecularMutationTypeName);
+        return molecularMutationTypeService.getMolecularMutationTypeByNameFailingWhenNull(
+            molecularMutationTypeName);
     }
 }

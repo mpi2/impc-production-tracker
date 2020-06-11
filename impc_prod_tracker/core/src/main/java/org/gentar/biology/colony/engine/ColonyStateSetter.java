@@ -7,6 +7,8 @@ import org.gentar.biology.status.StatusService;
 import org.gentar.statemachine.ProcessData;
 import org.gentar.statemachine.StateSetter;
 import org.springframework.stereotype.Component;
+
+import javax.annotation.PostConstruct;
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
@@ -16,9 +18,18 @@ public class ColonyStateSetter implements StateSetter
 {
     private StatusService statusService;
 
+    private static Status INITIAL_STATUS;
+
     public ColonyStateSetter(StatusService statusService)
     {
         this.statusService = statusService;
+    }
+
+    @PostConstruct
+    private void loadInitialStatus()
+    {
+        INITIAL_STATUS =
+            statusService.getStatusByName(ColonyState.GenotypeInProgress.getInternalName());
     }
 
     @Override
@@ -38,7 +49,7 @@ public class ColonyStateSetter implements StateSetter
     @Override
     public void setInitialStatus(ProcessData entity)
     {
-        setStatusByName(entity, ColonyState.GenotypeInProgress.getInternalName());
+        setStatus(entity, INITIAL_STATUS);
     }
 
     private void registerStatusStamp(Colony colony)

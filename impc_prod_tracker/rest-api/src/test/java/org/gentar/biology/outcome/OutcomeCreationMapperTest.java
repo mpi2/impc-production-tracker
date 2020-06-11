@@ -1,13 +1,15 @@
 package org.gentar.biology.outcome;
 
-import org.gentar.biology.mutation.MutationMapper;
-import org.gentar.biology.outcome.type.OutcomeType;
+import org.gentar.biology.mutation.MutationCreationDTO;
+import org.gentar.biology.mutation.MutationCreationMapper;
 import org.gentar.biology.outcome.type.OutcomeTypeName;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -22,12 +24,12 @@ class OutcomeCreationMapperTest
     @Mock
     private OutcomeService outcomeService;
     @Mock
-    private MutationMapper mutationMapper;
+    private MutationCreationMapper mutationCreationMapper;
 
     @BeforeEach
     void setUp()
     {
-        testInstance = new OutcomeCreationMapper(outcomeCommonMapper, outcomeService, mutationMapper);
+        testInstance = new OutcomeCreationMapper(outcomeCommonMapper, outcomeService, mutationCreationMapper);
     }
 
     @Test
@@ -35,10 +37,13 @@ class OutcomeCreationMapperTest
     {
         OutcomeCreationDTO outcomeCreationDTO = new OutcomeCreationDTO();
         outcomeCreationDTO.setOutcomeTypeName(OutcomeTypeName.COLONY.getLabel());
+        List<MutationCreationDTO> mutationCreationDTOS = new ArrayList<>();
+        outcomeCreationDTO.setMutationCreationDTOS(mutationCreationDTOS);
+
         testInstance.toEntity(outcomeCreationDTO);
 
         verify(outcomeCommonMapper, times(1)).toEntity(outcomeCreationDTO.getOutcomeCommonDTO());
-        verify(mutationMapper, times(1)).toEntities(outcomeCreationDTO.getMutationDTOS());
+        verify(mutationCreationMapper, times(1)).toEntities(outcomeCreationDTO.getMutationCreationDTOS());
         verify(outcomeService, times(1))
             .getOutcomeTypeByNameFailingWhenNull(OutcomeTypeName.COLONY.getLabel());
     }
@@ -48,10 +53,13 @@ class OutcomeCreationMapperTest
     {
         OutcomeCreationDTO outcomeCreationDTO = new OutcomeCreationDTO();
         outcomeCreationDTO.setOutcomeTypeName(OutcomeTypeName.SPECIMEN.getLabel());
+        List<MutationCreationDTO> mutationCreationDTOS = new ArrayList<>();
+        outcomeCreationDTO.setMutationCreationDTOS(mutationCreationDTOS);
+
         testInstance.toEntity(outcomeCreationDTO);
 
         verify(outcomeCommonMapper, times(1)).toEntity(outcomeCreationDTO.getOutcomeCommonDTO());
-        verify(mutationMapper, times(1)).toEntities(outcomeCreationDTO.getMutationDTOS());
+        verify(mutationCreationMapper, times(1)).toEntities(outcomeCreationDTO.getMutationCreationDTOS());
         verify(outcomeService, times(1))
             .getOutcomeTypeByNameFailingWhenNull(OutcomeTypeName.SPECIMEN.getLabel());
     }

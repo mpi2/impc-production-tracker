@@ -58,6 +58,10 @@ class MutationCommonMapperTest
     private GeneMapper geneMapper;
     @Mock
     private MutationSequenceMapper mutationSequenceMapper;
+    @Mock
+    private GeneticMutationTypeMapper geneticMutationTypeMapper;
+    @Mock
+    private MolecularMutationTypeMapper molecularMutationTypeMapper;
 
     @BeforeEach
     void setUp()
@@ -68,7 +72,7 @@ class MutationCommonMapperTest
                 mutationQCResultMapper,
                 mutationCategorizationMapper,
                 geneMapper,
-                mutationSequenceMapper);
+                mutationSequenceMapper, geneticMutationTypeMapper, molecularMutationTypeMapper);
     }
 
     @Test
@@ -139,15 +143,20 @@ class MutationCommonMapperTest
             mutation.getMgiAlleleSymbolRequiresConstruction(),
             is(MGI_ALLELE_SYMBOL_REQUIRES_CONSTRUCTION));
         assertThat(mutation.getAlleleConfirmed(), is(ALLELE_CONFIRMED));
-        assertThat(mutation.getImitsAllele(), is(IMITS_ALLELE));
-        assertThat(mutation.getGeneticMutationType().getName(), is(GENETIC_MUTATION_TYPE));
-        assertThat(mutation.getMolecularMutationType().getName(), is(MOLECULAR_MUTATION_TYPE));
-        assertThat(mutation.getGenbankFile().getName(), is(FILE_GB));
-
-        verify(mutationQCResultMapper, times(1)).toEntities(mutationCommonDTO.getMutationQCResultDTOs());
+        verify(
+            mutationQCResultMapper, times(1)).toEntities(mutationCommonDTO.getMutationQCResultDTOs());
         verify(geneMapper, times(1)).toEntities(mutationCommonDTO.getGeneDTOS());
-        verify(mutationSequenceMapper, times(1)).toEntities(mutationCommonDTO.getMutationSequenceDTOS());
-        verify(mutationCategorizationMapper, times(1)).toEntities(mutationCommonDTO.getMutationCategorizationDTOS());
+        verify(
+            mutationSequenceMapper, times(1)).toEntities(mutationCommonDTO.getMutationSequenceDTOS());
+        verify(
+            mutationCategorizationMapper,
+            times(1)).toEntities(mutationCommonDTO.getMutationCategorizationDTOS());
+        verify(
+            geneticMutationTypeMapper,
+            times(1)).toEntity(mutationCommonDTO.getGeneticMutationTypeName());
+        verify(
+            molecularMutationTypeMapper,
+            times(1)).toEntity(mutationCommonDTO.getMolecularMutationTypeName());
     }
 
     private MutationCommonDTO buildMutationDto()

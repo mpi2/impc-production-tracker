@@ -23,7 +23,8 @@ public class MolecularMutationTypeServiceImpl implements MolecularMutationTypeSe
         MolecularMutationType molecularMutationType = getMolecularMutationTypeByName(name);
         if (molecularMutationType == null)
         {
-            throw new UserOperationFailedException("Molecular mutation type name '" + name + "' does not exist.");
+            throw new UserOperationFailedException(
+                "Molecular mutation type name '" + name + "' does not exist.");
         }
         return molecularMutationType;
     }
