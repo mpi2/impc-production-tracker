@@ -8,7 +8,7 @@ import java.util.List;
 public interface PhenotypingStageRepository extends CrudRepository<PhenotypingStage, Long>
 {
     @Query("SELECT max(ps.psn) FROM PhenotypingStage ps")
-    String getMaxPps();
+    String getMaxPsn();
 
     PhenotypingStage findByPsn(String psn);
 

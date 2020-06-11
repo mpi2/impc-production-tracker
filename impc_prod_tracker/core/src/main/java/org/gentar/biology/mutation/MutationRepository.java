@@ -15,9 +15,13 @@
  *******************************************************************************/
 package org.gentar.biology.mutation;
 
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 
 public interface MutationRepository extends CrudRepository<Mutation, Long>
 {
+    @Query("SELECT max(m.min) FROM Mutation m")
+    String getMaxMin();
+
     Mutation findByMin(String min);
 }
