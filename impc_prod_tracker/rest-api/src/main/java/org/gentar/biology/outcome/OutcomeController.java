@@ -1,9 +1,11 @@
 package org.gentar.biology.outcome;
 
 import org.gentar.audit.history.History;
+import org.gentar.audit.history.HistoryMapper;
 import org.gentar.biology.ChangeResponse;
 import org.gentar.biology.plan.Plan;
 import org.gentar.biology.plan.PlanService;
+import org.gentar.common.history.HistoryDTO;
 import org.gentar.helpers.ChangeResponseCreator;
 import org.springframework.hateoas.Link;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -34,6 +36,7 @@ public class OutcomeController
     private OutcomeResponseMapper outcomeResponseMapper;
     private OutcomeCreationMapper outcomeCreationMapper;
     private ChangeResponseCreator changeResponseCreator;
+    private HistoryMapper historyMapper;
 
     public OutcomeController(
         OutcomeService outcomeService,
@@ -41,7 +44,8 @@ public class OutcomeController
         OutcomeRequestProcessor outcomeRequestProcessor,
         OutcomeResponseMapper outcomeResponseMapper,
         OutcomeCreationMapper outcomeCreationMapper,
-        ChangeResponseCreator changeResponseCreator)
+        ChangeResponseCreator changeResponseCreator,
+        HistoryMapper historyMapper)
     {
         this.outcomeService = outcomeService;
         this.planService = planService;
@@ -49,6 +53,7 @@ public class OutcomeController
         this.outcomeResponseMapper = outcomeResponseMapper;
         this.outcomeCreationMapper = outcomeCreationMapper;
         this.changeResponseCreator = changeResponseCreator;
+        this.historyMapper = historyMapper;
     }
 
     @GetMapping(value = {"plans/{pin}/outcomes/{tpo}"})
@@ -65,6 +70,14 @@ public class OutcomeController
         Plan plan = planService.getNotNullPlanByPin(pin);
         Set<Outcome> outcomes = plan.getOutcomes();
         return outcomeResponseMapper.toDtos(outcomes);
+    }
+
+    @GetMapping(value = {"plans/{pin}/outcomes/{tpo}/history"})
+    public List<HistoryDTO> getPlanHistory(@PathVariable String pin, @PathVariable String tpo)
+    {
+        Outcome outcome = outcomeService.getOutcomeByPinAndTpo(pin, tpo);
+
+        return historyMapper.toDtos(outcomeService.getOutcomeHistory(outcome));
     }
 
     /**
