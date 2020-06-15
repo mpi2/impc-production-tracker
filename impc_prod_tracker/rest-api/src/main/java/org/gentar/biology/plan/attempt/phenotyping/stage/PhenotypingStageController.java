@@ -6,12 +6,14 @@ import org.gentar.biology.ChangeResponse;
 import org.gentar.biology.plan.Plan;
 import org.gentar.biology.plan.PlanService;
 import org.gentar.common.history.HistoryDTO;
+import org.gentar.helpers.ChangeResponseCreator;
 import org.gentar.helpers.LinkUtil;
 import org.gentar.helpers.PaginationHelper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PagedResourcesAssembler;
 import org.springframework.hateoas.EntityModel;
+import org.springframework.hateoas.Link;
 import org.springframework.hateoas.PagedModel;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -21,6 +23,7 @@ import java.util.List;
 import java.util.Set;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 @RestController
 @RequestMapping("/api")
@@ -33,14 +36,15 @@ public class PhenotypingStageController
     private HistoryMapper historyMapper;
     private PhenotypingStageResponseMapper phenotypingStageResponseMapper;
     private PhenotypingStageCreationMapper phenotypingStageCreationMapper;
+    private ChangeResponseCreator changeResponseCreator;
 
-    public PhenotypingStageController (
+    public PhenotypingStageController(
             PhenotypingStageService phenotypingStageService,
             PlanService planService,
             PhenotypingStageRequestProcessor phenotypingStageRequestProcessor,
             HistoryMapper historyMapper,
             PhenotypingStageResponseMapper phenotypingStageResponseMapper,
-            PhenotypingStageCreationMapper phenotypingStageCreationMapper)
+            PhenotypingStageCreationMapper phenotypingStageCreationMapper, ChangeResponseCreator changeResponseCreator)
     {
         this.phenotypingStageService = phenotypingStageService;
         this.planService = planService;
@@ -48,6 +52,7 @@ public class PhenotypingStageController
         this.historyMapper = historyMapper;
         this.phenotypingStageResponseMapper = phenotypingStageResponseMapper;
         this.phenotypingStageCreationMapper = phenotypingStageCreationMapper;
+        this.changeResponseCreator = changeResponseCreator;
     }
 
     @GetMapping(value = {"/phenotypingStages"})
@@ -86,6 +91,14 @@ public class PhenotypingStageController
         return phenotypingStageResponseMapper.toDtos(phenotypingStages);
     }
 
+    @GetMapping(value = {"plans/{pin}/phenotypingStages/{psn}/history"})
+    public List<HistoryDTO> getPlanHistory(@PathVariable String pin, @PathVariable String psn)
+    {
+        PhenotypingStage phenotypingStage = phenotypingStageService.getPhenotypingStageByPinAndPsn(pin, psn);
+
+        return historyMapper.toDtos(phenotypingStageService.getPhenotypingStageHistory(phenotypingStage));
+    }
+
     /**
      * Create a phenotyping stage in the system.
      * @param phenotypingStageCreationDTO DTO with the representation of the phenotyping stage.
@@ -104,14 +117,40 @@ public class PhenotypingStageController
         return buildChangeResponse(createdPhenotypingStage);
     }
 
+
+
+    @PutMapping(value = {"plans/{pin}/phenotypingStages/{psn}"})
+    public ChangeResponse update(@PathVariable String pin, @PathVariable String psn,
+            @RequestBody PhenotypingStageUpdateDTO phenotypingStageUpdateDTO)
+    {
+        phenotypingStageRequestProcessor.validateAssociation(pin, psn);
+        PhenotypingStage phenotypingStage = getPhenotypingStageToUpdate(psn, phenotypingStageUpdateDTO);
+        History history = phenotypingStageService.update(phenotypingStage);
+
+        return buildChangeResponse(pin, psn, history);
+    }
+
+    /**
+     * Get a PhenotypingStage object based on PhenotypingStageUpdateDTO using the fields that can be
+     * updated by the user.
+     * @param phenotypingStageUpdateDTO phenotyping stage sent by the user.
+     * @return The original phenotyping stage with the allowed modifications specified in the dto.
+     */
+    private PhenotypingStage getPhenotypingStageToUpdate(String psn,
+                                                         PhenotypingStageUpdateDTO phenotypingStageUpdateDTO)
+    {
+        PhenotypingStage currentPhenotypingStage = phenotypingStageService.getByPsnFailsIfNotFound(psn);
+        return phenotypingStageRequestProcessor.getPhenotypingStageToUpdate(currentPhenotypingStage,
+                phenotypingStageUpdateDTO);
+    }
+
     private ChangeResponse buildChangeResponse(PhenotypingStage phenotypingStage)
     {
         List<HistoryDTO> historyList =
-            historyMapper.toDtos(phenotypingStageService.getPhenotypingStageHistory(phenotypingStage));
+                historyMapper.toDtos(phenotypingStageService.getPhenotypingStageHistory(phenotypingStage));
         return buildChangeResponse(phenotypingStage, historyList);
     }
-    private ChangeResponse buildChangeResponse(
-        PhenotypingStage phenotypingStage, List<HistoryDTO> historyList)
+    private ChangeResponse buildChangeResponse(PhenotypingStage phenotypingStage, List<HistoryDTO> historyList)
     {
         ChangeResponse changeResponse = new ChangeResponse();
         changeResponse.setHistoryDTOs(historyList);
@@ -124,35 +163,14 @@ public class PhenotypingStageController
         return changeResponse;
     }
 
-    @PutMapping(value = {"plans/{pin}/phenotypingStages/{psn}"})
-    public HistoryDTO update(
-            @PathVariable String pin, @PathVariable String psn,
-            @RequestBody PhenotypingStageUpdateDTO phenotypingStageUpdateDTO)
+    private ChangeResponse buildChangeResponse(String pin, String psn, History history)
     {
-        HistoryDTO historyDTO = new HistoryDTO();
-        phenotypingStageRequestProcessor.validateAssociation(pin, psn);
-        PhenotypingStage phenotypingStage = getPhenotypingStageToUpdate(phenotypingStageUpdateDTO);
-        History history = phenotypingStageService.update(phenotypingStage);
-
-        if (history != null)
-        {
-            historyDTO = historyMapper.toDto(history);
-        }
-        return historyDTO;
+        Link link = buildPhenotypingStageLink(pin, psn);
+        return changeResponseCreator.create(link, history);
     }
 
-    /**
-     * Get a PhenotypingStage object based on PhenotypingStageUpdateDTO using the fields that can be
-     * updated by the user.
-     * @param phenotypingStageUpdateDTO phenotyping stage sent by the user.
-     * @return The original phenotyping stage with the allowed modifications specified in the dto.
-     */
-    private PhenotypingStage getPhenotypingStageToUpdate(
-        PhenotypingStageUpdateDTO phenotypingStageUpdateDTO)
+    private Link buildPhenotypingStageLink(String pin, String psn)
     {
-        PhenotypingStage currentPhenotypingStage =
-            phenotypingStageService.getByPsnFailsIfNotFound(phenotypingStageUpdateDTO.getPsn());
-        return phenotypingStageRequestProcessor.getPhenotypingStageToUpdate(
-            currentPhenotypingStage, phenotypingStageUpdateDTO);
+        return linkTo(methodOn(PhenotypingStageController.class).findOneByPlanAndPsn(pin, psn)).withSelfRel();
     }
 }

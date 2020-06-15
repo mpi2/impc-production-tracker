@@ -23,8 +23,11 @@ import java.time.LocalDate;
 @Data
 public class TissueDistributionDTO
 {
-    @JsonIgnore
     private Long id;
+
+    @JsonIgnore
+    private Long phenotypingStageId;
+
     private LocalDate startDate;
     private LocalDate endDate;
     private String workUnitName;

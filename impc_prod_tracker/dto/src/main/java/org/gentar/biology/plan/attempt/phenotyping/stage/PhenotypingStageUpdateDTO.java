@@ -10,6 +10,7 @@ import org.gentar.common.state_machine.StatusTransitionDTO;
 @RequiredArgsConstructor
 public class PhenotypingStageUpdateDTO
 {
+    private Long id;
     private String psn;
 
     @JsonProperty("statusTransition")

@@ -67,7 +67,7 @@ public interface PhenotypingStageService
 
     /**
      * Gets the history for a phenotyping stage.
-     * @param phenotypingStage The project.
+     * @param phenotypingStage The phenotyping stage.
      * @return List of {@link History} with the trace of the changes for a phenotyping stage.
      */
     List<History> getPhenotypingStageHistory(PhenotypingStage phenotypingStage);
@@ -85,4 +85,11 @@ public interface PhenotypingStageService
      * @return {@link PhenotypingStageType} object.
      */
     PhenotypingStageType getPhenotypingStageTypeByName(String name);
+
+    /**
+     * Gets the history for a phenotyping stage.
+     * @param psn The phenotyping stag.
+     * @return A PhenotypingStage.
+     */
+    PhenotypingStage getNotNullPhenotypingStageByPsn(String psn);
 }

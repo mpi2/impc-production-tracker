@@ -50,7 +50,7 @@ public class PhenotypingStage extends BaseEntity implements ProcessData
 
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
-    @OneToMany(cascade= CascadeType.ALL, mappedBy = "phenotypingStage", orphanRemoval=true)
+    @OneToMany(cascade= CascadeType.ALL, mappedBy = "phenotypingStage")
     private Set<TissueDistribution> tissueDistributions;
 
     @NotNull
@@ -67,6 +67,8 @@ public class PhenotypingStage extends BaseEntity implements ProcessData
 
     public PhenotypingStage(PhenotypingStage phenotypingStage) {
         this.id = phenotypingStage.id;
+        this.psn = phenotypingStage.psn;
+        this.status = phenotypingStage.status;
         this.phenotypingAttempt = phenotypingStage.phenotypingAttempt;
         this.phenotypingExperimentsStarted = phenotypingStage.phenotypingExperimentsStarted;
         this.doNotCountTowardsCompleteness = phenotypingStage.doNotCountTowardsCompleteness;
@@ -79,6 +81,7 @@ public class PhenotypingStage extends BaseEntity implements ProcessData
     {
         List<String> values = new ArrayList<>();
         values.add("id=" + id);
+        values.add("psn=" + psn);
         values.add("phenotypingStageType=" + phenotypingStageType.getName());
         values.add("phenotypingExperimentsStarted=" + phenotypingExperimentsStarted);
         values.add("statusName=" + status.getName());

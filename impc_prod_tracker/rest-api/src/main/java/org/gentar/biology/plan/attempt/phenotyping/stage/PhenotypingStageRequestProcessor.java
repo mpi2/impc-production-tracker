@@ -1,19 +1,35 @@
 package org.gentar.biology.plan.attempt.phenotyping.stage;
 
+import org.gentar.biology.colony.Colony;
 import org.gentar.biology.plan.Plan;
 import org.gentar.biology.plan.PlanService;
+import org.gentar.biology.plan.attempt.phenotyping.stage.tissue_distribution.TissueDistribution;
 import org.gentar.exceptions.UserOperationFailedException;
+import org.gentar.statemachine.ProcessEvent;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Component
 public class PhenotypingStageRequestProcessor
 {
+    private PhenotypingStageService phenotypingStageService;
     private PlanService planService;
+    private PhenotypingStageUpdateMapper phenotypingStageUpdateMapper;
+    private TissueDistributionMapper tissueDistributionMapper;
 
-    public PhenotypingStageRequestProcessor(PlanService planService) {
+    public PhenotypingStageRequestProcessor(PhenotypingStageService phenotypingStageService,
+                                            PlanService planService,
+                                            PhenotypingStageUpdateMapper phenotypingStageUpdateMapper,
+                                            TissueDistributionMapper tissueDistributionMapper)
+    {
+        this.phenotypingStageService = phenotypingStageService;
         this.planService = planService;
+        this.phenotypingStageUpdateMapper = phenotypingStageUpdateMapper;
+        this.tissueDistributionMapper = tissueDistributionMapper;
     }
 
     /**
@@ -25,12 +41,49 @@ public class PhenotypingStageRequestProcessor
     public PhenotypingStage getPhenotypingStageToUpdate(PhenotypingStage originalPhenotypingStage,
                                                PhenotypingStageUpdateDTO phenotypingStageUpdateDTO)
     {
-        if (originalPhenotypingStage == null || phenotypingStageUpdateDTO == null)
+        if (originalPhenotypingStage == null || originalPhenotypingStage == null)
         {
-            throw new UserOperationFailedException("Cannot update the phenotyping stage.");
+            throw new UserOperationFailedException("Cannot update the phenotyping stage");
         }
         PhenotypingStage newPhenotypingStage = new PhenotypingStage(originalPhenotypingStage);
+
+        PhenotypingStageCommonDTO phenotypingStageCommonDTO =  phenotypingStageUpdateDTO.getPhenotypingStageCommonDTO();
+        if (phenotypingStageCommonDTO.getDoNotCountTowardsCompleteness() != null)
+        {
+            newPhenotypingStage.setDoNotCountTowardsCompleteness(phenotypingStageCommonDTO.getDoNotCountTowardsCompleteness());
+        }
+        if (phenotypingStageCommonDTO.getInitialDataReleaseDate() != null)
+        {
+            newPhenotypingStage.setInitialDataReleaseDate(phenotypingStageCommonDTO.getInitialDataReleaseDate());
+        }
+        if (phenotypingStageCommonDTO.getPhenotypingExperimentsStarted() != null)
+        {
+            newPhenotypingStage.setPhenotypingExperimentsStarted(phenotypingStageCommonDTO.getPhenotypingExperimentsStarted());
+        }
+        if (phenotypingStageCommonDTO.getTissueDistributionCentreDTOs() != null)
+        {
+            setTissueDistribution(newPhenotypingStage, phenotypingStageCommonDTO.getTissueDistributionCentreDTOs());
+        }
+
+        setEvent(newPhenotypingStage, phenotypingStageUpdateDTO);
         return newPhenotypingStage;
+    }
+
+    private void setTissueDistribution(PhenotypingStage newPhenotypingStage, List<TissueDistributionDTO> tissueDistributionDTOS)
+    {
+        Set<TissueDistribution> tissueDistributions = tissueDistributionMapper.toEntities(tissueDistributionDTOS);
+        tissueDistributions.forEach(tissueDistribution -> tissueDistribution.setPhenotypingStage(newPhenotypingStage));
+        newPhenotypingStage.setTissueDistributions(tissueDistributions);
+    }
+
+    private void setEvent(PhenotypingStage phenotypingStage, PhenotypingStageUpdateDTO phenotypingStageUpdateDTO)
+    {
+        if (phenotypingStageUpdateDTO.getStatusTransitionDTO() != null)
+        {
+            String action = phenotypingStageUpdateDTO.getStatusTransitionDTO().getActionToExecute();
+            ProcessEvent processEvent = phenotypingStageService.getProcessEventByName(phenotypingStage, action);
+            phenotypingStage.setEvent(processEvent);
+        }
     }
 
     /**

@@ -150,7 +150,7 @@ public class PhenotypingStageServiceImpl implements PhenotypingStageService
         PhenotypingStageType phenotypingStageType = getPhenotypingStageTypeByName(name);
         if (phenotypingStageType == null)
         {
-            throw new UserOperationFailedException("Phenotyping sage type" + name + " does not exist.");
+            throw new UserOperationFailedException("Phenotyping stage type" + name + " does not exist.");
         }
         return phenotypingStageType;
     }
@@ -159,5 +159,10 @@ public class PhenotypingStageServiceImpl implements PhenotypingStageService
     public PhenotypingStageType getPhenotypingStageTypeByName(String name)
     {
         return phenotypingStageTypeRepository.findByNameIgnoreCase(name);
+    }
+
+    @Override
+    public PhenotypingStage getNotNullPhenotypingStageByPsn(String psn) {
+        return null;
     }
 }
