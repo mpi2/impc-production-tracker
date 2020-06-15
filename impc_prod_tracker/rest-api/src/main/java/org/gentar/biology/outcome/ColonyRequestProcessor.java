@@ -25,17 +25,19 @@ public class ColonyRequestProcessor
         Colony colonyToUpdate = new Colony(originalColony);
         Colony mappedColony = colonyMapper.toEntity(colonyDTO);
         colonyToUpdate.setGenotypingComment(colonyDTO.getGenotypingComment());
-        associateDistributionProducts(colonyToUpdate, mappedColony.getDistributionProducts());
+        associateDistributionProducts(
+            colonyToUpdate, originalColony, mappedColony.getDistributionProducts());
         modifyStrainIfNeeded(colonyToUpdate, colonyDTO);
         return colonyToUpdate;
     }
 
     private void associateDistributionProducts(
-        Colony colonyToUpdate, Set<DistributionProduct> distributionProducts)
+        Colony colonyToUpdate,Colony originalColony, Set<DistributionProduct> distributionProducts)
     {
         if (distributionProducts != null)
         {
-            distributionProducts.forEach(x -> x.setColony(colonyToUpdate));
+            // Colony never changes so we keep the original reference
+            distributionProducts.forEach(x -> x.setColony(originalColony));
         }
         colonyToUpdate.setDistributionProducts(distributionProducts);
     }
