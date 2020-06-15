@@ -26,10 +26,23 @@
                 NAME="BCM"/>
     <WORK_UNIT  ID="2"
                 NAME="TCP"/>
+
     <WORK_GROUP ID="1"
                 NAME="BaSH"/>
     <WORK_GROUP  ID="2"
                  NAME="DTCC"/>
+
+    <DISTRIBUTION_NETWORK   ID="1"
+                            NAME="MMRRC"/>
+    <DISTRIBUTION_NETWORK   ID="2"
+                            NAME="CMMR"/>
+    <DISTRIBUTION_NETWORK   ID="3"
+                            NAME="EMMA"/>
+
+    <PRODUCT_TYPE   ID="1"
+                    NAME="Live mice"/>
+    <PRODUCT_TYPE   ID="2"
+                    NAME="Frozen sperm"/>
 
     <STATUS     ID="1"
                 NAME="Plan Created"
@@ -51,10 +64,59 @@
                 NAME="Attempt Aborted"
                 IS_ABORTION_STATUS="true"
                 ORDERING="14000"/>
+    <STATUS     ID="9"
+                NAME="Genotype In Progress"
+                IS_ABORTION_STATUS="false"
+                ORDERING="32000"/>
 
     <STRAIN  ID="1"
              NAME="C57BL/6NJ"
              MGI_STRAIN_ACC_ID="MGI:3056279"/>
+
+    <OUTCOME_TYPE   ID="1"
+                    NAME="Colony"/>
+    <OUTCOME_TYPE   ID="2"
+                    NAME="Specimen"/>
+
+    <GENETIC_MUTATION_TYPE  ID="1"
+                            NAME="Null"/>
+    <GENETIC_MUTATION_TYPE  ID="2"
+                            NAME="Gain-of-function"/>
+    <GENETIC_MUTATION_TYPE  ID="3"
+                            NAME="Loss-of-function"/>
+    <GENETIC_MUTATION_TYPE  ID="4"
+                            NAME="Dominant"/>
+    <GENETIC_MUTATION_TYPE  ID="5"
+                            NAME="Recessive"/>
+    <GENETIC_MUTATION_TYPE  ID="6"
+                            NAME="Not Tested"/>
+
+    <MOLECULAR_MUTATION_TYPE    ID="1"
+                                NAME="Point Mutation"/>
+    <MOLECULAR_MUTATION_TYPE    ID="2"
+                                NAME="Deletion"/>
+    <MOLECULAR_MUTATION_TYPE    ID="3"
+                                NAME="Exon Deletion"/>
+    <MOLECULAR_MUTATION_TYPE    ID="4"
+                                NAME="Intra-exon deletion"/>
+    <MOLECULAR_MUTATION_TYPE    ID="5"
+                                NAME="Inter-exon deletion"/>
+    <MOLECULAR_MUTATION_TYPE    ID="6"
+                                NAME="Whole-gene deletion"/>
+    <MOLECULAR_MUTATION_TYPE    ID="7"
+                                NAME="Copy Number Variant"/>
+    <MOLECULAR_MUTATION_TYPE    ID="8"
+                                NAME="SNP"/>
+    <MOLECULAR_MUTATION_TYPE    ID="9"
+                                NAME="Insertion"/>
+    <MOLECULAR_MUTATION_TYPE    ID="10"
+                                NAME="Inverted insertion"/>
+    <MOLECULAR_MUTATION_TYPE    ID="11"
+                                NAME="Inversion"/>
+    <MOLECULAR_MUTATION_TYPE    ID="12"
+                                NAME="Indel"/>
+    <MOLECULAR_MUTATION_TYPE    ID="13"
+                                NAME="Complex rearrangement"/>
 
     <PROJECT    ID="1"
                 TPN="TPN:000000001"
@@ -74,6 +136,64 @@
                 WORK_UNIT_ID="1"
                 WORK_GROUP_ID="1"
                 SUMMARY_STATUS_ID="4"/>
+
+    <OUTCOME    ID="1"
+                PLAN_ID="1"
+                TPO="TPO:000000000001"
+                OUTCOME_TYPE_ID="1"/>
+    <OUTCOME    ID="2"
+                PLAN_ID="1"
+                TPO="TPO:000000000002"
+                OUTCOME_TYPE_ID="1"/>
+    <OUTCOME    ID="3"
+                PLAN_ID="1"
+                TPO="TPO:000000000003"
+                OUTCOME_TYPE_ID="2"/>
+    <OUTCOME    ID="4"
+                PLAN_ID="1"
+                TPO="TPO:000000000004"
+                OUTCOME_TYPE_ID="2"/>
+    <OUTCOME    ID="5"
+                PLAN_ID="1"
+                TPO="TPO:000000000005"
+                OUTCOME_TYPE_ID="1"/>
+
+    <COLONY OUTCOME_ID="1"
+            NAME="jr34293"
+            STATUS_ID="9"
+            STRAIN_ID="1"
+            GENOTYPING_COMMENT="An example comment for the genotyping."/>
+
+    <COLONY_STATUS_STAMP    ID="1"
+                            COLONY_ID="1"
+                            STATUS_ID="9"
+                            DATE="2019-08-06 20:09:51.896778"/>
+
+    <DISTRIBUTION_PRODUCT   ID="1"
+                            COLONY_ID="1"
+                            START_DATE="2018-04-19 00:00:00"
+                            END_DATE="2018-11-09 00:00:00"
+                            DISTRIBUTION_CENTRE_ID="1"
+                            DISTRIBUTION_NETWORK_ID="1"
+                            PRODUCT_TYPE_ID="1"/>
+
+    <MUTATION   ID="1"
+                MIN="MIN:000000000001"
+                GENETIC_MUTATION_TYPE_ID="6"
+                MOLECULAR_MUTATION_TYPE_ID="12"
+                ALLELE_CONFIRMED="false"
+                ALLELE_SYMBOL_SUPERSCRIPT_TEMPLATE="9"
+                AUTO_DESCRIPTION="Frameshift mutation caused by a 4bp deletion in ENSMUST00000081333"
+                DESCRIPTION="Molecular description of Frataxin ex1 CRISPR KO Fxn[em1]:
+This allele from project Fxn-5659J-A was generated at The Jackson Laboratory by injecting Cas9 RNA and guide sequence AGTAGCATGTGGGCGTTCGG, which resulted in a 4 bp deletion TTCG in exon1 beginning at Chromosome 19 negative strand position 24280556 bp (GRCm38/mm10) and is predicted to cause a frameshift mutation with early truncation."
+                IMITS_ALLELE="259191"
+                MGI_ALLELE_ID="MGI:5571595"
+                MGI_ALLELE_SYMBOL="em1(IMPC)J"
+                MGI_ALLELE_SYMBOL_REQUIRES_CONSTRUCTION="true"
+                MGI_ALLELE_SYMBOL_WITHOUT_IMPC_ABBREVIATION="true"/>
+
+    <MUTATION_OUTCOME   MUTATION_ID="1"
+                        OUTCOME_ID="1"/>
 
     <PERSON     ID="123"
                 EMAIL="imits2test@test.com"
