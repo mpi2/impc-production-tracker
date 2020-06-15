@@ -28,6 +28,7 @@ public class ColonyRequestProcessor
         associateDistributionProducts(
             colonyToUpdate, originalColony, mappedColony.getDistributionProducts());
         modifyStrainIfNeeded(colonyToUpdate, colonyDTO);
+        colonyToUpdate.setEvent(mappedColony.getEvent());
         return colonyToUpdate;
     }
 
