@@ -7,14 +7,10 @@ import org.springframework.stereotype.Component;
 public class MutationCreationMapper implements Mapper<Mutation, MutationCreationDTO>
 {
     private MutationCommonMapper mutationCommonMapper;
-    private GeneticMutationTypeMapper geneticMutationTypeMapper;
 
-    public MutationCreationMapper(
-        MutationCommonMapper mutationCommonMapper,
-        GeneticMutationTypeMapper geneticMutationTypeMapper)
+    public MutationCreationMapper(MutationCommonMapper mutationCommonMapper)
     {
         this.mutationCommonMapper = mutationCommonMapper;
-        this.geneticMutationTypeMapper = geneticMutationTypeMapper;
     }
 
     @Override
