@@ -3,6 +3,8 @@ package org.gentar.biology.outcome;
 import com.github.springtestdbunit.annotation.DatabaseOperation;
 import com.github.springtestdbunit.annotation.DatabaseSetup;
 import com.github.springtestdbunit.annotation.DatabaseTearDown;
+import org.gentar.biology.plan.PlanFieldsDescriptors;
+import org.gentar.biology.statemachine.StatusTransitionFieldsDescriptors;
 import org.gentar.framework.ControllerTestTemplate;
 import org.gentar.framework.SequenceResetter;
 import org.gentar.framework.TestResourceLoader;
@@ -12,12 +14,16 @@ import org.junit.jupiter.api.Test;
 import org.skyscreamer.jsonassert.JSONAssert;
 import org.skyscreamer.jsonassert.JSONCompareMode;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.restdocs.payload.FieldDescriptor;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.ResultActions;
+import org.springframework.test.web.servlet.ResultHandler;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import java.io.IOException;
+import java.util.List;
 
+import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 class OutcomeControllerTest extends ControllerTestTemplate
@@ -62,7 +68,7 @@ class OutcomeControllerTest extends ControllerTestTemplate
             .get("/api/plans/PIN:0000000001/outcomes/TPO:000000000001")
             .header("Authorization", accessToken))
             .andExpect(status().isOk())
-            .andDo(document("outcomes/allOutcomes"));
+            .andDo(documentColonyOutcome());
 
         MvcResult result = resultActions.andReturn();
         String contentAsString = result.getResponse().getContentAsString();
@@ -71,6 +77,14 @@ class OutcomeControllerTest extends ControllerTestTemplate
             loadExpectedResponseFromResource("expectedColonyOutcomeTPO_000000000001.json");
 
         JSONAssert.assertEquals(expectedOutputAsString, contentAsString, JSONCompareMode.STRICT);
+    }
+
+    private ResultHandler documentColonyOutcome()
+    {
+        List<FieldDescriptor> outcomeFieldDescriptions =
+            OutcomeFieldsDescriptors.getOutcomeFieldDescriptions();
+        outcomeFieldDescriptions.addAll(OutcomeFieldsDescriptors.getColonyFieldDescriptions());
+        return document("outcomes/colonyOutcome", responseFields(outcomeFieldDescriptions));
     }
 
     private String loadExpectedResponseFromResource(String resourceName)

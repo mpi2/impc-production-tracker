@@ -30,7 +30,6 @@ public class OutcomeResponseMapper implements Mapper<Outcome, OutcomeResponseDTO
         {
             OutcomeCommonDTO outcomeCommonDTO = outcomeCommonMapper.toDto(outcome);
             outcomeResponseDTO.setOutcomeCommonDTO(outcomeCommonDTO);
-            outcomeResponseDTO.setId(outcome.getId());
             if (outcome.getPlan() != null)
             {
                 outcomeResponseDTO.setPin(outcome.getPlan().getPin());
