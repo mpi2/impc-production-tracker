@@ -44,7 +44,6 @@ class OutcomeResponseMapperTest
         OutcomeResponseDTO outcomeResponseDTO = testInstance.toDto(outcome);
 
         verify(outcomeCommonMapper, times(1)).toDto(outcome);
-        assertThat(outcomeResponseDTO.getId(), is(1L));
         assertThat(outcomeResponseDTO.getPin(), is("pin1"));
         assertThat(outcomeResponseDTO.getTpo(), is("tpo1"));
         assertThat(outcomeResponseDTO.getOutcomeTypeName(), is(OutcomeTypeName.COLONY.getLabel()));

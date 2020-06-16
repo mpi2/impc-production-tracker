@@ -12,6 +12,6 @@ public class DistributionProductDTO
     private String distributionCentreName;
     private String productTypeName;
     private String distributionNetworkName;
-    private LocalDateTime endDate;
     private LocalDateTime startDate;
+    private LocalDateTime endDate;
 }

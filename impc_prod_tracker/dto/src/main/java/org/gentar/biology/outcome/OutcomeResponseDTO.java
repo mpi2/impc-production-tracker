@@ -7,8 +7,6 @@ import org.springframework.hateoas.RepresentationModel;
 @Data
 public class OutcomeResponseDTO extends RepresentationModel<OutcomeResponseDTO>
 {
-    private Long id;
-
     private String pin;
 
     private String tpo;

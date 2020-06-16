@@ -1,5 +1,5 @@
 = GenTaR REST API
-v{version}, {date}
+{date}
 :doctype: book
 :icons: font
 :source-highlighter: highlightjs
@@ -26,7 +26,7 @@ This guide is aimed at developers of such applications.
 
 == Usage of HTTP Verbs
 
-The following table describes how the coderadar API interprets the HTTP verbs.
+The following table describes how the GenTaR API interprets the HTTP verbs.
 
 .HTTP Verbs
 |===
@@ -381,6 +381,55 @@ include::{snippets}/plans/putCrisprPlan/http-request.adoc[]
 ===== Example Response
 
 include::{snippets}/plans/putCrisprPlan/http-response.adoc[]
+
+
+== Outcomes
+anchor:outcomes[]
+This section describes the REST endpoints for outcomes in the system.
+
+[TODO:DEFINITION]
+
+An outcome can be either a colony or a specimen.
+
+=== Fields
+These are the fields you are going to see in the body of a request in a GET or in the payload for POST or PUT
+operations.
+
+==== Colony
+include::{snippets}/outcomes/colonyOutcome/response-fields.adoc[]
+
+==== Specimen
+TODO: Add specimen
+
+
+
+=== GET
+==== Get a specific outcome (Colony)
+
+This endpoint a specific outcome belonging to a plan. In this example the outcome is a colony.
+
+===== Example Request
+
+Curl:
+include::{snippets}/outcomes/colonyOutcome/curl-request.adoc[]
+
+===== Example Response
+
+include::{snippets}/outcomes/colonyOutcome/http-response.adoc[]
+
+
+==== Get all outcomes in a plan
+This endpoint shows all the outcomes associated to a plan.
+
+===== Example Request
+
+Curl:
+include::{snippets}/outcomes/allOutcomes/curl-request.adoc[]
+
+===== Example Response
+
+include::{snippets}/outcomes/allOutcomes/http-response.adoc[]
+
 
 == State Machine interaction
 

@@ -1,6 +1,5 @@
 [
   {
-    "id":4,
     "pin":"PIN:0000000001",
     "tpo":"TPO:000000000004",
     "outcomeTypeName":"Specimen",
@@ -9,12 +8,10 @@
     ]
   },
   {
-    "id":1,
     "pin":"PIN:0000000001",
     "tpo":"TPO:000000000001",
     "outcomeTypeName":"Colony",
     "colony":{
-      "id":1,
       "name":"jr34293",
       "genotypingComment":"An example comment for the genotyping.",
       "statusName":"Genotype In Progress",
@@ -66,7 +63,6 @@
     ]
   },
   {
-    "id":2,
     "pin":"PIN:0000000001",
     "tpo":"TPO:000000000002",
     "outcomeTypeName":"Colony",
@@ -75,7 +71,6 @@
     ]
   },
   {
-    "id":3,
     "pin":"PIN:0000000001",
     "tpo":"TPO:000000000003",
     "outcomeTypeName":"Specimen",
@@ -84,7 +79,6 @@
     ]
   },
   {
-    "id":5,
     "pin":"PIN:0000000001",
     "tpo":"TPO:000000000005",
     "outcomeTypeName":"Colony",
