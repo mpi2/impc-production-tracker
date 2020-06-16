@@ -1,0 +1,95 @@
+[
+  {
+    "id":4,
+    "pin":"PIN:0000000001",
+    "tpo":"TPO:000000000004",
+    "outcomeTypeName":"Specimen",
+    "links":[
+
+    ]
+  },
+  {
+    "id":1,
+    "pin":"PIN:0000000001",
+    "tpo":"TPO:000000000001",
+    "outcomeTypeName":"Colony",
+    "colony":{
+      "id":1,
+      "name":"jr34293",
+      "genotypingComment":"An example comment for the genotyping.",
+      "statusName":"Genotype In Progress",
+      "statusDates":[
+        {
+          "statusName":"Genotype In Progress",
+          "date":"2019-08-06T20:09:51.896778"
+        }
+      ],
+      "backgroundStrainName":"C57BL/6NJ",
+      "distributionProducts":[
+        {
+          "id":1,
+          "distributionCentreName":"BCM",
+          "productTypeName":"Live mice",
+          "distributionNetworkName":"MMRRC",
+          "endDate":"2018-11-09T00:00:00",
+          "startDate":"2018-04-19T00:00:00"
+        }
+      ],
+      "statusTransition":{
+        "currentStatus":"Genotype In Progress",
+        "transitions":[
+          {
+            "action":"confirmGenotypeWhenInProgress",
+            "description":"Confirm Genotype when Genotype In Progress",
+            "triggeredByUser":true,
+            "available":false,
+            "note":"A sequence and mgi allele symbol must exist.",
+            "nextStatus":"GenotypeConfirmed"
+          },
+          {
+            "action":"updateFromGenotypeInProgressToGenotypeNotConfirmed",
+            "description":"Update from Genotype In Progress to Genotype Not Confirmed",
+            "triggeredByUser":true,
+            "available":true,
+            "note":null,
+            "nextStatus":"GenotypeNotConfirmed"
+          }
+        ],
+        "actionToExecute":null
+      }
+    },
+    "links":[
+      {
+        "rel":"mutations",
+        "href":"http://localhost:8080/api/plans/PIN:0000000001/outcomes/TPO:000000000001/mutations/MIN:000000000001"
+      }
+    ]
+  },
+  {
+    "id":2,
+    "pin":"PIN:0000000001",
+    "tpo":"TPO:000000000002",
+    "outcomeTypeName":"Colony",
+    "links":[
+
+    ]
+  },
+  {
+    "id":3,
+    "pin":"PIN:0000000001",
+    "tpo":"TPO:000000000003",
+    "outcomeTypeName":"Specimen",
+    "links":[
+
+    ]
+  },
+  {
+    "id":5,
+    "pin":"PIN:0000000001",
+    "tpo":"TPO:000000000005",
+    "outcomeTypeName":"Colony",
+    "links":[
+
+    ]
+  }
+]
