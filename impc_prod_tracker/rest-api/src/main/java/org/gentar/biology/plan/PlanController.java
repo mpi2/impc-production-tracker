@@ -79,7 +79,7 @@ public class PlanController
     /**
      * Creates a new project in the system.
      * @param planCreationDTO Request with data of the plan to be created.
-     * @return {@link PlanDTO} representing the plan created in the system.
+     * @return {@link ChangeResponse} representing the plan created in the system.
      */
     @PostMapping
     public ChangeResponse createPlan(@RequestBody PlanCreationDTO planCreationDTO)
@@ -93,7 +93,7 @@ public class PlanController
 
     /**
      * Get all the plans in the system.
-     * @return A collection of {@link PlanDTO} objects.
+     * @return A collection of {@link PlanResponseDTO} objects.
      */
     @GetMapping
     public ResponseEntity findAll(
