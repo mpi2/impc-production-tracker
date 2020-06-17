@@ -11,7 +11,6 @@ import static org.hamcrest.core.Is.is;
 
 class PlanCommonDataDTOTest
 {
-
     public static final String WORK_UNIT_NAME = "workUnitName";
     public static final String WORK_GROUP_NAME = "workGroupName";
     public static final String FUNDER_NAME = "funderName";
