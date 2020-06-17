@@ -399,8 +399,7 @@ operations.
 include::{snippets}/outcomes/colonyOutcome/response-fields.adoc[]
 
 ==== Specimen
-TODO: Add specimen
-
+include::{snippets}/outcomes/specimenOutcome/response-fields.adoc[]
 
 
 === GET
@@ -418,6 +417,20 @@ include::{snippets}/outcomes/colonyOutcome/curl-request.adoc[]
 include::{snippets}/outcomes/colonyOutcome/http-response.adoc[]
 
 
+==== Get a specific outcome (Specimen)
+
+This endpoint a specific outcome belonging to a plan. In this example the outcome is a colony.
+
+===== Example Request
+
+Curl:
+include::{snippets}/outcomes/specimenOutcome/curl-request.adoc[]
+
+===== Example Response
+
+include::{snippets}/outcomes/specimenOutcome/http-response.adoc[]
+
+
 ==== Get all outcomes in a plan
 This endpoint shows all the outcomes associated to a plan.
 
@@ -429,6 +442,21 @@ include::{snippets}/outcomes/allOutcomes/curl-request.adoc[]
 ===== Example Response
 
 include::{snippets}/outcomes/allOutcomes/http-response.adoc[]
+
+
+=== POST
+
+==== Create an outcome (colony)
+
+
+===== Example Request
+
+Curl:
+include::{snippets}/outcomes/postCrisprPlan/http-request.adoc[]
+
+===== Example Response
+
+include::{snippets}/plans/postCrisprPlan/http-response.adoc[]
 
 
 == State Machine interaction

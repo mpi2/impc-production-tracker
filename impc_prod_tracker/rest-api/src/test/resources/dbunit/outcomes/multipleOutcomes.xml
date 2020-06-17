@@ -125,6 +125,42 @@
     <MOLECULAR_MUTATION_TYPE    ID="13"
                                 NAME="Complex rearrangement"/>
 
+    <MUTATION_CATEGORIZATION_TYPE   ID="1"
+                                    NAME="allele_category"/>
+    <MUTATION_CATEGORIZATION_TYPE   ID="2"
+                                    NAME="repair_mechanism"/>
+
+    <MUTATION_CATEGORIZATION    ID="1"
+                                NAME="Null Reporter"
+                                MUTATION_CATEGORIZATION_TYPE_ID="1"/>
+    <MUTATION_CATEGORIZATION    ID="2"
+                                NAME="Conditional Ready"
+                                MUTATION_CATEGORIZATION_TYPE_ID="1"/>
+    <MUTATION_CATEGORIZATION    ID="3"
+                                NAME="Conditional"
+                                MUTATION_CATEGORIZATION_TYPE_ID="1"/>
+    <MUTATION_CATEGORIZATION    ID="4"
+                                NAME="Conditional point mutation"
+                                MUTATION_CATEGORIZATION_TYPE_ID="1"/>
+    <MUTATION_CATEGORIZATION    ID="5"
+                                NAME="Cre"
+                                MUTATION_CATEGORIZATION_TYPE_ID="1"/>
+    <MUTATION_CATEGORIZATION    ID="6"
+                                NAME="Overexpressor"
+                                MUTATION_CATEGORIZATION_TYPE_ID="1"/>
+    <MUTATION_CATEGORIZATION    ID="7"
+                                NAME="tag knock-in"
+                                MUTATION_CATEGORIZATION_TYPE_ID="1"/>
+    <MUTATION_CATEGORIZATION    ID="8"
+                                NAME="NHEJ"
+                                MUTATION_CATEGORIZATION_TYPE_ID="2"/>
+    <MUTATION_CATEGORIZATION    ID="9"
+                                NAME="HR"
+                                MUTATION_CATEGORIZATION_TYPE_ID="2"/>
+    <MUTATION_CATEGORIZATION    ID="10"
+                                NAME="HDR"
+                                MUTATION_CATEGORIZATION_TYPE_ID="2"/>
+
     <PROPERTY_TYPE  ID="1"
                     NAME="Property 1"/>
     <PROPERTY_TYPE  ID="2"
@@ -230,6 +266,15 @@ This allele from project Fxn-5659J-A was generated at The Jackson Laboratory by 
                             STATUS_ID="7"
                             DATE="2019-08-06 20:09:51.896778"/>
 
+    <GENE   ID="1"
+            SYMBOL="Serpinb10"
+            NAME="serine (or cysteine) peptidase inhibitor, clade B (ovalbumin), member 10"
+            SPECIES_ID="1"
+            ACC_ID="MGI:2138648"
+            MGI_START="107529003"
+            MGI_STOP="107549271"
+            MGI_STRAND="+"/>
+
     <PERSON     ID="123"
                 EMAIL="imits2test@test.com"
                 AUTH_ID="usr-dde67fbd-c3c2-42eb-aa81-f1a225f047c7"/>
@@ -248,4 +293,6 @@ This allele from project Fxn-5659J-A was generated at The Jackson Laboratory by 
     <PLAN_STATUS_STAMP/>
     <PLAN_SUMMARY_STATUS_STAMP/>
     <PROJECT_SUMMARY_STATUS_STAMP/>
+    <MUTATION_GENE/>
+    <MUTATION_MUTATION_CATEGORIZATION/>
 </dataset>

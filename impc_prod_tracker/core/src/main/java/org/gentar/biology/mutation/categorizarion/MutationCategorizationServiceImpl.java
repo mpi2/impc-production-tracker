@@ -1,12 +1,9 @@
 package org.gentar.biology.mutation.categorizarion;
 
-import lombok.extern.java.Log;
 import org.gentar.biology.mutation.categorizarion.type.MutationCategorizationType;
 import org.gentar.biology.mutation.categorizarion.type.MutationCategorizationTypeRepository;
 import org.gentar.exceptions.UserOperationFailedException;
 import org.springframework.stereotype.Component;
-
-import java.util.logging.Logger;
 
 @Component
 public class MutationCategorizationServiceImpl implements MutationCategorizationService

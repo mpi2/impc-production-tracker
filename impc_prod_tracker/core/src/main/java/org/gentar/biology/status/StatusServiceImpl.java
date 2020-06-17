@@ -1,7 +1,11 @@
 package org.gentar.biology.status;
 
 import org.gentar.exceptions.UserOperationFailedException;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 @Component
 public class StatusServiceImpl implements StatusService
@@ -14,6 +18,8 @@ public class StatusServiceImpl implements StatusService
         this.statusRepository = statusRepository;
     }
 
+    @Cacheable("statuses")
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
     public Status getStatusByName(String name)
     {
         return statusRepository.findByNameIgnoreCase(name);
