@@ -64,6 +64,10 @@
                 NAME="Attempt Aborted"
                 IS_ABORTION_STATUS="true"
                 ORDERING="14000"/>
+    <STATUS     ID="7"
+                NAME="Specimen Group In Progress"
+                IS_ABORTION_STATUS="false"
+                ORDERING="22000"/>
     <STATUS     ID="9"
                 NAME="Genotype In Progress"
                 IS_ABORTION_STATUS="false"
@@ -77,6 +81,9 @@
                     NAME="Colony"/>
     <OUTCOME_TYPE   ID="2"
                     NAME="Specimen"/>
+
+    <SPECIMEN_TYPE ID="1"
+                   NAME="Haploessential"/>
 
     <GENETIC_MUTATION_TYPE  ID="1"
                             NAME="Null"/>
@@ -117,6 +124,11 @@
                                 NAME="Indel"/>
     <MOLECULAR_MUTATION_TYPE    ID="13"
                                 NAME="Complex rearrangement"/>
+
+    <PROPERTY_TYPE  ID="1"
+                    NAME="Property 1"/>
+    <PROPERTY_TYPE  ID="2"
+                    NAME="Property 2"/>
 
     <PROJECT    ID="1"
                 TPN="TPN:000000001"
@@ -194,6 +206,29 @@ This allele from project Fxn-5659J-A was generated at The Jackson Laboratory by 
 
     <MUTATION_OUTCOME   MUTATION_ID="1"
                         OUTCOME_ID="1"/>
+
+    <SPECIMEN   OUTCOME_ID="4"
+                SPECIMEN_EXTERNAL_REF="External reference"
+                SPECIMEN_TYPE_ID="1"
+                STATUS_ID="7"
+                STRAIN_ID="1"/>
+
+    <SPECIMEN_PROPERTY  ID="1"
+                        PROPERTY_TYPE_ID="1"
+                        SPECIMEN_OUTCOME_ID="4"
+                        VALUE="Value 1"/>
+    <SPECIMEN_PROPERTY  ID="2"
+                        PROPERTY_TYPE_ID="2"
+                        SPECIMEN_OUTCOME_ID="4"
+                        VALUE="Value 2"/>
+
+    <MUTATION_OUTCOME   MUTATION_ID="1"
+                        OUTCOME_ID="4"/>
+
+    <SPECIMEN_STATUS_STAMP  ID="1"
+                            SPECIMEN_ID="4"
+                            STATUS_ID="7"
+                            DATE="2019-08-06 20:09:51.896778"/>
 
     <PERSON     ID="123"
                 EMAIL="imits2test@test.com"

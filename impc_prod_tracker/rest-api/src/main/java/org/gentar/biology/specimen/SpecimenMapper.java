@@ -2,10 +2,17 @@ package org.gentar.biology.specimen;
 
 import org.gentar.EntityMapper;
 import org.gentar.Mapper;
+import org.gentar.biology.status.StatusStampMapper;
+import org.gentar.biology.status_stamps.StatusStampsDTO;
 import org.gentar.biology.strain.StrainMapper;
 import org.gentar.common.state_machine.StatusTransitionDTO;
+import org.gentar.common.state_machine.TransitionDTO;
 import org.gentar.statemachine.ProcessEvent;
+import org.gentar.statemachine.TransitionEvaluation;
+import org.gentar.statemachine.TransitionMapper;
 import org.springframework.stereotype.Component;
+import java.util.Comparator;
+import java.util.List;
 
 @Component
 public class SpecimenMapper implements Mapper<Specimen, SpecimenDTO>
@@ -13,27 +20,71 @@ public class SpecimenMapper implements Mapper<Specimen, SpecimenDTO>
     private EntityMapper entityMapper;
     private SpecimenService specimenService;
     private StrainMapper strainMapper;
+    private StatusStampMapper statusStampMapper;
+    private TransitionMapper transitionMapper;
+    private SpecimenPropertyMapper specimenPropertyMapper;
 
     public SpecimenMapper(
-        EntityMapper entityMapper, SpecimenService specimenService, StrainMapper strainMapper)
+        EntityMapper entityMapper,
+        SpecimenService specimenService,
+        StrainMapper strainMapper,
+        StatusStampMapper statusStampMapper,
+        TransitionMapper transitionMapper,
+        SpecimenPropertyMapper specimenPropertyMapper)
     {
         this.entityMapper = entityMapper;
         this.specimenService = specimenService;
         this.strainMapper = strainMapper;
+        this.statusStampMapper = statusStampMapper;
+        this.transitionMapper = transitionMapper;
+        this.specimenPropertyMapper = specimenPropertyMapper;
     }
 
     @Override
-    public SpecimenDTO toDto(Specimen entity)
+    public SpecimenDTO toDto(Specimen specimen)
     {
-        SpecimenDTO specimenDTO = entityMapper.toTarget(entity, SpecimenDTO.class);
-        if (entity != null) {
-            specimenDTO.setStrainName(strainMapper.toDto(entity.getStrain()));
+        SpecimenDTO specimenDTO = entityMapper.toTarget(specimen, SpecimenDTO.class);
+        if (specimen != null)
+        {
+            specimenDTO.setStrainName(strainMapper.toDto(specimen.getStrain()));
+            setStatusStampsDTOS(specimenDTO, specimen);
+            addStatusTransitionDTO(specimenDTO, specimen);
+            addSpecimenPropertiesDTO(specimenDTO, specimen);
         }
         return specimenDTO;
     }
 
+    private void setStatusStampsDTOS(SpecimenDTO specimenDTO, Specimen specimen)
+    {
+        List<StatusStampsDTO> statusStampsDTOS =
+            statusStampMapper.toDtos(specimen.getSpecimenStatusStamps());
+        statusStampsDTOS.sort(Comparator.comparing(StatusStampsDTO::getDate));
+        specimenDTO.setStatusStampsDTOS(statusStampsDTOS);
+    }
+
+    private void addStatusTransitionDTO(SpecimenDTO specimenDTO, Specimen specimen)
+    {
+        StatusTransitionDTO statusTransitionDTO = new StatusTransitionDTO();
+        statusTransitionDTO.setCurrentStatus(specimen.getStatus().getName());
+        statusTransitionDTO.setTransitions(getTransitions(specimen));
+        specimenDTO.setStatusTransitionDTO(statusTransitionDTO);
+    }
+
+    private List<TransitionDTO> getTransitions(Specimen specimen)
+    {
+        List<TransitionEvaluation> transitionEvaluations =
+            specimenService.evaluateNextTransitions(specimen);
+        return transitionMapper.toDtos(transitionEvaluations);
+    }
+
+    private void addSpecimenPropertiesDTO(SpecimenDTO specimenDTO, Specimen specimen)
+    {
+        List<SpecimenPropertyDTO> specimenPropertyDTOS =
+            specimenPropertyMapper.toDtos(specimen.getSpecimenProperties());
+        specimenDTO.setSpecimenPropertyDTOS(specimenPropertyDTOS);
+    }
+
     @Override
-    //TODO: Why we are not showing the state machine for specimen?
     public Specimen toEntity(SpecimenDTO specimenDTO)
     {
         Specimen specimen = entityMapper.toTarget(specimenDTO, Specimen.class);

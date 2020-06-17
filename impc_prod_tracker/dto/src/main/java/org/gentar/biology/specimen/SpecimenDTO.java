@@ -1,15 +1,16 @@
 package org.gentar.biology.specimen;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 import org.gentar.biology.status_stamps.StatusStampsDTO;
 import org.gentar.common.state_machine.StatusTransitionDTO;
-
 import java.util.List;
 
 @Data
 public class SpecimenDTO
 {
+    @JsonIgnore
     private Long id;
     private String specimenExternalRef;
     private String specimenTypeName;
