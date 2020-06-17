@@ -10,18 +10,18 @@ import java.util.Set;
 @Component
 public class PhenotypingStageCommonMapper implements Mapper<PhenotypingStage, PhenotypingStageCommonDTO>
 {
-    private EntityMapper entityMapper;
     private TissueDistributionMapper tissueDistributionMapper;
 
-    public PhenotypingStageCommonMapper(EntityMapper entityMapper, TissueDistributionMapper tissueDistributionMapper) {
-        this.entityMapper = entityMapper;
+    public PhenotypingStageCommonMapper(TissueDistributionMapper tissueDistributionMapper) {
         this.tissueDistributionMapper = tissueDistributionMapper;
     }
 
     @Override
     public PhenotypingStageCommonDTO toDto(PhenotypingStage phenotypingStage) {
-        PhenotypingStageCommonDTO phenotypingStageCommonDTO = entityMapper.toTarget(phenotypingStage,
-                PhenotypingStageCommonDTO.class);
+        PhenotypingStageCommonDTO phenotypingStageCommonDTO =  new PhenotypingStageCommonDTO();
+        phenotypingStageCommonDTO.setInitialDataReleaseDate(phenotypingStage.getInitialDataReleaseDate());
+        phenotypingStageCommonDTO.setDoNotCountTowardsCompleteness(phenotypingStage.getDoNotCountTowardsCompleteness());
+        phenotypingStageCommonDTO.setPhenotypingExperimentsStarted(phenotypingStage.getPhenotypingExperimentsStarted());
         phenotypingStageCommonDTO.setTissueDistributionCentreDTOs(
                 tissueDistributionMapper.toDtos(phenotypingStage.getTissueDistributions()));
         return phenotypingStageCommonDTO;
@@ -29,7 +29,10 @@ public class PhenotypingStageCommonMapper implements Mapper<PhenotypingStage, Ph
 
     @Override
     public PhenotypingStage toEntity(PhenotypingStageCommonDTO dto) {
-        PhenotypingStage phenotypingStage = entityMapper.toTarget(dto, PhenotypingStage.class);
+        PhenotypingStage phenotypingStage = new PhenotypingStage();
+        phenotypingStage.setInitialDataReleaseDate(dto.getInitialDataReleaseDate());
+        phenotypingStage.setDoNotCountTowardsCompleteness(dto.getDoNotCountTowardsCompleteness());
+        phenotypingStage.setPhenotypingExperimentsStarted(dto.getPhenotypingExperimentsStarted());
         setTissueDistributionCentre(phenotypingStage, dto);
         return phenotypingStage;
     }
