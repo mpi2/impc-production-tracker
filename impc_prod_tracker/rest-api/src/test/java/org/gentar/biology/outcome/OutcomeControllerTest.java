@@ -87,6 +87,34 @@ class OutcomeControllerTest extends ControllerTestTemplate
         return document("outcomes/colonyOutcome", responseFields(outcomeFieldDescriptions));
     }
 
+    @Test
+    @DatabaseSetup(DBSetupFilesPaths.MULTIPLE_OUTCOMES)
+    @DatabaseTearDown(type = DatabaseOperation.DELETE_ALL, value = DBSetupFilesPaths.MULTIPLE_OUTCOMES)
+    void testGetSpecimenOutcomeInPlan() throws Exception
+    {
+        ResultActions resultActions = mvc().perform(MockMvcRequestBuilders
+            .get("/api/plans/PIN:0000000001/outcomes/TPO:000000000004")
+            .header("Authorization", accessToken))
+            .andExpect(status().isOk())
+            .andDo(documentSpecimenOutcome());
+
+        MvcResult result = resultActions.andReturn();
+        String contentAsString = result.getResponse().getContentAsString();
+        System.out.println(contentAsString);
+        String expectedOutputAsString =
+            loadExpectedResponseFromResource("expectedSpecimenOutcomeTPO_000000000004.json");
+
+        JSONAssert.assertEquals(expectedOutputAsString, contentAsString, JSONCompareMode.STRICT);
+    }
+
+    private ResultHandler documentSpecimenOutcome()
+    {
+        List<FieldDescriptor> outcomeFieldDescriptions =
+            OutcomeFieldsDescriptors.getOutcomeFieldDescriptions();
+        outcomeFieldDescriptions.addAll(OutcomeFieldsDescriptors.getSpecimenFieldDescriptions());
+        return document("outcomes/specimenOutcome", responseFields(outcomeFieldDescriptions));
+    }
+
     private String loadExpectedResponseFromResource(String resourceName)
         throws IOException
     {

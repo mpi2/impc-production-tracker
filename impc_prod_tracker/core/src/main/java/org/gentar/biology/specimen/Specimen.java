@@ -4,6 +4,7 @@ import lombok.*;
 import org.gentar.BaseEntity;
 import org.gentar.audit.diff.IgnoreForAuditingChanges;
 import org.gentar.biology.outcome.Outcome;
+import org.gentar.biology.specimen.property.SpecimenProperty;
 import org.gentar.biology.specimen.status_stamp.SpecimenStatusStamp;
 import org.gentar.biology.specimen.type.SpecimenType;
 import org.gentar.biology.strain.Strain;
@@ -18,8 +19,8 @@ import java.util.Set;
 @NoArgsConstructor(access= AccessLevel.PUBLIC, force=true)
 @Data
 @Entity
-public class Specimen extends BaseEntity implements ProcessData {
-
+public class Specimen extends BaseEntity implements ProcessData
+{
     @Id
     @Column(name = "id")
     private Long id;
@@ -48,6 +49,11 @@ public class Specimen extends BaseEntity implements ProcessData {
     @OneToMany(cascade= CascadeType.ALL, mappedBy = "specimen")
     private Set<SpecimenStatusStamp> specimenStatusStamps;
 
-    private  transient ProcessEvent event;
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
+    @OneToMany(cascade= CascadeType.ALL, mappedBy = "specimen")
+    private Set<SpecimenProperty> specimenProperties;
+
+    private transient ProcessEvent event;
 
 }
