@@ -67,9 +67,12 @@ public class PlanCreator
     {
         entityManager.persist(plan);
         plan.setPin(buildPin(plan.getId()));
-        if (plan.getPhenotypingAttempt().getPhenotypingStages() != null)
+        if (plan.getPhenotypingAttempt() != null)
         {
-            plan.getPhenotypingAttempt().getPhenotypingStages().forEach(x -> x.setPsn(buildPsn(x.getId())));
+            if (plan.getPhenotypingAttempt().getPhenotypingStages() != null)
+            {
+                plan.getPhenotypingAttempt().getPhenotypingStages().forEach(x -> x.setPsn(buildPsn(x.getId())));
+            }
         }
         return plan;
     }
