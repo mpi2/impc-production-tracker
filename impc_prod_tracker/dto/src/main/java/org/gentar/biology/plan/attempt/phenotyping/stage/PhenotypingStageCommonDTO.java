@@ -8,7 +8,6 @@ import java.time.LocalDate;
 import java.util.List;
 
 @Data
-@RequiredArgsConstructor
 public class PhenotypingStageCommonDTO
 {
     private LocalDate phenotypingExperimentsStarted;

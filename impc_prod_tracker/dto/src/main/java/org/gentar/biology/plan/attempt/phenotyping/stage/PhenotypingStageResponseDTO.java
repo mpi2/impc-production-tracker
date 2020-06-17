@@ -3,14 +3,13 @@ package org.gentar.biology.plan.attempt.phenotyping.stage;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonUnwrapped;
 import lombok.Data;
-import lombok.RequiredArgsConstructor;
+
 import org.gentar.biology.status_stamps.StatusStampsDTO;
 import org.gentar.common.state_machine.StatusTransitionDTO;
 
 import java.util.List;
 
 @Data
-@RequiredArgsConstructor
 public class PhenotypingStageResponseDTO
 {
     private Long id;
