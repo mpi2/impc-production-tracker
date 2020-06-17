@@ -14,6 +14,7 @@ import org.junit.jupiter.api.Test;
 import org.skyscreamer.jsonassert.JSONAssert;
 import org.skyscreamer.jsonassert.JSONCompareMode;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.restdocs.payload.FieldDescriptor;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.ResultActions;
@@ -113,6 +114,27 @@ class OutcomeControllerTest extends ControllerTestTemplate
             OutcomeFieldsDescriptors.getOutcomeFieldDescriptions();
         outcomeFieldDescriptions.addAll(OutcomeFieldsDescriptors.getSpecimenFieldDescriptions());
         return document("outcomes/specimenOutcome", responseFields(outcomeFieldDescriptions));
+    }
+
+    @Test
+    @DatabaseSetup(DBSetupFilesPaths.MULTIPLE_OUTCOMES)
+    @DatabaseTearDown(type = DatabaseOperation.DELETE_ALL, value = DBSetupFilesPaths.MULTIPLE_OUTCOMES)
+    void testCreateColonyOutcomeInPlan() throws Exception
+    {
+        sequenceResetter.syncSequence("OUTCOME_SEQ", "OUTCOME");
+        sequenceResetter.syncSequence("COLONY_STATUS_STAMP_SEQ", "COLONY_STATUS_STAMP");
+        sequenceResetter.syncSequence("DISTRIBUTION_PRODUCT_SEQ", "DISTRIBUTION_PRODUCT");
+        sequenceResetter.syncSequence("MUTATION_SEQ", "MUTATION");
+
+        String payload = loadExpectedResponseFromResource("colonyOutcomeCreationPayload.json");
+
+        ResultActions resultActions = mvc().perform(MockMvcRequestBuilders
+            .post("/api/plans/PIN:0000000001/outcomes")
+            .header("Authorization", accessToken)
+            .content(payload)
+            .contentType(MediaType.APPLICATION_JSON))
+            .andExpect(status().isOk())
+            .andDo(document("plans/postColonyOutcome"));
     }
 
     private String loadExpectedResponseFromResource(String resourceName)

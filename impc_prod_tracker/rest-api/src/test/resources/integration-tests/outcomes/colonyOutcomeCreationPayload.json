@@ -1,0 +1,59 @@
+{
+  "id":null,
+  "pin":"PIN:0000000001",
+  "tpo":null,
+  "outcomeTypeName":"Colony",
+  "colony":{
+    "id":null,
+    "name":"jr34077",
+    "genotypingComment":"genotyping comment",
+    "backgroundStrainName":"C57BL/6NJ",
+    "distributionProducts":[
+      {
+        "id":null,
+        "distributionCentreName":"BCM",
+        "productTypeName":"Live mice",
+        "distributionNetworkName":null,
+        "endDate":"2020-06-08T15:49:52.0353",
+        "startDate":null
+      }
+    ]
+  },
+  "mutations":[
+    {
+      "id":1,
+      "min":"MIN:000000000001",
+      "mgiAlleleId":null,
+      "mgiAlleleSymbol":"em1(IMPC)J",
+      "mgiAlleleSymbolWithoutImpcAbbreviation":false,
+      "mgiAlleleSymbolRequiresConstruction":true,
+      "geneticMutationTypeName":"Not Tested",
+      "molecularMutationTypeName":"Deletion",
+      "genbankFileName":null,
+      "alleleConfirmed":false,
+      "mutationQcResults":[
+
+      ],
+      "genes":[
+        {
+          "id":1,
+          "name":"otogelin",
+          "symbol":"Otog",
+          "speciesName":"Mus musculus",
+          "externalLink":"http://www.mousephenotype.org/data/genes/MGI:1202064",
+          "accessionId":"MGI:1202064"
+        }
+      ],
+      "mutationSequences":[
+
+      ],
+      "mutationCategorizations":[
+        {
+          "name":"NHEJ",
+          "description":"non-homology end-joining",
+          "typeName":"repair_mechanism"
+        }
+      ]
+    }
+  ]
+}

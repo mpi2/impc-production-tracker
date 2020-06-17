@@ -52,6 +52,7 @@ public class OutcomeCommonMapper implements Mapper<Outcome, OutcomeCommonDTO>
         if (outcomeCommonDTO.getColonyDTO() != null)
         {
             Colony colony = colonyMapper.toEntity(outcomeCommonDTO.getColonyDTO());
+            colony.setId(outcome.getId());
             colony.setOutcome(outcome);
             outcome.setColony(colony);
         }
