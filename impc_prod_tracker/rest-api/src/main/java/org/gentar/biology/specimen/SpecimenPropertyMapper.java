@@ -3,7 +3,9 @@ package org.gentar.biology.specimen;
 import org.gentar.EntityMapper;
 import org.gentar.Mapper;
 import org.gentar.biology.specimen.property.SpecimenProperty;
+import org.springframework.stereotype.Component;
 
+@Component
 public class SpecimenPropertyMapper implements Mapper<SpecimenProperty, SpecimenPropertyDTO>
 {
     private EntityMapper entityMapper;

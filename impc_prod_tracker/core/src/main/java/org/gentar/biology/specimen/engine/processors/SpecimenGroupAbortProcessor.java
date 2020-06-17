@@ -6,7 +6,9 @@ import org.gentar.statemachine.AbstractProcessor;
 import org.gentar.statemachine.ProcessData;
 import org.gentar.statemachine.ProcessEvent;
 import org.gentar.statemachine.TransitionEvaluation;
+import org.springframework.stereotype.Component;
 
+@Component
 public class SpecimenGroupAbortProcessor extends AbstractProcessor
 {
     public SpecimenGroupAbortProcessor(SpecimenStateSetter specimenStateSetter)
@@ -23,7 +25,7 @@ public class SpecimenGroupAbortProcessor extends AbstractProcessor
         transitionEvaluation.setExecutable(canAbortSpecimen);
         if (!canAbortSpecimen)
         {
-            transitionEvaluation.setNote("Specimen cannot be aborted");
+            transitionEvaluation.setNote("Specimen cannot be aborted [Not implemented yet.]");
         }
         return transitionEvaluation;
     }
