@@ -3,8 +3,49 @@
     "pin":"PIN:0000000001",
     "tpo":"TPO:000000000004",
     "outcomeTypeName":"Specimen",
+    "specimen":{
+      "specimenExternalRef":"External reference",
+      "specimenTypeName":"Haploessential",
+      "statusName":"Specimen Group In Progress",
+      "statusDates":[
+        {
+          "statusName":"Specimen Group In Progress",
+          "date":"2019-08-06T20:09:51.896778"
+        }
+      ],
+      "backgroundStrainName":"C57BL/6NJ",
+      "specimenProperties":[
+        {
+          "id":1,
+          "propertyTypeName":"Property 1",
+          "value":"Value 1"
+        },
+        {
+          "id":2,
+          "propertyTypeName":"Property 2",
+          "value":"Value 2"
+        }
+      ],
+      "statusTransition":{
+        "currentStatus":"Specimen Group In Progress",
+        "transitions":[
+          {
+            "action":"abortSpecimenGroup",
+            "description":"Abort a specimen group",
+            "triggeredByUser":true,
+            "available":false,
+            "note":"Specimen cannot be aborted [Not implemented yet.]",
+            "nextStatus":"SpecimenGroupAborted"
+          }
+        ],
+        "actionToExecute":null
+      }
+    },
     "links":[
-
+      {
+        "rel":"mutations",
+        "href":"http://localhost:8080/api/plans/PIN:0000000001/outcomes/TPO:000000000004/mutations/MIN:000000000001"
+      }
     ]
   },
   {
@@ -28,8 +69,8 @@
           "distributionCentreName":"BCM",
           "productTypeName":"Live mice",
           "distributionNetworkName":"MMRRC",
-          "endDate":"2018-11-09T00:00:00",
-          "startDate":"2018-04-19T00:00:00"
+          "startDate":"2018-04-19T00:00:00",
+          "endDate":"2018-11-09T00:00:00"
         }
       ],
       "statusTransition":{
