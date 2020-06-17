@@ -66,7 +66,18 @@ public class PhenotypingStageUpdater
 
     private void saveChanges(PhenotypingStage phenotypingStage)
     {
+        if (phenotypingStage.getPsn() == null)
+        {
+            buildPsn(phenotypingStage.getId());
+        }
         phenotypingStageRepository.save(phenotypingStage);
+    }
+
+    private String buildPsn(Long id)
+    {
+        String identifier = String.format("%0" + 12 + "d", id);
+        identifier = "PSN:" + identifier;
+        return identifier;
     }
 
     private void saveTrackOfChanges(History history)

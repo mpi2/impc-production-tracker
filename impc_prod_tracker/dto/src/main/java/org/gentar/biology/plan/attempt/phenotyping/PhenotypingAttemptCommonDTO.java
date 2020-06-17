@@ -5,13 +5,10 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
-import org.gentar.biology.plan.attempt.phenotyping.stage.PhenotypingStageDTO;
-
-import java.util.List;
 
 @Data
 @RequiredArgsConstructor
-public class PhenotypingAttemptDTO
+public class PhenotypingAttemptCommonDTO
 {
     @JsonIgnore
     private Long id;
@@ -32,7 +29,4 @@ public class PhenotypingAttemptDTO
 
     @JsonProperty("phenotypingBackgroundStrainName")
     private String strainName;
-
-    @JsonProperty("phenotypingStages")
-    private List<PhenotypingStageDTO> phenotypingStageDTOs;
 }

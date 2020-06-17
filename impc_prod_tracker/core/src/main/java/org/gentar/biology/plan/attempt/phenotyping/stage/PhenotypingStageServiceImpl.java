@@ -18,9 +18,7 @@ import org.gentar.statemachine.TransitionEvaluation;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Collection;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Component
@@ -96,7 +94,7 @@ public class PhenotypingStageServiceImpl implements PhenotypingStageService
         PhenotypingStage phenotypingStage = phenotypingStageRepository.findByPsn(psn);
         if (phenotypingStage == null)
         {
-            throw new UserOperationFailedException("PhenotypingsStage " + psn + " does not exist");
+            throw new UserOperationFailedException("PhenotypingsStage " + psn + " does not exist.");
         }
         return phenotypingStage;
     }
@@ -159,10 +157,5 @@ public class PhenotypingStageServiceImpl implements PhenotypingStageService
     public PhenotypingStageType getPhenotypingStageTypeByName(String name)
     {
         return phenotypingStageTypeRepository.findByNameIgnoreCase(name);
-    }
-
-    @Override
-    public PhenotypingStage getNotNullPhenotypingStageByPsn(String psn) {
-        return null;
     }
 }

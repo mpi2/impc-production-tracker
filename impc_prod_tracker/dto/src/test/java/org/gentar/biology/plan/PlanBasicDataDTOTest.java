@@ -3,7 +3,7 @@ package org.gentar.biology.plan;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import org.gentar.biology.plan.attempt.breeding.BreedingAttemptDTO;
 import org.gentar.biology.plan.attempt.crispr.CrisprAttemptDTO;
-import org.gentar.biology.plan.attempt.phenotyping.PhenotypingAttemptDTO;
+import org.gentar.biology.plan.attempt.phenotyping.PhenotypingAttemptCreationDTO;
 import org.gentar.biology.plan.plan_starting_point.PlanStartingPointDTO;
 import org.junit.jupiter.api.Test;
 import org.util.JsonConverter;
@@ -58,8 +58,8 @@ class PlanBasicDataDTOTest
     {
         PlanBasicDataDTO planBasicDataDTO = new PlanBasicDataDTO();
         planBasicDataDTO.setPlanCommonDataDTO(new PlanCommonDataDTO());
-        PhenotypingAttemptDTO phenotypingAttemptDTO = new PhenotypingAttemptDTO();
-        planBasicDataDTO.setPhenotypingAttemptDTO(phenotypingAttemptDTO);
+        PhenotypingAttemptCreationDTO phenotypingAttemptCreationDTO = new PhenotypingAttemptCreationDTO();
+        planBasicDataDTO.setPhenotypingAttemptCreationDTO(phenotypingAttemptCreationDTO);
         planBasicDataDTO.setPlanStartingPointDTO(new PlanStartingPointDTO());
 
         String json = JsonConverter.toJson(planBasicDataDTO);

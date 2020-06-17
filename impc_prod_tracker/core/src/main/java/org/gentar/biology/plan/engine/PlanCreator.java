@@ -4,11 +4,14 @@ import org.gentar.audit.history.History;
 import org.gentar.audit.history.HistoryService;
 import org.gentar.biology.plan.Plan;
 import org.gentar.biology.plan.PlanStatusManager;
+import org.gentar.biology.plan.attempt.phenotyping.stage.PhenotypingStage;
+import org.gentar.biology.plan.attempt.phenotyping.stage.PhenotypingStageService;
 import org.gentar.biology.project.ProjectService;
 import org.springframework.stereotype.Component;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.transaction.Transactional;
+import java.util.Set;
 
 /**
  * Class with the logic to save a plan in the system.
@@ -24,10 +27,10 @@ public class PlanCreator
     private ProjectService projectService;
 
     public PlanCreator(
-        EntityManager entityManager,
-        HistoryService<Plan> historyService,
-        PlanStatusManager planStatusManager,
-        ProjectService projectService)
+            EntityManager entityManager,
+            HistoryService<Plan> historyService,
+            PlanStatusManager planStatusManager,
+            ProjectService projectService)
     {
         this.entityManager = entityManager;
         this.historyService = historyService;
@@ -64,6 +67,10 @@ public class PlanCreator
     {
         entityManager.persist(plan);
         plan.setPin(buildPin(plan.getId()));
+        if (plan.getPhenotypingAttempt().getPhenotypingStages() != null)
+        {
+            plan.getPhenotypingAttempt().getPhenotypingStages().forEach(x -> x.setPsn(buildPsn(x.getId())));
+        }
         return plan;
     }
 
@@ -77,6 +84,13 @@ public class PlanCreator
     {
         String identifier = String.format("%0" + 10 + "d", id);
         identifier = "PIN:" + identifier;
+        return identifier;
+    }
+
+    private String buildPsn(Long id)
+    {
+        String identifier = String.format("%0" + 12 + "d", id);
+        identifier = "PSN:" + identifier;
         return identifier;
     }
 

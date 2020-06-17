@@ -7,7 +7,8 @@ import com.fasterxml.jackson.annotation.JsonUnwrapped;
 import lombok.Data;
 import org.gentar.biology.plan.attempt.breeding.BreedingAttemptDTO;
 import org.gentar.biology.plan.attempt.crispr.CrisprAttemptDTO;
-import org.gentar.biology.plan.attempt.phenotyping.PhenotypingAttemptDTO;
+import org.gentar.biology.plan.attempt.phenotyping.PhenotypingAttemptCreationDTO;
+import org.gentar.biology.plan.attempt.phenotyping.PhenotypingAttemptResponseDTO;
 import org.gentar.biology.plan.plan_starting_point.PlanStartingPointDTO;
 import java.util.List;
 
@@ -41,13 +42,18 @@ public class PlanBasicDataDTO
     @JsonProperty("crisprAttempt")
     private CrisprAttemptDTO crisprAttemptDTO;
 
-    // Crispr attempt information. It will only contain information if the attempt type is breeding.
+    // Breeding attempt information. It will only contain information if the attempt type is breeding.
     @JsonInclude(JsonInclude.Include.NON_NULL)
     @JsonProperty("breedingAttempt")
     private BreedingAttemptDTO breedingAttemptDTO;
 
-    // Crispr attempt information. It will only contain information if the plan type is phenotyping.
+    // Phenotyping attempt information for creation. It will only contain information if the plan type is phenotyping.
     @JsonInclude(JsonInclude.Include.NON_NULL)
     @JsonProperty("phenotypingAttempt")
-    private PhenotypingAttemptDTO phenotypingAttemptDTO;
+    private PhenotypingAttemptCreationDTO phenotypingAttemptCreationDTO;
+
+    // Phenotyping attempt information for response. It will only contain information if the plan type is phenotyping.
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    @JsonProperty("phenotypingAttemptResponse")
+    private PhenotypingAttemptResponseDTO phenotypingAttemptResponseDTO;
 }

@@ -2,9 +2,9 @@ package org.gentar.biology.plan.attempt;
 
 import org.gentar.Mapper;
 import org.gentar.exceptions.UserOperationFailedException;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
-@Service
+@Component
 public class AttemptTypeMapper implements Mapper<AttemptType, String>
 {
     private AttemptTypeService attemptTypeService;
