@@ -21,14 +21,17 @@ public class PhenotypingStageResponseMapper implements Mapper<PhenotypingStage, 
     private PhenotypingStageService phenotypingStageService;
     private TransitionMapper transitionMapper;
 
-    public PhenotypingStageResponseMapper(PhenotypingStageCommonMapper phenotypingStageCommonMapper, PhenotypingStageService phenotypingStageService, TransitionMapper transitionMapper) {
+    public PhenotypingStageResponseMapper(PhenotypingStageCommonMapper phenotypingStageCommonMapper,
+                                          PhenotypingStageService phenotypingStageService,
+                                          TransitionMapper transitionMapper) {
         this.phenotypingStageCommonMapper = phenotypingStageCommonMapper;
         this.phenotypingStageService = phenotypingStageService;
         this.transitionMapper = transitionMapper;
     }
 
     @Override
-    public PhenotypingStageResponseDTO toDto(PhenotypingStage phenotypingStage) {
+    public PhenotypingStageResponseDTO toDto(PhenotypingStage phenotypingStage)
+    {
         PhenotypingStageResponseDTO phenotypingStageResponseDTO = new PhenotypingStageResponseDTO();
         if (phenotypingStage != null)
         {
@@ -88,7 +91,8 @@ public class PhenotypingStageResponseMapper implements Mapper<PhenotypingStage, 
     }
 
     @Override
-    public PhenotypingStage toEntity(PhenotypingStageResponseDTO dto) {
+    public PhenotypingStage toEntity(PhenotypingStageResponseDTO dto)
+    {
         // A PhenotypingStage response does not need to be converted to an entity.
         return null;
     }
