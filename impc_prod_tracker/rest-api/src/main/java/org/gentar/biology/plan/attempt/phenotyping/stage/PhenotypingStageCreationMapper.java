@@ -1,8 +1,13 @@
 package org.gentar.biology.plan.attempt.phenotyping.stage;
 
 import org.gentar.Mapper;
+import org.gentar.biology.plan.attempt.phenotyping.PhenotypingAttemptCreationDTO;
 import org.gentar.biology.plan.attempt.phenotyping.stage.type.PhenotypingStageType;
 import org.springframework.stereotype.Component;
+
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
 
 @Component
 public class PhenotypingStageCreationMapper implements Mapper<PhenotypingStage, PhenotypingStageCreationDTO>
@@ -35,5 +40,16 @@ public class PhenotypingStageCreationMapper implements Mapper<PhenotypingStage, 
         phenotypingStage.setPhenotypingStageType(phenotypingStageType);
 
         return phenotypingStage;
+    }
+
+    @Override
+    public Set<PhenotypingStage> toEntities(Collection<PhenotypingStageCreationDTO> dtos)
+    {
+        Set<PhenotypingStage> phenotypingStages = new HashSet<>();
+        if (dtos != null)
+        {
+            dtos.forEach(dto -> phenotypingStages.add(toEntity(dto)));
+        }
+        return phenotypingStages;
     }
 }

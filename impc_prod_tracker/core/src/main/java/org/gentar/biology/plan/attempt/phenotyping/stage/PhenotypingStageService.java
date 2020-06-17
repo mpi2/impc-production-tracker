@@ -6,6 +6,8 @@ import org.gentar.exceptions.UserOperationFailedException;
 import org.gentar.statemachine.ProcessEvent;
 import org.gentar.statemachine.TransitionEvaluation;
 import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 
 public interface PhenotypingStageService
 {
@@ -67,7 +69,7 @@ public interface PhenotypingStageService
 
     /**
      * Gets the history for a phenotyping stage.
-     * @param phenotypingStage The project.
+     * @param phenotypingStage The phenotyping stage.
      * @return List of {@link History} with the trace of the changes for a phenotyping stage.
      */
     List<History> getPhenotypingStageHistory(PhenotypingStage phenotypingStage);
