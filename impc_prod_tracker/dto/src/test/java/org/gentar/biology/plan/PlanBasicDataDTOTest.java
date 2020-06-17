@@ -68,7 +68,6 @@ class PlanBasicDataDTOTest
         assertThat(json, is("{\"funderNames\":null,\"workUnitName\":null,\"workGroupName\":null," +
             "\"comment\":null,\"productsAvailableForGeneralPublic\":null," +
             "\"phenotypingStartingPoint\":{\"outcomeTpo\":null}," +
-            "\"phenotypingAttempt\":{\"phenotypingExternalRef\":null," +
-            "\"phenotypingBackgroundStrainName\":null,\"phenotypingStages\":null}}"));
+            "\"phenotypingAttempt\":{\"phenotypingStages\":null}}"));
     }
 }
