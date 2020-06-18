@@ -3,16 +3,17 @@ package org.gentar.biology.outcome;
 import com.github.springtestdbunit.annotation.DatabaseOperation;
 import com.github.springtestdbunit.annotation.DatabaseSetup;
 import com.github.springtestdbunit.annotation.DatabaseTearDown;
-import org.gentar.biology.plan.PlanFieldsDescriptors;
-import org.gentar.biology.statemachine.StatusTransitionFieldsDescriptors;
 import org.gentar.framework.ControllerTestTemplate;
 import org.gentar.framework.SequenceResetter;
 import org.gentar.framework.TestResourceLoader;
+import org.gentar.framework.asserts.json.OutcomeCustomizations;
 import org.gentar.framework.db.DBSetupFilesPaths;
+import org.gentar.helpers.LinkUtil;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.skyscreamer.jsonassert.JSONAssert;
 import org.skyscreamer.jsonassert.JSONCompareMode;
+import org.skyscreamer.jsonassert.comparator.CustomComparator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.payload.FieldDescriptor;
@@ -20,7 +21,6 @@ import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.ResultHandler;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-
 import java.io.IOException;
 import java.util.List;
 
@@ -55,7 +55,7 @@ class OutcomeControllerTest extends ControllerTestTemplate
         String contentAsString = result.getResponse().getContentAsString();
         System.out.println(contentAsString);
         String expectedOutputAsString =
-            loadExpectedResponseFromResource("expectedAllOutcomes.json");
+            loadFromResource("expectedAllOutcomes.json");
 
         JSONAssert.assertEquals(expectedOutputAsString, contentAsString, JSONCompareMode.STRICT);
     }
@@ -75,7 +75,7 @@ class OutcomeControllerTest extends ControllerTestTemplate
         String contentAsString = result.getResponse().getContentAsString();
         System.out.println(contentAsString);
         String expectedOutputAsString =
-            loadExpectedResponseFromResource("expectedColonyOutcomeTPO_000000000001.json");
+            loadFromResource("expectedColonyOutcomeTPO_000000000001.json");
 
         JSONAssert.assertEquals(expectedOutputAsString, contentAsString, JSONCompareMode.STRICT);
     }
@@ -103,7 +103,7 @@ class OutcomeControllerTest extends ControllerTestTemplate
         String contentAsString = result.getResponse().getContentAsString();
         System.out.println(contentAsString);
         String expectedOutputAsString =
-            loadExpectedResponseFromResource("expectedSpecimenOutcomeTPO_000000000004.json");
+            loadFromResource("expectedSpecimenOutcomeTPO_000000000004.json");
 
         JSONAssert.assertEquals(expectedOutputAsString, contentAsString, JSONCompareMode.STRICT);
     }
@@ -125,8 +125,10 @@ class OutcomeControllerTest extends ControllerTestTemplate
         sequenceResetter.syncSequence("COLONY_STATUS_STAMP_SEQ", "COLONY_STATUS_STAMP");
         sequenceResetter.syncSequence("DISTRIBUTION_PRODUCT_SEQ", "DISTRIBUTION_PRODUCT");
         sequenceResetter.syncSequence("MUTATION_SEQ", "MUTATION");
+        sequenceResetter.syncSequence("SEQUENCE_SEQ", "SEQUENCE");
+        sequenceResetter.syncSequence("MUTATION_SEQUENCE_SEQ", "MUTATION_SEQUENCE");
 
-        String payload = loadExpectedResponseFromResource("colonyOutcomeCreationPayload.json");
+        String payload = loadFromResource("colonyOutcomeCreationPayload.json");
 
         ResultActions resultActions = mvc().perform(MockMvcRequestBuilders
             .post("/api/plans/PIN:0000000001/outcomes")
@@ -134,13 +136,56 @@ class OutcomeControllerTest extends ControllerTestTemplate
             .content(payload)
             .contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
-            .andDo(document("plans/postColonyOutcome"));
+            .andDo(document("outcomes/postColonyOutcome"));
+
+        MvcResult result = resultActions.andReturn();
+        String contentAsString = result.getResponse().getContentAsString();
+        String planLink = LinkUtil.getSelfHrefLinkStringFromJson(contentAsString);
+        verifyGetOutcomeEqualsJsonIgnoringIdsAndPinAndDates(planLink, "expectedCreatedColonyOutcome.json");
     }
 
-    private String loadExpectedResponseFromResource(String resourceName)
+    private String loadFromResource(String resourceName)
         throws IOException
     {
         String completeResourcePath = TEST_RESOURCES_FOLDER + resourceName;
         return TestResourceLoader.loadJsonFromResource(completeResourcePath);
+    }
+
+    private void verifyGetOutcomeEqualsJsonIgnoringIdsAndPinAndDates(
+        String planLink, String jsonFileName)
+        throws Exception
+    {
+        ResultActions callGetWithObtainedUrl = mvc().perform(MockMvcRequestBuilders
+            .get(planLink)
+            .header("Authorization", accessToken))
+            .andExpect(status().isOk());
+        MvcResult obtainedProject = callGetWithObtainedUrl.andReturn();
+        String obtainedPlanAsString = obtainedProject.getResponse().getContentAsString();
+        System.out.println(obtainedPlanAsString);
+        String expectedOutputAsString = loadFromResource(jsonFileName);
+
+        JSONAssert.assertEquals(
+            expectedOutputAsString,
+            obtainedPlanAsString,
+            new CustomComparator(
+                JSONCompareMode.STRICT, OutcomeCustomizations.ignoreIdsAndTpoAndDates()));
+
+        String mutationLink = LinkUtil.getCustomHrefLinkStringFromJson(obtainedPlanAsString, "mutations");
+        System.out.println(mutationLink);
+        verifyMutationIsExpectedIgnoringIds(mutationLink, "");
+    }
+
+
+    private void verifyMutationIsExpectedIgnoringIds(
+        String mutationLink, String jsonFileName)
+        throws Exception
+    {
+        ResultActions callGetWithObtainedUrl = mvc().perform(MockMvcRequestBuilders
+            .get(mutationLink)
+            .header("Authorization", accessToken))
+            .andExpect(status().isOk());
+        MvcResult obtainedMutation = callGetWithObtainedUrl.andReturn();
+        String obtainedMutationAsString = obtainedMutation.getResponse().getContentAsString();
+        //TODO: Check object is the expected
     }
 }
