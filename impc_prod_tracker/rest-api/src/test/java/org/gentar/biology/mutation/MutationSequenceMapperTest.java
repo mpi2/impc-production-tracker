@@ -1,6 +1,8 @@
 package org.gentar.biology.mutation;
 
 import org.gentar.biology.mutation.sequence.MutationSequence;
+import org.gentar.biology.sequence.Sequence;
+import org.gentar.biology.sequence.SequenceDTO;
 import org.gentar.biology.sequence.SequenceMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -34,6 +36,7 @@ class MutationSequenceMapperTest
         MutationSequence mutationSequence = new MutationSequence();
         mutationSequence.setId(1L);
         mutationSequence.setIndex(1);
+        mutationSequence.setSequence(new Sequence());
 
         MutationSequenceDTO mutationSequenceDTO = testInstance.toDto(mutationSequence);
 
@@ -48,6 +51,7 @@ class MutationSequenceMapperTest
         MutationSequenceDTO mutationSequenceDTO = new MutationSequenceDTO();
         mutationSequenceDTO.setId(1L);
         mutationSequenceDTO.setIndex(1);
+        mutationSequenceDTO.setSequenceDTO(new SequenceDTO());
 
         MutationSequence mutationSequence = testInstance.toEntity(mutationSequenceDTO);
 

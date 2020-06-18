@@ -31,7 +31,11 @@ public class MutationSequenceMapper implements Mapper<MutationSequence, Mutation
         MutationSequence mutationSequence = new MutationSequence();
         mutationSequence.setId(mutationSequenceDTO.getId());
         mutationSequence.setIndex(mutationSequenceDTO.getIndex());
-        mutationSequence.setSequence(sequenceMapper.toEntity(mutationSequenceDTO.getSequenceDTO()));
+        if (mutationSequenceDTO.getSequenceDTO() != null)
+        {
+            mutationSequence.setSequence(
+                sequenceMapper.toEntity(mutationSequenceDTO.getSequenceDTO()));
+        }
         return mutationSequence;
     }
 }

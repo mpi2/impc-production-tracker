@@ -11,7 +11,6 @@ public class MutationCommonDTO
     private Boolean mgiAlleleSymbolRequiresConstruction;
     private String geneticMutationTypeName;
     private String molecularMutationTypeName;
-    private String genbankFileName;
     private Long imitsAllele;
     private Boolean alleleConfirmed;
 

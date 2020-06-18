@@ -8,6 +8,7 @@ import org.gentar.biology.mutation.Mutation;
 import org.gentar.biology.mutation.sequence.MutationSequence;
 import org.gentar.biology.outcome.Outcome;
 import org.gentar.biology.sequence.Sequence;
+import org.gentar.biology.sequence.SequenceRepository;
 import org.gentar.biology.sequence.SequenceService;
 import org.gentar.biology.sequence.category.SequenceCategory;
 import org.gentar.biology.sequence.category.SequenceCategoryName;
@@ -37,7 +38,10 @@ class ConfirmGenotypeProcessorTest
     @Mock
     private ColonyStateSetter colonyStateSetter;
 
-    private SequenceService sequenceService = new SequenceService();
+    @Mock
+    private SequenceRepository sequenceRepository;
+
+    private SequenceService sequenceService = new SequenceService(sequenceRepository);
 
     @BeforeEach
     void setUp()

@@ -88,7 +88,6 @@ class MutationCommonMapperTest
         assertThat(mutationCommonDTO.getImitsAllele(), is(IMITS_ALLELE));
         assertThat(mutationCommonDTO.getGeneticMutationTypeName(), is(GENETIC_MUTATION_TYPE));
         assertThat(mutationCommonDTO.getMolecularMutationTypeName(), is(MOLECULAR_MUTATION_TYPE));
-        assertThat(mutationCommonDTO.getGenbankFileName(), is(FILE_GB));
 
         verify(mutationQCResultMapper, times(1)).toDtos(mutation.getMutationQcResults());
         verify(geneMapper, times(1)).toDtos(mutation.getGenes());
@@ -167,7 +166,6 @@ class MutationCommonMapperTest
         mutationCommonDTO.setImitsAllele(IMITS_ALLELE);
         mutationCommonDTO.setGeneticMutationTypeName(GENETIC_MUTATION_TYPE);
         mutationCommonDTO.setMolecularMutationTypeName(MOLECULAR_MUTATION_TYPE);
-        mutationCommonDTO.setGenbankFileName(FILE_GB);
         mutationCommonDTO.setGeneDTOS(new ArrayList<>());
         mutationCommonDTO.setMutationCategorizationDTOS(new ArrayList<>());
         mutationCommonDTO.setMutationSequenceDTOS(new ArrayList<>());

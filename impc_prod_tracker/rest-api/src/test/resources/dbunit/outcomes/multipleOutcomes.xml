@@ -161,6 +161,31 @@
                                 NAME="HDR"
                                 MUTATION_CATEGORIZATION_TYPE_ID="2"/>
 
+    <SEQUENCE_TYPE  ID="1"
+                    NAME="complete"/>
+    <SEQUENCE_TYPE  ID="2"
+                    NAME="partial"/>
+    <SEQUENCE_TYPE  ID="3"
+                    NAME="5_prime_end"/>
+    <SEQUENCE_TYPE  ID="4"
+                    NAME="3_prime_end"/>
+
+    <SEQUENCE_CATEGORY  ID="1"
+                        NAME="intention target sequence"/>
+    <SEQUENCE_CATEGORY  ID="2"
+                        NAME="original starting sequence"/>
+    <SEQUENCE_CATEGORY  ID="3"
+                        NAME="outcome sequence"/>
+
+    <SEQUENCE   ID="1"
+                SEQUENCE=">Otog
+TGGGACTAGGTCACAGACAGAAAAAGGGGGATGAGAAGGCCTTAGATCTAAGGGAGGTAAAGAGAGAATTAACCACAGGAATTAGCACACTGAAGGATCGTGCTCGCCAGACCTCAAACCATCTCCTTCTTGCGTCATGAGAAAGCCTTGACCCATCATTTTCCAGTTTTCTGTGTTCTTGCCCCACTTTGGCCCCTGGATCCTGGGATCTCCCCAGAAATTCTTACCTAGCCCC"
+                SEQUENCE_CATEGORY_ID="3"/>
+    <SEQUENCE   ID="2"
+                SEQUENCE=">Dennd6b
+CCATGGATAGCCATATATCTGCGCAATCTGGCCTCCTTGACGCCATGACAGCAGCTGACCCGTGAGCACTGTGTAGTGGATTCTCCTGTCCCAGGCAGACTGAGTCAGGCTCCTTCAGGGAAACTGAAAGTGATTCTCTGTGTTGATTCATCCAAGGCCCATGGAGGGACCTTCCAGGGGTCTTGGAGCACTCTCAGATTGGCTAAATTCTTTCTGAATCAGCAGATGTCCTCTAGACCGGATCAGCCCACTTTCAGAACTAGGGAATCCTAAGTCTCACTGTGCTAGGCAGAGGGCAGGCCCTAGTCTCAGGGGCAAGTGCCTCCTAGGGTCTC"
+                SEQUENCE_CATEGORY_ID="3"/>
+
     <PROPERTY_TYPE  ID="1"
                     NAME="Property 1"/>
     <PROPERTY_TYPE  ID="2"
@@ -242,6 +267,15 @@ This allele from project Fxn-5659J-A was generated at The Jackson Laboratory by 
 
     <MUTATION_OUTCOME   MUTATION_ID="1"
                         OUTCOME_ID="1"/>
+
+    <MUTATION_SEQUENCE  ID="1"
+                        MUTATION_ID="1"
+                        SEQUENCE_ID="1"
+                        INDEX="1"/>
+    <MUTATION_SEQUENCE  ID="2"
+                        MUTATION_ID="1"
+                        SEQUENCE_ID="2"
+                        INDEX="2"/>
 
     <SPECIMEN   OUTCOME_ID="4"
                 SPECIMEN_EXTERNAL_REF="External reference"

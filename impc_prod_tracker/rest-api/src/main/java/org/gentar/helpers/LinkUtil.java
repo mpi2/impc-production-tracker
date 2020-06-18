@@ -37,4 +37,17 @@ public class LinkUtil
         JSONObject self = links.getJSONObject("self");
         return self.get("href").toString();
     }
+
+    /**
+     * Gets the relationName.href link from a json. It expects the json to have that structure.
+     * @param jsonString The json string where the link is.
+     * @return The link in a string representation.
+     */
+    public static String getCustomHrefLinkStringFromJson(String jsonString, String relationName)
+    {
+        JSONObject jsonResponse = new JSONObject(jsonString);
+        JSONObject links = jsonResponse.getJSONObject("_links");
+        JSONObject self = links.getJSONObject(relationName);
+        return self.get("href").toString();
+    }
 }

@@ -1,33 +1,22 @@
 package org.gentar.biology.sequence;
 
-import org.gentar.EntityMapper;
 import org.gentar.Mapper;
 import org.springframework.stereotype.Component;
 import org.gentar.biology.sequence_location.SequenceLocation;
-import org.gentar.biology.sequence_location.SequenceLocationRepository;
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 @Component
 public class SequenceMapper implements Mapper<Sequence, SequenceDTO>
 {
-    private EntityMapper entityMapper;
-    private SequenceLocationRepository sequenceLocationRepository;
     private SequenceLocationMapper sequenceLocationMapper;
     private SequenceCategoryMapper sequenceCategoryMapper;
     private SequenceTypeMapper sequenceTypeMapper;
 
-
     public SequenceMapper(
-        EntityMapper entityMapper,
-        SequenceLocationRepository sequenceLocationRepository,
         SequenceLocationMapper sequenceLocationMapper,
         SequenceCategoryMapper sequenceCategoryMapper,
         SequenceTypeMapper sequenceTypeMapper)
     {
-        this.entityMapper = entityMapper;
-        this.sequenceLocationRepository = sequenceLocationRepository;
         this.sequenceLocationMapper = sequenceLocationMapper;
         this.sequenceCategoryMapper = sequenceCategoryMapper;
         this.sequenceTypeMapper = sequenceTypeMapper;
@@ -35,27 +24,26 @@ public class SequenceMapper implements Mapper<Sequence, SequenceDTO>
 
     public SequenceDTO toDto(Sequence sequence)
     {
-        SequenceDTO sequenceDTO = entityMapper.toTarget(sequence,SequenceDTO.class);
-        List<SequenceLocation> sequenceLocations =
-            sequenceLocationRepository.findAllBySequence(sequence);
-        List<SequenceLocationDTO> sequenceLocationDTOS = sequenceLocationMapper.toDtos(sequenceLocations);
+        SequenceDTO sequenceDTO = new SequenceDTO();
+        sequenceDTO.setSequence(sequence.getSequence());
+        if (sequence.getSequenceType() != null)
+        {
+            sequenceDTO.setSequenceTypeName(sequence.getSequenceType().getName());
+        }
+        if (sequence.getSequenceCategory() != null)
+        {
+            sequenceDTO.setSequenceCategoryName(sequence.getSequenceCategory().getName());
+        }
+        List<SequenceLocationDTO> sequenceLocationDTOS =
+            sequenceLocationMapper.toDtos(sequence.getSequenceLocations());
         sequenceDTO.setSequenceLocationDTOS(sequenceLocationDTOS);
         return sequenceDTO;
     }
 
-    public List<SequenceDTO> toDtos(Collection<Sequence> sequences)
-    {
-        List<SequenceDTO> sequenceDTOS = new ArrayList<>();
-        if (sequences != null)
-        {
-            sequences.forEach(x -> sequenceDTOS.add(toDto(x)));
-        }
-        return sequenceDTOS;
-    }
-
     public Sequence toEntity(SequenceDTO sequenceDTO)
     {
-        Sequence sequence = entityMapper.toTarget(sequenceDTO, Sequence.class);
+        Sequence sequence = new Sequence();
+        sequence.setSequence(sequenceDTO.getSequence());
         sequence.setSequenceCategory(
             sequenceCategoryMapper.toEntity(sequenceDTO.getSequenceCategoryName()));
         sequence.setSequenceType(
@@ -73,6 +61,5 @@ public class SequenceMapper implements Mapper<Sequence, SequenceDTO>
             sequenceLocations.forEach(x -> x.setSequence(sequence));
             sequence.setSequenceLocations(sequenceLocations);
         }
-
     }
 }
