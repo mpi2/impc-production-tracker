@@ -5,8 +5,11 @@ import org.gentar.Mapper;
 import org.gentar.biology.gene.GeneMapper;
 import org.gentar.biology.mutation.genetic_type.GeneticMutationType;
 import org.gentar.biology.mutation.molecular_type.MolecularMutationType;
+import org.gentar.biology.mutation.sequence.MutationSequence;
 import org.springframework.stereotype.Component;
 import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 @Component
 public class MutationCommonMapper implements Mapper<Mutation, MutationCommonDTO>
@@ -63,8 +66,7 @@ public class MutationCommonMapper implements Mapper<Mutation, MutationCommonDTO>
         mutation.setMutationQcResults(
             new HashSet<>(mutationQCResultMapper.toEntities(mutationCommonDTO.getMutationQCResultDTOs())));
         mutation.setGenes(new HashSet<>(geneMapper.toEntities(mutationCommonDTO.getGeneDTOS())));
-        mutation.setMutationSequences(
-            new HashSet<>(mutationSequenceMapper.toEntities(mutationCommonDTO.getMutationSequenceDTOS())));
+        setMutationSequences(mutation, mutationCommonDTO);
         mutation.setMutationCategorizations(
             new HashSet<>(mutationCategorizationMapper.toEntities(
                 mutationCommonDTO.getMutationCategorizationDTOS())));
@@ -90,6 +92,19 @@ public class MutationCommonMapper implements Mapper<Mutation, MutationCommonDTO>
             MolecularMutationType molecularMutationType =
                 molecularMutationTypeMapper.toEntity(molecularMutationTypeName);
             mutation.setMolecularMutationType(molecularMutationType);
+        }
+    }
+
+    private void setMutationSequences(Mutation mutation, MutationCommonDTO mutationCommonDTO)
+    {
+        List<MutationSequenceDTO> mutationSequenceDTOS = mutationCommonDTO.getMutationSequenceDTOS();
+        if (mutationSequenceDTOS != null)
+        {
+            Set<MutationSequence> mutationSequences =
+                new HashSet<>(
+                    mutationSequenceMapper.toEntities(mutationCommonDTO.getMutationSequenceDTOS()));
+            mutationSequences.forEach(x -> x.setMutation(mutation));
+            mutation.setMutationSequences(mutationSequences);
         }
     }
 }

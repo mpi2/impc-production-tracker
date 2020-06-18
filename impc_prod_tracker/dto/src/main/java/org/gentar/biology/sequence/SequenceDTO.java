@@ -7,8 +7,8 @@ import java.util.List;
 
 @Data
 @RequiredArgsConstructor
-public class SequenceDTO {
-
+public class SequenceDTO
+{
     private String sequence;
 
     @JsonProperty("typeName")

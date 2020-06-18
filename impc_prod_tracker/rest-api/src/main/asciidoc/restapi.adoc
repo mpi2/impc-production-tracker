@@ -452,11 +452,11 @@ include::{snippets}/outcomes/allOutcomes/http-response.adoc[]
 ===== Example Request
 
 Curl:
-include::{snippets}/outcomes/postCrisprPlan/http-request.adoc[]
+include::{snippets}/outcomes/postColonyOutcome/http-request.adoc[]
 
 ===== Example Response
 
-include::{snippets}/plans/postCrisprPlan/http-response.adoc[]
+include::{snippets}/outcomes/postColonyOutcome/http-response.adoc[]
 
 
 == State Machine interaction
