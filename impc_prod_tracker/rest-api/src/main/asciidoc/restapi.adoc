@@ -116,10 +116,10 @@ This is the list of filters you can use:
 |===
 |Filter name | Description
 
-|tpns
+|tpn
 |TPN(s) to be used as a filter. Eg: TPN:000000013.
 
-|intentions
+|intention
 a|Name of the intention. Possible values:
 
 - Point Mutation
@@ -136,17 +136,17 @@ a|Name of the intention. Possible values:
 - Indel
 - Complex rearrangement
 
-|genes
+|gene
 |Marker symbol or accession id(s). Eg.Vps37a,MGI:1261835
 
-|workUnitNames
+|workUnitName
 |Name of the work unit(s) associated with any of the plans in the project.
 
-|workGroupNames
+|workGroupName
 |Name of the work group(s) associated with any of the plans in the project.
 
-|assignmentNames
-a|Assignment Name. Possible values:
+|assignmentStatusName
+a|Assignment Status Name. Possible values:
 
 * Assigned
 * Inspect - Conflict
@@ -155,16 +155,16 @@ a|Assignment Name. Possible values:
 * Inspect - Attempt
 * Inspect - GLT Mouse
 
-|summaryStatusNames
+|summaryStatusName
 |Summary Status of the project. Eg: Plan Created.
 
-|privacyNames
+|privacyName
 |The privacy of the project. Any of: public, protected, restricted.
 
-|externalReferences
+|externalReference
 |External reference for the project.
 
-|imitsMiPlanIds
+|imitsMiPlanId
 |Ids in iMits (if the project was migrated from there).
 
 |===

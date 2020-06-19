@@ -18,8 +18,6 @@ package org.gentar.biology.plan;
 import org.gentar.audit.history.History;
 import org.gentar.audit.history.HistoryMapper;
 import org.gentar.biology.ChangeResponse;
-import org.gentar.biology.plan.attempt.phenotyping.stage.PhenotypingStageCreationMapper;
-import org.gentar.biology.plan.attempt.phenotyping.stage.PhenotypingStageService;
 import org.gentar.biology.plan.filter.PlanFilter;
 import org.gentar.biology.plan.filter.PlanFilterBuilder;
 import org.gentar.biology.plan.mappers.PlanCreationMapper;
@@ -44,7 +42,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
 import java.util.Collections;
 import java.util.List;
 
@@ -62,8 +59,6 @@ public class PlanController
     private PlanResponseMapper planResponseMapper;
     private UpdatePlanRequestProcessor updatePlanRequestProcessor;
     private ProjectService projectService;
-    private PhenotypingStageService phenotypingStageService;
-    private PhenotypingStageCreationMapper phenotypingStageCreationMapper;
 
     public PlanController(
             HistoryMapper historyMapper,
@@ -71,7 +66,7 @@ public class PlanController
             PlanCreationMapper planCreationMapper,
             PlanResponseMapper planResponseMapper,
             UpdatePlanRequestProcessor updatePlanRequestProcessor,
-            ProjectService projectService, PhenotypingStageService phenotypingStageService, PhenotypingStageCreationMapper phenotypingStageCreationMapper)
+            ProjectService projectService)
     {
         this.historyMapper = historyMapper;
         this.planService = planService;
@@ -79,8 +74,6 @@ public class PlanController
         this.planResponseMapper = planResponseMapper;
         this.updatePlanRequestProcessor = updatePlanRequestProcessor;
         this.projectService = projectService;
-        this.phenotypingStageService = phenotypingStageService;
-        this.phenotypingStageCreationMapper = phenotypingStageCreationMapper;
     }
 
     /**
