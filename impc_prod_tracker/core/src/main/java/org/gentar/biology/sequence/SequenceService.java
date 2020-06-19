@@ -33,6 +33,9 @@ public class SequenceService
      */
     public void createSequence(Sequence sequence)
     {
-        sequenceRepository.save(sequence);
+        if (sequence != null)
+        {
+            sequenceRepository.save(sequence);
+        }
     }
 }

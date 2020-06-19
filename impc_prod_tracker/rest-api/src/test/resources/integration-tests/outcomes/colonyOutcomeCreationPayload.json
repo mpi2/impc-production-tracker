@@ -38,7 +38,7 @@
       ],
       "mutationSequences":[
         {
-          "sequenceDTO":{
+          "sequence":{
             "sequence": "TCTAAAAGGNACAGTTGGTGACTGCAGCTTAAACTCTGAGTGCAGCAGG",
             "typeName": "partial",
             "categoryName": "intention target sequence"
