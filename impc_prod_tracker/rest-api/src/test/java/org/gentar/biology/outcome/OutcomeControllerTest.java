@@ -3,6 +3,10 @@ package org.gentar.biology.outcome;
 import com.github.springtestdbunit.annotation.DatabaseOperation;
 import com.github.springtestdbunit.annotation.DatabaseSetup;
 import com.github.springtestdbunit.annotation.DatabaseTearDown;
+import org.gentar.audit.history.HistoryValidator;
+import org.gentar.biology.ChangeResponse;
+import org.gentar.common.history.HistoryDTO;
+import org.gentar.common.history.HistoryDetailDTO;
 import org.gentar.framework.ControllerTestTemplate;
 import org.gentar.framework.RestCaller;
 import org.gentar.framework.ResultValidator;
@@ -12,6 +16,7 @@ import org.gentar.framework.asserts.json.MutationCustomizations;
 import org.gentar.framework.asserts.json.OutcomeCustomizations;
 import org.gentar.framework.db.DBSetupFilesPaths;
 import org.gentar.helpers.LinkUtil;
+import org.gentar.util.JsonHelper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +25,8 @@ import org.springframework.test.web.servlet.ResultHandler;
 import java.io.IOException;
 import java.util.List;
 
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.is;
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
 
 class OutcomeControllerTest extends ControllerTestTemplate
@@ -109,10 +116,10 @@ class OutcomeControllerTest extends ControllerTestTemplate
             restCaller.executePostAndDocument(url, payload, document("outcomes/postColonyOutcome"));
         String outcomeUrl = LinkUtil.getSelfHrefLinkStringFromJson(obtainedJson);
 
-        verifyObtainedOutcome(outcomeUrl, expectedJson);
+        verifyCreatedOutcome(outcomeUrl, expectedJson);
     }
 
-    private void verifyObtainedOutcome(
+    private void verifyCreatedOutcome(
         String outcomeUrl, String expectedJson) throws Exception
     {
         String obtainedOutcome = restCaller.executeGet(outcomeUrl);
@@ -131,6 +138,48 @@ class OutcomeControllerTest extends ControllerTestTemplate
         String obtainedMutation = restCaller.executeGet(mutationLink);
         resultValidator.validateObtainedMatchesJson(
             obtainedMutation, jsonFileName, MutationCustomizations.ignoreIdsAndMin());
+    }
+
+    @Test
+    @DatabaseSetup(DBSetupFilesPaths.MULTIPLE_OUTCOMES)
+    @DatabaseTearDown(type = DatabaseOperation.DELETE_ALL, value = DBSetupFilesPaths.MULTIPLE_OUTCOMES)
+    void testUpdateColonyOutcomeInPlan() throws Exception
+    {
+        String payload = loadFromResource("colonyOutcomeUpdatePayload.json");
+        String url = "/api/plans/PIN:0000000001/outcomes/TPO:000000000001";
+        String expectedJson = getCompleteResourcePath("expectedUpdatedColonyOutcome.json");
+        String obtainedJson =
+            restCaller.executePutAndDocument(url, payload, document("outcomes/putColonyOutcome"));
+        ChangeResponse changeResponse = JsonHelper.fromJson(obtainedJson, ChangeResponse.class);
+        verifyChangeResponse(changeResponse);
+        String outcomeUrl = LinkUtil.getSelfHrefLinkStringFromJson(obtainedJson);
+        verifyUpdatedOutcome(outcomeUrl, expectedJson);
+    }
+
+    private void verifyChangeResponse(ChangeResponse changeResponse)
+    {
+        List<HistoryDTO> historyDTOS = changeResponse.getHistoryDTOs();
+        assertThat(historyDTOS.size(), is(1));
+
+        HistoryDTO historyDTO = historyDTOS.get(0);
+        assertThat(historyDTO.getComment(), is("Outcome updated"));
+
+        List<HistoryDetailDTO> historyDetailDTOS = historyDTO.getDetails();
+        assertThat(historyDetailDTOS.size(), is(1));
+
+        HistoryDetailDTO historyDetailDTO1 =
+            HistoryValidator.getHistoryDetailByField(historyDetailDTOS, "colony.genotypingComment");
+        assertThat(historyDetailDTO1.getOldValue(), is("An example comment for the genotyping."));
+        assertThat(historyDetailDTO1.getNewValue(), is("Genotyping comment changed."));
+    }
+
+    private void verifyUpdatedOutcome(
+        String outcomeUrl, String expectedJson) throws Exception
+    {
+        String obtainedOutcome = restCaller.executeGet(outcomeUrl);
+        System.out.println(obtainedOutcome);
+        resultValidator.validateObtainedMatchesJson(
+            obtainedOutcome, expectedJson, OutcomeCustomizations.ignoreIdsAndTpoAndDates());
     }
 
     private String getCompleteResourcePath(String resourceJsonName)
