@@ -1,0 +1,22 @@
+{
+  "tpo":"TPO:000000000001",
+  "outcomeTypeName":"Colony",
+  "colony":{
+    "name":"jr34293",
+    "genotypingComment":"Genotyping comment changed.",
+    "backgroundStrainName":"C57BL/6NJ",
+    "distributionProducts":[
+      {
+        "id":1,
+        "distributionCentreName":"BCM",
+        "productTypeName":"Live mice",
+        "distributionNetworkName":"MMRRC",
+        "endDate":"2018-11-09T00:00:00",
+        "startDate":"2018-04-19T00:00:00"
+      }
+    ],
+    "statusTransition":{
+      "actionToExecute":null
+    }
+  }
+}

@@ -2,9 +2,12 @@ package org.gentar.biology.plan.status;
 
 import org.gentar.biology.colony.Colony;
 import org.gentar.biology.outcome.Outcome;
+import org.gentar.biology.outcome.type.OutcomeType;
+import org.gentar.biology.outcome.type.OutcomeTypeName;
 import org.gentar.biology.plan.Plan;
 import org.gentar.biology.plan.attempt.phenotyping.PhenotypingAttempt;
 import org.gentar.biology.plan.attempt.phenotyping.stage.PhenotypingStage;
+import org.gentar.biology.specimen.Specimen;
 import org.gentar.biology.status.Status;
 import org.gentar.exceptions.SystemOperationFailedException;
 import org.springframework.stereotype.Component;
@@ -55,8 +58,23 @@ public class PlanSummaryStatusUpdater
         if (outcomes != null)
         {
             outcomes.forEach(x -> {
-                Colony colony = x.getColony();
-                outcomeStatuses.add(colony.getStatus());
+                if (x.getOutcomeType().getName().equals(OutcomeTypeName.COLONY.getLabel()))
+                {
+                    Colony colony = x.getColony();
+                    if (colony != null)
+                    {
+                        outcomeStatuses.add(colony.getStatus());
+                    }
+                }
+
+                else if (x.getOutcomeType().getName().equals(OutcomeTypeName.SPECIMEN.getLabel()))
+                {
+                    Specimen specimen = x.getSpecimen();
+                    if (specimen != null)
+                    {
+                        outcomeStatuses.add(specimen.getStatus());
+                    }
+                }
             });
         }
         return outcomeStatuses;

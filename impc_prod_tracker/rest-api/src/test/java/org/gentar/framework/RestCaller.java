@@ -72,4 +72,18 @@ public class RestCaller
         MvcResult obtained = resultActions.andReturn();
         return obtained.getResponse().getContentAsString();
     }
+
+    public String executePutAndDocument(String url, String payload, ResultHandler documentMethod)
+        throws Exception
+    {
+        ResultActions resultActions = mvc.perform(MockMvcRequestBuilders
+            .put(url)
+            .header(HEADER_AUTHORIZATION, accessToken)
+            .content(payload)
+            .contentType(MediaType.APPLICATION_JSON))
+            .andExpect(status().isOk())
+            .andDo(documentMethod);
+        MvcResult obtained = resultActions.andReturn();
+        return obtained.getResponse().getContentAsString();
+    }
 }

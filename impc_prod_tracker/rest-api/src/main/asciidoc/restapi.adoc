@@ -458,6 +458,20 @@ include::{snippets}/outcomes/postColonyOutcome/http-request.adoc[]
 
 include::{snippets}/outcomes/postColonyOutcome/http-response.adoc[]
 
+=== PUT
+
+==== Update an outcome (colony)
+
+
+===== Example Request
+
+Curl:
+include::{snippets}/outcomes/putColonyOutcome/http-request.adoc[]
+
+===== Example Response
+
+include::{snippets}/outcomes/putColonyOutcome/http-response.adoc[]
+
 
 == State Machine interaction
 
