@@ -443,6 +443,19 @@ include::{snippets}/outcomes/allOutcomes/curl-request.adoc[]
 
 include::{snippets}/outcomes/allOutcomes/http-response.adoc[]
 
+==== Get the history of changes for an outcome
+
+You can use this endpoint to see all the changes that have been made on an outcome.
+
+===== Example Request
+
+Curl:
+include::{snippets}/outcomes/colonyOutcome/history/curl-request.adoc[]
+
+===== Example Response
+
+include::{snippets}/outcomes/colonyOutcome/history/http-response.adoc[]
+
 
 === POST
 

@@ -3,6 +3,7 @@ package org.gentar.biology.outcome;
 import com.github.springtestdbunit.annotation.DatabaseOperation;
 import com.github.springtestdbunit.annotation.DatabaseSetup;
 import com.github.springtestdbunit.annotation.DatabaseTearDown;
+import org.gentar.audit.history.HistoryFieldsDescriptors;
 import org.gentar.audit.history.HistoryValidator;
 import org.gentar.biology.ChangeResponse;
 import org.gentar.common.history.HistoryDTO;
@@ -80,6 +81,26 @@ class OutcomeControllerTest extends ControllerTestTemplate
     @Test
     @DatabaseSetup(DBSetupFilesPaths.MULTIPLE_OUTCOMES)
     @DatabaseTearDown(type = DatabaseOperation.DELETE_ALL, value = DBSetupFilesPaths.MULTIPLE_OUTCOMES)
+    void testGetColonyOutcomeInPlanHistory() throws Exception
+    {
+        String url = "/api/plans/PIN:0000000001/outcomes/TPO:000000000002/history";
+        String expectedJson =
+            getCompleteResourcePath("expectedColonyOutcomeHistoryTPO_000000000002.json");
+        String obtainedJson = restCaller.executeGetAndDocument(url, documentColonyOutcomeHistory());
+        System.out.println(obtainedJson);
+        resultValidator.validateObtainedMatchesJson(obtainedJson, expectedJson);
+    }
+
+    private ResultHandler documentColonyOutcomeHistory()
+    {
+        List<FieldDescriptor> historyFieldDescriptions =
+            HistoryFieldsDescriptors.getHistoryFieldDescriptions();
+        return document("outcomes/colonyOutcome/history", responseFields(historyFieldDescriptions));
+    }
+
+    @Test
+    @DatabaseSetup(DBSetupFilesPaths.MULTIPLE_OUTCOMES)
+    @DatabaseTearDown(type = DatabaseOperation.DELETE_ALL, value = DBSetupFilesPaths.MULTIPLE_OUTCOMES)
     void testGetSpecimenOutcomeInPlan() throws Exception
     {
         String url = "/api/plans/PIN:0000000001/outcomes/TPO:000000000004";
@@ -107,6 +128,8 @@ class OutcomeControllerTest extends ControllerTestTemplate
         sequenceResetter.syncSequence("MUTATION_SEQ", "MUTATION");
         sequenceResetter.syncSequence("SEQUENCE_SEQ", "SEQUENCE");
         sequenceResetter.syncSequence("MUTATION_SEQUENCE_SEQ", "MUTATION_SEQUENCE");
+        sequenceResetter.syncSequence("HISTORY_SEQ", "HISTORY");
+        sequenceResetter.syncSequence("HISTORY_DETAIL_SEQ", "HISTORY_DETAIL");
 
         String payload = loadFromResource("colonyOutcomeCreationPayload.json");
 
@@ -145,6 +168,9 @@ class OutcomeControllerTest extends ControllerTestTemplate
     @DatabaseTearDown(type = DatabaseOperation.DELETE_ALL, value = DBSetupFilesPaths.MULTIPLE_OUTCOMES)
     void testUpdateColonyOutcomeInPlan() throws Exception
     {
+        sequenceResetter.syncSequence("HISTORY_SEQ", "HISTORY");
+        sequenceResetter.syncSequence("HISTORY_DETAIL_SEQ", "HISTORY_DETAIL");
+
         String payload = loadFromResource("colonyOutcomeUpdatePayload.json");
         String url = "/api/plans/PIN:0000000001/outcomes/TPO:000000000001";
         String expectedJson = getCompleteResourcePath("expectedUpdatedColonyOutcome.json");
