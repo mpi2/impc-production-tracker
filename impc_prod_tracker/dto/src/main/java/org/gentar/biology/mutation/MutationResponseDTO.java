@@ -20,7 +20,9 @@ public class MutationResponseDTO extends RepresentationModel<MutationResponseDTO
     private Long imitsAllele;
     private String mgiAlleleSymbol;
     private Boolean mgiAlleleSymbolWithoutImpcAbbreviation;
+    @JsonIgnore
     private String description;
+    @JsonIgnore
     private String autoDescription;
     @JsonProperty("genes")
     private List<GeneDTO> geneDTOS;

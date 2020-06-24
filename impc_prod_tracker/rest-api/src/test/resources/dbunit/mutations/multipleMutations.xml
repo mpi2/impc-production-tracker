@@ -1,0 +1,463 @@
+<dataset>
+    <PRIVACY    ID="1"
+                NAME="public"/>
+    <PRIVACY    ID="2"
+                NAME="protected"/>
+    <PRIVACY    ID="3"
+                NAME="restricted"/>
+
+    <SPECIES    ID="1"
+                NAME="Mus musculus"
+                TAXON_ID="10090"/>
+    <SPECIES    ID="2"
+                NAME="Homo sapiens"
+                TAXON_ID="9606"/>
+
+    <ASSIGNMENT_STATUS  ID="1"
+                        NAME="Assigned"/>
+
+    <PLAN_TYPE  ID="1"
+                NAME="production"/>
+    <PLAN_TYPE  ID="2"
+                NAME="phenotyping"/>
+
+    <ATTEMPT_TYPE   ID="1"
+                    NAME="crispr"/>
+
+    <WORK_UNIT  ID="1"
+                NAME="BCM"/>
+    <WORK_UNIT  ID="2"
+                NAME="TCP"/>
+
+    <WORK_GROUP ID="1"
+                NAME="BaSH"/>
+    <WORK_GROUP  ID="2"
+                 NAME="DTCC"/>
+
+    <DISTRIBUTION_NETWORK   ID="1"
+                            NAME="MMRRC"/>
+    <DISTRIBUTION_NETWORK   ID="2"
+                            NAME="CMMR"/>
+    <DISTRIBUTION_NETWORK   ID="3"
+                            NAME="EMMA"/>
+
+    <PRODUCT_TYPE   ID="1"
+                    NAME="Live mice"/>
+    <PRODUCT_TYPE   ID="2"
+                    NAME="Frozen sperm"/>
+
+    <STATUS     ID="1"
+                NAME="Plan Created"
+                IS_ABORTION_STATUS="false"
+                ORDERING="1000"/>
+    <STATUS     ID="2"
+                NAME="Attempt In Progress"
+                IS_ABORTION_STATUS="false"
+                ORDERING="11000"/>
+    <STATUS     ID="3"
+                NAME="Embryos Obtained"
+                IS_ABORTION_STATUS="false"
+                ORDERING="12000"/>
+    <STATUS     ID="4"
+                NAME="Founder Obtained"
+                IS_ABORTION_STATUS="false"
+                ORDERING="13000"/>
+    <STATUS     ID="5"
+                NAME="Attempt Aborted"
+                IS_ABORTION_STATUS="true"
+                ORDERING="14000"/>
+    <STATUS     ID="7"
+                NAME="Specimen Group In Progress"
+                IS_ABORTION_STATUS="false"
+                ORDERING="22000"/>
+    <STATUS     ID="9"
+                NAME="Genotype In Progress"
+                IS_ABORTION_STATUS="false"
+                ORDERING="32000"/>
+
+    <STRAIN  ID="1"
+             NAME="C57BL/6NJ"
+             MGI_STRAIN_ACC_ID="MGI:3056279"/>
+    
+    <STRAIN  ID="8"
+             NAME="C57BL/6J"
+             MGI_STRAIN_ACC_ID="MGI:3028467"/>
+
+    <OUTCOME_TYPE   ID="1"
+                    NAME="Colony"/>
+    <OUTCOME_TYPE   ID="2"
+                    NAME="Specimen"/>
+
+    <SPECIMEN_TYPE ID="1"
+                   NAME="Haploessential"/>
+
+    <GENETIC_MUTATION_TYPE  ID="1"
+                            NAME="Null"/>
+    <GENETIC_MUTATION_TYPE  ID="2"
+                            NAME="Gain-of-function"/>
+    <GENETIC_MUTATION_TYPE  ID="3"
+                            NAME="Loss-of-function"/>
+    <GENETIC_MUTATION_TYPE  ID="4"
+                            NAME="Dominant"/>
+    <GENETIC_MUTATION_TYPE  ID="5"
+                            NAME="Recessive"/>
+    <GENETIC_MUTATION_TYPE  ID="6"
+                            NAME="Not Tested"/>
+
+    <MOLECULAR_MUTATION_TYPE    ID="1"
+                                NAME="Point Mutation"/>
+    <MOLECULAR_MUTATION_TYPE    ID="2"
+                                NAME="Deletion"/>
+    <MOLECULAR_MUTATION_TYPE    ID="3"
+                                NAME="Exon Deletion"/>
+    <MOLECULAR_MUTATION_TYPE    ID="4"
+                                NAME="Intra-exon deletion"/>
+    <MOLECULAR_MUTATION_TYPE    ID="5"
+                                NAME="Inter-exon deletion"/>
+    <MOLECULAR_MUTATION_TYPE    ID="6"
+                                NAME="Whole-gene deletion"/>
+    <MOLECULAR_MUTATION_TYPE    ID="7"
+                                NAME="Copy Number Variant"/>
+    <MOLECULAR_MUTATION_TYPE    ID="8"
+                                NAME="SNP"/>
+    <MOLECULAR_MUTATION_TYPE    ID="9"
+                                NAME="Insertion"/>
+    <MOLECULAR_MUTATION_TYPE    ID="10"
+                                NAME="Inverted insertion"/>
+    <MOLECULAR_MUTATION_TYPE    ID="11"
+                                NAME="Inversion"/>
+    <MOLECULAR_MUTATION_TYPE    ID="12"
+                                NAME="Indel"/>
+    <MOLECULAR_MUTATION_TYPE    ID="13"
+                                NAME="Complex rearrangement"/>
+
+    <MUTATION_CATEGORIZATION_TYPE   ID="1"
+                                    NAME="allele_category"/>
+    <MUTATION_CATEGORIZATION_TYPE   ID="2"
+                                    NAME="repair_mechanism"/>
+
+    <MUTATION_CATEGORIZATION    ID="1"
+                                NAME="Null Reporter"
+                                MUTATION_CATEGORIZATION_TYPE_ID="1"/>
+    <MUTATION_CATEGORIZATION    ID="2"
+                                NAME="Conditional Ready"
+                                MUTATION_CATEGORIZATION_TYPE_ID="1"/>
+    <MUTATION_CATEGORIZATION    ID="3"
+                                NAME="Conditional"
+                                MUTATION_CATEGORIZATION_TYPE_ID="1"/>
+    <MUTATION_CATEGORIZATION    ID="4"
+                                NAME="Conditional point mutation"
+                                MUTATION_CATEGORIZATION_TYPE_ID="1"/>
+    <MUTATION_CATEGORIZATION    ID="5"
+                                NAME="Cre"
+                                MUTATION_CATEGORIZATION_TYPE_ID="1"/>
+    <MUTATION_CATEGORIZATION    ID="6"
+                                NAME="Overexpressor"
+                                MUTATION_CATEGORIZATION_TYPE_ID="1"/>
+    <MUTATION_CATEGORIZATION    ID="7"
+                                NAME="tag knock-in"
+                                MUTATION_CATEGORIZATION_TYPE_ID="1"/>
+    <MUTATION_CATEGORIZATION    ID="8"
+                                NAME="NHEJ"
+                                DESCRIPTION="non-homology end-joining"
+                                MUTATION_CATEGORIZATION_TYPE_ID="2"/>
+    <MUTATION_CATEGORIZATION    ID="9"
+                                NAME="HR"
+                                MUTATION_CATEGORIZATION_TYPE_ID="2"/>
+    <MUTATION_CATEGORIZATION    ID="10"
+                                NAME="HDR"
+                                MUTATION_CATEGORIZATION_TYPE_ID="2"/>
+
+	<QC_TYPE	ID="1"
+				NAME="five_prime_screen" />
+	<QC_TYPE	ID="2"
+				NAME="three_prime_screen" />
+	<QC_TYPE	ID="3"
+				NAME="loxp_screen" />
+	<QC_TYPE	ID="4"
+				NAME="loss_of_allele" />
+	<QC_TYPE	ID="5"
+				NAME="vector_integrity" />
+	<QC_TYPE	ID="6"
+				NAME="southern_blot" />
+	<QC_TYPE	ID="7"
+				NAME="five_prime_lr_pcr" />
+	<QC_TYPE	ID="8"
+				NAME="five_prime_cassette_integrity" />
+	<QC_TYPE	ID="9"
+				NAME="tv_backbone_assay" />
+	<QC_TYPE	ID="10"
+				NAME="neo_count_qpcr" />
+	<QC_TYPE	ID="11"
+				NAME="lacz_count_qpcr" />
+	<QC_TYPE	ID="12"
+				NAME="neo_sr_pcr" />
+	<QC_TYPE	ID="13"
+				NAME="loa_qpcr" />
+	<QC_TYPE	ID="14"
+				NAME="homozygous_loa_sr_pcr" />
+	<QC_TYPE	ID="15"
+				NAME="lacz_sr_pcr" />
+	<QC_TYPE	ID="16"
+				NAME="mutant_specific_sr_pcr" />
+	<QC_TYPE	ID="17"
+				NAME="loxp_confirmation" />
+	<QC_TYPE	ID="18"
+				NAME="three_prime_lr_pcr" />
+	<QC_TYPE	ID="19"
+				NAME="critical_region_qpcr" />
+	<QC_TYPE	ID="20"
+				NAME="loxp_srpcr" />
+	<QC_TYPE	ID="21"
+				NAME="loxp_srpcr_and_sequencing" />
+				
+	<QC_STATUS	ID="1"
+				NAME="pass" />
+	<QC_STATUS	ID="2"
+				NAME="passb" />
+	<QC_STATUS	ID="3"
+				NAME="not confirmed" />
+	<QC_STATUS	ID="4"
+				NAME="no reads detected" />
+	<QC_STATUS	ID="5"
+				NAME="fail" />
+				
+				
+
+    <SEQUENCE_TYPE  ID="1"
+                    NAME="complete"/>
+    <SEQUENCE_TYPE  ID="2"
+                    NAME="partial"/>
+    <SEQUENCE_TYPE  ID="3"
+                    NAME="5_prime_end"/>
+    <SEQUENCE_TYPE  ID="4"
+                    NAME="3_prime_end"/>
+
+    <SEQUENCE_CATEGORY  ID="1"
+                        NAME="intention target sequence"/>
+    <SEQUENCE_CATEGORY  ID="2"
+                        NAME="original starting sequence"/>
+    <SEQUENCE_CATEGORY  ID="3"
+                        NAME="outcome sequence"/>
+                        
+    <LOCATION	ID="1"
+    			CHR="7"
+    			GENOME_BUILD="GRCm38.p6"
+    			START="46245748"
+    			STOP="46245649"
+    			STRAND="-"
+    			SPECIES_ID="1"
+    			STRAIN_ID="8" />
+    			
+    <LOCATION	ID="2"
+    			CHR="7"
+    			GENOME_BUILD="GRCm38.p6"
+    			START="46245132"
+    			STOP="46244994"
+    			STRAND="-"
+    			SPECIES_ID="1"
+    			STRAIN_ID="8" />
+
+    <SEQUENCE   ID="1"
+                SEQUENCE=">Otog
+TGGGACTAGGTCACAGACAGAAAAAGGGGGATGAGAAGGCCTTAGATCTAAGGGAGGTAAAGAGAGAATTAACCACAGGAATTAGCACACTGAAGGATCGTGCTCGCCAGACCTCAAACCATCTCCTTCTTGCGTCATGAGAAAGCCTTGACCCATCATTTTCCAGTTTTCTGTGTTCTTGCCCCACTTTGGCCCCTGGATCCTGGGATCTCCCCAGAAATTCTTACCTAGCCCC"
+                SEQUENCE_TYPE_ID="1"
+                SEQUENCE_CATEGORY_ID="3"/>
+                
+    <SEQUENCE   ID="2"
+                SEQUENCE=">Dennd6b
+CCATGGATAGCCATATATCTGCGCAATCTGGCCTCCTTGACGCCATGACAGCAGCTGACCCGTGAGCACTGTGTAGTGGATTCTCCTGTCCCAGGCAGACTGAGTCAGGCTCCTTCAGGGAAACTGAAAGTGATTCTCTGTGTTGATTCATCCAAGGCCCATGGAGGGACCTTCCAGGGGTCTTGGAGCACTCTCAGATTGGCTAAATTCTTTCTGAATCAGCAGATGTCCTCTAGACCGGATCAGCCCACTTTCAGAACTAGGGAATCCTAAGTCTCACTGTGCTAGGCAGAGGGCAGGCCCTAGTCTCAGGGGCAAGTGCCTCCTAGGGTCTC"
+                SEQUENCE_CATEGORY_ID="3"/>
+
+	<SEQUENCE_LOCATION	ID="1"
+						SEQUENCE_ID="1"
+						LOCATION_ID="1"
+						INDEX="1" />
+	
+	<SEQUENCE_LOCATION	ID="2"
+						SEQUENCE_ID="1"
+						LOCATION_ID="2"
+						INDEX="2" />
+						
+
+    <PROPERTY_TYPE  ID="1"
+                    NAME="Property 1"/>
+    <PROPERTY_TYPE  ID="2"
+                    NAME="Property 2"/>
+
+    <PROJECT    ID="1"
+                TPN="TPN:000000001"
+                PRIVACY_ID="1"
+                ASSIGNMENT_STATUS_ID="1"
+                SUMMARY_STATUS_ID="1"
+                RECOVERY="false"
+                COMMENT="Comment test"
+                PROJECT_EXTERNAL_REF="External reference 01"/>
+
+    <PLAN       ID="1"
+                PIN="PIN:0000000001"
+                PROJECT_ID="1"
+                PLAN_TYPE_ID="1"
+                ATTEMPT_TYPE_ID="1"
+                STATUS_ID="4"
+                WORK_UNIT_ID="1"
+                WORK_GROUP_ID="1"
+                SUMMARY_STATUS_ID="4"/>
+
+    <OUTCOME    ID="1"
+                PLAN_ID="1"
+                TPO="TPO:000000000001"
+                OUTCOME_TYPE_ID="1"/>
+    <OUTCOME    ID="2"
+                PLAN_ID="1"
+                TPO="TPO:000000000002"
+                OUTCOME_TYPE_ID="1"/>
+    <OUTCOME    ID="3"
+                PLAN_ID="1"
+                TPO="TPO:000000000003"
+                OUTCOME_TYPE_ID="2"/>
+    <OUTCOME    ID="4"
+                PLAN_ID="1"
+                TPO="TPO:000000000004"
+                OUTCOME_TYPE_ID="2"/>
+    <OUTCOME    ID="5"
+                PLAN_ID="1"
+                TPO="TPO:000000000005"
+                OUTCOME_TYPE_ID="1"/>
+
+    <COLONY OUTCOME_ID="1"
+            NAME="jr34293"
+            STATUS_ID="9"
+            STRAIN_ID="1"
+            GENOTYPING_COMMENT="An example comment for the genotyping."/>
+
+    <COLONY_STATUS_STAMP    ID="1"
+                            COLONY_ID="1"
+                            STATUS_ID="9"
+                            DATE="2019-08-06 20:09:51.896778"/>
+
+    <DISTRIBUTION_PRODUCT   ID="1"
+                            COLONY_ID="1"
+                            START_DATE="2018-04-19 00:00:00"
+                            END_DATE="2018-11-09 00:00:00"
+                            DISTRIBUTION_CENTRE_ID="1"
+                            DISTRIBUTION_NETWORK_ID="1"
+                            PRODUCT_TYPE_ID="1"/>
+
+    <MUTATION   ID="1"
+                MIN="MIN:000000000001"
+                GENETIC_MUTATION_TYPE_ID="6"
+                MOLECULAR_MUTATION_TYPE_ID="12"
+                ALLELE_CONFIRMED="false"
+                ALLELE_SYMBOL_SUPERSCRIPT_TEMPLATE="9"
+                AUTO_DESCRIPTION="Frameshift mutation caused by a 4bp deletion in ENSMUST00000081333"
+                DESCRIPTION="Molecular description of Frataxin ex1 CRISPR KO Fxn[em1]:
+This allele from project Fxn-5659J-A was generated at The Jackson Laboratory by injecting Cas9 RNA and guide sequence AGTAGCATGTGGGCGTTCGG, which resulted in a 4 bp deletion TTCG in exon1 beginning at Chromosome 19 negative strand position 24280556 bp (GRCm38/mm10) and is predicted to cause a frameshift mutation with early truncation."
+                IMITS_ALLELE="259191"
+                MGI_ALLELE_ID="MGI:5571595"
+                MGI_ALLELE_SYMBOL="em1(IMPC)J"
+                MGI_ALLELE_SYMBOL_REQUIRES_CONSTRUCTION="true"
+                MGI_ALLELE_SYMBOL_WITHOUT_IMPC_ABBREVIATION="false"/>
+
+    <MUTATION   ID="2"
+                MIN="MIN:000000000002"
+                GENETIC_MUTATION_TYPE_ID="6"
+                MOLECULAR_MUTATION_TYPE_ID="2"
+                ALLELE_CONFIRMED="false"
+                ALLELE_SYMBOL_SUPERSCRIPT_TEMPLATE="9"
+                AUTO_DESCRIPTION=""
+                DESCRIPTION="Otog&lt;em1(IMPC)J&gt;:\r\nThis allele was generated at The Jackson Laboratory by electroporating Cas9 protein and 2 guide sequences CTTCACGTACCAAGGAGGGG and TCTTGCTTCCTACTTCCAGT, which resulted in a 520 bp deletion beginning at Chromosome 7 position 46,245,130 bp and ending after 46,245,649 bp (GRCm38/mm10). This mutation deletes ENSMUSE00000204147 (exon 4) and 444 bp of flanking intronic sequence including the splice acceptor and donor and is predicted to cause a change of amino acid sequence after residue 71 and early truncation 34 amino acids later. \r\n\r\n\r\n"
+                IMITS_ALLELE="266843"
+                MGI_ALLELE_ID="MGI:6342258"
+                MGI_ALLELE_SYMBOL="em1(IMPC)J"
+                MGI_ALLELE_SYMBOL_REQUIRES_CONSTRUCTION="true"
+                MGI_ALLELE_SYMBOL_WITHOUT_IMPC_ABBREVIATION="false"/>
+
+    <MUTATION_OUTCOME   MUTATION_ID="1"
+                        OUTCOME_ID="1"/>
+                        
+    <MUTATION_OUTCOME   MUTATION_ID="2"
+                        OUTCOME_ID="2"/>
+
+    <MUTATION_OUTCOME   MUTATION_ID="1"
+                        OUTCOME_ID="4"/>
+
+
+    <MUTATION_SEQUENCE  ID="1"
+                        MUTATION_ID="1"
+                        SEQUENCE_ID="1"
+                        INDEX="1"/>
+                        
+    <MUTATION_SEQUENCE  ID="2"
+                        MUTATION_ID="2"
+                        SEQUENCE_ID="1"
+                        INDEX="1"/>
+                        
+    <MUTATION_QC_RESULT	ID="1"
+    					MUTATION_ID="2"
+    					QC_TYPE_ID="16"
+    					STATUS_ID="1" />
+
+    <SPECIMEN   OUTCOME_ID="4"
+                SPECIMEN_EXTERNAL_REF="External reference"
+                SPECIMEN_TYPE_ID="1"
+                STATUS_ID="7"
+                STRAIN_ID="1"/>
+
+    <SPECIMEN_PROPERTY  ID="1"
+                        PROPERTY_TYPE_ID="1"
+                        SPECIMEN_OUTCOME_ID="4"
+                        VALUE="Value 1"/>
+    <SPECIMEN_PROPERTY  ID="2"
+                        PROPERTY_TYPE_ID="2"
+                        SPECIMEN_OUTCOME_ID="4"
+                        VALUE="Value 2"/>
+    <SPECIMEN_STATUS_STAMP  ID="1"
+                            SPECIMEN_ID="4"
+                            STATUS_ID="7"
+                            DATE="2019-08-06 20:09:51.896778"/>
+
+    <GENE   ID="1"
+            SYMBOL="Serpinb10"
+            NAME="serine (or cysteine) peptidase inhibitor, clade B (ovalbumin), member 10"
+            SPECIES_ID="1"
+            ACC_ID="MGI:2138648"
+            MGI_START="107529003"
+            MGI_STOP="107549271"
+            MGI_STRAND="+"/>
+
+    <GENE   ID="2"
+            SYMBOL="Otog"
+            NAME="otogelin"
+            SPECIES_ID="1"
+            ACC_ID="MGI:1202064"
+            MGI_START="46240987"
+            MGI_STOP="46311434"
+            MGI_STRAND="+"/>
+
+    <MUTATION_GENE   MUTATION_ID="2"
+                     GENE_ID="2"/>
+
+	<MUTATION_MUTATION_CATEGORIZATION   MUTATION_ID="2"
+										MUTATION_CATEGORIZATION_ID="8"/>
+
+    <PERSON     ID="123"
+                EMAIL="imits2test@test.com"
+                AUTH_ID="usr-dde67fbd-c3c2-42eb-aa81-f1a225f047c7"/>
+
+    <ROLE   ID="1"
+            NAME="manager"/>
+    <ROLE   ID="2"
+            NAME="general"/>
+
+    <PERSON_ROLE_WORK_UNIT  ID="1"
+                            PERSON_ID="123"
+                            ROLE_ID="2"
+                            WORK_UNIT_ID="1"/>
+
+    <PERSON_ROLE_CONSORTIUM/>
+    <PLAN_STATUS_STAMP/>
+    <PLAN_SUMMARY_STATUS_STAMP/>
+    <PROJECT_SUMMARY_STATUS_STAMP/>
+    <MUTATION_MUTATION_CATEGORIZATION/>
+</dataset>
