@@ -55,8 +55,6 @@ class MutationCommonMapperTest
     @Mock
     private MutationCategorizationMapper mutationCategorizationMapper;
     @Mock
-    private GeneMapper geneMapper;
-    @Mock
     private MutationSequenceMapper mutationSequenceMapper;
     @Mock
     private GeneticMutationTypeMapper geneticMutationTypeMapper;
@@ -71,7 +69,6 @@ class MutationCommonMapperTest
                 entityMapper,
                 mutationQCResultMapper,
                 mutationCategorizationMapper,
-                geneMapper,
                 mutationSequenceMapper, geneticMutationTypeMapper, molecularMutationTypeMapper);
     }
 
@@ -85,12 +82,10 @@ class MutationCommonMapperTest
             mutationCommonDTO.getMgiAlleleSymbolRequiresConstruction(),
             is(MGI_ALLELE_SYMBOL_REQUIRES_CONSTRUCTION));
         assertThat(mutationCommonDTO.getAlleleConfirmed(), is(ALLELE_CONFIRMED));
-        assertThat(mutationCommonDTO.getImitsAllele(), is(IMITS_ALLELE));
         assertThat(mutationCommonDTO.getGeneticMutationTypeName(), is(GENETIC_MUTATION_TYPE));
         assertThat(mutationCommonDTO.getMolecularMutationTypeName(), is(MOLECULAR_MUTATION_TYPE));
 
         verify(mutationQCResultMapper, times(1)).toDtos(mutation.getMutationQcResults());
-        verify(geneMapper, times(1)).toDtos(mutation.getGenes());
         verify(mutationSequenceMapper, times(1)).toDtos(mutation.getMutationSequences());
         verify(mutationCategorizationMapper, times(1)).toDtos(mutation.getMutationCategorizations());
     }
@@ -144,7 +139,6 @@ class MutationCommonMapperTest
         assertThat(mutation.getAlleleConfirmed(), is(ALLELE_CONFIRMED));
         verify(
             mutationQCResultMapper, times(1)).toEntities(mutationCommonDTO.getMutationQCResultDTOs());
-        verify(geneMapper, times(1)).toEntities(mutationCommonDTO.getGeneDTOS());
         verify(
             mutationSequenceMapper, times(1)).toEntities(mutationCommonDTO.getMutationSequenceDTOS());
         verify(
@@ -163,10 +157,8 @@ class MutationCommonMapperTest
         MutationCommonDTO mutationCommonDTO = new MutationCommonDTO();
         mutationCommonDTO.setMgiAlleleSymbolRequiresConstruction(MGI_ALLELE_SYMBOL_REQUIRES_CONSTRUCTION);
         mutationCommonDTO.setAlleleConfirmed(ALLELE_CONFIRMED);
-        mutationCommonDTO.setImitsAllele(IMITS_ALLELE);
         mutationCommonDTO.setGeneticMutationTypeName(GENETIC_MUTATION_TYPE);
         mutationCommonDTO.setMolecularMutationTypeName(MOLECULAR_MUTATION_TYPE);
-        mutationCommonDTO.setGeneDTOS(new ArrayList<>());
         mutationCommonDTO.setMutationCategorizationDTOS(new ArrayList<>());
         mutationCommonDTO.setMutationSequenceDTOS(new ArrayList<>());
         mutationCommonDTO.setMutationQCResultDTOs(new ArrayList<>());

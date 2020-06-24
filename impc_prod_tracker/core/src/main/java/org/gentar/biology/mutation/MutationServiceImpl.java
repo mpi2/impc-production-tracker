@@ -1,5 +1,6 @@
 package org.gentar.biology.mutation;
 
+import org.gentar.audit.history.History;
 import org.gentar.biology.mutation.sequence.MutationSequence;
 import org.gentar.biology.mutation.sequence.MutationSequenceService;
 import org.gentar.biology.sequence.SequenceService;
@@ -14,17 +15,20 @@ public class MutationServiceImpl implements MutationService
     private MutationRepository mutationRepository;
     private SequenceService sequenceService;
     private MutationSequenceService mutationSequenceService;
+    private MutationUpdater mutationUpdater;
 
     private static final String MUTATION_NOT_EXIST_ERROR = "Mutation %s does not exist.";
 
     public MutationServiceImpl(
         MutationRepository mutationRepository,
         SequenceService sequenceService,
-        MutationSequenceService mutationSequenceService)
+        MutationSequenceService mutationSequenceService,
+        MutationUpdater mutationUpdater)
     {
         this.mutationRepository = mutationRepository;
         this.sequenceService = sequenceService;
         this.mutationSequenceService = mutationSequenceService;
+        this.mutationUpdater = mutationUpdater;
     }
 
     @Override
@@ -39,12 +43,19 @@ public class MutationServiceImpl implements MutationService
     }
 
     @Override
-    public Mutation createMutation(Mutation mutation)
+    public Mutation create(Mutation mutation)
     {
         Mutation createdMutation = mutationRepository.save(mutation);
         createdMutation.setMin(buildMin(createdMutation.getId()));
         saveMutationSequences(mutation);
         return createdMutation;
+    }
+
+    @Override
+    public History update(Mutation mutation)
+    {
+        Mutation originalMutation = new Mutation(getMutationByMinFailsIfNull(mutation.getMin()));
+        return mutationUpdater.update(originalMutation, mutation);
     }
 
     private String buildMin(Long id)

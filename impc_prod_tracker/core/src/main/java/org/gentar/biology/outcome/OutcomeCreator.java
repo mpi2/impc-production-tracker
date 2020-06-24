@@ -80,7 +80,7 @@ class OutcomeCreator
         Set<Mutation> mutations = outcome.getMutations();
         if (mutations != null)
         {
-            mutations.forEach(x -> mutationService.createMutation(x));
+            mutations.forEach(x -> mutationService.create(x));
         }
     }
 

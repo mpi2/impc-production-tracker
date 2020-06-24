@@ -26,15 +26,8 @@
       "mutationQcResults":[
 
       ],
-      "genes":[
-        {
-          "id":1,
-          "name":"otogelin",
-          "symbol":"Otog",
-          "speciesName":"Mus musculus",
-          "externalLink":"http://www.mousephenotype.org/data/genes/MGI:1202064",
-          "accessionId":"MGI:1202064"
-        }
+      "geneSymbolsOrAccessionIds": [
+        "Serpinb10"
       ],
       "mutationSequences":[
         {

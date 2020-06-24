@@ -1,6 +1,7 @@
 package org.gentar.biology.mutation;
 
 import org.gentar.Mapper;
+import org.gentar.biology.gene.GeneMapper;
 import org.gentar.biology.outcome.Outcome;
 import org.gentar.biology.outcome.OutcomeController;
 import org.springframework.hateoas.Link;
@@ -16,10 +17,12 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 public class MutationResponseMapper implements Mapper<Mutation, MutationResponseDTO>
 {
     private MutationCommonMapper mutationCommonMapper;
+    private GeneMapper geneMapper;
 
-    public MutationResponseMapper(MutationCommonMapper mutationCommonMapper)
+    public MutationResponseMapper(MutationCommonMapper mutationCommonMapper, GeneMapper geneMapper)
     {
         this.mutationCommonMapper = mutationCommonMapper;
+        this.geneMapper = geneMapper;
     }
 
     @Override
@@ -31,11 +34,13 @@ public class MutationResponseMapper implements Mapper<Mutation, MutationResponse
         mutationResponseDTO.setId(mutation.getId());
         mutationResponseDTO.setMin(mutation.getMin());
         mutationResponseDTO.setMgiAlleleId(mutation.getMgiAlleleId());
+        mutationResponseDTO.setImitsAllele(mutation.getImitsAllele());
         mutationResponseDTO.setMgiAlleleSymbol(mutation.getMgiAlleleSymbol());
         mutationResponseDTO.setMgiAlleleSymbolWithoutImpcAbbreviation(
             mutation.getMgiAlleleSymbolWithoutImpcAbbreviation());
         mutationResponseDTO.setDescription(mutation.getDescription());
         mutationResponseDTO.setAutoDescription(mutation.getAutoDescription());
+        mutationResponseDTO.setGeneDTOS(geneMapper.toDtos(mutation.getGenes()));
         addOutcomesLinks(mutationResponseDTO, mutation);
         return mutationResponseDTO;
     }
