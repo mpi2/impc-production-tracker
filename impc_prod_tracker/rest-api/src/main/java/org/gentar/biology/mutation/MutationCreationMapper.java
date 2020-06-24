@@ -45,7 +45,7 @@ public class MutationCreationMapper implements Mapper<Mutation, MutationCreation
         if (accessionIdsOrSymbols != null)
         {
             accessionIdsOrSymbols.forEach(x -> {
-                Gene gene = geneService.findAndCreateInLocalIfNeeded(x);
+                Gene gene = geneService.findAndCreateInLocalIfNeededFailIfNull(x);
                 if (gene != null)
                 {
                     genes.add(gene);

@@ -14,6 +14,8 @@
  * License.
  *******************************************************************************/
 package org.gentar.biology.gene;
+import org.gentar.exceptions.UserOperationFailedException;
+
 import java.util.List;
 
 public interface GeneService
@@ -42,7 +44,7 @@ public interface GeneService
     Gene create(Gene gene);
 
     /**
-     * Given a accession id or a symbol, this method returns a gene matching it.
+     * Given an accession id or a symbol, this method returns a gene matching it.
      *
      * First this looks in the local gene table. If it is not found there, it looks in the
      * reference data. If no data is found, this tries to see if the input is actually a synonym in
@@ -50,8 +52,19 @@ public interface GeneService
      *
      * If the gene is found in the external reference data, then the result is copied in the local
      * gene table.
-     * @param accessionIdOrSymbol
-     * @return
+     * @param accessionIdOrSymbol String with the accession id or the symbol for the gene.
+     * @return Gene object or null.
      */
     Gene findAndCreateInLocalIfNeeded(String accessionIdOrSymbol);
+
+    /**
+     * Given an accession id or a symbol, this method returns a gene matching it.
+     * Fails if the gene is not found.
+     * @param accessionIdOrSymbol String with the accession id or the symbol for the gene. Calls
+     *                            findAndCreateInLocalIfNeeded(accessionIdOrSymbol).
+     * @return Gene object.
+     * @throws UserOperationFailedException
+     */
+    Gene findAndCreateInLocalIfNeededFailIfNull(String accessionIdOrSymbol)
+    throws UserOperationFailedException;
 }
