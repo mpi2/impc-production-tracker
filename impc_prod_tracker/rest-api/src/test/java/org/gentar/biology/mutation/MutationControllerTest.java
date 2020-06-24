@@ -37,12 +37,15 @@ public class MutationControllerTest extends ControllerTestTemplate
     void testGetMutationInOutcome() throws Exception
     {
         String url = "/api/plans/PIN:0000000001/outcomes/TPO:000000000002/mutations/MIN:000000000002";
+        String expectedJson = getCompleteResourcePath("expectedMutationMIN_000000000002.json");
         String obtainedJson = restCaller.executeGet(url);
         System.out.println(obtainedJson);
-        /*
-        String expectedJson = getCompleteResourcePath("expectedAllOutcomes.json");
         resultValidator.validateObtainedMatchesJson(obtainedJson, expectedJson);
-         */
+     }
+
+    private String getCompleteResourcePath(String resourceJsonName)
+    {
+        return TEST_RESOURCES_FOLDER + resourceJsonName;
     }
 
 }
