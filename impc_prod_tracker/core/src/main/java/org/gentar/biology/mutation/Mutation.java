@@ -28,6 +28,7 @@ import org.gentar.biology.gene.Gene;
 import org.gentar.biology.mutation.molecular_type.MolecularMutationType;
 import org.gentar.biology.outcome.Outcome;
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.Set;
 
 @NoArgsConstructor(access= AccessLevel.PUBLIC, force=true)
@@ -131,4 +132,33 @@ public class Mutation extends BaseEntity
     @EqualsAndHashCode.Exclude
     @OneToMany(mappedBy = "mutation")
     private Set<MutationSequence> mutationSequences;
+
+    // Copy Constructor
+    public Mutation(Mutation mutation)
+    {
+        this.id = mutation.getId();
+        this.min = mutation.getMin();
+        this.mgiAlleleId = mutation.getMgiAlleleId();
+        this.mgiAlleleSymbol = mutation.getMgiAlleleSymbol();
+        this.mgiAlleleSymbolRequiresConstruction = mutation.getMgiAlleleSymbolRequiresConstruction();
+        this.mgiAlleleSymbolWithoutImpcAbbreviation =
+            mutation.getMgiAlleleSymbolWithoutImpcAbbreviation();
+        this.alleleConfirmed = mutation.getAlleleConfirmed();
+        this.alleleSymbolSuperscriptTemplate = mutation.getAlleleSymbolSuperscriptTemplate();
+        this.description = mutation.getDescription();
+        this.autoDescription = mutation.getAutoDescription();
+        this.imitsAllele = mutation.imitsAllele;
+        this.geneticMutationType = mutation.geneticMutationType;
+        this.molecularMutationType = mutation.molecularMutationType;
+        this.genbankFile = mutation.genbankFile;
+        this.bamFile = mutation.bamFile;
+        this.bamFileIndex =mutation.getBamFileIndex();
+        this.vcfFile = mutation.getVcfFile();
+        this.vcfFileIndex = mutation.getVcfFileIndex();
+        this.genes = mutation.getGenes();
+        this.outcomes = mutation.getOutcomes();
+        this.mutationCategorizations = mutation.getMutationCategorizations();
+        this.mutationQcResults = mutation.getMutationQcResults();
+        this.mutationSequences = mutation.getMutationSequences();
+    }
 }

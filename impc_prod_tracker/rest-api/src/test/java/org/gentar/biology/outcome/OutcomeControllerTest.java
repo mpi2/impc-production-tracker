@@ -146,6 +146,7 @@ class OutcomeControllerTest extends ControllerTestTemplate
         String outcomeUrl, String expectedJson) throws Exception
     {
         String obtainedOutcome = restCaller.executeGet(outcomeUrl);
+        System.out.println(obtainedOutcome);
         resultValidator.validateObtainedMatchesJson(
             obtainedOutcome, expectedJson, OutcomeCustomizations.ignoreIdsAndTpoAndDates());
 
@@ -159,6 +160,7 @@ class OutcomeControllerTest extends ControllerTestTemplate
     throws Exception
     {
         String obtainedMutation = restCaller.executeGet(mutationLink);
+        System.out.println(obtainedMutation);
         resultValidator.validateObtainedMatchesJson(
             obtainedMutation, jsonFileName, MutationCustomizations.ignoreIdsAndMin());
     }
