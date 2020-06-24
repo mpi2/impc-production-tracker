@@ -14,14 +14,44 @@
  * License.
  *******************************************************************************/
 package org.gentar.biology.gene;
-
 import java.util.List;
 
 public interface GeneService
 {
     List<Gene> getGenesBySymbolStartingWith(String symbol);
 
-    Gene getGenesBySymbol(String symbol);
-
+    /**
+     * Find a gene by it's accession id.
+     * @param accessionId Accession id.
+     * @return Gene object if something was found. Null otherwise.
+     */
     Gene getGeneByAccessionId(String accessionId);
+
+    /**
+     * Find a gene by it's symbol.
+     * @param symbol Accession id.
+     * @return Gene object if something was found. Null otherwise.
+     */
+    Gene getGeneBySymbol(String symbol);
+
+    /**
+     * Saves a gene in the database.
+     * @param gene Gene in memory.
+     * @return Created gene.
+     */
+    Gene create(Gene gene);
+
+    /**
+     * Given a accession id or a symbol, this method returns a gene matching it.
+     *
+     * First this looks in the local gene table. If it is not found there, it looks in the
+     * reference data. If no data is found, this tries to see if the input is actually a synonym in
+     * the reference data. If no data is found as a synonym either, then null is returned.
+     *
+     * If the gene is found in the external reference data, then the result is copied in the local
+     * gene table.
+     * @param accessionIdOrSymbol
+     * @return
+     */
+    Gene findAndCreateInLocalIfNeeded(String accessionIdOrSymbol);
 }

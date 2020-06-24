@@ -79,6 +79,7 @@ public class Gene extends BaseEntity
     private String mgiStrand;
 
     @EqualsAndHashCode.Exclude
+    @ToString.Exclude
     @ManyToMany(mappedBy = "genes")
     private Set<Mutation> mutations;
 

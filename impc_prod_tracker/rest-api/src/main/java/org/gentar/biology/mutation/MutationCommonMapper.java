@@ -2,7 +2,6 @@ package org.gentar.biology.mutation;
 
 import org.gentar.EntityMapper;
 import org.gentar.Mapper;
-import org.gentar.biology.gene.GeneMapper;
 import org.gentar.biology.mutation.genetic_type.GeneticMutationType;
 import org.gentar.biology.mutation.molecular_type.MolecularMutationType;
 import org.gentar.biology.mutation.sequence.MutationSequence;
@@ -17,7 +16,6 @@ public class MutationCommonMapper implements Mapper<Mutation, MutationCommonDTO>
     private EntityMapper entityMapper;
     private MutationQCResultMapper mutationQCResultMapper;
     private MutationCategorizationMapper mutationCategorizationMapper;
-    private GeneMapper geneMapper;
     private MutationSequenceMapper mutationSequenceMapper;
     private GeneticMutationTypeMapper geneticMutationTypeMapper;
     private MolecularMutationTypeMapper molecularMutationTypeMapper;
@@ -26,7 +24,6 @@ public class MutationCommonMapper implements Mapper<Mutation, MutationCommonDTO>
         EntityMapper entityMapper,
         MutationQCResultMapper mutationQCResultMapper,
         MutationCategorizationMapper mutationCategorizationMapper,
-        GeneMapper geneMapper,
         MutationSequenceMapper mutationSequenceMapper,
         GeneticMutationTypeMapper geneticMutationTypeMapper,
         MolecularMutationTypeMapper molecularMutationTypeMapper)
@@ -34,7 +31,6 @@ public class MutationCommonMapper implements Mapper<Mutation, MutationCommonDTO>
         this.entityMapper = entityMapper;
         this.mutationQCResultMapper = mutationQCResultMapper;
         this.mutationCategorizationMapper = mutationCategorizationMapper;
-        this.geneMapper = geneMapper;
         this.mutationSequenceMapper = mutationSequenceMapper;
         this.geneticMutationTypeMapper = geneticMutationTypeMapper;
         this.molecularMutationTypeMapper = molecularMutationTypeMapper;
@@ -46,7 +42,6 @@ public class MutationCommonMapper implements Mapper<Mutation, MutationCommonDTO>
         MutationCommonDTO mutationCommonDTO = entityMapper.toTarget(mutation, MutationCommonDTO.class);
         mutationCommonDTO.setMutationQCResultDTOs(
             mutationQCResultMapper.toDtos(mutation.getMutationQcResults()));
-        mutationCommonDTO.setGeneDTOS(geneMapper.toDtos(mutation.getGenes()));
         mutationCommonDTO.setMutationSequenceDTOS(
             mutationSequenceMapper.toDtos(mutation.getMutationSequences()));
         mutationCommonDTO.setMutationCategorizationDTOS(
@@ -65,7 +60,6 @@ public class MutationCommonMapper implements Mapper<Mutation, MutationCommonDTO>
         setMolecularMutationType(mutation, mutationCommonDTO);
         mutation.setMutationQcResults(
             new HashSet<>(mutationQCResultMapper.toEntities(mutationCommonDTO.getMutationQCResultDTOs())));
-        mutation.setGenes(new HashSet<>(geneMapper.toEntities(mutationCommonDTO.getGeneDTOS())));
         setMutationSequences(mutation, mutationCommonDTO);
         mutation.setMutationCategorizations(
             new HashSet<>(mutationCategorizationMapper.toEntities(
