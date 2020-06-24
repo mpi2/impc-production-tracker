@@ -1,6 +1,7 @@
 package org.gentar.biology.gene;
 
 import org.gentar.biology.gene.external_ref.GeneExternalService;
+import org.gentar.exceptions.UserOperationFailedException;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
@@ -51,6 +52,19 @@ public class GeneServiceImpl implements GeneService
             {
                 create(gene);
             }
+        }
+        return gene;
+    }
+
+    @Override
+    public Gene findAndCreateInLocalIfNeededFailIfNull(String accessionIdOrSymbol)
+    throws UserOperationFailedException
+    {
+        Gene gene = findAndCreateInLocalIfNeeded(accessionIdOrSymbol);
+        if (gene == null)
+        {
+            throw new UserOperationFailedException(
+                "Gene with accession id or symbol [" + accessionIdOrSymbol + "] does not exist");
         }
         return gene;
     }
