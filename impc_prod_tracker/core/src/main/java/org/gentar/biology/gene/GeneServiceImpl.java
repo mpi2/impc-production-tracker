@@ -50,7 +50,17 @@ public class GeneServiceImpl implements GeneService
             gene = findInExternalReference(accessionIdOrSymbol);
             if (gene != null)
             {
-                create(gene);
+                // Check that what we found is actually new. The gene could already exist in the
+                // system if 'accessionIdOrSymbol' is actually a synonym.
+                Gene alreadyExistingGene = getGeneByAccessionId(gene.getAccId());
+                if (alreadyExistingGene == null)
+                {
+                    create(gene);
+                }
+                else
+                {
+                    gene = alreadyExistingGene;
+                }
             }
         }
         return gene;
@@ -64,7 +74,7 @@ public class GeneServiceImpl implements GeneService
         if (gene == null)
         {
             throw new UserOperationFailedException(
-                "Gene with accession id or symbol [" + accessionIdOrSymbol + "] does not exist");
+                "Gene with accession id or symbol [" + accessionIdOrSymbol + "] does not exist.");
         }
         return gene;
     }
@@ -88,7 +98,11 @@ public class GeneServiceImpl implements GeneService
         Gene gene = geneExternalService.getGeneFromExternalDataBySymbolOrAccId(accessionIdOrSymbol);
         if (gene == null)
         {
-            gene = geneExternalService.getSynonymFromExternalGenes(accessionIdOrSymbol);
+            Gene synonym = geneExternalService.getSynonymFromExternalGenes(accessionIdOrSymbol);
+            if (synonym != null)
+            {
+                gene = geneExternalService.getGeneFromExternalDataBySymbolOrAccId(synonym.getAccId());
+            }
         }
         return gene;
     }
