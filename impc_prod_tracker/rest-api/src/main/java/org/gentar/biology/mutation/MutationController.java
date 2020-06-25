@@ -2,6 +2,7 @@ package org.gentar.biology.mutation;
 
 import org.gentar.audit.history.History;
 import org.gentar.biology.ChangeResponse;
+import org.gentar.biology.outcome.Outcome;
 import org.gentar.biology.outcome.OutcomeService;
 import org.gentar.helpers.ChangeResponseCreator;
 import org.springframework.hateoas.Link;
@@ -12,6 +13,8 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
@@ -54,6 +57,25 @@ public class MutationController
     {
         Mutation mutation = outcomeService.getMutationByPinTpoAndMin(pin, tpo, min);
         return mutationResponseMapper.toDto(mutation);
+    }
+
+    /**
+     * Gets all the mutations for a specific outcome.
+     * @param pin Public identifier of the plan.
+     * @param tpo Public identifier of the outcome.
+     * @return Collection of mutations.
+     */
+    @GetMapping(value = {"plans/{pin}/outcomes/{tpo}/mutations"})
+    public List<MutationResponseDTO> getAllMutationsByOutcome(
+        @PathVariable String pin, @PathVariable String tpo)
+    {
+        List<MutationResponseDTO> mutationResponseDTOS = new ArrayList<>();
+        Outcome outcome = outcomeService.getOutcomeByPinAndTpo(pin, tpo);
+        if (outcome != null)
+        {
+            mutationResponseDTOS = mutationResponseMapper.toDtos(outcome.getMutations());
+        }
+        return mutationResponseDTOS;
     }
 
     /**
