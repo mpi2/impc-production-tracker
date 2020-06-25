@@ -4,6 +4,7 @@ import org.gentar.EntityMapper;
 import org.gentar.Mapper;
 import org.gentar.biology.mutation.genetic_type.GeneticMutationType;
 import org.gentar.biology.mutation.molecular_type.MolecularMutationType;
+import org.gentar.biology.mutation.qc_results.MutationQcResult;
 import org.gentar.biology.mutation.sequence.MutationSequence;
 import org.springframework.stereotype.Component;
 import java.util.HashSet;
@@ -58,13 +59,24 @@ public class MutationCommonMapper implements Mapper<Mutation, MutationCommonDTO>
             mutationCommonDTO.getMgiAlleleSymbolRequiresConstruction());
         setGeneticMutationType(mutation, mutationCommonDTO);
         setMolecularMutationType(mutation, mutationCommonDTO);
-        mutation.setMutationQcResults(
-            new HashSet<>(mutationQCResultMapper.toEntities(mutationCommonDTO.getMutationQCResultDTOs())));
+        setMutationQcResults(mutation, mutationCommonDTO);
         setMutationSequences(mutation, mutationCommonDTO);
         mutation.setMutationCategorizations(
             new HashSet<>(mutationCategorizationMapper.toEntities(
                 mutationCommonDTO.getMutationCategorizationDTOS())));
         return mutation;
+    }
+
+    private void setMutationQcResults(Mutation mutation, MutationCommonDTO mutationCommonDTO)
+    {
+        List<MutationQCResultDTO> mutationQCResultDTOS = mutationCommonDTO.getMutationQCResultDTOs();
+        if (mutationQCResultDTOS != null)
+        {
+            Set<MutationQcResult> mutationQcResults =
+                new HashSet<>(mutationQCResultMapper.toEntities(mutationQCResultDTOS));
+            mutationQcResults.forEach(x -> x.setMutation(mutation));
+            mutation.setMutationQcResults(mutationQcResults);
+        }
     }
 
     private void setGeneticMutationType(Mutation mutation, MutationCommonDTO mutationCommonDTO)

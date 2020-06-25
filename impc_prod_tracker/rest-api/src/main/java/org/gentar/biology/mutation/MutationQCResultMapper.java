@@ -1,29 +1,54 @@
 package org.gentar.biology.mutation;
 
-import org.gentar.EntityMapper;
 import org.gentar.Mapper;
 import org.gentar.biology.mutation.qc_results.MutationQcResult;
+import org.gentar.biology.mutation.qc_results.QcStatusService;
+import org.gentar.biology.mutation.qc_results.QcTypeService;
 import org.springframework.stereotype.Component;
 
 @Component
 public class MutationQCResultMapper implements Mapper<MutationQcResult, MutationQCResultDTO>
 {
-    private EntityMapper entityMapper;
+    private QcTypeService qcTypeService;
+    private QcStatusService qcStatusService;
 
-    public MutationQCResultMapper(EntityMapper entityMapper)
+    public MutationQCResultMapper(QcTypeService qcTypeService, QcStatusService qcStatusService)
     {
-        this.entityMapper = entityMapper;
+        this.qcTypeService = qcTypeService;
+        this.qcStatusService = qcStatusService;
     }
 
     @Override
-    public MutationQCResultDTO toDto(MutationQcResult entity)
+    public MutationQCResultDTO toDto(MutationQcResult mutationQcResult)
     {
-        return entityMapper.toTarget(entity, MutationQCResultDTO.class);
+        MutationQCResultDTO mutationQCResultDTO = new MutationQCResultDTO();
+        mutationQCResultDTO.setId(mutationQcResult.getId());
+        if (mutationQcResult.getQcType() != null)
+        {
+            mutationQCResultDTO.setQcTypeName(mutationQcResult.getQcType().getName());
+        }
+        if (mutationQcResult.getStatus() != null)
+        {
+            mutationQCResultDTO.setStatusName(mutationQcResult.getStatus().getName());
+        }
+        return mutationQCResultDTO;
     }
 
     @Override
-    public MutationQcResult toEntity(MutationQCResultDTO dto)
+    public MutationQcResult toEntity(MutationQCResultDTO mutationQCResultDTO)
     {
-        return entityMapper.toTarget(dto, MutationQcResult.class);
+        MutationQcResult mutationQcResult = new MutationQcResult();
+        mutationQcResult.setId(mutationQCResultDTO.getId());
+        if (mutationQCResultDTO.getQcTypeName() != null)
+        {
+            mutationQcResult.setQcType(
+                qcTypeService.getQcTypeByNameFailsIfNull(mutationQCResultDTO.getQcTypeName()));
+        }
+        if (mutationQCResultDTO.getStatusName() != null)
+        {
+            mutationQcResult.setStatus(
+                qcStatusService.getQcStatusByNameFailsIfNull(mutationQCResultDTO.getStatusName()));
+        }
+        return mutationQcResult;
     }
 }

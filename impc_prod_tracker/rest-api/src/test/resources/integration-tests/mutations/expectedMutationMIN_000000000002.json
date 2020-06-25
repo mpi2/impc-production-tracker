@@ -8,6 +8,7 @@
   "geneticMutationTypeName": "Not Tested",
   "molecularMutationTypeName": "Deletion",
   "mutationQcResults": [{
+    "id":1,
     "qcTypeName": "mutant_specific_sr_pcr",
     "statusName": "pass"
   }],

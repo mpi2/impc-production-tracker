@@ -124,7 +124,7 @@ public class Mutation extends BaseEntity
 
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
-    @OneToMany
+    @OneToMany(cascade= CascadeType.ALL)
     @JoinColumn(name = "mutation_id")
     private Set<MutationQcResult> mutationQcResults;
 
