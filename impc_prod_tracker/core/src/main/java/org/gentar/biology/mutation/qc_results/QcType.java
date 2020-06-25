@@ -8,7 +8,7 @@ import org.gentar.BaseEntity;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
-@NoArgsConstructor(access= AccessLevel.PRIVATE, force=true)
+@NoArgsConstructor(access= AccessLevel.PUBLIC, force=true)
 @Data
 @Entity
 public class QcType extends BaseEntity

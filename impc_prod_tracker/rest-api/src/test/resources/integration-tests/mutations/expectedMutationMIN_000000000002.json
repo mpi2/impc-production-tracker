@@ -9,6 +9,7 @@
   "molecularMutationTypeName": "Deletion",
   "alleleConfirmed": false,
   "mutationQcResults": [{
+    "id":1,
     "qcTypeName": "mutant_specific_sr_pcr",
     "statusName": "pass"
   }],

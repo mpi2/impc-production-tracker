@@ -3,11 +3,10 @@ package org.gentar.biology.mutation.qc_results;
 import lombok.*;
 import org.gentar.BaseEntity;
 import org.gentar.biology.mutation.Mutation;
-
 import javax.persistence.*;
 import java.io.Serializable;
 
-@NoArgsConstructor(access= AccessLevel.PRIVATE, force=true)
+@NoArgsConstructor(access= AccessLevel.PUBLIC, force=true)
 @Data
 @Entity
 public class MutationQcResult extends BaseEntity implements Serializable
@@ -17,6 +16,8 @@ public class MutationQcResult extends BaseEntity implements Serializable
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "mutationQcResultSeq")
     private Long id;
 
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
     @ManyToOne(targetEntity = Mutation.class)
     private Mutation mutation;
 
@@ -25,5 +26,12 @@ public class MutationQcResult extends BaseEntity implements Serializable
 
     @ManyToOne(targetEntity = QcStatus.class)
     private QcStatus status;
+
+    public String toString()
+    {
+        String qcTypeName = qcType == null ? "Not defined" : qcType.getName();
+        String statusName = status == null ? "Not defined" : status.getName();
+        return "id:" +id + ", QC type name:" +qcTypeName + ", QC status:" +statusName;
+    }
 
 }
