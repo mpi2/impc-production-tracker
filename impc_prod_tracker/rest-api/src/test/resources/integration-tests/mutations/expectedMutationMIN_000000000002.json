@@ -7,7 +7,6 @@
   "mgiAlleleSymbolRequiresConstruction": true,
   "geneticMutationTypeName": "Not Tested",
   "molecularMutationTypeName": "Deletion",
-  "alleleConfirmed": false,
   "mutationQcResults": [{
     "qcTypeName": "mutant_specific_sr_pcr",
     "statusName": "pass"
