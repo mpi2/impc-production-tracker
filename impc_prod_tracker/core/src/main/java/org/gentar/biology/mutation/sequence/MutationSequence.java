@@ -2,6 +2,7 @@ package org.gentar.biology.mutation.sequence;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 import org.gentar.BaseEntity;
 import org.gentar.biology.mutation.Mutation;
 import org.gentar.biology.sequence.Sequence;
@@ -18,10 +19,11 @@ public class MutationSequence extends BaseEntity implements Serializable
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "mutationSequenceSeq")
     private Long id;
 
+    @ToString.Exclude
     @ManyToOne(targetEntity= Mutation.class)
     private Mutation mutation;
 
-    @ManyToOne(targetEntity= Sequence.class)
+    @ManyToOne(cascade=CascadeType.ALL)
     private Sequence sequence;
 
     private Integer index;

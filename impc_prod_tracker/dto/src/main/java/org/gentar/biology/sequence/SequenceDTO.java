@@ -9,6 +9,8 @@ import java.util.List;
 @RequiredArgsConstructor
 public class SequenceDTO
 {
+    private Long id;
+
     private String sequence;
 
     @JsonProperty("typeName")

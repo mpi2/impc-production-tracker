@@ -24,6 +24,7 @@
     {
       "id":4,
       "sequence":{
+        "id":4,
         "sequence":"TCTAAAAGGNACAGTTGGTGACTGCAGCTTAAACTCTGAGTGCAGCAGG",
         "typeName":"partial",
         "categoryName":"intention target sequence",

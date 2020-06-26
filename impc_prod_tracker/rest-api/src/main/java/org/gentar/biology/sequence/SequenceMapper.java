@@ -25,6 +25,7 @@ public class SequenceMapper implements Mapper<Sequence, SequenceDTO>
     public SequenceDTO toDto(Sequence sequence)
     {
         SequenceDTO sequenceDTO = new SequenceDTO();
+        sequenceDTO.setId(sequence.getId());
         sequenceDTO.setSequence(sequence.getSequence());
         if (sequence.getSequenceType() != null)
         {
@@ -43,6 +44,7 @@ public class SequenceMapper implements Mapper<Sequence, SequenceDTO>
     public Sequence toEntity(SequenceDTO sequenceDTO)
     {
         Sequence sequence = new Sequence();
+        sequence.setId(sequenceDTO.getId());
         sequence.setSequence(sequenceDTO.getSequence());
         sequence.setSequenceCategory(
             sequenceCategoryMapper.toEntity(sequenceDTO.getSequenceCategoryName()));
