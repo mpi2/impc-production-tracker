@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class LocationDTO
 {
+    private Long id;
     private String chr;
     private Long start;
     private Long stop;

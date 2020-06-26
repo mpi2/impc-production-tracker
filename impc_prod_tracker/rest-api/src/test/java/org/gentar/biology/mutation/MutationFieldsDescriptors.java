@@ -58,11 +58,23 @@ public class MutationFieldsDescriptors
                 "outcome sequence\n\n" +
                 "A mutation should always be specified as 'outcome sequence'.");
         addField(
-            mutationFieldsDescriptions, "mutationSequences[].sequence.sequenceLocations[]", "Sequence locations defined in a publicly available genome build associated with the sequence object.");
+            mutationFieldsDescriptions,
+            "mutationSequences[].sequence.sequenceLocations[]",
+            "Sequence locations defined in a publicly available genome build associated with the sequence object.");
+        addField(
+            mutationFieldsDescriptions,
+            "mutationSequences[].sequence.sequenceLocations[].id",
+            "Internal identifier. READ ONLY AND SUBJECT TO CHANGE.");
         addField(
             mutationFieldsDescriptions, "mutationSequences[].sequence.sequenceLocations[].locationIndex", "Index used to order the locations.");
         addField(
-            mutationFieldsDescriptions, "mutationSequences[].sequence.sequenceLocations[].location", "A location object.");
+            mutationFieldsDescriptions,
+            "mutationSequences[].sequence.sequenceLocations[].location",
+            "A location object.");
+        addField(
+            mutationFieldsDescriptions,
+            "mutationSequences[].sequence.sequenceLocations[].location.id",
+            "Internal identifier. READ ONLY AND SUBJECT TO CHANGE.");
         addField(
             mutationFieldsDescriptions, "mutationSequences[].sequence.sequenceLocations[].location.chr", "The chromosome for the sequence location.");
         addField(

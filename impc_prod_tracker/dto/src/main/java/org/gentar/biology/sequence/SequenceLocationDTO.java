@@ -7,7 +7,9 @@ import org.gentar.biology.location.LocationDTO;
 
 @Data
 @RequiredArgsConstructor
-public class SequenceLocationDTO {
+public class SequenceLocationDTO
+{
+    private Long id;
 
     private Integer locationIndex;
 
