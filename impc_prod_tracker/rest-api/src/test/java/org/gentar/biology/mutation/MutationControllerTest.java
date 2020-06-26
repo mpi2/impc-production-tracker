@@ -11,6 +11,12 @@ import org.gentar.framework.db.DBSetupFilesPaths;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.restdocs.payload.FieldDescriptor;
+import org.springframework.test.web.servlet.ResultHandler;
+
+import java.util.List;
+
+import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
 
 public class MutationControllerTest extends ControllerTestTemplate
 {
@@ -34,14 +40,31 @@ public class MutationControllerTest extends ControllerTestTemplate
     @Test
     @DatabaseSetup(DBSetupFilesPaths.MULTIPLE_MUTATIONS)
     @DatabaseTearDown(type = DatabaseOperation.DELETE_ALL, value = DBSetupFilesPaths.MULTIPLE_MUTATIONS)
+    void testGetAllMutationsInOutcome() throws Exception
+    {
+        String url = "/api/plans/PIN:0000000001/outcomes/TPO:000000000002/mutations";
+        String expectedJson = getCompleteResourcePath("expectedMutationCollection.json");
+        String obtainedJson = restCaller.executeGet(url);
+        resultValidator.validateObtainedMatchesJson(obtainedJson, expectedJson);
+    }
+
+
+    @Test
+    @DatabaseSetup(DBSetupFilesPaths.MULTIPLE_MUTATIONS)
+    @DatabaseTearDown(type = DatabaseOperation.DELETE_ALL, value = DBSetupFilesPaths.MULTIPLE_MUTATIONS)
     void testGetMutationInOutcome() throws Exception
     {
         String url = "/api/plans/PIN:0000000001/outcomes/TPO:000000000002/mutations/MIN:000000000002";
         String expectedJson = getCompleteResourcePath("expectedMutationMIN_000000000002.json");
-        String obtainedJson = restCaller.executeGet(url);
-        System.out.println(obtainedJson);
+        String obtainedJson = restCaller.executeGetAndDocument(url, documentMutation());
         resultValidator.validateObtainedMatchesJson(obtainedJson, expectedJson);
-     }
+    }
+
+    private ResultHandler documentMutation()
+    {
+        List<FieldDescriptor> mutationFieldsDescriptions = MutationFieldsDescriptors.getMutationFieldsDescriptions();
+        return document("mutations", responseFields(mutationFieldsDescriptions));
+    }
 
     private String getCompleteResourcePath(String resourceJsonName)
     {
