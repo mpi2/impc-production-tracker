@@ -486,6 +486,31 @@ include::{snippets}/outcomes/putColonyOutcome/http-request.adoc[]
 include::{snippets}/outcomes/putColonyOutcome/http-response.adoc[]
 
 
+== Mutations
+anchor:mutations[]
+This section describes the REST endpoints for mutations in the system.
+
+=== Fields
+These are the fields you are going to see in the body of a request in a GET or in the payload for POST or PUT
+operations.
+include::{snippets}/mutations/response-fields.adoc[]
+
+=== GET
+==== Get a specific mutation
+
+This endpoint fetches a specific mutation associated with an outcome.
+
+===== Example Request
+
+Curl:
+include::{snippets}/mutations/curl-request.adoc[]
+
+===== Example Response
+
+include::{snippets}/mutations/http-response.adoc[]
+
+
+
 == State Machine interaction
 
 ==== Structure

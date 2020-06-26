@@ -1,5 +1,6 @@
 package org.gentar.biology.mutation;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 import java.util.List;
@@ -10,6 +11,8 @@ public class MutationCommonDTO
     private Boolean mgiAlleleSymbolRequiresConstruction;
     private String geneticMutationTypeName;
     private String molecularMutationTypeName;
+
+    @JsonIgnore
     private Boolean alleleConfirmed;
 
     @JsonProperty("mutationQcResults")
