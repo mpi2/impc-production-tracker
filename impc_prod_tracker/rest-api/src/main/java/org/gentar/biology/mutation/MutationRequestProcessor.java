@@ -1,6 +1,7 @@
 package org.gentar.biology.mutation;
 
 import org.gentar.biology.mutation.qc_results.MutationQcResult;
+import org.gentar.biology.mutation.sequence.MutationSequence;
 import org.gentar.exceptions.UserOperationFailedException;
 import org.springframework.stereotype.Component;
 import java.util.Set;
@@ -37,9 +38,9 @@ public class MutationRequestProcessor
         newMutation.setMolecularMutationType(mappedMutation.getMolecularMutationType());
         newMutation.setAlleleConfirmed(mappedMutation.getAlleleConfirmed());
         newMutation.setGenes(mappedMutation.getGenes());
-        newMutation.setMutationSequences(mappedMutation.getMutationSequences());
         newMutation.setMutationCategorizations(mappedMutation.getMutationCategorizations());
         setMutationQcResults(newMutation, mappedMutation);
+        setMutationSequences(newMutation, mappedMutation);
         return newMutation;
     }
 
@@ -50,6 +51,16 @@ public class MutationRequestProcessor
         if (mappedMutationQcResults != null)
         {
             mappedMutationQcResults.forEach(x -> x.setMutation(newMutation));
+        }
+    }
+
+    private void setMutationSequences(Mutation newMutation, Mutation mappedMutation)
+    {
+        Set<MutationSequence> mapperMutationSequences = mappedMutation.getMutationSequences();
+        newMutation.setMutationSequences(mapperMutationSequences);
+        if (mapperMutationSequences != null)
+        {
+            mapperMutationSequences.forEach(x -> x.setMutation(newMutation));
         }
     }
 }

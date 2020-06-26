@@ -130,7 +130,7 @@ public class Mutation extends BaseEntity
 
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
-    @OneToMany(mappedBy = "mutation")
+    @OneToMany(mappedBy = "mutation", cascade= CascadeType.ALL)
     private Set<MutationSequence> mutationSequences;
 
     // Copy Constructor
