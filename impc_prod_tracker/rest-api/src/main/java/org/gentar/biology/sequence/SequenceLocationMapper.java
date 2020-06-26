@@ -7,10 +7,6 @@ import org.gentar.biology.location.LocationMapper;
 import org.springframework.stereotype.Component;
 import org.gentar.biology.sequence_location.SequenceLocation;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-
 @Component
 public class SequenceLocationMapper implements Mapper<SequenceLocation, SequenceLocationDTO>
 {
@@ -26,38 +22,20 @@ public class SequenceLocationMapper implements Mapper<SequenceLocation, Sequence
     public SequenceLocationDTO toDto(SequenceLocation sequenceLocation)
     {
         SequenceLocationDTO sequenceLocationDTO = new SequenceLocationDTO();
+        sequenceLocationDTO.setId(sequenceLocation.getId());
         sequenceLocationDTO.setLocationDTO(locationMapper.toDto(sequenceLocation.getLocation()));
         sequenceLocationDTO.setLocationIndex(sequenceLocation.getIndex());
         return sequenceLocationDTO;
-    }
-
-    public List<SequenceLocationDTO> toDtos(Collection<SequenceLocation> sequenceLocations)
-    {
-        List<SequenceLocationDTO> sequenceLocationDTOS = new ArrayList<>();
-        if (sequenceLocations != null)
-        {
-            sequenceLocations.forEach(x -> sequenceLocationDTOS.add(toDto(x)));
-        }
-        return sequenceLocationDTOS;
     }
 
     public SequenceLocation toEntity(SequenceLocationDTO sequenceLocationDTO)
     {
         SequenceLocation sequenceLocation =
                 entityMapper.toTarget(sequenceLocationDTO, SequenceLocation.class);
+        sequenceLocation.setId(sequenceLocationDTO.getId());
         sequenceLocation.setIndex(sequenceLocationDTO.getLocationIndex());
         setLocations(sequenceLocation, sequenceLocationDTO);
         return sequenceLocation;
-    }
-
-    public List<SequenceLocation> toEntities(Collection<SequenceLocationDTO> sequenceLocationDTOS)
-    {
-        List<SequenceLocation> sequenceLocations = new ArrayList<>();
-        if (sequenceLocationDTOS != null)
-        {
-            sequenceLocationDTOS.forEach(x -> sequenceLocations.add(toEntity(x)));
-        }
-        return sequenceLocations;
     }
 
     private void setLocations(SequenceLocation sequenceLocation, SequenceLocationDTO sequenceLocationDTO)

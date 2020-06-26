@@ -22,15 +22,15 @@ public class Sequence extends BaseEntity
     @Column(columnDefinition = "TEXT")
     private String sequence;
 
-    @ManyToOne(targetEntity= SequenceType.class)
+    @ManyToOne
     private SequenceType sequenceType;
 
-    @ManyToOne(targetEntity= SequenceCategory.class)
+    @ManyToOne
     private SequenceCategory sequenceCategory;
 
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
-    @OneToMany(cascade=CascadeType.ALL, fetch=FetchType.EAGER)
+    @OneToMany(cascade=CascadeType.ALL, fetch=FetchType.EAGER, orphanRemoval=true)
     @JoinColumn(name = "sequence_id")
     private List<SequenceLocation> sequenceLocations;
 

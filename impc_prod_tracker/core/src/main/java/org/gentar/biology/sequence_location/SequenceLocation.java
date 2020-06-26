@@ -9,7 +9,7 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 
-@NoArgsConstructor(access= AccessLevel.PRIVATE, force=true)
+@NoArgsConstructor(access= AccessLevel.PUBLIC, force=true)
 @Data
 @Entity
 public class SequenceLocation extends BaseEntity implements Serializable {
@@ -21,7 +21,7 @@ public class SequenceLocation extends BaseEntity implements Serializable {
 
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
-    @ManyToOne(targetEntity = Sequence.class, cascade=CascadeType.ALL)
+    @ManyToOne(cascade=CascadeType.ALL)
     private Sequence sequence;
 
     @NotNull
@@ -29,7 +29,7 @@ public class SequenceLocation extends BaseEntity implements Serializable {
 
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
-    @ManyToOne(targetEntity = Location.class, cascade=CascadeType.ALL)
+    @ManyToOne(cascade=CascadeType.ALL)
     private Location location;
 
 }
