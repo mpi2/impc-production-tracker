@@ -96,7 +96,7 @@ public class OutcomeFieldsDescriptors
         addField(
             outcomeFieldDescriptions,
             "specimen.specimenTypeName",
-            "Specimen type name. Currently only Happloessential");
+            "Specimen type name. Currently only haplo-essential");
         addField(
             outcomeFieldDescriptions,
             "specimen.statusName",

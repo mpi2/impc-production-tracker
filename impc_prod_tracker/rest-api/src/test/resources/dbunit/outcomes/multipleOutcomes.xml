@@ -83,7 +83,7 @@
                     NAME="Specimen"/>
 
     <SPECIMEN_TYPE ID="1"
-                   NAME="Haploessential"/>
+                   NAME="haplo-essential"/>
 
     <GENETIC_MUTATION_TYPE  ID="1"
                             NAME="Null"/>
