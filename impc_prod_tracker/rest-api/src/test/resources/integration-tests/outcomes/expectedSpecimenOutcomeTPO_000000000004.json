@@ -4,7 +4,7 @@
   "outcomeTypeName":"Specimen",
   "specimen":{
     "specimenExternalRef":"External reference",
-    "specimenTypeName":"Haploessential",
+    "specimenTypeName":"haplo-essential",
     "statusName":"Specimen Group In Progress",
     "statusDates":[
       {
