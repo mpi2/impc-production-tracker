@@ -304,6 +304,8 @@ a|Attempt type. Possible values are:
 |imitsPhenotypeAttemptIds
 |iMits phenotyping attempt id.
 
+|phenotypingExternalRef
+|Phentoyping External Reference
 
 |===
 

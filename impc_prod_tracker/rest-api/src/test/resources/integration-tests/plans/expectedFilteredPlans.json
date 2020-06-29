@@ -118,7 +118,7 @@
   },
   "_links":{
     "self":{
-      "href":"http://localhost:8080/api/plans?statusName=Founder%20Obtained&attemptTypeName=crispr{&pin,tpn,workUnitName,workGroupName,summaryStatusName,typeName,imitsMiAttemptId,imitsPhenotypeAttemptIds}",
+      "href":"http://localhost:8080/api/plans?statusName=Founder%20Obtained&attemptTypeName=crispr{&pin,tpn,workUnitName,workGroupName,summaryStatusName,typeName,imitsMiAttemptId,imitsPhenotypeAttemptIds,phenotypingExternalRef}",
       "templated":true
     }
   },
