@@ -70,4 +70,6 @@ public class PlanFilter
     {
         return filters.getOrDefault(PlanFilterType.IMITS_PHENITYPING_ATTEMPT, null);
     }
+
+    public List<String> getPhenotypingExternalRefs () { return filters.getOrDefault(PlanFilterType.PHENOTYPING_EXTERNAL_REF, null); }
 }

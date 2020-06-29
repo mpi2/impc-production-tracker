@@ -85,6 +85,11 @@ public class PlanFilterBuilder
         return withFilter(PlanFilterType.IMITS_PHENITYPING_ATTEMPT, imitsPhenotypeAttemptIds);
     }
 
+    public PlanFilterBuilder withPhenotypingExternalRefs(List<String> phenotypingExternalRefs)
+    {
+        return withFilter(PlanFilterType.PHENOTYPING_EXTERNAL_REF, phenotypingExternalRefs);
+    }
+
     private boolean isListValid(List<String> values)
     {
         return values != null && !values.isEmpty();
