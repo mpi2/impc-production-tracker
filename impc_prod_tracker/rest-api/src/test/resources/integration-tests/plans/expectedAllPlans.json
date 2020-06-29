@@ -204,7 +204,7 @@
   },
   "_links":{
     "self":{
-      "href":"http://localhost:8080/api/plans{?pin,tpn,workUnitName,workGroupName,statusName,summaryStatusName,typeName,attemptTypeName,imitsMiAttemptId,imitsPhenotypeAttemptIds}",
+      "href":"http://localhost:8080/api/plans{?pin,tpn,workUnitName,workGroupName,statusName,summaryStatusName,typeName,attemptTypeName,imitsMiAttemptId,imitsPhenotypeAttemptIds,phenotypingExternalRef}",
       "templated":true
     }
   },
