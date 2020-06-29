@@ -112,7 +112,9 @@ public class PlanServiceImpl implements PlanService
                 .and(Specification.where(
                     PlanSpecs.withImitsMiAttempts(planFilter.getImitsMiAttemptIds())))
                 .and(Specification.where(
-                    PlanSpecs.withImitsPhenotypeAttempts(planFilter.getImitsPhenotypeAttemptIds())));
+                    PlanSpecs.withImitsPhenotypeAttempts(planFilter.getImitsPhenotypeAttemptIds())))
+                .and(Specification.where(
+                        PlanSpecs.withPhenotypingExternalRefs(planFilter.getPhenotypingExternalRefs())));
         return specifications;
     }
 

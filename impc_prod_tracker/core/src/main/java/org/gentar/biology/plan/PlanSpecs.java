@@ -180,8 +180,8 @@ public class PlanSpecs
     }
 
     /**
-     * Get all the plans that are related with the work groups specified in pins
-     * @param pins List of names of the Work Groups
+     * Get all the plans that are related with the pin specified in pins
+     * @param pins List of ids of the Pins
      * @return The found plans. If pins is null then not filter is applied.
      */
     public static Specification<Plan> withPins (List<String> pins)
@@ -206,8 +206,8 @@ public class PlanSpecs
     }
 
     /**
-     * Get all the plans that are related with the work groups specified in typeNames
-     * @param typeNames List of names of the Work Groups
+     * Get all the plans that are related with the plan types specified in typeNames
+     * @param typeNames List of names of the Plan Types
      * @return The found plans. If typeNames is null then not filter is applied.
      */
     public static Specification<Plan> withTypeNames (List<String> typeNames)
@@ -233,8 +233,8 @@ public class PlanSpecs
     }
 
     /**
-     * Get all the plans that are related with the work groups specified in attemptTypeNames
-     * @param attemptTypeNames List of names of the Work Groups
+     * Get all the plans that are related with the attempt type names specified in attemptTypeNames
+     * @param attemptTypeNames List of names of the Attempt Types
      * @return The found plans. If attemptTypeNames is null then not filter is applied.
      */
     public static Specification<Plan> withAttemptTypeNames (List<String> attemptTypeNames)
@@ -260,8 +260,8 @@ public class PlanSpecs
     }
 
     /**
-     * Get all the plans that are related with the work groups specified in imitsMiAttempts
-     * @param imitsMiAttempts List of names of the Work Groups
+     * Get all the plans that are related with the imits mi_attempts specified in imitsMiAttempts
+     * @param imitsMiAttempts List of ids in iMits
      * @return The found plans. If imitsMiAttempts is null then not filter is applied.
      */
     public static Specification<Plan> withImitsMiAttempts (List<String> imitsMiAttempts)
@@ -287,8 +287,8 @@ public class PlanSpecs
     }
 
     /**
-     * Get all the plans that are related with the work groups specified in imitsPhenotypeAttempts
-     * @param imitsPhenotypeAttempts List of names of the Work Groups
+     * Get all the plans that are related with the imits phenotyping attempts specified in imitsPhenotypeAttempts
+     * @param imitsPhenotypeAttempts List of ids in iMits
      * @return The found plans. If imitsPhenotypeAttempts is null then not filter is applied.
      */
     public static Specification<Plan> withImitsPhenotypeAttempts (List<String> imitsPhenotypeAttempts)
@@ -306,6 +306,33 @@ public class PlanSpecs
                 Path<PhenotypingAttempt> phenotypingAttemptPath = root.get(Plan_.phenotypingAttempt);
                 Path<Long> imitsPhenotypingAttemptPath = phenotypingAttemptPath.get(PhenotypingAttempt_.imitsPhenotypeAttempt);
                 predicates.add(imitsPhenotypingAttemptPath.in(imitsPhenotypeAttempts));
+                query.distinct(true);
+                return criteriaBuilder.and(predicates.toArray(new Predicate[predicates.size()]));
+            };
+        }
+        return specification;
+    }
+
+    /**
+     * Get all the plans that are related with the work groups specified in phenotypingExternalRefs
+     * @param phenotypingExternalRefs List of names of the Work Groups
+     * @return The found plans. If imitsPhenotypeAttempts is null then not filter is applied.
+     */
+    public static Specification<Plan> withPhenotypingExternalRefs (List<String> phenotypingExternalRefs)
+    {
+        Specification<Plan> specification;
+        if (phenotypingExternalRefs == null)
+        {
+            specification = buildTrueCondition();
+        }
+        else
+        {
+            specification = (Specification<Plan>) (root, query, criteriaBuilder) ->
+            {
+                List<Predicate> predicates = new ArrayList<>();
+                Path<PhenotypingAttempt> phenotypingAttemptPath = root.get(Plan_.phenotypingAttempt);
+                Path<String> imitsPhenotypingAttemptPath = phenotypingAttemptPath.get(PhenotypingAttempt_.phenotypingExternalRef);
+                predicates.add(imitsPhenotypingAttemptPath.in(phenotypingExternalRefs));
                 query.distinct(true);
                 return criteriaBuilder.and(predicates.toArray(new Predicate[predicates.size()]));
             };
