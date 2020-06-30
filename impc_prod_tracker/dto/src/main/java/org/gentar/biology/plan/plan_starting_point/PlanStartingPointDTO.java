@@ -4,10 +4,11 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.hateoas.RepresentationModel;
 
 @Data
 @NoArgsConstructor
-public class PlanStartingPointDTO
+public class PlanStartingPointDTO extends RepresentationModel<PlanStartingPointDTO>
 {
     @JsonIgnore
     private Long id;

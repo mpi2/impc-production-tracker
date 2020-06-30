@@ -47,7 +47,7 @@ class PlanBasicDataDTOTest
         assertThat(json, is(notNullValue()));
         assertThat(json, is("{\"funderNames\":null,\"workUnitName\":null,\"workGroupName\":null," +
             "\"comment\":null,\"productsAvailableForGeneralPublic\":null," +
-            "\"BreedingStartingPoints\":[{\"outcomeTpo\":null}]," +
+            "\"BreedingStartingPoints\":[{\"links\":[],\"outcomeTpo\":null}]," +
             "\"breedingAttempt\":{\"numberOfCreMatingsStarted\":null," +
             "\"numberOfCreMatingsSuccessful\":null,\"creExcesion\":null,\"tatCre\":null," +
             "\"deleterStrainName\":null}}"));
@@ -67,7 +67,7 @@ class PlanBasicDataDTOTest
         assertThat(json, is(notNullValue()));
         assertThat(json, is("{\"funderNames\":null,\"workUnitName\":null,\"workGroupName\":null," +
             "\"comment\":null,\"productsAvailableForGeneralPublic\":null," +
-            "\"phenotypingStartingPoint\":{\"outcomeTpo\":null}," +
+            "\"phenotypingStartingPoint\":{\"links\":[],\"outcomeTpo\":null}," +
             "\"phenotypingAttempt\":{\"phenotypingStages\":null}}"));
     }
 }

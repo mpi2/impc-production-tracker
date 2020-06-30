@@ -1,7 +1,9 @@
 package org.gentar.biology.starting_point;
 
+import org.gentar.biology.mutation.Mutation;
 import org.gentar.biology.outcome.Outcome;
 import org.gentar.biology.outcome.OutcomeService;
+import org.gentar.biology.plan.Plan;
 import org.gentar.biology.plan.plan_starting_point.PlanStartingPointDTO;
 import org.gentar.biology.plan.starting_point.PlanStartingPoint;
 import org.junit.jupiter.api.BeforeEach;
@@ -31,10 +33,17 @@ class PlanStartingPointMapperTest
     @Test
     void toDto()
     {
+
         PlanStartingPoint planStartingPoint = new PlanStartingPoint();
         planStartingPoint.setId(1L);
+
+        Plan plan = new Plan();
+        plan.setId(1L);
+
         Outcome outcome = new Outcome();
         outcome.setTpo("tpo");
+        outcome.setPlan(plan);
+
         planStartingPoint.setOutcome(outcome);
 
         PlanStartingPointDTO planStartingPointDTO = testInstance.toDto(planStartingPoint);
