@@ -49,7 +49,7 @@ public class PlanStartingPointMapper implements Mapper<PlanStartingPoint, PlanSt
             outcomes.forEach(x ->
                     links.add(linkTo(methodOn(OutcomeController.class)
                             .findOneByPlanAndTpo(planStartingPoint.getPlan().getPin(), planStartingPointDTO.getTpo()))
-                            .withRel("Outcome")));
+                            .withRel("outcome")));
         }
         planStartingPointDTO.add(links);
     }

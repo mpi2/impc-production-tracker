@@ -32,10 +32,18 @@ class PlanStartingPointMapperTest
     @Test
     void toDto()
     {
+
         PlanStartingPoint planStartingPoint = new PlanStartingPoint();
         planStartingPoint.setId(1L);
+
+        Plan productionPlan = new Plan();
+        productionPlan.setId(1L);
+        productionPlan.setPin("pinA");
+
         Outcome outcome = new Outcome();
         outcome.setTpo("tpo");
+        outcome.setPlan(productionPlan);
+
         planStartingPoint.setOutcome(outcome);
         Plan plan = new Plan();
         plan.setPin("pin");

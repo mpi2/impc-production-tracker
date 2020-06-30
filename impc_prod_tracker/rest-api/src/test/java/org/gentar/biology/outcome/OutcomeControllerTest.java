@@ -55,7 +55,7 @@ class OutcomeControllerTest extends ControllerTestTemplate
     {
         String url = "/api/plans/PIN:0000000001/outcomes";
         String expectedJson = getCompleteResourcePath("expectedAllOutcomes.json");
-        String obtainedJson = restCaller.executeGet(url);
+        String obtainedJson = restCaller.executeGetAndDocument(url, document("outcomes/allOutcomes"));
         resultValidator.validateObtainedMatchesJson(obtainedJson, expectedJson);
     }
 
