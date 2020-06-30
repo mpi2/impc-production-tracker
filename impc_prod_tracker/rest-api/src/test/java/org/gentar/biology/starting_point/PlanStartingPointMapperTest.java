@@ -2,6 +2,7 @@ package org.gentar.biology.starting_point;
 
 import org.gentar.biology.outcome.Outcome;
 import org.gentar.biology.outcome.OutcomeService;
+import org.gentar.biology.plan.Plan;
 import org.gentar.biology.plan.plan_starting_point.PlanStartingPointDTO;
 import org.gentar.biology.plan.starting_point.PlanStartingPoint;
 import org.junit.jupiter.api.BeforeEach;
@@ -36,6 +37,9 @@ class PlanStartingPointMapperTest
         Outcome outcome = new Outcome();
         outcome.setTpo("tpo");
         planStartingPoint.setOutcome(outcome);
+        Plan plan = new Plan();
+        plan.setPin("pin");
+        planStartingPoint.setPlan(plan);
 
         PlanStartingPointDTO planStartingPointDTO = testInstance.toDto(planStartingPoint);
 

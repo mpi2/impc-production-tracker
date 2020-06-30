@@ -1,6 +1,5 @@
 package org.gentar.biology.plan.attempt.phenotyping.stage;
 
-import org.gentar.biology.plan.Plan;
 import org.gentar.common.state_machine.StatusTransitionDTO;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
