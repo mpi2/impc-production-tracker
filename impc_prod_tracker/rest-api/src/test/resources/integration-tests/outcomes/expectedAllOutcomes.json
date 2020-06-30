@@ -91,6 +91,14 @@
             "available":true,
             "note":null,
             "nextStatus":"GenotypeNotConfirmed"
+          },
+          {
+            "action":"abortGenotypeInProgress",
+            "description":"Abort a colony that is Genotype In Progress",
+            "triggeredByUser":true,
+            "available":true,
+            "note":null,
+            "nextStatus":"ColonyAborted"
           }
         ],
         "actionToExecute":null
