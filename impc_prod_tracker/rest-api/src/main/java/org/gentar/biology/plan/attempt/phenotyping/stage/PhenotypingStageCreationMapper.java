@@ -1,7 +1,6 @@
 package org.gentar.biology.plan.attempt.phenotyping.stage;
 
 import org.gentar.Mapper;
-import org.gentar.biology.plan.attempt.phenotyping.PhenotypingAttemptCreationDTO;
 import org.gentar.biology.plan.attempt.phenotyping.stage.type.PhenotypingStageType;
 import org.springframework.stereotype.Component;
 
@@ -38,7 +37,6 @@ public class PhenotypingStageCreationMapper implements Mapper<PhenotypingStage, 
         PhenotypingStageType phenotypingStageType = phenotypingStageService
                 .getPhenotypingStageTypeByNameFailingWhenNull(phenotypingStageTypeName);
         phenotypingStage.setPhenotypingStageType(phenotypingStageType);
-
         return phenotypingStage;
     }
 
