@@ -80,7 +80,7 @@ public class PlanDTO extends RepresentationModel
     private PhenotypingAttemptCreationDTO phenotypingAttemptCreationDTO;
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    @JsonProperty("phenotypingAttemptResponse")
+    @JsonProperty("phenotypingAttempt")
     private PhenotypingAttemptResponseDTO phenotypingAttemptResponseDTO;
 
     @JsonProperty("statusTransition")

@@ -1,16 +1,9 @@
 package org.gentar.biology.plan.attempt.phenotyping.stage;
 
 import org.gentar.Mapper;
-import org.gentar.biology.colony.Colony;
-import org.gentar.biology.colony.ColonyDTO;
-import org.gentar.biology.plan.attempt.phenotyping.stage.type.PhenotypingStageType;
 import org.gentar.common.state_machine.StatusTransitionDTO;
-import org.gentar.common.state_machine.TransitionDTO;
 import org.gentar.statemachine.ProcessEvent;
-import org.gentar.statemachine.TransitionEvaluation;
 import org.springframework.stereotype.Component;
-
-import java.util.List;
 
 @Component
 public class PhenotypingStageUpdateMapper implements Mapper<PhenotypingStage, PhenotypingStageUpdateDTO>
@@ -35,9 +28,13 @@ public class PhenotypingStageUpdateMapper implements Mapper<PhenotypingStage, Ph
     @Override
     public PhenotypingStage toEntity(PhenotypingStageUpdateDTO dto)
     {
-        PhenotypingStage phenotypingStage = phenotypingStageCommonMapper.toEntity(dto.getPhenotypingStageCommonDTO());
-        phenotypingStage.setPsn(dto.getPsn());
+        PhenotypingStage phenotypingStage = new PhenotypingStage();
+        if (dto.getPhenotypingStageCommonDTO() != null)
+        {
+            phenotypingStage = phenotypingStageCommonMapper.toEntity(dto.getPhenotypingStageCommonDTO());
+        }
         phenotypingStage.setId(dto.getId());
+        phenotypingStage.setPsn(dto.getPsn());
         setEvent(phenotypingStage, dto);
         return phenotypingStage;
     }

@@ -305,7 +305,7 @@ a|Attempt type. Possible values are:
 |iMits phenotyping attempt id.
 
 |phenotypingExternalRef
-|Phentoyping External Reference
+|Phentoyping External Reference (colony name or specimen group name)
 
 |===
 
