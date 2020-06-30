@@ -1,6 +1,5 @@
 package org.gentar.biology.starting_point;
 
-import org.gentar.biology.mutation.Mutation;
 import org.gentar.biology.outcome.Outcome;
 import org.gentar.biology.outcome.OutcomeService;
 import org.gentar.biology.plan.Plan;
