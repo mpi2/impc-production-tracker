@@ -29,7 +29,7 @@ class PhenotypingStageUpdateDTOTest
 
         String json = JsonConverter.toJson(phenotypingStageUpdateDTO);
         assertThat(json, is(notNullValue()));
-        assertThat(json, is("{\"id\":null,\"psn\":\"psn\",\"phenotypingExperimentsStarted\":\"2020-06-17\"," +
+        assertThat(json, is("{\"psn\":\"psn\",\"phenotypingExperimentsStarted\":\"2020-06-17\"," +
                 "\"doNotCountTowardsCompleteness\":true,\"initialDataReleaseDate\":\"2020-06-17\"," +
                 "\"tissueDistributions\":null,\"statusTransition\":{\"actionToExecute\":\"actionToExecute\"}}"));
     }
