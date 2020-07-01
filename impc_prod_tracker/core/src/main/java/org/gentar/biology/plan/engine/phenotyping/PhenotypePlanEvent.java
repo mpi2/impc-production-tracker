@@ -2,6 +2,7 @@ package org.gentar.biology.plan.engine.phenotyping;
 
 import org.gentar.biology.plan.engine.phenotyping.processors.PhenotypePlanAbandonProcessor;
 import org.gentar.biology.plan.engine.phenotyping.processors.PhenotypePlanAbortProcessor;
+import org.gentar.biology.plan.engine.phenotyping.processors.ReversePhenotypePlanAbortProcessor;
 import org.gentar.statemachine.ProcessEvent;
 import org.gentar.statemachine.ProcessState;
 import org.gentar.statemachine.Processor;
