@@ -41,7 +41,7 @@ class PhenotypingStageResponseDTOTest
 
         String json = JsonConverter.toJson(phenotypingStageResponseDTO);
         assertThat(json, is(notNullValue()));
-        assertThat(json, is("{\"id\":null,\"pin\":\"pin\",\"psn\":\"psn\",\"statusName\":\"statusName\"," +
+        assertThat(json, is("{\"pin\":\"pin\",\"psn\":\"psn\",\"statusName\":\"statusName\"," +
                 "\"phenotypingTypeName\":\"phenotypingTypeName\",\"phenotypingExternalRef\":\"phenotypingExternalRef\"," +
                 "\"phenotypingExperimentsStarted\":\"2020-06-17\",\"doNotCountTowardsCompleteness\":true," +
                 "\"initialDataReleaseDate\":\"2020-06-17\",\"tissueDistributions\":null," +
