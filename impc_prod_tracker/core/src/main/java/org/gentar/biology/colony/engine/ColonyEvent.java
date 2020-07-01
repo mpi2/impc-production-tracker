@@ -103,19 +103,6 @@ public enum ColonyEvent implements ProcessEvent
             {
                 return ColonyAbortProcessor.class;
             }
-        },
-    abortGenotypeExtinct(
-        "Abort a colony that is Genotype Extinct",
-        ColonyState.GenotypeExtinct,
-        ColonyState.ColonyAborted,
-        StateMachineConstants.TRIGGERED_BY_USER,
-        null)
-        {
-            @Override
-            public Class<? extends Processor> getNextStepProcessor()
-            {
-                return ColonyAbortProcessor.class;
-            }
         };
 
     ColonyEvent(
