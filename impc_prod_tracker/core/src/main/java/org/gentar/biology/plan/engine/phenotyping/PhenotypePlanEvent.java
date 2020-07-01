@@ -25,16 +25,29 @@ public enum PhenotypePlanEvent implements ProcessEvent
                 }
             },
     abortPhenotypingPlan(
-        "Abort a phenotyping plan that has associated aborted phenotyping stage information",
-        PhenotypePlanState.PlanCreated,
-        PhenotypePlanState.PhenotypePlanAborted,
-        StateMachineConstants.TRIGGERED_BY_USER,
+            "Abort a phenotyping plan that has associated aborted phenotyping stage information",
+            PhenotypePlanState.PlanCreated,
+            PhenotypePlanState.PhenotypePlanAborted,
+            StateMachineConstants.NOT_TRIGGERED_BY_USER,
             null)
             {
                 @Override
                 public Class<? extends Processor> getNextStepProcessor()
                 {
                     return PhenotypePlanAbortProcessor.class;
+                }
+            },
+    reverseAbortedPhenotypingPlan(
+            "Reverse an aborted phenotyping plan that has valid associated phenotyping stage information",
+            PhenotypePlanState.PhenotypePlanAborted,
+            PhenotypePlanState.PlanCreated,
+            StateMachineConstants.NOT_TRIGGERED_BY_USER,
+            null)
+            {
+                @Override
+                public Class<? extends Processor> getNextStepProcessor()
+                {
+                    return ReversePhenotypePlanAbortProcessor.class;
                 }
             };
 
