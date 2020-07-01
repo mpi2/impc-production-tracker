@@ -29,7 +29,7 @@ public enum PhenotypePlanEvent implements ProcessEvent
             "Abort a phenotyping plan that has associated aborted phenotyping stage information",
             PhenotypePlanState.PlanCreated,
             PhenotypePlanState.PhenotypePlanAborted,
-            StateMachineConstants.NOT_TRIGGERED_BY_USER,
+            StateMachineConstants.TRIGGERED_BY_USER,
             null)
             {
                 @Override
@@ -42,7 +42,7 @@ public enum PhenotypePlanEvent implements ProcessEvent
             "Reverse an aborted phenotyping plan that has valid associated phenotyping stage information",
             PhenotypePlanState.PhenotypePlanAborted,
             PhenotypePlanState.PlanCreated,
-            StateMachineConstants.NOT_TRIGGERED_BY_USER,
+            StateMachineConstants.TRIGGERED_BY_USER,
             null)
             {
                 @Override
