@@ -23,6 +23,7 @@ import java.time.LocalDate;
 @Data
 public class TissueDistributionDTO
 {
+    @JsonIgnore
     private Long id;
 
     @JsonIgnore

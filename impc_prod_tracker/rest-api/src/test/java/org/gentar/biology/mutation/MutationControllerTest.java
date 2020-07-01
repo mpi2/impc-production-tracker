@@ -36,7 +36,6 @@ public class MutationControllerTest extends ControllerTestTemplate
         restCaller = new RestCaller(mvc(), accessToken);
     }
 
-
     @Test
     @DatabaseSetup(DBSetupFilesPaths.MULTIPLE_MUTATIONS)
     @DatabaseTearDown(type = DatabaseOperation.DELETE_ALL, value = DBSetupFilesPaths.MULTIPLE_MUTATIONS)

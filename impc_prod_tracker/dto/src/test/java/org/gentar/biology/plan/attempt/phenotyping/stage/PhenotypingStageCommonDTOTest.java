@@ -29,7 +29,7 @@ class PhenotypingStageCommonDTOTest
         assertThat(json, is("{\"phenotypingExperimentsStarted\":\"2020-06-17\"," +
                 "\"doNotCountTowardsCompleteness\":true," +
                 "\"initialDataReleaseDate\":\"2020-06-17\"," +
-                "\"tissueDistributions\":[{\"id\":null,\"startDate\":null,\"endDate\":null," +
+                "\"tissueDistributions\":[{\"startDate\":null,\"endDate\":null," +
                 "\"workUnitName\":null,\"materialDepositedTypeName\":null}]}"));
     }
 

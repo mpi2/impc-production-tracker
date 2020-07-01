@@ -1,0 +1,222 @@
+<dataset>
+    <PRIVACY    ID="1"
+                NAME="public"/>
+    <PRIVACY    ID="2"
+                NAME="protected"/>
+    <PRIVACY    ID="3"
+                NAME="restricted"/>
+
+    <SPECIES    ID="1"
+                NAME="Mus musculus"/>
+    <SPECIES    ID="2"
+                NAME="Homo sapiens"/>
+
+    <FUNDER ID="1"
+            NAME="KOMP"/>
+
+    <ASSIGNMENT_STATUS  ID="1"
+                        NAME="Assigned"/>
+    <ASSIGNMENT_STATUS  ID="2"
+                        NAME="Inspect - Conflict"/>
+
+    <PLAN_TYPE  ID="1"
+                NAME="production"/>
+    <PLAN_TYPE  ID="2"
+                NAME="phenotyping"/>
+
+    <ATTEMPT_TYPE   ID="1"
+                    NAME="crispr"/>
+    <ATTEMPT_TYPE   ID="2"
+                    NAME="haplo-essential crispr"/>
+    <ATTEMPT_TYPE   ID="3"
+                    NAME="breeding"/>
+    <ATTEMPT_TYPE   ID="4"
+                    NAME="adult phenotyping"/>
+    <ATTEMPT_TYPE   ID="5"
+                    NAME="haplo-essential phenotyping"/>
+
+    <WORK_UNIT  ID="1"
+                NAME="UCD"/>
+    <WORK_UNIT  ID="2"
+                NAME="TCP"/>
+    <WORK_GROUP ID="1"
+                NAME="BaSH"/>
+    <WORK_GROUP  ID="2"
+                 NAME="DTCC"/>
+
+    <STATUS     ID="1"
+                NAME="Plan Created"
+                IS_ABORTION_STATUS="false"
+                ORDERING="1000"/>
+    <STATUS     ID="22"
+                NAME="Phenotyping Production Registered"
+                IS_ABORTION_STATUS="false"
+                ORDERING="120000"/>
+    <STATUS     ID="23"
+                NAME="Late Adult Phenotyping Registered"
+                IS_ABORTION_STATUS="false"
+                ORDERING="130000"/>
+    <STATUS     ID="34"
+                NAME="Rederivation Started"
+                IS_ABORTION_STATUS="false"
+                ORDERING="251000"/>
+    <STATUS     ID="35"
+                NAME="Rederivation Complete"
+                IS_ABORTION_STATUS="false"
+                ORDERING="252000"/>
+    <STATUS     ID="36"
+                NAME="Phenotyping Started"
+                IS_ABORTION_STATUS="false"
+                ORDERING="253000"/>
+    <STATUS     ID="37"
+                NAME="Phenotyping All Data Sent"
+                IS_ABORTION_STATUS="false"
+                ORDERING="255000"/>
+    <STATUS     ID="38"
+                NAME="Phenotyping All Data Processed"
+                IS_ABORTION_STATUS="false"
+                ORDERING="256000"/>
+    <STATUS     ID="39"
+                NAME="Phenotyping Finished"
+                IS_ABORTION_STATUS="false"
+                ORDERING="257000"/>
+    <STATUS     ID="40"
+                NAME="Phenotype Production Aborted"
+                IS_ABORTION_STATUS="true"
+                ORDERING="258000"/>
+
+    <CONSORTIUM ID="1"
+                NAME="CMG"/>
+
+    <INSTITUTE  ID="1"
+                NAME="Broad"/>
+    <INSTITUTE  ID="2"
+                NAME="Yale"/>
+
+    <STRAIN  ID="1"
+             NAME="C57BL/6NJ"
+             MGI_STRAIN_ACC_ID="MGI:3056279"/>
+
+    <MATERIAL_DEPOSITED_TYPE   ID="1"
+                               NAME="Paraffin-embedded Sections"/>
+    <MATERIAL_DEPOSITED_TYPE   ID="2"
+                               NAME="Fixed Tissue"/>
+
+    <PHENOTYPING_STAGE_TYPE ID="1"
+                            NAME="early adult"/>
+    <PHENOTYPING_STAGE_TYPE ID="2"
+                            NAME="late adult"/>
+    <PHENOTYPING_STAGE_TYPE ID="3"
+                            NAME="haplo-essential"/>
+    <PHENOTYPING_STAGE_TYPE ID="4"
+                            NAME="embryo"/>
+
+    <PROJECT    ID="1"
+                TPN="TPN:000000001"
+                PRIVACY_ID="1"
+                ASSIGNMENT_STATUS_ID="1"
+                SUMMARY_STATUS_ID="36"
+                RECOVERY="false"
+                COMMENT="Comment test"
+                PROJECT_EXTERNAL_REF="External reference 01"/>
+    <PROJECT    ID="2"
+                TPN="TPN:000000002"
+                PRIVACY_ID="1"
+                ASSIGNMENT_STATUS_ID="2"
+                SUMMARY_STATUS_ID="22"/>
+
+    <PLAN       ID="1"
+                PIN="PIN:0000000001"
+                PROJECT_ID="1"
+                PLAN_TYPE_ID="1"
+                ATTEMPT_TYPE_ID="1"
+                STATUS_ID="1"
+                WORK_UNIT_ID="1"
+                WORK_GROUP_ID="1"
+                SUMMARY_STATUS_ID="36"/>
+    <PLAN       ID="2"
+                PIN="PIN:0000000002"
+                PROJECT_ID="1"
+                PLAN_TYPE_ID="1"
+                ATTEMPT_TYPE_ID="1"
+                STATUS_ID="1"
+                WORK_UNIT_ID="1"
+                WORK_GROUP_ID="1"
+                SUMMARY_STATUS_ID="1"/>
+
+    <PLAN_FUNDER    PLAN_ID="1"
+                    FUNDER_ID="1"/>
+
+    <PHENOTYPING_ATTEMPT PLAN_ID="1"
+                         PHENOTYPING_EXTERNAL_REF="CR10129"
+                         STRAIN_ID="1"/>
+    <PHENOTYPING_ATTEMPT PLAN_ID="2"
+                         PHENOTYPING_EXTERNAL_REF="JR34077"
+                         STRAIN_ID="1"/>
+
+    <PHENOTYPING_STAGE ID="2"
+                       PSN="PSN:000000000002"
+                       PLAN_ID="1"
+                       PHENOTYPING_STAGE_TYPE_ID="2"
+                       STATUS_ID="23"
+                       DO_NOT_COUNT_TOWARDS_COMPLETENESS="false"
+                       INITIAL_DATA_RELEASE_DATE="2019-04-12"
+                       PHENOTYPING_EXPERIMENTS_STARTED="2018-09-17"/>
+    <PHENOTYPING_STAGE ID="1"
+                       PSN="PSN:000000000001"
+                       PLAN_ID="1"
+                       PHENOTYPING_STAGE_TYPE_ID="1"
+                       STATUS_ID="36"
+                       DO_NOT_COUNT_TOWARDS_COMPLETENESS="true"
+                       INITIAL_DATA_RELEASE_DATE="2015-11-23"
+                       PHENOTYPING_EXPERIMENTS_STARTED="2020-02-24"/>
+
+
+    <PHENOTYPING_STAGE_STATUS_STAMP ID="1"
+                                    PHENOTYPING_STAGE_ID="1"
+                                    STATUS_ID="22"
+                                    DATE="2019-11-01"/>
+    <PHENOTYPING_STAGE_STATUS_STAMP ID="2"
+                                    PHENOTYPING_STAGE_ID="1"
+                                    STATUS_ID="36"
+                                    DATE="2019-11-01"/>
+    <PHENOTYPING_STAGE_STATUS_STAMP ID="3"
+                                    PHENOTYPING_STAGE_ID="2"
+                                    STATUS_ID="23"
+                                    DATE="2018-09-27"/>
+
+
+    <TISSUE_DISTRIBUTION    ID="1"
+                            PHENOTYPING_STAGE_ID="1"
+                            START_DATE="2020-04-13"
+                            END_DATE="2021-05-15"
+                            WORK_UNIT_ID="2"
+                            MATERIAL_DEPOSITED_TYPE_ID="1"
+                            />
+    <TISSUE_DISTRIBUTION    ID="2"
+                            PHENOTYPING_STAGE_ID="2"
+                            START_DATE="2019-04-13"
+                            END_DATE="2020-05-15"
+                            WORK_UNIT_ID="1"
+                            MATERIAL_DEPOSITED_TYPE_ID="2"
+    />
+
+    <PERSON     ID="123"
+                EMAIL="imits2test@test.com"
+                AUTH_ID="usr-dde67fbd-c3c2-42eb-aa81-f1a225f047c7"/>
+
+    <ROLE   ID="1"
+            NAME="manager"/>
+    <ROLE   ID="2"
+            NAME="general"/>
+
+    <PERSON_ROLE_WORK_UNIT  ID="1"
+                            PERSON_ID="123"
+                            ROLE_ID="2"
+                            WORK_UNIT_ID="1"/>
+
+    <PERSON_ROLE_CONSORTIUM/>
+    <PLAN_STATUS_STAMP/>
+    <PLAN_SUMMARY_STATUS_STAMP/>
+    <PROJECT_SUMMARY_STATUS_STAMP/>
+</dataset>
