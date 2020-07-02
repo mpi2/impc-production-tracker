@@ -45,6 +45,7 @@ public class ColonyRequestProcessor
 
     private void modifyStrainIfNeeded(Colony colony, ColonyDTO colonyDTO)
     {
+        // TODO check if the colony is being used in a phenotyping attempt
         String originalStrainName = colony.getStrain() == null ? "" : colony.getStrain().getName();
         String newStrainName = colonyDTO.getStrainName() == null ? "" : colonyDTO.getStrainName();
         if (!originalStrainName.equals(newStrainName))

@@ -1,0 +1,51 @@
+{
+  "pin": "PIN:0000000001",
+  "psn": "PSN:000000000001",
+  "statusName": "Phenotyping Started",
+  "phenotypingTypeName": "early adult",
+  "phenotypingExternalRef": "CR10129",
+  "phenotypingExperimentsStarted": "2020-02-24",
+  "doNotCountTowardsCompleteness": false,
+  "initialDataReleaseDate": "2015-11-23",
+  "tissueDistributions": [
+    {
+      "id": 1,
+      "startDate": "2020-04-13",
+      "endDate": "2021-05-15",
+      "workUnitName": "TCP",
+      "materialDepositedTypeName": "Paraffin-embedded Sections"
+    }
+  ],
+  "statusDates": [
+    {
+      "statusName": "Phenotyping Production Registered",
+      "date": "2019-11-01T00:00:00"
+    },
+    {
+      "statusName": "Phenotyping Started",
+      "date": "2019-11-01T00:00:00"
+    }
+  ],
+  "statusTransition": {
+    "currentStatus": "Phenotyping Started",
+    "transitions": [
+      {
+        "action": "updateToPhenotypingAllDataSent",
+        "description": "No more phenotype data will be sent to the DCC.",
+        "triggeredByUser": true,
+        "available": true,
+        "note": "Used to indicate all phenotype data has been sent to the DCC.",
+        "nextStatus": "PhenotypingAllDataSent"
+      },
+      {
+        "action": "abortWhenPhenotypingStarted",
+        "description": "Abort phenotyping when phenotyping has been started",
+        "triggeredByUser": true,
+        "available": true,
+        "note": null,
+        "nextStatus": "PhenotypeProductionAborted"
+      }
+    ],
+    "actionToExecute": null
+  }
+}
