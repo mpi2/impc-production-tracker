@@ -49,7 +49,16 @@ class CheckedClassesTree
             Node<Class<?>> parentNode = getNode(parentClass);
             if (parentNode != null)
             {
-                relationAlreadyExists = parentNode.anyParentContains(childClass);
+                // We don't want to restrict collections in the tree because they can exist
+                // in any place of the objects graph.
+                if (PropertyChecker.isCollection(childClass) || PropertyChecker.isCollection(parentClass))
+                {
+                    relationAlreadyExists = false;
+                }
+                else
+                {
+                    relationAlreadyExists = parentNode.anyParentContains(childClass);
+                }
             }
         }
         return !relationAlreadyExists;
@@ -72,9 +81,11 @@ class CheckedClassesTree
 
         if (canRelationBeAdded(childClass, parentClass))
         {
-            Node<Class<?>> parentNode = getNode(parentClass);
-            Node<Class<?>> newNode = new Node<>(childClass);
-            parentNode.addChild(newNode);
+            {
+                Node<Class<?>> parentNode = getNode(parentClass);
+                Node<Class<?>> newNode = new Node<>(childClass);
+                parentNode.addChild(newNode);
+            }
         }
     }
 

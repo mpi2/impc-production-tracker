@@ -1,6 +1,7 @@
 package org.gentar.audit.history;
 
 import lombok.Data;
+import org.gentar.audit.diff.ChangeType;
 
 /**
  * Class to describe a change in a property between two objects.
@@ -29,4 +30,7 @@ class ChangeDescription
 
     // Id in the "parentClass" entity for the new value.
     private Object newValueId;
+
+    // Type of change
+    private ChangeType changeType;
 }

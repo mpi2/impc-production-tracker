@@ -12,14 +12,56 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 class PropertyDescription
 {
+    private PropertyDefinition propertyDefinition = new PropertyDefinition();
     private Object value;
-    private Class<?> type;
-    private String name;
     private boolean isSimpleValue;
 
     public String toString()
     {
-        return "[name: " + name + ", type: " + type.getSimpleName()
-            + ", value: " + value + ", isSimpleValue:" +isSimpleValue +"]";
+        String name = propertyDefinition == null ? null : propertyDefinition.getName();
+        String typeSimpleName = null;
+        String parentTypeSimpleName = null;
+
+        if (propertyDefinition != null)
+        {
+            typeSimpleName = propertyDefinition.getType().getSimpleName();
+            if (propertyDefinition.getParentType() != null)
+            {
+                parentTypeSimpleName = propertyDefinition.getParentType().getSimpleName();
+            }
+        }
+        return "[name: " + name + ", type: " + typeSimpleName
+            + ", value: " + value + ", isSimpleValue:" +isSimpleValue
+            +", parentType: "+parentTypeSimpleName+"]";
+    }
+
+    public String getName()
+    {
+        return propertyDefinition.getName();
+    }
+
+    public void setName(String name)
+    {
+        propertyDefinition.setName(name);
+    }
+
+    public Class<?> getType()
+    {
+        return propertyDefinition.getType();
+    }
+
+    public void setType(Class<?> type)
+    {
+        propertyDefinition.setType(type);
+    }
+
+    public Class<?> getParentType()
+    {
+        return propertyDefinition.getParentType();
+    }
+
+    public void setParentType(Class<?> type)
+    {
+        propertyDefinition.setParentType(type);
     }
 }

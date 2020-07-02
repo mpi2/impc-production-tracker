@@ -27,4 +27,13 @@ public class MutationSequence extends BaseEntity implements Serializable
     private Sequence sequence;
 
     private Integer index;
+
+    // Copy Constructor
+    public MutationSequence(MutationSequence mutationSequence)
+    {
+        this.id = mutationSequence.getId();
+        this.mutation = mutationSequence.getMutation();
+        this.sequence = new Sequence(mutationSequence.getSequence());
+        this.index = mutationSequence.getIndex();
+    }
 }

@@ -63,7 +63,6 @@ public class PropertyMapGrouperTest
         plan2.setWorkUnit(workUnit2);
         ChangesDetector<Plan> changesDetector = new ChangesDetector<>(Arrays.asList(), plan1, plan2);
         List<ChangeEntry> changeEntries = changesDetector.getChanges();
-        changesDetector.print();
         Map<String, Map<String, ChangeEntry>> groupedProps =
             testInstance.getGroupedChanges(changeEntries);
     }
