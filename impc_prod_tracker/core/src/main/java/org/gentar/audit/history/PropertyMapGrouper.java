@@ -97,17 +97,4 @@ class PropertyMapGrouper
         }
         return key;
     }
-
-    void print()
-    {
-        groupedProperties.forEach((k, v) ->
-        {
-            System.out.println(k);
-            System.out.println(" { ");
-            v.forEach((k1, v1) -> {
-                System.out.println("    " + k1 + " = " + v1);
-            });
-            System.out.println("  } ");
-        });
-    }
 }

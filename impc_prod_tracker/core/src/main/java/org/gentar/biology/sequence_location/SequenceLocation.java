@@ -19,7 +19,6 @@ public class SequenceLocation extends BaseEntity implements Serializable {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequenceLocationSeq")
     private Long id;
 
-    @EqualsAndHashCode.Exclude
     @ToString.Exclude
     @ManyToOne(cascade=CascadeType.ALL)
     private Sequence sequence;
@@ -27,9 +26,15 @@ public class SequenceLocation extends BaseEntity implements Serializable {
     @NotNull
     private Integer index;
 
-    @EqualsAndHashCode.Exclude
     @ToString.Exclude
     @ManyToOne(cascade=CascadeType.ALL)
     private Location location;
 
+    public SequenceLocation(SequenceLocation sequenceLocation)
+    {
+        this.id = sequenceLocation.getId();
+        this.sequence = sequenceLocation.getSequence();
+        this.index = sequenceLocation.getIndex();
+        this.location = new Location(sequenceLocation.getLocation());
+    }
 }

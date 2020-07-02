@@ -1,14 +1,22 @@
 package org.gentar.audit.diff.tree;
 
-import java.util.ArrayList;
-import java.util.List;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class Node<T>
 {
+    @EqualsAndHashCode.Include
     private T data = null;
 
-    private List<Node<T>> children = new ArrayList<>();
+    private Set<Node<T>> children = new HashSet<>();
 
+    @EqualsAndHashCode.Include
     private Node<T> parent = null;
 
     public Node(T data) {
@@ -30,7 +38,7 @@ public class Node<T>
         this.children.addAll(children);
     }
 
-    public List<Node<T>> getChildren() {
+    public Set<Node<T>> getChildren() {
         return children;
     }
 
@@ -99,6 +107,6 @@ public class Node<T>
 
     private static <T> void printTree(Node<T> node, String appender) {
         System.out.println(appender + node.getData());
-        node.getChildren().forEach(each ->  printTree(each, appender + appender));
+        node.getChildren().forEach(each ->  printTree(each, appender + "\t"));
     }
 }

@@ -6,7 +6,6 @@ import org.junit.jupiter.api.Test;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
 
@@ -43,7 +42,7 @@ public class ChangesDetectorTest
 
         List<ChangeEntry> changeEntryList = changesDetector.getChanges();
 
-        ChangeEntry expectedChangeEntry = getChangeEntry("property2", "b", "c");
+        ChangeEntry expectedChangeEntry = buildChangeEntry("property2", "b", "c");
 
         assertThat("Unexpected number of changes:", changeEntryList.size(), is(1));
 
@@ -107,87 +106,111 @@ public class ChangesDetectorTest
         planMock2.setWorkUnitList(Arrays.asList(workUnitMock2A, workUnitMock2B));
         planMock2.setPrivacy(privacyMock2);
 
-
         ChangesDetector<PlanMock> changesDetector =
-            new ChangesDetector<>(
-                new ArrayList<>(),
-                planMock1,
-                planMock2);
+            new ChangesDetector<>(new ArrayList<>(), planMock1, planMock2);
 
         List<ChangeEntry> changeEntryList = changesDetector.getChanges();
-        changesDetector.print();
 
-        assertThat("Unexpected number of changes:", changeEntryList.size(), is(16));
+        assertThat("Unexpected number of changes:", changeEntryList.size(), is(24));
 
         validateObtainedChangeEntryIsExpected(
-            getByPropertyName(changeEntryList, "id"), getChangeEntry("id", 1L, 2L));
+            getByPropertyName(changeEntryList, "id"), buildChangeEntry("id", 1L, 2L));
 
         validateObtainedChangeEntryIsExpected(
             getByPropertyName(changeEntryList, "planName"),
-            getChangeEntry("planName", "planMock1", "planMock2"));
+            buildChangeEntry("planName", "planMock1", "planMock2"));
 
         validateObtainedChangeEntryIsExpected(
             getByPropertyName(
                 changeEntryList, "privacy.id"),
-            getChangeEntry("privacy.id",
+            buildChangeEntry("privacy.id",
                 1L, 2L));
 
         validateObtainedChangeEntryIsExpected(
             getByPropertyName(
-                changeEntryList, "privacy"),
-            getChangeEntry("privacy",
-                privacyMock1, privacyMock2));
-
-        validateObtainedChangeEntryIsExpected(
-            getByPropertyName(
                 changeEntryList, "privacy.privacyName"),
-            getChangeEntry("privacy.privacyName",
+            buildChangeEntry("privacy.privacyName",
                 "privacyMock1", "privacyMock2"));
 
         validateObtainedChangeEntryIsExpected(
-            getByPropertyName(changeEntryList, "status"),
-            getChangeEntry("status", statusMock1, statusMock2));
-
-        validateObtainedChangeEntryIsExpected(
             getByPropertyName(changeEntryList, "status.id"),
-            getChangeEntry("status.id", 1L, 2L));
+            buildChangeEntry("status.id", 1L, 2L));
 
         validateObtainedChangeEntryIsExpected(
             getByPropertyName(changeEntryList, "status.statusName"),
-            getChangeEntry("status.statusName", "statusMock1", "statusMock2"));
-
-        validateObtainedChangeEntryIsExpected(
-            getByPropertyName(changeEntryList, "status.subStatus"),
-            getChangeEntry("status.subStatus", subStatusMock1, subStatusMock2));
+            buildChangeEntry("status.statusName", "statusMock1", "statusMock2"));
 
         validateObtainedChangeEntryIsExpected(
             getByPropertyName(changeEntryList, "status.subStatus.id"),
-            getChangeEntry("status.subStatus.id", 1L, 2L));
+            buildChangeEntry("status.subStatus.id", 1L, 2L));
 
         validateObtainedChangeEntryIsExpected(
             getByPropertyName(changeEntryList, "status.subStatus.subStatusName"),
-            getChangeEntry("status.subStatus.subStatusName", "subStatusMock1", "subStatusMock2"));
+            buildChangeEntry("status.subStatus.subStatusName", "subStatusMock1", "subStatusMock2"));
 
         validateObtainedChangeEntryIsExpected(
-            getByPropertyName(changeEntryList, "workUnitList"),
-            getChangeEntry("workUnitList", Arrays.asList(workUnitMock1A, workUnitMock1B), Arrays.asList(workUnitMock2A, workUnitMock2B)));
+            getByPropertyName(changeEntryList, "workUnitList.[1]"),
+            buildChangeEntry("workUnitList.[1]", workUnitMock1A, null));
 
         validateObtainedChangeEntryIsExpected(
-            getByPropertyName(changeEntryList, "workUnitList#1"),
-            getChangeEntry("workUnitList#1", workUnitMock1A, null));
+            getByPropertyName(changeEntryList, "workUnitList.[1].id"),
+            buildChangeEntry("workUnitList.[1].id", 1L, null));
 
         validateObtainedChangeEntryIsExpected(
-            getByPropertyName(changeEntryList, "workUnitList#2"),
-            getChangeEntry("workUnitList#2", workUnitMock1B, null));
+            getByPropertyName(changeEntryList, "workUnitList.[1].workUnitName"),
+            buildChangeEntry("workUnitList.[1].workUnitName", "workUnitMock1A", null));
 
         validateObtainedChangeEntryIsExpected(
-            getByPropertyName(changeEntryList, "workUnitList#3"),
-            getChangeEntry("workUnitList#3", null, workUnitMock2A));
+            getByPropertyName(changeEntryList, "workUnitList.[1].shortName"),
+            buildChangeEntry("workUnitList.[1].shortName", "workUnitMockShort1A", null));
 
         validateObtainedChangeEntryIsExpected(
-            getByPropertyName(changeEntryList, "workUnitList#4"),
-            getChangeEntry("workUnitList#4", null, workUnitMock2B));
+            getByPropertyName(changeEntryList, "workUnitList.[2]"),
+            buildChangeEntry("workUnitList.[2]", workUnitMock1B, null));
 
+        validateObtainedChangeEntryIsExpected(
+            getByPropertyName(changeEntryList, "workUnitList.[2].id"),
+            buildChangeEntry("workUnitList.[2].id", 2L, null));
+
+        validateObtainedChangeEntryIsExpected(
+            getByPropertyName(changeEntryList, "workUnitList.[2].workUnitName"),
+            buildChangeEntry("workUnitList.[2].workUnitName", "workUnitMock1B", null));
+
+        validateObtainedChangeEntryIsExpected(
+            getByPropertyName(changeEntryList, "workUnitList.[2].shortName"),
+            buildChangeEntry("workUnitList.[2].shortName", "workUnitMockShort1B", null));
+
+        validateObtainedChangeEntryIsExpected(
+            getByPropertyName(changeEntryList, "workUnitList.[3]"),
+            buildChangeEntry("workUnitList.[3]", null, workUnitMock2A));
+
+        validateObtainedChangeEntryIsExpected(
+            getByPropertyName(changeEntryList, "workUnitList.[3].id"),
+            buildChangeEntry("workUnitList.[3].id", null, 3L));
+
+        validateObtainedChangeEntryIsExpected(
+            getByPropertyName(changeEntryList, "workUnitList.[3].workUnitName"),
+            buildChangeEntry("workUnitList.[3].workUnitName", null, "workUnitMock2A"));
+
+        validateObtainedChangeEntryIsExpected(
+            getByPropertyName(changeEntryList, "workUnitList.[3].shortName"),
+            buildChangeEntry("workUnitList.[3].shortName", null, "workUnitMockShort2A"));
+
+        validateObtainedChangeEntryIsExpected(
+            getByPropertyName(changeEntryList, "workUnitList.[4]"),
+            buildChangeEntry("workUnitList.[4]", null, workUnitMock2B));
+
+        validateObtainedChangeEntryIsExpected(
+            getByPropertyName(changeEntryList, "workUnitList.[4].id"),
+            buildChangeEntry("workUnitList.[4].id", null, 4L));
+
+        validateObtainedChangeEntryIsExpected(
+            getByPropertyName(changeEntryList, "workUnitList.[4].workUnitName"),
+            buildChangeEntry("workUnitList.[4].workUnitName", null, "workUnitMock2B"));
+
+        validateObtainedChangeEntryIsExpected(
+            getByPropertyName(changeEntryList, "workUnitList.[4].shortName"),
+            buildChangeEntry("workUnitList.[4].shortName", null, "workUnitMockShort2B"));
     }
 
     @Test
@@ -227,66 +250,99 @@ public class ChangesDetectorTest
 
         validateObtainedChangeEntryIsExpected(
             getByPropertyName(changeEntryList, "planName"),
-            getChangeEntry("planName", "planMock1", "planMock2"));
+            buildChangeEntry("planName", "planMock1", "planMock2"));
 
         validateObtainedChangeEntryIsExpected(
             getByPropertyName(
                 changeEntryList, "privacy.id"),
-            getChangeEntry("privacy.id",
+            buildChangeEntry("privacy.id",
                 1L, 2L));
 
         validateObtainedChangeEntryIsExpected(
             getByPropertyName(
-                changeEntryList, "privacy"),
-            getChangeEntry("privacy",
-                privacyMock1, privacyMock2));
-
-        validateObtainedChangeEntryIsExpected(
-            getByPropertyName(
                 changeEntryList, "privacy.privacyName"),
-            getChangeEntry("privacy.privacyName",
+            buildChangeEntry("privacy.privacyName",
                 "privacyMock1", "privacyMock2"));
 
         validateObtainedChangeEntryIsExpected(
-            getByPropertyName(changeEntryList, "status"),
-            getChangeEntry("status", statusMock1, statusMock2));
-
-        validateObtainedChangeEntryIsExpected(
             getByPropertyName(changeEntryList, "status.id"),
-            getChangeEntry("status.id", 1L, 2L));
+            buildChangeEntry("status.id", 1L, 2L));
 
         validateObtainedChangeEntryIsExpected(
             getByPropertyName(changeEntryList, "status.statusName"),
-            getChangeEntry("status.statusName", "statusMock1", "statusMock2"));
-
-        validateObtainedChangeEntryIsExpected(
-            getByPropertyName(changeEntryList, "status.subStatus"),
-            getChangeEntry("status.subStatus", subStatusMock1, subStatusMock2));
+            buildChangeEntry("status.statusName", "statusMock1", "statusMock2"));
 
         validateObtainedChangeEntryIsExpected(
             getByPropertyName(changeEntryList, "status.subStatus.id"),
-            getChangeEntry("status.subStatus.id", 1L, 2L));
+            buildChangeEntry("status.subStatus.id", 1L, 2L));
 
         validateObtainedChangeEntryIsExpected(
             getByPropertyName(changeEntryList, "status.subStatus.subStatusName"),
-            getChangeEntry("status.subStatus.subStatusName", "subStatusMock1", "subStatusMock2"));
+            buildChangeEntry("status.subStatus.subStatusName", "subStatusMock1", "subStatusMock2"));
 
         validateObtainedChangeEntryIsExpected(
-            getByPropertyName(changeEntryList, "workUnitList#1"),
-            getChangeEntry("workUnitList#1", workUnitMock1A, null));
+            getByPropertyName(changeEntryList, "workUnitList.[1]"),
+            buildChangeEntry("workUnitList.[1]", workUnitMock1A, null));
 
         validateObtainedChangeEntryIsExpected(
-            getByPropertyName(changeEntryList, "workUnitList#2"),
-            getChangeEntry("workUnitList#2", workUnitMock1B, null));
+            getByPropertyName(changeEntryList, "workUnitList.[1].id"),
+            buildChangeEntry("workUnitList.[1].id", 1L, null));
 
         validateObtainedChangeEntryIsExpected(
-            getByPropertyName(changeEntryList, "workUnitList#3"),
-            getChangeEntry("workUnitList#3", null, workUnitMock2A));
+            getByPropertyName(changeEntryList, "workUnitList.[1].workUnitName"),
+            buildChangeEntry("workUnitList.[1].workUnitName", "workUnitMock1A", null));
 
         validateObtainedChangeEntryIsExpected(
-            getByPropertyName(changeEntryList, "workUnitList#4"),
-            getChangeEntry("workUnitList#4", null, workUnitMock2B));
+            getByPropertyName(changeEntryList, "workUnitList.[1].shortName"),
+            buildChangeEntry("workUnitList.[1].shortName", "workUnitMockShort1A", null));
 
+        validateObtainedChangeEntryIsExpected(
+            getByPropertyName(changeEntryList, "workUnitList.[2]"),
+            buildChangeEntry("workUnitList.[2]", workUnitMock1B, null));
+
+        validateObtainedChangeEntryIsExpected(
+            getByPropertyName(changeEntryList, "workUnitList.[2].id"),
+            buildChangeEntry("workUnitList.[2].id", 2L, null));
+
+        validateObtainedChangeEntryIsExpected(
+            getByPropertyName(changeEntryList, "workUnitList.[2].workUnitName"),
+            buildChangeEntry("workUnitList.[2].workUnitName", "workUnitMock1B", null));
+
+        validateObtainedChangeEntryIsExpected(
+            getByPropertyName(changeEntryList, "workUnitList.[2].shortName"),
+            buildChangeEntry("workUnitList.[2].shortName", "workUnitMockShort1B", null));
+
+        validateObtainedChangeEntryIsExpected(
+            getByPropertyName(changeEntryList, "workUnitList.[3]"),
+            buildChangeEntry("workUnitList.[3]", null, workUnitMock2A));
+
+        validateObtainedChangeEntryIsExpected(
+            getByPropertyName(changeEntryList, "workUnitList.[3].id"),
+            buildChangeEntry("workUnitList.[3].id", null, 3L));
+
+        validateObtainedChangeEntryIsExpected(
+            getByPropertyName(changeEntryList, "workUnitList.[3].workUnitName"),
+            buildChangeEntry("workUnitList.[3].workUnitName", null, "workUnitMock2A"));
+
+        validateObtainedChangeEntryIsExpected(
+            getByPropertyName(changeEntryList, "workUnitList.[3].shortName"),
+            buildChangeEntry("workUnitList.[3].shortName", null, "workUnitMockShort2A"));
+
+        validateObtainedChangeEntryIsExpected(
+            getByPropertyName(changeEntryList, "workUnitList.[4]"),
+            buildChangeEntry("workUnitList.[4]", null, workUnitMock2B));
+
+        validateObtainedChangeEntryIsExpected(
+            getByPropertyName(changeEntryList, "workUnitList.[4].id"),
+            buildChangeEntry("workUnitList.[4].id", null, 4L));
+
+        validateObtainedChangeEntryIsExpected(
+            getByPropertyName(changeEntryList, "workUnitList.[4].workUnitName"),
+            buildChangeEntry("workUnitList.[4].workUnitName", null, "workUnitMock2B"));
+
+        validateObtainedChangeEntryIsExpected(
+            getByPropertyName(changeEntryList, "workUnitList.[4].shortName"),
+            buildChangeEntry("workUnitList.[4].shortName", null, "workUnitMockShort2B"));
     }
 
     private ChangeEntry getByPropertyName(List<ChangeEntry> changeEntries, String propertyName)
@@ -299,7 +355,7 @@ public class ChangesDetectorTest
         return null;
     }
 
-    private ChangeEntry getChangeEntry(String property, Object oldValue, Object newValue)
+    private ChangeEntry buildChangeEntry(String property, Object oldValue, Object newValue)
     {
         ChangeEntry expectedChangeEntry = new ChangeEntry();
         expectedChangeEntry.setProperty(property);

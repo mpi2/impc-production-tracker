@@ -81,6 +81,7 @@ public class HistoryBuilder<T>
     private List<HistoryDetail> getDetails(T originalEntity, T newEntity)
     {
         List<String> fieldsToExclude = new ArrayList<>();
+        fieldsToExclude.add("id");
         fieldsToExclude.add(BaseEntity_.CREATED_AT);
         fieldsToExclude.add(BaseEntity_.CREATED_BY);
         fieldsToExclude.add(BaseEntity_.LAST_MODIFIED);
@@ -105,6 +106,7 @@ public class HistoryBuilder<T>
                     x.getOldValueId() == null ? null : x.getOldValueId().toString());
                 historyDetail.setNewValueEntityId(
                     x.getNewValueId() == null ? null : x.getNewValueId().toString());
+                historyDetail.setNote(x.getChangeType().getLabel());
 
                 details.add(historyDetail);
             });

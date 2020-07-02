@@ -25,7 +25,7 @@ public class PropertyEvaluatorTest
         PropertyDescription dataOutput = propertyEvaluator.getData();
 
         assertThat("map:", dataOutput, is(notNullValue()));
-        assertThat("map:", dataOutput.getName(), is("p1"));
+        assertThat("map:", dataOutput.getPropertyDefinition().getName(), is("p1"));
         assertThat("map:", dataOutput.getType(), is(String.class));
         assertThat("map:", dataOutput.getValue(), is(notNullValue()));
         assertThat("map:", dataOutput.isSimpleValue(), is(true));
@@ -44,9 +44,8 @@ public class PropertyEvaluatorTest
         propertyEvaluator.evaluate();
         PropertyDescription outputData = propertyEvaluator.getData();
 
-
         assertThat("map:", outputData, is(notNullValue()));
-        assertThat("map:", outputData.getName(), is("parentPropertyName.p1"));
+        assertThat("map:", outputData.getPropertyDefinition().getName(), is("parentPropertyName.p1"));
         assertThat("map:", outputData.getType(), is(String.class));
         assertThat("map:", outputData.getValue(), is(notNullValue()));
         assertThat("map:", outputData.isSimpleValue(), is(true));

@@ -2,11 +2,13 @@ package org.gentar.audit.history;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import org.gentar.audit.diff.ChangeType;
 import org.gentar.audit.history.History;
 import org.gentar.audit.history.HistoryBuilder;
 import org.gentar.audit.history.detail.HistoryDetail;
 import org.gentar.security.abac.subject.SubjectRetriever;
 import org.gentar.security.abac.subject.SystemSubject;
+import org.gentar.util.CollectionPrinter;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -73,70 +75,136 @@ public class HistoryBuilderTest
         assertThat("History record not generated:", history, is(notNullValue()));
 
         List<HistoryDetail> historyDetails = history.getHistoryDetailSet();
-        assertThat("Unexpected number of history details", historyDetails.size(), is(8));
 
-        HistoryDetail planNameHistoryDetail = getHistoryDetails("planName", historyDetails);
-        assertThat("Expected plan name change not found", planNameHistoryDetail, is(notNullValue()));
-        assertThat("Expected field not found", planNameHistoryDetail.getField(), is("planName"));
-        assertThat("Unexpected plan name old value", planNameHistoryDetail.getOldValue(), is("planMock1"));
-        assertThat("Unexpected plan name new value", planNameHistoryDetail.getNewValue(), is("planMock2"));
+        assertThat("Unexpected number of history details", historyDetails.size(), is(16));
 
-        HistoryDetail privacyNameHistoryDetail = getHistoryDetails("privacy.privacyName", historyDetails);
-        assertThat("Expected privacy name change not found", privacyNameHistoryDetail, is(notNullValue()));
-        assertThat("Expected field not found", privacyNameHistoryDetail.getField(), is("privacy.privacyName"));
-        assertThat(
-            "Unexpected privacy name old value", privacyNameHistoryDetail.getOldValue(), is("privacyMock1"));
-        assertThat(
-            "Unexpected privacy name new value", privacyNameHistoryDetail.getNewValue(), is("privacyMock2"));
+        HistoryDetail historyDetail1 = getHistoryDetails("planName", historyDetails);
+        assertThat(historyDetail1.getOldValue(), is("planMock1"));
+        assertThat(historyDetail1.getNewValue(), is("planMock2"));
+        assertThat(historyDetail1.getReferenceEntity(), is(nullValue()));
+        assertThat(historyDetail1.getOldValueEntityId(), is(nullValue()));
+        assertThat(historyDetail1.getNewValueEntityId(), is(nullValue()));
+        assertThat(historyDetail1.getNote(), is(ChangeType.CHANGED.getLabel()));
 
-        HistoryDetail statusNameHistoryDetail = getHistoryDetails("status.statusName", historyDetails);
-        assertThat("Expected status name change not found", statusNameHistoryDetail, is(notNullValue()));
-        assertThat("Expected field not found", statusNameHistoryDetail.getField(), is("status.statusName"));
-        assertThat(
-            "Unexpected status name old value", statusNameHistoryDetail.getOldValue(), is("statusMock1"));
-        assertThat(
-            "Unexpected status name new value", statusNameHistoryDetail.getNewValue(), is("statusMock2"));
+        HistoryDetail historyDetail2 = getHistoryDetails("privacy.privacyName", historyDetails);
+        assertThat(historyDetail2.getOldValue(), is("privacyMock1"));
+        assertThat(historyDetail2.getNewValue(), is("privacyMock2"));
+        assertThat(historyDetail2.getReferenceEntity(), is(nullValue()));
+        assertThat(historyDetail2.getOldValueEntityId(), is(nullValue()));
+        assertThat(historyDetail2.getNewValueEntityId(), is(nullValue()));
+        assertThat(historyDetail2.getNote(), is(ChangeType.CHANGED.getLabel()));
 
-        HistoryDetail workUnitElement1HistoryDetail = getHistoryDetails("workUnitList#1", historyDetails);
-        assertThat(
-            "Expected work unit element 1 change not found", workUnitElement1HistoryDetail, is(notNullValue()));
-        assertThat("Expected field not found", workUnitElement1HistoryDetail.getField(), is("workUnitList#1"));
-        assertThat(
-            "Unexpected work unit element 1 old value", workUnitElement1HistoryDetail.getOldValue(), is("workUnitMock1A"));
-        assertThat(
-            "Unexpected work unit element 1 new value", workUnitElement1HistoryDetail.getNewValue(), is(nullValue()));
+        HistoryDetail historyDetail3 = getHistoryDetails("status.statusName", historyDetails);
+        assertThat(historyDetail3.getOldValue(), is("statusMock1"));
+        assertThat(historyDetail3.getNewValue(), is("statusMock2"));
+        assertThat(historyDetail3.getReferenceEntity(), is(nullValue()));
+        assertThat(historyDetail3.getOldValueEntityId(), is(nullValue()));
+        assertThat(historyDetail3.getNewValueEntityId(), is(nullValue()));
+        assertThat(historyDetail3.getNote(), is(ChangeType.CHANGED.getLabel()));
 
-        HistoryDetail workUnitElement2HistoryDetail = getHistoryDetails("workUnitList#2", historyDetails);
-        assertThat("Expected work unit element 2 change not found", workUnitElement2HistoryDetail, is(notNullValue()));
-        assertThat(
-            "Expected field not found", workUnitElement2HistoryDetail.getField(), is("workUnitList#2"));
-        assertThat(
-            "Unexpected work unit element 2 old value", workUnitElement2HistoryDetail.getOldValue(), is("workUnitMock1B"));
-        assertThat(
-            "Unexpected work unit element 2 new value", workUnitElement2HistoryDetail.getNewValue(), is(nullValue()));
+        HistoryDetail historyDetail4 = getHistoryDetails("status.subStatus.subStatusName", historyDetails);
+        assertThat(historyDetail4.getOldValue(), is("subStatusMock1"));
+        assertThat(historyDetail4.getNewValue(), is("subStatusMock2"));
+        assertThat(historyDetail4.getReferenceEntity(), is(nullValue()));
+        assertThat(historyDetail4.getOldValueEntityId(), is(nullValue()));
+        assertThat(historyDetail4.getNewValueEntityId(), is(nullValue()));
+        assertThat(historyDetail4.getNote(), is(ChangeType.CHANGED.getLabel()));
 
-        HistoryDetail workUnitElement3HistoryDetail = getHistoryDetails("workUnitList#3", historyDetails);
-        assertThat(
-            "Expected work unit element 3 change not found", workUnitElement3HistoryDetail, is(notNullValue()));
-        assertThat(
-            "Expected field not found", workUnitElement3HistoryDetail.getField(), is("workUnitList#3"));
-        assertThat(
-            "Unexpected work unit element 3 old value", workUnitElement3HistoryDetail.getOldValue(), is(nullValue()));
-        assertThat(
-            "Unexpected work unit element 3 new value", workUnitElement3HistoryDetail.getNewValue(), is("workUnitMock2A"));
+        HistoryDetail historyDetail5 = getHistoryDetails("workUnitList.[1]", historyDetails);
+        assertThat(historyDetail5.getOldValue(), is("workUnitMock1A"));
+        assertThat(historyDetail5.getNewValue(), is(nullValue()));
+        assertThat(historyDetail5.getReferenceEntity(), is(nullValue()));
+        assertThat(historyDetail5.getOldValueEntityId(), is(nullValue()));
+        assertThat(historyDetail5.getNewValueEntityId(), is(nullValue()));
+        assertThat(historyDetail5.getNote(), is(ChangeType.REMOVED.getLabel()));
 
-        HistoryDetail workUnitElement4HistoryDetail = getHistoryDetails("workUnitList#4", historyDetails);
-        assertThat(
-            "Expected work unit element 4 change not found", workUnitElement4HistoryDetail, is(notNullValue()));
-        assertThat(
-            "Expected field not found", workUnitElement4HistoryDetail.getField(), is("workUnitList#4"));
-        assertThat(
-            "Unexpected work unit element 4 old value", workUnitElement4HistoryDetail.getOldValue(), is(nullValue()));
-        assertThat(
-            "Unexpected work unit element 4 new value", workUnitElement4HistoryDetail.getNewValue(), is("workUnitMock2B"));
+        HistoryDetail historyDetail6 = getHistoryDetails("workUnitList.[1].shortName", historyDetails);
+        assertThat(historyDetail6.getOldValue(), is("workUnitMockShort1A"));
+        assertThat(historyDetail6.getNewValue(), is(nullValue()));
+        assertThat(historyDetail6.getReferenceEntity(), is(nullValue()));
+        assertThat(historyDetail6.getOldValueEntityId(), is(nullValue()));
+        assertThat(historyDetail6.getNewValueEntityId(), is(nullValue()));
+        assertThat(historyDetail6.getNote(), is(ChangeType.CHANGED.getLabel()));
 
-        HistoryDetail workUnitListHistoryDetail = getHistoryDetails("workUnitList", historyDetails);
-        assertThat("No change at list level is expected", workUnitListHistoryDetail, is(nullValue()));
+        HistoryDetail historyDetail7 = getHistoryDetails("workUnitList.[1].workUnitName", historyDetails);
+        assertThat(historyDetail7.getOldValue(), is("workUnitMock1A"));
+        assertThat(historyDetail7.getNewValue(), is(nullValue()));
+        assertThat(historyDetail7.getReferenceEntity(), is(nullValue()));
+        assertThat(historyDetail7.getOldValueEntityId(), is(nullValue()));
+        assertThat(historyDetail7.getNewValueEntityId(), is(nullValue()));
+        assertThat(historyDetail7.getNote(), is(ChangeType.CHANGED.getLabel()));
+
+        HistoryDetail historyDetail8 = getHistoryDetails("workUnitList.[2]", historyDetails);
+        assertThat(historyDetail8.getOldValue(), is("workUnitMock1B"));
+        assertThat(historyDetail8.getNewValue(), is(nullValue()));
+        assertThat(historyDetail8.getReferenceEntity(), is(nullValue()));
+        assertThat(historyDetail8.getOldValueEntityId(), is(nullValue()));
+        assertThat(historyDetail8.getNewValueEntityId(), is(nullValue()));
+        assertThat(historyDetail8.getNote(), is(ChangeType.REMOVED.getLabel()));
+
+        HistoryDetail historyDetail9 = getHistoryDetails("workUnitList.[2].shortName", historyDetails);
+        assertThat(historyDetail9.getOldValue(), is("workUnitMockShort1B"));
+        assertThat(historyDetail9.getNewValue(), is(nullValue()));
+        assertThat(historyDetail9.getReferenceEntity(), is(nullValue()));
+        assertThat(historyDetail9.getOldValueEntityId(), is(nullValue()));
+        assertThat(historyDetail9.getNewValueEntityId(), is(nullValue()));
+        assertThat(historyDetail9.getNote(), is(ChangeType.CHANGED.getLabel()));
+
+        HistoryDetail historyDetail10 = getHistoryDetails("workUnitList.[2].workUnitName", historyDetails);
+        assertThat(historyDetail10.getOldValue(), is("workUnitMock1B"));
+        assertThat(historyDetail10.getNewValue(), is(nullValue()));
+        assertThat(historyDetail10.getReferenceEntity(), is(nullValue()));
+        assertThat(historyDetail10.getOldValueEntityId(), is(nullValue()));
+        assertThat(historyDetail10.getNewValueEntityId(), is(nullValue()));
+        assertThat(historyDetail10.getNote(), is(ChangeType.CHANGED.getLabel()));
+
+        HistoryDetail historyDetail11 = getHistoryDetails("workUnitList.[3]", historyDetails);
+        assertThat(historyDetail11.getOldValue(), is(nullValue()));
+        assertThat(historyDetail11.getNewValue(), is("workUnitMock2A"));
+        assertThat(historyDetail11.getReferenceEntity(), is(nullValue()));
+        assertThat(historyDetail11.getOldValueEntityId(), is(nullValue()));
+        assertThat(historyDetail11.getNewValueEntityId(), is(nullValue()));
+        assertThat(historyDetail11.getNote(), is(ChangeType.ADDED.getLabel()));
+
+        HistoryDetail historyDetail12 = getHistoryDetails("workUnitList.[3].shortName", historyDetails);
+        assertThat(historyDetail12.getOldValue(), is(nullValue()));
+        assertThat(historyDetail12.getNewValue(), is("workUnitMockShort2A"));
+        assertThat(historyDetail12.getReferenceEntity(), is(nullValue()));
+        assertThat(historyDetail12.getOldValueEntityId(), is(nullValue()));
+        assertThat(historyDetail12.getNewValueEntityId(), is(nullValue()));
+        assertThat(historyDetail12.getNote(), is(ChangeType.CHANGED.getLabel()));
+
+        HistoryDetail historyDetail13 = getHistoryDetails("workUnitList.[3].workUnitName", historyDetails);
+        assertThat(historyDetail13.getOldValue(), is(nullValue()));
+        assertThat(historyDetail13.getNewValue(), is("workUnitMock2A"));
+        assertThat(historyDetail13.getReferenceEntity(), is(nullValue()));
+        assertThat(historyDetail13.getOldValueEntityId(), is(nullValue()));
+        assertThat(historyDetail13.getNewValueEntityId(), is(nullValue()));
+        assertThat(historyDetail13.getNote(), is(ChangeType.CHANGED.getLabel()));
+
+        HistoryDetail historyDetail14 = getHistoryDetails("workUnitList.[4]", historyDetails);
+        assertThat(historyDetail14.getOldValue(), is(nullValue()));
+        assertThat(historyDetail14.getNewValue(), is("workUnitMock2B"));
+        assertThat(historyDetail14.getReferenceEntity(), is(nullValue()));
+        assertThat(historyDetail14.getOldValueEntityId(), is(nullValue()));
+        assertThat(historyDetail14.getNewValueEntityId(), is(nullValue()));
+        assertThat(historyDetail14.getNote(), is(ChangeType.ADDED.getLabel()));
+
+        HistoryDetail historyDetail15 = getHistoryDetails("workUnitList.[4].shortName", historyDetails);
+        assertThat(historyDetail15.getOldValue(), is(nullValue()));
+        assertThat(historyDetail15.getNewValue(), is("workUnitMockShort2B"));
+        assertThat(historyDetail15.getReferenceEntity(), is(nullValue()));
+        assertThat(historyDetail15.getOldValueEntityId(), is(nullValue()));
+        assertThat(historyDetail15.getNewValueEntityId(), is(nullValue()));
+        assertThat(historyDetail15.getNote(), is(ChangeType.CHANGED.getLabel()));
+
+        HistoryDetail historyDetail16 = getHistoryDetails("workUnitList.[4].workUnitName", historyDetails);
+        assertThat(historyDetail16.getOldValue(), is(nullValue()));
+        assertThat(historyDetail16.getNewValue(), is("workUnitMock2B"));
+        assertThat(historyDetail16.getReferenceEntity(), is(nullValue()));
+        assertThat(historyDetail16.getOldValueEntityId(), is(nullValue()));
+        assertThat(historyDetail16.getNewValueEntityId(), is(nullValue()));
+        assertThat(historyDetail16.getNote(), is(ChangeType.CHANGED.getLabel()));
     }
 
     private HistoryDetail getHistoryDetails(

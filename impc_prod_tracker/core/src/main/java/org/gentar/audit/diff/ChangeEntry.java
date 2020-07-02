@@ -9,4 +9,11 @@ public class ChangeEntry
     private Object oldValue;
     private Object newValue;
     private Class<?> type;
+    private ChangeType changeType;
+
+    public String toString()
+    {
+        return property + " old["+oldValue+"] new[" + newValue + "] type[" + type.getSimpleName() +
+            "] changeType[" + changeType + "]";
+    }
 }
