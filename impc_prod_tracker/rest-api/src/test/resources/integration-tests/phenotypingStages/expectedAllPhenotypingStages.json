@@ -10,6 +10,7 @@
     "initialDataReleaseDate": "2015-11-23",
     "tissueDistributions": [
       {
+        "id": 1,
         "startDate": "2020-04-13",
         "endDate": "2021-05-15",
         "workUnitName": "TCP",
@@ -60,6 +61,7 @@
     "initialDataReleaseDate": "2019-04-12",
     "tissueDistributions": [
       {
+        "id": 2,
         "startDate": "2019-04-13",
         "endDate": "2020-05-15",
         "workUnitName": "UCD",

@@ -22,6 +22,7 @@ public class PhenotypingStageFieldsDescriptors
         addField(phenotypingStageFieldsDescriptions, "doNotCountTowardsCompleteness", "");
         addField(phenotypingStageFieldsDescriptions, "initialDataReleaseDate", "");
         addField(phenotypingStageFieldsDescriptions, "tissueDistributions[]", "");
+        addField(phenotypingStageFieldsDescriptions, "tissueDistributions[].id", "");
         addField(phenotypingStageFieldsDescriptions, "tissueDistributions[].startDate", "");
         addField(phenotypingStageFieldsDescriptions, "tissueDistributions[].endDate", "");
         addField(phenotypingStageFieldsDescriptions, "tissueDistributions[].workUnitName", "");

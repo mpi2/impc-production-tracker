@@ -252,17 +252,24 @@ include::{snippets}/projects/putProject/response-fields.adoc[]
 anchor:chapter-configure[]
 This section describes the REST endpoints for plans in the system.
 
-
 === Fields
 These are the fields you are going to see in the body of a request in a GET or in the payload for POST or PUT
-operations. This is an example of a Crispr plan.
+operations.
+
+==== Crispr plan.
 include::{snippets}/plans/getCrisprPlan/response-fields.adoc[]
+
+==== Phenotyping plan.
+ADD FIELDS EXAMPLE
+// include::{snippets}/plans/getPhenotypingPlan/response-fields.adoc[]
 
 === Filters
 When you use the endpoint to get all the plans, you can also use filters to reduce the results.
 This is the list of filters you can use:
 
-.Filters for plans
+==== Common filters
+
+.Common filters for plans
 |===
 |Filter name | Description
 
@@ -281,25 +288,37 @@ This is the list of filters you can use:
 |summaryStatusName
 |Name of the summary status in the plan.
 
-|typeName
-a|Name of the type of the plan. Possible values are:
+|typeName a|Name of the type of the plan. Possible values are:
 
-- production
-- phenotyping
+* production
+* phenotyping
 
-|attemptTypeName
+|===
 
-a|Attempt type. Possible values are:
+==== Specific filters for production plan
 
-- crispr
-- haplo-essential crispr
-- haplo-essential crispr
-- breeding
-- adult phenotyping
-- haplo-essential phenotyping
+.Filters for production plans
+|===
+|attemptTypeName a|Attempt type. Possible values are:
+
+* crispr
+* haplo-essential crispr
+* haplo-essential crispr
+* breeding
 
 |imitsMiAttemptIds
-|iMits attempt id.
+|iMits mi attempt id.
+
+|===
+
+==== Specific filters for phenotyping plan
+
+.Filters for phenotyping plans
+|===
+|attemptTypeName a|Attempt type. Possible values are:
+
+* adult phenotyping
+* haplo-essential phenotyping
 
 |imitsPhenotypeAttemptIds
 |iMits phenotyping attempt id.
@@ -312,7 +331,7 @@ a|Attempt type. Possible values are:
 === GET
 ==== Get a specific plan
 
-This endpoint shows a plan in the system.
+This endpoint shows a production plan in the system.
 
 ===== Example Request
 
@@ -349,8 +368,7 @@ include::{snippets}/plans/filteredPlans/http-response.adoc[]
 
 === POST
 
-==== Create a plan
-
+==== Create a crispr plan
 
 ===== Example Request
 
@@ -361,10 +379,20 @@ include::{snippets}/plans/postCrisprPlan/http-request.adoc[]
 
 include::{snippets}/plans/postCrisprPlan/http-response.adoc[]
 
+==== Create a phenotyping plan
+
+===== Example Request
+
+Curl:
+ADD PHENOTYPING PLAN INFORMATION
+//include::{snippets}/plans/postPhenotypingPlan/http-request.adoc[]
+
+===== Example Response
+ADD PHENOTYPING PLAN INFORMATION
+//include::{snippets}/plans/postPhenotypingPlan/http-response.adoc[]
+
 
 === PUT
-
-==== Update a plan
 
 You can update some information in a plan if you are related with any of the
 work units for that plan.
@@ -375,6 +403,8 @@ mandatory).
 
 If a value is provided for pin, the system will validate that it matches the pin in the url parameter.
 
+==== Update a crispr plan
+
 ===== Example Request
 
 Curl:
@@ -383,6 +413,18 @@ include::{snippets}/plans/putCrisprPlan/http-request.adoc[]
 ===== Example Response
 
 include::{snippets}/plans/putCrisprPlan/http-response.adoc[]
+
+==== Update a phenotyping plan
+NO INFORMATION IN THE PHENOTYPING PLAN CAN BE UPDATE, JUST THE PLAN
+===== Example Request
+
+Curl:
+ADD PHENOTYPING PLAN INFORMATION
+//include::{snippets}/plans/putPhenotypingPlan/http-request.adoc[]
+
+===== Example Response
+ADD PHENOTYPING PLAN INFORMATION
+//include::{snippets}/plans/putPhenotypingPlan/http-response.adoc[]
 
 
 == Outcomes
@@ -463,7 +505,6 @@ include::{snippets}/outcomes/colonyOutcome/history/http-response.adoc[]
 
 ==== Create an outcome (colony)
 
-
 ===== Example Request
 
 Curl:
@@ -511,6 +552,89 @@ include::{snippets}/mutations/curl-request.adoc[]
 
 include::{snippets}/mutations/http-response.adoc[]
 
+== Phenotyping Stages
+anchor:phenotypingStages[]
+This section describes the REST endpoints for phenotyping stages in the system.
+
+[TODO:DEFINITION]
+DFSDF
+
+=== Fields
+These are the fields you are going to see in the body of a request in a GET or in the payload for POST or PUT
+operations.
+
+include::{snippets}/phenotypingStage/response-fields.adoc[]
+
+
+=== GET
+==== Get a specific phenotyping stage
+
+This endpoint fetches a specific phenotyping stage belonging to a plan.
+
+===== Example Request
+
+Curl:
+include::{snippets}/phenotypingStage/curl-request.adoc[]
+
+===== Example Response
+
+include::{snippets}/phenotypingStage/http-response.adoc[]
+
+
+==== Get all phenotyping stages in a plan
+This endpoint shows all the phenotyping stages associated to a plan.
+
+===== Example Request
+
+Curl:
+include::{snippets}/phenotypingStage/curl-request.adoc[]
+
+===== Example Response
+
+include::{snippets}/phenotypingStage/http-response.adoc[]
+
+==== Get the history of changes for a phenotyping stage
+
+You can use this endpoint to see all the changes that have been made on a phenotyping stage.
+
+===== Example Request
+
+Curl:
+include::{snippets}/phenotypingStage/history/curl-request.adoc[]
+
+===== Example Response
+
+include::{snippets}/phenotypingStage/history/http-response.adoc[]
+
+
+=== POST
+
+==== Create a phenotyping stage
+
+===== Example Request
+
+Curl:
+[TODO:LINK]
+//include::{snippets}/phenotypingStage/postPhenotypingStage/http-request.adoc[]
+
+===== Example Response
+[TODO:LINK]
+//include::{snippets}/phenotypingStage/postPhenotypingStage/http-response.adoc[]
+
+
+=== PUT
+
+==== Update a phenotyping stage
+
+===== Example Request
+
+Curl:
+[TODO:LINK]
+//include::{snippets}/phenotypingStage/putPhenotypingStage/http-request.adoc[]
+
+===== Example Response
+[TODO:LINK]
+include::{snippets}/phenotypingStage/putPhenotypingStage/http-response.adoc[]
 
 
 == State Machine interaction
@@ -614,6 +738,7 @@ The response will indicate what changed in the system, as long as a link to the 
 case you need to retrieve the new object.
 
 include::{snippets}/plans/putCrisprPlanStateMachine/http-response.adoc[]
+
 
 
 

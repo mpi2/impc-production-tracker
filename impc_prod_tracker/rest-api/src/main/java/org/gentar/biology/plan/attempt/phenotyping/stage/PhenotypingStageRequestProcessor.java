@@ -1,17 +1,15 @@
 package org.gentar.biology.plan.attempt.phenotyping.stage;
 
-import org.gentar.biology.colony.Colony;
 import org.gentar.biology.plan.Plan;
 import org.gentar.biology.plan.PlanService;
+import org.gentar.biology.plan.attempt.phenotyping.stage.material_deposited_type.MaterialDepositedType;
 import org.gentar.biology.plan.attempt.phenotyping.stage.tissue_distribution.TissueDistribution;
 import org.gentar.exceptions.UserOperationFailedException;
+import org.gentar.organization.work_unit.WorkUnitMapper;
 import org.gentar.statemachine.ProcessEvent;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @Component
 public class PhenotypingStageRequestProcessor
@@ -20,16 +18,20 @@ public class PhenotypingStageRequestProcessor
     private PlanService planService;
     private PhenotypingStageUpdateMapper phenotypingStageUpdateMapper;
     private TissueDistributionMapper tissueDistributionMapper;
+    private WorkUnitMapper workUnitMapper;
+    private MaterialDepositedTypeMapper materialDepositedTypeMapper;
 
     public PhenotypingStageRequestProcessor(PhenotypingStageService phenotypingStageService,
                                             PlanService planService,
                                             PhenotypingStageUpdateMapper phenotypingStageUpdateMapper,
-                                            TissueDistributionMapper tissueDistributionMapper)
+                                            TissueDistributionMapper tissueDistributionMapper, WorkUnitMapper workUnitMapper, MaterialDepositedTypeMapper materialDepositedTypeMapper)
     {
         this.phenotypingStageService = phenotypingStageService;
         this.planService = planService;
         this.phenotypingStageUpdateMapper = phenotypingStageUpdateMapper;
         this.tissueDistributionMapper = tissueDistributionMapper;
+        this.workUnitMapper = workUnitMapper;
+        this.materialDepositedTypeMapper = materialDepositedTypeMapper;
     }
 
     /**
@@ -69,11 +71,43 @@ public class PhenotypingStageRequestProcessor
         return newPhenotypingStage;
     }
 
-    private void setTissueDistribution(PhenotypingStage newPhenotypingStage, List<TissueDistributionDTO> tissueDistributionDTOS)
+    private void setTissueDistribution(PhenotypingStage newPhenotypingStage,
+                                       List<TissueDistributionDTO> tissueDistributionDTOS)
     {
-        Set<TissueDistribution> tissueDistributions = tissueDistributionMapper.toEntities(tissueDistributionDTOS);
-        tissueDistributions.forEach(tissueDistribution -> tissueDistribution.setPhenotypingStage(newPhenotypingStage));
-        newPhenotypingStage.setTissueDistributions(tissueDistributions);
+
+        Set<TissueDistribution> newTissueDistributions = new HashSet<TissueDistribution>();
+
+        tissueDistributionDTOS.forEach(tissueDistributionDTO -> newTissueDistributions.add(
+                        getTissueDistributionToUpdate(newPhenotypingStage, tissueDistributionDTO)));
+
+        newPhenotypingStage.setTissueDistributions(newTissueDistributions);
+    }
+
+    public TissueDistribution getTissueDistributionToUpdate(PhenotypingStage newPhenotypingStage,
+                                                  TissueDistributionDTO tissueDistributionDTO)
+    {
+        if (tissueDistributionDTO.getId() == null)
+        {
+            TissueDistribution tissueDistributionToBeCreated = tissueDistributionMapper.toEntity(tissueDistributionDTO);
+            tissueDistributionToBeCreated.setPhenotypingStage(newPhenotypingStage);
+            return tissueDistributionToBeCreated;
+        }
+
+        Set<TissueDistribution> originalTissueDistributions = new HashSet<TissueDistribution>(
+        newPhenotypingStage.getTissueDistributions());
+
+        TissueDistribution tissueDistributionToUpdate = originalTissueDistributions.stream()
+                .filter(tissueDistribution -> tissueDistributionDTO.getId().equals(tissueDistribution.getId()))
+                .findFirst()
+                .get();
+
+        tissueDistributionToUpdate.setStartDate(tissueDistributionDTO.getStartDate());
+        tissueDistributionToUpdate.setEndDate(tissueDistributionDTO.getEndDate());
+        tissueDistributionToUpdate.setMaterialDepositedType(materialDepositedTypeMapper.toEntity(
+                tissueDistributionDTO.getMaterialDepositedTypeName()));
+        tissueDistributionToUpdate.setWorkUnit(workUnitMapper.toEntity(tissueDistributionDTO.getWorkUnitName()));
+
+        return tissueDistributionToUpdate;
     }
 
     private void setEvent(PhenotypingStage phenotypingStage, PhenotypingStageUpdateDTO phenotypingStageUpdateDTO)

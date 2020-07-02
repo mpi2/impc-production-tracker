@@ -201,6 +201,19 @@
                             MATERIAL_DEPOSITED_TYPE_ID="2"
     />
 
+    <HISTORY    ID="1"
+                USER_="imits2test@test.com"
+                COMMENT="PhenotypingStage updated"
+                ENTITY_ID="2"
+                ENTITY_NAME="PhenotypingStage"
+                DATE="2020-06-17 15:08:56.643268"/>
+
+    <HISTORY_DETAIL ID="1"
+                    HISTORY_ID="1"
+                    FIELD="doNotCountTowardsCompleteness"
+                    OLD_VALUE="false"
+                    NEW_VALUE="true"/>
+
     <PERSON     ID="123"
                 EMAIL="imits2test@test.com"
                 AUTH_ID="usr-dde67fbd-c3c2-42eb-aa81-f1a225f047c7"/>
