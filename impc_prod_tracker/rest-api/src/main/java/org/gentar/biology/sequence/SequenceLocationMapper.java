@@ -31,7 +31,7 @@ public class SequenceLocationMapper implements Mapper<SequenceLocation, Sequence
     public SequenceLocation toEntity(SequenceLocationDTO sequenceLocationDTO)
     {
         SequenceLocation sequenceLocation =
-                entityMapper.toTarget(sequenceLocationDTO, SequenceLocation.class);
+            entityMapper.toTarget(sequenceLocationDTO, SequenceLocation.class);
         sequenceLocation.setId(sequenceLocationDTO.getId());
         sequenceLocation.setIndex(sequenceLocationDTO.getLocationIndex());
         setLocations(sequenceLocation, sequenceLocationDTO);

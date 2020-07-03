@@ -1,6 +1,7 @@
 package org.gentar.audit.history;
 
 import org.gentar.biology.plan.type.PlanType;
+import org.gentar.util.CollectionPrinter;
 import org.hamcrest.Matchers;
 import org.gentar.biology.plan.attempt.crispr.CrisprAttempt;
 import org.gentar.biology.plan.attempt.crispr.genotype_primer.GenotypePrimer;
@@ -69,11 +70,16 @@ public class HistoryChangesAdaptorUsingPlanObjectTest
 
         List<ChangeDescription> changeDescriptionList = historyChangesAdaptor.getChanges();
 
-        assertThat("Only one change is expected:", changeDescriptionList.size(), is(1));
-        ChangeDescription change = changeDescriptionList.get(0);
-        assertThat("No expected property", change.getProperty(), is("planType.name"));
-        assertThat("No expected old value", change.getOldValue(), is("originalPlanTypeName"));
-        assertThat("No expected new value", change.getNewValue(), is("newPlanType"));
+        assertThat("Only one change is expected:", changeDescriptionList.size(), is(2));
+        ChangeDescription change1 = getChange("planType.id", changeDescriptionList);
+        assertThat("No expected property", change1.getProperty(), is("planType.id"));
+        assertThat("No expected old value", change1.getOldValue(), is(1L));
+        assertThat("No expected new value", change1.getNewValue(), is(2L));
+
+        ChangeDescription change2 = getChange("planType.name", changeDescriptionList);
+        assertThat("No expected property", change2.getProperty(), is("planType.name"));
+        assertThat("No expected old value", change2.getOldValue(), is("originalPlanTypeName"));
+        assertThat("No expected new value", change2.getNewValue(), is("newPlanType"));
     }
 
     @Test
@@ -95,15 +101,21 @@ public class HistoryChangesAdaptorUsingPlanObjectTest
         historyChangesAdaptor = new HistoryChangesAdaptor<>(originalPlan, newPlan);
         List<ChangeDescription> changeDescriptionList = historyChangesAdaptor.getChanges();
 
-        assertThat("Unexpected number of changes:", changeDescriptionList.size(), is(2));
+        assertThat("Unexpected number of changes:", changeDescriptionList.size(), is(3));
         ChangeDescription change1 = getChange("comment", changeDescriptionList);
         assertThat("Change not found", change1, is(notNullValue()));
         assertThat("No expected old value", change1.getOldValue(), is(nullValue()));
         assertThat("No expected old value", change1.getNewValue(), is("New comment"));
-        ChangeDescription change2 = getChange("planType.name", changeDescriptionList);
+
+        ChangeDescription change2 = getChange("planType.id", changeDescriptionList);
         assertThat("Change not found", change2, is(notNullValue()));
-        assertThat("No expected old value", change2.getOldValue(), is("originalPlanTypeName"));
-        assertThat("No expected old value", change2.getNewValue(), is("newPlanType"));
+        assertThat("No expected old value", change2.getOldValue(), is(1L));
+        assertThat("No expected old value", change2.getNewValue(), is(2L));
+
+        ChangeDescription change3 = getChange("planType.name", changeDescriptionList);
+        assertThat("Change not found", change3, is(notNullValue()));
+        assertThat("No expected old value", change3.getOldValue(), is("originalPlanTypeName"));
+        assertThat("No expected old value", change3.getNewValue(), is("newPlanType"));
     }
 
     @Test
@@ -189,29 +201,133 @@ public class HistoryChangesAdaptorUsingPlanObjectTest
         crisprAttempt2.setGuides(guides);
         newPlan.setCrisprAttempt(crisprAttempt2);
         List<ChangeDescription> changeDescriptionList = historyChangesAdaptor.getChanges();
-        assertThat("Unexpected number of changes:", changeDescriptionList.size(), is(2));
+        assertThat("Unexpected number of changes:", changeDescriptionList.size(), is(14));
 
-        ChangeDescription changeDescriptionElement1 =
-            getChange("crisprAttempt.guides#1", changeDescriptionList);
+        ChangeDescription changeDescription1 =
+            getChange("crisprAttempt.guides.[1]", changeDescriptionList);
         assertThat(
-            "Unexpected property:",
-            changeDescriptionElement1.getProperty(),
-            is("crisprAttempt.guides#1"));
+            "Unexpected property:", changeDescription1.getProperty(), is("crisprAttempt.guides.[1]"));
         assertThat(
-            "Unexpected old value:", changeDescriptionElement1.getOldValue(), is(nullValue()));
+            "Unexpected old value:", changeDescription1.getOldValue(), is(nullValue()));
         assertThat(
-            "Unexpected new value:", changeDescriptionElement1.getNewValue(), Matchers.is(guide1));
+            "Unexpected new value:", changeDescription1.getNewValue(), Matchers.is(guide1));
 
-        ChangeDescription changeDescriptionElement2 =
-            getChange("crisprAttempt.guides#2", changeDescriptionList);
+        ChangeDescription changeDescription2 =
+            getChange("crisprAttempt.guides.[1].chr", changeDescriptionList);
         assertThat(
-            "Unexpected property:",
-            changeDescriptionElement2.getProperty(),
-            is("crisprAttempt.guides#2"));
+            "Unexpected property:", changeDescription2.getProperty(), is("crisprAttempt.guides.[1].chr"));
         assertThat(
-            "Unexpected old value:", changeDescriptionElement2.getOldValue(), is(nullValue()));
+            "Unexpected old value:", changeDescription2.getOldValue(), is(nullValue()));
         assertThat(
-            "Unexpected new value:", changeDescriptionElement2.getNewValue(), Matchers.is(guide2));
+            "Unexpected new value:", changeDescription2.getNewValue(), Matchers.is("X"));
+
+        ChangeDescription changeDescription3 =
+            getChange("crisprAttempt.guides.[1].id", changeDescriptionList);
+        assertThat(
+            "Unexpected property:", changeDescription3.getProperty(), is("crisprAttempt.guides.[1].id"));
+        assertThat(
+            "Unexpected old value:", changeDescription3.getOldValue(), is(nullValue()));
+        assertThat(
+            "Unexpected new value:", changeDescription3.getNewValue(), Matchers.is(1L));
+
+        ChangeDescription changeDescription4 =
+            getChange("crisprAttempt.guides.[1].sequence", changeDescriptionList);
+        assertThat(
+            "Unexpected property:", changeDescription4.getProperty(), is("crisprAttempt.guides.[1].sequence"));
+        assertThat(
+            "Unexpected old value:", changeDescription4.getOldValue(), is(nullValue()));
+        assertThat(
+            "Unexpected new value:", changeDescription4.getNewValue(), Matchers.is("GCCTCAATCTGCACAGTATTGGG"));
+
+        ChangeDescription changeDescription5 =
+            getChange("crisprAttempt.guides.[1].start", changeDescriptionList);
+        assertThat(
+            "Unexpected property:", changeDescription5.getProperty(), is("crisprAttempt.guides.[1].start"));
+        assertThat(
+            "Unexpected old value:", changeDescription5.getOldValue(), is(nullValue()));
+        assertThat(
+            "Unexpected new value:", changeDescription5.getNewValue(), Matchers.is(105880383));
+
+        ChangeDescription changeDescription6 =
+            getChange("crisprAttempt.guides.[1].stop", changeDescriptionList);
+        assertThat(
+            "Unexpected property:", changeDescription6.getProperty(), is("crisprAttempt.guides.[1].stop"));
+        assertThat(
+            "Unexpected old value:", changeDescription6.getOldValue(), is(nullValue()));
+        assertThat(
+            "Unexpected new value:", changeDescription6.getNewValue(), Matchers.is(105880405));
+
+        ChangeDescription changeDescription7 =
+            getChange("crisprAttempt.guides.[1].truncatedGuide", changeDescriptionList);
+        assertThat(
+            "Unexpected property:", changeDescription7.getProperty(), is("crisprAttempt.guides.[1].truncatedGuide"));
+        assertThat(
+            "Unexpected old value:", changeDescription7.getOldValue(), is(nullValue()));
+        assertThat(
+            "Unexpected new value:", changeDescription7.getNewValue(), Matchers.is(false));
+
+        ChangeDescription changeDescription8 =
+            getChange("crisprAttempt.guides.[2]", changeDescriptionList);
+        assertThat(
+            "Unexpected property:", changeDescription8.getProperty(), is("crisprAttempt.guides.[2]"));
+        assertThat(
+            "Unexpected old value:", changeDescription8.getOldValue(), is(nullValue()));
+        assertThat(
+            "Unexpected new value:", changeDescription8.getNewValue(), Matchers.is(guide2));
+
+        ChangeDescription changeDescription9 =
+            getChange("crisprAttempt.guides.[2].chr", changeDescriptionList);
+        assertThat(
+            "Unexpected property:", changeDescription9.getProperty(), is("crisprAttempt.guides.[2].chr"));
+        assertThat(
+            "Unexpected old value:", changeDescription9.getOldValue(), is(nullValue()));
+        assertThat(
+            "Unexpected new value:", changeDescription9.getNewValue(), Matchers.is("X"));
+
+        ChangeDescription changeDescription10 =
+            getChange("crisprAttempt.guides.[2].id", changeDescriptionList);
+        assertThat(
+            "Unexpected property:", changeDescription10.getProperty(), is("crisprAttempt.guides.[2].id"));
+        assertThat(
+            "Unexpected old value:", changeDescription10.getOldValue(), is(nullValue()));
+        assertThat(
+            "Unexpected new value:", changeDescription10.getNewValue(), Matchers.is(2L));
+
+        ChangeDescription changeDescription11 =
+            getChange("crisprAttempt.guides.[2].sequence", changeDescriptionList);
+        assertThat(
+            "Unexpected property:", changeDescription11.getProperty(), is("crisprAttempt.guides.[2].sequence"));
+        assertThat(
+            "Unexpected old value:", changeDescription11.getOldValue(), is(nullValue()));
+        assertThat(
+            "Unexpected new value:", changeDescription11.getNewValue(), Matchers.is("AAATCAATCTGCACAGTATTGGG"));
+
+        ChangeDescription changeDescription12 =
+            getChange("crisprAttempt.guides.[2].start", changeDescriptionList);
+        assertThat(
+            "Unexpected property:", changeDescription12.getProperty(), is("crisprAttempt.guides.[2].start"));
+        assertThat(
+            "Unexpected old value:", changeDescription12.getOldValue(), is(nullValue()));
+        assertThat(
+            "Unexpected new value:", changeDescription12.getNewValue(), Matchers.is(9999999));
+
+        ChangeDescription changeDescription13 =
+            getChange("crisprAttempt.guides.[2].stop", changeDescriptionList);
+        assertThat(
+            "Unexpected property:", changeDescription13.getProperty(), is("crisprAttempt.guides.[2].stop"));
+        assertThat(
+            "Unexpected old value:", changeDescription13.getOldValue(), is(nullValue()));
+        assertThat(
+            "Unexpected new value:", changeDescription13.getNewValue(), Matchers.is(999999999));
+
+        ChangeDescription changeDescription14 =
+            getChange("crisprAttempt.guides.[2].truncatedGuide", changeDescriptionList);
+        assertThat(
+            "Unexpected property:", changeDescription14.getProperty(), is("crisprAttempt.guides.[2].truncatedGuide"));
+        assertThat(
+            "Unexpected old value:", changeDescription14.getOldValue(), is(nullValue()));
+        assertThat(
+            "Unexpected new value:", changeDescription14.getNewValue(), Matchers.is(false));
     }
 
     @Test
@@ -249,29 +365,134 @@ public class HistoryChangesAdaptorUsingPlanObjectTest
         crisprAttempt2.setGuides(Collections.singleton(guide2));
 
         List<ChangeDescription> changeDescriptionList = historyChangesAdaptor.getChanges();
-        assertThat("Unexpected number of changes:", changeDescriptionList.size(), is(2));
 
-        ChangeDescription changeDescriptionElement1 =
-            getChange("crisprAttempt.guides#1", changeDescriptionList);
-        assertThat(
-            "Unexpected property:",
-            changeDescriptionElement1.getProperty(),
-            is("crisprAttempt.guides#1"));
-        assertThat(
-            "Unexpected old value:", changeDescriptionElement1.getOldValue(), is(guide1));
-        assertThat(
-            "Unexpected new value:", changeDescriptionElement1.getNewValue(), is(nullValue()));
+        assertThat("Unexpected number of changes:", changeDescriptionList.size(), is(14));
 
-        ChangeDescription changeDescriptionElement2 =
-            getChange("crisprAttempt.guides#2", changeDescriptionList);
+        ChangeDescription changeDescription1 =
+            getChange("crisprAttempt.guides.[1]", changeDescriptionList);
         assertThat(
-            "Unexpected property:",
-            changeDescriptionElement2.getProperty(),
-            is("crisprAttempt.guides#2"));
+            "Unexpected property:", changeDescription1.getProperty(), is("crisprAttempt.guides.[1]"));
         assertThat(
-            "Unexpected old value:", changeDescriptionElement2.getOldValue(), is(nullValue()));
+            "Unexpected old value:", changeDescription1.getOldValue(), is(guide1));
         assertThat(
-            "Unexpected new value:", changeDescriptionElement2.getNewValue(), Matchers.is(guide2));
+            "Unexpected new value:", changeDescription1.getNewValue(), Matchers.is(nullValue()));
+
+        ChangeDescription changeDescription2 =
+            getChange("crisprAttempt.guides.[1].chr", changeDescriptionList);
+        assertThat(
+            "Unexpected property:", changeDescription2.getProperty(), is("crisprAttempt.guides.[1].chr"));
+        assertThat(
+            "Unexpected old value:", changeDescription2.getOldValue(), is("Y"));
+        assertThat(
+            "Unexpected new value:", changeDescription2.getNewValue(), Matchers.is(nullValue()));
+
+        ChangeDescription changeDescription3 =
+            getChange("crisprAttempt.guides.[1].id", changeDescriptionList);
+        assertThat(
+            "Unexpected property:", changeDescription3.getProperty(), is("crisprAttempt.guides.[1].id"));
+        assertThat(
+            "Unexpected old value:", changeDescription3.getOldValue(), is(1L));
+        assertThat(
+            "Unexpected new value:", changeDescription3.getNewValue(), Matchers.is(nullValue()));
+
+        ChangeDescription changeDescription4 =
+            getChange("crisprAttempt.guides.[1].sequence", changeDescriptionList);
+        assertThat(
+            "Unexpected property:", changeDescription4.getProperty(), is("crisprAttempt.guides.[1].sequence"));
+        assertThat(
+            "Unexpected old value:", changeDescription4.getOldValue(), is("AGCCTCAATCTGCACAGTATTGGG"));
+        assertThat(
+            "Unexpected new value:", changeDescription4.getNewValue(), Matchers.is(nullValue()));
+
+        ChangeDescription changeDescription5 =
+            getChange("crisprAttempt.guides.[1].start", changeDescriptionList);
+        assertThat(
+            "Unexpected property:", changeDescription5.getProperty(), is("crisprAttempt.guides.[1].start"));
+        assertThat(
+            "Unexpected old value:", changeDescription5.getOldValue(), is(905880383));
+        assertThat(
+            "Unexpected new value:", changeDescription5.getNewValue(), Matchers.is(nullValue()));
+
+        ChangeDescription changeDescription6 =
+            getChange("crisprAttempt.guides.[1].stop", changeDescriptionList);
+        assertThat(
+            "Unexpected property:", changeDescription6.getProperty(), is("crisprAttempt.guides.[1].stop"));
+        assertThat(
+            "Unexpected old value:", changeDescription6.getOldValue(), is(910880405));
+        assertThat(
+            "Unexpected new value:", changeDescription6.getNewValue(), Matchers.is(nullValue()));
+
+        ChangeDescription changeDescription7 =
+            getChange("crisprAttempt.guides.[1].truncatedGuide", changeDescriptionList);
+        assertThat(
+            "Unexpected property:", changeDescription7.getProperty(), is("crisprAttempt.guides.[1].truncatedGuide"));
+        assertThat(
+            "Unexpected old value:", changeDescription7.getOldValue(), is(false));
+        assertThat(
+            "Unexpected new value:", changeDescription7.getNewValue(), Matchers.is(nullValue()));
+
+        ChangeDescription changeDescription8 =
+            getChange("crisprAttempt.guides.[2]", changeDescriptionList);
+        assertThat(
+            "Unexpected property:", changeDescription8.getProperty(), is("crisprAttempt.guides.[2]"));
+        assertThat(
+            "Unexpected old value:", changeDescription8.getOldValue(), is(nullValue()));
+        assertThat(
+            "Unexpected new value:", changeDescription8.getNewValue(), Matchers.is(guide2));
+
+        ChangeDescription changeDescription9 =
+            getChange("crisprAttempt.guides.[2].chr", changeDescriptionList);
+        assertThat(
+            "Unexpected property:", changeDescription9.getProperty(), is("crisprAttempt.guides.[2].chr"));
+        assertThat(
+            "Unexpected old value:", changeDescription9.getOldValue(), is(nullValue()));
+        assertThat(
+            "Unexpected new value:", changeDescription9.getNewValue(), Matchers.is("X"));
+
+        ChangeDescription changeDescription10 =
+            getChange("crisprAttempt.guides.[2].id", changeDescriptionList);
+        assertThat(
+            "Unexpected property:", changeDescription10.getProperty(), is("crisprAttempt.guides.[2].id"));
+        assertThat(
+            "Unexpected old value:", changeDescription10.getOldValue(), is(nullValue()));
+        assertThat(
+            "Unexpected new value:", changeDescription10.getNewValue(), Matchers.is(2L));
+
+        ChangeDescription changeDescription11 =
+            getChange("crisprAttempt.guides.[2].sequence", changeDescriptionList);
+        assertThat(
+            "Unexpected property:", changeDescription11.getProperty(), is("crisprAttempt.guides.[2].sequence"));
+        assertThat(
+            "Unexpected old value:", changeDescription11.getOldValue(), is(nullValue()));
+        assertThat(
+            "Unexpected new value:", changeDescription11.getNewValue(), Matchers.is("GCCTCAATCTGCACAGTATTGGG"));
+
+        ChangeDescription changeDescription12 =
+            getChange("crisprAttempt.guides.[2].start", changeDescriptionList);
+        assertThat(
+            "Unexpected property:", changeDescription12.getProperty(), is("crisprAttempt.guides.[2].start"));
+        assertThat(
+            "Unexpected old value:", changeDescription12.getOldValue(), is(nullValue()));
+        assertThat(
+            "Unexpected new value:", changeDescription12.getNewValue(), Matchers.is(105880383));
+
+        ChangeDescription changeDescription13 =
+            getChange("crisprAttempt.guides.[2].stop", changeDescriptionList);
+        assertThat(
+            "Unexpected property:", changeDescription13.getProperty(), is("crisprAttempt.guides.[2].stop"));
+        assertThat(
+            "Unexpected old value:", changeDescription13.getOldValue(), is(nullValue()));
+        assertThat(
+            "Unexpected new value:", changeDescription13.getNewValue(), Matchers.is(105880405));
+
+        ChangeDescription changeDescription14 =
+            getChange("crisprAttempt.guides.[2].truncatedGuide", changeDescriptionList);
+        assertThat(
+            "Unexpected property:", changeDescription14.getProperty(), is("crisprAttempt.guides.[2].truncatedGuide"));
+        assertThat(
+            "Unexpected old value:", changeDescription14.getOldValue(), is(nullValue()));
+        assertThat(
+            "Unexpected new value:", changeDescription14.getNewValue(), Matchers.is(false));
     }
 
     @Test
@@ -297,18 +518,47 @@ public class HistoryChangesAdaptorUsingPlanObjectTest
 
         List<ChangeDescription> changeDescriptionList = historyChangesAdaptor.getChanges();
 
-        assertThat("Unexpected number of changes:", changeDescriptionList.size(), is(1));
+        assertThat("Unexpected number of changes:", changeDescriptionList.size(), is(4));
 
-        ChangeDescription changeDescriptionElement1 =
-            getChange("crisprAttempt.primers#1", changeDescriptionList);
+        ChangeDescription changeDescription1 =
+            getChange("crisprAttempt.primers.[1]", changeDescriptionList);
+        assertThat("Unexpected property:",
+            changeDescription1.getProperty(),
+            is("crisprAttempt.primers.[1]"));
         assertThat(
-            "Unexpected property:",
-            changeDescriptionElement1.getProperty(),
-            is("crisprAttempt.primers#1"));
+            "Unexpected old value:", changeDescription1.getOldValue(), is(nullValue()));
         assertThat(
-            "Unexpected old value:", changeDescriptionElement1.getOldValue(), is(nullValue()));
+            "Unexpected new value:", changeDescription1.getNewValue(), is(primer1));
+
+        ChangeDescription changeDescription2 =
+            getChange("crisprAttempt.primers.[1]", changeDescriptionList);
+        assertThat("Unexpected property:",
+            changeDescription2.getProperty(),
+            is("crisprAttempt.primers.[1]"));
         assertThat(
-            "Unexpected new value:", changeDescriptionElement1.getNewValue(), is(primer1));
+            "Unexpected old value:", changeDescription2.getOldValue(), is(nullValue()));
+        assertThat(
+            "Unexpected new value:", changeDescription2.getNewValue(), is(primer1));
+
+        ChangeDescription changeDescription3 =
+            getChange("crisprAttempt.primers.[1].name", changeDescriptionList);
+        assertThat("Unexpected property:",
+            changeDescription3.getProperty(),
+            is("crisprAttempt.primers.[1].name"));
+        assertThat(
+            "Unexpected old value:", changeDescription3.getOldValue(), is(nullValue()));
+        assertThat(
+            "Unexpected new value:", changeDescription3.getNewValue(), is("Dnah10 KO F"));
+
+        ChangeDescription changeDescription4 =
+            getChange("crisprAttempt.primers.[1].sequence", changeDescriptionList);
+        assertThat("Unexpected property:",
+            changeDescription4.getProperty(),
+            is("crisprAttempt.primers.[1].sequence"));
+        assertThat(
+            "Unexpected old value:", changeDescription4.getOldValue(), is(nullValue()));
+        assertThat(
+            "Unexpected new value:", changeDescription4.getNewValue(), is("ACACCCCTAGTCTTGTGTCTCA"));
     }
 
     private Plan buildBasicPlan()

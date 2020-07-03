@@ -33,4 +33,6 @@ public class HistoryDetail extends BaseEntity
 
     private String newValueEntityId;
 
+    private String note;
+
 }

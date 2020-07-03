@@ -7,22 +7,36 @@ package org.gentar.audit.diff;
  */
 class PropertyEvaluator
 {
-    private Object object;
-    private String parentName;
-    private PropertyDescription data = new PropertyDescription();
+    private final Object object;
+    private final String parentName;
+    private final PropertyDescription data = new PropertyDescription();
 
     PropertyEvaluator(PropertyDefinition input, Object object, String parentName)
     {
         this.data.setName(input.getName());
         this.data.setType(input.getType());
+        this.data.setPropertyDefinition(input);
         this.object = object;
         this.parentName = parentName;
     }
 
+    /**
+     *
+     */
     void evaluate()
     {
         data.setValue(PropertyChecker.getValue(data.getName(), object));
-        data.setName(buildPropertyName());
+        data.getPropertyDefinition().setName(buildPropertyName());
+        data.setSimpleValue(PropertyChecker.isASimpleValue(data.getType()));
+    }
+
+    /**
+     * Sets the data evaluating the value of the property in the object.
+     */
+    void buildByValue()
+    {
+        data.setValue(object);
+        data.getPropertyDefinition().setName(buildPropertyName());
         data.setSimpleValue(PropertyChecker.isASimpleValue(data.getType()));
     }
 
@@ -33,7 +47,7 @@ class PropertyEvaluator
 
     private String buildPropertyName()
     {
-        String name = data.getName();
+        String name = data.getPropertyDefinition().getName();
         if (parentName != null)
         {
             name = parentName + "." + name;

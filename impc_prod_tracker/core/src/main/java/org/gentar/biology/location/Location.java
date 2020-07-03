@@ -8,9 +8,12 @@ import org.gentar.biology.strain.Strain;
 
 import javax.persistence.*;
 import javax.validation.constraints.Pattern;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 
-@NoArgsConstructor(access= AccessLevel.PRIVATE, force=true)
+@NoArgsConstructor(access= AccessLevel.PUBLIC, force=true)
 @Data
 @Entity
 public class Location extends BaseEntity
@@ -42,4 +45,20 @@ public class Location extends BaseEntity
     @OneToMany(cascade=CascadeType.ALL, fetch=FetchType.EAGER)
     @JoinColumn(name = "location_id")
     private List<SequenceLocation> sequenceLocations;
+
+    public Location(Location location)
+    {
+        this.id = location.getId();
+        this.chr = location.getChr();
+        this.start = location.getStart();
+        this.stop = location.getStop();
+        this.strand = location.getStrand();
+        this.genomeBuild = location.getGenomeBuild();
+        this.species = location.getSpecies();
+        this.strain = location.getStrain();
+        if (location.getSequenceLocations() != null)
+        {
+            this.sequenceLocations = new ArrayList<>(location.getSequenceLocations());
+        }
+    }
 }

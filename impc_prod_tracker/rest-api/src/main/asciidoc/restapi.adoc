@@ -637,11 +637,13 @@ include::{snippets}/phenotypingStages/putPhenotypingStage/http-response.adoc[]
 
 ==== Structure
 
-Several entities in GenTaR rely in a state machine to control the logic to change from a status
-to another.
+Several entities in GenTaR rely on a state machine to control the logic to change from one status
+to another. The state machines for these entities are described in the following document.
+
+link:state_machine_transitions.pdf[state_machine_transitions.pdf]
 
 When you do a GET to one of those entities, you'll get as part of the response a *statusTransition*
-section, which contains information about the current status and what actions cab be executed in order
+section, which contains information about the current status and what actions can be executed in order
 to change that status.
 
 ```json

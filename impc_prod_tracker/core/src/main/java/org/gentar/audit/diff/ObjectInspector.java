@@ -1,5 +1,7 @@
 package org.gentar.audit.diff;
 
+import org.gentar.util.CollectionPrinter;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -11,10 +13,16 @@ import java.util.Map;
  */
 class ObjectInspector
 {
-    private Map<String, PropertyDescription> map;
-    private Object object;
-    private CheckedClassesTree checkedClassesTree;
-    private List<String> fieldsToIgnore;
+    // Map for a field (property) and the value and meta info for it.
+    private final Map<String, PropertyDescription> map;
+    // Object being evaluated.
+    private final Object object;
+    // Mechanism to avoid circular dependencies by remembering which classes have been evaluated.
+    private final CheckedClassesTree checkedClassesTree;
+    // Fields that are not needed for the analysis.
+    private final List<String> fieldsToIgnore;
+
+    private final PropertyDescriptionExtractor propertyDescriptionExtractor;
 
     ObjectInspector(Object object, List<String> fieldsToIgnore)
     {
@@ -23,6 +31,7 @@ class ObjectInspector
         this.checkedClassesTree = new CheckedClassesTree();
         map = new HashMap<>();
         checkedClassesTree.setRootClass(object.getClass());
+        propertyDescriptionExtractor = new PropertyDescriptionExtractor();
         check(object.getClass(), object, null);
     }
 
@@ -34,62 +43,89 @@ class ObjectInspector
      */
     private void check(Class<?> type, Object object, PropertyDefinition parentData)
     {
-        List<PropertyDefinition> properties = PropertyChecker.getPropertiesDataByType(type);
-        String parentName = getParentName(parentData);
-        for (PropertyDefinition prop : properties)
+        List<PropertyDescription> propertiesWithValues;
+
+        if (PropertyChecker.isCollection(type))
         {
-            PropertyDescription data = getPropertyData(prop, object, parentName);
-            if (data != null)
+            propertiesWithValues = propertyDescriptionExtractor.buildByCollection(object, parentData);
+        }
+        else
+        {
+            propertiesWithValues = propertyDescriptionExtractor.buildByType(type, object, parentData);
+        }
+
+        for (PropertyDescription propertyWithValue : propertiesWithValues)
+        {
+            if (!mustIgnoreProperty(propertyWithValue.getName()))
             {
-                prop.setName(data.getName());
-                map.put(data.getName(), data);
-                if (mustCheckInternalProperties(data, parentData))
+                map.put(propertyWithValue.getPropertyDefinition().getName(), propertyWithValue);
+                if (mustCheckInternalProperties(propertyWithValue, parentData))
                 {
-                    PropertyDefinition currentParent = getCurrentParent(parentData);
-                    checkedClassesTree.addRelationIfNotExist(data.getType(), currentParent.getType());
-                    check(data.getType(), data.getValue(), prop);
+                   // PropertyDefinition currentParent = getCurrentParent(parentData);
+                    Class<?> parentTypeToRegister = getParentTypeToRegister(parentData);
+
+                    checkedClassesTree.addRelationIfNotExist(
+                        propertyWithValue.getType(), parentTypeToRegister);
+                    check(
+                        propertyWithValue.getType(),
+                        propertyWithValue.getValue(),
+                        propertyWithValue.getPropertyDefinition());
                 }
             }
         }
     }
 
-    private PropertyDefinition getCurrentParent(PropertyDefinition parentData)
+    private Class<?> getParentTypeToRegister(PropertyDefinition parentData)
     {
+        Class<?> parentTypeToRegister = null;
+        if (parentData == null)
+        {
+            parentTypeToRegister = object.getClass();
+        }
+        else
+        {
+            // If the current element is the child of a collection, we don't want to register in the
+            // dependencies tree the relation children->Collection but children->Owner of the collection
+            if (PropertyChecker.isCollection(parentData.getType()))
+            {
+                parentTypeToRegister = parentData.getParentType();
+            }
+            else
+            {
+                parentTypeToRegister = parentData.getType();
+            }
+        }
+        return parentTypeToRegister;
+        /*if (parentData != null)
+        {
+            // If the current element is the child of a collection, we don't want to register in the
+            // dependencies tree the relation children->Collection but children->Owner of the collection
+            if (PropertyChecker.isCollection(parentData.getType()))
+            {
+                parentTypeToRegister = parentData.getParentType();
+            }
+            else
+            {
+                parentTypeToRegister = parentData.getType();
+            }
+        }
+        return parentTypeToRegister;
+        /*
         PropertyDefinition propertyDefinition = parentData;
         if (parentData == null)
         {
-            propertyDefinition = new PropertyDefinition(null, object.getClass());
+            propertyDefinition = new PropertyDefinition(null, object.getClass(), null);
         }
-        return propertyDefinition;
-    }
-
-    private String getParentName(PropertyDefinition parentData)
-    {
-        String parentName = null;
-        if (parentData != null)
+        else
         {
-            parentName = parentData.getName();
+            // If the current element is the child of a collection, we don't want to register in the
+            // dependencies tree the relation children->Collection but children->Owner of the collection
+            if (PropertyChecker.isCollection(parentData.getType()))
+            {
+                propertyDefinition.setType(parentData.getParentType());
+            }
         }
-        return parentName;
-    }
-
-    private PropertyDescription getPropertyData(
-        PropertyDefinition property, Object object, String parentName)
-    {
-        PropertyDescription propertyDescription = null;
-        if (!mustIgnoreProperty(property.getName()))
-        {
-            propertyDescription = buildProperty(property, object, parentName);
-        }
-        return propertyDescription;
-    }
-
-    private PropertyDescription buildProperty(
-        PropertyDefinition property, Object object, String parentName)
-    {
-        PropertyEvaluator propertyEvaluator = new PropertyEvaluator(property, object, parentName);
-        propertyEvaluator.evaluate();
-        return propertyEvaluator.getData();
+        return propertyDefinition;*/
     }
 
     public Map<String, PropertyDescription> getMap()
@@ -99,8 +135,12 @@ class ObjectInspector
 
     private boolean mustIgnoreProperty(String property)
     {
-        return fieldsToIgnore.contains(property);
+        int lastIndexForDot = property.lastIndexOf(".");
+        String shortPropertyName = property.substring(lastIndexForDot + 1);
+        return fieldsToIgnore.contains(shortPropertyName);
     }
+
+    // Determines if we need to recursively evaluate the data in the property
 
     private boolean mustCheckInternalProperties(PropertyDescription data, PropertyDefinition parentData)
     {
@@ -109,10 +149,12 @@ class ObjectInspector
 
     private boolean isCircularReference(PropertyDescription data, PropertyDefinition parentData)
     {
-        return !checkedClassesTree.canRelationBeAdded(
-            data.getType(), getCurrentParent(parentData).getType());
-    }
+        Class<?> parentTypeToRegister = getParentTypeToRegister(parentData);
+        boolean canRelationBeAdded =
+            checkedClassesTree.canRelationBeAdded(data.getType(), parentTypeToRegister);
 
+        return !canRelationBeAdded;
+    }
 
     Map<String, Object> getValuesForSimpleProperties()
     {
@@ -125,12 +167,5 @@ class ObjectInspector
             }
         }
         return simpleProps;
-    }
-
-    void printSimple()
-    {
-        getValuesForSimpleProperties().forEach((k, v) -> {
-            System.out.println(k + ": " + v);
-        });
     }
 }

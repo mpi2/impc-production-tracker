@@ -30,6 +30,7 @@ import org.gentar.biology.outcome.Outcome;
 import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @NoArgsConstructor(access= AccessLevel.PUBLIC, force=true)
 @Data
@@ -156,9 +157,23 @@ public class Mutation extends BaseEntity
         this.vcfFile = mutation.getVcfFile();
         this.vcfFileIndex = mutation.getVcfFileIndex();
         this.genes = mutation.getGenes();
-        this.outcomes = mutation.getOutcomes();
-        this.mutationCategorizations = mutation.getMutationCategorizations();
-        this.mutationQcResults = mutation.getMutationQcResults();
-        this.mutationSequences = mutation.getMutationSequences();
+        if (mutation.getOutcomes() != null)
+        {
+            this.outcomes = new HashSet<>(mutation.getOutcomes());
+        }
+        if (mutation.getMutationCategorizations() != null)
+        {
+            this.mutationCategorizations = new HashSet<>(mutation.getMutationCategorizations());
+        }
+        if (mutation.getMutationQcResults() != null)
+        {
+            this.mutationQcResults = new HashSet<>(mutation.getMutationQcResults());
+        }
+        if (mutation.getMutationSequences() != null)
+        {
+            // Create copy by each element in collection.
+            this.mutationSequences = mutation.getMutationSequences().stream()
+                .map(MutationSequence::new).collect(Collectors.toSet());
+        }
     }
 }
