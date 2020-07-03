@@ -563,7 +563,7 @@ DFSDF
 These are the fields you are going to see in the body of a request in a GET or in the payload for POST or PUT
 operations.
 
-include::{snippets}/phenotypingStage/response-fields.adoc[]
+include::{snippets}/phenotypingStages/getPhenotypingStage/response-fields.adoc[]
 
 
 === GET
@@ -574,11 +574,11 @@ This endpoint fetches a specific phenotyping stage belonging to a plan.
 ===== Example Request
 
 Curl:
-include::{snippets}/phenotypingStage/curl-request.adoc[]
+include::{snippets}/phenotypingStages/getPhenotypingStage/curl-request.adoc[]
 
 ===== Example Response
 
-include::{snippets}/phenotypingStage/http-response.adoc[]
+include::{snippets}/phenotypingStages/getPhenotypingStage/http-response.adoc[]
 
 
 ==== Get all phenotyping stages in a plan
@@ -587,11 +587,11 @@ This endpoint shows all the phenotyping stages associated to a plan.
 ===== Example Request
 
 Curl:
-include::{snippets}/phenotypingStage/curl-request.adoc[]
+include::{snippets}/phenotypingStages/allPhenotypingStages/curl-request.adoc[]
 
 ===== Example Response
 
-include::{snippets}/phenotypingStage/http-response.adoc[]
+include::{snippets}/phenotypingStages/allPhenotypingStages/http-response.adoc[]
 
 ==== Get the history of changes for a phenotyping stage
 
@@ -600,11 +600,11 @@ You can use this endpoint to see all the changes that have been made on a phenot
 ===== Example Request
 
 Curl:
-include::{snippets}/phenotypingStage/history/curl-request.adoc[]
+include::{snippets}/phenotypingStages/history/curl-request.adoc[]
 
 ===== Example Response
 
-include::{snippets}/phenotypingStage/history/http-response.adoc[]
+include::{snippets}/phenotypingStages/history/http-response.adoc[]
 
 
 === POST
@@ -614,12 +614,10 @@ include::{snippets}/phenotypingStage/history/http-response.adoc[]
 ===== Example Request
 
 Curl:
-[TODO:LINK]
-//include::{snippets}/phenotypingStage/postPhenotypingStage/http-request.adoc[]
+include::{snippets}/phenotypingStages/postPhenotypingStage/http-request.adoc[]
 
 ===== Example Response
-[TODO:LINK]
-//include::{snippets}/phenotypingStage/postPhenotypingStage/http-response.adoc[]
+include::{snippets}/phenotypingStages/postPhenotypingStage/http-response.adoc[]
 
 
 === PUT
@@ -629,12 +627,10 @@ Curl:
 ===== Example Request
 
 Curl:
-[TODO:LINK]
-//include::{snippets}/phenotypingStage/putPhenotypingStage/http-request.adoc[]
+include::{snippets}/phenotypingStages/putPhenotypingStage/http-request.adoc[]
 
 ===== Example Response
-[TODO:LINK]
-include::{snippets}/phenotypingStage/putPhenotypingStage/http-response.adoc[]
+include::{snippets}/phenotypingStages/putPhenotypingStage/http-response.adoc[]
 
 
 == State Machine interaction

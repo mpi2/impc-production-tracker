@@ -167,17 +167,10 @@ class PhenotypingStageControllerTest  extends ControllerTestTemplate
                 obtainedPhenotypingStage, expectedJson, PhenotypingStageCustomizations.ignoreIdsAndPsnAndDates());
     }
 
-
-
-
-
-
     private String getCompleteResourcePath(String resourceJsonName)
     {
         return TEST_RESOURCES_FOLDER + resourceJsonName;
     }
-
-
 
     private String loadFromResource(String resourceName)
             throws IOException
