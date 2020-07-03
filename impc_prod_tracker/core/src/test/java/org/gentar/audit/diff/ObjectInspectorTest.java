@@ -347,7 +347,7 @@ public class ObjectInspectorTest
         objectInspector = new ObjectInspector(plan, Collections.singletonList(""));
         var map = objectInspector.getMap();
 
-        assertThat(map.size(), is(150));
+        assertThat(map.size(), is(149));
     }
 
     @Data
