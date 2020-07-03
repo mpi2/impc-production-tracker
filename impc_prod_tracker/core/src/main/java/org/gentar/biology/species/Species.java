@@ -17,6 +17,7 @@ package org.gentar.biology.species;
 
 import lombok.*;
 import org.gentar.BaseEntity;
+import org.gentar.audit.diff.IgnoreForAuditingChanges;
 import org.gentar.biology.project.Project;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -40,6 +41,7 @@ public class Species extends BaseEntity
 
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
+    @IgnoreForAuditingChanges
     @ManyToMany(mappedBy = "species")
     private Set<Project> projects;
 }
