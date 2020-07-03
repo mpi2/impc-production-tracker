@@ -3,17 +3,15 @@ package org.gentar.biology.sequence;
 import org.gentar.Mapper;
 import org.springframework.stereotype.Component;
 import org.gentar.biology.sequence_location.SequenceLocation;
-
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 
 @Component
 public class SequenceMapper implements Mapper<Sequence, SequenceDTO>
 {
-    private SequenceLocationMapper sequenceLocationMapper;
-    private SequenceCategoryMapper sequenceCategoryMapper;
-    private SequenceTypeMapper sequenceTypeMapper;
+    private final SequenceLocationMapper sequenceLocationMapper;
+    private final SequenceCategoryMapper sequenceCategoryMapper;
+    private final SequenceTypeMapper sequenceTypeMapper;
 
     public SequenceMapper(
         SequenceLocationMapper sequenceLocationMapper,
@@ -47,13 +45,16 @@ public class SequenceMapper implements Mapper<Sequence, SequenceDTO>
     public Sequence toEntity(SequenceDTO sequenceDTO)
     {
         Sequence sequence = new Sequence();
-        sequence.setId(sequenceDTO.getId());
-        sequence.setSequence(sequenceDTO.getSequence());
-        sequence.setSequenceCategory(
-            sequenceCategoryMapper.toEntity(sequenceDTO.getSequenceCategoryName()));
-        sequence.setSequenceType(
-            sequenceTypeMapper.toEntity(sequenceDTO.getSequenceTypeName()));
-        setSequenceLocations(sequence, sequenceDTO);
+        if (sequenceDTO != null)
+        {
+            sequence.setId(sequenceDTO.getId());
+            sequence.setSequence(sequenceDTO.getSequence());
+            sequence.setSequenceCategory(
+                sequenceCategoryMapper.toEntity(sequenceDTO.getSequenceCategoryName()));
+            sequence.setSequenceType(
+                sequenceTypeMapper.toEntity(sequenceDTO.getSequenceTypeName()));
+            setSequenceLocations(sequence, sequenceDTO);
+        }
         return sequence;
     }
 

@@ -23,5 +23,7 @@ public interface MutationRepository extends CrudRepository<Mutation, Long>
     @Query("SELECT max(m.min) FROM Mutation m")
     String getMaxMin();
 
+    Mutation findFirstById(Long id);
+
     Mutation findByMin(String min);
 }

@@ -33,7 +33,7 @@ public class Sequence extends BaseEntity
 
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
-    @OneToMany(cascade=CascadeType.ALL, fetch=FetchType.EAGER, orphanRemoval=true)
+    @OneToMany(cascade=CascadeType.ALL)
     @JoinColumn(name = "sequence_id")
     private List<SequenceLocation> sequenceLocations;
 

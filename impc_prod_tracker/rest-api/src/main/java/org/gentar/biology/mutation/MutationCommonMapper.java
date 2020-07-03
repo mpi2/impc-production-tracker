@@ -14,12 +14,12 @@ import java.util.Set;
 @Component
 public class MutationCommonMapper implements Mapper<Mutation, MutationCommonDTO>
 {
-    private EntityMapper entityMapper;
-    private MutationQCResultMapper mutationQCResultMapper;
-    private MutationCategorizationMapper mutationCategorizationMapper;
-    private MutationSequenceMapper mutationSequenceMapper;
-    private GeneticMutationTypeMapper geneticMutationTypeMapper;
-    private MolecularMutationTypeMapper molecularMutationTypeMapper;
+    private final EntityMapper entityMapper;
+    private final MutationQCResultMapper mutationQCResultMapper;
+    private final MutationCategorizationMapper mutationCategorizationMapper;
+    private final MutationSequenceMapper mutationSequenceMapper;
+    private final GeneticMutationTypeMapper geneticMutationTypeMapper;
+    private final MolecularMutationTypeMapper molecularMutationTypeMapper;
 
     public MutationCommonMapper(
         EntityMapper entityMapper,
@@ -54,16 +54,19 @@ public class MutationCommonMapper implements Mapper<Mutation, MutationCommonDTO>
     public Mutation toEntity(MutationCommonDTO mutationCommonDTO)
     {
         Mutation mutation = new Mutation();
-        mutation.setAlleleConfirmed(mutationCommonDTO.getAlleleConfirmed());
-        mutation.setMgiAlleleSymbolRequiresConstruction(
-            mutationCommonDTO.getMgiAlleleSymbolRequiresConstruction());
-        setGeneticMutationType(mutation, mutationCommonDTO);
-        setMolecularMutationType(mutation, mutationCommonDTO);
-        setMutationQcResults(mutation, mutationCommonDTO);
-        setMutationSequences(mutation, mutationCommonDTO);
-        mutation.setMutationCategorizations(
-            new HashSet<>(mutationCategorizationMapper.toEntities(
-                mutationCommonDTO.getMutationCategorizationDTOS())));
+        if (mutationCommonDTO != null)
+        {
+            mutation.setAlleleConfirmed(mutationCommonDTO.getAlleleConfirmed());
+            mutation.setMgiAlleleSymbolRequiresConstruction(
+                mutationCommonDTO.getMgiAlleleSymbolRequiresConstruction());
+            setGeneticMutationType(mutation, mutationCommonDTO);
+            setMolecularMutationType(mutation, mutationCommonDTO);
+            setMutationQcResults(mutation, mutationCommonDTO);
+            setMutationSequences(mutation, mutationCommonDTO);
+            mutation.setMutationCategorizations(
+                new HashSet<>(mutationCategorizationMapper.toEntities(
+                    mutationCommonDTO.getMutationCategorizationDTOS())));
+        }
         return mutation;
     }
 

@@ -111,7 +111,7 @@ public class MutationController
     }
 
     private Mutation getMutationToUpdate(
-        String pin, String tpo,  String min, MutationUpdateDTO mutationUpdateDTO)
+        String pin, String tpo, String min, MutationUpdateDTO mutationUpdateDTO)
     {
         Mutation currentMutation = outcomeService.getMutationByPinTpoAndMin(pin, tpo, min);
         return mutationRequestProcessor.getMutationToUpdate(currentMutation, mutationUpdateDTO);

@@ -2,7 +2,6 @@ package org.gentar.biology.mutation;
 
 import org.gentar.EntityMapper;
 import org.gentar.biology.gene.Gene;
-import org.gentar.biology.gene.GeneMapper;
 import org.gentar.biology.mutation.categorizarion.MutationCategorization;
 import org.gentar.biology.mutation.genbank_file.GenbankFile;
 import org.gentar.biology.mutation.genetic_type.GeneticMutationType;

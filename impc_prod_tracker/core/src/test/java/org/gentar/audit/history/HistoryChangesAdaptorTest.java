@@ -1,13 +1,12 @@
 package org.gentar.audit.history;
 
 import org.gentar.audit.diff.ChangeType;
-import org.gentar.audit.history.detail.HistoryDetail;
+
 import org.gentar.biology.project.assignment.AssignmentStatus;
 import org.gentar.biology.plan.Plan;
 import org.gentar.biology.project.Project;
-import org.gentar.util.CollectionPrinter;
+import org.gentar.biology.species.Species;
 import org.junit.jupiter.api.Test;
-
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
@@ -21,6 +20,29 @@ import static org.hamcrest.Matchers.nullValue;
 public class HistoryChangesAdaptorTest
 {
     private HistoryChangesAdaptor<Project> testInstance;
+
+    @Test
+    public void testSmallClass()
+    {
+        Species species1 = new Species();
+        species1.setId(1L);
+        Project project1 = new Project();
+        project1.setId(1L);
+        project1.setSpecies(new HashSet<>(Arrays.asList(species1)));
+        species1.setProjects(new HashSet<>(Arrays.asList(project1)));
+
+        Species species2 = new Species();
+        species2.setId(2L);
+        Project project2 = new Project();
+        project2.setId(2L);
+        project2.setSpecies(new HashSet<>(Arrays.asList(species2)));
+        species2.setProjects(new HashSet<>(Arrays.asList(project2)));
+
+        HistoryChangesAdaptor<Project> historyChangesAdaptor =
+            new HistoryChangesAdaptor<>(Arrays.asList("id"), project1, project2);
+
+        List<ChangeDescription> changeDescriptionList = historyChangesAdaptor.getChanges();
+    }
 
     @Test
     public void test()

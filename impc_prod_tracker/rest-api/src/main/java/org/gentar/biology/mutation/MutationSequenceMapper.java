@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class MutationSequenceMapper implements Mapper<MutationSequence, MutationSequenceDTO>
 {
-    private SequenceMapper sequenceMapper;
+    private final SequenceMapper sequenceMapper;
 
     public MutationSequenceMapper(SequenceMapper sequenceMapper)
     {
@@ -29,13 +29,17 @@ public class MutationSequenceMapper implements Mapper<MutationSequence, Mutation
     public MutationSequence toEntity(MutationSequenceDTO mutationSequenceDTO)
     {
         MutationSequence mutationSequence = new MutationSequence();
-        mutationSequence.setId(mutationSequenceDTO.getId());
-        mutationSequence.setIndex(mutationSequenceDTO.getIndex());
-        if (mutationSequenceDTO.getSequenceDTO() != null)
+        if (mutationSequenceDTO != null)
         {
-            mutationSequence.setSequence(
-                sequenceMapper.toEntity(mutationSequenceDTO.getSequenceDTO()));
+            mutationSequence.setId(mutationSequenceDTO.getId());
+            mutationSequence.setIndex(mutationSequenceDTO.getIndex());
+            if (mutationSequenceDTO.getSequenceDTO() != null)
+            {
+                mutationSequence.setSequence(
+                    sequenceMapper.toEntity(mutationSequenceDTO.getSequenceDTO()));
+            }
         }
+
         return mutationSequence;
     }
 }

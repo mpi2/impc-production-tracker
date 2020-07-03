@@ -3,6 +3,7 @@ package org.gentar.biology.outcome;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import org.gentar.BaseEntity;
+import org.gentar.audit.diff.IgnoreForAuditingChanges;
 import org.gentar.biology.colony.Colony;
 import org.gentar.biology.mutation.Mutation;
 import org.gentar.biology.outcome.type.OutcomeType;
@@ -32,6 +33,7 @@ public class Outcome extends BaseEntity implements Resource<Outcome>
     @ManyToOne
     private OutcomeType outcomeType;
 
+    @IgnoreForAuditingChanges
     @ManyToOne
     private Plan plan;
 
@@ -52,6 +54,7 @@ public class Outcome extends BaseEntity implements Resource<Outcome>
 
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
+    @IgnoreForAuditingChanges
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "outcome")
     private Set<PlanStartingPoint> planStartingPoints;
 
