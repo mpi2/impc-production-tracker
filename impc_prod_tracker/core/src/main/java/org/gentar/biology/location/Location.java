@@ -2,6 +2,7 @@ package org.gentar.biology.location;
 
 import lombok.*;
 import org.gentar.BaseEntity;
+import org.gentar.audit.diff.IgnoreForAuditingChanges;
 import org.gentar.biology.sequence_location.SequenceLocation;
 import org.gentar.biology.species.Species;
 import org.gentar.biology.strain.Strain;
@@ -42,6 +43,7 @@ public class Location extends BaseEntity
 
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
+    @IgnoreForAuditingChanges
     @OneToMany(cascade=CascadeType.ALL, fetch=FetchType.EAGER)
     @JoinColumn(name = "location_id")
     private List<SequenceLocation> sequenceLocations;

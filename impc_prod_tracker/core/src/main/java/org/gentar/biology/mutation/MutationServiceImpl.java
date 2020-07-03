@@ -18,6 +18,7 @@ public class MutationServiceImpl implements MutationService
     private MutationUpdater mutationUpdater;
 
     private static final String MUTATION_NOT_EXIST_ERROR = "Mutation %s does not exist.";
+    private static final String MUTATION_BY_ID_NOT_EXIST_ERROR = "Mutation with id [%s] does not exist.";
 
     public MutationServiceImpl(
         MutationRepository mutationRepository,
@@ -29,6 +30,23 @@ public class MutationServiceImpl implements MutationService
         this.sequenceService = sequenceService;
         this.mutationSequenceService = mutationSequenceService;
         this.mutationUpdater = mutationUpdater;
+    }
+
+    @Override
+    public Mutation getById(Long id)
+    {
+        return mutationRepository.findFirstById(id);
+    }
+
+    @Override
+    public Mutation getByIdFailsIfNull(Long id)
+    {
+        Mutation mutation = getById(id);
+        if (mutation == null)
+        {
+            throw new UserOperationFailedException(String.format(MUTATION_BY_ID_NOT_EXIST_ERROR, id));
+        }
+        return mutation;
     }
 
     @Override

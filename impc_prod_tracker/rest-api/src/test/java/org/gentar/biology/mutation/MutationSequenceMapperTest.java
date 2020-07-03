@@ -12,13 +12,14 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
 @ExtendWith(MockitoExtension.class)
 class MutationSequenceMapperTest
 {
+    public static final long ID = 1L;
+    public static final int INDEX = 1;
     private MutationSequenceMapper testInstance;
 
     @Mock
@@ -49,14 +50,13 @@ class MutationSequenceMapperTest
     void toEntity()
     {
         MutationSequenceDTO mutationSequenceDTO = new MutationSequenceDTO();
-        mutationSequenceDTO.setId(1L);
-        mutationSequenceDTO.setIndex(1);
+        mutationSequenceDTO.setId(ID);
+        mutationSequenceDTO.setIndex(INDEX);
         mutationSequenceDTO.setSequenceDTO(new SequenceDTO());
 
         MutationSequence mutationSequence = testInstance.toEntity(mutationSequenceDTO);
 
         verify(sequenceMapper, times(1)).toEntity(mutationSequenceDTO.getSequenceDTO());
-        assertThat(mutationSequence.getId(), is(1L));
-        assertThat(mutationSequence.getIndex(), is(1));
+        assertThat(mutationSequence.getIndex(), is(INDEX));
     }
 }

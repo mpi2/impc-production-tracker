@@ -2,6 +2,7 @@ package org.gentar.biology.sequence;
 
 import org.gentar.biology.sequence.category.SequenceCategory;
 import org.gentar.biology.sequence.category.SequenceCategoryName;
+import org.gentar.exceptions.UserOperationFailedException;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -9,9 +10,26 @@ public class SequenceService
 {
     private SequenceRepository sequenceRepository;
 
+    private static final String NOT_FOUND_ERROR = "The sequence with if [%s] does not exist.";
+
     public SequenceService(SequenceRepository sequenceRepository)
     {
         this.sequenceRepository = sequenceRepository;
+    }
+
+    public Sequence getById(Long id)
+    {
+        return sequenceRepository.findFirstById(id);
+    }
+
+    public Sequence getByIdFailsIfNull(Long id)
+    {
+        Sequence sequence = getById(id);
+        if (sequence == null)
+        {
+            throw new UserOperationFailedException(String.format(NOT_FOUND_ERROR, id));
+        }
+        return sequence;
     }
 
     /**

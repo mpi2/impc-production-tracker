@@ -10,6 +10,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.util.ArrayList;
 
 import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.nullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -17,6 +18,7 @@ import static org.mockito.Mockito.verify;
 @ExtendWith(MockitoExtension.class)
 class SequenceMapperTest
 {
+    public static final Long ID = 1L;
     public static final String SEQUENCE = "CGAGTGA";
     public static final String SEQUENCE_CATEGORY_NAME = "sequenceCategoryName";
     public static final String SEQUENCE_TYPE_NAME = "sequenceTypeName";
@@ -61,6 +63,7 @@ class SequenceMapperTest
     void toEntity()
     {
         SequenceDTO sequenceDTO = new SequenceDTO();
+        sequenceDTO.setId(null);
         sequenceDTO.setSequence(SEQUENCE);
         sequenceDTO.setSequenceCategoryName(SEQUENCE_CATEGORY_NAME);
         sequenceDTO.setSequenceTypeName(SEQUENCE_TYPE_NAME);
@@ -68,6 +71,7 @@ class SequenceMapperTest
 
         Sequence sequence = testInstance.toEntity(sequenceDTO);
 
+        assertThat(sequence.getId(), is(nullValue()));
         assertThat(sequence.getSequence(), is(SEQUENCE));
         verify(sequenceCategoryMapper, times(1)).toEntity(SEQUENCE_CATEGORY_NAME);
         verify(sequenceTypeMapper, times(1)).toEntity(SEQUENCE_TYPE_NAME);
