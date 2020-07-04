@@ -147,6 +147,40 @@ class PropertyDescriptionExtractorTest
         assertThat("Incorrect value", description2.getValue(), is(manyToManyClass.getSimpleClass()));
     }
 
+    @Test
+    void testCollectionWithElementsWithoutId()
+    {
+        SimpleClass simpleClass1 = new SimpleClass();
+        simpleClass1.setId(null);
+        simpleClass1.setField1("simpleClass1Field1");
+
+        SimpleClass simpleClass2 = new SimpleClass();
+        simpleClass2.setId(null);
+        simpleClass2.setField1("simpleClass2Field1");
+
+        ClassWithSimpleCollection classWithSimpleCollection = new ClassWithSimpleCollection();
+        classWithSimpleCollection.setListOfSimpleClass(Arrays.asList(simpleClass1, simpleClass2));
+
+        List<SimpleClass> listOfSimpleClass = Arrays.asList(simpleClass1, simpleClass2);
+
+        List<PropertyDescription> propertyDescriptions =
+            testInstance.buildByCollection(listOfSimpleClass, null);
+
+        assertThat("Expected 2 descriptions", propertyDescriptions.size(), is(2));
+        PropertyDescription description1 = findByName("["+simpleClass1.toString()+"]", propertyDescriptions);
+        assertThat("Incorrect type", description1.getType(), is(SimpleClass.class));
+        assertThat("Incorrect value", description1.getValue(), is(simpleClass1));
+        PropertyDescription description2 = findByName("["+simpleClass2.toString()+"]", propertyDescriptions);
+        assertThat("Incorrect type", description2.getType(), is(SimpleClass.class));
+        assertThat("Incorrect value", description2.getValue(), is(simpleClass2));
+    }
+
+    @Data
+    public class ClassWithSimpleCollection
+    {
+        List<SimpleClass> listOfSimpleClass;
+    }
+
     @Data
     public class RootEntity
     {
@@ -168,17 +202,5 @@ class PropertyDescriptionExtractorTest
         private Long id;
         private String field1;
         private String field2;
-    }
-
-    private void printPretty(List<PropertyDescription> propertyDescriptions)
-    {
-        System.out.println("--- Init PropertyDescription list ---");
-        System.out.println("[");
-        if (propertyDescriptions != null)
-        {
-            propertyDescriptions.forEach(x -> System.out.println("\t" + x));
-        }
-        System.out.println("]");
-        System.out.println("--- End PropertyDescription list ---");
     }
 }

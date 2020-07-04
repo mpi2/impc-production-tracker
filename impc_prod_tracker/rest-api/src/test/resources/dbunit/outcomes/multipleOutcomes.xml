@@ -329,7 +329,8 @@ This allele from project Fxn-5659J-A was generated at The Jackson Laboratory by 
                     HISTORY_ID="1"
                     FIELD="colony.genotypingComment"
                     OLD_VALUE="Comment version 1"
-                    NEW_VALUE="Comment version 2"/>
+                    NEW_VALUE="Comment version 2"
+                    NOTE="Field changed"/>
 
     <PERSON_ROLE_WORK_UNIT  ID="1"
                             PERSON_ID="123"
