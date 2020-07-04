@@ -2,7 +2,6 @@ package org.gentar.audit.history;
 
 import org.gentar.audit.diff.ChangeEntry;
 import org.gentar.exceptions.SystemOperationFailedException;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -100,23 +99,4 @@ public class ChangeDescriptionCreator
         return property.contains(SEPARATOR);
     }
 
-    private ChangeDescription createBasicChangeDescription(ChangeEntry change)
-    {
-        ChangeDescription changeDescription = new ChangeDescription();
-        changeDescription.setProperty(change.getProperty());
-        changeDescription.setOldValue(change.getOldValue());
-        changeDescription.setNewValue(change.getNewValue());
-        return changeDescription;
-    }
-
-    private ChangeDescription createChangeDescriptionWithReference(
-        String groupParentName, ChangeEntry idPropertyChange, ChangeEntry change)
-    {
-        ChangeDescription changeDescription = createBasicChangeDescription(change);
-        changeDescription.setParentClass(groupParentName);
-        changeDescription.setOldValueId(idPropertyChange.getOldValue());
-        changeDescription.setNewValueId(idPropertyChange.getNewValue());
-
-        return changeDescription;
-    }
 }

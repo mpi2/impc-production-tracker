@@ -212,7 +212,8 @@
                     HISTORY_ID="1"
                     FIELD="doNotCountTowardsCompleteness"
                     OLD_VALUE="false"
-                    NEW_VALUE="true"/>
+                    NEW_VALUE="true"
+                    NOTE="Field changed"/>
 
     <PERSON     ID="123"
                 EMAIL="imits2test@test.com"

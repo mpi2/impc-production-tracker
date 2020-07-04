@@ -8,7 +8,8 @@
       {
         "field":"colony.genotypingComment",
         "oldValue":"Comment version 1",
-        "newValue":"Comment version 2"
+        "newValue":"Comment version 2",
+        "note": "Field changed"
       }
     ]
   }

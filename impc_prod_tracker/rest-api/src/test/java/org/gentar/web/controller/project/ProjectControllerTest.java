@@ -274,6 +274,8 @@ class ProjectControllerTest extends ControllerTestTemplate
                     .description("Value in the field before the change"),
                 fieldWithPath("history[].details[].newValue")
                     .description("Value in the field after the change"),
+                fieldWithPath("history[].details[].note")
+                    .description("One of these: Field changed, Element added, Element deleted."),
                 fieldWithPath("_links.self.href").description("Links to the just created project.")
             ));
     }

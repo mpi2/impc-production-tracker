@@ -32,7 +32,7 @@ public class HistoryMapper implements Mapper<History, HistoryDTO>
         List<HistoryDetailDTO> detailDTOs = new ArrayList<>();
         details.forEach(
             x-> detailDTOs.add(
-                new HistoryDetailDTO(x.getField(), x.getOldValue(), x.getNewValue())));
+                new HistoryDetailDTO(x.getField(), x.getOldValue(), x.getNewValue(), x.getNote())));
         return detailDTOs;
     }
 }

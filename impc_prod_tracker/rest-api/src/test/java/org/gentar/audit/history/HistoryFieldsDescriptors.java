@@ -19,6 +19,7 @@ public class HistoryFieldsDescriptors
         addField(historyFieldDescriptions, "[].details[].field", "Field that was changed.");
         addField(historyFieldDescriptions, "[].details[].oldValue", "Value before the change.");
         addField(historyFieldDescriptions, "[].details[].newValue", "Value after the change.");
+        addField(historyFieldDescriptions, "[].details[].note", "One of these: Field changed, Element added, Element deleted.");
         return historyFieldDescriptions;
     }
 
