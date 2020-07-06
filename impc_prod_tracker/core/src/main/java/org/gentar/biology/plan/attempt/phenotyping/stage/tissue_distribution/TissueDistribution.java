@@ -2,7 +2,9 @@ package org.gentar.biology.plan.attempt.phenotyping.stage.tissue_distribution;
 
 import lombok.AccessLevel;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 import org.gentar.BaseEntity;
 import org.gentar.biology.plan.attempt.phenotyping.stage.PhenotypingStage;
 import org.gentar.biology.plan.attempt.phenotyping.stage.material_deposited_type.MaterialDepositedType;
@@ -37,4 +39,14 @@ public class TissueDistribution extends BaseEntity
     @NotNull
     @ManyToOne(targetEntity = WorkUnit.class)
     private WorkUnit workUnit;
+
+    public String toString()
+    {
+        String materialDepositedTypeName =
+            materialDepositedType == null ? "Not defined" : materialDepositedType.getName();
+        String workUnitName = workUnit == null ? "Not defined" : workUnit.getName();
+        return "id:" +id + ", startDate:" + startDate + ", endDate: "+ endDate
+            + ", material Deposited Type Name:" + materialDepositedTypeName
+            + ", work unit name: " +workUnitName;
+    }
 }
