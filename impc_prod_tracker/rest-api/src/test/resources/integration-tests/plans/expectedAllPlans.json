@@ -94,11 +94,24 @@
         "statusName":"Founder Obtained",
         "summaryStatusName":"Founder Obtained",
         "statusDates":[
-
+          {
+            "statusName": "Plan Created",
+            "date": "2018-01-15T00:00:00"
+          },
+          {
+            "statusName": "Attempt In Progress",
+            "date": "2018-01-15T00:00:00"
+          },
+          {
+            "statusName": "Embryos Obtained",
+            "date": "2018-02-22T00:00:00"
+          },
+          {
+            "statusName": "Founder Obtained",
+            "date": "2018-02-22T00:00:00"
+          }
         ],
-        "summaryStatusDates":[
-
-        ],
+        "summaryStatusDates":[],
         "statusTransition":{
           "currentStatus":"Founder Obtained",
           "transitions":[
@@ -129,7 +142,10 @@
         "statusName":"Plan Created",
         "summaryStatusName":"Plan Created",
         "statusDates":[
-
+          {
+            "statusName": "Plan Created",
+            "date": "2019-11-01T00:00:00"
+          }
         ],
         "summaryStatusDates":[
 
@@ -172,7 +188,10 @@
         "statusName":"Plan Created",
         "summaryStatusName":"Plan Created",
         "statusDates":[
-
+          {
+            "statusName": "Plan Created",
+            "date": "2019-11-01T00:00:00"
+          }
         ],
         "summaryStatusDates":[
 
@@ -199,6 +218,128 @@
           ],
           "actionToExecute":null
         }
+      },
+      {
+        "pin": "PIN:0000000004",
+        "tpn": "TPN:000000001",
+        "attemptTypeName": "adult phenotyping",
+        "funderNames": [
+
+        ],
+        "workUnitName": "BCM",
+        "workGroupName": "BaSH",
+        "comment": null,
+        "productsAvailableForGeneralPublic":false,
+        "phenotypingStartingPoint": {
+          "_links": {
+            "outcome": {
+              "href": "http://localhost:8080/api/plans/PIN:0000000001/outcomes/TPO:000000000001"
+            }
+          },
+          "outcomeTpo": "TPO:000000000001"
+        },
+        "phenotypingAttemptResponse": {
+          "phenotypingExternalRef":"JR12345",
+          "imitsPhenotypeAttemptId":8517,
+          "imitsPhenotypingProductionId":8719,
+          "imitsParentColonyId":20755,
+          "phenotypingBackgroundStrainName":"C57BL/6NJ"
+        },
+        "typeName": "phenotyping",
+        "statusName": "Plan Created",
+        "summaryStatusName": "Phenotyping Started",
+        "statusDates": [
+          {
+            "statusName": "Plan Created",
+            "date": "2019-11-01T00:00:00"
+          }
+        ],
+        "summaryStatusDates": [
+
+        ],
+        "statusTransition": {
+          "currentStatus": "Plan Created",
+          "transitions": [
+            {
+              "action": "abandonWhenCreated",
+              "description": "Abandon a phenotyping plan that has no associated phenotyping stage information",
+              "triggeredByUser": true,
+              "available": false,
+              "note": "The plan already has phenotyping stages. Please abort the plan.",
+              "nextStatus": "PlanAbandoned"
+            },
+            {
+              "action": "abortPhenotypingPlan",
+              "description": "Abort a phenotyping plan that has associated aborted phenotyping stage information",
+              "triggeredByUser": true,
+              "available": true,
+              "note": null,
+              "nextStatus": "PhenotypePlanAborted"
+            }
+          ],
+          "actionToExecute": null
+        }
+      },
+      {
+        "pin": "PIN:0000000005",
+        "tpn": "TPN:000000001",
+        "attemptTypeName": "adult phenotyping",
+        "funderNames": [
+
+        ],
+        "workUnitName": "JAX",
+        "workGroupName": "JAX",
+        "comment": null,
+        "productsAvailableForGeneralPublic":null,
+        "phenotypingStartingPoint": {
+          "_links": {
+            "outcome": {
+              "href": "http://localhost:8080/api/plans/PIN:0000000001/outcomes/TPO:000000000002"
+            }
+          },
+          "outcomeTpo": "TPO:000000000002"
+        },
+        "phenotypingAttemptResponse": {
+          "phenotypingExternalRef":"JR6789",
+          "imitsPhenotypeAttemptId":8516,
+          "imitsPhenotypingProductionId":8718,
+          "imitsParentColonyId":20754,
+          "phenotypingBackgroundStrainName":"C57BL/6NJ"
+        },
+        "typeName": "phenotyping",
+        "statusName": "Plan Created",
+        "summaryStatusName": "Phenotyping Started",
+        "statusDates": [
+          {
+            "statusName": "Plan Created",
+            "date": "2019-11-01T00:00:00"
+          }
+        ],
+        "summaryStatusDates": [
+
+        ],
+        "statusTransition": {
+          "currentStatus": "Plan Created",
+          "transitions": [
+            {
+              "action": "abandonWhenCreated",
+              "description": "Abandon a phenotyping plan that has no associated phenotyping stage information",
+              "triggeredByUser": true,
+              "available": false,
+              "note": "The plan already has phenotyping stages. Please abort the plan.",
+              "nextStatus": "PlanAbandoned"
+            },
+            {
+              "action": "abortPhenotypingPlan",
+              "description": "Abort a phenotyping plan that has associated aborted phenotyping stage information",
+              "triggeredByUser": true,
+              "available": true,
+              "note": null,
+              "nextStatus": "PhenotypePlanAborted"
+            }
+          ],
+          "actionToExecute": null
+        }
       }
     ]
   },
@@ -210,7 +351,7 @@
   },
   "page":{
     "size":20,
-    "totalElements":3,
+    "totalElements":5,
     "totalPages":1,
     "number":0
   }

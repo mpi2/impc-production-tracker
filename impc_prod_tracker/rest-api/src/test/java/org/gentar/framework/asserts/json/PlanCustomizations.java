@@ -63,6 +63,7 @@ public class PlanCustomizations
         customizations.add(CustomizationHelper.buildDateCustomization("statusDates[1].date"));
         customizations.add(CustomizationHelper.buildDateCustomization("statusDates[2].date"));
         customizations.add(CustomizationHelper.buildDateCustomization("statusDates[3].date"));
+        customizations.add(CustomizationHelper.buildDateCustomization("statusDates[4].date"));
         customizations.add(CustomizationHelper.buildDateCustomization("summaryStatusDates[0].date"));
         return customizations;
     }

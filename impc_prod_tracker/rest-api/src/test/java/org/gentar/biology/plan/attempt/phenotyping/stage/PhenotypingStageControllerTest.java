@@ -128,6 +128,9 @@ class PhenotypingStageControllerTest  extends ControllerTestTemplate
     @DatabaseTearDown(type = DatabaseOperation.DELETE_ALL, value = DBSetupFilesPaths.MULTIPLE_PHENOTYPING_STAGES)
     void testUpdatePhenotypingStageInPlan() throws Exception
     {
+        sequenceResetter.syncSequence("PHENOTYPING_STAGE_SEQ", "PHENOTYPING_STAGE");
+        sequenceResetter.syncSequence("PHENOTYPING_STAGE_STATUS_STAMP_SEQ", "PHENOTYPING_STAGE_STATUS_STAMP");
+        sequenceResetter.syncSequence("TISSUE_DISTRIBUTION_SEQ", "TISSUE_DISTRIBUTION");
         sequenceResetter.syncSequence("HISTORY_SEQ", "HISTORY");
         sequenceResetter.syncSequence("HISTORY_DETAIL_SEQ", "HISTORY_DETAIL");
 

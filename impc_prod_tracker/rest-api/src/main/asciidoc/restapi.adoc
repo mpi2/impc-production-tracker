@@ -260,8 +260,7 @@ operations.
 include::{snippets}/plans/getCrisprPlan/response-fields.adoc[]
 
 ==== Phenotyping plan.
-ADD FIELDS EXAMPLE
-// include::{snippets}/plans/getPhenotypingPlan/response-fields.adoc[]
+include::{snippets}/plans/getPhenotypingPlan/response-fields.adoc[]
 
 === Filters
 When you use the endpoint to get all the plans, you can also use filters to reduce the results.
@@ -331,7 +330,7 @@ This is the list of filters you can use:
 === GET
 ==== Get a specific plan
 
-This endpoint shows a production plan in the system.
+This endpoint shows a plan in the system.
 
 ===== Example Request
 
@@ -366,6 +365,19 @@ include::{snippets}/plans/filteredPlans/curl-request.adoc[]
 
 include::{snippets}/plans/filteredPlans/http-response.adoc[]
 
+==== Get the history of changes for a plan
+
+You can use this endpoint to see all the changes that have been made on a plan.
+
+===== Example Request
+
+Curl:
+include::{snippets}/plans/history/curl-request.adoc[]
+
+===== Example Response
+
+include::{snippets}/plans/history/http-response.adoc[]
+
 === POST
 
 ==== Create a crispr plan
@@ -384,12 +396,10 @@ include::{snippets}/plans/postCrisprPlan/http-response.adoc[]
 ===== Example Request
 
 Curl:
-ADD PHENOTYPING PLAN INFORMATION
-//include::{snippets}/plans/postPhenotypingPlan/http-request.adoc[]
+include::{snippets}/plans/postPhenotypingPlan/http-request.adoc[]
 
 ===== Example Response
-ADD PHENOTYPING PLAN INFORMATION
-//include::{snippets}/plans/postPhenotypingPlan/http-response.adoc[]
+include::{snippets}/plans/postPhenotypingPlan/http-response.adoc[]
 
 
 === PUT
@@ -415,16 +425,16 @@ include::{snippets}/plans/putCrisprPlan/http-request.adoc[]
 include::{snippets}/plans/putCrisprPlan/http-response.adoc[]
 
 ==== Update a phenotyping plan
-NO INFORMATION IN THE PHENOTYPING PLAN CAN BE UPDATE, JUST THE PLAN
+
 ===== Example Request
 
 Curl:
-ADD PHENOTYPING PLAN INFORMATION
-//include::{snippets}/plans/putPhenotypingPlan/http-request.adoc[]
+
+include::{snippets}/plans/putPhenotypingPlan/http-request.adoc[]
 
 ===== Example Response
-ADD PHENOTYPING PLAN INFORMATION
-//include::{snippets}/plans/putPhenotypingPlan/http-response.adoc[]
+
+include::{snippets}/plans/putPhenotypingPlan/http-response.adoc[]
 
 
 == Outcomes

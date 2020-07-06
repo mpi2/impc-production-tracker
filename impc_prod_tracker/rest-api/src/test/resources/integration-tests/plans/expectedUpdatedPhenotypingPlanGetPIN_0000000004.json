@@ -1,12 +1,14 @@
 {
-  "pin": "PIN:0000000007",
+  "pin": "PIN:0000000004",
   "tpn": "TPN:000000001",
   "attemptTypeName": "adult phenotyping",
-  "funderNames":[],
-  "workUnitName":"UCD",
-  "workGroupName":"DTCC",
-  "comment":null,
-  "productsAvailableForGeneralPublic": true,
+  "funderNames": [
+
+  ],
+  "workUnitName": "BCM",
+  "workGroupName": "BaSH",
+  "comment": "New Plan comment",
+  "productsAvailableForGeneralPublic":false,
   "phenotypingStartingPoint": {
     "_links": {
       "outcome": {
@@ -16,8 +18,11 @@
     "outcomeTpo": "TPO:000000000001"
   },
   "phenotypingAttemptResponse": {
-    "phenotypingExternalRef": "CR1234",
-    "phenotypingBackgroundStrainName": "C57BL/6NJ"
+    "phenotypingExternalRef":"JR12345",
+    "imitsPhenotypeAttemptId":8517,
+    "imitsPhenotypingProductionId":8719,
+    "imitsParentColonyId":20755,
+    "phenotypingBackgroundStrainName":"C57BL/6NJ"
   },
   "typeName": "phenotyping",
   "statusName": "Plan Created",
@@ -25,13 +30,13 @@
   "statusDates": [
     {
       "statusName": "Plan Created",
-      "date": "2020-07-02T18:49:48.814889"
+      "date": "2019-11-01T00:00:00"
     }
   ],
   "summaryStatusDates": [
     {
       "statusName": "Plan Created",
-      "date": "2020-07-02T18:49:48.901093"
+      "date": "2019-11-01T00:00:00"
     }
   ],
   "statusTransition": {

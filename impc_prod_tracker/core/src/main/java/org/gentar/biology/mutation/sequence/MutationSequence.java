@@ -1,4 +1,5 @@
 package org.gentar.biology.mutation.sequence;
+
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -7,6 +8,7 @@ import org.gentar.BaseEntity;
 import org.gentar.biology.mutation.Mutation;
 import org.gentar.biology.sequence.Sequence;
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 
 @NoArgsConstructor(access= AccessLevel.PUBLIC, force=true)
@@ -19,13 +21,16 @@ public class MutationSequence extends BaseEntity implements Serializable
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "mutationSequenceSeq")
     private Long id;
 
+    @NotNull
     @ToString.Exclude
     @ManyToOne(targetEntity= Mutation.class)
     private Mutation mutation;
 
+    @NotNull
     @ManyToOne(cascade=CascadeType.ALL)
     private Sequence sequence;
 
+    @NotNull
     private Integer index;
 
     // Copy Constructor

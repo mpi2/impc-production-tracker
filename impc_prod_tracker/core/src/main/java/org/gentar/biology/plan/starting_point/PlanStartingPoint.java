@@ -3,10 +3,12 @@ package org.gentar.biology.plan.starting_point;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 import org.gentar.BaseEntity;
 import org.gentar.biology.outcome.Outcome;
 import org.gentar.biology.plan.Plan;
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 
 @NoArgsConstructor(access= AccessLevel.PUBLIC, force=true)
@@ -19,10 +21,13 @@ public class PlanStartingPoint extends BaseEntity implements Serializable
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "planStartingPointSeq")
     private Long id;
 
-    @ManyToOne(targetEntity= Plan.class)
+    @NotNull
+//    @ToString.Exclude
+    @ManyToOne(targetEntity = Plan.class)
     private Plan plan;
 
-    @ManyToOne(targetEntity= Outcome.class)
+    @NotNull
+    @ManyToOne(targetEntity = Outcome.class)
     private Outcome outcome;
 
 }
