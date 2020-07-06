@@ -2,6 +2,7 @@ package org.gentar.biology.plan.attempt.phenotyping;
 
 import lombok.*;
 import org.gentar.BaseEntity;
+import org.gentar.audit.diff.IgnoreForAuditingChanges;
 import org.gentar.biology.plan.Plan;
 import org.gentar.biology.plan.attempt.phenotyping.stage.PhenotypingStage;
 import org.gentar.biology.strain.Strain;
@@ -20,6 +21,7 @@ public class PhenotypingAttempt extends BaseEntity
 
     @OneToOne
     @MapsId
+    @IgnoreForAuditingChanges
     private Plan plan;
 
     private Long imitsPhenotypeAttempt;
