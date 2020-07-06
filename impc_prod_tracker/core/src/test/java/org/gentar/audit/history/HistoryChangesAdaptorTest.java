@@ -88,7 +88,7 @@ public class HistoryChangesAdaptorTest
             getChangeDescription("assignmentStatus.name", changeDescriptionList);
         assertThat(changeDescription1.getOldValue(), is("S1"));
         assertThat(changeDescription1.getNewValue(), is("S2"));
-        assertThat(changeDescription1.getChangeType(), is(ChangeType.CHANGED));
+        assertThat(changeDescription1.getChangeType(), is(ChangeType.CHANGED_FIELD));
 
         ChangeDescription changeDescription2 =
             getChangeDescription("plans.[10]", changeDescriptionList);
@@ -100,7 +100,7 @@ public class HistoryChangesAdaptorTest
             getChangeDescription("plans.[10].pin", changeDescriptionList);
         assertThat(changeDescription3.getOldValue(), is("pin1"));
         assertThat(changeDescription3.getNewValue(), is(nullValue()));
-        assertThat(changeDescription3.getChangeType(), is(ChangeType.CHANGED));
+        assertThat(changeDescription3.getChangeType(), is(ChangeType.CHANGED_FIELD));
 
         ChangeDescription changeDescription4 =
             getChangeDescription("plans.[20]", changeDescriptionList);
@@ -112,13 +112,13 @@ public class HistoryChangesAdaptorTest
             getChangeDescription("plans.[20].pin", changeDescriptionList);
         assertThat(changeDescription5.getOldValue(), is(nullValue()));
         assertThat(changeDescription5.getNewValue(), is("pin2"));
-        assertThat(changeDescription5.getChangeType(), is(ChangeType.CHANGED));
+        assertThat(changeDescription5.getChangeType(), is(ChangeType.CHANGED_FIELD));
 
         ChangeDescription changeDescription6 =
             getChangeDescription("tpn", changeDescriptionList);
         assertThat(changeDescription6.getOldValue(), is("tpn1"));
         assertThat(changeDescription6.getNewValue(), is("tpn2"));
-        assertThat(changeDescription6.getChangeType(), is(ChangeType.CHANGED));
+        assertThat(changeDescription6.getChangeType(), is(ChangeType.CHANGED_FIELD));
     }
 
     private ChangeDescription getChangeDescription(

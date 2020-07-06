@@ -4,9 +4,13 @@ import org.gentar.audit.history.History;
 import org.gentar.audit.history.HistoryService;
 import org.gentar.biology.colony.Colony;
 import org.gentar.biology.colony.Colony_;
+import org.gentar.biology.colony.distribution.DistributionProduct;
+import org.gentar.biology.colony.distribution.DistributionProduct_;
 import org.gentar.biology.plan.PlanStatusManager;
 import org.gentar.biology.status.Status_;
 import org.gentar.exceptions.UserOperationFailedException;
+import org.gentar.organization.work_unit.WorkUnit;
+import org.gentar.organization.work_unit.WorkUnit_;
 import org.gentar.security.abac.spring.ContextAwarePolicyEnforcement;
 import org.gentar.security.permissions.PermissionService;
 import org.gentar.statemachine.StateTransitionsManager;
@@ -42,6 +46,7 @@ public class OutcomeUpdater
         changeStatusIfNeeded(newOutcome);
         History history = detectTrackOfChanges(originalOutcome, newOutcome);
         saveChanges(newOutcome);
+        //History history = detectTrackOfChanges(originalOutcome, newOutcome);
         saveTrackOfChanges(history);
         planStatusManager.setSummaryStatus(originalOutcome.getPlan());
         return history;
@@ -87,6 +92,9 @@ public class OutcomeUpdater
             historyService.detectTrackOfChanges(
                 originalOutcome, newOutcome, originalOutcome.getId());
         history = historyService.filterDetailsInNestedEntity(history, Colony_.STATUS, Status_.NAME);
+        history =
+            historyService.filterDetailsInNestedEntity(
+                history, DistributionProduct_.DISTRIBUTION_CENTRE, WorkUnit_.NAME);
         return history;
     }
 }
