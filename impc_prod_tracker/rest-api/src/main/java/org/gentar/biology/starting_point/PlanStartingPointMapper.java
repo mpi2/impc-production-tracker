@@ -43,12 +43,13 @@ public class PlanStartingPointMapper implements Mapper<PlanStartingPoint, PlanSt
     {
         List<Link> links = new ArrayList<>();
         List<Outcome> outcomes = new ArrayList<>();
-        outcomes.add(planStartingPoint.getOutcome());
+        Outcome outcome = planStartingPoint.getOutcome();
+        outcomes.add(outcome);
         if (outcomes != null)
         {
             outcomes.forEach(x ->
                     links.add(linkTo(methodOn(OutcomeController.class)
-                            .findOneByPlanAndTpo(planStartingPoint.getPlan().getPin(), planStartingPointDTO.getTpo()))
+                            .findOneByPlanAndTpo(outcome.getPlan().getPin(), planStartingPointDTO.getTpo()))
                             .withRel("outcome")));
         }
         planStartingPointDTO.add(links);

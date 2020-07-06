@@ -1,0 +1,15 @@
+{
+  "pin":"PIN:0000000004",
+  "tpn":"TPN:000000001",
+  "attemptTypeName":"adult phenotyping",
+  "funderNames":[
+  ],
+  "workUnitName":"BCM",
+  "workGroupName":"BaSH",
+  "comment":"New Plan comment",
+  "productsAvailableForGeneralPublic":true,
+  "typeName":"phenotyping",
+  "statusTransition":{
+    "actionToExecute":null
+  }
+}

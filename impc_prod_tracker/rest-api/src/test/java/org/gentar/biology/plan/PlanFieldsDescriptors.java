@@ -18,6 +18,8 @@ public class PlanFieldsDescriptors
         addField(sharedFieldDescriptions, "comment", "Comment for the plan");
         addField(sharedFieldDescriptions, "statusName", "Current status of the plan.");
         addField(sharedFieldDescriptions, "statusDates[]", "Stamps of the statuses the plan has gone through.");
+        addField(sharedFieldDescriptions, "statusDates[].statusName", "");
+        addField(sharedFieldDescriptions, "statusDates[].date", "");
         addField(
             sharedFieldDescriptions,
             "summaryStatusName",
@@ -218,6 +220,27 @@ public class PlanFieldsDescriptors
         addField(crisprFields, "crisprAttempt.assay.totalTransferred", "Total transferred");
 
         return crisprFields;
+    }
+
+    public static List<FieldDescriptor> getPhenotypingFieldDescriptors()
+    {
+        List<FieldDescriptor> phenotypingFields = new ArrayList<>();
+
+        addField(phenotypingFields, "phenotypingStartingPoint", "Outcome information");
+        addField(phenotypingFields, "phenotypingStartingPoint._links", "");
+        addField(phenotypingFields, "phenotypingStartingPoint._links.outcome", "");
+        addField(phenotypingFields, "phenotypingStartingPoint._links.outcome.href", "Outcome link");
+        addField(phenotypingFields, "phenotypingStartingPoint.outcomeTpo",
+                "Public identifier for the outcome.");
+        addField(phenotypingFields, "phenotypingAttemptResponse", "Phenotyping attempt details.");
+        addField(phenotypingFields, "phenotypingAttemptResponse.phenotypingExternalRef",
+                "Phenotyping colony name or specimen group name");
+        addField(phenotypingFields, "phenotypingAttemptResponse.imitsPhenotypeAttemptId", "");
+        addField(phenotypingFields, "phenotypingAttemptResponse.imitsPhenotypingProductionId", "");
+        addField(phenotypingFields, "phenotypingAttemptResponse.imitsParentColonyId", "");
+        addField(phenotypingFields, "phenotypingAttemptResponse.phenotypingBackgroundStrainName",
+                "Phenotyping attempt background strain.");
+        return phenotypingFields;
     }
 
     private static void addField(List<FieldDescriptor> list, String name, String description)

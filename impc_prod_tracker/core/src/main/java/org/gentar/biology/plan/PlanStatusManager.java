@@ -112,7 +112,10 @@ public class PlanStatusManager
         PhenotypingAttempt phenotypingAttempt = plan.getPhenotypingAttempt();
         if (phenotypingAttempt != null)
         {
-            phenotypingStages.addAll(phenotypingAttempt.getPhenotypingStages());
+            if (phenotypingAttempt.getPhenotypingStages() != null)
+            {
+                phenotypingStages.addAll(phenotypingAttempt.getPhenotypingStages());
+            }
         }
         return phenotypingStages;
     }

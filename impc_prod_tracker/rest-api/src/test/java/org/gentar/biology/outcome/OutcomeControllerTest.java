@@ -87,7 +87,6 @@ class OutcomeControllerTest extends ControllerTestTemplate
         String expectedJson =
             getCompleteResourcePath("expectedColonyOutcomeHistoryTPO_000000000002.json");
         String obtainedJson = restCaller.executeGetAndDocument(url, documentColonyOutcomeHistory());
-        System.out.println(obtainedJson);
         resultValidator.validateObtainedMatchesJson(obtainedJson, expectedJson);
     }
 
