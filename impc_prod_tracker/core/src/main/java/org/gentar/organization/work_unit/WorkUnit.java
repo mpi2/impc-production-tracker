@@ -45,6 +45,7 @@ public class WorkUnit extends BaseEntity
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
     @JsonIgnore
+    @IgnoreForAuditingChanges
     @ManyToMany(fetch=FetchType.EAGER, mappedBy = "workUnits")
     private Set<Consortium> consortia;
 

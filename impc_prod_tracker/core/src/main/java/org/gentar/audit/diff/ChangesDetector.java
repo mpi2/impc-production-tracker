@@ -2,8 +2,6 @@ package org.gentar.audit.diff;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import org.gentar.util.CollectionPrinter;
-
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -104,30 +102,6 @@ public class ChangesDetector<T>
         return inputMap;
     }
 
-    private ChangeEntry evaluateChange(
-        String property, PropertyDescription oldPropertyData, PropertyDescription newPropertyData)
-    {
-        Object oldValue = null;
-        Object newValue = null;
-        Class<?> type = null;
-        if (oldPropertyData != null)
-        {
-            oldValue = oldPropertyData.getValue();
-            type = oldPropertyData.getType();
-        }
-        if (newPropertyData != null)
-        {
-            newValue = newPropertyData.getValue();
-            type = newPropertyData.getType();
-        }
-        ChangeEntry changeEntry = null;
-        if (!Objects.equals(oldValue, newValue))
-        {
-            changeEntry = buildChangeEntry(property, type, oldValue, newValue, ChangeType.CHANGED);
-        }
-        return changeEntry;
-    }
-
     private List<ChangeEntry> evaluateProperty(ChangeDetectionInput input)
     {
         List<ChangeEntry> changes = new ArrayList<>();
@@ -185,7 +159,8 @@ public class ChangesDetector<T>
         PropertyDescription newPropertyWithValue = newObjectPropertyData.get(property);
         if (oldPropertyWithValue != null && newPropertyWithValue != null)
         {
-            changeEntry = evaluateChange(property, oldPropertyWithValue, newPropertyWithValue);
+            changeEntry = evaluateChange(
+                property, oldPropertyWithValue, newPropertyWithValue, ChangeType.CHANGED_ELEMENT);
         }
         else if (oldPropertyWithValue == null)
         {
@@ -206,6 +181,40 @@ public class ChangesDetector<T>
                     oldPropertyWithValue.getValue(),
                     null,
                     ChangeType.REMOVED);
+        }
+        return changeEntry;
+    }
+
+    private ChangeEntry evaluateChange(
+        String property, PropertyDescription oldPropertyData, PropertyDescription newPropertyData)
+    {
+        return evaluateChange(property, oldPropertyData, newPropertyData, ChangeType.CHANGED_FIELD);
+    };
+
+    private ChangeEntry evaluateChange(
+        String property,
+        PropertyDescription oldPropertyData,
+        PropertyDescription newPropertyData,
+        ChangeType changeType
+        )
+    {
+        Object oldValue = null;
+        Object newValue = null;
+        Class<?> type = null;
+        if (oldPropertyData != null)
+        {
+            oldValue = oldPropertyData.getValue();
+            type = oldPropertyData.getType();
+        }
+        if (newPropertyData != null)
+        {
+            newValue = newPropertyData.getValue();
+            type = newPropertyData.getType();
+        }
+        ChangeEntry changeEntry = null;
+        if (!Objects.equals(oldValue, newValue))
+        {
+            changeEntry = buildChangeEntry(property, type, oldValue, newValue, changeType);
         }
         return changeEntry;
     }
