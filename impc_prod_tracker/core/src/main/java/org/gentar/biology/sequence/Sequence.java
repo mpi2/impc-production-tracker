@@ -2,6 +2,7 @@ package org.gentar.biology.sequence;
 
 import lombok.*;
 import org.gentar.BaseEntity;
+import org.gentar.audit.diff.IgnoreForAuditingChanges;
 import org.gentar.biology.intention.project_intention_sequence.ProjectIntentionSequence;
 import org.gentar.biology.mutation.sequence.MutationSequence;
 import org.gentar.biology.sequence.category.SequenceCategory;
@@ -39,6 +40,7 @@ public class Sequence extends BaseEntity
 
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
+    @IgnoreForAuditingChanges
     @OneToMany(cascade=CascadeType.ALL, mappedBy = "sequence")
     private List<ProjectIntentionSequence> projectIntentionSequences;
 

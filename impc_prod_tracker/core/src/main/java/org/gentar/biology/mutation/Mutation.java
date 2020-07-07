@@ -63,9 +63,11 @@ public class Mutation extends BaseEntity
 
     // The next two fields are for Arturo's pipeline
     @Column(columnDefinition = "TEXT")
+    @ToString.Exclude
     private String description;
 
     @Column(columnDefinition = "TEXT")
+    @ToString.Exclude
     private String autoDescription;
 
     @Column(unique = true)

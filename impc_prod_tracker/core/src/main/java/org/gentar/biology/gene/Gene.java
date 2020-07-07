@@ -19,6 +19,7 @@ package org.gentar.biology.gene;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import org.gentar.BaseEntity;
+import org.gentar.audit.diff.IgnoreForAuditingChanges;
 import org.gentar.biology.mutation.Mutation;
 import org.gentar.biology.gene.flag.GeneFlag;
 import org.gentar.biology.intention.project_intention_gene.ProjectIntentionGene;
@@ -100,6 +101,7 @@ public class Gene extends BaseEntity
 
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
+    @IgnoreForAuditingChanges
     @OneToMany
     @JoinColumn(name = "gene_id")
     private Set<ProjectIntentionGene> projectIntentionGenes;
