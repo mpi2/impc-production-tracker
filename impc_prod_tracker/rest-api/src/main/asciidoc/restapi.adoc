@@ -546,7 +546,7 @@ This section describes the REST endpoints for mutations in the system.
 === Fields
 These are the fields you are going to see in the body of a request in a GET or in the payload for POST or PUT
 operations.
-include::{snippets}/mutations/response-fields.adoc[]
+include::{snippets}/mutations/mutation/response-fields.adoc[]
 
 === GET
 ==== Get a specific mutation
@@ -556,11 +556,24 @@ This endpoint fetches a specific mutation associated with an outcome.
 ===== Example Request
 
 Curl:
-include::{snippets}/mutations/curl-request.adoc[]
+include::{snippets}/mutations/mutation/curl-request.adoc[]
 
 ===== Example Response
 
-include::{snippets}/mutations/http-response.adoc[]
+include::{snippets}/mutations/mutation/http-response.adoc[]
+
+==== Get history for a specific mutation
+
+This endpoint fetches the history of a specific mutation associated with an outcome.
+
+===== Example Request
+
+Curl:
+include::{snippets}/mutations/mutation/history/curl-request.adoc[]
+
+===== Example Response
+
+include::{snippets}/mutations/mutation/history/http-response.adoc[]
 
 == Phenotyping Stages
 anchor:phenotypingStages[]

@@ -3,6 +3,7 @@ package org.gentar.biology.mutation;
 import com.github.springtestdbunit.annotation.DatabaseOperation;
 import com.github.springtestdbunit.annotation.DatabaseSetup;
 import com.github.springtestdbunit.annotation.DatabaseTearDown;
+import org.gentar.audit.history.HistoryFieldsDescriptors;
 import org.gentar.framework.ControllerTestTemplate;
 import org.gentar.framework.RestCaller;
 import org.gentar.framework.ResultValidator;
@@ -62,7 +63,25 @@ public class MutationControllerTest extends ControllerTestTemplate
     private ResultHandler documentMutation()
     {
         List<FieldDescriptor> mutationFieldsDescriptions = MutationFieldsDescriptors.getMutationFieldsDescriptions();
-        return document("mutations", responseFields(mutationFieldsDescriptions));
+        return document("mutations/mutation", responseFields(mutationFieldsDescriptions));
+    }
+
+    @Test
+    @DatabaseSetup(DBSetupFilesPaths.MULTIPLE_MUTATIONS)
+    @DatabaseTearDown(type = DatabaseOperation.DELETE_ALL, value = DBSetupFilesPaths.MULTIPLE_MUTATIONS)
+    void testGetMutationHistoryInOutcome() throws Exception
+    {
+        String url = "/api/plans/PIN:0000000001/outcomes/TPO:000000000002/mutations/MIN:000000000002/history";
+        String expectedJson = getCompleteResourcePath("expectedMutationHistoryMIN_000000000002.json");
+        String obtainedJson = restCaller.executeGetAndDocument(url, documentMutationHistory());
+        resultValidator.validateObtainedMatchesJson(obtainedJson, expectedJson);
+    }
+
+    private ResultHandler documentMutationHistory()
+    {
+        List<FieldDescriptor> historyFieldDescriptions =
+            HistoryFieldsDescriptors.getHistoryFieldDescriptions();
+        return document("mutations/mutation/history", responseFields(historyFieldDescriptions));
     }
 
     private String getCompleteResourcePath(String resourceJsonName)
