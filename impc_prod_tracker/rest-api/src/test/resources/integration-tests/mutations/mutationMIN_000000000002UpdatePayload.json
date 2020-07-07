@@ -77,14 +77,8 @@
       "href":"http://localhost:8080/api/plans/PIN:0000000001/outcomes/TPO:000000000002"
     }
   },
-  "genes":[
-    {
-      "id":2,
-      "name":"otogelin",
-      "symbol":"Otog",
-      "speciesName":"Mus musculus",
-      "externalLink":"http://www.mousephenotype.org/data/genes/MGI:1202064",
-      "accessionId":"MGI:1202064"
-    }
+  "geneSymbolsOrAccessionIds":[
+      "Otog",
+      "Dennd6b"
   ]
 }

@@ -92,7 +92,6 @@ public class FluentPersonRoleWorkUnitListTest
         FluentPersonRoleWorkUnitList fluentPersonRoleWorkUnitList =
             new FluentPersonRoleWorkUnitList(personRoleWorkUnits);
         List<String> namesList = fluentPersonRoleWorkUnitList.toWorkUnitsNames();
-        System.out.println(namesList);
     }
 
     private List<PersonRoleWorkUnit> buildPersonRoleWorkUnits()

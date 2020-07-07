@@ -117,7 +117,6 @@ class PhenotypingStageControllerTest  extends ControllerTestTemplate
             String phenotypingStageUrl, String expectedJson) throws Exception
     {
         String obtainedPhenotypingStage = restCaller.executeGet(phenotypingStageUrl);
-        System.out.println(obtainedPhenotypingStage);
         resultValidator.validateObtainedMatchesJson(
                 obtainedPhenotypingStage, expectedJson, PhenotypingStageCustomizations.ignoreIdsAndPsnAndDates());
     }
@@ -164,7 +163,6 @@ class PhenotypingStageControllerTest  extends ControllerTestTemplate
             String phenotypingStageUrl, String expectedJson) throws Exception
     {
         String obtainedPhenotypingStage = restCaller.executeGet(phenotypingStageUrl);
-        System.out.println(obtainedPhenotypingStage);
         resultValidator.validateObtainedMatchesJson(
                 obtainedPhenotypingStage, expectedJson, PhenotypingStageCustomizations.ignoreIdsAndPsnAndDates());
     }
