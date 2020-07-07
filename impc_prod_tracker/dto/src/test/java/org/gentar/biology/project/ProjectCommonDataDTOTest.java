@@ -20,7 +20,6 @@ class ProjectCommonDataDTOTest
         projectCommonDataDTO.setProjectExternalRef("externalRef");
 
         String json = JsonConverter.toJson(projectCommonDataDTO);
-        System.out.println(json);
 
         assertThat(json, is(notNullValue()));
         assertThat(json, is("{\"recovery\":false,\"comment\":\"comment\"," +

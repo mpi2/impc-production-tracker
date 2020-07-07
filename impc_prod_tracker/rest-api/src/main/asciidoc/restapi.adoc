@@ -575,6 +575,22 @@ include::{snippets}/mutations/mutation/history/curl-request.adoc[]
 
 include::{snippets}/mutations/mutation/history/http-response.adoc[]
 
+=== PUT
+==== Update a mutation
+
+This endpoint allows the modification of an existing mutation.
+
+===== Example Request
+
+Curl:
+include::{snippets}/mutations/mutation/putMutation/curl-request.adoc[]
+
+===== Example Response
+
+include::{snippets}/mutations/mutation/putMutation/http-response.adoc[]
+
+
+
 == Phenotyping Stages
 anchor:phenotypingStages[]
 This section describes the REST endpoints for phenotyping stages in the system.

@@ -8,9 +8,135 @@
     {
       "id":1,
       "user":"imits2test@test.com",
-      "date":"2020-07-07T13:24:47.17211",
+      "date":"2020-07-07T16:18:58.115067",
       "comment":"Mutation updated",
       "details":[
+        {
+          "field":"genes.[4]",
+          "oldValue":null,
+          "newValue":"Gene(id=4, symbol=Dennd6b, name=DENN/MADD domain containing 6B, type=Gene, genomeBuild=GRCm38, entrezGeneId=69440, ncbiChromosome=15, ncbiStart=89182213, ncbiStop=89198427, ncbiStrand=-, ensemblGeneId=ENSMUSG00000015377, ensemblChromosome=15, ensemblStart=89182213, ensemblStop=89196496, ensemblStrand=-, mgiCm=44.70, mgiChromosome=15, mgiStart=89182213, mgiStop=89196496, mgiStrand=-, species=null, accId=MGI:1916690)",
+          "note":"Element added"
+        },
+        {
+          "field":"genes.[4].accId",
+          "oldValue":null,
+          "newValue":"MGI:1916690",
+          "note":"Field changed"
+        },
+        {
+          "field":"genes.[4].ensemblChromosome",
+          "oldValue":null,
+          "newValue":"15",
+          "note":"Field changed"
+        },
+        {
+          "field":"genes.[4].ensemblGeneId",
+          "oldValue":null,
+          "newValue":"ENSMUSG00000015377",
+          "note":"Field changed"
+        },
+        {
+          "field":"genes.[4].ensemblStart",
+          "oldValue":null,
+          "newValue":"89182213",
+          "note":"Field changed"
+        },
+        {
+          "field":"genes.[4].ensemblStop",
+          "oldValue":null,
+          "newValue":"89196496",
+          "note":"Field changed"
+        },
+        {
+          "field":"genes.[4].ensemblStrand",
+          "oldValue":null,
+          "newValue":"-",
+          "note":"Field changed"
+        },
+        {
+          "field":"genes.[4].entrezGeneId",
+          "oldValue":null,
+          "newValue":"69440",
+          "note":"Field changed"
+        },
+        {
+          "field":"genes.[4].genomeBuild",
+          "oldValue":null,
+          "newValue":"GRCm38",
+          "note":"Field changed"
+        },
+        {
+          "field":"genes.[4].mgiChromosome",
+          "oldValue":null,
+          "newValue":"15",
+          "note":"Field changed"
+        },
+        {
+          "field":"genes.[4].mgiCm",
+          "oldValue":null,
+          "newValue":"44.70",
+          "note":"Field changed"
+        },
+        {
+          "field":"genes.[4].mgiStart",
+          "oldValue":null,
+          "newValue":"89182213",
+          "note":"Field changed"
+        },
+        {
+          "field":"genes.[4].mgiStop",
+          "oldValue":null,
+          "newValue":"89196496",
+          "note":"Field changed"
+        },
+        {
+          "field":"genes.[4].mgiStrand",
+          "oldValue":null,
+          "newValue":"-",
+          "note":"Field changed"
+        },
+        {
+          "field":"genes.[4].name",
+          "oldValue":null,
+          "newValue":"DENN/MADD domain containing 6B",
+          "note":"Field changed"
+        },
+        {
+          "field":"genes.[4].ncbiChromosome",
+          "oldValue":null,
+          "newValue":"15",
+          "note":"Field changed"
+        },
+        {
+          "field":"genes.[4].ncbiStart",
+          "oldValue":null,
+          "newValue":"89182213",
+          "note":"Field changed"
+        },
+        {
+          "field":"genes.[4].ncbiStop",
+          "oldValue":null,
+          "newValue":"89198427",
+          "note":"Field changed"
+        },
+        {
+          "field":"genes.[4].ncbiStrand",
+          "oldValue":null,
+          "newValue":"-",
+          "note":"Field changed"
+        },
+        {
+          "field":"genes.[4].symbol",
+          "oldValue":null,
+          "newValue":"Dennd6b",
+          "note":"Field changed"
+        },
+        {
+          "field":"genes.[4].type",
+          "oldValue":null,
+          "newValue":"Gene",
+          "note":"Field changed"
+        },
         {
           "field":"geneticMutationType.name",
           "oldValue":"Not Tested",

@@ -80,6 +80,14 @@
   },
   "genes":[
     {
+      "id":4,
+      "name":"DENN/MADD domain containing 6B",
+      "symbol":"Dennd6b",
+      "speciesName":null,
+      "externalLink":"http://www.mousephenotype.org/data/genes/MGI:1916690",
+      "accessionId":"MGI:1916690"
+    },
+    {
       "id":2,
       "name":"otogelin",
       "symbol":"Otog",

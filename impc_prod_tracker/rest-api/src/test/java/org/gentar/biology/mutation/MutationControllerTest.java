@@ -94,12 +94,12 @@ public class MutationControllerTest extends ControllerTestTemplate
         sequenceResetter.syncSequence("MUTATION_QC_RESULT_SEQ", "MUTATION_QC_RESULT");
         sequenceResetter.syncSequence("HISTORY_SEQ", "HISTORY");
         sequenceResetter.syncSequence("HISTORY_DETAIL_SEQ", "HISTORY_DETAIL");
+        sequenceResetter.syncSequence("GENE_SEQ", "GENE");
 
         String payload = loadFromResource("mutationMIN_000000000002UpdatePayload.json");
         String url = "/api/plans/PIN:0000000001/outcomes/TPO:000000000002/mutations/MIN:000000000002/";
         String obtainedJson =
             restCaller.executePutAndDocument(url, payload, document("mutations/mutation/putMutation"));
-        System.out.println(":::");
         System.out.println(obtainedJson);
         verifyUpdateResponse(obtainedJson, "expectedResponseUpdateMutationMIN_000000000002.json");
         String mutationUrl = LinkUtil.getSelfHrefLinkStringFromJson(obtainedJson);
