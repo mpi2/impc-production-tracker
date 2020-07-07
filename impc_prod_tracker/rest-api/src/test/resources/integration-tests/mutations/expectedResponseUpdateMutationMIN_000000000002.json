@@ -1,0 +1,101 @@
+{
+  "_links":{
+    "self":{
+      "href":"http://localhost:8080/api/plans/PIN:0000000001/outcomes/TPO:000000000002/mutations/MIN:000000000002"
+    }
+  },
+  "history":[
+    {
+      "id":1,
+      "user":"imits2test@test.com",
+      "date":"2020-07-07T13:24:47.17211",
+      "comment":"Mutation updated",
+      "details":[
+        {
+          "field":"geneticMutationType.name",
+          "oldValue":"Not Tested",
+          "newValue":"Null",
+          "note":"Field changed"
+        },
+        {
+          "field":"molecularMutationType.name",
+          "oldValue":"Deletion",
+          "newValue":"Point Mutation",
+          "note":"Field changed"
+        },
+        {
+          "field":"mutationCategorizations.[9]",
+          "oldValue":null,
+          "newValue":"MutationCategorization(id=9, name=HR, description=null, mutationCategorizationType=MutationCategorizationType(id=2, name=repair_mechanism))",
+          "note":"Element added"
+        },
+        {
+          "field":"mutationCategorizations.[9].mutationCategorizationType.name",
+          "oldValue":null,
+          "newValue":"repair_mechanism",
+          "note":"Field changed"
+        },
+        {
+          "field":"mutationCategorizations.[9].name",
+          "oldValue":null,
+          "newValue":"HR",
+          "note":"Field changed"
+        },
+        {
+          "field":"mutationQcResults.[id:null, QC type name:loxp_screen, QC status:fail]",
+          "oldValue":null,
+          "newValue":"id:null, QC type name:loxp_screen, QC status:fail",
+          "note":"Element added"
+        },
+        {
+          "field":"mutationQcResults.[id:null, QC type name:loxp_screen, QC status:fail].qcType.name",
+          "oldValue":null,
+          "newValue":"loxp_screen",
+          "note":"Field changed"
+        },
+        {
+          "field":"mutationQcResults.[id:null, QC type name:loxp_screen, QC status:fail].status.name",
+          "oldValue":null,
+          "newValue":"fail",
+          "note":"Field changed"
+        },
+        {
+          "field":"mutationSequences.[2].sequence.sequenceLocations.[1]",
+          "oldValue":"SequenceLocation(id=1, index=1)",
+          "newValue":"SequenceLocation(id=1, index=1)",
+          "note":"Element changed"
+        },
+        {
+          "field":"mutationSequences.[2].sequence.sequenceLocations.[1].location.start",
+          "oldValue":"46245748",
+          "newValue":"46245700",
+          "note":"Field changed"
+        },
+        {
+          "field":"mutationSequences.[2].sequence.sequenceLocations.[1].location.stop",
+          "oldValue":"46245649",
+          "newValue":"46245602",
+          "note":"Field changed"
+        },
+        {
+          "field":"mutationSequences.[2].sequence.sequenceLocations.[2]",
+          "oldValue":"SequenceLocation(id=2, index=2)",
+          "newValue":"SequenceLocation(id=2, index=2)",
+          "note":"Element changed"
+        },
+        {
+          "field":"mutationSequences.[2].sequence.sequenceLocations.[2].location.start",
+          "oldValue":"46245132",
+          "newValue":"46245150",
+          "note":"Field changed"
+        },
+        {
+          "field":"mutationSequences.[2].sequence.sequenceLocations.[2].location.stop",
+          "oldValue":"46244994",
+          "newValue":"46244960",
+          "note":"Field changed"
+        }
+      ]
+    }
+  ]
+}

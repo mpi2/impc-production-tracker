@@ -102,7 +102,6 @@ class PlanControllerTest extends ControllerTestTemplate
 
         MvcResult result = resultActions.andReturn();
         String contentAsString = result.getResponse().getContentAsString();
-        System.out.println(contentAsString);
         String expectedOutputAsString =
                 loadExpectedResponseFromResource("expectedAllPlans.json");
 
@@ -115,16 +114,15 @@ class PlanControllerTest extends ControllerTestTemplate
     void testGetFilteredPlans() throws Exception
     {
         ResultActions resultActions = mvc().perform(MockMvcRequestBuilders
-                .get("/api/plans?statusName=Founder Obtained&attemptTypeName=crispr")
-                .header("Authorization", accessToken))
-                .andExpect(status().isOk())
-                .andDo(document("plans/filteredPlans"));
+            .get("/api/plans?statusName=Founder Obtained&attemptTypeName=crispr")
+            .header("Authorization", accessToken))
+            .andExpect(status().isOk())
+            .andDo(document("plans/filteredPlans"));
 
         MvcResult result = resultActions.andReturn();
         String contentAsString = result.getResponse().getContentAsString();
-        System.out.println(contentAsString);
         String expectedOutputAsString =
-                loadExpectedResponseFromResource("expectedFilteredPlans.json");
+            loadExpectedResponseFromResource("expectedFilteredPlans.json");
 
         JSONAssert.assertEquals(expectedOutputAsString, contentAsString, JSONCompareMode.STRICT);
     }
@@ -143,16 +141,15 @@ class PlanControllerTest extends ControllerTestTemplate
         editCrisprPlanWithNewValues(planUpdateDTO);
 
         ResultActions resultActions = mvc().perform(MockMvcRequestBuilders
-                .put("/api/plans/PIN:0000000001")
-                .header("Authorization", accessToken)
-                .content(toJson(planUpdateDTO))
-                .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andDo(document("plans/putCrisprPlan"));
+            .put("/api/plans/PIN:0000000001")
+            .header("Authorization", accessToken)
+            .content(toJson(planUpdateDTO))
+            .contentType(MediaType.APPLICATION_JSON))
+            .andExpect(status().isOk())
+            .andDo(document("plans/putCrisprPlan"));
 
         MvcResult result = resultActions.andReturn();
         String contentAsString = result.getResponse().getContentAsString();
-        System.out.println(contentAsString);
         ChangeResponse changeResponse = JsonHelper.fromJson(contentAsString, ChangeResponse.class);
         verifyChangeResponse(changeResponse);
 
@@ -164,14 +161,13 @@ class PlanControllerTest extends ControllerTestTemplate
     private void verifyGetPlantEqualsJson(String planLink, String jsonFileName) throws Exception
     {
         ResultActions callGetWithObtainedUrl = mvc().perform(MockMvcRequestBuilders
-                .get(planLink)
-                .header("Authorization", accessToken))
-                .andExpect(status().isOk());
+            .get(planLink)
+            .header("Authorization", accessToken))
+            .andExpect(status().isOk());
         MvcResult obtainedProject = callGetWithObtainedUrl.andReturn();
         String obtainedPlanAsString = obtainedProject.getResponse().getContentAsString();
-        System.out.println(obtainedPlanAsString);
         String expectedOutputAsString =
-                loadExpectedResponseFromResource(jsonFileName);
+            loadExpectedResponseFromResource(jsonFileName);
 
         JSONAssert.assertEquals(expectedOutputAsString, obtainedPlanAsString, JSONCompareMode.STRICT);
     }
@@ -192,7 +188,7 @@ class PlanControllerTest extends ControllerTestTemplate
     private PlanUpdateDTO getPlanToUpdate() throws IOException
     {
         String originalPlan =
-                loadExpectedResponseFromResource("expectedUpdatedPlanGetPIN_0000000001.json");
+            loadExpectedResponseFromResource("expectedUpdatedPlanGetPIN_0000000001.json");
         return JsonHelper.fromJson(originalPlan, PlanUpdateDTO.class);
     }
 
@@ -275,7 +271,7 @@ class PlanControllerTest extends ControllerTestTemplate
 
         MvcResult result = resultActions.andReturn();
         String contentAsString = result.getResponse().getContentAsString();
-        System.out.println(contentAsString);
+
         ChangeResponse changeResponse = JsonHelper.fromJson(contentAsString, ChangeResponse.class);
 
         List<HistoryDTO> historyDTOS = changeResponse.getHistoryDTOs();
@@ -446,9 +442,8 @@ class PlanControllerTest extends ControllerTestTemplate
             String phenotypingPlanUrl, String expectedJson) throws Exception
     {
         String obtainedPhenotypingPlan = restCaller.executeGet(phenotypingPlanUrl);
-        System.out.println(obtainedPhenotypingPlan);
         resultValidator.validateObtainedMatchesJson(
-                obtainedPhenotypingPlan, expectedJson, PlanCustomizations.ignoreIdsAndPinAndDates());
+            obtainedPhenotypingPlan, expectedJson, PlanCustomizations.ignoreIdsAndPinAndDates());
     }
 
     private String loadFromResource(String resourceName)
@@ -475,7 +470,7 @@ class PlanControllerTest extends ControllerTestTemplate
         String url = "/api/plans/";
         String expectedJson = getCompleteResourcePath("expectedCreatedPhenotypingPlan.json");
         String obtainedJson =
-                restCaller.executePostAndDocument(url, payload, document("plans/postPhenotypingPlan"));
+            restCaller.executePostAndDocument(url, payload, document("plans/postPhenotypingPlan"));
         String phenotypingPlanUrl = LinkUtil.getSelfHrefLinkStringFromJson(obtainedJson);
 
         verifyCreatedPhenotypingPlan(phenotypingPlanUrl, expectedJson);
@@ -485,7 +480,6 @@ class PlanControllerTest extends ControllerTestTemplate
             String phenotypingPlanUrl, String expectedJson) throws Exception
     {
         String obtainedPhenotypingStage = restCaller.executeGet(phenotypingPlanUrl);
-        System.out.println(obtainedPhenotypingStage);
         resultValidator.validateObtainedMatchesJson(
                 obtainedPhenotypingStage, expectedJson, PlanCustomizations.ignoreIdsAndPinAndDates());
     }
