@@ -8,7 +8,7 @@ import java.util.List;
 
 public class OutcomeCustomizations
 {
-    public static  Customization[] ignoreIdsAndTpoAndDates()
+    public static Customization[] ignoreIdsAndTpoAndDates()
     {
         List<Customization> customizationList = new ArrayList<>();
         customizationList.addAll(buildCustomizationForColonyIds());

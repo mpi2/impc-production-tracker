@@ -371,7 +371,8 @@ This allele from project Fxn-5659J-A was generated at The Jackson Laboratory by 
                 MGI_ALLELE_ID="MGI:6342258"
                 MGI_ALLELE_SYMBOL="em1(IMPC)J"
                 MGI_ALLELE_SYMBOL_REQUIRES_CONSTRUCTION="true"
-                MGI_ALLELE_SYMBOL_WITHOUT_IMPC_ABBREVIATION="false"/>
+                MGI_ALLELE_SYMBOL_WITHOUT_IMPC_ABBREVIATION="false"
+                CREATED_BY="imits2test@test.com"/>
 
     <MUTATION_OUTCOME   MUTATION_ID="1"
                         OUTCOME_ID="1"/>

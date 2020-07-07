@@ -7,9 +7,11 @@
                 NAME="restricted"/>
 
     <SPECIES    ID="1"
-                NAME="Mus musculus"/>
+                NAME="Mus musculus"
+                TAXON_ID="10090"/>
     <SPECIES    ID="2"
-                NAME="Homo sapiens"/>
+                NAME="Homo sapiens"
+                TAXON_ID="9606"/>
 
     <ASSIGNMENT_STATUS  ID="1"
                         NAME="Assigned"/>

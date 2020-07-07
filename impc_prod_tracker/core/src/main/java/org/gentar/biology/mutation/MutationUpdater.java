@@ -3,6 +3,8 @@ package org.gentar.biology.mutation;
 import org.gentar.audit.history.History;
 import org.gentar.audit.history.HistoryService;
 import org.gentar.biology.colony.Colony_;
+import org.gentar.biology.location.Location_;
+import org.gentar.biology.species.Species_;
 import org.gentar.biology.status.Status_;
 import org.gentar.exceptions.UserOperationFailedException;
 import org.gentar.security.abac.spring.ContextAwarePolicyEnforcement;
@@ -68,6 +70,7 @@ public class MutationUpdater
         if (history != null)
         {
             history = historyService.filterDetailsInNestedEntity(history, Colony_.STATUS, Status_.NAME);
+            history = historyService.filterDetailsInNestedEntity(history, Location_.SPECIES, Species_.NAME);
         }
         return history;
     }
