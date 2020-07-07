@@ -1,5 +1,4 @@
 {
-  "pin":"PIN:0000000001",
   "tpn":"TPN:000000001",
   "attemptTypeName":"crispr",
   "funderNames":[
@@ -7,18 +6,17 @@
   ],
   "workUnitName":"BCM",
   "workGroupName":"BaSH",
-  "comment":"New Plan comment",
-  "productsAvailableForGeneralPublic":null,
+  "comment":"example of crispr plan creation",
+  "productsAvailableForGeneralPublic":false,
   "crisprAttempt":{
     "miDate":"2019-02-26",
-    "experimental":false,
-    "comment":"New Crispr Comment",
+    "experimental":true,
+    "comment":"crispr plan comment",
     "mutagenesisExternalRef":"MF-26326",
     "imitsMiAttemptId":20043,
-    "attemptExternalRef":"New external reference",
+    "attemptExternalRef":"attempt external reference",
     "nucleases":[
       {
-        "id":1,
         "typeName":"CAS9",
         "concentration":250.0,
         "className":"protein"
@@ -26,7 +24,6 @@
     ],
     "guides":[
       {
-        "id":1,
         "chr":"X",
         "start":46245139,
         "stop":46245161,
@@ -42,7 +39,6 @@
     ],
     "mutagenesisDonors":[
       {
-        "id":1,
         "concentration":5.0,
         "vectorName":"pUC18_Ikzf2_conditional",
         "oligoSequenceFasta":"ATAATTGGCAGCCTGATTAGAAGAATGCCCATCTTGTCTAGTGACACATTAGAACAATGAGTAATTGCTCGATGCGGATCCATAACTTCGTATAGCATACATTATACGAAGTTATTCTCTGGGATTAAGAAAAAACTAACATATGAAACAGAAGCCCAGACATCTAAAACCACAAAGA",
@@ -51,7 +47,6 @@
     ],
     "reagents":[
       {
-        "id":1,
         "reagentName":"Ligase IV",
         "reagentDescription":"NHEJ Inhibitor",
         "concentration":334.0
@@ -59,18 +54,16 @@
     ],
     "genotypePrimers":[
       {
-        "id":1,
         "genomicStartCoordinate":1,
         "genomicEndCoordinate":200,
         "name":"Gpr68wtR",
         "sequence":"GTAGAGGGACAGGCAGTTGG"
       }
     ],
-    "totalEmbryosInjected":10,
-    "totalEmbryosSurvived":5,
+    "totalEmbryosInjected":72,
+    "totalEmbryosSurvived":70,
     "embryo2Cell":"20043",
     "assay":{
-      "id":1,
       "typeName":"T7EN1",
       "numFounderPups":26,
       "numFounderSelectedForBreeding":1,
@@ -87,8 +80,5 @@
     },
     "strainInjectedName":"C57BL/6NJ"
   },
-  "typeName":"production",
-  "statusTransition":{
-    "actionToExecute":null
-  }
+  "typeName":"production"
 }

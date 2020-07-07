@@ -128,8 +128,8 @@
     <PLAN       ID="1"
                 PIN="PIN:0000000001"
                 PROJECT_ID="1"
-                PLAN_TYPE_ID="1"
-                ATTEMPT_TYPE_ID="1"
+                PLAN_TYPE_ID="2"
+                ATTEMPT_TYPE_ID="4"
                 STATUS_ID="1"
                 WORK_UNIT_ID="1"
                 WORK_GROUP_ID="1"
@@ -137,8 +137,8 @@
     <PLAN       ID="2"
                 PIN="PIN:0000000002"
                 PROJECT_ID="1"
-                PLAN_TYPE_ID="1"
-                ATTEMPT_TYPE_ID="1"
+                PLAN_TYPE_ID="2"
+                ATTEMPT_TYPE_ID="4"
                 STATUS_ID="1"
                 WORK_UNIT_ID="1"
                 WORK_GROUP_ID="1"
@@ -154,14 +154,6 @@
                          PHENOTYPING_EXTERNAL_REF="JR34077"
                          STRAIN_ID="1"/>
 
-    <PHENOTYPING_STAGE ID="2"
-                       PSN="PSN:000000000002"
-                       PLAN_ID="1"
-                       PHENOTYPING_STAGE_TYPE_ID="2"
-                       STATUS_ID="23"
-                       DO_NOT_COUNT_TOWARDS_COMPLETENESS="false"
-                       INITIAL_DATA_RELEASE_DATE="2019-04-12"
-                       PHENOTYPING_EXPERIMENTS_STARTED="2018-09-17"/>
     <PHENOTYPING_STAGE ID="1"
                        PSN="PSN:000000000001"
                        PLAN_ID="1"
@@ -170,6 +162,14 @@
                        DO_NOT_COUNT_TOWARDS_COMPLETENESS="true"
                        INITIAL_DATA_RELEASE_DATE="2015-11-23"
                        PHENOTYPING_EXPERIMENTS_STARTED="2020-02-24"/>
+    <PHENOTYPING_STAGE ID="2"
+                       PSN="PSN:000000000002"
+                       PLAN_ID="1"
+                       PHENOTYPING_STAGE_TYPE_ID="2"
+                       STATUS_ID="23"
+                       DO_NOT_COUNT_TOWARDS_COMPLETENESS="false"
+                       INITIAL_DATA_RELEASE_DATE="2019-04-12"
+                       PHENOTYPING_EXPERIMENTS_STARTED="2018-09-17"/>
 
 
     <PHENOTYPING_STAGE_STATUS_STAMP ID="1"
