@@ -7,7 +7,7 @@
   ],
   "workUnitName":"BCM",
   "workGroupName":"BaSH",
-  "comment":null,
+  "comment": "New Plan comment",
   "productsAvailableForGeneralPublic":null,
   "crisprAttempt":{
     "miDate":"2019-02-26",
@@ -92,24 +92,8 @@
   "summaryStatusName":"Attempt Aborted",
   "statusDates":[
     {
-      "statusName": "Plan Created",
-      "date": "2018-01-15T00:00:00"
-    },
-    {
-      "statusName": "Attempt In Progress",
-      "date": "2018-01-15T00:00:00"
-    },
-    {
-      "statusName": "Embryos Obtained",
-      "date": "2018-02-22T00:00:00"
-    },
-    {
-      "statusName": "Founder Obtained",
-      "date": "2018-02-22T00:00:00"
-    },
-    {
       "statusName":"Attempt Aborted",
-      "date":"2020-07-06T13:27:15.550972"
+      "date":"2020-06-03T10:35:54.855702"
     }
   ],
   "summaryStatusDates":[

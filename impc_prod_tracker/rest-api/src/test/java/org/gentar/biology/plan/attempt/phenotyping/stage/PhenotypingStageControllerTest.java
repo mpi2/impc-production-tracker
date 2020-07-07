@@ -81,7 +81,6 @@ class PhenotypingStageControllerTest  extends ControllerTestTemplate
         String expectedJson =
                 getCompleteResourcePath("expectedPhenotypingStageHistoryPSN_000000000002.json");
         String obtainedJson = restCaller.executeGetAndDocument(url, documentPhenotypingStageHistory());
-        System.out.println(obtainedJson);
         resultValidator.validateObtainedMatchesJson(obtainedJson, expectedJson);
     }
 

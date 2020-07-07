@@ -19,6 +19,9 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -86,9 +89,16 @@ public class PhenotypingStageController
     @GetMapping(value = {"plans/{pin}/phenotypingStages"})
     public List<PhenotypingStageResponseDTO> findAllByPlan(@PathVariable String pin)
     {
+        List<PhenotypingStageResponseDTO> phenotypingStageResponseDTOS = new ArrayList<>();
+
         Plan plan = planService.getNotNullPlanByPin(pin);
-        Set<PhenotypingStage> phenotypingStages = plan.getPhenotypingAttempt().getPhenotypingStages();
-        return phenotypingStageResponseMapper.toDtos(phenotypingStages);
+
+        if (plan.getPhenotypingAttempt() != null)
+        {
+            Set<PhenotypingStage> phenotypingStages = plan.getPhenotypingAttempt().getPhenotypingStages();
+            phenotypingStageResponseDTOS = phenotypingStageResponseMapper.toDtos(phenotypingStages);
+        }
+        return phenotypingStageResponseDTOS;
     }
 
     @GetMapping(value = {"plans/{pin}/phenotypingStages/{psn}/history"})

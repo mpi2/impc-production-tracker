@@ -50,7 +50,7 @@
                     NAME="mRNA"/>
 
     <NUCLEASE_TYPE ID="1"
-                   NAME="CAS9"/>
+                    NAME="CAS9"/>
     <NUCLEASE_TYPE ID="2"
                    NAME="D10A"/>
     <NUCLEASE_TYPE ID="3"
@@ -58,21 +58,21 @@
     <NUCLEASE_TYPE ID="4"
                    NAME="protein"/>
 
-    <OUTCOME_TYPE   ID="1"
-                    NAME="Colony"/>
-    <OUTCOME_TYPE   ID="2"
-                    NAME="Specimen"/>
-
     <WORK_UNIT  ID="1"
                 NAME="BCM"/>
     <WORK_UNIT  ID="2"
                 NAME="TCP"/>
     <WORK_UNIT  ID="3"
+                NAME="JAX"/>
+    <WORK_UNIT  ID="4"
                 NAME="UCD"/>
+
     <WORK_GROUP ID="1"
                 NAME="BaSH"/>
     <WORK_GROUP  ID="2"
                  NAME="DTCC"/>
+    <WORK_GROUP  ID="3"
+                 NAME="JAX"/>
 
     <STATUS     ID="1"
                 NAME="Plan Created"
@@ -94,42 +94,10 @@
                 NAME="Attempt Aborted"
                 IS_ABORTION_STATUS="true"
                 ORDERING="14000"/>
-    <STATUS     ID="22"
-                NAME="Phenotyping Production Registered"
-                IS_ABORTION_STATUS="false"
-                ORDERING="120000"/>
-    <STATUS     ID="23"
-                NAME="Late Adult Phenotyping Registered"
-                IS_ABORTION_STATUS="false"
-                ORDERING="130000"/>
-    <STATUS     ID="34"
-                NAME="Rederivation Started"
-                IS_ABORTION_STATUS="false"
-                ORDERING="251000"/>
-    <STATUS     ID="35"
-                NAME="Rederivation Complete"
-                IS_ABORTION_STATUS="false"
-                ORDERING="252000"/>
-    <STATUS     ID="36"
+    <STATUS     ID="6"
                 NAME="Phenotyping Started"
                 IS_ABORTION_STATUS="false"
                 ORDERING="253000"/>
-    <STATUS     ID="37"
-                NAME="Phenotyping All Data Sent"
-                IS_ABORTION_STATUS="false"
-                ORDERING="255000"/>
-    <STATUS     ID="38"
-                NAME="Phenotyping All Data Processed"
-                IS_ABORTION_STATUS="false"
-                ORDERING="256000"/>
-    <STATUS     ID="39"
-                NAME="Phenotyping Finished"
-                IS_ABORTION_STATUS="false"
-                ORDERING="257000"/>
-    <STATUS     ID="40"
-                NAME="Phenotype Production Aborted"
-                IS_ABORTION_STATUS="true"
-                ORDERING="258000"/>
 
     <CONSORTIUM ID="1"
                 NAME="CMG"/>
@@ -166,6 +134,11 @@
                 NAME="Xrcc5"
                 DESCRIPTION="NHEJ Inhibitor"/>
 
+    <OUTCOME_TYPE   ID="1"
+                    NAME="Colony"/>
+    <OUTCOME_TYPE   ID="2"
+                    NAME="Specimen"/>
+
     <PROJECT    ID="1"
                 TPN="TPN:000000001"
                 PRIVACY_ID="1"
@@ -185,7 +158,7 @@
                 PROJECT_ID="1"
                 PLAN_TYPE_ID="1"
                 ATTEMPT_TYPE_ID="1"
-                STATUS_ID="4"
+                STATUS_ID="1"
                 WORK_UNIT_ID="1"
                 WORK_GROUP_ID="1"
                 SUMMARY_STATUS_ID="4"/>
@@ -201,25 +174,66 @@
     <PLAN       ID="3"
                 PIN="PIN:0000000003"
                 PROJECT_ID="1"
-                PLAN_TYPE_ID="2"
-                ATTEMPT_TYPE_ID="4"
-                STATUS_ID="1"
+                PLAN_TYPE_ID="1"
+                ATTEMPT_TYPE_ID="1"
+                STATUS_ID="4"
                 WORK_UNIT_ID="1"
                 WORK_GROUP_ID="1"
-                SUMMARY_STATUS_ID="36"/>
-    <PLAN       ID="6"
-                PIN="PIN:0000000006"
+                SUMMARY_STATUS_ID="1"/>
+    <PLAN       ID="4"
+                PIN="PIN:0000000004"
                 PROJECT_ID="1"
                 PLAN_TYPE_ID="2"
                 ATTEMPT_TYPE_ID="4"
                 STATUS_ID="1"
                 WORK_UNIT_ID="1"
                 WORK_GROUP_ID="1"
-                SUMMARY_STATUS_ID="1"/>
+                SUMMARY_STATUS_ID="6"
+                PRODUCTS_AVAILABLE_FOR_GENERAL_PUBLIC="false"/>
+    <PLAN       ID="5"
+                PIN="PIN:0000000005"
+                PROJECT_ID="1"
+                PLAN_TYPE_ID="2"
+                ATTEMPT_TYPE_ID="4"
+                STATUS_ID="1"
+                WORK_UNIT_ID="3"
+                WORK_GROUP_ID="3"
+                SUMMARY_STATUS_ID="6"/>
+
+    <PLAN_STATUS_STAMP  ID="1"
+                        PLAN_ID="1"
+                        STATUS_ID="1"
+                        DATE="2018-01-15"/>
+    <PLAN_STATUS_STAMP  ID="2"
+                        PLAN_ID="2"
+                        STATUS_ID="1"
+                        DATE="2019-11-01"/>
+    <PLAN_STATUS_STAMP  ID="3"
+                        PLAN_ID="3"
+                        STATUS_ID="1"
+                        DATE="2019-11-01"/>
+    <PLAN_STATUS_STAMP  ID="4"
+                        PLAN_ID="3"
+                        STATUS_ID="2"
+                        DATE="2018-01-15"/>
+    <PLAN_STATUS_STAMP  ID="5"
+                        PLAN_ID="3"
+                        STATUS_ID="3"
+                        DATE="2018-02-22"/>
+    <PLAN_STATUS_STAMP  ID="6"
+                        PLAN_ID="3"
+                        STATUS_ID="4"
+                        DATE="2018-02-22"/>
+    <PLAN_STATUS_STAMP  ID="7"
+                        PLAN_ID="4"
+                        STATUS_ID="1"
+                        DATE="2019-11-01"/>
+    <PLAN_STATUS_STAMP  ID="8"
+                        PLAN_ID="5"
+                        STATUS_ID="1"
+                        DATE="2019-11-01"/>
 
     <PLAN_FUNDER    PLAN_ID="1"
-                    FUNDER_ID="1"/>
-    <PLAN_FUNDER    PLAN_ID="3"
                     FUNDER_ID="1"/>
 
     <CRISPR_ATTEMPT PLAN_ID="1"
@@ -288,27 +302,33 @@
             TOTAL_TRANSFERRED="72"/>
 
     <OUTCOME    ID="1"
-                OUTCOME_TYPE_ID="1"
-                PLAN_ID="1"
-                TPO="TPO:000000000001"/>
+                PLAN_ID="3"
+                TPO="TPO:000000000001"
+                OUTCOME_TYPE_ID="1"/>
     <OUTCOME    ID="2"
-                OUTCOME_TYPE_ID="1"
-                PLAN_ID="1"
-                TPO="TPO:000000000002"/>
+                PLAN_ID="3"
+                TPO="TPO:000000000002"
+                OUTCOME_TYPE_ID="1"/>
 
-    <PLAN_STARTING_POINT    ID="1"
-                            PLAN_ID="3"
-                            OUTCOME_ID="1"/>
-    <PLAN_STARTING_POINT    ID="2"
-                            PLAN_ID="6"
-                            OUTCOME_ID="2"/>
+    <PHENOTYPING_ATTEMPT PLAN_ID="4"
+                         PHENOTYPING_EXTERNAL_REF="JR12345"
+                         STRAIN_ID="1"
+                         IMITS_PARENT_COLONY="20755"
+                         IMITS_PHENOTYPE_ATTEMPT="8517"
+                         IMITS_PHENOTYPING_PRODUCTION="8719"/>
+    <PHENOTYPING_ATTEMPT PLAN_ID="5"
+                         PHENOTYPING_EXTERNAL_REF="JR6789"
+                         STRAIN_ID="1"
+                         IMITS_PARENT_COLONY="20754"
+                         IMITS_PHENOTYPE_ATTEMPT="8516"
+                         IMITS_PHENOTYPING_PRODUCTION="8718"/>
 
-    <PHENOTYPING_ATTEMPT PLAN_ID="3"
-                         PHENOTYPING_EXTERNAL_REF="CR10129"
-                         STRAIN_ID="1"/>
-    <PHENOTYPING_ATTEMPT PLAN_ID="6"
-                         PHENOTYPING_EXTERNAL_REF="JR34077"
-                         STRAIN_ID="1"/>
+    <PLAN_STARTING_POINT ID="1"
+                         OUTCOME_ID="1"
+                         PLAN_ID="4"/>
+    <PLAN_STARTING_POINT ID="2"
+                         OUTCOME_ID="2"
+                         PLAN_ID="5"/>
 
     <HISTORY    ID="1"
                 USER_="imits2test@test.com"
@@ -339,7 +359,6 @@
                             WORK_UNIT_ID="1"/>
 
     <PERSON_ROLE_CONSORTIUM/>
-    <PLAN_STATUS_STAMP/>
     <PLAN_SUMMARY_STATUS_STAMP/>
     <PROJECT_SUMMARY_STATUS_STAMP/>
 </dataset>
