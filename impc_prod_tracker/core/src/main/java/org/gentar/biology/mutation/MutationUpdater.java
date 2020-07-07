@@ -3,31 +3,32 @@ package org.gentar.biology.mutation;
 import org.gentar.audit.history.History;
 import org.gentar.audit.history.HistoryService;
 import org.gentar.biology.colony.Colony_;
-import org.gentar.biology.location.Location;
-import org.gentar.biology.mutation.sequence.MutationSequence;
-import org.gentar.biology.sequence.Sequence;
-import org.gentar.biology.sequence_location.SequenceLocation;
 import org.gentar.biology.status.Status_;
+import org.gentar.exceptions.UserOperationFailedException;
+import org.gentar.security.abac.spring.ContextAwarePolicyEnforcement;
+import org.gentar.security.permissions.PermissionService;
 import org.springframework.stereotype.Component;
-
-import java.util.Collection;
-import java.util.Set;
 
 @Component
 public class MutationUpdater
 {
-    private MutationRepository mutationRepository;
-    private HistoryService<Mutation> historyService;
+    private final MutationRepository mutationRepository;
+    private final HistoryService<Mutation> historyService;
+    private final ContextAwarePolicyEnforcement policyEnforcement;
 
-    public MutationUpdater(MutationRepository mutationRepository, HistoryService<Mutation> historyService)
+    public MutationUpdater(
+        MutationRepository mutationRepository,
+        HistoryService<Mutation> historyService,
+        ContextAwarePolicyEnforcement policyEnforcement)
     {
         this.mutationRepository = mutationRepository;
         this.historyService = historyService;
+        this.policyEnforcement = policyEnforcement;
     }
 
     History update(Mutation originalMutation, Mutation newMutation)
     {
-        validatePermission(newMutation);
+        validatePermission(originalMutation);
         validateData(newMutation);
         History history = detectTrackOfChanges(originalMutation, newMutation);
         saveChanges(newMutation);
@@ -37,7 +38,10 @@ public class MutationUpdater
 
     private void validatePermission(Mutation mutation)
     {
-        // TODO Validates the user belongs to the centre that created the mutation
+        if (!policyEnforcement.hasPermission(mutation, PermissionService.UPDATE_MUTATION))
+        {
+            throw new UserOperationFailedException("You don't have permission to edit this mutation");
+        }
     }
 
     private void validateData(Mutation newMutation)

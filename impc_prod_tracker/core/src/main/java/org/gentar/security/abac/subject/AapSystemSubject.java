@@ -230,7 +230,12 @@ public class AapSystemSubject implements SystemSubject
     @Override
     public boolean belongsToAnyWorkUnit(Collection<WorkUnit> workUnits)
     {
-        return getRelatedWorkUnits().stream().anyMatch(workUnits::contains);
+        boolean result = false;
+        if (workUnits != null)
+        {
+            result = getRelatedWorkUnits().stream().anyMatch(workUnits::contains);
+        }
+        return result;
     }
 
     @Override
@@ -298,6 +303,21 @@ public class AapSystemSubject implements SystemSubject
         }
 
         return result;
+    }
+
+    public List<WorkUnit> getRelatedWorkUnitsByUserMail(String email)
+    {
+        List<WorkUnit> workUnits = new ArrayList<>();
+        Person person = personRepository.findPersonByEmail(email);
+        if (person != null)
+        {
+            Set<PersonRoleWorkUnit> personRoleWorkUnits = person.getRolesWorkUnits();
+            if (personRoleWorkUnits != null)
+            {
+                personRoleWorkUnits.forEach(x -> workUnits.add(x.getWorkUnit()));
+            }
+        }
+        return workUnits;
     }
 
     public SystemSubject buildSystemSubjectByPerson(Person person)
