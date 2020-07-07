@@ -39,8 +39,10 @@ public class MutationRequestProcessor
             mappedMutation.getMgiAlleleSymbolRequiresConstruction());
         newMutation.setGeneticMutationType(mappedMutation.getGeneticMutationType());
         newMutation.setMolecularMutationType(mappedMutation.getMolecularMutationType());
-        newMutation.setAlleleConfirmed(mappedMutation.getAlleleConfirmed());
-        newMutation.setGenes(mappedMutation.getGenes());
+        if (mutationUpdateDTO.getSymbolOrAccessionIds() != null)
+        {
+            newMutation.setGenes(mappedMutation.getGenes());
+        }
         newMutation.setMutationCategorizations(mappedMutation.getMutationCategorizations());
         setMutationQcResults(newMutation, mappedMutation);
         setMutationSequences(originalMutation, newMutation, mappedMutation);

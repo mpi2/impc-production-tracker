@@ -1,9 +1,12 @@
 package org.gentar.biology.mutation;
 
 import org.gentar.audit.history.History;
+import org.gentar.audit.history.HistoryMapper;
 import org.gentar.biology.ChangeResponse;
 import org.gentar.biology.outcome.Outcome;
 import org.gentar.biology.outcome.OutcomeService;
+import org.gentar.biology.plan.Plan;
+import org.gentar.common.history.HistoryDTO;
 import org.gentar.helpers.ChangeResponseCreator;
 import org.springframework.hateoas.Link;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -24,24 +27,27 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 @CrossOrigin(origins="*")
 public class MutationController
 {
-    private OutcomeService outcomeService;
-    private MutationResponseMapper mutationResponseMapper;
-    private MutationRequestProcessor mutationRequestProcessor;
-    private MutationService mutationService;
-    private ChangeResponseCreator changeResponseCreator;
+    private final OutcomeService outcomeService;
+    private final MutationResponseMapper mutationResponseMapper;
+    private final MutationRequestProcessor mutationRequestProcessor;
+    private final MutationService mutationService;
+    private final ChangeResponseCreator changeResponseCreator;
+    private final HistoryMapper historyMapper;
 
     public MutationController(
         OutcomeService outcomeService,
         MutationResponseMapper mutationResponseMapper,
         MutationRequestProcessor mutationRequestProcessor,
         MutationService mutationService,
-        ChangeResponseCreator changeResponseCreator)
+        ChangeResponseCreator changeResponseCreator,
+        HistoryMapper historyMapper)
     {
         this.outcomeService = outcomeService;
         this.mutationResponseMapper = mutationResponseMapper;
         this.mutationRequestProcessor = mutationRequestProcessor;
         this.mutationService = mutationService;
         this.changeResponseCreator = changeResponseCreator;
+        this.historyMapper = historyMapper;
     }
 
     /**
@@ -57,6 +63,21 @@ public class MutationController
     {
         Mutation mutation = outcomeService.getMutationByPinTpoAndMin(pin, tpo, min);
         return mutationResponseMapper.toDto(mutation);
+    }
+
+    /**
+     * Gets a mutation in an outcome.
+     * @param pin Public identifier of the plan.
+     * @param tpo Public identifier of the outcome.
+     * @param min Public identifier of the mutation.
+     * @return Mutation DTO
+     */
+    @GetMapping(value = {"plans/{pin}/outcomes/{tpo}/mutations/{min}/history"})
+    public List<HistoryDTO> findMutationHistoryInOutcomeById(
+        @PathVariable String pin, @PathVariable String tpo, @PathVariable String min)
+    {
+        Mutation mutation = outcomeService.getMutationByPinTpoAndMin(pin, tpo, min);
+        return historyMapper.toDtos(mutationService.getHistory(mutation));
     }
 
     /**
