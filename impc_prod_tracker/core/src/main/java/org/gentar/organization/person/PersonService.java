@@ -15,6 +15,7 @@
  */
 package org.gentar.organization.person;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import org.gentar.organization.person.Person;
 import java.util.List;
 
@@ -51,7 +52,7 @@ public interface PersonService
      *                             with work units and consortia.
      * @return Created {@link Person} with an id provided by the system.
      */
-    Person createPerson(Person person, String token);
+    Person createPerson(Person person, String token) throws JsonProcessingException;
 
     /**
      * Updates the information for a person, as long as the current user has permission to do it.
