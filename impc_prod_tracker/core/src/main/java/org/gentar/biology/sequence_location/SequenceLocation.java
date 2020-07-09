@@ -35,6 +35,9 @@ public class SequenceLocation extends BaseEntity implements Serializable {
         this.id = sequenceLocation.getId();
         this.sequence = sequenceLocation.getSequence();
         this.index = sequenceLocation.getIndex();
-        this.location = new Location(sequenceLocation.getLocation());
+        if (sequenceLocation.getLocation() != null)
+        {
+            this.location = new Location(sequenceLocation.getLocation());
+        }
     }
 }

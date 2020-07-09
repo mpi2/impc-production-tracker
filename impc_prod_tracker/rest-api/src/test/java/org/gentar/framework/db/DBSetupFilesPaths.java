@@ -2,7 +2,9 @@ package org.gentar.framework.db;
 
 public class DBSetupFilesPaths
 {
-    public final static String CREATE_USER = "/dbunit/auth/createUser.xml";
+    public final static String SIGN_IN = "/dbunit/auth/signIn.xml";
+    public final static String ADMIN_USER = "/dbunit/people/adminUser.xml";
+    public final static String GENERAL_USER = "/dbunit/people/generalUser.xml";
     public final static String MULTIPLE_PROJECTS = "/dbunit/projects/multipleProjects.xml";
     public final static String MULTIPLE_PLANS = "/dbunit/plans/multiplePlans.xml";
     public final static String MULTIPLE_OUTCOMES= "/dbunit/outcomes/multipleOutcomes.xml";

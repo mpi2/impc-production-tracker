@@ -23,11 +23,15 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * This class allows to access from any part of the code to the ABAC logic.
+ */
+
 @Component
 public class ContextAwarePolicyEnforcement
 {
-    private PolicyEnforcement policy;
-    private SubjectRetriever subjectRetriever;
+    private final PolicyEnforcement policy;
+    private final SubjectRetriever subjectRetriever;
 
     public ContextAwarePolicyEnforcement(PolicyEnforcement policy, SubjectRetriever subjectRetriever)
     {
@@ -45,12 +49,29 @@ public class ContextAwarePolicyEnforcement
             throw new AccessDeniedException("Access is denied");
     }
 
-    public boolean hasPermission(Object resource, String permission)
+    /**
+     * Checks if the subject has a specific permission on a resource.
+     * @param subject Object that represents the user for whom we want to check the permission.
+     * @param resource The resource for which we evaluate the permission.
+     * @param permission The name of the action we are evaluating.
+     * @return True if the subject has permission. False otherwise.
+     */
+    public boolean hasPermission(Object subject, Object resource, String permission)
     {
         Map<String, Object> environment = new HashMap<>();
-
         environment.put("time", new Date());
-        return policy.check(subjectRetriever.getSubject(), resource, permission, environment);
+        return policy.check(subject, resource, permission, environment);
+    }
+
+    /**
+     * Checks if the user that is currently logged in the system has a specific permission on a resource.
+     * @param resource The resource for which we evaluate the permission.
+     * @param permission The name of the action we are evaluating.
+     * @return True if the logged user has permission. False otherwise.
+     */
+    public boolean hasPermission(Object resource, String permission)
+    {
+        return hasPermission(subjectRetriever.getSubject(), resource, permission);
     }
 
     public boolean isUserAnonymous()

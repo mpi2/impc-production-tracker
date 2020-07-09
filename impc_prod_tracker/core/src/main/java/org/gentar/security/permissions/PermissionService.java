@@ -32,10 +32,22 @@ public interface PermissionService
     String MANAGE_GENE_LIST_ACTION = "MANAGE_GENE_LISTS";
 
     /**
+     * Get the general permissions a user has that don't depend on specific resources.
+     * The user is the currently logged user in the system.
+     * @return List with the permissions.
+     */
+    List<ActionPermission> getPermissionsLoggedUser();
+
+    /**
      * Get the general permissions a user have that don't depend on specific resources.
      * @return List with the permissions.
      */
-    List<ActionPermission> getPermissions();
+    /**
+     * Get the general permissions a user has that don't depend on specific resources.
+     * @param userEmail The user email that idendifies the record in the system.
+     * @return List with the permissions.
+     */
+    List<ActionPermission> getPermissionsByUser(String userEmail);
 
     /**
      * Returns if the current use can execute an comment on a specific resource.

@@ -1,0 +1,227 @@
+{
+  "_links":{
+    "self":{
+      "href":"http://localhost:8080/api/plans/PIN:0000000001/outcomes/TPO:000000000002/mutations/MIN:000000000002"
+    }
+  },
+  "history":[
+    {
+      "id":1,
+      "user":"imits2test@test.com",
+      "date":"2020-07-07T16:18:58.115067",
+      "comment":"Mutation updated",
+      "details":[
+        {
+          "field":"genes.[4]",
+          "oldValue":null,
+          "newValue":"Gene(id=4, symbol=Dennd6b, name=DENN/MADD domain containing 6B, type=Gene, genomeBuild=GRCm38, entrezGeneId=69440, ncbiChromosome=15, ncbiStart=89182213, ncbiStop=89198427, ncbiStrand=-, ensemblGeneId=ENSMUSG00000015377, ensemblChromosome=15, ensemblStart=89182213, ensemblStop=89196496, ensemblStrand=-, mgiCm=44.70, mgiChromosome=15, mgiStart=89182213, mgiStop=89196496, mgiStrand=-, species=null, accId=MGI:1916690)",
+          "note":"Element added"
+        },
+        {
+          "field":"genes.[4].accId",
+          "oldValue":null,
+          "newValue":"MGI:1916690",
+          "note":"Field changed"
+        },
+        {
+          "field":"genes.[4].ensemblChromosome",
+          "oldValue":null,
+          "newValue":"15",
+          "note":"Field changed"
+        },
+        {
+          "field":"genes.[4].ensemblGeneId",
+          "oldValue":null,
+          "newValue":"ENSMUSG00000015377",
+          "note":"Field changed"
+        },
+        {
+          "field":"genes.[4].ensemblStart",
+          "oldValue":null,
+          "newValue":"89182213",
+          "note":"Field changed"
+        },
+        {
+          "field":"genes.[4].ensemblStop",
+          "oldValue":null,
+          "newValue":"89196496",
+          "note":"Field changed"
+        },
+        {
+          "field":"genes.[4].ensemblStrand",
+          "oldValue":null,
+          "newValue":"-",
+          "note":"Field changed"
+        },
+        {
+          "field":"genes.[4].entrezGeneId",
+          "oldValue":null,
+          "newValue":"69440",
+          "note":"Field changed"
+        },
+        {
+          "field":"genes.[4].genomeBuild",
+          "oldValue":null,
+          "newValue":"GRCm38",
+          "note":"Field changed"
+        },
+        {
+          "field":"genes.[4].mgiChromosome",
+          "oldValue":null,
+          "newValue":"15",
+          "note":"Field changed"
+        },
+        {
+          "field":"genes.[4].mgiCm",
+          "oldValue":null,
+          "newValue":"44.70",
+          "note":"Field changed"
+        },
+        {
+          "field":"genes.[4].mgiStart",
+          "oldValue":null,
+          "newValue":"89182213",
+          "note":"Field changed"
+        },
+        {
+          "field":"genes.[4].mgiStop",
+          "oldValue":null,
+          "newValue":"89196496",
+          "note":"Field changed"
+        },
+        {
+          "field":"genes.[4].mgiStrand",
+          "oldValue":null,
+          "newValue":"-",
+          "note":"Field changed"
+        },
+        {
+          "field":"genes.[4].name",
+          "oldValue":null,
+          "newValue":"DENN/MADD domain containing 6B",
+          "note":"Field changed"
+        },
+        {
+          "field":"genes.[4].ncbiChromosome",
+          "oldValue":null,
+          "newValue":"15",
+          "note":"Field changed"
+        },
+        {
+          "field":"genes.[4].ncbiStart",
+          "oldValue":null,
+          "newValue":"89182213",
+          "note":"Field changed"
+        },
+        {
+          "field":"genes.[4].ncbiStop",
+          "oldValue":null,
+          "newValue":"89198427",
+          "note":"Field changed"
+        },
+        {
+          "field":"genes.[4].ncbiStrand",
+          "oldValue":null,
+          "newValue":"-",
+          "note":"Field changed"
+        },
+        {
+          "field":"genes.[4].symbol",
+          "oldValue":null,
+          "newValue":"Dennd6b",
+          "note":"Field changed"
+        },
+        {
+          "field":"genes.[4].type",
+          "oldValue":null,
+          "newValue":"Gene",
+          "note":"Field changed"
+        },
+        {
+          "field":"geneticMutationType.name",
+          "oldValue":"Not Tested",
+          "newValue":"Null",
+          "note":"Field changed"
+        },
+        {
+          "field":"molecularMutationType.name",
+          "oldValue":"Deletion",
+          "newValue":"Point Mutation",
+          "note":"Field changed"
+        },
+        {
+          "field":"mutationCategorizations.[9]",
+          "oldValue":null,
+          "newValue":"MutationCategorization(id=9, name=HR, description=null, mutationCategorizationType=MutationCategorizationType(id=2, name=repair_mechanism))",
+          "note":"Element added"
+        },
+        {
+          "field":"mutationCategorizations.[9].mutationCategorizationType.name",
+          "oldValue":null,
+          "newValue":"repair_mechanism",
+          "note":"Field changed"
+        },
+        {
+          "field":"mutationCategorizations.[9].name",
+          "oldValue":null,
+          "newValue":"HR",
+          "note":"Field changed"
+        },
+        {
+          "field":"mutationQcResults.[id:null, QC type name:loxp_screen, QC status:fail]",
+          "oldValue":null,
+          "newValue":"id:null, QC type name:loxp_screen, QC status:fail",
+          "note":"Element added"
+        },
+        {
+          "field":"mutationQcResults.[id:null, QC type name:loxp_screen, QC status:fail].qcType.name",
+          "oldValue":null,
+          "newValue":"loxp_screen",
+          "note":"Field changed"
+        },
+        {
+          "field":"mutationQcResults.[id:null, QC type name:loxp_screen, QC status:fail].status.name",
+          "oldValue":null,
+          "newValue":"fail",
+          "note":"Field changed"
+        },
+        {
+          "field":"mutationSequences.[2].sequence.sequenceLocations.[1]",
+          "oldValue":"SequenceLocation(id=1, index=1)",
+          "newValue":"SequenceLocation(id=1, index=1)",
+          "note":"Element changed"
+        },
+        {
+          "field":"mutationSequences.[2].sequence.sequenceLocations.[1].location.start",
+          "oldValue":"46245748",
+          "newValue":"46245700",
+          "note":"Field changed"
+        },
+        {
+          "field":"mutationSequences.[2].sequence.sequenceLocations.[1].location.stop",
+          "oldValue":"46245649",
+          "newValue":"46245602",
+          "note":"Field changed"
+        },
+        {
+          "field":"mutationSequences.[2].sequence.sequenceLocations.[2]",
+          "oldValue":"SequenceLocation(id=2, index=2)",
+          "newValue":"SequenceLocation(id=2, index=2)",
+          "note":"Element changed"
+        },
+        {
+          "field":"mutationSequences.[2].sequence.sequenceLocations.[2].location.start",
+          "oldValue":"46245132",
+          "newValue":"46245150",
+          "note":"Field changed"
+        },
+        {
+          "field":"mutationSequences.[2].sequence.sequenceLocations.[2].location.stop",
+          "oldValue":"46244994",
+          "newValue":"46244960",
+          "note":"Field changed"
+        }
+      ]
+    }
+  ]
+}

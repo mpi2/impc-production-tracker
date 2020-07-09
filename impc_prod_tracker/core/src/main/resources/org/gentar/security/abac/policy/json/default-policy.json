@@ -105,7 +105,7 @@
     "name": "Read outcome in related consortia.",
     "description": "A user can read a project that is related to a consortium where the user is a member of that consortium.",
     "target": "action == 'READ_OUTCOME'",
-    "condition": "subject.belongsToConsortia(resource.getRelatedConsortia())"
+    "condition": "subject.belongsToConsortia( subject.getRelatedWorkUnitsByUserMail(resource.getCreatedBy()))"
   },
   {
     "name": "Manage target gene lists",
@@ -150,5 +150,4 @@
     "target": "action == 'REVERSE_FROM_PHENOTYPING_FINISHED_TO_ALL_DATA_PROCESSED'",
     "condition": "subject.isUserByKey('cda_user_key') OR subject.isUserByKey('dcc_user_key')"
   }
-
 ]

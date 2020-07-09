@@ -212,6 +212,7 @@ public class Project extends BaseEntity implements Resource<Project>
     private List<ProjectIntention> projectIntentions;
 
     @ToString.Exclude
+    @EqualsAndHashCode.Exclude
     @JsonIgnore
     @ManyToMany
     @JoinTable(

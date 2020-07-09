@@ -18,6 +18,7 @@ package org.gentar.organization.funder;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import org.gentar.BaseEntity;
+import org.gentar.audit.diff.IgnoreForAuditingChanges;
 import org.gentar.biology.plan.Plan;
 import org.gentar.organization.work_group.WorkGroup;
 
@@ -41,11 +42,13 @@ public class Funder extends BaseEntity
 
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
+    @IgnoreForAuditingChanges
     @JsonIgnore
     @ManyToMany(mappedBy = "funders")
     private Set<Plan> plans;
 
     @ManyToMany
+    @IgnoreForAuditingChanges
     @JoinTable(
         name = "funder_work_group",
         joinColumns = @JoinColumn(name = "funder_id"),

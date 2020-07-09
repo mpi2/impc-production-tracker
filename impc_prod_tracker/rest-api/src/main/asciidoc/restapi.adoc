@@ -96,6 +96,50 @@ include::{snippets}/auth/signin/no-valid-user-password/http-request.adoc[]
 include::{snippets}/auth/signin/no-valid-user-password/http-response.adoc[]
 
 
+
+== Users
+anchor:users[]
+This section describes the REST endpoints to manage users in the system.
+
+
+=== Fields
+These are the fields you are going to see in the body of a request in a GET or in the payload for POST or PUT
+operations.
+
+include::{snippets}/people/getPerson/response-fields.adoc[]
+
+=== GET
+
+==== Get Current Logged Person
+
+Get the current user information. The current user is the owner of the token being used in this request.
+
+===== Example Request
+
+Curl:
+include::{snippets}/people/getPerson/curl-request.adoc[]
+
+===== Example Response
+
+include::{snippets}/people/getPerson/http-response.adoc[]
+
+
+=== POST
+
+==== Create a user
+
+This endpoint allows the creation of a user in the system.
+
+===== Example Request
+
+Curl:
+include::{snippets}/people/postPerson/curl-request.adoc[]
+
+===== Example Response
+
+include::{snippets}/people/postPerson/http-response.adoc[]
+
+
 == Projects
 anchor:chapter-configure[]
 This section describes the REST endpoints for projects in the system.
@@ -260,8 +304,7 @@ operations.
 include::{snippets}/plans/getCrisprPlan/response-fields.adoc[]
 
 ==== Phenotyping plan.
-ADD FIELDS EXAMPLE
-// include::{snippets}/plans/getPhenotypingPlan/response-fields.adoc[]
+include::{snippets}/plans/getPhenotypingPlan/response-fields.adoc[]
 
 === Filters
 When you use the endpoint to get all the plans, you can also use filters to reduce the results.
@@ -331,7 +374,7 @@ This is the list of filters you can use:
 === GET
 ==== Get a specific plan
 
-This endpoint shows a production plan in the system.
+This endpoint shows a plan in the system.
 
 ===== Example Request
 
@@ -366,6 +409,19 @@ include::{snippets}/plans/filteredPlans/curl-request.adoc[]
 
 include::{snippets}/plans/filteredPlans/http-response.adoc[]
 
+==== Get the history of changes for a plan
+
+You can use this endpoint to see all the changes that have been made on a plan.
+
+===== Example Request
+
+Curl:
+include::{snippets}/plans/history/curl-request.adoc[]
+
+===== Example Response
+
+include::{snippets}/plans/history/http-response.adoc[]
+
 === POST
 
 ==== Create a crispr plan
@@ -384,12 +440,10 @@ include::{snippets}/plans/postCrisprPlan/http-response.adoc[]
 ===== Example Request
 
 Curl:
-ADD PHENOTYPING PLAN INFORMATION
-//include::{snippets}/plans/postPhenotypingPlan/http-request.adoc[]
+include::{snippets}/plans/postPhenotypingPlan/http-request.adoc[]
 
 ===== Example Response
-ADD PHENOTYPING PLAN INFORMATION
-//include::{snippets}/plans/postPhenotypingPlan/http-response.adoc[]
+include::{snippets}/plans/postPhenotypingPlan/http-response.adoc[]
 
 
 === PUT
@@ -415,16 +469,16 @@ include::{snippets}/plans/putCrisprPlan/http-request.adoc[]
 include::{snippets}/plans/putCrisprPlan/http-response.adoc[]
 
 ==== Update a phenotyping plan
-NO INFORMATION IN THE PHENOTYPING PLAN CAN BE UPDATE, JUST THE PLAN
+
 ===== Example Request
 
 Curl:
-ADD PHENOTYPING PLAN INFORMATION
-//include::{snippets}/plans/putPhenotypingPlan/http-request.adoc[]
+
+include::{snippets}/plans/putPhenotypingPlan/http-request.adoc[]
 
 ===== Example Response
-ADD PHENOTYPING PLAN INFORMATION
-//include::{snippets}/plans/putPhenotypingPlan/http-response.adoc[]
+
+include::{snippets}/plans/putPhenotypingPlan/http-response.adoc[]
 
 
 == Outcomes
@@ -536,7 +590,7 @@ This section describes the REST endpoints for mutations in the system.
 === Fields
 These are the fields you are going to see in the body of a request in a GET or in the payload for POST or PUT
 operations.
-include::{snippets}/mutations/response-fields.adoc[]
+include::{snippets}/mutations/mutation/response-fields.adoc[]
 
 === GET
 ==== Get a specific mutation
@@ -546,11 +600,40 @@ This endpoint fetches a specific mutation associated with an outcome.
 ===== Example Request
 
 Curl:
-include::{snippets}/mutations/curl-request.adoc[]
+include::{snippets}/mutations/mutation/curl-request.adoc[]
 
 ===== Example Response
 
-include::{snippets}/mutations/http-response.adoc[]
+include::{snippets}/mutations/mutation/http-response.adoc[]
+
+==== Get history for a specific mutation
+
+This endpoint fetches the history of a specific mutation associated with an outcome.
+
+===== Example Request
+
+Curl:
+include::{snippets}/mutations/mutation/history/curl-request.adoc[]
+
+===== Example Response
+
+include::{snippets}/mutations/mutation/history/http-response.adoc[]
+
+=== PUT
+==== Update a mutation
+
+This endpoint allows the modification of an existing mutation.
+
+===== Example Request
+
+Curl:
+include::{snippets}/mutations/mutation/putMutation/curl-request.adoc[]
+
+===== Example Response
+
+include::{snippets}/mutations/mutation/putMutation/http-response.adoc[]
+
+
 
 == Phenotyping Stages
 anchor:phenotypingStages[]
@@ -563,7 +646,7 @@ DFSDF
 These are the fields you are going to see in the body of a request in a GET or in the payload for POST or PUT
 operations.
 
-include::{snippets}/phenotypingStage/response-fields.adoc[]
+include::{snippets}/phenotypingStages/getPhenotypingStage/response-fields.adoc[]
 
 
 === GET
@@ -574,11 +657,11 @@ This endpoint fetches a specific phenotyping stage belonging to a plan.
 ===== Example Request
 
 Curl:
-include::{snippets}/phenotypingStage/curl-request.adoc[]
+include::{snippets}/phenotypingStages/getPhenotypingStage/curl-request.adoc[]
 
 ===== Example Response
 
-include::{snippets}/phenotypingStage/http-response.adoc[]
+include::{snippets}/phenotypingStages/getPhenotypingStage/http-response.adoc[]
 
 
 ==== Get all phenotyping stages in a plan
@@ -587,11 +670,11 @@ This endpoint shows all the phenotyping stages associated to a plan.
 ===== Example Request
 
 Curl:
-include::{snippets}/phenotypingStage/curl-request.adoc[]
+include::{snippets}/phenotypingStages/allPhenotypingStages/curl-request.adoc[]
 
 ===== Example Response
 
-include::{snippets}/phenotypingStage/http-response.adoc[]
+include::{snippets}/phenotypingStages/allPhenotypingStages/http-response.adoc[]
 
 ==== Get the history of changes for a phenotyping stage
 
@@ -600,11 +683,11 @@ You can use this endpoint to see all the changes that have been made on a phenot
 ===== Example Request
 
 Curl:
-include::{snippets}/phenotypingStage/history/curl-request.adoc[]
+include::{snippets}/phenotypingStages/history/curl-request.adoc[]
 
 ===== Example Response
 
-include::{snippets}/phenotypingStage/history/http-response.adoc[]
+include::{snippets}/phenotypingStages/history/http-response.adoc[]
 
 
 === POST
@@ -614,12 +697,10 @@ include::{snippets}/phenotypingStage/history/http-response.adoc[]
 ===== Example Request
 
 Curl:
-[TODO:LINK]
-//include::{snippets}/phenotypingStage/postPhenotypingStage/http-request.adoc[]
+include::{snippets}/phenotypingStages/postPhenotypingStage/http-request.adoc[]
 
 ===== Example Response
-[TODO:LINK]
-//include::{snippets}/phenotypingStage/postPhenotypingStage/http-response.adoc[]
+include::{snippets}/phenotypingStages/postPhenotypingStage/http-response.adoc[]
 
 
 === PUT
@@ -629,12 +710,10 @@ Curl:
 ===== Example Request
 
 Curl:
-[TODO:LINK]
-//include::{snippets}/phenotypingStage/putPhenotypingStage/http-request.adoc[]
+include::{snippets}/phenotypingStages/putPhenotypingStage/http-request.adoc[]
 
 ===== Example Response
-[TODO:LINK]
-include::{snippets}/phenotypingStage/putPhenotypingStage/http-response.adoc[]
+include::{snippets}/phenotypingStages/putPhenotypingStage/http-response.adoc[]
 
 
 == State Machine interaction

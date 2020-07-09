@@ -2,30 +2,40 @@ package org.gentar.biology.mutation;
 
 import org.gentar.audit.history.History;
 import org.gentar.audit.history.HistoryService;
-import org.gentar.biology.location.Location;
-import org.gentar.biology.mutation.sequence.MutationSequence;
-import org.gentar.biology.sequence.Sequence;
-import org.gentar.biology.sequence_location.SequenceLocation;
+import org.gentar.biology.colony.Colony_;
+import org.gentar.biology.location.Location_;
+import org.gentar.biology.outcome.Outcome;
+import org.gentar.biology.plan.Plan;
+import org.gentar.biology.species.Species_;
+import org.gentar.biology.status.Status_;
+import org.gentar.exceptions.UserOperationFailedException;
+import org.gentar.security.abac.spring.ContextAwarePolicyEnforcement;
+import org.gentar.security.permissions.PermissionService;
 import org.springframework.stereotype.Component;
 
-import java.util.Collection;
+import java.util.HashSet;
 import java.util.Set;
 
 @Component
 public class MutationUpdater
 {
-    private MutationRepository mutationRepository;
-    private HistoryService<Mutation> historyService;
+    private final MutationRepository mutationRepository;
+    private final HistoryService<Mutation> historyService;
+    private final ContextAwarePolicyEnforcement policyEnforcement;
 
-    public MutationUpdater(MutationRepository mutationRepository, HistoryService<Mutation> historyService)
+    public MutationUpdater(
+        MutationRepository mutationRepository,
+        HistoryService<Mutation> historyService,
+        ContextAwarePolicyEnforcement policyEnforcement)
     {
         this.mutationRepository = mutationRepository;
         this.historyService = historyService;
+        this.policyEnforcement = policyEnforcement;
     }
 
     History update(Mutation originalMutation, Mutation newMutation)
     {
-        validatePermission(newMutation);
+        validatePermission(originalMutation);
         validateData(newMutation);
         History history = detectTrackOfChanges(originalMutation, newMutation);
         saveChanges(newMutation);
@@ -35,7 +45,28 @@ public class MutationUpdater
 
     private void validatePermission(Mutation mutation)
     {
-        // TODO Validates the user belongs to the centre that created the mutation
+        Set<Plan> associatedPlans = getAssociatedPlans(mutation);
+        for (Plan plan : associatedPlans)
+        {
+            // If the user can update the plan then they can update the mutation.
+            if (!policyEnforcement.hasPermission(plan, PermissionService.UPDATE_PLAN_ACTION))
+            {
+                throw new UserOperationFailedException(
+                    "To update this mutation you need permission to update the plan "
+                        + plan.getPin() + ".");
+            }
+        }
+    }
+
+    private Set<Plan> getAssociatedPlans(Mutation mutation)
+    {
+        Set<Plan> plans = new HashSet<>();
+        Set<Outcome> outcomes = mutation.getOutcomes();
+        if (outcomes != null)
+        {
+            outcomes.forEach(x -> plans.add(x.getPlan()));
+        }
+        return plans;
     }
 
     private void validateData(Mutation newMutation)
@@ -56,55 +87,15 @@ public class MutationUpdater
 
     private History detectTrackOfChanges(Mutation originalMutation, Mutation newMutation)
     {
-        testChangeLoc(originalMutation, newMutation);
         History history =
             historyService.detectTrackOfChanges(
                 originalMutation, newMutation, originalMutation.getId());
-        //history = historyService.filterDetailsInNestedEntity(history, Colony_.STATUS, Status_.NAME);
+        if (history != null)
+        {
+            history = historyService.filterDetailsInNestedEntity(history, Colony_.STATUS, Status_.NAME);
+            history = historyService.filterDetailsInNestedEntity(history, Location_.SPECIES, Species_.NAME);
+        }
         return history;
     }
 
-    private void testChangeLoc(Mutation originalMutation, Mutation newMutation)
-    {
-        MutationSequence originalMutationSequence = null;
-        MutationSequence newMutationSequence = null;
-        Location originalLocation = null;
-        Location newLocation = null;
-        // Original
-        for (MutationSequence mutationSequence : originalMutation.getMutationSequences())
-        {
-            originalMutationSequence = mutationSequence;
-        }
-
-        for (SequenceLocation sequenceLocation : originalMutationSequence.getSequence().getSequenceLocations())
-        {
-            Location location = sequenceLocation.getLocation();
-            originalLocation = location;
-        }
-        // New
-        for (MutationSequence mutationSequence : newMutation.getMutationSequences())
-        {
-            newMutationSequence = mutationSequence;
-        }
-
-        for (SequenceLocation sequenceLocation : newMutationSequence.getSequence().getSequenceLocations())
-        {
-            Location location = sequenceLocation.getLocation();
-            newLocation = location;
-        }
-        //boolean test = originalLocation.equals(newLocation);
-    }
-
-    private Location getLocationById(Collection<SequenceLocation> sequenceLocations, Long id)
-    {
-        for (SequenceLocation sequenceLocation: sequenceLocations)
-        {
-            Location location = sequenceLocation.getLocation();
-            if (location.getId().equals(id))
-            {
-                return location;
-            }
-        }
-        return null;
-    }
 }

@@ -41,7 +41,7 @@ public class PermissionController
     @GetMapping(value = {"/permissions"})
     public List<ActionPermission> getConfiguration()
     {
-        return permissionService.getPermissions();
+        return permissionService.getPermissionsLoggedUser();
     }
 
     @GetMapping(value = {"/permissionByActionOnResource"})

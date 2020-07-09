@@ -54,7 +54,8 @@ public class PersonMapper implements Mapper<Person, PersonDTO>
         {
             personDTO.setRolesWorkUnits(peopleRoleWorkUnitToDtos(person.getRolesWorkUnits()));
             personDTO.setRolesConsortia(peopleRoleConsortiaToDto(person.getRolesConsortia()));
-            List<ActionPermission> actionPermissions = permissionService.getPermissions();
+            List<ActionPermission> actionPermissions =
+                permissionService.getPermissionsByUser(person.getEmail());
             List<ActionPermissionDTO> actionPermissionDTOS = new ArrayList<>();
             if (actionPermissions != null)
             {
@@ -86,7 +87,6 @@ public class PersonMapper implements Mapper<Person, PersonDTO>
     public Person toEntity(PersonDTO personDTO)
     {
         Person person = new Person();
-        person.setId(personDTO.getId());
         person.setName(personDTO.getName());
         person.setEmail(personDTO.getEmail());
         person.setPassword(personDTO.getPassword());

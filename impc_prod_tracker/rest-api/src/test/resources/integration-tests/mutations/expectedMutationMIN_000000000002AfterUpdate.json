@@ -1,0 +1,99 @@
+{
+  "min":"MIN:000000000002",
+  "mgiAlleleId":"MGI:6342258",
+  "imitsAllele":266843,
+  "mgiAlleleSymbol":"em1(IMPC)J",
+  "mgiAlleleSymbolWithoutImpcAbbreviation":false,
+  "mgiAlleleSymbolRequiresConstruction":true,
+  "geneticMutationTypeName":"Null",
+  "molecularMutationTypeName":"Point Mutation",
+  "mutationQcResults":[
+    {
+      "id":3,
+      "qcTypeName":"loxp_screen",
+      "statusName":"fail"
+    },
+    {
+      "id":1,
+      "qcTypeName":"mutant_specific_sr_pcr",
+      "statusName":"pass"
+    }
+  ],
+  "mutationSequences":[
+    {
+      "id":2,
+      "index":1,
+      "sequence":{
+        "id":1,
+        "sequence":">Otog TGGGACTAGGTCACAGACAGAAAAAGGGGGATGAGAAGGCCTTAGATCTAAGGGAGGTAAAGAGAGAATTAACCACAGGAATTAGCACACTGAAGGATCGTGCTCGCCAGACCTCAAACCATCTCCTTCTTGCGTCATGAGAAAGCCTTGACCCATCATTTTCCAGTTTTCTGTGTTCTTGCCCCACTTTGGCCCCTGGATCCTGGGATCTCCCCAGAAATTCTTACCTAGCCCC",
+        "typeName":"complete",
+        "categoryName":"outcome sequence",
+        "sequenceLocations":[
+          {
+            "id":1,
+            "locationIndex":1,
+            "location":{
+              "id":1,
+              "chr":"7",
+              "start":46245700,
+              "stop":46245602,
+              "strand":"-",
+              "genomeBuild":"GRCm38.p6",
+              "strainName":"C57BL/6J",
+              "speciesName":"Mus musculus"
+            }
+          },
+          {
+            "id":2,
+            "locationIndex":2,
+            "location":{
+              "id":2,
+              "chr":"7",
+              "start":46245150,
+              "stop":46244960,
+              "strand":"-",
+              "genomeBuild":"GRCm38.p6",
+              "strainName":"C57BL/6J",
+              "speciesName":"Mus musculus"
+            }
+          }
+        ]
+      }
+    }
+  ],
+  "mutationCategorizations":[
+    {
+      "name":"NHEJ",
+      "description":"non-homology end-joining",
+      "typeName":"repair_mechanism"
+    },
+    {
+      "name":"HR",
+      "description":null,
+      "typeName":"repair_mechanism"
+    }
+  ],
+  "_links":{
+    "outcomes":{
+      "href":"http://localhost:8080/api/plans/PIN:0000000001/outcomes/TPO:000000000002"
+    }
+  },
+  "genes":[
+    {
+      "id":4,
+      "name":"DENN/MADD domain containing 6B",
+      "symbol":"Dennd6b",
+      "speciesName":null,
+      "externalLink":"http://www.mousephenotype.org/data/genes/MGI:1916690",
+      "accessionId":"MGI:1916690"
+    },
+    {
+      "id":2,
+      "name":"otogelin",
+      "symbol":"Otog",
+      "speciesName":"Mus musculus",
+      "externalLink":"http://www.mousephenotype.org/data/genes/MGI:1202064",
+      "accessionId":"MGI:1202064"
+    }
+  ]
+}

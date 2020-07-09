@@ -12,8 +12,8 @@ import java.util.Set;
 @Component
 public class MutationUpdateMapper implements Mapper<Mutation, MutationUpdateDTO>
 {
-    private MutationCommonMapper mutationCommonMapper;
-    private GeneService geneService;
+    private final MutationCommonMapper mutationCommonMapper;
+    private final GeneService geneService;
 
     public MutationUpdateMapper(MutationCommonMapper mutationCommonMapper, GeneService geneService)
     {

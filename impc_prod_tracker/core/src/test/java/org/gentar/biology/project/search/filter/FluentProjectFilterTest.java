@@ -33,7 +33,6 @@ class FluentProjectFilterTest
         List<Project> data = buildData();
         var w = new FluentProjectFilter(data).withTpns(Collections.singletonList("tpn1"));
         List<Project> filteredData = w.getFilteredData();
-        System.out.println(filteredData);
         assertThat(
             "There should be only 1 result",
             filteredData.size(),
@@ -54,7 +53,6 @@ class FluentProjectFilterTest
         data.get(0).setPlans(Collections.singleton(plan));
         var test =  new FluentProjectFilter(data).withWorkUnitNames(Collections.singletonList("wu1"));
         List<Project> filteredData = test.getFilteredData();
-        System.out.println(filteredData);
         assertThat(
             "There should be only 1 result",
             filteredData.size(),

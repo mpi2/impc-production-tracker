@@ -76,11 +76,11 @@ class ChangesDetectorComplexCasesTest
         assertThat("2 changes expected:", changeEntries.size(), is(2));
 
         ChangeEntry changeEntry1 = findByName("sequenceLocations.[1]", changeEntries);
-        assertThat(changeEntry1.getChangeType(), is(ChangeType.CHANGED));
+        assertThat(changeEntry1.getChangeType(), is(ChangeType.CHANGED_ELEMENT));
         assertThat(changeEntry1.getType(), is(SequenceLocation.class));
 
         ChangeEntry changeEntry2 = findByName("sequenceLocations.[1].location.chr", changeEntries);
-        assertThat(changeEntry2.getChangeType(), is(ChangeType.CHANGED));
+        assertThat(changeEntry2.getChangeType(), is(ChangeType.CHANGED_FIELD));
         assertThat(changeEntry2.getType(), is(String.class));
         assertThat(changeEntry2.getOldValue(), is("X"));
         assertThat(changeEntry2.getNewValue(), is("Y"));

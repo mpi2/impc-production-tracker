@@ -1,0 +1,17 @@
+{
+  "tpn":"TPN:000000001",
+  "funderNames":[],
+  "workUnitName":"UCD",
+  "workGroupName":"DTCC",
+  "comment":null,
+  "productsAvailableForGeneralPublic":true,
+  "attemptTypeName":"adult phenotyping",
+  "typeName":"phenotyping",
+  "phenotypingStartingPoint": {
+    "outcomeTpo":"TPO:000000000001"
+  },
+  "phenotypingAttempt":{
+    "phenotypingExternalRef":"CR1234",
+    "phenotypingBackgroundStrainName":"C57BL/6NJ"
+  }
+}

@@ -15,6 +15,7 @@
  */
 package org.gentar.organization.person;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import org.gentar.exceptions.UserOperationFailedException;
 import org.gentar.security.abac.subject.SubjectRetriever;
 import org.gentar.security.abac.subject.SystemSubject;
@@ -95,10 +96,10 @@ public class PersonServiceImpl implements PersonService
     }
 
     @Override
-    public Person createPerson(Person person)
+    public Person createPerson(Person person, String token) throws JsonProcessingException
     {
         validatePersonNotExists(person);
-        String authId = aapService.createUser(person);
+        String authId = aapService.createUser(person, token);
         person.setAuthId(authId);
         personRepository.save(person);
         return person;

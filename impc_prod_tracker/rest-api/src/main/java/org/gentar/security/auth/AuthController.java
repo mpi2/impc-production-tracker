@@ -36,7 +36,7 @@ import static org.springframework.http.ResponseEntity.ok;
 public class AuthController
 {
     private static final String AUTHENTICATION_ERROR = "Invalid User/Password provided.";
-    private AuthService authService;
+    private final AuthService authService;
 
     public AuthController(AuthService authService)
     {
@@ -74,4 +74,5 @@ public class AuthController
         authenticationResponseDTO.setAccessToken(token);
         return authenticationResponseDTO;
     }
+
 }

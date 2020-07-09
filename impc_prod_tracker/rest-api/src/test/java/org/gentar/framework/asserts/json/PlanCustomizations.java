@@ -12,7 +12,7 @@ import java.util.List;
  */
 public class PlanCustomizations
 {
-    public Customization[] ignoreIdsAndPinAndDates()
+    public static Customization[] ignoreIdsAndPinAndDates()
     {
         List<Customization> customizationList = new ArrayList<>();
         customizationList.addAll(buildCustomizationForCrisprIds());
@@ -21,7 +21,7 @@ public class PlanCustomizations
         return customizationList.toArray(new Customization[0]);
     }
 
-    public Customization[] ignoreIdsAndDates()
+    public static Customization[] ignoreIdsAndDates()
     {
         List<Customization> customizationList = new ArrayList<>();
         customizationList.addAll(buildCustomizationForCrisprIds());
@@ -29,13 +29,13 @@ public class PlanCustomizations
         return customizationList.toArray(new Customization[0]);
     }
 
-    private Customization buildCustomizationForPin()
+    private static Customization buildCustomizationForPin()
     {
         return new Customization(
             "pin", new RegularExpressionValueMatcher<>(CustomizationConstants.PIN_PATTERN));
     }
 
-    private List<Customization> buildCustomizationForCrisprIds()
+    private static List<Customization> buildCustomizationForCrisprIds()
     {
         List<Customization> customizations = new ArrayList<>();
         customizations.add(CustomizationHelper.buildIdCustomization("crisprAttempt.assay.id"));
@@ -56,13 +56,14 @@ public class PlanCustomizations
         return customizations;
     }
 
-    private List<Customization> buildCustomizationForStatusDates()
+    private static List<Customization> buildCustomizationForStatusDates()
     {
         List<Customization> customizations = new ArrayList<>();
         customizations.add(CustomizationHelper.buildDateCustomization("statusDates[0].date"));
         customizations.add(CustomizationHelper.buildDateCustomization("statusDates[1].date"));
         customizations.add(CustomizationHelper.buildDateCustomization("statusDates[2].date"));
         customizations.add(CustomizationHelper.buildDateCustomization("statusDates[3].date"));
+        customizations.add(CustomizationHelper.buildDateCustomization("statusDates[4].date"));
         customizations.add(CustomizationHelper.buildDateCustomization("summaryStatusDates[0].date"));
         return customizations;
     }

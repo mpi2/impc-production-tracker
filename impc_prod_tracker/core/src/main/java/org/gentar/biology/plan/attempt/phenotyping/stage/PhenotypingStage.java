@@ -14,6 +14,7 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -74,7 +75,10 @@ public class PhenotypingStage extends BaseEntity implements ProcessData
         this.doNotCountTowardsCompleteness = phenotypingStage.doNotCountTowardsCompleteness;
         this.initialDataReleaseDate = phenotypingStage.initialDataReleaseDate;
         this.phenotypingStageType = phenotypingStage.phenotypingStageType;
-        this.tissueDistributions = phenotypingStage.tissueDistributions;
+        if (phenotypingStage.tissueDistributions != null)
+        {
+            this.tissueDistributions = new HashSet<>(phenotypingStage.tissueDistributions);
+        }
     }
 
     public String toString()

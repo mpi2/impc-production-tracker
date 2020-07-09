@@ -1,6 +1,5 @@
 package org.gentar.biology.sequence;
 
-import org.gentar.EntityMapper;
 import org.gentar.Mapper;
 import org.gentar.biology.location.Location;
 import org.gentar.biology.location.LocationMapper;
@@ -10,13 +9,11 @@ import org.gentar.biology.sequence_location.SequenceLocation;
 @Component
 public class SequenceLocationMapper implements Mapper<SequenceLocation, SequenceLocationDTO>
 {
-    private LocationMapper locationMapper;
-    private EntityMapper entityMapper;
+    private final LocationMapper locationMapper;
 
-    public SequenceLocationMapper(LocationMapper locationMapper, EntityMapper entityMapper)
+    public SequenceLocationMapper(LocationMapper locationMapper)
     {
         this.locationMapper = locationMapper;
-        this.entityMapper = entityMapper;
     }
 
     public SequenceLocationDTO toDto(SequenceLocation sequenceLocation)
@@ -30,11 +27,13 @@ public class SequenceLocationMapper implements Mapper<SequenceLocation, Sequence
 
     public SequenceLocation toEntity(SequenceLocationDTO sequenceLocationDTO)
     {
-        SequenceLocation sequenceLocation =
-            entityMapper.toTarget(sequenceLocationDTO, SequenceLocation.class);
-        sequenceLocation.setId(sequenceLocationDTO.getId());
-        sequenceLocation.setIndex(sequenceLocationDTO.getLocationIndex());
-        setLocations(sequenceLocation, sequenceLocationDTO);
+        SequenceLocation sequenceLocation = new SequenceLocation();
+        if (sequenceLocationDTO != null)
+        {
+            sequenceLocation.setId(sequenceLocationDTO.getId());
+            sequenceLocation.setIndex(sequenceLocationDTO.getLocationIndex());
+            setLocations(sequenceLocation, sequenceLocationDTO);
+        }
         return sequenceLocation;
     }
 

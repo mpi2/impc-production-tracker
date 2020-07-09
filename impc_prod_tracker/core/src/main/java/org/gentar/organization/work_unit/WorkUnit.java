@@ -18,6 +18,7 @@ package org.gentar.organization.work_unit;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import org.gentar.BaseEntity;
+import org.gentar.audit.diff.IgnoreForAuditingChanges;
 import org.gentar.organization.consortium.Consortium;
 import org.gentar.organization.work_group.WorkGroup;
 
@@ -44,13 +45,14 @@ public class WorkUnit extends BaseEntity
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
     @JsonIgnore
-    @ManyToMany(fetch = FetchType.EAGER, mappedBy = "workUnits")
+    @IgnoreForAuditingChanges
+    @ManyToMany(fetch=FetchType.EAGER, mappedBy = "workUnits")
     private Set<Consortium> consortia;
 
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
-    @JsonIgnore
-    @ManyToMany(fetch = FetchType.EAGER, mappedBy = "workUnits")
+    @IgnoreForAuditingChanges
+    @ManyToMany(fetch=FetchType.EAGER, mappedBy = "workUnits")
     private Set<WorkGroup> workGroups;
 
     public WorkUnit(String name)

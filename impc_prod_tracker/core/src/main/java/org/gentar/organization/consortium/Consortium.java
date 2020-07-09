@@ -20,6 +20,7 @@ import lombok.*;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
+import org.gentar.audit.diff.IgnoreForAuditingChanges;
 import org.springframework.data.rest.core.annotation.RestResource;
 import org.gentar.BaseEntity;
 import org.gentar.organization.work_unit.WorkUnit;
@@ -50,7 +51,7 @@ public class Consortium extends BaseEntity
     private String description;
 
     @ToString.Exclude
-    @JsonIgnore
+    @IgnoreForAuditingChanges
     @ManyToMany
     @JoinTable(
         name = "consortium_work_unit",

@@ -1,7 +1,5 @@
 package org.gentar.audit.diff;
 
-import org.gentar.util.CollectionPrinter;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -61,7 +59,6 @@ class ObjectInspector
                 map.put(propertyWithValue.getPropertyDefinition().getName(), propertyWithValue);
                 if (mustCheckInternalProperties(propertyWithValue, parentData))
                 {
-                   // PropertyDefinition currentParent = getCurrentParent(parentData);
                     Class<?> parentTypeToRegister = getParentTypeToRegister(parentData);
 
                     checkedClassesTree.addRelationIfNotExist(
@@ -96,36 +93,6 @@ class ObjectInspector
             }
         }
         return parentTypeToRegister;
-        /*if (parentData != null)
-        {
-            // If the current element is the child of a collection, we don't want to register in the
-            // dependencies tree the relation children->Collection but children->Owner of the collection
-            if (PropertyChecker.isCollection(parentData.getType()))
-            {
-                parentTypeToRegister = parentData.getParentType();
-            }
-            else
-            {
-                parentTypeToRegister = parentData.getType();
-            }
-        }
-        return parentTypeToRegister;
-        /*
-        PropertyDefinition propertyDefinition = parentData;
-        if (parentData == null)
-        {
-            propertyDefinition = new PropertyDefinition(null, object.getClass(), null);
-        }
-        else
-        {
-            // If the current element is the child of a collection, we don't want to register in the
-            // dependencies tree the relation children->Collection but children->Owner of the collection
-            if (PropertyChecker.isCollection(parentData.getType()))
-            {
-                propertyDefinition.setType(parentData.getParentType());
-            }
-        }
-        return propertyDefinition;*/
     }
 
     public Map<String, PropertyDescription> getMap()

@@ -16,7 +16,10 @@
 package org.gentar.security.authentication;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import lombok.Data;
 import org.gentar.exceptions.UserOperationFailedException;
+import org.gentar.util.JsonHelper;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -33,9 +36,15 @@ import org.gentar.organization.person.Person;
 @Component
 public class AAPService
 {
-    private RestTemplate restTemplate;
-    @Value("${local_authentication_url}")
+    private final RestTemplate restTemplate;
+    @Value("${local_authentication_base_url}")
     private String EXTERNAL_SERVICE_URL;
+    @Value("${gentar_domain_reference}")
+    private String GENTAR_DOMAIN_REFERENCE;
+
+    private final String AUTHENTICATION_ENDPOINT = "/auth";
+    private final String DOMAIN_ENDPOINT = "/domains/%s/%s/user";
+    private final String RESET_PASSWORD = "/reset";
 
     public static final String PERSON_ALREADY_IN_AAP_ERROR = "The user [%s] already exists in the "
         + "Authentication System.";
@@ -45,6 +54,13 @@ public class AAPService
         this.restTemplate = restTemplate;
     }
 
+    /**
+     * Returns a JWT given a userName and password. To do so, this calls the AAP system with the
+     * provided data.
+     * @param userName User name.
+     * @param password Password.
+     * @return String with the JWT.
+     */
     public String getToken(String userName, String password)
     {
         ResponseEntity<String> response;
@@ -54,7 +70,7 @@ public class AAPService
         try
         {
             response = restTemplate.exchange(
-                EXTERNAL_SERVICE_URL,
+                EXTERNAL_SERVICE_URL + AUTHENTICATION_ENDPOINT,
                 HttpMethod.GET,
                 entity,
                 String.class);
@@ -66,27 +82,35 @@ public class AAPService
         return response.getBody();
     }
 
-    public String createUser(Person person)
+    /**
+     * Creates an account in the AAP system for a person in the system.
+     * @param person Person information which will be used to build the payload to call the
+     *               AAP endpoint that creates the user in that system.
+     * @param token Token to be able to authenticate in AAP before executing the creation task.
+     * @return A string with the id in the AAP system for the user.
+     */
+    public String createUser(Person person, String token) throws JsonProcessingException
     {
         String authId = createLocalAccount(person);
+        associateWithDomain(authId, token);
         return authId;
     }
 
-    private String createLocalAccount(Person person)
+    private String createLocalAccount(Person person) throws JsonProcessingException
     {
         LocalAccountInfo localAccountInfo =
             new LocalAccountInfo(person.getName(), person.getPassword(), person.getEmail());
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
-
-        HttpEntity<LocalAccountInfo> requestEntity = new HttpEntity<>(localAccountInfo, headers);
+        String payload = JsonHelper.toJson(localAccountInfo);
+        HttpEntity<String> requestEntity = new HttpEntity<>(payload, headers);
         ResponseEntity<String> response;
         try
         {
             response =
                 restTemplate.postForEntity(
-                    EXTERNAL_SERVICE_URL,
+                    EXTERNAL_SERVICE_URL + AUTHENTICATION_ENDPOINT,
                     requestEntity,
                     String.class);
         }
@@ -100,6 +124,40 @@ public class AAPService
             throw new UserOperationFailedException(message);
         }
         return response.getBody();
+    }
+
+    private void associateWithDomain(String authId, String token)
+    {
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        headers.setBearerAuth(token);
+
+        HttpEntity<LocalAccountInfo> requestEntity = new HttpEntity<>(headers);
+        String domainAssociationUrl =
+            EXTERNAL_SERVICE_URL + String.format(DOMAIN_ENDPOINT, GENTAR_DOMAIN_REFERENCE, authId);
+        restTemplate.exchange(domainAssociationUrl, HttpMethod.PUT, requestEntity, Void.class);
+    }
+
+    /**
+     * Calls the endpoint in AAP for requesting the reset of the password for the user with email 'email'.
+     * This will send an email to the user with a link to change the password.
+     * @param email Email of the user who needs the password reset.
+     */
+    public void requestPasswordReset(String email) throws JsonProcessingException
+    {
+        PasswordResetRequest passwordResetRequest = new PasswordResetRequest();
+        passwordResetRequest.userName = email;
+        passwordResetRequest.email = email;
+
+        String payload = JsonHelper.toJson(passwordResetRequest);
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        HttpEntity<String> requestEntity =
+            new HttpEntity<>(payload, headers);
+        String domainAssociationUrl =
+            EXTERNAL_SERVICE_URL + RESET_PASSWORD;
+        restTemplate.exchange(domainAssociationUrl, HttpMethod.POST, requestEntity, Void.class);
     }
 
     /**
@@ -129,5 +187,14 @@ public class AAPService
             this.email = email;
             this.userName = email;
         }
+    }
+
+    private static class PasswordResetRequest
+    {
+        @JsonProperty("username")
+        String userName;
+
+        @JsonProperty("email")
+        String email;
     }
 }

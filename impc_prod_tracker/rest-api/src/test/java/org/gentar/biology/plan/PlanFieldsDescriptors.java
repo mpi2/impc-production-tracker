@@ -220,6 +220,24 @@ public class PlanFieldsDescriptors
         return crisprFields;
     }
 
+    public static List<FieldDescriptor> getPhenotypingFieldDescriptors()
+    {
+        List<FieldDescriptor> phenotypingFields = new ArrayList<>();
+
+        addField(phenotypingFields, "phenotypingStartingPoint", "Outcome information");
+        addField(phenotypingFields, "phenotypingStartingPoint._links", "");
+        addField(phenotypingFields, "phenotypingStartingPoint._links.outcome", "");
+        addField(phenotypingFields, "phenotypingStartingPoint._links.outcome.href", "Outcome link");
+        addField(phenotypingFields, "phenotypingStartingPoint.outcomeTpo",
+                "Public identifier for the outcome.");
+        addField(phenotypingFields, "phenotypingAttemptResponse", "Phenotyping attempt details.");
+        addField(phenotypingFields, "phenotypingAttemptResponse.phenotypingExternalRef",
+                "Phenotyping colony name or specimen group name");
+        addField(phenotypingFields, "phenotypingAttemptResponse.phenotypingBackgroundStrainName",
+                "Phenotyping attempt background strain.");
+        return phenotypingFields;
+    }
+
     private static void addField(List<FieldDescriptor> list, String name, String description)
     {
         list.add(fieldWithPath(name).description(description).optional());

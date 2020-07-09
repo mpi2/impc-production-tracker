@@ -12,8 +12,10 @@ import java.util.stream.Collectors;
 @Component
 public class HistoryServiceImpl<T> implements HistoryService<T>
 {
-    private HistoryBuilder<T> historyBuilder;
-    private HistoryRepository historyRepository;
+    private final HistoryBuilder<T> historyBuilder;
+    private final HistoryRepository historyRepository;
+
+    private static final String FIELD_NAME_SEPARATOR = ".";
 
     public HistoryServiceImpl(HistoryBuilder<T> historyBuilder, HistoryRepository historyRepository)
     {
@@ -152,10 +154,13 @@ public class HistoryServiceImpl<T> implements HistoryService<T>
     {
         boolean result = true;
         String field = historyDetail.getField();
-        String fieldToKeepInNested = nestedEntityFieldName + "." + fieldName;
-        if (field.contains(nestedEntityFieldName))
+        if (field.contains(nestedEntityFieldName + FIELD_NAME_SEPARATOR))
         {
-            result = field.contains(fieldToKeepInNested);
+            String fieldToKeepInNested = nestedEntityFieldName + FIELD_NAME_SEPARATOR + fieldName;
+            if (field.contains(nestedEntityFieldName))
+            {
+                result = field.contains(fieldToKeepInNested);
+            }
         }
         return result;
     }

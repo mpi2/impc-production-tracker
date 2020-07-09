@@ -81,7 +81,6 @@ class PhenotypingStageControllerTest  extends ControllerTestTemplate
         String expectedJson =
                 getCompleteResourcePath("expectedPhenotypingStageHistoryPSN_000000000002.json");
         String obtainedJson = restCaller.executeGetAndDocument(url, documentPhenotypingStageHistory());
-        System.out.println(obtainedJson);
         resultValidator.validateObtainedMatchesJson(obtainedJson, expectedJson);
     }
 
@@ -118,7 +117,6 @@ class PhenotypingStageControllerTest  extends ControllerTestTemplate
             String phenotypingStageUrl, String expectedJson) throws Exception
     {
         String obtainedPhenotypingStage = restCaller.executeGet(phenotypingStageUrl);
-        System.out.println(obtainedPhenotypingStage);
         resultValidator.validateObtainedMatchesJson(
                 obtainedPhenotypingStage, expectedJson, PhenotypingStageCustomizations.ignoreIdsAndPsnAndDates());
     }
@@ -128,6 +126,9 @@ class PhenotypingStageControllerTest  extends ControllerTestTemplate
     @DatabaseTearDown(type = DatabaseOperation.DELETE_ALL, value = DBSetupFilesPaths.MULTIPLE_PHENOTYPING_STAGES)
     void testUpdatePhenotypingStageInPlan() throws Exception
     {
+        sequenceResetter.syncSequence("PHENOTYPING_STAGE_SEQ", "PHENOTYPING_STAGE");
+        sequenceResetter.syncSequence("PHENOTYPING_STAGE_STATUS_STAMP_SEQ", "PHENOTYPING_STAGE_STATUS_STAMP");
+        sequenceResetter.syncSequence("TISSUE_DISTRIBUTION_SEQ", "TISSUE_DISTRIBUTION");
         sequenceResetter.syncSequence("HISTORY_SEQ", "HISTORY");
         sequenceResetter.syncSequence("HISTORY_DETAIL_SEQ", "HISTORY_DETAIL");
 
@@ -162,22 +163,14 @@ class PhenotypingStageControllerTest  extends ControllerTestTemplate
             String phenotypingStageUrl, String expectedJson) throws Exception
     {
         String obtainedPhenotypingStage = restCaller.executeGet(phenotypingStageUrl);
-        System.out.println(obtainedPhenotypingStage);
         resultValidator.validateObtainedMatchesJson(
                 obtainedPhenotypingStage, expectedJson, PhenotypingStageCustomizations.ignoreIdsAndPsnAndDates());
     }
-
-
-
-
-
 
     private String getCompleteResourcePath(String resourceJsonName)
     {
         return TEST_RESOURCES_FOLDER + resourceJsonName;
     }
-
-
 
     private String loadFromResource(String resourceName)
             throws IOException

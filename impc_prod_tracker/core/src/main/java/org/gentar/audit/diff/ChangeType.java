@@ -13,8 +13,10 @@ public enum ChangeType implements LabeledType
     ADDED("Element added"),
     // The property was removed from a collection.
     REMOVED("Element removed"),
+    // The property is an element in a collection and it was changed.
+    CHANGED_ELEMENT("Element changed"),
     // The property changed its value.
-    CHANGED("Field changed"),
+    CHANGED_FIELD("Field changed"),
     // The property was not changed.
     UNTOUCHED("No changed");
 

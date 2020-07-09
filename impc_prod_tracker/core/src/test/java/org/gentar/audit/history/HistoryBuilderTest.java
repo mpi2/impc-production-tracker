@@ -3,12 +3,9 @@ package org.gentar.audit.history;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.gentar.audit.diff.ChangeType;
-import org.gentar.audit.history.History;
-import org.gentar.audit.history.HistoryBuilder;
 import org.gentar.audit.history.detail.HistoryDetail;
 import org.gentar.security.abac.subject.SubjectRetriever;
 import org.gentar.security.abac.subject.SystemSubject;
-import org.gentar.util.CollectionPrinter;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -84,7 +81,7 @@ public class HistoryBuilderTest
         assertThat(historyDetail1.getReferenceEntity(), is(nullValue()));
         assertThat(historyDetail1.getOldValueEntityId(), is(nullValue()));
         assertThat(historyDetail1.getNewValueEntityId(), is(nullValue()));
-        assertThat(historyDetail1.getNote(), is(ChangeType.CHANGED.getLabel()));
+        assertThat(historyDetail1.getNote(), is(ChangeType.CHANGED_FIELD.getLabel()));
 
         HistoryDetail historyDetail2 = getHistoryDetails("privacy.privacyName", historyDetails);
         assertThat(historyDetail2.getOldValue(), is("privacyMock1"));
@@ -92,7 +89,7 @@ public class HistoryBuilderTest
         assertThat(historyDetail2.getReferenceEntity(), is(nullValue()));
         assertThat(historyDetail2.getOldValueEntityId(), is(nullValue()));
         assertThat(historyDetail2.getNewValueEntityId(), is(nullValue()));
-        assertThat(historyDetail2.getNote(), is(ChangeType.CHANGED.getLabel()));
+        assertThat(historyDetail2.getNote(), is(ChangeType.CHANGED_FIELD.getLabel()));
 
         HistoryDetail historyDetail3 = getHistoryDetails("status.statusName", historyDetails);
         assertThat(historyDetail3.getOldValue(), is("statusMock1"));
@@ -100,7 +97,7 @@ public class HistoryBuilderTest
         assertThat(historyDetail3.getReferenceEntity(), is(nullValue()));
         assertThat(historyDetail3.getOldValueEntityId(), is(nullValue()));
         assertThat(historyDetail3.getNewValueEntityId(), is(nullValue()));
-        assertThat(historyDetail3.getNote(), is(ChangeType.CHANGED.getLabel()));
+        assertThat(historyDetail3.getNote(), is(ChangeType.CHANGED_FIELD.getLabel()));
 
         HistoryDetail historyDetail4 = getHistoryDetails("status.subStatus.subStatusName", historyDetails);
         assertThat(historyDetail4.getOldValue(), is("subStatusMock1"));
@@ -108,7 +105,7 @@ public class HistoryBuilderTest
         assertThat(historyDetail4.getReferenceEntity(), is(nullValue()));
         assertThat(historyDetail4.getOldValueEntityId(), is(nullValue()));
         assertThat(historyDetail4.getNewValueEntityId(), is(nullValue()));
-        assertThat(historyDetail4.getNote(), is(ChangeType.CHANGED.getLabel()));
+        assertThat(historyDetail4.getNote(), is(ChangeType.CHANGED_FIELD.getLabel()));
 
         HistoryDetail historyDetail5 = getHistoryDetails("workUnitList.[1]", historyDetails);
         assertThat(historyDetail5.getOldValue(), is("workUnitMock1A"));
@@ -124,7 +121,7 @@ public class HistoryBuilderTest
         assertThat(historyDetail6.getReferenceEntity(), is(nullValue()));
         assertThat(historyDetail6.getOldValueEntityId(), is(nullValue()));
         assertThat(historyDetail6.getNewValueEntityId(), is(nullValue()));
-        assertThat(historyDetail6.getNote(), is(ChangeType.CHANGED.getLabel()));
+        assertThat(historyDetail6.getNote(), is(ChangeType.CHANGED_FIELD.getLabel()));
 
         HistoryDetail historyDetail7 = getHistoryDetails("workUnitList.[1].workUnitName", historyDetails);
         assertThat(historyDetail7.getOldValue(), is("workUnitMock1A"));
@@ -132,7 +129,7 @@ public class HistoryBuilderTest
         assertThat(historyDetail7.getReferenceEntity(), is(nullValue()));
         assertThat(historyDetail7.getOldValueEntityId(), is(nullValue()));
         assertThat(historyDetail7.getNewValueEntityId(), is(nullValue()));
-        assertThat(historyDetail7.getNote(), is(ChangeType.CHANGED.getLabel()));
+        assertThat(historyDetail7.getNote(), is(ChangeType.CHANGED_FIELD.getLabel()));
 
         HistoryDetail historyDetail8 = getHistoryDetails("workUnitList.[2]", historyDetails);
         assertThat(historyDetail8.getOldValue(), is("workUnitMock1B"));
@@ -148,7 +145,7 @@ public class HistoryBuilderTest
         assertThat(historyDetail9.getReferenceEntity(), is(nullValue()));
         assertThat(historyDetail9.getOldValueEntityId(), is(nullValue()));
         assertThat(historyDetail9.getNewValueEntityId(), is(nullValue()));
-        assertThat(historyDetail9.getNote(), is(ChangeType.CHANGED.getLabel()));
+        assertThat(historyDetail9.getNote(), is(ChangeType.CHANGED_FIELD.getLabel()));
 
         HistoryDetail historyDetail10 = getHistoryDetails("workUnitList.[2].workUnitName", historyDetails);
         assertThat(historyDetail10.getOldValue(), is("workUnitMock1B"));
@@ -156,7 +153,7 @@ public class HistoryBuilderTest
         assertThat(historyDetail10.getReferenceEntity(), is(nullValue()));
         assertThat(historyDetail10.getOldValueEntityId(), is(nullValue()));
         assertThat(historyDetail10.getNewValueEntityId(), is(nullValue()));
-        assertThat(historyDetail10.getNote(), is(ChangeType.CHANGED.getLabel()));
+        assertThat(historyDetail10.getNote(), is(ChangeType.CHANGED_FIELD.getLabel()));
 
         HistoryDetail historyDetail11 = getHistoryDetails("workUnitList.[3]", historyDetails);
         assertThat(historyDetail11.getOldValue(), is(nullValue()));
@@ -172,7 +169,7 @@ public class HistoryBuilderTest
         assertThat(historyDetail12.getReferenceEntity(), is(nullValue()));
         assertThat(historyDetail12.getOldValueEntityId(), is(nullValue()));
         assertThat(historyDetail12.getNewValueEntityId(), is(nullValue()));
-        assertThat(historyDetail12.getNote(), is(ChangeType.CHANGED.getLabel()));
+        assertThat(historyDetail12.getNote(), is(ChangeType.CHANGED_FIELD.getLabel()));
 
         HistoryDetail historyDetail13 = getHistoryDetails("workUnitList.[3].workUnitName", historyDetails);
         assertThat(historyDetail13.getOldValue(), is(nullValue()));
@@ -180,7 +177,7 @@ public class HistoryBuilderTest
         assertThat(historyDetail13.getReferenceEntity(), is(nullValue()));
         assertThat(historyDetail13.getOldValueEntityId(), is(nullValue()));
         assertThat(historyDetail13.getNewValueEntityId(), is(nullValue()));
-        assertThat(historyDetail13.getNote(), is(ChangeType.CHANGED.getLabel()));
+        assertThat(historyDetail13.getNote(), is(ChangeType.CHANGED_FIELD.getLabel()));
 
         HistoryDetail historyDetail14 = getHistoryDetails("workUnitList.[4]", historyDetails);
         assertThat(historyDetail14.getOldValue(), is(nullValue()));
@@ -196,7 +193,7 @@ public class HistoryBuilderTest
         assertThat(historyDetail15.getReferenceEntity(), is(nullValue()));
         assertThat(historyDetail15.getOldValueEntityId(), is(nullValue()));
         assertThat(historyDetail15.getNewValueEntityId(), is(nullValue()));
-        assertThat(historyDetail15.getNote(), is(ChangeType.CHANGED.getLabel()));
+        assertThat(historyDetail15.getNote(), is(ChangeType.CHANGED_FIELD.getLabel()));
 
         HistoryDetail historyDetail16 = getHistoryDetails("workUnitList.[4].workUnitName", historyDetails);
         assertThat(historyDetail16.getOldValue(), is(nullValue()));
@@ -204,7 +201,7 @@ public class HistoryBuilderTest
         assertThat(historyDetail16.getReferenceEntity(), is(nullValue()));
         assertThat(historyDetail16.getOldValueEntityId(), is(nullValue()));
         assertThat(historyDetail16.getNewValueEntityId(), is(nullValue()));
-        assertThat(historyDetail16.getNote(), is(ChangeType.CHANGED.getLabel()));
+        assertThat(historyDetail16.getNote(), is(ChangeType.CHANGED_FIELD.getLabel()));
     }
 
     private HistoryDetail getHistoryDetails(

@@ -1,0 +1,59 @@
+{
+  "pin": "PIN:0000000005",
+  "tpn": "TPN:000000001",
+  "attemptTypeName": "adult phenotyping",
+  "funderNames":[],
+  "workUnitName":"UCD",
+  "workGroupName":"DTCC",
+  "comment":null,
+  "productsAvailableForGeneralPublic": true,
+  "phenotypingStartingPoint": {
+    "_links": {
+      "outcome": {
+        "href": "http://localhost:8080/api/plans/PIN:0000000001/outcomes/TPO:000000000001"
+      }
+    },
+    "outcomeTpo": "TPO:000000000001"
+  },
+  "phenotypingAttemptResponse": {
+    "phenotypingExternalRef": "CR1234",
+    "phenotypingBackgroundStrainName": "C57BL/6NJ"
+  },
+  "typeName": "phenotyping",
+  "statusName": "Plan Created",
+  "summaryStatusName": "Plan Created",
+  "statusDates": [
+    {
+      "statusName": "Plan Created",
+      "date": "2020-07-02T18:49:48.814889"
+    }
+  ],
+  "summaryStatusDates": [
+    {
+      "statusName": "Plan Created",
+      "date": "2020-07-02T18:49:48.901093"
+    }
+  ],
+  "statusTransition": {
+    "currentStatus": "Plan Created",
+    "transitions": [
+      {
+        "action": "abandonWhenCreated",
+        "description": "Abandon a phenotyping plan that has no associated phenotyping stage information",
+        "triggeredByUser": true,
+        "available": false,
+        "note": "The plan already has phenotyping stages. Please abort the plan.",
+        "nextStatus": "PlanAbandoned"
+      },
+      {
+        "action": "abortPhenotypingPlan",
+        "description": "Abort a phenotyping plan that has associated aborted phenotyping stage information",
+        "triggeredByUser": true,
+        "available": true,
+        "note": null,
+        "nextStatus": "PhenotypePlanAborted"
+      }
+    ],
+    "actionToExecute": null
+  }
+}

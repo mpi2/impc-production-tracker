@@ -1,0 +1,44 @@
+<dataset>
+    <ROLE
+            id="1"
+            name="general"
+    />
+    <WORK_UNIT
+            id="1"
+            name="UCD"
+    />
+    <CONSORTIUM
+            id="1"
+            name="BaSH"
+    />
+    <CONSORTIUM
+            id="2"
+            name="CMG"
+    />
+    <INSTITUTE
+            id="1"
+            name="Yale"
+    />
+
+    <PERSON
+            id="1"
+            name="Test user name"
+            email="imits2test@test.com"
+            auth_id="usr-dde67fbd-c3c2-42eb-aa81-f1a225f047c7"
+            ebi_admin="true"
+    />
+    <PERSON_ROLE_WORK_UNIT
+            id="1"
+            person_id="1"
+            role_id="1"
+            work_unit_id="1"
+    />
+    <PERSON_ROLE_CONSORTIUM
+            id="1"
+            person_id="1"
+            role_id="1"
+            consortium_id="1"
+    />
+    <PROJECT_CONSORTIUM_INSTITUTE/>
+
+</dataset>

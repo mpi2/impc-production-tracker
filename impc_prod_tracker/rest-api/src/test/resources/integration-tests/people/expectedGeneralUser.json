@@ -1,0 +1,34 @@
+{
+  "name":"Test user name",
+  "email":"imits2test@test.com",
+  "contactable":true,
+  "rolesWorkUnits":[
+    {
+      "id":1,
+      "workUnitName":"UCD",
+      "roleName":"general"
+    }
+  ],
+  "rolesConsortia":[
+    {
+      "id":1,
+      "consortiumName":"BaSH",
+      "roleName":"general"
+    }
+  ],
+  "actionPermissions":[
+    {
+      "actionName":"manageUsers",
+      "value":false
+    },
+    {
+      "actionName":"executeManagerTasks",
+      "value":false
+    },
+    {
+      "actionName":"canManageGeneLists",
+      "value":false
+    }
+  ],
+  "isAdmin":false
+}
