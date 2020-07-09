@@ -96,6 +96,35 @@ include::{snippets}/auth/signin/no-valid-user-password/http-request.adoc[]
 include::{snippets}/auth/signin/no-valid-user-password/http-response.adoc[]
 
 
+
+== Users
+anchor:users[]
+This section describes the REST endpoints to manage users in the system.
+
+
+=== Fields
+These are the fields you are going to see in the body of a request in a GET or in the payload for POST or PUT
+operations.
+
+include::{snippets}/people/getPerson/response-fields.adoc[]
+
+=== GET
+==== Get Current Logged Person
+
+Get the current user information. The current user is the owner of the token being used in this request.
+
+===== Example Request
+
+Curl:
+include::{snippets}/people/getPerson/curl-request.adoc[]
+
+===== Example Response
+
+include::{snippets}/people/getPerson/http-response.adoc[]
+
+
+
+
 == Projects
 anchor:chapter-configure[]
 This section describes the REST endpoints for projects in the system.
