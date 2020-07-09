@@ -23,9 +23,10 @@
     <PERSON
             id="1"
             name="Test user name"
+            contactable="true"
             email="imits2test@test.com"
             auth_id="usr-dde67fbd-c3c2-42eb-aa81-f1a225f047c7"
-            ebi_admin="true"
+            ebi_admin="false"
     />
     <PERSON_ROLE_WORK_UNIT
             id="1"

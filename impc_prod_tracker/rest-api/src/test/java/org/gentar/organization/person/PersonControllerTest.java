@@ -19,14 +19,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.SpyBean;
 import org.springframework.restdocs.payload.FieldDescriptor;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.ResultHandler;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import java.io.IOException;
 import java.util.List;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doReturn;
-import static org.mockito.Mockito.when;
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -56,6 +57,35 @@ class PersonControllerTest extends ControllerTestTemplate
     }
 
     @Test
+    @DatabaseSetup(DBSetupFilesPaths.GENERAL_USER)
+    @DatabaseTearDown(type = DatabaseOperation.DELETE_ALL, value = DBSetupFilesPaths.GENERAL_USER)
+    void testGetCurrentUser() throws Exception
+    {
+        ResultActions resultActions = mvc().perform(MockMvcRequestBuilders
+            .get("/api/people/currentPerson")
+            .header("Authorization", accessToken))
+            .andExpect(status().isOk())
+            .andDo(documentCurrentUser());
+
+        MvcResult result = resultActions.andReturn();
+        String obtainedJson = result.getResponse().getContentAsString();
+        validateGetResponse(obtainedJson, "expectedGeneralUser.json");
+    }
+
+    private void validateGetResponse(String obtainedJson, String expectedJsonPath) throws Exception
+    {
+        String completePathExpectedJson = getCompleteResourcePath(expectedJsonPath);
+        resultValidator.validateObtainedMatchesJson(obtainedJson, completePathExpectedJson);
+    }
+
+    private ResultHandler documentCurrentUser()
+    {
+        List<FieldDescriptor> personFieldDescriptions =
+            PersonFieldsDescriptors.getPersonFieldDescriptions();
+        return document("people/getPerson", responseFields(personFieldDescriptions));
+    }
+
+    @Test
     @DatabaseSetup(DBSetupFilesPaths.ADMIN_USER)
     @DatabaseTearDown(type = DatabaseOperation.DELETE_ALL, value = DBSetupFilesPaths.ADMIN_USER)
     public void testCreatePerson() throws Exception
@@ -68,7 +98,6 @@ class PersonControllerTest extends ControllerTestTemplate
         String url = "/api/people";
         doReturn("usr-dde67fbd-c3c2-42eb-aa81-f1a225f047c7").when(aapService).createUser(any(), any());
         String obtainedJson = restCaller.executePostAndDocument(url, payload, documentPersonCreation());
-        System.out.println(obtainedJson);
         validateCreationResponse(obtainedJson, "expectedCreatedUser.json");
     }
 
