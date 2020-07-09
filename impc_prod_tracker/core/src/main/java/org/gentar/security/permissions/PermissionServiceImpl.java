@@ -15,6 +15,12 @@
  *******************************************************************************/
 package org.gentar.security.permissions;
 
+import org.gentar.organization.person.Person;
+import org.gentar.organization.person.PersonRepository;
+import org.gentar.organization.person.PersonService;
+import org.gentar.organization.work_unit.WorkUnitService;
+import org.gentar.security.abac.subject.AapSystemSubject;
+import org.gentar.security.abac.subject.SystemSubject;
 import org.springframework.stereotype.Component;
 import org.gentar.security.abac.spring.ContextAwarePolicyEnforcement;
 import org.gentar.biology.plan.PlanService;
@@ -36,28 +42,51 @@ public class PermissionServiceImpl implements PermissionService
     private final ContextAwarePolicyEnforcement policyEnforcement;
     private final PlanService planService;
     private final ProjectService projectService;
+    private final PersonService personService;
+    private final PersonRepository personRepository;
+    private final WorkUnitService workUnitService;
 
     public PermissionServiceImpl(
         ContextAwarePolicyEnforcement policyEnforcement,
         PlanService planService,
-        ProjectService projectService)
+        ProjectService projectService,
+        PersonService personService,
+        PersonRepository personRepository,
+        WorkUnitService workUnitService)
     {
         this.policyEnforcement = policyEnforcement;
         this.planService = planService;
         this.projectService = projectService;
+        this.personService = personService;
+        this.personRepository = personRepository;
+        this.workUnitService = workUnitService;
     }
 
     @Override
-    public List<ActionPermission> getPermissions()
+    public List<ActionPermission> getPermissionsLoggedUser()
     {
         List<ActionPermission> actionPermissions = new ArrayList<>();
-        actionPermissions.add(getManageUsersPermission());
-        actionPermissions.add(getExecutingManagementTasks());
-        actionPermissions.add(getManageGeneLists());
+        actionPermissions.add(getManageUsersPermissionLoggedUser());
+        actionPermissions.add(getExecutingManagementTasksLoggedUser());
+        actionPermissions.add(getManageGeneListsLoggedUser());
         return actionPermissions;
     }
 
-    private ActionPermission getManageUsersPermission()
+    @Override
+    public List<ActionPermission> getPermissionsByUser(String userEmail)
+    {
+        Person user = personService.getPersonByEmail(userEmail);
+        SystemSubject personAsSystemSubject
+            = new AapSystemSubject(personRepository, workUnitService, user);
+
+        List<ActionPermission> actionPermissions = new ArrayList<>();
+        actionPermissions.add(getManageUsersPermissionByUser(personAsSystemSubject));
+        actionPermissions.add(getExecutingManagementTasksByUser(personAsSystemSubject));
+        actionPermissions.add(getManageGeneListsByUser(personAsSystemSubject));
+        return actionPermissions;
+    }
+
+    private ActionPermission getManageUsersPermissionLoggedUser()
     {
         ActionPermission actionPermission = new ActionPermission();
         actionPermission.setActionName(MANAGE_USERS_KEY);
@@ -65,7 +94,7 @@ public class PermissionServiceImpl implements PermissionService
         return actionPermission;
     }
 
-    private ActionPermission getExecutingManagementTasks()
+    private ActionPermission getExecutingManagementTasksLoggedUser()
     {
         ActionPermission actionPermission = new ActionPermission();
         actionPermission.setActionName(EXECUTE_MANAGER_TASKS_KEY);
@@ -74,12 +103,38 @@ public class PermissionServiceImpl implements PermissionService
         return actionPermission;
     }
 
-    private ActionPermission getManageGeneLists()
+    private ActionPermission getManageGeneListsLoggedUser()
     {
         ActionPermission actionPermission = new ActionPermission();
         actionPermission.setActionName(MANAGE_GENE_LISTS);
         actionPermission.setValue(
             policyEnforcement.hasPermission(null, MANAGE_GENE_LIST_ACTION));
+        return actionPermission;
+    }
+
+    private ActionPermission getManageUsersPermissionByUser(SystemSubject user)
+    {
+        ActionPermission actionPermission = new ActionPermission();
+        actionPermission.setActionName(MANAGE_USERS_KEY);
+        actionPermission.setValue(policyEnforcement.hasPermission(user, null, MANAGE_USERS_ACTION));
+        return actionPermission;
+    }
+
+    private ActionPermission getExecutingManagementTasksByUser(SystemSubject user)
+    {
+        ActionPermission actionPermission = new ActionPermission();
+        actionPermission.setActionName(EXECUTE_MANAGER_TASKS_KEY);
+        actionPermission.setValue(
+            policyEnforcement.hasPermission(user, null, EXECUTE_MANAGER_TASKS_ACTION));
+        return actionPermission;
+    }
+
+    private ActionPermission getManageGeneListsByUser(SystemSubject user)
+    {
+        ActionPermission actionPermission = new ActionPermission();
+        actionPermission.setActionName(MANAGE_GENE_LISTS);
+        actionPermission.setValue(
+            policyEnforcement.hasPermission(user, null, MANAGE_GENE_LIST_ACTION));
         return actionPermission;
     }
 

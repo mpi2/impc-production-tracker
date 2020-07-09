@@ -33,9 +33,14 @@ import org.gentar.organization.person.Person;
 @Component
 public class AAPService
 {
-    private RestTemplate restTemplate;
-    @Value("${local_authentication_url}")
+    private final RestTemplate restTemplate;
+    @Value("${local_authentication_base_url}")
     private String EXTERNAL_SERVICE_URL;
+    @Value("${gentar_domain_reference}")
+    private String GENTAR_DOMAIN_REFERENCE;
+
+    private final String AUTHENTICATION_ENDPOINT = "/auth";
+    private final String DOMAIN_ENDPOINT = "/domains/%s/%s/user";
 
     public static final String PERSON_ALREADY_IN_AAP_ERROR = "The user [%s] already exists in the "
         + "Authentication System.";
@@ -54,7 +59,7 @@ public class AAPService
         try
         {
             response = restTemplate.exchange(
-                EXTERNAL_SERVICE_URL,
+                EXTERNAL_SERVICE_URL + AUTHENTICATION_ENDPOINT,
                 HttpMethod.GET,
                 entity,
                 String.class);
@@ -66,9 +71,10 @@ public class AAPService
         return response.getBody();
     }
 
-    public String createUser(Person person)
+    public String createUser(Person person, String token)
     {
         String authId = createLocalAccount(person);
+        associateWithDomain(authId, token);
         return authId;
     }
 
@@ -86,7 +92,7 @@ public class AAPService
         {
             response =
                 restTemplate.postForEntity(
-                    EXTERNAL_SERVICE_URL,
+                    EXTERNAL_SERVICE_URL + AUTHENTICATION_ENDPOINT,
                     requestEntity,
                     String.class);
         }
@@ -100,6 +106,18 @@ public class AAPService
             throw new UserOperationFailedException(message);
         }
         return response.getBody();
+    }
+
+    private void associateWithDomain(String authId, String token)
+    {
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        headers.setBearerAuth(token);
+
+        HttpEntity<LocalAccountInfo> requestEntity = new HttpEntity<>(headers);
+        String domainAssociationUrl =
+            EXTERNAL_SERVICE_URL + String.format(DOMAIN_ENDPOINT, GENTAR_DOMAIN_REFERENCE, authId);
+        restTemplate.exchange(domainAssociationUrl, HttpMethod.PUT, requestEntity, Void.class);
     }
 
     /**

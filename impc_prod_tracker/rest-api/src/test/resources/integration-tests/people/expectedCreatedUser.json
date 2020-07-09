@@ -1,0 +1,34 @@
+{
+  "name":"New User",
+  "email":"newuser@ebi.ac.uk",
+  "contactable":true,
+  "rolesWorkUnits":[
+    {
+      "id":3,
+      "workUnitName":"UCD",
+      "roleName":"general"
+    }
+  ],
+  "rolesConsortia":[
+    {
+      "id":3,
+      "consortiumName":"CMG",
+      "roleName":"general"
+    }
+  ],
+  "actionPermissions":[
+    {
+      "actionName":"manageUsers",
+      "value":false
+    },
+    {
+      "actionName":"executeManagerTasks",
+      "value":false
+    },
+    {
+      "actionName":"canManageGeneLists",
+      "value":false
+    }
+  ],
+  "isAdmin":false
+}
