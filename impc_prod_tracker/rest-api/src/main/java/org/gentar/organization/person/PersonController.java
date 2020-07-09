@@ -15,8 +15,10 @@
  */
 package org.gentar.organization.person;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import org.gentar.exceptions.UserOperationFailedException;
 import org.gentar.security.AuthorizationHeaderReader;
+import org.gentar.security.authentication.AAPService;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -33,18 +35,20 @@ import java.util.List;
 @RequestMapping("/api/people")
 public class PersonController
 {
-    private PersonService personService;
-    private PersonMapper personMapper;
-    private AuthorizationHeaderReader authorizationHeaderReader;
+    private final PersonService personService;
+    private final PersonMapper personMapper;
+    private final AuthorizationHeaderReader authorizationHeaderReader;
+    private final AAPService aapService;
 
     public PersonController(
         PersonService personService,
         PersonMapper personMapper,
-        AuthorizationHeaderReader authorizationHeaderReader)
+        AuthorizationHeaderReader authorizationHeaderReader, AAPService aapService)
     {
         this.personService = personService;
         this.personMapper = personMapper;
         this.authorizationHeaderReader = authorizationHeaderReader;
+        this.aapService = aapService;
     }
 
     /**
@@ -88,7 +92,7 @@ public class PersonController
     @PostMapping
     @PreAuthorize("hasPermission(null, 'MANAGE_USERS')")
     public PersonDTO createPerson(
-        @RequestBody PersonCreationDTO personCreationDTO, HttpServletRequest request)
+        @RequestBody PersonCreationDTO personCreationDTO, HttpServletRequest request) throws JsonProcessingException
     {
         String token = authorizationHeaderReader.getAuthorizationToken(request);
         Person personToBeCreated = personMapper.personCreationDTOtoEntity(personCreationDTO);
@@ -105,4 +109,9 @@ public class PersonController
         return null;
     }
 
+    @PostMapping(value = {"/requestPasswordReset"})
+    public void requestPasswordReset(@RequestBody String email) throws JsonProcessingException
+    {
+        aapService.requestPasswordReset(email);
+    }
 }
