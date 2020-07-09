@@ -14,7 +14,6 @@ import org.gentar.security.authentication.AAPService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
-import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.SpyBean;
 import org.springframework.restdocs.payload.FieldDescriptor;
@@ -45,8 +44,6 @@ class PersonControllerTest extends ControllerTestTemplate
     @SpyBean
     @Autowired
     private AAPService aapService;
-    @Mock
-    ResultActions resultActions;
 
     @BeforeEach
     void setUp() throws Exception

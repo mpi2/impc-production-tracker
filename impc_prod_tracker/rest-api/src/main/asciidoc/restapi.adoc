@@ -109,6 +109,7 @@ operations.
 include::{snippets}/people/getPerson/response-fields.adoc[]
 
 === GET
+
 ==== Get Current Logged Person
 
 Get the current user information. The current user is the owner of the token being used in this request.
@@ -123,6 +124,20 @@ include::{snippets}/people/getPerson/curl-request.adoc[]
 include::{snippets}/people/getPerson/http-response.adoc[]
 
 
+=== POST
+
+==== Create a user
+
+This endpoint allows the creation of a user in the system.
+
+===== Example Request
+
+Curl:
+include::{snippets}/people/postPerson/curl-request.adoc[]
+
+===== Example Response
+
+include::{snippets}/people/postPerson/http-response.adoc[]
 
 
 == Projects
