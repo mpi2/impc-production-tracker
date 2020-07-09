@@ -1,0 +1,44 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: production-tracker-api-ingress
+  namespace: mi-production-tracker-dev
+  annotations:
+    #
+    # To use the Ingress Rules set the Service type as ClusterIP
+    #
+    # The annotation nginx.ingress.kubernetes.io/rewrite-target
+    # must explicitly be defined in a capture group in the new format.
+    # see
+    # https://github.com/kubernetes/ingress-nginx/tree/master/docs/examples/rewrite
+    #
+    #
+    # Note: There are several ingress projects written around nginx
+    # and annotations differ between the projects
+    #
+    # This cluster uses:
+    # https://github.com/kubernetes/ingress-nginx/
+    # see also:
+    # https://kubernetes.github.io/ingress-nginx/user-guide/nginx-configuration/annotations/
+    # https://kubernetes.github.io/ingress-nginx/user-guide/nginx-configuration/configmap/
+    #
+    # NOT
+    # https://github.com/nginxinc/kubernetes-ingress/
+    #
+    kubernetes.io/ingress.class: nginx
+    nginx.ingress.kubernetes.io/rewrite-target: /production-tracker-dev-api/$2
+    nginx.ingress.kubernetes.io/from-to-www-redirect: "true"
+    # adds 301 redirect with trailing slash
+    # see: https://github.com/kubernetes/ingress-nginx/issues/646
+    nginx.ingress.kubernetes.io/configuration-snippet: |
+        rewrite ^(/production-tracker-dev-api)$ $1/ permanent;
+    nginx.ingress.kubernetes.io/ssl-redirect: "false"
+
+spec:
+  rules:
+  - http:
+      paths:
+      - path: /production-tracker-dev-api(/|$)(.*)
+        backend:
+          serviceName: api-service-dev
+          servicePort: 8080
