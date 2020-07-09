@@ -51,7 +51,7 @@ public interface PersonService
      *                             with work units and consortia.
      * @return Created {@link Person} with an id provided by the system.
      */
-    Person createPerson(Person person);
+    Person createPerson(Person person, String token);
 
     /**
      * Updates the information for a person, as long as the current user has permission to do it.

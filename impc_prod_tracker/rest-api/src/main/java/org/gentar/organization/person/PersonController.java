@@ -88,10 +88,11 @@ public class PersonController
     @PostMapping
     @PreAuthorize("hasPermission(null, 'MANAGE_USERS')")
     public PersonDTO createPerson(
-        @RequestBody PersonCreationDTO personCreationDTO)
+        @RequestBody PersonCreationDTO personCreationDTO, HttpServletRequest request)
     {
+        String token = authorizationHeaderReader.getAuthorizationToken(request);
         Person personToBeCreated = personMapper.personCreationDTOtoEntity(personCreationDTO);
-        return personMapper.toDto(personService.createPerson(personToBeCreated));
+        return personMapper.toDto(personService.createPerson(personToBeCreated, token));
     }
 
     @PutMapping

@@ -39,8 +39,8 @@ public class AuthControllerTest extends ControllerTestTemplate
         "Invalid User/Password provided.";
 
     @Test
-    @DatabaseSetup(DBSetupFilesPaths.CREATE_USER)
-    @DatabaseTearDown(type = DatabaseOperation.DELETE_ALL, value = DBSetupFilesPaths.CREATE_USER)
+    @DatabaseSetup(DBSetupFilesPaths.SIGN_IN)
+    @DatabaseTearDown(type = DatabaseOperation.DELETE_ALL, value = DBSetupFilesPaths.SIGN_IN)
     public void testSignIn() throws Exception
     {
         AuthenticationRequest authenticationRequest =
