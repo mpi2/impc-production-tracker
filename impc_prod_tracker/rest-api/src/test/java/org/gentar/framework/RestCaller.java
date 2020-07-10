@@ -5,6 +5,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.ResultHandler;
+import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -15,8 +16,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  */
 public class RestCaller
 {
-    private MockMvc mvc;
-    private String accessToken;
+    private final MockMvc mvc;
+    private final String accessToken;
 
     private static final String HEADER_AUTHORIZATION = "Authorization";
 
@@ -65,6 +66,20 @@ public class RestCaller
         ResultActions resultActions = mvc.perform(MockMvcRequestBuilders
             .post(url)
             .header(HEADER_AUTHORIZATION, accessToken)
+            .content(payload)
+            .contentType(MediaType.APPLICATION_JSON))
+            .andExpect(status().isOk())
+            .andDo(documentMethod);
+        MvcResult obtained = resultActions.andReturn();
+        return obtained.getResponse().getContentAsString();
+    }
+
+    public String executePostAndDocumentNoAuthentication(
+        String url, String payload, ResultHandler documentMethod)
+        throws Exception
+    {
+        ResultActions resultActions = mvc.perform(MockMvcRequestBuilders
+            .post(url)
             .content(payload)
             .contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
