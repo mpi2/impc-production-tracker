@@ -140,6 +140,23 @@ include::{snippets}/people/postPerson/curl-request.adoc[]
 include::{snippets}/people/postPerson/http-response.adoc[]
 
 
+==== Request password reset
+
+This endpoint allows to request a reset of the password for a given user. Using this, the user
+will receive an email with a link and a secret pin. Following the link and using the secret pin the
+user can set a new password.
+
+===== Example Request
+
+Curl:
+include::{snippets}/people/requestPasswordReset/curl-request.adoc[]
+
+===== Example Response
+
+include::{snippets}/people/requestPasswordReset/http-response.adoc[]
+
+
+
 == Projects
 anchor:chapter-configure[]
 This section describes the REST endpoints for projects in the system.
