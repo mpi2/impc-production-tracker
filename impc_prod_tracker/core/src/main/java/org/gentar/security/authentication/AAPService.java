@@ -17,7 +17,6 @@ package org.gentar.security.authentication;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import lombok.Data;
 import org.gentar.exceptions.UserOperationFailedException;
 import org.gentar.util.JsonHelper;
 import org.springframework.beans.factory.annotation.Value;
