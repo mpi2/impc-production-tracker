@@ -60,5 +60,5 @@ public interface PersonService
      * @param token JWT token to communicate with AAP in case of need.
      * @return Updated person.
      */
-    Person updatePerson(Person person, String token);
+    Person updateManagedPerson(Person person, String token);
 }

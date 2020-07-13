@@ -21,7 +21,7 @@
     "name": "Update information for a user",
     "description": "A manager can update a user if the user is managed by the manager.",
     "target": "action == 'UPDATE_USER'",
-    "condition": "subject.managesAnyWorkUnit(resource.getRelatedWorkUnits())"
+    "condition": "subject.managesAnyWorkUnit(resource.getWorkUnits())"
   },
   {
     "name": "Filter roles",

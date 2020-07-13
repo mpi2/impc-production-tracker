@@ -123,8 +123,8 @@ public class AapSystemSubject implements SystemSubject
     private void setPersonData(Person person)
     {
         isEbiAdmin = person.getEbiAdmin() == null ? false : person.getEbiAdmin();
-        roleWorkUnits = new ArrayList<>(person.getRolesWorkUnits());
-        roleConsortia = new ArrayList<>(person.getRolesConsortia());
+        roleWorkUnits = new ArrayList<>(person.getPersonRolesWorkUnits());
+        roleConsortia = new ArrayList<>(person.getPersonRolesConsortia());
     }
 
     @Override
@@ -311,7 +311,7 @@ public class AapSystemSubject implements SystemSubject
         Person person = personRepository.findPersonByEmail(email);
         if (person != null)
         {
-            Set<PersonRoleWorkUnit> personRoleWorkUnits = person.getRolesWorkUnits();
+            Set<PersonRoleWorkUnit> personRoleWorkUnits = person.getPersonRolesWorkUnits();
             if (personRoleWorkUnits != null)
             {
                 personRoleWorkUnits.forEach(x -> workUnits.add(x.getWorkUnit()));
