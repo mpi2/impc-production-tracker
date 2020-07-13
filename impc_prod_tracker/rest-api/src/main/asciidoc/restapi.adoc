@@ -74,6 +74,7 @@ A typical work flow follows this pattern:
 . Clients logs in again and retrieves a new token to continue working with the system
 
 See more:
+
 . https://auth0.com/docs/tokens/refresh-token
 . https://auth0.com/blog/refresh-tokens-what-are-they-and-when-to-use-them/
 
