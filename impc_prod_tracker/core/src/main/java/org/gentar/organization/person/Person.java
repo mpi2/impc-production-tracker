@@ -16,6 +16,8 @@
 package org.gentar.organization.person;
 
 import lombok.*;
+import org.gentar.organization.consortium.Consortium;
+import org.gentar.organization.work_unit.WorkUnit;
 import org.springframework.data.rest.core.annotation.RestResource;
 import org.gentar.BaseEntity;
 import org.gentar.organization.person.associations.PersonRoleConsortium;
@@ -23,6 +25,8 @@ import org.gentar.organization.person.associations.PersonRoleWorkUnit;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
+import java.util.Collection;
+import java.util.HashSet;
 import java.util.Set;
 
 @NoArgsConstructor(access= AccessLevel.PUBLIC, force=true)
@@ -62,12 +66,32 @@ public class Person extends BaseEntity
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
     @OneToMany(cascade=CascadeType.ALL, mappedBy = "person", orphanRemoval=true, fetch = FetchType.EAGER)
-    private Set<PersonRoleWorkUnit> rolesWorkUnits;
+    private Set<PersonRoleWorkUnit> personRolesWorkUnits;
 
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
     @OneToMany(cascade=CascadeType.ALL, mappedBy = "person", orphanRemoval=true, fetch = FetchType.EAGER)
-    private Set<PersonRoleConsortium> rolesConsortia;
+    private Set<PersonRoleConsortium> personRolesConsortia;
+
+    public Collection<WorkUnit> getWorkUnits()
+    {
+        Set<WorkUnit> workUnits = new HashSet<>();
+        if (personRolesWorkUnits != null)
+        {
+            personRolesWorkUnits.forEach(x -> workUnits.add(x.getWorkUnit()));
+        }
+        return workUnits;
+    }
+
+    public Collection<Consortium> getConsortia()
+    {
+        Set<Consortium> consortia = new HashSet<>();
+        if (personRolesConsortia != null)
+        {
+            personRolesConsortia.forEach(x -> consortia.add(x.getConsortium()));
+        }
+        return consortia;
+    }
 
     @Override
     public String toString()

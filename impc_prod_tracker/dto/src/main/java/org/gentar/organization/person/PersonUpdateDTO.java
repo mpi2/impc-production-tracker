@@ -15,19 +15,12 @@
  */
 package org.gentar.organization.person;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonUnwrapped;
 import lombok.Data;
-
-import java.util.List;
 
 @Data
 public class PersonUpdateDTO
 {
-    private String name;
-    private String password;
-    private Boolean contactable;
-    @JsonProperty("isAdmin")
-    private boolean ebiAdmin;
-    private List<PersonRoleWorkUnitDTO> rolesWorkUnits;
-    private List<PersonRoleConsortiumDTO> rolesConsortia;
+    @JsonUnwrapped
+    private PersonCommonDTO personCommonDTO;
 }

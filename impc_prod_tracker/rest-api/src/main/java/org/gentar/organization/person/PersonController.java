@@ -36,17 +36,22 @@ public class PersonController
 {
     private final PersonService personService;
     private final PersonMapper personMapper;
+    private final PersonUpdateMapper personUpdateMapper;
+    private PersonRequestProcessor personRequestProcessor;
     private final AuthorizationHeaderReader authorizationHeaderReader;
     private final AAPService aapService;
 
     public PersonController(
         PersonService personService,
         PersonMapper personMapper,
-        AuthorizationHeaderReader authorizationHeaderReader,
+        PersonUpdateMapper personUpdateMapper,
+        PersonRequestProcessor personRequestProcessor, AuthorizationHeaderReader authorizationHeaderReader,
         AAPService aapService)
     {
         this.personService = personService;
         this.personMapper = personMapper;
+        this.personUpdateMapper = personUpdateMapper;
+        this.personRequestProcessor = personRequestProcessor;
         this.authorizationHeaderReader = authorizationHeaderReader;
         this.aapService = aapService;
     }
@@ -99,14 +104,16 @@ public class PersonController
         return personMapper.toDto(personService.createPerson(personToBeCreated, token));
     }
 
-    @PutMapping
-    @PreAuthorize("hasPermission(null, 'UPDATE_USER')")
-    public PersonDTO updatePerson(@RequestBody PersonDTO personDTO, HttpServletRequest request)
+    @PutMapping(value = {"/{email}"})
+    public PersonDTO updatePerson(
+        @PathVariable("email") String email,
+        @RequestBody PersonUpdateDTO personUpdateDTO,
+        HttpServletRequest request)
     {
         String token = authorizationHeaderReader.getAuthorizationToken(request);
-        Person personToBeUpdated = personMapper.toEntity(personDTO);
-        personService.updatePerson(personToBeUpdated, token);
-        return null;
+        Person personToBeUpdated = personRequestProcessor.getPersonToUpdate(email, personUpdateDTO);
+        Person person = personService.updateManagedPerson(personToBeUpdated, token);
+        return personMapper.toDto(person);
     }
 
     @PostMapping(value = {"/requestPasswordReset"})

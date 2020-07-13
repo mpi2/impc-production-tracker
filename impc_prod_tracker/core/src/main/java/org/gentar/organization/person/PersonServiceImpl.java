@@ -106,10 +106,10 @@ public class PersonServiceImpl implements PersonService
     }
 
     @Override
-    public Person updatePerson(Person person, String token)
+    public Person updateManagedPerson(Person person, String token)
     {
         validatePermissions(PermissionService.UPDATE_USER, person);
-        return null;
+        return person;
     }
 
     private void validatePermissions(String updateUser, Person person)

@@ -24,6 +24,7 @@ import org.gentar.organization.person.associations.PersonRoleConsortium;
 import org.gentar.organization.person.associations.PersonRoleWorkUnit;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -52,8 +53,8 @@ public class PersonMapper implements Mapper<Person, PersonDTO>
         PersonDTO personDTO = entityMapper.toTarget(person, PersonDTO.class);
         if (personDTO != null)
         {
-            personDTO.setRolesWorkUnits(peopleRoleWorkUnitToDtos(person.getRolesWorkUnits()));
-            personDTO.setRolesConsortia(peopleRoleConsortiaToDto(person.getRolesConsortia()));
+            personDTO.setRolesWorkUnits(peopleRoleWorkUnitToDtos(person.getPersonRolesWorkUnits()));
+            personDTO.setRolesConsortia(peopleRoleConsortiaToDto(person.getPersonRolesConsortia()));
             List<ActionPermission> actionPermissions =
                 permissionService.getPermissionsByUser(person.getEmail());
             List<ActionPermissionDTO> actionPermissionDTOS = new ArrayList<>();
@@ -119,35 +120,35 @@ public class PersonMapper implements Mapper<Person, PersonDTO>
     {
         List<PersonRoleWorkUnitDTO> roleWorkUnitDTOS = personDTO.getRolesWorkUnits();
         Set<PersonRoleWorkUnit> roleWorkUnitDTOSet =
-            personRoleWorkUnitMapper.toEntities(roleWorkUnitDTOS);
+            new HashSet<>(personRoleWorkUnitMapper.toEntities(roleWorkUnitDTOS));
         roleWorkUnitDTOSet.forEach(x -> x.setPerson(person));
-        person.setRolesWorkUnits(roleWorkUnitDTOSet);
+        person.setPersonRolesWorkUnits(roleWorkUnitDTOSet);
     }
 
     private void addRolesConsortia(PersonDTO personDTO, Person person)
     {
         List<PersonRoleConsortiumDTO> roleConsortiaDTOs = personDTO.getRolesConsortia();
         Set<PersonRoleConsortium> roleConsortiumSet =
-            personRoleConsortiumMapper.toEntities(roleConsortiaDTOs);
+            new HashSet<>(personRoleConsortiumMapper.toEntities(roleConsortiaDTOs));
         roleConsortiumSet.forEach(x -> x.setPerson(person));
-        person.setRolesConsortia(roleConsortiumSet);
+        person.setPersonRolesConsortia(roleConsortiumSet);
     }
 
     private void addRolesWorkUnits(PersonCreationDTO personCreationDTO, Person person)
     {
         List<PersonRoleWorkUnitDTO> roleWorkUnitDTOS = personCreationDTO.getRolesWorkUnits();
         Set<PersonRoleWorkUnit> roleWorkUnitDTOSet =
-            personRoleWorkUnitMapper.toEntities(roleWorkUnitDTOS);
+            new HashSet<>(personRoleWorkUnitMapper.toEntities(roleWorkUnitDTOS));
         roleWorkUnitDTOSet.forEach(x -> x.setPerson(person));
-        person.setRolesWorkUnits(roleWorkUnitDTOSet);
+        person.setPersonRolesWorkUnits(roleWorkUnitDTOSet);
     }
 
     private void addRolesConsortia(PersonCreationDTO personCreationDTO, Person person)
     {
         List<PersonRoleConsortiumDTO> roleConsortiaDTOs = personCreationDTO.getRolesConsortia();
         Set<PersonRoleConsortium> roleConsortiumSet =
-            personRoleConsortiumMapper.toEntities(roleConsortiaDTOs);
+            new HashSet<>(personRoleConsortiumMapper.toEntities(roleConsortiaDTOs));
         roleConsortiumSet.forEach(x -> x.setPerson(person));
-        person.setRolesConsortia(roleConsortiumSet);
+        person.setPersonRolesConsortia(roleConsortiumSet);
     }
 }
