@@ -15,7 +15,11 @@ import java.io.Serializable;
 @NoArgsConstructor(access= AccessLevel.PUBLIC, force=true)
 @Data
 @Entity
-public class PersonRoleWorkUnit extends BaseEntity implements Serializable {
+@Table(uniqueConstraints={
+    @UniqueConstraint(columnNames = {"person_id", "work_unit_id", "role_id"})
+})
+public class PersonRoleWorkUnit extends BaseEntity implements Serializable
+{
 
     @Id
     @SequenceGenerator(name = "personRoleWorkUnitSeq", sequenceName = "PERSON_ROLE_WORK_UNIT_SEQ")

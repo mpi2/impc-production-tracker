@@ -29,6 +29,9 @@ import java.io.Serializable;
 @NoArgsConstructor(access= AccessLevel.PUBLIC, force=true)
 @Data
 @Entity
+@Table(uniqueConstraints={
+    @UniqueConstraint(columnNames = {"person_id", "consortium_id", "role_id"})
+})
 public class PersonRoleConsortium extends BaseEntity implements Serializable
 {
     @Id

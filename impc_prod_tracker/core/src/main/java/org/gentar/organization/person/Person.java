@@ -65,12 +65,12 @@ public class Person extends BaseEntity
 
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
-    @OneToMany(cascade=CascadeType.ALL, mappedBy = "person", orphanRemoval=true, fetch = FetchType.EAGER)
+    @OneToMany(cascade=CascadeType.ALL, mappedBy = "person", fetch = FetchType.EAGER)
     private Set<PersonRoleWorkUnit> personRolesWorkUnits;
 
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
-    @OneToMany(cascade=CascadeType.ALL, mappedBy = "person", orphanRemoval=true, fetch = FetchType.EAGER)
+    @OneToMany(cascade=CascadeType.ALL, mappedBy = "person", fetch = FetchType.EAGER)
     private Set<PersonRoleConsortium> personRolesConsortia;
 
     public Collection<WorkUnit> getWorkUnits()

@@ -36,21 +36,19 @@ public class PersonController
 {
     private final PersonService personService;
     private final PersonMapper personMapper;
-    private final PersonUpdateMapper personUpdateMapper;
-    private PersonRequestProcessor personRequestProcessor;
+    private final PersonRequestProcessor personRequestProcessor;
     private final AuthorizationHeaderReader authorizationHeaderReader;
     private final AAPService aapService;
 
     public PersonController(
         PersonService personService,
         PersonMapper personMapper,
-        PersonUpdateMapper personUpdateMapper,
-        PersonRequestProcessor personRequestProcessor, AuthorizationHeaderReader authorizationHeaderReader,
+        PersonRequestProcessor personRequestProcessor,
+        AuthorizationHeaderReader authorizationHeaderReader,
         AAPService aapService)
     {
         this.personService = personService;
         this.personMapper = personMapper;
-        this.personUpdateMapper = personUpdateMapper;
         this.personRequestProcessor = personRequestProcessor;
         this.authorizationHeaderReader = authorizationHeaderReader;
         this.aapService = aapService;
@@ -70,7 +68,6 @@ public class PersonController
     }
 
     @GetMapping(value = {"/{email}"})
-    @PreAuthorize("hasPermission(null, 'MANAGE_USERS')")
     public PersonDTO findByEmail(@PathVariable("email") String email)
     {
         Person person = personService.getPersonByEmail(email);
