@@ -26,6 +26,7 @@ import java.io.IOException;
 import java.util.List;
 
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.doReturn;
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -46,10 +47,15 @@ class PersonControllerTest extends ControllerTestTemplate
     private AAPService aapService;
 
     @BeforeEach
-    void setUp() throws Exception
+    void setUp()
+    {
+          resultValidator = new ResultValidator();
+          restCaller = new RestCaller(mvc(), accessToken);
+    }
+
+    private void setupAuthentication() throws Exception
     {
         setTestUserSecurityContext();
-        resultValidator = new ResultValidator();
         restCaller = new RestCaller(mvc(), accessToken);
     }
 
@@ -58,6 +64,7 @@ class PersonControllerTest extends ControllerTestTemplate
     @DatabaseTearDown(type = DatabaseOperation.DELETE_ALL, value = DBSetupFilesPaths.GENERAL_USER)
     void testGetCurrentUser() throws Exception
     {
+        setupAuthentication();
         ResultActions resultActions = mvc().perform(MockMvcRequestBuilders
             .get("/api/people/currentPerson")
             .header("Authorization", accessToken))
@@ -87,6 +94,7 @@ class PersonControllerTest extends ControllerTestTemplate
     @DatabaseTearDown(type = DatabaseOperation.DELETE_ALL, value = DBSetupFilesPaths.ADMIN_USER)
     public void testCreatePerson() throws Exception
     {
+        setupAuthentication();
         sequenceResetter.syncSequence("PERSON_SEQ", "PERSON");
         sequenceResetter.syncSequence("PERSON_ROLE_CONSORTIUM_SEQ", "PERSON_ROLE_CONSORTIUM");
         sequenceResetter.syncSequence("PERSON_ROLE_WORK_UNIT_SEQ", "PERSON_ROLE_WORK_UNIT");
@@ -110,6 +118,20 @@ class PersonControllerTest extends ControllerTestTemplate
         String completePathExpectedJson = getCompleteResourcePath(expectedJsonPath);
         resultValidator.validateObtainedMatchesJson(
             obtainedJson, completePathExpectedJson, PersonCustomizations.ignoreIds());
+    }
+
+    @Test
+    public void testRequestPasswordReset() throws Exception
+    {
+        String email = "imits2test@test.com";
+        String url = "/api/people/requestPasswordReset";
+        doNothing().when(aapService).requestPasswordReset(email);
+        restCaller.executePostAndDocumentNoAuthentication(url, email, documentRequestPasswordReset());
+    }
+
+    private ResultHandler documentRequestPasswordReset()
+    {
+        return document("people/requestPasswordReset");
     }
 
     private String loadFromResource(String resourceName)
