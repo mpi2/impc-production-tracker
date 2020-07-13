@@ -109,6 +109,7 @@ public class PersonServiceImpl implements PersonService
     public Person updateManagedPerson(Person person, String token)
     {
         validatePermissions(PermissionService.UPDATE_USER, person);
+        personRepository.save(person);
         return person;
     }
 
@@ -116,7 +117,8 @@ public class PersonServiceImpl implements PersonService
     {
         if (!policyEnforcement.hasPermission(person, updateUser))
         {
-            throw new UserOperationFailedException("You don't have permissions to update the user.");
+            throw new UserOperationFailedException(
+                "You don't have permissions to execute the action on this user.");
         }
     }
 
