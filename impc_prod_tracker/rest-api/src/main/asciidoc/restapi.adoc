@@ -13,11 +13,11 @@
 == Introduction
 
 GenTaR is designed to coordinate the production of transgenic mice between high-throughput
-mouse production facilities and consortia of clinicians and human geneticists
-while minimizing the overlap	and	maximizing	efficiencies. GenTaR captures the intention	of
-a particular consortium	to produce mutant mice on a	particular	gene, the	progress	of
-mouse	production	and	modified mutation creation on the	original mouse,	and	the	capture
-of	phenotype	data	on	the	mouse.
+mouse production facilities and consortia of clinicians and human geneticists while
+minimizing the overlap and maximizing efficiencies. GenTaR captures the intention of a
+consortium to produce mutant mice targeting a particular gene, and the progress of
+mouse production. It records information about the mutation created, and tracks the
+state of phenotyping performed on the mutant mouse line.
 
 This is a secure resource that can house various types of mutations linked to genes,
 and will provide different data access policies to users.
@@ -41,6 +41,9 @@ The following table describes how the GenTaR API interprets the HTTP verbs.
 |PUT
 |PUT method replaces all current representations of the target resource with the request payload.
 
+|DELETE
+|DELETE method is not supported by the system.
+
 |===
 
 
@@ -48,26 +51,32 @@ The following table describes how the GenTaR API interprets the HTTP verbs.
 == Authentication
 anchor:login[]
 
-After a user registered, he or she can start working with GenTaR.
-The first step is login. To log in in GenTaR use the /auth/signin endpoint. The user must use the username and the password
-specified at registration. If the login was successful user gets a JSON Web Token (see https://jwt.io):
+After a user is registered in the system (see: <<Create a user>>), they can start working with GenTaR.
 
-After that the user has to use the access token for authentication with each request to a protected route or resource.
+The first step begins with logging into GenTaR using the /auth/signin endpoint.
+The user issues a POST request to the endpoint and supplies the username and the password
+credentials specified at registration as the JSON request payload (see the <<Login Data Structure>> example below).
+A JSON Web Token (see https://jwt.io) is returned if the login is successful.
+
+In all subsequent interactions with GenTaR the user provides the access token to authenticate each request to a protected route or resource.
 The tokens are signed by the server so the server can validate the signature of the token to grant the access to resources.
-The access token is a Base64 encoded String, that must be added to Authorization HTTP header like this:
+The access token is a Base64 encoded String, that should be included as an Authorization HTTP header like this:
 
  Authorization: Bearer eyJhbGciOiJSUzI1NiJIUzI1NiJ9.eyJpc3MiOiJjb2RlcmFkYXIiLCJleHAiOjE0ODQ1MTUzOTUsInR5cGUiOiJSRUZSRVNIIiwiaWF0IjoxNDg0NTE1NDU1LCJ1c2VySWQiOiIxIiwidXNlcm5hbWUiOiJyYWRhciJ9.zfkyc5jkPiAUEt7nU25SJxKprcPiXaiq0Q6bCJ_RrQo
 
 The access token is short-lived and by default expires after 30 minutes.
 
-A typical work flow looks like this:
+A typical work flow follows this pattern:
 
-. Client logs in with username and password and gets one token
-. Client requires resources using the access token in each request
+. Client logs in with username and password to obtain a token
+. Client interacts with resources in GenTaR by providing the access token in each request
 . After 30 minutes client gets a 401-Response
-. Clients logs in again and gets a new token
+. Clients logs in again and retrieves a new token to continue working with the system
 
-See more: https://auth0.com/docs/tokens/refresh-token and https://auth0.com/blog/refresh-tokens-what-are-they-and-when-to-use-them/
+See more:
+
+. https://auth0.com/docs/tokens/refresh-token
+. https://auth0.com/blog/refresh-tokens-what-are-they-and-when-to-use-them/
 
 
 === POST
@@ -86,7 +95,7 @@ include::{snippets}/auth/signin/http-response.adoc[]
 include::{snippets}/auth/signin/response-fields.adoc[]
 
 ==== Error in authentication: user/password is incorrect
-When trying to sign in with an incorrect user/password the system will inform about it returning
+When trying to sign in with incorrect user or password credentials the system will return
 an error message.
 
 .request
@@ -112,7 +121,7 @@ include::{snippets}/people/getPerson/response-fields.adoc[]
 
 ==== Get Current Logged Person
 
-Get the current user information. The current user is the owner of the token being used in this request.
+Get the current user information. The current user is the owner of the token used in the request.
 
 ===== Example Request
 
@@ -161,8 +170,7 @@ include::{snippets}/people/requestPasswordReset/http-response.adoc[]
 anchor:chapter-configure[]
 This section describes the REST endpoints for projects in the system.
 
-A project in GenTaR is the container for the intention and has one or more plans with the attempt
-information.
+A project in GenTaR is the container for the intention and has one or more plans with information about attempts to disrupt the targeted genes.
 
 === Fields
 These are the fields you are going to see in the body of a request in a GET or in the payload for POST or PUT

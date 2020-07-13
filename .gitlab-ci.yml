@@ -306,7 +306,7 @@ dev:
 
 hh-dev:
   stage: dev-deploy
-  image: dtzar/helm-kubectl:2.13.0
+  image: dtzar/helm-kubectl:2.14.3
   only:
     refs:
       - master
@@ -371,7 +371,7 @@ hh-dev:
 
 hx-dev:
   stage: dev-deploy
-  image: dtzar/helm-kubectl:2.13.0
+  image: dtzar/helm-kubectl:2.14.3
   only:
     refs:
       - master
