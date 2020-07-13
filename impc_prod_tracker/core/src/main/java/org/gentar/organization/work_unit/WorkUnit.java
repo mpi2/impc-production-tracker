@@ -46,13 +46,13 @@ public class WorkUnit extends BaseEntity
     @ToString.Exclude
     @JsonIgnore
     @IgnoreForAuditingChanges
-    @ManyToMany(fetch=FetchType.EAGER, mappedBy = "workUnits")
+    @ManyToMany(mappedBy = "workUnits")
     private Set<Consortium> consortia;
 
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
     @IgnoreForAuditingChanges
-    @ManyToMany(fetch=FetchType.EAGER, mappedBy = "workUnits")
+    @ManyToMany(mappedBy = "workUnits")
     private Set<WorkGroup> workGroups;
 
     public WorkUnit(String name)
