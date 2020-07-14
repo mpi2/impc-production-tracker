@@ -7,6 +7,10 @@
             id="1"
             name="UCD"
     />
+    <WORK_UNIT
+            id="2"
+            name="JAX"
+    />
     <CONSORTIUM
             id="1"
             name="BaSH"
@@ -22,14 +26,28 @@
 
     <PERSON
             id="1"
-            name="Test user name"
+            name="Test user 1 name"
             email="gentar_test_user1@gentar.org"
             auth_id="usr-3bc9e4f6-652a-4abf-ad92-77397f8bdd3f"
             ebi_admin="true"
     />
+    <PERSON
+            id="2"
+            name="Test user 2 name"
+            email="gentar_test_user2@gentar.org"
+            auth_id="usr-65f2f915-e553-4a4b-a980-bfba6de7fb6e"
+            ebi_admin="false"
+            contactable="true"
+    />
     <PERSON_ROLE_WORK_UNIT
             id="1"
             person_id="1"
+            role_id="1"
+            work_unit_id="1"
+    />
+    <PERSON_ROLE_WORK_UNIT
+            id="2"
+            person_id="2"
             role_id="1"
             work_unit_id="1"
     />

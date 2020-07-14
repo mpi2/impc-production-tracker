@@ -115,6 +115,7 @@ class PersonControllerTest extends ControllerTestTemplate
 
     private void validateCreationResponse(String obtainedJson, String expectedJsonPath) throws Exception
     {
+        System.out.println(obtainedJson);
         String completePathExpectedJson = getCompleteResourcePath(expectedJsonPath);
         resultValidator.validateObtainedMatchesJson(
             obtainedJson, completePathExpectedJson, PersonCustomizations.ignoreIds());
@@ -144,11 +145,18 @@ class PersonControllerTest extends ControllerTestTemplate
         sequenceResetter.syncSequence("PERSON_ROLE_CONSORTIUM_SEQ", "PERSON_ROLE_CONSORTIUM");
         sequenceResetter.syncSequence("PERSON_ROLE_WORK_UNIT_SEQ", "PERSON_ROLE_WORK_UNIT");
 
-        String payload = loadFromResource("createUserPayload.json");
-        String url = "/api/people";
-        doReturn("usr-3bc9e4f6-652a-4abf-ad92-77397f8bdd3f").when(aapService).createUser(any(), any());
-        String obtainedJson = restCaller.executePostAndDocument(url, payload, documentPersonCreation());
-        validateCreationResponse(obtainedJson, "expectedCreatedUser.json");
+        String payload = loadFromResource("updateUserPayload.json");
+        String url = "/api/people/gentar_test_user2@gentar.org";
+        String obtainedJson =
+            restCaller.executePutAndDocument(url, payload, documentUpdateManagedUser());
+        validateCreationResponse(obtainedJson, "expectedUpdatedManagedUser.json");
+    }
+
+    private ResultHandler documentUpdateManagedUser()
+    {
+        List<FieldDescriptor> personFieldDescriptions =
+            PersonFieldsDescriptors.getPersonFieldDescriptions();
+        return document("people/updateManagedUser", responseFields(personFieldDescriptions));
     }
 
     private String loadFromResource(String resourceName)

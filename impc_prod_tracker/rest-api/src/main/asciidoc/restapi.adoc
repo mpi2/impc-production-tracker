@@ -164,6 +164,21 @@ include::{snippets}/people/requestPasswordReset/curl-request.adoc[]
 
 include::{snippets}/people/requestPasswordReset/http-response.adoc[]
 
+=== PUT
+
+==== Update a managed user
+
+This endpoint allows a manager to update some information for a user that is managed by them.
+
+===== Example Request
+
+Curl:
+include::{snippets}/people/updateManagedUser/curl-request.adoc[]
+
+===== Example Response
+
+include::{snippets}/people/updateManagedUser/http-response.adoc[]
+
 
 
 == Projects
