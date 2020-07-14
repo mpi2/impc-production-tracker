@@ -101,14 +101,32 @@ public class PersonController
         return personMapper.toDto(personService.createPerson(personToBeCreated, token));
     }
 
+    /**
+     * Allows to change information for the current user logged into the system.
+     * @param personUpdateDTO Information to update.
+     * @return Updated person.
+     */
+    @PutMapping
+    public PersonDTO updateOwnPerson(@RequestBody PersonUpdateDTO personUpdateDTO)
+    throws JsonProcessingException
+    {
+        Person personToBeUpdated =
+            personRequestProcessor.getOwnPersonToUpdate(
+                personService.getLoggedPerson(), personUpdateDTO);
+        String oldPassword = personUpdateDTO.getCurrentPassword();
+        String newPassword = personUpdateDTO.getNewPassword();
+        Person person = personService.updateOwnPerson(personToBeUpdated, oldPassword, newPassword);
+        return personMapper.toDto(person);
+    }
+
     @PutMapping(value = {"/{email}"})
-    public PersonDTO updatePerson(
+    public PersonDTO updateManagedPerson(
         @PathVariable("email") String email,
         @RequestBody PersonUpdateDTO personUpdateDTO,
         HttpServletRequest request)
     {
         String token = authorizationHeaderReader.getAuthorizationToken(request);
-        Person personToBeUpdated = personRequestProcessor.getPersonToUpdate(email, personUpdateDTO);
+        Person personToBeUpdated = personRequestProcessor.getPersonManagedToUpdate(email, personUpdateDTO);
         Person person = personService.updateManagedPerson(personToBeUpdated, token);
         return personMapper.toDto(person);
     }

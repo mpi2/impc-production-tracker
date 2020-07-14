@@ -23,4 +23,7 @@ public class PersonUpdateDTO
 {
     @JsonUnwrapped
     private PersonCommonDTO personCommonDTO;
+
+    private String currentPassword;
+    private String newPassword;
 }
