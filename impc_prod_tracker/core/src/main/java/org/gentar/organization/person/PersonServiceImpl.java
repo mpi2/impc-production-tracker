@@ -113,6 +113,18 @@ public class PersonServiceImpl implements PersonService
         return person;
     }
 
+    @Override
+    public Person updateOwnPerson(Person person, String oldPassword, String newPassword)
+    throws JsonProcessingException
+    {
+        if (newPassword != null)
+        {
+            aapService.changePassword(person.getEmail(), oldPassword, newPassword);
+        }
+        personRepository.save(person);
+        return person;
+    }
+
     private void validatePermissions(String updateUser, Person person)
     {
         if (!policyEnforcement.hasPermission(person, updateUser))

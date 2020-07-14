@@ -17,6 +17,7 @@ package org.gentar.security.authentication;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import org.apache.tomcat.util.codec.binary.Base64;
 import org.gentar.exceptions.UserOperationFailedException;
 import org.gentar.util.JsonHelper;
 import org.springframework.beans.factory.annotation.Value;
@@ -26,11 +27,14 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 import org.gentar.organization.person.Person;
+
+import java.nio.charset.Charset;
 
 @Component
 public class AAPService
@@ -152,11 +156,59 @@ public class AAPService
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
-        HttpEntity<String> requestEntity =
-            new HttpEntity<>(payload, headers);
-        String domainAssociationUrl =
-            EXTERNAL_SERVICE_URL + RESET_PASSWORD;
+        HttpEntity<String> requestEntity = new HttpEntity<>(payload, headers);
+        String domainAssociationUrl = EXTERNAL_SERVICE_URL + RESET_PASSWORD;
         restTemplate.exchange(domainAssociationUrl, HttpMethod.POST, requestEntity, Void.class);
+    }
+
+    /**
+     * Change the password for a user.
+     * @param email Email of the user.
+     * @param oldPassword Old password.
+     * @param newPassword New password.
+     * @throws JsonProcessingException
+     */
+    public void changePassword(String email, String oldPassword, String newPassword) throws JsonProcessingException
+    {
+        PasswordChangeRequest passwordChangeRequest = new PasswordChangeRequest();
+        passwordChangeRequest.password = newPassword;
+
+        String payload = JsonHelper.toJson(passwordChangeRequest);
+
+        HttpHeaders headers = createBasicAuthorizationHeaders(email, oldPassword);
+        headers.setContentType(MediaType.APPLICATION_JSON);
+
+        String changePasswordUrl = EXTERNAL_SERVICE_URL + AUTHENTICATION_ENDPOINT;
+
+        HttpEntity<String> requestEntity = new HttpEntity<>(payload, headers);
+
+        HttpComponentsClientHttpRequestFactory requestFactory = new HttpComponentsClientHttpRequestFactory();
+        // Need to use this customised factory because PATH method is not working well with
+        // default configuration of injected restTemplate.
+        RestTemplate restTemplate = new RestTemplate(requestFactory);
+
+        try
+        {
+            restTemplate.exchange(changePasswordUrl, HttpMethod.PATCH, requestEntity, Void.class);
+        }
+        catch (HttpClientErrorException hcee)
+        {
+            if (hcee.getStatusCode().equals(HttpStatus.UNAUTHORIZED))
+            {
+                throw new UserOperationFailedException(
+                    "Unauthorized access.", "Check that your current credentials are correct.");
+            }
+        }
+    }
+
+    private HttpHeaders createBasicAuthorizationHeaders(String username, String password){
+        return new HttpHeaders() {{
+            String auth = username + ":" + password;
+            byte[] encodedAuth = Base64.encodeBase64(
+                auth.getBytes(Charset.forName("US-ASCII")) );
+            String authHeader = "Basic " + new String( encodedAuth );
+            set( "Authorization", authHeader );
+        }};
     }
 
     /**
@@ -195,5 +247,11 @@ public class AAPService
 
         @JsonProperty("email")
         String email;
+    }
+
+    private static class PasswordChangeRequest
+    {
+        @JsonProperty("password")
+        String password;
     }
 }

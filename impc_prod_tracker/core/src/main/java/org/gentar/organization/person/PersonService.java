@@ -61,4 +61,12 @@ public interface PersonService
      * @return Updated person.
      */
     Person updateManagedPerson(Person person, String token);
+
+    /**
+     * Updates information for the current logged user in the system.
+     * @param person Person object representing
+     * @param token JWT token to communicate with AAP in case of need.
+     * @return Updated person.
+     */
+    Person updateOwnPerson(Person person, String oldPassword, String newPassword) throws JsonProcessingException;
 }

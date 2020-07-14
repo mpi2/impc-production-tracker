@@ -1,5 +1,5 @@
 {
-  "name":"Test user name",
+  "name":"Test user 1 name [edited]",
   "email":"gentar_test_user1@gentar.org",
   "contactable":true,
   "rolesWorkUnits":[
@@ -19,16 +19,16 @@
   "actionPermissions":[
     {
       "actionName":"manageUsers",
-      "value":false
+      "value":true
     },
     {
       "actionName":"executeManagerTasks",
-      "value":false
+      "value":true
     },
     {
       "actionName":"canManageGeneLists",
-      "value":false
+      "value":true
     }
   ],
-  "isAdmin":false
+  "isAdmin":true
 }

@@ -1,0 +1,17 @@
+{
+  "name": "Test user 2 name [edited]",
+  "contactable": false,
+  "rolesWorkUnits": [
+    {
+      "id": 2,
+      "workUnitName": "UCD",
+      "roleName": "general"
+    }
+  ],
+  "rolesConsortia": [
+    {
+      "consortiumName": "CMG",
+      "roleName": "general"
+    }
+  ]
+}

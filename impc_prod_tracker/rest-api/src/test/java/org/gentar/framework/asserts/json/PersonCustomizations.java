@@ -11,8 +11,8 @@ public class PersonCustomizations
     {
         List<Customization> customizationList = new ArrayList<>();
         customizationList.add(CustomizationHelper.buildIdCustomization("id"));
-        customizationList.add(CustomizationHelper.buildIdCustomization("rolesWorkUnits[].id"));
-        customizationList.add(CustomizationHelper.buildIdCustomization("rolesConsortia[].id"));
+        customizationList.add(CustomizationHelper.buildIdCustomization("rolesWorkUnits[0].id"));
+        customizationList.add(CustomizationHelper.buildIdCustomization("rolesConsortia[0].id"));
         return customizationList.toArray(new Customization[0]);
     }
 }
