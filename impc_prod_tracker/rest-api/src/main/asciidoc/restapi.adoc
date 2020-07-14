@@ -179,6 +179,24 @@ include::{snippets}/people/updateManagedUser/curl-request.adoc[]
 
 include::{snippets}/people/updateManagedUser/http-response.adoc[]
 
+==== Update own user
+
+This endpoint allows a user that is currently logged in the system to modify data like the
+name, password of whether they are contactable or not.
+
+If a user wants to update their password, it's necessary to provide the current password
+('currentPassword' field) and the new password ('newPassword' field). Otherwise, the fields can be
+null or simply be omitted in the request.
+
+===== Example Request
+
+Curl:
+include::{snippets}/people/updateOwnUser/curl-request.adoc[]
+
+===== Example Response
+
+include::{snippets}/people/updateOwnUser/http-response.adoc[]
+
 
 
 == Projects

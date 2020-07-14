@@ -115,7 +115,6 @@ class PersonControllerTest extends ControllerTestTemplate
 
     private void validateCreationResponse(String obtainedJson, String expectedJsonPath) throws Exception
     {
-        System.out.println(obtainedJson);
         String completePathExpectedJson = getCompleteResourcePath(expectedJsonPath);
         resultValidator.validateObtainedMatchesJson(
             obtainedJson, completePathExpectedJson, PersonCustomizations.ignoreIds());
@@ -157,6 +156,33 @@ class PersonControllerTest extends ControllerTestTemplate
         List<FieldDescriptor> personFieldDescriptions =
             PersonFieldsDescriptors.getPersonFieldDescriptions();
         return document("people/updateManagedUser", responseFields(personFieldDescriptions));
+    }
+
+    @Test
+    @DatabaseSetup(DBSetupFilesPaths.ADMIN_USER)
+    @DatabaseTearDown(type = DatabaseOperation.DELETE_ALL, value = DBSetupFilesPaths.ADMIN_USER)
+    public void testOwnUser() throws Exception
+    {
+        setupAuthentication();
+        sequenceResetter.syncSequence("PERSON_SEQ", "PERSON");
+        sequenceResetter.syncSequence("PERSON_ROLE_CONSORTIUM_SEQ", "PERSON_ROLE_CONSORTIUM");
+        sequenceResetter.syncSequence("PERSON_ROLE_WORK_UNIT_SEQ", "PERSON_ROLE_WORK_UNIT");
+
+        String payload = loadFromResource("updateOwnUserPayload.json");
+        String url = "/api/people";
+        doNothing().when(aapService)
+            .changePassword(
+                "gentar_test_user1@gentar.org", "gentar_test_user1", "gentar_test_user1_new");
+        String obtainedJson =
+            restCaller.executePutAndDocument(url, payload, documentUpdateOwnUser());
+        validateCreationResponse(obtainedJson, "expectedUpdatedOwnUser.json");
+    }
+
+    private ResultHandler documentUpdateOwnUser()
+    {
+        List<FieldDescriptor> personFieldDescriptions =
+            PersonFieldsDescriptors.getPersonFieldDescriptions();
+        return document("people/updateOwnUser", responseFields(personFieldDescriptions));
     }
 
     private String loadFromResource(String resourceName)

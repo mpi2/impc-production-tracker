@@ -1,0 +1,34 @@
+{
+  "name":"Test user 1 name [edited]",
+  "email":"gentar_test_user1@gentar.org",
+  "contactable":true,
+  "rolesWorkUnits":[
+    {
+      "id":1,
+      "workUnitName":"UCD",
+      "roleName":"general"
+    }
+  ],
+  "rolesConsortia":[
+    {
+      "id":1,
+      "consortiumName":"BaSH",
+      "roleName":"general"
+    }
+  ],
+  "actionPermissions":[
+    {
+      "actionName":"manageUsers",
+      "value":true
+    },
+    {
+      "actionName":"executeManagerTasks",
+      "value":true
+    },
+    {
+      "actionName":"canManageGeneLists",
+      "value":true
+    }
+  ],
+  "isAdmin":true
+}
