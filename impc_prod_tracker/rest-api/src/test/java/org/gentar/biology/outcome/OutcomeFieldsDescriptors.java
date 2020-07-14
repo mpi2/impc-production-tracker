@@ -31,7 +31,7 @@ public class OutcomeFieldsDescriptors
             outcomeFieldDescriptions, "colony.genotypingComment", "Comment about the genotyping.");
         addField(outcomeFieldDescriptions, "colony.statusName", "Current status of the colony.");
         addField(
-            outcomeFieldDescriptions, "colony.backgroundStrainName", "Name of the strain in the colony.");
+            outcomeFieldDescriptions, "colony.backgroundStrainName", "Name of the background strain used for the colony.");
 
         addField(
             outcomeFieldDescriptions,
@@ -40,11 +40,11 @@ public class OutcomeFieldsDescriptors
         addField(
             outcomeFieldDescriptions,
             "colony.statusDates[].statusName",
-            "Status that the colony had in a date.");
+            "Status that the colony had on a specific date.");
         addField(
             outcomeFieldDescriptions,
             "colony.statusDates[].date",
-            "Data of the status change.");
+            "Date of the status change.");
         addField(
             outcomeFieldDescriptions,
             "colony.distributionProducts[]",
@@ -109,11 +109,11 @@ public class OutcomeFieldsDescriptors
         addField(
             outcomeFieldDescriptions,
             "specimen.statusDates[].statusName",
-            "Status that the specimen had in a date.");
+            "Status that the specimen had on a specific date.");
         addField(
             outcomeFieldDescriptions,
             "specimen.statusDates[].date",
-            "Data of the status change.");
+            "Date of the status change.");
 
         addField(
             outcomeFieldDescriptions,
