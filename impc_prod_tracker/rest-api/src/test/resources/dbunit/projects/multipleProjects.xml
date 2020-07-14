@@ -157,8 +157,8 @@
                                     INSTITUTE_ID="2"/>
 
     <PERSON     ID="123"
-                EMAIL="imits2test@test.com"
-                AUTH_ID="usr-dde67fbd-c3c2-42eb-aa81-f1a225f047c7"/>
+                EMAIL="gentar_test_user1@gentar.org"
+                AUTH_ID="usr-3bc9e4f6-652a-4abf-ad92-77397f8bdd3f"/>
     <PERSON_ROLE_WORK_UNIT/>
     <PERSON_ROLE_CONSORTIUM/>
     <PLAN_STATUS_STAMP/>

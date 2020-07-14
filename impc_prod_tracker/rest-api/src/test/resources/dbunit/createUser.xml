@@ -5,8 +5,8 @@
     />
     <person
             id="1"
-            email="imits2test@test.com"
-            auth_id="usr-dde67fbd-c3c2-42eb-aa81-f1a225f047c7"
+            email="gentar_test_user1@gentar.org"
+            auth_id="usr-3bc9e4f6-652a-4abf-ad92-77397f8bdd3f"
             role_id="1"
             />
 </dataset>
