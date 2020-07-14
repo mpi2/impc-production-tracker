@@ -46,16 +46,16 @@ public class MutationFieldsDescriptors
         addField(
             mutationFieldsDescriptions, "mutationSequences[].sequence.typeName", "The type of sequence.\n\nPossible values:\n" +
                 "\n" +
-                "complete\n\n" +
-                "partial\n\n" +
-                "5_prime_end\n\n" +
-                "3_prime_end");
+                "- complete\n\n" +
+                "- partial\n\n" +
+                "- 5_prime_end\n\n" +
+                "- 3_prime_end");
         addField(
             mutationFieldsDescriptions, "mutationSequences[].sequence.categoryName", "The category assigned to the sequence.\n\n" +
                 "Possible values:\n\n" +
-                "intention target sequence\n\n" +
-                "original starting sequence\n\n" +
-                "outcome sequence\n\n" +
+                "- intention target sequence\n\n" +
+                "- original starting sequence\n\n" +
+                "- outcome sequence\n\n" +
                 "A mutation should always be specified as 'outcome sequence'.");
         addField(
             mutationFieldsDescriptions,
@@ -98,8 +98,8 @@ public class MutationFieldsDescriptors
         addField(
             mutationFieldsDescriptions, "mutationCategorizations[].typeName", "A broader classification of the description.\n\n" +
                 "Possible values are:\n\n" +
-                "allele_category\n\n" +
-                "repair_mechanism");
+                "- allele_category\n\n" +
+                "- repair_mechanism");
         addField(
             mutationFieldsDescriptions, "genes[]", "List of genes associated with the mutation.");
         addField(

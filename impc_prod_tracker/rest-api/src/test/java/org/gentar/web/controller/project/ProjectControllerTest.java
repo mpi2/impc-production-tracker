@@ -94,14 +94,14 @@ class ProjectControllerTest extends ControllerTestTemplate
             responseFields(
                 fieldWithPath("tpn").description("Public identifier for the project. Read only."),
                 fieldWithPath("assignmentStatusName")
-                    .description("Assignment Status for the project. It would be a conflict if " +
+                    .description("Assignment Status for the project. It could be marked as in conflict if " +
                         "existing projects are working in the same gene. Read only."),
                 fieldWithPath("summaryStatusName")
                     .description("A status summarising the global status based on the statuses of " +
                         "the plans in the project. Read only."),
                 fieldWithPath("reactivationDate")
                     .description("Date on which the project was activated again" +
-                        "(assignment Status changed from inactive). Read only."),
+                        " (assignment Status changed from inactive). Read only."),
                 fieldWithPath("recovery").description("To be validated"),
                 fieldWithPath("comment").description("Comment on this project."),
                 fieldWithPath("relatedWorkUnitNames")
@@ -115,7 +115,7 @@ class ProjectControllerTest extends ControllerTestTemplate
                 fieldWithPath("projectIntentions")
                     .description("Intentions for the project"),
                 fieldWithPath("projectIntentions[].molecularMutationTypeName")
-                    .description("Name of thr molecular mutation."),
+                    .description("Name of the molecular mutation type."),
                 fieldWithPath("projectIntentions[].mutationCategorizations")
                     .description("Mutation categorizations linked to the project intention."),
                 fieldWithPath("projectIntentions[].mutationCategorizations[].name")
@@ -123,7 +123,7 @@ class ProjectControllerTest extends ControllerTestTemplate
                 fieldWithPath("projectIntentions[].mutationCategorizations[].description")
                     .description("Description of the mutation categorization."),
                 fieldWithPath("projectIntentions[].mutationCategorizations[].typeName")
-                    .description("Name of type of the mutation categorization."),
+                    .description("Name of the type of the mutation categorization."),
                 fieldWithPath("projectIntentions[].intentionByGene")
                     .description("Gene in the intention."),
                 fieldWithPath("projectIntentions[].intentionByGene.bestOrthologs[]")
@@ -264,7 +264,7 @@ class ProjectControllerTest extends ControllerTestTemplate
             responseFields(
                 fieldWithPath("history[]").description("Changes in the system."),
                 fieldWithPath("history[].id").description("Id of the change."),
-                fieldWithPath("history[].user").description("User that did the change."),
+                fieldWithPath("history[].user").description("The user that made the change."),
                 fieldWithPath("history[].date").description("Date of the change."),
                 fieldWithPath("history[].comment").description("Comment describing the change."),
                 fieldWithPath("history[].details[]").description("Additional details of the change."),
@@ -276,7 +276,7 @@ class ProjectControllerTest extends ControllerTestTemplate
                     .description("Value in the field after the change"),
                 fieldWithPath("history[].details[].note")
                     .description("One of these: Field changed, Element added, Element deleted."),
-                fieldWithPath("_links.self.href").description("Links to the just created project.")
+                fieldWithPath("_links.self.href").description("Links to the project just created.")
             ));
     }
 
@@ -420,11 +420,11 @@ class ProjectControllerTest extends ControllerTestTemplate
             responseFields(
                 fieldWithPath("history[]").description("Changes in the system."),
                 fieldWithPath("history[].id").description("Id of the change."),
-                fieldWithPath("history[].user").description("User that did the change."),
+                fieldWithPath("history[].user").description("The user that made the change."),
                 fieldWithPath("history[].date").description("Date of the change."),
                 fieldWithPath("history[].comment").description("Comment describing the change."),
                 fieldWithPath("history[].details[]").description("Additional details of the change."),
-                fieldWithPath("_links.self.href").description("Links to the just created project.")
+                fieldWithPath("_links.self.href").description("Links to the project just created.")
             ));
     }
 

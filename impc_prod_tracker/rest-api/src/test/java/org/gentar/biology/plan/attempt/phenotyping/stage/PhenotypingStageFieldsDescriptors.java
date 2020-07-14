@@ -21,7 +21,7 @@ public class PhenotypingStageFieldsDescriptors
         addField(phenotypingStageFieldsDescriptions, "phenotypingExperimentsStarted",
                 "Date when the phenotyping experiments started.");
         addField(phenotypingStageFieldsDescriptions, "doNotCountTowardsCompleteness", "");
-        addField(phenotypingStageFieldsDescriptions, "initialDataReleaseDate", "");
+        addField(phenotypingStageFieldsDescriptions, "initialDataReleaseDate", "Date when some data for the line becomes public. This is set by the CDA");
         addField(phenotypingStageFieldsDescriptions, "tissueDistributions[]",
                 "Tissue distribution available. ");
         addField(phenotypingStageFieldsDescriptions, "tissueDistributions[].id",

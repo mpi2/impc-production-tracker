@@ -41,12 +41,9 @@ The following table describes how the GenTaR API interprets the HTTP verbs.
 |PUT
 |PUT method replaces all current representations of the target resource with the request payload.
 
-|DELETE
-|DELETE method is not supported by the system.
-
 |===
 
-
+Other verbs, such as DELETE, are not supported by GenTaR at present.
 
 == Authentication
 anchor:login[]
@@ -75,8 +72,8 @@ A typical work flow follows this pattern:
 
 See more:
 
-. https://auth0.com/docs/tokens/refresh-token
-. https://auth0.com/blog/refresh-tokens-what-are-they-and-when-to-use-them/
+* https://auth0.com/docs/tokens/refresh-token
+* https://auth0.com/blog/refresh-tokens-what-are-they-and-when-to-use-them/
 
 
 === POST
@@ -95,7 +92,7 @@ include::{snippets}/auth/signin/http-response.adoc[]
 include::{snippets}/auth/signin/response-fields.adoc[]
 
 ==== Error in authentication: user/password is incorrect
-When trying to sign in with incorrect user or password credentials the system will return
+When trying to sign in with an incorrect user or password the system will return
 an error message.
 
 .request
@@ -137,7 +134,7 @@ include::{snippets}/people/getPerson/http-response.adoc[]
 
 ==== Create a user
 
-This endpoint allows the creation of a user in the system.
+To create a user in the system specify the user in a JSON document that sent to the following endpoint.
 
 ===== Example Request
 
@@ -151,9 +148,9 @@ include::{snippets}/people/postPerson/http-response.adoc[]
 
 ==== Request password reset
 
-This endpoint allows to request a reset of the password for a given user. Using this, the user
-will receive an email with a link and a secret pin. Following the link and using the secret pin the
-user can set a new password.
+An example of how to request a password reset for a specific user is shown below.
+When this endpoint is used, the user will receive an email with a link and a secret pin. By following the
+link and using the secret pin the user can set a new password.
 
 ===== Example Request
 
@@ -170,7 +167,9 @@ include::{snippets}/people/requestPasswordReset/http-response.adoc[]
 anchor:chapter-configure[]
 This section describes the REST endpoints for projects in the system.
 
-A project in GenTaR is the container for the intention and has one or more plans with information about attempts to disrupt the targeted genes.
+A project in GenTaR is a top level object. It specifies an intention,
+and it is associated with one or more plans that contain information
+about production attempts, or the state of phenotyping.
 
 === Fields
 These are the fields you are going to see in the body of a request in a GET or in the payload for POST or PUT
@@ -178,7 +177,27 @@ operations.
 include::{snippets}/projects/getProject/response-fields.adoc[]
 
 === Filters
-When you use the endpoint to get all the projects, you can also use filters to reduce the results.
+When you use request all projects, see the section <<Get all Projects>>, you can use filters on the result to select the information you require.
+
+Filters are applied by appending the filter to the endpoint in the following fashion
+
+ /api/projects?<filter name>=<value to use as the filter>
+
+*Note:* the names of the filters are case sensitive.
+
+Filter values can be supplied as a comma separated list
+
+For example, you could use this request to obtain information about the projects
+with the identifiers TPN:000000001 and TPN:000000004
+
+ /api/projects?tpn=TPN:000000001,TPN:000000004
+
+You can also combine filters in the following fashion
+
+ /api/projects?gene=MGI:1202064&workUnitName=JAX
+
+See the section <<Get all Projects using filters>> for an example of a request that uses a filter.
+
 This is the list of filters you can use:
 
 .Filters for projects
@@ -234,14 +253,14 @@ a|Assignment Status Name. Possible values:
 |External reference for the project.
 
 |imitsMiPlanId
-|Ids in iMits (if the project was migrated from there).
+|Ids in iMits (if the project was migrated from iMits).
 
 |===
 
 === GET
 ==== Get a specific project
 
-This endpoint shows a project in the system.
+To obtain information about a specific project in the system you can use the TPN identifier to make a request like the one below.
 
 ===== Example Request
 
@@ -254,7 +273,8 @@ include::{snippets}/projects/getProject/http-response.adoc[]
 
 
 ==== Get all Projects
-This endpoint shows all the projects the user has permission to see.
+You can obtain all the projects that the user has permission to view using the following request.
+The response is paged, and by default a maximum of 20 results are returned.
 
 ===== Example Request
 
@@ -267,8 +287,8 @@ include::{snippets}/projects/allProjects/http-response.adoc[]
 
 ==== Get all Projects using filters.
 
-You can also apply filters to the endpoint to refine the search. This is a list of the filters you can
-use. Each filter admits several values separated by comma.
+You can also apply filters to the endpoint to refine the search. Each filter admits several values separated by comma.
+The filters you can use are listed above under the section <<Filters for projects>>.
 
 
 ===== Example Request
@@ -284,7 +304,7 @@ include::{snippets}/projects/allProjectsWithFilter/http-response.adoc[]
 
 ==== Create a project
 
-In order to create a project, it's necessary to create also a plan attached to it.
+In order to create a project, it is necessary to create at least one plan that is attached to it.
 
 ===== Example Request
 
@@ -303,7 +323,7 @@ include::{snippets}/projects/postProject/response-fields.adoc[]
 ==== Update a project
 
 You can update some information in a project if you are related with any of the
-work units in the plans for the project.
+work units specified in the plans of the project.
 
 ===== Example Request
 
@@ -332,7 +352,8 @@ include::{snippets}/plans/getCrisprPlan/response-fields.adoc[]
 include::{snippets}/plans/getPhenotypingPlan/response-fields.adoc[]
 
 === Filters
-When you use the endpoint to get all the plans, you can also use filters to reduce the results.
+When you use the endpoint to get all the plans, you can use filters in a similar way to project filters, see <<Filters>>, to select the information you require.
+
 This is the list of filters you can use:
 
 ==== Common filters
@@ -473,14 +494,14 @@ include::{snippets}/plans/postPhenotypingPlan/http-response.adoc[]
 
 === PUT
 
-You can update some information in a plan if you are related with any of the
-work units for that plan.
+You can update some information in a plan if you as a user are related to any of the
+work units associated with the plan.
 
 The only fields that can be modified are the ones shown in "Example Request". The exception are
 pin and tpn, which are there just as a reference to the object that is being modified (they are not
 mandatory).
 
-If a value is provided for pin, the system will validate that it matches the pin in the url parameter.
+If a value is provided for pin, the system will validate that it matches the pin in the URL parameter.
 
 ==== Update a crispr plan
 
@@ -644,6 +665,9 @@ include::{snippets}/mutations/mutation/history/curl-request.adoc[]
 
 include::{snippets}/mutations/mutation/history/http-response.adoc[]
 
+=== POST
+A mutation is created as part of an outcome, see <<Create an outcome (colony)>>, rather than as a POST request to a mutation endpoint.
+
 === PUT
 ==== Update a mutation
 
@@ -750,7 +774,7 @@ to another. The state machines for these entities are described in the following
 
 link:state_machine_transitions.pdf[state_machine_transitions.pdf]
 
-When you do a GET to one of those entities, you'll get as part of the response a *statusTransition*
+When you make a GET request to one of those entities, as part of the response you will receive a *statusTransition*
 section, which contains information about the current status and what actions can be executed in order
 to change that status.
 
@@ -816,7 +840,7 @@ to change that status.
 |===
 
 
-==== How to execute a change in the state machine?
+==== Executing a change in the state machine
 To execute a transition in the plan, you need to choose an action that is _triggeredByUser = true_
 and _available = true_ and send a PUT request (as a normal plan update ) passing the name of the action
 as the value _actionToExecute_ in the statusTransition section of the payload.
@@ -831,8 +855,8 @@ transition executable by the user: *abortWhenFounderObtained*.
 Use the name of the action (abortWhenFounderObtained) as the value in the field *actionToExecute*.
 
 You can use the whole GET response as the payload for the new operation. You can also decide to send
-only the _statusTransition_ information in the payload. The following is an example of the request
-in case you decide to left out the attempt information:
+only the _statusTransition_ information in the payload. The following is an example of a request
+where you decide to leave out the attempt information:
 
 Curl:
 include::{snippets}/plans/putCrisprPlanStateMachine/http-request.adoc[]
@@ -840,7 +864,7 @@ include::{snippets}/plans/putCrisprPlanStateMachine/http-request.adoc[]
 
 ===== Example Response
 
-The response will indicate what changed in the system, as long as a link to the resource in
+The response will indicate what has changed in the system, along with a link to the resource in
 case you need to retrieve the new object.
 
 include::{snippets}/plans/putCrisprPlanStateMachine/http-response.adoc[]

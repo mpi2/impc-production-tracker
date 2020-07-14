@@ -93,9 +93,9 @@ public class PlanFieldsDescriptors
         addField(
             crisprFields, "crisprAttempt.totalEmbryosSurvived", "Total embryos survived.");
         addField(
-            crisprFields, "crisprAttempt.embryo2Cell", "Number of embryos to cell.");
+            crisprFields, "crisprAttempt.embryo2Cell", "Number of embryos at the two cell stage.");
         addField(
-            crisprFields, "crisprAttempt.strainInjectedName", "Strain injected name.");
+            crisprFields, "crisprAttempt.strainInjectedName", "Name of the strain injected.");
 
         // Nucleases
         addField(
@@ -103,12 +103,12 @@ public class PlanFieldsDescriptors
             "crisprAttempt.nucleases",
             "Information about the nucleases used in the attempt");
         addField(crisprFields, "crisprAttempt.nucleases[].id", "Id of the record in the system.");
-        addField(crisprFields, "crisprAttempt.nucleases[].typeName", "Name of the nuclease's type.");
+        addField(crisprFields, "crisprAttempt.nucleases[].typeName", "Name of the type of nuclease.");
         addField(
             crisprFields,
             "crisprAttempt.nucleases[].concentration",
             "Concentration of the nuclease.");
-        addField(crisprFields, "crisprAttempt.nucleases[].className", "Name of the nuclease's class.");
+        addField(crisprFields, "crisprAttempt.nucleases[].className", "Name of the class of nuclease. [protein or mRNA].");
 
         // Guides
         addField(
@@ -130,7 +130,7 @@ public class PlanFieldsDescriptors
         addField(crisprFields, "crisprAttempt.guides[].genomeBuild", "Genome build.");
         addField(crisprFields, "crisprAttempt.guides[].pam3", "PAM-3");
         addField(crisprFields, "crisprAttempt.guides[].pam5", "PAM-5");
-        addField(crisprFields, "crisprAttempt.guides[].protospacerSequence", "Protospacer qequence");
+        addField(crisprFields, "crisprAttempt.guides[].protospacerSequence", "Protospacer sequence");
 
         // Mutagenesis Donors
         addField(
@@ -147,7 +147,7 @@ public class PlanFieldsDescriptors
         addField(
             crisprFields,
             "crisprAttempt.mutagenesisDonors[].oligoSequenceFasta",
-            "Ologo sequence fasta.");
+            "Oligo sequence as FASTA format.");
         addField(
             crisprFields,
             "crisprAttempt.mutagenesisDonors[].preparationTypeName",
@@ -203,17 +203,17 @@ public class PlanFieldsDescriptors
         addField(
             crisprFields,
             "crisprAttempt.assay.numHdrG0Mutants",
-            "Number of Hdr G0 mutants.");
+            "Number of HDR G0 mutants.");
         addField(
             crisprFields,
             "crisprAttempt.assay.numHdrG0MutantsAllDonorsInserted",
-            "Number of Hdr G0 mutants with all donors inserted.");
+            "Number of HDR G0 mutants with all donors inserted.");
         addField(
             crisprFields,
             "crisprAttempt.assay.numHdrG0MutantsSubsetDonorsInserted",
-            "Number of Hdr G0 mutants with a subset of donors inserted.");
-        addField(crisprFields, "crisprAttempt.assay.numHrG0Mutants", "Number of Hr G0 mutants.");
-        addField(crisprFields, "crisprAttempt.assay.numNhejG0Mutants", "Number of Nhej G0 mutants.");
+            "Number of HDR G0 mutants with a subset of donors inserted.");
+        addField(crisprFields, "crisprAttempt.assay.numHrG0Mutants", "Number of HR G0 mutants.");
+        addField(crisprFields, "crisprAttempt.assay.numNhejG0Mutants", "Number of NHEJ G0 mutants.");
         addField(crisprFields, "crisprAttempt.assay.embryoTransferDay", "Embryo transfer day.");
         addField(crisprFields, "crisprAttempt.assay.totalTransferred", "Total transferred");
 

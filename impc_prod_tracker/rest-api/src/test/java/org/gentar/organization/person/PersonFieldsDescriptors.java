@@ -21,7 +21,7 @@ public class PersonFieldsDescriptors
         addField(
             personFieldDescriptions,
             "rolesWorkUnits[]",
-            "Information about the work units that the user is associated with, as long as the role the user has in each work unit.");
+            "Information about the work units that the user is associated with, along with the role the user has in each work unit.");
         addField(
             personFieldDescriptions,
             "rolesWorkUnits[].id",
@@ -31,7 +31,7 @@ public class PersonFieldsDescriptors
         addField(
             personFieldDescriptions,
             "rolesConsortia[]",
-            "Information about the consortia that the user is associated with, as long as the role the user has in each consortium.");
+            "Information about the consortia that the user is associated with, along with the role the user has in each consortium.");
         addField(
             personFieldDescriptions, "rolesConsortia[].id", "Internal id of the record in the system.");
         addField(
