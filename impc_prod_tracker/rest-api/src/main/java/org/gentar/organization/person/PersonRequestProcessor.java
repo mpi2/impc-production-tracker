@@ -18,13 +18,22 @@ public class PersonRequestProcessor
         this.personUpdateMapper = personUpdateMapper;
     }
 
+    public Person getOwnPersonToUpdate(Person loggedPerson, PersonUpdateDTO personUpdateDTO)
+    {
+        Person mappedPerson = personUpdateMapper.toEntity(personUpdateDTO);
+        loggedPerson.setName(mappedPerson.getName());
+        loggedPerson.setContactable(mappedPerson.getContactable());
+        loggedPerson.setPassword(mappedPerson.getPassword());
+        return loggedPerson;
+    }
+
     /**
      * Get the person object to update when a manager is going to update a user they manage.
      * @param email Email of the managed user.
      * @param personUpdateDTO Data to update
      * @return Person object with the new data.
      */
-    public Person getPersonToUpdate(String email, PersonUpdateDTO personUpdateDTO)
+    public Person getPersonManagedToUpdate(String email, PersonUpdateDTO personUpdateDTO)
     {
         Person personToUpdate = personService.getPersonByEmail(email);
         Person mappedPerson = personUpdateMapper.toEntity(personUpdateDTO);
