@@ -168,7 +168,7 @@ public class ControllerTestTemplate extends IntegrationTestTemplate
     {
 
         AuthenticationRequest authenticationRequest =
-            new AuthenticationRequest("imits2test", "imits2test");
+            new AuthenticationRequest("gentar_test_user1@gentar.org", "gentar_test_user1");
         ResultActions result
             = mvc().perform(post("/auth/signin")
             .content(toJson(authenticationRequest))

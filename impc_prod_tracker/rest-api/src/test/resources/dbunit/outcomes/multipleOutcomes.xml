@@ -312,8 +312,8 @@ This allele from project Fxn-5659J-A was generated at The Jackson Laboratory by 
             MGI_STRAND="+"/>
 
     <PERSON     ID="123"
-                EMAIL="imits2test@test.com"
-                AUTH_ID="usr-dde67fbd-c3c2-42eb-aa81-f1a225f047c7"/>
+                EMAIL="gentar_test_user1@gentar.org"
+                AUTH_ID="usr-3bc9e4f6-652a-4abf-ad92-77397f8bdd3f"/>
 
     <ROLE   ID="1"
             NAME="manager"/>
@@ -321,7 +321,7 @@ This allele from project Fxn-5659J-A was generated at The Jackson Laboratory by 
             NAME="general"/>
 
     <HISTORY    ID="1"
-                USER_="imits2test@test.com"
+                USER_="gentar_test_user1@gentar.org"
                 COMMENT="Outcome updated"
                 ENTITY_ID="2"
                 ENTITY_NAME="Outcome"

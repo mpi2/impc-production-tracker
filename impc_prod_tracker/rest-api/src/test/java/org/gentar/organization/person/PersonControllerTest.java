@@ -101,7 +101,7 @@ class PersonControllerTest extends ControllerTestTemplate
 
         String payload = loadFromResource("createUserPayload.json");
         String url = "/api/people";
-        doReturn("usr-dde67fbd-c3c2-42eb-aa81-f1a225f047c7").when(aapService).createUser(any(), any());
+        doReturn("usr-3bc9e4f6-652a-4abf-ad92-77397f8bdd3f").when(aapService).createUser(any(), any());
         String obtainedJson = restCaller.executePostAndDocument(url, payload, documentPersonCreation());
         validateCreationResponse(obtainedJson, "expectedCreatedUser.json");
     }
@@ -123,7 +123,7 @@ class PersonControllerTest extends ControllerTestTemplate
     @Test
     public void testRequestPasswordReset() throws Exception
     {
-        String email = "imits2test@test.com";
+        String email = "gentar_test_user1@gentar.org";
         String url = "/api/people/requestPasswordReset";
         doNothing().when(aapService).requestPasswordReset(email);
         restCaller.executePostAndDocumentNoAuthentication(url, email, documentRequestPasswordReset());
@@ -132,6 +132,23 @@ class PersonControllerTest extends ControllerTestTemplate
     private ResultHandler documentRequestPasswordReset()
     {
         return document("people/requestPasswordReset");
+    }
+
+    @Test
+    @DatabaseSetup(DBSetupFilesPaths.ADMIN_USER)
+    @DatabaseTearDown(type = DatabaseOperation.DELETE_ALL, value = DBSetupFilesPaths.ADMIN_USER)
+    public void testUpdateManagedUser() throws Exception
+    {
+        setupAuthentication();
+        sequenceResetter.syncSequence("PERSON_SEQ", "PERSON");
+        sequenceResetter.syncSequence("PERSON_ROLE_CONSORTIUM_SEQ", "PERSON_ROLE_CONSORTIUM");
+        sequenceResetter.syncSequence("PERSON_ROLE_WORK_UNIT_SEQ", "PERSON_ROLE_WORK_UNIT");
+
+        String payload = loadFromResource("createUserPayload.json");
+        String url = "/api/people";
+        doReturn("usr-3bc9e4f6-652a-4abf-ad92-77397f8bdd3f").when(aapService).createUser(any(), any());
+        String obtainedJson = restCaller.executePostAndDocument(url, payload, documentPersonCreation());
+        validateCreationResponse(obtainedJson, "expectedCreatedUser.json");
     }
 
     private String loadFromResource(String resourceName)

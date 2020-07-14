@@ -23,7 +23,7 @@
     <PERSON
             id="1"
             name="Test user name"
-            email="imits2test@test.com"
+            email="gentar_test_user1@gentar.org"
             auth_id="usr-dde67fbd-c3c2-42eb-aa81-f1a225f047c7"
             ebi_admin="true"
     />
