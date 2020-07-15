@@ -16,6 +16,7 @@
 package org.gentar.biology.project.mappers;
 
 import org.gentar.Mapper;
+import org.gentar.biology.project.Project;
 import org.gentar.biology.project.search.SearchResult;
 import org.gentar.biology.project.search.SearchResultDTO;
 import org.springframework.stereotype.Component;
@@ -23,7 +24,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class SearchResultMapper implements Mapper<SearchResult, SearchResultDTO>
 {
-    private ProjectResponseMapper projectResponseMapper;
+    private final ProjectResponseMapper projectResponseMapper;
 
     public SearchResultMapper(ProjectResponseMapper projectResponseMapper)
     {
@@ -35,8 +36,11 @@ public class SearchResultMapper implements Mapper<SearchResult, SearchResultDTO>
         SearchResultDTO searchResultDTO = new SearchResultDTO();
         searchResultDTO.setInput(searchResult.getInput());
         searchResultDTO.setComment(searchResult.getComment());
-        searchResultDTO.setProject(projectResponseMapper.toDto(searchResult.getProject()));
-
+        Project project = searchResult.getProject();
+        if (project != null)
+        {
+            searchResultDTO.setProject(projectResponseMapper.toDto(project));
+        }
         return searchResultDTO;
     }
 }
