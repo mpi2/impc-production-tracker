@@ -54,15 +54,15 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 @CrossOrigin(origins = "*")
 class ProjectController
 {
-    private ProjectService projectService;
-    private HistoryMapper historyMapper;
-    private CsvWriter<ProjectCsvRecord> csvWriter;
-    private ProjectCsvRecordMapper projectCsvRecordMapper;
-    private UpdateProjectRequestProcessor updateProjectRequestProcessor;
-    private PlanService planService;
-    private ProjectCreationMapper projectCreationMapper;
-    private PlanMinimumCreationMapper planMinimumCreationMapper;
-    private ProjectResponseMapper projectResponseMapper;
+    private final ProjectService projectService;
+    private final HistoryMapper historyMapper;
+    private final CsvWriter<ProjectCsvRecord> csvWriter;
+    private final ProjectCsvRecordMapper projectCsvRecordMapper;
+    private final UpdateProjectRequestProcessor updateProjectRequestProcessor;
+    private final PlanService planService;
+    private final ProjectCreationMapper projectCreationMapper;
+    private final PlanMinimumCreationMapper planMinimumCreationMapper;
+    private final ProjectResponseMapper projectResponseMapper;
 
     private static final String PROJECT_NOT_FOUND_ERROR =
         "Project %s does not exist or you don't have access to it.";
@@ -103,7 +103,7 @@ class ProjectController
         @RequestParam(value = "intention", required = false) List<String> intentions,
         @RequestParam(value = "workUnitName", required = false) List<String> workUnitNames,
         @RequestParam(value = "workGroupName", required = false) List<String> workGroupNames,
-        @RequestParam(value = "consortiaName", required = false) List<String> consortia,
+        @RequestParam(value = "consortiumName", required = false) List<String> consortia,
         @RequestParam(value = "assignmentStatusName", required = false) List<String> assignmentNames,
         @RequestParam(value = "summaryStatusName", required = false) List<String> summaryStatusNames,
         @RequestParam(value = "privacyName", required = false) List<String> privaciesNames,
@@ -208,7 +208,7 @@ class ProjectController
         @RequestParam(value = "intention", required = false) List<String> intentions,
         @RequestParam(value = "workUnitName", required = false) List<String> workUnitNames,
         @RequestParam(value = "workGroupName", required = false) List<String> workGroupNames,
-        @RequestParam(value = "consortiaName", required = false) List<String> consortia,
+        @RequestParam(value = "consortiumName", required = false) List<String> consortia,
         @RequestParam(value = "statusName", required = false) List<String> statuses,
         @RequestParam(value = "privacyName", required = false) List<String> privaciesNames,
         @RequestParam(value = "externalReference", required = false) List<String> externalReferences)
