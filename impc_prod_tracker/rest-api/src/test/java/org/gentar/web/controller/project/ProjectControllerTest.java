@@ -144,7 +144,7 @@ class ProjectControllerTest extends ControllerTestTemplate
                     .description("Accession id for the gene, e.g MGI"),
                 fieldWithPath("projectIntentions[].intentionByGene.gene.speciesName")
                     .description("Species associated with the gene"),
-                fieldWithPath("projectIntentions[].intentionBySequence[]")
+                fieldWithPath("projectIntentions[].intentionsBySequence[]")
                     .description("Sequence information"),
                 fieldWithPath("privacyName")
                     .description("Privacy level for the project (public, protected or restricted)"),
