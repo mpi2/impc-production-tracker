@@ -194,9 +194,11 @@ class ProjectController
      * @param workUnitNames list of work units names separated by comma.
      * @param workGroupNames list of work groups names separated by comma.
      * @param consortia list of consortia names separated by comma.
-     * @param statuses list of statuses names separated by comma.
+     * @param assignmentNames list of assignment statuses names separated by comma.
+     * @param summaryStatusNames list of summary statuses names separated by comma.
      * @param privaciesNames list of privacy names separated by comma.
      * @param externalReferences list of externalReferences separated by comma.
+     * @param imitsMiPlans list of iMits plans separated by comma.
      * @throws IOException
      */
     @GetMapping("/exportProjects")
@@ -209,9 +211,11 @@ class ProjectController
         @RequestParam(value = "workUnitName", required = false) List<String> workUnitNames,
         @RequestParam(value = "workGroupName", required = false) List<String> workGroupNames,
         @RequestParam(value = "consortiumName", required = false) List<String> consortia,
-        @RequestParam(value = "statusName", required = false) List<String> statuses,
+        @RequestParam(value = "assignmentStatusName", required = false) List<String> assignmentNames,
+        @RequestParam(value = "summaryStatusName", required = false) List<String> summaryStatusNames,
         @RequestParam(value = "privacyName", required = false) List<String> privaciesNames,
-        @RequestParam(value = "externalReference", required = false) List<String> externalReferences)
+        @RequestParam(value = "externalReference", required = false) List<String> externalReferences,
+        @RequestParam(value = "imitsMiPlanId", required = false) List<String> imitsMiPlans)
         throws IOException
     {
         ProjectFilter projectFilter = ProjectFilterBuilder.getInstance()
@@ -219,12 +223,14 @@ class ProjectController
             .withMarkerSymbols(markerSymbols)
             .withIntentions(intentions)
             .withGenes(genes)
-            .withAssignments(statuses)
+            .withAssignments(assignmentNames)
+            .withSummaryStatusNames(summaryStatusNames)
             .withPrivacies(privaciesNames)
             .withWorkUnitNames(workUnitNames)
-            .withWorkGroupNames(workGroupNames)
             .withConsortiaNames(consortia)
+            .withWorkGroupNames(workGroupNames)
             .withExternalReference(externalReferences)
+            .withImitsMiPlanId(imitsMiPlans)
             .build();
         var projectsPage = projectService.getProjects(projectFilter);
         List<ProjectCsvRecord> projectCsvRecords = projectCsvRecordMapper.toDtos(projectsPage);
