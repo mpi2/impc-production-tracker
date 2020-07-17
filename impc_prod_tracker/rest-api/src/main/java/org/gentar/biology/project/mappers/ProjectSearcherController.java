@@ -41,16 +41,21 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * This class contains the endpoints for the Search functionality in GenTaR.
+ * The basic functionality is , given an input (like a gene), to return the projects associated
+ * to it, if any.
+ */
 @RestController
 @RequestMapping("/api/projects/search")
 @CrossOrigin(origins = "*")
 public class ProjectSearcherController
 {
-    private ProjectSearcherService projectSearcherService;
-    private SearchReportMapper searchReportMapper;
-    private CsvReader csvReader;
-    private CsvWriter<SearchCsvRecord> csvWriter;
-    private SearchCsvRecordMapper searchCsvRecordMapper;
+    private final ProjectSearcherService projectSearcherService;
+    private final SearchReportMapper searchReportMapper;
+    private final CsvReader csvReader;
+    private final CsvWriter<SearchCsvRecord> csvWriter;
+    private final SearchCsvRecordMapper searchCsvRecordMapper;
 
     public ProjectSearcherController(
         ProjectSearcherService projectSearcherService,
@@ -66,41 +71,32 @@ public class ProjectSearcherController
         this.searchCsvRecordMapper = searchCsvRecordMapper;
     }
 
-    private Search buildSearch(
-        String searchTypeName,
-        List<String> inputs,
-        List<String> tpns,
-        List<String> intentionTypeNames,
-        List<String> privacies,
-        List<String> workUnitsNames,
-        List<String> workGroupNames,
-        List<String> consortiaNames,
-        List<String> summaryStatusNames)
-    {
-        ProjectFilter projectFilter = ProjectFilterBuilder.getInstance()
-            .withTpns(tpns)
-            .withIntentions(intentionTypeNames)
-            .withWorkUnitNames(workUnitsNames)
-            .withWorkGroupNames(workGroupNames)
-            .withPrivacies(privacies)
-            .withConsortiaNames(consortiaNames)
-            .withSummaryStatusNames(summaryStatusNames)
-            .build();
-        return new Search(searchTypeName, inputs, projectFilter);
-    }
-
+    /**
+     * Endpoint to search projects based on an list of inputs (genes for example).
+     * @param pageable Information about pagination.
+     * @param searchTypeName Type of search. Currently only supported search by gene.
+     * @param inputs The input to the search.
+     * @param tpns List of TPN identifying projects to use as filter.
+     * @param intentionTypeNames List of intentions to use as filter.
+     * @param privacies List of privacies to use as filter.
+     * @param workUnitsNames List of work units to use as filter.
+     * @param workGroupNames List of work groups to use as filter.
+     * @param consortiaNames List of consortia to use as filter.
+     * @param summaryStatusNames List of summary status to use as filter.
+     * @return a {@link SearchReportDTO} object with the search result.
+     */
     @GetMapping
     public ResponseEntity search(
         Pageable pageable,
         @RequestParam(value = "searchTypeName", required = false) String searchTypeName,
         @RequestParam(value = "input", required = false) List<String> inputs,
-        @RequestParam(value = "tpns", required = false) List<String> tpns,
-        @RequestParam(value = "intentionTypeNames", required = false) List<String> intentionTypeNames,
-        @RequestParam(value = "privacyNames", required = false) List<String> privacies,
-        @RequestParam(value = "workUnitNames", required = false) List<String> workUnitsNames,
-        @RequestParam(value = "workGroupNames", required = false) List<String> workGroupNames,
-        @RequestParam(value = "consortiaNames", required = false) List<String> consortiaNames,
-        @RequestParam(value = "summaryStatusNames", required = false) List<String> summaryStatusNames)
+        @RequestParam(value = "tpn", required = false) List<String> tpns,
+        @RequestParam(value = "intentionTypeName", required = false) List<String> intentionTypeNames,
+        @RequestParam(value = "privacyName", required = false) List<String> privacies,
+        @RequestParam(value = "workUnitName", required = false) List<String> workUnitsNames,
+        @RequestParam(value = "workGroupName", required = false) List<String> workGroupNames,
+        @RequestParam(value = "consortiumName", required = false) List<String> consortiaNames,
+        @RequestParam(value = "summaryStatusName", required = false) List<String> summaryStatusNames)
     {
         Search search =
             buildSearch(
@@ -119,18 +115,32 @@ public class ProjectSearcherController
         return new ResponseEntity<>(searchReportDTO, HttpStatus.OK);
     }
 
+    /**
+     * Endpoint to search projects based on an file that contains a list of inputs (genes for example).
+     * @param pageable Information about pagination.
+     * @param searchTypeName Type of search. Currently only supported search by gene.
+     * @param file File with the input.
+     * @param tpns List of TPN identifying projects to use as filter.
+     * @param intentionTypeNames List of intentions to use as filter.
+     * @param privacies List of privacies to use as filter.
+     * @param workUnitsNames List of work units to use as filter.
+     * @param workGroupNames List of work groups to use as filter.
+     * @param consortiaNames List of consortia to use as filter.
+     * @param summaryStatusNames List of summary status to use as filter.
+     * @return a {@link SearchReportDTO} object with the search result.
+     */
     @PostMapping
     public ResponseEntity searchByFile(
         Pageable pageable,
         @RequestParam(value = "searchTypeName", required = false) String searchTypeName,
         @RequestParam("file") MultipartFile file,
-        @RequestParam(value = "tpns", required = false) List<String> tpns,
-        @RequestParam(value = "intentionTypeNames", required = false) List<String> intentionTypeNames,
-        @RequestParam(value = "privacyNames", required = false) List<String> privacies,
-        @RequestParam(value = "workUnitNames", required = false) List<String> workUnitsNames,
-        @RequestParam(value = "workGroupNames", required = false) List<String> workGroupNames,
-        @RequestParam(value = "consortiaNames", required = false) List<String> consortiaNames,
-        @RequestParam(value = "summaryStatusNames", required = false) List<String> summaryStatusNames)
+        @RequestParam(value = "tpn", required = false) List<String> tpns,
+        @RequestParam(value = "intentionTypeName", required = false) List<String> intentionTypeNames,
+        @RequestParam(value = "privacyName", required = false) List<String> privacies,
+        @RequestParam(value = "workUnitName", required = false) List<String> workUnitsNames,
+        @RequestParam(value = "workGroupName", required = false) List<String> workGroupNames,
+        @RequestParam(value = "consortiumName", required = false) List<String> consortiaNames,
+        @RequestParam(value = "summaryStatusName", required = false) List<String> summaryStatusNames)
     {
         List<String> inputs = getInputByFile(file);
         Search search =
@@ -158,18 +168,34 @@ public class ProjectSearcherController
         return inputs;
     }
 
+    /**
+     * Executes a search with all the given filters and exports the results in a cvs file. To be
+     * used when the input is set in the url as a comma separated strings containing the search elements.
+     * @param response Http response needed to handle the file.
+     * @param searchTypeName Type of search. Currently only supported search by gene.
+     * @param inputs The inputs to search for.
+     * @param tpns List of TPN identifying projects to use as filter.
+     * @param intentionTypeNames List of intentions to use as filter.
+     * @param privacies List of privacies to use as filter.
+     * @param workUnitsNames List of work units to use as filter.
+     * @param workGroupNames List of work groups to use as filter.
+     * @param consortiaNames List of consortia to use as filter.
+     * @param summaryStatusNames List of summary status to use as filter.
+     * @throws Exception
+     */
     @GetMapping("/exportSearch")
     public void exportCSV(
         HttpServletResponse response,
         @RequestParam(value = "searchTypeName", required = false) String searchTypeName,
         @RequestParam(value = "input", required = false) List<String> inputs,
-        @RequestParam(value = "tpns", required = false) List<String> tpns,
-        @RequestParam(value = "intentionTypeNames", required = false) List<String> intentionTypeNames,
-        @RequestParam(value = "privacyNames", required = false) List<String> privacies,
-        @RequestParam(value = "workUnitNames", required = false) List<String> workUnitsNames,
-        @RequestParam(value = "workGroupNames", required = false) List<String> workGroupNames,
-        @RequestParam(value = "consortiaNames", required = false) List<String> consortiaNames,
-        @RequestParam(value = "summaryStatusNames", required = false) List<String> summaryStatusNames) throws Exception
+        @RequestParam(value = "tpn", required = false) List<String> tpns,
+        @RequestParam(value = "intentionTypeName", required = false) List<String> intentionTypeNames,
+        @RequestParam(value = "privacyName", required = false) List<String> privacies,
+        @RequestParam(value = "workUnitName", required = false) List<String> workUnitsNames,
+        @RequestParam(value = "workGroupName", required = false) List<String> workGroupNames,
+        @RequestParam(value = "consortiaName", required = false) List<String> consortiaNames,
+        @RequestParam(value = "summaryStatusName", required = false) List<String> summaryStatusNames)
+        throws Exception
     {
         exportCsv(
             response,
@@ -184,6 +210,21 @@ public class ProjectSearcherController
             summaryStatusNames);
     }
 
+    /**
+     * Executes a search with all the given filters and exports the results in a cvs file. To be
+       used when the input given in a file containing in each line a search element.
+     * @param response Http response needed to handle the file.
+     * @param searchTypeName Type of search. Currently only supported search by gene.
+     * @param file File with the input.
+     * @param tpns List of TPN identifying projects to use as filter.
+     * @param intentionTypeNames List of intentions to use as filter.
+     * @param privacies List of privacies to use as filter.
+     * @param workUnitsNames List of work units to use as filter.
+     * @param workGroupNames List of work groups to use as filter.
+     * @param consortiaNames List of consortia to use as filter.
+     * @param summaryStatusNames List of summary status to use as filter.
+     * @throws Exception
+     */
     @PostMapping("/exportSearchByFile")
     public void exportCSVByFile(
         HttpServletResponse response,
@@ -247,5 +288,28 @@ public class ProjectSearcherController
     private String getCleanText(String text)
     {
         return TextUtil.cleanTextContent(text);
+    }
+
+    private Search buildSearch(
+        String searchTypeName,
+        List<String> inputs,
+        List<String> tpns,
+        List<String> intentionTypeNames,
+        List<String> privacies,
+        List<String> workUnitsNames,
+        List<String> workGroupNames,
+        List<String> consortiaNames,
+        List<String> summaryStatusNames)
+    {
+        ProjectFilter projectFilter = ProjectFilterBuilder.getInstance()
+            .withTpns(tpns)
+            .withIntentions(intentionTypeNames)
+            .withWorkUnitNames(workUnitsNames)
+            .withWorkGroupNames(workGroupNames)
+            .withPrivacies(privacies)
+            .withConsortiaNames(consortiaNames)
+            .withSummaryStatusNames(summaryStatusNames)
+            .build();
+        return new Search(searchTypeName, inputs, projectFilter);
     }
 }

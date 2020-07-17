@@ -54,15 +54,15 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 @CrossOrigin(origins = "*")
 class ProjectController
 {
-    private ProjectService projectService;
-    private HistoryMapper historyMapper;
-    private CsvWriter<ProjectCsvRecord> csvWriter;
-    private ProjectCsvRecordMapper projectCsvRecordMapper;
-    private UpdateProjectRequestProcessor updateProjectRequestProcessor;
-    private PlanService planService;
-    private ProjectCreationMapper projectCreationMapper;
-    private PlanMinimumCreationMapper planMinimumCreationMapper;
-    private ProjectResponseMapper projectResponseMapper;
+    private final ProjectService projectService;
+    private final HistoryMapper historyMapper;
+    private final CsvWriter<ProjectCsvRecord> csvWriter;
+    private final ProjectCsvRecordMapper projectCsvRecordMapper;
+    private final UpdateProjectRequestProcessor updateProjectRequestProcessor;
+    private final PlanService planService;
+    private final ProjectCreationMapper projectCreationMapper;
+    private final PlanMinimumCreationMapper planMinimumCreationMapper;
+    private final ProjectResponseMapper projectResponseMapper;
 
     private static final String PROJECT_NOT_FOUND_ERROR =
         "Project %s does not exist or you don't have access to it.";
@@ -103,7 +103,7 @@ class ProjectController
         @RequestParam(value = "intention", required = false) List<String> intentions,
         @RequestParam(value = "workUnitName", required = false) List<String> workUnitNames,
         @RequestParam(value = "workGroupName", required = false) List<String> workGroupNames,
-        @RequestParam(value = "consortiaName", required = false) List<String> consortia,
+        @RequestParam(value = "consortiumName", required = false) List<String> consortia,
         @RequestParam(value = "assignmentStatusName", required = false) List<String> assignmentNames,
         @RequestParam(value = "summaryStatusName", required = false) List<String> summaryStatusNames,
         @RequestParam(value = "privacyName", required = false) List<String> privaciesNames,
@@ -194,9 +194,11 @@ class ProjectController
      * @param workUnitNames list of work units names separated by comma.
      * @param workGroupNames list of work groups names separated by comma.
      * @param consortia list of consortia names separated by comma.
-     * @param statuses list of statuses names separated by comma.
+     * @param assignmentNames list of assignment statuses names separated by comma.
+     * @param summaryStatusNames list of summary statuses names separated by comma.
      * @param privaciesNames list of privacy names separated by comma.
      * @param externalReferences list of externalReferences separated by comma.
+     * @param imitsMiPlans list of iMits plans separated by comma.
      * @throws IOException
      */
     @GetMapping("/exportProjects")
@@ -208,10 +210,12 @@ class ProjectController
         @RequestParam(value = "intention", required = false) List<String> intentions,
         @RequestParam(value = "workUnitName", required = false) List<String> workUnitNames,
         @RequestParam(value = "workGroupName", required = false) List<String> workGroupNames,
-        @RequestParam(value = "consortiaName", required = false) List<String> consortia,
-        @RequestParam(value = "statusName", required = false) List<String> statuses,
+        @RequestParam(value = "consortiumName", required = false) List<String> consortia,
+        @RequestParam(value = "assignmentStatusName", required = false) List<String> assignmentNames,
+        @RequestParam(value = "summaryStatusName", required = false) List<String> summaryStatusNames,
         @RequestParam(value = "privacyName", required = false) List<String> privaciesNames,
-        @RequestParam(value = "externalReference", required = false) List<String> externalReferences)
+        @RequestParam(value = "externalReference", required = false) List<String> externalReferences,
+        @RequestParam(value = "imitsMiPlanId", required = false) List<String> imitsMiPlans)
         throws IOException
     {
         ProjectFilter projectFilter = ProjectFilterBuilder.getInstance()
@@ -219,12 +223,14 @@ class ProjectController
             .withMarkerSymbols(markerSymbols)
             .withIntentions(intentions)
             .withGenes(genes)
-            .withAssignments(statuses)
+            .withAssignments(assignmentNames)
+            .withSummaryStatusNames(summaryStatusNames)
             .withPrivacies(privaciesNames)
             .withWorkUnitNames(workUnitNames)
-            .withWorkGroupNames(workGroupNames)
             .withConsortiaNames(consortia)
+            .withWorkGroupNames(workGroupNames)
             .withExternalReference(externalReferences)
+            .withImitsMiPlanId(imitsMiPlans)
             .build();
         var projectsPage = projectService.getProjects(projectFilter);
         List<ProjectCsvRecord> projectCsvRecords = projectCsvRecordMapper.toDtos(projectsPage);

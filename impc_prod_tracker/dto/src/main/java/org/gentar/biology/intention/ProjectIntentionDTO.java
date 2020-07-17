@@ -37,6 +37,6 @@ public class ProjectIntentionDTO
     private ProjectIntentionGeneDTO projectIntentionGeneDTO;
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    @JsonProperty("intentionBySequence")
+    @JsonProperty("intentionsBySequence")
     private List<ProjectIntentionSequenceDTO> projectIntentionSequenceDTOS;
 }
