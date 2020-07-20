@@ -22,16 +22,34 @@ spec:
       - image: rwilsonebi/production-tracker:latest
         imagePullPolicy: Always
         name: api-service
+        volumeMounts:
+        - name: database-conn-volume
+          readOnly: true
+          mountPath: /etc/dbserver
+        - name: db-credentials-volume
+          readOnly: true
+          mountPath: /etc/dbaccess
+        - name: aap-domain-volume
+          readOnly: true
+          mountPath: /etc/aap
         env:
+        - name: DOCKER_PRODUCTION
+          value: "TRUE"
         - name: SERVER_SERVLET_CONTEXT_PATH
-          value: /production-tracker-api
-        - name: TRACKER_POSTGRESQL_DB_HOST
-          value: production-tracker-database
-        - name: TRACKER_POSTGRESQL_DB_PORT
-          value: "5432"
+          value: /api
         - name: REDEPLOY_KEY
           value: "STRING_REPLACED_DURING_REDEPLOY"
         ports:
         - containerPort: 8080
           protocol: TCP
         resources: {}
+      volumes:
+      - name: database-conn-volume
+        configMap:
+          name: database-conn
+      - name: db-credentials-volume
+        secret:
+          secretName: db-credentials
+      - name: aap-domain-volume
+        secret:
+          secretName: aap-domain
