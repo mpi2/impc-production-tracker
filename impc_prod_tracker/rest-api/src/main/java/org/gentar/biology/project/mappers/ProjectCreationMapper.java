@@ -10,6 +10,8 @@ import org.gentar.biology.project.consortium.ProjectConsortiumMapper;
 import org.gentar.biology.species.Species;
 import org.gentar.biology.species.SpeciesMapper;
 import org.springframework.stereotype.Component;
+
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -55,8 +57,8 @@ public class ProjectCreationMapper implements Mapper<Project, ProjectCreationDTO
 
     private void setProjectIntentionsToEntity(Project project, ProjectCreationDTO projectCreationDTO)
     {
-        List<ProjectIntention> projectIntentions =
-            projectIntentionMapper.toEntities(projectCreationDTO.getProjectIntentionDTOS());
+        List<ProjectIntention> projectIntentions = new ArrayList<>(
+            projectIntentionMapper.toEntities(projectCreationDTO.getProjectIntentionDTOS()));
         projectIntentions.forEach(x -> x.setProject(project));
         project.setProjectIntentions(projectIntentions);
     }
