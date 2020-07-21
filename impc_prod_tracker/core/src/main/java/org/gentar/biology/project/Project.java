@@ -107,7 +107,7 @@ public class Project extends BaseEntity implements Resource<Project>
 
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
-    @OneToMany(fetch=FetchType.EAGER)
+    @OneToMany
     @JoinColumn(name = "project_id")
     private Set<Plan> plans;
 
@@ -223,7 +223,7 @@ public class Project extends BaseEntity implements Resource<Project>
 
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
-    @OneToMany(cascade=CascadeType.ALL, mappedBy = "project", orphanRemoval=true, fetch = FetchType.EAGER)
+    @OneToMany(cascade=CascadeType.ALL, mappedBy = "project", orphanRemoval=true)
     private Set<ProjectConsortium> projectConsortia;
 
     public String toString()

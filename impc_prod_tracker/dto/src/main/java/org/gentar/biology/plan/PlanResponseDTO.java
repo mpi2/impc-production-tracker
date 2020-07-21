@@ -7,12 +7,11 @@ import org.gentar.biology.status_stamps.StatusStampsDTO;
 import org.gentar.common.state_machine.StatusTransitionDTO;
 import org.springframework.hateoas.RepresentationModel;
 import org.springframework.hateoas.server.core.Relation;
-
 import java.util.List;
 
 @Relation(collectionRelation = "plans")
 @Data
-public class PlanResponseDTO extends RepresentationModel
+public class PlanResponseDTO extends RepresentationModel<PlanResponseDTO>
 {
     // Public identifier for the plan.
     private String pin;
