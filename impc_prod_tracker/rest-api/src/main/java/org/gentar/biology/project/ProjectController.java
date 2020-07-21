@@ -32,7 +32,6 @@ import org.gentar.audit.history.HistoryMapper;
 import org.gentar.helpers.ProjectCsvRecord;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PagedResourcesAssembler;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.PagedModel;
