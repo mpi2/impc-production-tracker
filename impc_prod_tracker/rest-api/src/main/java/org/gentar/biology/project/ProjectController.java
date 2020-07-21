@@ -97,7 +97,6 @@ class ProjectController
     @GetMapping
     public ResponseEntity findAll(
         Pageable pageable,
-        Sort sort,
         PagedResourcesAssembler assembler,
         @RequestParam(value = "tpn", required = false) List<String> tpns,
         @RequestParam(value = "markerSymbol", required = false) List<String> markerSymbols,
