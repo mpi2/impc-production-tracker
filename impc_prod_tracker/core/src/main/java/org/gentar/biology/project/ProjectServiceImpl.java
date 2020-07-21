@@ -44,13 +44,13 @@ import java.util.stream.Collectors;
 @Component
 public class ProjectServiceImpl implements ProjectService
 {
-    private ProjectRepository projectRepository;
-    private HistoryService<Project> historyService;
-    private ResourceAccessChecker<Project> resourceAccessChecker;
-    private ProjectCreator projectCreator;
-    private OrthologService orthologService;
-    private ProjectQueryHelper projectQueryHelper;
-    private ProjectUpdater projectUpdater;
+    private final ProjectRepository projectRepository;
+    private final HistoryService<Project> historyService;
+    private final ResourceAccessChecker<Project> resourceAccessChecker;
+    private final ProjectCreator projectCreator;
+    private final OrthologService orthologService;
+    private final ProjectQueryHelper projectQueryHelper;
+    private final ProjectUpdater projectUpdater;
 
     public static final String READ_PROJECT_ACTION = "READ_PROJECT";
 
@@ -91,12 +91,11 @@ public class ProjectServiceImpl implements ProjectService
         return project;
     }
 
+    @Override
     public List<Project> getProjects(ProjectFilter projectFilter)
     {
         Specification<Project> specifications = buildSpecificationsWithCriteria(projectFilter);
         List<Project> projects = projectRepository.findAll(specifications);
-        //TODO: Check if in memory filters are still needed.
-        // projects = applyFiltersToResults(projects, projectFilter);
         addOrthologs(projects);
         return getCheckedCollection(projects);
     }
