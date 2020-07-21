@@ -38,13 +38,13 @@ import java.util.stream.Collectors;
 @Component
 public class PlanServiceImpl implements PlanService
 {
-    private PlanRepository planRepository;
-    private ResourceAccessChecker<Plan> resourceAccessChecker;
-    private PlanUpdater planUpdater;
-    private HistoryService historyService;
-    private PlanCreator planCreator;
-    private PlanStateMachineResolver planStateMachineResolver;
-    private TransitionAvailabilityEvaluator transitionAvailabilityEvaluator;
+    private final PlanRepository planRepository;
+    private final ResourceAccessChecker<Plan> resourceAccessChecker;
+    private final PlanUpdater planUpdater;
+    private final HistoryService<Plan> historyService;
+    private final PlanCreator planCreator;
+    private final PlanStateMachineResolver planStateMachineResolver;
+    private final TransitionAvailabilityEvaluator transitionAvailabilityEvaluator;
 
     private static final String READ_PLAN_ACTION = "READ_PLAN";
     private static final String PLAN_NOT_EXISTS_ERROR =
@@ -54,7 +54,7 @@ public class PlanServiceImpl implements PlanService
         PlanRepository planRepository,
         ResourceAccessChecker<Plan> resourceAccessChecker,
         PlanUpdater planUpdater,
-        HistoryService historyService,
+        HistoryService<Plan> historyService,
         PlanCreator planCreator,
         PlanStateMachineResolver planStateMachineResolver,
         TransitionAvailabilityEvaluator transitionAvailabilityEvaluator)
@@ -147,7 +147,8 @@ public class PlanServiceImpl implements PlanService
     @Override
     public List<History> getPlanHistory(Plan plan)
     {
-        return historyService.getHistoryByEntityNameAndEntityId(Plan.class.getSimpleName(), plan.getId());
+        return historyService.getHistoryByEntityNameAndEntityId(
+            Plan.class.getSimpleName(), plan.getId());
     }
 
     @Override

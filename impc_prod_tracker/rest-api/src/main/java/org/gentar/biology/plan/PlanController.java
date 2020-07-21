@@ -53,20 +53,20 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 @CrossOrigin(origins="*")
 public class PlanController
 {
-    private HistoryMapper historyMapper;
-    private PlanService planService;
-    private PlanCreationMapper planCreationMapper;
-    private PlanResponseMapper planResponseMapper;
-    private UpdatePlanRequestProcessor updatePlanRequestProcessor;
-    private ProjectService projectService;
+    private final HistoryMapper historyMapper;
+    private final PlanService planService;
+    private final PlanCreationMapper planCreationMapper;
+    private final PlanResponseMapper planResponseMapper;
+    private final UpdatePlanRequestProcessor updatePlanRequestProcessor;
+    private final ProjectService projectService;
 
     public PlanController(
-            HistoryMapper historyMapper,
-            PlanService planService,
-            PlanCreationMapper planCreationMapper,
-            PlanResponseMapper planResponseMapper,
-            UpdatePlanRequestProcessor updatePlanRequestProcessor,
-            ProjectService projectService)
+        HistoryMapper historyMapper,
+        PlanService planService,
+        PlanCreationMapper planCreationMapper,
+        PlanResponseMapper planResponseMapper,
+        UpdatePlanRequestProcessor updatePlanRequestProcessor,
+        ProjectService projectService)
     {
         this.historyMapper = historyMapper;
         this.planService = planService;
@@ -170,7 +170,6 @@ public class PlanController
     public List<HistoryDTO> getPlanHistory(@PathVariable String pin)
     {
         Plan plan = getNotNullPlanByPin(pin);
-
         return historyMapper.toDtos(planService.getPlanHistory(plan));
     }
 
