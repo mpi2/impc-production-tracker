@@ -8,16 +8,15 @@ if [ -z "${DOCKER_PRODUCTION}" ]; then
 
 else
 
-	if [ -e /etc/dbserver/db_config ]; then
-	  export $(cat /etc/dbserver/db_config | awk -F ": " '{print $1"="$2 }')
-	fi
-	if [ -e /etc/aap/domain ]; then
-	  export AAP_DOMAIN=$(cat /etc/aap/domain)
-	fi
-	if [ -e /etc/dbaccess/db_password ]; then
-	  export TRACKER_POSTGRESQL_USER_PASSWORD=$(cat /etc/dbaccess/db_password)
-	fi
-
-	java -Djava.security.egd=file:/dev/./urandom -jar app.jar --server.port="${port}" --spring.profiles.active=dockerproduction
+	java -Djava.security.egd=file:/dev/./urandom -jar app.jar \
+	--server.port="${port}" --spring.profiles.active=dockerproduction \
+	-Dhttps.proxyHost=hx-wwwcache.ebi.ac.uk \
+	-Dhttps.proxyPort=3128 \
+	-Dhttp.proxyHost=hx-wwwcache.ebi.ac.uk \
+	-Dhttp.proxyPort=3128 \
+	-Dhttp.nonProxyHosts=*.ebi.ac.uk\|localhost\|127.0.0.1 \
+	-Dftp.proxyHost=hx-wwwcache.ebi.ac.uk \
+	-Dftp.proxyPort=3128 \
+	-Dftp.nonProxyHosts=*.ebi.ac.uk\|localhost\|127.0.0.1
 
 fi
