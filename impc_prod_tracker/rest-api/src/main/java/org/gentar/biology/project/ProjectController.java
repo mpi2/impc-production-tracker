@@ -52,7 +52,7 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 @RestController
 @RequestMapping("/api/projects")
 @CrossOrigin(origins = "*")
-class ProjectController
+public class ProjectController
 {
     private final ProjectService projectService;
     private final HistoryMapper historyMapper;

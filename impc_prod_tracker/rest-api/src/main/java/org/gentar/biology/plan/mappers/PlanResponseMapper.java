@@ -4,6 +4,8 @@ import org.gentar.Mapper;
 import org.gentar.biology.plan.Plan;
 import org.gentar.biology.plan.PlanResponseDTO;
 import org.gentar.biology.plan.PlanService;
+import org.gentar.biology.project.Project;
+import org.gentar.biology.project.ProjectController;
 import org.gentar.biology.status.StatusStampMapper;
 import org.gentar.biology.status_stamps.StatusStampsDTO;
 import org.gentar.common.state_machine.StatusTransitionDTO;
@@ -14,13 +16,16 @@ import org.springframework.stereotype.Component;
 import java.util.Comparator;
 import java.util.List;
 
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
+
 @Component
 public class PlanResponseMapper implements Mapper<Plan, PlanResponseDTO>
 {
-    private PlanCreationMapper planCreationMapper;
-    private StatusStampMapper statusStampMapper;
-    private PlanService planService;
-    private TransitionMapper transitionMapper;
+    private final PlanCreationMapper planCreationMapper;
+    private final StatusStampMapper statusStampMapper;
+    private final PlanService planService;
+    private final TransitionMapper transitionMapper;
 
     public PlanResponseMapper(
         PlanCreationMapper planCreationMapper,
@@ -51,6 +56,7 @@ public class PlanResponseMapper implements Mapper<Plan, PlanResponseDTO>
         setStatusStampsDTOS(planResponseDTO, plan);
         setSummaryStatusStampsDTOS(planResponseDTO, plan);
         setStatusTransitionDTO(planResponseDTO, plan);
+        addProjectLink(planResponseDTO, plan);
         return planResponseDTO;
     }
 
@@ -84,6 +90,17 @@ public class PlanResponseMapper implements Mapper<Plan, PlanResponseDTO>
         List<TransitionEvaluation> transitionEvaluations =
             planService.evaluateNextTransitions(plan);
         return transitionMapper.toDtos(transitionEvaluations);
+    }
+
+    private void addProjectLink(PlanResponseDTO planResponseDTO, Plan plan)
+    {
+        Project project = plan.getProject();
+        if (project != null)
+        {
+            planResponseDTO.add(
+                linkTo(methodOn(ProjectController.class).findOne(project.getTpn()))
+                    .withRel("project"));
+        }
     }
 
     @Override
