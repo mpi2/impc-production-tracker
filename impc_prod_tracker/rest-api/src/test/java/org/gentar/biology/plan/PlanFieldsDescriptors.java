@@ -22,6 +22,7 @@ public class PlanFieldsDescriptors
             sharedFieldDescriptions,
             "summaryStatusName",
             "A status summarising the global status based on the statuses of the children of the plan.");
+        addField(sharedFieldDescriptions, "_links.project.href", "Link to the project.");
         addField(
             sharedFieldDescriptions,
             "summaryStatusDates[]",

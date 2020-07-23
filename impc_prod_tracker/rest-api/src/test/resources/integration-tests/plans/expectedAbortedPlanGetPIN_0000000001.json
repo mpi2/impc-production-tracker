@@ -90,6 +90,11 @@
   "typeName":"production",
   "statusName":"Attempt Aborted",
   "summaryStatusName":"Attempt Aborted",
+  "_links":{
+    "project":{
+      "href":"http://localhost:8080/api/projects/TPN:000000001"
+    }
+  },
   "statusDates":[
     {
       "statusName":"Attempt Aborted",

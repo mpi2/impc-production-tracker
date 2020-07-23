@@ -62,10 +62,10 @@ class PlanControllerTest extends ControllerTestTemplate
     void testGetOneCrisprPlan() throws Exception
     {
         ResultActions resultActions = mvc().perform(MockMvcRequestBuilders
-                .get("/api/plans/PIN:0000000001")
-                .header("Authorization", accessToken))
-                .andExpect(status().isOk())
-                .andDo(documentCrisprPlan());
+            .get("/api/plans/PIN:0000000001")
+            .header("Authorization", accessToken))
+            .andExpect(status().isOk())
+            .andDo(documentCrisprPlan());
 
         MvcResult result = resultActions.andReturn();
         String contentAsString = result.getResponse().getContentAsString();
@@ -95,15 +95,15 @@ class PlanControllerTest extends ControllerTestTemplate
     void testGetAllPlans() throws Exception
     {
         ResultActions resultActions = mvc().perform(MockMvcRequestBuilders
-                .get("/api/plans")
-                .header("Authorization", accessToken))
-                .andExpect(status().isOk())
-                .andDo(document("plans/allPlans"));
+            .get("/api/plans")
+            .header("Authorization", accessToken))
+            .andExpect(status().isOk())
+            .andDo(document("plans/allPlans"));
 
         MvcResult result = resultActions.andReturn();
         String contentAsString = result.getResponse().getContentAsString();
         String expectedOutputAsString =
-                loadExpectedResponseFromResource("expectedAllPlans.json");
+            loadExpectedResponseFromResource("expectedAllPlans.json");
 
         JSONAssert.assertEquals(expectedOutputAsString, contentAsString, JSONCompareMode.STRICT);
     }
@@ -123,7 +123,6 @@ class PlanControllerTest extends ControllerTestTemplate
         String contentAsString = result.getResponse().getContentAsString();
         String expectedOutputAsString =
             loadExpectedResponseFromResource("expectedFilteredPlans.json");
-
         JSONAssert.assertEquals(expectedOutputAsString, contentAsString, JSONCompareMode.STRICT);
     }
 
@@ -241,8 +240,8 @@ class PlanControllerTest extends ControllerTestTemplate
         if (historyDetailDTOS != null)
         {
             historyDetailDTO = historyDetailDTOS.stream()
-                    .filter(x -> x.getField().equals(field))
-                    .findFirst().orElse(null);
+                .filter(x -> x.getField().equals(field))
+                .findFirst().orElse(null);
         }
         return historyDetailDTO;
     }
@@ -262,12 +261,12 @@ class PlanControllerTest extends ControllerTestTemplate
         setAbortAction(planUpdateDTO);
 
         ResultActions resultActions = mvc().perform(MockMvcRequestBuilders
-                .put("/api/plans/PIN:0000000001")
-                .header("Authorization", accessToken)
-                .content(toJson(planUpdateDTO))
-                .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andDo(document("plans/putCrisprPlanStateMachine"));
+            .put("/api/plans/PIN:0000000001")
+            .header("Authorization", accessToken)
+            .content(toJson(planUpdateDTO))
+            .contentType(MediaType.APPLICATION_JSON))
+            .andExpect(status().isOk())
+            .andDo(document("plans/putCrisprPlanStateMachine"));
 
         MvcResult result = resultActions.andReturn();
         String contentAsString = result.getResponse().getContentAsString();
@@ -284,36 +283,36 @@ class PlanControllerTest extends ControllerTestTemplate
         assertThat(historyDetailDTOS.size(), is(3));
 
         HistoryDetailDTO historyDetailDTO1 =
-                getHistoryDetailByField(historyDetailDTOS, "status.name");
+            getHistoryDetailByField(historyDetailDTOS, "status.name");
         assertThat(historyDetailDTO1.getOldValue(), is("Founder Obtained"));
         assertThat(historyDetailDTO1.getNewValue(), is("Attempt Aborted"));
 
         HistoryDetailDTO historyDetailDTO2 =
-                getHistoryDetailByField(historyDetailDTOS, "summaryStatus.name");
+            getHistoryDetailByField(historyDetailDTOS, "summaryStatus.name");
         assertThat(historyDetailDTO2.getOldValue(), is("Founder Obtained"));
         assertThat(historyDetailDTO2.getNewValue(), is("Attempt Aborted"));
 
         String planLink = LinkUtil.getSelfHrefLinkStringFromJson(contentAsString);
 
         verifyGetPlantEqualsJsonIgnoringIdsAndDates(
-                planLink, "expectedAbortedPlanGetPIN_0000000001.json");
+            planLink, "expectedAbortedPlanGetPIN_0000000001.json");
     }
 
     private void verifyGetPlantEqualsJsonIgnoringIdsAndDates(String planLink, String jsonFileName)
             throws Exception
     {
         ResultActions callGetWithObtainedUrl = mvc().perform(MockMvcRequestBuilders
-                .get(planLink)
-                .header("Authorization", accessToken))
-                .andExpect(status().isOk());
+            .get(planLink)
+            .header("Authorization", accessToken))
+            .andExpect(status().isOk());
         MvcResult obtainedProject = callGetWithObtainedUrl.andReturn();
         String obtainedPlanAsString = obtainedProject.getResponse().getContentAsString();
         String expectedOutputAsString = loadExpectedResponseFromResource(jsonFileName);
 
         JSONAssert.assertEquals(
-                expectedOutputAsString,
-                obtainedPlanAsString,
-                new CustomComparator(JSONCompareMode.STRICT, planCustomizations.ignoreIdsAndDates()));
+            expectedOutputAsString,
+            obtainedPlanAsString,
+            new CustomComparator(JSONCompareMode.STRICT, planCustomizations.ignoreIdsAndDates()));
     }
 
     private void setAbortAction(PlanUpdateDTO planUpdateDTO)
@@ -343,12 +342,12 @@ class PlanControllerTest extends ControllerTestTemplate
         String payload = loadExpectedResponseFromResource("crisrpPlanCreationPayload.json");
 
         ResultActions resultActions = mvc().perform(MockMvcRequestBuilders
-                .post("/api/plans")
-                .header("Authorization", accessToken)
-                .content((payload))
-                .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andDo(document("plans/postCrisprPlan"));
+            .post("/api/plans")
+            .header("Authorization", accessToken)
+            .content((payload))
+            .contentType(MediaType.APPLICATION_JSON))
+            .andExpect(status().isOk())
+            .andDo(document("plans/postCrisprPlan"));
 
         MvcResult result = resultActions.andReturn();
         String contentAsString = result.getResponse().getContentAsString();
@@ -357,21 +356,20 @@ class PlanControllerTest extends ControllerTestTemplate
     }
 
     private void verifyGetPlantEqualsJsonIgnoringIdsAndPinAndDates(
-            String planLink, String jsonFileName)
-            throws Exception
+        String planLink, String jsonFileName) throws Exception
     {
         ResultActions callGetWithObtainedUrl = mvc().perform(MockMvcRequestBuilders
-                .get(planLink)
-                .header("Authorization", accessToken))
-                .andExpect(status().isOk());
+            .get(planLink)
+            .header("Authorization", accessToken))
+            .andExpect(status().isOk());
         MvcResult obtainedProject = callGetWithObtainedUrl.andReturn();
         String obtainedPlanAsString = obtainedProject.getResponse().getContentAsString();
         String expectedOutputAsString = loadExpectedResponseFromResource(jsonFileName);
 
         JSONAssert.assertEquals(
-                expectedOutputAsString,
-                obtainedPlanAsString,
-                new CustomComparator(JSONCompareMode.STRICT, planCustomizations.ignoreIdsAndPinAndDates()));
+            expectedOutputAsString,
+            obtainedPlanAsString,
+            new CustomComparator(JSONCompareMode.STRICT, planCustomizations.ignoreIdsAndPinAndDates()));
     }
 
     @Test
@@ -381,7 +379,7 @@ class PlanControllerTest extends ControllerTestTemplate
     {
         String url = "/api/plans/PIN:0000000002/history";
         String expectedJson =
-                getCompleteResourcePath("expectedAttemptHistoryPIN_0000000002.json");
+            getCompleteResourcePath("expectedAttemptHistoryPIN_0000000002.json");
         String obtainedJson = restCaller.executeGetAndDocument(url, documentPhenotypingStageHistory());
         resultValidator.validateObtainedMatchesJson(obtainedJson, expectedJson);
     }
@@ -394,7 +392,7 @@ class PlanControllerTest extends ControllerTestTemplate
     private ResultHandler documentPhenotypingStageHistory()
     {
         List<FieldDescriptor> historyFieldDescriptions =
-                HistoryFieldsDescriptors.getHistoryFieldDescriptions();
+            HistoryFieldsDescriptors.getHistoryFieldDescriptions();
         return document("plans/history", responseFields(historyFieldDescriptions));
     }
 
@@ -428,12 +426,12 @@ class PlanControllerTest extends ControllerTestTemplate
         assertThat(historyDetailDTOS.size(), is(3));
 
         HistoryDetailDTO historyDetailDTO1 =
-                getHistoryDetailByField(historyDetailDTOS, "comment");
+            getHistoryDetailByField(historyDetailDTOS, "comment");
         assertThat(historyDetailDTO1.getOldValue(), is(nullValue()));
         assertThat(historyDetailDTO1.getNewValue(), is("New Plan comment"));
 
         HistoryDetailDTO historyDetailDTO2 =
-                getHistoryDetailByField(historyDetailDTOS, "productsAvailableForGeneralPublic");
+            getHistoryDetailByField(historyDetailDTOS, "productsAvailableForGeneralPublic");
         assertThat(historyDetailDTO2.getOldValue(), is(nullValue()));
         assertThat(historyDetailDTO2.getNewValue(), is("true"));
     }
@@ -447,7 +445,7 @@ class PlanControllerTest extends ControllerTestTemplate
     }
 
     private String loadFromResource(String resourceName)
-            throws IOException
+        throws IOException
     {
         String completeResourcePath = getCompleteResourcePath(resourceName);
         return TestResourceLoader.loadJsonFromResource(completeResourcePath);
