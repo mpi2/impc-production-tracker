@@ -116,7 +116,7 @@ public class MutationFieldsDescriptors
             mutationFieldsDescriptions, "genes[].accessionId", "The accession identifier for the gene.");
 
         addField(
-            mutationFieldsDescriptions, "_links.outcomes.href", "Outcomes associated with the mutation.");
+            mutationFieldsDescriptions, "_links.outcomes[].href", "Outcomes associated with the mutation.");
         return mutationFieldsDescriptions;
     }
 
