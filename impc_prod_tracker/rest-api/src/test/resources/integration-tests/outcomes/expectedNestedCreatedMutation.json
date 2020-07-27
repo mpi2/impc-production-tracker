@@ -1,28 +1,19 @@
 {
   "min":"MIN:000000000003",
   "mgiAlleleId":null,
+  "imitsAllele":null,
   "mgiAlleleSymbol":null,
   "mgiAlleleSymbolWithoutImpcAbbreviation":null,
   "mgiAlleleSymbolRequiresConstruction":true,
   "geneticMutationTypeName":"Not Tested",
   "molecularMutationTypeName":"Deletion",
-  "imitsAllele":null,
   "mutationQcResults":[
 
-  ],
-  "genes":[
-    {
-      "id":1,
-      "name":"serine (or cysteine) peptidase inhibitor, clade B (ovalbumin), member 10",
-      "symbol":"Serpinb10",
-      "speciesName":"Mus musculus",
-      "externalLink":"http://www.mousephenotype.org/data/genes/MGI:2138648",
-      "accessionId":"MGI:2138648"
-    }
   ],
   "mutationSequences":[
     {
       "id":4,
+      "index":1,
       "sequence":{
         "id":4,
         "sequence":"TCTAAAAGGNACAGTTGGTGACTGCAGCTTAAACTCTGAGTGCAGCAGG",
@@ -31,8 +22,7 @@
         "sequenceLocations":[
 
         ]
-      },
-      "index":1
+      }
     }
   ],
   "mutationCategorizations":[
@@ -43,8 +33,20 @@
     }
   ],
   "_links":{
-    "outcomes":{
-      "href":"http://localhost:8080/api/plans/PIN:0000000001/outcomes/TPO:000000007"
+    "outcomes":[
+      {
+        "href":"http://localhost:8080/api/plans/PIN:0000000001/outcomes/TPO:000000007"
+      }
+    ]
+  },
+  "genes":[
+    {
+      "id":1,
+      "name":"serine (or cysteine) peptidase inhibitor, clade B (ovalbumin), member 10",
+      "symbol":"Serpinb10",
+      "speciesName":"Mus musculus",
+      "externalLink":"http://www.mousephenotype.org/data/genes/MGI:2138648",
+      "accessionId":"MGI:2138648"
     }
-  }
+  ]
 }

@@ -1,5 +1,6 @@
 package org.gentar.helpers;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.hateoas.PagedModel;
 
@@ -47,7 +48,16 @@ public class LinkUtil
     {
         JSONObject jsonResponse = new JSONObject(jsonString);
         JSONObject links = jsonResponse.getJSONObject("_links");
-        JSONObject self = links.getJSONObject(relationName);
-        return self.get("href").toString();
+        JSONObject relation = links.getJSONObject(relationName);
+        return relation.get("href").toString();
+    }
+
+    public static String getCustomHrefLinkStringFromJsonArray(
+        String jsonString, String relationName, int index)
+    {
+        JSONObject jsonResponse = new JSONObject(jsonString);
+        JSONObject links = jsonResponse.getJSONObject("_links");
+        JSONArray relation = links.getJSONArray(relationName);
+        return relation.getJSONObject(index).get("href").toString();
     }
 }

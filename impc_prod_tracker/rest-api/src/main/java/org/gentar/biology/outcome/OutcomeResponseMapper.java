@@ -3,6 +3,7 @@ package org.gentar.biology.outcome;
 import org.gentar.Mapper;
 import org.gentar.biology.mutation.Mutation;
 import org.gentar.biology.mutation.MutationController;
+import org.gentar.biology.project.ProjectController;
 import org.springframework.hateoas.Link;
 import org.springframework.stereotype.Component;
 import java.util.ArrayList;
@@ -42,6 +43,8 @@ public class OutcomeResponseMapper implements Mapper<Outcome, OutcomeResponseDTO
             }
         }
         addMutationLinks(outcomeResponseDTO, outcome);
+        outcomeResponseDTO.add(
+        linkTo(methodOn(OutcomeController.class).findOneByPlanAndTpo(outcome.getPlan().getPin(), outcome.getTpo())).withSelfRel());
         return outcomeResponseDTO;
     }
 

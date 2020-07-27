@@ -19,8 +19,8 @@
         "distributionCentreName":"BCM",
         "productTypeName":"Live mice",
         "distributionNetworkName":"MMRRC",
-        "endDate":"2018-11-09T00:00:00",
-        "startDate":"2018-04-19T00:00:00"
+        "startDate":"2018-04-19T00:00:00",
+        "endDate":"2018-11-09T00:00:00"
       }
     ],
     "statusTransition":{
@@ -55,8 +55,13 @@
     }
   },
   "_links":{
-    "mutations":{
-      "href":"http://localhost:8080/api/plans/PIN:0000000001/outcomes/TPO:000000000001/mutations/MIN:000000000001"
+    "mutations":[
+      {
+        "href":"http://localhost:8080/api/plans/PIN:0000000001/outcomes/TPO:000000000001/mutations/MIN:000000000001"
+      }
+    ],
+    "self":{
+      "href":"http://localhost:8080/api/plans/PIN:0000000001/outcomes/TPO:000000000001"
     }
   }
 }

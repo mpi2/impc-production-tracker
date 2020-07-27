@@ -1,138 +1,156 @@
-[
-  {
-    "pin":"PIN:0000000001",
-    "tpo":"TPO:000000000004",
-    "outcomeTypeName":"Specimen",
-    "specimen":{
-      "specimenExternalRef":"External reference",
-      "specimenTypeName":"haplo-essential",
-      "statusName":"Specimen Group In Progress",
-      "statusDates":[
-        {
+{
+  "_embedded":{
+    "outcomes":[
+      {
+        "pin":"PIN:0000000001",
+        "tpo":"TPO:000000000004",
+        "outcomeTypeName":"Specimen",
+        "specimen":{
+          "specimenExternalRef":"External reference",
+          "specimenTypeName":"haplo-essential",
           "statusName":"Specimen Group In Progress",
-          "date":"2019-08-06T20:09:51.896778"
-        }
-      ],
-      "backgroundStrainName":"C57BL/6NJ",
-      "specimenProperties":[
-        {
-          "id":1,
-          "propertyTypeName":"Property 1",
-          "value":"Value 1"
+          "statusDates":[
+            {
+              "statusName":"Specimen Group In Progress",
+              "date":"2019-08-06T20:09:51.896778"
+            }
+          ],
+          "backgroundStrainName":"C57BL/6NJ",
+          "specimenProperties":[
+            {
+              "id":1,
+              "propertyTypeName":"Property 1",
+              "value":"Value 1"
+            },
+            {
+              "id":2,
+              "propertyTypeName":"Property 2",
+              "value":"Value 2"
+            }
+          ],
+          "statusTransition":{
+            "currentStatus":"Specimen Group In Progress",
+            "transitions":[
+              {
+                "action":"abortSpecimenGroup",
+                "description":"Abort a specimen group",
+                "triggeredByUser":true,
+                "available":false,
+                "note":"Specimen cannot be aborted [Not implemented yet.]",
+                "nextStatus":"SpecimenGroupAborted"
+              }
+            ],
+            "actionToExecute":null
+          }
         },
-        {
-          "id":2,
-          "propertyTypeName":"Property 2",
-          "value":"Value 2"
-        }
-      ],
-      "statusTransition":{
-        "currentStatus":"Specimen Group In Progress",
-        "transitions":[
-          {
-            "action":"abortSpecimenGroup",
-            "description":"Abort a specimen group",
-            "triggeredByUser":true,
-            "available":false,
-            "note":"Specimen cannot be aborted [Not implemented yet.]",
-            "nextStatus":"SpecimenGroupAborted"
+        "_links":{
+          "mutations":[
+            {
+              "href":"http://localhost:8080/api/plans/PIN:0000000001/outcomes/TPO:000000000004/mutations/MIN:000000000001"
+            }
+          ],
+          "self":{
+            "href":"http://localhost:8080/api/plans/PIN:0000000001/outcomes/TPO:000000000004"
           }
-        ],
-        "actionToExecute":null
-      }
-    },
-    "links":[
+        }
+      },
       {
-        "rel":"mutations",
-        "href":"http://localhost:8080/api/plans/PIN:0000000001/outcomes/TPO:000000000004/mutations/MIN:000000000001"
-      }
-    ]
-  },
-  {
-    "pin":"PIN:0000000001",
-    "tpo":"TPO:000000000001",
-    "outcomeTypeName":"Colony",
-    "colony":{
-      "name":"jr34293",
-      "genotypingComment":"An example comment for the genotyping.",
-      "statusName":"Genotype In Progress",
-      "statusDates":[
-        {
+        "pin":"PIN:0000000001",
+        "tpo":"TPO:000000000001",
+        "outcomeTypeName":"Colony",
+        "colony":{
+          "name":"jr34293",
+          "genotypingComment":"An example comment for the genotyping.",
           "statusName":"Genotype In Progress",
-          "date":"2019-08-06T20:09:51.896778"
-        }
-      ],
-      "backgroundStrainName":"C57BL/6NJ",
-      "distributionProducts":[
-        {
-          "id":1,
-          "distributionCentreName":"BCM",
-          "productTypeName":"Live mice",
-          "distributionNetworkName":"MMRRC",
-          "startDate":"2018-04-19T00:00:00",
-          "endDate":"2018-11-09T00:00:00"
-        }
-      ],
-      "statusTransition":{
-        "currentStatus":"Genotype In Progress",
-        "transitions":[
-          {
-            "action":"confirmGenotypeWhenInProgress",
-            "description":"Confirm Genotype when Genotype In Progress",
-            "triggeredByUser":true,
-            "available":true,
-            "note":null,
-            "nextStatus":"GenotypeConfirmed"
-          },
-          {
-            "action":"updateFromGenotypeInProgressToGenotypeNotConfirmed",
-            "description":"Update from Genotype In Progress to Genotype Not Confirmed",
-            "triggeredByUser":true,
-            "available":true,
-            "note":null,
-            "nextStatus":"GenotypeNotConfirmed"
-          },
-          {
-            "action":"abortGenotypeInProgress",
-            "description":"Abort a colony that is Genotype In Progress",
-            "triggeredByUser":true,
-            "available":true,
-            "note":null,
-            "nextStatus":"ColonyAborted"
+          "statusDates":[
+            {
+              "statusName":"Genotype In Progress",
+              "date":"2019-08-06T20:09:51.896778"
+            }
+          ],
+          "backgroundStrainName":"C57BL/6NJ",
+          "distributionProducts":[
+            {
+              "id":1,
+              "distributionCentreName":"BCM",
+              "productTypeName":"Live mice",
+              "distributionNetworkName":"MMRRC",
+              "startDate":"2018-04-19T00:00:00",
+              "endDate":"2018-11-09T00:00:00"
+            }
+          ],
+          "statusTransition":{
+            "currentStatus":"Genotype In Progress",
+            "transitions":[
+              {
+                "action":"confirmGenotypeWhenInProgress",
+                "description":"Confirm Genotype when Genotype In Progress",
+                "triggeredByUser":true,
+                "available":true,
+                "note":null,
+                "nextStatus":"GenotypeConfirmed"
+              },
+              {
+                "action":"updateFromGenotypeInProgressToGenotypeNotConfirmed",
+                "description":"Update from Genotype In Progress to Genotype Not Confirmed",
+                "triggeredByUser":true,
+                "available":true,
+                "note":null,
+                "nextStatus":"GenotypeNotConfirmed"
+              },
+              {
+                "action":"abortGenotypeInProgress",
+                "description":"Abort a colony that is Genotype In Progress",
+                "triggeredByUser":true,
+                "available":true,
+                "note":null,
+                "nextStatus":"ColonyAborted"
+              }
+            ],
+            "actionToExecute":null
           }
-        ],
-        "actionToExecute":null
-      }
-    },
-    "links":[
+        },
+        "_links":{
+          "mutations":[
+            {
+              "href":"http://localhost:8080/api/plans/PIN:0000000001/outcomes/TPO:000000000001/mutations/MIN:000000000001"
+            }
+          ],
+          "self":{
+            "href":"http://localhost:8080/api/plans/PIN:0000000001/outcomes/TPO:000000000001"
+          }
+        }
+      },
       {
-        "rel":"mutations",
-        "href":"http://localhost:8080/api/plans/PIN:0000000001/outcomes/TPO:000000000001/mutations/MIN:000000000001"
+        "pin":"PIN:0000000001",
+        "tpo":"TPO:000000000002",
+        "outcomeTypeName":"Colony",
+        "_links":{
+          "self":{
+            "href":"http://localhost:8080/api/plans/PIN:0000000001/outcomes/TPO:000000000002"
+          }
+        }
+      },
+      {
+        "pin":"PIN:0000000001",
+        "tpo":"TPO:000000000003",
+        "outcomeTypeName":"Specimen",
+        "_links":{
+          "self":{
+            "href":"http://localhost:8080/api/plans/PIN:0000000001/outcomes/TPO:000000000003"
+          }
+        }
+      },
+      {
+        "pin":"PIN:0000000001",
+        "tpo":"TPO:000000000005",
+        "outcomeTypeName":"Colony",
+        "_links":{
+          "self":{
+            "href":"http://localhost:8080/api/plans/PIN:0000000001/outcomes/TPO:000000000005"
+          }
+        }
       }
-    ]
-  },
-  {
-    "pin":"PIN:0000000001",
-    "tpo":"TPO:000000000002",
-    "outcomeTypeName":"Colony",
-    "links":[
-
-    ]
-  },
-  {
-    "pin":"PIN:0000000001",
-    "tpo":"TPO:000000000003",
-    "outcomeTypeName":"Specimen",
-    "links":[
-
-    ]
-  },
-  {
-    "pin":"PIN:0000000001",
-    "tpo":"TPO:000000000005",
-    "outcomeTypeName":"Colony",
-    "links":[
-
     ]
   }
-]
+}

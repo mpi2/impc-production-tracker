@@ -17,7 +17,9 @@ public class OutcomeFieldsDescriptors
         addField(outcomeFieldDescriptions, "tpo", "Public identifier for the outcome.");
         addField(outcomeFieldDescriptions, "outcomeTypeName", "Outcome type.");
         addField(
-            outcomeFieldDescriptions, "_links.mutations.href", "Mutation associated with the outcome.");
+            outcomeFieldDescriptions, "_links.mutations[].href", "Mutation associated with the outcome.");
+        addField(
+            outcomeFieldDescriptions, "_links.self.href", "Link to the outcome.");
         return outcomeFieldDescriptions;
     }
 
