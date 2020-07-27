@@ -1,20 +1,9 @@
 {
-  "tpn": "any valid value",
+  "tpn":"TPN:000000007",
   "recovery":false,
   "comment":"comment",
   "privacyName":"public",
   "externalReference":"externalRef",
-  "speciesNames":[
-    "Mus musculus"
-  ],
-  "consortia":[
-    {
-      "consortiumName":"CMG",
-      "institutes":[
-        "Broad"
-      ]
-    }
-  ],
   "assignmentStatusName":"Assigned",
   "summaryStatusName":null,
   "relatedWorkUnitNames":[
@@ -25,14 +14,16 @@
   ],
   "reactivationDate":null,
   "_links":{
-    "productionPlans":{
-      "href":"http://localhost:8080/api/plans/PIN:0000000001"
-    }
+    "productionPlans":[
+      {
+        "href":"http://localhost:8080/api/plans/PIN:0000000003"
+      }
+    ]
   },
   "assignmentStatusStamps":[
     {
       "statusName":"Assigned",
-      "date":"2020-05-26T15:33:24.661314"
+      "date":"2020-07-27T11:53:28.098748"
     }
   ],
   "projectIntentions":[
@@ -63,6 +54,17 @@
       },
       "intentionsBySequence":[
 
+      ]
+    }
+  ],
+  "speciesNames":[
+    "Mus musculus"
+  ],
+  "consortia":[
+    {
+      "consortiumName":"CMG",
+      "institutes":[
+        "Broad"
       ]
     }
   ]

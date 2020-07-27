@@ -73,7 +73,6 @@ class ProjectControllerTest extends ControllerTestTemplate
             .andDo(documentSingleProject());
         MvcResult result = resultActions.andReturn();
         String contentAsString = result.getResponse().getContentAsString();
-
         String expectedOutputAsString =
             loadExpectedResponseFromResource("expectedProjectTPN_000000001.json");
 
@@ -160,7 +159,7 @@ class ProjectControllerTest extends ControllerTestTemplate
                     .description("Links for project"),
                 fieldWithPath("_links.productionPlans")
                     .description("Links to production plans"),
-                fieldWithPath("_links.productionPlans.href")
+                fieldWithPath("_links.productionPlans[].href")
                     .description("Link to a specific production plan")
             ));
     }
@@ -189,7 +188,6 @@ class ProjectControllerTest extends ControllerTestTemplate
 
         MvcResult result = resultActions.andReturn();
         String contentAsString = result.getResponse().getContentAsString();
-
         String expectedOutputAsString =
             loadExpectedResponseFromResource("expectedAllProjects.json");
 
@@ -209,7 +207,6 @@ class ProjectControllerTest extends ControllerTestTemplate
 
         MvcResult result = resultActions.andReturn();
         String contentAsString = result.getResponse().getContentAsString();
-
         String expectedOutputAsString =
             loadExpectedResponseFromResource("expectedFilteredProjects.json");
 
@@ -349,7 +346,6 @@ class ProjectControllerTest extends ControllerTestTemplate
             .andExpect(status().isOk());
         MvcResult obtainedProject = callGetWithObtainedUrl.andReturn();
         String obtainedProjectAsString = obtainedProject.getResponse().getContentAsString();
-
         String expectedOutputAsString =
             loadExpectedResponseFromResource(jsonFileName);
 
@@ -517,7 +513,6 @@ class ProjectControllerTest extends ControllerTestTemplate
             .andExpect(status().isOk());
         MvcResult obtainedProject = callGetWithObtainedUrl.andReturn();
         String obtainedProjectAsString = obtainedProject.getResponse().getContentAsString();
-
         String expectedOutputAsString =
             loadExpectedResponseFromResource(jsonFileName);
 

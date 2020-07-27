@@ -1,22 +1,9 @@
 {
   "tpn":"TPN:000000001",
-  "reactivationDate":null,
   "recovery":false,
   "comment":"Comment test",
   "privacyName":"public",
   "externalReference":"External reference 01",
-  "speciesNames":[
-    "Mus musculus"
-  ],
-  "consortia":[
-    {
-      "consortiumName":"CMG",
-      "institutes":[
-        "Yale",
-        "Broad"
-      ]
-    }
-  ],
   "assignmentStatusName":"Assigned",
   "summaryStatusName":"Plan Created",
   "relatedWorkUnitNames":[
@@ -25,10 +12,13 @@
   "relatedWorkGroupNames":[
     "BaSH"
   ],
+  "reactivationDate":null,
   "_links":{
-    "productionPlans":{
-      "href":"http://localhost:8080/api/plans/PIN:0000000001"
-    }
+    "productionPlans":[
+      {
+        "href":"http://localhost:8080/api/plans/PIN:0000000001"
+      }
+    ]
   },
   "assignmentStatusStamps":[
 
@@ -61,6 +51,18 @@
       },
       "intentionsBySequence":[
 
+      ]
+    }
+  ],
+  "speciesNames":[
+    "Mus musculus"
+  ],
+  "consortia":[
+    {
+      "consortiumName":"CMG",
+      "institutes":[
+        "Yale",
+        "Broad"
       ]
     }
   ]
