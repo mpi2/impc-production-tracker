@@ -1,55 +1,63 @@
 {
-  "pin": "PIN:0000000002",
-  "psn": "PSN:000000000004",
-  "statusName": "Phenotyping Production Registered",
-  "phenotypingTypeName": "early adult",
-  "phenotypingExternalRef": "JR34077",
-  "phenotypingExperimentsStarted": "2020-02-24",
-  "doNotCountTowardsCompleteness": true,
-  "initialDataReleaseDate": "2015-11-23",
-  "tissueDistributions": [
+  "pin":"PIN:0000000002",
+  "psn":"PSN:000000000000",
+  "statusName":"Phenotyping Production Registered",
+  "phenotypingTypeName":"early adult",
+  "phenotypingExternalRef":"JR34077",
+  "phenotypingExperimentsStarted":"2020-02-24",
+  "doNotCountTowardsCompleteness":true,
+  "initialDataReleaseDate":"2015-11-23",
+  "tissueDistributions":[
     {
-      "id": 4,
-      "startDate": "2020-04-13",
-      "endDate": "2021-05-15",
-      "workUnitName": "TCP",
-      "materialDepositedTypeName": "Paraffin-embedded Sections"
+      "id":4,
+      "startDate":"2020-04-13",
+      "endDate":"2021-05-15",
+      "workUnitName":"TCP",
+      "materialDepositedTypeName":"Paraffin-embedded Sections"
     }
   ],
-  "statusDates": [
+  "_links":{
+    "self":{
+      "href":"http://localhost:8080/api/plans/PIN:0000000002/phenotypingStages/PSN:000000000000"
+    },
+    "plan":{
+      "href":"http://localhost:8080/api/plans/PIN:0000000002"
+    }
+  },
+  "statusDates":[
     {
-      "statusName": "Phenotyping Production Registered",
-      "date": "2020-07-01T00:00:00"
+      "statusName":"Phenotyping Production Registered",
+      "date":"2020-07-27T18:09:44.375662"
     }
   ],
-  "statusTransition": {
-    "currentStatus": "Phenotyping Production Registered",
-    "transitions": [
+  "statusTransition":{
+    "currentStatus":"Phenotyping Production Registered",
+    "transitions":[
       {
-        "action": "updateToRederivationStarted",
-        "description": "Started rederivation of the colony for phenotyping",
-        "triggeredByUser": true,
-        "available": true,
-        "note": "executed by the user when rederivation is started.",
-        "nextStatus": "RederivationStarted"
+        "action":"updateToRederivationStarted",
+        "description":"Started rederivation of the colony for phenotyping",
+        "triggeredByUser":true,
+        "available":true,
+        "note":"executed by the user when rederivation is started.",
+        "nextStatus":"RederivationStarted"
       },
       {
-        "action": "updateToPhenotypingStarted",
-        "description": "Marked as started when the DCC receives phenotype data",
-        "triggeredByUser": true,
-        "available": false,
-        "note": "The current user does not have permission to rollback to 'Phenotyping Started'",
-        "nextStatus": "PhenotypingStarted"
+        "action":"updateToPhenotypingStarted",
+        "description":"Marked as started when the DCC receives phenotype data",
+        "triggeredByUser":true,
+        "available":false,
+        "note":"The current user does not have permission to rollback to 'Phenotyping Started'",
+        "nextStatus":"PhenotypingStarted"
       },
       {
-        "action": "abortWhenPhenotypeProductionRegistered",
-        "description": "Abort phenotyping when a phenotype attempt has been registered",
-        "triggeredByUser": true,
-        "available": true,
-        "note": null,
-        "nextStatus": "PhenotypeProductionAborted"
+        "action":"abortWhenPhenotypeProductionRegistered",
+        "description":"Abort phenotyping when a phenotype attempt has been registered",
+        "triggeredByUser":true,
+        "available":true,
+        "note":null,
+        "nextStatus":"PhenotypeProductionAborted"
       }
     ],
-    "actionToExecute": null
+    "actionToExecute":null
   }
 }

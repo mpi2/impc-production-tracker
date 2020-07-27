@@ -208,7 +208,6 @@ public class PlanController
     {
         ChangeResponse changeResponse = new ChangeResponse();
         changeResponse.setHistoryDTOs(historyList);
-
         changeResponse.add(linkTo(PlanController.class).slash(plan.getPin()).withSelfRel());
         return changeResponse;
     }

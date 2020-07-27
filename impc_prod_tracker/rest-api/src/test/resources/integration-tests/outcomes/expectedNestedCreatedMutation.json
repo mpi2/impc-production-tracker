@@ -1,5 +1,5 @@
 {
-  "min":"MIN:000000000003",
+  "min":"MIN:NNNNNNNNNNNN",
   "mgiAlleleId":null,
   "imitsAllele":null,
   "mgiAlleleSymbol":null,
@@ -33,6 +33,9 @@
     }
   ],
   "_links":{
+    "self":{
+      "href":"http://localhost:8080/api/mutations/MIN:NNNNNNNNNNNN"
+    },
     "outcomes":[
       {
         "href":"http://localhost:8080/api/plans/PIN:0000000001/outcomes/TPO:000000007"

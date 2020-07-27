@@ -4,9 +4,7 @@ import org.gentar.audit.history.History;
 import org.gentar.audit.history.HistoryMapper;
 import org.gentar.biology.ChangeResponse;
 import org.gentar.biology.outcome.Outcome;
-import org.gentar.biology.outcome.OutcomeResponseDTO;
 import org.gentar.biology.outcome.OutcomeService;
-import org.gentar.biology.plan.Plan;
 import org.gentar.common.history.HistoryDTO;
 import org.gentar.helpers.ChangeResponseCreator;
 import org.springframework.hateoas.CollectionModel;
@@ -51,6 +49,13 @@ public class MutationController
         this.mutationService = mutationService;
         this.changeResponseCreator = changeResponseCreator;
         this.historyMapper = historyMapper;
+    }
+
+    @GetMapping(value = {"mutations/{min}"})
+    public MutationResponseDTO findMutationByMin(@PathVariable String min)
+    {
+        Mutation mutation = mutationService.getMutationByMinFailsIfNull(min);
+        return mutationResponseMapper.toDto(mutation);
     }
 
     /**

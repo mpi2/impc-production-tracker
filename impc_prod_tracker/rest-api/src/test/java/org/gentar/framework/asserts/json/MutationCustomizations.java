@@ -7,10 +7,11 @@ import java.util.List;
 
 public class MutationCustomizations
 {
-    public static  Customization[] ignoreIdsAndMin()
+    public static Customization[] ignoreIdsAndMin()
     {
         List<Customization> customizationList = new ArrayList<>();
         customizationList.addAll(buildCustomizationForMutationSequencesIds());
+        customizationList.add(buildCustomizationForMinLink());
         customizationList.add(buildCustomizationForMin());
         return customizationList.toArray(new Customization[0]);
     }
@@ -19,6 +20,13 @@ public class MutationCustomizations
     {
         return new Customization(
             "min", new RegularExpressionValueMatcher<>(CustomizationConstants.MIN_PATTERN));
+    }
+
+    private static Customization buildCustomizationForMinLink()
+    {
+        return new Customization(
+            "_links.self.href",
+            new RegularExpressionValueMatcher<>(CustomizationConstants.MIN_URL_PATTERN));
     }
 
     private static List<Customization> buildCustomizationForMutationSequencesIds()

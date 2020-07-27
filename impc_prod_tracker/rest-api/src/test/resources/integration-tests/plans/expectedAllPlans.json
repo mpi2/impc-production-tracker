@@ -94,6 +94,9 @@
         "statusName":"Founder Obtained",
         "summaryStatusName":"Founder Obtained",
         "_links":{
+          "self":{
+            "href":"http://localhost:8080/api/plans/PIN:0000000001"
+          },
           "project":{
             "href":"http://localhost:8080/api/projects/TPN:000000001"
           }
@@ -134,6 +137,9 @@
         "statusName":"Plan Created",
         "summaryStatusName":"Plan Created",
         "_links":{
+          "self":{
+            "href":"http://localhost:8080/api/plans/PIN:0000000002"
+          },
           "project":{
             "href":"http://localhost:8080/api/projects/TPN:000000001"
           }
@@ -194,6 +200,9 @@
         "statusName":"Plan Created",
         "summaryStatusName":"Phenotyping Started",
         "_links":{
+          "self":{
+            "href":"http://localhost:8080/api/plans/PIN:0000000003"
+          },
           "project":{
             "href":"http://localhost:8080/api/projects/TPN:000000001"
           }
@@ -254,6 +263,9 @@
         "statusName":"Plan Created",
         "summaryStatusName":"Plan Created",
         "_links":{
+          "self":{
+            "href":"http://localhost:8080/api/plans/PIN:0000000006"
+          },
           "project":{
             "href":"http://localhost:8080/api/projects/TPN:000000001"
           }

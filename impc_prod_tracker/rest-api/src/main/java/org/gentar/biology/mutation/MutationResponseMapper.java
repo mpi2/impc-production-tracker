@@ -4,6 +4,9 @@ import org.gentar.Mapper;
 import org.gentar.biology.gene.GeneMapper;
 import org.gentar.biology.outcome.Outcome;
 import org.gentar.biology.outcome.OutcomeController;
+import org.gentar.biology.plan.Plan;
+import org.gentar.biology.plan.PlanController;
+import org.gentar.biology.plan.PlanResponseDTO;
 import org.springframework.hateoas.Link;
 import org.springframework.stereotype.Component;
 import java.util.ArrayList;
@@ -16,8 +19,8 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 @Component
 public class MutationResponseMapper implements Mapper<Mutation, MutationResponseDTO>
 {
-    private MutationCommonMapper mutationCommonMapper;
-    private GeneMapper geneMapper;
+    private final MutationCommonMapper mutationCommonMapper;
+    private final GeneMapper geneMapper;
 
     public MutationResponseMapper(MutationCommonMapper mutationCommonMapper, GeneMapper geneMapper)
     {
@@ -41,8 +44,23 @@ public class MutationResponseMapper implements Mapper<Mutation, MutationResponse
         mutationResponseDTO.setDescription(mutation.getDescription());
         mutationResponseDTO.setAutoDescription(mutation.getAutoDescription());
         mutationResponseDTO.setGeneDTOS(geneMapper.toDtos(mutation.getGenes()));
+        addSelfLink(mutationResponseDTO, mutation);
         addOutcomesLinks(mutationResponseDTO, mutation);
         return mutationResponseDTO;
+    }
+
+    private void addSelfLink(MutationResponseDTO mutationResponseDTO, Mutation mutation)
+    {
+        List<Link> links = new ArrayList<>();
+        Set<Outcome> outcomes = mutation.getOutcomes();
+        if (outcomes != null)
+        {
+            outcomes.forEach(x ->
+                links.add(linkTo(methodOn(MutationController.class)
+                    .findMutationByMin(mutation.getMin()))
+                    .withSelfRel()));
+        }
+        mutationResponseDTO.add(links);
     }
 
     private void addOutcomesLinks(MutationResponseDTO mutationResponseDTO, Mutation mutation)

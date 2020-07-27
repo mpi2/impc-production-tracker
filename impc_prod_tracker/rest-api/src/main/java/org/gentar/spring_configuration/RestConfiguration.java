@@ -42,6 +42,8 @@ public class RestConfiguration
             .withRenderSingleLinksFor(
                 LinkRelation.of("project"), HalConfiguration.RenderSingleLinks.AS_SINGLE)
             .withRenderSingleLinksFor(
+                LinkRelation.of("plan"), HalConfiguration.RenderSingleLinks.AS_SINGLE)
+            .withRenderSingleLinksFor(
                 LinkRelation.of("outcome"), HalConfiguration.RenderSingleLinks.AS_SINGLE);
     }
 

@@ -45,8 +45,6 @@ class PlanControllerTest extends ControllerTestTemplate
     @Autowired
     private SequenceResetter sequenceResetter;
 
-    PlanCustomizations planCustomizations = new PlanCustomizations();
-
     @BeforeEach
     public void setup() throws Exception
     {
@@ -311,7 +309,7 @@ class PlanControllerTest extends ControllerTestTemplate
         JSONAssert.assertEquals(
             expectedOutputAsString,
             obtainedPlanAsString,
-            new CustomComparator(JSONCompareMode.STRICT, planCustomizations.ignoreIdsAndDates()));
+            new CustomComparator(JSONCompareMode.STRICT, PlanCustomizations.ignoreIdsAndDates()));
     }
 
     private void setAbortAction(PlanUpdateDTO planUpdateDTO)
@@ -368,7 +366,7 @@ class PlanControllerTest extends ControllerTestTemplate
         JSONAssert.assertEquals(
             expectedOutputAsString,
             obtainedPlanAsString,
-            new CustomComparator(JSONCompareMode.STRICT, planCustomizations.ignoreIdsAndPinAndDates()));
+            new CustomComparator(JSONCompareMode.STRICT, PlanCustomizations.ignoreIdsAndPinAndDates()));
     }
 
     @Test
