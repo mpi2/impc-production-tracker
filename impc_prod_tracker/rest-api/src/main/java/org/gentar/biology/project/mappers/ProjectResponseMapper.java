@@ -5,6 +5,7 @@ import org.gentar.biology.intention.ProjectIntentionDTO;
 import org.gentar.biology.intention.ProjectIntentionMapper;
 import org.gentar.biology.project.Project;
 import org.gentar.biology.project.ProjectConsortiumDTO;
+import org.gentar.biology.project.ProjectController;
 import org.gentar.biology.project.ProjectResponseDTO;
 import org.gentar.biology.project.consortium.ProjectConsortiumMapper;
 import org.gentar.biology.species.SpeciesMapper;
@@ -12,20 +13,24 @@ import org.gentar.biology.status.StatusStampMapper;
 import org.gentar.biology.status_stamps.StatusStampsDTO;
 import org.gentar.organization.work_group.WorkGroup;
 import org.gentar.organization.work_unit.WorkUnit;
+import org.springframework.hateoas.Link;
 import org.springframework.stereotype.Component;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
 
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
+
 @Component
 public class ProjectResponseMapper implements Mapper<Project, ProjectResponseDTO>
 {
-    private ProjectCommonDataMapper projectCommonDataMapper;
-    private StatusStampMapper statusStampMapper;
-    private ProjectIntentionMapper projectIntentionMapper;
-    private SpeciesMapper speciesMapper;
-    private ProjectConsortiumMapper projectConsortiumMapper;
+    private final ProjectCommonDataMapper projectCommonDataMapper;
+    private final StatusStampMapper statusStampMapper;
+    private final ProjectIntentionMapper projectIntentionMapper;
+    private final SpeciesMapper speciesMapper;
+    private final ProjectConsortiumMapper projectConsortiumMapper;
 
     public ProjectResponseMapper(
         ProjectCommonDataMapper projectCommonDataMapper,
@@ -56,16 +61,17 @@ public class ProjectResponseMapper implements Mapper<Project, ProjectResponseDTO
         {
             projectResponseDTO.setSummaryStatusName(project.getSummaryStatus().getName());
         }
-        setStatusStampsDTO(project, projectResponseDTO);
-        setProjectIntentionsDTOS(project, projectResponseDTO);
-        setRelatedWorkUnitsDTOS(project, projectResponseDTO);
-        setRelatedWorkGroupsDTOS(project, projectResponseDTO);
-        setConsortiaToDto(project, projectResponseDTO);
-        setSpeciesToDto(project, projectResponseDTO);
+        setStatusStampsDTO(projectResponseDTO, project);
+        setProjectIntentionsDTOS(projectResponseDTO, project);
+        setRelatedWorkUnitsDTOS(projectResponseDTO, project);
+        setRelatedWorkGroupsDTOS(projectResponseDTO, project);
+        setConsortiaToDto(projectResponseDTO, project);
+        setSpeciesToDto(projectResponseDTO, project);
+        addSelfLink(projectResponseDTO, project);
         return projectResponseDTO;
     }
 
-    private void setStatusStampsDTO(Project project, ProjectResponseDTO projectResponseDTO)
+    private void setStatusStampsDTO(ProjectResponseDTO projectResponseDTO, Project project)
     {
         List<StatusStampsDTO> statusStampsDTOS =
             statusStampMapper.toDtos(project.getAssignmentStatusStamps());
@@ -73,14 +79,14 @@ public class ProjectResponseMapper implements Mapper<Project, ProjectResponseDTO
         projectResponseDTO.setStatusStampsDTOS(statusStampsDTOS);
     }
 
-    private void setProjectIntentionsDTOS(Project project, ProjectResponseDTO projectResponseDTO)
+    private void setProjectIntentionsDTOS(ProjectResponseDTO projectResponseDTO, Project project)
     {
         List<ProjectIntentionDTO> projectIntentionDTOs =
             projectIntentionMapper.toDtos(project.getProjectIntentions());
         projectResponseDTO.setProjectIntentionDTOS(projectIntentionDTOs);
     }
 
-    private void setRelatedWorkUnitsDTOS(Project project, ProjectResponseDTO projectResponseDTO)
+    private void setRelatedWorkUnitsDTOS(ProjectResponseDTO projectResponseDTO, Project project)
     {
         List<String> relatedWorkUnits = new ArrayList<>();
         List<WorkUnit> workUnits = project.getRelatedWorkUnits();
@@ -91,7 +97,7 @@ public class ProjectResponseMapper implements Mapper<Project, ProjectResponseDTO
         projectResponseDTO.setRelatedWorkUnitNames(new HashSet<>(relatedWorkUnits));
     }
 
-    private void setRelatedWorkGroupsDTOS(Project project, ProjectResponseDTO projectResponseDTO)
+    private void setRelatedWorkGroupsDTOS(ProjectResponseDTO projectResponseDTO, Project project)
     {
         List<String> relatedWorkGroups = new ArrayList<>();
         List<WorkGroup> workGroups = project.getRelatedWorkGroups();
@@ -102,17 +108,25 @@ public class ProjectResponseMapper implements Mapper<Project, ProjectResponseDTO
         projectResponseDTO.setRelatedWorkGroupNames(new HashSet<>(relatedWorkGroups));
     }
 
-    private void setConsortiaToDto(Project project, ProjectResponseDTO projectResponseDTO)
+    private void setConsortiaToDto(ProjectResponseDTO projectResponseDTO, Project project)
     {
         List<ProjectConsortiumDTO> projectConsortiumDTOS =
             projectConsortiumMapper.toDtos(project.getProjectConsortia());
         projectResponseDTO.setProjectConsortiumDTOS(projectConsortiumDTOS);
     }
 
-    private void setSpeciesToDto(Project project, ProjectResponseDTO projectResponseDTO)
+    private void setSpeciesToDto(ProjectResponseDTO projectResponseDTO, Project project)
     {
         List<String> speciesNames = speciesMapper.toDtos(project.getSpecies());
         projectResponseDTO.setSpeciesNames(speciesNames);
+    }
+
+    private void addSelfLink(ProjectResponseDTO projectResponseDTO, Project project)
+    {
+        Link link = linkTo(methodOn(ProjectController.class)
+            .findOne(project.getTpn()))
+            .withSelfRel();
+        projectResponseDTO.add(link);
     }
 
     @Override

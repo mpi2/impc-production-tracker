@@ -157,8 +157,8 @@ class ProjectControllerTest extends ControllerTestTemplate
                     .description("Institutes associated with the project - consortium"),
                 fieldWithPath("_links")
                     .description("Links for project"),
-                fieldWithPath("_links.productionPlans")
-                    .description("Links to production plans"),
+                fieldWithPath("_links.productionPlans").description("Links to production plans"),
+                fieldWithPath("_links.self.href").description("Link to the project"),
                 fieldWithPath("_links.productionPlans[].href")
                     .description("Link to a specific production plan")
             ));
@@ -314,7 +314,7 @@ class ProjectControllerTest extends ControllerTestTemplate
     @Test
     @DatabaseSetup(DBSetupFilesPaths.MULTIPLE_PROJECTS)
     @DatabaseTearDown(type = DatabaseOperation.DELETE_ALL, value = DBSetupFilesPaths.MULTIPLE_PROJECTS)
-    void testCreatProject() throws Exception
+    void testCreateProject() throws Exception
     {
         sequenceResetter.syncSequence("PROJECT_CONSORTIUM_SEQ", "PROJECT_CONSORTIUM");
         sequenceResetter.syncSequence("PROJECT_INTENTION_SEQ", "PROJECT_INTENTION");
@@ -513,6 +513,7 @@ class ProjectControllerTest extends ControllerTestTemplate
             .andExpect(status().isOk());
         MvcResult obtainedProject = callGetWithObtainedUrl.andReturn();
         String obtainedProjectAsString = obtainedProject.getResponse().getContentAsString();
+        System.out.println(obtainedProjectAsString);
         String expectedOutputAsString =
             loadExpectedResponseFromResource(jsonFileName);
 

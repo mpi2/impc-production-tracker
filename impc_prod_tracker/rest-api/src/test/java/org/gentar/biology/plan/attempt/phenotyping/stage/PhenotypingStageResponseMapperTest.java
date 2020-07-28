@@ -1,5 +1,6 @@
 package org.gentar.biology.plan.attempt.phenotyping.stage;
 
+import org.gentar.biology.plan.Plan;
 import org.gentar.biology.plan.attempt.phenotyping.PhenotypingAttempt;
 import org.gentar.biology.plan.attempt.phenotyping.stage.status_stamp.PhenotypingStageStatusStamp;
 import org.gentar.biology.plan.attempt.phenotyping.stage.type.PhenotypingStageType;
@@ -21,7 +22,8 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
 @ExtendWith(MockitoExtension.class)
-class PhenotypingStageResponseMapperTest {
+class PhenotypingStageResponseMapperTest
+{
     private PhenotypingStageResponseMapper testInstance;
 
     @Mock
@@ -37,7 +39,7 @@ class PhenotypingStageResponseMapperTest {
     void setUp()
     {
         testInstance = new PhenotypingStageResponseMapper(phenotypingStageCommonMapper,
-                phenotypingStageService, transitionMapper);
+            phenotypingStageService, transitionMapper);
     }
 
     @Test
@@ -62,6 +64,7 @@ class PhenotypingStageResponseMapperTest {
 
         PhenotypingAttempt phenotypingAttempt = new PhenotypingAttempt();
         phenotypingAttempt.setPhenotypingExternalRef("externalRef");
+        phenotypingAttempt.setPlan(new Plan());
         phenotypingStage.setPhenotypingAttempt(phenotypingAttempt);
 
         PhenotypingStageResponseDTO phenotypingStageResponseDTO = testInstance.toDto(phenotypingStage);

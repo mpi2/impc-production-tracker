@@ -1,5 +1,5 @@
 {
-  "tpn":"TPN:000000007",
+  "tpn":"TPN:000000000",
   "recovery":false,
   "comment":"comment",
   "privacyName":"public",
@@ -14,6 +14,9 @@
   ],
   "reactivationDate":null,
   "_links":{
+    "self":{
+      "href":"http://localhost:8080/api/projects/TPN:000000000"
+    },
     "productionPlans":[
       {
         "href":"http://localhost:8080/api/plans/PIN:0000000003"
