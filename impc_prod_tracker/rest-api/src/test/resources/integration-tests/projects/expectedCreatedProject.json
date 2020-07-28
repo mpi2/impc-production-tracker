@@ -19,7 +19,7 @@
     },
     "productionPlans":[
       {
-        "href":"http://localhost:8080/api/plans/PIN:0000000003"
+        "href":"http://localhost:8080/api/plans/PIN:0000000000"
       }
     ]
   },
