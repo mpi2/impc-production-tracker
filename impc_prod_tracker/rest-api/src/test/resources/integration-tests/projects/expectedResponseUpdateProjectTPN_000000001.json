@@ -1,0 +1,41 @@
+{
+  "_links":{
+    "self":{
+      "href":"http://localhost:8080/api/projects/TPN:000000001"
+    }
+  },
+  "history":[
+    {
+      "id":1,
+      "user":"gentar_test_user1@gentar.org",
+      "date":"2020-07-28T12:10:10.578719",
+      "comment":"Project updated",
+      "details":[
+        {
+          "field":"comment",
+          "oldValue":"Comment test",
+          "newValue":"A new comment",
+          "note":"Field changed"
+        },
+        {
+          "field":"privacy.name",
+          "oldValue":"public",
+          "newValue":"protected",
+          "note":"Field changed"
+        },
+        {
+          "field":"projectExternalRef",
+          "oldValue":"External reference 01",
+          "newValue":"new external reference",
+          "note":"Field changed"
+        },
+        {
+          "field":"recovery",
+          "oldValue":"false",
+          "newValue":"true",
+          "note":"Field changed"
+        }
+      ]
+    }
+  ]
+}

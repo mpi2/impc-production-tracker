@@ -3,46 +3,22 @@ package org.gentar.web.controller.project;
 import com.github.springtestdbunit.annotation.DatabaseOperation;
 import com.github.springtestdbunit.annotation.DatabaseSetup;
 import com.github.springtestdbunit.annotation.DatabaseTearDown;
-import org.gentar.biology.ChangeResponse;
-import org.gentar.biology.gene.GeneDTO;
-import org.gentar.biology.gene.ProjectIntentionGeneDTO;
-import org.gentar.biology.intention.ProjectIntentionDTO;
-import org.gentar.biology.mutation.MutationCategorizationDTO;
-import org.gentar.biology.plan.PlanCommonDataDTO;
-import org.gentar.biology.plan.PlanMinimumCreationDTO;
-import org.gentar.biology.project.ProjectCommonDataDTO;
-import org.gentar.biology.project.ProjectConsortiumDTO;
-import org.gentar.biology.project.ProjectCreationDTO;
-import org.gentar.biology.project.ProjectUpdateDTO;
-import org.gentar.common.history.HistoryDTO;
-import org.gentar.common.history.HistoryDetailDTO;
 import org.gentar.framework.ControllerTestTemplate;
+import org.gentar.framework.RestCaller;
+import org.gentar.framework.ResultValidator;
 import org.gentar.framework.SequenceResetter;
 import org.gentar.framework.TestResourceLoader;
+import org.gentar.framework.asserts.json.ChangeResponseCustomizations;
 import org.gentar.framework.asserts.json.ProjectCustomizations;
 import org.gentar.framework.db.DBSetupFilesPaths;
 import org.gentar.helpers.LinkUtil;
-import org.gentar.util.JsonHelper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.skyscreamer.jsonassert.JSONAssert;
-import org.skyscreamer.jsonassert.JSONCompareMode;
-import org.skyscreamer.jsonassert.comparator.CustomComparator;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
-import org.springframework.test.web.servlet.MvcResult;
-import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.ResultHandler;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
 
-import static org.gentar.util.JsonHelper.toJson;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.is;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.restdocs.payload.PayloadDocumentation.requestFields;
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
@@ -55,10 +31,15 @@ class ProjectControllerTest extends ControllerTestTemplate
     @Autowired
     private SequenceResetter sequenceResetter;
 
+    private ResultValidator resultValidator;
+    private RestCaller restCaller;
+
     @BeforeEach
     public void setup() throws Exception
     {
         setTestUserSecurityContext();
+        resultValidator = new ResultValidator();
+        restCaller = new RestCaller(mvc(), accessToken);
     }
 
     @Test
@@ -66,24 +47,10 @@ class ProjectControllerTest extends ControllerTestTemplate
     @DatabaseTearDown(type = DatabaseOperation.DELETE_ALL, value = DBSetupFilesPaths.MULTIPLE_PROJECTS)
     void testGetOneProject() throws Exception
     {
-        ResultActions resultActions = mvc().perform(MockMvcRequestBuilders
-            .get("/api/projects/TPN:000000001")
-            .header("Authorization", accessToken))
-            .andExpect(status().isOk())
-            .andDo(documentSingleProject());
-        MvcResult result = resultActions.andReturn();
-        String contentAsString = result.getResponse().getContentAsString();
-        String expectedOutputAsString =
-            loadExpectedResponseFromResource("expectedProjectTPN_000000001.json");
-
-        JSONAssert.assertEquals(expectedOutputAsString, contentAsString, JSONCompareMode.STRICT);
-    }
-
-    private String loadExpectedResponseFromResource(String resourceName)
-        throws IOException
-    {
-        String completeResourcePath = TEST_RESOURCES_FOLDER + resourceName;
-        return TestResourceLoader.loadJsonFromResource(completeResourcePath);
+        String url = "/api/projects/TPN:000000001";
+        String expectedJsonPath = getCompleteResourcePath("expectedProjectTPN_000000001.json");
+        String obtainedJson = restCaller.executeGetAndDocument(url, documentSingleProject());
+        resultValidator.validateObtainedMatchesJson(obtainedJson, expectedJsonPath);
     }
 
     private ResultHandler documentSingleProject()
@@ -180,18 +147,10 @@ class ProjectControllerTest extends ControllerTestTemplate
     @DatabaseTearDown(type = DatabaseOperation.DELETE_ALL, value = DBSetupFilesPaths.MULTIPLE_PROJECTS)
     void testGetAllProjects() throws Exception
     {
-        ResultActions resultActions = mvc().perform(MockMvcRequestBuilders
-            .get("/api/projects")
-            .header("Authorization", accessToken))
-            .andExpect(status().isOk())
-            .andDo(document("projects/allProjects"));
-
-        MvcResult result = resultActions.andReturn();
-        String contentAsString = result.getResponse().getContentAsString();
-        String expectedOutputAsString =
-            loadExpectedResponseFromResource("expectedAllProjects.json");
-
-        JSONAssert.assertEquals(expectedOutputAsString, contentAsString, JSONCompareMode.STRICT);
+        String url = "/api/projects";
+        String expectedJsonPath = getCompleteResourcePath("expectedAllProjects.json");
+        String obtainedJson = restCaller.executeGetAndDocument(url, document("projects/allProjects"));
+        resultValidator.validateObtainedMatchesJson(obtainedJson, expectedJsonPath);
     }
 
     @Test
@@ -199,18 +158,10 @@ class ProjectControllerTest extends ControllerTestTemplate
     @DatabaseTearDown(type = DatabaseOperation.DELETE_ALL, value = DBSetupFilesPaths.MULTIPLE_PROJECTS)
     void testGetAllProjectsWithFilter() throws Exception
     {
-        ResultActions resultActions = mvc().perform(MockMvcRequestBuilders
-            .get("/api/projects?assignmentStatusName=Assigned")
-            .header("Authorization", accessToken))
-            .andExpect(status().isOk())
-            .andDo(document("projects/allProjectsWithFilter"));
-
-        MvcResult result = resultActions.andReturn();
-        String contentAsString = result.getResponse().getContentAsString();
-        String expectedOutputAsString =
-            loadExpectedResponseFromResource("expectedFilteredProjects.json");
-
-        JSONAssert.assertEquals(expectedOutputAsString, contentAsString, JSONCompareMode.STRICT);
+        String url = "/api/projects?assignmentStatusName=Assigned";
+        String expectedJsonPath = getCompleteResourcePath("expectedFilteredProjects.json");
+        String obtainedJson = restCaller.executeGetAndDocument(url, document("projects/allProjectsWithFilter"));
+        resultValidator.validateObtainedMatchesJson(obtainedJson, expectedJsonPath);
     }
 
     @Test
@@ -218,30 +169,27 @@ class ProjectControllerTest extends ControllerTestTemplate
     @DatabaseTearDown(type = DatabaseOperation.DELETE_ALL, value = DBSetupFilesPaths.MULTIPLE_PROJECTS)
     void testUpdateProject() throws Exception
     {
-        ProjectUpdateDTO projectUpdateDTO = new ProjectUpdateDTO();
-        ProjectCommonDataDTO projectCommonDataDTO = new ProjectCommonDataDTO();
-        projectCommonDataDTO.setPrivacyName("protected");
-        projectCommonDataDTO.setComment("A new comment");
-        projectCommonDataDTO.setProjectExternalRef("new external reference");
-        projectCommonDataDTO.setRecovery(true);
-        projectUpdateDTO.setTpn("TPN:000000001");
-        projectUpdateDTO.setProjectCommonDataDTO(projectCommonDataDTO);
+        String payload = loadFromResource("projectTPN_000000001UpdatePayload.json");
+        String url = "/api/projects/TPN:000000001";
+        String obtainedJson =
+            restCaller.executePutAndDocument(url, payload, documentUpdateOfProject());
+        verifyUpdateResponse(obtainedJson, "expectedResponseUpdateProjectTPN_000000001.json");
+        String projectUrl = LinkUtil.getSelfHrefLinkStringFromJson(obtainedJson);
+        verifyUpdatedProject(projectUrl, "expectedUpdatedProjectTPN_000000001.json");
+    }
 
-        ResultActions resultActions = mvc().perform(MockMvcRequestBuilders
-            .put("/api/projects/TPN:000000001")
-            .header("Authorization", accessToken)
-            .content(toJson(projectUpdateDTO))
-            .contentType(MediaType.APPLICATION_JSON))
-            .andExpect(status().isOk())
-            .andDo(documentUpdateOfProject());
+    private void verifyUpdateResponse(String obtainedJson, String expectedJsonPath) throws Exception
+    {
+        String expectedJsonCompletePath = getCompleteResourcePath(expectedJsonPath);
+        resultValidator.validateObtainedMatchesJson(
+            obtainedJson, expectedJsonCompletePath, ChangeResponseCustomizations.ignoreDates());
+    }
 
-        MvcResult result = resultActions.andReturn();
-        String contentAsString = result.getResponse().getContentAsString();
-        ChangeResponse changeResponse = JsonHelper.fromJson(contentAsString, ChangeResponse.class);
-        verifyChangeResponse(changeResponse);
-        String projectLink = LinkUtil.getSelfHrefLinkStringFromJson(contentAsString);
-
-        verifyGetProjectEqualsJson(projectLink, "expectedUpdatedProjectTPN_000000001.json");
+    private void verifyUpdatedProject(String mutationUrl, String expectedJsonPath) throws Exception
+    {
+        String expectedJsonCompletePath = getCompleteResourcePath(expectedJsonPath);
+        String obtainedMutation = restCaller.executeGet(mutationUrl);
+        resultValidator.validateObtainedMatchesJson(obtainedMutation, expectedJsonCompletePath);
     }
 
     private ResultHandler documentUpdateOfProject()
@@ -277,40 +225,6 @@ class ProjectControllerTest extends ControllerTestTemplate
             ));
     }
 
-    private void verifyChangeResponse(ChangeResponse changeResponse)
-    {
-        List<HistoryDTO> historyDTOS = changeResponse.getHistoryDTOs();
-        assertThat(historyDTOS.size(), is(1));
-
-        HistoryDTO historyDTO = historyDTOS.get(0);
-        assertThat(historyDTO.getComment(), is("Project updated"));
-
-        List<HistoryDetailDTO> historyDetailDTOS = historyDTO.getDetails();
-        assertThat(historyDetailDTOS.size(), is(4));
-
-        HistoryDetailDTO historyDetailDTO1 = getHistoryDetailByField(historyDetailDTOS, "comment");
-        assertThat(historyDetailDTO1.getField(), is("comment"));
-        assertThat(historyDetailDTO1.getOldValue(), is("Comment test"));
-        assertThat(historyDetailDTO1.getNewValue(), is("A new comment"));
-
-        HistoryDetailDTO historyDetailDTO2 = getHistoryDetailByField(historyDetailDTOS, "recovery");
-        assertThat(historyDetailDTO2.getField(), is("recovery"));
-        assertThat(historyDetailDTO2.getOldValue(), is("false"));
-        assertThat(historyDetailDTO2.getNewValue(), is("true"));
-
-        HistoryDetailDTO historyDetailDTO3 =
-            getHistoryDetailByField(historyDetailDTOS, "privacy.name");
-        assertThat(historyDetailDTO3.getField(), is("privacy.name"));
-        assertThat(historyDetailDTO3.getOldValue(), is("public"));
-        assertThat(historyDetailDTO3.getNewValue(), is("protected"));
-
-        HistoryDetailDTO historyDetailDTO4 =
-            getHistoryDetailByField(historyDetailDTOS, "projectExternalRef");
-        assertThat(historyDetailDTO4.getField(), is("projectExternalRef"));
-        assertThat(historyDetailDTO4.getOldValue(), is("External reference 01"));
-        assertThat(historyDetailDTO4.getNewValue(), is("new external reference"));
-    }
-
     @Test
     @DatabaseSetup(DBSetupFilesPaths.MULTIPLE_PROJECTS)
     @DatabaseTearDown(type = DatabaseOperation.DELETE_ALL, value = DBSetupFilesPaths.MULTIPLE_PROJECTS)
@@ -321,38 +235,29 @@ class ProjectControllerTest extends ControllerTestTemplate
         sequenceResetter.syncSequence("PROJECT_SEQ", "PROJECT");
         sequenceResetter.syncSequence("PLAN_SEQ", "PLAN");
 
-        ProjectCreationDTO projectCreationDTO = buildProjectCreationDTO();
-        ResultActions resultActions = mvc().perform(MockMvcRequestBuilders
-            .post("/api/projects")
-            .header("Authorization", accessToken)
-            .content(toJson(projectCreationDTO))
-            .contentType(MediaType.APPLICATION_JSON))
-            .andExpect(status().isOk())
-            .andDo(documentCreationOfProject());
-
-        MvcResult result = resultActions.andReturn();
-        String contentAsString = result.getResponse().getContentAsString();
-        String projectLink = LinkUtil.getSelfHrefLinkStringFromJson(contentAsString);
-        verifyGetProjectEqualsJsonIgnoringIdsAndDates(projectLink, "expectedCreatedProject.json");
+        String payload = loadFromResource("projectCreationPayload.json");
+        String url = "/api/projects";
+        String obtainedJson =
+            restCaller.executePostAndDocument(url, payload, documentCreationOfProject());
+        verifyCreationResponse(obtainedJson, "expectedCreationResponse.json");
+        String projectLink = LinkUtil.getSelfHrefLinkStringFromJson(obtainedJson);
+        verifyProjectCreation(projectLink, "expectedCreatedProject.json");
     }
 
-    private void verifyGetProjectEqualsJsonIgnoringIdsAndDates(
-        String projectLink, String jsonFileName) throws Exception
+    private void verifyCreationResponse(String obtainedJson, String expectedJsonPath) throws Exception
     {
-        ProjectCustomizations projectCustomizations = new ProjectCustomizations();
-        ResultActions callGetWithObtainedUrl = mvc().perform(MockMvcRequestBuilders
-            .get(projectLink)
-            .header("Authorization", accessToken))
-            .andExpect(status().isOk());
-        MvcResult obtainedProject = callGetWithObtainedUrl.andReturn();
-        String obtainedProjectAsString = obtainedProject.getResponse().getContentAsString();
-        String expectedOutputAsString =
-            loadExpectedResponseFromResource(jsonFileName);
+        String expectedJsonCompletePath = getCompleteResourcePath(expectedJsonPath);
+        resultValidator.validateObtainedMatchesJson(
+            obtainedJson, expectedJsonCompletePath, ChangeResponseCustomizations.ignoreDates());
+    }
 
-        JSONAssert.assertEquals(
-            expectedOutputAsString,
-            obtainedProjectAsString,
-            new CustomComparator(JSONCompareMode.STRICT, projectCustomizations.ignoreIdsAndDates()));
+    private void verifyProjectCreation(String projectLink, String expectedJsonPath) throws Exception
+    {
+        String expectedJsonCompletePath = getCompleteResourcePath(expectedJsonPath);
+        String obtained = restCaller.executeGet(projectLink);
+        System.out.println(obtained);
+        resultValidator.validateObtainedMatchesJson(
+             obtained, expectedJsonCompletePath, ProjectCustomizations.ignoreIdsAndDates());
     }
 
     private ResultHandler documentCreationOfProject()
@@ -424,112 +329,15 @@ class ProjectControllerTest extends ControllerTestTemplate
             ));
     }
 
-    private ProjectCreationDTO buildProjectCreationDTO()
+    private String loadFromResource(String resourceName)
+        throws IOException
     {
-        ProjectCreationDTO projectCreationDTO = new ProjectCreationDTO();
-
-        ProjectCommonDataDTO projectCommonDataDTO = buildProjectCommonDataDTO();
-        projectCreationDTO.setProjectCommonDataDTO(projectCommonDataDTO);
-
-        PlanMinimumCreationDTO planMinimumCreationDTO = buildPlanMinimumCreationDTO();
-        projectCreationDTO.setPlanMinimumCreationDTO(planMinimumCreationDTO);
-
-        projectCreationDTO.setSpeciesNames(Collections.singletonList("Mus musculus"));
-        List<ProjectConsortiumDTO> projectConsortiumDTOS = new ArrayList<>();
-        ProjectConsortiumDTO projectConsortiumDTO = new ProjectConsortiumDTO();
-        projectConsortiumDTO.setConsortiumName("CMG");
-        projectConsortiumDTO.setInstituteNames(Collections.singletonList("Broad"));
-        projectConsortiumDTOS.add(projectConsortiumDTO);
-        projectCreationDTO.setProjectConsortiumDTOS(projectConsortiumDTOS);
-
-        ProjectIntentionDTO projectIntentionDTO = buildProjectIntentionDTO();
-        List<ProjectIntentionDTO> projectIntentionDTOS = new ArrayList<>();
-        projectIntentionDTOS.add(projectIntentionDTO);
-        projectCreationDTO.setProjectIntentionDTOS(projectIntentionDTOS);
-        return projectCreationDTO;
+        String completeResourcePath = getCompleteResourcePath(resourceName);
+        return TestResourceLoader.loadJsonFromResource(completeResourcePath);
     }
 
-    private PlanMinimumCreationDTO buildPlanMinimumCreationDTO()
+    private String getCompleteResourcePath(String resourceJsonName)
     {
-        PlanMinimumCreationDTO planMinimumCreationDTO = new PlanMinimumCreationDTO();
-        planMinimumCreationDTO.setPlanTypeName("production");
-        planMinimumCreationDTO.setAttemptTypeName("crispr");
-        PlanCommonDataDTO planCommonDataDTO = new PlanCommonDataDTO();
-        planCommonDataDTO.setComment("Plan comment");
-        planCommonDataDTO.setWorkUnitName("BCM");
-        planCommonDataDTO.setWorkGroupName("BaSH");
-        planCommonDataDTO.setFunderNames(Arrays.asList("KOMP"));
-        planMinimumCreationDTO.setPlanCommonDataDTO(planCommonDataDTO);
-        return planMinimumCreationDTO;
-
-    }
-
-    private ProjectCommonDataDTO buildProjectCommonDataDTO()
-    {
-        ProjectCommonDataDTO projectCommonDataDTO = new ProjectCommonDataDTO();
-        projectCommonDataDTO.setComment("comment");
-        projectCommonDataDTO.setPrivacyName("public");
-        projectCommonDataDTO.setProjectExternalRef("externalRef");
-        projectCommonDataDTO.setRecovery(false);
-        List<ProjectConsortiumDTO> projectConsortiumDTOS = new ArrayList<>();
-        ProjectConsortiumDTO projectConsortiumDTO = new ProjectConsortiumDTO();
-        projectConsortiumDTO.setConsortiumName("CMG");
-        projectConsortiumDTO.setInstituteNames(Collections.singletonList("Broad"));
-        projectConsortiumDTOS.add(projectConsortiumDTO);
-        return projectCommonDataDTO;
-    }
-
-    private ProjectIntentionDTO buildProjectIntentionDTO()
-    {
-        ProjectIntentionDTO projectIntentionDTO = new ProjectIntentionDTO();
-        ProjectIntentionGeneDTO projectIntentionGeneDTO = new ProjectIntentionGeneDTO();
-        GeneDTO geneDTO = buildGeneDTO("Serpinb10", "MGI:2138648");
-        projectIntentionGeneDTO.setGeneDTO(geneDTO);
-        projectIntentionDTO.setProjectIntentionGeneDTO(projectIntentionGeneDTO);
-        projectIntentionDTO.setMolecularMutationTypeName("Point Mutation");
-        List<MutationCategorizationDTO> mutationCategorizationDTOS = new ArrayList<>();
-        MutationCategorizationDTO mutationCategorizationDTO = new MutationCategorizationDTO();
-        mutationCategorizationDTO.setName("Null Reporter");
-        mutationCategorizationDTO.setMutationCategorizationTypeName("allele_category");
-        mutationCategorizationDTOS.add(mutationCategorizationDTO);
-        projectIntentionDTO.setMutationCategorizationDTOS(mutationCategorizationDTOS);
-        return projectIntentionDTO;
-    }
-
-    private GeneDTO buildGeneDTO(String symbol, String accId)
-    {
-        GeneDTO geneDTO = new GeneDTO();
-        geneDTO.setSymbol(symbol);
-        geneDTO.setAccId(accId);
-        return geneDTO;
-    }
-
-    private void verifyGetProjectEqualsJson(String linkToProject, String jsonFileName)
-        throws Exception
-    {
-        ResultActions callGetWithObtainedUrl = mvc().perform(MockMvcRequestBuilders
-            .get(linkToProject)
-            .header("Authorization", accessToken))
-            .andExpect(status().isOk());
-        MvcResult obtainedProject = callGetWithObtainedUrl.andReturn();
-        String obtainedProjectAsString = obtainedProject.getResponse().getContentAsString();
-        System.out.println(obtainedProjectAsString);
-        String expectedOutputAsString =
-            loadExpectedResponseFromResource(jsonFileName);
-
-        JSONAssert.assertEquals(expectedOutputAsString, obtainedProjectAsString, JSONCompareMode.STRICT);
-    }
-
-    private HistoryDetailDTO getHistoryDetailByField(
-        List<HistoryDetailDTO> historyDetailDTOS, String field)
-    {
-        HistoryDetailDTO historyDetailDTO = null;
-        if (historyDetailDTOS != null)
-        {
-            historyDetailDTO = historyDetailDTOS.stream()
-                .filter(x -> x.getField().equals(field))
-                .findFirst().orElse(null);
-        }
-        return historyDetailDTO;
+        return TEST_RESOURCES_FOLDER + resourceJsonName;
     }
 }

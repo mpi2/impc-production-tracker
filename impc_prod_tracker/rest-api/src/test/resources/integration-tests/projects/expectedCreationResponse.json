@@ -1,0 +1,18 @@
+{
+  "_links":{
+    "self":{
+      "href":"http://localhost:8080/api/projects/TPN:000000000"
+    }
+  },
+  "history":[
+    {
+      "id":1,
+      "user":"gentar_test_user1@gentar.org",
+      "date":"2020-07-28T10:44:40.999198",
+      "comment":"Project created",
+      "details":[
+
+      ]
+    }
+  ]
+}

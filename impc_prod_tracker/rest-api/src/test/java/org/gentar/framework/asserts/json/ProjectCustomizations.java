@@ -8,7 +8,7 @@ import java.util.List;
 
 public class ProjectCustomizations
 {
-    public Customization[] ignoreIdsAndDates()
+    public static Customization[] ignoreIdsAndDates()
     {
         List<Customization> customizationList = new ArrayList<>();
         customizationList.add(buildCustomizationForTpn());
@@ -19,19 +19,19 @@ public class ProjectCustomizations
         return customizationList.toArray(new Customization[0]);
     }
 
-    private Customization buildCustomizationForTpn()
+    private static Customization buildCustomizationForTpn()
     {
         return new Customization(
             "tpn", new RegularExpressionValueMatcher<>(CustomizationConstants.TPN_PATTERN));
     }
 
-    private Customization buildCustomizationForPin()
+    private static Customization buildCustomizationForPin()
     {
         return new Customization(
             "pin", new RegularExpressionValueMatcher<>(CustomizationConstants.PIN_PATTERN));
     }
 
-    private List<Customization> buildCustomizationForStatusDates()
+    private static List<Customization> buildCustomizationForStatusDates()
     {
         List<Customization> customizations = new ArrayList<>();
         customizations.add(CustomizationHelper.buildDateCustomization("assignmentStatusStamps[0].date"));
@@ -45,14 +45,14 @@ public class ProjectCustomizations
             new RegularExpressionValueMatcher<>(CustomizationConstants.TPN_URL_PATTERN));
     }
 
-    private List<Customization> buildCustomizationForPlansLinks()
+    private static List<Customization> buildCustomizationForPlansLinks()
     {
         List<Customization> customizations = new ArrayList<>();
         customizations.add(new Customization(
-            "_links.productionPlans.href",
+            "_links.productionPlans[0].href",
             new RegularExpressionValueMatcher<>(CustomizationConstants.PIN_URL_PATTERN)));
         customizations.add(new Customization(
-            "_links.phenotypingPlans.href",
+            "_links.phenotypingPlans[0].href",
             new RegularExpressionValueMatcher<>(CustomizationConstants.PIN_URL_PATTERN)));
         return customizations;
     }

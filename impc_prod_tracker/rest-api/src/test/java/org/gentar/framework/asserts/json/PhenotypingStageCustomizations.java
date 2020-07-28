@@ -17,7 +17,7 @@ public class PhenotypingStageCustomizations
         List<Customization> customizationList = new ArrayList<>();
         customizationList.addAll(buildCustomizationForStatusDates());
         customizationList.add(buildCustomizationForPsn());
-        customizationList.add(buildCustomizationForMinLink());
+        customizationList.add(buildCustomizationForSelfLink());
         return customizationList.toArray(new Customization[0]);
     }
 
@@ -34,7 +34,7 @@ public class PhenotypingStageCustomizations
             "psn", new RegularExpressionValueMatcher<>(CustomizationConstants.PSN_PATTERN));
     }
 
-    private static Customization buildCustomizationForMinLink()
+    private static Customization buildCustomizationForSelfLink()
     {
         return new Customization(
             "_links.self.href",

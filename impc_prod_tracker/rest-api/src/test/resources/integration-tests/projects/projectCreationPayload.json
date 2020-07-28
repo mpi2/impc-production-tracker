@@ -1,0 +1,50 @@
+{
+  "recovery":false,
+  "comment":"comment",
+  "privacyName":"public",
+  "externalReference":"externalRef",
+  "planDetails":{
+    "funderNames":[
+      "KOMP"
+    ],
+    "workUnitName":"BCM",
+    "workGroupName":"BaSH",
+    "comment":"Plan comment",
+    "productsAvailableForGeneralPublic":null,
+    "attemptTypeName":"crispr",
+    "typeName":"production"
+  },
+  "projectIntentions":[
+    {
+      "molecularMutationTypeName":"Point Mutation",
+      "mutationCategorizations":[
+        {
+          "name":"Null Reporter",
+          "description":null,
+          "typeName":"allele_category"
+        }
+      ],
+      "intentionByGene":{
+        "gene":{
+          "id":null,
+          "name":null,
+          "symbol":"Serpinb10",
+          "speciesName":null,
+          "externalLink":null,
+          "accessionId":"MGI:2138648"
+        }
+      }
+    }
+  ],
+  "speciesNames":[
+    "Mus musculus"
+  ],
+  "consortia":[
+    {
+      "consortiumName":"CMG",
+      "institutes":[
+        "Broad"
+      ]
+    }
+  ]
+}
