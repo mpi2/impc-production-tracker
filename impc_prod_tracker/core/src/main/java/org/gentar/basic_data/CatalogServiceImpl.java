@@ -126,6 +126,8 @@ public class CatalogServiceImpl implements CatalogService
         {
             addWorkUnits();
             addWorkGroups();
+            addConsortia();
+            addFunders();
             addPlanTypes();
             addPrivacies();
             addStatuses();
@@ -137,12 +139,10 @@ public class CatalogServiceImpl implements CatalogService
             addPreparationTypes();
             addSearchTypes();
             addSpecies();
-            addConsortia();
             addMolecularMutationTypes();
             addNucleaseTypes();
             addNucleaseClasses();
             addMutationCategorizations();
-            addFunders();
             addAttemptTypes();
             addSequenceTypes();
             addSequenceCategorization();

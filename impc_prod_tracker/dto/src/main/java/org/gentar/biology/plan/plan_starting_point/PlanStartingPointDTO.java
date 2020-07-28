@@ -15,4 +15,7 @@ public class PlanStartingPointDTO extends RepresentationModel<PlanStartingPointD
 
     @JsonProperty("outcomeTpo")
     private String tpo;
+
+    @JsonProperty("productionPlanPin")
+    private String pin;
 }

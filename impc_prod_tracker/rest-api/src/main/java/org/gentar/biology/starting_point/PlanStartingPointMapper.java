@@ -4,6 +4,7 @@ import org.gentar.Mapper;
 import org.gentar.biology.outcome.Outcome;
 import org.gentar.biology.outcome.OutcomeController;
 import org.gentar.biology.outcome.OutcomeService;
+import org.gentar.biology.plan.PlanController;
 import org.gentar.biology.plan.plan_starting_point.PlanStartingPointDTO;
 import org.gentar.biology.plan.starting_point.PlanStartingPoint;
 import org.springframework.hateoas.Link;
@@ -34,8 +35,27 @@ public class PlanStartingPointMapper implements Mapper<PlanStartingPoint, PlanSt
         {
             planStartingPointDTO.setTpo(planStartingPoint.getOutcome().getTpo());
             addOutcomeLinks(planStartingPointDTO, planStartingPoint);
+            planStartingPointDTO.setPin(planStartingPoint.getOutcome().getPlan().getPin());
+            addProductionPlanLinks(planStartingPointDTO, planStartingPoint);
         }
         return planStartingPointDTO;
+    }
+
+    private void addProductionPlanLinks(PlanStartingPointDTO planStartingPointDTO,
+                                        PlanStartingPoint planStartingPoint)
+    {
+        List<Link> links = new ArrayList<>();
+        List<Outcome> outcomes = new ArrayList<>();
+        Outcome outcome = planStartingPoint.getOutcome();
+        outcomes.add(outcome);
+        if (outcomes != null)
+        {
+            outcomes.forEach(x ->
+                    links.add(linkTo(methodOn(PlanController.class)
+                            .findOne(outcome.getPlan().getPin()))
+                            .withRel("productionPlan")));
+        }
+        planStartingPointDTO.add(links);
     }
 
     private void addOutcomeLinks(PlanStartingPointDTO planStartingPointDTO,
