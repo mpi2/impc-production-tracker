@@ -17,9 +17,14 @@
         ],
         "reactivationDate":null,
         "_links":{
-          "productionPlans":{
-            "href":"http://localhost:8080/api/plans/PIN:0000000001"
-          }
+          "self":{
+            "href":"http://localhost:8080/api/projects/TPN:000000001"
+          },
+          "productionPlans":[
+            {
+              "href":"http://localhost:8080/api/plans/PIN:0000000001"
+            }
+          ]
         },
         "assignmentStatusStamps":[
 
@@ -95,6 +100,11 @@
 
         ],
         "reactivationDate":null,
+        "_links":{
+          "self":{
+            "href":"http://localhost:8080/api/projects/TPN:000000003"
+          }
+        },
         "assignmentStatusStamps":[
 
         ],
@@ -128,6 +138,11 @@
 
         ],
         "reactivationDate":null,
+        "_links":{
+          "self":{
+            "href":"http://localhost:8080/api/projects/TPN:000000005"
+          }
+        },
         "assignmentStatusStamps":[
 
         ],

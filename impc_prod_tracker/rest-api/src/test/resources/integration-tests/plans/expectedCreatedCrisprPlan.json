@@ -1,5 +1,5 @@
 {
-  "pin":"any valid pin value",
+  "pin":"PIN:0000000000",
   "tpn":"TPN:000000001",
   "attemptTypeName":"crispr",
   "funderNames":[
@@ -91,6 +91,9 @@
   "statusName":"Founder Obtained",
   "summaryStatusName":"Founder Obtained",
   "_links":{
+    "self":{
+      "href":"http://localhost:8080/api/plans/PIN:0000000000"
+    },
     "project":{
       "href":"http://localhost:8080/api/projects/TPN:000000001"
     }

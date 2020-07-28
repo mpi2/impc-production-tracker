@@ -18,6 +18,7 @@ public class PlanCustomizations
         customizationList.addAll(buildCustomizationForCrisprIds());
         customizationList.addAll(buildCustomizationForStatusDates());
         customizationList.add(buildCustomizationForPin());
+        customizationList.add(buildCustomizationForPinLink());
         return customizationList.toArray(new Customization[0]);
     }
 
@@ -33,6 +34,13 @@ public class PlanCustomizations
     {
         return new Customization(
             "pin", new RegularExpressionValueMatcher<>(CustomizationConstants.PIN_PATTERN));
+    }
+
+    private static Customization buildCustomizationForPinLink()
+    {
+        return new Customization(
+            "_links.self.href",
+            new RegularExpressionValueMatcher<>(CustomizationConstants.PIN_URL_PATTERN));
     }
 
     private static List<Customization> buildCustomizationForCrisprIds()

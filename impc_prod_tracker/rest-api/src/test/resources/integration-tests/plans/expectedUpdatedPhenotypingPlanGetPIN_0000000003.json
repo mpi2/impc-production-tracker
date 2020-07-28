@@ -25,6 +25,9 @@
   "statusName":"Plan Created",
   "summaryStatusName":"Plan Created",
   "_links":{
+    "self":{
+      "href":"http://localhost:8080/api/plans/PIN:0000000003"
+    },
     "project":{
       "href":"http://localhost:8080/api/projects/TPN:000000001"
     }

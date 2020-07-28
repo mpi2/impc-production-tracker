@@ -14,6 +14,7 @@ public class ProjectCustomizations
         customizationList.add(buildCustomizationForTpn());
         customizationList.add(buildCustomizationForPin());
         customizationList.addAll(buildCustomizationForStatusDates());
+        customizationList.add(buildCustomizationForSelfLink());
         customizationList.addAll(buildCustomizationForPlansLinks());
         return customizationList.toArray(new Customization[0]);
     }
@@ -30,27 +31,6 @@ public class ProjectCustomizations
             "pin", new RegularExpressionValueMatcher<>(CustomizationConstants.PIN_PATTERN));
     }
 
-    private List<Customization> buildCustomizationForCrisprIds()
-    {
-        List<Customization> customizations = new ArrayList<>();
-        customizations.add(CustomizationHelper.buildIdCustomization("crisprAttempt.assay.id"));
-        customizations.add(
-            CustomizationHelper.buildIdCustomization("crisprAttempt.genotypePrimers[0].id"));
-        customizations.add(
-            CustomizationHelper.buildIdCustomization("crisprAttempt.guides[0].id"));
-        customizations.add(
-            CustomizationHelper.buildIdCustomization("crisprAttempt.mutagenesisDonors[0].id"));
-        customizations.add(
-            CustomizationHelper.buildIdCustomization("crisprAttempt.nucleases[0].id"));
-        customizations.add(
-            CustomizationHelper.buildIdCustomization("crisprAttempt.reagents[0].id"));
-        customizations.add(
-            CustomizationHelper.buildIdCustomization("crisprAttempt.mutagenesisDonors[0].id"));
-        customizations.add(
-            CustomizationHelper.buildIdCustomization("crisprAttempt.mutagenesisDonors[0].id"));
-        return customizations;
-    }
-
     private List<Customization> buildCustomizationForStatusDates()
     {
         List<Customization> customizations = new ArrayList<>();
@@ -58,13 +38,22 @@ public class ProjectCustomizations
         return customizations;
     }
 
+    private static Customization buildCustomizationForSelfLink()
+    {
+        return new Customization(
+            "_links.self.href",
+            new RegularExpressionValueMatcher<>(CustomizationConstants.TPN_URL_PATTERN));
+    }
+
     private List<Customization> buildCustomizationForPlansLinks()
     {
         List<Customization> customizations = new ArrayList<>();
-        Customization productionPlansLinks = new Customization(
+        customizations.add(new Customization(
             "_links.productionPlans.href",
-            new RegularExpressionValueMatcher<>("(http://localhost:8080/api/plans/)(PIN:\\d{1,10})"));
-        customizations.add(productionPlansLinks);
+            new RegularExpressionValueMatcher<>(CustomizationConstants.PIN_URL_PATTERN)));
+        customizations.add(new Customization(
+            "_links.phenotypingPlans.href",
+            new RegularExpressionValueMatcher<>(CustomizationConstants.PIN_URL_PATTERN)));
         return customizations;
     }
 }

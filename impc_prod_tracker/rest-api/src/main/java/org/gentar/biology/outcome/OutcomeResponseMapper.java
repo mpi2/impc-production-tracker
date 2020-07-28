@@ -15,7 +15,7 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 @Component
 public class OutcomeResponseMapper implements Mapper<Outcome, OutcomeResponseDTO>
 {
-    private OutcomeCommonMapper outcomeCommonMapper;
+    private final OutcomeCommonMapper outcomeCommonMapper;
 
     public OutcomeResponseMapper(OutcomeCommonMapper outcomeCommonMapper)
     {
@@ -41,8 +41,18 @@ public class OutcomeResponseMapper implements Mapper<Outcome, OutcomeResponseDTO
                 outcomeResponseDTO.setOutcomeTypeName(outcome.getOutcomeType().getName());
             }
         }
+        addSelfLink(outcomeResponseDTO, outcome);
         addMutationLinks(outcomeResponseDTO, outcome);
         return outcomeResponseDTO;
+    }
+
+    private void addSelfLink(OutcomeResponseDTO outcomeResponseDTO, Outcome outcome)
+    {
+        Link link = linkTo(
+            methodOn(OutcomeController.class).findOneByPlanAndTpo(
+                outcome.getPlan().getPin(), outcome.getTpo()))
+            .withSelfRel();
+        outcomeResponseDTO.add(link);
     }
 
     private void addMutationLinks(OutcomeResponseDTO outcomeResponseDTO, Outcome outcome)

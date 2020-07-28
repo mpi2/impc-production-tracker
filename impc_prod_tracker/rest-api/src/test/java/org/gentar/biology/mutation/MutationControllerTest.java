@@ -64,7 +64,8 @@ public class MutationControllerTest extends ControllerTestTemplate
 
     private ResultHandler documentMutation()
     {
-        List<FieldDescriptor> mutationFieldsDescriptions = MutationFieldsDescriptors.getMutationFieldsDescriptions();
+        List<FieldDescriptor> mutationFieldsDescriptions =
+            MutationFieldsDescriptors.getMutationFieldsDescriptions();
         return document("mutations/mutation", responseFields(mutationFieldsDescriptions));
     }
 
@@ -100,7 +101,6 @@ public class MutationControllerTest extends ControllerTestTemplate
         String url = "/api/plans/PIN:0000000001/outcomes/TPO:000000000002/mutations/MIN:000000000002/";
         String obtainedJson =
             restCaller.executePutAndDocument(url, payload, document("mutations/mutation/putMutation"));
-        System.out.println(obtainedJson);
         verifyUpdateResponse(obtainedJson, "expectedResponseUpdateMutationMIN_000000000002.json");
         String mutationUrl = LinkUtil.getSelfHrefLinkStringFromJson(obtainedJson);
         verifyUpdatedMutation(mutationUrl, "expectedMutationMIN_000000000002AfterUpdate.json");

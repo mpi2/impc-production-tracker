@@ -5,10 +5,11 @@ import org.gentar.audit.history.HistoryMapper;
 import org.gentar.biology.ChangeResponse;
 import org.gentar.biology.outcome.Outcome;
 import org.gentar.biology.outcome.OutcomeService;
-import org.gentar.biology.plan.Plan;
 import org.gentar.common.history.HistoryDTO;
 import org.gentar.helpers.ChangeResponseCreator;
+import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.Link;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -50,6 +51,13 @@ public class MutationController
         this.historyMapper = historyMapper;
     }
 
+    @GetMapping(value = {"mutations/{min}"})
+    public MutationResponseDTO findMutationByMin(@PathVariable String min)
+    {
+        Mutation mutation = mutationService.getMutationByMinFailsIfNull(min);
+        return mutationResponseMapper.toDto(mutation);
+    }
+
     /**
      * Gets a mutation in an outcome.
      * @param pin Public identifier of the plan.
@@ -87,7 +95,7 @@ public class MutationController
      * @return Collection of mutations.
      */
     @GetMapping(value = {"plans/{pin}/outcomes/{tpo}/mutations"})
-    public List<MutationResponseDTO> getAllMutationsByOutcome(
+    public ResponseEntity<CollectionModel<MutationResponseDTO>> getAllMutationsByOutcome(
         @PathVariable String pin, @PathVariable String tpo)
     {
         List<MutationResponseDTO> mutationResponseDTOS = new ArrayList<>();
@@ -96,7 +104,7 @@ public class MutationController
         {
             mutationResponseDTOS = mutationResponseMapper.toDtos(outcome.getMutations());
         }
-        return mutationResponseDTOS;
+        return ResponseEntity.ok(CollectionModel.of(mutationResponseDTOS));
     }
 
     /**

@@ -6,7 +6,6 @@ import com.github.springtestdbunit.annotation.DatabaseTearDown;
 import org.gentar.audit.history.HistoryFieldsDescriptors;
 import org.gentar.biology.ChangeResponse;
 import org.gentar.biology.plan.attempt.crispr.CrisprAttemptDTO;
-import org.gentar.biology.plan.attempt.phenotyping.stage.PhenotypingStageFieldsDescriptors;
 import org.gentar.common.history.HistoryDTO;
 import org.gentar.common.history.HistoryDetailDTO;
 import org.gentar.framework.*;
@@ -46,8 +45,6 @@ class PlanControllerTest extends ControllerTestTemplate
     @Autowired
     private SequenceResetter sequenceResetter;
 
-    PlanCustomizations planCustomizations = new PlanCustomizations();
-
     @BeforeEach
     public void setup() throws Exception
     {
@@ -70,7 +67,7 @@ class PlanControllerTest extends ControllerTestTemplate
         MvcResult result = resultActions.andReturn();
         String contentAsString = result.getResponse().getContentAsString();
         String expectedOutputAsString =
-                loadExpectedResponseFromResource("expectedCrisprPlanGetPIN_0000000001.json");
+            loadExpectedResponseFromResource("expectedCrisprPlanGetPIN_0000000001.json");
 
         JSONAssert.assertEquals(expectedOutputAsString, contentAsString, JSONCompareMode.STRICT);
     }
@@ -203,32 +200,32 @@ class PlanControllerTest extends ControllerTestTemplate
         assertThat(historyDetailDTOS.size(), is(6));
 
         HistoryDetailDTO historyDetailDTO1 =
-                getHistoryDetailByField(historyDetailDTOS, "crisprAttempt.comment");
+            getHistoryDetailByField(historyDetailDTOS, "crisprAttempt.comment");
         assertThat(historyDetailDTO1.getOldValue(), is("crispr plan comment"));
         assertThat(historyDetailDTO1.getNewValue(), is("New Crispr Comment"));
 
         HistoryDetailDTO historyDetailDTO2 =
-                getHistoryDetailByField(historyDetailDTOS, "crisprAttempt.totalEmbryosInjected");
+            getHistoryDetailByField(historyDetailDTOS, "crisprAttempt.totalEmbryosInjected");
         assertThat(historyDetailDTO2.getOldValue(), is("72"));
         assertThat(historyDetailDTO2.getNewValue(), is("10"));
 
         HistoryDetailDTO historyDetailDTO3 =
-                getHistoryDetailByField(historyDetailDTOS, "crisprAttempt.miExternalRef");
+            getHistoryDetailByField(historyDetailDTOS, "crisprAttempt.miExternalRef");
         assertThat(historyDetailDTO3.getOldValue(), is(nullValue()));
         assertThat(historyDetailDTO3.getNewValue(), is("New external reference"));
 
         HistoryDetailDTO historyDetailDTO4 =
-                getHistoryDetailByField(historyDetailDTOS, "crisprAttempt.totalEmbryosSurvived");
+            getHistoryDetailByField(historyDetailDTOS, "crisprAttempt.totalEmbryosSurvived");
         assertThat(historyDetailDTO4.getOldValue(), is("70"));
         assertThat(historyDetailDTO4.getNewValue(), is("5"));
 
         HistoryDetailDTO historyDetailDTO5 =
-                getHistoryDetailByField(historyDetailDTOS, "crisprAttempt.experimental");
+            getHistoryDetailByField(historyDetailDTOS, "crisprAttempt.experimental");
         assertThat(historyDetailDTO5.getOldValue(), is("true"));
         assertThat(historyDetailDTO5.getNewValue(), is("false"));
 
         HistoryDetailDTO historyDetailDTO6 =
-                getHistoryDetailByField(historyDetailDTOS, "comment");
+            getHistoryDetailByField(historyDetailDTOS, "comment");
         assertThat(historyDetailDTO6.getOldValue(), is(nullValue()));
         assertThat(historyDetailDTO6.getNewValue(), is("New Plan comment"));
     }
@@ -299,7 +296,7 @@ class PlanControllerTest extends ControllerTestTemplate
     }
 
     private void verifyGetPlantEqualsJsonIgnoringIdsAndDates(String planLink, String jsonFileName)
-            throws Exception
+        throws Exception
     {
         ResultActions callGetWithObtainedUrl = mvc().perform(MockMvcRequestBuilders
             .get(planLink)
@@ -312,7 +309,7 @@ class PlanControllerTest extends ControllerTestTemplate
         JSONAssert.assertEquals(
             expectedOutputAsString,
             obtainedPlanAsString,
-            new CustomComparator(JSONCompareMode.STRICT, planCustomizations.ignoreIdsAndDates()));
+            new CustomComparator(JSONCompareMode.STRICT, PlanCustomizations.ignoreIdsAndDates()));
     }
 
     private void setAbortAction(PlanUpdateDTO planUpdateDTO)
@@ -369,7 +366,7 @@ class PlanControllerTest extends ControllerTestTemplate
         JSONAssert.assertEquals(
             expectedOutputAsString,
             obtainedPlanAsString,
-            new CustomComparator(JSONCompareMode.STRICT, planCustomizations.ignoreIdsAndPinAndDates()));
+            new CustomComparator(JSONCompareMode.STRICT, PlanCustomizations.ignoreIdsAndPinAndDates()));
     }
 
     @Test
@@ -470,7 +467,6 @@ class PlanControllerTest extends ControllerTestTemplate
         String obtainedJson =
             restCaller.executePostAndDocument(url, payload, document("plans/postPhenotypingPlan"));
         String phenotypingPlanUrl = LinkUtil.getSelfHrefLinkStringFromJson(obtainedJson);
-
         verifyCreatedPhenotypingPlan(phenotypingPlanUrl, expectedJson);
     }
 
@@ -479,7 +475,7 @@ class PlanControllerTest extends ControllerTestTemplate
     {
         String obtainedPhenotypingStage = restCaller.executeGet(phenotypingPlanUrl);
         resultValidator.validateObtainedMatchesJson(
-                obtainedPhenotypingStage, expectedJson, PlanCustomizations.ignoreIdsAndPinAndDates());
+            obtainedPhenotypingStage, expectedJson, PlanCustomizations.ignoreIdsAndPinAndDates());
     }
 
     @Test

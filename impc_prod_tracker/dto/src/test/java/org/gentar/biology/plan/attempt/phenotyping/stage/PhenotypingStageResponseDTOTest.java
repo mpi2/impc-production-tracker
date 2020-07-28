@@ -42,13 +42,16 @@ class PhenotypingStageResponseDTOTest
         String json = JsonConverter.toJson(phenotypingStageResponseDTO);
         assertThat(json, is(notNullValue()));
         assertThat(json, is("{\"pin\":\"pin\",\"psn\":\"psn\",\"statusName\":\"statusName\"," +
-                "\"phenotypingTypeName\":\"phenotypingTypeName\",\"phenotypingExternalRef\":\"phenotypingExternalRef\"," +
-                "\"phenotypingExperimentsStarted\":\"2020-06-17\",\"doNotCountTowardsCompleteness\":true," +
-                "\"initialDataReleaseDate\":\"2020-06-17\",\"tissueDistributions\":null," +
-                "\"statusDates\":[{\"statusName\":null,\"date\":\"2020-01-01T01:01:00\"}]," +
-                "\"statusTransition\":{\"currentStatus\":\"current status name\"," +
-                "\"transitions\":[{\"action\":null,\"description\":\"transition description\",\"triggeredByUser\":false," +
-                "\"available\":false,\"note\":null,\"nextStatus\":null}],\"actionToExecute\":null}}"));
+            "\"phenotypingTypeName\":\"phenotypingTypeName\"," +
+            "\"phenotypingExternalRef\":\"phenotypingExternalRef\"," +
+            "\"phenotypingExperimentsStarted\":\"2020-06-17\"," +
+            "\"doNotCountTowardsCompleteness\":true,\"initialDataReleaseDate\":\"2020-06-17\"," +
+            "\"tissueDistributions\":null," +
+            "\"links\":[],\"statusDates\":[{\"statusName\":null,\"date\":\"2020-01-01T01:01:00\"}]," +
+            "\"statusTransition\":{\"currentStatus\":\"current status name\"," +
+            "\"transitions\":[{\"action\":null,\"description\":\"transition description\"," +
+            "\"triggeredByUser\":false,\"available\":false,\"note\":null,\"nextStatus\":null}]," +
+            "\"actionToExecute\":null}}"));
     }
 
     private List<StatusStampsDTO> buildStatusStampsDTOS()

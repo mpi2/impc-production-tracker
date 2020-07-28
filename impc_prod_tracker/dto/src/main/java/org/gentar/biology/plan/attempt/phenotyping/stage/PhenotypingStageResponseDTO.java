@@ -4,14 +4,17 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonUnwrapped;
 import lombok.Data;
-
+import org.gentar.biology.mutation.MutationResponseDTO;
 import org.gentar.biology.status_stamps.StatusStampsDTO;
 import org.gentar.common.state_machine.StatusTransitionDTO;
+import org.springframework.hateoas.RepresentationModel;
+import org.springframework.hateoas.server.core.Relation;
 
 import java.util.List;
 
+@Relation(collectionRelation = "phenotypingStages")
 @Data
-public class PhenotypingStageResponseDTO
+public class PhenotypingStageResponseDTO extends RepresentationModel<PhenotypingStageResponseDTO>
 {
     @JsonIgnore
     private Long id;

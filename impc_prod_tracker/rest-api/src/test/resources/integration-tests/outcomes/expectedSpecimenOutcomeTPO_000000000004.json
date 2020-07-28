@@ -41,8 +41,13 @@
     }
   },
   "_links":{
-    "mutations":{
-      "href":"http://localhost:8080/api/plans/PIN:0000000001/outcomes/TPO:000000000004/mutations/MIN:000000000001"
+    "mutations":[
+      {
+        "href":"http://localhost:8080/api/plans/PIN:0000000001/outcomes/TPO:000000000004/mutations/MIN:000000000001"
+      }
+    ],
+    "self":{
+      "href":"http://localhost:8080/api/plans/PIN:0000000001/outcomes/TPO:000000000004"
     }
   }
 }

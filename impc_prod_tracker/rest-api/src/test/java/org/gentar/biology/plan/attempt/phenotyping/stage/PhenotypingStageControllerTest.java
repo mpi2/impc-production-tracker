@@ -18,7 +18,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.restdocs.payload.FieldDescriptor;
 import org.springframework.test.web.servlet.ResultHandler;
-
 import java.io.IOException;
 import java.util.List;
 
@@ -26,7 +25,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
 
-class PhenotypingStageControllerTest  extends ControllerTestTemplate
+class PhenotypingStageControllerTest extends ControllerTestTemplate
 {
     private static final String TEST_RESOURCES_FOLDER = INTEGRATION_TESTS_RESOURCE_PATH + "phenotypingStages/";
 
@@ -51,7 +50,8 @@ class PhenotypingStageControllerTest  extends ControllerTestTemplate
     {
         String url = "/api/plans/PIN:0000000001/phenotypingStages";
         String expectedJson = getCompleteResourcePath("expectedAllPhenotypingStages.json");
-        String obtainedJson = restCaller.executeGetAndDocument(url, document("phenotypingStages/allPhenotypingStages"));
+        String obtainedJson =
+            restCaller.executeGetAndDocument(url, document("phenotypingStages/allPhenotypingStages"));
         resultValidator.validateObtainedMatchesJson(obtainedJson, expectedJson);
     }
 
@@ -68,8 +68,11 @@ class PhenotypingStageControllerTest  extends ControllerTestTemplate
 
     private ResultHandler documentPhenotypingStage()
     {
-        List<FieldDescriptor> phenotypingStageFieldsDescriptions = PhenotypingStageFieldsDescriptors.getPhenotypingStageFieldsDescriptions();
-        return document("phenotypingStages/getPhenotypingStage", responseFields(phenotypingStageFieldsDescriptions));
+        List<FieldDescriptor> phenotypingStageFieldsDescriptions =
+            PhenotypingStageFieldsDescriptors.getPhenotypingStageFieldsDescriptions();
+        return document(
+            "phenotypingStages/getPhenotypingStage",
+            responseFields(phenotypingStageFieldsDescriptions));
     }
 
     @Test
@@ -79,7 +82,7 @@ class PhenotypingStageControllerTest  extends ControllerTestTemplate
     {
         String url = "/api/plans/PIN:0000000001/phenotypingStages/PSN:000000000002/history";
         String expectedJson =
-                getCompleteResourcePath("expectedPhenotypingStageHistoryPSN_000000000002.json");
+            getCompleteResourcePath("expectedPhenotypingStageHistoryPSN_000000000002.json");
         String obtainedJson = restCaller.executeGetAndDocument(url, documentPhenotypingStageHistory());
         resultValidator.validateObtainedMatchesJson(obtainedJson, expectedJson);
     }
@@ -87,7 +90,7 @@ class PhenotypingStageControllerTest  extends ControllerTestTemplate
     private ResultHandler documentPhenotypingStageHistory()
     {
         List<FieldDescriptor> historyFieldDescriptions =
-                HistoryFieldsDescriptors.getHistoryFieldDescriptions();
+            HistoryFieldsDescriptors.getHistoryFieldDescriptions();
         return document("phenotypingStages/history", responseFields(historyFieldDescriptions));
     }
 
@@ -107,18 +110,18 @@ class PhenotypingStageControllerTest  extends ControllerTestTemplate
         String url = "/api/plans/PIN:0000000002/phenotypingStages/";
         String expectedJson = getCompleteResourcePath("expectedCreatedPhenotypingStage.json");
         String obtainedJson =
-                restCaller.executePostAndDocument(url, payload, document("phenotypingStages/postPhenotypingStage"));
+            restCaller.executePostAndDocument(url, payload, document("phenotypingStages/postPhenotypingStage"));
         String phenotypingStageUrl = LinkUtil.getSelfHrefLinkStringFromJson(obtainedJson);
 
         verifyCreatedPhenotypingStage(phenotypingStageUrl, expectedJson);
     }
 
     private void verifyCreatedPhenotypingStage(
-            String phenotypingStageUrl, String expectedJson) throws Exception
+        String phenotypingStageUrl, String expectedJson) throws Exception
     {
-        String obtainedPhenotypingStage = restCaller.executeGet(phenotypingStageUrl);
+        String obtained = restCaller.executeGet(phenotypingStageUrl);
         resultValidator.validateObtainedMatchesJson(
-                obtainedPhenotypingStage, expectedJson, PhenotypingStageCustomizations.ignoreIdsAndPsnAndDates());
+            obtained, expectedJson, PhenotypingStageCustomizations.ignoreIdsAndPsnAndDates());
     }
 
     @Test
@@ -127,15 +130,19 @@ class PhenotypingStageControllerTest  extends ControllerTestTemplate
     void testUpdatePhenotypingStageInPlan() throws Exception
     {
         sequenceResetter.syncSequence("PHENOTYPING_STAGE_SEQ", "PHENOTYPING_STAGE");
-        sequenceResetter.syncSequence("PHENOTYPING_STAGE_STATUS_STAMP_SEQ", "PHENOTYPING_STAGE_STATUS_STAMP");
+        sequenceResetter.syncSequence(
+            "PHENOTYPING_STAGE_STATUS_STAMP_SEQ", "PHENOTYPING_STAGE_STATUS_STAMP");
         sequenceResetter.syncSequence("TISSUE_DISTRIBUTION_SEQ", "TISSUE_DISTRIBUTION");
         sequenceResetter.syncSequence("HISTORY_SEQ", "HISTORY");
         sequenceResetter.syncSequence("HISTORY_DETAIL_SEQ", "HISTORY_DETAIL");
 
         String payload = loadFromResource("phenotypingStageUpdatePayload.json");
         String url = "/api/plans/PIN:0000000001/phenotypingStages/PSN:000000000001";
-        String expectedJson = getCompleteResourcePath("expectedUpdatedPhenotypingStagePSN_000000000001.json");
-        String obtainedJson = restCaller.executePutAndDocument(url, payload, document("phenotypingStages/putPhenotypingStage"));
+        String expectedJson =
+            getCompleteResourcePath("expectedUpdatedPhenotypingStagePSN_000000000001.json");
+        String obtainedJson =
+            restCaller.executePutAndDocument(
+                url, payload, document("phenotypingStages/putPhenotypingStage"));
         ChangeResponse changeResponse = JsonHelper.fromJson(obtainedJson, ChangeResponse.class);
         verifyChangeResponse(changeResponse);
         String phenotypingStageUrl = LinkUtil.getSelfHrefLinkStringFromJson(obtainedJson);
@@ -154,17 +161,17 @@ class PhenotypingStageControllerTest  extends ControllerTestTemplate
         assertThat(historyDetailDTOS.size(), is(1));
 
         HistoryDetailDTO historyDetailDTO1 =
-                HistoryValidator.getHistoryDetailByField(historyDetailDTOS, "doNotCountTowardsCompleteness");
+            HistoryValidator.getHistoryDetailByField(historyDetailDTOS, "doNotCountTowardsCompleteness");
         assertThat(historyDetailDTO1.getOldValue(), is("true"));
         assertThat(historyDetailDTO1.getNewValue(), is("false"));
     }
 
     private void verifyUpdatedPhenotypingStage(
-            String phenotypingStageUrl, String expectedJson) throws Exception
+        String phenotypingStageUrl, String expectedJson) throws Exception
     {
-        String obtainedPhenotypingStage = restCaller.executeGet(phenotypingStageUrl);
+        String obtained = restCaller.executeGet(phenotypingStageUrl);
         resultValidator.validateObtainedMatchesJson(
-                obtainedPhenotypingStage, expectedJson, PhenotypingStageCustomizations.ignoreIdsAndPsnAndDates());
+            obtained, expectedJson, PhenotypingStageCustomizations.ignoreIdsAndPsnAndDates());
     }
 
     private String getCompleteResourcePath(String resourceJsonName)
@@ -173,7 +180,7 @@ class PhenotypingStageControllerTest  extends ControllerTestTemplate
     }
 
     private String loadFromResource(String resourceName)
-            throws IOException
+        throws IOException
     {
         String completeResourcePath = getCompleteResourcePath(resourceName);
         return TestResourceLoader.loadJsonFromResource(completeResourcePath);

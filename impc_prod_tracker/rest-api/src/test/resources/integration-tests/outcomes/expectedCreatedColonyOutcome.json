@@ -9,7 +9,7 @@
     "statusDates":[
       {
         "statusName":"Genotype In Progress",
-        "date":"2020-06-18T08:58:06.290481"
+        "date":"2020-07-27T08:39:33.595563"
       }
     ],
     "backgroundStrainName":"C57BL/6NJ",
@@ -55,8 +55,13 @@
     }
   },
   "_links":{
-    "mutations":{
-      "href":"http://localhost:8080/api/plans/PIN:0000000001/outcomes/TPO:000000007/mutations/MIN:000000000003"
+    "mutations":[
+      {
+        "href":"http://localhost:8080/api/plans/PIN:0000000001/outcomes/TPO:000000007/mutations/MIN:000000000003"
+      }
+    ],
+    "self":{
+      "href":"http://localhost:8080/api/plans/PIN:0000000001/outcomes/TPO:000000007"
     }
   }
 }

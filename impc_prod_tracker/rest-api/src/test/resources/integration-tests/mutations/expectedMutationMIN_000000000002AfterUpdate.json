@@ -74,9 +74,14 @@
     }
   ],
   "_links":{
-    "outcomes":{
-      "href":"http://localhost:8080/api/plans/PIN:0000000001/outcomes/TPO:000000000002"
-    }
+    "self":{
+      "href":"http://localhost:8080/api/mutations/MIN:000000000002"
+    },
+    "outcomes":[
+      {
+        "href":"http://localhost:8080/api/plans/PIN:0000000001/outcomes/TPO:000000000002"
+      }
+    ]
   },
   "genes":[
     {

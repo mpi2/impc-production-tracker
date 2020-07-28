@@ -137,7 +137,6 @@ class OutcomeControllerTest extends ControllerTestTemplate
         String obtainedJson =
             restCaller.executePostAndDocument(url, payload, document("outcomes/postColonyOutcome"));
         String outcomeUrl = LinkUtil.getSelfHrefLinkStringFromJson(obtainedJson);
-
         verifyCreatedOutcome(outcomeUrl, expectedJson);
     }
 
@@ -149,7 +148,7 @@ class OutcomeControllerTest extends ControllerTestTemplate
             obtainedOutcome, expectedJson, OutcomeCustomizations.ignoreIdsAndTpoAndDates());
 
         String mutationLink =
-            LinkUtil.getCustomHrefLinkStringFromJson(obtainedOutcome, "mutations");
+            LinkUtil.getCustomHrefLinkStringFromJsonArray(obtainedOutcome, "mutations", 0);
         verifyObtainedMutation(
             mutationLink, getCompleteResourcePath("expectedNestedCreatedMutation.json"));
     }

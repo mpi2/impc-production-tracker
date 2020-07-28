@@ -2,6 +2,7 @@ package org.gentar.biology.plan.mappers;
 
 import org.gentar.Mapper;
 import org.gentar.biology.plan.Plan;
+import org.gentar.biology.plan.PlanController;
 import org.gentar.biology.plan.PlanResponseDTO;
 import org.gentar.biology.plan.PlanService;
 import org.gentar.biology.project.Project;
@@ -12,6 +13,7 @@ import org.gentar.common.state_machine.StatusTransitionDTO;
 import org.gentar.common.state_machine.TransitionDTO;
 import org.gentar.statemachine.TransitionEvaluation;
 import org.gentar.statemachine.TransitionMapper;
+import org.springframework.hateoas.Link;
 import org.springframework.stereotype.Component;
 import java.util.Comparator;
 import java.util.List;
@@ -56,6 +58,7 @@ public class PlanResponseMapper implements Mapper<Plan, PlanResponseDTO>
         setStatusStampsDTOS(planResponseDTO, plan);
         setSummaryStatusStampsDTOS(planResponseDTO, plan);
         setStatusTransitionDTO(planResponseDTO, plan);
+        addSelfLink(planResponseDTO, plan);
         addProjectLink(planResponseDTO, plan);
         return planResponseDTO;
     }
@@ -90,6 +93,12 @@ public class PlanResponseMapper implements Mapper<Plan, PlanResponseDTO>
         List<TransitionEvaluation> transitionEvaluations =
             planService.evaluateNextTransitions(plan);
         return transitionMapper.toDtos(transitionEvaluations);
+    }
+
+    private void addSelfLink(PlanResponseDTO planResponseDTO, Plan plan)
+    {
+        Link link = linkTo(methodOn(PlanController.class).findOne(plan.getPin())).withSelfRel();
+        planResponseDTO.add(link);
     }
 
     private void addProjectLink(PlanResponseDTO planResponseDTO, Plan plan)

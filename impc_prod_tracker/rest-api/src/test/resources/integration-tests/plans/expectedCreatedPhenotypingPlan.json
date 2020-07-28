@@ -1,5 +1,5 @@
 {
-  "pin": "PIN:0000000005",
+  "pin": "PIN:NNNNNNNNNN",
   "tpn": "TPN:000000001",
   "attemptTypeName": "adult phenotyping",
   "funderNames":[],
@@ -23,6 +23,9 @@
   "statusName": "Plan Created",
   "summaryStatusName": "Plan Created",
   "_links":{
+    "self":{
+      "href":"http://localhost:8080/api/plans/PIN:NNNNNNNNNN"
+    },
     "project":{
       "href":"http://localhost:8080/api/projects/TPN:000000001"
     }

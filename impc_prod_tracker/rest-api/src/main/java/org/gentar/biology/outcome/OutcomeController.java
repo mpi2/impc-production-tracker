@@ -7,7 +7,9 @@ import org.gentar.biology.plan.Plan;
 import org.gentar.biology.plan.PlanService;
 import org.gentar.common.history.HistoryDTO;
 import org.gentar.helpers.ChangeResponseCreator;
+import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.Link;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -30,13 +32,13 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 @CrossOrigin(origins="*")
 public class OutcomeController
 {
-    private OutcomeService outcomeService;
-    private PlanService planService;
-    private OutcomeRequestProcessor outcomeRequestProcessor;
-    private OutcomeResponseMapper outcomeResponseMapper;
-    private OutcomeCreationMapper outcomeCreationMapper;
-    private ChangeResponseCreator changeResponseCreator;
-    private HistoryMapper historyMapper;
+    private final OutcomeService outcomeService;
+    private final PlanService planService;
+    private final OutcomeRequestProcessor outcomeRequestProcessor;
+    private final OutcomeResponseMapper outcomeResponseMapper;
+    private final OutcomeCreationMapper outcomeCreationMapper;
+    private final ChangeResponseCreator changeResponseCreator;
+    private final HistoryMapper historyMapper;
 
     public OutcomeController(
         OutcomeService outcomeService,
@@ -65,19 +67,21 @@ public class OutcomeController
     }
 
     @GetMapping(value = {"plans/{pin}/outcomes"})
-    public List<OutcomeResponseDTO> findAllByPlan(@PathVariable String pin)
+    public ResponseEntity<CollectionModel<OutcomeResponseDTO>> findAllByPlan(@PathVariable String pin)
     {
         Plan plan = planService.getNotNullPlanByPin(pin);
         Set<Outcome> outcomes = plan.getOutcomes();
-        return outcomeResponseMapper.toDtos(outcomes);
+        return ResponseEntity.ok(CollectionModel.of(outcomeResponseMapper.toDtos(outcomes)));
     }
 
     @GetMapping(value = {"plans/{pin}/outcomes/{tpo}/history"})
-    public List<HistoryDTO> getPlanHistory(@PathVariable String pin, @PathVariable String tpo)
+    public List<HistoryDTO> getPlanHistory(
+        @PathVariable String pin, @PathVariable String tpo)
     {
         Outcome outcome = outcomeService.getOutcomeByPinAndTpo(pin, tpo);
-
-        return historyMapper.toDtos(outcomeService.getOutcomeHistory(outcome));
+        List<HistoryDTO> historyDTOS =
+            historyMapper.toDtos(outcomeService.getOutcomeHistory(outcome));
+        return historyDTOS;
     }
 
     /**
