@@ -13,9 +13,13 @@
     "_links":{
       "outcome":{
         "href":"http://localhost:8080/api/plans/PIN:0000000001/outcomes/TPO:000000000001"
+      },
+      "productionPlan": {
+        "href": "http://localhost:8080/api/plans/PIN:0000000001"
       }
     },
-    "outcomeTpo":"TPO:000000000001"
+    "outcomeTpo":"TPO:000000000001",
+    "productionPlanPin": "PIN:0000000001"
   },
   "phenotypingAttemptResponse":{
     "phenotypingExternalRef":"CR10129",

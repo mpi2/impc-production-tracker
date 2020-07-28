@@ -230,8 +230,13 @@ public class PlanFieldsDescriptors
         addField(phenotypingFields, "phenotypingStartingPoint._links", "");
         addField(phenotypingFields, "phenotypingStartingPoint._links.outcome", "");
         addField(phenotypingFields, "phenotypingStartingPoint._links.outcome.href", "Outcome link");
+        addField(phenotypingFields, "phenotypingStartingPoint._links.productionPlan", "");
+        addField(phenotypingFields, "phenotypingStartingPoint._links.productionPlan.href",
+                "Production plan link");
         addField(phenotypingFields, "phenotypingStartingPoint.outcomeTpo",
                 "Public identifier for the outcome.");
+        addField(phenotypingFields, "phenotypingStartingPoint.productionPlanPin",
+                "Public identifier for the outcome production plan.");
         addField(phenotypingFields, "phenotypingAttemptResponse", "Phenotyping attempt details.");
         addField(phenotypingFields, "phenotypingAttemptResponse.phenotypingExternalRef",
                 "Phenotyping colony name or specimen group name");

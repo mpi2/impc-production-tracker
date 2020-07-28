@@ -45,12 +45,10 @@ class PlanBasicDataDTOTest
 
         String json = JsonConverter.toJson(planBasicDataDTO);
         assertThat(json, is(notNullValue()));
-        assertThat(json, is("{\"funderNames\":null,\"workUnitName\":null,\"workGroupName\":null," +
-            "\"comment\":null,\"productsAvailableForGeneralPublic\":null," +
-            "\"BreedingStartingPoints\":[{\"links\":[],\"outcomeTpo\":null}]," +
-            "\"breedingAttempt\":{\"numberOfCreMatingsStarted\":null," +
-            "\"numberOfCreMatingsSuccessful\":null,\"creExcesion\":null,\"tatCre\":null," +
-            "\"deleterStrainName\":null}}"));
+        assertThat(json, is("{\"funderNames\":null,\"workUnitName\":null,\"workGroupName\":null,\"comment\":null," +
+                "\"productsAvailableForGeneralPublic\":null,\"BreedingStartingPoints\":[{\"links\":[],\"outcomeTpo\":null," +
+                "\"productionPlanPin\":null}],\"breedingAttempt\":{\"numberOfCreMatingsStarted\":null," +
+                "\"numberOfCreMatingsSuccessful\":null,\"creExcesion\":null,\"tatCre\":null,\"deleterStrainName\":null}}"));
     }
 
     @Test
@@ -67,7 +65,7 @@ class PlanBasicDataDTOTest
         assertThat(json, is(notNullValue()));
         assertThat(json, is("{\"funderNames\":null,\"workUnitName\":null,\"workGroupName\":null," +
             "\"comment\":null,\"productsAvailableForGeneralPublic\":null," +
-            "\"phenotypingStartingPoint\":{\"links\":[],\"outcomeTpo\":null}," +
+            "\"phenotypingStartingPoint\":{\"links\":[],\"outcomeTpo\":null,\"productionPlanPin\":null}," +
             "\"phenotypingAttempt\":{\"phenotypingStages\":null}}"));
     }
 }

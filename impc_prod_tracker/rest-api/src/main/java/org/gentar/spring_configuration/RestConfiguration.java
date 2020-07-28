@@ -44,7 +44,9 @@ public class RestConfiguration
             .withRenderSingleLinksFor(
                 LinkRelation.of("plan"), HalConfiguration.RenderSingleLinks.AS_SINGLE)
             .withRenderSingleLinksFor(
-                LinkRelation.of("outcome"), HalConfiguration.RenderSingleLinks.AS_SINGLE);
+                LinkRelation.of("outcome"), HalConfiguration.RenderSingleLinks.AS_SINGLE)
+            .withRenderSingleLinksFor(
+                LinkRelation.of("productionPlan"), HalConfiguration.RenderSingleLinks.AS_SINGLE);
     }
 
 }
