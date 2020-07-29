@@ -55,7 +55,7 @@
         "triggeredByUser": true,
         "available": false,
         "note": "The plan already has phenotyping stages. Please abort the plan.",
-        "nextStatus": "PlanAbandoned"
+        "nextStatus": "Plan Abandoned"
       },
       {
         "action": "abortPhenotypingPlan",
@@ -63,7 +63,7 @@
         "triggeredByUser": true,
         "available": true,
         "note": null,
-        "nextStatus": "PhenotypePlanAborted"
+        "nextStatus": "Phenotyping Plan Aborted"
       }
     ],
     "actionToExecute": null

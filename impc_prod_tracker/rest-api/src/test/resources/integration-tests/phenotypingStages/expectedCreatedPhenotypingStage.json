@@ -39,7 +39,7 @@
         "triggeredByUser":true,
         "available":true,
         "note":"executed by the user when rederivation is started.",
-        "nextStatus":"RederivationStarted"
+        "nextStatus":"Rederivation Started"
       },
       {
         "action":"updateToPhenotypingStarted",
@@ -47,7 +47,7 @@
         "triggeredByUser":true,
         "available":false,
         "note":"The current user does not have permission to rollback to 'Phenotyping Started'",
-        "nextStatus":"PhenotypingStarted"
+        "nextStatus":"Phenotyping Started"
       },
       {
         "action":"abortWhenPhenotypeProductionRegistered",
@@ -55,7 +55,7 @@
         "triggeredByUser":true,
         "available":true,
         "note":null,
-        "nextStatus":"PhenotypeProductionAborted"
+        "nextStatus":"Phenotype Production Aborted"
       }
     ],
     "actionToExecute":null

@@ -46,7 +46,7 @@
               "triggeredByUser":true,
               "available":true,
               "note":"Used to indicate all phenotype data has been sent to the DCC.",
-              "nextStatus":"PhenotypingAllDataSent"
+              "nextStatus":"Phenotyping All Data Sent"
             },
             {
               "action":"abortWhenPhenotypingStarted",
@@ -54,7 +54,7 @@
               "triggeredByUser":true,
               "available":true,
               "note":null,
-              "nextStatus":"PhenotypeProductionAborted"
+              "nextStatus":"Phenotype Production Aborted"
             }
           ],
           "actionToExecute":null
@@ -101,7 +101,7 @@
               "triggeredByUser":true,
               "available":false,
               "note":"The current user does not have permission to move to 'Phenotyping Started'",
-              "nextStatus":"PhenotypingStarted"
+              "nextStatus":"Phenotyping Started"
             },
             {
               "action":"abortWhenPhenotypingProductionRegistered",
@@ -109,7 +109,7 @@
               "triggeredByUser":true,
               "available":true,
               "note":null,
-              "nextStatus":"PhenotypeProductionAborted"
+              "nextStatus":"Phenotype Production Aborted"
             }
           ],
           "actionToExecute":null

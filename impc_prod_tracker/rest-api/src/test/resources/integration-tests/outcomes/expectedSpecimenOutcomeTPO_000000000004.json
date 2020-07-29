@@ -34,7 +34,7 @@
           "triggeredByUser":true,
           "available":false,
           "note":"Specimen cannot be aborted [Not implemented yet.]",
-          "nextStatus":"SpecimenGroupAborted"
+          "nextStatus":"Specimen Group Aborted"
         }
       ],
       "actionToExecute":null

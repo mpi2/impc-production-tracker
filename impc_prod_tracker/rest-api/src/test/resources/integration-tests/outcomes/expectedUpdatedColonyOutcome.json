@@ -32,7 +32,7 @@
           "triggeredByUser":true,
           "available":true,
           "note":null,
-          "nextStatus":"GenotypeConfirmed"
+          "nextStatus":"Genotype Confirmed"
         },
         {
           "action":"updateFromGenotypeInProgressToGenotypeNotConfirmed",
@@ -40,7 +40,7 @@
           "triggeredByUser":true,
           "available":true,
           "note":null,
-          "nextStatus":"GenotypeNotConfirmed"
+          "nextStatus":"Genotype Not Confirmed"
         },
         {
           "action":"abortGenotypeInProgress",
@@ -48,7 +48,7 @@
           "triggeredByUser":true,
           "available":true,
           "note":null,
-          "nextStatus":"ColonyAborted"
+          "nextStatus":"Colony Aborted"
         }
       ],
       "actionToExecute":null
