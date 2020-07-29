@@ -15,7 +15,7 @@ public class TransitionMapper implements Mapper<TransitionEvaluation, Transition
         transitionDTO.setDescription(entity.getTransition().getDescription());
         transitionDTO.setTriggeredByUser(entity.getTransition().isTriggeredByUser());
         transitionDTO.setAvailable(entity.isExecutable());
-        transitionDTO.setNextStatus(entity.getTransition().getEndState().getName());
+        transitionDTO.setNextStatus(entity.getTransition().getEndState().getInternalName());
         transitionDTO.setNote(
             entity.getNote() == null ? entity.getTransition().getTriggerNote() : entity.getNote());
         return transitionDTO;

@@ -43,7 +43,7 @@
         "triggeredByUser":true,
         "available":true,
         "note":"Used to indicate all phenotype data has been sent to the DCC.",
-        "nextStatus":"PhenotypingAllDataSent"
+        "nextStatus":"Phenotyping All Data Sent"
       },
       {
         "action":"abortWhenPhenotypingStarted",
@@ -51,7 +51,7 @@
         "triggeredByUser":true,
         "available":true,
         "note":null,
-        "nextStatus":"PhenotypeProductionAborted"
+        "nextStatus":"Phenotype Production Aborted"
       }
     ],
     "actionToExecute":null

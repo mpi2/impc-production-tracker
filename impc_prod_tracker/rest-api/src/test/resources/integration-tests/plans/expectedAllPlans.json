@@ -116,7 +116,7 @@
               "triggeredByUser":true,
               "available":true,
               "note":null,
-              "nextStatus":"AttemptAborted"
+              "nextStatus":"Attempt Aborted"
             }
           ],
           "actionToExecute":null
@@ -159,7 +159,7 @@
               "triggeredByUser":true,
               "available":true,
               "note":null,
-              "nextStatus":"PlanAbandoned"
+              "nextStatus":"Plan Abandoned"
             },
             {
               "action":"updateToInProgress",
@@ -167,7 +167,7 @@
               "triggeredByUser":false,
               "available":false,
               "note":"There is not a crispr attempt yet",
-              "nextStatus":"AttemptInProgress"
+              "nextStatus":"Attempt In Progress"
             }
           ],
           "actionToExecute":null
@@ -222,7 +222,7 @@
               "triggeredByUser":true,
               "available":false,
               "note":"The plan already has phenotyping stages. Please abort the plan.",
-              "nextStatus":"PlanAbandoned"
+              "nextStatus":"Plan Abandoned"
             },
             {
               "action":"abortPhenotypingPlan",
@@ -230,7 +230,7 @@
               "triggeredByUser":true,
               "available":true,
               "note":null,
-              "nextStatus":"PhenotypePlanAborted"
+              "nextStatus":"Phenotyping Plan Aborted"
             }
           ],
           "actionToExecute":null
@@ -285,7 +285,7 @@
               "triggeredByUser":true,
               "available":false,
               "note":"The plan already has phenotyping stages. Please abort the plan.",
-              "nextStatus":"PlanAbandoned"
+              "nextStatus":"Plan Abandoned"
             },
             {
               "action":"abortPhenotypingPlan",
@@ -293,7 +293,7 @@
               "triggeredByUser":true,
               "available":true,
               "note":null,
-              "nextStatus":"PhenotypePlanAborted"
+              "nextStatus":"Phenotyping Plan Aborted"
             }
           ],
           "actionToExecute":null

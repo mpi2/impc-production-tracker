@@ -113,7 +113,7 @@
         "triggeredByUser":true,
         "available":true,
         "note":null,
-        "nextStatus":"AttemptAborted"
+        "nextStatus":"Attempt Aborted"
       }
     ],
     "actionToExecute":null

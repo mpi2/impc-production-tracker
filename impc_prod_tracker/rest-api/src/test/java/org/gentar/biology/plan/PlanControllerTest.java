@@ -403,8 +403,10 @@ class PlanControllerTest extends ControllerTestTemplate
 
         String payload = loadFromResource("phenotypingPlanUpdatePayload.json");
         String url = "/api/plans/PIN:0000000003";
-        String expectedJson = getCompleteResourcePath("expectedUpdatedPhenotypingPlanGetPIN_0000000003.json");
-        String obtainedJson = restCaller.executePutAndDocument(url, payload, document("plans/putPhenotypingPlan"));
+        String expectedJson =
+            getCompleteResourcePath("expectedUpdatedPhenotypingPlanGetPIN_0000000003.json");
+        String obtainedJson =
+            restCaller.executePutAndDocument(url, payload, document("plans/putPhenotypingPlan"));
         ChangeResponse changeResponse = JsonHelper.fromJson(obtainedJson, ChangeResponse.class);
         verifyChangeResponsePhenotyping(changeResponse);
         String phenotypingPlanUrl = LinkUtil.getSelfHrefLinkStringFromJson(obtainedJson);
