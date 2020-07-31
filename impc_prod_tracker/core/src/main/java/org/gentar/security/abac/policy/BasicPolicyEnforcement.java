@@ -73,7 +73,7 @@ public class BasicPolicyEnforcement implements PolicyEnforcement
             if (evaluateRuleExpression(rule.getCondition(), cxt))
             {
                 result = true;
-                logger.info("Found rule that evaluated true: [{}]", rule.getDescription());
+//                logger.info("Found rule that evaluated true: [{}]", rule.getDescription());
                 break;
             }
         }

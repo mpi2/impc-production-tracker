@@ -138,6 +138,7 @@ public class Plan extends BaseEntity implements Resource<Plan>, ProcessData
 
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
+    @IgnoreForAuditingChanges
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "plan")
     private Set<PlanStartingPoint> planStartingPoints;
 
@@ -167,6 +168,8 @@ public class Plan extends BaseEntity implements Resource<Plan>, ProcessData
         this.crisprAttempt = plan.crisprAttempt;
         this.breedingAttempt = plan.breedingAttempt;
         this.phenotypingAttempt = plan.phenotypingAttempt;
+        this.planStartingPoints =
+            plan.planStatusStamps == null ? null : new HashSet<>(plan.planStartingPoints);
     }
 
     @ManyToOne

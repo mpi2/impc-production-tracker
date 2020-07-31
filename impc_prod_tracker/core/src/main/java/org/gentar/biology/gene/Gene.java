@@ -90,7 +90,7 @@ public class Gene extends BaseEntity
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
     @JsonIgnore
-    @ManyToMany()
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
             name = "gene_flag_relation",
             joinColumns = @JoinColumn(name = "gene_id"),

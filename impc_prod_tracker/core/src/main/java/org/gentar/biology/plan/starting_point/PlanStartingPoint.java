@@ -3,8 +3,8 @@ package org.gentar.biology.plan.starting_point;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.ToString;
 import org.gentar.BaseEntity;
+import org.gentar.audit.diff.IgnoreForAuditingChanges;
 import org.gentar.biology.outcome.Outcome;
 import org.gentar.biology.plan.Plan;
 import javax.persistence.*;
@@ -22,12 +22,13 @@ public class PlanStartingPoint extends BaseEntity implements Serializable
     private Long id;
 
     @NotNull
-//    @ToString.Exclude
     @ManyToOne(targetEntity = Plan.class)
+    @IgnoreForAuditingChanges
     private Plan plan;
 
     @NotNull
     @ManyToOne(targetEntity = Outcome.class)
+    @IgnoreForAuditingChanges
     private Outcome outcome;
 
 }

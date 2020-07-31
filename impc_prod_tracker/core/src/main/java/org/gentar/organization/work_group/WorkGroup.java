@@ -18,6 +18,7 @@ package org.gentar.organization.work_group;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import org.gentar.BaseEntity;
+import org.gentar.audit.diff.IgnoreForAuditingChanges;
 import org.gentar.organization.funder.Funder;
 import org.gentar.organization.work_unit.WorkUnit;
 import javax.persistence.Entity;
@@ -48,6 +49,7 @@ public class WorkGroup extends BaseEntity
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
     @JsonIgnore
+    @IgnoreForAuditingChanges
     @ManyToMany(mappedBy = "workGroups")
     private Set<Funder> funders;
 
