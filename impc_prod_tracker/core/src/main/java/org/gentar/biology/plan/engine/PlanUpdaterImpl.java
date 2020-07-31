@@ -63,7 +63,7 @@ public class PlanUpdaterImpl implements PlanUpdater
         if (!policyEnforcement.hasPermission(plan, PermissionService.UPDATE_PLAN_ACTION))
         {
             throw new UserOperationFailedException(
-                "You don't have permission to edit this plan");
+                "You don't have permission to edit the plan " + plan.getPin());
         }
     }
 

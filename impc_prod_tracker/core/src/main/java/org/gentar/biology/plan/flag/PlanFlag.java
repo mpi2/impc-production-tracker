@@ -17,6 +17,7 @@ package org.gentar.biology.plan.flag;
 
 import lombok.*;
 import org.gentar.BaseEntity;
+import org.gentar.audit.diff.IgnoreForAuditingChanges;
 import org.gentar.biology.plan.Plan;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -41,5 +42,6 @@ public class PlanFlag extends BaseEntity
     private String name;
 
     @ManyToMany(mappedBy = "planFlags")
+    @IgnoreForAuditingChanges
     private Set<Plan> plans;
 }
