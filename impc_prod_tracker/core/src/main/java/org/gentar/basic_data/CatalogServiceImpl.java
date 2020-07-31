@@ -16,6 +16,8 @@
 package org.gentar.basic_data;
 
 
+import org.gentar.biology.colony.distribution.distribution_network.DistributionNetworkRepository;
+import org.gentar.biology.colony.distribution.product_type.ProductTypeRepository;
 import org.gentar.biology.plan.attempt.crispr.nuclease.nuclease_class.NucleaseClassRepository;
 import org.gentar.biology.plan.attempt.crispr.nuclease.nuclease_type.NucleaseTypeRepository;
 import org.gentar.biology.mutation.categorizarion.MutationCategorizationRepository;
@@ -48,27 +50,29 @@ import java.util.Map;
 @Component
 public class CatalogServiceImpl implements CatalogService
 {
-    private WorkUnitRepository workUnitRepository;
-    private WorkGroupRepository workGroupRepository;
-    private PlanTypeRepository planTypeRepository;
-    private PrivacyRepository privacyRepository;
-    private StatusRepository statusRepository;
-    private AssignmentStatusRepository assignmentStatusRepository;
-    private GeneticMutationTypeRepository geneticMutationTypeRepository;
-    private InstituteRepository instituteRepository;
-    private StrainRepository strainRepository;
-    private PreparationTypeRepository preparationTypeRepository;
-    private MaterialDepositedTypeRepository materialDepositedTypeRepository;
-    private SpeciesRepository speciesRepository;
-    private ConsortiumRepository consortiumRepository;
-    private MolecularMutationTypeRepository molecularMutationTypeRepository;
-    private NucleaseTypeRepository nucleaseTypeRepository;
-    private NucleaseClassRepository nucleaseClassRepository;
-    private MutationCategorizationRepository mutationCategorizationRepository;
-    private FunderRepository funderRepository;
-    private AttemptTypeRepository attemptTypeRepository;
-    private SequenceTypeRepository sequenceTypeRepository;
-    private SequenceCategoryRepository sequenceCategoryRepository;
+    private final WorkUnitRepository workUnitRepository;
+    private final WorkGroupRepository workGroupRepository;
+    private final PlanTypeRepository planTypeRepository;
+    private final PrivacyRepository privacyRepository;
+    private final StatusRepository statusRepository;
+    private final AssignmentStatusRepository assignmentStatusRepository;
+    private final GeneticMutationTypeRepository geneticMutationTypeRepository;
+    private final InstituteRepository instituteRepository;
+    private final StrainRepository strainRepository;
+    private final PreparationTypeRepository preparationTypeRepository;
+    private final MaterialDepositedTypeRepository materialDepositedTypeRepository;
+    private final SpeciesRepository speciesRepository;
+    private final ConsortiumRepository consortiumRepository;
+    private final MolecularMutationTypeRepository molecularMutationTypeRepository;
+    private final NucleaseTypeRepository nucleaseTypeRepository;
+    private final NucleaseClassRepository nucleaseClassRepository;
+    private final MutationCategorizationRepository mutationCategorizationRepository;
+    private final FunderRepository funderRepository;
+    private final AttemptTypeRepository attemptTypeRepository;
+    private final SequenceTypeRepository sequenceTypeRepository;
+    private final SequenceCategoryRepository sequenceCategoryRepository;
+    private final ProductTypeRepository productTypeRepository;
+    private final DistributionNetworkRepository distributionNetworkRepository;
 
     private Map<String, List<String>> conf = new HashMap<>();
 
@@ -93,8 +97,9 @@ public class CatalogServiceImpl implements CatalogService
         FunderRepository funderRepository,
         AttemptTypeRepository attemptTypeRepository,
         SequenceTypeRepository sequenceTypeRepository,
-        SequenceCategoryRepository sequenceCategoryRepository
-    )
+        SequenceCategoryRepository sequenceCategoryRepository,
+        ProductTypeRepository productTypeRepository,
+        DistributionNetworkRepository distributionNetworkRepository)
     {
         this.workUnitRepository = workUnitRepository;
         this.workGroupRepository = workGroupRepository;
@@ -117,6 +122,8 @@ public class CatalogServiceImpl implements CatalogService
         this.attemptTypeRepository = attemptTypeRepository;
         this.sequenceTypeRepository = sequenceTypeRepository;
         this.sequenceCategoryRepository = sequenceCategoryRepository;
+        this.productTypeRepository = productTypeRepository;
+        this.distributionNetworkRepository = distributionNetworkRepository;
     }
 
     @Override
@@ -146,6 +153,8 @@ public class CatalogServiceImpl implements CatalogService
             addAttemptTypes();
             addSequenceTypes();
             addSequenceCategorization();
+            addProductTypes();
+            addDistributionNetworks();
         }
         return conf;
     }
@@ -304,4 +313,17 @@ public class CatalogServiceImpl implements CatalogService
         conf.put("sequenceCategorizations", sequenceCategorizations);
     }
 
+    private void addProductTypes()
+    {
+        List<String> productTypes = new ArrayList<>();
+        productTypeRepository.findAll().forEach(p -> productTypes.add(p.getName()));
+        conf.put("productTypes", productTypes);
+    }
+
+    private void addDistributionNetworks()
+    {
+        List<String> distributionNetworks = new ArrayList<>();
+        distributionNetworkRepository.findAll().forEach(p -> distributionNetworks.add(p.getName()));
+        conf.put("distributionNetworks", distributionNetworks);
+    }
 }
