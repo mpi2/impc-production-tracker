@@ -2,7 +2,6 @@ package org.gentar.biology.plan;
 
 import lombok.Data;
 import org.gentar.biology.plan.filter.PlanFilterBuilder;
-import org.gentar.biology.status_stamps.StatusStampsDTO;
 import org.gentar.helpers.CsvRecord;
 import org.gentar.helpers.CsvWriter;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -13,7 +12,6 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.time.Duration;
 import java.time.Instant;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
@@ -46,7 +44,6 @@ public class StatusSyncController
         int size = plans.size();
         int count = 0;
         Instant init = Instant.now();
-        Instant last = Instant.now();
         for (Plan plan : plans)
         {
             System.out.println(plan.getPin());
@@ -56,9 +53,7 @@ public class StatusSyncController
             count ++;
             if (count % 10 == 0)
             {
-                Instant now = Instant.now();
-                Duration timeElapsed = Duration.between(last, now);
-                System.out.println(count + " of " + size + ". Updated: [" + records.size() + "]. Elapsed since last: " + timeElapsed);
+                System.out.println(count + " of " + size + ". Updated: [" + records.size() + "]");
             }
 
             if (!initialStatusName.equals(newStatusName))
@@ -70,7 +65,6 @@ public class StatusSyncController
                 records.add(record);
                 System.out.println("--> Changed " + plan.getPin());
             }
-            last = Instant.now();
         }
         csvWriter.writeListToCsv(response.getWriter(), records, MassivePlanStatusUpdateCsv.HEADERS);
         Instant end = Instant.now();
@@ -82,7 +76,7 @@ public class StatusSyncController
         List<Plan> plans = new ArrayList<>();
 
         List<String> filterStatuses =
-            Arrays.asList("Plan Created", "Attempt In Progress", "Embryos Obtained");
+            Arrays.asList("Attempt In Progress", "Embryos Obtained");
         plans = planService.getPlans(
             PlanFilterBuilder.getInstance()
                 .withStatusNames(filterStatuses)
