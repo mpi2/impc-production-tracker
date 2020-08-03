@@ -8,7 +8,7 @@ import org.gentar.biology.colony.distribution.product_type.ProductType;
 import org.gentar.organization.work_unit.WorkUnit;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 @NoArgsConstructor(access= AccessLevel.PUBLIC, force=true)
 @Data
@@ -36,10 +36,10 @@ public class DistributionProduct extends BaseEntity
     private DistributionNetwork distributionNetwork;
 
     @Column(name = "start_date")
-    private LocalDateTime startDate;
+    private LocalDate startDate;
 
     @Column(name = "end_date")
-    private LocalDateTime endDate;
+    private LocalDate endDate;
 
     public String toString()
     {
