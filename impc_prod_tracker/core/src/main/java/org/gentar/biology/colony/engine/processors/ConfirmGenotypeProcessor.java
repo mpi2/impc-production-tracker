@@ -79,6 +79,6 @@ public class ConfirmGenotypeProcessor extends AbstractProcessor
 
     private boolean mgiAlleleSymbolExists(Mutation mutation)
     {
-        return mutation.getMgiAlleleSymbol() != null;
+        return mutation.getSymbol() != null;
     }
 }

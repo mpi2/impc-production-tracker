@@ -2,13 +2,10 @@ package org.gentar.biology.mutation;
 
 import org.gentar.Mapper;
 import org.gentar.biology.gene.GeneMapper;
-import org.gentar.biology.mutation.symbolCalculator.AlleleSymbolCalculator;
-import org.gentar.biology.mutation.symbolCalculator.CrisprAlleleSymbolCalculator;
+import org.gentar.biology.mutation.symbolConstructor.AlleleSymbolConstructor;
+import org.gentar.biology.mutation.symbolConstructor.CrisprAlleleSymbolConstructor;
 import org.gentar.biology.outcome.Outcome;
 import org.gentar.biology.outcome.OutcomeController;
-import org.gentar.biology.plan.Plan;
-import org.gentar.biology.plan.PlanController;
-import org.gentar.biology.plan.PlanResponseDTO;
 import org.springframework.hateoas.Link;
 import org.springframework.stereotype.Component;
 import java.util.ArrayList;
@@ -23,14 +20,11 @@ public class MutationResponseMapper implements Mapper<Mutation, MutationResponse
 {
     private final MutationCommonMapper mutationCommonMapper;
     private final GeneMapper geneMapper;
-    private final AlleleSymbolCalculator alleleSymbolCalculator;
 
     public MutationResponseMapper(MutationCommonMapper mutationCommonMapper, GeneMapper geneMapper)
     {
         this.mutationCommonMapper = mutationCommonMapper;
         this.geneMapper = geneMapper;
-        // Currently only taking into account crispr data.
-        alleleSymbolCalculator = new CrisprAlleleSymbolCalculator();
     }
 
     @Override
@@ -43,7 +37,7 @@ public class MutationResponseMapper implements Mapper<Mutation, MutationResponse
         mutationResponseDTO.setMin(mutation.getMin());
         mutationResponseDTO.setMgiAlleleId(mutation.getMgiAlleleId());
         mutationResponseDTO.setImitsAllele(mutation.getImitsAllele());
-        mutationResponseDTO.setMgiAlleleSymbol(mutation.getMgiAlleleSymbol());
+        mutationResponseDTO.setSymbol(mutation.getSymbol());
         mutationResponseDTO.setMgiAlleleSymbolWithoutImpcAbbreviation(
             mutation.getMgiAlleleSymbolWithoutImpcAbbreviation());
         mutationResponseDTO.setDescription(mutation.getDescription());
@@ -51,8 +45,6 @@ public class MutationResponseMapper implements Mapper<Mutation, MutationResponse
         mutationResponseDTO.setGeneDTOS(geneMapper.toDtos(mutation.getGenes()));
         addSelfLink(mutationResponseDTO, mutation);
         addOutcomesLinks(mutationResponseDTO, mutation);
-        mutationResponseDTO.setCalculatedMgiAlleleSymbol(
-            alleleSymbolCalculator.calculateAlleleSymbol(mutation));
         return mutationResponseDTO;
     }
 

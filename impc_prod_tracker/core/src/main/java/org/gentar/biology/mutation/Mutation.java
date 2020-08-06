@@ -22,7 +22,6 @@ import org.gentar.biology.mutation.categorizarion.MutationCategorization;
 import org.gentar.biology.mutation.genetic_type.GeneticMutationType;
 import org.gentar.biology.mutation.qc_results.MutationQcResult;
 import org.gentar.biology.mutation.sequence.MutationSequence;
-import org.gentar.organization.work_unit.WorkUnit;
 import org.hibernate.annotations.Type;
 import org.gentar.BaseEntity;
 import org.gentar.biology.mutation.genbank_file.GenbankFile;
@@ -31,7 +30,6 @@ import org.gentar.biology.mutation.molecular_type.MolecularMutationType;
 import org.gentar.biology.outcome.Outcome;
 import javax.persistence.*;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -51,9 +49,7 @@ public class Mutation extends BaseEntity
 
     private String mgiAlleleId;
 
-    private String mgiAlleleSymbol;
-
-    private transient String calculatedMgiAlleleSymbol;
+    private String symbol;
 
     private Boolean mgiAlleleSymbolRequiresConstruction;
 
@@ -147,7 +143,7 @@ public class Mutation extends BaseEntity
         this.id = mutation.getId();
         this.min = mutation.getMin();
         this.mgiAlleleId = mutation.getMgiAlleleId();
-        this.mgiAlleleSymbol = mutation.getMgiAlleleSymbol();
+        this.symbol = mutation.getSymbol();
         this.mgiAlleleSymbolRequiresConstruction = mutation.getMgiAlleleSymbolRequiresConstruction();
         this.mgiAlleleSymbolWithoutImpcAbbreviation =
             mutation.getMgiAlleleSymbolWithoutImpcAbbreviation();

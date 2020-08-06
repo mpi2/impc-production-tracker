@@ -1,15 +1,15 @@
-package org.gentar.biology.mutation.symbolCalculator;
+package org.gentar.biology.mutation.symbolConstructor;
 
 import org.apache.logging.log4j.util.Strings;
 import org.gentar.biology.gene.Gene;
 import org.gentar.biology.mutation.Mutation;
 
-public class CrisprAlleleSymbolCalculator implements AlleleSymbolCalculator
+public class CrisprAlleleSymbolConstructor implements AlleleSymbolConstructor
 {
     @Override
     public String calculateAlleleSymbol(Mutation mutation)
     {
-        String result = mutation.getMgiAlleleSymbol();
+        String result = mutation.getSymbol();
         if (mutation.getMgiAlleleSymbolRequiresConstruction())
         {
             String geneSymbol = getGeneSymbolByMutation(mutation);
