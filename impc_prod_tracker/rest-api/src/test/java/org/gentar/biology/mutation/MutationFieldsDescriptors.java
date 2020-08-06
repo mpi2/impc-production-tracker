@@ -16,6 +16,7 @@ public class MutationFieldsDescriptors
         addField(mutationFieldsDescriptions, "min", "Public identifier for the mutation. READ ONLY");
         addField(mutationFieldsDescriptions, "mgiAlleleId", "Public identifier assigned by MGI for the allele. READ ONLY");
         addField(mutationFieldsDescriptions, "mgiAlleleSymbol", "Allele symbol assigned. This field often only contains the allele superscript. The mgiAlleleSymbolRequiresConstruction field indicates if the full allele symbol need construction from the information in this field and the associated gene information. In cases of complex mutations associated with several genes the full allele symbol should be recorded in this field. SPECIFY ONLY WHEN CREATING");
+        addField(mutationFieldsDescriptions, "calculatedMgiAlleleSymbol", "Allele symbol once it's constructed.");
         addField(mutationFieldsDescriptions, "mgiAlleleSymbolWithoutImpcAbbreviation", "Used to indicate whether the allele symbol includes the IMPC abbreviation. SPECIFY ONLY WHEN CREATING");
         addField(mutationFieldsDescriptions, "mgiAlleleSymbolRequiresConstruction", "Indicates if the allele symbol needs to be constructed from a superscript recorded in the mgiAlleleSymbol field and the associated gene information. SPECIFY ONLY WHEN CREATING");
         addField(mutationFieldsDescriptions, "geneticMutationTypeName", "Formal classification of the mutation in genetic terms, or an indication that the mutation has not been tested genetically.");
