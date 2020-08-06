@@ -29,7 +29,6 @@ class MutationCommonMapperTest
 {
     public static final long ID = 1L;
     public static final String MGI_ALLELE_ID = "mgiAlleleId";
-    public static final String MGI_ALLELE_SYMBOL = "mgiAlleleSymbol";
     public static final boolean MGI_ALLELE_SYMBOL_REQUIRES_CONSTRUCTION = true;
     public static final boolean MGI_ALLELE_SYMBOL_WITHOUT_IMPC_ABBREVIATION = true;
     public static final boolean ALLELE_CONFIRMED = false;
@@ -94,7 +93,7 @@ class MutationCommonMapperTest
         Mutation mutation = new Mutation();
         mutation.setId(ID);
         mutation.setMgiAlleleId(MGI_ALLELE_ID);
-        mutation.setMgiAlleleSymbol(MGI_ALLELE_SYMBOL);
+        mutation.setSymbol(SYMBOL);
         mutation.setMgiAlleleSymbolRequiresConstruction(MGI_ALLELE_SYMBOL_REQUIRES_CONSTRUCTION);
         mutation.setMgiAlleleSymbolWithoutImpcAbbreviation(MGI_ALLELE_SYMBOL_WITHOUT_IMPC_ABBREVIATION);
         mutation.setAlleleConfirmed(ALLELE_CONFIRMED);

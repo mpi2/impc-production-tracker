@@ -26,7 +26,6 @@ public class MutationResponseMapperTest
 {
     public static final long ID = 1L;
     public static final String MGI_ALLELE_ID = "mgiAlleleId";
-    public static final String MGI_ALLELE_SYMBOL = "mgiAlleleSymbol";
     public static final boolean MGI_ALLELE_SYMBOL_REQUIRES_CONSTRUCTION = true;
     public static final boolean MGI_ALLELE_SYMBOL_WITHOUT_IMPC_ABBREVIATION = true;
     public static final boolean ALLELE_CONFIRMED = false;
@@ -62,7 +61,7 @@ public class MutationResponseMapperTest
 
         assertThat(mutationResponseDTO.getId(), is(ID));
         assertThat(mutationResponseDTO.getMgiAlleleId(), is(MGI_ALLELE_ID));
-        assertThat(mutationResponseDTO.getMgiAlleleSymbol(), is(MGI_ALLELE_SYMBOL));
+        assertThat(mutationResponseDTO.getSymbol(), is(SYMBOL));
         assertThat(
             mutationResponseDTO.getMgiAlleleSymbolWithoutImpcAbbreviation(),
             is(MGI_ALLELE_SYMBOL_WITHOUT_IMPC_ABBREVIATION));
@@ -77,7 +76,7 @@ public class MutationResponseMapperTest
         Mutation mutation = new Mutation();
         mutation.setId(ID);
         mutation.setMgiAlleleId(MGI_ALLELE_ID);
-        mutation.setMgiAlleleSymbol(MGI_ALLELE_SYMBOL);
+        mutation.setSymbol(SYMBOL);
         mutation.setMgiAlleleSymbolRequiresConstruction(MGI_ALLELE_SYMBOL_REQUIRES_CONSTRUCTION);
         mutation.setMgiAlleleSymbolWithoutImpcAbbreviation(MGI_ALLELE_SYMBOL_WITHOUT_IMPC_ABBREVIATION);
         mutation.setAlleleConfirmed(ALLELE_CONFIRMED);

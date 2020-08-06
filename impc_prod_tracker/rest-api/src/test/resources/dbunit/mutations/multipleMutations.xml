@@ -355,7 +355,7 @@ CCATGGATAGCCATATATCTGCGCAATCTGGCCTCCTTGACGCCATGACAGCAGCTGACCCGTGAGCACTGTGTAGTGGA
 This allele from project Fxn-5659J-A was generated at The Jackson Laboratory by injecting Cas9 RNA and guide sequence AGTAGCATGTGGGCGTTCGG, which resulted in a 4 bp deletion TTCG in exon1 beginning at Chromosome 19 negative strand position 24280556 bp (GRCm38/mm10) and is predicted to cause a frameshift mutation with early truncation."
                 IMITS_ALLELE="259191"
                 MGI_ALLELE_ID="MGI:5571595"
-                MGI_ALLELE_SYMBOL="em1(IMPC)J"
+                SYMBOL="em1(IMPC)J"
                 MGI_ALLELE_SYMBOL_REQUIRES_CONSTRUCTION="true"
                 MGI_ALLELE_SYMBOL_WITHOUT_IMPC_ABBREVIATION="false"/>
 
@@ -369,7 +369,7 @@ This allele from project Fxn-5659J-A was generated at The Jackson Laboratory by 
                 DESCRIPTION="Otog&lt;em1(IMPC)J&gt;:\r\nThis allele was generated at The Jackson Laboratory by electroporating Cas9 protein and 2 guide sequences CTTCACGTACCAAGGAGGGG and TCTTGCTTCCTACTTCCAGT, which resulted in a 520 bp deletion beginning at Chromosome 7 position 46,245,130 bp and ending after 46,245,649 bp (GRCm38/mm10). This mutation deletes ENSMUSE00000204147 (exon 4) and 444 bp of flanking intronic sequence including the splice acceptor and donor and is predicted to cause a change of amino acid sequence after residue 71 and early truncation 34 amino acids later. \r\n\r\n\r\n"
                 IMITS_ALLELE="266843"
                 MGI_ALLELE_ID="MGI:6342258"
-                MGI_ALLELE_SYMBOL="em1(IMPC)J"
+                SYMBOL="em1(IMPC)J"
                 MGI_ALLELE_SYMBOL_REQUIRES_CONSTRUCTION="true"
                 MGI_ALLELE_SYMBOL_WITHOUT_IMPC_ABBREVIATION="false"
                 CREATED_BY="gentar_test_user1@gentar.org"/>

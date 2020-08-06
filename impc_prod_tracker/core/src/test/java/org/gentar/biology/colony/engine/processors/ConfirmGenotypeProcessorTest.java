@@ -101,7 +101,7 @@ class ConfirmGenotypeProcessorTest
     {
         Colony colony = buildColonyWithOutcomeSequence(1L);
         Mutation mutation = colony.getOutcome().getMutations().iterator().next();
-        mutation.setMgiAlleleSymbol("mgiAlleleSymbol");
+        mutation.setSymbol("mgiAlleleSymbol");
         colony.setEvent(ColonyEvent.confirmGenotypeWhenInProgress);
 
         testInstance.process(colony);
@@ -117,7 +117,7 @@ class ConfirmGenotypeProcessorTest
         Set<Mutation> mutations = new HashSet<>();
         mutations.add(mutation);
         colony.getOutcome().setMutations(mutations);
-        mutation.setMgiAlleleSymbol("mgiAlleleSymbol");
+        mutation.setSymbol("mgiAlleleSymbol");
         colony.setEvent(ColonyEvent.confirmGenotypeWhenInProgress);
 
         UserOperationFailedException thrown = assertThrows(UserOperationFailedException.class,
