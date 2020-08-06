@@ -6,6 +6,7 @@
         "mgiAlleleId":"MGI:6342258",
         "imitsAllele":266843,
         "mgiAlleleSymbol":"em1(IMPC)J",
+        "calculatedMgiAlleleSymbol": "Otog<em1(IMPC)J>",
         "mgiAlleleSymbolWithoutImpcAbbreviation":false,
         "mgiAlleleSymbolRequiresConstruction":true,
         "geneticMutationTypeName":"Not Tested",

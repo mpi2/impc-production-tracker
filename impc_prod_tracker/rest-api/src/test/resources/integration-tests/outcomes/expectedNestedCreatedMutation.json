@@ -3,6 +3,7 @@
   "mgiAlleleId":null,
   "imitsAllele":null,
   "mgiAlleleSymbol":null,
+  "calculatedMgiAlleleSymbol": null,
   "mgiAlleleSymbolWithoutImpcAbbreviation":null,
   "mgiAlleleSymbolRequiresConstruction":true,
   "geneticMutationTypeName":"Not Tested",

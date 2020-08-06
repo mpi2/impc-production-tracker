@@ -53,6 +53,8 @@ public class Mutation extends BaseEntity
 
     private String mgiAlleleSymbol;
 
+    private transient String calculatedMgiAlleleSymbol;
+
     private Boolean mgiAlleleSymbolRequiresConstruction;
 
     private Boolean mgiAlleleSymbolWithoutImpcAbbreviation;
