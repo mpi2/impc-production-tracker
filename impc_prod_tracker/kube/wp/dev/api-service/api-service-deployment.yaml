@@ -23,6 +23,8 @@ spec:
         imagePullPolicy: Always
         name: api-service-dev
         env:
+        - name: EBI_PROXY
+          value: "TRUE"
         - name: SERVER_SERVLET_CONTEXT_PATH
           value: /production-tracker-dev-api
         - name: TRACKER_POSTGRESQL_DB_HOST
