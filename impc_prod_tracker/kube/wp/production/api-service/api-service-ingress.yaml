@@ -26,19 +26,25 @@ metadata:
     # https://github.com/nginxinc/kubernetes-ingress/
     #
     kubernetes.io/ingress.class: nginx
-    nginx.ingress.kubernetes.io/rewrite-target: /production-tracker-api/$2
+    nginx.ingress.kubernetes.io/rewrite-target: /tracker-api/$2
     nginx.ingress.kubernetes.io/from-to-www-redirect: "true"
     # adds 301 redirect with trailing slash
     # see: https://github.com/kubernetes/ingress-nginx/issues/646
     nginx.ingress.kubernetes.io/configuration-snippet: |
-        rewrite ^(/production-tracker-api)$ $1/ permanent;
-    nginx.ingress.kubernetes.io/ssl-redirect: "false"
+        rewrite ^(/tracker-api)$ $1/ permanent;
+    nginx.ingress.kubernetes.io/ssl-redirect: "true"
 
 spec:
   rules:
-  - http:
+  - host: www.gentar.org
+    http:
       paths:
-      - path: /production-tracker-api(/|$)(.*)
+      - path: /tracker-api(/|$)(.*)
         backend:
           serviceName: api-service
           servicePort: 8080
+  tls:
+    - hosts:
+        - gentar.org
+        - www.gentar.org
+      secretName: gentar-tls
