@@ -8,5 +8,5 @@ import org.gentar.biology.mutation.Mutation;
  */
 public interface AlleleSymbolConstructor
 {
-    String calculateAlleleSymbol(Mutation mutation);
+    String calculateAlleleSymbol(SymbolSuggestionRequest symbolSuggestionRequest, Mutation mutation);
 }

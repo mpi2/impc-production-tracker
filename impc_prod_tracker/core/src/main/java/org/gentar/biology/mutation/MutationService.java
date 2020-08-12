@@ -15,4 +15,5 @@ public interface MutationService
      * @return List of {@link History} with the trace of the changes for a mutation.
      */
     List<History> getHistory(Mutation mutation);
+    String getSuggestedSymbol(Mutation mutation);
 }

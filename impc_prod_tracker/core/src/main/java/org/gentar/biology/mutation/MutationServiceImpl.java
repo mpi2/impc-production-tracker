@@ -77,6 +77,12 @@ public class MutationServiceImpl implements MutationService
             Mutation.class.getSimpleName(), mutation.getId());
     }
 
+    @Override
+    public String getSuggestedSymbol(Mutation mutation)
+    {
+        return null;
+    }
+
     private String buildMin(Long id)
     {
         String identifier = String.format("%0" + 12 + "d", id);

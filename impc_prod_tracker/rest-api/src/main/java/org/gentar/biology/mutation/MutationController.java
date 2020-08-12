@@ -3,6 +3,8 @@ package org.gentar.biology.mutation;
 import org.gentar.audit.history.History;
 import org.gentar.audit.history.HistoryMapper;
 import org.gentar.biology.ChangeResponse;
+import org.gentar.biology.mutation.symbolConstructor.AlleleSymbolConstructor;
+import org.gentar.biology.mutation.symbolConstructor.SymbolSuggestionRequest;
 import org.gentar.biology.outcome.Outcome;
 import org.gentar.biology.outcome.OutcomeService;
 import org.gentar.common.history.HistoryDTO;
@@ -13,9 +15,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import java.util.ArrayList;
 import java.util.List;
@@ -145,4 +149,24 @@ public class MutationController
         Mutation currentMutation = outcomeService.getMutationByPinTpoAndMin(pin, tpo, min);
         return mutationRequestProcessor.getMutationToUpdate(currentMutation, mutationUpdateDTO);
     }
+
+    @PostMapping(value = {"plans/{pin}/outcomes/suggestedSymbol"})
+    public String getSuggestedSymbol(
+        @PathVariable String pin, @RequestBody MutationUpdateDTO mutationUpdateDTO)
+    {
+        String result = "";
+        SymbolSuggestionRequestDTO symbolSuggestionRequestDTO =
+            mutationUpdateDTO.getSymbolSuggestionRequestDTO();
+        if (symbolSuggestionRequestDTO != null)
+        {
+            SymbolSuggestionRequest symbolSuggestionRequest =
+                mutationRequestProcessor.buildSymbolSuggestionRequest(symbolSuggestionRequestDTO, pin);
+            AlleleSymbolConstructor alleleSymbolConstructor =
+                mutationRequestProcessor.getAlleleSymbolConstructor(pin);
+            Mutation mutation = mutationRequestProcessor.getSimpleMappedMutation(mutationUpdateDTO);
+            result = alleleSymbolConstructor.calculateAlleleSymbol(symbolSuggestionRequest, mutation);
+        }
+        return result;
+    }
+
 }

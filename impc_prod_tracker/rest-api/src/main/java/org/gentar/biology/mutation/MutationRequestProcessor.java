@@ -3,6 +3,11 @@ package org.gentar.biology.mutation;
 import org.gentar.biology.location.Location;
 import org.gentar.biology.mutation.qc_results.MutationQcResult;
 import org.gentar.biology.mutation.sequence.MutationSequence;
+import org.gentar.biology.mutation.symbolConstructor.AlleleSymbolConstructor;
+import org.gentar.biology.mutation.symbolConstructor.AlleleSymbolHandler;
+import org.gentar.biology.mutation.symbolConstructor.SymbolSuggestionRequest;
+import org.gentar.biology.plan.Plan;
+import org.gentar.biology.plan.PlanService;
 import org.gentar.biology.sequence.Sequence;
 import org.gentar.biology.sequence_location.SequenceLocation;
 import org.gentar.exceptions.UserOperationFailedException;
@@ -13,11 +18,18 @@ import java.util.Set;
 @Component
 public class MutationRequestProcessor
 {
-    private MutationUpdateMapper mutationUpdateMapper;
+    private final MutationUpdateMapper mutationUpdateMapper;
+    private final PlanService planService;
+    private AlleleSymbolHandler alleleSymbolHandler;
 
-    public MutationRequestProcessor(MutationUpdateMapper mutationUpdateMapper)
+    public MutationRequestProcessor(
+        MutationUpdateMapper mutationUpdateMapper,
+        PlanService planService,
+        AlleleSymbolHandler alleleSymbolHandler)
     {
         this.mutationUpdateMapper = mutationUpdateMapper;
+        this.planService = planService;
+        this.alleleSymbolHandler = alleleSymbolHandler;
     }
 
     /**
@@ -135,5 +147,34 @@ public class MutationRequestProcessor
                 .findAny().orElse(null);
         }
         return original;
+    }
+
+    /**
+     * Creates a request to create a symbol suggestion for a mutation
+     * @param symbolSuggestionRequestDTO Information provided by the user
+     * @param pin Plan identifier.
+     * @return SymbolSuggestionRequest object with additional information.
+     */
+    public SymbolSuggestionRequest buildSymbolSuggestionRequest(
+        SymbolSuggestionRequestDTO symbolSuggestionRequestDTO, String pin)
+    {
+        SymbolSuggestionRequest symbolSuggestionRequest = new SymbolSuggestionRequest();
+        Plan plan = planService.getNotNullPlanByPin(pin);
+        symbolSuggestionRequest.setIlarCode(plan.getWorkUnit().getIlarCode());
+        symbolSuggestionRequest.setConsortiumAbbreviation(
+            symbolSuggestionRequestDTO.getConsortiumAbbreviation());
+        symbolSuggestionRequest.setExcludeConsortiumAbbreviation(
+            symbolSuggestionRequestDTO.isExcludeConsortiumAbbreviation());
+        return symbolSuggestionRequest;
+    }
+
+    public AlleleSymbolConstructor getAlleleSymbolConstructor(String pin)
+    {
+        return alleleSymbolHandler.getAlleleSymbolConstructor(planService.getNotNullPlanByPin(pin));
+    }
+
+    public Mutation getSimpleMappedMutation(MutationUpdateDTO mutationUpdateDTO)
+    {
+        return mutationUpdateMapper.toEntity(mutationUpdateDTO);
     }
 }

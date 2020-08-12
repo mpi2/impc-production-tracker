@@ -18,6 +18,8 @@ package org.gentar.biology.mutation;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 
+import java.util.List;
+
 public interface MutationRepository extends CrudRepository<Mutation, Long>
 {
     @Query("SELECT max(m.min) FROM Mutation m")
@@ -26,4 +28,6 @@ public interface MutationRepository extends CrudRepository<Mutation, Long>
     Mutation findFirstById(Long id);
 
     Mutation findByMin(String min);
+
+    List<Mutation> findAllBySymbolLike(String symbolSearchTerm);
 }
