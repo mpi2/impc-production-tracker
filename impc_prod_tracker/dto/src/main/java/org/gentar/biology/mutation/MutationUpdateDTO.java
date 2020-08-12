@@ -14,4 +14,7 @@ public class MutationUpdateDTO
 
     @JsonProperty("geneSymbolsOrAccessionIds")
     private List<String> symbolOrAccessionIds;
+
+    @JsonProperty("symbolSuggestionRequest")
+    private SymbolSuggestionRequestDTO symbolSuggestionRequestDTO;
 }

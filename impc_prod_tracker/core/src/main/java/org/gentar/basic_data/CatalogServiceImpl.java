@@ -24,6 +24,7 @@ import org.gentar.biology.mutation.categorizarion.MutationCategorizationReposito
 import org.gentar.biology.plan.attempt.AttemptTypeRepository;
 import org.gentar.biology.sequence.category.SequenceCategoryRepository;
 import org.gentar.biology.sequence.type.SequenceTypeRepository;
+import org.gentar.organization.consortium.Consortium;
 import org.gentar.organization.funder.FunderRepository;
 import org.springframework.stereotype.Component;
 import org.gentar.biology.mutation.genetic_type.GeneticMutationTypeRepository;
@@ -155,6 +156,7 @@ public class CatalogServiceImpl implements CatalogService
             addSequenceCategorization();
             addProductTypes();
             addDistributionNetworks();
+            addConsortiaToConstructSymbols();
         }
         return conf;
     }
@@ -220,7 +222,6 @@ public class CatalogServiceImpl implements CatalogService
         List<String> assignmentStatuses = new ArrayList<>();
         assignmentStatusRepository.findAll().forEach(p -> assignmentStatuses.add(p.getName()));
         conf.put("assignmentStatuses", assignmentStatuses);
-
     }
 
     private void addGeneticMutationTypes()
@@ -325,5 +326,19 @@ public class CatalogServiceImpl implements CatalogService
         List<String> distributionNetworks = new ArrayList<>();
         distributionNetworkRepository.findAll().forEach(p -> distributionNetworks.add(p.getName()));
         conf.put("distributionNetworks", distributionNetworks);
+    }
+
+    /**
+     * In the future this list should be created from a query in the database. Currently it's
+     * fixed and only have IMPC as consortium whom abbreviation can be used to construct the
+     * symbol of an allele.
+     */
+    private void addConsortiaToConstructSymbols()
+    {
+        List<String> consortiaToConstructSymbols = new ArrayList<>();
+        // Make sure the consortium exists in database
+        Consortium impc = consortiumRepository.findByNameIgnoreCase("IMPC");
+        consortiaToConstructSymbols.add(impc.getName());
+        conf.put("consortiaToConstructSymbols", consortiaToConstructSymbols);
     }
 }
