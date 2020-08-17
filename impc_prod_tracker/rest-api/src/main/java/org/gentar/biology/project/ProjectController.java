@@ -159,6 +159,7 @@ public class ProjectController
         List<HistoryDTO> historyList = historyMapper.toDtos(projectService.getProjectHistory(project));
         return buildChangeResponse(project, historyList);
     }
+
     private ChangeResponse buildChangeResponse(Project project, List<HistoryDTO> historyList)
     {
         ChangeResponse changeResponse = new ChangeResponse();

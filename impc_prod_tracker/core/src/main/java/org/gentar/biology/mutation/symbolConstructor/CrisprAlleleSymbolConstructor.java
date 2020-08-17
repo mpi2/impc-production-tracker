@@ -7,7 +7,6 @@ import java.util.List;
 
 public class CrisprAlleleSymbolConstructor implements AlleleSymbolConstructor
 {
-
     private final MutationRepository mutationRepository;
     private static final String GENE_SYMBOL_SECTION= "[GENE_SYMBOL]";
     private static final String ID_SECTION = "[ID]";

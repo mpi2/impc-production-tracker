@@ -121,7 +121,7 @@ public class OutcomeController
      * @param mins List of public mutation ids.
      * @return ChangeResponse record with the changes.
      */
-    @PostMapping(value = {"plans/{pin}/outcomes/{tpo}/mutations"})
+    @PostMapping(value = {"plans/{pin}/outcomes/{tpo}/mutations/associate"})
     public ChangeResponse createMutationAssociations(
         @PathVariable String pin,
         @PathVariable String tpo,
@@ -139,7 +139,7 @@ public class OutcomeController
      * @param mins List of public mutation ids.
      * @return ChangeResponse record with the changes.
      */
-    @DeleteMapping(value = {"plans/{pin}/outcomes/{tpo}/mutations"})
+    @DeleteMapping(value = {"plans/{pin}/outcomes/{tpo}/mutations/deleteAssociations"})
     public ChangeResponse deleteMutationAssociations(
         @PathVariable String pin,
         @PathVariable String tpo,
