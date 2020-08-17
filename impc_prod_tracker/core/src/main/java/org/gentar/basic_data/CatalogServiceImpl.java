@@ -18,6 +18,7 @@ package org.gentar.basic_data;
 
 import org.gentar.biology.colony.distribution.distribution_network.DistributionNetworkRepository;
 import org.gentar.biology.colony.distribution.product_type.ProductTypeRepository;
+import org.gentar.biology.mutation.categorizarion.MutationCategorization;
 import org.gentar.biology.plan.attempt.crispr.nuclease.nuclease_class.NucleaseClassRepository;
 import org.gentar.biology.plan.attempt.crispr.nuclease.nuclease_type.NucleaseTypeRepository;
 import org.gentar.biology.mutation.categorizarion.MutationCategorizationRepository;
@@ -44,6 +45,7 @@ import org.gentar.organization.work_unit.WorkUnitRepository;
 import org.gentar.biology.project.search.SearchType;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -75,7 +77,7 @@ public class CatalogServiceImpl implements CatalogService
     private final ProductTypeRepository productTypeRepository;
     private final DistributionNetworkRepository distributionNetworkRepository;
 
-    private Map<String, List<String>> conf = new HashMap<>();
+    private Map<String, Object> conf = new HashMap<>();
 
     public CatalogServiceImpl(
         WorkUnitRepository workUnitRepository,
@@ -128,7 +130,7 @@ public class CatalogServiceImpl implements CatalogService
     }
 
     @Override
-    public Map<String, List<String>> getCatalog()
+    public Map<String, Object> getCatalog()
     {
         if (conf.isEmpty())
         {
@@ -148,6 +150,7 @@ public class CatalogServiceImpl implements CatalogService
             addSearchTypes();
             addSpecies();
             addMolecularMutationTypes();
+            addMutationCategorizationsByType();
             addNucleaseTypes();
             addNucleaseClasses();
             addMutationCategorizations();
@@ -163,167 +166,187 @@ public class CatalogServiceImpl implements CatalogService
 
     private void addAttemptTypes()
     {
-        List<String> attemptTypes = new ArrayList<>();
+        List<Object> attemptTypes = new ArrayList<>();
         attemptTypeRepository.findAll().forEach(p -> attemptTypes.add(p.getName()));
         conf.put("attemptTypes", attemptTypes);
     }
 
     private void addFunders()
     {
-        List<String> funders = new ArrayList<>();
+        List<Object> funders = new ArrayList<>();
         funderRepository.findAll().forEach(p -> funders.add(p.getName()));
         conf.put("funders", funders);
     }
 
     private void addConsortia()
     {
-        List<String> consortia = new ArrayList<>();
+        List<Object> consortia = new ArrayList<>();
         consortiumRepository.findAll().forEach(p -> consortia.add(p.getName()));
         conf.put("consortia", consortia);
     }
 
     private void addWorkUnits()
     {
-        List<String> workUnits = new ArrayList<>();
+        List<Object> workUnits = new ArrayList<>();
         workUnitRepository.findAll().forEach(p -> workUnits.add(p.getName()));
         conf.put("workUnits", workUnits);
     }
 
     private void addWorkGroups()
     {
-        List<String> workGroups = new ArrayList<>();
+        List<Object> workGroups = new ArrayList<>();
         workGroupRepository.findAll().forEach(p -> workGroups.add(p.getName()));
         conf.put("workGroups", workGroups);
     }
 
     private void addPlanTypes()
     {
-        List<String> planTypes = new ArrayList<>();
+        List<Object> planTypes = new ArrayList<>();
         planTypeRepository.findAll().forEach(p -> planTypes.add(p.getName()));
         conf.put("planTypes", planTypes);
     }
 
     private void addPrivacies()
     {
-        List<String> privacies = new ArrayList<>();
+        List<Object> privacies = new ArrayList<>();
         privacyRepository.findAll().forEach(p -> privacies.add(p.getName()));
         conf.put("privacies", privacies);
     }
 
     private void addStatuses()
     {
-        List<String> statuses = new ArrayList<>();
+        List<Object> statuses = new ArrayList<>();
         statusRepository.findAll().forEach(p -> statuses.add(p.getName()));
         conf.put("statuses", statuses);
     }
 
     private void addAssignmentStatuses()
     {
-        List<String> assignmentStatuses = new ArrayList<>();
+        List<Object> assignmentStatuses = new ArrayList<>();
         assignmentStatusRepository.findAll().forEach(p -> assignmentStatuses.add(p.getName()));
         conf.put("assignmentStatuses", assignmentStatuses);
     }
 
     private void addGeneticMutationTypes()
     {
-        List<String> geneticMutationTypes = new ArrayList<>();
+        List<Object> geneticMutationTypes = new ArrayList<>();
         geneticMutationTypeRepository.findAll().forEach(p -> geneticMutationTypes.add(p.getName()));
         conf.put("geneticMutationTypes", geneticMutationTypes);
     }
 
     private void addInstitutes()
     {
-        List<String> institutes = new ArrayList<>();
+        List<Object> institutes = new ArrayList<>();
         instituteRepository.findAll().forEach(p -> institutes.add(p.getName()));
         conf.put("institutes", institutes);
     }
 
     private void addStrains()
     {
-        List<String> trackedStrains = new ArrayList<>();
+        List<Object> trackedStrains = new ArrayList<>();
         strainRepository.findAll().forEach(p -> trackedStrains.add(p.getName()));
         conf.put("trackedStrains", trackedStrains);
     }
 
     private void addMaterialTypes()
     {
-        List<String> materialTypes = new ArrayList<>();
+        List<Object> materialTypes = new ArrayList<>();
         materialDepositedTypeRepository.findAll().forEach(p -> materialTypes.add(p.getName()));
         conf.put("materialTypes", materialTypes);
     }
 
     private void addPreparationTypes()
     {
-        List<String> preparationTypes = new ArrayList<>();
+        List<Object> preparationTypes = new ArrayList<>();
         preparationTypeRepository.findAll().forEach(p -> preparationTypes.add(p.getName()));
         conf.put("preparationTypes", preparationTypes);
     }
 
     private void addSearchTypes()
     {
-        List<String> searchTypes = SearchType.getValidValuesNames();
+        List<Object> searchTypes = new ArrayList<>();
+        var res = SearchType.getValidValuesNames();
+        searchTypes.addAll(res);
         conf.put("searchTypes", searchTypes);
     }
 
     private void addSpecies()
     {
-        List<String> species = new ArrayList<>();
+        List<Object> species = new ArrayList<>();
         speciesRepository.findAll().forEach(p -> species.add(p.getName()));
         conf.put("species", species);
     }
 
     private void addMolecularMutationTypes()
     {
-        List<String> molecularMutationTypes = new ArrayList<>();
+        List<Object> molecularMutationTypes = new ArrayList<>();
         molecularMutationTypeRepository.findAll().forEach(p -> molecularMutationTypes.add(p.getName()));
         conf.put("molecularMutationTypes", molecularMutationTypes);
     }
 
     private void addNucleaseTypes()
     {
-        List<String> nucleaseTypes = new ArrayList<>();
+        List<Object> nucleaseTypes = new ArrayList<>();
         nucleaseTypeRepository.findAll().forEach(p -> nucleaseTypes.add(p.getName()));
         conf.put("nucleaseTypes", nucleaseTypes);
     }
 
     private void addNucleaseClasses()
     {
-        List<String> nucleaseClasses = new ArrayList<>();
+        List<Object> nucleaseClasses = new ArrayList<>();
         nucleaseClassRepository.findAll().forEach(p -> nucleaseClasses.add(p.getName()));
         conf.put("nucleaseClasses", nucleaseClasses);
     }
 
     private void addMutationCategorizations ()
     {
-        List<String> mutationCategorizations = new ArrayList<>();
+        List<Object> mutationCategorizations = new ArrayList<>();
         mutationCategorizationRepository.findAll().forEach(p -> mutationCategorizations.add(p.getName()));
         conf.put("mutationCategorizations", mutationCategorizations);
     }
 
+    private void addMutationCategorizationsByType()
+    {
+        List<Object> mutationCategorizations = new ArrayList<>();
+        List<MutationCategorization> allMutationCategorization = new ArrayList<>();
+        mutationCategorizationRepository.findAll().forEach(allMutationCategorization::add);
+        Map<String, List<String>> map = new HashMap<>();
+        allMutationCategorization.forEach( x -> {
+            String key = x.getMutationCategorizationType().getName();
+            map.computeIfAbsent(key, k -> new ArrayList<>());
+            var list = map.get(key);
+            list.add(x.getName());
+
+        });
+
+        mutationCategorizationRepository.findAll().forEach(p -> mutationCategorizations.add(p.getName()));
+        conf.put("mutationCategorizationsByType", map);
+    }
+
     private void addSequenceTypes ()
     {
-        List<String> sequenceTypes = new ArrayList<>();
+        List<Object> sequenceTypes = new ArrayList<>();
         sequenceTypeRepository.findAll().forEach(p -> sequenceTypes.add(p.getName()));
         conf.put("sequenceTypes", sequenceTypes);
     }
 
     private void addSequenceCategorization ()
     {
-        List<String> sequenceCategorizations = new ArrayList<>();
+        List<Object> sequenceCategorizations = new ArrayList<>();
         sequenceCategoryRepository.findAll().forEach(p -> sequenceCategorizations.add(p.getName()));
         conf.put("sequenceCategorizations", sequenceCategorizations);
     }
 
     private void addProductTypes()
     {
-        List<String> productTypes = new ArrayList<>();
+        List<Object> productTypes = new ArrayList<>();
         productTypeRepository.findAll().forEach(p -> productTypes.add(p.getName()));
         conf.put("productTypes", productTypes);
     }
 
     private void addDistributionNetworks()
     {
-        List<String> distributionNetworks = new ArrayList<>();
+        List<Object> distributionNetworks = new ArrayList<>();
         distributionNetworkRepository.findAll().forEach(p -> distributionNetworks.add(p.getName()));
         conf.put("distributionNetworks", distributionNetworks);
     }
@@ -335,7 +358,7 @@ public class CatalogServiceImpl implements CatalogService
      */
     private void addConsortiaToConstructSymbols()
     {
-        List<String> consortiaToConstructSymbols = new ArrayList<>();
+        List<Object> consortiaToConstructSymbols = new ArrayList<>();
         // Make sure the consortium exists in database
         Consortium impc = consortiumRepository.findByNameIgnoreCase("IMPC");
         consortiaToConstructSymbols.add(impc.getName());

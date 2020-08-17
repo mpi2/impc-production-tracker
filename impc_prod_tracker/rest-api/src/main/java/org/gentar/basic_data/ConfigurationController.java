@@ -38,7 +38,7 @@ public class ConfigurationController
     }
 
     @GetMapping(value = {"/conf"})
-    public Map<String, List<String>> getConfiguration()
+    public Map<String, Object> getConfiguration()
     {
         return catalogService.getCatalog();
     }

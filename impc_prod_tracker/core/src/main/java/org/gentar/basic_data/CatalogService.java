@@ -24,5 +24,5 @@ public interface CatalogService
      * Returns a catalog with data for the most used entities in the system.
      * @return Map with entities and values for those entities.
      */
-    Map<String, List<String>> getCatalog();
+    Map<String, Object> getCatalog();
 }
