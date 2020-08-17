@@ -5,6 +5,7 @@ import org.gentar.audit.history.HistoryService;
 import org.gentar.biology.mutation.sequence.MutationSequence;
 import org.gentar.biology.mutation.sequence.MutationSequenceService;
 import org.gentar.biology.plan.Plan;
+import org.gentar.biology.project.Project;
 import org.gentar.biology.sequence.SequenceService;
 import org.gentar.exceptions.UserOperationFailedException;
 import org.springframework.stereotype.Component;
@@ -60,7 +61,14 @@ public class MutationServiceImpl implements MutationService
         Mutation createdMutation = mutationRepository.save(mutation);
         createdMutation.setMin(buildMin(createdMutation.getId()));
         saveMutationSequences(mutation);
+        registerCreationInHistory(mutation);
         return createdMutation;
+    }
+
+    private void registerCreationInHistory(Mutation mutation)
+    {
+        History history = historyService.buildCreationTrack(mutation, mutation.getId());
+        historyService.saveTrackOfChanges(history);
     }
 
     @Override

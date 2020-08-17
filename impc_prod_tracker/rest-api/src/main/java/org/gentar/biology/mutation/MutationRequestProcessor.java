@@ -6,12 +6,15 @@ import org.gentar.biology.mutation.sequence.MutationSequence;
 import org.gentar.biology.mutation.symbolConstructor.AlleleSymbolConstructor;
 import org.gentar.biology.mutation.symbolConstructor.AlleleSymbolHandler;
 import org.gentar.biology.mutation.symbolConstructor.SymbolSuggestionRequest;
+import org.gentar.biology.outcome.Outcome;
 import org.gentar.biology.plan.Plan;
 import org.gentar.biology.plan.PlanService;
 import org.gentar.biology.sequence.Sequence;
 import org.gentar.biology.sequence_location.SequenceLocation;
 import org.gentar.exceptions.UserOperationFailedException;
 import org.springframework.stereotype.Component;
+
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -19,17 +22,28 @@ import java.util.Set;
 public class MutationRequestProcessor
 {
     private final MutationUpdateMapper mutationUpdateMapper;
+    private final MutationCreationMapper mutationCreationMapper;
     private final PlanService planService;
     private AlleleSymbolHandler alleleSymbolHandler;
 
     public MutationRequestProcessor(
         MutationUpdateMapper mutationUpdateMapper,
-        PlanService planService,
+        MutationCreationMapper mutationCreationMapper, PlanService planService,
         AlleleSymbolHandler alleleSymbolHandler)
     {
         this.mutationUpdateMapper = mutationUpdateMapper;
+        this.mutationCreationMapper = mutationCreationMapper;
         this.planService = planService;
         this.alleleSymbolHandler = alleleSymbolHandler;
+    }
+
+    public Mutation getMutationToCreate(Outcome outcome, MutationCreationDTO mutationCreationDTO)
+    {
+        Mutation mutation = mutationCreationMapper.toEntity(mutationCreationDTO);
+        Set<Outcome> outcomeSet = new HashSet<>();
+        outcomeSet.add(outcome);
+        mutation.setOutcomes(outcomeSet);
+        return mutation;
     }
 
     /**

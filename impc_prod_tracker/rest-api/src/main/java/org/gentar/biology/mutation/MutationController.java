@@ -7,6 +7,7 @@ import org.gentar.biology.mutation.symbolConstructor.AlleleSymbolConstructor;
 import org.gentar.biology.mutation.symbolConstructor.SymbolSuggestionRequest;
 import org.gentar.biology.outcome.Outcome;
 import org.gentar.biology.outcome.OutcomeService;
+import org.gentar.biology.project.Project;
 import org.gentar.common.history.HistoryDTO;
 import org.gentar.helpers.ChangeResponseCreator;
 import org.springframework.hateoas.CollectionModel;
@@ -19,7 +20,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import java.util.ArrayList;
 import java.util.List;
@@ -112,11 +112,11 @@ public class MutationController
     }
 
     /**
-     * Gets a mutation in an outcome.
+     * Updates a mutation in an outcome.
      * @param pin Public identifier of the plan.
      * @param tpo Public identifier of the outcome.
      * @param min Public identifier of the mutation.
-     * @return Mutation DTO
+     * @return ChangeResponse object with information about the change.
      */
     @PutMapping(value = {"plans/{pin}/outcomes/{tpo}/mutations/{min}"})
     public ChangeResponse updateMutationInOutcomeById(
@@ -130,7 +130,25 @@ public class MutationController
         return buildChangeResponse(pin, tpo, min,  history);
     }
 
-    private ChangeResponse buildChangeResponse(String pin, String tpo, String min,  History history)
+    @PostMapping(value = {"plans/{pin}/outcomes/{tpo}/mutations"})
+    public ChangeResponse createMutationInOutcome(
+        @PathVariable String pin,
+        @PathVariable String tpo,
+        @RequestBody MutationCreationDTO mutationCreationDTO)
+    {
+        Outcome outcome = outcomeService.getOutcomeByPinAndTpo(pin, tpo);
+        Mutation mutation = getMutationToCreate(outcome, mutationCreationDTO);
+        Mutation createdMutation = mutationService.create(mutation);
+        return buildChangeResponse(pin, tpo, createdMutation);
+    }
+
+    private ChangeResponse buildChangeResponse(String pin, String tpo, Mutation mutation)
+    {
+        Link link = buildMutationLink(pin, tpo, mutation.getMin());
+        return changeResponseCreator.create(link, mutationService.getHistory(mutation));
+    }
+
+    private ChangeResponse buildChangeResponse(String pin, String tpo, String min, History history)
     {
         Link link = buildMutationLink(pin, tpo, min);
         return changeResponseCreator.create(link, history);
@@ -141,6 +159,11 @@ public class MutationController
         return linkTo(
             methodOn(MutationController.class)
                 .findMutationInOutcomeById(pin, tpo, min)).withSelfRel();
+    }
+
+    private Mutation getMutationToCreate(Outcome outcome, MutationCreationDTO mutationCreationDTO)
+    {
+        return mutationRequestProcessor.getMutationToCreate(outcome, mutationCreationDTO);
     }
 
     private Mutation getMutationToUpdate(

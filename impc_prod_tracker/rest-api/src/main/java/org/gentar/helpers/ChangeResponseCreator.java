@@ -13,7 +13,7 @@ import java.util.List;
 @Component
 public class ChangeResponseCreator
 {
-    private HistoryMapper historyMapper;
+    private final HistoryMapper historyMapper;
 
     public ChangeResponseCreator(HistoryMapper historyMapper)
     {
@@ -29,7 +29,7 @@ public class ChangeResponseCreator
     {
         ChangeResponse changeResponse = new ChangeResponse();
         changeResponse.add(link);
-        List<HistoryDTO> historyDTOS = historyMapper.toDtos((List<History>) historyRecords);
+        List<HistoryDTO> historyDTOS = historyMapper.toDtos(historyRecords);
         changeResponse.setHistoryDTOs(historyDTOS);
         return changeResponse;
     }
