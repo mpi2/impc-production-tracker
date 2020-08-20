@@ -15,9 +15,14 @@
  *******************************************************************************/
 package org.gentar.biology.strain;
 
+import org.gentar.biology.strain.strain_type.StrainType;
 import org.springframework.data.repository.CrudRepository;
+
+import java.util.List;
 
 public interface StrainRepository extends CrudRepository<Strain, Long>
 {
     Strain findByNameIgnoreCase (String name);
+
+    List<Strain> findAllByStrainTypesIn(List<StrainType> strainTypes);
 }

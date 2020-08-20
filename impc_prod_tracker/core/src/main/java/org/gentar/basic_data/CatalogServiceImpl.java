@@ -25,6 +25,8 @@ import org.gentar.biology.mutation.categorizarion.MutationCategorizationReposito
 import org.gentar.biology.plan.attempt.AttemptTypeRepository;
 import org.gentar.biology.sequence.category.SequenceCategoryRepository;
 import org.gentar.biology.sequence.type.SequenceTypeRepository;
+import org.gentar.biology.strain.strain_type.StrainType;
+import org.gentar.biology.strain.strain_type.StrainTypeRepository;
 import org.gentar.organization.consortium.Consortium;
 import org.gentar.organization.funder.FunderRepository;
 import org.springframework.stereotype.Component;
@@ -62,6 +64,7 @@ public class CatalogServiceImpl implements CatalogService
     private final GeneticMutationTypeRepository geneticMutationTypeRepository;
     private final InstituteRepository instituteRepository;
     private final StrainRepository strainRepository;
+    private final StrainTypeRepository strainTypeRepository;
     private final PreparationTypeRepository preparationTypeRepository;
     private final MaterialDepositedTypeRepository materialDepositedTypeRepository;
     private final SpeciesRepository speciesRepository;
@@ -89,6 +92,7 @@ public class CatalogServiceImpl implements CatalogService
         GeneticMutationTypeRepository geneticMutationTypeRepository,
         InstituteRepository instituteRepository,
         StrainRepository strainRepository,
+        StrainTypeRepository strainTypeRepository,
         PreparationTypeRepository preparationTypeRepository,
         MaterialDepositedTypeRepository materialDepositedTypeRepository,
         SpeciesRepository speciesRepository,
@@ -113,6 +117,7 @@ public class CatalogServiceImpl implements CatalogService
         this.geneticMutationTypeRepository = geneticMutationTypeRepository;
         this.instituteRepository = instituteRepository;
         this.strainRepository = strainRepository;
+        this.strainTypeRepository = strainTypeRepository;
         this.preparationTypeRepository = preparationTypeRepository;
         this.materialDepositedTypeRepository = materialDepositedTypeRepository;
         this.speciesRepository = speciesRepository;
@@ -145,6 +150,7 @@ public class CatalogServiceImpl implements CatalogService
             addGeneticMutationTypes();
             addInstitutes();
             addStrains();
+            addBackGroundStrains();
             addMaterialTypes();
             addPreparationTypes();
             addSearchTypes();
@@ -248,6 +254,15 @@ public class CatalogServiceImpl implements CatalogService
         conf.put("trackedStrains", trackedStrains);
     }
 
+    private void addBackGroundStrains()
+    {
+        List<Object> backgroundStrains = new ArrayList<>();
+        StrainType backgroundStrainType = strainTypeRepository.findByName("background strain");
+        strainRepository.findAllByStrainTypesIn(Collections.singletonList(backgroundStrainType))
+            .forEach(p -> backgroundStrains.add(p.getName()));
+        conf.put("backgroundStrains", backgroundStrains);
+    }
+
     private void addMaterialTypes()
     {
         List<Object> materialTypes = new ArrayList<>();
@@ -316,9 +331,7 @@ public class CatalogServiceImpl implements CatalogService
             map.computeIfAbsent(key, k -> new ArrayList<>());
             var list = map.get(key);
             list.add(x.getName());
-
         });
-
         mutationCategorizationRepository.findAll().forEach(p -> mutationCategorizations.add(p.getName()));
         conf.put("mutationCategorizationsByType", map);
     }
