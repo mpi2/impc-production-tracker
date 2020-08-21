@@ -10,6 +10,7 @@ import org.gentar.biology.outcome.Outcome;
 import org.gentar.biology.plan.Plan;
 import org.gentar.biology.plan.PlanService;
 import org.gentar.biology.sequence.Sequence;
+import org.gentar.biology.sequence.category.SequenceCategoryService;
 import org.gentar.biology.sequence_location.SequenceLocation;
 import org.gentar.exceptions.UserOperationFailedException;
 import org.springframework.stereotype.Component;
@@ -24,26 +25,46 @@ public class MutationRequestProcessor
     private final MutationUpdateMapper mutationUpdateMapper;
     private final MutationCreationMapper mutationCreationMapper;
     private final PlanService planService;
-    private AlleleSymbolHandler alleleSymbolHandler;
+    private final AlleleSymbolHandler alleleSymbolHandler;
+    private final SequenceCategoryService sequenceCategoryService;
 
     public MutationRequestProcessor(
         MutationUpdateMapper mutationUpdateMapper,
-        MutationCreationMapper mutationCreationMapper, PlanService planService,
-        AlleleSymbolHandler alleleSymbolHandler)
+        MutationCreationMapper mutationCreationMapper,
+        PlanService planService,
+        AlleleSymbolHandler alleleSymbolHandler,
+        SequenceCategoryService sequenceCategoryService)
     {
         this.mutationUpdateMapper = mutationUpdateMapper;
         this.mutationCreationMapper = mutationCreationMapper;
         this.planService = planService;
         this.alleleSymbolHandler = alleleSymbolHandler;
+        this.sequenceCategoryService = sequenceCategoryService;
     }
 
     public Mutation getMutationToCreate(Outcome outcome, MutationCreationDTO mutationCreationDTO)
     {
         Mutation mutation = mutationCreationMapper.toEntity(mutationCreationDTO);
+        setOutcomeCategoryType(mutation);
         Set<Outcome> outcomeSet = new HashSet<>();
         outcomeSet.add(outcome);
         mutation.setOutcomes(outcomeSet);
         return mutation;
+    }
+
+    private void setOutcomeCategoryType(Mutation mutation)
+    {
+        Set<MutationSequence> mutationSequences = mutation.getMutationSequences();
+        if (mutationSequences != null)
+        {
+            mutationSequences.forEach(x -> {
+                Sequence sequence = x.getSequence();
+                if (sequence != null)
+                {
+                    sequence.setSequenceCategory(sequenceCategoryService.getOutcomeSequenceCategory());
+                }
+            });
+        }
     }
 
     /**
@@ -72,6 +93,7 @@ public class MutationRequestProcessor
         newMutation.setMutationCategorizations(mappedMutation.getMutationCategorizations());
         setMutationQcResults(newMutation, mappedMutation);
         setMutationSequences(originalMutation, newMutation, mappedMutation);
+        setOutcomeCategoryType(newMutation);
         return newMutation;
     }
 
