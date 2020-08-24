@@ -1,5 +1,6 @@
 package org.gentar.biology.mutation.symbolConstructor;
 
+import org.apache.logging.log4j.util.Strings;
 import org.gentar.biology.gene.Gene;
 import org.gentar.biology.mutation.Mutation;
 import org.gentar.biology.mutation.MutationRepository;
@@ -34,7 +35,7 @@ public class CrisprAlleleSymbolConstructor implements AlleleSymbolConstructor
         int nextId = getNextId(geneSymbol, symbolSuggestionRequest.getIlarCode());
         result = template.replace(GENE_SYMBOL_SECTION, geneSymbol);
         result = result.replace(ID_SECTION, nextId + "");
-        if (symbolSuggestionRequest.isExcludeConsortiumAbbreviation())
+        if (Strings.isBlank(symbolSuggestionRequest.getConsortiumAbbreviation()))
         {
             result = result.replace(CONSORTIUM_ABBREVIATION_SECTION, "");
         }
