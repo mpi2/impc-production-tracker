@@ -184,42 +184,6 @@
           "oldValue":null,
           "newValue":"fail",
           "note":"Field changed"
-        },
-        {
-          "field":"mutationSequences.[2].sequence.sequenceLocations.[1]",
-          "oldValue":"SequenceLocation(id=1, index=1)",
-          "newValue":"SequenceLocation(id=1, index=1)",
-          "note":"Element changed"
-        },
-        {
-          "field":"mutationSequences.[2].sequence.sequenceLocations.[1].location.start",
-          "oldValue":"46245748",
-          "newValue":"46245700",
-          "note":"Field changed"
-        },
-        {
-          "field":"mutationSequences.[2].sequence.sequenceLocations.[1].location.stop",
-          "oldValue":"46245649",
-          "newValue":"46245602",
-          "note":"Field changed"
-        },
-        {
-          "field":"mutationSequences.[2].sequence.sequenceLocations.[2]",
-          "oldValue":"SequenceLocation(id=2, index=2)",
-          "newValue":"SequenceLocation(id=2, index=2)",
-          "note":"Element changed"
-        },
-        {
-          "field":"mutationSequences.[2].sequence.sequenceLocations.[2].location.start",
-          "oldValue":"46245132",
-          "newValue":"46245150",
-          "note":"Field changed"
-        },
-        {
-          "field":"mutationSequences.[2].sequence.sequenceLocations.[2].location.stop",
-          "oldValue":"46244994",
-          "newValue":"46244960",
-          "note":"Field changed"
         }
       ]
     }

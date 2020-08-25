@@ -1,5 +1,6 @@
 package org.gentar.biology.sequence;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
@@ -20,5 +21,6 @@ public class SequenceDTO
     private String sequenceCategoryName;
 
     @JsonProperty("sequenceLocations")
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private List<SequenceLocationDTO> sequenceLocationDTOS;
 }

@@ -58,38 +58,6 @@ public class MutationFieldsDescriptors
                 "- outcome sequence\n\n" +
                 "A mutation should always be specified as 'outcome sequence'.");
         addField(
-            mutationFieldsDescriptions,
-            "mutationSequences[].sequence.sequenceLocations[]",
-            "Sequence locations defined in a publicly available genome build associated with the sequence object.");
-        addField(
-            mutationFieldsDescriptions,
-            "mutationSequences[].sequence.sequenceLocations[].id",
-            "Internal identifier. READ ONLY AND SUBJECT TO CHANGE.");
-        addField(
-            mutationFieldsDescriptions, "mutationSequences[].sequence.sequenceLocations[].locationIndex", "Index used to order the locations.");
-        addField(
-            mutationFieldsDescriptions,
-            "mutationSequences[].sequence.sequenceLocations[].location",
-            "A location object.");
-        addField(
-            mutationFieldsDescriptions,
-            "mutationSequences[].sequence.sequenceLocations[].location.id",
-            "Internal identifier. READ ONLY AND SUBJECT TO CHANGE.");
-        addField(
-            mutationFieldsDescriptions, "mutationSequences[].sequence.sequenceLocations[].location.chr", "The chromosome for the sequence location.");
-        addField(
-            mutationFieldsDescriptions, "mutationSequences[].sequence.sequenceLocations[].location.start", "The start of the sequence location.");
-        addField(
-            mutationFieldsDescriptions, "mutationSequences[].sequence.sequenceLocations[].location.stop", "The end of the sequence location.");
-        addField(
-            mutationFieldsDescriptions, "mutationSequences[].sequence.sequenceLocations[].location.strand", "The strand of the sequence location.");
-        addField(
-            mutationFieldsDescriptions, "mutationSequences[].sequence.sequenceLocations[].location.genomeBuild", "The genome build that defines the location.");
-        addField(
-            mutationFieldsDescriptions, "mutationSequences[].sequence.sequenceLocations[].location.strainName", "The name of the strain sequenced.");
-        addField(
-            mutationFieldsDescriptions, "mutationSequences[].sequence.sequenceLocations[].location.speciesName", "The species sequenced.");
-        addField(
             mutationFieldsDescriptions, "mutationCategorizations[]", "A list classifying the mutation.");
         addField(
             mutationFieldsDescriptions, "mutationCategorizations[].name", "A label describing the mutation.");
