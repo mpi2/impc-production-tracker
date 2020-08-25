@@ -14,7 +14,23 @@ public class OutcomeCustomizations
         customizationList.addAll(buildCustomizationForColonyIds());
         customizationList.addAll(buildCustomizationForColonyStatusDates());
         customizationList.add(buildCustomizationForTpo());
+        customizationList.add(buildCustomizationForTpoLink());
+        customizationList.add(buildCustomizationForMinLink());
         return customizationList.toArray(new Customization[0]);
+    }
+
+    private static Customization buildCustomizationForTpoLink()
+    {
+        return new Customization(
+            "_links.self.href",
+            new RegularExpressionValueMatcher<>(CustomizationConstants.TPO_URL_PATTERN));
+    }
+
+    private static Customization buildCustomizationForMinLink()
+    {
+        return new Customization(
+            " _links.mutations[0].href",
+            new RegularExpressionValueMatcher<>(CustomizationConstants.MIN_URL_PATTERN));
     }
 
     public static Customization[] ignoreIdsAndDates()
