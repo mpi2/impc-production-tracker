@@ -86,7 +86,7 @@ class OutcomeCreator
 
     private String buildTpo(Long id)
     {
-        String identifier = String.format("%0" + 9 + "d", id);
+        String identifier = String.format("%0" + 12 + "d", id);
         identifier = "TPO:" + identifier;
         return identifier;
     }

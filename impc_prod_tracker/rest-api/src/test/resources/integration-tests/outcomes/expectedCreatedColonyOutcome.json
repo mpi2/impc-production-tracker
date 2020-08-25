@@ -1,6 +1,6 @@
 {
   "pin":"PIN:0000000001",
-  "tpo":"TPO:000000007",
+  "tpo":"TPO:000000000007",
   "outcomeTypeName":"Colony",
   "colony":{
     "name":"jr34077",
@@ -57,11 +57,11 @@
   "_links":{
     "mutations":[
       {
-        "href":"http://localhost:8080/api/plans/PIN:0000000001/outcomes/TPO:000000007/mutations/MIN:000000000003"
+        "href":"http://localhost:8080/api/plans/PIN:0000000001/outcomes/TPO:000000000007/mutations/MIN:000000000003"
       }
     ],
     "self":{
-      "href":"http://localhost:8080/api/plans/PIN:0000000001/outcomes/TPO:000000007"
+      "href":"http://localhost:8080/api/plans/PIN:0000000001/outcomes/TPO:000000000007"
     }
   }
 }
