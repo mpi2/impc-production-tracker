@@ -1,6 +1,5 @@
 package org.gentar.biology.mutation;
 
-import org.gentar.biology.location.Location;
 import org.gentar.biology.mutation.qc_results.MutationQcResult;
 import org.gentar.biology.mutation.sequence.MutationSequence;
 import org.gentar.biology.mutation.symbolConstructor.AlleleSymbolConstructor;
@@ -11,12 +10,10 @@ import org.gentar.biology.plan.Plan;
 import org.gentar.biology.plan.PlanService;
 import org.gentar.biology.sequence.Sequence;
 import org.gentar.biology.sequence.category.SequenceCategoryService;
-import org.gentar.biology.sequence_location.SequenceLocation;
 import org.gentar.exceptions.UserOperationFailedException;
 import org.springframework.stereotype.Component;
 
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 @Component
@@ -118,71 +115,14 @@ public class MutationRequestProcessor
             for (MutationSequence mutationSequence : mappedMutationSequences)
             {
                 mutationSequence.setMutation(originalMutation);
-                if (mutationSequence.getId() != null)
+                if (mutationSequence.getSequence().getSequenceLocations() != null)
                 {
-                    MutationSequence originalMutationSequence =
-                        getMutationSequenceById(
-                            mutationSequence.getId(), originalMutation.getMutationSequences());
-                    if (originalMutationSequence != null)
-                    {
-                        Sequence originalSequence = originalMutationSequence.getSequence();
-                        Sequence newSequence = mutationSequence.getSequence();
-                        completeSequence(originalSequence, newSequence);
-                    }
+                    throw new UserOperationFailedException(
+                        "Mutation sequences do not accept locations.");
                 }
             }
             newMutation.setMutationSequences(mappedMutationSequences);
         }
-    }
-
-    private void completeSequence(Sequence originalSequence, Sequence newSequence)
-    {
-        if (originalSequence != null && newSequence != null)
-        {
-            List<SequenceLocation> originalSequenceLocations = originalSequence.getSequenceLocations();
-            List<SequenceLocation> newSequenceLocations = newSequence.getSequenceLocations();
-            completeSequenceLocations(originalSequenceLocations, newSequenceLocations);
-        }
-    }
-
-    /// Set the Sequence location if they are not new and need one
-    private void completeSequenceLocations(
-        List<SequenceLocation> originalSequenceLocations, List<SequenceLocation> newSequenceLocations)
-    {
-        for (SequenceLocation newSequenceLocation : newSequenceLocations)
-        {
-            Long id = newSequenceLocation.getId();
-            if (id != null)
-            {
-                // The entity exists so it should exist in the original object
-                SequenceLocation originalSequenceLocation = originalSequenceLocations.stream()
-                    .filter(x -> x.getId().equals(id)).findAny().orElse(null);
-                completeLocation(originalSequenceLocation, newSequenceLocation);
-            }
-        }
-    }
-
-    // Set missing data to the new location
-    private void completeLocation(SequenceLocation originalEntity, SequenceLocation newEntity)
-    {
-        Location originalLocation = originalEntity.getLocation();
-        Location newLocation = newEntity.getLocation();
-        if (originalLocation != null && newLocation != null)
-        {
-            newLocation.setSequenceLocations(originalLocation.getSequenceLocations());
-        }
-    }
-
-    private MutationSequence getMutationSequenceById(Long id, Set<MutationSequence> mutationSequences)
-    {
-        MutationSequence original = null;
-        if (mutationSequences != null)
-        {
-            original = mutationSequences.stream()
-                .filter(x -> x.getId().equals(id))
-                .findAny().orElse(null);
-        }
-        return original;
     }
 
     /**

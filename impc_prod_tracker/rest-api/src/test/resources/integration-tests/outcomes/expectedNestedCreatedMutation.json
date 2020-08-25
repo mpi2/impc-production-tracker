@@ -18,10 +18,7 @@
         "id":4,
         "sequence":"TCTAAAAGGNACAGTTGGTGACTGCAGCTTAAACTCTGAGTGCAGCAGG",
         "typeName":"partial",
-        "categoryName":"intention target sequence",
-        "sequenceLocations":[
-
-        ]
+        "categoryName":"intention target sequence"
       }
     }
   ],
