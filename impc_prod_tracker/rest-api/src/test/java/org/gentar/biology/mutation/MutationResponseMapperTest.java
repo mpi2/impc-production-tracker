@@ -61,7 +61,6 @@ public class MutationResponseMapperTest
 
         assertThat(mutationResponseDTO.getId(), is(ID));
         assertThat(mutationResponseDTO.getMgiAlleleId(), is(MGI_ALLELE_ID));
-        assertThat(mutationResponseDTO.getSymbol(), is(SYMBOL));
         assertThat(
             mutationResponseDTO.getMgiAlleleSymbolWithoutImpcAbbreviation(),
             is(MGI_ALLELE_SYMBOL_WITHOUT_IMPC_ABBREVIATION));

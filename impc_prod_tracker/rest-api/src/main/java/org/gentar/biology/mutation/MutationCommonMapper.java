@@ -41,6 +41,7 @@ public class MutationCommonMapper implements Mapper<Mutation, MutationCommonDTO>
     public MutationCommonDTO toDto(Mutation mutation)
     {
         MutationCommonDTO mutationCommonDTO = entityMapper.toTarget(mutation, MutationCommonDTO.class);
+        mutationCommonDTO.setSymbol(mutation.getSymbol());
         mutationCommonDTO.setMutationQCResultDTOs(
             mutationQCResultMapper.toDtos(mutation.getMutationQcResults()));
         mutationCommonDTO.setMutationSequenceDTOS(
@@ -56,6 +57,7 @@ public class MutationCommonMapper implements Mapper<Mutation, MutationCommonDTO>
         Mutation mutation = new Mutation();
         if (mutationCommonDTO != null)
         {
+            mutation.setSymbol(mutationCommonDTO.getSymbol());
             mutation.setAlleleConfirmed(mutationCommonDTO.getAlleleConfirmed());
             mutation.setMgiAlleleSymbolRequiresConstruction(
                 mutationCommonDTO.getMgiAlleleSymbolRequiresConstruction());

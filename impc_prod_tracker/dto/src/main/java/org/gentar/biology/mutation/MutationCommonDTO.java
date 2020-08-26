@@ -11,6 +11,7 @@ public class MutationCommonDTO
     private Boolean mgiAlleleSymbolRequiresConstruction;
     private String geneticMutationTypeName;
     private String molecularMutationTypeName;
+    private String symbol;
 
     @JsonIgnore
     private Boolean alleleConfirmed;
