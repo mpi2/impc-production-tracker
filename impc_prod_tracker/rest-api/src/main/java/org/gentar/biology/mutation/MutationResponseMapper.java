@@ -37,7 +37,6 @@ public class MutationResponseMapper implements Mapper<Mutation, MutationResponse
         mutationResponseDTO.setMin(mutation.getMin());
         mutationResponseDTO.setMgiAlleleId(mutation.getMgiAlleleId());
         mutationResponseDTO.setImitsAllele(mutation.getImitsAllele());
-        mutationResponseDTO.setSymbol(mutation.getSymbol());
         mutationResponseDTO.setMgiAlleleSymbolWithoutImpcAbbreviation(
             mutation.getMgiAlleleSymbolWithoutImpcAbbreviation());
         mutationResponseDTO.setDescription(mutation.getDescription());

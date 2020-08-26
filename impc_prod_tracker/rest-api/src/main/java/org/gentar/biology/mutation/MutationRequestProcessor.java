@@ -79,6 +79,7 @@ public class MutationRequestProcessor
         Mutation newMutation = new Mutation(originalMutation);
 
        Mutation mappedMutation = mutationUpdateMapper.toEntity(mutationUpdateDTO);
+        newMutation.setSymbol(mappedMutation.getSymbol());
         newMutation.setMgiAlleleSymbolRequiresConstruction(
             mappedMutation.getMgiAlleleSymbolRequiresConstruction());
         newMutation.setGeneticMutationType(mappedMutation.getGeneticMutationType());
