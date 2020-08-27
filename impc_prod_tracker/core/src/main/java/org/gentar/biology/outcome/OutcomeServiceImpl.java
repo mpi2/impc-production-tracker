@@ -1,5 +1,6 @@
 package org.gentar.biology.outcome;
 
+import org.gentar.audit.diff.ChangeEntry;
 import org.gentar.audit.history.History;
 import org.gentar.audit.history.HistoryService;
 import org.gentar.biology.mutation.Mutation;
@@ -14,6 +15,7 @@ import org.gentar.security.abac.ResourceAccessChecker;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import java.util.Collection;
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
@@ -187,7 +189,15 @@ public class OutcomeServiceImpl implements OutcomeService
     @Override
     public List<History> getOutcomeHistory(Outcome outcome)
     {
-        return historyService.getHistoryByEntityNameAndEntityId("Outcome", outcome.getId());
+        List<History> outcomeHistory =
+            historyService.getHistoryByEntityNameAndEntityId("Outcome", outcome.getId());
+        Set<Mutation> mutations = outcome.getMutations();
+        if (mutations != null)
+        {
+            mutations.forEach(x -> outcomeHistory.addAll(mutationService.getHistory(x)));
+        }
+        outcomeHistory.sort(Comparator.comparing(History::getDate));
+        return outcomeHistory;
     }
 
     @Override
