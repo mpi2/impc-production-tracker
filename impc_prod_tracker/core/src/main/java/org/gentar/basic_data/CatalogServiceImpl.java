@@ -19,6 +19,8 @@ package org.gentar.basic_data;
 import org.gentar.biology.colony.distribution.distribution_network.DistributionNetworkRepository;
 import org.gentar.biology.colony.distribution.product_type.ProductTypeRepository;
 import org.gentar.biology.mutation.categorizarion.MutationCategorization;
+import org.gentar.biology.mutation.qc_results.QcStatusRepository;
+import org.gentar.biology.mutation.qc_results.QcTypeRepository;
 import org.gentar.biology.plan.attempt.crispr.nuclease.nuclease_class.NucleaseClassRepository;
 import org.gentar.biology.plan.attempt.crispr.nuclease.nuclease_type.NucleaseTypeRepository;
 import org.gentar.biology.mutation.categorizarion.MutationCategorizationRepository;
@@ -79,6 +81,8 @@ public class CatalogServiceImpl implements CatalogService
     private final SequenceCategoryRepository sequenceCategoryRepository;
     private final ProductTypeRepository productTypeRepository;
     private final DistributionNetworkRepository distributionNetworkRepository;
+    private final QcTypeRepository qcTypeRepository;
+    private final QcStatusRepository qcStatusRepository;
 
     private Map<String, Object> conf = new HashMap<>();
 
@@ -106,7 +110,9 @@ public class CatalogServiceImpl implements CatalogService
         SequenceTypeRepository sequenceTypeRepository,
         SequenceCategoryRepository sequenceCategoryRepository,
         ProductTypeRepository productTypeRepository,
-        DistributionNetworkRepository distributionNetworkRepository)
+        DistributionNetworkRepository distributionNetworkRepository,
+        QcTypeRepository qcTypeRepository,
+        QcStatusRepository qcStatusRepository)
     {
         this.workUnitRepository = workUnitRepository;
         this.workGroupRepository = workGroupRepository;
@@ -132,6 +138,8 @@ public class CatalogServiceImpl implements CatalogService
         this.sequenceCategoryRepository = sequenceCategoryRepository;
         this.productTypeRepository = productTypeRepository;
         this.distributionNetworkRepository = distributionNetworkRepository;
+        this.qcTypeRepository = qcTypeRepository;
+        this.qcStatusRepository = qcStatusRepository;
     }
 
     @Override
@@ -166,6 +174,8 @@ public class CatalogServiceImpl implements CatalogService
             addProductTypes();
             addDistributionNetworks();
             addConsortiaToConstructSymbols();
+            addQcTypes();
+            addQcStatuses();
         }
         return conf;
     }
@@ -376,5 +386,19 @@ public class CatalogServiceImpl implements CatalogService
         Consortium impc = consortiumRepository.findByNameIgnoreCase("IMPC");
         consortiaToConstructSymbols.add(impc.getName());
         conf.put("consortiaToConstructSymbols", consortiaToConstructSymbols);
+    }
+
+    private void addQcTypes()
+    {
+        List<Object> qcTypes = new ArrayList<>();
+        qcTypeRepository.findAll().forEach(p -> qcTypes.add(p.getName()));
+        conf.put("qcTypes", qcTypes);
+    }
+
+    private void addQcStatuses()
+    {
+        List<Object> qcStatuses = new ArrayList<>();
+        qcStatusRepository.findAll().forEach(p -> qcStatuses.add(p.getName()));
+        conf.put("qcStatuses", qcStatuses);
     }
 }
