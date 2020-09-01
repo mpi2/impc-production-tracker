@@ -21,6 +21,7 @@ import org.gentar.biology.colony.distribution.product_type.ProductTypeRepository
 import org.gentar.biology.mutation.categorizarion.MutationCategorization;
 import org.gentar.biology.mutation.qc_results.QcStatusRepository;
 import org.gentar.biology.mutation.qc_results.QcTypeRepository;
+import org.gentar.biology.outcome.type.OutcomeTypeRepository;
 import org.gentar.biology.plan.attempt.crispr.nuclease.nuclease_class.NucleaseClassRepository;
 import org.gentar.biology.plan.attempt.crispr.nuclease.nuclease_type.NucleaseTypeRepository;
 import org.gentar.biology.mutation.categorizarion.MutationCategorizationRepository;
@@ -77,6 +78,7 @@ public class CatalogServiceImpl implements CatalogService
     private final MutationCategorizationRepository mutationCategorizationRepository;
     private final FunderRepository funderRepository;
     private final AttemptTypeRepository attemptTypeRepository;
+    private final OutcomeTypeRepository outcomeTypeRepository;
     private final SequenceTypeRepository sequenceTypeRepository;
     private final SequenceCategoryRepository sequenceCategoryRepository;
     private final ProductTypeRepository productTypeRepository;
@@ -84,7 +86,7 @@ public class CatalogServiceImpl implements CatalogService
     private final QcTypeRepository qcTypeRepository;
     private final QcStatusRepository qcStatusRepository;
 
-    private Map<String, Object> conf = new HashMap<>();
+    private final Map<String, Object> conf = new HashMap<>();
 
     public CatalogServiceImpl(
         WorkUnitRepository workUnitRepository,
@@ -107,6 +109,7 @@ public class CatalogServiceImpl implements CatalogService
         MutationCategorizationRepository mutationCategorizationRepository,
         FunderRepository funderRepository,
         AttemptTypeRepository attemptTypeRepository,
+        OutcomeTypeRepository outcomeTypeRepository,
         SequenceTypeRepository sequenceTypeRepository,
         SequenceCategoryRepository sequenceCategoryRepository,
         ProductTypeRepository productTypeRepository,
@@ -134,6 +137,7 @@ public class CatalogServiceImpl implements CatalogService
         this.mutationCategorizationRepository = mutationCategorizationRepository;
         this.funderRepository = funderRepository;
         this.attemptTypeRepository = attemptTypeRepository;
+        this.outcomeTypeRepository = outcomeTypeRepository;
         this.sequenceTypeRepository = sequenceTypeRepository;
         this.sequenceCategoryRepository = sequenceCategoryRepository;
         this.productTypeRepository = productTypeRepository;
@@ -172,6 +176,7 @@ public class CatalogServiceImpl implements CatalogService
             addSequenceTypes();
             addSequenceCategorization();
             addProductTypes();
+            addOutcomeTypes();
             addDistributionNetworks();
             addConsortiaToConstructSymbols();
             addQcTypes();
@@ -365,6 +370,13 @@ public class CatalogServiceImpl implements CatalogService
         List<Object> productTypes = new ArrayList<>();
         productTypeRepository.findAll().forEach(p -> productTypes.add(p.getName()));
         conf.put("productTypes", productTypes);
+    }
+
+    private void addOutcomeTypes()
+    {
+        List<Object> outcomeTypes = new ArrayList<>();
+        outcomeTypeRepository.findAll().forEach(p -> outcomeTypes.add(p.getName()));
+        conf.put("outcomeTypes", outcomeTypes);
     }
 
     private void addDistributionNetworks()
