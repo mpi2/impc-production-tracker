@@ -4,6 +4,7 @@ import lombok.AccessLevel;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 import org.gentar.BaseEntity;
 import org.gentar.biology.plan.attempt.crispr.CrisprAttempt;
 
@@ -22,6 +23,7 @@ public class CrisprAttemptReagent extends BaseEntity implements Serializable
     private Long id;
 
     @EqualsAndHashCode.Exclude
+    @ToString.Exclude
     @NotNull
     @ManyToOne
     @JoinColumn(name = "attempt_id")
