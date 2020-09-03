@@ -1,5 +1,6 @@
 package org.gentar.biology.plan.mappers;
 
+import org.apache.logging.log4j.util.Strings;
 import org.gentar.Mapper;
 import org.gentar.biology.plan.Plan;
 import org.gentar.biology.plan.PlanCommonDataDTO;
@@ -56,7 +57,14 @@ public class PlanCommonDataMapper implements Mapper<Plan, PlanCommonDataDTO>
     public Plan toEntity(PlanCommonDataDTO planCommonDataDTO)
     {
         Plan plan = new Plan();
-        plan.setComment(planCommonDataDTO.getComment());
+        if (Strings.isBlank(planCommonDataDTO.getComment()))
+        {
+            plan.setComment(null);
+        }
+        else
+        {
+            plan.setComment(planCommonDataDTO.getComment());
+        }
         plan.setProductsAvailableForGeneralPublic(
             planCommonDataDTO.getProductsAvailableForGeneralPublic());
         Set<Funder> funders =
