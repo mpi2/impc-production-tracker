@@ -22,6 +22,7 @@ import org.gentar.biology.mutation.categorizarion.MutationCategorization;
 import org.gentar.biology.mutation.qc_results.QcStatusRepository;
 import org.gentar.biology.mutation.qc_results.QcTypeRepository;
 import org.gentar.biology.outcome.type.OutcomeTypeRepository;
+import org.gentar.biology.plan.attempt.crispr.assay.AssayTypeRepository;
 import org.gentar.biology.plan.attempt.crispr.nuclease.nuclease_class.NucleaseClassRepository;
 import org.gentar.biology.plan.attempt.crispr.nuclease.nuclease_type.NucleaseTypeRepository;
 import org.gentar.biology.mutation.categorizarion.MutationCategorizationRepository;
@@ -87,6 +88,7 @@ public class CatalogServiceImpl implements CatalogService
     private final QcTypeRepository qcTypeRepository;
     private final QcStatusRepository qcStatusRepository;
     private final ReagentRepository reagentRepository;
+    private final AssayTypeRepository assayTypeRepository;
 
     private final Map<String, Object> conf = new HashMap<>();
 
@@ -118,7 +120,8 @@ public class CatalogServiceImpl implements CatalogService
         DistributionNetworkRepository distributionNetworkRepository,
         QcTypeRepository qcTypeRepository,
         QcStatusRepository qcStatusRepository,
-        ReagentRepository reagentRepository)
+        ReagentRepository reagentRepository,
+        AssayTypeRepository assayTypeRepository)
     {
         this.workUnitRepository = workUnitRepository;
         this.workGroupRepository = workGroupRepository;
@@ -148,6 +151,7 @@ public class CatalogServiceImpl implements CatalogService
         this.qcTypeRepository = qcTypeRepository;
         this.qcStatusRepository = qcStatusRepository;
         this.reagentRepository = reagentRepository;
+        this.assayTypeRepository = assayTypeRepository;
     }
 
     @Override
@@ -186,6 +190,7 @@ public class CatalogServiceImpl implements CatalogService
             addQcTypes();
             addQcStatuses();
             addReagents();
+            addAssayTypes();
         }
         return conf;
     }
@@ -424,5 +429,12 @@ public class CatalogServiceImpl implements CatalogService
         List<Object> reagents = new ArrayList<>();
         reagentRepository.findAll().forEach(p -> reagents.add(p.getName()));
         conf.put("reagents", reagents);
+    }
+
+    private void addAssayTypes()
+    {
+        List<Object> assayTypes = new ArrayList<>();
+        assayTypeRepository.findAll().forEach(p -> assayTypes.add(p.getName()));
+        conf.put("assayTypes", assayTypes);
     }
 }
