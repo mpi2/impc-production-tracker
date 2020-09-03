@@ -15,6 +15,7 @@
  */
 package org.gentar.biology.plan.attempt.crispr;
 
+import org.apache.logging.log4j.util.Strings;
 import org.gentar.EntityMapper;
 import org.gentar.Mapper;
 import org.gentar.biology.strain.StrainMapper;
@@ -32,14 +33,14 @@ import java.util.Set;
 @Component
 public class CrisprAttemptMapper implements Mapper<CrisprAttempt, CrisprAttemptDTO>
 {
-    private EntityMapper entityMapper;
-    private GuideMapper guideMapper;
-    private NucleaseMapper nucleaseMapper;
-    private StrainMapper strainMapper;
-    private MutagenesisDonorMapper mutagenesisDonorMapper;
-    private GenotypePrimerMapper genotypePrimerMapper;
-    private AssayMapper assayMapper;
-    private CrisprAttemptReagentMapper crisprAttemptReagentMapper;
+    private final EntityMapper entityMapper;
+    private final GuideMapper guideMapper;
+    private final NucleaseMapper nucleaseMapper;
+    private final StrainMapper strainMapper;
+    private final MutagenesisDonorMapper mutagenesisDonorMapper;
+    private final GenotypePrimerMapper genotypePrimerMapper;
+    private final AssayMapper assayMapper;
+    private final CrisprAttemptReagentMapper crisprAttemptReagentMapper;
 
     public CrisprAttemptMapper(
         EntityMapper entityMapper,
@@ -82,6 +83,14 @@ public class CrisprAttemptMapper implements Mapper<CrisprAttempt, CrisprAttemptD
     public CrisprAttempt toEntity(CrisprAttemptDTO crisprAttemptDTO)
     {
         CrisprAttempt crisprAttempt = entityMapper.toTarget(crisprAttemptDTO, CrisprAttempt.class);
+        if (Strings.isBlank(crisprAttemptDTO.getComment()))
+        {
+            crisprAttempt.setComment(null);
+        }
+        else
+        {
+            crisprAttempt.setComment(crisprAttemptDTO.getComment());
+        }
         setAssay(crisprAttempt, crisprAttemptDTO);
         setStrain(crisprAttempt, crisprAttemptDTO);
         setGuidesToEntity(crisprAttempt, crisprAttemptDTO);
