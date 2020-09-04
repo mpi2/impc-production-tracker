@@ -28,6 +28,7 @@ import org.gentar.biology.plan.attempt.crispr.nuclease.nuclease_type.NucleaseTyp
 import org.gentar.biology.mutation.categorizarion.MutationCategorizationRepository;
 import org.gentar.biology.plan.attempt.AttemptTypeRepository;
 import org.gentar.biology.plan.attempt.crispr.reagent.ReagentRepository;
+import org.gentar.biology.plan.attempt.phenotyping.stage.type.PhenotypingStageTypeRepository;
 import org.gentar.biology.sequence.category.SequenceCategoryRepository;
 import org.gentar.biology.sequence.type.SequenceTypeRepository;
 import org.gentar.biology.strain.strain_type.StrainType;
@@ -89,6 +90,7 @@ public class CatalogServiceImpl implements CatalogService
     private final QcStatusRepository qcStatusRepository;
     private final ReagentRepository reagentRepository;
     private final AssayTypeRepository assayTypeRepository;
+    private final PhenotypingStageTypeRepository phenotypingStageTypeRepository;
 
     private final Map<String, Object> conf = new HashMap<>();
 
@@ -121,7 +123,8 @@ public class CatalogServiceImpl implements CatalogService
         QcTypeRepository qcTypeRepository,
         QcStatusRepository qcStatusRepository,
         ReagentRepository reagentRepository,
-        AssayTypeRepository assayTypeRepository)
+        AssayTypeRepository assayTypeRepository,
+        PhenotypingStageTypeRepository phenotypingStageTypeRepository)
     {
         this.workUnitRepository = workUnitRepository;
         this.workGroupRepository = workGroupRepository;
@@ -152,6 +155,7 @@ public class CatalogServiceImpl implements CatalogService
         this.qcStatusRepository = qcStatusRepository;
         this.reagentRepository = reagentRepository;
         this.assayTypeRepository = assayTypeRepository;
+        this.phenotypingStageTypeRepository = phenotypingStageTypeRepository;
     }
 
     @Override
@@ -191,6 +195,7 @@ public class CatalogServiceImpl implements CatalogService
             addQcStatuses();
             addReagents();
             addAssayTypes();
+            addPhenotypingStagesTypes();
         }
         return conf;
     }
@@ -436,5 +441,12 @@ public class CatalogServiceImpl implements CatalogService
         List<Object> assayTypes = new ArrayList<>();
         assayTypeRepository.findAll().forEach(p -> assayTypes.add(p.getName()));
         conf.put("assayTypes", assayTypes);
+    }
+
+    private void addPhenotypingStagesTypes()
+    {
+        List<Object> phenotypingStagesTypes = new ArrayList<>();
+        phenotypingStageTypeRepository.findAll().forEach(p -> phenotypingStagesTypes.add(p.getName()));
+        conf.put("phenotypingStagesTypes", phenotypingStagesTypes);
     }
 }
