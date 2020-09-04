@@ -7,7 +7,6 @@ import org.gentar.biology.mutation.symbolConstructor.AlleleSymbolConstructor;
 import org.gentar.biology.mutation.symbolConstructor.SymbolSuggestionRequest;
 import org.gentar.biology.outcome.Outcome;
 import org.gentar.biology.outcome.OutcomeService;
-import org.gentar.biology.project.Project;
 import org.gentar.common.history.HistoryDTO;
 import org.gentar.helpers.ChangeResponseCreator;
 import org.springframework.hateoas.CollectionModel;
@@ -63,6 +62,21 @@ public class MutationController
     }
 
     /**
+     * Gets all the mutations for a specific outcome.
+     * @param tpo Public identifier of the outcome.
+     * @return Collection of mutations.
+     */
+    @GetMapping(value = {"outcomes/{tpo}/mutations"})
+    public ResponseEntity<CollectionModel<MutationResponseDTO>>
+    getAllMutationsByOutcome(@PathVariable String tpo)
+    {
+        List<MutationResponseDTO> mutationResponseDTOS;
+        Outcome outcome = outcomeService.getByTpoFailsIfNotFound(tpo);
+        mutationResponseDTOS = getMutationsDtosByOutcome(outcome);
+        return ResponseEntity.ok(CollectionModel.of(mutationResponseDTOS));
+    }
+
+    /**
      * Gets a mutation in an outcome.
      * @param pin Public identifier of the plan.
      * @param tpo Public identifier of the outcome.
@@ -93,22 +107,29 @@ public class MutationController
     }
 
     /**
-     * Gets all the mutations for a specific outcome.
+     * Gets all the mutations for a specific outcome accessing it through the plan.
      * @param pin Public identifier of the plan.
      * @param tpo Public identifier of the outcome.
      * @return Collection of mutations.
      */
     @GetMapping(value = {"plans/{pin}/outcomes/{tpo}/mutations"})
-    public ResponseEntity<CollectionModel<MutationResponseDTO>> getAllMutationsByOutcome(
+    public ResponseEntity<CollectionModel<MutationResponseDTO>> getAllMutationsByPlanAndOutcome(
         @PathVariable String pin, @PathVariable String tpo)
     {
-        List<MutationResponseDTO> mutationResponseDTOS = new ArrayList<>();
+        List<MutationResponseDTO> mutationResponseDTOS;
         Outcome outcome = outcomeService.getOutcomeByPinAndTpo(pin, tpo);
+        mutationResponseDTOS = getMutationsDtosByOutcome(outcome);
+        return ResponseEntity.ok(CollectionModel.of(mutationResponseDTOS));
+    }
+
+    private List<MutationResponseDTO> getMutationsDtosByOutcome(Outcome outcome)
+    {
+        List<MutationResponseDTO> mutationResponseDTOS = new ArrayList<>();
         if (outcome != null)
         {
             mutationResponseDTOS = mutationResponseMapper.toDtos(outcome.getMutations());
         }
-        return ResponseEntity.ok(CollectionModel.of(mutationResponseDTOS));
+        return mutationResponseDTOS;
     }
 
     /**

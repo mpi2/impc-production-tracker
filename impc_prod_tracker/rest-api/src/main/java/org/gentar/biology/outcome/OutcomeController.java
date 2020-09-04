@@ -3,6 +3,8 @@ package org.gentar.biology.outcome;
 import org.gentar.audit.history.History;
 import org.gentar.audit.history.HistoryMapper;
 import org.gentar.biology.ChangeResponse;
+import org.gentar.biology.mutation.Mutation;
+import org.gentar.biology.mutation.MutationResponseDTO;
 import org.gentar.biology.plan.Plan;
 import org.gentar.biology.plan.PlanService;
 import org.gentar.common.history.HistoryDTO;
@@ -56,6 +58,13 @@ public class OutcomeController
         this.outcomeCreationMapper = outcomeCreationMapper;
         this.changeResponseCreator = changeResponseCreator;
         this.historyMapper = historyMapper;
+    }
+
+    @GetMapping(value = {"outcomes/{tpo}"})
+    public OutcomeResponseDTO findOneByTpo(@PathVariable String tpo)
+    {
+        Outcome outcome = outcomeService.getByTpoFailsIfNotFound(tpo);
+        return outcomeResponseMapper.toDto(outcome);
     }
 
     @GetMapping(value = {"plans/{pin}/outcomes/{tpo}"})

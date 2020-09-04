@@ -43,8 +43,8 @@ import org.gentar.error_management.ExceptionHandlerFilter;
 @EnableHypermediaSupport(type = { EnableHypermediaSupport.HypermediaType.HAL })
 public class RootConfiguration extends WebSecurityConfigurerAdapter
 {
-    private JwtTokenFilter jwtTokenFilter;
-    private ExceptionHandlerFilter exceptionHandlerFilter;
+    private final JwtTokenFilter jwtTokenFilter;
+    private final ExceptionHandlerFilter exceptionHandlerFilter;
 
 
     public RootConfiguration(
@@ -52,7 +52,6 @@ public class RootConfiguration extends WebSecurityConfigurerAdapter
     {
         this.jwtTokenFilter = jwtTokenFilter;
         this.exceptionHandlerFilter = exceptionHandlerFilter;
-
     }
 
     @Bean
@@ -84,8 +83,9 @@ public class RootConfiguration extends WebSecurityConfigurerAdapter
             .antMatchers("/docs/**").permitAll()
             .antMatchers("/auth/signin").permitAll()
             .antMatchers("/api/conf").permitAll()
-            .antMatchers("/api/plans/**").permitAll()
             .antMatchers("/api/projects/**").permitAll()
+            .antMatchers("/api/plans/**").permitAll()
+            .antMatchers("/api/outcomes/**").permitAll()
             .antMatchers("/api/people/requestPasswordReset").permitAll()
             .antMatchers("/reports/**").permitAll()
             .anyRequest().authenticated()
