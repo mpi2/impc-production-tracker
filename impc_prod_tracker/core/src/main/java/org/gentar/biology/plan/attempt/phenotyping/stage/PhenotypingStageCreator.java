@@ -15,9 +15,9 @@ import javax.transaction.Transactional;
 public class PhenotypingStageCreator
 {
     @PersistenceContext
-    private EntityManager entityManager;
-    private HistoryService<PhenotypingStage> historyService;
-    private PhenotypingStageStateSetter phenotypingStageStateSetter;
+    private final EntityManager entityManager;
+    private final HistoryService<PhenotypingStage> historyService;
+    private final PhenotypingStageStateSetter phenotypingStageStateSetter;
 
     public PhenotypingStageCreator(
             EntityManager entityManager,
@@ -29,6 +29,7 @@ public class PhenotypingStageCreator
         this.phenotypingStageStateSetter = phenotypingStageStateSetter;
     }
 
+    @Transactional
     public PhenotypingStage create(PhenotypingStage phenotypingStage)
     {
         setInitialStatus(phenotypingStage);

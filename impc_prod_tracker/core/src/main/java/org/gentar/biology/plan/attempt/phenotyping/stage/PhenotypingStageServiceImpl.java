@@ -24,30 +24,30 @@ import java.util.stream.Collectors;
 @Component
 public class PhenotypingStageServiceImpl implements PhenotypingStageService
 {
-    private PhenotypingStageStateMachineResolver phenotypingStageStateMachineResolver;
-    private TransitionAvailabilityEvaluator transitionAvailabilityEvaluator;
-    private PhenotypingStageRepository phenotypingStageRepository;
-    private PhenotypingStageTypeRepository phenotypingStageTypeRepository;
-    private PlanService planService;
-    private ResourceAccessChecker<PhenotypingStage> resourceAccessChecker;
-    private StatusService statusService;
-    private PhenotypingStageCreator phenotypingStageCreator;
-    private PhenotypingStageUpdater phenotypingStageUpdater;
-    private HistoryService historyService;
+    private final PhenotypingStageStateMachineResolver phenotypingStageStateMachineResolver;
+    private final TransitionAvailabilityEvaluator transitionAvailabilityEvaluator;
+    private final PhenotypingStageRepository phenotypingStageRepository;
+    private final PhenotypingStageTypeRepository phenotypingStageTypeRepository;
+    private final PlanService planService;
+    private final ResourceAccessChecker<PhenotypingStage> resourceAccessChecker;
+    private final StatusService statusService;
+    private final PhenotypingStageCreator phenotypingStageCreator;
+    private final PhenotypingStageUpdater phenotypingStageUpdater;
+    private final HistoryService<PhenotypingStage> historyService;
 
     public static final String READ_PHENOTYPING_STAGE_ACTION = "READ_PHENOTYPING_STAGE";
 
     public PhenotypingStageServiceImpl(
-            PhenotypingStageStateMachineResolver phenotypingStageStateMachineResolver,
-            TransitionAvailabilityEvaluator transitionAvailabilityEvaluator,
-            PhenotypingStageRepository phenotypingStageRepository,
-            PhenotypingStageTypeRepository phenotypingStageTypeRepository,
-            PlanService planService,
-            ResourceAccessChecker<PhenotypingStage> resourceAccessChecker,
-            StatusService statusService,
-            PhenotypingStageCreator phenotypingStageCreator,
-            PhenotypingStageUpdater phenotypingStageUpdater,
-            HistoryService historyService)
+        PhenotypingStageStateMachineResolver phenotypingStageStateMachineResolver,
+        TransitionAvailabilityEvaluator transitionAvailabilityEvaluator,
+        PhenotypingStageRepository phenotypingStageRepository,
+        PhenotypingStageTypeRepository phenotypingStageTypeRepository,
+        PlanService planService,
+        ResourceAccessChecker<PhenotypingStage> resourceAccessChecker,
+        StatusService statusService,
+        PhenotypingStageCreator phenotypingStageCreator,
+        PhenotypingStageUpdater phenotypingStageUpdater,
+        HistoryService<PhenotypingStage> historyService)
     {
         this.phenotypingStageStateMachineResolver = phenotypingStageStateMachineResolver;
         this.transitionAvailabilityEvaluator = transitionAvailabilityEvaluator;
@@ -77,13 +77,14 @@ public class PhenotypingStageServiceImpl implements PhenotypingStageService
     }
 
     @Override
-    public PhenotypingStage getPhenotypingStageByPinAndPsn(String pin, String psn) {
+    public PhenotypingStage getPhenotypingStageByPinAndPsn(String pin, String psn)
+    {
         Plan plan = planService.getNotNullPlanByPin(pin);
         PhenotypingStage phenotypingStage = getByPsnFailsIfNotFound(psn);
         if (plan != phenotypingStage.getPhenotypingAttempt().getPlan())
         {
             throw new UserOperationFailedException(
-                    "Plan "+ pin + " is not related with phenotyping stage +" + psn + ".");
+                "Plan " + pin + " is not related with phenotyping stage +" + psn + ".");
         }
         return phenotypingStage;
     }
@@ -100,46 +101,44 @@ public class PhenotypingStageServiceImpl implements PhenotypingStageService
     }
 
     @Override
-    public List<PhenotypingStage> getPhenotypingStages() {
+    public List<PhenotypingStage> getPhenotypingStages()
+    {
         return getCheckedCollection(phenotypingStageRepository.findAll());
     }
 
     private List<PhenotypingStage> getCheckedCollection(Collection<PhenotypingStage> phenotypingStages)
     {
         return phenotypingStages.stream().map(this::getAccessChecked)
-                .filter(Objects::nonNull)
-                .collect(Collectors.toList());
+            .filter(Objects::nonNull)
+            .collect(Collectors.toList());
     }
 
     private PhenotypingStage getAccessChecked(PhenotypingStage phenotypingStage)
     {
-        return (PhenotypingStage) resourceAccessChecker.checkAccess((Resource<PhenotypingStage>) phenotypingStage,
-                READ_PHENOTYPING_STAGE_ACTION);
+        return (PhenotypingStage) resourceAccessChecker.checkAccess(
+            (Resource<PhenotypingStage>) phenotypingStage, READ_PHENOTYPING_STAGE_ACTION);
     }
 
     @Override
-    public PhenotypingStage create(PhenotypingStage phenotypingStage) {
-        setInitialStatus(phenotypingStage);
-        PhenotypingStage createdPhenotypingStage = phenotypingStageCreator.create(phenotypingStage);
-        return createdPhenotypingStage;
-    }
-
-    private void setInitialStatus(PhenotypingStage phenotypingStage)
+    @Transactional
+    public PhenotypingStage create(PhenotypingStage phenotypingStage)
     {
-        Status phenotypingStageStatus = statusService.getStatusByName(PhenotypingStageState.PhenotypingStarted.getInternalName());
-        phenotypingStage.setStatus(phenotypingStageStatus);
+        return phenotypingStageCreator.create(phenotypingStage);
     }
 
     @Transactional
-    public History update(PhenotypingStage phenotypingStage) {
-        PhenotypingStage originalPhenotypingStage = new PhenotypingStage(getByPsnFailsIfNotFound(phenotypingStage.getPsn()));
+    public History update(PhenotypingStage phenotypingStage)
+    {
+        PhenotypingStage originalPhenotypingStage =
+            new PhenotypingStage(getByPsnFailsIfNotFound(phenotypingStage.getPsn()));
         return phenotypingStageUpdater.update(originalPhenotypingStage, phenotypingStage);
     }
 
     @Override
-    public List<History> getPhenotypingStageHistory (PhenotypingStage phenotypingStage)
+    public List<History> getPhenotypingStageHistory(PhenotypingStage phenotypingStage)
     {
-        return historyService.getHistoryByEntityNameAndEntityId("PhenotypingStage", phenotypingStage.getId());
+        return historyService.getHistoryByEntityNameAndEntityId(
+            "PhenotypingStage", phenotypingStage.getId());
     }
 
     @Override
@@ -148,7 +147,8 @@ public class PhenotypingStageServiceImpl implements PhenotypingStageService
         PhenotypingStageType phenotypingStageType = getPhenotypingStageTypeByName(name);
         if (phenotypingStageType == null)
         {
-            throw new UserOperationFailedException("Phenotyping stage type" + name + " does not exist.");
+            throw new UserOperationFailedException(
+                "Phenotyping stage type" + name + " does not exist.");
         }
         return phenotypingStageType;
     }
