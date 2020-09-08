@@ -19,7 +19,7 @@ import java.util.Set;
 @Component
 public class PhenotypingStageStateSetter implements StateSetter
 {
-    private StatusService statusService;
+    private final StatusService statusService;
     private static final Map<PhenotypingStageTypeName, String> SUFFIXES;
 
     static

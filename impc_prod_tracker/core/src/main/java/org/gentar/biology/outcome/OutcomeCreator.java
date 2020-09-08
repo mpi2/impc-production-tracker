@@ -21,10 +21,10 @@ class OutcomeCreator
 {
     @PersistenceContext
     private EntityManager entityManager;
-    private HistoryService<Outcome> historyService;
-    private ColonyStateSetter colonyStateSetter;
-    private SpecimenStateSetter specimenStateSetter;
-    private MutationService mutationService;
+    private final HistoryService<Outcome> historyService;
+    private final ColonyStateSetter colonyStateSetter;
+    private final SpecimenStateSetter specimenStateSetter;
+    private final MutationService mutationService;
 
     OutcomeCreator(
         HistoryService<Outcome> historyService,
@@ -80,7 +80,7 @@ class OutcomeCreator
         Set<Mutation> mutations = outcome.getMutations();
         if (mutations != null)
         {
-            mutations.forEach(x -> mutationService.create(x));
+            mutations.forEach(mutationService::create);
         }
     }
 

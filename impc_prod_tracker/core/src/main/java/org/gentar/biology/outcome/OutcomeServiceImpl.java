@@ -1,6 +1,5 @@
 package org.gentar.biology.outcome;
 
-import org.gentar.audit.diff.ChangeEntry;
 import org.gentar.audit.history.History;
 import org.gentar.audit.history.HistoryService;
 import org.gentar.biology.mutation.Mutation;
@@ -9,7 +8,6 @@ import org.gentar.biology.outcome.type.OutcomeType;
 import org.gentar.biology.outcome.type.OutcomeTypeRepository;
 import org.gentar.biology.plan.Plan;
 import org.gentar.biology.plan.PlanService;
-import org.gentar.biology.status.StatusService;
 import org.gentar.exceptions.UserOperationFailedException;
 import org.gentar.security.abac.ResourceAccessChecker;
 import org.springframework.stereotype.Component;
@@ -25,14 +23,14 @@ import java.util.stream.Collectors;
 @Component
 public class OutcomeServiceImpl implements OutcomeService
 {
-    private OutcomeRepository outcomeRepository;
-    private OutcomeTypeRepository outcomeTypeRepository;
-    private OutcomeCreator outcomeCreator;
-    private OutcomeUpdater outcomeUpdater;
-    private PlanService planService;
-    private MutationService mutationService;
-    private ResourceAccessChecker<Outcome> resourceAccessChecker;
-    private HistoryService<Outcome> historyService;
+    private final OutcomeRepository outcomeRepository;
+    private final OutcomeTypeRepository outcomeTypeRepository;
+    private final OutcomeCreator outcomeCreator;
+    private final OutcomeUpdater outcomeUpdater;
+    private final PlanService planService;
+    private final MutationService mutationService;
+    private final ResourceAccessChecker<Outcome> resourceAccessChecker;
+    private final HistoryService<Outcome> historyService;
 
     public static final String READ_OUTCOME_ACTION = "READ_OUTCOME";
 
@@ -40,7 +38,6 @@ public class OutcomeServiceImpl implements OutcomeService
         OutcomeRepository outcomeRepository,
         OutcomeTypeRepository outcomeTypeRepository,
         OutcomeCreator outcomeCreator,
-        StatusService statusService,
         OutcomeUpdater outcomeUpdater,
         PlanService planService,
         MutationService mutationService,
