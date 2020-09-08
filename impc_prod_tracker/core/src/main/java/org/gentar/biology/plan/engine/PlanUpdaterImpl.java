@@ -17,12 +17,12 @@ import org.springframework.transaction.annotation.Transactional;
 @Component
 public class PlanUpdaterImpl implements PlanUpdater
 {
-    private HistoryService<Plan> historyService;
-    private ContextAwarePolicyEnforcement policyEnforcement;
-    private PlanRepository planRepository;
-    private PlanValidator planValidator;
-    private ProjectService projectService;
-    private PlanStatusManager planStatusManager;
+    private final HistoryService<Plan> historyService;
+    private final ContextAwarePolicyEnforcement policyEnforcement;
+    private final PlanRepository planRepository;
+    private final PlanValidator planValidator;
+    private final ProjectService projectService;
+    private final PlanStatusManager planStatusManager;
 
     public PlanUpdaterImpl(
         HistoryService<Plan> historyService,

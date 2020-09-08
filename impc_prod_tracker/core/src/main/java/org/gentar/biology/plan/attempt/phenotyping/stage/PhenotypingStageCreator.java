@@ -18,24 +18,33 @@ public class PhenotypingStageCreator
     private final EntityManager entityManager;
     private final HistoryService<PhenotypingStage> historyService;
     private final PhenotypingStageStateSetter phenotypingStageStateSetter;
+    private final PhenotypingStageValidator phenotypingStageValidator;
 
     public PhenotypingStageCreator(
-            EntityManager entityManager,
-            HistoryService<PhenotypingStage> historyService,
-            PhenotypingStageStateSetter phenotypingStageStateSetter)
+        EntityManager entityManager,
+        HistoryService<PhenotypingStage> historyService,
+        PhenotypingStageStateSetter phenotypingStageStateSetter,
+        PhenotypingStageValidator phenotypingStageValidator)
     {
         this.entityManager = entityManager;
         this.historyService = historyService;
         this.phenotypingStageStateSetter = phenotypingStageStateSetter;
+        this.phenotypingStageValidator = phenotypingStageValidator;
     }
 
     @Transactional
     public PhenotypingStage create(PhenotypingStage phenotypingStage)
     {
+        validateData(phenotypingStage);
         setInitialStatus(phenotypingStage);
         PhenotypingStage createdPhenotypingStage = save(phenotypingStage);
         registerCreationInHistory(createdPhenotypingStage);
         return createdPhenotypingStage;
+    }
+
+    private void validateData(PhenotypingStage phenotypingStage)
+    {
+        phenotypingStageValidator.validate(phenotypingStage);
     }
 
     private void setInitialStatus(PhenotypingStage phenotypingStage)
