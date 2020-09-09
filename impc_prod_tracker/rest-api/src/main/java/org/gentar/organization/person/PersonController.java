@@ -73,7 +73,6 @@ public class PersonController
         Person person = personService.getPersonByEmail(email);
         if (person == null)
         {
-            //TODO Not found
             throw new UserOperationFailedException(
                 "User with email " + email + " not found.");
         }
