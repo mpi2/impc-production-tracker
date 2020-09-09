@@ -33,7 +33,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 import org.gentar.organization.person.Person;
-
 import java.nio.charset.Charset;
 
 @Component
@@ -69,9 +68,17 @@ public class AAPService
         ResponseEntity<String> response;
         HttpHeaders headers = new HttpHeaders();
         headers.setBasicAuth(userName, password);
+
         HttpEntity<String> entity = new HttpEntity<>("parameters", headers);
         try
         {
+            // For some reason, using the injected restTemplate causes an odd behaviour. After
+            // a successful login, if the user tries again the login process with an invalid
+            // password, the call to the AAP keeps generating a valid token, when the expected
+            // behaviour is to return an error message due to invalid credentials.
+            // Using a new RestTemplate fixes the issue but it's not clear why.
+            RestTemplate restTemplate = new RestTemplate();
+
             response = restTemplate.exchange(
                 EXTERNAL_SERVICE_URL + AUTHENTICATION_ENDPOINT,
                 HttpMethod.GET,
