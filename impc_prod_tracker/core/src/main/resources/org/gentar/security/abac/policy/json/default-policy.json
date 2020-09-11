@@ -54,6 +54,12 @@
     "condition": "subject.role.name == 'admin'"
   },
   {
+    "name": "Create a plan that is in the same subject's work unit",
+    "description": "Permission to create a plan",
+    "target": "action == 'CREATE_PLAN'",
+    "condition": "subject.belongsToAnyWorkUnit(resource.workUnit)"
+  },
+  {
     "name": "Update a plan that is in the same subject's work unit",
     "description": "Permission to Update a plan",
     "target": "action == 'UPDATE_PLAN'",

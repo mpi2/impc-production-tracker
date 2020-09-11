@@ -205,8 +205,8 @@
         "comment":null,
         "privacyName":"restricted",
         "externalReference":null,
-        "assignmentStatusName":null,
-        "summaryStatusName":null,
+        "assignmentStatusName":"Assigned",
+        "summaryStatusName":"Plan Created",
         "relatedWorkUnitNames":[
 
         ],
@@ -229,7 +229,12 @@
 
         ],
         "consortia":[
+          {
+            "consortiumName":"CMG",
+            "institutes":[
 
+            ]
+          }
         ]
       }
     ]
