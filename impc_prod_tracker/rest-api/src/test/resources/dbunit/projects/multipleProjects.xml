@@ -158,8 +158,9 @@
 
     <PERSON     ID="123"
                 EMAIL="gentar_test_user1@gentar.org"
+                EBI_ADMIN="true"
                 AUTH_ID="usr-3bc9e4f6-652a-4abf-ad92-77397f8bdd3f"/>
-    <PERSON_ROLE_WORK_UNIT/>
+
     <PERSON_ROLE_CONSORTIUM/>
     <PLAN_STATUS_STAMP/>
     <PLAN_SUMMARY_STATUS_STAMP/>
