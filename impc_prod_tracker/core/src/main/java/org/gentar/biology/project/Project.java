@@ -124,6 +124,26 @@ public class Project extends BaseEntity implements Resource<Project>
     @ManyToOne(targetEntity= Privacy.class)
     private Privacy privacy;
 
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
+    @OneToMany(cascade=CascadeType.ALL, mappedBy = "project")
+    private List<ProjectIntention> projectIntentions;
+
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
+    @JsonIgnore
+    @ManyToMany
+    @JoinTable(
+        name = "project_species",
+        joinColumns = @JoinColumn(name = "project_id"),
+        inverseJoinColumns = @JoinColumn(name = "species_id"))
+    private Set<Species> species;
+
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
+    @OneToMany(cascade=CascadeType.ALL, mappedBy = "project", orphanRemoval=true)
+    private Set<ProjectConsortium> projectConsortia;
+
     @JsonIgnore
     public ResourcePrivacy getResourcePrivacy()
     {
@@ -206,25 +226,14 @@ public class Project extends BaseEntity implements Resource<Project>
         return relatedConsortia;
     }
 
-    @EqualsAndHashCode.Exclude
-    @ToString.Exclude
-    @OneToMany(cascade=CascadeType.ALL, mappedBy = "project")
-    private List<ProjectIntention> projectIntentions;
-
-    @ToString.Exclude
-    @EqualsAndHashCode.Exclude
-    @JsonIgnore
-    @ManyToMany
-    @JoinTable(
-            name = "project_species",
-            joinColumns = @JoinColumn(name = "project_id"),
-            inverseJoinColumns = @JoinColumn(name = "species_id"))
-    private Set<Species> species;
-
-    @EqualsAndHashCode.Exclude
-    @ToString.Exclude
-    @OneToMany(cascade=CascadeType.ALL, mappedBy = "project", orphanRemoval=true)
-    private Set<ProjectConsortium> projectConsortia;
+    public void addPlan(Plan plan)
+    {
+        if (this.plans == null)
+        {
+            this.plans = new HashSet<>();
+        }
+        this.plans.add(plan);
+    }
 
     public String toString()
     {
