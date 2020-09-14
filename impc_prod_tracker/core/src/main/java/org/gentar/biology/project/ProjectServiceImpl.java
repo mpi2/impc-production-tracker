@@ -19,7 +19,9 @@ import org.gentar.audit.history.HistoryService;
 import org.gentar.biology.ortholog.Ortholog;
 import org.gentar.biology.ortholog.OrthologService;
 import org.gentar.biology.intention.project_intention_gene.ProjectIntentionGene;
+import org.gentar.biology.outcome.Outcome;
 import org.gentar.biology.plan.Plan;
+import org.gentar.biology.plan.type.PlanTypeName;
 import org.gentar.biology.project.engine.ProjectUpdater;
 import org.gentar.biology.project.specs.ProjectSpecs;
 import org.gentar.exceptions.UserOperationFailedException;
@@ -211,5 +213,24 @@ public class ProjectServiceImpl implements ProjectService
         }
         plans.add(plan);
         plan.setProject(project);
+    }
+
+    @Override
+    public List<String> getProductionTposByProject(Project project)
+    {
+        List<String> tpos = new ArrayList<>();
+        List<Plan> productionPlans =
+            projectQueryHelper.getPlansByType(project, PlanTypeName.PRODUCTION);
+        if (productionPlans != null)
+        {
+            productionPlans.forEach(x -> {
+                Set<Outcome> outcomes = x.getOutcomes();
+                if (outcomes != null)
+                {
+                    outcomes.forEach(outcome -> tpos.add(outcome.getTpo()));
+                }
+            });
+        }
+        return tpos;
     }
 }

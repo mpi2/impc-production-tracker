@@ -4,11 +4,14 @@ import org.apache.commons.collections.CollectionUtils;
 import org.gentar.biology.ortholog.Ortholog;
 import org.gentar.biology.intention.project_intention.ProjectIntention;
 import org.gentar.biology.intention.project_intention_gene.ProjectIntentionGene;
+import org.gentar.biology.plan.Plan;
+import org.gentar.biology.plan.type.PlanTypeName;
 import org.springframework.stereotype.Component;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * A class with common queries to a project
@@ -95,5 +98,18 @@ public class ProjectQueryHelper
         List<String> consortiaNames = new ArrayList<>();
         project.getRelatedConsortia().forEach(x -> consortiaNames.add(x.getName()));
         return consortiaNames;
+    }
+
+    public List<Plan> getPlansByType(Project project, PlanTypeName planTypeName)
+    {
+        List<Plan> plansByType = new ArrayList<>();
+        Set<Plan> allPlans = project.getPlans();
+        if (allPlans != null)
+        {
+            plansByType = allPlans.stream()
+                .filter(x -> x.getPlanType().getName().equals(planTypeName.getLabel()))
+                .collect(Collectors.toList());
+        }
+        return plansByType;
     }
 }

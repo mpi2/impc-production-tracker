@@ -58,4 +58,12 @@ public interface ProjectService
      * @param project Project object.
      */
     void associatePlanToProject(Plan plan, Project project);
+
+    /**
+     * Get all the TPOs associated with all the production plans in the project.
+     * @param project Project to evaluate.
+     * @return List of strings with the TPOs that are associated to the production plans in this
+     * project.
+     */
+    List<String> getProductionTposByProject(Project project);
 }

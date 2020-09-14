@@ -283,4 +283,12 @@ public class ProjectController
 
         return historyMapper.toDtos(projectService.getProjectHistory(project));
     }
+
+    @GetMapping(value = {"/{tpn}/productionTpos"})
+    public List<String> getProductionTposByProject(@PathVariable String tpn)
+    {
+        Project project = ProjectUtilities.getNotNullProjectByTpn(tpn);
+
+        return projectService.getProductionTposByProject(project);
+    }
 }
