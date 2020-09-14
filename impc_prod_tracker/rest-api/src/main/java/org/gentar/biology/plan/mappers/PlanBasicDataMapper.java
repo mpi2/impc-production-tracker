@@ -149,6 +149,9 @@ public class PlanBasicDataMapper implements Mapper<Plan, PlanBasicDataDTO>
         else if (planBasicDataDTO.getPhenotypingAttemptCreationDTO() != null)
         {
             setPhenotypingAttempt(plan, planBasicDataDTO);
+        }
+        if (planBasicDataDTO.getPlanStartingPointDTO() != null)
+        {
             setStartingPoint(plan, planBasicDataDTO);
         }
     }
