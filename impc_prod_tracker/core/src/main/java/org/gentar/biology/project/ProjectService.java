@@ -16,6 +16,7 @@
 package org.gentar.biology.project;
 
 import org.gentar.audit.history.History;
+import org.gentar.biology.outcome.Outcome;
 import org.gentar.biology.plan.Plan;
 import org.gentar.biology.project.search.filter.ProjectFilter;
 import org.springframework.data.domain.Page;
@@ -62,8 +63,8 @@ public interface ProjectService
     /**
      * Get all the TPOs associated with all the production plans in the project.
      * @param project Project to evaluate.
-     * @return List of strings with the TPOs that are associated to the production plans in this
+     * @return List of outcomes that are associated to the production plans in this
      * project.
      */
-    List<String> getProductionTposByProject(Project project);
+    List<Outcome> getProductionOutcomesByProject(Project project);
 }

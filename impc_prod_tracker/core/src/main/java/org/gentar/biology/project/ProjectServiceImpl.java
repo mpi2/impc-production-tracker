@@ -216,21 +216,18 @@ public class ProjectServiceImpl implements ProjectService
     }
 
     @Override
-    public List<String> getProductionTposByProject(Project project)
+    public List<Outcome> getProductionOutcomesByProject(Project project)
     {
-        List<String> tpos = new ArrayList<>();
+        List<Outcome> productionOutcomes = new ArrayList<>();
         List<Plan> productionPlans =
             projectQueryHelper.getPlansByType(project, PlanTypeName.PRODUCTION);
         if (productionPlans != null)
         {
             productionPlans.forEach(x -> {
                 Set<Outcome> outcomes = x.getOutcomes();
-                if (outcomes != null)
-                {
-                    outcomes.forEach(outcome -> tpos.add(outcome.getTpo()));
-                }
+                productionOutcomes.addAll(outcomes);
             });
         }
-        return tpos;
+        return productionOutcomes;
     }
 }
