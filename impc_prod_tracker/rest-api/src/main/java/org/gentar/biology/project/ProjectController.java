@@ -17,6 +17,10 @@ package org.gentar.biology.project;
 
 import org.gentar.audit.history.History;
 import org.gentar.biology.ChangeResponse;
+import org.gentar.biology.outcome.Outcome;
+import org.gentar.biology.outcome.OutcomeResponseDTO;
+import org.gentar.biology.outcome.OutcomeSummaryDTO;
+import org.gentar.biology.outcome.OutcomeSummaryMapper;
 import org.gentar.biology.plan.*;
 import org.gentar.biology.plan.mappers.PlanMinimumCreationMapper;
 import org.gentar.biology.plan.type.PlanTypeName;
@@ -63,6 +67,7 @@ public class ProjectController
     private final ProjectCreationMapper projectCreationMapper;
     private final PlanMinimumCreationMapper planMinimumCreationMapper;
     private final ProjectResponseMapper projectResponseMapper;
+    private final OutcomeSummaryMapper outcomeSummaryMapper;
 
     private static final String PROJECT_NOT_FOUND_ERROR =
         "Project %s does not exist or you don't have access to it.";
@@ -76,7 +81,8 @@ public class ProjectController
         PlanService planService,
         ProjectCreationMapper projectCreationMapper,
         PlanMinimumCreationMapper planMinimumCreationMapper,
-        ProjectResponseMapper projectResponseMapper)
+        ProjectResponseMapper projectResponseMapper,
+        OutcomeSummaryMapper outcomeSummaryMapper)
     {
         this.projectService = projectService;
         this.historyMapper = historyMapper;
@@ -87,6 +93,7 @@ public class ProjectController
         this.projectCreationMapper = projectCreationMapper;
         this.planMinimumCreationMapper = planMinimumCreationMapper;
         this.projectResponseMapper = projectResponseMapper;
+        this.outcomeSummaryMapper = outcomeSummaryMapper;
     }
 
     /**
@@ -284,11 +291,11 @@ public class ProjectController
         return historyMapper.toDtos(projectService.getProjectHistory(project));
     }
 
-    @GetMapping(value = {"/{tpn}/productionTpos"})
-    public List<String> getProductionTposByProject(@PathVariable String tpn)
+    @GetMapping(value = {"/{tpn}/productionOutcomesSummaries"})
+    public List<OutcomeSummaryDTO> getProductionOutcomesSummaries(@PathVariable String tpn)
     {
         Project project = ProjectUtilities.getNotNullProjectByTpn(tpn);
-
-        return projectService.getProductionTposByProject(project);
+        List<Outcome> productionOutcomes = projectService.getProductionOutcomesByProject(project);
+        return outcomeSummaryMapper.toDtos(productionOutcomes);
     }
 }
