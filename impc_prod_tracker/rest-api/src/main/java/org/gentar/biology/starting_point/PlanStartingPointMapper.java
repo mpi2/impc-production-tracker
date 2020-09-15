@@ -9,7 +9,6 @@ import org.gentar.biology.plan.plan_starting_point.PlanStartingPointDTO;
 import org.gentar.biology.plan.starting_point.PlanStartingPoint;
 import org.springframework.hateoas.Link;
 import org.springframework.stereotype.Component;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,7 +18,7 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 @Component
 public class PlanStartingPointMapper implements Mapper<PlanStartingPoint, PlanStartingPointDTO>
 {
-    private OutcomeService outcomeService;
+    private final OutcomeService outcomeService;
 
     public PlanStartingPointMapper(OutcomeService outcomeService)
     {
@@ -30,19 +29,22 @@ public class PlanStartingPointMapper implements Mapper<PlanStartingPoint, PlanSt
     public PlanStartingPointDTO toDto(PlanStartingPoint planStartingPoint)
     {
         PlanStartingPointDTO planStartingPointDTO = new PlanStartingPointDTO();
-        planStartingPointDTO.setId(planStartingPoint.getId());
-        if (planStartingPoint.getOutcome() != null)
+        if (planStartingPoint != null)
         {
-            planStartingPointDTO.setTpo(planStartingPoint.getOutcome().getTpo());
-            addOutcomeLinks(planStartingPointDTO, planStartingPoint);
-            planStartingPointDTO.setPin(planStartingPoint.getOutcome().getPlan().getPin());
-            addProductionPlanLinks(planStartingPointDTO, planStartingPoint);
+            planStartingPointDTO.setId(planStartingPoint.getId());
+            if (planStartingPoint.getOutcome() != null)
+            {
+                planStartingPointDTO.setTpo(planStartingPoint.getOutcome().getTpo());
+                addOutcomeLinks(planStartingPointDTO, planStartingPoint);
+                planStartingPointDTO.setPin(planStartingPoint.getOutcome().getPlan().getPin());
+                addProductionPlanLinks(planStartingPointDTO, planStartingPoint);
+            }
         }
         return planStartingPointDTO;
     }
 
-    private void addProductionPlanLinks(PlanStartingPointDTO planStartingPointDTO,
-                                        PlanStartingPoint planStartingPoint)
+    private void addProductionPlanLinks(
+        PlanStartingPointDTO planStartingPointDTO, PlanStartingPoint planStartingPoint)
     {
         List<Link> links = new ArrayList<>();
         List<Outcome> outcomes = new ArrayList<>();
@@ -51,15 +53,15 @@ public class PlanStartingPointMapper implements Mapper<PlanStartingPoint, PlanSt
         if (outcomes != null)
         {
             outcomes.forEach(x ->
-                    links.add(linkTo(methodOn(PlanController.class)
-                            .findOne(outcome.getPlan().getPin()))
-                            .withRel("productionPlan")));
+                links.add(linkTo(methodOn(PlanController.class)
+                    .findOne(outcome.getPlan().getPin()))
+                    .withRel("productionPlan")));
         }
         planStartingPointDTO.add(links);
     }
 
-    private void addOutcomeLinks(PlanStartingPointDTO planStartingPointDTO,
-                                          PlanStartingPoint planStartingPoint)
+    private void addOutcomeLinks(
+        PlanStartingPointDTO planStartingPointDTO, PlanStartingPoint planStartingPoint)
     {
         List<Link> links = new ArrayList<>();
         List<Outcome> outcomes = new ArrayList<>();
@@ -68,9 +70,9 @@ public class PlanStartingPointMapper implements Mapper<PlanStartingPoint, PlanSt
         if (outcomes != null)
         {
             outcomes.forEach(x ->
-                    links.add(linkTo(methodOn(OutcomeController.class)
-                            .findOneByPlanAndTpo(outcome.getPlan().getPin(), planStartingPointDTO.getTpo()))
-                            .withRel("outcome")));
+                links.add(linkTo(methodOn(OutcomeController.class)
+                    .findOneByPlanAndTpo(outcome.getPlan().getPin(), planStartingPointDTO.getTpo()))
+                    .withRel("outcome")));
         }
         planStartingPointDTO.add(links);
     }
