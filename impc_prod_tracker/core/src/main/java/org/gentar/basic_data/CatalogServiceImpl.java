@@ -22,6 +22,8 @@ import org.gentar.biology.mutation.categorizarion.MutationCategorization;
 import org.gentar.biology.mutation.qc_results.QcStatusRepository;
 import org.gentar.biology.mutation.qc_results.QcTypeRepository;
 import org.gentar.biology.outcome.type.OutcomeTypeRepository;
+import org.gentar.biology.plan.attempt.AttemptTypeService;
+import org.gentar.biology.plan.attempt.AttemptTypesName;
 import org.gentar.biology.plan.attempt.crispr.assay.AssayTypeRepository;
 import org.gentar.biology.plan.attempt.crispr.nuclease.nuclease_class.NucleaseClassRepository;
 import org.gentar.biology.plan.attempt.crispr.nuclease.nuclease_type.NucleaseTypeRepository;
@@ -29,12 +31,15 @@ import org.gentar.biology.mutation.categorizarion.MutationCategorizationReposito
 import org.gentar.biology.plan.attempt.AttemptTypeRepository;
 import org.gentar.biology.plan.attempt.crispr.reagent.ReagentRepository;
 import org.gentar.biology.plan.attempt.phenotyping.stage.type.PhenotypingStageTypeRepository;
+import org.gentar.biology.plan.type.PlanType;
+import org.gentar.biology.plan.type.PlanTypeName;
 import org.gentar.biology.sequence.category.SequenceCategoryRepository;
 import org.gentar.biology.sequence.type.SequenceTypeRepository;
 import org.gentar.biology.strain.strain_type.StrainType;
 import org.gentar.biology.strain.strain_type.StrainTypeRepository;
 import org.gentar.organization.consortium.Consortium;
 import org.gentar.organization.funder.FunderRepository;
+import org.gentar.organization.work_group.WorkGroup;
 import org.springframework.stereotype.Component;
 import org.gentar.biology.mutation.genetic_type.GeneticMutationTypeRepository;
 import org.gentar.biology.project.assignment.AssignmentStatusRepository;
@@ -61,6 +66,7 @@ import java.util.Map;
 @Component
 public class CatalogServiceImpl implements CatalogService
 {
+    private final AttemptTypeService attemptTypeService;
     private final WorkUnitRepository workUnitRepository;
     private final WorkGroupRepository workGroupRepository;
     private final PlanTypeRepository planTypeRepository;
@@ -95,6 +101,7 @@ public class CatalogServiceImpl implements CatalogService
     private final Map<String, Object> conf = new HashMap<>();
 
     public CatalogServiceImpl(
+        AttemptTypeService attemptTypeService,
         WorkUnitRepository workUnitRepository,
         WorkGroupRepository workGroupRepository,
         PlanTypeRepository planTypeRepository,
@@ -126,6 +133,7 @@ public class CatalogServiceImpl implements CatalogService
         AssayTypeRepository assayTypeRepository,
         PhenotypingStageTypeRepository phenotypingStageTypeRepository)
     {
+        this.attemptTypeService = attemptTypeService;
         this.workUnitRepository = workUnitRepository;
         this.workGroupRepository = workGroupRepository;
         this.planTypeRepository = planTypeRepository;
@@ -163,10 +171,13 @@ public class CatalogServiceImpl implements CatalogService
     {
         if (conf.isEmpty())
         {
+            addAttemptTypesByPlanTypes();
+            addWorkGroupsByWorkUnits();
             addWorkUnits();
             addWorkGroups();
             addConsortia();
             addFunders();
+            addFundersByWorkGroups();
             addPlanTypes();
             addPrivacies();
             addStatuses();
@@ -200,6 +211,37 @@ public class CatalogServiceImpl implements CatalogService
         return conf;
     }
 
+    private void addAttemptTypesByPlanTypes()
+    {
+        Map<String, List<String>> map = new HashMap<>();
+        var planTypes = planTypeRepository.findAll();
+        planTypes.forEach(planType -> {
+            PlanTypeName planTypeName = PlanTypeName.valueOfLabel(planType.getName());
+            List<AttemptTypesName> attemptTypesNames =
+                attemptTypeService.getAttemptTypesByPlanTypeName(planTypeName);
+            List<String> attemptTypesNamesValues = new ArrayList<>();
+            attemptTypesNames.forEach(x -> attemptTypesNamesValues.add(x.getLabel()));
+            map.put(planTypeName.getLabel(), attemptTypesNamesValues);
+        });
+        conf.put("attemptTypesByPlanTypes", map);
+    }
+
+    private void addWorkGroupsByWorkUnits()
+    {
+        Map<String, List<String>> map = new HashMap<>();
+        var workUnits = workUnitRepository.findAll();
+        workUnits.forEach(workUnit -> {
+            var workGroups = workUnit.getWorkGroups();
+            List<String> workGroupsNames = new ArrayList<>();
+            if (workGroups != null)
+            {
+                workGroups.forEach(workGroup -> workGroupsNames.add(workGroup.getName()));
+            }
+            map.put(workUnit.getName(), workGroupsNames);
+        });
+        conf.put("workGroupsByWorkUnits", map);
+    }
+
     private void addAttemptTypes()
     {
         List<Object> attemptTypes = new ArrayList<>();
@@ -212,6 +254,22 @@ public class CatalogServiceImpl implements CatalogService
         List<Object> funders = new ArrayList<>();
         funderRepository.findAll().forEach(p -> funders.add(p.getName()));
         conf.put("funders", funders);
+    }
+
+    private void addFundersByWorkGroups()
+    {
+        Map<String, List<String>> map = new HashMap<>();
+        var workGroups = workGroupRepository.findAll();
+        workGroups.forEach(workUnit -> {
+            var funders = workUnit.getFunders();
+            List<String> funderNames = new ArrayList<>();
+            if (funders != null)
+            {
+                funders.forEach(funder -> funderNames.add(funder.getName()));
+            }
+            map.put(workUnit.getName(), funderNames);
+        });
+        conf.put("fundersByWorkGroups", map);
     }
 
     private void addConsortia()

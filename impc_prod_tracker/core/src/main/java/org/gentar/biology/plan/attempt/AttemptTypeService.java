@@ -1,9 +1,11 @@
 package org.gentar.biology.plan.attempt;
 
-import org.springframework.cache.annotation.Cacheable;
+import org.gentar.biology.plan.type.PlanTypeName;
+
+import java.util.List;
 
 public interface AttemptTypeService
 {
-    @Cacheable("attemptTypes")
     AttemptType getAttemptTypeByName(String attemptTypeName);
+    List<AttemptTypesName> getAttemptTypesByPlanTypeName(PlanTypeName planTypeName);
 }
