@@ -19,7 +19,6 @@ public class PhenotypingStageCommonMapper implements Mapper<PhenotypingStage, Ph
     public PhenotypingStageCommonDTO toDto(PhenotypingStage phenotypingStage) {
         PhenotypingStageCommonDTO phenotypingStageCommonDTO =  new PhenotypingStageCommonDTO();
         phenotypingStageCommonDTO.setInitialDataReleaseDate(phenotypingStage.getInitialDataReleaseDate());
-        phenotypingStageCommonDTO.setDoNotCountTowardsCompleteness(phenotypingStage.getDoNotCountTowardsCompleteness());
         phenotypingStageCommonDTO.setPhenotypingExperimentsStarted(phenotypingStage.getPhenotypingExperimentsStarted());
         phenotypingStageCommonDTO.setTissueDistributionCentreDTOs(
                 tissueDistributionMapper.toDtos(phenotypingStage.getTissueDistributions()));
@@ -30,7 +29,6 @@ public class PhenotypingStageCommonMapper implements Mapper<PhenotypingStage, Ph
     public PhenotypingStage toEntity(PhenotypingStageCommonDTO dto) {
         PhenotypingStage phenotypingStage = new PhenotypingStage();
         phenotypingStage.setInitialDataReleaseDate(dto.getInitialDataReleaseDate());
-        phenotypingStage.setDoNotCountTowardsCompleteness(dto.getDoNotCountTowardsCompleteness());
         phenotypingStage.setPhenotypingExperimentsStarted(dto.getPhenotypingExperimentsStarted());
         setTissueDistributionCentre(phenotypingStage, dto);
         return phenotypingStage;

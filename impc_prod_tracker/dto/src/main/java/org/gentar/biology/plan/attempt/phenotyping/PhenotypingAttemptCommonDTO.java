@@ -25,6 +25,8 @@ public class PhenotypingAttemptCommonDTO
     @JsonProperty("imitsParentColonyId")
     private Long imitsParentColony;
 
+    private Boolean doNotCountTowardsCompleteness;
+
     private String phenotypingExternalRef;
 
     @JsonProperty("phenotypingBackgroundStrainName")

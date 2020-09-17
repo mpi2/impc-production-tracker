@@ -29,7 +29,6 @@ class PhenotypingStageResponseDTOTest
         phenotypingStageResponseDTO.setPhenotypingExternalRef("phenotypingExternalRef");
         PhenotypingStageCommonDTO phenotypingStageCommonDTO = new PhenotypingStageCommonDTO();
         phenotypingStageCommonDTO.setPhenotypingExperimentsStarted(LocalDate.parse("2020-06-17"));
-        phenotypingStageCommonDTO.setDoNotCountTowardsCompleteness(true);
         phenotypingStageCommonDTO.setInitialDataReleaseDate(LocalDate.parse("2020-06-17"));
         phenotypingStageResponseDTO.setPhenotypingStageCommonDTO(phenotypingStageCommonDTO);
         StatusTransitionDTO statusTransitionDTO = new StatusTransitionDTO();
@@ -45,7 +44,7 @@ class PhenotypingStageResponseDTOTest
             "\"phenotypingTypeName\":\"phenotypingTypeName\"," +
             "\"phenotypingExternalRef\":\"phenotypingExternalRef\"," +
             "\"phenotypingExperimentsStarted\":\"2020-06-17\"," +
-            "\"doNotCountTowardsCompleteness\":true,\"initialDataReleaseDate\":\"2020-06-17\"," +
+            "\"initialDataReleaseDate\":\"2020-06-17\"," +
             "\"tissueDistributions\":null," +
             "\"links\":[],\"statusDates\":[{\"statusName\":null,\"date\":\"2020-01-01T01:01:00\"}]," +
             "\"statusTransition\":{\"currentStatus\":\"current status name\"," +

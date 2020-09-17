@@ -38,7 +38,7 @@ class PhenotypingStageCommonMapperTest
     {
         PhenotypingStage phenotypingStage = new PhenotypingStage();
         phenotypingStage.setPhenotypingExperimentsStarted(LocalDate.parse("2020-01-01"));
-        phenotypingStage.setDoNotCountTowardsCompleteness(true);
+//        phenotypingStage.setDoNotCountTowardsCompleteness(true);
         phenotypingStage.setInitialDataReleaseDate(LocalDate.parse("2020-02-02"));
 
         TissueDistribution tissueDistribution = new TissueDistribution();
@@ -58,7 +58,7 @@ class PhenotypingStageCommonMapperTest
         verify(tissueDistributionMapper, times(1)).toDtos(phenotypingStage.getTissueDistributions());
 
         assertThat(phenotypingStageCommonDTO.getPhenotypingExperimentsStarted(), is(LocalDate.parse("2020-01-01")));
-        assertThat(phenotypingStageCommonDTO.getDoNotCountTowardsCompleteness(), is(true));
+//        assertThat(phenotypingStageCommonDTO.getDoNotCountTowardsCompleteness(), is(true));
         assertThat(phenotypingStageCommonDTO.getInitialDataReleaseDate(), is(LocalDate.parse("2020-02-02")));
     }
 
@@ -67,7 +67,7 @@ class PhenotypingStageCommonMapperTest
     {
         PhenotypingStageCommonDTO phenotypingStageCommonDTO = new PhenotypingStageCommonDTO();
         phenotypingStageCommonDTO.setPhenotypingExperimentsStarted(LocalDate.parse("2020-01-01"));
-        phenotypingStageCommonDTO.setDoNotCountTowardsCompleteness(true);
+//        phenotypingStageCommonDTO.setDoNotCountTowardsCompleteness(true);
         phenotypingStageCommonDTO.setInitialDataReleaseDate(LocalDate.parse("2020-02-02"));
 
         PhenotypingStage phenotypingStage = testInstance.toEntity(phenotypingStageCommonDTO);
@@ -75,7 +75,7 @@ class PhenotypingStageCommonMapperTest
         verify(tissueDistributionMapper, times(1)).toEntities(
                 phenotypingStageCommonDTO.getTissueDistributionCentreDTOs());
         assertThat(phenotypingStage, is(notNullValue()));
-        assertThat(phenotypingStage.getDoNotCountTowardsCompleteness(), is(true));
+//        assertThat(phenotypingStage.getDoNotCountTowardsCompleteness(), is(true));
         assertThat(phenotypingStage.getPhenotypingExperimentsStarted(), is(LocalDate.parse("2020-01-01")));
         assertThat(phenotypingStage.getInitialDataReleaseDate(), is(LocalDate.parse("2020-02-02")));
     }

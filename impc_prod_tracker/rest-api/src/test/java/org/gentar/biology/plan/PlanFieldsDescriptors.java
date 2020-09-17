@@ -242,6 +242,7 @@ public class PlanFieldsDescriptors
                 "Phenotyping colony name or specimen group name");
         addField(phenotypingFields, "phenotypingAttemptResponse.phenotypingBackgroundStrainName",
                 "Phenotyping attempt background strain.");
+        addField(phenotypingFields, "phenotypingAttemptResponse.doNotCountTowardsCompleteness", "");
         return phenotypingFields;
     }
 

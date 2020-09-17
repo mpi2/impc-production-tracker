@@ -41,7 +41,7 @@ public class PhenotypingStageRequestProcessor
         }
         PhenotypingStage newPhenotypingStage = new PhenotypingStage(originalPhenotypingStage);
         PhenotypingStageCommonDTO phenotypingStageCommonDTO = phenotypingStageUpdateDTO.getPhenotypingStageCommonDTO();
-        newPhenotypingStage.setDoNotCountTowardsCompleteness(phenotypingStageCommonDTO.getDoNotCountTowardsCompleteness());
+//        newPhenotypingStage.setDoNotCountTowardsCompleteness(phenotypingStageCommonDTO.getDoNotCountTowardsCompleteness());
         newPhenotypingStage.setInitialDataReleaseDate(phenotypingStageCommonDTO.getInitialDataReleaseDate());
         newPhenotypingStage.setPhenotypingExperimentsStarted(phenotypingStageCommonDTO.getPhenotypingExperimentsStarted());
         Set<TissueDistribution> mappedTissueDistributions =

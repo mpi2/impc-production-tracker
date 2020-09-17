@@ -161,9 +161,9 @@ class PhenotypingStageControllerTest extends ControllerTestTemplate
         assertThat(historyDetailDTOS.size(), is(1));
 
         HistoryDetailDTO historyDetailDTO1 =
-            HistoryValidator.getHistoryDetailByField(historyDetailDTOS, "doNotCountTowardsCompleteness");
-        assertThat(historyDetailDTO1.getOldValue(), is("true"));
-        assertThat(historyDetailDTO1.getNewValue(), is("false"));
+            HistoryValidator.getHistoryDetailByField(historyDetailDTOS, "phenotypingExperimentsStarted");
+        assertThat(historyDetailDTO1.getOldValue(), is("2020-02-24"));
+        assertThat(historyDetailDTO1.getNewValue(), is("2020-04-02"));
     }
 
     private void verifyUpdatedPhenotypingStage(

@@ -20,7 +20,6 @@ public class PhenotypingStageFieldsDescriptors
         addField(phenotypingStageFieldsDescriptions, "phenotypingExternalRef", "Colony name or Specimen Group name.");
         addField(phenotypingStageFieldsDescriptions, "phenotypingExperimentsStarted",
                 "Date when the phenotyping experiments started.");
-        addField(phenotypingStageFieldsDescriptions, "doNotCountTowardsCompleteness", "");
         addField(
             phenotypingStageFieldsDescriptions,
             "initialDataReleaseDate", "Date when some data for the line becomes public. This is set by the CDA");

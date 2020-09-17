@@ -6,9 +6,9 @@
     "comment":"PhenotypingStage updated",
     "details":[
       {
-        "field":"doNotCountTowardsCompleteness",
-        "oldValue":"false",
-        "newValue":"true",
+        "field":"phenotyping_experiments_started",
+        "oldValue":"2020-02-24",
+        "newValue":"2020-04-02",
         "note":"Field changed"
       }
     ]

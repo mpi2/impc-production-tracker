@@ -22,6 +22,7 @@
     "productionPlanPin": "PIN:0000000001"
   },
   "phenotypingAttemptResponse":{
+    "doNotCountTowardsCompleteness":false,
     "phenotypingExternalRef":"CR10129",
     "phenotypingBackgroundStrainName":"C57BL/6NJ"
   },

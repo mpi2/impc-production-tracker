@@ -5,7 +5,6 @@
   "phenotypingTypeName":"early adult",
   "phenotypingExternalRef":"CR10129",
   "phenotypingExperimentsStarted":"2020-02-24",
-  "doNotCountTowardsCompleteness":true,
   "initialDataReleaseDate":"2015-11-23",
   "tissueDistributions":[
     {

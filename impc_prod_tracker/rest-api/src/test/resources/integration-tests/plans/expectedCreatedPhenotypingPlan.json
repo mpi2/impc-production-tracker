@@ -21,7 +21,8 @@
   },
   "phenotypingAttemptResponse": {
     "phenotypingExternalRef": "CR1234",
-    "phenotypingBackgroundStrainName": "C57BL/6NJ"
+    "phenotypingBackgroundStrainName": "C57BL/6NJ",
+    "doNotCountTowardsCompleteness":false
   },
   "typeName": "phenotyping",
   "statusName": "Plan Created",
