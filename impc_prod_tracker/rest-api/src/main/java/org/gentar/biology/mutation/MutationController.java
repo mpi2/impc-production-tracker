@@ -207,8 +207,11 @@ public class MutationController
                 mutationRequestProcessor.buildSymbolSuggestionRequest(symbolSuggestionRequestDTO, pin);
             AlleleSymbolConstructor alleleSymbolConstructor =
                 mutationRequestProcessor.getAlleleSymbolConstructor(pin);
-            Mutation mutation = mutationRequestProcessor.getSimpleMappedMutation(mutationUpdateDTO);
-            result = alleleSymbolConstructor.calculateAlleleSymbol(symbolSuggestionRequest, mutation);
+            if (alleleSymbolConstructor != null)
+            {
+                Mutation mutation = mutationRequestProcessor.getSimpleMappedMutation(mutationUpdateDTO);
+                result = alleleSymbolConstructor.calculateAlleleSymbol(symbolSuggestionRequest, mutation);
+            }
         }
         return result;
     }

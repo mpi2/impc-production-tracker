@@ -15,31 +15,26 @@
  *******************************************************************************/
 package org.gentar.basic_data;
 
-
 import org.gentar.biology.colony.distribution.distribution_network.DistributionNetworkRepository;
 import org.gentar.biology.colony.distribution.product_type.ProductTypeRepository;
-import org.gentar.biology.mutation.categorizarion.MutationCategorization;
+import org.gentar.biology.mutation.categorizarion.MutationCategorizationService;
 import org.gentar.biology.mutation.qc_results.QcStatusRepository;
 import org.gentar.biology.mutation.qc_results.QcTypeRepository;
 import org.gentar.biology.outcome.type.OutcomeTypeRepository;
 import org.gentar.biology.plan.attempt.AttemptTypeService;
-import org.gentar.biology.plan.attempt.AttemptTypesName;
 import org.gentar.biology.plan.attempt.crispr.assay.AssayTypeRepository;
 import org.gentar.biology.plan.attempt.crispr.nuclease.nuclease_class.NucleaseClassRepository;
 import org.gentar.biology.plan.attempt.crispr.nuclease.nuclease_type.NucleaseTypeRepository;
 import org.gentar.biology.mutation.categorizarion.MutationCategorizationRepository;
-import org.gentar.biology.plan.attempt.AttemptTypeRepository;
 import org.gentar.biology.plan.attempt.crispr.reagent.ReagentRepository;
-import org.gentar.biology.plan.attempt.phenotyping.stage.type.PhenotypingStageTypeRepository;
-import org.gentar.biology.plan.type.PlanType;
-import org.gentar.biology.plan.type.PlanTypeName;
+import org.gentar.biology.plan.attempt.phenotyping.stage.type.PhenotypingStageTypeService;
 import org.gentar.biology.sequence.category.SequenceCategoryRepository;
 import org.gentar.biology.sequence.type.SequenceTypeRepository;
 import org.gentar.biology.strain.strain_type.StrainType;
 import org.gentar.biology.strain.strain_type.StrainTypeRepository;
-import org.gentar.organization.consortium.Consortium;
-import org.gentar.organization.funder.FunderRepository;
-import org.gentar.organization.work_group.WorkGroup;
+import org.gentar.organization.consortium.ConsortiumService;
+import org.gentar.organization.funder.FunderService;
+import org.gentar.organization.work_group.WorkGroupService;
 import org.springframework.stereotype.Component;
 import org.gentar.biology.mutation.genetic_type.GeneticMutationTypeRepository;
 import org.gentar.biology.project.assignment.AssignmentStatusRepository;
@@ -51,12 +46,9 @@ import org.gentar.biology.project.privacy.PrivacyRepository;
 import org.gentar.biology.species.SpeciesRepository;
 import org.gentar.biology.status.StatusRepository;
 import org.gentar.biology.strain.StrainRepository;
-import org.gentar.organization.consortium.ConsortiumRepository;
 import org.gentar.organization.institute.InstituteRepository;
-import org.gentar.organization.work_group.WorkGroupRepository;
 import org.gentar.organization.work_unit.WorkUnitRepository;
 import org.gentar.biology.project.search.SearchType;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -68,7 +60,7 @@ public class CatalogServiceImpl implements CatalogService
 {
     private final AttemptTypeService attemptTypeService;
     private final WorkUnitRepository workUnitRepository;
-    private final WorkGroupRepository workGroupRepository;
+    private final WorkGroupService workGroupService;
     private final PlanTypeRepository planTypeRepository;
     private final PrivacyRepository privacyRepository;
     private final StatusRepository statusRepository;
@@ -80,13 +72,12 @@ public class CatalogServiceImpl implements CatalogService
     private final PreparationTypeRepository preparationTypeRepository;
     private final MaterialDepositedTypeRepository materialDepositedTypeRepository;
     private final SpeciesRepository speciesRepository;
-    private final ConsortiumRepository consortiumRepository;
+    private final ConsortiumService consortiumService;
     private final MolecularMutationTypeRepository molecularMutationTypeRepository;
     private final NucleaseTypeRepository nucleaseTypeRepository;
     private final NucleaseClassRepository nucleaseClassRepository;
     private final MutationCategorizationRepository mutationCategorizationRepository;
-    private final FunderRepository funderRepository;
-    private final AttemptTypeRepository attemptTypeRepository;
+    private final FunderService funderService;
     private final OutcomeTypeRepository outcomeTypeRepository;
     private final SequenceTypeRepository sequenceTypeRepository;
     private final SequenceCategoryRepository sequenceCategoryRepository;
@@ -96,15 +87,15 @@ public class CatalogServiceImpl implements CatalogService
     private final QcStatusRepository qcStatusRepository;
     private final ReagentRepository reagentRepository;
     private final AssayTypeRepository assayTypeRepository;
-    private final PhenotypingStageTypeRepository phenotypingStageTypeRepository;
+    private final PhenotypingStageTypeService phenotypingStageTypeService;
+    private final MutationCategorizationService mutationCategorizationService;
 
     private final Map<String, Object> conf = new HashMap<>();
 
     public CatalogServiceImpl(
         AttemptTypeService attemptTypeService,
         WorkUnitRepository workUnitRepository,
-        WorkGroupRepository workGroupRepository,
-        PlanTypeRepository planTypeRepository,
+        WorkGroupService workGroupService, PlanTypeRepository planTypeRepository,
         PrivacyRepository privacyRepository,
         StatusRepository statusRepository,
         AssignmentStatusRepository assignmentStatusRepository,
@@ -115,14 +106,12 @@ public class CatalogServiceImpl implements CatalogService
         PreparationTypeRepository preparationTypeRepository,
         MaterialDepositedTypeRepository materialDepositedTypeRepository,
         SpeciesRepository speciesRepository,
-        ConsortiumRepository consortiumRepository,
+        ConsortiumService consortiumService,
         MolecularMutationTypeRepository molecularMutationTypeRepository,
         NucleaseTypeRepository nucleaseTypeRepository,
         NucleaseClassRepository nucleaseClassRepository,
         MutationCategorizationRepository mutationCategorizationRepository,
-        FunderRepository funderRepository,
-        AttemptTypeRepository attemptTypeRepository,
-        OutcomeTypeRepository outcomeTypeRepository,
+        FunderService funderService, OutcomeTypeRepository outcomeTypeRepository,
         SequenceTypeRepository sequenceTypeRepository,
         SequenceCategoryRepository sequenceCategoryRepository,
         ProductTypeRepository productTypeRepository,
@@ -131,11 +120,12 @@ public class CatalogServiceImpl implements CatalogService
         QcStatusRepository qcStatusRepository,
         ReagentRepository reagentRepository,
         AssayTypeRepository assayTypeRepository,
-        PhenotypingStageTypeRepository phenotypingStageTypeRepository)
+        PhenotypingStageTypeService phenotypingStageTypeService,
+        MutationCategorizationService mutationCategorizationService)
     {
         this.attemptTypeService = attemptTypeService;
         this.workUnitRepository = workUnitRepository;
-        this.workGroupRepository = workGroupRepository;
+        this.workGroupService = workGroupService;
         this.planTypeRepository = planTypeRepository;
         this.privacyRepository = privacyRepository;
         this.statusRepository = statusRepository;
@@ -147,13 +137,12 @@ public class CatalogServiceImpl implements CatalogService
         this.preparationTypeRepository = preparationTypeRepository;
         this.materialDepositedTypeRepository = materialDepositedTypeRepository;
         this.speciesRepository = speciesRepository;
-        this.consortiumRepository = consortiumRepository;
+        this.consortiumService = consortiumService;
         this.molecularMutationTypeRepository = molecularMutationTypeRepository;
         this.nucleaseTypeRepository = nucleaseTypeRepository;
         this.nucleaseClassRepository = nucleaseClassRepository;
         this.mutationCategorizationRepository = mutationCategorizationRepository;
-        this.funderRepository = funderRepository;
-        this.attemptTypeRepository = attemptTypeRepository;
+        this.funderService = funderService;
         this.outcomeTypeRepository = outcomeTypeRepository;
         this.sequenceTypeRepository = sequenceTypeRepository;
         this.sequenceCategoryRepository = sequenceCategoryRepository;
@@ -163,7 +152,8 @@ public class CatalogServiceImpl implements CatalogService
         this.qcStatusRepository = qcStatusRepository;
         this.reagentRepository = reagentRepository;
         this.assayTypeRepository = assayTypeRepository;
-        this.phenotypingStageTypeRepository = phenotypingStageTypeRepository;
+        this.phenotypingStageTypeService = phenotypingStageTypeService;
+        this.mutationCategorizationService = mutationCategorizationService;
     }
 
     @Override
@@ -207,75 +197,47 @@ public class CatalogServiceImpl implements CatalogService
             addReagents();
             addAssayTypes();
             addPhenotypingStagesTypes();
+            addPhenotypingStagesTypesByAttemptTypes();
         }
         return conf;
     }
 
     private void addAttemptTypesByPlanTypes()
     {
-        Map<String, List<String>> map = new HashMap<>();
-        var planTypes = planTypeRepository.findAll();
-        planTypes.forEach(planType -> {
-            PlanTypeName planTypeName = PlanTypeName.valueOfLabel(planType.getName());
-            List<AttemptTypesName> attemptTypesNames =
-                attemptTypeService.getAttemptTypesByPlanTypeName(planTypeName);
-            List<String> attemptTypesNamesValues = new ArrayList<>();
-            attemptTypesNames.forEach(x -> attemptTypesNamesValues.add(x.getLabel()));
-            map.put(planTypeName.getLabel(), attemptTypesNamesValues);
-        });
+        Map<String, List<String>> map = attemptTypeService.getAttemptTypesByPlanTypeNameMap();
         conf.put("attemptTypesByPlanTypes", map);
     }
 
     private void addWorkGroupsByWorkUnits()
     {
-        Map<String, List<String>> map = new HashMap<>();
-        var workUnits = workUnitRepository.findAll();
-        workUnits.forEach(workUnit -> {
-            var workGroups = workUnit.getWorkGroups();
-            List<String> workGroupsNames = new ArrayList<>();
-            if (workGroups != null)
-            {
-                workGroups.forEach(workGroup -> workGroupsNames.add(workGroup.getName()));
-            }
-            map.put(workUnit.getName(), workGroupsNames);
-        });
+        Map<String, List<String>> map = workGroupService.getWorkGroupsNamesByWorkUnitNamesMap();
         conf.put("workGroupsByWorkUnits", map);
     }
 
     private void addAttemptTypes()
     {
         List<Object> attemptTypes = new ArrayList<>();
-        attemptTypeRepository.findAll().forEach(p -> attemptTypes.add(p.getName()));
+        attemptTypeService.getAll().forEach(p -> attemptTypes.add(p.getName()));
         conf.put("attemptTypes", attemptTypes);
     }
 
     private void addFunders()
     {
         List<Object> funders = new ArrayList<>();
-        funderRepository.findAll().forEach(p -> funders.add(p.getName()));
+        funderService.getAll().forEach(p -> funders.add(p.getName()));
         conf.put("funders", funders);
     }
 
     private void addFundersByWorkGroups()
     {
-        Map<String, List<String>> map = new HashMap<>();
-        var workGroups = workGroupRepository.findAll();
-        workGroups.forEach(workUnit -> {
-            var funders = workUnit.getFunders();
-            List<String> funderNames = new ArrayList<>();
-            if (funders != null)
-            {
-                funders.forEach(funder -> funderNames.add(funder.getName()));
-            }
-            map.put(workUnit.getName(), funderNames);
-        });
+        Map<String, List<String>> map = funderService.getFunderNamesByWorkGroupNamesMap();
         conf.put("fundersByWorkGroups", map);
     }
 
     private void addConsortia()
     {
         List<Object> consortia = new ArrayList<>();
-        consortiumRepository.findAll().forEach(p -> consortia.add(p.getName()));
+        consortiumService.findAllConsortia().forEach(p -> consortia.add(p.getName()));
         conf.put("consortia", consortia);
     }
 
@@ -289,7 +251,7 @@ public class CatalogServiceImpl implements CatalogService
     private void addWorkGroups()
     {
         List<Object> workGroups = new ArrayList<>();
-        workGroupRepository.findAll().forEach(p -> workGroups.add(p.getName()));
+        workGroupService.getAll().forEach(p -> workGroups.add(p.getName()));
         conf.put("workGroups", workGroups);
     }
 
@@ -410,17 +372,8 @@ public class CatalogServiceImpl implements CatalogService
 
     private void addMutationCategorizationsByType()
     {
-        List<Object> mutationCategorizations = new ArrayList<>();
-        List<MutationCategorization> allMutationCategorization = new ArrayList<>();
-        mutationCategorizationRepository.findAll().forEach(allMutationCategorization::add);
-        Map<String, List<String>> map = new HashMap<>();
-        allMutationCategorization.forEach( x -> {
-            String key = x.getMutationCategorizationType().getName();
-            map.computeIfAbsent(key, k -> new ArrayList<>());
-            var list = map.get(key);
-            list.add(x.getName());
-        });
-        mutationCategorizationRepository.findAll().forEach(p -> mutationCategorizations.add(p.getName()));
+        Map<String, List<String>> map =
+            mutationCategorizationService.getMutationCategorizationNamesByCategorizationTypesNames();
         conf.put("mutationCategorizationsByType", map);
     }
 
@@ -459,17 +412,10 @@ public class CatalogServiceImpl implements CatalogService
         conf.put("distributionNetworks", distributionNetworks);
     }
 
-    /**
-     * In the future this list should be created from a query in the database. Currently it's
-     * fixed and only have IMPC as consortium whom abbreviation can be used to construct the
-     * symbol of an allele.
-     */
     private void addConsortiaToConstructSymbols()
     {
-        List<Object> consortiaToConstructSymbols = new ArrayList<>();
-        // Make sure the consortium exists in database
-        Consortium impc = consortiumRepository.findByNameIgnoreCase("IMPC");
-        consortiaToConstructSymbols.add(impc.getName());
+        var consortiaNames = consortiumService.getConsortiaNamesUsableToConstructSymbols();
+        List<Object> consortiaToConstructSymbols = new ArrayList<Object>(consortiaNames);
         conf.put("consortiaToConstructSymbols", consortiaToConstructSymbols);
     }
 
@@ -504,7 +450,14 @@ public class CatalogServiceImpl implements CatalogService
     private void addPhenotypingStagesTypes()
     {
         List<Object> phenotypingStagesTypes = new ArrayList<>();
-        phenotypingStageTypeRepository.findAll().forEach(p -> phenotypingStagesTypes.add(p.getName()));
+        phenotypingStageTypeService.getAll().forEach(p -> phenotypingStagesTypes.add(p.getName()));
         conf.put("phenotypingStagesTypes", phenotypingStagesTypes);
+    }
+
+    private void addPhenotypingStagesTypesByAttemptTypes()
+    {
+        Map<String, List<String>> map =
+            phenotypingStageTypeService.getPhenotypingStageTypeNamesByAttemptTypeNamesMap();
+        conf.put("phenotypingStagesTypesByAttemptTypes", map);
     }
 }

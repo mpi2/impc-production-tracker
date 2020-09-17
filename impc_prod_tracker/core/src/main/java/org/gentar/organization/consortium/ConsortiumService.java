@@ -15,15 +15,15 @@
  */
 package org.gentar.organization.consortium;
 
-import org.springframework.cache.annotation.Cacheable;
 import java.util.List;
 
 public interface ConsortiumService
 {
-    @Cacheable("consortiumNames")
     Consortium findConsortiumByName(String name);
 
     Consortium getConsortiumByNameOrThrowException(String consortiumName);
 
     List<Consortium> findAllConsortia();
+
+    List<String> getConsortiaNamesUsableToConstructSymbols();
 }
