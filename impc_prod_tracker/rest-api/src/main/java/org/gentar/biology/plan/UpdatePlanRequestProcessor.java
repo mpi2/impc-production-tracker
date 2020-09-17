@@ -15,6 +15,7 @@
  */
 package org.gentar.biology.plan;
 
+import org.gentar.biology.plan.attempt.phenotyping.PhenotypingAttempt;
 import org.gentar.biology.plan.mappers.PlanUpdateMapper;
 import org.gentar.statemachine.ProcessEvent;
 import org.springframework.stereotype.Component;
@@ -26,8 +27,8 @@ import org.springframework.stereotype.Component;
 @Component
 public class UpdatePlanRequestProcessor
 {
-    private PlanUpdateMapper planUpdateMapper;
-    private PlanService planService;
+    private final PlanUpdateMapper planUpdateMapper;
+    private final PlanService planService;
 
     public UpdatePlanRequestProcessor(PlanUpdateMapper planUpdateMapper, PlanService planService)
     {
@@ -52,14 +53,8 @@ public class UpdatePlanRequestProcessor
             Plan mappedPlan = planUpdateMapper.toEntity(planUpdateDTO);
             plan.setComment(mappedPlan.getComment());
             plan.setProductsAvailableForGeneralPublic(mappedPlan.getProductsAvailableForGeneralPublic());
-            if (mappedPlan.getCrisprAttempt() != null)
-            {
-                plan.setCrisprAttempt(mappedPlan.getCrisprAttempt());
-            }
-            if (mappedPlan.getPhenotypingAttempt() != null)
-            {
-                plan.setPhenotypingAttempt(mappedPlan.getPhenotypingAttempt());
-            }
+            setUpdatedCrisprAttempt(plan, mappedPlan);
+            setUpdatedPhenotypingAttempt(plan, mappedPlan);
             if (mappedPlan.getBreedingAttempt() != null)
             {
                 plan.setBreedingAttempt(mappedPlan.getBreedingAttempt());
@@ -67,6 +62,31 @@ public class UpdatePlanRequestProcessor
             setEvent(plan, planUpdateDTO);
         }
         return plan;
+    }
+
+    private void setUpdatedCrisprAttempt(Plan originalPlan, Plan mappedPlan)
+    {
+        if (mappedPlan.getCrisprAttempt() != null)
+        {
+            originalPlan.setCrisprAttempt(mappedPlan.getCrisprAttempt());
+        }
+    }
+
+    // Update only desired fields
+    private void setUpdatedPhenotypingAttempt(Plan originalPlan, Plan mappedPlan)
+    {
+        if (mappedPlan.getPhenotypingAttempt() != null)
+        {
+            PhenotypingAttempt phenotypingAttempt =
+                new PhenotypingAttempt(originalPlan.getPhenotypingAttempt());
+            PhenotypingAttempt mmapedPhenotypingAttempt = mappedPlan.getPhenotypingAttempt();
+            phenotypingAttempt.setDoNotCountTowardsCompleteness(
+                mmapedPhenotypingAttempt.getDoNotCountTowardsCompleteness());
+            phenotypingAttempt.setPhenotypingExternalRef(
+                mmapedPhenotypingAttempt.getPhenotypingExternalRef());
+            phenotypingAttempt.setStrain(mmapedPhenotypingAttempt.getStrain());
+            originalPlan.setPhenotypingAttempt(phenotypingAttempt);
+        }
     }
 
     private void setEvent(Plan plan, PlanUpdateDTO planUpdateDTO)
