@@ -2,6 +2,7 @@ package org.gentar.biology.plan.attempt;
 
 import org.gentar.biology.plan.type.PlanTypeName;
 import org.gentar.biology.plan.type.PlanTypeRepository;
+import org.gentar.exceptions.UserOperationFailedException;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Component;
 import java.util.ArrayList;
@@ -14,6 +15,8 @@ public class AttemptTypeServiceImpl implements AttemptTypeService
 {
     private final AttemptTypeRepository attemptTypeRepository;
     private final PlanTypeRepository planTypeRepository;
+
+    private static final String ATTEMPT_TYPE_NOT_FOUND_ERROR = "Attempt type '%s' does not exist.";
 
     public AttemptTypeServiceImpl(
         AttemptTypeRepository attemptTypeRepository, PlanTypeRepository planTypeRepository)
@@ -33,6 +36,18 @@ public class AttemptTypeServiceImpl implements AttemptTypeService
     public AttemptType getAttemptTypeByName(String attemptTypeName)
     {
         return attemptTypeRepository.findByNameIgnoreCase(attemptTypeName);
+    }
+
+    @Override
+    public AttemptType getAttemptTypeByNameFailsIfNull(String attemptTypeName)
+    {
+        AttemptType attemptType = getAttemptTypeByName(attemptTypeName);
+        if (attemptType == null)
+        {
+            throw new UserOperationFailedException(
+                String.format(ATTEMPT_TYPE_NOT_FOUND_ERROR, attemptTypeName));
+        }
+        return attemptType;
     }
 
     @Override
