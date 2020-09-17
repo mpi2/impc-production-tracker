@@ -20,7 +20,6 @@ class PhenotypingStageUpdateDTOTest
         phenotypingStageUpdateDTO.setPsn("psn");
         PhenotypingStageCommonDTO phenotypingStageCommonDTO = new PhenotypingStageCommonDTO();
         phenotypingStageCommonDTO.setPhenotypingExperimentsStarted(LocalDate.parse("2020-06-17"));
-        phenotypingStageCommonDTO.setDoNotCountTowardsCompleteness(true);
         phenotypingStageCommonDTO.setInitialDataReleaseDate(LocalDate.parse("2020-06-17"));
         phenotypingStageUpdateDTO.setPhenotypingStageCommonDTO(phenotypingStageCommonDTO);
         StatusTransitionDTO statusTransitionDTO = new StatusTransitionDTO();
@@ -30,7 +29,7 @@ class PhenotypingStageUpdateDTOTest
         String json = JsonConverter.toJson(phenotypingStageUpdateDTO);
         assertThat(json, is(notNullValue()));
         assertThat(json, is("{\"psn\":\"psn\",\"phenotypingExperimentsStarted\":\"2020-06-17\"," +
-                "\"doNotCountTowardsCompleteness\":true,\"initialDataReleaseDate\":\"2020-06-17\"," +
+                "\"initialDataReleaseDate\":\"2020-06-17\"," +
                 "\"tissueDistributions\":null,\"statusTransition\":{\"actionToExecute\":\"actionToExecute\"}}"));
     }
 

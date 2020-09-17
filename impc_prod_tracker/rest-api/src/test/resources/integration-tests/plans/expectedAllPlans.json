@@ -198,7 +198,8 @@
         },
         "phenotypingAttemptResponse":{
           "phenotypingExternalRef":"CR10129",
-          "phenotypingBackgroundStrainName":"C57BL/6NJ"
+          "phenotypingBackgroundStrainName":"C57BL/6NJ",
+          "doNotCountTowardsCompleteness":false
         },
         "typeName":"phenotyping",
         "statusName":"Plan Created",
@@ -265,7 +266,8 @@
         },
         "phenotypingAttemptResponse":{
           "phenotypingExternalRef":"JR34077",
-          "phenotypingBackgroundStrainName":"C57BL/6NJ"
+          "phenotypingBackgroundStrainName":"C57BL/6NJ",
+          "doNotCountTowardsCompleteness":false
         },
         "typeName":"phenotyping",
         "statusName":"Plan Created",

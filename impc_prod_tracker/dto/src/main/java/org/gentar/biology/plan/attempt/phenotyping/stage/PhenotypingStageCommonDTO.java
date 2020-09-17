@@ -10,7 +10,6 @@ import java.util.List;
 public class PhenotypingStageCommonDTO
 {
     private LocalDate phenotypingExperimentsStarted;
-    private Boolean doNotCountTowardsCompleteness;
     private LocalDate initialDataReleaseDate;
 
     @JsonProperty("tissueDistributions")

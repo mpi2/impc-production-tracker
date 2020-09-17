@@ -28,6 +28,8 @@ public class PhenotypingAttempt extends BaseEntity
     private Long imitsPhenotypingProduction;
     private Long imitsParentColony;
 
+    private Boolean doNotCountTowardsCompleteness;
+
     @NotNull
     @Column(unique = true)
     private String phenotypingExternalRef;

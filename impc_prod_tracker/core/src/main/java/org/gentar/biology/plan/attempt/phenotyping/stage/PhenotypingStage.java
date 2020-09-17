@@ -47,8 +47,6 @@ public class PhenotypingStage extends BaseEntity implements ProcessData
 
     private LocalDate phenotypingExperimentsStarted;
 
-    private Boolean doNotCountTowardsCompleteness;
-
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
     @OneToMany(cascade= CascadeType.ALL, mappedBy = "phenotypingStage", orphanRemoval=true)
@@ -72,7 +70,6 @@ public class PhenotypingStage extends BaseEntity implements ProcessData
         this.status = phenotypingStage.status;
         this.phenotypingAttempt = phenotypingStage.phenotypingAttempt;
         this.phenotypingExperimentsStarted = phenotypingStage.phenotypingExperimentsStarted;
-        this.doNotCountTowardsCompleteness = phenotypingStage.doNotCountTowardsCompleteness;
         this.initialDataReleaseDate = phenotypingStage.initialDataReleaseDate;
         this.phenotypingStageType = phenotypingStage.phenotypingStageType;
         if (phenotypingStage.tissueDistributions != null)
@@ -93,7 +90,6 @@ public class PhenotypingStage extends BaseEntity implements ProcessData
         values.add("phenotypingExperimentsStarted=" + phenotypingExperimentsStarted);
         values.add("statusName=" + statusName);
         values.add("initialDataReleaseDate=" + initialDataReleaseDate);
-        values.add("doNotCountTowardsCompleteness=" + doNotCountTowardsCompleteness);
         return String.join(",", values);
     }
 }

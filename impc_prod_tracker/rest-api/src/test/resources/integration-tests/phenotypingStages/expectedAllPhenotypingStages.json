@@ -3,12 +3,65 @@
     "phenotypingStages":[
       {
         "pin":"PIN:0000000001",
+        "psn":"PSN:000000000002",
+        "statusName":"Late Adult Phenotyping Registered",
+        "phenotypingTypeName":"late adult",
+        "phenotypingExternalRef":"CR10129",
+        "phenotypingExperimentsStarted":"2018-09-17",
+        "initialDataReleaseDate":"2019-04-12",
+        "tissueDistributions":[
+          {
+            "id":2,
+            "startDate":"2019-04-13",
+            "endDate":"2020-05-15",
+            "workUnitName":"UCD",
+            "materialDepositedTypeName":"Fixed Tissue"
+          }
+        ],
+        "_links":{
+          "self":{
+            "href":"http://localhost:8080/api/plans/PIN:0000000001/phenotypingStages/PSN:000000000002"
+          },
+          "plan":{
+            "href":"http://localhost:8080/api/plans/PIN:0000000001"
+          }
+        },
+        "statusDates":[
+          {
+            "statusName":"Late Adult Phenotyping Registered",
+            "date":"2018-09-27T00:00:00"
+          }
+        ],
+        "statusTransition":{
+          "currentStatus":"Late Adult Phenotyping Registered",
+          "transitions":[
+            {
+              "action":"updateToPhenotypingStarted",
+              "description":"Marked as started when the DCC receives phenotype data",
+              "triggeredByUser":true,
+              "available":false,
+              "note":"The current user does not have permission to move to 'Phenotyping Started'",
+              "nextStatus":"Phenotyping Started"
+            },
+            {
+              "action":"abortWhenPhenotypingProductionRegistered",
+              "description":"Abort phenotyping when a phenotype attempt has been registered",
+              "triggeredByUser":true,
+              "available":true,
+              "note":null,
+              "nextStatus":"Phenotype Production Aborted"
+            }
+          ],
+          "actionToExecute":null
+        }
+      },
+      {
+        "pin":"PIN:0000000001",
         "psn":"PSN:000000000001",
         "statusName":"Phenotyping Started",
         "phenotypingTypeName":"early adult",
         "phenotypingExternalRef":"CR10129",
         "phenotypingExperimentsStarted":"2020-02-24",
-        "doNotCountTowardsCompleteness":true,
         "initialDataReleaseDate":"2015-11-23",
         "tissueDistributions":[
           {
@@ -51,61 +104,6 @@
             {
               "action":"abortWhenPhenotypingStarted",
               "description":"Abort phenotyping when phenotyping has been started",
-              "triggeredByUser":true,
-              "available":true,
-              "note":null,
-              "nextStatus":"Phenotype Production Aborted"
-            }
-          ],
-          "actionToExecute":null
-        }
-      },
-      {
-        "pin":"PIN:0000000001",
-        "psn":"PSN:000000000002",
-        "statusName":"Late Adult Phenotyping Registered",
-        "phenotypingTypeName":"late adult",
-        "phenotypingExternalRef":"CR10129",
-        "phenotypingExperimentsStarted":"2018-09-17",
-        "doNotCountTowardsCompleteness":false,
-        "initialDataReleaseDate":"2019-04-12",
-        "tissueDistributions":[
-          {
-            "id":2,
-            "startDate":"2019-04-13",
-            "endDate":"2020-05-15",
-            "workUnitName":"UCD",
-            "materialDepositedTypeName":"Fixed Tissue"
-          }
-        ],
-        "_links":{
-          "self":{
-            "href":"http://localhost:8080/api/plans/PIN:0000000001/phenotypingStages/PSN:000000000002"
-          },
-          "plan":{
-            "href":"http://localhost:8080/api/plans/PIN:0000000001"
-          }
-        },
-        "statusDates":[
-          {
-            "statusName":"Late Adult Phenotyping Registered",
-            "date":"2018-09-27T00:00:00"
-          }
-        ],
-        "statusTransition":{
-          "currentStatus":"Late Adult Phenotyping Registered",
-          "transitions":[
-            {
-              "action":"updateToPhenotypingStarted",
-              "description":"Marked as started when the DCC receives phenotype data",
-              "triggeredByUser":true,
-              "available":false,
-              "note":"The current user does not have permission to move to 'Phenotyping Started'",
-              "nextStatus":"Phenotyping Started"
-            },
-            {
-              "action":"abortWhenPhenotypingProductionRegistered",
-              "description":"Abort phenotyping when a phenotype attempt has been registered",
               "triggeredByUser":true,
               "available":true,
               "note":null,

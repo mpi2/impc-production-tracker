@@ -2,7 +2,6 @@
   "phenotypingTypeName": "early adult",
   "phenotypingExternalRef": "JR34077",
   "phenotypingExperimentsStarted": "2020-02-24",
-  "doNotCountTowardsCompleteness": true,
   "initialDataReleaseDate": "2015-11-23",
   "tissueDistributions": [
     {

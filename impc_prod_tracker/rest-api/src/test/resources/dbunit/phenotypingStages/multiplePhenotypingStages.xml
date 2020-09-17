@@ -159,7 +159,6 @@
                        PLAN_ID="1"
                        PHENOTYPING_STAGE_TYPE_ID="1"
                        STATUS_ID="36"
-                       DO_NOT_COUNT_TOWARDS_COMPLETENESS="true"
                        INITIAL_DATA_RELEASE_DATE="2015-11-23"
                        PHENOTYPING_EXPERIMENTS_STARTED="2020-02-24"/>
     <PHENOTYPING_STAGE ID="2"
@@ -167,7 +166,6 @@
                        PLAN_ID="1"
                        PHENOTYPING_STAGE_TYPE_ID="2"
                        STATUS_ID="23"
-                       DO_NOT_COUNT_TOWARDS_COMPLETENESS="false"
                        INITIAL_DATA_RELEASE_DATE="2019-04-12"
                        PHENOTYPING_EXPERIMENTS_STARTED="2018-09-17"/>
 
@@ -210,9 +208,9 @@
 
     <HISTORY_DETAIL ID="1"
                     HISTORY_ID="1"
-                    FIELD="doNotCountTowardsCompleteness"
-                    OLD_VALUE="false"
-                    NEW_VALUE="true"
+                    FIELD="phenotyping_experiments_started"
+                    OLD_VALUE="2020-02-24"
+                    NEW_VALUE="2020-04-02"
                     NOTE="Field changed"/>
 
     <PERSON     ID="123"
