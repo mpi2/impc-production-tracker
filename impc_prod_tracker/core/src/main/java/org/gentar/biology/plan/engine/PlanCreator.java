@@ -26,6 +26,7 @@ public class PlanCreator
     private final HistoryService<Plan> historyService;
     private final PlanStatusManager planStatusManager;
     private final ProjectService projectService;
+    private final PlanValidator planValidator;
     private final ContextAwarePolicyEnforcement policyEnforcement;
 
     public PlanCreator(
@@ -33,12 +34,14 @@ public class PlanCreator
         HistoryService<Plan> historyService,
         PlanStatusManager planStatusManager,
         ProjectService projectService,
+        PlanValidator planValidator,
         ContextAwarePolicyEnforcement policyEnforcement)
     {
         this.entityManager = entityManager;
         this.historyService = historyService;
         this.planStatusManager = planStatusManager;
         this.projectService = projectService;
+        this.planValidator = planValidator;
         this.policyEnforcement = policyEnforcement;
     }
 
@@ -51,12 +54,18 @@ public class PlanCreator
     @Transactional
     public Plan createPlan(Plan plan)
     {
+        validateData(plan);
         validatePermissionToCreatePlan(plan);
         setStatusAndSummaryStatus(plan);
         Plan createdPlan = savePlan(plan);
         registerCreationInHistory(createdPlan);
         updateProjectDueToChangesInChild(plan);
         return createdPlan;
+    }
+
+    private void validateData(Plan plan)
+    {
+        planValidator.validate(plan);
     }
 
     /**

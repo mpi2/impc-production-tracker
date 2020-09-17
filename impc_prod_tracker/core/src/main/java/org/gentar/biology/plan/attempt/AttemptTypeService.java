@@ -8,7 +8,12 @@ import java.util.Map;
 public interface AttemptTypeService
 {
     List<AttemptType> getAll();
+
     AttemptType getAttemptTypeByName(String attemptTypeName);
+
+    AttemptType getAttemptTypeByNameFailsIfNull(String attemptTypeName);
+
     List<AttemptTypesName> getAttemptTypesByPlanTypeName(PlanTypeName planTypeName);
+
     Map<String, List<String>> getAttemptTypesByPlanTypeNameMap();
 }
