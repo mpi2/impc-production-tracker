@@ -19,7 +19,7 @@
     "nucleases":[
       {
         "id":1,
-        "typeName":"CAS9",
+        "typeName":"Cas9",
         "concentration":250.0,
         "className":"protein"
       }

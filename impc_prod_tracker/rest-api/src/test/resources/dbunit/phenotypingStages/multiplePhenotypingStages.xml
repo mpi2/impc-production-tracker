@@ -103,7 +103,7 @@
                                NAME="Fixed Tissue"/>
 
     <PHENOTYPING_STAGE_TYPE ID="1"
-                            NAME="early adult"/>
+                            NAME="early adult and embryo"/>
     <PHENOTYPING_STAGE_TYPE ID="2"
                             NAME="late adult"/>
     <PHENOTYPING_STAGE_TYPE ID="3"
