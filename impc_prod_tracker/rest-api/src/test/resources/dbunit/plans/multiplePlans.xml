@@ -50,7 +50,7 @@
                     NAME="mRNA"/>
 
     <NUCLEASE_TYPE ID="1"
-                   NAME="CAS9"/>
+                   NAME="Cas9"/>
     <NUCLEASE_TYPE ID="2"
                    NAME="D10A"/>
     <NUCLEASE_TYPE ID="3"
