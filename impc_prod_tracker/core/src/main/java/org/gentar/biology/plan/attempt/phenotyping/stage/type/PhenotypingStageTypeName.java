@@ -6,7 +6,7 @@ import java.util.Map;
 
 public enum PhenotypingStageTypeName implements LabeledType
 {
-    EARLY_ADULT("early adult"),
+    EARLY_ADULT("early adult and embryo"),
     LATE_ADULT("late adult"),
     HAPLOESSENTIAL("haplo-essential"),
     EMBRYO("embryo");

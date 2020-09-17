@@ -59,7 +59,7 @@
         "pin":"PIN:0000000001",
         "psn":"PSN:000000000001",
         "statusName":"Phenotyping Started",
-        "phenotypingTypeName":"early adult",
+        "phenotypingTypeName":"early adult and embryo",
         "phenotypingExternalRef":"CR10129",
         "phenotypingExperimentsStarted":"2020-02-24",
         "initialDataReleaseDate":"2015-11-23",

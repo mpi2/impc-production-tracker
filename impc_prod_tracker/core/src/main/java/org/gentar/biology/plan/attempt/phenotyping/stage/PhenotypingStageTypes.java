@@ -1,7 +1,7 @@
 package org.gentar.biology.plan.attempt.phenotyping.stage;
 
 public enum PhenotypingStageTypes {
-    EARLY_ADULT("early adult"),
+    EARLY_ADULT("early adult and embryo"),
     LATE_ADULT("late adult"),
     HAPLOESSENTIAL("haplo-essential"),
     EMBRYO("embryo");
