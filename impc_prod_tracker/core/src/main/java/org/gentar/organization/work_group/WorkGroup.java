@@ -22,6 +22,7 @@ import org.gentar.audit.diff.IgnoreForAuditingChanges;
 import org.gentar.organization.funder.Funder;
 import org.gentar.organization.work_unit.WorkUnit;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -54,7 +55,7 @@ public class WorkGroup extends BaseEntity
     private Set<Funder> funders;
 
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "work_group_work_unit",
             joinColumns = @JoinColumn(name = "work_group_id"),
