@@ -15,7 +15,6 @@
  *******************************************************************************/
 package org.gentar.basic_data;
 
-import java.util.List;
 import java.util.Map;
 
 public interface CatalogService

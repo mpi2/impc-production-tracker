@@ -17,8 +17,11 @@ package org.gentar.organization.funder;
 
 import org.springframework.data.repository.CrudRepository;
 
+import java.util.List;
+
 
 public interface FunderRepository extends CrudRepository<Funder, Long>
 {
     Funder getFirstByNameIgnoreCase(String name);
+    List<Funder> findAll();
 }

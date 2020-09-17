@@ -17,11 +17,11 @@ package org.gentar.organization.work_group;
 
 import org.springframework.data.repository.CrudRepository;
 
-public interface WorkGroupRepository extends CrudRepository<WorkGroup, Long> {
+import java.util.List;
+
+public interface WorkGroupRepository extends CrudRepository<WorkGroup, Long>
+{
+    List<WorkGroup> findAll();
     WorkGroup findWorkGroupByName(String name);
-
-//    WorkGroup findWorkGroupByIlarCode(String code);
-
     WorkGroup findWorkGroupByNameIgnoreCase(String name);
-
 }
