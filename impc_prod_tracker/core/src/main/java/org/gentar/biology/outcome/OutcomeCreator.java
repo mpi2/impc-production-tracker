@@ -25,27 +25,36 @@ class OutcomeCreator
     private final ColonyStateSetter colonyStateSetter;
     private final SpecimenStateSetter specimenStateSetter;
     private final MutationService mutationService;
+    private final OutcomeValidator outcomeValidator;
 
     OutcomeCreator(
         HistoryService<Outcome> historyService,
         ColonyStateSetter colonyStateSetter,
         SpecimenStateSetter specimenStateSetter,
-        MutationService mutationService)
+        MutationService mutationService,
+        OutcomeValidator outcomeValidator)
     {
         this.historyService = historyService;
         this.colonyStateSetter = colonyStateSetter;
         this.specimenStateSetter = specimenStateSetter;
         this.mutationService = mutationService;
+        this.outcomeValidator = outcomeValidator;
     }
 
     @Transactional
     public Outcome create(Outcome outcome)
     {
+        validatePermission(outcome);
         setInitialStatus(outcome);
         Outcome createdOutcome = save(outcome);
         saveMutations(createdOutcome);
         registerCreationInHistory(createdOutcome);
         return createdOutcome;
+    }
+
+    private void validatePermission(Outcome outcome)
+    {
+        outcomeValidator.validateCreationPermission(outcome);
     }
 
     private void setInitialStatus(Outcome outcome)
