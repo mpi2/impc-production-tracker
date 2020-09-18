@@ -4,11 +4,8 @@ import org.gentar.biology.plan.PlanStatusManager;
 import org.gentar.biology.plan.Plan_;
 import org.gentar.biology.project.ProjectService;
 import org.gentar.biology.status.Status_;
-import org.gentar.exceptions.UserOperationFailedException;
 import org.gentar.audit.history.HistoryService;
-import org.gentar.security.permissions.PermissionService;
 import org.springframework.stereotype.Component;
-import org.gentar.security.abac.spring.ContextAwarePolicyEnforcement;
 import org.gentar.biology.plan.Plan;
 import org.gentar.biology.plan.PlanRepository;
 import org.gentar.audit.history.History;
@@ -18,7 +15,6 @@ import org.springframework.transaction.annotation.Transactional;
 public class PlanUpdaterImpl implements PlanUpdater
 {
     private final HistoryService<Plan> historyService;
-    private final ContextAwarePolicyEnforcement policyEnforcement;
     private final PlanRepository planRepository;
     private final PlanValidator planValidator;
     private final ProjectService projectService;
@@ -26,14 +22,12 @@ public class PlanUpdaterImpl implements PlanUpdater
 
     public PlanUpdaterImpl(
         HistoryService<Plan> historyService,
-        ContextAwarePolicyEnforcement policyEnforcement,
         PlanRepository planRepository,
         PlanValidator planValidator,
         ProjectService projectService,
         PlanStatusManager planStatusManager)
     {
         this.historyService = historyService;
-        this.policyEnforcement = policyEnforcement;
         this.planRepository = planRepository;
         this.planValidator = planValidator;
         this.projectService = projectService;
@@ -54,18 +48,11 @@ public class PlanUpdaterImpl implements PlanUpdater
         return history;
     }
 
-    /**
-     * Check if the current logged user has permission to update the plan p.
-     * @param plan Plan being updated.
-     */
-    private void validatePermissionToUpdatePlan(Plan plan)
+    private void validatePermissionToUpdatePlan(Plan newPlan)
     {
-        if (!policyEnforcement.hasPermission(plan, PermissionService.UPDATE_PLAN_ACTION))
-        {
-            throw new UserOperationFailedException(
-                "You don't have permission to edit the plan " + plan.getPin());
-        }
+        planValidator.validatePermissionToUpdatePlan(newPlan);
     }
+
 
     /**
      * Check if the changes in the plan require a change on the status.

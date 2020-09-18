@@ -4,39 +4,34 @@ import org.gentar.audit.history.History;
 import org.gentar.audit.history.HistoryService;
 import org.gentar.biology.colony.Colony;
 import org.gentar.biology.colony.Colony_;
-import org.gentar.biology.colony.distribution.DistributionProduct;
 import org.gentar.biology.colony.distribution.DistributionProduct_;
 import org.gentar.biology.plan.PlanStatusManager;
 import org.gentar.biology.status.Status_;
-import org.gentar.exceptions.UserOperationFailedException;
-import org.gentar.organization.work_unit.WorkUnit;
 import org.gentar.organization.work_unit.WorkUnit_;
-import org.gentar.security.abac.spring.ContextAwarePolicyEnforcement;
-import org.gentar.security.permissions.PermissionService;
 import org.gentar.statemachine.StateTransitionsManager;
 import org.springframework.stereotype.Component;
 
 @Component
 public class OutcomeUpdater
 {
-    private HistoryService<Outcome> historyService;
-    private StateTransitionsManager stateTransitionsManager;
-    private OutcomeRepository outcomeRepository;
-    private PlanStatusManager planStatusManager;
-    private ContextAwarePolicyEnforcement policyEnforcement;
+    private final HistoryService<Outcome> historyService;
+    private final StateTransitionsManager stateTransitionsManager;
+    private final OutcomeRepository outcomeRepository;
+    private final PlanStatusManager planStatusManager;
+    private final OutcomeValidator outcomeValidator;
 
     public OutcomeUpdater(
-        HistoryService historyService,
+        HistoryService<Outcome> historyService,
         StateTransitionsManager stateTransitionsManager,
         OutcomeRepository outcomeRepository,
         PlanStatusManager planStatusManager,
-        ContextAwarePolicyEnforcement policyEnforcement)
+        OutcomeValidator outcomeValidator)
     {
         this.historyService = historyService;
         this.stateTransitionsManager = stateTransitionsManager;
         this.outcomeRepository = outcomeRepository;
         this.planStatusManager = planStatusManager;
-        this.policyEnforcement = policyEnforcement;
+        this.outcomeValidator = outcomeValidator;
     }
 
     History update(Outcome originalOutcome, Outcome newOutcome)
@@ -46,20 +41,16 @@ public class OutcomeUpdater
         changeStatusIfNeeded(newOutcome);
         History history = detectTrackOfChanges(originalOutcome, newOutcome);
         saveChanges(newOutcome);
-        //History history = detectTrackOfChanges(originalOutcome, newOutcome);
         saveTrackOfChanges(history);
         planStatusManager.setSummaryStatus(originalOutcome.getPlan());
         return history;
     }
 
-    private void validatePermission(Outcome outcome)
+    private void validatePermission(Outcome newOutcome)
     {
-        if (!policyEnforcement.hasPermission(outcome.getPlan(), PermissionService.UPDATE_PLAN_ACTION))
-        {
-            throw new UserOperationFailedException(
-                "You don't have permission to edit this outcome");
-        }
+        outcomeValidator.validateUpdatePermission(newOutcome);
     }
+
 
     private void validateData(Outcome newOutcome)
     {

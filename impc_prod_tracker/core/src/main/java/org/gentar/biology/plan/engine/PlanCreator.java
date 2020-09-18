@@ -5,10 +5,6 @@ import org.gentar.audit.history.HistoryService;
 import org.gentar.biology.plan.Plan;
 import org.gentar.biology.plan.PlanStatusManager;
 import org.gentar.biology.project.ProjectService;
-import org.gentar.exceptions.UserOperationFailedException;
-import org.gentar.organization.work_unit.WorkUnit;
-import org.gentar.security.abac.spring.ContextAwarePolicyEnforcement;
-import org.gentar.security.permissions.PermissionService;
 import org.springframework.stereotype.Component;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -27,22 +23,19 @@ public class PlanCreator
     private final PlanStatusManager planStatusManager;
     private final ProjectService projectService;
     private final PlanValidator planValidator;
-    private final ContextAwarePolicyEnforcement policyEnforcement;
 
     public PlanCreator(
         EntityManager entityManager,
         HistoryService<Plan> historyService,
         PlanStatusManager planStatusManager,
         ProjectService projectService,
-        PlanValidator planValidator,
-        ContextAwarePolicyEnforcement policyEnforcement)
+        PlanValidator planValidator)
     {
         this.entityManager = entityManager;
         this.historyService = historyService;
         this.planStatusManager = planStatusManager;
         this.projectService = projectService;
         this.planValidator = planValidator;
-        this.policyEnforcement = policyEnforcement;
     }
 
     /**
@@ -63,24 +56,14 @@ public class PlanCreator
         return createdPlan;
     }
 
+    private void validatePermissionToCreatePlan(Plan plan)
+    {
+        planValidator.validatePermissionToCreatePlan(plan);
+    }
+
     private void validateData(Plan plan)
     {
         planValidator.validate(plan);
-    }
-
-    /**
-     * Check if the current logged user has permission to update the plan p.
-     * @param plan Plan being updated.
-     */
-    private void validatePermissionToCreatePlan(Plan plan)
-    {
-        if (!policyEnforcement.hasPermission(plan, PermissionService.CREATE_PLAN_ACTION))
-        {
-            WorkUnit workUnit = plan.getWorkUnit();
-            String workUnitName = workUnit == null ? "Not defined" : workUnit.getName();
-            throw new UserOperationFailedException(
-                "You don't have permission to create a plan in work unit "+ workUnitName);
-        }
     }
 
     private void setStatusAndSummaryStatus(Plan plan)
