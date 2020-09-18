@@ -77,14 +77,18 @@ public class UpdatePlanRequestProcessor
     {
         if (mappedPlan.getPhenotypingAttempt() != null)
         {
-            PhenotypingAttempt phenotypingAttempt =
-                new PhenotypingAttempt(originalPlan.getPhenotypingAttempt());
-            PhenotypingAttempt mmapedPhenotypingAttempt = mappedPlan.getPhenotypingAttempt();
+            PhenotypingAttempt phenotypingAttempt = mappedPlan.getPhenotypingAttempt();
+            if (originalPlan.getPhenotypingAttempt() != null)
+            {
+                phenotypingAttempt =
+                    new PhenotypingAttempt(originalPlan.getPhenotypingAttempt());
+            }
+            PhenotypingAttempt mapedPhenotypingAttempt = mappedPlan.getPhenotypingAttempt();
             phenotypingAttempt.setDoNotCountTowardsCompleteness(
-                mmapedPhenotypingAttempt.getDoNotCountTowardsCompleteness());
+                mapedPhenotypingAttempt.getDoNotCountTowardsCompleteness());
             phenotypingAttempt.setPhenotypingExternalRef(
-                mmapedPhenotypingAttempt.getPhenotypingExternalRef());
-            phenotypingAttempt.setStrain(mmapedPhenotypingAttempt.getStrain());
+                mapedPhenotypingAttempt.getPhenotypingExternalRef());
+            phenotypingAttempt.setStrain(mapedPhenotypingAttempt.getStrain());
             originalPlan.setPhenotypingAttempt(phenotypingAttempt);
         }
     }
