@@ -9,7 +9,7 @@ public enum AttemptTypesName implements LabeledType
     CRISPR("crispr"),
     HAPLOESSENTIAL_CRISPR("haplo-essential crispr"),
     BREEDING("breeding"),
-    ADULT_PHENOTYPING("adult phenotyping"),
+    ADULT_PHENOTYPING("adult and embryo phenotyping"),
     HAPLOESSENTIAL_PHENOTYPING("haplo-essential phenotyping");
 
     private static final Map<String, AttemptTypesName> BY_LABEL = new HashMap<>();

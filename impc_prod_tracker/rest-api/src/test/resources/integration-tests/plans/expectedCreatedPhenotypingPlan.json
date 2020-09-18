@@ -1,7 +1,7 @@
 {
   "pin": "PIN:NNNNNNNNNN",
   "tpn": "TPN:000000001",
-  "attemptTypeName": "adult phenotyping",
+  "attemptTypeName": "adult and embryo phenotyping",
   "funderNames":[],
   "workUnitName":"UCD",
   "workGroupName":"DTCC",

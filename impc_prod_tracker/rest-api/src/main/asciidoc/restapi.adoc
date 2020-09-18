@@ -439,7 +439,7 @@ This is the list of filters you can use:
 |===
 |attemptTypeName a|Attempt type. Possible values are:
 
-* adult phenotyping
+* adult and embryo phenotyping
 * haplo-essential phenotyping
 
 |imitsPhenotypeAttemptIds

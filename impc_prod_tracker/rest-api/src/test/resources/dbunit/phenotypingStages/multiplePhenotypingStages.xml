@@ -31,7 +31,7 @@
     <ATTEMPT_TYPE   ID="3"
                     NAME="breeding"/>
     <ATTEMPT_TYPE   ID="4"
-                    NAME="adult phenotyping"/>
+                    NAME="adult and embryo phenotyping"/>
     <ATTEMPT_TYPE   ID="5"
                     NAME="haplo-essential phenotyping"/>
 
@@ -177,7 +177,7 @@
     <PHENOTYPING_STAGE_STATUS_STAMP ID="2"
                                     PHENOTYPING_STAGE_ID="1"
                                     STATUS_ID="36"
-                                    DATE="2019-11-01"/>
+                                    DATE="2019-11-02"/>
     <PHENOTYPING_STAGE_STATUS_STAMP ID="3"
                                     PHENOTYPING_STAGE_ID="2"
                                     STATUS_ID="23"

@@ -31,7 +31,7 @@
     <ATTEMPT_TYPE   ID="3"
                     NAME="breeding"/>
     <ATTEMPT_TYPE   ID="4"
-                    NAME="adult phenotyping"/>
+                    NAME="adult and embryo phenotyping"/>
     <ATTEMPT_TYPE   ID="5"
                     NAME="haplo-essential phenotyping"/>
 
