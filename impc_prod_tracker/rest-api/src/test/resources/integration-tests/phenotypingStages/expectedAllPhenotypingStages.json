@@ -82,12 +82,12 @@
         },
         "statusDates":[
           {
-            "statusName":"Phenotyping Started",
+            "statusName":"Phenotyping Production Registered",
             "date":"2019-11-01T00:00:00"
           },
           {
-            "statusName":"Phenotyping Production Registered",
-            "date":"2019-11-01T00:00:00"
+            "statusName":"Phenotyping Started",
+            "date":"2019-11-02T00:00:00"
           }
         ],
         "statusTransition":{

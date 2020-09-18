@@ -176,7 +176,7 @@
       {
         "pin":"PIN:0000000003",
         "tpn":"TPN:000000001",
-        "attemptTypeName":"adult phenotyping",
+        "attemptTypeName":"adult and embryo phenotyping",
         "funderNames":[
           "KOMP"
         ],
@@ -244,7 +244,7 @@
       {
         "pin":"PIN:0000000006",
         "tpn":"TPN:000000001",
-        "attemptTypeName":"adult phenotyping",
+        "attemptTypeName":"adult and embryo phenotyping",
         "funderNames":[
 
         ],

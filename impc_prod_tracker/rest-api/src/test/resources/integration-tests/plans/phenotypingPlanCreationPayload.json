@@ -5,7 +5,7 @@
   "workGroupName":"DTCC",
   "comment":null,
   "productsAvailableForGeneralPublic":true,
-  "attemptTypeName":"adult phenotyping",
+  "attemptTypeName":"adult and embryo phenotyping",
   "typeName":"phenotyping",
   "phenotypingStartingPoint": {
     "outcomeTpo":"TPO:000000000001"
