@@ -27,6 +27,7 @@ public class PrivacyMapper implements Mapper<Privacy, String>
     private PrivacyService privacyService;
 
     private static final String PRIVACY_NOT_FOUND_ERROR = "Privacy '%s' does not exist.";
+    private static final String PRIVACY_NULL_ERROR = "Privacy cannot be '%s'.";
 
     public PrivacyMapper(PrivacyService privacyService)
     {
@@ -45,6 +46,10 @@ public class PrivacyMapper implements Mapper<Privacy, String>
 
     public Privacy toEntity(String privacyName)
     {
+        if (privacyName == null)
+        {
+            throw new UserOperationFailedException(String.format(PRIVACY_NULL_ERROR, privacyName));
+        }
         Privacy privacy = privacyService.findPrivacyByName(privacyName);
         if (privacy == null)
         {

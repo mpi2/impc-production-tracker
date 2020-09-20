@@ -2,6 +2,7 @@ package org.gentar.biology.mutation;
 
 import org.gentar.Mapper;
 import org.gentar.biology.mutation.categorizarion.MutationCategorizationService;
+import org.gentar.biology.mutation.categorizarion.type.MutationCategorizationType;
 import org.springframework.stereotype.Component;
 import org.gentar.biology.mutation.categorizarion.MutationCategorization;
 import org.gentar.EntityMapper;
@@ -26,8 +27,13 @@ public class MutationCategorizationMapper implements Mapper<MutationCategorizati
 
     public MutationCategorization toEntity(MutationCategorizationDTO mutationCategorizationDTO)
     {
-        return mutationCategorizationService.getMutationCategorizationByNameAndTypeFailingWhenNull(
-            mutationCategorizationDTO.getName(),
-            mutationCategorizationDTO.getMutationCategorizationTypeName());
+        if (mutationCategorizationDTO.getMutationCategorizationTypeName() == null) {
+            return mutationCategorizationService.getMutationCategorizationByNameFailingWhenNull(
+                    mutationCategorizationDTO.getName());
+        } else {
+            return mutationCategorizationService.getMutationCategorizationByNameAndTypeFailingWhenNull(
+                    mutationCategorizationDTO.getName(),
+                    mutationCategorizationDTO.getMutationCategorizationTypeName());
+        }
     }
 }

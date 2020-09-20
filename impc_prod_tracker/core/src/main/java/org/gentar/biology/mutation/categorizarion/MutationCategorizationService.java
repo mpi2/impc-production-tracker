@@ -10,7 +10,11 @@ public interface MutationCategorizationService
 {
     MutationCategorization getMutationCategorizationByNameAndType(String name, String type);
 
+    MutationCategorization getMutationCategorizationByName(String name);
+
     MutationCategorization getMutationCategorizationByNameAndTypeFailingWhenNull(String name, String type);
+
+    MutationCategorization getMutationCategorizationByNameFailingWhenNull(String name);
 
     MutationCategorizationType getMutationCategorizationTypeByName(String name);
 

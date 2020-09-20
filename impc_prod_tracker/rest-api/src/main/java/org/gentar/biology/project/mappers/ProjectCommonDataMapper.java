@@ -42,11 +42,7 @@ public class ProjectCommonDataMapper implements Mapper<Project, ProjectCommonDat
 
     private void setPrivacyToEntity(Project project, ProjectCommonDataDTO projectCommonDataDTO)
     {
-        String privacyName = projectCommonDataDTO.getPrivacyName();
-        if (privacyName != null)
-        {
-            Privacy privacy = privacyMapper.toEntity(projectCommonDataDTO.getPrivacyName());
-            project.setPrivacy(privacy);
-        }
+        Privacy privacy = privacyMapper.toEntity(projectCommonDataDTO.getPrivacyName());
+        project.setPrivacy(privacy);
     }
 }

@@ -16,8 +16,8 @@
 package org.gentar.biology.intention;
 
 import org.gentar.Mapper;
-import org.gentar.audit.diff.ChangeEntry;
 import org.gentar.biology.gene.ProjectIntentionGeneDTO;
+import org.gentar.biology.intention.project_intention.ProjectIntentionService;
 import org.gentar.biology.mutation.categorizarion.MutationCategorization;
 import org.gentar.biology.sequence.ProjectIntentionSequenceDTO;
 import org.gentar.EntityMapper;
@@ -39,6 +39,7 @@ public class ProjectIntentionMapper implements Mapper<ProjectIntention, ProjectI
     private final ProjectIntentionGeneMapper projectIntentionGeneMapper;
     private final ProjectIntentionSequenceMapper projectIntentionSequenceMapper;
     private final OrthologMapper orthologMapper;
+    private final ProjectIntentionService projectIntentionService;
 
     public ProjectIntentionMapper(
             EntityMapper entityMapper,
@@ -46,7 +47,7 @@ public class ProjectIntentionMapper implements Mapper<ProjectIntention, ProjectI
             MolecularMutationTypeMapper molecularMutationTypeMapper,
             ProjectIntentionGeneMapper projectIntentionGeneMapper,
             ProjectIntentionSequenceMapper projectIntentionSequenceMapper,
-            OrthologMapper orthologMapper)
+            OrthologMapper orthologMapper, ProjectIntentionService projectIntentionService)
     {
         this.entityMapper = entityMapper;
         this.mutationCategorizationMapper = mutationCategorizationMapper;
@@ -54,6 +55,7 @@ public class ProjectIntentionMapper implements Mapper<ProjectIntention, ProjectI
         this.projectIntentionGeneMapper = projectIntentionGeneMapper;
         this.projectIntentionSequenceMapper = projectIntentionSequenceMapper;
         this.orthologMapper = orthologMapper;
+        this.projectIntentionService = projectIntentionService;
     }
 
     @Override
@@ -108,26 +110,40 @@ public class ProjectIntentionMapper implements Mapper<ProjectIntention, ProjectI
     {
         ProjectIntention projectIntention =
             entityMapper.toTarget(projectIntentionDTO, ProjectIntention.class);
+
         projectIntention.setMolecularMutationType(
             molecularMutationTypeMapper.toEntity(projectIntentionDTO.getMolecularMutationTypeName()));
+
         Set<MutationCategorization> mutationCategorizations =
                 new HashSet<>(mutationCategorizationMapper.toEntities(
                     projectIntentionDTO.getMutationCategorizationDTOS()));
+
         projectIntention.setMutationCategorizations(mutationCategorizations);
+
         setProjectIntentionAttributes(projectIntention, projectIntentionDTO);
+
         return projectIntention;
+    }
+
+    @Override
+    public Set<ProjectIntention> toEntities(Collection<ProjectIntentionDTO> projectIntentionDTOS) {
+        Set<ProjectIntention> projectIntentions = new HashSet<>();
+        if (projectIntentionDTOS != null)
+        {
+            projectIntentionDTOS.forEach(projectIntentionDTO -> projectIntentions.add(toEntity(projectIntentionDTO)));
+        } else {
+            projectIntentionService.getErrorProjectIntentionNull();
+        }
+        return projectIntentions;
     }
 
     private void setProjectIntentionAttributes(
         ProjectIntention projectIntention, ProjectIntentionDTO projectIntentionDTO)
     {
-        if (projectIntentionDTO.getProjectIntentionGeneDTO() != null)
-        {
-            ProjectIntentionGene projectIntentionGene =
-                projectIntentionGeneMapper.toEntity(projectIntentionDTO.getProjectIntentionGeneDTO());
-            projectIntentionGene.setProjectIntention(projectIntention);
-            projectIntention.setProjectIntentionGene(projectIntentionGene);
-        }
+        ProjectIntentionGene projectIntentionGene =
+            projectIntentionGeneMapper.toEntity(projectIntentionDTO.getProjectIntentionGeneDTO());
+        projectIntentionGene.setProjectIntention(projectIntention);
+        projectIntention.setProjectIntentionGene(projectIntentionGene);
 
         if (projectIntentionDTO.getProjectIntentionSequenceDTOS() != null)
         {

@@ -1,6 +1,8 @@
 package org.gentar.biology.project.consortium;
 
 import org.gentar.Mapper;
+import org.gentar.biology.plan.attempt.crispr.CrisprAttemptReagentDTO;
+import org.gentar.biology.plan.attempt.crispr.reagent.CrisprAttemptReagent;
 import org.gentar.organization.consortium.ConsortiumService;
 import org.gentar.biology.project.ProjectConsortiumDTO;
 import org.gentar.EntityMapper;
@@ -36,6 +38,18 @@ public class ProjectConsortiumMapper implements Mapper<ProjectConsortium, Projec
             addProjectConsortiumInstituteFromEntity(projectConsortiumDTO));
 
         return projectConsortium;
+    }
+
+    @Override
+    public Set<ProjectConsortium> toEntities(Collection<ProjectConsortiumDTO> projectConsortiumDTOS) {
+        Set<ProjectConsortium> projectConsortiums = new HashSet<>();
+        if (projectConsortiumDTOS != null)
+        {
+            projectConsortiumDTOS.forEach(projectConsortiumDTO -> projectConsortiums.add(toEntity(projectConsortiumDTO)));
+        } else {
+            consortiumService.getErrorConsortiumNull();
+        }
+        return projectConsortiums;
     }
 
     public ProjectConsortiumDTO toDto(ProjectConsortium projectConsortium)
