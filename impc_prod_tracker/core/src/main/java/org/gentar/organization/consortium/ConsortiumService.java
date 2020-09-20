@@ -25,5 +25,7 @@ public interface ConsortiumService
 
     List<Consortium> findAllConsortia();
 
+    void getErrorConsortiumNull();
+
     List<String> getConsortiaNamesUsableToConstructSymbols();
 }

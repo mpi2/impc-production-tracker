@@ -37,6 +37,7 @@ public class ProjectIntentionGeneMapper implements Mapper<ProjectIntentionGene, 
     private GeneExternalService geneExternalService;
 
     private static final String GENE_NOT_EXIST_ERROR = "Gene [%s] does not exist.";
+    private static final String GENE_NULL_ERROR = "Gene gene symbol cannot be null.";
 
     public ProjectIntentionGeneMapper(
         GeneMapper geneMapper,
@@ -67,6 +68,10 @@ public class ProjectIntentionGeneMapper implements Mapper<ProjectIntentionGene, 
 
     public ProjectIntentionGene toEntity(ProjectIntentionGeneDTO projectIntentionGeneDTO)
     {
+        if (projectIntentionGeneDTO == null)
+        {
+            throw new UserOperationFailedException(String.format(GENE_NULL_ERROR));
+        }
         ProjectIntentionGene projectIntentionGene = new ProjectIntentionGene();
         Gene gene = loadGene(projectIntentionGeneDTO.getGeneDTO());
         projectIntentionGene.setGene(gene);

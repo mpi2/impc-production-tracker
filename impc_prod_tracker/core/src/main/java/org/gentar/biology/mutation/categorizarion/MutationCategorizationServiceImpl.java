@@ -35,6 +35,14 @@ public class MutationCategorizationServiceImpl implements MutationCategorization
             .findByNameAndMutationCategorizationTypeNameIgnoreCase(name, type);
     }
 
+
+    @Override
+    public MutationCategorization getMutationCategorizationByName(String name)
+    {
+        return mutationCategorizationRepository
+                .findByNameIgnoreCase(name);
+    }
+
     @Override
     public MutationCategorization getMutationCategorizationByNameAndTypeFailingWhenNull(
         String name, String type)
@@ -45,6 +53,19 @@ public class MutationCategorizationServiceImpl implements MutationCategorization
         {
             throw new UserOperationFailedException(
                 "Mutation Categorization name '" + name + "' or type '" + type + "' do not exist.");
+        }
+        return mutationCategorization;
+    }
+
+    @Override
+    public MutationCategorization getMutationCategorizationByNameFailingWhenNull(String name)
+    {
+        MutationCategorization mutationCategorization =
+                getMutationCategorizationByName(name);
+        if (mutationCategorization == null)
+        {
+            throw new UserOperationFailedException(
+                    "Mutation Categorization name '" + name + "' do not exist.");
         }
         return mutationCategorization;
     }

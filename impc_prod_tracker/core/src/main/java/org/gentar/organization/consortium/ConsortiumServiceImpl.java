@@ -12,6 +12,7 @@ public class ConsortiumServiceImpl implements ConsortiumService
     private final ConsortiumRepository consortiumRepository;
 
     private static final String CONSORTIUM_NOT_EXISTS_ERROR = "Consortium '%s' does not exist.";
+    private static final String CONSORTIUM_NULL_ERROR = "Consortium cannot be null. Select at least one.";
 
     public ConsortiumServiceImpl(ConsortiumRepository consortiumRepository)
     {
@@ -28,6 +29,11 @@ public class ConsortiumServiceImpl implements ConsortiumService
     @Override
     public Consortium getConsortiumByNameOrThrowException(String consortiumName)
     {
+        if (consortiumName == null)
+        {
+            throw new UserOperationFailedException(
+                    String.format(CONSORTIUM_NULL_ERROR));
+        }
         Consortium consortium = findConsortiumByName(consortiumName);
         if (consortium == null)
         {
@@ -35,6 +41,13 @@ public class ConsortiumServiceImpl implements ConsortiumService
                 String.format(CONSORTIUM_NOT_EXISTS_ERROR, consortiumName));
         }
         return consortium;
+    }
+
+    @Override
+    public void getErrorConsortiumNull()
+    {
+        throw new UserOperationFailedException(
+                String.format(CONSORTIUM_NULL_ERROR));
     }
 
     @Override
