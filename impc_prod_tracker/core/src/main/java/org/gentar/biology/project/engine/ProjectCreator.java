@@ -17,12 +17,15 @@ package org.gentar.biology.project.engine;
 
 import org.gentar.audit.history.History;
 import org.gentar.audit.history.HistoryService;
+import org.gentar.biology.plan.Plan;
+import org.gentar.biology.plan.engine.PlanCreator;
 import org.gentar.biology.project.assignment.AssignmentStatusUpdater;
 import org.springframework.stereotype.Component;
 import org.gentar.biology.project.Project;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.transaction.Transactional;
+import java.util.Set;
 
 /**
  * Class with the logic to save a project in the system.
@@ -34,15 +37,21 @@ public class ProjectCreator
     @PersistenceContext
     private EntityManager entityManager;
 
-    private AssignmentStatusUpdater assignmentStatusUpdater;
-
-    private HistoryService<Project> historyService;
+    private final AssignmentStatusUpdater assignmentStatusUpdater;
+    private final HistoryService<Project> historyService;
+    private final ProjectValidator projectValidator;
+    private final PlanCreator planCreator;
 
     public ProjectCreator(
-        AssignmentStatusUpdater assignmentStatusUpdater, HistoryService<Project> historyService)
+        AssignmentStatusUpdater assignmentStatusUpdater,
+        HistoryService<Project> historyService,
+        ProjectValidator projectValidator,
+        PlanCreator planCreator)
     {
         this.assignmentStatusUpdater = assignmentStatusUpdater;
         this.historyService = historyService;
+        this.projectValidator = projectValidator;
+        this.planCreator = planCreator;
     }
 
     /**
@@ -52,10 +61,32 @@ public class ProjectCreator
      */
     public Project createProject(Project project)
     {
+        validateData(project);
+        validatePermissionToCreate(project);
         setInitialAssignmentStatus(project);
         Project createdProject = saveProject(project);
+        savePlans(createdProject);
         registerCreationInHistory(project);
         return createdProject;
+    }
+
+    private void savePlans(Project createdProject)
+    {
+        Set<Plan> plans = createdProject.getPlans();
+        if (plans != null)
+        {
+            plans.forEach(planCreator::createPlan);
+        }
+    }
+
+    private void validateData(Project project)
+    {
+        projectValidator.validateData(project);
+    }
+
+    private void validatePermissionToCreate(Project project)
+    {
+        projectValidator.validatePermissionToCreateProject(project);
     }
 
     private Project saveProject(Project project)

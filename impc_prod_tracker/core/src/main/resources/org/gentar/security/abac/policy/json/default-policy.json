@@ -66,6 +66,12 @@
     "condition": "subject.belongsToAnyWorkUnit(resource.workUnit)"
   },
   {
+    "name": "Create a project",
+    "description": "A user from a work unit can create a project with a plan associated with it.",
+    "target": "action == 'CREATE_PROJECT'",
+    "condition": "subject.belongsToAnyWorkUnit(resource.getRelatedWorkUnits())"
+  },
+  {
     "name": "Read public projects.",
     "description": "A project that is public can be read by anyone.",
     "target": "action == 'READ_PROJECT'",

@@ -206,12 +206,7 @@ public class ProjectServiceImpl implements ProjectService
             throw new UserOperationFailedException(
                 "The plan cannot be associated with the project because the plan is null");
         }
-        Set<Plan> plans = project.getPlans();
-        if (plans == null)
-        {
-            plans = new HashSet<>();
-        }
-        plans.add(plan);
+        project.addPlan(plan);
         plan.setProject(project);
     }
 

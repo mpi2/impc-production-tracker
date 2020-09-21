@@ -5,7 +5,7 @@
   "privacyName":"public",
   "externalReference":"externalRef",
   "assignmentStatusName":"Assigned",
-  "summaryStatusName":null,
+  "summaryStatusName":"Plan Created",
   "relatedWorkUnitNames":[
     "BCM"
   ],

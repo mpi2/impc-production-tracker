@@ -1,14 +1,28 @@
 {
   "_links":{
     "self":{
-      "href":"http://localhost:8080/api/projects/TPN:000000000"
+      "href":"http://localhost:8080/api/projects/TPN:000000007"
     }
   },
   "history":[
     {
       "id":1,
       "user":"gentar_test_user1@gentar.org",
-      "date":"2020-07-28T10:44:40.999198",
+      "date":"2020-09-21T12:52:33.977001",
+      "comment":"Project updated",
+      "details":[
+        {
+          "field":"summaryStatus.name",
+          "oldValue":null,
+          "newValue":"Plan Created",
+          "note":"Field changed"
+        }
+      ]
+    },
+    {
+      "id":2,
+      "user":"gentar_test_user1@gentar.org",
+      "date":"2020-09-21T12:52:33.984489",
       "comment":"Project created",
       "details":[
 
