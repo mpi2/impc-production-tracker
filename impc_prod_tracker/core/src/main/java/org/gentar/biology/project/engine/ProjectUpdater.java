@@ -11,24 +11,27 @@ import org.springframework.stereotype.Component;
 @Component
 public class ProjectUpdater
 {
-    private HistoryService<Project> historyService;
-    private ProjectRepository projectRepository;
-    private AssignmentStatusUpdater assignmentStatusUpdater;
-    private ProjectSummaryStatusUpdater projectSummaryStatusUpdater;
-    private ProjectHistoryRecorder projectHistoryRecorder;
+    private final HistoryService<Project> historyService;
+    private final ProjectRepository projectRepository;
+    private final AssignmentStatusUpdater assignmentStatusUpdater;
+    private final ProjectSummaryStatusUpdater projectSummaryStatusUpdater;
+    private final ProjectHistoryRecorder projectHistoryRecorder;
+    private final ProjectValidator projectValidator;
 
     public ProjectUpdater(
         HistoryService<Project> historyService,
         ProjectRepository projectRepository,
         AssignmentStatusUpdater assignmentStatusUpdater,
         ProjectSummaryStatusUpdater projectSummaryStatusUpdater,
-        ProjectHistoryRecorder projectHistoryRecorder)
+        ProjectHistoryRecorder projectHistoryRecorder,
+        ProjectValidator projectValidator)
     {
         this.historyService = historyService;
         this.projectRepository = projectRepository;
         this.assignmentStatusUpdater = assignmentStatusUpdater;
         this.projectSummaryStatusUpdater = projectSummaryStatusUpdater;
         this.projectHistoryRecorder = projectHistoryRecorder;
+        this.projectValidator = projectValidator;
     }
 
     public History updateProject(Project originalProject, Project newProject)
@@ -43,7 +46,7 @@ public class ProjectUpdater
 
     private void validatePermissions(Project newProject)
     {
-        //TODO: add validations of permission
+        projectValidator.validatePermissionToUpdateProject(newProject);
     }
 
     /**

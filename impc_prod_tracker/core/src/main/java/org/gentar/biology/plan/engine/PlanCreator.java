@@ -4,7 +4,7 @@ import org.gentar.audit.history.History;
 import org.gentar.audit.history.HistoryService;
 import org.gentar.biology.plan.Plan;
 import org.gentar.biology.plan.PlanStatusManager;
-import org.gentar.biology.project.ProjectService;
+import org.gentar.biology.project.engine.ProjectUpdater;
 import org.springframework.stereotype.Component;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -21,21 +21,21 @@ public class PlanCreator
     private final EntityManager entityManager;
     private final HistoryService<Plan> historyService;
     private final PlanStatusManager planStatusManager;
-    private final ProjectService projectService;
     private final PlanValidator planValidator;
+    private final ProjectUpdater projectUpdater;
 
     public PlanCreator(
         EntityManager entityManager,
         HistoryService<Plan> historyService,
         PlanStatusManager planStatusManager,
-        ProjectService projectService,
-        PlanValidator planValidator)
+        PlanValidator planValidator,
+        ProjectUpdater projectUpdater)
     {
         this.entityManager = entityManager;
         this.historyService = historyService;
         this.planStatusManager = planStatusManager;
-        this.projectService = projectService;
         this.planValidator = planValidator;
+        this.projectUpdater = projectUpdater;
     }
 
     /**
@@ -118,6 +118,6 @@ public class PlanCreator
      */
     private void updateProjectDueToChangesInChild(Plan plan)
     {
-        projectService.checkForUpdates(plan.getProject());
+        projectUpdater.updateProjectWhenPlanUpdated(plan.getProject());
     }
 }

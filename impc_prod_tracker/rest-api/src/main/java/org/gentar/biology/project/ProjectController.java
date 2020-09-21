@@ -153,11 +153,10 @@ public class ProjectController
     public ChangeResponse createProject(@RequestBody ProjectCreationDTO projectCreationDTO)
     {
         Project projectToBeCreated = projectCreationMapper.toEntity(projectCreationDTO);
-        Project createdProject = projectService.createProject(projectToBeCreated);
         Plan planToBeCreated = planMinimumCreationMapper.toEntity(
             projectCreationDTO.getPlanMinimumCreationDTO());
-        projectService.associatePlanToProject(planToBeCreated, createdProject);
-        planService.createPlan(planToBeCreated);
+        projectService.associatePlanToProject(planToBeCreated, projectToBeCreated);
+        Project createdProject = projectService.createProject(projectToBeCreated);
         return buildChangeResponse(createdProject);
     }
 

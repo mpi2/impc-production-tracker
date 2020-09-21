@@ -12,6 +12,7 @@ public class ChangeResponseCustomizations
     {
         List<Customization> customizations = new ArrayList<>();
         customizations.add(CustomizationHelper.buildDateCustomization("history[0].date"));
+        customizations.add(CustomizationHelper.buildDateCustomization("history[1].date"));
         customizations.add(buildCustomizationForSelfLink());
         return customizations.toArray(new Customization[0]);
     }

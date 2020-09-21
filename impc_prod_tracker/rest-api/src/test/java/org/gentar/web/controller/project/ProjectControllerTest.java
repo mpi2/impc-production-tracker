@@ -325,6 +325,10 @@ class ProjectControllerTest extends ControllerTestTemplate
                 fieldWithPath("history[].date").description("Date of the change."),
                 fieldWithPath("history[].comment").description("Comment describing the change."),
                 fieldWithPath("history[].details[]").description("Additional details of the change."),
+                fieldWithPath("history[].details[].field").description("Field that changed."),
+                fieldWithPath("history[].details[].oldValue").description("Value before the change."),
+                fieldWithPath("history[].details[].newValue").description("Value after the change."),
+                fieldWithPath("history[].details[].note").description("Note of the change."),
                 fieldWithPath("_links.self.href").description("Links to the project just created.")
             ));
     }
