@@ -9,6 +9,8 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ProjectConsortiumDTO
 {
+    private Long id;
+
     private String consortiumName;
 
     @JsonProperty("institutes")

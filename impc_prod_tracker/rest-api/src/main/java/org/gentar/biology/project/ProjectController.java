@@ -18,7 +18,6 @@ package org.gentar.biology.project;
 import org.gentar.audit.history.History;
 import org.gentar.biology.ChangeResponse;
 import org.gentar.biology.outcome.Outcome;
-import org.gentar.biology.outcome.OutcomeResponseDTO;
 import org.gentar.biology.outcome.OutcomeSummaryDTO;
 import org.gentar.biology.outcome.OutcomeSummaryMapper;
 import org.gentar.biology.plan.*;
@@ -63,7 +62,6 @@ public class ProjectController
     private final CsvWriter<ProjectCsvRecord> csvWriter;
     private final ProjectCsvRecordMapper projectCsvRecordMapper;
     private final UpdateProjectRequestProcessor updateProjectRequestProcessor;
-    private final PlanService planService;
     private final ProjectCreationMapper projectCreationMapper;
     private final PlanMinimumCreationMapper planMinimumCreationMapper;
     private final ProjectResponseMapper projectResponseMapper;
@@ -78,7 +76,6 @@ public class ProjectController
         CsvWriter<ProjectCsvRecord> csvWriter,
         ProjectCsvRecordMapper projectCsvRecordMapper,
         UpdateProjectRequestProcessor updateProjectRequestProcessor,
-        PlanService planService,
         ProjectCreationMapper projectCreationMapper,
         PlanMinimumCreationMapper planMinimumCreationMapper,
         ProjectResponseMapper projectResponseMapper,
@@ -89,7 +86,6 @@ public class ProjectController
         this.csvWriter = csvWriter;
         this.projectCsvRecordMapper = projectCsvRecordMapper;
         this.updateProjectRequestProcessor = updateProjectRequestProcessor;
-        this.planService = planService;
         this.projectCreationMapper = projectCreationMapper;
         this.planMinimumCreationMapper = planMinimumCreationMapper;
         this.projectResponseMapper = projectResponseMapper;

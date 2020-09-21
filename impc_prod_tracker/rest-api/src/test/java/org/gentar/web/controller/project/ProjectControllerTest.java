@@ -118,6 +118,8 @@ class ProjectControllerTest extends ControllerTestTemplate
                     .description("Species associated with the project."),
                 fieldWithPath("consortia")
                     .description("Consortia associated with the project."),
+                fieldWithPath("consortia[].id")
+                    .description("Internal id of the record."),
                 fieldWithPath("consortia[].consortiumName")
                     .description("Name of the consortium."),
                 fieldWithPath("consortia[].institutes")
@@ -255,7 +257,6 @@ class ProjectControllerTest extends ControllerTestTemplate
     {
         String expectedJsonCompletePath = getCompleteResourcePath(expectedJsonPath);
         String obtained = restCaller.executeGet(projectLink);
-        System.out.println(obtained);
         resultValidator.validateObtainedMatchesJson(
              obtained, expectedJsonCompletePath, ProjectCustomizations.ignoreIdsAndDates());
     }

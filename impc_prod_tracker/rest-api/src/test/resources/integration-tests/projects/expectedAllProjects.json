@@ -77,6 +77,7 @@
         ],
         "consortia":[
           {
+            "id":1,
             "consortiumName":"CMG",
             "institutes":[
               "Yale",
@@ -116,6 +117,7 @@
         ],
         "consortia":[
           {
+            "id":2,
             "consortiumName":"CMG",
             "institutes":[
               "Broad"
@@ -154,6 +156,7 @@
         ],
         "consortia":[
           {
+            "id":3,
             "consortiumName":"CMG",
             "institutes":[
               "Yale"
@@ -192,6 +195,7 @@
         ],
         "consortia":[
           {
+            "id":4,
             "consortiumName":"CMG",
             "institutes":[
 
@@ -230,6 +234,7 @@
         ],
         "consortia":[
           {
+            "id":5,
             "consortiumName":"CMG",
             "institutes":[
 
