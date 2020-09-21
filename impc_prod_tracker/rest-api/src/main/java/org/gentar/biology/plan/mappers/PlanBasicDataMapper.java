@@ -66,11 +66,8 @@ public class PlanBasicDataMapper implements Mapper<Plan, PlanBasicDataDTO>
         AttemptTypesName attemptTypesName = getAttemptTypesName(plan.getAttemptType());
         switch (attemptTypesName)
         {
-            case CRISPR:
+            case CRISPR: case HAPLOESSENTIAL_CRISPR:
                 setCrisprAttemptDto(planBasicDataDTO, plan);
-                break;
-            case HAPLOESSENTIAL_CRISPR:
-                //TODO: set the happloessential crispr attempt
                 break;
             case ADULT_PHENOTYPING: case HAPLOESSENTIAL_PHENOTYPING:
                 setPhenotypingAttemptDto(planBasicDataDTO, plan);
