@@ -33,7 +33,7 @@ public class MutationCustomizations
     {
         List<Customization> customizations = new ArrayList<>();
         customizations.add(
-            CustomizationHelper.buildIdCustomization("mutationSequences[0].id"));
+            CustomizationHelper.buildIdCustomization("mutationSequences[**].id"));
         return customizations;
     }
 

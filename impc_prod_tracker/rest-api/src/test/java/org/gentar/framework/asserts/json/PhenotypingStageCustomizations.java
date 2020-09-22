@@ -2,7 +2,6 @@ package org.gentar.framework.asserts.json;
 
 import org.skyscreamer.jsonassert.Customization;
 import org.skyscreamer.jsonassert.RegularExpressionValueMatcher;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,16 +14,9 @@ public class PhenotypingStageCustomizations
     public static Customization[] ignoreIdsAndPsnAndDates()
     {
         List<Customization> customizationList = new ArrayList<>();
-        customizationList.addAll(buildCustomizationForStatusDates());
+        customizationList.add(buildCustomizationForStatusDates());
         customizationList.add(buildCustomizationForPsn());
         customizationList.add(buildCustomizationForSelfLink());
-        return customizationList.toArray(new Customization[0]);
-    }
-
-    public static Customization[] ignoreIdsAndDates()
-    {
-        List<Customization> customizationList = new ArrayList<>();
-        customizationList.addAll(buildCustomizationForStatusDates());
         return customizationList.toArray(new Customization[0]);
     }
 
@@ -41,14 +33,8 @@ public class PhenotypingStageCustomizations
             new RegularExpressionValueMatcher<>(CustomizationConstants.PSN_URL_PATTERN));
     }
 
-    private static List<Customization> buildCustomizationForStatusDates()
+    private static Customization buildCustomizationForStatusDates()
     {
-        List<Customization> customizations = new ArrayList<>();
-        customizations.add(CustomizationHelper.buildDateCustomization("statusDates[0].date"));
-        customizations.add(CustomizationHelper.buildDateCustomization("statusDates[1].date"));
-        customizations.add(CustomizationHelper.buildDateCustomization("statusDates[2].date"));
-        customizations.add(CustomizationHelper.buildDateCustomization("statusDates[3].date"));
-        customizations.add(CustomizationHelper.buildDateCustomization("summaryStatusDates[0].date"));
-        return customizations;
+        return CustomizationHelper.buildDateCustomization("statusDates[**].date");
     }
 }
