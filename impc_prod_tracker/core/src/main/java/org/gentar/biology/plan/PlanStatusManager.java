@@ -19,12 +19,12 @@ import java.util.List;
 @Component
 public class PlanStatusManager
 {
-    private StateTransitionsManager stateTransitionManager;
-    private SystemEventsExecutor systemEventsExecutor;
-    private PlanStateSetter planStateSetter;
-    private PlanSummaryStatusUpdater planSummaryStatusUpdater;
-    private PlanStateMachineResolver planStateMachineResolver;
-    private PhenotypingStageStateSetter phenotypingStageStateSetter;
+    private final StateTransitionsManager stateTransitionManager;
+    private final SystemEventsExecutor systemEventsExecutor;
+    private final PlanStateSetter planStateSetter;
+    private final PlanSummaryStatusUpdater planSummaryStatusUpdater;
+    private final PlanStateMachineResolver planStateMachineResolver;
+    private final PhenotypingStageStateSetter phenotypingStageStateSetter;
 
     public PlanStatusManager(
         StateTransitionsManager stateTransitionManager,
@@ -50,7 +50,7 @@ public class PlanStatusManager
     public void setChildrenInitialStatuses(Plan plan)
     {
         List<PhenotypingStage> phenotypingStages = getPhenotypingStages(plan);
-        phenotypingStages.forEach(x -> phenotypingStageStateSetter.setInitialStatus(x));
+        phenotypingStages.forEach(phenotypingStageStateSetter::setInitialStatus);
     }
 
     public void setSummaryStatus(Plan plan)

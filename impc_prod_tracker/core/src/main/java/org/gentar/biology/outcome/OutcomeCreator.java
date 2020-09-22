@@ -6,6 +6,7 @@ import org.gentar.biology.colony.engine.ColonyStateSetter;
 import org.gentar.biology.mutation.Mutation;
 import org.gentar.biology.mutation.MutationService;
 import org.gentar.biology.outcome.type.OutcomeTypeName;
+import org.gentar.biology.plan.PlanStatusManager;
 import org.gentar.biology.specimen.engine.SpecimenStateSetter;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,19 +27,22 @@ class OutcomeCreator
     private final SpecimenStateSetter specimenStateSetter;
     private final MutationService mutationService;
     private final OutcomeValidator outcomeValidator;
+    private final PlanStatusManager planStatusManager;
 
     OutcomeCreator(
         HistoryService<Outcome> historyService,
         ColonyStateSetter colonyStateSetter,
         SpecimenStateSetter specimenStateSetter,
         MutationService mutationService,
-        OutcomeValidator outcomeValidator)
+        OutcomeValidator outcomeValidator,
+        PlanStatusManager planStatusManager)
     {
         this.historyService = historyService;
         this.colonyStateSetter = colonyStateSetter;
         this.specimenStateSetter = specimenStateSetter;
         this.mutationService = mutationService;
         this.outcomeValidator = outcomeValidator;
+        this.planStatusManager = planStatusManager;
     }
 
     @Transactional
@@ -49,7 +53,13 @@ class OutcomeCreator
         Outcome createdOutcome = save(outcome);
         saveMutations(createdOutcome);
         registerCreationInHistory(createdOutcome);
+        updatePlanDueToChangesInChild(createdOutcome);
         return createdOutcome;
+    }
+
+    private void updatePlanDueToChangesInChild(Outcome outcome)
+    {
+        planStatusManager.setSummaryStatus(outcome.getPlan());
     }
 
     private void validatePermission(Outcome outcome)

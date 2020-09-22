@@ -2,6 +2,9 @@ package org.gentar.biology.plan.attempt.phenotyping.stage;
 
 import org.gentar.audit.history.History;
 import org.gentar.audit.history.HistoryService;
+import org.gentar.biology.plan.Plan;
+import org.gentar.biology.plan.PlanStatusManager;
+import org.gentar.biology.plan.attempt.phenotyping.PhenotypingAttempt;
 import org.springframework.stereotype.Component;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -19,17 +22,20 @@ public class PhenotypingStageCreator
     private final HistoryService<PhenotypingStage> historyService;
     private final PhenotypingStageStateSetter phenotypingStageStateSetter;
     private final PhenotypingStageValidator phenotypingStageValidator;
+    private final PlanStatusManager planStatusManager;
 
     public PhenotypingStageCreator(
         EntityManager entityManager,
         HistoryService<PhenotypingStage> historyService,
         PhenotypingStageStateSetter phenotypingStageStateSetter,
-        PhenotypingStageValidator phenotypingStageValidator)
+        PhenotypingStageValidator phenotypingStageValidator,
+        PlanStatusManager planStatusManager)
     {
         this.entityManager = entityManager;
         this.historyService = historyService;
         this.phenotypingStageStateSetter = phenotypingStageStateSetter;
         this.phenotypingStageValidator = phenotypingStageValidator;
+        this.planStatusManager = planStatusManager;
     }
 
     @Transactional
@@ -39,7 +45,21 @@ public class PhenotypingStageCreator
         setInitialStatus(phenotypingStage);
         PhenotypingStage createdPhenotypingStage = save(phenotypingStage);
         registerCreationInHistory(createdPhenotypingStage);
+        associateToPhenotypingAttempt(phenotypingStage);
+        updatePlanDueToChangesInChild(createdPhenotypingStage);
         return createdPhenotypingStage;
+    }
+
+    // Needed so when validating the pla, it already has access to this phenotyping stage
+    private void associateToPhenotypingAttempt(PhenotypingStage phenotypingStage)
+    {
+        PhenotypingAttempt phenotypingAttempt = phenotypingStage.getPhenotypingAttempt();
+        phenotypingAttempt.addPhenotypingStage(phenotypingStage);
+    }
+
+    private void updatePlanDueToChangesInChild(PhenotypingStage createdPhenotypingStage)
+    {
+        planStatusManager.setSummaryStatus(createdPhenotypingStage.getPhenotypingAttempt().getPlan());
     }
 
     private void validateData(PhenotypingStage phenotypingStage)

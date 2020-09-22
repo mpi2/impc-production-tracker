@@ -42,15 +42,19 @@ public class OutcomeUpdater
         History history = detectTrackOfChanges(originalOutcome, newOutcome);
         saveChanges(newOutcome);
         saveTrackOfChanges(history);
-        planStatusManager.setSummaryStatus(originalOutcome.getPlan());
+        updatePlanDueToChangesInChild(newOutcome);
         return history;
+    }
+
+    private void updatePlanDueToChangesInChild(Outcome outcome)
+    {
+        planStatusManager.setSummaryStatus(outcome.getPlan());
     }
 
     private void validatePermission(Outcome newOutcome)
     {
         outcomeValidator.validateUpdatePermission(newOutcome);
     }
-
 
     private void validateData(Outcome newOutcome)
     {
