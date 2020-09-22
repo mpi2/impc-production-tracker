@@ -5,7 +5,7 @@ import org.gentar.audit.history.HistoryService;
 import org.gentar.biology.colony.Colony;
 import org.gentar.biology.colony.Colony_;
 import org.gentar.biology.colony.distribution.DistributionProduct_;
-import org.gentar.biology.plan.PlanStatusManager;
+import org.gentar.biology.plan.engine.PlanUpdater;
 import org.gentar.biology.status.Status_;
 import org.gentar.organization.work_unit.WorkUnit_;
 import org.gentar.statemachine.StateTransitionsManager;
@@ -17,20 +17,19 @@ public class OutcomeUpdater
     private final HistoryService<Outcome> historyService;
     private final StateTransitionsManager stateTransitionsManager;
     private final OutcomeRepository outcomeRepository;
-    private final PlanStatusManager planStatusManager;
+    private final PlanUpdater planUpdater;
     private final OutcomeValidator outcomeValidator;
 
     public OutcomeUpdater(
         HistoryService<Outcome> historyService,
         StateTransitionsManager stateTransitionsManager,
         OutcomeRepository outcomeRepository,
-        PlanStatusManager planStatusManager,
-        OutcomeValidator outcomeValidator)
+        PlanUpdater planUpdater, OutcomeValidator outcomeValidator)
     {
         this.historyService = historyService;
         this.stateTransitionsManager = stateTransitionsManager;
         this.outcomeRepository = outcomeRepository;
-        this.planStatusManager = planStatusManager;
+        this.planUpdater = planUpdater;
         this.outcomeValidator = outcomeValidator;
     }
 
@@ -48,7 +47,7 @@ public class OutcomeUpdater
 
     private void updatePlanDueToChangesInChild(Outcome outcome)
     {
-        planStatusManager.setSummaryStatus(outcome.getPlan());
+        planUpdater.notifyChangeInChild(outcome.getPlan());
     }
 
     private void validatePermission(Outcome newOutcome)

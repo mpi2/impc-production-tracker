@@ -6,7 +6,7 @@ import org.gentar.biology.colony.engine.ColonyStateSetter;
 import org.gentar.biology.mutation.Mutation;
 import org.gentar.biology.mutation.MutationService;
 import org.gentar.biology.outcome.type.OutcomeTypeName;
-import org.gentar.biology.plan.PlanStatusManager;
+import org.gentar.biology.plan.engine.PlanUpdater;
 import org.gentar.biology.specimen.engine.SpecimenStateSetter;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -27,7 +27,7 @@ class OutcomeCreator
     private final SpecimenStateSetter specimenStateSetter;
     private final MutationService mutationService;
     private final OutcomeValidator outcomeValidator;
-    private final PlanStatusManager planStatusManager;
+    private final PlanUpdater planUpdater;
 
     OutcomeCreator(
         HistoryService<Outcome> historyService,
@@ -35,14 +35,14 @@ class OutcomeCreator
         SpecimenStateSetter specimenStateSetter,
         MutationService mutationService,
         OutcomeValidator outcomeValidator,
-        PlanStatusManager planStatusManager)
+        PlanUpdater planUpdater)
     {
         this.historyService = historyService;
         this.colonyStateSetter = colonyStateSetter;
         this.specimenStateSetter = specimenStateSetter;
         this.mutationService = mutationService;
         this.outcomeValidator = outcomeValidator;
-        this.planStatusManager = planStatusManager;
+        this.planUpdater = planUpdater;
     }
 
     @Transactional
@@ -59,7 +59,7 @@ class OutcomeCreator
 
     private void updatePlanDueToChangesInChild(Outcome outcome)
     {
-        planStatusManager.setSummaryStatus(outcome.getPlan());
+        planUpdater.notifyChangeInChild(outcome.getPlan());
     }
 
     private void validatePermission(Outcome outcome)
