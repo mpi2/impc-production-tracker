@@ -62,6 +62,7 @@ public class CrisprAttemptMapper implements Mapper<CrisprAttempt, CrisprAttemptD
         this.crisprAttemptReagentMapper = crisprAttemptReagentMapper;
     }
 
+    @Override
     public CrisprAttemptDTO toDto(CrisprAttempt crisprAttempt)
     {
         CrisprAttemptDTO crisprAttemptDTO = null;
@@ -80,6 +81,7 @@ public class CrisprAttemptMapper implements Mapper<CrisprAttempt, CrisprAttemptD
         return crisprAttemptDTO;
     }
 
+    @Override
     public CrisprAttempt toEntity(CrisprAttemptDTO crisprAttemptDTO)
     {
         CrisprAttempt crisprAttempt = entityMapper.toTarget(crisprAttemptDTO, CrisprAttempt.class);

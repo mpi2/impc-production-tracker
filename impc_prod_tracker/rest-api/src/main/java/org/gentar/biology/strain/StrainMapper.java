@@ -21,7 +21,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class StrainMapper implements Mapper<Strain, String>
 {
-    private StrainService strainService;
+    private final StrainService strainService;
 
     public StrainMapper(StrainService strainService)
     {
@@ -39,8 +39,14 @@ public class StrainMapper implements Mapper<Strain, String>
         return name;
     }
 
+    @Override
     public Strain toEntity(String strainName)
     {
-        return strainService.getStrainByNameFailWhenNotFound(strainName);
+        Strain strain = null;
+        if (strainName != null)
+        {
+            strain = strainService.getStrainByNameFailWhenNotFound(strainName);
+        }
+        return strain;
     }
 }
