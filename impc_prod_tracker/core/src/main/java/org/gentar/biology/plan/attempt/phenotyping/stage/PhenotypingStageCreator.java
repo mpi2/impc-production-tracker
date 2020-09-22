@@ -2,9 +2,8 @@ package org.gentar.biology.plan.attempt.phenotyping.stage;
 
 import org.gentar.audit.history.History;
 import org.gentar.audit.history.HistoryService;
-import org.gentar.biology.plan.Plan;
-import org.gentar.biology.plan.PlanStatusManager;
 import org.gentar.biology.plan.attempt.phenotyping.PhenotypingAttempt;
+import org.gentar.biology.plan.engine.PlanUpdater;
 import org.springframework.stereotype.Component;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -22,20 +21,20 @@ public class PhenotypingStageCreator
     private final HistoryService<PhenotypingStage> historyService;
     private final PhenotypingStageStateSetter phenotypingStageStateSetter;
     private final PhenotypingStageValidator phenotypingStageValidator;
-    private final PlanStatusManager planStatusManager;
+    private final PlanUpdater planUpdater;
 
     public PhenotypingStageCreator(
         EntityManager entityManager,
         HistoryService<PhenotypingStage> historyService,
         PhenotypingStageStateSetter phenotypingStageStateSetter,
         PhenotypingStageValidator phenotypingStageValidator,
-        PlanStatusManager planStatusManager)
+        PlanUpdater planUpdater)
     {
         this.entityManager = entityManager;
         this.historyService = historyService;
         this.phenotypingStageStateSetter = phenotypingStageStateSetter;
         this.phenotypingStageValidator = phenotypingStageValidator;
-        this.planStatusManager = planStatusManager;
+        this.planUpdater = planUpdater;
     }
 
     @Transactional
@@ -59,7 +58,7 @@ public class PhenotypingStageCreator
 
     private void updatePlanDueToChangesInChild(PhenotypingStage createdPhenotypingStage)
     {
-        planStatusManager.setSummaryStatus(createdPhenotypingStage.getPhenotypingAttempt().getPlan());
+        planUpdater.notifyChangeInChild(createdPhenotypingStage.getPhenotypingAttempt().getPlan());
     }
 
     private void validateData(PhenotypingStage phenotypingStage)

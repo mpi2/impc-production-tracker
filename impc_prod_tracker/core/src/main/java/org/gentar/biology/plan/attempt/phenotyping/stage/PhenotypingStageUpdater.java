@@ -2,7 +2,7 @@ package org.gentar.biology.plan.attempt.phenotyping.stage;
 
 import org.gentar.audit.history.History;
 import org.gentar.audit.history.HistoryService;
-import org.gentar.biology.plan.PlanStatusManager;
+import org.gentar.biology.plan.engine.PlanUpdater;
 import org.gentar.biology.status.Status_;
 import org.gentar.exceptions.UserOperationFailedException;
 import org.gentar.security.abac.spring.ContextAwarePolicyEnforcement;
@@ -16,20 +16,20 @@ public class PhenotypingStageUpdater
     private final HistoryService<PhenotypingStage> historyService;
     private final StateTransitionsManager stateTransitionsManager;
     private final PhenotypingStageRepository phenotypingStageRepository;
-    private final PlanStatusManager planStatusManager;
+    private final PlanUpdater planUpdater;
     private final ContextAwarePolicyEnforcement policyEnforcement;
 
     public PhenotypingStageUpdater(
         HistoryService<PhenotypingStage> historyService,
         StateTransitionsManager stateTransitionsManager,
         PhenotypingStageRepository phenotypingStageRepository,
-        PlanStatusManager planStatusManager,
+        PlanUpdater planUpdater,
         ContextAwarePolicyEnforcement policyEnforcement)
     {
         this.historyService = historyService;
         this.stateTransitionsManager = stateTransitionsManager;
         this.phenotypingStageRepository = phenotypingStageRepository;
-        this.planStatusManager = planStatusManager;
+        this.planUpdater = planUpdater;
         this.policyEnforcement = policyEnforcement;
     }
 
@@ -85,8 +85,8 @@ public class PhenotypingStageUpdater
         return history;
     }
 
-    private void updatePlanDueToChangesInChild(PhenotypingStage createdPhenotypingStage)
+    private void updatePlanDueToChangesInChild(PhenotypingStage phenotypingStage)
     {
-        planStatusManager.setSummaryStatus(createdPhenotypingStage.getPhenotypingAttempt().getPlan());
+        planUpdater.notifyChangeInChild(phenotypingStage.getPhenotypingAttempt().getPlan());
     }
 }

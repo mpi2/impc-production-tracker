@@ -48,6 +48,14 @@ public class PlanUpdaterImpl implements PlanUpdater
         return history;
     }
 
+    @Override
+    public void notifyChangeInChild(Plan plan)
+    {
+        Plan planAfterUpdate = new Plan(plan);
+        planStatusManager.setSummaryStatus(planAfterUpdate);
+        updatePlan(plan, planAfterUpdate);
+    }
+
     private void validatePermissionToUpdatePlan(Plan newPlan)
     {
         planValidator.validatePermissionToUpdatePlan(newPlan);
