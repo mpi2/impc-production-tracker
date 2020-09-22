@@ -22,7 +22,7 @@ public class ProjectCustomizations
 
     private static Customization buildCustomizationForConsortiaInstitutesId()
     {
-        return CustomizationHelper.buildIdCustomization("consortia[0].id");
+        return CustomizationHelper.buildIdCustomization("consortia**.id");
     }
 
     private static Customization buildCustomizationForTpn()
@@ -40,7 +40,7 @@ public class ProjectCustomizations
     private static List<Customization> buildCustomizationForStatusDates()
     {
         List<Customization> customizations = new ArrayList<>();
-        customizations.add(CustomizationHelper.buildDateCustomization("assignmentStatusStamps[0].date"));
+        customizations.add(CustomizationHelper.buildDateCustomization("assignmentStatusStamps[**].date"));
         return customizations;
     }
 
@@ -55,10 +55,10 @@ public class ProjectCustomizations
     {
         List<Customization> customizations = new ArrayList<>();
         customizations.add(new Customization(
-            "_links.productionPlans[0].href",
+            "_links.productionPlans[**].href",
             new RegularExpressionValueMatcher<>(CustomizationConstants.PIN_URL_PATTERN)));
         customizations.add(new Customization(
-            "_links.phenotypingPlans[0].href",
+            "_links.phenotypingPlans[**].href",
             new RegularExpressionValueMatcher<>(CustomizationConstants.PIN_URL_PATTERN)));
         return customizations;
     }

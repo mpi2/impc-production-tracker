@@ -51,19 +51,16 @@ public class OutcomeCustomizations
     {
         List<Customization> customizations = new ArrayList<>();
         customizations.add(
-            CustomizationHelper.buildIdCustomization("colony.distributionProducts[0].id"));
+            CustomizationHelper.buildIdCustomization("colony.distributionProducts[**].id"));
         return customizations;
     }
 
     private static List<Customization> buildCustomizationForColonyStatusDates()
     {
         List<Customization> customizations = new ArrayList<>();
-        customizations.add(CustomizationHelper.buildDateCustomization("colony.statusDates[0].date"));
-        customizations.add(CustomizationHelper.buildDateCustomization("colony.statusDates[1].date"));
-        customizations.add(CustomizationHelper.buildDateCustomization("colony.statusDates[2].date"));
-        customizations.add(CustomizationHelper.buildDateCustomization("colony.statusDates[3].date"));
+        customizations.add(CustomizationHelper.buildDateCustomization("colony.statusDates[**].date"));
         customizations.add(
-            CustomizationHelper.buildDateCustomization("colony.summaryStatusDates[0].date"));
+            CustomizationHelper.buildDateCustomization("colony.summaryStatusDates[**].date"));
         return customizations;
     }
 }

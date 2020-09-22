@@ -48,31 +48,27 @@ public class PlanCustomizations
         List<Customization> customizations = new ArrayList<>();
         customizations.add(CustomizationHelper.buildIdCustomization("crisprAttempt.assay.id"));
         customizations.add(
-            CustomizationHelper.buildIdCustomization("crisprAttempt.genotypePrimers[0].id"));
+            CustomizationHelper.buildIdCustomization("crisprAttempt.genotypePrimers[**].id"));
         customizations.add(
-            CustomizationHelper.buildIdCustomization("crisprAttempt.guides[0].id"));
+            CustomizationHelper.buildIdCustomization("crisprAttempt.guides[**].id"));
         customizations.add(
-            CustomizationHelper.buildIdCustomization("crisprAttempt.mutagenesisDonors[0].id"));
+            CustomizationHelper.buildIdCustomization("crisprAttempt.mutagenesisDonors[**].id"));
         customizations.add(
-            CustomizationHelper.buildIdCustomization("crisprAttempt.nucleases[0].id"));
+            CustomizationHelper.buildIdCustomization("crisprAttempt.nucleases[**].id"));
         customizations.add(
-            CustomizationHelper.buildIdCustomization("crisprAttempt.reagents[0].id"));
+            CustomizationHelper.buildIdCustomization("crisprAttempt.reagents[**].id"));
         customizations.add(
-            CustomizationHelper.buildIdCustomization("crisprAttempt.mutagenesisDonors[0].id"));
+            CustomizationHelper.buildIdCustomization("crisprAttempt.mutagenesisDonors[**].id"));
         customizations.add(
-            CustomizationHelper.buildIdCustomization("crisprAttempt.mutagenesisDonors[0].id"));
+            CustomizationHelper.buildIdCustomization("crisprAttempt.mutagenesisDonors[**].id"));
         return customizations;
     }
 
     private static List<Customization> buildCustomizationForStatusDates()
     {
         List<Customization> customizations = new ArrayList<>();
-        customizations.add(CustomizationHelper.buildDateCustomization("statusDates[0].date"));
-        customizations.add(CustomizationHelper.buildDateCustomization("statusDates[1].date"));
-        customizations.add(CustomizationHelper.buildDateCustomization("statusDates[2].date"));
-        customizations.add(CustomizationHelper.buildDateCustomization("statusDates[3].date"));
-        customizations.add(CustomizationHelper.buildDateCustomization("statusDates[4].date"));
-        customizations.add(CustomizationHelper.buildDateCustomization("summaryStatusDates[0].date"));
+        customizations.add(CustomizationHelper.buildDateCustomization("statusDates[**].date"));
+        customizations.add(CustomizationHelper.buildDateCustomization("summaryStatusDates[**].date"));
         return customizations;
     }
 
