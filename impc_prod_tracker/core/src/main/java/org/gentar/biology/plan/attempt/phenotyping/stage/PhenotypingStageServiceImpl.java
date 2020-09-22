@@ -4,11 +4,8 @@ import org.gentar.audit.history.History;
 import org.gentar.audit.history.HistoryService;
 import org.gentar.biology.plan.Plan;
 import org.gentar.biology.plan.PlanService;
-import org.gentar.biology.plan.attempt.phenotyping.stage.engine.PhenotypingStageState;
 import org.gentar.biology.plan.attempt.phenotyping.stage.type.PhenotypingStageType;
 import org.gentar.biology.plan.attempt.phenotyping.stage.type.PhenotypingStageTypeRepository;
-import org.gentar.biology.status.Status;
-import org.gentar.biology.status.StatusService;
 import org.gentar.exceptions.UserOperationFailedException;
 import org.gentar.security.abac.Resource;
 import org.gentar.security.abac.ResourceAccessChecker;
@@ -17,7 +14,6 @@ import org.gentar.statemachine.TransitionAvailabilityEvaluator;
 import org.gentar.statemachine.TransitionEvaluation;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
-
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -30,7 +26,6 @@ public class PhenotypingStageServiceImpl implements PhenotypingStageService
     private final PhenotypingStageTypeRepository phenotypingStageTypeRepository;
     private final PlanService planService;
     private final ResourceAccessChecker<PhenotypingStage> resourceAccessChecker;
-    private final StatusService statusService;
     private final PhenotypingStageCreator phenotypingStageCreator;
     private final PhenotypingStageUpdater phenotypingStageUpdater;
     private final HistoryService<PhenotypingStage> historyService;
@@ -44,7 +39,6 @@ public class PhenotypingStageServiceImpl implements PhenotypingStageService
         PhenotypingStageTypeRepository phenotypingStageTypeRepository,
         PlanService planService,
         ResourceAccessChecker<PhenotypingStage> resourceAccessChecker,
-        StatusService statusService,
         PhenotypingStageCreator phenotypingStageCreator,
         PhenotypingStageUpdater phenotypingStageUpdater,
         HistoryService<PhenotypingStage> historyService)
@@ -55,7 +49,6 @@ public class PhenotypingStageServiceImpl implements PhenotypingStageService
         this.phenotypingStageTypeRepository = phenotypingStageTypeRepository;
         this.planService = planService;
         this.resourceAccessChecker = resourceAccessChecker;
-        this.statusService = statusService;
         this.phenotypingStageCreator = phenotypingStageCreator;
         this.phenotypingStageUpdater = phenotypingStageUpdater;
         this.historyService = historyService;

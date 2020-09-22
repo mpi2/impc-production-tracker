@@ -6,8 +6,6 @@ import org.gentar.exceptions.UserOperationFailedException;
 import org.gentar.statemachine.ProcessEvent;
 import org.gentar.statemachine.TransitionEvaluation;
 import java.util.List;
-import java.util.Optional;
-import java.util.Set;
 
 public interface PhenotypingStageService
 {

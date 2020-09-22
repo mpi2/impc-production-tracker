@@ -13,18 +13,18 @@ import org.springframework.stereotype.Component;
 @Component
 public class PhenotypingStageUpdater
 {
-    private HistoryService<PhenotypingStage> historyService;
-    private StateTransitionsManager stateTransitionsManager;
-    private PhenotypingStageRepository phenotypingStageRepository;
-    private PlanStatusManager planStatusManager;
-    private ContextAwarePolicyEnforcement policyEnforcement;
+    private final HistoryService<PhenotypingStage> historyService;
+    private final StateTransitionsManager stateTransitionsManager;
+    private final PhenotypingStageRepository phenotypingStageRepository;
+    private final PlanStatusManager planStatusManager;
+    private final ContextAwarePolicyEnforcement policyEnforcement;
 
-    public PhenotypingStageUpdater (
-            HistoryService historyService,
-            StateTransitionsManager stateTransitionsManager,
-            PhenotypingStageRepository phenotypingStageRepository,
-            PlanStatusManager planStatusManager,
-            ContextAwarePolicyEnforcement policyEnforcement)
+    public PhenotypingStageUpdater(
+        HistoryService<PhenotypingStage> historyService,
+        StateTransitionsManager stateTransitionsManager,
+        PhenotypingStageRepository phenotypingStageRepository,
+        PlanStatusManager planStatusManager,
+        ContextAwarePolicyEnforcement policyEnforcement)
     {
         this.historyService = historyService;
         this.stateTransitionsManager = stateTransitionsManager;
@@ -41,16 +41,17 @@ public class PhenotypingStageUpdater
         History history = detectTrackOfChanges(originalPhenotypingStage, newPhenotypingStage);
         saveChanges(newPhenotypingStage);
         saveTrackOfChanges(history);
-        planStatusManager.setSummaryStatus(originalPhenotypingStage.getPhenotypingAttempt().getPlan());
+        updatePlanDueToChangesInChild(newPhenotypingStage);
         return history;
     }
 
     private void validatePermission(PhenotypingStage phenotypingStage)
     {
-        if (!policyEnforcement.hasPermission(phenotypingStage.getPhenotypingAttempt().getPlan(), PermissionService.UPDATE_PLAN_ACTION))
+        if (!policyEnforcement.hasPermission(
+            phenotypingStage.getPhenotypingAttempt().getPlan(), PermissionService.UPDATE_PLAN_ACTION))
         {
             throw new UserOperationFailedException(
-                    "You don't have permission to edit this phenotyping stage.");
+                "You don't have permission to edit this phenotyping stage.");
         }
     }
 
@@ -66,18 +67,7 @@ public class PhenotypingStageUpdater
 
     private void saveChanges(PhenotypingStage phenotypingStage)
     {
-        if (phenotypingStage.getPsn() == null)
-        {
-            buildPsn(phenotypingStage.getId());
-        }
         phenotypingStageRepository.save(phenotypingStage);
-    }
-
-    private String buildPsn(Long id)
-    {
-        String identifier = String.format("%0" + 12 + "d", id);
-        identifier = "PSN:" + identifier;
-        return identifier;
     }
 
     private void saveTrackOfChanges(History history)
@@ -85,12 +75,18 @@ public class PhenotypingStageUpdater
         historyService.saveTrackOfChanges(history);
     }
 
-    private History detectTrackOfChanges(PhenotypingStage originalPhenotypingStage, PhenotypingStage newPhenotypingStage)
+    private History detectTrackOfChanges(
+        PhenotypingStage originalPhenotypingStage, PhenotypingStage newPhenotypingStage)
     {
         History history =
-                historyService.detectTrackOfChanges(
-                        originalPhenotypingStage, newPhenotypingStage, originalPhenotypingStage.getId());
+            historyService.detectTrackOfChanges(
+                originalPhenotypingStage, newPhenotypingStage, originalPhenotypingStage.getId());
         history = historyService.filterDetailsInNestedEntity(history, PhenotypingStage_.STATUS, Status_.NAME);
         return history;
+    }
+
+    private void updatePlanDueToChangesInChild(PhenotypingStage createdPhenotypingStage)
+    {
+        planStatusManager.setSummaryStatus(createdPhenotypingStage.getPhenotypingAttempt().getPlan());
     }
 }

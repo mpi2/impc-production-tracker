@@ -6,7 +6,6 @@ import org.gentar.audit.diff.IgnoreForAuditingChanges;
 import org.gentar.biology.plan.Plan;
 import org.gentar.biology.plan.attempt.phenotyping.stage.PhenotypingStage;
 import org.gentar.biology.strain.Strain;
-
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.HashSet;
@@ -59,5 +58,15 @@ public class PhenotypingAttempt extends BaseEntity
         this.phenotypingStages =
             phenotypingAttempt.phenotypingStages == null ? null :
                 new HashSet<>(phenotypingAttempt.phenotypingStages);
+    }
+
+    public void addPhenotypingStage(PhenotypingStage phenotypingStage)
+    {
+        phenotypingStage.setPhenotypingAttempt(this);
+        if (phenotypingStages == null)
+        {
+            phenotypingStages = new HashSet<>();
+        }
+        phenotypingStages.add(phenotypingStage);
     }
 }

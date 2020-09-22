@@ -53,7 +53,6 @@ public class PlanUpdaterImpl implements PlanUpdater
         planValidator.validatePermissionToUpdatePlan(newPlan);
     }
 
-
     /**
      * Check if the changes in the plan require a change on the status.
      * @param plan Plan being updated.
