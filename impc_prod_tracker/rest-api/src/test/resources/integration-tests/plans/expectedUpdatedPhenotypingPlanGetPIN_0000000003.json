@@ -8,7 +8,7 @@
   "workUnitName":"BCM",
   "workGroupName":"BaSH",
   "comment":"New Plan comment",
-  "productsAvailableForGeneralPublic":true,
+  "productsAvailableForGeneralPublic":false,
   "phenotypingStartingPoint":{
     "_links":{
       "outcome":{
