@@ -10,7 +10,7 @@
     "workUnitName":"BCM",
     "workGroupName":"BaSH",
     "comment":"Plan comment",
-    "productsAvailableForGeneralPublic":null,
+    "productsAvailableForGeneralPublic":true,
     "attemptTypeName":"crispr",
     "typeName":"production"
   },
