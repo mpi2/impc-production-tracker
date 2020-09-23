@@ -45,6 +45,36 @@ The following table describes how the GenTaR API interprets the HTTP verbs.
 
 Other verbs, such as DELETE, are not supported by GenTaR at present.
 
+== Pagination and Sorting
+Most of the endpoints returning collections are paginated and can be sorted. If no parameters are
+specified, then the default ones are applied.
+
+=== Pagination
+The parameters to specify the pagination are:
+|===
+|Parameter | Description
+|page
+|Number of the page to retrieve. It starts with 0 (which is the default value).
+|size
+|Number of elements to retrieve.
+
+|===
+
+=== Sorting
+The parameters to specify the sorting are:
+|===
+|Parameter | Description
+|sort
+|Column and direction to sort, separated by comma. The directions are ASC or DESC.
+Example: sort=tpn,ASC
+
+|===
+
+For example, to get the first 15 projects in the system, ordered by tpn, the call to the enpoint
+would be:
+
+ api/projects?page=0&size=15&sort=tpn,ASC
+
 == Authentication
 anchor:login[]
 
