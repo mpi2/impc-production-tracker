@@ -11,7 +11,7 @@
         "workUnitName":"BCM",
         "workGroupName":"BaSH",
         "comment":null,
-        "productsAvailableForGeneralPublic":null,
+        "productsAvailableForGeneralPublic":true,
         "crisprAttempt":{
           "miDate":"2019-02-26",
           "experimental":true,
@@ -132,7 +132,7 @@
         "workUnitName":"BCM",
         "workGroupName":"BaSH",
         "comment":null,
-        "productsAvailableForGeneralPublic":null,
+        "productsAvailableForGeneralPublic":true,
         "typeName":"production",
         "statusName":"Plan Created",
         "summaryStatusName":"Plan Created",
@@ -183,7 +183,7 @@
         "workUnitName":"BCM",
         "workGroupName":"BaSH",
         "comment":null,
-        "productsAvailableForGeneralPublic":null,
+        "productsAvailableForGeneralPublic":true,
         "phenotypingStartingPoint":{
           "_links":{
             "outcome":{
@@ -251,7 +251,7 @@
         "workUnitName":"BCM",
         "workGroupName":"BaSH",
         "comment":null,
-        "productsAvailableForGeneralPublic":null,
+        "productsAvailableForGeneralPublic":true,
         "phenotypingStartingPoint":{
           "_links":{
             "outcome":{

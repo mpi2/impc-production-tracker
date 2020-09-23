@@ -178,10 +178,6 @@ public class PlanFieldsDescriptors
             "crisprAttempt.genotypePrimers[].genomicEndCoordinate",
             "Genomic end coordinate.");
         addField(
-            crisprFields,
-            "crisprAttempt.genotypePrimers[].genomicEndCoordinate",
-            "Genotype primer name.");
-        addField(
             crisprFields, "crisprAttempt.genotypePrimers[].sequence", "Genotype primer sequence.");
 
         // Assay

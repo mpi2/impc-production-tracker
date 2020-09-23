@@ -222,7 +222,6 @@ class PlanControllerTest extends ControllerTestTemplate
     @DatabaseTearDown(type = DatabaseOperation.DELETE_ALL, value = DBSetupFilesPaths.MULTIPLE_PLANS)
     void testUpdateStateMachineCrisprPlan() throws Exception
     {
-
         sequenceResetter.syncSequence("PLAN_STATUS_STAMP_SEQ", "PLAN_STATUS_STAMP");
         sequenceResetter.syncSequence("PLAN_SUMMARY_STATUS_STAMP_SEQ", "PLAN_SUMMARY_STATUS_STAMP");
         sequenceResetter.syncSequence("HISTORY_SEQ", "HISTORY");
@@ -381,8 +380,8 @@ class PlanControllerTest extends ControllerTestTemplate
 
         HistoryDetailDTO historyDetailDTO2 =
             getHistoryDetailByField(historyDetailDTOS, "productsAvailableForGeneralPublic");
-        assertThat(historyDetailDTO2.getOldValue(), is(nullValue()));
-        assertThat(historyDetailDTO2.getNewValue(), is("true"));
+        assertThat(historyDetailDTO2.getOldValue(), is("true"));
+        assertThat(historyDetailDTO2.getNewValue(), is("false"));
     }
 
     private void verifyUpdatedPhenotypingPlan(
@@ -423,7 +422,7 @@ class PlanControllerTest extends ControllerTestTemplate
     }
 
     private void verifyCreatedPhenotypingPlan(
-            String phenotypingPlanUrl, String expectedJson) throws Exception
+        String phenotypingPlanUrl, String expectedJson) throws Exception
     {
         String obtainedPhenotypingStage = restCaller.executeGet(phenotypingPlanUrl);
         resultValidator.validateObtainedMatchesJson(
