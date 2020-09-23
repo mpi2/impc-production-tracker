@@ -1,7 +1,7 @@
 package org.gentar.biology.plan.attempt.phenotyping.stage;
 
 import org.gentar.biology.plan.attempt.phenotyping.stage.engine.PhenotypingStageEvent;
-import org.gentar.biology.plan.attempt.phenotyping.stage.engine.EarlyAdultEvent;
+import org.gentar.biology.plan.attempt.phenotyping.stage.engine.AdultEvent;
 import org.gentar.biology.plan.attempt.phenotyping.stage.type.PhenotypingStageType;
 import org.gentar.biology.plan.attempt.phenotyping.stage.type.PhenotypingStageTypeName;
 import org.gentar.statemachine.ProcessData;
@@ -42,9 +42,10 @@ public class PhenotypingStageStateMachineResolver implements StateMachineResolve
     {
         List<ProcessEvent> processEvents;
         PhenotypingStageType phenotypingStageType = phenotypingStage.getPhenotypingStageType();
-        if (PhenotypingStageTypeName.EARLY_ADULT.getLabel().equals(phenotypingStageType.getName()))
+        if (PhenotypingStageTypeName.EARLY_ADULT.getLabel().equals(phenotypingStageType.getName()) ||
+            PhenotypingStageTypeName.LATE_ADULT.getLabel().equals(phenotypingStageType.getName()))
         {
-            processEvents = EarlyAdultEvent.getAllEvents();
+            processEvents = AdultEvent.getAllEvents();
         }
         else
         {

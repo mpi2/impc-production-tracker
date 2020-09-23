@@ -33,7 +33,7 @@ class PhenotypingStageProcessorWithoutValidationsTest
     public void testProcess()
     {
         PhenotypingStage phenotypingStage = buildPhenotypingStage(
-            PhenotypingStageState.PhenotypingProductionRegistered.getInternalName());
+            PhenotypingStageState.PhenotypingRegistered.getInternalName());
         phenotypingStage.setEvent(PhenotypingStageEvent.updateToPhenotypingStarted);
 
         testInstance.process(phenotypingStage);

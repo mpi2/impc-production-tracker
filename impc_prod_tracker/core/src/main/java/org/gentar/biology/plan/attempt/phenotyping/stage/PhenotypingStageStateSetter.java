@@ -1,6 +1,6 @@
 package org.gentar.biology.plan.attempt.phenotyping.stage;
 
-import org.gentar.biology.plan.attempt.phenotyping.stage.engine.EarlyAdultState;
+import org.gentar.biology.plan.attempt.phenotyping.stage.engine.AdultState;
 import org.gentar.biology.plan.attempt.phenotyping.stage.engine.PhenotypingStageState;
 import org.gentar.biology.plan.attempt.phenotyping.stage.status_stamp.PhenotypingStageStatusStamp;
 import org.gentar.biology.plan.attempt.phenotyping.stage.type.PhenotypingStageType;
@@ -57,15 +57,15 @@ public class PhenotypingStageStateSetter implements StateSetter
         PhenotypingStageType phenotypingStageType =
             ((PhenotypingStage) entity).getPhenotypingStageType();
         String initialStatusName;
-        if (isEarlyAdult(phenotypingStageType))
+        if (isEarlyAdult(phenotypingStageType) || isLateAdult(phenotypingStageType))
         {
             initialStatusName =
-                EarlyAdultState.PhenotypingProductionRegistered.getInternalName();
+                AdultState.PhenotypingRegistered.getInternalName();
         }
         else
         {
             initialStatusName =
-                PhenotypingStageState.PhenotypingProductionRegistered.getInternalName();
+                PhenotypingStageState.PhenotypingRegistered.getInternalName();
         }
         setStatusByName(entity, initialStatusName);
     }
@@ -94,6 +94,11 @@ public class PhenotypingStageStateSetter implements StateSetter
     private boolean isEarlyAdult(PhenotypingStageType phenotypingStageType)
     {
         return PhenotypingStageTypeName.EARLY_ADULT.getLabel().equals(phenotypingStageType.getName());
+    }
+
+    private boolean isLateAdult(PhenotypingStageType phenotypingStageType)
+    {
+        return PhenotypingStageTypeName.LATE_ADULT.getLabel().equals(phenotypingStageType.getName());
     }
 
     private void registerStatusStamp(PhenotypingStage phenotypingStage)

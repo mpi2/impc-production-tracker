@@ -44,7 +44,7 @@ class UpdateToPhenotypingStartedProcessorTest
     public void testWhenUserIsAllowed()
     {
         PhenotypingStage phenotypingStage = buildPhenotypingStage(
-            PhenotypingStageState.PhenotypingProductionRegistered.getInternalName());
+            PhenotypingStageState.PhenotypingRegistered.getInternalName());
         phenotypingStage.setEvent(PhenotypingStageEvent.updateToPhenotypingStarted);
         when(policyEnforcement.hasPermission(any(), anyString())).thenReturn(true);
 
@@ -60,7 +60,7 @@ class UpdateToPhenotypingStartedProcessorTest
     public void testWhenUserIsNotAllowed()
     {
         PhenotypingStage phenotypingStage = buildPhenotypingStage(
-            PhenotypingStageState.PhenotypingProductionRegistered.getInternalName());
+            PhenotypingStageState.PhenotypingRegistered.getInternalName());
         phenotypingStage.setEvent(PhenotypingStageEvent.rollbackPhenotypingAllDataProcessed);
         when(policyEnforcement.hasPermission(any(), anyString())).thenReturn(false);
 

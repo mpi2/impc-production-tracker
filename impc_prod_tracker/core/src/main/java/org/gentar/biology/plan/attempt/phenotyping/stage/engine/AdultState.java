@@ -2,9 +2,9 @@ package org.gentar.biology.plan.attempt.phenotyping.stage.engine;
 
 import org.gentar.statemachine.ProcessState;
 
-public enum EarlyAdultState implements ProcessState
+public enum AdultState implements ProcessState
 {
-    PhenotypingProductionRegistered("Phenotyping Production Registered"),
+    PhenotypingRegistered("Phenotyping Registered"),
     RederivationStarted("Rederivation Started"),
     RederivationComplete("Rederivation Complete"),
     PhenotypingStarted("Phenotyping Started"),
@@ -15,7 +15,7 @@ public enum EarlyAdultState implements ProcessState
 
     private String internalName;
 
-    EarlyAdultState(String internalName)
+    AdultState(String internalName)
     {
         this.internalName = internalName;
     }

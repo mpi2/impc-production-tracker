@@ -151,6 +151,12 @@
     "condition": "subject.isUserByKey('dcc_user_key')"
   },
   {
+    "name": "Reverse from Phenotyping Started to Phenotyping Registered",
+    "description": "DCC can reverse a phenotyping stage from phenotyping started to phenotyping registered",
+    "target": "action == 'REVERSE_FROM_PHENOTYPING_STARTED_TO_PHENOTYPING_REGISTERED'",
+    "condition": "subject.isUserByKey('dcc_user_key')"
+  },
+  {
     "name": "Update from All Data Processed to Phenotyping Finished",
     "description": "CDA can update a phenotyping stage from All Data Processed to Phenotyping Finished",
     "target": "action == 'UPDATE_FROM_ALL_DATA_PROCESSED_TO_PHENOTYPING_FINISHED'",

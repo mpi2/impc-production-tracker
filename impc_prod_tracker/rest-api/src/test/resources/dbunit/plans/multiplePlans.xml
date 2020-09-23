@@ -95,7 +95,7 @@
                 IS_ABORTION_STATUS="true"
                 ORDERING="14000"/>
     <STATUS     ID="22"
-                NAME="Phenotyping Production Registered"
+                NAME="Phenotyping Registered"
                 IS_ABORTION_STATUS="false"
                 ORDERING="120000"/>
     <STATUS     ID="23"

@@ -4,7 +4,7 @@ import org.gentar.statemachine.ProcessState;
 
 public enum PhenotypingStageState implements ProcessState
 {
-    PhenotypingProductionRegistered("Phenotyping Registered"),
+    PhenotypingRegistered("Phenotyping Registered"),
     PhenotypingStarted("Phenotyping Started"),
     PhenotypingAllDataSent("Phenotyping All Data Sent"),
     PhenotypingAllDataProcessed("Phenotyping All Data Processed"),
