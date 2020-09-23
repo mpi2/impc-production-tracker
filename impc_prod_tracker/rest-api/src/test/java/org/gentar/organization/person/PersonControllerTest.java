@@ -65,14 +65,9 @@ class PersonControllerTest extends ControllerTestTemplate
     void testGetCurrentUser() throws Exception
     {
         setupAuthentication();
-        ResultActions resultActions = mvc().perform(MockMvcRequestBuilders
-            .get("/api/people/currentPerson")
-            .header("Authorization", accessToken))
-            .andExpect(status().isOk())
-            .andDo(documentCurrentUser());
 
-        MvcResult result = resultActions.andReturn();
-        String obtainedJson = result.getResponse().getContentAsString();
+        String obtainedJson =
+            restCaller.executeGetAndDocument("/api/people/currentPerson", documentCurrentUser());
         validateGetResponse(obtainedJson, "expectedGeneralUser.json");
     }
 

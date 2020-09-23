@@ -239,6 +239,7 @@ These are the fields you are going to see in the body of a request in a GET or i
 operations.
 include::{snippets}/projects/getProject/response-fields.adoc[]
 
+[#_project_filters]
 === Filters
 When you use request all projects, see the section <<Get all Projects>>, you can use filters on the result to select the information you require.
 
@@ -259,7 +260,7 @@ You can also combine filters in the following fashion
 
  /api/projects?gene=MGI:1202064&workUnitName=JAX
 
-See the section <<Get all Projects using filters>> for an example of a request that uses a filter.
+See the section <<#_get_all_projects_using_filters>> for an example of a request that uses a filter.
 
 This is the list of filters you can use:
 
@@ -348,10 +349,12 @@ include::{snippets}/projects/allProjects/curl-request.adoc[]
 
 include::{snippets}/projects/allProjects/http-response.adoc[]
 
+
+[#_get_all_projects_using_filters]
 ==== Get all Projects using filters.
 
-You can also apply filters to the endpoint to refine the search. Each filter admits several values separated by comma.
-The filters you can use are listed above under the section <<Filters for projects>>.
+You can also apply filters to the endpoint to refine the search.Each filter admits several values separated by comma.
+The filters you can use are listed above under the section <<#_project_filters>>.
 
 
 ===== Example Request
