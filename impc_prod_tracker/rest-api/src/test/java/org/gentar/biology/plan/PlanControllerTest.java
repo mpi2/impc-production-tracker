@@ -19,13 +19,11 @@ import org.skyscreamer.jsonassert.JSONAssert;
 import org.skyscreamer.jsonassert.JSONCompareMode;
 import org.skyscreamer.jsonassert.comparator.CustomComparator;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
 import org.springframework.restdocs.payload.FieldDescriptor;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.ResultHandler;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-
 import java.io.IOException;
 import java.util.List;
 
@@ -59,14 +57,8 @@ class PlanControllerTest extends ControllerTestTemplate
     @DatabaseTearDown(type = DatabaseOperation.DELETE_ALL, value = DBSetupFilesPaths.MULTIPLE_PLANS)
     void testGetOneCrisprPlan() throws Exception
     {
-        ResultActions resultActions = mvc().perform(MockMvcRequestBuilders
-            .get("/api/plans/PIN:0000000001")
-            .header("Authorization", accessToken))
-            .andExpect(status().isOk())
-            .andDo(documentCrisprPlan());
-
-        MvcResult result = resultActions.andReturn();
-        String contentAsString = result.getResponse().getContentAsString();
+        String contentAsString =
+            restCaller.executeGetAndDocument("/api/plans/PIN:0000000001", documentCrisprPlan());
         String expectedOutputAsString =
             loadExpectedResponseFromResource("expectedCrisprPlanGetPIN_0000000001.json");
 
@@ -92,14 +84,8 @@ class PlanControllerTest extends ControllerTestTemplate
     @DatabaseTearDown(type = DatabaseOperation.DELETE_ALL, value = DBSetupFilesPaths.MULTIPLE_PLANS)
     void testGetAllPlans() throws Exception
     {
-        ResultActions resultActions = mvc().perform(MockMvcRequestBuilders
-            .get("/api/plans")
-            .header("Authorization", accessToken))
-            .andExpect(status().isOk())
-            .andDo(document("plans/allPlans"));
-
-        MvcResult result = resultActions.andReturn();
-        String contentAsString = result.getResponse().getContentAsString();
+        String contentAsString =
+            restCaller.executeGetAndDocument("/api/plans", document("plans/allPlans"));
         String expectedOutputAsString =
             loadExpectedResponseFromResource("expectedAllPlans.json");
 
@@ -111,14 +97,9 @@ class PlanControllerTest extends ControllerTestTemplate
     @DatabaseTearDown(type = DatabaseOperation.DELETE_ALL, value = DBSetupFilesPaths.MULTIPLE_PLANS)
     void testGetFilteredPlans() throws Exception
     {
-        ResultActions resultActions = mvc().perform(MockMvcRequestBuilders
-            .get("/api/plans?statusName=Founder Obtained&attemptTypeName=crispr")
-            .header("Authorization", accessToken))
-            .andExpect(status().isOk())
-            .andDo(document("plans/filteredPlans"));
-
-        MvcResult result = resultActions.andReturn();
-        String contentAsString = result.getResponse().getContentAsString();
+        String contentAsString = restCaller.executeGetAndDocument(
+            "/api/plans?statusName=Founder Obtained&attemptTypeName=crispr",
+            document("plans/filteredPlans"));
         String expectedOutputAsString =
             loadExpectedResponseFromResource("expectedFilteredPlans.json");
         JSONAssert.assertEquals(expectedOutputAsString, contentAsString, JSONCompareMode.STRICT);
@@ -137,16 +118,8 @@ class PlanControllerTest extends ControllerTestTemplate
         PlanUpdateDTO planUpdateDTO = getPlanToUpdate();
         editCrisprPlanWithNewValues(planUpdateDTO);
 
-        ResultActions resultActions = mvc().perform(MockMvcRequestBuilders
-            .put("/api/plans/PIN:0000000001")
-            .header("Authorization", accessToken)
-            .content(toJson(planUpdateDTO))
-            .contentType(MediaType.APPLICATION_JSON))
-            .andExpect(status().isOk())
-            .andDo(document("plans/putCrisprPlan"));
-
-        MvcResult result = resultActions.andReturn();
-        String contentAsString = result.getResponse().getContentAsString();
+        String contentAsString =
+            restCaller.executePutAndDocument("/api/plans/PIN:0000000001", toJson(planUpdateDTO), document("plans/putCrisprPlan"));
         ChangeResponse changeResponse = JsonHelper.fromJson(contentAsString, ChangeResponse.class);
         verifyChangeResponse(changeResponse);
 
@@ -258,16 +231,10 @@ class PlanControllerTest extends ControllerTestTemplate
         PlanUpdateDTO planUpdateDTO = getPlanToUpdate();
         setAbortAction(planUpdateDTO);
 
-        ResultActions resultActions = mvc().perform(MockMvcRequestBuilders
-            .put("/api/plans/PIN:0000000001")
-            .header("Authorization", accessToken)
-            .content(toJson(planUpdateDTO))
-            .contentType(MediaType.APPLICATION_JSON))
-            .andExpect(status().isOk())
-            .andDo(document("plans/putCrisprPlanStateMachine"));
-
-        MvcResult result = resultActions.andReturn();
-        String contentAsString = result.getResponse().getContentAsString();
+        String contentAsString = restCaller.executePutAndDocument(
+            "/api/plans/PIN:0000000001",
+            toJson(planUpdateDTO),
+            document("plans/putCrisprPlanStateMachine"));
 
         ChangeResponse changeResponse = JsonHelper.fromJson(contentAsString, ChangeResponse.class);
 
@@ -299,12 +266,7 @@ class PlanControllerTest extends ControllerTestTemplate
     private void verifyGetPlantEqualsJsonIgnoringIdsAndDates(String planLink, String jsonFileName)
         throws Exception
     {
-        ResultActions callGetWithObtainedUrl = mvc().perform(MockMvcRequestBuilders
-            .get(planLink)
-            .header("Authorization", accessToken))
-            .andExpect(status().isOk());
-        MvcResult obtainedProject = callGetWithObtainedUrl.andReturn();
-        String obtainedPlanAsString = obtainedProject.getResponse().getContentAsString();
+        String obtainedPlanAsString = restCaller.executeGet(planLink);
         String expectedOutputAsString = loadExpectedResponseFromResource(jsonFileName);
 
         JSONAssert.assertEquals(
@@ -339,16 +301,8 @@ class PlanControllerTest extends ControllerTestTemplate
 
         String payload = loadExpectedResponseFromResource("crisrpPlanCreationPayload.json");
 
-        ResultActions resultActions = mvc().perform(MockMvcRequestBuilders
-            .post("/api/plans")
-            .header("Authorization", accessToken)
-            .content((payload))
-            .contentType(MediaType.APPLICATION_JSON))
-            .andExpect(status().isOk())
-            .andDo(document("plans/postCrisprPlan"));
-
-        MvcResult result = resultActions.andReturn();
-        String contentAsString = result.getResponse().getContentAsString();
+        String contentAsString =
+            restCaller.executePostAndDocument("/api/plans", payload, document("plans/postCrisprPlan"));
         String planLink = LinkUtil.getSelfHrefLinkStringFromJson(contentAsString);
         verifyGetPlantEqualsJsonIgnoringIdsAndPinAndDates(planLink, "expectedCreatedCrisprPlan.json");
     }
@@ -356,12 +310,7 @@ class PlanControllerTest extends ControllerTestTemplate
     private void verifyGetPlantEqualsJsonIgnoringIdsAndPinAndDates(
         String planLink, String jsonFileName) throws Exception
     {
-        ResultActions callGetWithObtainedUrl = mvc().perform(MockMvcRequestBuilders
-            .get(planLink)
-            .header("Authorization", accessToken))
-            .andExpect(status().isOk());
-        MvcResult obtainedProject = callGetWithObtainedUrl.andReturn();
-        String obtainedPlanAsString = obtainedProject.getResponse().getContentAsString();
+        String obtainedPlanAsString = restCaller.executeGet(planLink);
         String expectedOutputAsString = loadExpectedResponseFromResource(jsonFileName);
 
         JSONAssert.assertEquals(

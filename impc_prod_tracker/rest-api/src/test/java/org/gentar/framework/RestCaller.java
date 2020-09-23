@@ -32,7 +32,7 @@ public class RestCaller
     {
         ResultActions resultActions = mvc.perform(MockMvcRequestBuilders
             .get(url)
-            .header(HEADER_AUTHORIZATION, accessToken))
+            .header(HEADER_AUTHORIZATION, "Bearer " + accessToken))
             .andExpect(status().isOk());
         MvcResult obtained = resultActions.andReturn();
         return obtained.getResponse().getContentAsString();
@@ -42,7 +42,7 @@ public class RestCaller
     {
         ResultActions resultActions = mvc.perform(MockMvcRequestBuilders
             .get(url)
-            .header(HEADER_AUTHORIZATION, accessToken))
+            .header(HEADER_AUTHORIZATION, "Bearer " + accessToken))
             .andExpect(status().isOk())
             .andDo(documentMethod);
         MvcResult obtained = resultActions.andReturn();
@@ -53,7 +53,7 @@ public class RestCaller
     {
         ResultActions resultActions = mvc.perform(MockMvcRequestBuilders
             .post(url)
-            .header(HEADER_AUTHORIZATION, accessToken)
+            .header(HEADER_AUTHORIZATION, "Bearer " + accessToken)
             .content(payload)
             .contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk());
@@ -66,7 +66,7 @@ public class RestCaller
     {
         ResultActions resultActions = mvc.perform(MockMvcRequestBuilders
             .post(url)
-            .header(HEADER_AUTHORIZATION, accessToken)
+            .header(HEADER_AUTHORIZATION, "Bearer " + accessToken)
             .content(payload)
             .contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
@@ -94,7 +94,7 @@ public class RestCaller
     {
         ResultActions resultActions = mvc.perform(MockMvcRequestBuilders
             .put(url)
-            .header(HEADER_AUTHORIZATION, accessToken)
+            .header(HEADER_AUTHORIZATION, "Bearer " + accessToken)
             .content(payload)
             .contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
