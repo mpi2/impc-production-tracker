@@ -69,6 +69,7 @@
                 SUMMARY_STATUS_ID="1"
                 RECOVERY="false"
                 COMMENT="Comment test"
+                REACTIVATION_DATE="2020-09-24 00:00:02"
                 PROJECT_EXTERNAL_REF="External reference 01"/>
     <PROJECT    ID="2"
                 TPN="TPN:000000002"

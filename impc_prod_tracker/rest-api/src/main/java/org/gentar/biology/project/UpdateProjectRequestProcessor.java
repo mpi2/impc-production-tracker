@@ -8,7 +8,7 @@ import org.springframework.util.StringUtils;
 @Component
 public class UpdateProjectRequestProcessor
 {
-    private ProjectUpdateMapper projectUpdateMapper;
+    private final ProjectUpdateMapper projectUpdateMapper;
     private static final String NOT_MATCHING_TPN =
         "The payload contains tpn [%s] but you're modifying [%s].";
 
