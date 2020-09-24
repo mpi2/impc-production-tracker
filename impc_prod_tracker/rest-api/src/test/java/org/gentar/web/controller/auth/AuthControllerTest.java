@@ -36,7 +36,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class AuthControllerTest extends ControllerTestTemplate
 {
     private static final String USER_NOT_IN_AUTH_SYSTEM_MJE =
-        "Invalid User/Password provided.";
+        "Invalid userName/password provided.";
 
     @Test
     @DatabaseSetup(DBSetupFilesPaths.SIGN_IN)
