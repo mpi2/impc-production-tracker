@@ -1,10 +1,6 @@
 package org.gentar.biology.plan.attempt.phenotyping.stage.engine;
 
-import org.gentar.biology.plan.attempt.phenotyping.stage.engine.processors.AllDataProcessedToPhenotypingFinishedProcessor;
-import org.gentar.biology.plan.attempt.phenotyping.stage.engine.processors.AllDataSentToAllDataProcessedProcessor;
-import org.gentar.biology.plan.attempt.phenotyping.stage.engine.processors.PhenotypingStageProcessorWithoutValidations;
-import org.gentar.biology.plan.attempt.phenotyping.stage.engine.processors.RollbackToAllDataProcessedProcessor;
-import org.gentar.biology.plan.attempt.phenotyping.stage.engine.processors.UpdateToPhenotypingStartedProcessor;
+import org.gentar.biology.plan.attempt.phenotyping.stage.engine.processors.*;
 import org.gentar.statemachine.ProcessEvent;
 import org.gentar.statemachine.ProcessState;
 import org.gentar.statemachine.Processor;
@@ -12,24 +8,24 @@ import org.gentar.statemachine.StateMachineConstants;
 import java.util.Arrays;
 import java.util.List;
 
-public enum EarlyAdultEvent implements ProcessEvent
+public enum AdultEvent implements ProcessEvent
 {
     updateToRederivationStarted(
         "Started rederivation of the colony for phenotyping",
-        EarlyAdultState.PhenotypingProductionRegistered,
-        EarlyAdultState.RederivationStarted,
+        AdultState.PhenotypingRegistered,
+        AdultState.RederivationStarted,
         StateMachineConstants.TRIGGERED_BY_USER,
         "executed by the user when rederivation is started."),
     updateToRederivationComplete(
         "Completed rederivation of the colony for phenotyping",
-        EarlyAdultState.RederivationStarted,
-        EarlyAdultState.RederivationComplete,
+        AdultState.RederivationStarted,
+        AdultState.RederivationComplete,
         StateMachineConstants.TRIGGERED_BY_USER,
         "executed by the user when rederivation is complete."),
     updateToPhenotypingStartedAfterRederivation(
         "Marked as started when the DCC recieves phenotype data following a rederivation step",
-        EarlyAdultState.RederivationComplete,
-        EarlyAdultState.PhenotypingStarted,
+        AdultState.RederivationComplete,
+        AdultState.PhenotypingStarted,
         StateMachineConstants.TRIGGERED_BY_USER,
         "executed by the DCC following completion of rederivation.")
         {
@@ -41,8 +37,8 @@ public enum EarlyAdultEvent implements ProcessEvent
         },
     updateToPhenotypingStarted(
         "Marked as started when the DCC receives phenotype data",
-        EarlyAdultState.PhenotypingProductionRegistered,
-        EarlyAdultState.PhenotypingStarted,
+        AdultState.PhenotypingRegistered,
+        AdultState.PhenotypingStarted,
         StateMachineConstants.TRIGGERED_BY_USER,
         "executed by the DCC when phenotyping is started.")
         {
@@ -54,14 +50,14 @@ public enum EarlyAdultEvent implements ProcessEvent
         },
     updateToPhenotypingAllDataSent(
         "No more phenotype data will be sent to the DCC.",
-        EarlyAdultState.PhenotypingStarted,
-        EarlyAdultState.PhenotypingAllDataSent,
+        AdultState.PhenotypingStarted,
+        AdultState.PhenotypingAllDataSent,
         StateMachineConstants.TRIGGERED_BY_USER,
         "Used to indicate all phenotype data has been sent to the DCC."),
     updateToPhenotypingAllDataProcessed(
         "Set by the DCC when all phenotype data received and processed.",
-        EarlyAdultState.PhenotypingAllDataSent,
-        EarlyAdultState.PhenotypingAllDataProcessed,
+        AdultState.PhenotypingAllDataSent,
+        AdultState.PhenotypingAllDataProcessed,
         StateMachineConstants.TRIGGERED_BY_USER,
         "executed by the DCC when all phenotype data received and processed.")
         {
@@ -73,8 +69,8 @@ public enum EarlyAdultEvent implements ProcessEvent
         },
     updateToPhenotypingFinished(
         "Marked as finished by the CDA when all phenotype data published",
-        EarlyAdultState.PhenotypingAllDataProcessed,
-        EarlyAdultState.PhenotypingFinished,
+        AdultState.PhenotypingAllDataProcessed,
+        AdultState.PhenotypingFinished,
         StateMachineConstants.TRIGGERED_BY_USER,
         "executed by the CDA.")
         {
@@ -84,10 +80,23 @@ public enum EarlyAdultEvent implements ProcessEvent
                 return AllDataProcessedToPhenotypingFinishedProcessor.class;
             }
         },
+    rollbackPhenotypingStarted(
+            "Rollback the state of phenotyping marked as having phenotyping started.",
+            AdultState.PhenotypingStarted,
+            AdultState.PhenotypingRegistered,
+            StateMachineConstants.TRIGGERED_BY_USER,
+            "Executed by the DCC.")
+            {
+                @Override
+                public Class<? extends Processor> getNextStepProcessor()
+                {
+                    return RollbackToPhenotypingRegisteredProcessor.class;
+                }
+            },
     rollbackPhenotypingAllDataSent(
         "Rollback the state of phenotyping marked as having all phenotype data sent to allow data entry.",
-        EarlyAdultState.PhenotypingAllDataSent,
-        EarlyAdultState.PhenotypingStarted,
+        AdultState.PhenotypingAllDataSent,
+        AdultState.PhenotypingStarted,
         StateMachineConstants.TRIGGERED_BY_USER,
         "Allows more data to be sent.")
         {
@@ -99,8 +108,8 @@ public enum EarlyAdultEvent implements ProcessEvent
         },
     rollbackPhenotypingAllDataProcessed(
         "Rollback the state of phenotyping marked as having all phenotype data processed to allow data entry.",
-        EarlyAdultState.PhenotypingAllDataProcessed,
-        EarlyAdultState.PhenotypingStarted,
+        AdultState.PhenotypingAllDataProcessed,
+        AdultState.PhenotypingStarted,
         StateMachineConstants.TRIGGERED_BY_USER,
         "Executed by the DCC and used when more data needs to be sent.")
         {
@@ -112,8 +121,8 @@ public enum EarlyAdultEvent implements ProcessEvent
         },
     rollbackPhenotypingFinished(
         "Rollback the state of phenotyping marked as finished to allow an update.",
-        EarlyAdultState.PhenotypingFinished,
-        EarlyAdultState.PhenotypingAllDataProcessed,
+        AdultState.PhenotypingFinished,
+        AdultState.PhenotypingAllDataProcessed,
         StateMachineConstants.TRIGGERED_BY_USER,
         "executed by the CDA when phenotyping needs updating.")
         {
@@ -125,54 +134,30 @@ public enum EarlyAdultEvent implements ProcessEvent
         },
     reverseAbortion(
         "Reverse abortion",
-        EarlyAdultState.PhenotypeProductionAborted,
-        EarlyAdultState.PhenotypingProductionRegistered,
+        AdultState.PhenotypeProductionAborted,
+        AdultState.PhenotypingRegistered,
         StateMachineConstants.TRIGGERED_BY_USER,
         null),
-    abortWhenPhenotypeProductionRegistered(
+    abortWhenPhenotypeRegistered(
         "Abort phenotyping when a phenotype attempt has been registered",
-        EarlyAdultState.PhenotypingProductionRegistered,
-        EarlyAdultState.PhenotypeProductionAborted,
+        AdultState.PhenotypingRegistered,
+        AdultState.PhenotypeProductionAborted,
         StateMachineConstants.TRIGGERED_BY_USER,
         null),
     abortWhenRederivationStarted(
         "Abort phenotyping when rederivation has been started",
-        EarlyAdultState.RederivationStarted,
-        EarlyAdultState.PhenotypeProductionAborted,
+        AdultState.RederivationStarted,
+        AdultState.PhenotypeProductionAborted,
         StateMachineConstants.TRIGGERED_BY_USER,
         null),
     abortWhenRederivationComplete(
         "Abort phenotyping when rederivation is complete",
-        EarlyAdultState.RederivationComplete,
-        EarlyAdultState.PhenotypeProductionAborted,
-        StateMachineConstants.TRIGGERED_BY_USER,
-        null),
-    abortWhenPhenotypingStarted(
-        "Abort phenotyping when phenotyping has been started",
-        EarlyAdultState.PhenotypingStarted,
-        EarlyAdultState.PhenotypeProductionAborted,
-        StateMachineConstants.TRIGGERED_BY_USER,
-        null),
-    abortWhenPhenotypingAllDataSent(
-        "Abort phenotyping when all phenotype data has been sent to the DCC",
-        EarlyAdultState.PhenotypingAllDataSent,
-        EarlyAdultState.PhenotypeProductionAborted,
-        StateMachineConstants.TRIGGERED_BY_USER,
-        null),
-    abortWhenPhenotypingAllDataProcessed(
-        "Abort phenotyping when all phenotype data has been processed by the DCC",
-        EarlyAdultState.PhenotypingAllDataProcessed,
-        EarlyAdultState.PhenotypeProductionAborted,
-        StateMachineConstants.TRIGGERED_BY_USER,
-        null),
-    abortWhenPhenotypingFinished(
-        "Abort phenotyping when it is finished",
-        EarlyAdultState.PhenotypingFinished,
-        EarlyAdultState.PhenotypeProductionAborted,
+        AdultState.RederivationComplete,
+        AdultState.PhenotypeProductionAborted,
         StateMachineConstants.TRIGGERED_BY_USER,
         null);
 
-    EarlyAdultEvent(
+    AdultEvent(
         String description,
         ProcessState initialState,
         ProcessState endState,
@@ -236,6 +221,6 @@ public enum EarlyAdultEvent implements ProcessEvent
 
     public static List<ProcessEvent> getAllEvents()
     {
-        return Arrays.asList(EarlyAdultEvent.values());
+        return Arrays.asList(AdultEvent.values());
     }
 }

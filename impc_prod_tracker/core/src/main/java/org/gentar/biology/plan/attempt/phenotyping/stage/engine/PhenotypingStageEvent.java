@@ -1,11 +1,6 @@
 package org.gentar.biology.plan.attempt.phenotyping.stage.engine;
 
-import org.gentar.biology.plan.attempt.phenotyping.stage.engine.processors.AllDataProcessedToPhenotypingFinishedProcessor;
-import org.gentar.biology.plan.attempt.phenotyping.stage.engine.processors.AllDataSentToAllDataProcessedProcessor;
-import org.gentar.biology.plan.attempt.phenotyping.stage.engine.processors.PhenotypingStageProcessorWithoutValidations;
-import org.gentar.biology.plan.attempt.phenotyping.stage.engine.processors.PhenotypingStartedProcessor;
-import org.gentar.biology.plan.attempt.phenotyping.stage.engine.processors.RollbackToAllDataProcessedProcessor;
-import org.gentar.biology.plan.attempt.phenotyping.stage.engine.processors.UpdateToPhenotypingStartedProcessor;
+import org.gentar.biology.plan.attempt.phenotyping.stage.engine.processors.*;
 import org.gentar.statemachine.ProcessEvent;
 import org.gentar.statemachine.ProcessState;
 import org.gentar.statemachine.Processor;
@@ -17,7 +12,7 @@ public enum PhenotypingStageEvent implements ProcessEvent
 {
     updateToPhenotypingStarted(
         "Marked as started when the DCC receives phenotype data",
-        PhenotypingStageState.PhenotypingProductionRegistered,
+        PhenotypingStageState.PhenotypingRegistered,
         PhenotypingStageState.PhenotypingStarted,
         StateMachineConstants.TRIGGERED_BY_USER,
         "executed by the DCC when phenotyping is started.")
@@ -60,19 +55,32 @@ public enum PhenotypingStageEvent implements ProcessEvent
                 return AllDataProcessedToPhenotypingFinishedProcessor.class;
             }
         },
-    rollbackPhenotypingAllDataSent(
-        "Rollback the state of phenotyping marked as having all phenotype data sent to allow data entry.",
-        PhenotypingStageState.PhenotypingAllDataSent,
-        PhenotypingStageState.PhenotypingStarted,
-        StateMachineConstants.TRIGGERED_BY_USER,
-        "Allows more data to be sent.")
-        {
-            @Override
-            public Class<? extends Processor> getNextStepProcessor()
+    rollbackPhenotypingStarted(
+            "Rollback the state of phenotyping marked as having phenotyping started.",
+            PhenotypingStageState.PhenotypingStarted,
+            PhenotypingStageState.PhenotypingRegistered,
+            StateMachineConstants.TRIGGERED_BY_USER,
+            "Executed by the DCC.")
             {
-                return AllDataProcessedToPhenotypingFinishedProcessor.class;
-            }
-        },
+                @Override
+                public Class<? extends Processor> getNextStepProcessor()
+                {
+                    return RollbackToPhenotypingRegisteredProcessor.class;
+                }
+            },
+    rollbackPhenotypingAllDataSent(
+            "Rollback the state of phenotyping marked as having all phenotype data sent to allow data entry.",
+            PhenotypingStageState.PhenotypingAllDataSent,
+            PhenotypingStageState.PhenotypingStarted,
+            StateMachineConstants.TRIGGERED_BY_USER,
+            "Executed by the DCC, allows more data to be sent.")
+            {
+                @Override
+                public Class<? extends Processor> getNextStepProcessor()
+                {
+                    return RollbackToAllDataProcessedProcessor.class;
+                }
+            },
     rollbackPhenotypingAllDataProcessed(
         "Rollback the state of phenotyping marked as having all phenotype data processed to allow data entry.",
         PhenotypingStageState.PhenotypingAllDataProcessed,
@@ -102,36 +110,12 @@ public enum PhenotypingStageEvent implements ProcessEvent
     reverseAbortion(
         "Reverse abortion",
         PhenotypingStageState.PhenotypeProductionAborted,
-        PhenotypingStageState.PhenotypingProductionRegistered,
+        PhenotypingStageState.PhenotypingRegistered,
         StateMachineConstants.TRIGGERED_BY_USER,
         null),
-    abortWhenPhenotypingProductionRegistered(
+    abortWhenPhenotypingRegistered(
         "Abort phenotyping when a phenotype attempt has been registered",
-        PhenotypingStageState.PhenotypingProductionRegistered,
-        PhenotypingStageState.PhenotypeProductionAborted,
-        StateMachineConstants.TRIGGERED_BY_USER,
-        null),
-    abortWhenPhenotypingStarted(
-        "Abort phenotyping when phenotyping has been started",
-        PhenotypingStageState.PhenotypingStarted,
-        PhenotypingStageState.PhenotypeProductionAborted,
-        StateMachineConstants.TRIGGERED_BY_USER,
-        null),
-    abortWhenPhenotypingAllDataSent(
-        "Abort phenotyping when all phenotype data has been sent to the DCC",
-        PhenotypingStageState.PhenotypingAllDataSent,
-        PhenotypingStageState.PhenotypeProductionAborted,
-        StateMachineConstants.TRIGGERED_BY_USER,
-        null),
-    abortWhenPhenotypingAllDataProcessed(
-        "Abort phenotyping when all phenotype data has been processed by the DCC",
-        PhenotypingStageState.PhenotypingAllDataProcessed,
-        PhenotypingStageState.PhenotypeProductionAborted,
-        StateMachineConstants.TRIGGERED_BY_USER,
-        null),
-    abortWhenPhenotypingFinished(
-        "Abort phenotyping when it is finished",
-        PhenotypingStageState.PhenotypingFinished,
+        PhenotypingStageState.PhenotypingRegistered,
         PhenotypingStageState.PhenotypeProductionAborted,
         StateMachineConstants.TRIGGERED_BY_USER,
         null);
