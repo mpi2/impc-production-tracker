@@ -102,10 +102,28 @@
           }
         },
         "statusDates":[
-
+          {
+            "statusName":"Plan Created",
+            "date":"2018-01-15T00:00:00.706639"
+          },
+          {
+            "statusName":"Attempt In Progress",
+            "date":"2018-01-15T00:00:00.706639"
+          },
+          {
+            "statusName":"Founder Obtained",
+            "date":"2018-02-22T20:18:00.706639"
+          },
+          {
+            "statusName":"Embryos Obtained",
+            "date":"2018-04-04T14:32:00.706639"
+          }
         ],
         "summaryStatusDates":[
-
+          {
+            "statusName":"Founder Obtained",
+            "date":"2019-08-06T20:09:51.706639"
+          }
         ],
         "statusTransition":{
           "currentStatus":"Founder Obtained",
@@ -145,10 +163,16 @@
           }
         },
         "statusDates":[
-
+          {
+            "statusName":"Plan Created",
+            "date":"2020-04-14T12:46:24.706639"
+          }
         ],
         "summaryStatusDates":[
-
+          {
+            "statusName":"Plan Created",
+            "date":"2020-04-14T12:46:24.706639"
+          }
         ],
         "statusTransition":{
           "currentStatus":"Plan Created",
@@ -189,21 +213,21 @@
             "outcome":{
               "href":"http://localhost:8080/api/plans/PIN:0000000001/outcomes/TPO:000000000001"
             },
-            "productionPlan": {
-              "href": "http://localhost:8080/api/plans/PIN:0000000001"
+            "productionPlan":{
+              "href":"http://localhost:8080/api/plans/PIN:0000000001"
             }
           },
           "outcomeTpo":"TPO:000000000001",
-          "productionPlanPin": "PIN:0000000001"
+          "productionPlanPin":"PIN:0000000001"
         },
         "phenotypingAttemptResponse":{
+          "doNotCountTowardsCompleteness":false,
           "phenotypingExternalRef":"CR10129",
-          "phenotypingBackgroundStrainName":"C57BL/6NJ",
-          "doNotCountTowardsCompleteness":false
+          "phenotypingBackgroundStrainName":"C57BL/6NJ"
         },
         "typeName":"phenotyping",
         "statusName":"Plan Created",
-        "summaryStatusName":"Phenotyping Started",
+        "summaryStatusName":"Plan Created",
         "_links":{
           "self":{
             "href":"http://localhost:8080/api/plans/PIN:0000000003"
@@ -213,10 +237,16 @@
           }
         },
         "statusDates":[
-
+          {
+            "statusName":"Plan Created",
+            "date":"2020-04-14T12:46:24.706639"
+          }
         ],
         "summaryStatusDates":[
-
+          {
+            "statusName":"Plan Created",
+            "date":"2020-04-14T12:46:24.706639"
+          }
         ],
         "statusTransition":{
           "currentStatus":"Plan Created",
@@ -257,17 +287,17 @@
             "outcome":{
               "href":"http://localhost:8080/api/plans/PIN:0000000001/outcomes/TPO:000000000002"
             },
-            "productionPlan": {
-              "href": "http://localhost:8080/api/plans/PIN:0000000001"
+            "productionPlan":{
+              "href":"http://localhost:8080/api/plans/PIN:0000000001"
             }
           },
           "outcomeTpo":"TPO:000000000002",
-          "productionPlanPin": "PIN:0000000001"
+          "productionPlanPin":"PIN:0000000001"
         },
         "phenotypingAttemptResponse":{
+          "doNotCountTowardsCompleteness":false,
           "phenotypingExternalRef":"JR34077",
-          "phenotypingBackgroundStrainName":"C57BL/6NJ",
-          "doNotCountTowardsCompleteness":false
+          "phenotypingBackgroundStrainName":"C57BL/6NJ"
         },
         "typeName":"phenotyping",
         "statusName":"Plan Created",
@@ -281,10 +311,16 @@
           }
         },
         "statusDates":[
-
+          {
+            "statusName":"Plan Created",
+            "date":"2018-02-22T20:18:00.706639"
+          }
         ],
         "summaryStatusDates":[
-
+          {
+            "statusName":"Plan Created",
+            "date":"2020-04-14T12:46:24.706639"
+          }
         ],
         "statusTransition":{
           "currentStatus":"Plan Created",
