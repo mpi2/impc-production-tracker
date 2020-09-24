@@ -3,6 +3,7 @@ package org.gentar.web.controller.project;
 import com.github.springtestdbunit.annotation.DatabaseOperation;
 import com.github.springtestdbunit.annotation.DatabaseSetup;
 import com.github.springtestdbunit.annotation.DatabaseTearDown;
+import org.gentar.audit.history.HistoryFieldsDescriptors;
 import org.gentar.framework.ControllerTestTemplate;
 import org.gentar.framework.RestCaller;
 import org.gentar.framework.ResultValidator;
@@ -15,6 +16,7 @@ import org.gentar.helpers.LinkUtil;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.test.web.servlet.ResultHandler;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import java.io.IOException;
@@ -65,9 +67,9 @@ class ProjectControllerTest extends ControllerTestTemplate
                 fieldWithPath("summaryStatusName")
                     .description("A status summarising the global status based on the statuses of " +
                         "the plans in the project. Read only."),
-                fieldWithPath("reactivationDate")
-                    .description("Date on which the project was activated again" +
-                        " (assignment Status changed from inactive). Read only."),
+                fieldWithPath("reactivationDate").type(JsonFieldType.STRING)
+                    .description("Date, represented as string, on which the project was activated again" +
+                        " (assignment Status changed from inactive). Example: \"2020-09-24T00:00:05\". Read only."),
                 fieldWithPath("recovery").description("To be validated"),
                 fieldWithPath("comment").description("Comment on this project."),
                 fieldWithPath("relatedWorkUnitNames")
@@ -209,21 +211,7 @@ class ProjectControllerTest extends ControllerTestTemplate
                 fieldWithPath("privacyName")
                     .description("Privacy level for the project (public, protected or restricted)")),
             responseFields(
-                fieldWithPath("history[]").description("Changes in the system."),
-                fieldWithPath("history[].id").description("Id of the change."),
-                fieldWithPath("history[].user").description("The user that made the change."),
-                fieldWithPath("history[].date").description("Date of the change."),
-                fieldWithPath("history[].comment").description("Comment describing the change."),
-                fieldWithPath("history[].details[]").description("Additional details of the change."),
-                fieldWithPath("history[].details[].field")
-                    .description("Field that changed."),
-                fieldWithPath("history[].details[].oldValue")
-                    .description("Value in the field before the change"),
-                fieldWithPath("history[].details[].newValue")
-                    .description("Value in the field after the change"),
-                fieldWithPath("history[].details[].note")
-                    .description("One of these: Field changed, Element added, Element deleted."),
-                fieldWithPath("_links.self.href").description("Links to the project just created.")
+                HistoryFieldsDescriptors.getHistoryFieldDescriptions("history")
             ));
     }
 
@@ -320,18 +308,7 @@ class ProjectControllerTest extends ControllerTestTemplate
                     .description("Institutes associated with the project - consortium")),
 
             responseFields(
-                fieldWithPath("history[]").description("Changes in the system."),
-                fieldWithPath("history[].id").description("Id of the change."),
-                fieldWithPath("history[].user").description("The user that made the change."),
-                fieldWithPath("history[].date").description("Date of the change."),
-                fieldWithPath("history[].comment").description("Comment describing the change."),
-                fieldWithPath("history[].details[]").description("Additional details of the change."),
-                fieldWithPath("history[].details[].field").description("Field that changed."),
-                fieldWithPath("history[].details[].oldValue").description("Value before the change."),
-                fieldWithPath("history[].details[].newValue").description("Value after the change."),
-                fieldWithPath("history[].details[].note").description("Note of the change."),
-                fieldWithPath("_links.self.href").description("Links to the project just created.")
-            ));
+                HistoryFieldsDescriptors.getHistoryFieldDescriptions("history")));
     }
 
     private String loadFromResource(String resourceName)

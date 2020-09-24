@@ -3,6 +3,7 @@ package org.gentar.biology.project;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import org.junit.jupiter.api.Test;
 import org.util.JsonConverter;
+import java.time.LocalDateTime;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.notNullValue;
@@ -18,11 +19,14 @@ class ProjectCommonDataDTOTest
         projectCommonDataDTO.setPrivacyName("public");
         projectCommonDataDTO.setRecovery(false);
         projectCommonDataDTO.setProjectExternalRef("externalRef");
+        LocalDateTime date = LocalDateTime.of(2000, 1, 1, 0, 0);
+        projectCommonDataDTO.setReactivationDate(date);
 
         String json = JsonConverter.toJson(projectCommonDataDTO);
 
         assertThat(json, is(notNullValue()));
         assertThat(json, is("{\"recovery\":false,\"comment\":\"comment\"," +
+            "\"reactivationDate\":\"2000-01-01T00:00:00\"," +
             "\"privacyName\":\"public\",\"externalReference\":\"externalRef\"}"));
     }
 }
