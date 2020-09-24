@@ -209,7 +209,7 @@
                 WORK_UNIT_ID="1"
                 WORK_GROUP_ID="1"
                 PRODUCTS_AVAILABLE_FOR_GENERAL_PUBLIC="true"
-                SUMMARY_STATUS_ID="36"/>
+                SUMMARY_STATUS_ID="1"/>
     <PLAN       ID="6"
                 PIN="PIN:0000000006"
                 PROJECT_ID="1"
@@ -343,14 +343,69 @@
                             PERSON_ID="123"
                             ROLE_ID="2"
                             WORK_UNIT_ID="1"/>
-
     <PERSON_ROLE_WORK_UNIT  ID="2"
                             PERSON_ID="123"
                             ROLE_ID="2"
                             WORK_UNIT_ID="3"/>
 
-    <PERSON_ROLE_CONSORTIUM/>
-    <PLAN_STATUS_STAMP/>
-    <PLAN_SUMMARY_STATUS_STAMP/>
+    <PLAN_STATUS_STAMP  ID="10"
+                        PLAN_ID="1"
+                        STATUS_ID="1"
+                        DATE="2018-01-15 00:00:00.706639"
+    />
+    <PLAN_STATUS_STAMP  ID="11"
+                        PLAN_ID="1"
+                        STATUS_ID="2"
+                        DATE="2018-01-15 00:00:00.706639"
+    />
+    <PLAN_STATUS_STAMP  ID="12"
+                        PLAN_ID="1"
+                        STATUS_ID="3"
+                        DATE="2018-04-04 14:32:00.706639"
+    />
+    <PLAN_STATUS_STAMP  ID="13"
+                        PLAN_ID="1"
+                        STATUS_ID="4"
+                        DATE="2018-02-22 20:18:00.706639"
+    />
+    <PLAN_STATUS_STAMP  ID="14"
+                        PLAN_ID="2"
+                        STATUS_ID="1"
+                        DATE="2020-04-14 12:46:24.706639"
+    />
+    <PLAN_STATUS_STAMP  ID="15"
+                        PLAN_ID="3"
+                        STATUS_ID="1"
+                        DATE="2020-04-14 12:46:24.706639"
+    />
+    <PLAN_STATUS_STAMP  ID="16"
+                        PLAN_ID="6"
+                        STATUS_ID="1"
+                        DATE="2018-02-22 20:18:00.706639"
+    />
+
+    <PLAN_SUMMARY_STATUS_STAMP  ID="7"
+                                PLAN_ID="1"
+                                STATUS_ID="4"
+                                DATE="2019-08-06 20:09:51.706639"
+    />
+    <PLAN_SUMMARY_STATUS_STAMP  ID="8"
+                                PLAN_ID="2"
+                                STATUS_ID="1"
+                                DATE="2020-04-14 12:46:24.706639"
+    />
+    <PLAN_SUMMARY_STATUS_STAMP  ID="9"
+                                PLAN_ID="3"
+                                STATUS_ID="1"
+                                DATE="2020-04-14 12:46:24.706639"
+    />
+    <PLAN_SUMMARY_STATUS_STAMP    ID="10"
+                                  PLAN_ID="6"
+                                  STATUS_ID="1"
+                                  DATE="2020-04-14 12:46:24.706639"
+    />
+
     <PROJECT_SUMMARY_STATUS_STAMP/>
+
+    <PERSON_ROLE_CONSORTIUM/>
 </dataset>

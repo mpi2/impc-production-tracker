@@ -99,10 +99,28 @@
     }
   },
   "statusDates":[
-
+    {
+      "statusName":"Plan Created",
+      "date":"2018-01-15T00:00:00.706639"
+    },
+    {
+      "statusName":"Attempt In Progress",
+      "date":"2018-01-15T00:00:00.706639"
+    },
+    {
+      "statusName":"Founder Obtained",
+      "date":"2018-02-22T20:18:00.706639"
+    },
+    {
+      "statusName":"Embryos Obtained",
+      "date":"2018-04-04T14:32:00.706639"
+    }
   ],
   "summaryStatusDates":[
-
+    {
+      "statusName":"Founder Obtained",
+      "date":"2019-08-06T20:09:51.706639"
+    }
   ],
   "statusTransition":{
     "currentStatus":"Founder Obtained",

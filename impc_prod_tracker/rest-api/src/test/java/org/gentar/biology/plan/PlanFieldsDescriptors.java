@@ -17,7 +17,12 @@ public class PlanFieldsDescriptors
         addField(sharedFieldDescriptions, "attemptTypeName", "Attempt type.");
         addField(sharedFieldDescriptions, "comment", "Comment for the plan");
         addField(sharedFieldDescriptions, "statusName", "Current status of the plan.");
-        addField(sharedFieldDescriptions, "statusDates[]", "Stamps of the statuses the plan has gone through.");
+        addField(sharedFieldDescriptions, "statusDates[]",
+                "Stamps of the statuses the plan has gone through.");
+        addField(sharedFieldDescriptions, "statusDates[].statusName",
+                "Status that the plan had on a specific date.");
+        addField(sharedFieldDescriptions, "statusDates[].date",
+                "Date of the status change.");
         addField(
             sharedFieldDescriptions,
             "summaryStatusName",
@@ -28,6 +33,16 @@ public class PlanFieldsDescriptors
             sharedFieldDescriptions,
             "summaryStatusDates[]",
             "Stamps of the statuses summaries the plan has gone through.");
+        addField(sharedFieldDescriptions, "funderNames", "Funders for the plan.");
+        addField(
+                sharedFieldDescriptions,
+                "summaryStatusDates[].statusName",
+                "Summary status that the plan had on a specific date.");
+        addField(sharedFieldDescriptions, "funderNames", "Funders for the plan.");
+        addField(
+                sharedFieldDescriptions,
+                "summaryStatusDates[].date",
+                "Date of the summary status change.");
         addField(sharedFieldDescriptions, "funderNames", "Funders for the plan.");
         addField(sharedFieldDescriptions, "workUnitName", "Work unit for the plan.");
         addField(sharedFieldDescriptions, "workGroupName", "Work group for the plan.");

@@ -14,12 +14,12 @@
       "outcome":{
         "href":"http://localhost:8080/api/plans/PIN:0000000001/outcomes/TPO:000000000001"
       },
-      "productionPlan": {
-        "href": "http://localhost:8080/api/plans/PIN:0000000001"
+      "productionPlan":{
+        "href":"http://localhost:8080/api/plans/PIN:0000000001"
       }
     },
     "outcomeTpo":"TPO:000000000001",
-    "productionPlanPin": "PIN:0000000001"
+    "productionPlanPin":"PIN:0000000001"
   },
   "phenotypingAttemptResponse":{
     "doNotCountTowardsCompleteness":false,
@@ -28,7 +28,7 @@
   },
   "typeName":"phenotyping",
   "statusName":"Plan Created",
-  "summaryStatusName":"Phenotyping Started",
+  "summaryStatusName":"Plan Created",
   "_links":{
     "self":{
       "href":"http://localhost:8080/api/plans/PIN:0000000003"
@@ -38,10 +38,16 @@
     }
   },
   "statusDates":[
-
+    {
+      "statusName":"Plan Created",
+      "date":"2020-04-14T12:46:24.706639"
+    }
   ],
   "summaryStatusDates":[
-
+    {
+      "statusName":"Plan Created",
+      "date":"2020-04-14T12:46:24.706639"
+    }
   ],
   "statusTransition":{
     "currentStatus":"Plan Created",

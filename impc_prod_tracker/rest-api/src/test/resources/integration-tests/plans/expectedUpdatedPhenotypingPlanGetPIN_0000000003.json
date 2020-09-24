@@ -15,11 +15,11 @@
         "href":"http://localhost:8080/api/plans/PIN:0000000001/outcomes/TPO:000000000001"
       },
       "productionPlan":{
-        "href": "http://localhost:8080/api/plans/PIN:0000000001"
+        "href":"http://localhost:8080/api/plans/PIN:0000000001"
       }
     },
     "outcomeTpo":"TPO:000000000001",
-    "productionPlanPin": "PIN:0000000001"
+    "productionPlanPin":"PIN:0000000001"
   },
   "phenotypingAttemptResponse":{
     "doNotCountTowardsCompleteness":false,
@@ -38,12 +38,15 @@
     }
   },
   "statusDates":[
-
+    {
+      "statusName":"Plan Created",
+      "date":"2020-04-14T12:46:24.706639"
+    }
   ],
   "summaryStatusDates":[
     {
       "statusName":"Plan Created",
-      "date":"2020-07-07T13:48:33.388623"
+      "date":"2020-04-14T12:46:24.706639"
     }
   ],
   "statusTransition":{
