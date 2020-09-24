@@ -35,7 +35,8 @@ import static org.springframework.http.ResponseEntity.ok;
 @RequestMapping("/auth")
 public class AuthController
 {
-    private static final String AUTHENTICATION_ERROR = "Invalid User/Password provided.";
+    private static final String AUTHENTICATION_ERROR = "Invalid userName/password provided.";
+    private static final String USERNAME_NULL_ERROR = "Invalid userName or null provided.";
     private final AuthService authService;
 
     public AuthController(AuthService authService)
@@ -54,6 +55,10 @@ public class AuthController
         try
         {
             String username = authenticationRequest.getUserName();
+            if (username == null)
+            {
+                throw new UserOperationFailedException(USERNAME_NULL_ERROR);
+            }
             String token = authService.getAuthenticationToken(
                 authenticationRequest.getUserName(), authenticationRequest.getPassword());
             AuthenticationResponseDTO authenticationResponseDTO = buildAuthenticationResponseDTO(
