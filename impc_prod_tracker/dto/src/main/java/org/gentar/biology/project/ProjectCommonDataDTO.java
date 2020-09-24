@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
+
 @Data
 @NoArgsConstructor
 /**
@@ -24,4 +26,7 @@ public class ProjectCommonDataDTO
 
     // Any comment about this project.
     private String comment;
+
+    // Date in which the project as changed to an active assignment status.
+    private LocalDateTime reactivationDate;
 }

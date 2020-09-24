@@ -12,7 +12,7 @@
   "relatedWorkGroupNames":[
     "BaSH"
   ],
-  "reactivationDate":null,
+  "reactivationDate":"2020-09-24T00:00:02",
   "_links":{
     "self":{
       "href":"http://localhost:8080/api/projects/TPN:000000001"

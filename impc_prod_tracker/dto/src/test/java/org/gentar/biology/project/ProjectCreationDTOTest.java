@@ -7,6 +7,7 @@ import org.gentar.biology.intention.ProjectIntentionDTO;
 import org.gentar.biology.plan.PlanMinimumCreationDTO;
 import org.junit.jupiter.api.Test;
 import org.util.JsonConverter;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,6 +25,8 @@ class ProjectCreationDTOTest
         projectCommonDataDTO.setComment("comment");
         projectCommonDataDTO.setPrivacyName("public");
         projectCommonDataDTO.setProjectExternalRef("externalRef");
+        LocalDateTime date = LocalDateTime.of(2000, 1, 1, 0, 0);
+        projectCommonDataDTO.setReactivationDate(date);
         projectCreationDTO.setProjectCommonDataDTO(projectCommonDataDTO);
         PlanMinimumCreationDTO planMinimumCreationDTO = new PlanMinimumCreationDTO();
         planMinimumCreationDTO.setPlanTypeName("production");
@@ -43,7 +46,8 @@ class ProjectCreationDTOTest
         String json = JsonConverter.toJson(projectCreationDTO);
 
         assertThat(json, is(notNullValue()));
-        assertThat(json, is("{\"recovery\":null,\"comment\":\"comment\",\"privacyName\":\"public\"," +
+        assertThat(json, is("{\"recovery\":null,\"comment\":\"comment\"," +
+            "\"reactivationDate\":\"2000-01-01T00:00:00\",\"privacyName\":\"public\"," +
             "\"externalReference\":\"externalRef\",\"planDetails\":{\"attemptTypeName\":\"crispr\"," +
             "\"typeName\":\"production\"},\"projectIntentions\":[{\"molecularMutationTypeName\":null," +
             "\"mutationCategorizations\":null,\"intentionByGene\":{\"gene\":{\"id\":null," +
