@@ -12,6 +12,7 @@ import org.gentar.exceptions.UserOperationFailedException;
 import org.gentar.security.abac.ResourceAccessChecker;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
+
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.HashSet;
@@ -57,8 +58,8 @@ public class OutcomeServiceImpl implements OutcomeService
     private List<Outcome> getCheckedCollection(Collection<Outcome> outcomes)
     {
         return outcomes.stream().map(this::getAccessChecked)
-                .filter(Objects::nonNull)
-                .collect(Collectors.toList());
+            .filter(Objects::nonNull)
+            .collect(Collectors.toList());
     }
 
     private Outcome getAccessChecked(Outcome outcome)
@@ -74,22 +75,25 @@ public class OutcomeServiceImpl implements OutcomeService
         if (plan != outcome.getPlan())
         {
             throw new UserOperationFailedException(
-                "Plan "+ pin + " is not related with outcome +" + tpo + ".");
+                "Plan " + pin + " is not related with outcome +" + tpo + ".");
         }
         return outcome;
     }
 
+    @Override
     public List<Outcome> getOutcomes()
     {
         return getCheckedCollection(outcomeRepository.findAll());
     }
 
+    @Override
     @Transactional
     public Outcome create(Outcome outcome)
     {
         return outcomeCreator.create(outcome);
     }
 
+    @Override
     @Transactional
     public History update(Outcome outcome)
     {
@@ -125,6 +129,7 @@ public class OutcomeServiceImpl implements OutcomeService
         return outcome;
     }
 
+    @Override
     public Mutation getMutationByPinTpoAndMin(String pin, String tpo, String min)
     {
         Mutation mutation = null;
@@ -133,7 +138,7 @@ public class OutcomeServiceImpl implements OutcomeService
         if (plan != outcome.getPlan())
         {
             throw new UserOperationFailedException(
-                "Plan " + pin + " is not related with outcome "+ tpo + ".");
+                "Plan " + pin + " is not related with outcome " + tpo + ".");
         }
         Set<Mutation> allMutations = outcome.getMutations();
         if (allMutations != null)
