@@ -10,7 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Component
 public class StatusServiceImpl implements StatusService
 {
-    private StatusRepository statusRepository;
+    private final StatusRepository statusRepository;
     private static final String STATUS_NOT_FOUND_ERROR = "Status [%s] not found";
 
     public StatusServiceImpl(StatusRepository statusRepository)
@@ -18,6 +18,7 @@ public class StatusServiceImpl implements StatusService
         this.statusRepository = statusRepository;
     }
 
+    @Override
     @Cacheable("statuses")
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     public Status getStatusByName(String name)

@@ -48,6 +48,7 @@ class OutcomeCreator
     @Transactional
     public Outcome create(Outcome outcome)
     {
+        validateData(outcome);
         validatePermission(outcome);
         setInitialStatus(outcome);
         Outcome createdOutcome = save(outcome);
@@ -55,6 +56,11 @@ class OutcomeCreator
         registerCreationInHistory(createdOutcome);
         updatePlanDueToChangesInChild(createdOutcome);
         return createdOutcome;
+    }
+
+    private void validateData(Outcome outcome)
+    {
+        outcomeValidator.validateData(outcome);
     }
 
     private void updatePlanDueToChangesInChild(Outcome outcome)
