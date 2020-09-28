@@ -95,7 +95,11 @@ public class UpdatePlanRequestProcessor
 
     private void setEvent(Plan plan, PlanUpdateDTO planUpdateDTO)
     {
-        String action = planUpdateDTO.getStatusTransitionDTO().getActionToExecute();
+        String action = null;
+        if (planUpdateDTO.getStatusTransitionDTO() != null)
+        {
+            action = planUpdateDTO.getStatusTransitionDTO().getActionToExecute();
+        }
         if (action != null)
         {
             ProcessEvent processEvent = planService.getProcessEventByName(plan, action);

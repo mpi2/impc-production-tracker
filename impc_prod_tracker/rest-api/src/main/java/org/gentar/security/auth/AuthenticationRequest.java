@@ -19,6 +19,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.NonNull;
 
 /**
  * Payload structure for an authentication request.
@@ -31,7 +32,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class AuthenticationRequest
 {
-    private String userName;
+    @NonNull private String userName;
 
-    private String password;
+    @NonNull private String password;
 }

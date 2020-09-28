@@ -18,19 +18,22 @@ public class PhenotypingStageUpdater
     private final PhenotypingStageRepository phenotypingStageRepository;
     private final PlanUpdater planUpdater;
     private final ContextAwarePolicyEnforcement policyEnforcement;
+    private final PhenotypingStageValidator phenotypingStageValidator;
 
     public PhenotypingStageUpdater(
         HistoryService<PhenotypingStage> historyService,
         StateTransitionsManager stateTransitionsManager,
         PhenotypingStageRepository phenotypingStageRepository,
         PlanUpdater planUpdater,
-        ContextAwarePolicyEnforcement policyEnforcement)
+        ContextAwarePolicyEnforcement policyEnforcement,
+        PhenotypingStageValidator phenotypingStageValidator)
     {
         this.historyService = historyService;
         this.stateTransitionsManager = stateTransitionsManager;
         this.phenotypingStageRepository = phenotypingStageRepository;
         this.planUpdater = planUpdater;
         this.policyEnforcement = policyEnforcement;
+        this.phenotypingStageValidator = phenotypingStageValidator;
     }
 
     History update(PhenotypingStage originalPhenotypingStage, PhenotypingStage newPhenotypingStage)
@@ -47,17 +50,12 @@ public class PhenotypingStageUpdater
 
     private void validatePermission(PhenotypingStage phenotypingStage)
     {
-        if (!policyEnforcement.hasPermission(
-            phenotypingStage.getPhenotypingAttempt().getPlan(), PermissionService.UPDATE_PLAN_ACTION))
-        {
-            throw new UserOperationFailedException(
-                "You don't have permission to edit this phenotyping stage.");
-        }
+        phenotypingStageValidator.validateUpdatePermission(phenotypingStage);
     }
 
     private void validateData(PhenotypingStage phenotypingStage)
     {
-        // Add validations if needed
+        phenotypingStageValidator.validateData(phenotypingStage);
     }
 
     private void changeStatusIfNeeded(PhenotypingStage phenotypingStage)

@@ -83,7 +83,7 @@ public class AuthControllerTest extends ControllerTestTemplate
             .content(toJson(authenticationRequest))
             .contentType(MediaType.APPLICATION_JSON))
             .andExpect(content().string(containsString(USER_NOT_IN_AUTH_SYSTEM_MJE)))
-            .andExpect(status().is5xxServerError())
+            .andExpect(status().is4xxClientError())
             .andDo(document("auth/signin/no-valid-user-password"));
     }
 }
