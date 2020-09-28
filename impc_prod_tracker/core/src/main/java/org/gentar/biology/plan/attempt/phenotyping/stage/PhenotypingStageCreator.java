@@ -41,12 +41,18 @@ public class PhenotypingStageCreator
     public PhenotypingStage create(PhenotypingStage phenotypingStage)
     {
         validateData(phenotypingStage);
+        validatePermissions(phenotypingStage);
         setInitialStatus(phenotypingStage);
         PhenotypingStage createdPhenotypingStage = save(phenotypingStage);
         registerCreationInHistory(createdPhenotypingStage);
         associateToPhenotypingAttempt(phenotypingStage);
         updatePlanDueToChangesInChild(createdPhenotypingStage);
         return createdPhenotypingStage;
+    }
+
+    private void validatePermissions(PhenotypingStage phenotypingStage)
+    {
+        phenotypingStageValidator.validateCreationPermission(phenotypingStage);
     }
 
     // Needed so when validating the pla, it already has access to this phenotyping stage
@@ -63,7 +69,7 @@ public class PhenotypingStageCreator
 
     private void validateData(PhenotypingStage phenotypingStage)
     {
-        phenotypingStageValidator.validate(phenotypingStage);
+        phenotypingStageValidator.validateData(phenotypingStage);
     }
 
     private void setInitialStatus(PhenotypingStage phenotypingStage)

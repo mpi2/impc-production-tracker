@@ -51,6 +51,8 @@ public class AAPService
     public static final String PERSON_ALREADY_IN_AAP_ERROR = "The user [%s] already exists in the "
         + "Authentication System.";
 
+    private static final String AUTHENTICATION_ERROR = "Invalid userName/password provided.";
+
     public AAPService(RestTemplate restTemplate)
     {
         this.restTemplate = restTemplate;
@@ -87,7 +89,7 @@ public class AAPService
         }
         catch (HttpClientErrorException e)
         {
-            throw new BadCredentialsException(e.getMessage());
+            throw new BadCredentialsException(AUTHENTICATION_ERROR);
         }
         return response.getBody();
     }

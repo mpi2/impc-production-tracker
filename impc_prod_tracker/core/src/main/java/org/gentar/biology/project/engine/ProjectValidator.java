@@ -1,8 +1,10 @@
 package org.gentar.biology.project.engine;
 
 import org.gentar.biology.project.Project;
+import org.gentar.exceptions.ForbiddenAccessException;
 import org.gentar.exceptions.UserOperationFailedException;
 import org.gentar.security.abac.spring.ContextAwarePolicyEnforcement;
+import org.gentar.security.permissions.Actions;
 import org.gentar.security.permissions.PermissionService;
 import org.springframework.stereotype.Component;
 
@@ -34,8 +36,7 @@ public class ProjectValidator
     {
         if (!policyEnforcement.hasPermission(project, PermissionService.CREATE_PROJECT_ACTION))
         {
-            throw new UserOperationFailedException(
-                "You don't have permission to create this project.");
+            throwPermissionExceptionForProject(Actions.CREATE, project);
         }
     }
 
@@ -47,8 +48,13 @@ public class ProjectValidator
     {
         if (!policyEnforcement.hasPermission(project, PermissionService.UPDATE_PROJECT_ACTION))
         {
-            throw new UserOperationFailedException(
-                "You don't have permission to update this project.");
+            throwPermissionExceptionForProject(Actions.UPDATE, project);
         }
+    }
+
+    private void throwPermissionExceptionForProject(Actions action, Project project)
+    {
+        String entityType = Project.class.getSimpleName();
+        throw new ForbiddenAccessException(action, entityType, project.getTpn());
     }
 }

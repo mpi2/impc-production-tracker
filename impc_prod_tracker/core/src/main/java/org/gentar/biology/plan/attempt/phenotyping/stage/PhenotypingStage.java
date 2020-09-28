@@ -76,6 +76,10 @@ public class PhenotypingStage extends BaseEntity implements ProcessData
         {
             this.tissueDistributions = new HashSet<>(phenotypingStage.tissueDistributions);
         }
+        if (phenotypingStage.phenotypingStageStatusStamps != null)
+        {
+            this.phenotypingStageStatusStamps = new HashSet<>(phenotypingStage.phenotypingStageStatusStamps);
+        }
     }
 
     public String toString()

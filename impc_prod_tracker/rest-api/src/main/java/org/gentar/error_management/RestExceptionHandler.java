@@ -18,6 +18,8 @@ package org.gentar.error_management;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import lombok.extern.slf4j.Slf4j;
+import org.gentar.exceptions.ForbiddenAccessException;
+import org.gentar.exceptions.InvalidRequestException;
 import org.gentar.exceptions.OperationFailedException;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
@@ -27,7 +29,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.http.converter.HttpMessageNotWritableException;
-import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.transaction.TransactionSystemException;
 import org.springframework.web.HttpMediaTypeNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -46,6 +48,7 @@ import static org.springframework.http.HttpStatus.BAD_REQUEST;
 import static org.springframework.http.HttpStatus.NOT_FOUND;
 import static org.springframework.http.HttpStatus.FORBIDDEN;
 import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
+import static org.springframework.http.HttpStatus.UNAUTHORIZED;
 
 /**
  * Central Exception handling. Taken from https://github.com/brunocleite/spring-boot-exception-handling.
@@ -62,13 +65,30 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler
         return buildResponseEntity(ApiError.of(ex));
     }
 
-    @ExceptionHandler(AccessDeniedException.class)
+    @ExceptionHandler(InvalidRequestException.class)
     public final ResponseEntity<Object> handleAccessDeniedException(
-        AccessDeniedException ex, WebRequest request)
+        InvalidRequestException ex, WebRequest request)
     {
         return buildResponseEntity(
-            new ApiError(FORBIDDEN, ex.getMessage(), "Check the permissions with your admin."));
+            new ApiError(BAD_REQUEST, ex.getMessage(), "Please fix the request format and try again."));
     }
+
+    @ExceptionHandler(AuthenticationException.class)
+    public final ResponseEntity<Object> handleAccessDeniedException(
+        AuthenticationException ex, WebRequest request)
+    {
+        return buildResponseEntity(
+            new ApiError(UNAUTHORIZED, ex.getMessage(), "Please provide valid credentials."));
+    }
+
+    @ExceptionHandler(ForbiddenAccessException.class)
+    public final ResponseEntity<Object> handleAccessDeniedException(
+        ForbiddenAccessException ex, WebRequest request)
+    {
+        return buildResponseEntity(
+            new ApiError(FORBIDDEN, ex.getMessage(), "Please check your permissions with the administrator."));
+    }
+
     /**
      * Handle MissingServletRequestParameterException. Triggered when a 'required' request parameter is missing.
      *

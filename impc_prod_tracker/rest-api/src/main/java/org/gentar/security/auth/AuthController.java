@@ -15,10 +15,8 @@
  */
 package org.gentar.security.auth;
 
-import org.gentar.exceptions.UserOperationFailedException;
 import org.gentar.security.authentication.AuthService;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.AuthenticationException;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -35,7 +33,7 @@ import static org.springframework.http.ResponseEntity.ok;
 @RequestMapping("/auth")
 public class AuthController
 {
-    private static final String AUTHENTICATION_ERROR = "Invalid userName/password provided.";
+
     private static final String USERNAME_NULL_ERROR = "Invalid userName or null provided.";
     private final AuthService authService;
 
@@ -46,30 +44,19 @@ public class AuthController
 
     /**
      * Signin a user to obtain a token and some basic information about the user.
+     *
      * @param authenticationRequest Object with the user's credentials.
      * @return Token if authenticated, as well as basic information like role and workUnitName.
      */
     @PostMapping(value = {"/signin"})
     public ResponseEntity signIn(@RequestBody AuthenticationRequest authenticationRequest)
     {
-        try
-        {
-            String username = authenticationRequest.getUserName();
-            if (username == null)
-            {
-                throw new UserOperationFailedException(USERNAME_NULL_ERROR);
-            }
-            String token = authService.getAuthenticationToken(
-                authenticationRequest.getUserName(), authenticationRequest.getPassword());
-            AuthenticationResponseDTO authenticationResponseDTO = buildAuthenticationResponseDTO(
-                username, token);
-
-            return ok(authenticationResponseDTO);
-        }
-        catch (AuthenticationException e)
-        {
-            throw new UserOperationFailedException(AUTHENTICATION_ERROR);
-        }
+        String username = authenticationRequest.getUserName();
+        String token = authService.getAuthenticationToken(
+            authenticationRequest.getUserName(), authenticationRequest.getPassword());
+        AuthenticationResponseDTO authenticationResponseDTO = buildAuthenticationResponseDTO(
+            username, token);
+        return ok(authenticationResponseDTO);
     }
 
     private AuthenticationResponseDTO buildAuthenticationResponseDTO(String userName, String token)

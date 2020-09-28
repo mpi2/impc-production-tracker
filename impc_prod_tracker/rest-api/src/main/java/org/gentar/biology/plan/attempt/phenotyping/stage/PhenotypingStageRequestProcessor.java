@@ -6,6 +6,7 @@ import org.gentar.biology.plan.attempt.phenotyping.stage.tissue_distribution.Tis
 import org.gentar.exceptions.UserOperationFailedException;
 import org.gentar.statemachine.ProcessEvent;
 import org.springframework.stereotype.Component;
+
 import java.util.*;
 
 @Component
@@ -32,18 +33,20 @@ public class PhenotypingStageRequestProcessor
      * @param phenotypingStageUpdateDTO the dto with the new information.
      * @return the updated phenotyping stage.
      */
-    public PhenotypingStage getPhenotypingStageToUpdate(PhenotypingStage originalPhenotypingStage,
-                                                        PhenotypingStageUpdateDTO phenotypingStageUpdateDTO)
+    public PhenotypingStage getPhenotypingStageToUpdate(
+        PhenotypingStage originalPhenotypingStage, PhenotypingStageUpdateDTO phenotypingStageUpdateDTO)
     {
         if (originalPhenotypingStage == null || phenotypingStageUpdateDTO == null)
         {
             throw new UserOperationFailedException("Cannot update the phenotyping stage");
         }
         PhenotypingStage newPhenotypingStage = new PhenotypingStage(originalPhenotypingStage);
-        PhenotypingStageCommonDTO phenotypingStageCommonDTO = phenotypingStageUpdateDTO.getPhenotypingStageCommonDTO();
-//        newPhenotypingStage.setDoNotCountTowardsCompleteness(phenotypingStageCommonDTO.getDoNotCountTowardsCompleteness());
-        newPhenotypingStage.setInitialDataReleaseDate(phenotypingStageCommonDTO.getInitialDataReleaseDate());
-        newPhenotypingStage.setPhenotypingExperimentsStarted(phenotypingStageCommonDTO.getPhenotypingExperimentsStarted());
+        PhenotypingStageCommonDTO phenotypingStageCommonDTO =
+            phenotypingStageUpdateDTO.getPhenotypingStageCommonDTO();
+        newPhenotypingStage.setInitialDataReleaseDate(
+            phenotypingStageCommonDTO.getInitialDataReleaseDate());
+        newPhenotypingStage.setPhenotypingExperimentsStarted(
+            phenotypingStageCommonDTO.getPhenotypingExperimentsStarted());
         Set<TissueDistribution> mappedTissueDistributions =
             tissueDistributionMapper.toEntities(
                 phenotypingStageCommonDTO.getTissueDistributionCentreDTOs());

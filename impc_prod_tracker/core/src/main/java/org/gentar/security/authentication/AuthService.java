@@ -15,6 +15,8 @@
  *******************************************************************************/
 package org.gentar.security.authentication;
 
+import org.gentar.exceptions.CommonErrorMessages;
+import org.gentar.exceptions.InvalidRequestException;
 import org.springframework.stereotype.Service;
 
 /**
@@ -40,6 +42,22 @@ public class AuthService
      */
     public String getAuthenticationToken(String userName, String password)
     {
+        validateNotNullCredentials(userName, password);
         return aapService.getToken(userName, password);
+    }
+
+    private void validateNotNullCredentials(String userName, String password)
+    {
+        if (userName == null)
+        {
+            String errorMessage = String.format(CommonErrorMessages.NULL_FIELD_ERROR, "userName");
+            errorMessage += " Make sure the sent parameter is called 'userName' (case sensitive).";
+            throw new InvalidRequestException(errorMessage);
+        }
+        if (password == null)
+        {
+            String errorMessage = String.format(CommonErrorMessages.NULL_FIELD_ERROR, "password");
+            throw new InvalidRequestException(errorMessage);
+        }
     }
 }

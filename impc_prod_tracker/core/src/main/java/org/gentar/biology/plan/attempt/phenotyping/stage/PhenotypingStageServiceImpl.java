@@ -141,7 +141,7 @@ public class PhenotypingStageServiceImpl implements PhenotypingStageService
         if (phenotypingStageType == null)
         {
             throw new UserOperationFailedException(
-                "Phenotyping stage type" + name + " does not exist.");
+                "Phenotyping stage type " + name + " does not exist.");
         }
         return phenotypingStageType;
     }

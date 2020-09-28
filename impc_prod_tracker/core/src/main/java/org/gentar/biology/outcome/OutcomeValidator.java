@@ -4,8 +4,11 @@ import org.gentar.biology.colony.Colony;
 import org.gentar.biology.outcome.type.OutcomeType;
 import org.gentar.biology.outcome.type.OutcomeTypeName;
 import org.gentar.biology.specimen.Specimen;
+import org.gentar.exceptions.CommonErrorMessages;
+import org.gentar.exceptions.ForbiddenAccessException;
 import org.gentar.exceptions.UserOperationFailedException;
 import org.gentar.security.abac.spring.ContextAwarePolicyEnforcement;
+import org.gentar.security.permissions.Actions;
 import org.gentar.security.permissions.PermissionService;
 import org.springframework.stereotype.Component;
 
@@ -13,12 +16,6 @@ import org.springframework.stereotype.Component;
 public class OutcomeValidator
 {
     private final ContextAwarePolicyEnforcement policyEnforcement;
-    private static final String CREATION_ERROR_MESSAGE =
-        "You cannot create an outcome associated to the plan %s because you do not have permissions " +
-            "to edit that plan.";
-    private static final String UPDATE_ERROR_MESSAGE =
-        "You cannot edit the outcome %s because it is associated to the plan %s and you do not have" +
-            " permissions to edit that plan";
     private static final String NULL_FIELD_ERROR = "[%s] cannot be null.";
 
     private final ColonyValidator colonyValidator;
@@ -63,17 +60,17 @@ public class OutcomeValidator
     {
         if (!canEditPlan(outcome))
         {
-            throw new UserOperationFailedException(
-                String.format(CREATION_ERROR_MESSAGE, outcome.getPlan().getPin()));
+            String detail = String.format(CommonErrorMessages.EDIT_PLAN_ERROR, outcome.getPlan().getPin());
+            throwPermissionExceptionForOutcome(Actions.CREATE, outcome, detail);
         }
     }
 
     public void validateUpdatePermission(Outcome outcome)
     {
-        if (!policyEnforcement.hasPermission(outcome.getPlan(), PermissionService.UPDATE_PLAN_ACTION))
+        if (!canEditPlan(outcome))
         {
-            throw new UserOperationFailedException(
-                String.format(UPDATE_ERROR_MESSAGE, outcome.getTpo(), outcome.getPlan().getPin()));
+            String detail = String.format(CommonErrorMessages.EDIT_PLAN_ERROR, outcome.getPlan().getPin());
+            throwPermissionExceptionForOutcome(Actions.UPDATE, outcome, detail);
         }
     }
 
@@ -81,5 +78,11 @@ public class OutcomeValidator
     {
         return policyEnforcement.hasPermission(
             outcome.getPlan(), PermissionService.UPDATE_PLAN_ACTION);
+    }
+
+    private void throwPermissionExceptionForOutcome(Actions action, Outcome outcome, String detail)
+    {
+        String entityType = Outcome.class.getSimpleName();
+        throw new ForbiddenAccessException(action, entityType, outcome.getTpo(), detail);
     }
 }
