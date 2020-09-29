@@ -15,7 +15,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class AllDataProcessedToPhenotypingFinishedProcessor extends AbstractProcessor
 {
-    private ContextAwarePolicyEnforcement policyEnforcement;
+    private final ContextAwarePolicyEnforcement policyEnforcement;
 
     public AllDataProcessedToPhenotypingFinishedProcessor(
         PhenotypingStageStateSetter stageStateSetter, ContextAwarePolicyEnforcement policyEnforcement)

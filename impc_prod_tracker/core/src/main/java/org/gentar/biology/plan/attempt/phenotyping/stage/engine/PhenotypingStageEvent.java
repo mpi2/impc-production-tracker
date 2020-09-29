@@ -23,12 +23,14 @@ public enum PhenotypingStageEvent implements ProcessEvent
                 return PhenotypingStartedProcessor.class;
             }
         },
+
     updateToPhenotypingAllDataSent(
         "No more phenotype data will be sent to the DCC.",
         PhenotypingStageState.PhenotypingStarted,
         PhenotypingStageState.PhenotypingAllDataSent,
         StateMachineConstants.TRIGGERED_BY_USER,
         "Used to indicate all phenotype data has been sent to the DCC."),
+
     updateToPhenotypingAllDataProcessed(
         "Set by the DCC when all phenotype data received and processed.",
         PhenotypingStageState.PhenotypingAllDataSent,
@@ -42,6 +44,7 @@ public enum PhenotypingStageEvent implements ProcessEvent
                 return AllDataSentToAllDataProcessedProcessor.class;
             }
         },
+
     updateToPhenotypingFinished(
         "Marked as finished by the CDA when all phenotype data published",
         PhenotypingStageState.PhenotypingAllDataProcessed,
@@ -55,32 +58,34 @@ public enum PhenotypingStageEvent implements ProcessEvent
                 return AllDataProcessedToPhenotypingFinishedProcessor.class;
             }
         },
+
     rollbackPhenotypingStarted(
-            "Rollback the state of phenotyping marked as having phenotyping started.",
-            PhenotypingStageState.PhenotypingStarted,
-            PhenotypingStageState.PhenotypingRegistered,
-            StateMachineConstants.TRIGGERED_BY_USER,
-            "Executed by the DCC.")
+        "Rollback the state of phenotyping marked as having phenotyping started.",
+        PhenotypingStageState.PhenotypingStarted,
+        PhenotypingStageState.PhenotypingRegistered,
+        StateMachineConstants.TRIGGERED_BY_USER,
+        "Executed by the DCC.")
+        {
+            @Override
+            public Class<? extends Processor> getNextStepProcessor()
             {
-                @Override
-                public Class<? extends Processor> getNextStepProcessor()
-                {
-                    return RollbackToPhenotypingRegisteredProcessor.class;
-                }
-            },
+                return RollbackToPhenotypingRegisteredProcessor.class;
+            }
+        },
+
     rollbackPhenotypingAllDataSent(
-            "Rollback the state of phenotyping marked as having all phenotype data sent to allow data entry.",
-            PhenotypingStageState.PhenotypingAllDataSent,
-            PhenotypingStageState.PhenotypingStarted,
-            StateMachineConstants.TRIGGERED_BY_USER,
-            "Executed by the DCC, allows more data to be sent.")
+        "Rollback the state of phenotyping marked as having all phenotype data sent to allow data entry.",
+        PhenotypingStageState.PhenotypingAllDataSent,
+        PhenotypingStageState.PhenotypingStarted,
+        StateMachineConstants.TRIGGERED_BY_USER,
+        "Executed by the DCC, allows more data to be sent.")
+        {
+            @Override
+            public Class<? extends Processor> getNextStepProcessor()
             {
-                @Override
-                public Class<? extends Processor> getNextStepProcessor()
-                {
-                    return RollbackToAllDataProcessedProcessor.class;
-                }
-            },
+                return PhenotypingStartedProcessor.class;
+            }
+        },
     rollbackPhenotypingAllDataProcessed(
         "Rollback the state of phenotyping marked as having all phenotype data processed to allow data entry.",
         PhenotypingStageState.PhenotypingAllDataProcessed,
@@ -91,9 +96,10 @@ public enum PhenotypingStageEvent implements ProcessEvent
             @Override
             public Class<? extends Processor> getNextStepProcessor()
             {
-                return UpdateToPhenotypingStartedProcessor.class;
+                return PhenotypingStartedProcessor.class;
             }
         },
+
     rollbackPhenotypingFinished(
         "Rollback the state of phenotyping marked as finished to allow an update.",
         PhenotypingStageState.PhenotypingFinished,
@@ -107,12 +113,14 @@ public enum PhenotypingStageEvent implements ProcessEvent
                 return RollbackToAllDataProcessedProcessor.class;
             }
         },
+
     reverseAbortion(
         "Reverse abortion",
         PhenotypingStageState.PhenotypeProductionAborted,
         PhenotypingStageState.PhenotypingRegistered,
         StateMachineConstants.TRIGGERED_BY_USER,
         null),
+
     abortWhenPhenotypingRegistered(
         "Abort phenotyping when a phenotype attempt has been registered",
         PhenotypingStageState.PhenotypingRegistered,
@@ -135,31 +143,36 @@ public enum PhenotypingStageEvent implements ProcessEvent
     }
 
     @Override
-    public ProcessState getInitialState() {
+    public ProcessState getInitialState()
+    {
         return initialState;
     }
 
     @Override
-    public ProcessState getEndState() {
+    public ProcessState getEndState()
+    {
         return endState;
     }
 
     @Override
-    public boolean isTriggeredByUser() {
+    public boolean isTriggeredByUser()
+    {
         return triggeredByUser;
     }
 
     @Override
-    public String getTriggerNote() {
+    public String getTriggerNote()
+    {
         return triggerNote;
     }
 
-    private String description;
-    private ProcessState initialState;
-    private ProcessState endState;
-    private boolean triggeredByUser;
-    private String triggerNote;
+    private final String description;
+    private final ProcessState initialState;
+    private final ProcessState endState;
+    private final boolean triggeredByUser;
+    private final String triggerNote;
 
+    //Processor used for the transitions when no other processor is specified.
     @Override
     public Class<? extends Processor> getNextStepProcessor()
     {

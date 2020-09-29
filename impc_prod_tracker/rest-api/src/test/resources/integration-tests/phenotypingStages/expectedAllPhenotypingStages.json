@@ -41,7 +41,7 @@
 					"description": "Marked as started when the DCC receives phenotype data",
 					"triggeredByUser": true,
 					"available": false,
-					"note": "The current user does not have permission to rollback to 'Phenotyping Started'",
+					"note": "The current user does not have permission to move to 'Phenotyping Started'",
 					"nextStatus": "Phenotyping Started"
 				}, {
 					"action": "abortWhenPhenotypeRegistered",

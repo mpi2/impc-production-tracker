@@ -15,7 +15,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class PhenotypingStartedProcessor extends AbstractProcessor
 {
-    private ContextAwarePolicyEnforcement policyEnforcement;
+    private final ContextAwarePolicyEnforcement policyEnforcement;
 
     public PhenotypingStartedProcessor(
         PhenotypingStageStateSetter phenotypingStageStateSetter,
@@ -30,9 +30,9 @@ public class PhenotypingStartedProcessor extends AbstractProcessor
     {
         TransitionEvaluation transitionEvaluation = new TransitionEvaluation();
         transitionEvaluation.setTransition(transition);
-        boolean canAbortPhenotypingStage = canExecuteTransition();
-        transitionEvaluation.setExecutable(canAbortPhenotypingStage);
-        if (!canAbortPhenotypingStage)
+        boolean validTransition = canExecuteTransition();
+        transitionEvaluation.setExecutable(validTransition);
+        if (!validTransition)
         {
             transitionEvaluation.setNote("The current user does not have permission to move " +
                 "to 'Phenotyping Started'");

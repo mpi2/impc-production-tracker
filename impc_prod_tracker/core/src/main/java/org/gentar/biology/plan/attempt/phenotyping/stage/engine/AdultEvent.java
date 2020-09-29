@@ -16,12 +16,14 @@ public enum AdultEvent implements ProcessEvent
         AdultState.RederivationStarted,
         StateMachineConstants.TRIGGERED_BY_USER,
         "executed by the user when rederivation is started."),
+
     updateToRederivationComplete(
         "Completed rederivation of the colony for phenotyping",
         AdultState.RederivationStarted,
         AdultState.RederivationComplete,
         StateMachineConstants.TRIGGERED_BY_USER,
         "executed by the user when rederivation is complete."),
+
     updateToPhenotypingStartedAfterRederivation(
         "Marked as started when the DCC recieves phenotype data following a rederivation step",
         AdultState.RederivationComplete,
@@ -32,7 +34,7 @@ public enum AdultEvent implements ProcessEvent
             @Override
             public Class<? extends Processor> getNextStepProcessor()
             {
-                return UpdateToPhenotypingStartedProcessor.class;
+                return PhenotypingStartedProcessor.class;
             }
         },
     updateToPhenotypingStarted(
@@ -45,7 +47,7 @@ public enum AdultEvent implements ProcessEvent
             @Override
             public Class<? extends Processor> getNextStepProcessor()
             {
-                return UpdateToPhenotypingStartedProcessor.class;
+                return PhenotypingStartedProcessor.class;
             }
         },
     updateToPhenotypingAllDataSent(
@@ -54,6 +56,7 @@ public enum AdultEvent implements ProcessEvent
         AdultState.PhenotypingAllDataSent,
         StateMachineConstants.TRIGGERED_BY_USER,
         "Used to indicate all phenotype data has been sent to the DCC."),
+
     updateToPhenotypingAllDataProcessed(
         "Set by the DCC when all phenotype data received and processed.",
         AdultState.PhenotypingAllDataSent,
@@ -103,7 +106,7 @@ public enum AdultEvent implements ProcessEvent
             @Override
             public Class<? extends Processor> getNextStepProcessor()
             {
-                return UpdateToPhenotypingStartedProcessor.class;
+                return PhenotypingStartedProcessor.class;
             }
         },
     rollbackPhenotypingAllDataProcessed(
@@ -116,7 +119,7 @@ public enum AdultEvent implements ProcessEvent
             @Override
             public Class<? extends Processor> getNextStepProcessor()
             {
-                return UpdateToPhenotypingStartedProcessor.class;
+                return PhenotypingStartedProcessor.class;
             }
         },
     rollbackPhenotypingFinished(
@@ -195,11 +198,11 @@ public enum AdultEvent implements ProcessEvent
         return triggerNote;
     }
 
-    private String description;
-    private ProcessState initialState;
-    private ProcessState endState;
-    private boolean triggeredByUser;
-    private String triggerNote;
+    private final String description;
+    private final ProcessState initialState;
+    private final ProcessState endState;
+    private final boolean triggeredByUser;
+    private final String triggerNote;
 
     @Override
     public Class<? extends Processor> getNextStepProcessor()
