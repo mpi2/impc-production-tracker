@@ -15,7 +15,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class AllDataSentToAllDataProcessedProcessor extends AbstractProcessor
 {
-    private ContextAwarePolicyEnforcement policyEnforcement;
+    private final ContextAwarePolicyEnforcement policyEnforcement;
 
     public AllDataSentToAllDataProcessedProcessor(
         PhenotypingStageStateSetter stageStateSetter, ContextAwarePolicyEnforcement policyEnforcement)
@@ -29,9 +29,9 @@ public class AllDataSentToAllDataProcessedProcessor extends AbstractProcessor
     {
         TransitionEvaluation transitionEvaluation = new TransitionEvaluation();
         transitionEvaluation.setTransition(transition);
-        boolean canAbortPhenotypingStage = canExecuteTransition();
-        transitionEvaluation.setExecutable(canAbortPhenotypingStage);
-        if (!canAbortPhenotypingStage)
+        boolean isValidTransition = canExecuteTransition();
+        transitionEvaluation.setExecutable(isValidTransition);
+        if (!isValidTransition)
         {
             transitionEvaluation.setNote("The current user does not have permission to move " +
                 "to 'All Data Processed'");
