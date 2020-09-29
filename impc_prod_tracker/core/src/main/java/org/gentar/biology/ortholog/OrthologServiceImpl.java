@@ -2,18 +2,18 @@ package org.gentar.biology.ortholog;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.gentar.graphql.GraphQLConsumer;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Component;
-
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 
 @Component
 public class OrthologServiceImpl implements OrthologService
 {
-    private GraphQLConsumer graphQLConsumer;
-    private JSONToOrthologsMapper jsonToOrthologsMapper;
+    private final GraphQLConsumer graphQLConsumer;
+    private final JSONToOrthologsMapper jsonToOrthologsMapper;
 
-    private static int THRESHOLD_SUPPORT_COUNT = 4;
+    private static final int THRESHOLD_SUPPORT_COUNT = 4;
 
     static final String ORTHOLOGS_BY_ACC_ID_QUERY =
             "{ \"query\":" +
@@ -43,6 +43,8 @@ public class OrthologServiceImpl implements OrthologService
         this.jsonToOrthologsMapper = jsonToOrthologsMapper;
     }
 
+    @Override
+    @Cacheable("orthologsByIds")
     public Map<String, List<Ortholog>> getOrthologsByAccIds(List<String> accIds)
     {
         Map<String, List<Ortholog>> orthologs = new HashMap<>();

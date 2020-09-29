@@ -136,7 +136,6 @@ public class ProjectSearcherServiceImpl implements ProjectSearcherService
 
     private PagedModel.PageMetadata buildPageMetadata(Page<?> paginatedContent)
     {
-        int numNulls = (int) paginatedContent.stream().filter(Objects::isNull).count();
         return new PagedModel.PageMetadata(
             paginatedContent.getSize(),
             paginatedContent.getNumber(),
