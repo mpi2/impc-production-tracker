@@ -18,15 +18,19 @@ package org.gentar.biology.plan;
 import org.gentar.biology.plan.engine.PlanCreator;
 import org.gentar.biology.plan.engine.PlanStateMachineResolver;
 import org.gentar.biology.plan.filter.PlanFilter;
-import org.gentar.exceptions.UserOperationFailedException;
+import org.gentar.exceptions.ForbiddenAccessException;
+import org.gentar.exceptions.NotFoundException;
 import org.gentar.audit.history.HistoryService;
 import org.gentar.security.abac.ResourceAccessChecker;
+import org.gentar.security.abac.spring.ContextAwarePolicyEnforcement;
+import org.gentar.security.permissions.Actions;
 import org.gentar.statemachine.ProcessEvent;
 import org.gentar.statemachine.TransitionAvailabilityEvaluator;
 import org.gentar.statemachine.TransitionEvaluation;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Component;
 import org.gentar.audit.history.History;
 import org.gentar.biology.plan.engine.PlanUpdater;
@@ -45,6 +49,7 @@ public class PlanServiceImpl implements PlanService
     private final PlanCreator planCreator;
     private final PlanStateMachineResolver planStateMachineResolver;
     private final TransitionAvailabilityEvaluator transitionAvailabilityEvaluator;
+    private final ContextAwarePolicyEnforcement policyEnforcement;
 
     private static final String READ_PLAN_ACTION = "READ_PLAN";
     private static final String PLAN_NOT_EXISTS_ERROR =
@@ -57,7 +62,8 @@ public class PlanServiceImpl implements PlanService
         HistoryService<Plan> historyService,
         PlanCreator planCreator,
         PlanStateMachineResolver planStateMachineResolver,
-        TransitionAvailabilityEvaluator transitionAvailabilityEvaluator)
+        TransitionAvailabilityEvaluator transitionAvailabilityEvaluator,
+        ContextAwarePolicyEnforcement policyEnforcement)
     {
         this.planRepository = planRepository;
         this.resourceAccessChecker = resourceAccessChecker;
@@ -66,18 +72,20 @@ public class PlanServiceImpl implements PlanService
         this.planCreator = planCreator;
         this.planStateMachineResolver = planStateMachineResolver;
         this.transitionAvailabilityEvaluator = transitionAvailabilityEvaluator;
+        this.policyEnforcement = policyEnforcement;
     }
 
     @Override
     public Plan getNotNullPlanByPin(String pin)
-    throws UserOperationFailedException
+    throws NotFoundException
     {
         Plan plan = planRepository.findPlanByPin(pin);
         if (plan == null)
         {
-            throw new UserOperationFailedException(String.format(PLAN_NOT_EXISTS_ERROR, pin));
+            throw new NotFoundException(String.format(PLAN_NOT_EXISTS_ERROR, pin));
         }
-        return plan;
+        validateReadPermissions(plan);
+        return getAccessChecked(plan);
     }
 
     @Override
@@ -169,5 +177,17 @@ public class PlanServiceImpl implements PlanService
     public ProcessEvent getProcessEventByName(Plan plan, String name)
     {
         return planStateMachineResolver.getProcessEventByActionName(plan, name);
+    }
+
+    private void validateReadPermissions(Plan plan)
+    {
+        try
+        {
+            policyEnforcement.checkPermission(plan, READ_PLAN_ACTION);
+        }
+        catch (AccessDeniedException ade)
+        {
+            throw new ForbiddenAccessException(Actions.READ, Plan.class.getSimpleName(), plan.getPin());
+        }
     }
 }

@@ -143,7 +143,7 @@ class ProjectControllerTest extends ControllerTestTemplate
         mvc().perform(MockMvcRequestBuilders
             .get("/api/projects/TPN:01X")
             .header("Authorization", accessToken))
-            .andExpect(status().is5xxServerError());
+            .andExpect(status().is4xxClientError());
     }
 
     @Test

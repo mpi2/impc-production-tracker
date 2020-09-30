@@ -14,7 +14,6 @@ import org.gentar.organization.consortium.Consortium;
 import org.gentar.organization.work_unit.WorkUnit;
 import org.gentar.security.abac.Resource;
 import org.gentar.security.abac.ResourcePrivacy;
-
 import javax.persistence.*;
 import java.util.*;
 
@@ -87,6 +86,8 @@ public class Outcome extends BaseEntity implements Resource<Outcome>
     @JsonIgnore
     public Resource<Outcome> getRestrictedObject()
     {
+        // TODO: define the data that we need to show if the user is going to see a restricted
+        // version of the object. "this" would shoe the object as it is.
         return this;
     }
 
