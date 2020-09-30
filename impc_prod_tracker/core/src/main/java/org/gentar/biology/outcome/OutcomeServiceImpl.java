@@ -4,6 +4,7 @@ import org.gentar.audit.history.History;
 import org.gentar.audit.history.HistoryService;
 import org.gentar.biology.mutation.Mutation;
 import org.gentar.biology.mutation.MutationService;
+import org.gentar.biology.mutation.MutationValidator;
 import org.gentar.biology.outcome.type.OutcomeType;
 import org.gentar.biology.outcome.type.OutcomeTypeRepository;
 import org.gentar.biology.plan.Plan;
@@ -30,6 +31,7 @@ public class OutcomeServiceImpl implements OutcomeService
     private final OutcomeUpdater outcomeUpdater;
     private final PlanService planService;
     private final MutationService mutationService;
+    private final MutationValidator mutationValidator;
     private final ResourceAccessChecker<Outcome> resourceAccessChecker;
     private final HistoryService<Outcome> historyService;
 
@@ -42,6 +44,7 @@ public class OutcomeServiceImpl implements OutcomeService
         OutcomeUpdater outcomeUpdater,
         PlanService planService,
         MutationService mutationService,
+        MutationValidator mutationValidator,
         ResourceAccessChecker<Outcome> resourceAccessChecker,
         HistoryService<Outcome> historyService)
     {
@@ -51,6 +54,7 @@ public class OutcomeServiceImpl implements OutcomeService
         this.outcomeUpdater = outcomeUpdater;
         this.planService = planService;
         this.mutationService = mutationService;
+        this.mutationValidator = mutationValidator;
         this.resourceAccessChecker = resourceAccessChecker;
         this.historyService = historyService;
     }
@@ -151,6 +155,7 @@ public class OutcomeServiceImpl implements OutcomeService
         {
             throw new NotFoundException("Mutation " + min + " does not exist.");
         }
+        mutationValidator.validateReadPermissions(mutation);
         return mutation;
     }
 

@@ -19,10 +19,10 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import org.gentar.exceptions.UserOperationFailedException;
 import org.gentar.security.abac.subject.SubjectRetriever;
 import org.gentar.security.abac.subject.SystemSubject;
+import org.gentar.security.permissions.Actions;
 import org.springframework.stereotype.Component;
 import org.gentar.security.abac.spring.ContextAwarePolicyEnforcement;
 import org.gentar.security.authentication.AAPService;
-import org.gentar.security.permissions.PermissionService;
 import org.gentar.organization.management.ManagementService;
 
 import java.util.List;
@@ -108,7 +108,7 @@ public class PersonServiceImpl implements PersonService
     @Override
     public Person updateManagedPerson(Person person, String token)
     {
-        validatePermissions(PermissionService.UPDATE_USER, person);
+        validatePermissions(Actions.UPDATE_USER, person);
         personRepository.save(person);
         return person;
     }

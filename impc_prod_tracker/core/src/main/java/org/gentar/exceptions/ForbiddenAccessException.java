@@ -1,20 +1,20 @@
 package org.gentar.exceptions;
 
 import org.apache.logging.log4j.util.Strings;
-import org.gentar.security.permissions.Actions;
+import org.gentar.security.permissions.Operations;
 
 public class ForbiddenAccessException extends RuntimeException
 {
     private static final String ERROR_TEMPLATE = "You do not have permission to %s the %s%s.";
 
-    public ForbiddenAccessException(Actions action, String resourceType, String resourceId)
+    public ForbiddenAccessException(Operations operation, String resourceType, String resourceId)
     {
-        this(getErrorMessage(action, resourceType, resourceId, null));
+        this(getErrorMessage(operation, resourceType, resourceId, null));
     }
 
-    public ForbiddenAccessException(Actions action, String resourceType, String resourceId, String details)
+    public ForbiddenAccessException(Operations operation, String resourceType, String resourceId, String details)
     {
-        this(getErrorMessage(action, resourceType, resourceId, details));
+        this(getErrorMessage(operation, resourceType, resourceId, details));
     }
 
     private ForbiddenAccessException(String message)
@@ -22,7 +22,7 @@ public class ForbiddenAccessException extends RuntimeException
         super(message);
     }
 
-    private static String getErrorMessage(Actions action, String resourceType, String resourceId, String details)
+    private static String getErrorMessage(Operations action, String resourceType, String resourceId, String details)
     {
         String finalResourceType = resourceType.toLowerCase();
         String finalResourceId = " " + resourceId;

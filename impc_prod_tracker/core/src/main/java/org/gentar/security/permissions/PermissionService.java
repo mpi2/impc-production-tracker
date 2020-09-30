@@ -15,8 +15,6 @@
  *******************************************************************************/
 package org.gentar.security.permissions;
 
-import org.gentar.security.permissions.ActionPermission;
-
 import java.util.List;
 
 /**
@@ -24,15 +22,6 @@ import java.util.List;
  */
 public interface PermissionService
 {
-    String MANAGE_USERS_ACTION = "MANAGE_USERS";
-    String EXECUTE_MANAGER_TASKS_ACTION = "EXECUTE_MANAGER_TASKS";
-    String CREATE_PLAN_ACTION = "CREATE_PLAN";
-    String UPDATE_PLAN_ACTION = "UPDATE_PLAN";
-    String CREATE_PROJECT_ACTION = "CREATE_PROJECT";
-    String UPDATE_PROJECT_ACTION = "UPDATE_PROJECT";
-    String UPDATE_USER = "UPDATE_USER";
-    String MANAGE_GENE_LIST_ACTION = "MANAGE_GENE_LISTS";
-
     /**
      * Get the general permissions a user has that don't depend on specific resources.
      * The user is the currently logged user in the system.

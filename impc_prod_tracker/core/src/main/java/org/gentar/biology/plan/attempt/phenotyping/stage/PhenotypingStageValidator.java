@@ -7,7 +7,7 @@ import org.gentar.exceptions.ForbiddenAccessException;
 import org.gentar.exceptions.UserOperationFailedException;
 import org.gentar.security.abac.spring.ContextAwarePolicyEnforcement;
 import org.gentar.security.permissions.Actions;
-import org.gentar.security.permissions.PermissionService;
+import org.gentar.security.permissions.Operations;
 import org.springframework.stereotype.Component;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -76,7 +76,7 @@ public class PhenotypingStageValidator
         {
             String detail = String.format(
                 CommonErrorMessages.EDIT_PLAN_ERROR, phenotypingStage.getPhenotypingAttempt().getPlan().getPin());
-            throwPermissionExceptionForPhenotypingStage(Actions.CREATE, phenotypingStage, detail);
+            throwPermissionExceptionForPhenotypingStage(Operations.CREATE, phenotypingStage, detail);
         }
     }
 
@@ -86,18 +86,18 @@ public class PhenotypingStageValidator
         {
             String detail = String.format(
                 CommonErrorMessages.EDIT_PLAN_ERROR, phenotypingStage.getPhenotypingAttempt().getPlan().getPin());
-            throwPermissionExceptionForPhenotypingStage(Actions.UPDATE, phenotypingStage, detail);
+            throwPermissionExceptionForPhenotypingStage(Operations.UPDATE, phenotypingStage, detail);
         }
     }
 
     private boolean canEditPlan(PhenotypingStage phenotypingStage)
     {
         return policyEnforcement.hasPermission(
-            phenotypingStage.getPhenotypingAttempt().getPlan(), PermissionService.UPDATE_PLAN_ACTION);
+            phenotypingStage.getPhenotypingAttempt().getPlan(), Actions.UPDATE_PLAN_ACTION);
     }
 
     private void throwPermissionExceptionForPhenotypingStage(
-        Actions action, PhenotypingStage phenotypingStage, String detail)
+        Operations action, PhenotypingStage phenotypingStage, String detail)
     {
         String entityType = "phenotyping stage";
         throw new ForbiddenAccessException(action, entityType, phenotypingStage.getPsn(), detail);

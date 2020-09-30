@@ -13,11 +13,10 @@ import org.gentar.exceptions.UserOperationFailedException;
 import org.gentar.security.abac.ResourceAccessChecker;
 import org.gentar.security.abac.spring.ContextAwarePolicyEnforcement;
 import org.gentar.security.permissions.Actions;
-import org.gentar.security.permissions.PermissionService;
+import org.gentar.security.permissions.Operations;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Component;
 import org.gentar.biology.plan.Plan;
-
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
@@ -33,8 +32,6 @@ public class PlanValidator
     private final AttemptTypeService attemptTypeService;
     private final ContextAwarePolicyEnforcement policyEnforcement;
     private final ResourceAccessChecker<Plan> resourceAccessChecker;
-
-    private static final String READ_PLAN_ACTION = "READ_PLAN";
 
     private static final String ATTEMPT_TYPE_PLAN_TYPE_INVALID_ASSOCIATION =
         "The attempt type [%s] cannot be associated with a plan with type [%s].";
@@ -120,9 +117,9 @@ public class PlanValidator
      */
     public void validatePermissionToCreatePlan(Plan plan)
     {
-        if (!policyEnforcement.hasPermission(plan, PermissionService.CREATE_PLAN_ACTION))
+        if (!policyEnforcement.hasPermission(plan, Actions.CREATE_PLAN_ACTION))
         {
-            throwPermissionExceptionForPlan(Actions.CREATE, plan);
+            throwPermissionExceptionForPlan(Operations.CREATE, plan);
         }
     }
 
@@ -132,13 +129,13 @@ public class PlanValidator
      */
     public void validatePermissionToUpdatePlan(Plan plan)
     {
-        if (!policyEnforcement.hasPermission(plan, PermissionService.UPDATE_PLAN_ACTION))
+        if (!policyEnforcement.hasPermission(plan, Actions.UPDATE_PLAN_ACTION))
         {
-            throwPermissionExceptionForPlan(Actions.UPDATE, plan);
+            throwPermissionExceptionForPlan(Operations.UPDATE, plan);
         }
     }
 
-    private void throwPermissionExceptionForPlan(Actions action, Plan plan)
+    private void throwPermissionExceptionForPlan(Operations action, Plan plan)
     {
         String entityType = Plan.class.getSimpleName();
         throw new ForbiddenAccessException(action, entityType, plan.getPin());
@@ -153,18 +150,19 @@ public class PlanValidator
 
     public Plan getAccessChecked(Plan plan)
     {
-        return (Plan) resourceAccessChecker.checkAccess(plan, READ_PLAN_ACTION);
+        return (Plan) resourceAccessChecker.checkAccess(plan, Actions.READ_PLAN_ACTION);
     }
 
     public void validateReadPermissions(Plan plan)
     {
         try
         {
-            policyEnforcement.checkPermission(plan, READ_PLAN_ACTION);
+            policyEnforcement.checkPermission(plan, Actions.READ_PLAN_ACTION);
         }
         catch (AccessDeniedException ade)
         {
-            throw new ForbiddenAccessException(Actions.READ, Plan.class.getSimpleName(), plan.getPin());
+            throw new ForbiddenAccessException(
+                Operations.READ, Plan.class.getSimpleName(), plan.getPin());
         }
     }
 

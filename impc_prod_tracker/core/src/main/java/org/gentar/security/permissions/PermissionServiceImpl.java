@@ -90,7 +90,7 @@ public class PermissionServiceImpl implements PermissionService
     {
         ActionPermission actionPermission = new ActionPermission();
         actionPermission.setActionName(MANAGE_USERS_KEY);
-        actionPermission.setValue(policyEnforcement.hasPermission(null, MANAGE_USERS_ACTION));
+        actionPermission.setValue(policyEnforcement.hasPermission(null, Actions.MANAGE_USERS_ACTION));
         return actionPermission;
     }
 
@@ -99,7 +99,7 @@ public class PermissionServiceImpl implements PermissionService
         ActionPermission actionPermission = new ActionPermission();
         actionPermission.setActionName(EXECUTE_MANAGER_TASKS_KEY);
         actionPermission.setValue(
-            policyEnforcement.hasPermission(null, EXECUTE_MANAGER_TASKS_ACTION));
+            policyEnforcement.hasPermission(null, Actions.EXECUTE_MANAGER_TASKS_ACTION));
         return actionPermission;
     }
 
@@ -108,7 +108,7 @@ public class PermissionServiceImpl implements PermissionService
         ActionPermission actionPermission = new ActionPermission();
         actionPermission.setActionName(MANAGE_GENE_LISTS);
         actionPermission.setValue(
-            policyEnforcement.hasPermission(null, MANAGE_GENE_LIST_ACTION));
+            policyEnforcement.hasPermission(null, Actions.MANAGE_GENE_LIST_ACTION));
         return actionPermission;
     }
 
@@ -116,7 +116,7 @@ public class PermissionServiceImpl implements PermissionService
     {
         ActionPermission actionPermission = new ActionPermission();
         actionPermission.setActionName(MANAGE_USERS_KEY);
-        actionPermission.setValue(policyEnforcement.hasPermission(user, null, MANAGE_USERS_ACTION));
+        actionPermission.setValue(policyEnforcement.hasPermission(user, null, Actions.MANAGE_USERS_ACTION));
         return actionPermission;
     }
 
@@ -125,7 +125,7 @@ public class PermissionServiceImpl implements PermissionService
         ActionPermission actionPermission = new ActionPermission();
         actionPermission.setActionName(EXECUTE_MANAGER_TASKS_KEY);
         actionPermission.setValue(
-            policyEnforcement.hasPermission(user, null, EXECUTE_MANAGER_TASKS_ACTION));
+            policyEnforcement.hasPermission(user, null, Actions.EXECUTE_MANAGER_TASKS_ACTION));
         return actionPermission;
     }
 
@@ -134,7 +134,7 @@ public class PermissionServiceImpl implements PermissionService
         ActionPermission actionPermission = new ActionPermission();
         actionPermission.setActionName(MANAGE_GENE_LISTS);
         actionPermission.setValue(
-            policyEnforcement.hasPermission(user, null, MANAGE_GENE_LIST_ACTION));
+            policyEnforcement.hasPermission(user, null, Actions.MANAGE_GENE_LIST_ACTION));
         return actionPermission;
     }
 
@@ -148,12 +148,12 @@ public class PermissionServiceImpl implements PermissionService
         {
             case UPDATE_PLAN:
                 resource = planService.getPlanByPinWithoutCheckPermissions(resourceId);
-                actionInPolicySystem = UPDATE_PLAN_ACTION;
+                actionInPolicySystem = Actions.UPDATE_PLAN_ACTION;
                 break;
 
             case UPDATE_PROJECT:
                 resource = projectService.getProjectByPinWithoutCheckPermissions(resourceId);
-                actionInPolicySystem = UPDATE_PROJECT_ACTION;
+                actionInPolicySystem = Actions.UPDATE_PROJECT_ACTION;
                 break;
 
             default:

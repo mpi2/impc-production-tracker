@@ -10,7 +10,7 @@ import org.gentar.biology.species.Species_;
 import org.gentar.biology.status.Status_;
 import org.gentar.exceptions.UserOperationFailedException;
 import org.gentar.security.abac.spring.ContextAwarePolicyEnforcement;
-import org.gentar.security.permissions.PermissionService;
+import org.gentar.security.permissions.Actions;
 import org.springframework.stereotype.Component;
 
 import java.util.HashSet;
@@ -49,7 +49,7 @@ public class MutationUpdater
         for (Plan plan : associatedPlans)
         {
             // If the user can update the plan then they can update the mutation.
-            if (!policyEnforcement.hasPermission(plan, PermissionService.UPDATE_PLAN_ACTION))
+            if (!policyEnforcement.hasPermission(plan, Actions.UPDATE_PLAN_ACTION))
             {
                 throw new UserOperationFailedException(
                     "To update this mutation you need permission to update the plan "
