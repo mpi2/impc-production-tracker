@@ -82,6 +82,7 @@ public class PhenotypingStage extends BaseEntity implements ProcessData
         }
     }
 
+    @Override
     public String toString()
     {
         String phenotypingStageTypeName =

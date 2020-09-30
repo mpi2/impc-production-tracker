@@ -20,6 +20,7 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 import lombok.extern.slf4j.Slf4j;
 import org.gentar.exceptions.ForbiddenAccessException;
 import org.gentar.exceptions.InvalidRequestException;
+import org.gentar.exceptions.NotFoundException;
 import org.gentar.exceptions.OperationFailedException;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
@@ -79,6 +80,14 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler
     {
         return buildResponseEntity(
             new ApiError(UNAUTHORIZED, ex.getMessage(), "Please provide valid credentials."));
+    }
+
+    @ExceptionHandler(NotFoundException.class)
+    public final ResponseEntity<Object> handleAccessDeniedException(
+        NotFoundException ex, WebRequest request)
+    {
+        return buildResponseEntity(
+            new ApiError(NOT_FOUND, ex.getMessage(), "Please check the resource identifier."));
     }
 
     @ExceptionHandler(ForbiddenAccessException.class)

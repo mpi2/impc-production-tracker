@@ -144,6 +144,7 @@ public class Project extends BaseEntity implements Resource<Project>
     @OneToMany(cascade=CascadeType.ALL, mappedBy = "project", orphanRemoval=true)
     private Set<ProjectConsortium> projectConsortia;
 
+    @Override
     @JsonIgnore
     public ResourcePrivacy getResourcePrivacy()
     {
@@ -166,6 +167,7 @@ public class Project extends BaseEntity implements Resource<Project>
         return resourcePrivacy;
     }
 
+    @Override
     @JsonIgnore
     public Project getRestrictedObject()
     {

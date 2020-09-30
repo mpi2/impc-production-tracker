@@ -26,6 +26,7 @@ import org.gentar.biology.plan.type.PlanTypeName;
 import org.gentar.biology.project.mappers.ProjectCreationMapper;
 import org.gentar.biology.project.mappers.ProjectCsvRecordMapper;
 import org.gentar.biology.project.mappers.ProjectResponseMapper;
+import org.gentar.exceptions.NotFoundException;
 import org.gentar.exceptions.UserOperationFailedException;
 import org.gentar.helpers.CsvWriter;
 import org.gentar.helpers.PlanLinkBuilder;
@@ -242,7 +243,7 @@ public class ProjectController
 
     private ProjectResponseDTO getDTO(Project project)
     {
-        ProjectResponseDTO projectResponseDTO = null;
+        ProjectResponseDTO projectResponseDTO = new ProjectResponseDTO();
         if (project != null)
         {
             projectResponseDTO = projectResponseMapper.toDto(project);
@@ -263,18 +264,9 @@ public class ProjectController
     public EntityModel<?> findOne(@PathVariable String tpn)
     {
         EntityModel<ProjectResponseDTO> entityModel = null;
-        Project project = projectService.getProjectByTpn(tpn);
+        Project project = projectService.getNotNullProjectByTpn(tpn);
         ProjectResponseDTO projectResponseDTO = getDTO(project);
-
-        if (projectResponseDTO != null)
-        {
-            entityModel = new EntityModel<>(projectResponseDTO);
-        }
-        else
-        {
-            throw new UserOperationFailedException(String.format(PROJECT_NOT_FOUND_ERROR, tpn));
-        }
-
+        entityModel = EntityModel.of(projectResponseDTO);
         return entityModel;
     }
 
