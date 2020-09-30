@@ -6,6 +6,7 @@ import org.gentar.biology.plan.Plan;
 import org.gentar.biology.plan.PlanService;
 import org.gentar.biology.plan.attempt.phenotyping.stage.type.PhenotypingStageType;
 import org.gentar.biology.plan.attempt.phenotyping.stage.type.PhenotypingStageTypeRepository;
+import org.gentar.exceptions.NotFoundException;
 import org.gentar.exceptions.UserOperationFailedException;
 import org.gentar.security.abac.Resource;
 import org.gentar.security.abac.ResourceAccessChecker;
@@ -88,7 +89,7 @@ public class PhenotypingStageServiceImpl implements PhenotypingStageService
         PhenotypingStage phenotypingStage = phenotypingStageRepository.findByPsn(psn);
         if (phenotypingStage == null)
         {
-            throw new UserOperationFailedException("PhenotypingsStage " + psn + " does not exist.");
+            throw new NotFoundException("PhenotypingsStage " + psn + " does not exist.");
         }
         return phenotypingStage;
     }
@@ -140,7 +141,7 @@ public class PhenotypingStageServiceImpl implements PhenotypingStageService
         PhenotypingStageType phenotypingStageType = getPhenotypingStageTypeByName(name);
         if (phenotypingStageType == null)
         {
-            throw new UserOperationFailedException(
+            throw new NotFoundException(
                 "Phenotyping stage type " + name + " does not exist.");
         }
         return phenotypingStageType;

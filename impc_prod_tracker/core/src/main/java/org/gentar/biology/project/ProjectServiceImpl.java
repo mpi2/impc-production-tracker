@@ -23,82 +23,67 @@ import org.gentar.biology.outcome.Outcome;
 import org.gentar.biology.plan.Plan;
 import org.gentar.biology.plan.type.PlanTypeName;
 import org.gentar.biology.project.engine.ProjectUpdater;
+import org.gentar.biology.project.engine.ProjectValidator;
 import org.gentar.biology.project.specs.ProjectSpecs;
-import org.gentar.exceptions.ForbiddenAccessException;
 import org.gentar.exceptions.NotFoundException;
 import org.gentar.exceptions.UserOperationFailedException;
-import org.gentar.security.abac.ResourceAccessChecker;
 import org.gentar.biology.project.search.filter.ProjectFilter;
-import org.gentar.security.abac.spring.ContextAwarePolicyEnforcement;
-import org.gentar.security.permissions.Actions;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
-import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Component;
 import org.gentar.audit.history.History;
 import org.gentar.biology.project.engine.ProjectCreator;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 @Component
 public class ProjectServiceImpl implements ProjectService
 {
     private final ProjectRepository projectRepository;
     private final HistoryService<Project> historyService;
-    private final ResourceAccessChecker<Project> resourceAccessChecker;
     private final ProjectCreator projectCreator;
     private final OrthologService orthologService;
     private final ProjectQueryHelper projectQueryHelper;
     private final ProjectUpdater projectUpdater;
-    private final ContextAwarePolicyEnforcement policyEnforcement;
-
-    public static final String READ_PROJECT_ACTION = "READ_PROJECT";
+    private final ProjectValidator projectValidator;
 
     public ProjectServiceImpl(
         ProjectRepository projectRepository,
         HistoryService<Project> historyService,
-        ResourceAccessChecker<Project> resourceAccessChecker,
         ProjectCreator projectCreator,
         OrthologService orthologService,
         ProjectQueryHelper projectQueryHelper,
         ProjectUpdater projectUpdater,
-        ContextAwarePolicyEnforcement policyEnforcement)
+        ProjectValidator projectValidator)
     {
         this.projectRepository = projectRepository;
         this.historyService = historyService;
-        this.resourceAccessChecker = resourceAccessChecker;
         this.projectCreator = projectCreator;
         this.orthologService = orthologService;
         this.projectQueryHelper = projectQueryHelper;
         this.projectUpdater = projectUpdater;
-        this.policyEnforcement = policyEnforcement;
-    }
-
-    @Override
-    public Project getProjectByTpn(String tpn)
-    {
-        Specification<Project> specifications = ProjectSpecs.withTpns(Arrays.asList(tpn));
-        Project project = projectRepository.findOne(specifications).orElse(null);
-        validateReadPermissions(project);
-        return getAccessChecked(project);
+        this.projectValidator = projectValidator;
     }
 
     @Override
     public Project getNotNullProjectByTpn(String tpn)
     {
-        Project project = getProjectByTpn(tpn);
+        Project project = projectRepository.findByTpn(tpn);
         if (project == null)
         {
-            throw new NotFoundException("Project " + tpn + " does not exist");
+            throw new NotFoundException("Project " + tpn + " does not exist.");
         }
-        return project;
+        projectValidator.validateReadPermissions(project);
+        return projectValidator.getAccessChecked(project);
+    }
+
+    @Override
+    public Project getProjectByPinWithoutCheckPermissions(String tpn)
+    {
+        return projectRepository.findByTpn(tpn);
     }
 
     @Override
@@ -107,7 +92,7 @@ public class ProjectServiceImpl implements ProjectService
         Specification<Project> specifications = buildSpecificationsWithCriteria(projectFilter);
         List<Project> projects = projectRepository.findAll(specifications);
         addOrthologs(projects);
-        return getCheckedCollection(projects);
+        return projectValidator.getCheckedCollection(projects);
     }
 
     @Override
@@ -116,7 +101,7 @@ public class ProjectServiceImpl implements ProjectService
         Specification<Project> specifications = buildSpecificationsWithCriteria(projectFilter);
         Page<Project> projectsPage = projectRepository.findAll(specifications, pageable);
         addOrthologs(projectsPage.getContent());
-        return projectsPage.map(this::getAccessChecked);
+        return projectsPage.map(projectValidator::getAccessChecked);
     }
 
     private void addOrthologs(List<Project> projects)
@@ -145,17 +130,6 @@ public class ProjectServiceImpl implements ProjectService
             projectIntentionGenes.addAll(projectQueryHelper.getIntentionGenesByProject(x));
         });
         return projectIntentionGenes;
-    }
-
-    private Project getAccessChecked(Project project)
-    {
-        return (Project) resourceAccessChecker.checkAccess(project, READ_PROJECT_ACTION);
-    }
-
-    private List<Project> getCheckedCollection(Collection<Project> projects)
-    {
-        return projects.stream()
-            .map(this::getAccessChecked).filter(Objects::nonNull).collect(Collectors.toList());
     }
 
     private Specification<Project> buildSpecificationsWithCriteria(ProjectFilter projectFilter)
@@ -232,17 +206,5 @@ public class ProjectServiceImpl implements ProjectService
             });
         }
         return productionOutcomes;
-    }
-
-    private void validateReadPermissions(Project project)
-    {
-        try
-        {
-            policyEnforcement.checkPermission(project, READ_PROJECT_ACTION);
-        }
-        catch (AccessDeniedException ade)
-        {
-            throw new ForbiddenAccessException(Actions.READ, Project.class.getSimpleName(), project.getTpn());
-        }
     }
 }

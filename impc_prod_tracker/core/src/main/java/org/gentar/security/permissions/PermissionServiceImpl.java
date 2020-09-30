@@ -152,7 +152,7 @@ public class PermissionServiceImpl implements PermissionService
                 break;
 
             case UPDATE_PROJECT:
-                resource = projectService.getProjectByTpn(resourceId);
+                resource = projectService.getProjectByPinWithoutCheckPermissions(resourceId);
                 actionInPolicySystem = UPDATE_PROJECT_ACTION;
                 break;
 

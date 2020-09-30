@@ -10,12 +10,18 @@ import org.gentar.biology.plan.type.PlanTypeName;
 import org.gentar.exceptions.CommonErrorMessages;
 import org.gentar.exceptions.ForbiddenAccessException;
 import org.gentar.exceptions.UserOperationFailedException;
+import org.gentar.security.abac.ResourceAccessChecker;
 import org.gentar.security.abac.spring.ContextAwarePolicyEnforcement;
 import org.gentar.security.permissions.Actions;
 import org.gentar.security.permissions.PermissionService;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Component;
 import org.gentar.biology.plan.Plan;
+
+import java.util.Collection;
 import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 /**
  * Class that validates the date in a  {@link Plan}.
@@ -26,17 +32,23 @@ public class PlanValidator
     private final CrisprAttemptValidator crisprAttemptValidator;
     private final AttemptTypeService attemptTypeService;
     private final ContextAwarePolicyEnforcement policyEnforcement;
+    private final ResourceAccessChecker<Plan> resourceAccessChecker;
+
+    private static final String READ_PLAN_ACTION = "READ_PLAN";
+
     private static final String ATTEMPT_TYPE_PLAN_TYPE_INVALID_ASSOCIATION =
         "The attempt type [%s] cannot be associated with a plan with type [%s].";
 
     public PlanValidator(
         CrisprAttemptValidator crisprAttemptValidator,
         AttemptTypeService attemptTypeService,
-        ContextAwarePolicyEnforcement policyEnforcement)
+        ContextAwarePolicyEnforcement policyEnforcement,
+        ResourceAccessChecker<Plan> resourceAccessChecker)
     {
         this.crisprAttemptValidator = crisprAttemptValidator;
         this.attemptTypeService = attemptTypeService;
         this.policyEnforcement = policyEnforcement;
+        this.resourceAccessChecker = resourceAccessChecker;
     }
 
     /**
@@ -130,6 +142,30 @@ public class PlanValidator
     {
         String entityType = Plan.class.getSimpleName();
         throw new ForbiddenAccessException(action, entityType, plan.getPin());
+    }
+
+    public List<Plan> getCheckedCollection(Collection<Plan> plans)
+    {
+        return plans.stream().map(this::getAccessChecked)
+            .filter(Objects::nonNull)
+            .collect(Collectors.toList());
+    }
+
+    public Plan getAccessChecked(Plan plan)
+    {
+        return (Plan) resourceAccessChecker.checkAccess(plan, READ_PLAN_ACTION);
+    }
+
+    public void validateReadPermissions(Plan plan)
+    {
+        try
+        {
+            policyEnforcement.checkPermission(plan, READ_PLAN_ACTION);
+        }
+        catch (AccessDeniedException ade)
+        {
+            throw new ForbiddenAccessException(Actions.READ, Plan.class.getSimpleName(), plan.getPin());
+        }
     }
 
 }
