@@ -9,7 +9,7 @@ import org.gentar.exceptions.ForbiddenAccessException;
 import org.gentar.exceptions.UserOperationFailedException;
 import org.gentar.security.abac.spring.ContextAwarePolicyEnforcement;
 import org.gentar.security.permissions.Actions;
-import org.gentar.security.permissions.PermissionService;
+import org.gentar.security.permissions.Operations;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -61,7 +61,7 @@ public class OutcomeValidator
         if (!canEditPlan(outcome))
         {
             String detail = String.format(CommonErrorMessages.EDIT_PLAN_ERROR, outcome.getPlan().getPin());
-            throwPermissionExceptionForOutcome(Actions.CREATE, outcome, detail);
+            throwPermissionExceptionForOutcome(Operations.CREATE, outcome, detail);
         }
     }
 
@@ -70,17 +70,17 @@ public class OutcomeValidator
         if (!canEditPlan(outcome))
         {
             String detail = String.format(CommonErrorMessages.EDIT_PLAN_ERROR, outcome.getPlan().getPin());
-            throwPermissionExceptionForOutcome(Actions.UPDATE, outcome, detail);
+            throwPermissionExceptionForOutcome(Operations.UPDATE, outcome, detail);
         }
     }
 
     private boolean canEditPlan(Outcome outcome)
     {
         return policyEnforcement.hasPermission(
-            outcome.getPlan(), PermissionService.UPDATE_PLAN_ACTION);
+            outcome.getPlan(), Actions.UPDATE_PLAN_ACTION);
     }
 
-    private void throwPermissionExceptionForOutcome(Actions action, Outcome outcome, String detail)
+    private void throwPermissionExceptionForOutcome(Operations action, Outcome outcome, String detail)
     {
         String entityType = Outcome.class.getSimpleName();
         throw new ForbiddenAccessException(action, entityType, outcome.getTpo(), detail);

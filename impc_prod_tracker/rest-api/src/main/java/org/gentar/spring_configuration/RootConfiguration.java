@@ -46,7 +46,6 @@ public class RootConfiguration extends WebSecurityConfigurerAdapter
     private final JwtTokenFilter jwtTokenFilter;
     private final ExceptionHandlerFilter exceptionHandlerFilter;
 
-
     public RootConfiguration(
         JwtTokenFilter jwtTokenFilter, ExceptionHandlerFilter exceptionHandlerFilter)
     {
@@ -86,6 +85,7 @@ public class RootConfiguration extends WebSecurityConfigurerAdapter
             .antMatchers("/api/projects/**").permitAll()
             .antMatchers("/api/plans/**").permitAll()
             .antMatchers("/api/outcomes/**").permitAll()
+            .antMatchers("/api/mutations/**").permitAll()
             .antMatchers("/api/people/requestPasswordReset").permitAll()
             .antMatchers("/reports/**").permitAll()
             .anyRequest().authenticated()

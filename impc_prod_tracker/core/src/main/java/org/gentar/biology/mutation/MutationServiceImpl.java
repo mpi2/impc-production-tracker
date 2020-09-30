@@ -18,6 +18,7 @@ public class MutationServiceImpl implements MutationService
     private final MutationSequenceService mutationSequenceService;
     private final MutationUpdater mutationUpdater;
     private final HistoryService<Mutation> historyService;
+    private final MutationValidator mutationValidator;
 
     private static final String MUTATION_NOT_EXIST_ERROR = "Mutation %s does not exist.";
 
@@ -26,13 +27,15 @@ public class MutationServiceImpl implements MutationService
         SequenceService sequenceService,
         MutationSequenceService mutationSequenceService,
         MutationUpdater mutationUpdater,
-        HistoryService<Mutation> historyService)
+        HistoryService<Mutation> historyService,
+        MutationValidator mutationValidator)
     {
         this.mutationRepository = mutationRepository;
         this.sequenceService = sequenceService;
         this.mutationSequenceService = mutationSequenceService;
         this.mutationUpdater = mutationUpdater;
         this.historyService = historyService;
+        this.mutationValidator = mutationValidator;
     }
 
     @Override
@@ -49,6 +52,7 @@ public class MutationServiceImpl implements MutationService
         {
             throw new NotFoundException(String.format(MUTATION_NOT_EXIST_ERROR, min));
         }
+        mutationValidator.validateReadPermissions(mutation);
         return mutation;
     }
 
@@ -80,12 +84,6 @@ public class MutationServiceImpl implements MutationService
     {
         return historyService.getHistoryByEntityNameAndEntityId(
             Mutation.class.getSimpleName(), mutation.getId());
-    }
-
-    @Override
-    public String getSuggestedSymbol(Mutation mutation)
-    {
-        return null;
     }
 
     private String buildMin(Long id)
