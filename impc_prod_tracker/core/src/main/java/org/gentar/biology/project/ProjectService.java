@@ -25,8 +25,8 @@ import java.util.List;
 
 public interface ProjectService
 {
-    Project getProjectByTpn(String tpn);
     Project getNotNullProjectByTpn(String tpn);
+    Project getProjectByPinWithoutCheckPermissions(String tpn);
     List<Project> getProjects(ProjectFilter projectFilter);
     Page<Project> getProjects(ProjectFilter projectFilter, Pageable pageable);
 

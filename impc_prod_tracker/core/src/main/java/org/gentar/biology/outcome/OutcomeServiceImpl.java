@@ -8,11 +8,11 @@ import org.gentar.biology.outcome.type.OutcomeType;
 import org.gentar.biology.outcome.type.OutcomeTypeRepository;
 import org.gentar.biology.plan.Plan;
 import org.gentar.biology.plan.PlanService;
+import org.gentar.exceptions.NotFoundException;
 import org.gentar.exceptions.UserOperationFailedException;
 import org.gentar.security.abac.ResourceAccessChecker;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
-
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.HashSet;
@@ -113,7 +113,7 @@ public class OutcomeServiceImpl implements OutcomeService
         OutcomeType outcomeType = getOutcomeTypeByName(name);
         if (outcomeType == null)
         {
-            throw new UserOperationFailedException("Outcome type" + name + " does not exist.");
+            throw new NotFoundException("Outcome type" + name + " does not exist.");
         }
         return outcomeType;
     }
@@ -124,7 +124,7 @@ public class OutcomeServiceImpl implements OutcomeService
         Outcome outcome = outcomeRepository.findByTpo(tpo);
         if (outcome == null)
         {
-            throw new UserOperationFailedException("Outcome " + tpo + " does not exist");
+            throw new NotFoundException("Outcome " + tpo + " does not exist.");
         }
         return outcome;
     }
@@ -149,7 +149,7 @@ public class OutcomeServiceImpl implements OutcomeService
         }
         if (mutation == null)
         {
-            throw new UserOperationFailedException("Mutation " + min + " not found");
+            throw new NotFoundException("Mutation " + min + " does not exist.");
         }
         return mutation;
     }

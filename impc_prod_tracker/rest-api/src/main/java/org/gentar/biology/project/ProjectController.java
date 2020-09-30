@@ -26,8 +26,6 @@ import org.gentar.biology.plan.type.PlanTypeName;
 import org.gentar.biology.project.mappers.ProjectCreationMapper;
 import org.gentar.biology.project.mappers.ProjectCsvRecordMapper;
 import org.gentar.biology.project.mappers.ProjectResponseMapper;
-import org.gentar.exceptions.NotFoundException;
-import org.gentar.exceptions.UserOperationFailedException;
 import org.gentar.helpers.CsvWriter;
 import org.gentar.helpers.PlanLinkBuilder;
 import org.gentar.helpers.LinkUtil;
@@ -45,7 +43,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.gentar.biology.project.search.filter.ProjectFilter;
 import org.gentar.biology.project.search.filter.ProjectFilterBuilder;
-import org.gentar.biology.project.helper.ProjectUtilities;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Collections;
@@ -273,7 +270,7 @@ public class ProjectController
     @GetMapping(value = {"/{tpn}/history"})
     public List<HistoryDTO> getProjectHistory(@PathVariable String tpn)
     {
-        Project project = ProjectUtilities.getNotNullProjectByTpn(tpn);
+        Project project = projectService.getNotNullProjectByTpn(tpn);
 
         return historyMapper.toDtos(projectService.getProjectHistory(project));
     }
@@ -281,7 +278,7 @@ public class ProjectController
     @GetMapping(value = {"/{tpn}/productionOutcomesSummaries"})
     public List<OutcomeSummaryDTO> getProductionOutcomesSummaries(@PathVariable String tpn)
     {
-        Project project = ProjectUtilities.getNotNullProjectByTpn(tpn);
+        Project project = projectService.getNotNullProjectByTpn(tpn);
         List<Outcome> productionOutcomes = projectService.getProductionOutcomesByProject(project);
         return outcomeSummaryMapper.toDtos(productionOutcomes);
     }
