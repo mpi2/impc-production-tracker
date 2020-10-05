@@ -22,6 +22,7 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
+@Deprecated
 @Component
 public class GeneMapper implements Mapper<Gene, GeneDTO>
 {
