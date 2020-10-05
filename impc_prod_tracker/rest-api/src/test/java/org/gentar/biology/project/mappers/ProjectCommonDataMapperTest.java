@@ -118,7 +118,7 @@ class ProjectCommonDataMapperTest
         projectCommonDataDTO.setRecovery(RECOVERY);
         ProjectConsortiumDTO projectConsortiumDTO = new ProjectConsortiumDTO();
         projectConsortiumDTO.setConsortiumName(CONSORTIUM_NAME);
-        projectConsortiumDTO.setInstituteNames(Arrays.asList(INSTITUTE_NAME));
+//        projectConsortiumDTO.setInstituteNames(Arrays.asList(INSTITUTE_NAME));
         List<ProjectConsortiumDTO> projectConsortiumDTOS = new ArrayList<>();
         projectConsortiumDTOS.add(projectConsortiumDTO);
         Privacy privacy = new Privacy();

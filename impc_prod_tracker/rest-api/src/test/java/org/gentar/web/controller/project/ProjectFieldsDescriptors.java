@@ -117,10 +117,6 @@ public class ProjectFieldsDescriptors
             addField(descriptors, "consortia[].id", "Internal record id.");
         }
         addField(descriptors, "consortia[].consortiumName", "Name of the consortium.");
-        addField(
-            descriptors,
-            "consortia[].institutes",
-            "Institutes associated with the project - consortium.");
         return descriptors;
     }
 

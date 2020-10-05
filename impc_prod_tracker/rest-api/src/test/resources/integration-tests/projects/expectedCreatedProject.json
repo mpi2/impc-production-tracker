@@ -102,10 +102,7 @@
   "consortia":[
     {
       "id":7,
-      "consortiumName":"CMG",
-      "institutes":[
-        "Broad"
-      ]
+      "consortiumName":"CMG"
     }
   ]
 }

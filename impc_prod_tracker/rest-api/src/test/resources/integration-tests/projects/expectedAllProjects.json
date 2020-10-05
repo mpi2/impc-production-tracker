@@ -107,11 +107,7 @@
         "consortia":[
           {
             "id":1,
-            "consortiumName":"CMG",
-            "institutes":[
-              "Yale",
-              "Broad"
-            ]
+            "consortiumName":"CMG"
           }
         ]
       },
@@ -147,10 +143,7 @@
         "consortia":[
           {
             "id":2,
-            "consortiumName":"CMG",
-            "institutes":[
-              "Broad"
-            ]
+            "consortiumName":"CMG"
           }
         ]
       },
@@ -186,10 +179,7 @@
         "consortia":[
           {
             "id":3,
-            "consortiumName":"CMG",
-            "institutes":[
-              "Yale"
-            ]
+            "consortiumName":"CMG"
           }
         ]
       },
@@ -225,10 +215,7 @@
         "consortia":[
           {
             "id":4,
-            "consortiumName":"CMG",
-            "institutes":[
-
-            ]
+            "consortiumName":"CMG"
           }
         ]
       },
@@ -264,10 +251,7 @@
         "consortia":[
           {
             "id":5,
-            "consortiumName":"CMG",
-            "institutes":[
-
-            ]
+            "consortiumName":"CMG"
           }
         ]
       }

@@ -103,12 +103,8 @@
   ],
   "consortia":[
     {
-      "id":1,
-      "consortiumName":"CMG",
-      "institutes":[
-        "Yale",
-        "Broad"
-      ]
+      "id": 1,
+      "consortiumName":"CMG"
     }
   ]
 }
