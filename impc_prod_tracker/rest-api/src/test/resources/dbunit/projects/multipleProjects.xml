@@ -7,12 +7,34 @@
                 NAME="restricted"/>
 
     <SPECIES    ID="1"
-                NAME="Mus musculus"/>
+                NAME="Mus musculus"
+                TAXON_ID="10090"/>
     <SPECIES    ID="2"
-                NAME="Homo sapiens"/>
+                NAME="Homo sapiens"
+                TAXON_ID="9606"/>
+
+    <SEQUENCE_TYPE  ID="1"
+                    NAME="complete"/>
+    <SEQUENCE_TYPE  ID="2"
+                    NAME="partial"/>
+    <SEQUENCE_TYPE  ID="3"
+                    NAME="5_prime_end"/>
+    <SEQUENCE_TYPE  ID="4"
+                    NAME="3_prime_end"/>
+
+    <SEQUENCE_CATEGORY  ID="1"
+                        NAME="intention target sequence"/>
+    <SEQUENCE_CATEGORY  ID="2"
+                        NAME="original starting sequence"/>
+    <SEQUENCE_CATEGORY  ID="3"
+                        NAME="outcome sequence"/>
 
     <FUNDER ID="1"
             NAME="KOMP"/>
+
+    <STRAIN ID="1"
+            NAME="C57BL/6N"
+            MGI_STRAIN_ACC_ID="MGI:2159965"/>
 
     <ASSIGNMENT_STATUS  ID="1"
                         NAME="Assigned"/>
@@ -100,6 +122,14 @@
                 WORK_UNIT_ID="1"
                 WORK_GROUP_ID="1"
                 SUMMARY_STATUS_ID="1"/>
+    <PLAN       ID="2"
+                PIN="PIN:0000000002"
+                PROJECT_ID="1"
+                PLAN_TYPE_ID="2"
+                STATUS_ID="1"
+                WORK_UNIT_ID="1"
+                WORK_GROUP_ID="1"
+                SUMMARY_STATUS_ID="1"/>
 
     <PROJECT_INTENTION  ID="1"
                         MOLECULAR_MUTATION_TYPE_ID="1"
@@ -123,6 +153,31 @@
 
     <PROJECT_INTENTION_GENE PROJECT_INTENTION_ID="1"
                             GENE_ID="1"/>
+
+    <SEQUENCE   ID="1"
+                SEQUENCE=">Otog
+TGGGACTAGGTCACAGACAGAAAAAGGGGGATGAGAAGGCCTTAGATCTAAGGGAGGTAAAGAGAGAATTAACCACAGGAATTAGCACACTGAAGGATCGTGCTCGCCAGACCTCAAACCATCTCCTTCTTGCGTCATGAGAAAGCCTTGACCCATCATTTTCCAGTTTTCTGTGTTCTTGCCCCACTTTGGCCCCTGGATCCTGGGATCTCCCCAGAAATTCTTACCTAGCCCC"
+                SEQUENCE_TYPE_ID="1"
+                SEQUENCE_CATEGORY_ID="3"/>
+
+    <LOCATION   ID="1"
+                CHR="X"
+                START="1234567"
+                STOP="7654321"
+                STRAND="+"
+                GENOME_BUILD="GRCm38"
+                SPECIES_ID="1"
+                STRAIN_ID="1"/>
+
+    <PROJECT_INTENTION_SEQUENCE ID="1"
+                                INDEX="1"
+                                PROJECT_INTENTION_ID="1"
+                                SEQUENCE_ID="1"/>
+
+    <SEQUENCE_LOCATION  ID="1"
+                        INDEX="1"
+                        LOCATION_ID="1"
+                        SEQUENCE_ID="1"/>
 
     <PROJECT_INTENTION_MUTATION_CATEGORIZATION PROJECT_INTENTION_ID="1"
                                                MUTATION_CATEGORIZATION_ID="1"/>

@@ -1,6 +1,6 @@
 package org.gentar.biology.project.mappers;
 
-import org.gentar.biology.intention.ProjectIntentionMapper;
+import org.gentar.biology.intention.ProjectIntentionResponseMapper;
 import org.gentar.biology.plan.Plan;
 import org.gentar.biology.project.Project;
 import org.gentar.biology.project.ProjectResponseDTO;
@@ -40,7 +40,7 @@ class ProjectResponseMapperTest
     @Mock
     private StatusStampMapper statusStampMapper;
     @Mock
-    private ProjectIntentionMapper projectIntentionMapper;
+    private ProjectIntentionResponseMapper projectIntentionResponseMapper;
     @Mock
     private SpeciesMapper speciesMapper;
     @Mock
@@ -50,7 +50,11 @@ class ProjectResponseMapperTest
     void setUp()
     {
         testInstance = new ProjectResponseMapper(
-            projectCommonDataMapper, statusStampMapper, projectIntentionMapper, speciesMapper, projectConsortiumMapper);
+            projectCommonDataMapper,
+            statusStampMapper,
+            projectIntentionResponseMapper,
+            speciesMapper,
+            projectConsortiumMapper);
     }
 
     @Test
@@ -61,7 +65,7 @@ class ProjectResponseMapperTest
 
         verify(projectCommonDataMapper, times(1)).toDto(project);
         verify(statusStampMapper, times(1)).toDtos(project.getAssignmentStatusStamps());
-        verify(projectIntentionMapper, times(1)).toDtos(project.getProjectIntentions());
+        verify(projectIntentionResponseMapper, times(1)).toDtos(project.getProjectIntentions());
         verify(speciesMapper, times(1)).toDtos(project.getSpecies());
         verify(projectConsortiumMapper, times(1)).toDtos(project.getProjectConsortia());
         assertThat(projectResponseDTO.getTpn(), is(TPN));

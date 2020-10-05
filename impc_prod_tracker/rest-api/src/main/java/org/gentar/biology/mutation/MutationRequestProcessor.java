@@ -84,7 +84,7 @@ public class MutationRequestProcessor
             mappedMutation.getMgiAlleleSymbolRequiresConstruction());
         newMutation.setGeneticMutationType(mappedMutation.getGeneticMutationType());
         newMutation.setMolecularMutationType(mappedMutation.getMolecularMutationType());
-        if (mutationUpdateDTO.getSymbolOrAccessionIds() != null)
+        if (mutationUpdateDTO.getGeneUpdateDTOS() != null)
         {
             newMutation.setGenes(mappedMutation.getGenes());
         }

@@ -2,6 +2,7 @@
   "tpn":"TPN:000000001",
   "recovery":false,
   "comment":"Comment test",
+  "reactivationDate":"2020-09-24T00:00:02",
   "privacyName":"public",
   "externalReference":"External reference 01",
   "assignmentStatusName":"Assigned",
@@ -12,7 +13,6 @@
   "relatedWorkGroupNames":[
     "BaSH"
   ],
-  "reactivationDate":"2020-09-24T00:00:02",
   "_links":{
     "self":{
       "href":"http://localhost:8080/api/projects/TPN:000000001"
@@ -20,6 +20,11 @@
     "productionPlans":[
       {
         "href":"http://localhost:8080/api/plans/PIN:0000000001"
+      }
+    ],
+    "phenotypingPlans":[
+      {
+        "href":"http://localhost:8080/api/plans/PIN:0000000002"
       }
     ]
   },
@@ -38,22 +43,58 @@
       ],
       "intentionByGene":{
         "bestOrthologs":[
-
+          {
+            "symbol":"SERPINB10",
+            "category":"MODERATE",
+            "support":"HGNC,OMA,HomoloGene,Panther,NCBI,Ensembl,Inparanoid",
+            "supportCount":7,
+            "link":"https://www.genenames.org/data/gene-symbol-report/#!/hgnc_id/HGNC:8942"
+          }
         ],
         "allOrthologs":[
-
+          {
+            "symbol":"SERPINB10",
+            "category":"MODERATE",
+            "support":"HGNC,OMA,HomoloGene,Panther,NCBI,Ensembl,Inparanoid",
+            "supportCount":7,
+            "link":"https://www.genenames.org/data/gene-symbol-report/#!/hgnc_id/HGNC:8942"
+          }
         ],
         "gene":{
           "id":1,
-          "name":"serine (or cysteine) peptidase inhibitor, clade B (ovalbumin), member 10",
           "symbol":"Serpinb10",
           "speciesName":"Mus musculus",
-          "externalLink":"http://www.mousephenotype.org/data/genes/MGI:2138648",
-          "accessionId":"MGI:2138648"
+          "accessionId":"MGI:2138648",
+          "name":"serine (or cysteine) peptidase inhibitor, clade B (ovalbumin), member 10",
+          "externalLink":"http://www.mousephenotype.org/data/genes/MGI:2138648"
         }
       },
-      "intentionsBySequence":[
-
+      "intentionsBySequences":[
+        {
+          "index":1,
+          "sequence":{
+            "id":1,
+            "sequence":">Otog TGGGACTAGGTCACAGACAGAAAAAGGGGGATGAGAAGGCCTTAGATCTAAGGGAGGTAAAGAGAGAATTAACCACAGGAATTAGCACACTGAAGGATCGTGCTCGCCAGACCTCAAACCATCTCCTTCTTGCGTCATGAGAAAGCCTTGACCCATCATTTTCCAGTTTTCTGTGTTCTTGCCCCACTTTGGCCCCTGGATCCTGGGATCTCCCCAGAAATTCTTACCTAGCCCC",
+            "typeName":"complete",
+            "categoryName":"outcome sequence",
+            "sequenceLocations":[
+              {
+                "id":1,
+                "locationIndex":1,
+                "location":{
+                  "id":1,
+                  "chr":"X",
+                  "start":1234567,
+                  "stop":7654321,
+                  "strand":"+",
+                  "genomeBuild":"GRCm38",
+                  "strainName":"C57BL/6N",
+                  "speciesName":"Mus musculus"
+                }
+              }
+            ]
+          }
+        }
       ]
     }
   ],

@@ -3,7 +3,7 @@ package org.gentar.biology.project;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonUnwrapped;
 import lombok.Data;
-import org.gentar.biology.intention.ProjectIntentionDTO;
+import org.gentar.biology.intention.ProjectIntentionCreationDTO;
 import org.gentar.biology.plan.PlanMinimumCreationDTO;
 import java.util.List;
 
@@ -24,7 +24,7 @@ public class ProjectCreationDTO
 
     // Intentions for the project.
     @JsonProperty("projectIntentions")
-    private List<ProjectIntentionDTO> projectIntentionDTOS;
+    private List<ProjectIntentionCreationDTO> projectIntentionCreationDTOS;
 
     @JsonProperty("speciesNames")
     private List<String> speciesNames;

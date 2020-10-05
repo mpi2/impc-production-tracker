@@ -1,6 +1,9 @@
 package org.gentar.biology.gene_list;
 
 import org.gentar.Mapper;
+import org.gentar.biology.mutation.Mutation;
+import org.gentar.biology.mutation.molecular_type.MolecularMutationType;
+import org.gentar.biology.outcome.Outcome;
 import org.gentar.biology.plan.Plan;
 import org.gentar.biology.project.Project;
 import org.gentar.biology.project.assignment.AssignmentStatus;
@@ -8,6 +11,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 @Component
 public class ProjectByGeneSummaryMapper implements Mapper<Project, ProjectByGeneSummaryDTO>
@@ -17,6 +21,7 @@ public class ProjectByGeneSummaryMapper implements Mapper<Project, ProjectByGene
     {
         ProjectByGeneSummaryDTO projectByGeneSummaryDTO = new ProjectByGeneSummaryDTO();
         projectByGeneSummaryDTO.setTpn(project.getTpn());
+        projectByGeneSummaryDTO.setSummaryStatus(project.getSummaryStatus().getName());
         AssignmentStatus assignmentStatus = project.getAssignmentStatus();
         if (assignmentStatus != null)
         {
@@ -50,10 +55,29 @@ public class ProjectByGeneSummaryMapper implements Mapper<Project, ProjectByGene
         {
             outcomes.forEach(o -> {
                 OutcomeSummaryDTO outcomeSummaryDTO = new OutcomeSummaryDTO();
-                outcomeSummaryDTO.setMolecularMutationTypeName("Unknown");
+                outcomeSummaryDTO.setTpo(o.getTpo());
+                outcomeSummaryDTO.setMolecularMutationTypeNames(
+                    getMolecularMutationTypeNamesByOutcome(o));
                 outcomeSummaryDTOS.add(outcomeSummaryDTO);
             });
         }
         planSummaryDTO.setOutcomes(outcomeSummaryDTOS);
+    }
+
+    private List<String> getMolecularMutationTypeNamesByOutcome(Outcome outcome)
+    {
+        List<String> names = new ArrayList<>();
+        Set<Mutation> mutations = outcome.getMutations();
+        if (mutations != null)
+        {
+            mutations.forEach(m -> {
+                MolecularMutationType molecularMutationType = m.getMolecularMutationType();
+                if (molecularMutationType != null)
+                {
+                    names.add(molecularMutationType.getName());
+                }
+            });
+        }
+        return names;
     }
 }

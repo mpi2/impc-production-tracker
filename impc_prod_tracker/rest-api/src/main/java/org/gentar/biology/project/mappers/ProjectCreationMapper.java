@@ -1,7 +1,7 @@
 package org.gentar.biology.project.mappers;
 
 import org.gentar.Mapper;
-import org.gentar.biology.intention.ProjectIntentionMapper;
+import org.gentar.biology.intention.ProjectIntentionCreationMapper;
 import org.gentar.biology.intention.project_intention.ProjectIntention;
 import org.gentar.biology.project.Project;
 import org.gentar.biology.project.ProjectCreationDTO;
@@ -19,19 +19,19 @@ import java.util.Set;
 @Component
 public class ProjectCreationMapper implements Mapper<Project, ProjectCreationDTO>
 {
-    private ProjectCommonDataMapper projectCommonDataMapper;
-    private ProjectIntentionMapper projectIntentionMapper;
-    private SpeciesMapper speciesMapper;
-    private ProjectConsortiumMapper projectConsortiumMapper;
+    private final ProjectCommonDataMapper projectCommonDataMapper;
+    private final ProjectIntentionCreationMapper projectIntentionCreationMapper;
+    private final SpeciesMapper speciesMapper;
+    private final ProjectConsortiumMapper projectConsortiumMapper;
 
     public ProjectCreationMapper(
         ProjectCommonDataMapper projectCommonDataMapper,
-        ProjectIntentionMapper projectIntentionMapper,
+        ProjectIntentionCreationMapper projectIntentionCreationMapper,
         SpeciesMapper speciesMapper,
         ProjectConsortiumMapper projectConsortiumMapper)
     {
         this.projectCommonDataMapper = projectCommonDataMapper;
-        this.projectIntentionMapper = projectIntentionMapper;
+        this.projectIntentionCreationMapper = projectIntentionCreationMapper;
         this.speciesMapper = speciesMapper;
         this.projectConsortiumMapper = projectConsortiumMapper;
     }
@@ -58,7 +58,7 @@ public class ProjectCreationMapper implements Mapper<Project, ProjectCreationDTO
     private void setProjectIntentionsToEntity(Project project, ProjectCreationDTO projectCreationDTO)
     {
         List<ProjectIntention> projectIntentions = new ArrayList<>(
-            projectIntentionMapper.toEntities(projectCreationDTO.getProjectIntentionDTOS()));
+            projectIntentionCreationMapper.toEntities(projectCreationDTO.getProjectIntentionCreationDTOS()));
         projectIntentions.forEach(x -> x.setProject(project));
         project.setProjectIntentions(projectIntentions);
     }

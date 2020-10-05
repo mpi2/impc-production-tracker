@@ -24,6 +24,7 @@ import org.gentar.biology.intention.OrthologDTO;
 
 import java.util.List;
 
+@Deprecated
 @Data
 @RequiredArgsConstructor
 public class ProjectIntentionGeneDTO

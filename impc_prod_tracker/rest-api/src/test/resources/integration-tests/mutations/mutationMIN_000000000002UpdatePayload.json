@@ -47,8 +47,12 @@
       "href":"http://localhost:8080/api/plans/PIN:0000000001/outcomes/TPO:000000000002"
     }
   },
-  "geneSymbolsOrAccessionIds":[
-      "Otog",
-      "Dennd6b"
+  "genes":[
+    {
+      "symbol": "Otog"
+    },
+    {
+      "symbol": "Dennd6b"
+    }
   ]
 }

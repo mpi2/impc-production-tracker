@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonUnwrapped;
 import lombok.Data;
 import org.gentar.biology.intention.ProjectIntentionDTO;
+import org.gentar.biology.intention.ProjectIntentionResponseDTO;
 import org.gentar.biology.status_stamps.StatusStampsDTO;
 import org.springframework.hateoas.RepresentationModel;
 import org.springframework.hateoas.server.core.Relation;
@@ -45,7 +46,7 @@ public class ProjectResponseDTO extends RepresentationModel<ProjectResponseDTO>
 
     // Intentions for the project.
     @JsonProperty("projectIntentions")
-    private List<ProjectIntentionDTO> projectIntentionDTOS;
+    private List<ProjectIntentionResponseDTO> projectIntentionDTOS;
 
     // Indicates if this project is a restricted view of the data because of the permissions for the
     // user.

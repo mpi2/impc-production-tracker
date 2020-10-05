@@ -65,9 +65,6 @@ public class ProjectController
     private final ProjectResponseMapper projectResponseMapper;
     private final OutcomeSummaryMapper outcomeSummaryMapper;
 
-    private static final String PROJECT_NOT_FOUND_ERROR =
-        "Project %s does not exist or you don't have access to it.";
-
     ProjectController(
         ProjectService projectService,
         HistoryMapper historyMapper,

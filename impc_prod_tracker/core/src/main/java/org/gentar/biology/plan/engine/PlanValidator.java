@@ -89,7 +89,7 @@ public class PlanValidator
         if (planType == null)
         {
             throw new UserOperationFailedException(
-                String.format(CommonErrorMessages.NULL_FIELD_ERROR, "plan type"));
+                String.format(CommonErrorMessages.NULL_FIELD_ERROR, "typeName"));
         }
     }
 
@@ -99,7 +99,7 @@ public class PlanValidator
         if (attemptType == null)
         {
             throw new UserOperationFailedException(
-                String.format(CommonErrorMessages.NULL_FIELD_ERROR, "attempt type"));
+                String.format(CommonErrorMessages.NULL_FIELD_ERROR, "attemptTypeName"));
         }
     }
 

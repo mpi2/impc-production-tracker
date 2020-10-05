@@ -33,7 +33,27 @@
           "externalLink":null,
           "accessionId":"MGI:2138648"
         }
-      }
+      },
+      "intentionsBySequences": [{
+        "sequence": {
+          "sequence": ">Gpr173 Cas9 high_Gpr173_11766 \n GATGGTTTGAGAGCCTGGACTGAAGCTTGAAAGAGAAGGCTTCTGTATGGGTCCCACCCTTCCCCTGCTGCTGGCCCCCGTATGGTGATTCTGACTTTCCCCCTGCCTATGATCAGTCCCAGCAGCACCAGCTTCACATAAGCCGATGCTGATGGCAGAGACAGTGCGCCGCTCACCTCTTCGGGCTCTCCGGTGGTGTTGGCCATACTGAGGGGCAAAGGCTACCCCCAACCCTAGGGGATTGGCCAGTTCAGTATTTGATGGGCCCTGGCGGACTCCATCAGTTTTCTTGCTGAGCTACACCTGCAAATGGGAACA",
+          "typeName": "partial",
+          "categoryName": "original starting sequence",
+          "sequenceLocations": [{
+            "locationIndex": 1,
+            "location": {
+              "chr": "X",
+              "start": 123456,
+              "stop": 654321,
+              "strand": "+",
+              "genomeBuild": "GRCm38",
+              "speciesName": "Mus musculus",
+              "strainName": "C57BL/6N"
+            }
+          }]
+        },
+        "index": 1
+      }]
     }
   ],
   "speciesNames":[

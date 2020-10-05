@@ -32,10 +32,10 @@ import java.util.Map;
 @Component
 public class GeneListService
 {
-    private GeneListRepository geneListRepository;
-    private GeneListRecordService geneListRecordService;
-    private GeneListCsvConverter geneListCsvConverter;
-    private ConsortiumService consortiumService;
+    private final GeneListRepository geneListRepository;
+    private final GeneListRecordService geneListRecordService;
+    private final GeneListCsvConverter geneListCsvConverter;
+    private final ConsortiumService consortiumService;
 
     public GeneListService(
         GeneListRepository geneListRepository,

@@ -1,8 +1,9 @@
 package org.gentar.biology.project.mappers;
 
 import org.gentar.Mapper;
-import org.gentar.biology.intention.ProjectIntentionDTO;
 import org.gentar.biology.intention.ProjectIntentionMapper;
+import org.gentar.biology.intention.ProjectIntentionResponseDTO;
+import org.gentar.biology.intention.ProjectIntentionResponseMapper;
 import org.gentar.biology.project.Project;
 import org.gentar.biology.project.ProjectConsortiumDTO;
 import org.gentar.biology.project.ProjectController;
@@ -28,20 +29,20 @@ public class ProjectResponseMapper implements Mapper<Project, ProjectResponseDTO
 {
     private final ProjectCommonDataMapper projectCommonDataMapper;
     private final StatusStampMapper statusStampMapper;
-    private final ProjectIntentionMapper projectIntentionMapper;
+    private final ProjectIntentionResponseMapper projectIntentionResponseMapper;
     private final SpeciesMapper speciesMapper;
     private final ProjectConsortiumMapper projectConsortiumMapper;
 
     public ProjectResponseMapper(
         ProjectCommonDataMapper projectCommonDataMapper,
         StatusStampMapper statusStampMapper,
-        ProjectIntentionMapper projectIntentionMapper,
+        ProjectIntentionResponseMapper projectIntentionResponseMapper,
         SpeciesMapper speciesMapper,
         ProjectConsortiumMapper projectConsortiumMapper)
     {
         this.projectCommonDataMapper = projectCommonDataMapper;
         this.statusStampMapper = statusStampMapper;
-        this.projectIntentionMapper = projectIntentionMapper;
+        this.projectIntentionResponseMapper = projectIntentionResponseMapper;
         this.speciesMapper = speciesMapper;
         this.projectConsortiumMapper = projectConsortiumMapper;
     }
@@ -81,8 +82,8 @@ public class ProjectResponseMapper implements Mapper<Project, ProjectResponseDTO
 
     private void setProjectIntentionsDTOS(ProjectResponseDTO projectResponseDTO, Project project)
     {
-        List<ProjectIntentionDTO> projectIntentionDTOs =
-            projectIntentionMapper.toDtos(project.getProjectIntentions());
+        List<ProjectIntentionResponseDTO> projectIntentionDTOs =
+            projectIntentionResponseMapper.toDtos(project.getProjectIntentions());
         projectResponseDTO.setProjectIntentionDTOS(projectIntentionDTOs);
     }
 

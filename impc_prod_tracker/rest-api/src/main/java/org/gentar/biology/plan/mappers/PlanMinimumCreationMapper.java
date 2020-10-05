@@ -11,10 +11,10 @@ import org.springframework.stereotype.Component;
 @Component
 public class PlanMinimumCreationMapper implements Mapper<Plan, PlanMinimumCreationDTO>
 {
-    private EntityMapper entity;
-    private PlanCommonDataMapper planCommonDataMapper;
-    private PlanTypeMapper planTypeMapper;
-    private AttemptTypeMapper attemptTypeMapper;
+    private final EntityMapper entity;
+    private final PlanCommonDataMapper planCommonDataMapper;
+    private final PlanTypeMapper planTypeMapper;
+    private final AttemptTypeMapper attemptTypeMapper;
 
     public PlanMinimumCreationMapper(
         EntityMapper entity,

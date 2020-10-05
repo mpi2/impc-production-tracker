@@ -7,9 +7,11 @@
                 NAME="restricted"/>
 
     <SPECIES    ID="1"
-                NAME="Mus musculus"/>
+                NAME="Mus musculus"
+                TAXON_ID="10090"/>
     <SPECIES    ID="2"
-                NAME="Homo sapiens"/>
+                NAME="Homo sapiens"
+                TAXON_ID="9606"/>
 
     <FUNDER ID="1"
             NAME="KOMP"/>
@@ -210,8 +212,8 @@
                 WORK_GROUP_ID="1"
                 PRODUCTS_AVAILABLE_FOR_GENERAL_PUBLIC="true"
                 SUMMARY_STATUS_ID="1"/>
-    <PLAN       ID="6"
-                PIN="PIN:0000000006"
+    <PLAN       ID="4"
+                PIN="PIN:0000000004"
                 PROJECT_ID="1"
                 PLAN_TYPE_ID="2"
                 ATTEMPT_TYPE_ID="4"
@@ -304,14 +306,14 @@
                             PLAN_ID="3"
                             OUTCOME_ID="1"/>
     <PLAN_STARTING_POINT    ID="2"
-                            PLAN_ID="6"
+                            PLAN_ID="4"
                             OUTCOME_ID="2"/>
 
     <PHENOTYPING_ATTEMPT PLAN_ID="3"
                          PHENOTYPING_EXTERNAL_REF="CR10129"
                          STRAIN_ID="1"
                          DO_NOT_COUNT_TOWARDS_COMPLETENESS="false" />
-    <PHENOTYPING_ATTEMPT PLAN_ID="6"
+    <PHENOTYPING_ATTEMPT PLAN_ID="4"
                          PHENOTYPING_EXTERNAL_REF="JR34077"
                          STRAIN_ID="1"
                          DO_NOT_COUNT_TOWARDS_COMPLETENESS="false" />
@@ -379,7 +381,7 @@
                         DATE="2020-04-14 12:46:24.706639"
     />
     <PLAN_STATUS_STAMP  ID="16"
-                        PLAN_ID="6"
+                        PLAN_ID="4"
                         STATUS_ID="1"
                         DATE="2018-02-22 20:18:00.706639"
     />
@@ -400,7 +402,7 @@
                                 DATE="2020-04-14 12:46:24.706639"
     />
     <PLAN_SUMMARY_STATUS_STAMP    ID="10"
-                                  PLAN_ID="6"
+                                  PLAN_ID="4"
                                   STATUS_ID="1"
                                   DATE="2020-04-14 12:46:24.706639"
     />

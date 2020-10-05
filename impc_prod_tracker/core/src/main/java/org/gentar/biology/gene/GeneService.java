@@ -14,6 +14,7 @@
  * License.
  *******************************************************************************/
 package org.gentar.biology.gene;
+import org.gentar.biology.species.SpeciesNames;
 import org.gentar.exceptions.UserOperationFailedException;
 
 import java.util.List;
@@ -55,7 +56,7 @@ public interface GeneService
      * @param accessionIdOrSymbol String with the accession id or the symbol for the gene.
      * @return Gene object or null.
      */
-    Gene findAndCreateInLocalIfNeeded(String accessionIdOrSymbol);
+    Gene findAndCreateInLocalIfNeeded(String accessionIdOrSymbol, SpeciesNames speciesName);
 
     /**
      * Given an accession id or a symbol, this method returns a gene matching it.
@@ -65,6 +66,6 @@ public interface GeneService
      * @return Gene object.
      * @throws UserOperationFailedException
      */
-    Gene findAndCreateInLocalIfNeededFailIfNull(String accessionIdOrSymbol)
+    Gene findAndCreateInLocalIfNeededFailIfNull(String accessionIdOrSymbol, SpeciesNames speciesName)
     throws UserOperationFailedException;
 }

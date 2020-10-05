@@ -26,8 +26,10 @@
       "mutationQcResults":[
 
       ],
-      "geneSymbolsOrAccessionIds": [
-        "Serpinb10"
+      "genes": [
+        {
+          "symbol": "Serpinb10"
+        }
       ],
       "mutationSequences":[
         {

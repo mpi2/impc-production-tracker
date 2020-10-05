@@ -30,6 +30,7 @@ import org.gentar.biology.intention.project_intention_sequence.ProjectIntentionS
 
 import java.util.*;
 
+@Deprecated
 @Component
 public class ProjectIntentionMapper implements Mapper<ProjectIntention, ProjectIntentionDTO>
 {
