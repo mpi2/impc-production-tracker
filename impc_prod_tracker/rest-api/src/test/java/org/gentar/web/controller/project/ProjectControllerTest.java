@@ -124,8 +124,6 @@ class ProjectControllerTest extends ControllerTestTemplate
                     .description("Internal id of the record."),
                 fieldWithPath("consortia[].consortiumName")
                     .description("Name of the consortium."),
-                fieldWithPath("consortia[].institutes")
-                    .description("Institutes associated with the project - consortium"),
                 fieldWithPath("_links")
                     .description("Links for project"),
                 fieldWithPath("_links.productionPlans").description("Links to production plans"),
@@ -303,9 +301,7 @@ class ProjectControllerTest extends ControllerTestTemplate
                 fieldWithPath("consortia")
                     .description("Consortia associated with the project."),
                 fieldWithPath("consortia[].consortiumName")
-                    .description("Name of the consortium."),
-                fieldWithPath("consortia[].institutes")
-                    .description("Institutes associated with the project - consortium")),
+                    .description("Name of the consortium.")),
 
             responseFields(
                 HistoryFieldsDescriptors.getHistoryFieldDescriptions("history")));

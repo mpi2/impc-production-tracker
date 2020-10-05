@@ -13,6 +13,6 @@ public class ProjectConsortiumDTO
 
     private String consortiumName;
 
-    @JsonProperty("institutes")
-    private List<String> InstituteNames;
+//    @JsonProperty("institutes")
+//    private List<String> InstituteNames;
 }

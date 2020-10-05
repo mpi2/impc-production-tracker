@@ -34,8 +34,7 @@ public class ProjectConsortiumMapper implements Mapper<ProjectConsortium, Projec
         String consortiumName = projectConsortiumDTO.getConsortiumName();
         projectConsortium.setConsortium(
             consortiumService.getConsortiumByNameOrThrowException(consortiumName));
-        projectConsortium.setInstitutes(
-            addProjectConsortiumInstituteFromEntity(projectConsortiumDTO));
+//        projectConsortium.setInstitutes(addProjectConsortiumInstituteFromEntity(projectConsortiumDTO));
 
         return projectConsortium;
     }
@@ -56,22 +55,22 @@ public class ProjectConsortiumMapper implements Mapper<ProjectConsortium, Projec
     {
         ProjectConsortiumDTO projectConsortiumDTO =
             entityMapper.toTarget(projectConsortium, ProjectConsortiumDTO.class);
-        addProjectConsortiumInstituteFromDto(projectConsortium, projectConsortiumDTO);
+//        addProjectConsortiumInstituteFromDto(projectConsortium, projectConsortiumDTO);
         return projectConsortiumDTO;
     }
 
-    private void addProjectConsortiumInstituteFromDto(
-        ProjectConsortium projectConsortium, ProjectConsortiumDTO projectConsortiumDTO)
-    {
-        List<String> projectConsortiumInstituteNames =
-                projectConsortiumInstituteMapper.toDtos(projectConsortium.getInstitutes());
-        projectConsortiumDTO.setInstituteNames(projectConsortiumInstituteNames);
-    }
+//    private void addProjectConsortiumInstituteFromDto(
+//        ProjectConsortium projectConsortium, ProjectConsortiumDTO projectConsortiumDTO)
+//    {
+//        List<String> projectConsortiumInstituteNames =
+//                projectConsortiumInstituteMapper.toDtos(projectConsortium.getInstitutes());
+//        projectConsortiumDTO.setInstituteNames(projectConsortiumInstituteNames);
+//    }
 
-    private Set<Institute> addProjectConsortiumInstituteFromEntity(
-        ProjectConsortiumDTO projectConsortiumDTO)
-    {
-        return new HashSet<>(projectConsortiumInstituteMapper.toEntities(
-            projectConsortiumDTO.getInstituteNames()));
-    }
+//    private Set<Institute> addProjectConsortiumInstituteFromEntity(
+//        ProjectConsortiumDTO projectConsortiumDTO)
+//    {
+//        return new HashSet<>(projectConsortiumInstituteMapper.toEntities(
+//            projectConsortiumDTO.getInstituteNames()));
+//    }
 }
