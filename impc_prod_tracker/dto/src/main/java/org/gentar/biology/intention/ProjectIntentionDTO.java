@@ -24,6 +24,7 @@ import org.gentar.biology.mutation.MutationCategorizationDTO;
 
 import java.util.List;
 
+@Deprecated
 @Data
 public class ProjectIntentionDTO
 {

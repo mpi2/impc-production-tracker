@@ -21,6 +21,7 @@ import org.gentar.biology.ortholog.OrthologService;
 import org.gentar.biology.intention.project_intention_gene.ProjectIntentionGene;
 import org.gentar.biology.outcome.Outcome;
 import org.gentar.biology.plan.Plan;
+import org.gentar.biology.plan.engine.PlanValidator;
 import org.gentar.biology.plan.type.PlanTypeName;
 import org.gentar.biology.project.engine.ProjectUpdater;
 import org.gentar.biology.project.engine.ProjectValidator;
@@ -35,6 +36,7 @@ import org.springframework.stereotype.Component;
 import org.gentar.audit.history.History;
 import org.gentar.biology.project.engine.ProjectCreator;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -49,6 +51,7 @@ public class ProjectServiceImpl implements ProjectService
     private final ProjectQueryHelper projectQueryHelper;
     private final ProjectUpdater projectUpdater;
     private final ProjectValidator projectValidator;
+    private final PlanValidator planValidator;
 
     public ProjectServiceImpl(
         ProjectRepository projectRepository,
@@ -57,7 +60,8 @@ public class ProjectServiceImpl implements ProjectService
         OrthologService orthologService,
         ProjectQueryHelper projectQueryHelper,
         ProjectUpdater projectUpdater,
-        ProjectValidator projectValidator)
+        ProjectValidator projectValidator,
+        PlanValidator planValidator)
     {
         this.projectRepository = projectRepository;
         this.historyService = historyService;
@@ -66,6 +70,7 @@ public class ProjectServiceImpl implements ProjectService
         this.projectQueryHelper = projectQueryHelper;
         this.projectUpdater = projectUpdater;
         this.projectValidator = projectValidator;
+        this.planValidator = planValidator;
     }
 
     @Override
@@ -77,6 +82,7 @@ public class ProjectServiceImpl implements ProjectService
             throw new NotFoundException("Project " + tpn + " does not exist.");
         }
         projectValidator.validateReadPermissions(project);
+        addOrthologs(Arrays.asList(project));
         return projectValidator.getAccessChecked(project);
     }
 
@@ -188,6 +194,7 @@ public class ProjectServiceImpl implements ProjectService
             throw new UserOperationFailedException(
                 "The plan cannot be associated with the project because the plan is null");
         }
+        planValidator.validate(plan);
         project.addPlan(plan);
         plan.setProject(project);
     }

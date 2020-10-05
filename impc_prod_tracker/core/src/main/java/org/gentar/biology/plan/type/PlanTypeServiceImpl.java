@@ -14,6 +14,7 @@ public class PlanTypeServiceImpl implements PlanTypeService
         this.planTypeRepository = planTypeRepository;
     }
 
+    @Override
     public PlanType getPlanTypeByName(String name)
     {
         return planTypeRepository.findFirstByNameIgnoreCase(name);

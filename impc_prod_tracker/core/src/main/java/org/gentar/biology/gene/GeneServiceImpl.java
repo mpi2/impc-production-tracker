@@ -1,6 +1,10 @@
 package org.gentar.biology.gene;
 
 import org.gentar.biology.gene.external_ref.GeneExternalService;
+import org.gentar.biology.species.Species;
+import org.gentar.biology.species.SpeciesNames;
+import org.gentar.biology.species.SpeciesService;
+import org.gentar.exceptions.NotFoundException;
 import org.gentar.exceptions.UserOperationFailedException;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -9,20 +13,30 @@ import java.util.List;
 @Component
 public class GeneServiceImpl implements GeneService
 {
-    private GeneRepository geneRepository;
-    private GeneExternalService geneExternalService;
+    private final GeneRepository geneRepository;
+    private final GeneExternalService geneExternalService;
+    private final SpeciesService speciesService;
 
-    public GeneServiceImpl(GeneRepository geneRepository, GeneExternalService geneExternalService)
+    private static final String GENE_IS_SYNONYM_ERROR =
+        "%s is a synonym for the gene %s (%s). Please use the valid symbol %s instead.";
+
+    public GeneServiceImpl(
+        GeneRepository geneRepository,
+        GeneExternalService geneExternalService,
+        SpeciesService speciesService)
     {
         this.geneRepository = geneRepository;
         this.geneExternalService = geneExternalService;
+        this.speciesService = speciesService;
     }
 
+    @Override
     public List<Gene> getGenesBySymbolStartingWith(String symbol)
     {
         return geneRepository.findBySymbolStartingWith(symbol);
     }
 
+    @Override
     public Gene getGeneByAccessionId(String accessionId)
     {
         return geneRepository.findFirstByAccIdIgnoreCase(accessionId);
@@ -42,11 +56,12 @@ public class GeneServiceImpl implements GeneService
     }
 
     @Override
-    public Gene findAndCreateInLocalIfNeeded(String accessionIdOrSymbol)
+    public Gene findAndCreateInLocalIfNeeded(String accessionIdOrSymbol, SpeciesNames speciesName)
     {
         Gene gene = findInLocal(accessionIdOrSymbol);
         if (gene == null)
         {
+            validateSpecies(speciesName);
             gene = findInExternalReference(accessionIdOrSymbol);
             if (gene != null)
             {
@@ -55,6 +70,8 @@ public class GeneServiceImpl implements GeneService
                 Gene alreadyExistingGene = getGeneByAccessionId(gene.getAccId());
                 if (alreadyExistingGene == null)
                 {
+                    Species species = getByNameOrDefaultIfNull(speciesName);
+                    gene.setSpecies(species);
                     create(gene);
                 }
                 else
@@ -66,14 +83,40 @@ public class GeneServiceImpl implements GeneService
         return gene;
     }
 
+    // Temporal validation. Human not supported yet
+    private void validateSpecies(SpeciesNames speciesName)
+    {
+        if (speciesName != null)
+        {
+            if (SpeciesNames.HUMAN.equals(speciesName))
+            {
+                throw new UserOperationFailedException("Human genes not supported yet.");
+            }
+        }
+    }
+
+    private Species getByNameOrDefaultIfNull(SpeciesNames speciesName)
+    {
+        Species species;
+        if (speciesName == null)
+        {
+            species = speciesService.getSpeciesByName(SpeciesNames.MOUSE.getLabel());
+        }
+        else
+        {
+            species = speciesService.getSpeciesByName(speciesName.getLabel());
+        }
+        return species;
+    }
+
     @Override
-    public Gene findAndCreateInLocalIfNeededFailIfNull(String accessionIdOrSymbol)
+    public Gene findAndCreateInLocalIfNeededFailIfNull(String accessionIdOrSymbol, SpeciesNames speciesName)
     throws UserOperationFailedException
     {
-        Gene gene = findAndCreateInLocalIfNeeded(accessionIdOrSymbol);
+        Gene gene = findAndCreateInLocalIfNeeded(accessionIdOrSymbol, speciesName);
         if (gene == null)
         {
-            throw new UserOperationFailedException(
+            throw new NotFoundException(
                 "Gene with accession id or symbol [" + accessionIdOrSymbol + "] does not exist.");
         }
         return gene;
@@ -101,7 +144,9 @@ public class GeneServiceImpl implements GeneService
             Gene synonym = geneExternalService.getSynonymFromExternalGenes(accessionIdOrSymbol);
             if (synonym != null)
             {
-                gene = geneExternalService.getGeneFromExternalDataBySymbolOrAccId(synonym.getAccId());
+                throw new UserOperationFailedException(
+                    String.format(GENE_IS_SYNONYM_ERROR,
+                        accessionIdOrSymbol, synonym.getSymbol(), synonym.getAccId(), synonym.getSymbol()));
             }
         }
         return gene;

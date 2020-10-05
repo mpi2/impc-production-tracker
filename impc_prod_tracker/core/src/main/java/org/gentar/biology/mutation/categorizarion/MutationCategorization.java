@@ -16,7 +16,6 @@ import java.util.Set;
 @Entity
 public class MutationCategorization extends BaseEntity
 {
-
     @Id
     @SequenceGenerator(name = "mutationCategorizationSeq", sequenceName = "MUTATION_CATEGORIZATION_SEQ")
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "mutationCategorizationSeq")
@@ -36,4 +35,12 @@ public class MutationCategorization extends BaseEntity
     @IgnoreForAuditingChanges
     @ManyToMany(mappedBy = "mutationCategorizations")
     private Set<ProjectIntention> projectIntentions;
+
+    public String toString()
+    {
+        String mutationCategorizationTypeName =
+            mutationCategorizationType == null ? "Not defined" : mutationCategorizationType.getName();
+        return "id:" +id + ", name:" + name + ", description: "+ description +
+            ", mutationCategorizationTypeName:" +mutationCategorizationTypeName;
+    }
 }

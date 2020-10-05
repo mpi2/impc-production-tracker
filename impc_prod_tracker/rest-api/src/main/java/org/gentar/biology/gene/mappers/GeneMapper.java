@@ -13,15 +13,18 @@
  * language governing permissions and limitations under the
  * License.
  *******************************************************************************/
-package org.gentar.biology.gene;
+package org.gentar.biology.gene.mappers;
 
 import org.gentar.EntityMapper;
 import org.gentar.Mapper;
+import org.gentar.biology.gene.Gene;
+import org.gentar.biology.gene.GeneDTO;
 import org.springframework.stereotype.Component;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
+@Deprecated
 @Component
 public class GeneMapper implements Mapper<Gene, GeneDTO>
 {

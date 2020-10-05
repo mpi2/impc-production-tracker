@@ -8,13 +8,13 @@
     {
       "id":1,
       "user":"gentar_test_user1@gentar.org",
-      "date":"2020-07-07T16:18:58.115067",
+      "date":"2020-10-02T17:16:06.434501",
       "comment":"Mutation updated",
       "details":[
         {
           "field":"genes.[4]",
           "oldValue":null,
-          "newValue":"Gene(id=4, symbol=Dennd6b, name=DENN/MADD domain containing 6B, type=Gene, genomeBuild=GRCm38, entrezGeneId=69440, ncbiChromosome=15, ncbiStart=89182213, ncbiStop=89198427, ncbiStrand=-, ensemblGeneId=ENSMUSG00000015377, ensemblChromosome=15, ensemblStart=89182213, ensemblStop=89196496, ensemblStrand=-, mgiCm=44.70, mgiChromosome=15, mgiStart=89182213, mgiStop=89196496, mgiStrand=-, species=null, accId=MGI:1916690)",
+          "newValue":"Gene(id=4, symbol=Dennd6b, name=DENN/MADD domain containing 6B, type=Gene, genomeBuild=GRCm38, entrezGeneId=69440, ncbiChromosome=15, ncbiStart=89182213, ncbiStop=89198427, ncbiStrand=-, ensemblGeneId=ENSMUSG00000015377, ensemblChromosome=15, ensemblStart=89182213, ensemblStop=89196496, ensemblStrand=-, mgiCm=44.70, mgiChromosome=15, mgiStart=89182213, mgiStop=89196496, mgiStrand=-, species=Species(id=1, name=Mus musculus, taxonId=10090), accId=MGI:1916690)",
           "note":"Element added"
         },
         {
@@ -126,6 +126,12 @@
           "note":"Field changed"
         },
         {
+          "field":"genes.[4].species.name",
+          "oldValue":null,
+          "newValue":"Mus musculus",
+          "note":"Field changed"
+        },
+        {
           "field":"genes.[4].symbol",
           "oldValue":null,
           "newValue":"Dennd6b",
@@ -152,7 +158,7 @@
         {
           "field":"mutationCategorizations.[9]",
           "oldValue":null,
-          "newValue":"MutationCategorization(id=9, name=HR, description=null, mutationCategorizationType=MutationCategorizationType(id=2, name=repair_mechanism))",
+          "newValue":"id:9, name:HR, description: null, mutationCategorizationTypeName:repair_mechanism",
           "note":"Element added"
         },
         {

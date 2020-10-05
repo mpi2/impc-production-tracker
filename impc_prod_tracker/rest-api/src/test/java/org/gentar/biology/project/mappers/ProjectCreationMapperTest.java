@@ -1,5 +1,6 @@
 package org.gentar.biology.project.mappers;
 
+import org.gentar.biology.intention.ProjectIntentionCreationMapper;
 import org.gentar.biology.intention.ProjectIntentionMapper;
 import org.gentar.biology.project.Project;
 import org.gentar.biology.project.ProjectCreationDTO;
@@ -46,7 +47,7 @@ class ProjectCreationMapperTest
     private ProjectCommonDataMapper projectCommonDataMapper;
 
     @Mock
-    private ProjectIntentionMapper projectIntentionMapper;
+    private ProjectIntentionCreationMapper projectIntentionCreationMapper;
 
     @Mock
     private SpeciesMapper speciesMapper;
@@ -59,7 +60,7 @@ class ProjectCreationMapperTest
         testInstance =
             new ProjectCreationMapper(
                 projectCommonDataMapper,
-                projectIntentionMapper,
+                projectIntentionCreationMapper,
                 speciesMapper,
                 projectConsortiumMapper);
     }

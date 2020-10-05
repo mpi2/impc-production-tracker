@@ -18,7 +18,7 @@ package org.gentar.biology.intention;
 import org.gentar.Mapper;
 import org.gentar.biology.gene.Gene;
 import org.gentar.biology.gene.GeneDTO;
-import org.gentar.biology.gene.GeneMapper;
+import org.gentar.biology.gene.mappers.GeneMapper;
 import org.gentar.biology.gene.GeneService;
 import org.gentar.biology.gene.ProjectIntentionGeneDTO;
 import org.gentar.exceptions.UserOperationFailedException;
@@ -29,6 +29,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+@Deprecated
 @Component
 public class ProjectIntentionGeneMapper implements Mapper<ProjectIntentionGene, ProjectIntentionGeneDTO>
 {

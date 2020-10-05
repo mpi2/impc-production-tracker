@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonUnwrapped;
 import lombok.Data;
 import org.gentar.biology.gene.GeneDTO;
+import org.gentar.biology.gene.GeneResponseDTO;
 import org.gentar.biology.outcome.OutcomeResponseDTO;
 import org.springframework.hateoas.RepresentationModel;
 import org.springframework.hateoas.server.core.Relation;
@@ -21,12 +22,9 @@ public class MutationResponseDTO extends RepresentationModel<MutationResponseDTO
     private String mgiAlleleId;
     private Long imitsAllele;
     private Boolean mgiAlleleSymbolWithoutImpcAbbreviation;
-    @JsonIgnore
-    private String description;
-    @JsonIgnore
-    private String autoDescription;
+
     @JsonProperty("genes")
-    private List<GeneDTO> geneDTOS;
+    private List<GeneResponseDTO> geneDTOS;
     @JsonUnwrapped
     private MutationCommonDTO mutationCommonDTO;
 }

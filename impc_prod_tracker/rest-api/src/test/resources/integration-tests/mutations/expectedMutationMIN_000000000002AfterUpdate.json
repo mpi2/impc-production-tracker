@@ -2,11 +2,11 @@
   "min":"MIN:000000000002",
   "mgiAlleleId":"MGI:6342258",
   "imitsAllele":266843,
-  "symbol":"em1(IMPC)J",
   "mgiAlleleSymbolWithoutImpcAbbreviation":false,
   "mgiAlleleSymbolRequiresConstruction":true,
   "geneticMutationTypeName":"Null",
   "molecularMutationTypeName":"Point Mutation",
+  "symbol":"em1(IMPC)J",
   "mutationQcResults":[
     {
       "id":3,
@@ -56,19 +56,19 @@
   "genes":[
     {
       "id":4,
-      "name":"DENN/MADD domain containing 6B",
       "symbol":"Dennd6b",
-      "speciesName":null,
-      "externalLink":"http://www.mousephenotype.org/data/genes/MGI:1916690",
-      "accessionId":"MGI:1916690"
+      "speciesName":"Mus musculus",
+      "accessionId":"MGI:1916690",
+      "name":"DENN/MADD domain containing 6B",
+      "externalLink":"http://www.mousephenotype.org/data/genes/MGI:1916690"
     },
     {
       "id":2,
-      "name":"otogelin",
       "symbol":"Otog",
       "speciesName":"Mus musculus",
-      "externalLink":"http://www.mousephenotype.org/data/genes/MGI:1202064",
-      "accessionId":"MGI:1202064"
+      "accessionId":"MGI:1202064",
+      "name":"otogelin",
+      "externalLink":"http://www.mousephenotype.org/data/genes/MGI:1202064"
     }
   ]
 }

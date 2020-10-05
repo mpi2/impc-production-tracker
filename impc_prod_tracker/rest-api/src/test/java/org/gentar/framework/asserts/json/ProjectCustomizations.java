@@ -13,6 +13,8 @@ public class ProjectCustomizations
         List<Customization> customizationList = new ArrayList<>();
         customizationList.add(buildCustomizationForTpn());
         customizationList.add(buildCustomizationForPin());
+        customizationList.add(buildCustomizationForSequencesId());
+        customizationList.add(buildCustomizationForSequenceLocationId());
         customizationList.add(buildCustomizationForConsortiaInstitutesId());
         customizationList.addAll(buildCustomizationForStatusDates());
         customizationList.add(buildCustomizationForSelfLink());
@@ -23,6 +25,16 @@ public class ProjectCustomizations
     private static Customization buildCustomizationForConsortiaInstitutesId()
     {
         return CustomizationHelper.buildIdCustomization("consortia**.id");
+    }
+
+    private static Customization buildCustomizationForSequencesId()
+    {
+        return CustomizationHelper.buildIdCustomization("**.sequence.id");
+    }
+
+    private static Customization buildCustomizationForSequenceLocationId()
+    {
+        return CustomizationHelper.buildIdCustomization("**sequenceLocations**.id");
     }
 
     private static Customization buildCustomizationForTpn()

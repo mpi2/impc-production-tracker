@@ -20,13 +20,12 @@ import org.gentar.biology.sequence.ProjectIntentionSequenceDTO;
 import org.gentar.biology.sequence.SequenceMapper;
 import org.springframework.stereotype.Component;
 import org.gentar.biology.intention.project_intention_sequence.ProjectIntentionSequence;
-
 import java.util.*;
 
 @Component
 public class ProjectIntentionSequenceMapper implements Mapper<ProjectIntentionSequence, ProjectIntentionSequenceDTO>
 {
-    private SequenceMapper sequenceMapper;
+    private final SequenceMapper sequenceMapper;
 
     public ProjectIntentionSequenceMapper(SequenceMapper sequenceMapper)
     {

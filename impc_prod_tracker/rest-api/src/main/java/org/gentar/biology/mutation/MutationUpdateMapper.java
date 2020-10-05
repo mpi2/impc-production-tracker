@@ -2,9 +2,9 @@ package org.gentar.biology.mutation;
 
 import org.gentar.Mapper;
 import org.gentar.biology.gene.Gene;
-import org.gentar.biology.gene.GeneService;
+import org.gentar.biology.gene.GeneUpdateDTO;
+import org.gentar.biology.gene.mappers.GeneUpdateMapper;
 import org.springframework.stereotype.Component;
-
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -13,12 +13,13 @@ import java.util.Set;
 public class MutationUpdateMapper implements Mapper<Mutation, MutationUpdateDTO>
 {
     private final MutationCommonMapper mutationCommonMapper;
-    private final GeneService geneService;
+    private final GeneUpdateMapper geneUpdateMapper;
 
-    public MutationUpdateMapper(MutationCommonMapper mutationCommonMapper, GeneService geneService)
+    public MutationUpdateMapper(
+        MutationCommonMapper mutationCommonMapper, GeneUpdateMapper geneUpdateMapper)
     {
         this.mutationCommonMapper = mutationCommonMapper;
-        this.geneService = geneService;
+        this.geneUpdateMapper = geneUpdateMapper;
     }
 
     @Override
@@ -41,18 +42,8 @@ public class MutationUpdateMapper implements Mapper<Mutation, MutationUpdateDTO>
 
     private void addGenes(Mutation mutation, MutationUpdateDTO mutationUpdateDTO)
     {
-        Set<Gene> genes = new HashSet<>();
-        List<String> accessionIdsOrSymbols = mutationUpdateDTO.getSymbolOrAccessionIds();
-        if (accessionIdsOrSymbols != null)
-        {
-            accessionIdsOrSymbols.forEach(x -> {
-                Gene gene = geneService.findAndCreateInLocalIfNeededFailIfNull(x);
-                if (gene != null)
-                {
-                    genes.add(gene);
-                }
-            });
-        }
+        List<GeneUpdateDTO> geneUpdateDTOS = mutationUpdateDTO.getGeneUpdateDTOS();
+        Set<Gene> genes = new HashSet<>( geneUpdateMapper.toEntities(geneUpdateDTOS));
         mutation.setGenes(genes);
     }
 }

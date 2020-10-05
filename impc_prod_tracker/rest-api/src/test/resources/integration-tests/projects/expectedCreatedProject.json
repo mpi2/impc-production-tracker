@@ -1,7 +1,8 @@
 {
-  "tpn":"TPN:000000000",
+  "tpn":"TPN:000000007",
   "recovery":false,
   "comment":"comment",
+  "reactivationDate":null,
   "privacyName":"public",
   "externalReference":"externalRef",
   "assignmentStatusName":"Assigned",
@@ -12,21 +13,20 @@
   "relatedWorkGroupNames":[
     "BaSH"
   ],
-  "reactivationDate":null,
   "_links":{
     "self":{
-      "href":"http://localhost:8080/api/projects/TPN:000000000"
+      "href":"http://localhost:8080/api/projects/TPN:000000007"
     },
     "productionPlans":[
       {
-        "href":"http://localhost:8080/api/plans/PIN:0000000000"
+        "href":"http://localhost:8080/api/plans/PIN:0000000004"
       }
     ]
   },
   "assignmentStatusStamps":[
     {
       "statusName":"Assigned",
-      "date":"2020-07-27T11:53:28.098748"
+      "date":"2020-10-05T15:52:06.855992"
     }
   ],
   "projectIntentions":[
@@ -41,22 +41,58 @@
       ],
       "intentionByGene":{
         "bestOrthologs":[
-
+          {
+            "symbol":"SERPINB10",
+            "category":"MODERATE",
+            "support":"HGNC,OMA,HomoloGene,Panther,NCBI,Ensembl,Inparanoid",
+            "supportCount":7,
+            "link":"https://www.genenames.org/data/gene-symbol-report/#!/hgnc_id/HGNC:8942"
+          }
         ],
         "allOrthologs":[
-
+          {
+            "symbol":"SERPINB10",
+            "category":"MODERATE",
+            "support":"HGNC,OMA,HomoloGene,Panther,NCBI,Ensembl,Inparanoid",
+            "supportCount":7,
+            "link":"https://www.genenames.org/data/gene-symbol-report/#!/hgnc_id/HGNC:8942"
+          }
         ],
         "gene":{
           "id":1,
-          "name":"serine (or cysteine) peptidase inhibitor, clade B (ovalbumin), member 10",
           "symbol":"Serpinb10",
           "speciesName":"Mus musculus",
-          "externalLink":"http://www.mousephenotype.org/data/genes/MGI:2138648",
-          "accessionId":"MGI:2138648"
+          "accessionId":"MGI:2138648",
+          "name":"serine (or cysteine) peptidase inhibitor, clade B (ovalbumin), member 10",
+          "externalLink":"http://www.mousephenotype.org/data/genes/MGI:2138648"
         }
       },
-      "intentionsBySequence":[
-
+      "intentionsBySequences":[
+        {
+          "index":1,
+          "sequence":{
+            "id":1,
+            "sequence":">Gpr173 Cas9 high_Gpr173_11766 \n GATGGTTTGAGAGCCTGGACTGAAGCTTGAAAGAGAAGGCTTCTGTATGGGTCCCACCCTTCCCCTGCTGCTGGCCCCCGTATGGTGATTCTGACTTTCCCCCTGCCTATGATCAGTCCCAGCAGCACCAGCTTCACATAAGCCGATGCTGATGGCAGAGACAGTGCGCCGCTCACCTCTTCGGGCTCTCCGGTGGTGTTGGCCATACTGAGGGGCAAAGGCTACCCCCAACCCTAGGGGATTGGCCAGTTCAGTATTTGATGGGCCCTGGCGGACTCCATCAGTTTTCTTGCTGAGCTACACCTGCAAATGGGAACA",
+            "typeName":"partial",
+            "categoryName":"original starting sequence",
+            "sequenceLocations":[
+              {
+                "id":1,
+                "locationIndex":1,
+                "location":{
+                  "id":1,
+                  "chr":"X",
+                  "start":123456,
+                  "stop":654321,
+                  "strand":"+",
+                  "genomeBuild":"GRCm38",
+                  "strainName":"C57BL/6N",
+                  "speciesName":"Mus musculus"
+                }
+              }
+            ]
+          }
+        }
       ]
     }
   ],
@@ -65,7 +101,7 @@
   ],
   "consortia":[
     {
-      "id":1,
+      "id":7,
       "consortiumName":"CMG"
     }
   ]

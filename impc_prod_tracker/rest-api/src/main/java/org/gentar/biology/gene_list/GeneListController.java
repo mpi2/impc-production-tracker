@@ -38,7 +38,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -51,15 +50,16 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 @CrossOrigin(origins = "*")
 public class GeneListController
 {
-    private GeneListService geneListService;
-    private ListRecordMapper listRecordMapper;
-    private CsvReader csvReader;
-    private GeneExternalService geneExternalService;
+    private final GeneListService geneListService;
+    private final ListRecordMapper listRecordMapper;
+    private final CsvReader csvReader;
+    private final GeneExternalService geneExternalService;
 
     public GeneListController(
         GeneListService geneListService,
         ListRecordMapper listRecordMapper,
-        CsvReader csvReader, GeneExternalService geneExternalService)
+        CsvReader csvReader,
+        GeneExternalService geneExternalService)
     {
         this.geneListService = geneListService;
         this.listRecordMapper = listRecordMapper;
@@ -75,7 +75,7 @@ public class GeneListController
      * @return Lists by consortium.
      */
     @GetMapping(value = {"/{consortiumName}/content"})
-    public ResponseEntity findByConsortium(
+    public ResponseEntity<?> findByConsortium(
         Pageable pageable,
         PagedResourcesAssembler assembler,
         @PathVariable("consortiumName") String consortiumName,
@@ -112,12 +112,12 @@ public class GeneListController
         return accIds;
     }
 
-    private ResponseEntity buildResponseEntity(
+    private ResponseEntity<?> buildResponseEntity(
         PagedResourcesAssembler assembler,
         String slashContent, Page<ListRecord> geneListRecordsPage)
     {
         Page<ListRecordDTO> geneListRecordDTOPage =
-            geneListRecordsPage.map(x -> listRecordMapper.toDto(x));
+            geneListRecordsPage.map(listRecordMapper::toDto);
         PagedModel pr =
             assembler.toModel(
                 geneListRecordDTOPage,
