@@ -41,10 +41,7 @@
   ],
   "consortia":[
     {
-      "consortiumName":"CMG",
-      "institutes":[
-        "Broad"
-      ]
+      "consortiumName":"CMG"
     }
   ]
 }

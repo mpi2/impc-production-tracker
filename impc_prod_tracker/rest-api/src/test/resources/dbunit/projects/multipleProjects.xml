@@ -52,11 +52,6 @@
     <CONSORTIUM ID="1"
                 NAME="CMG"/>
 
-    <INSTITUTE  ID="1"
-                NAME="Broad"/>
-    <INSTITUTE  ID="2"
-                NAME="Yale"/>
-
     <MOLECULAR_MUTATION_TYPE    ID="1"
                                 NAME="Point Mutation"/>
     <MOLECULAR_MUTATION_TYPE    ID="2"
@@ -147,15 +142,6 @@
     <PROJECT_CONSORTIUM ID="5"
                         PROJECT_ID="5"
                         CONSORTIUM_ID="1"/>
-
-    <PROJECT_CONSORTIUM_INSTITUTE   PROJECT_CONSORTIUM_ID="1"
-                                    INSTITUTE_ID="1"/>
-    <PROJECT_CONSORTIUM_INSTITUTE   PROJECT_CONSORTIUM_ID="1"
-                                    INSTITUTE_ID="2"/>
-    <PROJECT_CONSORTIUM_INSTITUTE   PROJECT_CONSORTIUM_ID="2"
-                                    INSTITUTE_ID="1"/>
-    <PROJECT_CONSORTIUM_INSTITUTE   PROJECT_CONSORTIUM_ID="3"
-                                    INSTITUTE_ID="2"/>
 
     <PERSON     ID="123"
                 EMAIL="gentar_test_user1@gentar.org"
