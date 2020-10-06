@@ -2,8 +2,8 @@ package org.gentar.web.mapping;
 
 import org.gentar.EntityMapper;
 import org.gentar.biology.gene.Gene;
+import org.gentar.biology.gene.GeneCommonDTO;
 import org.gentar.biology.species.Species;
-import org.gentar.biology.gene.GeneDTO;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.modelmapper.ModelMapper;
@@ -14,7 +14,6 @@ import org.springframework.test.context.junit4.SpringRunner;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
@@ -40,7 +39,7 @@ public class EntityMapperTest
         EntityMapper entityMapper = new EntityMapper(modelMapper);
         Gene gene = buildGene(ID1);
 
-        GeneDTO geneDTO = entityMapper.toTarget(gene, GeneDTO.class);
+        GeneCommonDTO geneDTO = entityMapper.toTarget(gene, GeneCommonDTO.class);
 
         assertThat("Gene Symbol", geneDTO.getSymbol(), is(SYMBOL + ID1));
         assertThat("Gene idListValue", geneDTO.getAccId(), is(ID_LIST_VALUE));
@@ -53,7 +52,7 @@ public class EntityMapperTest
         EntityMapper entityMapper = new EntityMapper(modelMapper);
         Gene gene = null;
 
-        GeneDTO geneDTO = entityMapper.toTarget(gene, GeneDTO.class);
+        GeneCommonDTO geneDTO = entityMapper.toTarget(gene, GeneCommonDTO.class);
 
         assertThat("geneDTO", geneDTO, is(nullValue()));
     }
@@ -67,7 +66,7 @@ public class EntityMapperTest
         genes.add(gene1);
         genes.add(gene2);
         EntityMapper entityMapper = new EntityMapper(modelMapper);
-        List<GeneDTO> geneDTOList = entityMapper.toTargets(genes, GeneDTO.class);
+        List<GeneCommonDTO> geneDTOList = entityMapper.toTargets(genes, GeneCommonDTO.class);
         assertThat("geneDTOList size", geneDTOList.size(), is(2));
     }
 

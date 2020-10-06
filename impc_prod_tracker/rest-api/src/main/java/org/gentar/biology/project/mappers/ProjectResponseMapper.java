@@ -1,7 +1,6 @@
 package org.gentar.biology.project.mappers;
 
 import org.gentar.Mapper;
-import org.gentar.biology.intention.ProjectIntentionMapper;
 import org.gentar.biology.intention.ProjectIntentionResponseDTO;
 import org.gentar.biology.intention.ProjectIntentionResponseMapper;
 import org.gentar.biology.project.Project;

@@ -1,7 +1,6 @@
 package org.gentar.biology.project.mappers;
 
 import org.gentar.biology.intention.ProjectIntentionCreationMapper;
-import org.gentar.biology.intention.ProjectIntentionMapper;
 import org.gentar.biology.project.Project;
 import org.gentar.biology.project.ProjectCreationDTO;
 import org.gentar.biology.project.consortium.ProjectConsortium;

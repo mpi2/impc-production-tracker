@@ -1,9 +1,10 @@
 package org.gentar.biology.project;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import org.gentar.biology.gene.GeneDTO;
-import org.gentar.biology.gene.ProjectIntentionGeneDTO;
-import org.gentar.biology.intention.ProjectIntentionDTO;
+import org.gentar.biology.gene.GeneCommonDTO;
+import org.gentar.biology.gene.GeneCreationDTO;
+import org.gentar.biology.gene.ProjectIntentionGeneCreationDTO;
+import org.gentar.biology.intention.ProjectIntentionCreationDTO;
 import org.gentar.biology.plan.PlanMinimumCreationDTO;
 import org.junit.jupiter.api.Test;
 import org.util.JsonConverter;
@@ -12,8 +13,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.notNullValue;
-import static org.hamcrest.core.Is.is;
 
 class ProjectCreationDTOTest
 {
@@ -32,26 +33,26 @@ class ProjectCreationDTOTest
         planMinimumCreationDTO.setPlanTypeName("production");
         planMinimumCreationDTO.setAttemptTypeName("crispr");
         projectCreationDTO.setPlanMinimumCreationDTO(planMinimumCreationDTO);
-        ProjectIntentionDTO projectIntentionDTO = new ProjectIntentionDTO();
-        ProjectIntentionGeneDTO projectIntentionGeneDTO = new ProjectIntentionGeneDTO();
-        GeneDTO geneDTO = new GeneDTO();
-        geneDTO.setSymbol("symbol");
-        projectIntentionGeneDTO.setGeneDTO(geneDTO);
-        projectIntentionDTO.setProjectIntentionGeneDTO(projectIntentionGeneDTO);
-        List<ProjectIntentionDTO> projectIntentionDTOS = new ArrayList<>();
-        projectIntentionDTOS.add(projectIntentionDTO);
+        ProjectIntentionCreationDTO projectIntentionCreationDTO = new ProjectIntentionCreationDTO();
+        ProjectIntentionGeneCreationDTO projectIntentionGeneCreationDTO = new ProjectIntentionGeneCreationDTO();
+        GeneCreationDTO geneCreationDTO = new GeneCreationDTO();
+        GeneCommonDTO geneCommonDTO = new GeneCommonDTO();
+        geneCommonDTO.setSymbol("symbol");
+        geneCreationDTO.setGeneCommonDTO(geneCommonDTO);
+        projectIntentionGeneCreationDTO.setGeneDTO(geneCreationDTO);
+        projectIntentionCreationDTO.setProjectIntentionGeneCreationDTO(projectIntentionGeneCreationDTO);
+        List<ProjectIntentionCreationDTO> projectIntentionDTOS = new ArrayList<>();
+        projectIntentionDTOS.add(projectIntentionCreationDTO);
 
-       // projectCreationDTO.setProjectIntentionDTOS(projectIntentionDTOS);
+        projectCreationDTO.setProjectIntentionCreationDTOS(projectIntentionDTOS);
 
         String json = JsonConverter.toJson(projectCreationDTO);
-
-//        assertThat(json, is(notNullValue()));
-//        assertThat(json, is("{\"recovery\":null,\"comment\":\"comment\"," +
-//            "\"reactivationDate\":\"2000-01-01T00:00:00\",\"privacyName\":\"public\"," +
-//            "\"externalReference\":\"externalRef\",\"planDetails\":{\"attemptTypeName\":\"crispr\"," +
-//            "\"typeName\":\"production\"},\"projectIntentions\":[{\"molecularMutationTypeName\":null," +
-//            "\"mutationCategorizations\":null,\"intentionByGene\":{\"gene\":{\"id\":null," +
-//            "\"name\":null,\"symbol\":\"symbol\",\"speciesName\":null,\"externalLink\":null," +
-//            "\"accessionId\":null}}}],\"speciesNames\":null,\"consortia\":null}"));
+        assertThat(json, is(notNullValue()));
+        assertThat(json, is("{\"recovery\":null,\"comment\":\"comment\"," +
+            "\"reactivationDate\":\"2000-01-01T00:00:00\",\"privacyName\":\"public\"," +
+            "\"externalReference\":\"externalRef\",\"planDetails\":{\"attemptTypeName\":\"crispr\"," +
+            "\"typeName\":\"production\"},\"projectIntentions\":[{\"intentionByGene\":{\"gene\":" +
+            "{\"symbol\":\"symbol\",\"speciesName\":null,\"accessionId\":null}}," +
+            "\"intentionsBySequences\":null}],\"speciesNames\":null,\"consortia\":null}"));
     }
 }
