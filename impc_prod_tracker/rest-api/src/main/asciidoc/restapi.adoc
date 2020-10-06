@@ -370,7 +370,13 @@ include::{snippets}/projects/allProjectsWithFilter/http-response.adoc[]
 
 ==== Create a project
 
-In order to create a project, it is necessary to create at least one plan that is attached to it.
+In order to create a project, it is necessary to create at least one plan that is attached
+to it (palnDetails object).
+Tne intention(s) of the project are defined in the creation. It can be a gene and one or
+more sequences. The complete set of fields used in the creation are the following:
+
+Fields in project creation:
+include::{snippets}/projects/postProject/request-fields.adoc[]
 
 ===== Example Request
 
