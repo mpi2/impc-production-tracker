@@ -70,9 +70,6 @@ public class PlanStatusManager
      */
     public void updateStatusIfNeeded(Plan plan)
     {
-        // This is going to be @deprecated once the phenotyping stages are responsible for processing
-        // their states machines.
-        updateChildrenIfNeeded(plan);
         executeSystemTriggeredTransitions(plan);
         executeUserTriggeredTransitions(plan);
         // Once the final state for the plan is calculated, we can calculate the summary status
@@ -91,19 +88,6 @@ public class PlanStatusManager
         {
             stateTransitionManager.processEvent(plan);
         }
-    }
-
-    /**
-     * Apply the needed changes to the children of the plan. This is in case where a state machine
-     * needs to be executed in the children (because a user or system request to change status).
-     * For now the only children of plan that rely in the 'update' method of a plan
-     * (don't have a dedicated endpoint) to be triggered are the phenotyping stages.
-     * @param plan Plan being updated.
-     */
-    private void updateChildrenIfNeeded(Plan plan)
-    {
-        List<PhenotypingStage> phenotypingStages = getPhenotypingStages(plan);
-        phenotypingStages.forEach(x -> stateTransitionManager.processEvent(x));
     }
 
     private List<PhenotypingStage> getPhenotypingStages(Plan plan)
