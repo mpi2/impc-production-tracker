@@ -51,7 +51,7 @@ class PhenotypingStartedProcessorWithTissueCreationTest
     private final MaterialDepositedType fixedMaterialDepositedType = new MaterialDepositedType();
     private MaterialDepositedType paraffinMaterialDepositedType;
 
-    private static final String AUTOMATIC_TISSUE_CREATION_WORK_UNIT = "USC";
+    private static final String AUTOMATIC_TISSUE_CREATION_WORK_UNIT = "UCD";
     private static final String NOT_AUTOMATIC_TISSUE_CREATION_WORK_UNIT = "JAX";
 
     @BeforeEach
@@ -72,8 +72,6 @@ class PhenotypingStartedProcessorWithTissueCreationTest
             AUTOMATIC_TISSUE_CREATION_WORK_UNIT);
         phenotypingStage.setEvent(PhenotypingStageEvent.updateToPhenotypingStarted);
         when(policyEnforcement.hasPermission(null, Actions.UPDATE_TO_PHENOTYPING_STARTED)).thenReturn(true);
-        when(policyEnforcement.hasPermission(
-            phenotypingStage, Actions.AUTOMATIC_TISSUE_DISTRIBUTION_CREATION)).thenReturn(true);
         when(materialDepositedTypeService.getMaterialDepositedTypeByName(FIXED_TISSUE_NAME))
             .thenReturn(fixedMaterialDepositedType);
         testInstance.process(phenotypingStage);
@@ -110,8 +108,6 @@ class PhenotypingStartedProcessorWithTissueCreationTest
         phenotypingStage.addTissueDistribution(existingTissueDistribution);
         phenotypingStage.setEvent(PhenotypingStageEvent.updateToPhenotypingStarted);
         when(policyEnforcement.hasPermission(null, Actions.UPDATE_TO_PHENOTYPING_STARTED)).thenReturn(true);
-        when(policyEnforcement.hasPermission(
-            phenotypingStage, Actions.AUTOMATIC_TISSUE_DISTRIBUTION_CREATION)).thenReturn(true);
         testInstance.process(phenotypingStage);
 
         assertThat(
@@ -138,8 +134,6 @@ class PhenotypingStartedProcessorWithTissueCreationTest
             NOT_AUTOMATIC_TISSUE_CREATION_WORK_UNIT);
         phenotypingStage.setEvent(PhenotypingStageEvent.updateToPhenotypingStarted);
         when(policyEnforcement.hasPermission(null, Actions.UPDATE_TO_PHENOTYPING_STARTED)).thenReturn(true);
-        when(policyEnforcement.hasPermission(
-            phenotypingStage, Actions.AUTOMATIC_TISSUE_DISTRIBUTION_CREATION)).thenReturn(false);
 
         testInstance.process(phenotypingStage);
 
@@ -164,8 +158,6 @@ class PhenotypingStartedProcessorWithTissueCreationTest
         phenotypingStage.addTissueDistribution(existingTissueDistribution);
         phenotypingStage.setEvent(PhenotypingStageEvent.updateToPhenotypingStarted);
         when(policyEnforcement.hasPermission(null, Actions.UPDATE_TO_PHENOTYPING_STARTED)).thenReturn(true);
-        when(policyEnforcement.hasPermission(
-            phenotypingStage, Actions.AUTOMATIC_TISSUE_DISTRIBUTION_CREATION)).thenReturn(false);
 
         testInstance.process(phenotypingStage);
 
