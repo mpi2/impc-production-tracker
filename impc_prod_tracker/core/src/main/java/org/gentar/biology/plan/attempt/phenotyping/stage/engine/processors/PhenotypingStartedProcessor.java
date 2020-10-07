@@ -2,6 +2,7 @@ package org.gentar.biology.plan.attempt.phenotyping.stage.engine.processors;
 
 import org.gentar.biology.plan.attempt.phenotyping.stage.PhenotypingStageStateSetter;
 import org.gentar.security.abac.spring.ContextAwarePolicyEnforcement;
+import org.gentar.security.permissions.Actions;
 import org.gentar.statemachine.AbstractProcessor;
 import org.gentar.statemachine.ProcessData;
 import org.gentar.statemachine.ProcessEvent;
@@ -42,6 +43,6 @@ public class PhenotypingStartedProcessor extends AbstractProcessor
 
     private boolean canExecuteTransition()
     {
-        return policyEnforcement.hasPermission(null, "UPDATE_TO_PHENOTYPING_STARTED");
+        return policyEnforcement.hasPermission(null, Actions.UPDATE_TO_PHENOTYPING_STARTED);
     }
 }

@@ -60,7 +60,7 @@ class PhenotypingStartedProcessorTest
     public void testWhenUserIsNotAllowed()
     {
         PhenotypingStage phenotypingStage = buildPhenotypingStage(
-            PhenotypingStageState.PhenotypingRegistered.getInternalName());
+            PhenotypingStageState.PhenotypingAllDataSent.getInternalName());
         phenotypingStage.setEvent(PhenotypingStageEvent.updateToPhenotypingStarted);
         when(policyEnforcement.hasPermission(any(), anyString())).thenReturn(false);
 

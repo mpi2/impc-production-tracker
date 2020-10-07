@@ -82,6 +82,16 @@ public class PhenotypingStage extends BaseEntity implements ProcessData
         }
     }
 
+    public void addTissueDistribution(TissueDistribution tissueDistribution)
+    {
+        if (tissueDistributions == null)
+        {
+            tissueDistributions = new HashSet<>();
+        }
+        tissueDistributions.add(tissueDistribution);
+        tissueDistribution.setPhenotypingStage(this);
+    }
+
     @Override
     public String toString()
     {
