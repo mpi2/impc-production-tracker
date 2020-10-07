@@ -240,10 +240,7 @@ hh-sandbox:
   stage: sandbox-deploy
   image: dtzar/helm-kubectl:2.14.3
   rules:
-    - if: '$PRODUCTION_DEPLOYMENT != "true" && \
-           $CI_PROJECT_NAMESPACE == "mouse-informatics" && \
-           $CI_BUILD_REF_NAME == "master" && \
-           $CI_PIPELINE_SOURCE == "schedule"'
+    - if: '$PRODUCTION_DEPLOYMENT != "true" && $CI_PROJECT_NAMESPACE == "mouse-informatics" && $CI_BUILD_REF_NAME == "master" && $CI_PIPELINE_SOURCE == "schedule"'
   script:
   # Only deploy from the MPI2 impc-production-tracker repository rather than repository forks
   - |
@@ -286,10 +283,7 @@ hx-sandbox:
   stage: sandbox-deploy
   image: dtzar/helm-kubectl:2.14.3
   rules:
-    - if: '$PRODUCTION_DEPLOYMENT != "true" && \
-           $CI_PROJECT_NAMESPACE == "mouse-informatics" && \
-           $CI_BUILD_REF_NAME == "master" && \
-           $CI_PIPELINE_SOURCE == "schedule"'
+    - if: '$PRODUCTION_DEPLOYMENT != "true" && $CI_PROJECT_NAMESPACE == "mouse-informatics" && $CI_BUILD_REF_NAME == "master" && $CI_PIPELINE_SOURCE == "schedule"'
   script:
   # Only deploy from the MPI2 impc-production-tracker repository rather than repository forks
   - |
@@ -398,8 +392,7 @@ hh-dev:
   stage: dev-deploy
   image: dtzar/helm-kubectl:2.14.3
   rules:
-    - if: '$PRODUCTION_DEPLOYMENT != "true" && \
-           $CI_PROJECT_NAMESPACE == "mouse-informatics"'
+    - if: '$PRODUCTION_DEPLOYMENT != "true" && $CI_PROJECT_NAMESPACE == "mouse-informatics"'
   script:
   # Only deploy from the MPI2 impc-production-tracker repository rather than repository forks
   - |
@@ -461,8 +454,7 @@ hx-dev:
   stage: dev-deploy
   image: dtzar/helm-kubectl:2.14.3
   rules:
-    - if: '$PRODUCTION_DEPLOYMENT != "true" && \
-           $CI_PROJECT_NAMESPACE == "mouse-informatics"'
+    - if: '$PRODUCTION_DEPLOYMENT != "true" && $CI_PROJECT_NAMESPACE == "mouse-informatics"'
   script:
   # Only deploy from the MPI2 impc-production-tracker repository rather than repository forks
   - |
