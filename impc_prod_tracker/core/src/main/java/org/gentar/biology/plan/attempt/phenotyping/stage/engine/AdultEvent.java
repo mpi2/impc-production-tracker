@@ -34,7 +34,7 @@ public enum AdultEvent implements ProcessEvent
             @Override
             public Class<? extends Processor> getNextStepProcessor()
             {
-                return PhenotypingStartedProcessor.class;
+                return PhenotypingStartedProcessorWithTissueCreation.class;
             }
         },
     updateToPhenotypingStarted(
@@ -47,7 +47,7 @@ public enum AdultEvent implements ProcessEvent
             @Override
             public Class<? extends Processor> getNextStepProcessor()
             {
-                return PhenotypingStartedProcessor.class;
+                return PhenotypingStartedProcessorWithTissueCreation.class;
             }
         },
     updateToPhenotypingAllDataSent(

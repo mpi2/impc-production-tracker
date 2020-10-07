@@ -12,4 +12,6 @@ public class Actions
     public static final String UPDATE_PROJECT_ACTION = "UPDATE_PROJECT";
     public static final String UPDATE_USER = "UPDATE_USER";
     public static final String MANAGE_GENE_LIST_ACTION = "MANAGE_GENE_LISTS";
+    public static final String UPDATE_TO_PHENOTYPING_STARTED = "UPDATE_TO_PHENOTYPING_STARTED";
+    public static final String AUTOMATIC_TISSUE_DISTRIBUTION_CREATION = "AUTOMATIC_TISSUE_DISTRIBUTION_CREATION";
 }

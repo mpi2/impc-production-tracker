@@ -192,5 +192,12 @@
     "description": "DCC or CDA can update a phenotyping stage from Phenotyping Finished to All Data Processed",
     "target": "action == 'REVERSE_FROM_PHENOTYPING_FINISHED_TO_ALL_DATA_PROCESSED'",
     "condition": "subject.isUserByKey('cda_user_key') OR subject.isUserByKey('dcc_user_key')"
+  },
+
+  {
+    "name": "Automatically create tissue distribution when moving from Phenotyping Registered to Phenotyping Started",
+    "description": "For some work units the transition should create a 'Fixed Tissue' tissue distribution",
+    "target": "action == 'AUTOMATIC_TISSUE_DISTRIBUTION_CREATION'",
+    "condition": "{'UCD'}.contains(resource.workUnit.name)"
   }
 ]
