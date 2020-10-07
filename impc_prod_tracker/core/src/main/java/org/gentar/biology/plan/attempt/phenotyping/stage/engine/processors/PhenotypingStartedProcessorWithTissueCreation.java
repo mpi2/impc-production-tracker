@@ -6,6 +6,7 @@ import org.gentar.biology.plan.attempt.phenotyping.stage.material_deposited_type
 import org.gentar.biology.plan.attempt.phenotyping.stage.material_deposited_type.MaterialDepositedTypeNames;
 import org.gentar.biology.plan.attempt.phenotyping.stage.material_deposited_type.MaterialDepositedTypeService;
 import org.gentar.biology.plan.attempt.phenotyping.stage.tissue_distribution.TissueDistribution;
+import org.gentar.organization.work_unit.WorkUnit;
 import org.gentar.security.abac.spring.ContextAwarePolicyEnforcement;
 import org.gentar.security.permissions.Actions;
 import org.gentar.statemachine.AbstractProcessor;
@@ -15,6 +16,7 @@ import org.gentar.statemachine.TransitionEvaluation;
 import org.springframework.stereotype.Component;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -30,6 +32,7 @@ public class PhenotypingStartedProcessorWithTissueCreation extends AbstractProce
 {
     private final ContextAwarePolicyEnforcement policyEnforcement;
     private final MaterialDepositedTypeService materialDepositedTypeService;
+    private final static List<String> WORK_UNIT_NAMES_AUTOMATIC_TISSUE_DISTRIBUTION = Arrays.asList("UCD");
 
     public PhenotypingStartedProcessorWithTissueCreation(
         PhenotypingStageStateSetter phenotypingStageStateSetter,
@@ -129,7 +132,7 @@ public class PhenotypingStartedProcessorWithTissueCreation extends AbstractProce
 
     private boolean needToCreateTissueDistribution(PhenotypingStage phenotypingStage)
     {
-        return policyEnforcement.hasPermission(
-            phenotypingStage, Actions.AUTOMATIC_TISSUE_DISTRIBUTION_CREATION);
+        WorkUnit workUnit = phenotypingStage.getPhenotypingAttempt().getPlan().getWorkUnit();
+        return WORK_UNIT_NAMES_AUTOMATIC_TISSUE_DISTRIBUTION.contains(workUnit.getName());
     }
 }
