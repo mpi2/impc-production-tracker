@@ -44,6 +44,7 @@ services:
 
 stages:
    - build
+   - production-deploy
    - sandbox-deploy
    - dev-deploy
 
@@ -146,14 +147,103 @@ build_image:
 
 
 
+hh-production:
+  stage: production-deploy
+  image: dtzar/helm-kubectl:2.14.3
+  rules:
+    - if: '$PRODUCTION_DEPLOYMENT == "true" && $CI_PIPELINE_SOURCE == "schedule"'
+  script:
+  # Only deploy from the MPI2 impc-production-tracker repository rather than repository forks
+  - |
+    if [ ! -z ${HH_KUBERNETES_ENDPOINT+set} ]; then
+
+      kubectl config set-cluster local --server="${HH_KUBERNETES_ENDPOINT}"
+      kubectl config set clusters.local.certificate-authority-data "${HH_KUBERNETES_CERTIFICATE_AUTHORITY_DATA}"
+      kubectl config set-credentials ${HH_KUBERNETES_USER} --token="${HH_KUBERNETES_USER_TOKEN}"
+      kubectl config set-context "${HH_KUBERNETES_NAMESPACE}" --cluster=local --user=${HH_KUBERNETES_USER} --namespace="${HH_KUBERNETES_NAMESPACE}"
+      kubectl config use-context "${HH_KUBERNETES_NAMESPACE}"
+      kubectl version
+     
+      cd impc_prod_tracker
+     
+      #
+      #
+      # Substitute the "latest" image tag in your deployment template with a more specific tag
+      # and record the deployment so you can rollback to this particular version.
+      #
+      sed -i "s/latest/${PRODUCTION_API_TAG}/g" kube/wp/production/api-service/api-service-deployment.yaml
+      sed -i "s/STRING_REPLACED_DURING_REDEPLOY/$(date)/g" kube/wp/production/api-service/api-service-deployment.yaml
+
+      if kubectl apply -f kube/wp/production/api-service/api-service-deployment.yaml --record | grep -q unchanged; then
+          echo "=> Patching deployment to force image update."
+          kubectl patch -f kube/wp/production/api-service/api-service-deployment.yaml --record -p "{\"spec\":{\"template\":{\"metadata\":{\"annotations\":{\"ci-last-updated\":\"$(date +'%s')\"}}}}}"
+      else
+          echo "=> Deployment apply has changed the object, no need to force image update."
+      fi
+      #
+      #
+      # Log the status of the application deployment
+      #
+      kubectl rollout status -f kube/wp/production/api-service/api-service-deployment.yaml
+      kubectl get pod,deployment,rs,svc,ing
+    fi
+  
+
+
+hx-production:
+  stage: production-deploy
+  image: dtzar/helm-kubectl:2.14.3
+  rules:
+    - if: '$PRODUCTION_DEPLOYMENT == "true" && $CI_PIPELINE_SOURCE == "schedule"'
+  script:
+  # Only deploy from the MPI2 impc-production-tracker repository rather than repository forks
+  - |
+    if [ ! -z ${HX_KUBERNETES_ENDPOINT+set} ]; then
+
+      kubectl config set-cluster local --server="${HX_KUBERNETES_ENDPOINT}"
+      kubectl config set clusters.local.certificate-authority-data "${HX_KUBERNETES_CERTIFICATE_AUTHORITY_DATA}"
+      kubectl config set-credentials ${HX_KUBERNETES_USER} --token="${HX_KUBERNETES_USER_TOKEN}"
+      kubectl config set-context "${HX_KUBERNETES_NAMESPACE}" --cluster=local --user=${HX_KUBERNETES_USER} --namespace="${HX_KUBERNETES_NAMESPACE}"
+      kubectl config use-context "${HX_KUBERNETES_NAMESPACE}"
+      kubectl version
+     
+      cd impc_prod_tracker
+     
+      #
+      #
+      # Substitute the "latest" image tag in your deployment template with a more specific tag
+      # and record the deployment so you can rollback to this particular version.
+      #
+      sed -i "s/latest/${PRODUCTION_API_TAG}/g" kube/wp/production/api-service/api-service-deployment.yaml
+      sed -i "s/STRING_REPLACED_DURING_REDEPLOY/$(date)/g" kube/wp/production/api-service/api-service-deployment.yaml
+
+      if kubectl apply -f kube/wp/production/api-service/api-service-deployment.yaml --record | grep -q unchanged; then
+          echo "=> Patching deployment to force image update."
+          kubectl patch -f kube/wp/production/api-service/api-service-deployment.yaml --record -p "{\"spec\":{\"template\":{\"metadata\":{\"annotations\":{\"ci-last-updated\":\"$(date +'%s')\"}}}}}"
+      else
+          echo "=> Deployment apply has changed the object, no need to force image update."
+      fi
+      #
+      #
+      # Log the status of the application deployment
+      #
+      kubectl rollout status -f kube/wp/production/api-service/api-service-deployment.yaml
+      kubectl get pod,deployment,rs,svc,ing
+    fi
+
+
+
+
+
+
 hh-sandbox:
   stage: sandbox-deploy
   image: dtzar/helm-kubectl:2.14.3
-  only:
-    refs:
-      - master
-    variables:
-      - $KUBERNETES_DEPLOYMENT == "true"
+  rules:
+    - if: '$PRODUCTION_DEPLOYMENT != "true" && \
+           $CI_PROJECT_NAMESPACE == "mouse-informatics" && \
+           $CI_BUILD_REF_NAME == "master" && \
+           $CI_PIPELINE_SOURCE == "schedule"'
   script:
   # Only deploy from the MPI2 impc-production-tracker repository rather than repository forks
   - |
@@ -195,11 +285,11 @@ hh-sandbox:
 hx-sandbox:
   stage: sandbox-deploy
   image: dtzar/helm-kubectl:2.14.3
-  only:
-    refs:
-      - master
-    variables:
-      - $KUBERNETES_DEPLOYMENT == "true"
+  rules:
+    - if: '$PRODUCTION_DEPLOYMENT != "true" && \
+           $CI_PROJECT_NAMESPACE == "mouse-informatics" && \
+           $CI_BUILD_REF_NAME == "master" && \
+           $CI_PIPELINE_SOURCE == "schedule"'
   script:
   # Only deploy from the MPI2 impc-production-tracker repository rather than repository forks
   - |
@@ -307,11 +397,9 @@ hx-sandbox:
 hh-dev:
   stage: dev-deploy
   image: dtzar/helm-kubectl:2.14.3
-  only:
-    refs:
-      - master
-    variables:
-      - $KUBERNETES_DEPLOYMENT == "true"
+  rules:
+    - if: '$PRODUCTION_DEPLOYMENT != "true" && \
+           $CI_PROJECT_NAMESPACE == "mouse-informatics"'
   script:
   # Only deploy from the MPI2 impc-production-tracker repository rather than repository forks
   - |
@@ -372,11 +460,9 @@ hh-dev:
 hx-dev:
   stage: dev-deploy
   image: dtzar/helm-kubectl:2.14.3
-  only:
-    refs:
-      - master
-    variables:
-      - $KUBERNETES_DEPLOYMENT == "true"
+  rules:
+    - if: '$PRODUCTION_DEPLOYMENT != "true" && \
+           $CI_PROJECT_NAMESPACE == "mouse-informatics"'
   script:
   # Only deploy from the MPI2 impc-production-tracker repository rather than repository forks
   - |
