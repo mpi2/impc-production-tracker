@@ -44,6 +44,14 @@ public class AAPService
     @Value("${gentar_domain_reference}")
     private String GENTAR_DOMAIN_REFERENCE;
 
+    //  By default the AAP token issued is valid for 1 hour.
+    //  The ttl attribute allows you to change this period, and
+    //  the maximum value that can be specified is 3 hours (180 minutes).
+    //  We decided to use a value of 3 hours in the absence of a token refresh mechanism
+    //  that allows you to extend the valid period of an existing token.
+    //  see: https://api.aai.ebi.ac.uk/docs/authentication/authentication.index.html#token-ttl
+
+    private final String TTL_ATTRIBUTE = "ttl=180";
     private final String AUTHENTICATION_ENDPOINT = "/auth";
     private final String DOMAIN_ENDPOINT = "/domains/%s/%s/user";
     private final String RESET_PASSWORD = "/reset";
@@ -82,7 +90,7 @@ public class AAPService
             RestTemplate restTemplate = new RestTemplate();
 
             response = restTemplate.exchange(
-                EXTERNAL_SERVICE_URL + AUTHENTICATION_ENDPOINT,
+                EXTERNAL_SERVICE_URL + AUTHENTICATION_ENDPOINT + '?' + TTL_ATTRIBUTE,
                 HttpMethod.GET,
                 entity,
                 String.class);
