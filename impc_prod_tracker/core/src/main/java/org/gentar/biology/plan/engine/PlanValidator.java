@@ -7,6 +7,7 @@ import org.gentar.biology.plan.attempt.AttemptTypesName;
 import org.gentar.biology.plan.attempt.crispr.CrisprAttemptValidator;
 import org.gentar.biology.plan.type.PlanType;
 import org.gentar.biology.plan.type.PlanTypeName;
+import org.gentar.biology.project.engine.ProjectValidator;
 import org.gentar.exceptions.CommonErrorMessages;
 import org.gentar.exceptions.ForbiddenAccessException;
 import org.gentar.exceptions.UserOperationFailedException;
@@ -32,6 +33,7 @@ public class PlanValidator
     private final AttemptTypeService attemptTypeService;
     private final ContextAwarePolicyEnforcement policyEnforcement;
     private final ResourceAccessChecker<Plan> resourceAccessChecker;
+    private final ProjectValidator projectValidator;
 
     private static final String ATTEMPT_TYPE_PLAN_TYPE_INVALID_ASSOCIATION =
         "The attempt type [%s] cannot be associated with a plan with type [%s].";
@@ -40,12 +42,14 @@ public class PlanValidator
         CrisprAttemptValidator crisprAttemptValidator,
         AttemptTypeService attemptTypeService,
         ContextAwarePolicyEnforcement policyEnforcement,
-        ResourceAccessChecker<Plan> resourceAccessChecker)
+        ResourceAccessChecker<Plan> resourceAccessChecker,
+        ProjectValidator projectValidator)
     {
         this.crisprAttemptValidator = crisprAttemptValidator;
         this.attemptTypeService = attemptTypeService;
         this.policyEnforcement = policyEnforcement;
         this.resourceAccessChecker = resourceAccessChecker;
+        this.projectValidator = projectValidator;
     }
 
     /**
@@ -117,9 +121,14 @@ public class PlanValidator
      */
     public void validatePermissionToCreatePlan(Plan plan)
     {
-        if (!policyEnforcement.hasPermission(plan, Actions.CREATE_PLAN_ACTION))
+        String planTypeName = plan.getPlanType().getName();
+        if (PlanTypeName.PRODUCTION.getLabel().equals(planTypeName))
         {
-            throwPermissionExceptionForPlan(Operations.CREATE, plan);
+            projectValidator.validatePermissionToAddProductionPlan(plan.getProject());
+        }
+        else if (PlanTypeName.PHENOTYPING.getLabel().equals(planTypeName))
+        {
+            projectValidator.validatePermissionToAddPhenotypingPlan(plan.getProject());
         }
     }
 

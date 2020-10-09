@@ -18,6 +18,7 @@ package org.gentar.biology.project;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import org.gentar.audit.diff.IgnoreForAuditingChanges;
+import org.gentar.biology.plan.type.PlanTypeName;
 import org.gentar.biology.project.summary_status.ProjectSummaryStatusStamp;
 import org.gentar.biology.status.Status;
 import org.gentar.exceptions.SystemOperationFailedException;
@@ -193,6 +194,23 @@ public class Project extends BaseEntity implements Resource<Project>
             plans.forEach(x -> {
                 WorkUnit workUnit = x.getWorkUnit();
                 if (workUnit != null)
+                {
+                    relatedWorkUnites.add(workUnit);
+                }
+            } );
+        }
+        return relatedWorkUnites;
+    }
+
+    public List<WorkUnit> getRelatedProductionPlanWorkUnits()
+    {
+        List<WorkUnit> relatedWorkUnites = new ArrayList<>();
+        if (plans != null)
+        {
+            plans.forEach(x -> {
+                WorkUnit workUnit = x.getWorkUnit();
+                if (workUnit != null &&
+                    x.getPlanType().getName().equals(PlanTypeName.PRODUCTION.getLabel()))
                 {
                     relatedWorkUnites.add(workUnit);
                 }

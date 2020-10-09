@@ -17,7 +17,7 @@ public class ForbiddenAccessException extends RuntimeException
         this(getErrorMessage(operation, resourceType, resourceId, details));
     }
 
-    private ForbiddenAccessException(String message)
+    public ForbiddenAccessException(String message)
     {
         super(message);
     }
