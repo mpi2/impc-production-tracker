@@ -6,7 +6,6 @@ public class Actions
     public static final String READ_PLAN_ACTION = "READ_PLAN";
     public static final String MANAGE_USERS_ACTION = "MANAGE_USERS";
     public static final String EXECUTE_MANAGER_TASKS_ACTION = "EXECUTE_MANAGER_TASKS";
-    public static final String CREATE_PLAN_ACTION = "CREATE_PLAN";
     public static final String UPDATE_PLAN_ACTION = "UPDATE_PLAN";
     public static final String CREATE_PROJECT_ACTION = "CREATE_PROJECT";
     public static final String UPDATE_PROJECT_ACTION = "UPDATE_PROJECT";

@@ -77,9 +77,9 @@
   },
   {
     "name": "Modify associated projects",
-    "description": "A user can modify a project if they have plans associated with it.",
+    "description": "A user can modify a project if they have production plans associated with it.",
     "target": "action == 'UPDATE_PROJECT'",
-    "condition": "subject.belongsToAnyWorkUnit(resource.getRelatedWorkUnits())"
+    "condition": "subject.belongsToAnyWorkUnit(resource.getRelatedProductionPlanWorkUnits())"
   },
 
   {
@@ -101,10 +101,16 @@
     "condition": "subject.belongsToAnyWorkUnit(resource.workUnit)"
   },
   {
-    "name": "Create a plan that is in the same subject's work unit",
-    "description": "Permission to create a plan",
-    "target": "action == 'CREATE_PLAN'",
-    "condition": "subject.belongsToAnyWorkUnit(resource.workUnit)"
+    "name": "Create a production plan in a project (rule applies to the project)",
+    "description": "A user can create a production plan only if they have modify access to the project.",
+    "target": "action == 'CREATE_PRODUCTION_PLAN_IN_PROJECT'",
+    "condition": "subject.belongsToAnyWorkUnit(resource.getRelatedProductionPlanWorkUnits())"
+  },
+  {
+    "name": "Create a production plan in a project (rule applies to the project)",
+    "description": "A user can create a phenotyping plan if they have read access to the project and a production plan exists.",
+    "target": "action == 'CREATE_PHENOTYPING_PLAN_IN_PROJECT'",
+    "condition": "subject.belongsToAnyWorkUnit(resource.getRelatedProductionPlanWorkUnits())"
   },
   {
     "name": "Update a plan that is in the same subject's work unit",

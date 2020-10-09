@@ -15,6 +15,8 @@
  *******************************************************************************/
 package org.gentar.security.permissions;
 
+import org.gentar.biology.project.ProjectQueryHelper;
+import org.gentar.biology.project.engine.ProjectValidator;
 import org.gentar.organization.person.Person;
 import org.gentar.organization.person.PersonRepository;
 import org.gentar.organization.person.PersonService;
@@ -25,7 +27,6 @@ import org.springframework.stereotype.Component;
 import org.gentar.security.abac.spring.ContextAwarePolicyEnforcement;
 import org.gentar.biology.plan.PlanService;
 import org.gentar.biology.project.ProjectService;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,6 +37,8 @@ public class PermissionServiceImpl implements PermissionService
     private static final String EXECUTE_MANAGER_TASKS_KEY = "executeManagerTasks";
 
     private static final String UPDATE_PLAN = "canUpdatePlan";
+    private static final String CREATE_PRODUCTION_PLAN = "canCreateProductionPlan";
+    private static final String CREATE_PHENOTYPING_PLAN = "canCreatePhenotypingPlan";
     private static final String UPDATE_PROJECT = "canUpdateProject";
     private static final String MANAGE_GENE_LISTS = "canManageGeneLists";
 
@@ -45,6 +48,8 @@ public class PermissionServiceImpl implements PermissionService
     private final PersonService personService;
     private final PersonRepository personRepository;
     private final WorkUnitService workUnitService;
+    private final ProjectQueryHelper projectQueryHelper;
+    private final ProjectValidator projectValidator;
 
     public PermissionServiceImpl(
         ContextAwarePolicyEnforcement policyEnforcement,
@@ -52,7 +57,9 @@ public class PermissionServiceImpl implements PermissionService
         ProjectService projectService,
         PersonService personService,
         PersonRepository personRepository,
-        WorkUnitService workUnitService)
+        WorkUnitService workUnitService,
+        ProjectQueryHelper projectQueryHelper,
+        ProjectValidator projectValidator)
     {
         this.policyEnforcement = policyEnforcement;
         this.planService = planService;
@@ -60,6 +67,8 @@ public class PermissionServiceImpl implements PermissionService
         this.personService = personService;
         this.personRepository = personRepository;
         this.workUnitService = workUnitService;
+        this.projectQueryHelper = projectQueryHelper;
+        this.projectValidator = projectValidator;
     }
 
     @Override
@@ -141,33 +150,100 @@ public class PermissionServiceImpl implements PermissionService
     @Override
     public boolean getPermissionByActionOnResource(String action, String resourceId)
     {
-        Object resource = null;
-        String actionInPolicySystem = null;
         boolean hasPermission;
         switch (action)
         {
             case UPDATE_PLAN:
-                resource = planService.getPlanByPinWithoutCheckPermissions(resourceId);
-                actionInPolicySystem = Actions.UPDATE_PLAN_ACTION;
+                hasPermission = canUpdatePlan(resourceId);
                 break;
 
             case UPDATE_PROJECT:
-                resource = projectService.getProjectByPinWithoutCheckPermissions(resourceId);
-                actionInPolicySystem = Actions.UPDATE_PROJECT_ACTION;
+                hasPermission = canUpdateProject(resourceId);
+                break;
+
+            case CREATE_PRODUCTION_PLAN:
+                hasPermission = canCreateProductionPlan(resourceId);
+                break;
+
+            case CREATE_PHENOTYPING_PLAN:
+                hasPermission = canCreatePhenotypingPlan(resourceId);
                 break;
 
             default:
-        }
-
-        if (resource == null)
-        {
-            hasPermission = false;
-        }
-        else
-        {
-            hasPermission = policyEnforcement.hasPermission(resource, actionInPolicySystem);
+                hasPermission = false;
         }
 
         return hasPermission;
+    }
+
+    private boolean canUpdatePlan(String pin)
+    {
+        return checkPermissionByPolicyAction(
+            planService.getPlanByPinWithoutCheckPermissions(pin), Actions.UPDATE_PLAN_ACTION);
+    }
+
+    private boolean canUpdateProject(String tpn)
+    {
+        boolean result;
+        try
+        {
+            projectValidator.validatePermissionToUpdateProject(
+                projectService.getProjectByPinWithoutCheckPermissions(tpn));
+            result = true;
+        }
+        catch (Exception e)
+        {
+            result = false;
+        }
+
+        return result;
+    }
+
+    private boolean canCreateProductionPlan(String tpn)
+    {
+        boolean result;
+        try
+        {
+            projectValidator.validatePermissionToAddProductionPlan(
+                projectService.getProjectByPinWithoutCheckPermissions(tpn));
+            result = true;
+        }
+        catch (Exception e)
+        {
+            result = false;
+        }
+
+        return result;
+    }
+
+    private boolean canCreatePhenotypingPlan(String tpn)
+    {
+        boolean result;
+        try
+        {
+            projectValidator.validatePermissionToAddPhenotypingPlan(
+                projectService.getProjectByPinWithoutCheckPermissions(tpn));
+            result = true;
+        }
+        catch (Exception e)
+        {
+            result = false;
+        }
+
+        return result;
+    }
+
+    private boolean checkPermissionByPolicyAction(Object resource, String action)
+    {
+        boolean result;
+        if (resource == null)
+        {
+            result = false;
+        }
+        else
+        {
+            result = policyEnforcement.hasPermission(resource, action);
+        }
+        return result;
     }
 }
