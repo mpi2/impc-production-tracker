@@ -19,6 +19,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import org.apache.tomcat.util.codec.binary.Base64;
 import org.gentar.exceptions.UserOperationFailedException;
+import org.gentar.organization.person.associations.PersonRoleConsortium;
+import org.gentar.organization.person.associations.PersonRoleWorkUnit;
 import org.gentar.util.JsonHelper;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
@@ -34,6 +36,8 @@ import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 import org.gentar.organization.person.Person;
 import java.nio.charset.Charset;
+import java.util.ArrayList;
+import java.util.List;
 
 @Component
 public class AAPService
@@ -54,6 +58,7 @@ public class AAPService
     private final String TTL_ATTRIBUTE = "ttl=180";
     private final String AUTHENTICATION_ENDPOINT = "/auth";
     private final String DOMAIN_ENDPOINT = "/domains/%s/%s/user";
+    private final String DOMAIN_MANAGER_ENDPOINT = "/domains/%s/managers/%s";
     private final String RESET_PASSWORD = "/reset";
 
     public static final String PERSON_ALREADY_IN_AAP_ERROR = "The user [%s] already exists in the "
@@ -113,7 +118,30 @@ public class AAPService
     {
         String authId = createLocalAccount(person);
         associateWithDomain(authId, token);
+        if (isPersonAManager(person))
+        {
+            addUserAsDomainManager(authId, token);
+        }
         return authId;
+    }
+
+    private boolean isPersonAManager(Person person)
+    {
+        for (PersonRoleWorkUnit personRoleWorkUnit : person.getPersonRolesWorkUnits())
+        {
+            if ("manager".equals(personRoleWorkUnit.getRole().getName()))
+            {
+                return true;
+            }
+        }
+        for (PersonRoleConsortium personRoleConsortium : person.getPersonRolesConsortia())
+        {
+            if ("manager".equals(personRoleConsortium.getRole().getName()))
+            {
+                return true;
+            }
+        }
+        return false;
     }
 
     private String createLocalAccount(Person person) throws JsonProcessingException
@@ -155,6 +183,18 @@ public class AAPService
         HttpEntity<LocalAccountInfo> requestEntity = new HttpEntity<>(headers);
         String domainAssociationUrl =
             EXTERNAL_SERVICE_URL + String.format(DOMAIN_ENDPOINT, GENTAR_DOMAIN_REFERENCE, authId);
+        restTemplate.exchange(domainAssociationUrl, HttpMethod.PUT, requestEntity, Void.class);
+    }
+
+    private void addUserAsDomainManager(String authId, String token)
+    {
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        headers.setBearerAuth(token);
+
+        HttpEntity<LocalAccountInfo> requestEntity = new HttpEntity<>(headers);
+        String domainAssociationUrl =
+            EXTERNAL_SERVICE_URL + String.format(DOMAIN_MANAGER_ENDPOINT, GENTAR_DOMAIN_REFERENCE, authId);
         restTemplate.exchange(domainAssociationUrl, HttpMethod.PUT, requestEntity, Void.class);
     }
 
