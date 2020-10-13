@@ -19,6 +19,7 @@ import org.gentar.EntityMapper;
 import org.gentar.Mapper;
 import org.gentar.biology.gene_list.record.GeneByListRecord;
 import org.gentar.biology.gene_list.record.ListRecord;
+import org.gentar.biology.gene_list.record.ListRecordType;
 import org.springframework.stereotype.Component;
 import org.gentar.biology.project.Project;
 import java.util.ArrayList;
@@ -31,15 +32,16 @@ import java.util.concurrent.atomic.AtomicInteger;
 @Component
 public class ListRecordMapper implements Mapper<ListRecord, ListRecordDTO>
 {
-    private GeneByListRecordMapper geneByListRecordMapper;
-    private ProjectsByGroupOfGenesFinder projectsByGroupOfGenesFinder;
-    private ProjectByGeneSummaryMapper projectByGeneSummaryMapper;
-    private EntityMapper entityMapper;
+    private final GeneByListRecordMapper geneByListRecordMapper;
+    private final ProjectsByGroupOfGenesFinder projectsByGroupOfGenesFinder;
+    private final ProjectByGeneSummaryMapper projectByGeneSummaryMapper;
+    private final EntityMapper entityMapper;
 
     public ListRecordMapper(
         GeneByListRecordMapper geneByListRecordMapper,
         ProjectsByGroupOfGenesFinder projectsByGroupOfGenesFinder,
-        ProjectByGeneSummaryMapper projectByGeneSummaryMapper, EntityMapper entityMapper)
+        ProjectByGeneSummaryMapper projectByGeneSummaryMapper,
+        EntityMapper entityMapper)
     {
         this.geneByListRecordMapper = geneByListRecordMapper;
         this.projectsByGroupOfGenesFinder = projectsByGroupOfGenesFinder;
@@ -53,6 +55,7 @@ public class ListRecordMapper implements Mapper<ListRecord, ListRecordDTO>
         ListRecordDTO listRecordDTO = new ListRecordDTO();
         listRecordDTO.setId(listRecord.getId());
         listRecordDTO.setNote(listRecord.getNote());
+        setRecordTypes(listRecordDTO, listRecord);
         listRecordDTO.setGenes(
             geneByListRecordMapper.toDtos(listRecord.getGenesByRecord()));
         List<Project> projects =
@@ -77,6 +80,18 @@ public class ListRecordMapper implements Mapper<ListRecord, ListRecordDTO>
         return projectByGeneSummaryMapper.toDto(project);
     }
 
+    private void setRecordTypes(ListRecordDTO listRecordDTO, ListRecord listRecord)
+    {
+        List<String> recordTypeNames = new ArrayList<>();
+        Set<ListRecordType> listRecordTypes = listRecord.getListRecordTypes();
+        if (listRecordTypes != null)
+        {
+            listRecordTypes.forEach(x -> recordTypeNames.add(x.getName()));
+        }
+        listRecordDTO.setRecordTypes(recordTypeNames);
+    }
+
+    @Override
     public ListRecord toEntity(ListRecordDTO listRecordDTO)
     {
         ListRecord listRecord = entityMapper.toTarget(listRecordDTO, ListRecord.class);
