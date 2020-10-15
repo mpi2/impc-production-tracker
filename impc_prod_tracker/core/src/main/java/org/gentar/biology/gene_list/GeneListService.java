@@ -101,8 +101,6 @@ public class GeneListService
         geneListRepository.save(geneList);
     }
 
-
-
     private void addOrReplaceListRecords(List<ListRecord> listRecords, GeneList geneList)
     {
         var currentListRecords = geneList.getListRecords();
@@ -191,7 +189,7 @@ public class GeneListService
         Map<String, List<String>> recordsByColumns =
             geneListCsvConverter.processCsvContent(csvContent);
         var listData =
-            geneListCsvConverter.buildListFromCsvContent(recordsByColumns, sortedAccIdsInCurrentList);
+            geneListCsvConverter.buildListFromCsvContent(consortiumName, recordsByColumns, sortedAccIdsInCurrentList);
         validateNewCsvRecords(new ArrayList<>(listData), geneList, recordsByColumns);
         listData.forEach(x -> x.setGeneList(geneList));
         if (geneList.getListRecords() == null)

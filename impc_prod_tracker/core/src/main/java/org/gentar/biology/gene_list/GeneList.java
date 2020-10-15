@@ -45,6 +45,8 @@ public class GeneList extends BaseEntity
     @MapsId
     private Consortium consortium;
 
+    private String description;
+
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
     @OneToMany(cascade= CascadeType.ALL, mappedBy = "geneList", orphanRemoval=true)
