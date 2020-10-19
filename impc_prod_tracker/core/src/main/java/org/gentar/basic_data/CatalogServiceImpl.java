@@ -17,6 +17,7 @@ package org.gentar.basic_data;
 
 import org.gentar.biology.colony.distribution.distribution_network.DistributionNetworkRepository;
 import org.gentar.biology.colony.distribution.product_type.ProductTypeRepository;
+import org.gentar.biology.gene_list.record.ListRecordTypeService;
 import org.gentar.biology.mutation.categorizarion.MutationCategorizationService;
 import org.gentar.biology.mutation.qc_results.QcStatusRepository;
 import org.gentar.biology.mutation.qc_results.QcTypeRepository;
@@ -89,6 +90,7 @@ public class CatalogServiceImpl implements CatalogService
     private final AssayTypeRepository assayTypeRepository;
     private final PhenotypingStageTypeService phenotypingStageTypeService;
     private final MutationCategorizationService mutationCategorizationService;
+    private final ListRecordTypeService listRecordTypeService;
 
     private final Map<String, Object> conf = new HashMap<>();
 
@@ -121,7 +123,8 @@ public class CatalogServiceImpl implements CatalogService
         ReagentRepository reagentRepository,
         AssayTypeRepository assayTypeRepository,
         PhenotypingStageTypeService phenotypingStageTypeService,
-        MutationCategorizationService mutationCategorizationService)
+        MutationCategorizationService mutationCategorizationService,
+        ListRecordTypeService listRecordTypeService)
     {
         this.attemptTypeService = attemptTypeService;
         this.workUnitRepository = workUnitRepository;
@@ -154,6 +157,7 @@ public class CatalogServiceImpl implements CatalogService
         this.assayTypeRepository = assayTypeRepository;
         this.phenotypingStageTypeService = phenotypingStageTypeService;
         this.mutationCategorizationService = mutationCategorizationService;
+        this.listRecordTypeService = listRecordTypeService;
     }
 
     @Override
@@ -198,6 +202,7 @@ public class CatalogServiceImpl implements CatalogService
             addAssayTypes();
             addPhenotypingStagesTypes();
             addPhenotypingStagesTypesByAttemptTypes();
+            addRecordTypesByConsortium();
         }
         return conf;
     }
@@ -459,5 +464,11 @@ public class CatalogServiceImpl implements CatalogService
         Map<String, List<String>> map =
             phenotypingStageTypeService.getPhenotypingStageTypeNamesByAttemptTypeNamesMap();
         conf.put("phenotypingStagesTypesByAttemptTypes", map);
+    }
+
+    private void addRecordTypesByConsortium()
+    {
+        Map<String, List<String>> map = listRecordTypeService.getRecordTypesByConsortium();
+        conf.put("recordTypesByConsortium", map);
     }
 }
