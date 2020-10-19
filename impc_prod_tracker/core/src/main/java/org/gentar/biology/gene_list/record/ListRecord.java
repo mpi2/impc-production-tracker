@@ -56,7 +56,7 @@ public class ListRecord
     private Set<GeneByListRecord> genesByRecord;
 
     @ToString.Exclude
-    @ManyToMany
+    @ManyToMany(cascade= CascadeType.ALL)
     @JoinTable(
         name = "List_record_List_record_type",
         joinColumns = @JoinColumn(name = "list_record_id"),
