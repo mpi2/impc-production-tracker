@@ -15,6 +15,7 @@
  */
 package org.gentar.biology.gene_list;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 import org.springframework.hateoas.server.core.Relation;
@@ -28,6 +29,10 @@ public class ListRecordDTO
     private String note;
     private List<GeneByListRecordDTO> genes;
     private List<String> recordTypes;
+
+    // Internal field to help the correct mapping of the recordTypes
+    @JsonIgnore
+    private String consortiumName;
 
     @JsonProperty("projects")
     private List<ProjectByGeneSummaryDTO> projectByGeneSummaryDTOS;

@@ -160,6 +160,7 @@ public class GeneListController
         @RequestBody List<ListRecordDTO> records,
         @PathVariable("consortiumName") String consortiumName)
     {
+        records.forEach(x -> x.setConsortiumName(consortiumName));
         List<ListRecord> listRecords =
             new ArrayList<>(listRecordMapper.toEntities(records));
         geneListService.updateRecordsInList(listRecords, consortiumName);

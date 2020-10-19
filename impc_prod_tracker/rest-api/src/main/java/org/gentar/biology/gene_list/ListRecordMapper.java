@@ -15,11 +15,11 @@
  */
 package org.gentar.biology.gene_list;
 
-import org.gentar.EntityMapper;
 import org.gentar.Mapper;
 import org.gentar.biology.gene_list.record.GeneByListRecord;
 import org.gentar.biology.gene_list.record.ListRecord;
 import org.gentar.biology.gene_list.record.ListRecordType;
+import org.gentar.biology.gene_list.record.ListRecordTypeService;
 import org.springframework.stereotype.Component;
 import org.gentar.biology.project.Project;
 import java.util.ArrayList;
@@ -35,18 +35,18 @@ public class ListRecordMapper implements Mapper<ListRecord, ListRecordDTO>
     private final GeneByListRecordMapper geneByListRecordMapper;
     private final ProjectsByGroupOfGenesFinder projectsByGroupOfGenesFinder;
     private final ProjectByGeneSummaryMapper projectByGeneSummaryMapper;
-    private final EntityMapper entityMapper;
+    private final ListRecordTypeService listRecordTypeService;
 
     public ListRecordMapper(
         GeneByListRecordMapper geneByListRecordMapper,
         ProjectsByGroupOfGenesFinder projectsByGroupOfGenesFinder,
         ProjectByGeneSummaryMapper projectByGeneSummaryMapper,
-        EntityMapper entityMapper)
+        ListRecordTypeService listRecordTypeService)
     {
         this.geneByListRecordMapper = geneByListRecordMapper;
         this.projectsByGroupOfGenesFinder = projectsByGroupOfGenesFinder;
         this.projectByGeneSummaryMapper = projectByGeneSummaryMapper;
-        this.entityMapper = entityMapper;
+        this.listRecordTypeService = listRecordTypeService;
     }
 
     @Override
@@ -94,15 +94,19 @@ public class ListRecordMapper implements Mapper<ListRecord, ListRecordDTO>
     @Override
     public ListRecord toEntity(ListRecordDTO listRecordDTO)
     {
-        ListRecord listRecord = entityMapper.toTarget(listRecordDTO, ListRecord.class);
+        ListRecord listRecord = new ListRecord();
+        listRecord.setId(listRecordDTO.getId());
+        listRecord.setNote(listRecordDTO.getNote());
         addGeneByListRecords(listRecord, listRecordDTO);
+        addRecordTypes(listRecord, listRecordDTO);
         return listRecord;
     }
 
     private void addGeneByListRecords(
         ListRecord listRecord, ListRecordDTO listRecordDTO)
     {
-        var geneEntities = geneByListRecordMapper.toEntities(listRecordDTO.getGenes());
+        var geneEntities =
+            geneByListRecordMapper.toEntities(listRecordDTO.getGenes());
         Set<GeneByListRecord> geneByListRecords = new HashSet<>(geneEntities);
         if (listRecord.getGenesByRecord() == null)
         {
@@ -117,5 +121,21 @@ public class ListRecordMapper implements Mapper<ListRecord, ListRecordDTO>
             x.setListRecord(listRecord);
             x.setIndex(index.getAndIncrement());
         });
+    }
+
+    private void addRecordTypes(ListRecord listRecord, ListRecordDTO listRecordDTO)
+    {
+        String consortiumName = listRecordDTO.getConsortiumName();
+        Set<ListRecordType> listRecordTypes = new HashSet<>();
+        List<String> recordTypesNames = listRecordDTO.getRecordTypes();
+        if (recordTypesNames != null)
+        {
+            recordTypesNames.forEach(x -> {
+                ListRecordType listRecordType =
+                    listRecordTypeService.getRecordTypeByTypeNameAndConsortiumName(x, consortiumName);
+                listRecordTypes.add(listRecordType);
+            });
+        }
+        listRecord.setListRecordTypes(listRecordTypes);
     }
 }
