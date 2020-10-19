@@ -23,7 +23,5 @@ import java.util.List;
 public class ProjectByGeneSummaryDTO
 {
     private String tpn;
-    private String assignmentStatusName;
     private String summaryStatus;
-    private List<PlanSummaryDTO> plans;
 }

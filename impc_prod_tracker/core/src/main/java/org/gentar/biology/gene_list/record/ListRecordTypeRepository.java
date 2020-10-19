@@ -4,4 +4,5 @@ import org.springframework.data.repository.CrudRepository;
 
 public interface ListRecordTypeRepository extends CrudRepository<ListRecordType, Long>
 {
+    ListRecordType findByNameAndGeneListConsortiumName(String typeName, String consortiumName);
 }
