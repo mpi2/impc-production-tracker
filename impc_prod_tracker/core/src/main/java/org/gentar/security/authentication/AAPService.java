@@ -82,7 +82,7 @@ public class AAPService
     {
         ResponseEntity<String> response;
         HttpHeaders headers = new HttpHeaders();
-        headers.setBasicAuth(userName, password);
+        headers.setBasicAuth(userName.toLowerCase(), password);
 
         HttpEntity<String> entity = new HttpEntity<>("parameters", headers);
         try
@@ -116,6 +116,7 @@ public class AAPService
      */
     public String createUser(Person person, String token) throws JsonProcessingException
     {
+        person.setEmail(person.getEmail().toLowerCase());
         String authId = createLocalAccount(person);
         associateWithDomain(authId, token);
         if (isPersonAManager(person))
