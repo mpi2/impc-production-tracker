@@ -28,6 +28,8 @@ import org.gentar.security.AuthorizationHeaderReader;
 import org.gentar.security.PublicKeyProvider;
 import org.gentar.security.abac.subject.AapSystemSubject;
 import org.gentar.security.abac.subject.SystemSubject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
@@ -44,15 +46,16 @@ public class JwtTokenProvider
 {
     static final String INVALID_TOKEN_MESSAGE = "Expired or invalid JWT token.";
     private static final String INVALID_TOKEN_DEBUG_MESSAGE =
-        "Tokens expire after a while (usually 1 hour), please create a new one. Also check that you"
+        "Tokens expire after 3 hours, please create a new one. Also check that you"
             + " are using the whole token in the authentication header. Contact your administrator"
             + "if after checking this you keep receiving the same error.";
     static final String NULL_EMPTY_TOKEN_MESSAGE = "The token cannot be null or empty.";
+    private static final Logger LOGGER = LoggerFactory.getLogger(JwtTokenProvider.class);
 
-    private PublicKeyProvider publicKeyProvider;
-    private AapSystemSubject aapSystemSubject;
+    private final PublicKeyProvider publicKeyProvider;
+    private final AapSystemSubject aapSystemSubject;
 
-    private AuthorizationHeaderReader authorizationHeaderReader = new AuthorizationHeaderReader();
+    private final AuthorizationHeaderReader authorizationHeaderReader = new AuthorizationHeaderReader();
 
     public JwtTokenProvider(
         PublicKeyProvider publicKeyProvider, AapSystemSubject aapSystemSubject)
@@ -121,6 +124,7 @@ public class JwtTokenProvider
         }
         catch (JwtException | IllegalArgumentException e)
         {
+            LOGGER.error(e.getMessage());
             throw new UserOperationFailedException(INVALID_TOKEN_MESSAGE, INVALID_TOKEN_DEBUG_MESSAGE);
         }
     }
