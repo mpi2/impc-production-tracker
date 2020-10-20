@@ -207,8 +207,8 @@ public class AAPService
     public void requestPasswordReset(String email) throws JsonProcessingException
     {
         PasswordResetRequest passwordResetRequest = new PasswordResetRequest();
-        passwordResetRequest.userName = email;
-        passwordResetRequest.email = email;
+        passwordResetRequest.userName = email.toLowerCase();
+        passwordResetRequest.email = email.toLowerCase();
 
         String payload = JsonHelper.toJson(passwordResetRequest);
 
