@@ -116,7 +116,8 @@ public class MutationRequestProcessor
             for (MutationSequence mutationSequence : mappedMutationSequences)
             {
                 mutationSequence.setMutation(originalMutation);
-                if (mutationSequence.getSequence().getSequenceLocations() != null)
+                if (mutationSequence.getSequence().getSequenceLocations() != null &&
+                        !mutationSequence.getSequence().getSequenceLocations().isEmpty())
                 {
                     throw new UserOperationFailedException(
                         "Mutation sequences do not accept locations.");

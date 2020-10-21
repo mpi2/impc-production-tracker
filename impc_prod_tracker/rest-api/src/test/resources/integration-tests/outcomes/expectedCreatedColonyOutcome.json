@@ -31,7 +31,7 @@
           "description":"Confirm Genotype when Genotype In Progress",
           "triggeredByUser":true,
           "available":false,
-          "note":"A sequence and mgi allele symbol must exist.",
+          "note":"A sequence and an allele symbol must exist.",
           "nextStatus":"Genotype Confirmed"
         },
         {

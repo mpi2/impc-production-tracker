@@ -2,9 +2,9 @@ package org.gentar.biology.mutation;
 
 import org.gentar.Mapper;
 import org.gentar.biology.mutation.sequence.MutationSequence;
-import org.gentar.biology.sequence.Sequence;
 import org.gentar.biology.sequence.SequenceDTO;
 import org.gentar.biology.sequence.SequenceMapper;
+import org.gentar.biology.sequence.category.SequenceCategoryName;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -43,8 +43,11 @@ public class MutationSequenceMapper implements Mapper<MutationSequence, Mutation
             mutationSequence.setIndex(mutationSequenceDTO.getIndex());
             if (mutationSequenceDTO.getSequenceDTO() != null)
             {
+                SequenceDTO sequenceDTO = mutationSequenceDTO.getSequenceDTO();
+                sequenceDTO.setSequenceCategoryName(SequenceCategoryName.OUTCOME_SEQUENCE.getLabel());
+
                 mutationSequence.setSequence(
-                    sequenceMapper.toEntity(mutationSequenceDTO.getSequenceDTO()));
+                    sequenceMapper.toEntity(sequenceDTO));
             }
         }
 

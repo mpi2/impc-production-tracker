@@ -132,7 +132,7 @@ class ConfirmGenotypeProcessorTest
         assertThat(
             "Not expected message",
             thrown.getDebugMessage(),
-            is("A sequence and mgi allele symbol must exist."));
+            is("A sequence and an allele symbol must exist."));
         verify(colonyStateSetter, times(0)).setStatusByName(any(Colony.class), any(String.class));
     }
 
