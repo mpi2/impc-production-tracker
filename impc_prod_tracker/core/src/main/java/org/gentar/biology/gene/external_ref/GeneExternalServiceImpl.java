@@ -29,6 +29,7 @@ public class GeneExternalServiceImpl implements GeneExternalService
         this.graphQLConsumer = graphQLConsumer;
     }
 
+    @Override
     @Cacheable("external_genes_by_input")
     public Gene getGeneFromExternalDataBySymbolOrAccId(String input)
     {
@@ -37,6 +38,7 @@ public class GeneExternalServiceImpl implements GeneExternalService
         return getGeneFromExternalData(query);
     }
 
+    @Override
     public Map<String, String> getAccIdsByMarkerSymbols(List<String> inputs)
     {
         if (inputs.isEmpty())
@@ -79,6 +81,7 @@ public class GeneExternalServiceImpl implements GeneExternalService
         return accIds;
     }
 
+    @Override
     public List<Gene> getGenesFromExternalDataBySymbolOrAccId(String input)
     {
         String query =
@@ -86,6 +89,7 @@ public class GeneExternalServiceImpl implements GeneExternalService
         return getGenesFromExternalData(query);
     }
 
+    @Override
     public Gene getSynonymFromExternalGenes(String symbol)
     {
         String query = String.format(ExternalReferenceConstants.SYNONYM_BY_SYMBOL_QUERY, symbol);

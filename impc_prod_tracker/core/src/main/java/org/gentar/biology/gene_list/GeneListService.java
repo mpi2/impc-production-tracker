@@ -60,6 +60,11 @@ public class GeneListService
         return geneListRecordService.getAllBySpecs(pageable, filter);
     }
 
+    public List<ListRecord> getAllNotPaginatedWithFilters(GeneListFilter filter)
+    {
+        return geneListRecordService.getAllNotPaginated(filter);
+    }
+
     public void updateRecordsInList(
         List<ListRecord> listRecords, String consortiumName)
     {

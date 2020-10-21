@@ -15,54 +15,41 @@
  */
 package org.gentar.biology.gene_list;
 
-import org.gentar.biology.project.search.filter.ProjectFilter;
-import org.gentar.biology.project.search.ProjectSearcherService;
-import org.gentar.biology.project.search.Search;
-import org.gentar.biology.project.search.SearchReport;
-import org.gentar.biology.project.search.SearchType;
+import org.gentar.biology.project.ProjectService;
+import org.gentar.biology.project.search.filter.ProjectFilterBuilder;
 import org.springframework.stereotype.Component;
 import org.gentar.biology.gene_list.record.GeneByListRecord;
 import org.gentar.biology.project.Project;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
 @Component
 public class ProjectsByGroupOfGenesFinder
 {
-    private ProjectSearcherService projectSearcherService;
+    private final ProjectService projectService;
 
-    public ProjectsByGroupOfGenesFinder(ProjectSearcherService projectSearcherService)
+    public ProjectsByGroupOfGenesFinder(ProjectService projectService)
     {
-        this.projectSearcherService = projectSearcherService;
+        this.projectService = projectService;
     }
 
     public List<Project> findProjectsByGenes(Set<GeneByListRecord> geneByListRecords)
     {
-        Set<Project> projects = new HashSet<>();
+        List<Project> projects = new ArrayList<>();
         List<String> ids = new ArrayList<>();
         if (geneByListRecords != null && !geneByListRecords.isEmpty())
         {
             geneByListRecords.forEach(x -> ids.add(x.getAccId()));
-            Search search = new Search(SearchType.BY_GENE.getName(), ids, ProjectFilter.getInstance());
-            SearchReport searchReport = projectSearcherService.executeSearch(search);
-            if (searchReport.getResults() != null)
-            {
-                searchReport.getResults().forEach(x -> {
-                    Project p = x.getProject();
-                    if (p != null)
-                    {
-                        projects.add(p);
-                    }
-                });
-            }
+            projects =
+                projectService.getProjectsWithoutOrthologs(
+                    ProjectFilterBuilder.getInstance().withGenes(ids).build());
         }
         return filterExactMatches(ids, projects);
     }
 
-    private List<Project> filterExactMatches(List<String> ids, Set<Project> projects)
+    private List<Project> filterExactMatches(List<String> ids, List<Project> projects)
     {
         List<Project> filteredProjects = new ArrayList<>();
         projects.forEach(p -> {

@@ -15,14 +15,12 @@
  */
 package org.gentar.biology.gene.external_ref;
 
-import org.springframework.cache.annotation.Cacheable;
 import org.gentar.biology.gene.Gene;
 import java.util.List;
 import java.util.Map;
 
 public interface GeneExternalService
 {
-    @Cacheable("external_genes_by_input")
     Gene getGeneFromExternalDataBySymbolOrAccId(String input);
 
     Map<String, String> getAccIdsByMarkerSymbols(List<String> inputs);
