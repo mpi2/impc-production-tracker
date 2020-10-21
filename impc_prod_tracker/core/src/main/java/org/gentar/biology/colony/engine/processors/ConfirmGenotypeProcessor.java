@@ -35,7 +35,7 @@ public class ConfirmGenotypeProcessor extends AbstractProcessor
         transitionEvaluation.setExecutable(canExecuteTransition);
         if (!canExecuteTransition)
         {
-            transitionEvaluation.setNote("A sequence and mgi allele symbol must exist.");
+            transitionEvaluation.setNote("A sequence and an allele symbol must exist.");
         }
         return transitionEvaluation;
     }
@@ -54,7 +54,7 @@ public class ConfirmGenotypeProcessor extends AbstractProcessor
             for (Mutation mutation : mutations)
             {
                 informationIsValidated = atLeastOneOutcomeSequenceExist(mutation)
-                    && mgiAlleleSymbolExists(mutation);
+                    && alleleSymbolExists(mutation);
                 if (informationIsValidated)
                 {
                     break;
@@ -77,7 +77,7 @@ public class ConfirmGenotypeProcessor extends AbstractProcessor
         return atLeastOneOutcomeSequenceExist;
     }
 
-    private boolean mgiAlleleSymbolExists(Mutation mutation)
+    private boolean alleleSymbolExists(Mutation mutation)
     {
         return mutation.getSymbol() != null;
     }
