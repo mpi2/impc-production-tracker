@@ -25,8 +25,8 @@ import org.gentar.biology.gene.Gene;
 @Component
 public class GeneByListRecordMapper implements Mapper<GeneByListRecord, GeneByListRecordDTO>
 {
-    private GeneExternalService geneExternalService;
-    private GeneByGeneListRecordService geneByGeneListRecordService;
+    private final GeneExternalService geneExternalService;
+    private final GeneByGeneListRecordService geneByGeneListRecordService;
 
     public GeneByListRecordMapper(
         GeneExternalService geneExternalService,

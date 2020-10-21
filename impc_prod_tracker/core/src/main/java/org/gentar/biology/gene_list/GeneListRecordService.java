@@ -34,7 +34,7 @@ import java.util.Map;
 @Component
 public class GeneListRecordService
 {
-    private ListRecordRepository listRecordRepository;
+    private final ListRecordRepository listRecordRepository;
 
     public GeneListRecordService(ListRecordRepository listRecordRepository)
     {
@@ -49,6 +49,12 @@ public class GeneListRecordService
     public Page<ListRecord> getAllByConsortium(Pageable pageable, String consortiumName)
     {
         return listRecordRepository.findAllByGeneListConsortiumName(pageable, consortiumName);
+    }
+
+    // Method to use when no pagination is applicable (export).
+    public List<ListRecord> getAllNotPaginated(GeneListFilter filter)
+    {
+        return listRecordRepository.findAll(buildSpecs(filter));
     }
 
     public Page<ListRecord> getAllBySpecs(Pageable pageable, GeneListFilter filter)

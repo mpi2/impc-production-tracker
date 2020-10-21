@@ -19,8 +19,12 @@ import org.gentar.biology.gene.external_ref.GeneExternalService;
 import org.gentar.biology.gene_list.filter.GeneListFilter;
 import org.gentar.biology.gene_list.filter.GeneListFilterBuilder;
 import org.gentar.biology.gene_list.record.ListRecord;
+import org.gentar.biology.project.Project;
 import org.gentar.helpers.CsvReader;
+import org.gentar.helpers.CsvWriter;
+import org.gentar.helpers.GeneListCsvRecord;
 import org.gentar.helpers.LinkUtil;
+import org.gentar.helpers.SearchCsvRecord;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PagedResourcesAssembler;
@@ -38,8 +42,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
+
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 
@@ -53,18 +61,24 @@ public class GeneListController
     private final GeneListService geneListService;
     private final ListRecordMapper listRecordMapper;
     private final CsvReader csvReader;
+    private final CsvWriter<SearchCsvRecord> csvWriter;
     private final GeneExternalService geneExternalService;
+    private final GeneListCsvRecordMapper geneListCsvRecordMapper;
 
     public GeneListController(
         GeneListService geneListService,
         ListRecordMapper listRecordMapper,
         CsvReader csvReader,
-        GeneExternalService geneExternalService)
+        CsvWriter<SearchCsvRecord> csvWriter,
+        GeneExternalService geneExternalService,
+        GeneListCsvRecordMapper geneListCsvRecordMapper)
     {
         this.geneListService = geneListService;
         this.listRecordMapper = listRecordMapper;
         this.csvReader = csvReader;
+        this.csvWriter = csvWriter;
         this.geneExternalService = geneExternalService;
+        this.geneListCsvRecordMapper = geneListCsvRecordMapper;
     }
 
     /**
@@ -184,5 +198,25 @@ public class GeneListController
     {
         geneListService.deleteRecordsInList(recordsIds, consortiumName);
         return findByConsortium(pageable, assembler, consortiumName, Collections.emptyList());
+    }
+
+    @PostMapping("/{consortiumName}/export")
+    public void exportCsv(
+        HttpServletResponse response,
+        @PathVariable("consortiumName") String consortiumName) throws IOException
+    {
+        String filename = "download.csv";
+        response.setContentType("text/csv");
+        response.setHeader(
+            HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + filename + "\"");
+
+        GeneListFilter filter = GeneListFilterBuilder.getInstance()
+            .withConsortiumName(consortiumName)
+            .build();
+        List<ListRecord> records =
+            geneListService.getAllNotPaginatedWithFilters(filter);
+        records.sort(Comparator.comparing(ListRecord::getId));
+        List<GeneListCsvRecord> geneListCsvRecords = geneListCsvRecordMapper.toDtos(records);
+        csvWriter.writeListToCsv(response.getWriter(), geneListCsvRecords, GeneListCsvRecord.HEADERS);
     }
 }

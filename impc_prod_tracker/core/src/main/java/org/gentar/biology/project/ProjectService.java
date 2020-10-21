@@ -28,6 +28,7 @@ public interface ProjectService
     Project getNotNullProjectByTpn(String tpn);
     Project getProjectByPinWithoutCheckPermissions(String tpn);
     List<Project> getProjects(ProjectFilter projectFilter);
+    List<Project> getProjectsWithoutOrthologs(ProjectFilter projectFilter);
     Page<Project> getProjects(ProjectFilter projectFilter, Pageable pageable);
 
     Project createProject(Project project);

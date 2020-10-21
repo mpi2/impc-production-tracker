@@ -37,6 +37,7 @@ import org.gentar.audit.history.History;
 import org.gentar.biology.project.engine.ProjectCreator;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -98,6 +99,14 @@ public class ProjectServiceImpl implements ProjectService
         Specification<Project> specifications = buildSpecificationsWithCriteria(projectFilter);
         List<Project> projects = projectRepository.findAll(specifications);
         addOrthologs(projects);
+        return projectValidator.getCheckedCollection(projects);
+    }
+
+    @Override
+    public List<Project> getProjectsWithoutOrthologs(ProjectFilter projectFilter)
+    {
+        Specification<Project> specifications = buildSpecificationsWithCriteria(projectFilter);
+        List<Project> projects = projectRepository.findAll(specifications);
         return projectValidator.getCheckedCollection(projects);
     }
 

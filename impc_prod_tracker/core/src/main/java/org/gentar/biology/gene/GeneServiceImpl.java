@@ -6,6 +6,7 @@ import org.gentar.biology.species.SpeciesNames;
 import org.gentar.biology.species.SpeciesService;
 import org.gentar.exceptions.NotFoundException;
 import org.gentar.exceptions.UserOperationFailedException;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
@@ -37,12 +38,14 @@ public class GeneServiceImpl implements GeneService
     }
 
     @Override
+    @Cacheable("geneByAccessionId")
     public Gene getGeneByAccessionId(String accessionId)
     {
         return geneRepository.findFirstByAccIdIgnoreCase(accessionId);
     }
 
     @Override
+    @Cacheable("geneBySymbol")
     public Gene getGeneBySymbol(String symbol)
     {
         return geneRepository.findBySymbol(symbol);
