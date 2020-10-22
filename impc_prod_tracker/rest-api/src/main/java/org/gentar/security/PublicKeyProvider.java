@@ -73,7 +73,7 @@ public class PublicKeyProvider
                 text = text
                     .replaceAll(BEGIN_CERT, "")
                     .replaceAll(END_CERT, "")
-                    .replaceAll("\n","");
+                    .replaceAll(System.lineSeparator(), "");
             }
         }
         catch (Exception e)
