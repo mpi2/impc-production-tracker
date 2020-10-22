@@ -1,7 +1,8 @@
 package org.gentar.biology.gene_list;
 
 import org.gentar.Mapper;
-import org.gentar.biology.gene.GeneService;
+import org.gentar.biology.gene.Gene;
+import org.gentar.biology.gene.external_ref.GeneExternalService;
 import org.gentar.biology.gene_list.record.GeneByListRecord;
 import org.gentar.biology.gene_list.record.ListRecord;
 import org.gentar.biology.project.Project;
@@ -15,13 +16,14 @@ import java.util.Set;
 public class GeneListCsvRecordMapper implements Mapper<ListRecord, GeneListCsvRecord>
 {
     private static final String SEPARATOR = ",";
-    private final GeneService geneService;
+    private final GeneExternalService geneExternalService;
     private final ProjectsByGroupOfGenesFinder projectsByGroupOfGenesFinder;
 
     public GeneListCsvRecordMapper(
-        GeneService geneService, ProjectsByGroupOfGenesFinder projectsByGroupOfGenesFinder)
+        GeneExternalService geneExternalService,
+        ProjectsByGroupOfGenesFinder projectsByGroupOfGenesFinder)
     {
-        this.geneService = geneService;
+        this.geneExternalService = geneExternalService;
         this.projectsByGroupOfGenesFinder = projectsByGroupOfGenesFinder;
     }
 
@@ -41,8 +43,18 @@ public class GeneListCsvRecordMapper implements Mapper<ListRecord, GeneListCsvRe
         Set<GeneByListRecord> genes = listRecord.getGenesByRecord();
         if (genes != null)
         {
-            genes.forEach(x -> genesSymbols.add(
-                geneService.getGeneByAccessionId(x.getAccId()).getSymbol()));
+            genes.forEach(x -> {
+                Gene gene =
+                    geneExternalService.getGeneFromExternalDataBySymbolOrAccId(x.getAccId());
+                if (gene == null)
+                {
+                    genesSymbols.add("gene not found ("+ x.getAccId()+")");
+                }
+                else
+                {
+                    genesSymbols.add(gene.getSymbol());
+                }
+            } );
         }
         return genesSymbols;
     }
