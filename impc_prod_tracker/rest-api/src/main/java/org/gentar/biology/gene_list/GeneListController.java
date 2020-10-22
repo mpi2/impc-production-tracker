@@ -200,7 +200,7 @@ public class GeneListController
         return findByConsortium(pageable, assembler, consortiumName, Collections.emptyList());
     }
 
-    @PostMapping("/{consortiumName}/export")
+    @GetMapping("/{consortiumName}/export")
     public void exportCsv(
         HttpServletResponse response,
         @PathVariable("consortiumName") String consortiumName) throws IOException
