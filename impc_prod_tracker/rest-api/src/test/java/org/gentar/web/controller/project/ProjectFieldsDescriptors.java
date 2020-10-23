@@ -63,10 +63,6 @@ public class ProjectFieldsDescriptors
         addField(descriptors, "planDetails.comment", "Comment in the plan.");
         addField(
             descriptors,
-            "planDetails.productsAvailableForGeneralPublic",
-            "Whether the product is available to the public.");
-        addField(
-            descriptors,
             "planDetails.attemptTypeName",
             "Attempt type name.");
         addField(

@@ -7,7 +7,6 @@
   "workUnitName":"BCM",
   "workGroupName":"BaSH",
   "comment":"example of crispr plan creation",
-  "productsAvailableForGeneralPublic":false,
   "crisprAttempt":{
     "miDate":"2019-02-26",
     "experimental":true,

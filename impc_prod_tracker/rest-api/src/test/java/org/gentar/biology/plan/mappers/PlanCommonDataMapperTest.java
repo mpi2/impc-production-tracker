@@ -35,7 +35,6 @@ class PlanCommonDataMapperTest
     public static final String WORK_UNIT_NAME = "workUnitName";
     public static final String WORK_GROUP_NAME = "workGroupName";
     public static final String PLAN_COMMENT = "plan Comment";
-    public static final boolean PRODUCTS_AVAILABLE_FOR_GENERAL_PUBLIC = true;
     private PlanCommonDataMapper testInstance;
 
     @Mock
@@ -63,9 +62,6 @@ class PlanCommonDataMapperTest
         assertThat(planCommonDataDTO.getComment(), is(PLAN_COMMENT));
         assertThat(planCommonDataDTO.getWorkUnitName(), is(WORK_UNIT_NAME));
         assertThat(planCommonDataDTO.getWorkGroupName(), is(WORK_GROUP_NAME));
-        assertThat(
-            planCommonDataDTO.getProductsAvailableForGeneralPublic(),
-            is(PRODUCTS_AVAILABLE_FOR_GENERAL_PUBLIC));
     }
 
     private Plan buildPlan()
@@ -88,7 +84,6 @@ class PlanCommonDataMapperTest
         workGroup.setName(WORK_GROUP_NAME);
         plan.setWorkGroup(workGroup);
         plan.setComment(PLAN_COMMENT);
-        plan.setProductsAvailableForGeneralPublic(PRODUCTS_AVAILABLE_FOR_GENERAL_PUBLIC);
         return plan;
     }
 
@@ -110,8 +105,6 @@ class PlanCommonDataMapperTest
         assertThat(plan.getComment(), is(PLAN_COMMENT));
         assertThat(plan.getWorkUnit().getName(), is(WORK_UNIT_NAME));
         assertThat(plan.getWorkGroup().getName(), is(WORK_GROUP_NAME));
-        assertThat(
-            plan.getProductsAvailableForGeneralPublic(), is(PRODUCTS_AVAILABLE_FOR_GENERAL_PUBLIC));
     }
 
     private PlanCommonDataDTO buildPlanCommonDataDTO()
@@ -120,7 +113,6 @@ class PlanCommonDataMapperTest
         planCommonDataDTO.setComment(PLAN_COMMENT);
         planCommonDataDTO.setWorkUnitName(WORK_UNIT_NAME);
         planCommonDataDTO.setWorkGroupName(WORK_GROUP_NAME);
-        planCommonDataDTO.setProductsAvailableForGeneralPublic(PRODUCTS_AVAILABLE_FOR_GENERAL_PUBLIC);
         return planCommonDataDTO;
     }
 }

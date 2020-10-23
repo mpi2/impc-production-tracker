@@ -48,9 +48,6 @@ public class PlanFieldsDescriptors
         addField(sharedFieldDescriptions, "workGroupName", "Work group for the plan.");
         addField(
             sharedFieldDescriptions,
-            "productsAvailableForGeneralPublic", "Products available for general public.");
-        addField(
-            sharedFieldDescriptions,
             "statusTransition",
             "Information about the current state in the state machine for the plan.");
         addField(sharedFieldDescriptions, "statusTransition.currentStatus", "Current status in the plan");

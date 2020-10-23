@@ -115,8 +115,6 @@ public class Plan extends BaseEntity implements Resource<Plan>, ProcessData
     @Column(columnDefinition = "TEXT")
     private String comment;
 
-    private Boolean productsAvailableForGeneralPublic;
-
     @ManyToMany()
     @JoinTable(
             name = "plan_flag_relation",
@@ -153,7 +151,6 @@ public class Plan extends BaseEntity implements Resource<Plan>, ProcessData
         this.workGroup = plan.workGroup;
         this.funders = new HashSet<>(plan.funders);
         this.comment = plan.comment;
-        this.productsAvailableForGeneralPublic = plan.productsAvailableForGeneralPublic;
         this.planFlags = new HashSet<>(plan.planFlags);
         this.protocols = new HashSet<>(plan.protocols);
         this.planStatusStamps =

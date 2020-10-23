@@ -52,7 +52,6 @@ public class UpdatePlanRequestProcessor
 
             Plan mappedPlan = planUpdateMapper.toEntity(planUpdateDTO);
             plan.setComment(mappedPlan.getComment());
-            plan.setProductsAvailableForGeneralPublic(mappedPlan.getProductsAvailableForGeneralPublic());
             setUpdatedCrisprAttempt(plan, mappedPlan);
             setUpdatedPhenotypingAttempt(plan, mappedPlan);
             if (mappedPlan.getBreedingAttempt() != null)

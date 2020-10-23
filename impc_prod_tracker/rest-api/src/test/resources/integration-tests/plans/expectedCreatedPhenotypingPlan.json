@@ -6,7 +6,6 @@
   "workUnitName":"UCD",
   "workGroupName":"DTCC",
   "comment":null,
-  "productsAvailableForGeneralPublic": true,
   "phenotypingStartingPoint": {
     "_links": {
       "outcome": {

@@ -40,8 +40,6 @@ public class PlanCommonDataMapper implements Mapper<Plan, PlanCommonDataDTO>
             planCommonDataDTO.setWorkUnitName(workUnitName);
             planCommonDataDTO.setWorkGroupName(workGroupName);
             planCommonDataDTO.setComment(plan.getComment());
-            planCommonDataDTO.setProductsAvailableForGeneralPublic(
-                plan.getProductsAvailableForGeneralPublic());
             setFundersNamesToDto(planCommonDataDTO, plan);
         }
 
@@ -65,8 +63,6 @@ public class PlanCommonDataMapper implements Mapper<Plan, PlanCommonDataDTO>
         {
             plan.setComment(planCommonDataDTO.getComment());
         }
-        plan.setProductsAvailableForGeneralPublic(
-            planCommonDataDTO.getProductsAvailableForGeneralPublic());
         Set<Funder> funders =
             new HashSet<>(funderMapper.toEntities(planCommonDataDTO.getFunderNames()));
         plan.setFunders(funders);

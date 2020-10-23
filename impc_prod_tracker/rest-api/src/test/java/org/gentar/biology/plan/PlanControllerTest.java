@@ -371,17 +371,12 @@ class PlanControllerTest extends ControllerTestTemplate
         assertThat(historyDTO.getComment(), is("Plan updated"));
 
         List<HistoryDetailDTO> historyDetailDTOS = historyDTO.getDetails();
-        assertThat(historyDetailDTOS.size(), is(2));
+        assertThat(historyDetailDTOS.size(), is(1));
 
         HistoryDetailDTO historyDetailDTO1 =
             getHistoryDetailByField(historyDetailDTOS, "comment");
         assertThat(historyDetailDTO1.getOldValue(), is(nullValue()));
         assertThat(historyDetailDTO1.getNewValue(), is("New Plan comment"));
-
-        HistoryDetailDTO historyDetailDTO2 =
-            getHistoryDetailByField(historyDetailDTOS, "productsAvailableForGeneralPublic");
-        assertThat(historyDetailDTO2.getOldValue(), is("true"));
-        assertThat(historyDetailDTO2.getNewValue(), is("false"));
     }
 
     private void verifyUpdatedPhenotypingPlan(
