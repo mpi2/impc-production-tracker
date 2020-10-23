@@ -4,7 +4,6 @@
   "workUnitName":"UCD",
   "workGroupName":"DTCC",
   "comment":null,
-  "productsAvailableForGeneralPublic":true,
   "attemptTypeName":"adult and embryo phenotyping",
   "typeName":"phenotyping",
   "phenotypingStartingPoint": {

@@ -23,7 +23,7 @@ class PlanMinimumCreationDTOTest
         String json = JsonConverter.toJson(planMinimumCreationDTO);
         assertThat(json, is(notNullValue()));
         assertThat(json, is("{\"funderNames\":null,\"workUnitName\":null,\"workGroupName\":null," +
-            "\"comment\":\"comment\",\"productsAvailableForGeneralPublic\":null," +
+            "\"comment\":\"comment\"," +
             "\"attemptTypeName\":\"attemptTypeName\",\"typeName\":\"planTypeName\"}"));
     }
 }

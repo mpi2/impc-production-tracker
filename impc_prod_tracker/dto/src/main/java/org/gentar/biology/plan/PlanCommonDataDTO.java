@@ -20,6 +20,4 @@ public class PlanCommonDataDTO
 
     // Comment about the plan.
     private String comment;
-
-    private Boolean productsAvailableForGeneralPublic;
 }

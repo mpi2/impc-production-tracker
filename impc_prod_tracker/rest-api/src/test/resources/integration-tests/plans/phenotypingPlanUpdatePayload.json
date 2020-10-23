@@ -7,7 +7,6 @@
   "workUnitName":"BCM",
   "workGroupName":"BaSH",
   "comment":"New Plan comment",
-  "productsAvailableForGeneralPublic":false,
   "typeName":"phenotyping",
   "statusTransition":{
     "actionToExecute":null

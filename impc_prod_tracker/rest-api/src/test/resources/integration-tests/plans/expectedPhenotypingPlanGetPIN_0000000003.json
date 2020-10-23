@@ -8,7 +8,6 @@
   "workUnitName":"BCM",
   "workGroupName":"BaSH",
   "comment":null,
-  "productsAvailableForGeneralPublic":true,
   "phenotypingStartingPoint":{
     "_links":{
       "outcome":{

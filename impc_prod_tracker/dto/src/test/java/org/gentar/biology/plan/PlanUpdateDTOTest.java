@@ -32,7 +32,7 @@ class PlanUpdateDTOTest
         assertThat(json, is(notNullValue()));
         assertThat(json, is("{\"pin\":null,\"tpn\":null,\"funderNames\":null,\"workUnitName\":null," +
             "\"workGroupName\":null,\"comment\":\"plan comment\"," +
-            "\"productsAvailableForGeneralPublic\":null,\"crisprAttempt\":{\"miDate\":null," +
+            "\"crisprAttempt\":{\"miDate\":null," +
             "\"experimental\":true,\"comment\":\"comment\",\"mutagenesisExternalRef\":null," +
             "\"attemptExternalRef\":null,\"nucleases\":null,\"guides\":null," +
             "\"mutagenesisDonors\":null,\"reagents\":null,\"genotypePrimers\":null," +

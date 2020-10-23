@@ -15,7 +15,6 @@ class PlanCommonDataDTOTest
     public static final String WORK_GROUP_NAME = "workGroupName";
     public static final String FUNDER_NAME = "funderName";
     public static final String COMMENT = "comment";
-    public static final boolean PRODUCTS_AVAILABLE_FOR_GENERAL_PUBLIC = true;
 
     @Test
     public void testStructure() throws JsonProcessingException
@@ -25,11 +24,9 @@ class PlanCommonDataDTOTest
         planCommonDataDTO.setWorkGroupName(WORK_GROUP_NAME);
         planCommonDataDTO.setFunderNames(Arrays.asList(FUNDER_NAME));
         planCommonDataDTO.setComment(COMMENT);
-        planCommonDataDTO.setProductsAvailableForGeneralPublic(PRODUCTS_AVAILABLE_FOR_GENERAL_PUBLIC);
         String json = JsonConverter.toJson(planCommonDataDTO);
         assertThat(json, is(notNullValue()));
         assertThat(json, is("{\"funderNames\":[\"funderName\"],\"workUnitName\":\"workUnitName\"," +
-            "\"workGroupName\":\"workGroupName\",\"comment\":\"comment\"," +
-            "\"productsAvailableForGeneralPublic\":true}"));
+            "\"workGroupName\":\"workGroupName\",\"comment\":\"comment\"}"));
     }
 }
