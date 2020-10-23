@@ -5,8 +5,6 @@ import org.gentar.biology.gene_list.GeneList_;
 import org.gentar.organization.consortium.Consortium;
 import org.gentar.organization.consortium.Consortium_;
 import org.springframework.data.jpa.domain.Specification;
-
-import javax.persistence.criteria.ListJoin;
 import javax.persistence.criteria.Path;
 import javax.persistence.criteria.SetJoin;
 import java.util.ArrayList;

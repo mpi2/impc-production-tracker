@@ -203,15 +203,17 @@ public class GeneListController
     @GetMapping("/{consortiumName}/export")
     public void exportCsv(
         HttpServletResponse response,
-        @PathVariable("consortiumName") String consortiumName) throws IOException
+        @PathVariable("consortiumName") String consortiumName,
+        @RequestParam(value = "markerSymbol", required = false) List<String> markerSymbols) throws IOException
     {
         String filename = "download.csv";
         response.setContentType("text/csv");
         response.setHeader(
             HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + filename + "\"");
-
+        List<String> accIds = getListAccIdsByMarkerSymbols(markerSymbols);
         GeneListFilter filter = GeneListFilterBuilder.getInstance()
             .withConsortiumName(consortiumName)
+            .withAccIds(accIds)
             .build();
         List<ListRecord> records =
             geneListService.getAllNotPaginatedWithFilters(filter);
