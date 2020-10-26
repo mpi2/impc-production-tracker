@@ -5,6 +5,7 @@ import org.gentar.biology.gene.Gene;
 import org.gentar.biology.gene.external_ref.GeneExternalService;
 import org.gentar.biology.gene_list.record.GeneByListRecord;
 import org.gentar.biology.gene_list.record.ListRecord;
+import org.gentar.biology.gene_list.record.ListRecordType;
 import org.gentar.biology.project.Project;
 import org.gentar.helpers.GeneListCsvRecord;
 import org.springframework.stereotype.Component;
@@ -34,6 +35,7 @@ public class GeneListCsvRecordMapper implements Mapper<ListRecord, GeneListCsvRe
         geneListCsvRecord.setGenes(String.join(SEPARATOR, getGenesSymbols(listRecord)));
         geneListCsvRecord.setNote(listRecord.getNote());
         geneListCsvRecord.setProjectInformation(String.join(SEPARATOR, getProjectsInfo(listRecord)));
+        geneListCsvRecord.setTypes(String.join(SEPARATOR, getTypes(listRecord)));
         return geneListCsvRecord;
     }
 
@@ -75,5 +77,16 @@ public class GeneListCsvRecordMapper implements Mapper<ListRecord, GeneListCsvRe
             }
         }
         return projectsInfo;
+    }
+
+    private List<String> getTypes(ListRecord listRecord)
+    {
+        List<String> typesNames = new ArrayList<>();
+        Set<ListRecordType> types = listRecord.getListRecordTypes();
+        if (types != null)
+        {
+            types.forEach(x -> typesNames.add(x.getName()));
+        }
+        return typesNames;
     }
 }
