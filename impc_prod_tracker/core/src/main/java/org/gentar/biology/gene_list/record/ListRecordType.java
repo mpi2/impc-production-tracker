@@ -2,6 +2,8 @@ package org.gentar.biology.gene_list.record;
 
 import lombok.*;
 import org.gentar.biology.gene_list.GeneList;
+
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -25,6 +27,9 @@ public class ListRecordType
 
     @ManyToOne
     private GeneList geneList;
+
+    @Column(columnDefinition = "boolean default true")
+    private boolean visible;
 
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
