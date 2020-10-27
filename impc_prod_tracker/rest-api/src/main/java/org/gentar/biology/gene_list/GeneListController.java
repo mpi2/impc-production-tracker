@@ -19,7 +19,6 @@ import org.gentar.biology.gene.external_ref.GeneExternalService;
 import org.gentar.biology.gene_list.filter.GeneListFilter;
 import org.gentar.biology.gene_list.filter.GeneListFilterBuilder;
 import org.gentar.biology.gene_list.record.ListRecord;
-import org.gentar.biology.project.Project;
 import org.gentar.helpers.CsvReader;
 import org.gentar.helpers.CsvWriter;
 import org.gentar.helpers.GeneListCsvRecord;
@@ -42,7 +41,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
-
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -59,6 +57,7 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 public class GeneListController
 {
     private final GeneListService geneListService;
+    private final GeneListMapper geneListMapper;
     private final ListRecordMapper listRecordMapper;
     private final CsvReader csvReader;
     private final CsvWriter<SearchCsvRecord> csvWriter;
@@ -67,6 +66,7 @@ public class GeneListController
 
     public GeneListController(
         GeneListService geneListService,
+        GeneListMapper geneListMapper,
         ListRecordMapper listRecordMapper,
         CsvReader csvReader,
         CsvWriter<SearchCsvRecord> csvWriter,
@@ -74,11 +74,24 @@ public class GeneListController
         GeneListCsvRecordMapper geneListCsvRecordMapper)
     {
         this.geneListService = geneListService;
+        this.geneListMapper = geneListMapper;
         this.listRecordMapper = listRecordMapper;
         this.csvReader = csvReader;
         this.csvWriter = csvWriter;
         this.geneExternalService = geneExternalService;
         this.geneListCsvRecordMapper = geneListCsvRecordMapper;
+    }
+
+    /**
+     * Get the list of gene lists in the system.
+     * @return List of information about all the gene lists.
+     */
+    @GetMapping(value = {"/descriptions"})
+    public ResponseEntity<?> getGeneListsDescriptions()
+    {
+        List<GeneList> geneLists = geneListService.getAll();
+        List<GeneListDTO> geneListDTOS = geneListMapper.toDtos(geneLists);
+        return new ResponseEntity<>(geneListDTOS, HttpStatus.OK);
     }
 
     /**

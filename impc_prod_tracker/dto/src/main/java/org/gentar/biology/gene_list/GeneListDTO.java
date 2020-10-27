@@ -15,15 +15,11 @@
  */
 package org.gentar.biology.gene_list;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
-import java.util.List;
 
 @Data
 public class GeneListDTO
 {
     private String consortiumName;
-
-    @JsonProperty("list")
-    private List<ListRecordDTO> listRecordDTOS;
+    private String description;
 }
