@@ -49,6 +49,11 @@ public class GeneListService
         this.consortiumService = consortiumService;
     }
 
+    public List<GeneList> getAll()
+    {
+        return geneListRepository.findAll();
+    }
+
     public GeneList getGeneListByConsortium(Consortium consortium)
     {
         return geneListRepository.findByConsortium(consortium);

@@ -18,7 +18,10 @@ package org.gentar.biology.gene_list;
 import org.springframework.data.repository.CrudRepository;
 import org.gentar.organization.consortium.Consortium;
 
+import java.util.List;
+
 public interface GeneListRepository extends CrudRepository<GeneList, Long>
 {
+    List<GeneList> findAll();
     GeneList findByConsortium(Consortium consortium);
 }
