@@ -24,6 +24,8 @@ import org.gentar.helpers.CsvWriter;
 import org.gentar.helpers.GeneListCsvRecord;
 import org.gentar.helpers.LinkUtil;
 import org.gentar.helpers.SearchCsvRecord;
+import org.gentar.organization.consortium.Consortium;
+import org.gentar.organization.consortium.ConsortiumService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PagedResourcesAssembler;
@@ -63,6 +65,7 @@ public class GeneListController
     private final CsvWriter<SearchCsvRecord> csvWriter;
     private final GeneExternalService geneExternalService;
     private final GeneListCsvRecordMapper geneListCsvRecordMapper;
+    private final ConsortiumService consortiumService;
 
     public GeneListController(
         GeneListService geneListService,
@@ -71,7 +74,8 @@ public class GeneListController
         CsvReader csvReader,
         CsvWriter<SearchCsvRecord> csvWriter,
         GeneExternalService geneExternalService,
-        GeneListCsvRecordMapper geneListCsvRecordMapper)
+        GeneListCsvRecordMapper geneListCsvRecordMapper,
+        ConsortiumService consortiumService)
     {
         this.geneListService = geneListService;
         this.geneListMapper = geneListMapper;
@@ -80,6 +84,7 @@ public class GeneListController
         this.csvWriter = csvWriter;
         this.geneExternalService = geneExternalService;
         this.geneListCsvRecordMapper = geneListCsvRecordMapper;
+        this.consortiumService = consortiumService;
     }
 
     /**
@@ -121,6 +126,26 @@ public class GeneListController
         Page<ListRecord> geneListRecords =
             geneListService.getAllWithFilters(pageable, filter);
         String slashContent = consortiumName + "/content";
+        return buildResponseEntity(assembler, slashContent, geneListRecords);
+    }
+
+    /**
+     * Get target gene lists by consortium.
+     * @param pageable Pagination information.
+     * @param assembler Allows to manage hal.
+     * @param consortiumName Name of the consortium.
+     * @return Lists by consortium.
+     */
+    @GetMapping(value = {"/{consortiumName}/publicContent"})
+    public ResponseEntity<?> findPublicRecordsByConsortium(
+        Pageable pageable,
+        PagedResourcesAssembler assembler,
+        @PathVariable("consortiumName") String consortiumName)
+    {
+        Consortium consortium = consortiumService.getConsortiumByNameOrThrowException(consortiumName);
+        Page<ListRecord> geneListRecords =
+            geneListService.getPublicRecordsByConsortium(pageable, consortium.getId());
+        String slashContent = consortiumName + "/publicContent";
         return buildResponseEntity(assembler, slashContent, geneListRecords);
     }
 
