@@ -65,6 +65,12 @@ public class GeneListService
         return geneListRecordService.getAllBySpecs(pageable, filter);
     }
 
+    public Page<ListRecord> getPublicRecordsByConsortium(
+        Pageable pageable, Long consortiumId)
+    {
+        return geneListRecordService.getPublicRecordsByConsortium(pageable, consortiumId);
+    }
+
     public List<ListRecord> getAllNotPaginatedWithFilters(GeneListFilter filter)
     {
         return geneListRecordService.getAllNotPaginated(filter);
