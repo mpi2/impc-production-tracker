@@ -22,6 +22,7 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 import org.gentar.biology.gene_list.GeneList;
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -50,13 +51,17 @@ public class ListRecord
 
     private String note;
 
+    @Column(columnDefinition = "boolean default false")
+    private Boolean visible;
+
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
     @OneToMany(cascade= CascadeType.ALL, mappedBy = "listRecord", orphanRemoval=true)
     private Set<GeneByListRecord> genesByRecord;
 
+    @EqualsAndHashCode.Exclude
     @ToString.Exclude
-    @ManyToMany(cascade= CascadeType.ALL)
+    @ManyToMany
     @JoinTable(
         name = "List_record_List_record_type",
         joinColumns = @JoinColumn(name = "list_record_id"),

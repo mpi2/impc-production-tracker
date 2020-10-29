@@ -140,11 +140,18 @@ public class GeneListController
     public ResponseEntity<?> findPublicRecordsByConsortium(
         Pageable pageable,
         PagedResourcesAssembler assembler,
-        @PathVariable("consortiumName") String consortiumName)
+        @PathVariable("consortiumName") String consortiumName,
+        @RequestParam(value = "markerSymbol", required = false) List<String> markerSymbols)
     {
-        Consortium consortium = consortiumService.getConsortiumByNameOrThrowException(consortiumName);
+        List<String> accIds = getListAccIdsByMarkerSymbols(markerSymbols);
+        GeneListFilter filter = GeneListFilterBuilder.getInstance()
+            .withConsortiumName(consortiumName)
+            .withAccIds(accIds)
+            .withVisible(Boolean.TRUE)
+            .build();
+
         Page<ListRecord> geneListRecords =
-            geneListService.getPublicRecordsByConsortium(pageable, consortium.getId());
+            geneListService.getAllWithFilters(pageable, filter);
         String slashContent = consortiumName + "/publicContent";
         return buildResponseEntity(assembler, slashContent, geneListRecords);
     }

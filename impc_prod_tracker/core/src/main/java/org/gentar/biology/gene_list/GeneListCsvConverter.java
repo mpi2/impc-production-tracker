@@ -23,6 +23,7 @@ public class GeneListCsvConverter
     public final static String CSV_GENE_HEADER = "Genes";
     public final static String CSV_NOTE_HEADER = "Note";
     public final static String CSV_TYPE_HEADER = "Type";
+    public final static String CSV_VISIBLE_HEADER = "Visible";
 
     private final GeneExternalService geneExternalService;
     private final GeneListRecordService geneListRecordService;
@@ -48,9 +49,11 @@ public class GeneListCsvConverter
         List<String> genesColumnContent = getElementsInColumn(csvContent, CSV_GENE_HEADER);
         List<String> notesColumnContent = getElementsInColumn(csvContent, CSV_NOTE_HEADER);
         List<String> typesColumnContent = getElementsInColumn(csvContent, CSV_TYPE_HEADER);
+        List<String> visiblesColumnContent = getElementsInColumn(csvContent, CSV_VISIBLE_HEADER);
         recordsByColumns.put(CSV_GENE_HEADER, genesColumnContent);
         recordsByColumns.put(CSV_NOTE_HEADER, notesColumnContent);
         recordsByColumns.put(CSV_TYPE_HEADER, typesColumnContent);
+        recordsByColumns.put(CSV_VISIBLE_HEADER, visiblesColumnContent);
         validateSameRowCountForAllColumns(recordsByColumns);
         return recordsByColumns;
     }
@@ -116,6 +119,7 @@ public class GeneListCsvConverter
         List<String> geneColumnContent = recordsByColumns.get(CSV_GENE_HEADER);
         List<String> noteColumnContent = recordsByColumns.get(CSV_NOTE_HEADER);
         List<String> typesColumnContent = recordsByColumns.get(CSV_TYPE_HEADER);
+        List<String> visiblesColumnContent = recordsByColumns.get(CSV_VISIBLE_HEADER);
         int numberOfRows = geneColumnContent.size();
         for (int i = 0; i < numberOfRows; i++)
         {
@@ -125,6 +129,7 @@ public class GeneListCsvConverter
                     geneColumnContent.get(i),
                     noteColumnContent.get(i),
                     typesColumnContent.get(i),
+                    visiblesColumnContent.get(i),
                     sortedAccIdsInCurrentList);
             listData.add(listRecord);
         }
@@ -136,6 +141,7 @@ public class GeneListCsvConverter
         String geneColumnContent,
         String note,
         String typeColumnContent,
+        String visibleColumnContent,
         Map<String, Long> sortedAccIdsInCurrentList)
     {
         ListRecord listRecord = new ListRecord();
@@ -144,6 +150,7 @@ public class GeneListCsvConverter
         Set<GeneByListRecord> geneByListRecords =
             buildGeneByGeneListRecords(geneSymbols, sortedAccIdsInCurrentList);
         listRecord.setNote(note);
+        listRecord.setVisible(Boolean.parseBoolean(visibleColumnContent.toLowerCase()));
         listRecord.setGenesByRecord(geneByListRecords);
         listRecord.setListRecordTypes(getRecordTypesByNames(consortiumName, types));
         geneByListRecords.forEach(x -> x.setListRecord(listRecord));

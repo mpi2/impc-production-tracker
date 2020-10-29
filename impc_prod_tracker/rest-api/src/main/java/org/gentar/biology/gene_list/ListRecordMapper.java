@@ -55,6 +55,7 @@ public class ListRecordMapper implements Mapper<ListRecord, ListRecordDTO>
         ListRecordDTO listRecordDTO = new ListRecordDTO();
         listRecordDTO.setId(listRecord.getId());
         listRecordDTO.setNote(listRecord.getNote());
+        listRecordDTO.setVisible(listRecord.getVisible());
         setRecordTypes(listRecordDTO, listRecord);
         listRecordDTO.setGenes(
             geneByListRecordMapper.toDtos(listRecord.getGenesByRecord()));
@@ -96,6 +97,8 @@ public class ListRecordMapper implements Mapper<ListRecord, ListRecordDTO>
     {
         ListRecord listRecord = new ListRecord();
         listRecord.setId(listRecordDTO.getId());
+        Boolean visible = listRecordDTO.getVisible() != null && listRecordDTO.getVisible();
+        listRecord.setVisible(visible);
         listRecord.setNote(listRecordDTO.getNote());
         addGeneByListRecords(listRecord, listRecordDTO);
         addRecordTypes(listRecord, listRecordDTO);
