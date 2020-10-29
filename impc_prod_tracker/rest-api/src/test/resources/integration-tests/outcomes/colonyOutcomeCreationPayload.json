@@ -41,6 +41,7 @@
           "index": 1
         }
       ],
+      "description": "",
       "mutationCategorizations":[
         {
           "name":"NHEJ",

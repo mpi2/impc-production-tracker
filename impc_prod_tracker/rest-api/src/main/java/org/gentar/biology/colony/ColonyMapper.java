@@ -49,6 +49,7 @@ public class ColonyMapper implements Mapper<Colony, ColonyDTO>
         ColonyDTO colonyDTO = entityMapper.toTarget(colony, ColonyDTO.class);
         colonyDTO.setStrainName(strainMapper.toDto(colony.getStrain()));
         colonyDTO.setStatusTransitionDTO(buildStatusTransitionDTO(colony));
+        colonyDTO.setGenotypingComment(colony.getGenotypingComment());
         setStatusStampsDTOS(colonyDTO, colony);
         setDistributionProductsDtos(colonyDTO, colony);
         return colonyDTO;
