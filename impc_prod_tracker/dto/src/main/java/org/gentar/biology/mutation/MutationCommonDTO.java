@@ -16,6 +16,8 @@ public class MutationCommonDTO
     @JsonIgnore
     private Boolean alleleConfirmed;
 
+    private String description;
+
     @JsonProperty("mutationQcResults")
     private List<MutationQCResultDTO> mutationQCResultDTOs;
 
