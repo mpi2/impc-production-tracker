@@ -1,6 +1,9 @@
 package org.gentar.biology.gene_list.filter;
 
 import org.gentar.biology.project.search.filter.FilterTypes;
+
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -38,6 +41,12 @@ public class GeneListFilterBuilder
     public GeneListFilterBuilder withAccIds(List<String> accIds)
     {
         filters.put(FilterTypes.ACC_ID, accIds);
+        return this;
+    }
+
+    public GeneListFilterBuilder withVisible(Boolean visible)
+    {
+        filters.put(FilterTypes.VISIBLE, Collections.singletonList(Boolean.toString(visible)));
         return this;
     }
 }

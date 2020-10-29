@@ -54,4 +54,19 @@ public class ListRecordSpecs
             return criteriaBuilder.and(predicates.toArray(new Predicate[predicates.size()]));
         };
     }
+
+    public static Specification<ListRecord> withVisible(Boolean visible)
+    {
+        return (Specification<ListRecord>) (root, query, criteriaBuilder) -> {
+            if (visible == null)
+            {
+                return criteriaBuilder.isTrue(criteriaBuilder.literal(true));
+            }
+            List<Predicate> predicates = new ArrayList<>();
+            Path<Boolean> visiblePath = root.get(ListRecord_.visible);
+            predicates.add(criteriaBuilder.equal(visiblePath, visible));
+            query.distinct(true);
+            return criteriaBuilder.and(predicates.toArray(new Predicate[predicates.size()]));
+        };
+    }
 }

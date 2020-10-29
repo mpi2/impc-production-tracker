@@ -27,6 +27,7 @@ public class ListRecordDTO
 {
     private Long id;
     private String note;
+    private Boolean visible;
     private List<GeneByListRecordDTO> genes;
     private List<String> recordTypes;
 

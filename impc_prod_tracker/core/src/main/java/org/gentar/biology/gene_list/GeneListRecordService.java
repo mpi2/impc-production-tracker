@@ -84,7 +84,8 @@ public class GeneListRecordService
         Specification<ListRecord> specifications =
             Specification.where(
                 ListRecordSpecs.withConsortiumName(filter.getConsortiumName()))
-                    .and(ListRecordSpecs.withAccIds(filter.getAccIds()));
+                    .and(ListRecordSpecs.withAccIds(filter.getAccIds()))
+                    .and(ListRecordSpecs.withVisible(filter.getVisible()));
         return specifications;
     }
 

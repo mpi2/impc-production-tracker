@@ -28,9 +28,6 @@ public class ListRecordType
     @ManyToOne
     private GeneList geneList;
 
-    @Column(columnDefinition = "boolean default true")
-    private boolean visible;
-
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
     @ManyToMany(mappedBy = "listRecordTypes")
