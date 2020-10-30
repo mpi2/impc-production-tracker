@@ -66,7 +66,7 @@ public class GeneController {
     @GetMapping(value = {"/test"})
     public Map<String, String> test (@RequestParam List<String> values)
     {
-        Map<String, String> data = geneExternalService.getAccIdsByMarkerSymbols(values);
+        Map<String, String> data = geneExternalService.getSymbolsByAccessionIdsBulk(values);
         return data;
     }
 

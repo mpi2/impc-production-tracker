@@ -3,6 +3,7 @@ package org.gentar.biology.gene.external_ref;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
+import org.apache.commons.collections4.ListUtils;
 import org.gentar.exceptions.SystemOperationFailedException;
 import org.gentar.graphql.GraphQLConsumer;
 import org.gentar.graphql.QueryBuilder;
@@ -13,7 +14,6 @@ import org.gentar.biology.gene.Gene;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -22,7 +22,8 @@ import java.util.Map;
 @Component
 public class GeneExternalServiceImpl implements GeneExternalService
 {
-    private GraphQLConsumer graphQLConsumer;
+    private final GraphQLConsumer graphQLConsumer;
+    private static final int ELEMENTS_BY_REQUEST = 100;
 
     public GeneExternalServiceImpl(GraphQLConsumer graphQLConsumer)
     {
@@ -41,18 +42,32 @@ public class GeneExternalServiceImpl implements GeneExternalService
     @Override
     public Map<String, String> getAccIdsByMarkerSymbols(List<String> inputs)
     {
-        if (inputs.isEmpty())
+        return getAccIdsByCollectionMarkerSymbols(inputs);
+    }
+
+    @Override
+    public Map<String, String> getSymbolsByAccessionIdsBulk(List<String> accIds)
+    {
+        Map<String, String> result = new HashMap<>();
+        List<List<String>> subLists = ListUtils.partition(accIds, ELEMENTS_BY_REQUEST);
+        for (List<String> subList : subLists)
         {
-            return Collections.emptyMap();
+            Map<String, String> subListMap = getSymbolsByAccessionIds(subList);
+            subListMap.forEach(
+                (key, value) -> result.merge(key, value, (v1, v2) -> v2));
         }
-        if (inputs.size() == 1)
-        {
-            return getAccIdsBySingleMarkerSymbol(inputs.get(0));
-        }
-        else
-        {
-            return getAccIdsByCollectionMarkerSymbols(inputs);
-        }
+        return result;
+    }
+
+    @Override
+    public Map<String, String> getSymbolsByAccessionIds(List<String> accessionIds)
+    {
+        String query = QueryBuilder.getInstance()
+            .withRoot("mouse_gene")
+            .withColumnInExactMatch("mgi_gene_acc_id", accessionIds)
+            .withFields(Arrays.asList("mgi_gene_acc_id", "symbol"))
+            .build();
+        return getSymbolsFromExternalData(query);
     }
 
     private Map<String, String> getAccIdsBySingleMarkerSymbol(String input)
@@ -70,7 +85,7 @@ public class GeneExternalServiceImpl implements GeneExternalService
         Map<String, String> accIds = new LinkedHashMap<>();
         String query = QueryBuilder.getInstance()
                 .withRoot("mouse_gene")
-                .withColumnInLikeValuesIgnoreCase("symbol", inputs)
+                .withColumnInExactMatch("mgi_gene_acc_id", inputs)
                 .withFields(Arrays.asList("mgi_gene_acc_id", "symbol"))
                 .build();
         var queryResults = getAccIdsFromExternalData(query);
@@ -150,6 +165,29 @@ public class GeneExternalServiceImpl implements GeneExternalService
             throw new SystemOperationFailedException(e);
         }
         return accIds;
+    }
+
+    private Map<String, String> getSymbolsFromExternalData(String query)
+    {
+        String result = graphQLConsumer.executeQuery(query);
+        Map<String, String> symbolsByAccIds = new HashMap<>();
+        try
+        {
+            MouseGeneResponse externalDataResponse =
+                JsonHelper.fromJson(result, MouseGeneResponse.class);
+            var externalDataMouseGenes = externalDataResponse.getData();
+
+            if (externalDataMouseGenes != null)
+            {
+                externalDataMouseGenes.forEach(
+                    x -> symbolsByAccIds.put(x.getAccId(), x.getSymbol()));
+            }
+        }
+        catch (IOException e)
+        {
+            throw new SystemOperationFailedException(e);
+        }
+        return symbolsByAccIds;
     }
 
     private Gene getGene(MouseGeneExternalReferenceDTO mouseGene)

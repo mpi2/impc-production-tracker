@@ -1,8 +1,12 @@
 package org.gentar.graphql;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Conditions
 {
     private static final String COLUMN_OPERATOR_STRING_TEMPLATE = "{%s: {%s: \\\"%s\\\"}}";
+    private static final String COLUMN_OPERATOR_LIST_TEMPLATE = "%s: {%s: [%s]}";
     private static final String COLUMN_OPERATOR_NUMBER_TEMPLATE = "{%s: {%s: %d}}";
 
     // Avoid instantiation.
@@ -16,7 +20,6 @@ public class Conditions
         String orTemplate = "%s: [%s]";
         return String.format(orTemplate, Operators.OR.getName(), conditions);
     }
-
 
     public static String createEqCondition(String column, String value)
     {
@@ -78,6 +81,14 @@ public class Conditions
         return createColumnOperatorStringCondition(column, Operators.NILIKE.getName(), value);
     }
 
+    public static String createInCondition(String column, List<String> values)
+    {
+        List<String> quotedValues = new ArrayList<>();
+        values.forEach(x -> quotedValues.add("\\\"" + x + "\\\""));
+        String commaSeparatedValues = String.join(",", quotedValues);
+        return createColumnOperatorListCondition(column, Operators.IN.getName(), commaSeparatedValues);
+    }
+
     private static String createColumnOperatorStringCondition(
         String column, String operator, String value)
     {
@@ -88,5 +99,11 @@ public class Conditions
         String column, String operator, double value)
     {
         return String.format(COLUMN_OPERATOR_NUMBER_TEMPLATE, column, operator, value);
+    }
+
+    private static String createColumnOperatorListCondition(
+        String column, String operator, String commaSeparatedQuotedValues)
+    {
+        return String.format(COLUMN_OPERATOR_LIST_TEMPLATE, column, operator, commaSeparatedQuotedValues);
     }
 }

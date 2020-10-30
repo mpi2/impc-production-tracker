@@ -1,5 +1,6 @@
 package org.gentar.biology.gene_list;
 
+import org.apache.logging.log4j.util.Strings;
 import org.gentar.biology.gene_list.record.ListRecord;
 import org.gentar.biology.gene_list.record.ListRecordType;
 import org.gentar.biology.gene_list.record.ListRecordTypeService;
@@ -95,7 +96,18 @@ public class GeneListCsvConverter
 
     private List<String> getHeaders(List<List<String>> csvContent)
     {
-        return csvContent.get(0);
+        List<String> headers = csvContent.get(0);
+        List<String> cleanedHeaders = new ArrayList<>();
+        for (String header : headers)
+        {
+            header = header.replace('\u00A0',' ');
+            header = header.replace('\u2007',' ');
+            header = header.replace('\u202F',' ');
+            header = header.replace('\uFEFF',' ');
+            header = header.trim();
+            cleanedHeaders.add(header);
+        }
+        return cleanedHeaders;
     }
 
     private List<String> getElementsInColumn(List<List<String>> csvContent, String csvGeneHeader)
@@ -161,14 +173,17 @@ public class GeneListCsvConverter
     {
         Set<ListRecordType> listRecordTypes = new HashSet<>();
         recordTypesNames.forEach(x -> {
-            ListRecordType listRecordType =
-                listRecordTypeService.getRecordTypeByTypeNameAndConsortiumName(x, consortiumName);
-            if (listRecordType == null)
+            if (!Strings.isBlank(x))
             {
-                throw new UserOperationFailedException(
-                    "Record type " + x + " does not exist in consortium " + consortiumName + ".");
+                ListRecordType listRecordType =
+                    listRecordTypeService.getRecordTypeByTypeNameAndConsortiumName(x, consortiumName);
+                if (listRecordType == null)
+                {
+                    throw new UserOperationFailedException(
+                        "Record type " + x + " does not exist in consortium " + consortiumName + ".");
+                }
+                listRecordTypes.add(listRecordType);
             }
-            listRecordTypes.add(listRecordType);
         });
         return listRecordTypes;
     }
