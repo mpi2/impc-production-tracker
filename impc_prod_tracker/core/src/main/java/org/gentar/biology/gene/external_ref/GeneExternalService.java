@@ -42,6 +42,8 @@ public interface GeneExternalService
      */
     Map<String, String> getSymbolsByAccessionIds(List<String> accessionIds);
 
+    Map<String, String> getAccIdsBySymbolsBulk(List<String> symbols);
+
     Map<String, String> getSymbolsByAccessionIdsBulk(List<String> accIds);
 
     /**

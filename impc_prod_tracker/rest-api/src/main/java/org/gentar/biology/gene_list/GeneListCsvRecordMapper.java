@@ -58,6 +58,7 @@ public class GeneListCsvRecordMapper implements Mapper<ListRecord, GeneListCsvRe
                 geneListCsvRecord.setVisible(x.getVisible());
                 geneListCsvRecord.setProjectInformation(String.join(SEPARATOR, getProjectsInfo(x)));
                 geneListCsvRecord.setTypes(String.join(SEPARATOR, getTypes(x)));
+                geneListCsvRecords.add(geneListCsvRecord);
             });
         }
 

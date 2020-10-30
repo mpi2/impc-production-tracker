@@ -48,13 +48,34 @@ public class QueryBuilder
         return this;
     }
 
+    public QueryBuilder withOrCondition(List<String> conditions)
+    {
+        List<String> formattedConditions = format(conditions);
+        this.conditions.add(Conditions.createOrCondition(conditionsToString(formattedConditions)));
+        return this;
+    }
+
+    private List<String> format(List<String> conditions)
+    {
+        List<String> formattedConditions = new ArrayList<>();
+        conditions.forEach(x -> {
+            String formatted = x;
+            if (x.charAt(0) != '{')
+            {
+                formatted = "{" + x + "}";
+            }
+            formattedConditions.add(formatted);
+        });
+        return formattedConditions;
+    }
+
     public QueryBuilder withColumnInLikeValuesIgnoreCase(String column, List<String> values)
     {
         List<String> newCondition = new ArrayList<>();
         if (values != null)
         {
             values.forEach(x -> {
-                String ilikeCondition =Conditions.createIlikeCondition(column, x);
+                String ilikeCondition = Conditions.createIlikeCondition(column, x);
                 newCondition.add(ilikeCondition);
             });
         }
@@ -64,7 +85,6 @@ public class QueryBuilder
 
     public QueryBuilder withColumnInExactMatch(String column, List<String> values)
     {
-
         String inCondition = null;
         if (values != null)
         {
@@ -72,6 +92,11 @@ public class QueryBuilder
         }
         this.conditions.add(inCondition);
         return this;
+    }
+
+    public static String getColumnInExactMatchCondition(String column, List<String> values)
+    {
+        return Conditions.createInCondition(column, values);
     }
 
     public QueryBuilder withFields(List<String> fields)
