@@ -62,6 +62,18 @@ public class QueryBuilder
         return this;
     }
 
+    public QueryBuilder withColumnInExactMatch(String column, List<String> values)
+    {
+
+        String inCondition = null;
+        if (values != null)
+        {
+            inCondition = Conditions.createInCondition(column, values);
+        }
+        this.conditions.add(inCondition);
+        return this;
+    }
+
     public QueryBuilder withFields(List<String> fields)
     {
         this.fields = fields;
