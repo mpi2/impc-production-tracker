@@ -132,6 +132,11 @@ public class GeneListCsvConverter
         List<String> noteColumnContent = recordsByColumns.get(CSV_NOTE_HEADER);
         List<String> typesColumnContent = recordsByColumns.get(CSV_TYPE_HEADER);
         List<String> visiblesColumnContent = recordsByColumns.get(CSV_VISIBLE_HEADER);
+
+        // Get all the accIds for the symbols so we can avoid individual calls to retrieve the information
+        List<String> symbols = getSymbolsList(geneColumnContent);
+        Map<String, String> accIdsBySymbolsMap = geneExternalService.getAccIdsBySymbolsBulk(symbols);
+
         int numberOfRows = geneColumnContent.size();
         for (int i = 0; i < numberOfRows; i++)
         {
@@ -142,10 +147,21 @@ public class GeneListCsvConverter
                     noteColumnContent.get(i),
                     typesColumnContent.get(i),
                     visiblesColumnContent.get(i),
-                    sortedAccIdsInCurrentList);
+                    sortedAccIdsInCurrentList,
+                    accIdsBySymbolsMap);
             listData.add(listRecord);
         }
         return listData;
+    }
+
+    private List<String> getSymbolsList(List<String> geneColumnContent)
+    {
+        List<String> symbols = new ArrayList<>();
+        geneColumnContent.forEach(x -> {
+            List<String> symbolsInRecord = Arrays.asList(x.split(","));
+            symbols.addAll(symbolsInRecord);
+        });
+        return symbols;
     }
 
     private ListRecord buildGeneListRecord(
@@ -154,13 +170,14 @@ public class GeneListCsvConverter
         String note,
         String typeColumnContent,
         String visibleColumnContent,
-        Map<String, Long> sortedAccIdsInCurrentList)
+        Map<String, Long> sortedAccIdsInCurrentList, Map<String,
+        String> accIdsBySymbolsMap)
     {
         ListRecord listRecord = new ListRecord();
         List<String> geneSymbols = Arrays.asList(geneColumnContent.split(","));
         List<String> types = Arrays.asList(typeColumnContent.split(","));
         Set<GeneByListRecord> geneByListRecords =
-            buildGeneByGeneListRecords(geneSymbols, sortedAccIdsInCurrentList);
+            buildGeneByGeneListRecords(geneSymbols, sortedAccIdsInCurrentList, accIdsBySymbolsMap);
         listRecord.setNote(note);
         listRecord.setVisible(Boolean.parseBoolean(visibleColumnContent.toLowerCase()));
         listRecord.setGenesByRecord(geneByListRecords);
@@ -189,12 +206,12 @@ public class GeneListCsvConverter
     }
 
     private Set<GeneByListRecord> buildGeneByGeneListRecords(
-        List<String> geneSymbols, Map<String, Long> currentListSymbols)
+        List<String> geneSymbols, Map<String, Long> currentListSymbols, Map<String, String> accIdsBySymbolsMap)
     {
         Set<GeneByListRecord> geneByListRecords = new HashSet<>();
-        List<Gene> genes = getGenesByListOfSymbols(geneSymbols);
+        List<String> accIds = getAccIdsByListOfSymbols(geneSymbols, accIdsBySymbolsMap);
         AtomicInteger index = new AtomicInteger();
-        genes.forEach(x -> {
+        accIds.forEach(x -> {
             var geneByGeneListRecord = buildGeneByGeneListRecord(x);
             geneByGeneListRecord.setIndex(index.getAndIncrement());
             geneByListRecords.add(geneByGeneListRecord);
@@ -209,24 +226,24 @@ public class GeneListCsvConverter
         return geneByListRecords;
     }
 
-    private GeneByListRecord buildGeneByGeneListRecord(Gene gene)
+    private GeneByListRecord buildGeneByGeneListRecord(String accId)
     {
         GeneByListRecord geneByListRecord = new GeneByListRecord();
-        geneByListRecord.setAccId(gene.getAccId());
+        geneByListRecord.setAccId(accId);
         return geneByListRecord;
     }
 
-    private List<Gene> getGenesByListOfSymbols(List<String> geneSymbols)
+    private List<String> getAccIdsByListOfSymbols(List<String> geneSymbols, Map<String, String> accIdsBySymbolsMap)
     {
-        List<Gene> genes = new ArrayList<>();
+        List<String> accIds = new ArrayList<>();
         geneSymbols.forEach(x -> {
-            Gene gene = geneExternalService.getGeneFromExternalDataBySymbolOrAccId(x);
-            if (gene == null)
+            String accId = accIdsBySymbolsMap.getOrDefault(x.toLowerCase(), null);
+            if (accId == null)
             {
                 throw new UserOperationFailedException(x + " is not a valid gene symbol.");
             }
-            genes.add(gene);
+            accIds.add(accId);
         });
-        return genes;
+        return accIds;
     }
 }

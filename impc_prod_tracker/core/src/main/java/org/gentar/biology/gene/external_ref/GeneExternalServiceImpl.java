@@ -35,8 +35,22 @@ public class GeneExternalServiceImpl implements GeneExternalService
     public Gene getGeneFromExternalDataBySymbolOrAccId(String input)
     {
         String query =
-                String.format(ExternalReferenceConstants.GENE_BY_SYMBOL_OR_ACC_ID_QUERY, input, input);
+            String.format(ExternalReferenceConstants.GENE_BY_SYMBOL_OR_ACC_ID_QUERY, input, input);
         return getGeneFromExternalData(query);
+    }
+
+    @Override
+    public Map<String, String> getAccIdsBySymbolsBulk(List<String> symbols)
+    {
+        Map<String, String> result = new HashMap<>();
+        List<List<String>> subLists = ListUtils.partition(symbols, ELEMENTS_BY_REQUEST);
+        for (List<String> subList : subLists)
+        {
+            Map<String, String> subListMap = getAccIdsBySymbols(subList);
+            subListMap.forEach(
+                (key, value) -> result.merge(key, value, (v1, v2) -> v2));
+        }
+        return result;
     }
 
     @Override
@@ -57,6 +71,21 @@ public class GeneExternalServiceImpl implements GeneExternalService
                 (key, value) -> result.merge(key, value, (v1, v2) -> v2));
         }
         return result;
+    }
+
+
+    public Map<String, String> getAccIdsBySymbols(List<String> symbols)
+    {
+        List<String> conditions = new ArrayList<>();
+        conditions.add(QueryBuilder.getColumnInExactMatchCondition("symbol", symbols));
+        conditions.add(QueryBuilder.getColumnInExactMatchCondition("mgi_gene_acc_id", symbols));
+
+        String query = QueryBuilder.getInstance()
+            .withRoot("mouse_gene")
+            .withOrCondition(conditions)
+            .withFields(Arrays.asList("mgi_gene_acc_id", "symbol"))
+            .build();
+        return getAccIdsFromExternalData(query);
     }
 
     @Override
