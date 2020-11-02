@@ -62,11 +62,6 @@ public class GeneListRecordService
         return listRecordRepository.findAll(buildSpecs(filter), pageable);
     }
 
-    public Page<ListRecord> getPublicRecordsByConsortium(Pageable pageable, Long consortiumId)
-    {
-        return listRecordRepository.findPublicByConsortiumId(pageable, consortiumId);
-    }
-
     public String genesByRecordToString(Collection<GeneByListRecord> genes)
     {
         StringBuilder result = new StringBuilder();

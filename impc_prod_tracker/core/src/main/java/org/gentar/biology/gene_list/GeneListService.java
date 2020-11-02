@@ -65,12 +65,6 @@ public class GeneListService
         return geneListRecordService.getAllBySpecs(pageable, filter);
     }
 
-    public Page<ListRecord> getPublicRecordsByConsortium(
-        Pageable pageable, Long consortiumId)
-    {
-        return geneListRecordService.getPublicRecordsByConsortium(pageable, consortiumId);
-    }
-
     public List<ListRecord> getAllNotPaginatedWithFilters(GeneListFilter filter)
     {
         return geneListRecordService.getAllNotPaginated(filter);
@@ -83,7 +77,7 @@ public class GeneListService
             consortiumService.getConsortiumByNameOrThrowException(consortiumName);
         final GeneList geneList = getOrCreateGeneList(consortium);
 
-        validateNewRecords(new ArrayList<>(listRecords), geneList);
+        validateNewRecords(listRecords, geneList);
 
         listRecords.forEach(x -> {
             if (x.getGeneList() == null)
@@ -176,10 +170,13 @@ public class GeneListService
         for (int i = 0; i < size; i++)
         {
             ListRecord listRecord = listData.get(i);
-            List<String> symbols = new ArrayList<>();
-            listRecord.getGenesByRecord().forEach(x -> symbols.add(x.getInputSymbolValue()));
-            geneListRecordService.validateNewRecord(
-                listRecord, sortedAccIdsInCurrentList, symbols.toString());
+            if (listRecord.getId() == null)
+            {
+                List<String> symbols = new ArrayList<>();
+                listRecord.getGenesByRecord().forEach(x -> symbols.add(x.getInputSymbolValue()));
+                geneListRecordService.validateNewRecord(
+                    listRecord, sortedAccIdsInCurrentList, symbols.toString());
+            }
         }
     }
 
