@@ -23,7 +23,7 @@ import java.util.Map;
 public class GeneExternalServiceImpl implements GeneExternalService
 {
     private final GraphQLConsumer graphQLConsumer;
-    private static final int ELEMENTS_BY_REQUEST = 100;
+    private static final int ELEMENTS_BY_REQUEST = 1000;
 
     public GeneExternalServiceImpl(GraphQLConsumer graphQLConsumer)
     {

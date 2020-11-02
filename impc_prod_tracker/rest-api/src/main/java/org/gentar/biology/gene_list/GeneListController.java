@@ -15,6 +15,7 @@
  */
 package org.gentar.biology.gene_list;
 
+import org.gentar.audit.diff.ObjectIdExtractor;
 import org.gentar.biology.gene.external_ref.GeneExternalService;
 import org.gentar.biology.gene_list.filter.GeneListFilter;
 import org.gentar.biology.gene_list.filter.GeneListFilterBuilder;
@@ -24,6 +25,8 @@ import org.gentar.helpers.CsvWriter;
 import org.gentar.helpers.GeneListCsvRecord;
 import org.gentar.helpers.LinkUtil;
 import org.gentar.helpers.SearchCsvRecord;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PagedResourcesAssembler;
@@ -63,6 +66,8 @@ public class GeneListController
     private final CsvWriter<SearchCsvRecord> csvWriter;
     private final GeneExternalService geneExternalService;
     private final GeneListCsvRecordMapper geneListCsvRecordMapper;
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(GeneListController.class);
 
     public GeneListController(
         GeneListService geneListService,
@@ -258,8 +263,11 @@ public class GeneListController
         List<ListRecord> records =
             geneListService.getAllNotPaginatedWithFilters(filter);
         records.sort(Comparator.comparing(ListRecord::getId));
+        LOGGER.info("Getting list for " + consortiumName);
         List<GeneListCsvRecord> geneListCsvRecords = geneListCsvRecordMapper.toDtos(records);
+        LOGGER.info("Got list for " + consortiumName + ". Writing csv...");
         csvWriter.writeListToCsv(response.getWriter(), geneListCsvRecords, GeneListCsvRecord.HEADERS);
+        LOGGER.info("Finished writing csv");
     }
 
     @GetMapping("/{consortiumName}/exportPublic")
