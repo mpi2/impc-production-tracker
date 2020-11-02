@@ -24,8 +24,6 @@ import org.gentar.helpers.CsvWriter;
 import org.gentar.helpers.GeneListCsvRecord;
 import org.gentar.helpers.LinkUtil;
 import org.gentar.helpers.SearchCsvRecord;
-import org.gentar.organization.consortium.Consortium;
-import org.gentar.organization.consortium.ConsortiumService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PagedResourcesAssembler;
@@ -65,7 +63,6 @@ public class GeneListController
     private final CsvWriter<SearchCsvRecord> csvWriter;
     private final GeneExternalService geneExternalService;
     private final GeneListCsvRecordMapper geneListCsvRecordMapper;
-    private final ConsortiumService consortiumService;
 
     public GeneListController(
         GeneListService geneListService,
@@ -74,8 +71,7 @@ public class GeneListController
         CsvReader csvReader,
         CsvWriter<SearchCsvRecord> csvWriter,
         GeneExternalService geneExternalService,
-        GeneListCsvRecordMapper geneListCsvRecordMapper,
-        ConsortiumService consortiumService)
+        GeneListCsvRecordMapper geneListCsvRecordMapper)
     {
         this.geneListService = geneListService;
         this.geneListMapper = geneListMapper;
@@ -84,7 +80,6 @@ public class GeneListController
         this.csvWriter = csvWriter;
         this.geneExternalService = geneExternalService;
         this.geneListCsvRecordMapper = geneListCsvRecordMapper;
-        this.consortiumService = consortiumService;
     }
 
     /**
@@ -259,6 +254,29 @@ public class GeneListController
         GeneListFilter filter = GeneListFilterBuilder.getInstance()
             .withConsortiumName(consortiumName)
             .withAccIds(accIds)
+            .build();
+        List<ListRecord> records =
+            geneListService.getAllNotPaginatedWithFilters(filter);
+        records.sort(Comparator.comparing(ListRecord::getId));
+        List<GeneListCsvRecord> geneListCsvRecords = geneListCsvRecordMapper.toDtos(records);
+        csvWriter.writeListToCsv(response.getWriter(), geneListCsvRecords, GeneListCsvRecord.HEADERS);
+    }
+
+    @GetMapping("/{consortiumName}/exportPublic")
+    public void exportPublicRecordsCsv(
+        HttpServletResponse response,
+        @PathVariable("consortiumName") String consortiumName,
+        @RequestParam(value = "markerSymbol", required = false) List<String> markerSymbols) throws IOException
+    {
+        String filename = "download.csv";
+        response.setContentType("text/csv");
+        response.setHeader(
+            HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + filename + "\"");
+        List<String> accIds = getListAccIdsByMarkerSymbols(markerSymbols);
+        GeneListFilter filter = GeneListFilterBuilder.getInstance()
+            .withConsortiumName(consortiumName)
+            .withAccIds(accIds)
+            .withVisible(Boolean.TRUE)
             .build();
         List<ListRecord> records =
             geneListService.getAllNotPaginatedWithFilters(filter);
