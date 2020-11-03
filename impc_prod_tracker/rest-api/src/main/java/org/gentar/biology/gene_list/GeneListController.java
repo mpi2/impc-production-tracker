@@ -44,6 +44,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
+
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -89,6 +90,7 @@ public class GeneListController
 
     /**
      * Get the list of gene lists in the system.
+     *
      * @return List of information about all the gene lists.
      */
     @GetMapping(value = {"/descriptions"})
@@ -101,8 +103,9 @@ public class GeneListController
 
     /**
      * Get target gene lists by consortium.
-     * @param pageable Pagination information.
-     * @param assembler Allows to manage hal.
+     *
+     * @param pageable       Pagination information.
+     * @param assembler      Allows to manage hal.
      * @param consortiumName Name of the consortium.
      * @return Lists by consortium.
      */
@@ -131,8 +134,9 @@ public class GeneListController
 
     /**
      * Get target gene lists by consortium.
-     * @param pageable Pagination information.
-     * @param assembler Allows to manage hal.
+     *
+     * @param pageable       Pagination information.
+     * @param assembler      Allows to manage hal.
      * @param consortiumName Name of the consortium.
      * @return Lists by consortium.
      */
@@ -206,9 +210,10 @@ public class GeneListController
 
     /**
      * Update the content of a list
-     * @param pageable Pagination information.
-     * @param assembler Assembler to create links.
-     * @param records Records to update.
+     *
+     * @param pageable       Pagination information.
+     * @param assembler      Assembler to create links.
+     * @param records        Records to update.
      * @param consortiumName Name of the consortium
      * @return Paginated content updated.
      */
@@ -228,9 +233,10 @@ public class GeneListController
 
     /**
      * Delete records of a list
-     * @param pageable Pagination information.
-     * @param assembler Assembler to create links.
-     * @param recordsIds Records to delete.
+     *
+     * @param pageable       Pagination information.
+     * @param assembler      Assembler to create links.
+     * @param recordsIds     Records to delete.
      * @param consortiumName Name of the consortium
      * @return Paginated content updated.
      */
@@ -291,5 +297,12 @@ public class GeneListController
         records.sort(Comparator.comparing(ListRecord::getId));
         List<GeneListCsvRecord> geneListCsvRecords = geneListCsvRecordMapper.toDtos(records);
         csvWriter.writeListToCsv(response.getWriter(), geneListCsvRecords, GeneListCsvRecord.HEADERS);
+    }
+
+    @GetMapping("/test")
+    public void testLongRequest(@RequestParam(value = "time", required = false) Long time)
+    throws InterruptedException
+    {
+        Thread.sleep(time);
     }
 }
