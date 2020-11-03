@@ -18,7 +18,7 @@ public class TomcatCustomizer  implements WebServerFactoryCustomizer<TomcatServl
             int originMaxKeepAliveRequests = protocol.getMaxKeepAliveRequests();
             protocol.setMaxKeepAliveRequests(-1);
             int originKeepAliveTimeout = protocol.getKeepAliveTimeout();
-            //protocol.setKeepAliveTimeout(60000);
+            protocol.setKeepAliveTimeout(50000);
 
             log.info(
                 "####################################################################################");
