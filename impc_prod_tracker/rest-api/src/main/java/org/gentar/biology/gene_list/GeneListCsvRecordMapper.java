@@ -9,13 +9,11 @@ import org.gentar.biology.gene_list.record.ListRecordType;
 import org.gentar.biology.project.Project;
 import org.gentar.helpers.GeneListCsvRecord;
 import org.springframework.stereotype.Component;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 @Component
 public class GeneListCsvRecordMapper implements Mapper<ListRecord, GeneListCsvRecord>
@@ -36,17 +34,13 @@ public class GeneListCsvRecordMapper implements Mapper<ListRecord, GeneListCsvRe
 
     public void initMap(List<String> accIds)
     {
-        if (symbolsByAccIds == null)
-        {
-            symbolsByAccIds = geneExternalService.getSymbolsByAccessionIdsBulk(accIds);
-        }
+        symbolsByAccIds = geneExternalService.getSymbolsByAccessionIdsBulk(accIds);
     }
 
     @Override
     public GeneListCsvRecord toDto(ListRecord listRecord)
     {
         GeneListCsvRecord geneListCsvRecord = new GeneListCsvRecord();
-        //geneListCsvRecord.setGenes(String.join(SEPARATOR, getGenesSymbols(listRecord)));
         geneListCsvRecord.setGenes(String.join(SEPARATOR, getCachedGenesSymbols(listRecord, symbolsByAccIds)));
         geneListCsvRecord.setNote(listRecord.getNote());
         geneListCsvRecord.setVisible(listRecord.getVisible());
