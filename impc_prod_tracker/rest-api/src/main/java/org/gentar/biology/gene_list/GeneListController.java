@@ -15,7 +15,6 @@
  */
 package org.gentar.biology.gene_list;
 
-import org.gentar.audit.diff.ObjectIdExtractor;
 import org.gentar.biology.gene.external_ref.GeneExternalService;
 import org.gentar.biology.gene_list.filter.GeneListFilter;
 import org.gentar.biology.gene_list.filter.GeneListFilterBuilder;
@@ -25,8 +24,11 @@ import org.gentar.helpers.CsvWriter;
 import org.gentar.helpers.GeneListCsvRecord;
 import org.gentar.helpers.LinkUtil;
 import org.gentar.helpers.SearchCsvRecord;
+import org.gentar.organization.consortium.Consortium;
+import org.gentar.organization.consortium.ConsortiumService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PagedResourcesAssembler;
@@ -34,6 +36,7 @@ import org.springframework.hateoas.PagedModel;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -45,13 +48,17 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.persistence.EntityManager;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 
@@ -67,6 +74,8 @@ public class GeneListController
     private final CsvWriter<SearchCsvRecord> csvWriter;
     private final GeneExternalService geneExternalService;
     private final GeneListCsvRecordMapper geneListCsvRecordMapper;
+    private final ConsortiumService consortiumService;
+    private final EntityManager entityManager;
 
     private static final Logger LOGGER = LoggerFactory.getLogger(GeneListController.class);
 
@@ -77,7 +86,9 @@ public class GeneListController
         CsvReader csvReader,
         CsvWriter<SearchCsvRecord> csvWriter,
         GeneExternalService geneExternalService,
-        GeneListCsvRecordMapper geneListCsvRecordMapper)
+        GeneListCsvRecordMapper geneListCsvRecordMapper,
+        ConsortiumService consortiumService,
+        EntityManager entityManager)
     {
         this.geneListService = geneListService;
         this.geneListMapper = geneListMapper;
@@ -86,6 +97,8 @@ public class GeneListController
         this.csvWriter = csvWriter;
         this.geneExternalService = geneExternalService;
         this.geneListCsvRecordMapper = geneListCsvRecordMapper;
+        this.consortiumService = consortiumService;
+        this.entityManager = entityManager;
     }
 
     /**
@@ -269,11 +282,64 @@ public class GeneListController
         List<ListRecord> records =
             geneListService.getAllNotPaginatedWithFilters(filter);
         records.sort(Comparator.comparing(ListRecord::getId));
-        LOGGER.info("Getting list for " + consortiumName);
         List<GeneListCsvRecord> geneListCsvRecords = geneListCsvRecordMapper.toDtos(records);
-        LOGGER.info("Got list for " + consortiumName + ". Writing csv...");
         csvWriter.writeListToCsv(response.getWriter(), geneListCsvRecords, GeneListCsvRecord.HEADERS);
-        LOGGER.info("Finished writing csv");
+    }
+
+    @GetMapping("/{consortiumName}/exportStream")
+    @Transactional(readOnly = true)
+    public void exportCsvStream(
+        HttpServletResponse response,
+        @PathVariable("consortiumName") String consortiumName,
+        @RequestParam(value = "markerSymbol", required = false) List<String> markerSymbols) throws IOException
+    {
+        String filename = "download.csv";
+        response.setContentType("text/csv");
+        response.setHeader(
+            HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + filename + "\"");
+        List<String> accIds = getListAccIdsByMarkerSymbols(markerSymbols);
+        GeneListFilter filter = GeneListFilterBuilder.getInstance()
+            .withConsortiumName(consortiumName)
+            .withAccIds(accIds)
+            .build();
+        Stream<ListRecord> recordsStream = geneListService.getAllStream(filter);
+
+        Consortium consortium = consortiumService.getConsortiumByNameOrThrowException(consortiumName);
+
+        writeCustomersToResponseAsCsv(recordsStream, response, consortium.getId());
+    }
+
+    private void setCsvParams(final HttpServletResponse response)
+    {
+        // not important; basically sets csv params so clients can understand it's a csv
+        response.setContentType("application/csv");
+        response.setHeader("Content-Disposition", "attachment;filename=customers.csv");
+    }
+
+    @Transactional
+        // doesn't do anything; just a reminder that this requires a transaction
+    void writeCustomersToResponseAsCsv(
+        Stream<ListRecord> listRecordStream, final HttpServletResponse response, Long consortiumId)
+        throws IOException
+    {
+        setCsvParams(response);
+        PrintWriter printWriter = response.getWriter();
+        printWriter.write(String.join(",", GeneListCsvRecord.HEADERS)+"\n");
+        csvWriter.csvWriterOneByOne(printWriter, GeneListCsvRecord.HEADERS);
+
+        List<String> allAccIdsByConsortium = geneListService.getAllAccIdsByConsortiumId(consortiumId);
+        geneListCsvRecordMapper.initMap(allAccIdsByConsortium);
+        listRecordStream.peek(listRecord ->
+            {
+                GeneListCsvRecord geneListCsvRecord = geneListCsvRecordMapper.toDto(listRecord);
+                String[] rowAsArray = geneListCsvRecord.getRowAsArray();
+                csvWriter.csvWriterOneByOne(printWriter, rowAsArray);
+            }
+        )
+            .forEach(entityManager::detach)
+        ; // optional, but objects _may_ not be GC'd if you don't detach them first.
+        printWriter.flush();
+        printWriter.close();
     }
 
     @GetMapping("/{consortiumName}/exportPublic")
@@ -297,12 +363,5 @@ public class GeneListController
         records.sort(Comparator.comparing(ListRecord::getId));
         List<GeneListCsvRecord> geneListCsvRecords = geneListCsvRecordMapper.toDtos(records);
         csvWriter.writeListToCsv(response.getWriter(), geneListCsvRecords, GeneListCsvRecord.HEADERS);
-    }
-
-    @GetMapping("/test")
-    public void testLongRequest(@RequestParam(value = "time", required = false) Long time)
-    throws InterruptedException
-    {
-        Thread.sleep(time);
     }
 }

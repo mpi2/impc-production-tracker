@@ -17,6 +17,7 @@ package org.gentar.biology.gene_list;
 
 import org.gentar.biology.gene_list.filter.GeneListFilter;
 import org.gentar.biology.gene_list.record.GeneByListRecord;
+import org.gentar.biology.gene_list.record.GeneByListRecordRepository;
 import org.gentar.biology.gene_list.record.ListRecord;
 import org.gentar.biology.gene_list.record.ListRecordSpecs;
 import org.gentar.exceptions.UserOperationFailedException;
@@ -30,15 +31,21 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Component
 public class GeneListRecordService
 {
     private final ListRecordRepository listRecordRepository;
+    private final GeneByListRecordRepository geneByListRecordRepository;
 
-    public GeneListRecordService(ListRecordRepository listRecordRepository)
+    public GeneListRecordService(
+        ListRecordRepository listRecordRepository,
+        GeneByListRecordRepository geneByListRecordRepository)
     {
         this.listRecordRepository = listRecordRepository;
+        this.geneByListRecordRepository = geneByListRecordRepository;
     }
 
     public ListRecord getGeneListRecordById(Long id)
@@ -57,9 +64,20 @@ public class GeneListRecordService
         return listRecordRepository.findAll(buildSpecs(filter));
     }
 
+    public Stream<ListRecord> getAllStream(GeneListFilter filter)
+    {
+        return listRecordRepository.stream(buildSpecs(filter), ListRecord.class);
+    }
+
     public Page<ListRecord> getAllBySpecs(Pageable pageable, GeneListFilter filter)
     {
         return listRecordRepository.findAll(buildSpecs(filter), pageable);
+    }
+
+    public List<String> getAllAccIdsByConsortiumId(Long consortiumId)
+    {
+        return geneByListRecordRepository.getAllAccIdsByConsortiumId(consortiumId).stream()
+            .map(Object::toString).collect(Collectors.toList());
     }
 
     public String genesByRecordToString(Collection<GeneByListRecord> genes)

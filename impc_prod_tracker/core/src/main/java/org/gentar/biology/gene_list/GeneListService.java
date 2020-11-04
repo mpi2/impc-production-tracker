@@ -28,6 +28,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Component
 public class GeneListService
@@ -68,6 +70,16 @@ public class GeneListService
     public List<ListRecord> getAllNotPaginatedWithFilters(GeneListFilter filter)
     {
         return geneListRecordService.getAllNotPaginated(filter);
+    }
+
+    public Stream<ListRecord> getAllStream(GeneListFilter filter)
+    {
+        return geneListRecordService.getAllStream(filter);
+    }
+
+    public List<String> getAllAccIdsByConsortiumId(Long consortiumId)
+    {
+        return geneListRecordService.getAllAccIdsByConsortiumId(consortiumId);
     }
 
     public void updateRecordsInList(

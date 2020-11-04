@@ -9,11 +9,13 @@ import org.gentar.biology.gene_list.record.ListRecordType;
 import org.gentar.biology.project.Project;
 import org.gentar.helpers.GeneListCsvRecord;
 import org.springframework.stereotype.Component;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Component
 public class GeneListCsvRecordMapper implements Mapper<ListRecord, GeneListCsvRecord>
@@ -21,6 +23,8 @@ public class GeneListCsvRecordMapper implements Mapper<ListRecord, GeneListCsvRe
     private static final String SEPARATOR = ",";
     private final GeneExternalService geneExternalService;
     private final ProjectsByGroupOfGenesFinder projectsByGroupOfGenesFinder;
+
+    private static Map<String, String> symbolsByAccIds = null;
 
     public GeneListCsvRecordMapper(
         GeneExternalService geneExternalService,
@@ -30,11 +34,20 @@ public class GeneListCsvRecordMapper implements Mapper<ListRecord, GeneListCsvRe
         this.projectsByGroupOfGenesFinder = projectsByGroupOfGenesFinder;
     }
 
+    public void initMap(List<String> accIds)
+    {
+        if (symbolsByAccIds == null)
+        {
+            symbolsByAccIds = geneExternalService.getSymbolsByAccessionIdsBulk(accIds);
+        }
+    }
+
     @Override
     public GeneListCsvRecord toDto(ListRecord listRecord)
     {
         GeneListCsvRecord geneListCsvRecord = new GeneListCsvRecord();
-        geneListCsvRecord.setGenes(String.join(SEPARATOR, getGenesSymbols(listRecord)));
+        //geneListCsvRecord.setGenes(String.join(SEPARATOR, getGenesSymbols(listRecord)));
+        geneListCsvRecord.setGenes(String.join(SEPARATOR, getCachedGenesSymbols(listRecord, symbolsByAccIds)));
         geneListCsvRecord.setNote(listRecord.getNote());
         geneListCsvRecord.setVisible(listRecord.getVisible());
         geneListCsvRecord.setProjectInformation(String.join(SEPARATOR, getProjectsInfo(listRecord)));
@@ -75,7 +88,7 @@ public class GeneListCsvRecordMapper implements Mapper<ListRecord, GeneListCsvRe
                 Set<GeneByListRecord> geneByListRecords = listRecord.getGenesByRecord();
                 if (geneByListRecords != null)
                 {
-                    geneByListRecords.forEach(x ->accIds.add(x.getAccId()));
+                    geneByListRecords.forEach(x -> accIds.add(x.getAccId()));
                 }
             }
         }
@@ -93,13 +106,12 @@ public class GeneListCsvRecordMapper implements Mapper<ListRecord, GeneListCsvRe
                     geneExternalService.getGeneFromExternalDataBySymbolOrAccId(x.getAccId());
                 if (gene == null)
                 {
-                    genesSymbols.add("gene not found ("+ x.getAccId()+")");
-                }
-                else
+                    genesSymbols.add("gene not found (" + x.getAccId() + ")");
+                } else
                 {
                     genesSymbols.add(gene.getSymbol());
                 }
-            } );
+            });
         }
         return genesSymbols;
     }
@@ -114,13 +126,12 @@ public class GeneListCsvRecordMapper implements Mapper<ListRecord, GeneListCsvRe
                 String symbol = symbolsByAccIds.get(x.getAccId());
                 if (symbol == null)
                 {
-                    genesSymbols.add("gene not found ("+ x.getAccId()+")");
-                }
-                else
+                    genesSymbols.add("gene not found (" + x.getAccId() + ")");
+                } else
                 {
                     genesSymbols.add(symbol);
                 }
-            } );
+            });
         }
         return genesSymbols;
     }
