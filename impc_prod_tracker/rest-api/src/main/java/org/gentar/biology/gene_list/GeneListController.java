@@ -28,7 +28,6 @@ import org.gentar.organization.consortium.Consortium;
 import org.gentar.organization.consortium.ConsortiumService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PagedResourcesAssembler;
@@ -57,7 +56,6 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
@@ -76,8 +74,6 @@ public class GeneListController
     private final GeneListCsvRecordMapper geneListCsvRecordMapper;
     private final ConsortiumService consortiumService;
     private final EntityManager entityManager;
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(GeneListController.class);
 
     public GeneListController(
         GeneListService geneListService,
@@ -311,7 +307,6 @@ public class GeneListController
 
     private void setCsvParams(final HttpServletResponse response)
     {
-        // not important; basically sets csv params so clients can understand it's a csv
         response.setContentType("application/csv");
         response.setHeader("Content-Disposition", "attachment;filename=customers.csv");
     }
@@ -324,7 +319,6 @@ public class GeneListController
     {
         setCsvParams(response);
         PrintWriter printWriter = response.getWriter();
-        printWriter.write(String.join(",", GeneListCsvRecord.HEADERS)+"\n");
         csvWriter.csvWriterOneByOne(printWriter, GeneListCsvRecord.HEADERS);
 
         List<String> allAccIdsByConsortium = geneListService.getAllAccIdsByConsortiumId(consortiumId);
@@ -336,8 +330,7 @@ public class GeneListController
                 csvWriter.csvWriterOneByOne(printWriter, rowAsArray);
             }
         )
-            .forEach(entityManager::detach)
-        ; // optional, but objects _may_ not be GC'd if you don't detach them first.
+            .forEach(entityManager::detach);
         printWriter.flush();
         printWriter.close();
     }
