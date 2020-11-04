@@ -324,7 +324,6 @@ public class GeneListController
     {
         setCsvParams(response);
         PrintWriter printWriter = response.getWriter();
-        printWriter.write(String.join(",", GeneListCsvRecord.HEADERS)+"\n");
         csvWriter.csvWriterOneByOne(printWriter, GeneListCsvRecord.HEADERS);
 
         List<String> allAccIdsByConsortium = geneListService.getAllAccIdsByConsortiumId(consortiumId);
@@ -336,8 +335,7 @@ public class GeneListController
                 csvWriter.csvWriterOneByOne(printWriter, rowAsArray);
             }
         )
-            .forEach(entityManager::detach)
-        ; // optional, but objects _may_ not be GC'd if you don't detach them first.
+            .forEach(entityManager::detach);
         printWriter.flush();
         printWriter.close();
     }
