@@ -15,13 +15,14 @@
  */
 package org.gentar.biology.gene_list.record;
 
+import org.gentar.util.stream.StreamableJpaSpecificationRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.repository.CrudRepository;
 
 public interface ListRecordRepository extends CrudRepository<ListRecord, Long>,
-    JpaSpecificationExecutor<ListRecord>
+    JpaSpecificationExecutor<ListRecord>, StreamableJpaSpecificationRepository<ListRecord>
 {
     Page<ListRecord> findAllByGeneListConsortiumName(Pageable pageable, String consortiumName);
 }

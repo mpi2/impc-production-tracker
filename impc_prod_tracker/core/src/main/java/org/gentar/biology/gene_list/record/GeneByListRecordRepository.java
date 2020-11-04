@@ -15,8 +15,15 @@
  */
 package org.gentar.biology.gene_list.record;
 
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
+
+import java.util.List;
 
 public interface GeneByListRecordRepository extends CrudRepository<GeneByListRecord, Long>
 {
+    @Query(
+        value = "select glr.acc_id from Gene_by_list_record glr, list_record lr where lr.id = glr.list_record_id and lr.gene_list_id = ?1",
+        nativeQuery = true)
+    List<Object> getAllAccIdsByConsortiumId(Long consortiumId);
 }
