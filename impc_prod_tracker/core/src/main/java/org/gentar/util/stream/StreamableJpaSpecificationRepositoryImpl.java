@@ -22,8 +22,6 @@ public class StreamableJpaSpecificationRepositoryImpl <T> implements StreamableJ
 
     @Override
     public Stream<T> stream(Specification<T> specification, Class<T> clazz) {
-        entityManager.clear();
-
         CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
         CriteriaQuery<T> criteriaQuery = criteriaBuilder.createQuery(clazz);
         Root<T> root = criteriaQuery.from(clazz);
@@ -33,7 +31,7 @@ public class StreamableJpaSpecificationRepositoryImpl <T> implements StreamableJ
             criteriaQuery.where(specification.toPredicate(root, criteriaQuery, criteriaBuilder));
         }
         return entityManager.createQuery(criteriaQuery)
-            .setHint(HINT_FETCH_SIZE, "1000") // depends on your DB implementation; MySQL expects "" + Integer.MIN_VALUE
+            .setHint(HINT_FETCH_SIZE, "100") // depends on your DB implementation; MySQL expects "" + Integer.MIN_VALUE
             .getResultStream();
     }
 }
