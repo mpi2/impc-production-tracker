@@ -31,7 +31,7 @@ public class StreamableJpaSpecificationRepositoryImpl <T> implements StreamableJ
             criteriaQuery.where(specification.toPredicate(root, criteriaQuery, criteriaBuilder));
         }
         return entityManager.createQuery(criteriaQuery)
-            .setHint(HINT_FETCH_SIZE, "100") // depends on your DB implementation; MySQL expects "" + Integer.MIN_VALUE
+            .setHint(HINT_FETCH_SIZE, "1") // depends on your DB implementation; MySQL expects "" + Integer.MIN_VALUE
             .getResultStream();
     }
 }
