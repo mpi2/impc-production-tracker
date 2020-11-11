@@ -86,6 +86,7 @@ class PlanControllerTest extends ControllerTestTemplate
     {
         String contentAsString =
             restCaller.executeGetAndDocument("/api/plans", document("plans/allPlans"));
+
         String expectedOutputAsString =
             loadExpectedResponseFromResource("expectedAllPlans.json");
 

@@ -4,6 +4,8 @@ import org.gentar.EntityMapper;
 import org.gentar.Mapper;
 import org.gentar.biology.strain.Strain;
 import org.gentar.biology.strain.StrainMapper;
+import org.gentar.organization.work_unit.WorkUnit;
+import org.gentar.organization.work_unit.WorkUnitMapper;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -11,11 +13,15 @@ public class PhenotypingAttemptCommonMapper implements Mapper<PhenotypingAttempt
 {
     private EntityMapper entityMapper;
     private StrainMapper strainMapper;
+    private WorkUnitMapper workUnitMapper;
 
-    public PhenotypingAttemptCommonMapper(EntityMapper entityMapper, StrainMapper strainMapper)
+    public PhenotypingAttemptCommonMapper(EntityMapper entityMapper,
+                                          StrainMapper strainMapper,
+                                          WorkUnitMapper workUnitMapper)
     {
         this.entityMapper = entityMapper;
         this.strainMapper = strainMapper;
+        this.workUnitMapper = workUnitMapper;
     }
 
     @Override
@@ -23,6 +29,11 @@ public class PhenotypingAttemptCommonMapper implements Mapper<PhenotypingAttempt
     {
         PhenotypingAttemptCommonDTO phenotypingAttemptCommonDTO = entityMapper.toTarget(entity,
                 PhenotypingAttemptCommonDTO.class);
+
+        if (phenotypingAttemptCommonDTO.getCohortWorkUnitName() == null)
+        {
+            phenotypingAttemptCommonDTO.setCohortWorkUnitName(entity.getPlan().getWorkUnit().getName());
+        }
         return phenotypingAttemptCommonDTO;
     }
 
@@ -31,6 +42,7 @@ public class PhenotypingAttemptCommonMapper implements Mapper<PhenotypingAttempt
     {
         PhenotypingAttempt phenotypingAttempt = entityMapper.toTarget(dto, PhenotypingAttempt.class);
         setStrain(phenotypingAttempt, dto);
+        setCohortWorkUnit(phenotypingAttempt, dto);
         return phenotypingAttempt;
     }
 
@@ -39,5 +51,11 @@ public class PhenotypingAttemptCommonMapper implements Mapper<PhenotypingAttempt
     {
         Strain strain = strainMapper.toEntity(dto.getStrainName());
         phenotypingAttempt.setStrain(strain);
+    }
+
+    private void setCohortWorkUnit(PhenotypingAttempt phenotypingAttempt, PhenotypingAttemptCommonDTO dto)
+    {
+        WorkUnit workUnit = workUnitMapper.toEntity(dto.getCohortWorkUnitName());
+        phenotypingAttempt.setCohortWorkUnit(workUnit);
     }
 }

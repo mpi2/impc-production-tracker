@@ -21,7 +21,8 @@
   "phenotypingAttemptResponse": {
     "phenotypingExternalRef": "CR1234",
     "phenotypingBackgroundStrainName": "C57BL/6NJ",
-    "doNotCountTowardsCompleteness":false
+    "doNotCountTowardsCompleteness":false,
+    "cohortProductionWorkUnitName":"UCD"
   },
   "typeName": "phenotyping",
   "statusName": "Plan Created",

@@ -31,4 +31,7 @@ public class PhenotypingAttemptCommonDTO
 
     @JsonProperty("phenotypingBackgroundStrainName")
     private String strainName;
+
+    @JsonProperty("cohortProductionWorkUnitName")
+    private String cohortWorkUnitName;
 }
