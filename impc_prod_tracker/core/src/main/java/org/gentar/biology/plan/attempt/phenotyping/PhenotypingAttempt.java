@@ -6,6 +6,8 @@ import org.gentar.audit.diff.IgnoreForAuditingChanges;
 import org.gentar.biology.plan.Plan;
 import org.gentar.biology.plan.attempt.phenotyping.stage.PhenotypingStage;
 import org.gentar.biology.strain.Strain;
+import org.gentar.organization.work_unit.WorkUnit;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.HashSet;
@@ -39,6 +41,9 @@ public class PhenotypingAttempt extends BaseEntity
     @ManyToOne(cascade = CascadeType.ALL)
     private Strain strain;
 
+    @ManyToOne(cascade = CascadeType.ALL)
+    private WorkUnit cohortWorkUnit;
+
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "phenotypingAttempt")
@@ -55,6 +60,7 @@ public class PhenotypingAttempt extends BaseEntity
         this.doNotCountTowardsCompleteness = phenotypingAttempt.doNotCountTowardsCompleteness;
         this.phenotypingExternalRef = phenotypingAttempt.phenotypingExternalRef;
         this.strain = phenotypingAttempt.strain;
+        this.cohortWorkUnit = phenotypingAttempt.cohortWorkUnit;
         this.phenotypingStages =
             phenotypingAttempt.phenotypingStages == null ? null :
                 new HashSet<>(phenotypingAttempt.phenotypingStages);

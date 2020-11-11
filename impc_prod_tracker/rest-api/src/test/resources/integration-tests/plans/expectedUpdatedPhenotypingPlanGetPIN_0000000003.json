@@ -23,7 +23,8 @@
   "phenotypingAttemptResponse":{
     "doNotCountTowardsCompleteness":false,
     "phenotypingExternalRef":"CR10129",
-    "phenotypingBackgroundStrainName":"C57BL/6NJ"
+    "phenotypingBackgroundStrainName":"C57BL/6NJ",
+    "cohortProductionWorkUnitName":"BCM"
   },
   "typeName":"phenotyping",
   "statusName":"Plan Created",

@@ -251,6 +251,7 @@ public class PlanFieldsDescriptors
         addField(phenotypingFields, "phenotypingAttemptResponse.phenotypingBackgroundStrainName",
                 "Phenotyping attempt background strain.");
         addField(phenotypingFields, "phenotypingAttemptResponse.doNotCountTowardsCompleteness", "");
+        addField(phenotypingFields, "phenotypingAttemptResponse.cohortProductionWorkUnitName", "");
         return phenotypingFields;
     }
 
