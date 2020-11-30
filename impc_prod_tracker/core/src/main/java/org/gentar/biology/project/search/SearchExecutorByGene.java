@@ -40,7 +40,7 @@ class SearchExecutorByGene implements SearchExecutor
     }
 
     @Override
-    @Cacheable("projectsBySearchTerm")
+    // @Cacheable("projectsBySearchTerm")
     public List<SearchResult> findProjects(String searchTerm)
     {
         List<SearchResult> searchResults = findProjectsByGene(searchTerm);
