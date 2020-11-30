@@ -944,8 +944,9 @@ case you need to retrieve the new object.
 
 include::{snippets}/plans/putCrisprPlanStateMachine/http-response.adoc[]
 
+== Lastest updates
 
-
+* 30/11/2020: New filter 'doNotCountTowardsCompleteness' added for phenotyping plans.
 
 
 
