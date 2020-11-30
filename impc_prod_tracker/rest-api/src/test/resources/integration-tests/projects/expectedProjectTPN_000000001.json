@@ -45,18 +45,18 @@
         "bestOrthologs":[
           {
             "symbol":"SERPINB10",
-            "category":"MODERATE",
-            "support":"HGNC,OMA,HomoloGene,Panther,NCBI,Ensembl,Inparanoid",
-            "supportCount":7,
+            "category":"GOOD",
+            "support":"HGNC,OMA,EggNOG,HomoloGene,OrthoMCL,Panther,NCBI,Ensembl,Inparanoid",
+            "supportCount":9,
             "link":"https://www.genenames.org/data/gene-symbol-report/#!/hgnc_id/HGNC:8942"
           }
         ],
         "allOrthologs":[
           {
             "symbol":"SERPINB10",
-            "category":"MODERATE",
-            "support":"HGNC,OMA,HomoloGene,Panther,NCBI,Ensembl,Inparanoid",
-            "supportCount":7,
+            "category":"GOOD",
+            "support":"HGNC,OMA,EggNOG,HomoloGene,OrthoMCL,Panther,NCBI,Ensembl,Inparanoid",
+            "supportCount":9,
             "link":"https://www.genenames.org/data/gene-symbol-report/#!/hgnc_id/HGNC:8942"
           }
         ],

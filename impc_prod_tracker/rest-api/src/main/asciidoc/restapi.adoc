@@ -467,7 +467,7 @@ This is the list of filters you can use:
 * haplo-essential crispr
 * breeding
 
-|imitsMiAttemptIds
+|imitsMiAttemptId
 |iMits mi attempt id.
 
 |===
@@ -481,11 +481,14 @@ This is the list of filters you can use:
 * adult and embryo phenotyping
 * haplo-essential phenotyping
 
-|imitsPhenotypeAttemptIds
+|imitsPhenotypeAttemptId
 |iMits phenotyping attempt id.
 
 |phenotypingExternalRef
-|Phentoyping External Reference (colony name or specimen group name)
+|Phentoyping External Reference (colony name or specimen group name).
+
+|doNotCountTowardsCompleteness
+|Do not count towards completeness boolean, true or false.
 
 |===
 

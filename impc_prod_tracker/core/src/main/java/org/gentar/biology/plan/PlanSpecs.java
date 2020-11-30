@@ -331,8 +331,33 @@ public class PlanSpecs
             {
                 List<Predicate> predicates = new ArrayList<>();
                 Path<PhenotypingAttempt> phenotypingAttemptPath = root.get(Plan_.phenotypingAttempt);
-                Path<String> imitsPhenotypingAttemptPath = phenotypingAttemptPath.get(PhenotypingAttempt_.phenotypingExternalRef);
-                predicates.add(imitsPhenotypingAttemptPath.in(phenotypingExternalRefs));
+                Path<String> phenotypingExternalRefPath = phenotypingAttemptPath.get(PhenotypingAttempt_.phenotypingExternalRef);
+                predicates.add(phenotypingExternalRefPath.in(phenotypingExternalRefs));
+                query.distinct(true);
+                return criteriaBuilder.and(predicates.toArray(new Predicate[predicates.size()]));
+            };
+        }
+        return specification;
+    }
+
+    public static Specification<Plan> withDoNotCountTowardsCompleteness (List<String> doNotCountTowardsCompleteness)
+    {
+        Specification<Plan> specification;
+        if (doNotCountTowardsCompleteness == null)
+        {
+            specification = buildTrueCondition();
+        }
+        else
+        {
+            specification = (Specification<Plan>) (root, query, criteriaBuilder) ->
+            {
+                List<Predicate> predicates = new ArrayList<>();
+                Path<PhenotypingAttempt> phenotypingAttemptPath = root.get(Plan_.phenotypingAttempt);
+                Path<Boolean> doNotCountTowardsCompletenessPath = phenotypingAttemptPath.get(
+                        PhenotypingAttempt_.doNotCountTowardsCompleteness);
+                Boolean value = "true".equalsIgnoreCase(doNotCountTowardsCompleteness.get(0)) ? Boolean.TRUE :
+                        "false".equalsIgnoreCase(doNotCountTowardsCompleteness.get(0)) ? Boolean.FALSE : null;
+                predicates.add(doNotCountTowardsCompletenessPath.in(value));
                 query.distinct(true);
                 return criteriaBuilder.and(predicates.toArray(new Predicate[predicates.size()]));
             };
