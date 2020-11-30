@@ -26,7 +26,7 @@
   "assignmentStatusStamps":[
     {
       "statusName":"Assigned",
-      "date":"2020-10-05T15:52:06.855992"
+      "date":"2020-11-30T12:32:13.700807"
     }
   ],
   "projectIntentions":[
@@ -43,18 +43,18 @@
         "bestOrthologs":[
           {
             "symbol":"SERPINB10",
-            "category":"MODERATE",
-            "support":"HGNC,OMA,HomoloGene,Panther,NCBI,Ensembl,Inparanoid",
-            "supportCount":7,
+            "category":"GOOD",
+            "support":"HGNC,OMA,EggNOG,HomoloGene,OrthoMCL,Panther,NCBI,Ensembl,Inparanoid",
+            "supportCount":9,
             "link":"https://www.genenames.org/data/gene-symbol-report/#!/hgnc_id/HGNC:8942"
           }
         ],
         "allOrthologs":[
           {
             "symbol":"SERPINB10",
-            "category":"MODERATE",
-            "support":"HGNC,OMA,HomoloGene,Panther,NCBI,Ensembl,Inparanoid",
-            "supportCount":7,
+            "category":"GOOD",
+            "support":"HGNC,OMA,EggNOG,HomoloGene,OrthoMCL,Panther,NCBI,Ensembl,Inparanoid",
+            "supportCount":9,
             "link":"https://www.genenames.org/data/gene-symbol-report/#!/hgnc_id/HGNC:8942"
           }
         ],
@@ -71,16 +71,16 @@
         {
           "index":1,
           "sequence":{
-            "id":1,
+            "id":3,
             "sequence":">Gpr173 Cas9 high_Gpr173_11766 \n GATGGTTTGAGAGCCTGGACTGAAGCTTGAAAGAGAAGGCTTCTGTATGGGTCCCACCCTTCCCCTGCTGCTGGCCCCCGTATGGTGATTCTGACTTTCCCCCTGCCTATGATCAGTCCCAGCAGCACCAGCTTCACATAAGCCGATGCTGATGGCAGAGACAGTGCGCCGCTCACCTCTTCGGGCTCTCCGGTGGTGTTGGCCATACTGAGGGGCAAAGGCTACCCCCAACCCTAGGGGATTGGCCAGTTCAGTATTTGATGGGCCCTGGCGGACTCCATCAGTTTTCTTGCTGAGCTACACCTGCAAATGGGAACA",
             "typeName":"partial",
             "categoryName":"original starting sequence",
             "sequenceLocations":[
               {
-                "id":1,
+                "id":3,
                 "locationIndex":1,
                 "location":{
-                  "id":1,
+                  "id":3,
                   "chr":"X",
                   "start":123456,
                   "stop":654321,

@@ -108,8 +108,9 @@ public class PlanController
         @RequestParam(value = "typeName", required = false) List<String> typeNames,
         @RequestParam(value = "attemptTypeName", required = false) List<String> attemptTypeNames,
         @RequestParam(value = "imitsMiAttemptId", required = false) List<String> imitsMiAttempts,
-        @RequestParam(value = "imitsPhenotypeAttemptIds", required = false) List<String> imitsPhenotypeAttempts,
-        @RequestParam(value = "phenotypingExternalRef", required = false) List<String> phenotyping_external_refs)
+        @RequestParam(value = "imitsPhenotypeAttemptId", required = false) List<String> imitsPhenotypeAttempts,
+        @RequestParam(value = "phenotypingExternalRef", required = false) List<String> phenotyping_external_refs,
+        @RequestParam(value = "doNotCountTowardsCompleteness", required = false) List<String> doNotCountTowardsCompleteness)
     {
         PlanFilter planFilter = PlanFilterBuilder.getInstance()
             .withTpns(projectTpns)
@@ -123,6 +124,7 @@ public class PlanController
             .withImitsMiAttemptIds(imitsMiAttempts)
             .withImitsPhenotypeAttemptIds(imitsPhenotypeAttempts)
             .withPhenotypingExternalRefs(phenotyping_external_refs)
+            .withDoNotCountTowardsCompleteness(doNotCountTowardsCompleteness)
             .build();
         Page<Plan> plans = planService.getPageablePlans(pageable, planFilter);
         Page<PlanResponseDTO> planDTOSPage = plans.map(this::getDTO);
@@ -133,7 +135,8 @@ public class PlanController
                 linkTo(methodOn(PlanController.class)
                     .findAll(pageable, assembler, pins, projectTpns, workUnitNames, workGroupNames,
                         statusNames, summaryStatusNames, typeNames, attemptTypeNames,
-                        imitsMiAttempts,imitsPhenotypeAttempts, phenotyping_external_refs)).withSelfRel());
+                        imitsMiAttempts,imitsPhenotypeAttempts, phenotyping_external_refs, doNotCountTowardsCompleteness
+                    )).withSelfRel());
 
         HttpHeaders responseHeaders = new HttpHeaders();
         responseHeaders.add("Link", LinkUtil.createLinkHeader(pr));

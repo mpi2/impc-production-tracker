@@ -111,7 +111,9 @@ public class PlanServiceImpl implements PlanService
                 .and(Specification.where(
                     PlanSpecs.withImitsPhenotypeAttempts(planFilter.getImitsPhenotypeAttemptIds())))
                 .and(Specification.where(
-                        PlanSpecs.withPhenotypingExternalRefs(planFilter.getPhenotypingExternalRefs())));
+                        PlanSpecs.withPhenotypingExternalRefs(planFilter.getPhenotypingExternalRefs())))
+                .and(Specification.where(
+                        PlanSpecs.withDoNotCountTowardsCompleteness(planFilter.getDoNotCountTowardsCompleteness())));
         return specifications;
     }
 

@@ -63,6 +63,7 @@ public class PlanFilter
 
     public List<String> getImitsMiAttemptIds()
     {
+
         return filters.getOrDefault(PlanFilterType.IMITS_MI_PLAN, null);
     }
 
@@ -71,5 +72,13 @@ public class PlanFilter
         return filters.getOrDefault(PlanFilterType.IMITS_PHENITYPING_ATTEMPT, null);
     }
 
-    public List<String> getPhenotypingExternalRefs () { return filters.getOrDefault(PlanFilterType.PHENOTYPING_EXTERNAL_REF, null); }
+    public List<String> getPhenotypingExternalRefs ()
+    {
+        return filters.getOrDefault(PlanFilterType.PHENOTYPING_EXTERNAL_REF, null);
+    }
+
+    public List<String> getDoNotCountTowardsCompleteness ()
+    {
+        return filters.getOrDefault(PlanFilterType.DO_NOT_COUNT_TOWARDS_COMPLETENESS, null);
+    }
 }

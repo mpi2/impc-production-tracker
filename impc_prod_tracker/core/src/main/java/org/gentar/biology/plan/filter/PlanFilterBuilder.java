@@ -90,6 +90,11 @@ public class PlanFilterBuilder
         return withFilter(PlanFilterType.PHENOTYPING_EXTERNAL_REF, phenotypingExternalRefs);
     }
 
+    public PlanFilterBuilder withDoNotCountTowardsCompleteness(List<String> doNotCountTowardsCompleteness)
+    {
+        return withFilter(PlanFilterType.DO_NOT_COUNT_TOWARDS_COMPLETENESS, doNotCountTowardsCompleteness);
+    }
+
     private boolean isListValid(List<String> values)
     {
         return values != null && !values.isEmpty();

@@ -167,7 +167,6 @@ class ProjectControllerTest extends ControllerTestTemplate
     {
         String expectedJsonCompletePath = getCompleteResourcePath(expectedJsonPath);
         String obtained = restCaller.executeGet(projectLink);
-        System.out.println(obtained);
         resultValidator.validateObtainedMatchesJson(
              obtained, expectedJsonCompletePath, ProjectCustomizations.ignoreIdsAndDates());
     }
