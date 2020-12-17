@@ -1,0 +1,236 @@
+<dataset>
+    <PRIVACY    ID="1"
+                NAME="public"/>
+    <PRIVACY    ID="2"
+                NAME="protected"/>
+    <PRIVACY    ID="3"
+                NAME="restricted"/>
+
+    <SPECIES    ID="1"
+                NAME="Mus musculus"
+                TAXON_ID="10090"/>
+    <SPECIES    ID="2"
+                NAME="Homo sapiens"
+                TAXON_ID="9606"/>
+
+    <SEQUENCE_TYPE  ID="1"
+                    NAME="complete"/>
+    <SEQUENCE_TYPE  ID="2"
+                    NAME="partial"/>
+    <SEQUENCE_TYPE  ID="3"
+                    NAME="5_prime_end"/>
+    <SEQUENCE_TYPE  ID="4"
+                    NAME="3_prime_end"/>
+
+    <SEQUENCE_CATEGORY  ID="1"
+                        NAME="intention target sequence"/>
+    <SEQUENCE_CATEGORY  ID="2"
+                        NAME="original starting sequence"/>
+    <SEQUENCE_CATEGORY  ID="3"
+                        NAME="outcome sequence"/>
+
+    <FUNDER ID="1"
+            NAME="KOMP"/>
+
+    <STRAIN ID="1"
+            NAME="C57BL/6N"
+            MGI_STRAIN_ACC_ID="MGI:2159965"/>
+
+    <ASSIGNMENT_STATUS  ID="1"
+                        NAME="Assigned"/>
+    <ASSIGNMENT_STATUS  ID="2"
+                        NAME="Inspect - Conflict"/>
+
+    <PLAN_TYPE  ID="1"
+                NAME="production"/>
+    <PLAN_TYPE  ID="2"
+                NAME="phenotyping"/>
+
+    <ATTEMPT_TYPE   ID="1"
+                    NAME="crispr"/>
+    <ATTEMPT_TYPE   ID="2"
+                    NAME="haplo-essential crispr"/>
+    <ATTEMPT_TYPE   ID="3"
+                    NAME="breeding"/>
+    <ATTEMPT_TYPE   ID="4"
+                    NAME="adult and embryo phenotyping"/>
+    <ATTEMPT_TYPE   ID="5"
+                    NAME="haplo-essential phenotyping"/>
+
+    <WORK_UNIT  ID="1"
+                NAME="BCM"/>
+    <WORK_UNIT  ID="2"
+                NAME="TCP"/>
+    <WORK_GROUP ID="1"
+                NAME="BaSH"/>
+    <WORK_GROUP  ID="2"
+                 NAME="DTCC"/>
+
+    <STATUS     ID="1"
+                NAME="Plan Created"/>
+    <STATUS     ID="2"
+                NAME="Attempt In Progress"/>
+
+    <CONSORTIUM ID="1"
+                NAME="CMG"/>
+
+    <MOLECULAR_MUTATION_TYPE    ID="1"
+                                NAME="Point Mutation"/>
+    <MOLECULAR_MUTATION_TYPE    ID="2"
+                                NAME="Deletion"/>
+
+    <PROJECT    ID="1"
+                TPN="TPN:000000001"
+                PRIVACY_ID="1"
+                ASSIGNMENT_STATUS_ID="1"
+                SUMMARY_STATUS_ID="1"
+                RECOVERY="false"
+                COMMENT="Comment test"
+                REACTIVATION_DATE="2020-09-24 00:00:02"
+                PROJECT_EXTERNAL_REF="External reference 01"/>
+    <PROJECT    ID="2"
+                TPN="TPN:000000002"
+                PRIVACY_ID="1"
+                ASSIGNMENT_STATUS_ID="2"
+                SUMMARY_STATUS_ID="2"/>
+    <PROJECT    ID="3"
+                TPN="TPN:000000003"
+                PRIVACY_ID="1"
+                ASSIGNMENT_STATUS_ID="1"
+                SUMMARY_STATUS_ID="1"/>
+    <PROJECT    ID="4"
+                TPN="TPN:000000004"
+                PRIVACY_ID="2"
+                ASSIGNMENT_STATUS_ID="2"
+                SUMMARY_STATUS_ID="2"/>
+    <PROJECT    ID="5"
+                TPN="TPN:000000005"
+                PRIVACY_ID="3"
+                ASSIGNMENT_STATUS_ID="1"
+                SUMMARY_STATUS_ID="1"/>
+
+    <PLAN       ID="1"
+                PIN="PIN:0000000001"
+                PROJECT_ID="1"
+                PLAN_TYPE_ID="1"
+                STATUS_ID="1"
+                WORK_UNIT_ID="1"
+                WORK_GROUP_ID="1"
+                SUMMARY_STATUS_ID="1"/>
+    <PLAN       ID="2"
+                PIN="PIN:0000000002"
+                PROJECT_ID="1"
+                PLAN_TYPE_ID="2"
+                STATUS_ID="1"
+                WORK_UNIT_ID="1"
+                WORK_GROUP_ID="1"
+                SUMMARY_STATUS_ID="1"/>
+
+    <PROJECT_INTENTION  ID="1"
+                        MOLECULAR_MUTATION_TYPE_ID="1"
+                        PROJECT_ID="1"/>
+
+    <MUTATION_CATEGORIZATION_TYPE   ID="1"
+                                    NAME="allele_category"/>
+
+    <MUTATION_CATEGORIZATION    ID="1"
+                                NAME="Null Reporter"
+                                MUTATION_CATEGORIZATION_TYPE_ID="1"/>
+
+    <GENE   ID="1"
+            SYMBOL="Serpinb10"
+            NAME="serine (or cysteine) peptidase inhibitor, clade B (ovalbumin), member 10"
+            SPECIES_ID="1"
+            ACC_ID="MGI:2138648"
+            MGI_START="107529003"
+            MGI_STOP="107549271"
+            MGI_STRAND="+"/>
+
+    <PROJECT_INTENTION_GENE PROJECT_INTENTION_ID="1"
+                            GENE_ID="1"/>
+
+    <SEQUENCE   ID="1"
+                SEQUENCE=">Otog
+TGGGACTAGGTCACAGACAGAAAAAGGGGGATGAGAAGGCCTTAGATCTAAGGGAGGTAAAGAGAGAATTAACCACAGGAATTAGCACACTGAAGGATCGTGCTCGCCAGACCTCAAACCATCTCCTTCTTGCGTCATGAGAAAGCCTTGACCCATCATTTTCCAGTTTTCTGTGTTCTTGCCCCACTTTGGCCCCTGGATCCTGGGATCTCCCCAGAAATTCTTACCTAGCCCC"
+                SEQUENCE_TYPE_ID="1"
+                SEQUENCE_CATEGORY_ID="3"/>
+
+    <LOCATION   ID="1"
+                CHR="X"
+                START="1234567"
+                STOP="7654321"
+                STRAND="+"
+                GENOME_BUILD="GRCm38"
+                SPECIES_ID="1"
+                STRAIN_ID="1"/>
+
+    <PROJECT_INTENTION_SEQUENCE ID="1"
+                                INDEX="1"
+                                PROJECT_INTENTION_ID="1"
+                                SEQUENCE_ID="1"/>
+
+    <SEQUENCE_LOCATION  ID="1"
+                        INDEX="1"
+                        LOCATION_ID="1"
+                        SEQUENCE_ID="1"/>
+
+    <PROJECT_INTENTION_MUTATION_CATEGORIZATION PROJECT_INTENTION_ID="1"
+                                               MUTATION_CATEGORIZATION_ID="1"/>
+
+    <PROJECT_SPECIES    PROJECT_ID="1"
+                        SPECIES_ID="1"/>
+    <PROJECT_SPECIES    PROJECT_ID="2"
+                        SPECIES_ID="2"/>
+
+    <PROJECT_CONSORTIUM ID="1"
+                        PROJECT_ID="1"
+                        CONSORTIUM_ID="1"/>
+    <PROJECT_CONSORTIUM ID="2"
+                        PROJECT_ID="2"
+                        CONSORTIUM_ID="1"/>
+    <PROJECT_CONSORTIUM ID="3"
+                        PROJECT_ID="3"
+                        CONSORTIUM_ID="1"/>
+    <PROJECT_CONSORTIUM ID="4"
+                        PROJECT_ID="4"
+                        CONSORTIUM_ID="1"/>
+    <PROJECT_CONSORTIUM ID="5"
+                        PROJECT_ID="5"
+                        CONSORTIUM_ID="1"/>
+
+    <PERSON     ID="123"
+                EMAIL="gentar_test_user1@gentar.org"
+                EBI_ADMIN="true"
+                AUTH_ID="usr-3bc9e4f6-652a-4abf-ad92-77397f8bdd3f"/>
+
+    <PERSON_ROLE_CONSORTIUM/>
+    <PLAN_STATUS_STAMP/>
+    <PLAN_SUMMARY_STATUS_STAMP/>
+    <ASSIGNMENT_STATUS_STAMP/>
+    <PROJECT_SUMMARY_STATUS_STAMP/>
+    <PLAN_FUNDER/>
+    <GENE_LIST CONSORTIUM_ID="1"
+               DESCRIPTION="more test data" />
+    <LIST_RECORD ID="1"
+                 GENE_LIST_ID="1"
+                 NOTE="test information" />
+    <GENE_BY_LIST_RECORD
+        ID="1"
+        ACC_ID="MGI:2138648"
+        INDEX="1"
+        LIST_RECORD_ID="1"
+        />
+    <LIST_RECORD_TYPE ID="1"
+                      NAME="Tier1"
+                      GENE_LIST_CONSORTIUM_ID="1" />
+    <LIST_RECORD_TYPE ID="2"
+                      NAME="Tier2"
+                      GENE_LIST_CONSORTIUM_ID="1" />
+    <LIST_RECORD_LIST_RECORD_TYPE
+        LIST_RECORD_ID="1"
+        LIST_RECORD_TYPE_ID="1" />
+    <LIST_RECORD_LIST_RECORD_TYPE
+            LIST_RECORD_ID="1"
+            LIST_RECORD_TYPE_ID="2" />
+
+</dataset>

@@ -15,21 +15,12 @@
  */
 package org.gentar.biology.gene_list;
 
-import lombok.AccessLevel;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 import org.gentar.BaseEntity;
 import org.gentar.biology.gene_list.record.ListRecord;
 import org.gentar.organization.consortium.Consortium;
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.MapsId;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
+
+import javax.persistence.*;
 import java.util.List;
 
 @NoArgsConstructor(access= AccessLevel.PUBLIC, force=true)
@@ -43,6 +34,7 @@ public class GeneList extends BaseEntity
 
     @OneToOne
     @MapsId
+    @JoinColumn(name="consortium_id")
     private Consortium consortium;
 
     private String description;

@@ -33,4 +33,6 @@ public class ListRecordType
     @ManyToMany(mappedBy = "listRecordTypes")
     private Set<ListRecord> listRecords;
 
+    //private Boolean visible;
+
 }
