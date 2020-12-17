@@ -16,19 +16,16 @@
 package org.gentar.biology.gene_list;
 
 import org.gentar.biology.gene_list.filter.GeneListFilter;
-import org.gentar.biology.gene_list.record.ListRecord;
+import org.gentar.biology.gene_list.record.*;
 import org.gentar.organization.consortium.ConsortiumService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
-import org.gentar.biology.gene_list.record.GeneByListRecord;
-import org.gentar.biology.gene_list.record.SortGeneByGeneListRecordByIndex;
 import org.gentar.organization.consortium.Consortium;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 @Component
@@ -39,8 +36,7 @@ public class GeneListService
     private final GeneListCsvConverter geneListCsvConverter;
     private final ConsortiumService consortiumService;
 
-    public GeneListService(
-        GeneListRepository geneListRepository,
+    public GeneListService(GeneListRepository geneListRepository,
         GeneListRecordService geneListRecordService,
         GeneListCsvConverter geneListCsvConverter,
         ConsortiumService consortiumService)
@@ -190,6 +186,10 @@ public class GeneListService
                     listRecord, sortedAccIdsInCurrentList, symbols.toString());
             }
         }
+    }
+
+    public List<GeneListProjection> getGeneListProjectionsByConsortiumName(String consortiumName){
+        return geneListRepository.findAllGeneListProjectionsByConsortiumName(consortiumName);
     }
 
     /**

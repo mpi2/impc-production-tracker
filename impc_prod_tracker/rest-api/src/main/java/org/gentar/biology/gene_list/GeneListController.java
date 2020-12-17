@@ -18,7 +18,10 @@ package org.gentar.biology.gene_list;
 import org.gentar.biology.gene.external_ref.GeneExternalService;
 import org.gentar.biology.gene_list.filter.GeneListFilter;
 import org.gentar.biology.gene_list.filter.GeneListFilterBuilder;
+import org.gentar.biology.gene_list.record.GeneListProjection;
 import org.gentar.biology.gene_list.record.ListRecord;
+import org.gentar.biology.gene_list.record.ListRecordType;
+import org.gentar.biology.gene_list.record.ListRecordTypeService;
 import org.gentar.helpers.CsvReader;
 import org.gentar.helpers.CsvWriter;
 import org.gentar.helpers.GeneListCsvRecord;
@@ -26,8 +29,6 @@ import org.gentar.helpers.LinkUtil;
 import org.gentar.helpers.SearchCsvRecord;
 import org.gentar.organization.consortium.Consortium;
 import org.gentar.organization.consortium.ConsortiumService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PagedResourcesAssembler;
@@ -51,11 +52,8 @@ import javax.persistence.EntityManager;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
@@ -68,6 +66,7 @@ public class GeneListController
     private final GeneListService geneListService;
     private final GeneListMapper geneListMapper;
     private final ListRecordMapper listRecordMapper;
+    private final ListRecordTypeService listRecordTypeService;
     private final CsvReader csvReader;
     private final CsvWriter<SearchCsvRecord> csvWriter;
     private final GeneExternalService geneExternalService;
@@ -76,19 +75,20 @@ public class GeneListController
     private final EntityManager entityManager;
 
     public GeneListController(
-        GeneListService geneListService,
-        GeneListMapper geneListMapper,
-        ListRecordMapper listRecordMapper,
-        CsvReader csvReader,
-        CsvWriter<SearchCsvRecord> csvWriter,
-        GeneExternalService geneExternalService,
-        GeneListCsvRecordMapper geneListCsvRecordMapper,
-        ConsortiumService consortiumService,
-        EntityManager entityManager)
+            GeneListService geneListService,
+            GeneListMapper geneListMapper,
+            ListRecordMapper listRecordMapper,
+            ListRecordTypeService listRecordTypeService, CsvReader csvReader,
+            CsvWriter<SearchCsvRecord> csvWriter,
+            GeneExternalService geneExternalService,
+            GeneListCsvRecordMapper geneListCsvRecordMapper,
+            ConsortiumService consortiumService,
+            EntityManager entityManager)
     {
         this.geneListService = geneListService;
         this.geneListMapper = geneListMapper;
         this.listRecordMapper = listRecordMapper;
+        this.listRecordTypeService = listRecordTypeService;
         this.csvReader = csvReader;
         this.csvWriter = csvWriter;
         this.geneExternalService = geneExternalService;
@@ -303,6 +303,67 @@ public class GeneListController
         Consortium consortium = consortiumService.getConsortiumByNameOrThrowException(consortiumName);
 
         writeCustomersToResponseAsCsv(recordsStream, response, consortium.getId());
+    }
+
+    @GetMapping("/{consortiumName}/exportProjection")
+    @Transactional(readOnly = true)
+    public void exportProjection(
+            HttpServletResponse response,
+            @PathVariable("consortiumName") String consortiumName) throws IOException
+    {
+        List<GeneListProjection> glp = geneListService.getGeneListProjectionsByConsortiumName(consortiumName);
+        Map<Long, List<GeneListProjection>> listRecordGenes = glp.stream().collect(Collectors.groupingBy(GeneListProjection::getId));
+        //System.out.println(listRecordGenes.containsKey(1L));
+        System.out.println(listRecordGenes.get(1L).get(0));
+
+        Map<String, Set<String>> geneProjectsSet = glp.stream().collect(Collectors.groupingBy(GeneListProjection::getSymbol, Collectors.mapping(GeneListProjection::getTpn, Collectors.toSet())));
+        Map<String, Set<String>> projectSummaryStatus = glp.stream().collect(Collectors.groupingBy(GeneListProjection::getTpn, Collectors.mapping(GeneListProjection::getSummaryStatus, Collectors.toSet())));
+        System.out.println(geneProjectsSet.containsKey("Otog"));
+        System.out.println(List.copyOf(geneProjectsSet.get("Otog")));
+        geneProjectsSet.forEach((k, v) -> System.out.println(k + " : " + v.size() + " : " + List.copyOf(v)));
+
+        Map<Long, List<String>> listRecordTypeByListRecord = listRecordTypeService.getRecordTypesByListRecord();
+
+        listRecordGenes.forEach((k,v) -> {
+                List<String> geneSymbols = listRecordGenes.get(k).stream().map(GeneListProjection::getSymbol).distinct().collect(Collectors.toList());
+                List<String> projectList = getProjectsForListRecord(k,geneSymbols, geneProjectsSet);
+                projectList.forEach(tpn ->
+                    System.out.println(geneSymbols.stream().collect(Collectors.joining(",")) +
+                            "\t" + listRecordGenes.get(k).get(0).getNote() +
+                            "\t" + listRecordTypeByListRecord.get(k).stream().distinct().collect(Collectors.joining(",")) +
+                            "\t" + listRecordGenes.get(k).get(0).getVisible() +
+                            "\t" + tpn +
+                            "\t" + List.copyOf(projectSummaryStatus.get(tpn)).get(0)
+                    )
+
+                );
+        });
+        //        Map<String, List<String>> geneProjectsSet = glp.stream().collect(Collectors.groupingBy(GeneListProjection::getSymbol));
+//
+//        Map<String, List<String>> listRecordGenes = glp.stream()
+//                .flatMap(e -> e.getValue().stream()
+//                        .map(i -> Map.entry(e.getKey(), models.get(i).stream())))
+//                .collect(groupingBy(Map.Entry::getKey,
+//                        Collectors.flatMapping(Map.Entry::getValue, Collectors.toList())));
+
+    }
+
+    private List<String> getProjectsForListRecord(Long listRecordId,
+                                                  List<String> geneSymbols,
+                                                  Map<String, Set<String>> geneProjectsSet) {
+        List projectList = new ArrayList<>();
+
+        if (geneSymbols.size() == 1) {
+            projectList = List.copyOf(geneProjectsSet.get(geneSymbols.get(0)));
+        } else if (geneSymbols.size() > 1) {
+            List<Set> listOfProjectSets  = new ArrayList<>();
+            geneSymbols.forEach(s -> listOfProjectSets.add(geneProjectsSet.get(s)));
+            for (int i = 1; i < listOfProjectSets.size(); i++) {
+                listOfProjectSets.get(0).retainAll(listOfProjectSets.get(i));
+            }
+            projectList = List.copyOf(geneProjectsSet.get(geneSymbols.get(0)));
+        }
+        return projectList;
     }
 
     private void setCsvParams(final HttpServletResponse response)
