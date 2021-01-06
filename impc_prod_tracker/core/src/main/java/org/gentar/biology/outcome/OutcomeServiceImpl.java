@@ -14,12 +14,8 @@ import org.gentar.exceptions.UserOperationFailedException;
 import org.gentar.security.abac.ResourceAccessChecker;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
-import java.util.Collection;
-import java.util.Comparator;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Objects;
-import java.util.Set;
+
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Component
@@ -36,6 +32,7 @@ public class OutcomeServiceImpl implements OutcomeService
     private final HistoryService<Outcome> historyService;
 
     public static final String READ_OUTCOME_ACTION = "READ_OUTCOME";
+    private ArrayList<Long> outcomeIds;
 
     public OutcomeServiceImpl(
         OutcomeRepository outcomeRepository,
@@ -217,5 +214,13 @@ public class OutcomeServiceImpl implements OutcomeService
         }
         plan.getOutcomes().add(outcome);
         outcome.setPlan(plan);
+    }
+
+    public List<OutcomeMutationProjection> getOutcomeMutationProjections() {
+        return outcomeRepository.findAllOutcomeMutationProjections();
+    }
+
+    public List<OutcomeMutationProjection> getSelectedOutcomeMutationProjections( List<Long> outcomeIds ) {
+        return outcomeRepository.findSelectedOutcomeMutationProjections(outcomeIds);
     }
 }
