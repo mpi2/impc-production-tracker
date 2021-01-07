@@ -1,6 +1,5 @@
 package org.gentar.biology.outcome;
 
-import org.gentar.biology.mutation.Mutation;
 import org.springframework.beans.factory.annotation.Value;
 
 public interface OutcomeMutationProjection {
@@ -11,7 +10,8 @@ public interface OutcomeMutationProjection {
     @Value("#{target.mutationId}")
     Long getMutationId();
 
-    @Value("#{target.mutation}")
-    Mutation getMutation();
+    // Note: retrieving the entire mutation as part of the projection is slow
+    @Value("#{target.symbol}")
+    String getSymbol();
 
 }

@@ -13,10 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @RestController
@@ -43,14 +40,14 @@ public class MgiReportController {
         List<Long> outcomeIds = pap.stream().map(x -> x.getOutcomeId()).collect(Collectors.toList());
 
         List<OutcomeMutationProjection> omp = outcomeService.getSelectedOutcomeMutationProjections(outcomeIds);
-        Map<Long, Set<Mutation>> outcomeMutationMap = omp.stream().collect(Collectors.groupingBy(OutcomeMutationProjection::getOutcomeId, Collectors.mapping(OutcomeMutationProjection::getMutation, Collectors.toSet())));
+        Map<Long, Set<OutcomeMutationProjection>> outcomeMutationMap = omp.stream().collect(Collectors.groupingBy(OutcomeMutationProjection::getOutcomeId, Collectors.mapping(entry -> entry, Collectors.toSet())));
 
         // select outcomes associated with only one mutation - compatible with existing MGI iMits report
-        List<Long> filteredMutationIds = outcomeMutationMap.entrySet().stream().filter(e -> e.getValue().size() == 1).map(e -> List.copyOf(e.getValue()).get(0).getId()).collect(Collectors.toList());
-        Map<Long, Mutation> filteredOutcomeMutationMap = outcomeMutationMap.entrySet().stream().filter(e -> e.getValue().size() == 1).collect(Collectors.toMap(map -> map.getKey(), map -> List.copyOf(map.getValue()).get(0)));
+        Map<Long, OutcomeMutationProjection> filteredOutcomeMutationMap = outcomeMutationMap.entrySet().stream().filter(e -> e.getValue().size() == 1).collect(Collectors.toMap(Map.Entry::getKey, e -> List.copyOf(e.getValue()).get(0)));
+        List<Long> filteredMutationIds = filteredOutcomeMutationMap.entrySet().stream().map(e -> e.getValue().getMutationId()).collect(Collectors.toList());
 
         // Check filteredOutcomeMutationMap contents
-        filteredOutcomeMutationMap.entrySet().stream().forEach(e -> System.out.println(e.getKey() + "\t" + e.getValue().getSymbol()));
+        // filteredOutcomeMutationMap.entrySet().stream().forEach(e -> System.out.println(e.getKey() + "\t" + e.getValue().getSymbol()));
 
         List<MutationGeneProjection> mgp = mutationService.getSelectedMutationGeneProjections(filteredMutationIds);
         Map<Long, Set<Gene>> mutationGeneMap = mgp.stream().collect(Collectors.groupingBy(MutationGeneProjection::getMutationId, Collectors.mapping(MutationGeneProjection::getGene, Collectors.toSet())));
@@ -61,10 +58,10 @@ public class MgiReportController {
 
         pap.stream()
                 .filter(x -> filteredOutcomeMutationMap.containsKey(x.getOutcomeId()))
-                .filter(x -> filteredMutationGeneMap.containsKey(filteredOutcomeMutationMap.get(x.getOutcomeId()).getId()))
+                .filter(x -> filteredMutationGeneMap.containsKey(filteredOutcomeMutationMap.get(x.getOutcomeId()).getMutationId()))
                 .forEach(x -> {
-                            Mutation m = filteredOutcomeMutationMap.get(x.getOutcomeId());
-                            Gene g = filteredMutationGeneMap.get(filteredOutcomeMutationMap.get(x.getOutcomeId()).getId());
+                            String mutationSymbol = filteredOutcomeMutationMap.get(x.getOutcomeId()).getSymbol();
+                            Gene g = filteredMutationGeneMap.get(filteredOutcomeMutationMap.get(x.getOutcomeId()).getMutationId());
                             String cohortProductionWorkUnit = x.getCohortProductionWorkUnit() == null ? x.getPhenotypingWorkUnit() : x.getCohortProductionWorkUnit();
                             System.out.println(
                                     g.getSymbol() + "\t" +
@@ -78,31 +75,9 @@ public class MgiReportController {
                                             x.getPhenotypingWorkUnit() + "\t" +
                                             x.getPhenotypingWorkGroup() + "\t" +
                                             cohortProductionWorkUnit + "\t" +
-                                            m.getSymbol()
+                                            mutationSymbol
 
                             );
-                    if (g.getSymbol().equals("Zbtb48")){
-                        System.out.println(x);
-                        System.out.println(x.getProductionWorkUnit());
-                        System.out.println(x.getProductionWorkGroup());
-                        System.out.println(x.getPhenotypingWorkUnit());
-                        System.out.println(x.getPhenotypingWorkGroup());
-                    }
-
                 });
-
-        pap.stream().forEach(x -> {
-            System.out.println(
-                            x.getColonyName() + "\t" +
-                            "\t" +
-                            x.getStrainName() + "\t" +
-                            x.getStrainAccId() + "\t" +
-                            x.getProductionWorkUnit() + "\t" +
-                            x.getProductionWorkGroup() + "\t" +
-                            x.getPhenotypingWorkUnit() + "\t" +
-                            x.getPhenotypingWorkGroup() + "\t" +
-                            x.getOutcomeId());
-
-        });
     }
 }
