@@ -1,8 +1,8 @@
-package org.gentar.biology.plan.attempt.phenotyping;
+package org.gentar.report.mgiPhenotypingColony.phenotypingAttempt;
 
 import org.springframework.beans.factory.annotation.Value;
 
-public interface PhenotypingAttemptProjectionForMgi {
+public interface MgiPhenotypingColonyReportPhenotypingAttemptProjection {
 
     @Value("#{target.colonyName}")
     String getColonyName();

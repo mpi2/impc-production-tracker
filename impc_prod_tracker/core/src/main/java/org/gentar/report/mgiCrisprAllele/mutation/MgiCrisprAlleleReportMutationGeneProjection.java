@@ -1,9 +1,9 @@
-package org.gentar.biology.mutation;
+package org.gentar.report.mgiCrisprAllele.mutation;
 
 import org.gentar.biology.gene.Gene;
 import org.springframework.beans.factory.annotation.Value;
 
-public interface MutationGeneProjection {
+public interface MgiCrisprAlleleReportMutationGeneProjection {
 
     @Value("#{target.mutationId}")
     Long getMutationId();

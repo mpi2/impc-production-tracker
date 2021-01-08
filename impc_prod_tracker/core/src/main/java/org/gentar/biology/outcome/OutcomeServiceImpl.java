@@ -215,12 +215,4 @@ public class OutcomeServiceImpl implements OutcomeService
         plan.getOutcomes().add(outcome);
         outcome.setPlan(plan);
     }
-
-    public List<OutcomeMutationProjection> getOutcomeMutationProjections() {
-        return outcomeRepository.findAllOutcomeMutationProjections();
-    }
-
-    public List<OutcomeMutationProjection> getSelectedOutcomeMutationProjections( List<Long> outcomeIds ) {
-        return outcomeRepository.findSelectedOutcomeMutationProjections(outcomeIds);
-    }
 }

@@ -86,10 +86,6 @@ public class MutationServiceImpl implements MutationService
             Mutation.class.getSimpleName(), mutation.getId());
     }
 
-    public List<MutationGeneProjection> getSelectedMutationGeneProjections(List mutationIds){
-        return mutationRepository.findSelectedMutationGeneProjections(mutationIds);
-    }
-
     private String buildMin(Long id)
     {
         String identifier = String.format("%0" + 12 + "d", id);
