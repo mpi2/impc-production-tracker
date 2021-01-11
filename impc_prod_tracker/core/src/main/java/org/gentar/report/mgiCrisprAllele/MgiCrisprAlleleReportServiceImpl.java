@@ -31,27 +31,21 @@ public class MgiCrisprAlleleReportServiceImpl implements MgiCrisprAlleleReportSe
 
     public void generateMgiCrisprAlleleReport() {
 
-
         List<MgiCrisprAlleleReportColonyProjection> cp = colonyReportService.getAllColonyReportProjections();
         List<Long> outcomeIds = cp.stream().map(x -> x.getOutcomeId()).collect(Collectors.toList());
 
-        List<MgiCrisprAlleleReportOutcomeMutationProjection> omp = outcomeReportService.getSelectedOutcomeMutationCrisprReportProjections(outcomeIds);
-        Map<Long, Set<MgiCrisprAlleleReportOutcomeMutationProjection>> outcomeMutationMap = omp.stream().collect(Collectors.groupingBy(MgiCrisprAlleleReportOutcomeMutationProjection::getOutcomeId, Collectors.mapping(entry -> entry, Collectors.toSet())));
+        Map<Long, MgiCrisprAlleleReportOutcomeMutationProjection> filteredOutcomeMutationMap = getMutationMap(outcomeIds);
+        List<Long> filteredMutationIds = getFilteredMutationIds(filteredOutcomeMutationMap);
+        // checkFilteredOutcomeMutationMap(filteredOutcomeMutationMap);
 
-        // select outcomes associated with only one mutation - compatible with existing MGI iMits report
-        Map<Long, MgiCrisprAlleleReportOutcomeMutationProjection> filteredOutcomeMutationMap = outcomeMutationMap.entrySet().stream().filter(e -> e.getValue().size() == 1).collect(Collectors.toMap(Map.Entry::getKey, e -> List.copyOf(e.getValue()).get(0)));
-        List<Long> filteredMutationIds = filteredOutcomeMutationMap.entrySet().stream().map(e -> e.getValue().getMutationId()).collect(Collectors.toList());
-
-        // Check filteredOutcomeMutationMap contents
-        // filteredOutcomeMutationMap.entrySet().stream().forEach(e -> System.out.println(e.getKey() + "\t" + e.getValue().getSymbol() + "\t" + e.getValue().getMutationType()));
-
-        List<MgiCrisprAlleleReportMutationGeneProjection> mgp = mutationReportService.getSelectedMutationGeneProjections(filteredMutationIds);
-        Map<Long, Set<Gene>> mutationGeneMap = mgp.stream().collect(Collectors.groupingBy(MgiCrisprAlleleReportMutationGeneProjection::getMutationId, Collectors.mapping(MgiCrisprAlleleReportMutationGeneProjection::getGene, Collectors.toSet())));
-
-        // select mutations associated with only one gene - compatible with existing MGI iMits report
-        Map<Long, Gene> filteredMutationGeneMap = mutationGeneMap.entrySet().stream().filter(e -> e.getValue().size() == 1).collect(Collectors.toMap(map -> map.getKey(), map -> List.copyOf(map.getValue()).get(0)));
+        Map<Long, Gene> filteredMutationGeneMap = getGeneMap(filteredMutationIds);
+        writeReport(cp, filteredOutcomeMutationMap, filteredMutationGeneMap);
+    }
 
 
+    private void writeReport( List<MgiCrisprAlleleReportColonyProjection> cp,
+                              Map<Long, MgiCrisprAlleleReportOutcomeMutationProjection> filteredOutcomeMutationMap,
+                              Map<Long, Gene> filteredMutationGeneMap ) {
         cp.stream()
                 .filter(x -> filteredOutcomeMutationMap.containsKey(x.getOutcomeId()))
                 .filter(x -> filteredMutationGeneMap.containsKey(filteredOutcomeMutationMap.get(x.getOutcomeId()).getMutationId()))
@@ -76,5 +70,62 @@ public class MgiCrisprAlleleReportServiceImpl implements MgiCrisprAlleleReportSe
 
                     );
                 });
+    }
+
+    private void checkFilteredOutcomeMutationMap(
+            Map<Long, MgiCrisprAlleleReportOutcomeMutationProjection> filteredOutcomeMutationMap ) {
+
+       filteredOutcomeMutationMap
+                .entrySet()
+                .stream()
+                .forEach(e ->
+                        System.out.println(
+                                e.getKey() + "\t" +
+                                e.getValue().getSymbol() + "\t" +
+                                e.getValue().getMutationType())
+                );
+    }
+
+
+    private List<Long> getFilteredMutationIds( Map<Long, MgiCrisprAlleleReportOutcomeMutationProjection> filteredOutcomeMutationMap ) {
+        return filteredOutcomeMutationMap
+                .entrySet()
+                .stream()
+                .map(e -> e.getValue().getMutationId())
+                .collect(Collectors.toList());
+    }
+
+
+    private Map<Long, MgiCrisprAlleleReportOutcomeMutationProjection> getMutationMap( List<Long> outcomeIds ) {
+        List<MgiCrisprAlleleReportOutcomeMutationProjection> omp = outcomeReportService.getSelectedOutcomeMutationCrisprReportProjections(outcomeIds);
+        Map<Long, Set<MgiCrisprAlleleReportOutcomeMutationProjection>> outcomeMutationMap = omp
+                .stream()
+                .collect(Collectors.groupingBy(
+                        MgiCrisprAlleleReportOutcomeMutationProjection::getOutcomeId,
+                        Collectors.mapping(entry -> entry, Collectors.toSet())));
+
+        // select outcomes associated with only one mutation - compatible with existing MGI iMits report
+        return outcomeMutationMap
+                .entrySet()
+                .stream()
+                .filter(e -> e.getValue().size() == 1)
+                .collect(Collectors.toMap(Map.Entry::getKey, e -> List.copyOf(e.getValue()).get(0)));
+    }
+
+
+    private Map<Long, Gene> getGeneMap( List<Long> filteredMutationIds ) {
+        List<MgiCrisprAlleleReportMutationGeneProjection> mgp = mutationReportService.getSelectedMutationGeneProjections(filteredMutationIds);
+        Map<Long, Set<Gene>> mutationGeneMap = mgp
+                .stream()
+                .collect(Collectors.groupingBy(
+                        MgiCrisprAlleleReportMutationGeneProjection::getMutationId,
+                        Collectors.mapping(MgiCrisprAlleleReportMutationGeneProjection::getGene, Collectors.toSet())));
+
+        // select mutations associated with only one gene - compatible with existing MGI iMits report
+        return mutationGeneMap
+                .entrySet()
+                .stream()
+                .filter(e -> e.getValue().size() == 1)
+                .collect(Collectors.toMap(map -> map.getKey(), map -> List.copyOf(map.getValue()).get(0)));
     }
 }
