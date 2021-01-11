@@ -32,7 +32,6 @@ public class OutcomeServiceImpl implements OutcomeService
     private final HistoryService<Outcome> historyService;
 
     public static final String READ_OUTCOME_ACTION = "READ_OUTCOME";
-    private ArrayList<Long> outcomeIds;
 
     public OutcomeServiceImpl(
         OutcomeRepository outcomeRepository,
