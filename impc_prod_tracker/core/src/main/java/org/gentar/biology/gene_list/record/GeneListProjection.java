@@ -1,9 +1,6 @@
 package org.gentar.biology.gene_list.record;
 
-import org.gentar.biology.project.Project;
 import org.springframework.beans.factory.annotation.Value;
-
-import java.util.List;
 
 public interface GeneListProjection {
 
@@ -33,7 +30,4 @@ public interface GeneListProjection {
 
     @Value("#{target.summaryStatus}")
     String getSummaryStatus();
-
-    // List<String> getTypeNames();
-    // List<Boolean> getVisibles();
 }

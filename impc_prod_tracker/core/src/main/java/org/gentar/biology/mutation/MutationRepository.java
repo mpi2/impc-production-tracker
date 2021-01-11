@@ -17,6 +17,7 @@ package org.gentar.biology.mutation;
 
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
@@ -30,4 +31,5 @@ public interface MutationRepository extends CrudRepository<Mutation, Long>
     Mutation findByMin(String min);
 
     List<Mutation> findAllBySymbolLike(String symbolSearchTerm);
+
 }
