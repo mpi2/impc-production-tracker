@@ -9,7 +9,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 @RestController
-@RequestMapping("/api/reports")
+@RequestMapping("/tracking-api/reports")
 public class GeneInterestReportController {
     private final GeneInterestReportServiceImpl reportService;
 
