@@ -38,13 +38,13 @@ class ConflictsCheckerTest
     private ConflictsChecker testInstance;
 
     private static AssignmentStatus assigned =
-        new AssignmentStatus(1L, AssignmentStatusNames.ASSIGNED_STATUS_NAME, "");
+        new AssignmentStatus(1L, AssignmentStatusNames.ASSIGNED_STATUS_NAME, "", 1);
     private static AssignmentStatus inspect_gtl_mouse =
-        new AssignmentStatus(1L, AssignmentStatusNames.INSPECT_GLT_MOUSE_STATUS_NAME, "");
+        new AssignmentStatus(1L, AssignmentStatusNames.INSPECT_GLT_MOUSE_STATUS_NAME, "", 2);
     private static AssignmentStatus inspect_attempt =
-        new AssignmentStatus(1L, AssignmentStatusNames.INSPECT_ATTEMPT_STATUS_NAME, "");
+        new AssignmentStatus(1L, AssignmentStatusNames.INSPECT_ATTEMPT_STATUS_NAME, "", 3);
     private static AssignmentStatus inspect_conflict =
-        new AssignmentStatus(1L, AssignmentStatusNames.INSPECT_CONFLICT_STATUS_NAME, "");
+        new AssignmentStatus(1L, AssignmentStatusNames.INSPECT_CONFLICT_STATUS_NAME, "", 4);
 
     @BeforeEach
     public void setup()
