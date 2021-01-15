@@ -15,9 +15,9 @@ public class GeneInterestReportProjectServiceImpl implements GeneInterestReportP
     }
 
 
-    public List<GeneInterestReportProjectProjection> getGeneInterestReportProjectProjections()
+    public List<GeneInterestReportProjectProjection> getGeneInterestReportCrisprProjectProjections()
     {
-        return projectRepository.findAllGeneInterestReportProjectProjections();
+        return projectRepository.findAllGeneInterestReportCrisprProjectProjections();
     }
 
 }
