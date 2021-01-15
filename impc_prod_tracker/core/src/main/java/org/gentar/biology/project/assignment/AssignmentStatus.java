@@ -20,11 +20,9 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.gentar.BaseEntity;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.SequenceGenerator;
+
+import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 
 @NoArgsConstructor(access= AccessLevel.PUBLIC, force=true)
 @AllArgsConstructor
@@ -40,4 +38,8 @@ public class AssignmentStatus extends BaseEntity
     private String name;
 
     private String description;
+
+    @NotNull
+    @Column(columnDefinition = "bigint default 0")
+    private Integer ordering;
 }
