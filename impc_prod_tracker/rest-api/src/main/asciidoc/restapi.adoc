@@ -946,8 +946,10 @@ include::{snippets}/plans/putCrisprPlanStateMachine/http-response.adoc[]
 
 == Lastest updates
 
-* 30/11/2020: New filter 'doNotCountTowardsCompleteness' added for phenotyping plans.
-
+* 2020-11-30: New filter 'doNotCountTowardsCompleteness' added for phenotyping plans.
+* 2021-01-26: Phenotyping Stage state machine: The rollbackPhenotypingAllDataProcessed action used by the DCC
+              now moves the PhenotypingAllDataProcessed state to PhenotypingAllDataSent rather than
+              PhenotypingStarted.
 
 
 
