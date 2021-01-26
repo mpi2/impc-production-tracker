@@ -112,7 +112,7 @@ public enum AdultEvent implements ProcessEvent
     rollbackPhenotypingAllDataProcessed(
         "Rollback the state of phenotyping marked as having all phenotype data processed to allow data entry.",
         AdultState.PhenotypingAllDataProcessed,
-        AdultState.PhenotypingStarted,
+        AdultState.PhenotypingAllDataSent,
         StateMachineConstants.TRIGGERED_BY_USER,
         "Executed by the DCC and used when more data needs to be sent.")
         {

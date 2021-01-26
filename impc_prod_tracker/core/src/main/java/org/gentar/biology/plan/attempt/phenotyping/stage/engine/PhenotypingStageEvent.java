@@ -89,7 +89,7 @@ public enum PhenotypingStageEvent implements ProcessEvent
     rollbackPhenotypingAllDataProcessed(
         "Rollback the state of phenotyping marked as having all phenotype data processed to allow data entry.",
         PhenotypingStageState.PhenotypingAllDataProcessed,
-        PhenotypingStageState.PhenotypingStarted,
+        PhenotypingStageState.PhenotypingAllDataSent,
         StateMachineConstants.TRIGGERED_BY_USER,
         "Executed by the DCC and used when more data needs to be sent.")
         {
