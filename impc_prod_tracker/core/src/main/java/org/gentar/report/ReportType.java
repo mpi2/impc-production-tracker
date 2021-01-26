@@ -7,6 +7,8 @@ import org.gentar.BaseEntity;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.util.ArrayList;
+import java.util.List;
 
 @NoArgsConstructor(access= AccessLevel.PUBLIC, force=true)
 @Data
@@ -18,9 +20,9 @@ public class ReportType extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "reportTypeSeq")
     private Long id;
 
-    @NotNull
     private String name;
 
+    @Column(columnDefinition="TEXT")
     private String description;
 
 }

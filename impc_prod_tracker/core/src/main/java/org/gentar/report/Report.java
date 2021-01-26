@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import org.gentar.BaseEntity;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 
 @NoArgsConstructor(access= AccessLevel.PUBLIC, force=true)
 @Data
@@ -20,7 +21,8 @@ public class Report extends BaseEntity {
     @Column(columnDefinition="TEXT")
     private String report;
 
-    @ManyToOne(targetEntity= ReportType.class)
+    @ManyToOne(targetEntity= ReportType.class, fetch = FetchType.LAZY)
+    @NotNull
     private ReportType reportType;
 
 }
