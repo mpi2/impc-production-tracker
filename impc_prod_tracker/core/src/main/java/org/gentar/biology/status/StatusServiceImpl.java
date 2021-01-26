@@ -7,6 +7,10 @@ import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
+
 @Component
 public class StatusServiceImpl implements StatusService
 {
@@ -35,5 +39,12 @@ public class StatusServiceImpl implements StatusService
             throw new UserOperationFailedException(String.format(STATUS_NOT_FOUND_ERROR, name));
         }
         return status;
+    }
+
+    public List<Status> getAllStatuses()
+    {
+        return StreamSupport
+                .stream(statusRepository.findAll().spliterator(), false)
+                .collect(Collectors.toList());
     }
 }
