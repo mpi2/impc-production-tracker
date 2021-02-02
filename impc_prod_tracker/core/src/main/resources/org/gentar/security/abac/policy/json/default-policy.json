@@ -198,5 +198,11 @@
     "description": "DCC or CDA can update a phenotyping stage from Phenotyping Finished to All Data Processed",
     "target": "action == 'REVERSE_FROM_PHENOTYPING_FINISHED_TO_ALL_DATA_PROCESSED'",
     "condition": "subject.isUserByKey('cda_user_key') OR subject.isUserByKey('dcc_user_key')"
+  },
+  {
+    "name": "CDA and Admin Resources",
+    "description": "The CDA or an Admin user can use these resources.",
+    "target": "action == 'CDA_AND_ADMIN'",
+    "condition": "subject.getRelatedRolesNames().contains('admin') OR subject.isUserByKey('cda_user_key')"
   }
 ]

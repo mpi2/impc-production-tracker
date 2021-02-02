@@ -1,6 +1,5 @@
 package org.gentar.report.generation;
 
-import org.gentar.report.collection.gene_interest.GeneInterestReportService;
 import org.gentar.report.collection.gene_interest.GeneInterestReportServiceImpl;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
