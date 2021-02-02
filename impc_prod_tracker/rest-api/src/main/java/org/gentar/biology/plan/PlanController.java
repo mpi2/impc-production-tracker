@@ -18,6 +18,8 @@ package org.gentar.biology.plan;
 import org.gentar.audit.history.History;
 import org.gentar.audit.history.HistoryMapper;
 import org.gentar.biology.ChangeResponse;
+import org.gentar.biology.plan.attempt.crispr.guide.GuideService;
+import org.gentar.biology.plan.attempt.crispr.guide.exons.ExonDTO;
 import org.gentar.biology.plan.filter.PlanFilter;
 import org.gentar.biology.plan.filter.PlanFilterBuilder;
 import org.gentar.biology.plan.mappers.PlanCreationMapper;
@@ -45,6 +47,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.Collections;
 import java.util.List;
 
+import static org.apache.tomcat.util.IntrospectionUtils.capitalize;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
@@ -59,14 +62,15 @@ public class PlanController
     private final PlanResponseMapper planResponseMapper;
     private final UpdatePlanRequestProcessor updatePlanRequestProcessor;
     private final ProjectService projectService;
+    private final GuideService guideService;
 
     public PlanController(
-        HistoryMapper historyMapper,
-        PlanService planService,
-        PlanCreationMapper planCreationMapper,
-        PlanResponseMapper planResponseMapper,
-        UpdatePlanRequestProcessor updatePlanRequestProcessor,
-        ProjectService projectService)
+            HistoryMapper historyMapper,
+            PlanService planService,
+            PlanCreationMapper planCreationMapper,
+            PlanResponseMapper planResponseMapper,
+            UpdatePlanRequestProcessor updatePlanRequestProcessor,
+            ProjectService projectService, GuideService guideService)
     {
         this.historyMapper = historyMapper;
         this.planService = planService;
@@ -74,6 +78,7 @@ public class PlanController
         this.planResponseMapper = planResponseMapper;
         this.updatePlanRequestProcessor = updatePlanRequestProcessor;
         this.projectService = projectService;
+        this.guideService = guideService;
     }
 
     /**
@@ -162,10 +167,10 @@ public class PlanController
     @GetMapping(value = {"/{pin}"})
     public EntityModel<?> findOne(@PathVariable String pin)
     {
-        EntityModel<PlanResponseDTO> entityModel;
+        EntityModel<PlanResponseDTO> entityModel = null;
         Plan plan = planService.getNotNullPlanByPin(pin);
         PlanResponseDTO planResponseDTO = getDTO(plan);
-        entityModel = new EntityModel<>(planResponseDTO);
+        entityModel = EntityModel.of(planResponseDTO);
         return entityModel;
     }
 
@@ -213,5 +218,14 @@ public class PlanController
         changeResponse.setHistoryDTOs(historyList);
         changeResponse.add(linkTo(PlanController.class).slash(plan.getPin()).withSelfRel());
         return changeResponse;
+    }
+
+
+
+
+    @GetMapping(value = {"/exons_in_wge/{marker_symbol}"})
+    public List<ExonDTO> getExonsInWge (@PathVariable String marker_symbol)
+    {
+        return guideService.getExonsByMarkerSymbol(capitalize(marker_symbol));
     }
 }
