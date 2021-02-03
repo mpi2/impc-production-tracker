@@ -12,12 +12,20 @@ import java.util.Set;
 public class WorkGroupController {
 
     private WorkUnitService workUnitService;
+    private WorkGroupService workGroupService;
 
-    public WorkGroupController (WorkUnitService workUnitService){
+    public WorkGroupController(WorkUnitService workUnitService, WorkGroupService workGroupService)
+    {
         this.workUnitService = workUnitService;
+        this.workGroupService = workGroupService;
     }
 
     @GetMapping(value = {"/workGroups"})
+    public Set<WorkGroup> getWorkGroup()
+    {
+        return workGroupService.getAll();
+    }
+    @GetMapping(value = {"/workGroupsByWorkUnit"})
     public Set<WorkGroup> getWorkGroup(@RequestParam String workUnitName)
     {
         return workUnitService.getWorkGroupsByWorkUnitName(workUnitName);

@@ -43,7 +43,7 @@ public class WorkGroupServiceImpl implements WorkGroupService
     }
 
     @Override
-    public List<WorkGroup> getAll()
+    public Set<WorkGroup> getAll()
     {
         return workGroupRepository.findAll();
     }

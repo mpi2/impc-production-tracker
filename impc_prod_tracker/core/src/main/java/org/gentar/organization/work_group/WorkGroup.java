@@ -54,7 +54,10 @@ public class WorkGroup extends BaseEntity
     @ManyToMany(mappedBy = "workGroups")
     private Set<Funder> funders;
 
-
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
+    @IgnoreForAuditingChanges
+    @JsonIgnore
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "work_group_work_unit",
