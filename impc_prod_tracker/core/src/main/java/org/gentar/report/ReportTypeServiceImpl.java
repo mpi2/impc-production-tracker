@@ -6,6 +6,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Component
 public class ReportTypeServiceImpl implements ReportTypeService {
@@ -36,16 +38,36 @@ public class ReportTypeServiceImpl implements ReportTypeService {
         ReportTypeName
                 .stream()
                 .filter(rt -> reportTypeExistsInDatabase(rt.getLabel()))
-                .forEach(rt -> updateDataBaseReportType(rt));
+                .forEach(rt -> updateDataBaseReportTypeDescription(rt));
     }
 
     public void updateReportTypeDescription(HttpServletResponse response, String name) {
         if (reportTypeNameExists(name) && reportTypeExistsInDatabase(name)) {
-            updateDataBaseReportType(ReportTypeName.valueOfLabel(name));
+            updateDataBaseReportTypeDescription(ReportTypeName.valueOfLabel(name));
         } else {
             response.setStatus(HttpStatus.FORBIDDEN.value());
         }
-   }
+    }
+
+    public void updateAllReportTypePublicSettings() {
+        ReportTypeName
+                .stream()
+                .filter(rt -> reportTypeExistsInDatabase(rt.getLabel()))
+                .forEach(rt -> updateDataBaseReportTypePublicSetting(rt));
+    }
+
+    public List<String> listPublicReportTypes() {
+
+        List<ReportType> publicReportTypes = reportTypeRepository.findAllByIsPublicIsTrue();
+        List<String> reportList =
+                publicReportTypes
+                .stream()
+                .map(ReportType::getName)
+                .collect(Collectors.toList());
+
+        return reportList;
+
+    }
 
     @Transactional
     public void saveDataBaseReportType(ReportTypeName reportTypeName)
@@ -53,15 +75,25 @@ public class ReportTypeServiceImpl implements ReportTypeService {
         ReportType reportType = new ReportType();
         reportType.setName(reportTypeName.getLabel());
         reportType.setDescription(reportTypeName.getDescription());
+        reportType.setIsPublic(reportTypeName.getIsPublic());
         reportTypeRepository.save(reportType);
     }
 
     @Transactional
-    public void updateDataBaseReportType(ReportTypeName reportTypeName)
+    public void updateDataBaseReportTypeDescription(ReportTypeName reportTypeName)
     {
         ReportType reportType = reportTypeRepository.findReportTypeByNameIs(reportTypeName.getLabel());
         if (!(reportType.getDescription().equals(reportTypeName.getDescription()))){
             reportType.setDescription(reportTypeName.getDescription());
+            reportTypeRepository.save(reportType);
+        }
+    }
+
+    @Transactional
+    public void updateDataBaseReportTypePublicSetting(ReportTypeName reportTypeName) {
+        ReportType reportType = reportTypeRepository.findReportTypeByNameIs(reportTypeName.getLabel());
+        if (!(reportType.getIsPublic().equals(reportTypeName.getIsPublic()))){
+            reportType.setIsPublic(reportTypeName.getIsPublic());
             reportTypeRepository.save(reportType);
         }
     }

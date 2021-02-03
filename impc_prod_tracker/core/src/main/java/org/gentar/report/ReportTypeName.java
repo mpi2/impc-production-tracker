@@ -6,16 +6,22 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Stream;
 
+import static java.lang.Boolean.TRUE;
+import static java.lang.Boolean.FALSE;
+
 /**
  * This enum should match the values of the name and description in report_type table.
  */
 public enum ReportTypeName implements LabeledType {
     GENE_INTEREST("gene_interest",
-            "This report is used by IMPC for register interest and feeds into the Solr gene core."),
+            "This report is used by IMPC for register interest and feeds into the Solr gene core.",
+            FALSE),
     MGI_CRISPR("mgi_crispr",
-            "This report is used by MGI to support their endonuclease-mediated allele load"),
+            "This report is used by MGI to support their endonuclease-mediated allele load",
+            TRUE),
     MGI_PHENOTYPING("mgi_phenotyping",
-    "This report is used by MGI to support their HT mammalian phenotype load. It must be combined with ES Cell data stored in iMits.");
+            "This report is used by MGI to support their HT mammalian phenotype load. It must be combined with ES Cell data stored in iMits.",
+            TRUE);
 
     private static final Map<String, ReportTypeName> BY_LABEL = new HashMap<>();
     static
@@ -28,11 +34,13 @@ public enum ReportTypeName implements LabeledType {
 
     private final String label;
     private final String description;
+    private final Boolean isPublic;
 
-    ReportTypeName(String label, String description)
+    ReportTypeName(String label, String description, Boolean isPublic)
     {
         this.label = label;
         this.description = description;
+        this.isPublic = isPublic;
     }
 
     public static ReportTypeName valueOfLabel(String label)
@@ -51,5 +59,7 @@ public enum ReportTypeName implements LabeledType {
     }
 
     public String getDescription() { return description;}
+
+    public Boolean getIsPublic() { return isPublic;}
 }
 
