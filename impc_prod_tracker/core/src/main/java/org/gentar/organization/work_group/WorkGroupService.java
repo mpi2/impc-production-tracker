@@ -11,7 +11,7 @@ public interface WorkGroupService {
 
     WorkGroup getWorkGroupByName(String name);
 
-    List<WorkGroup> getAll();
+    Set<WorkGroup> getAll();
 
     Map<String, List<String>> getWorkGroupsNamesByWorkUnitNamesMap();
 }
