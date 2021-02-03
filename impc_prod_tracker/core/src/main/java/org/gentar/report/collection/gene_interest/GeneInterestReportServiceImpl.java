@@ -46,7 +46,8 @@ public class GeneInterestReportServiceImpl implements GeneInterestReportService
     public GeneInterestReportServiceImpl(GeneInterestReportProjectServiceImpl projectService,
                                          GeneInterestReportGeneServiceImpl geneService,
                                          AssignmentStatusServiceImpl assignmentStatusService,
-                                         StatusServiceImpl statusService, ReportServiceImpl reportService)
+                                         StatusServiceImpl statusService,
+                                         ReportServiceImpl reportService)
     {
         this.projectService = projectService;
         this.geneService = geneService;
