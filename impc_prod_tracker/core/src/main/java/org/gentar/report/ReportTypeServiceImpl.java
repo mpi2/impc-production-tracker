@@ -56,13 +56,12 @@ public class ReportTypeServiceImpl implements ReportTypeService {
                 .forEach(rt -> updateDataBaseReportTypePublicSetting(rt));
     }
 
-    public List<String> listPublicReportTypes() {
+    public List<ReportType> listPublicReportTypes() {
 
         List<ReportType> publicReportTypes = reportTypeRepository.findAllByIsPublicIsTrue();
-        List<String> reportList =
+        List<ReportType> reportList =
                 publicReportTypes
                 .stream()
-                .map(ReportType::getName)
                 .collect(Collectors.toList());
 
         return reportList;
