@@ -1,4 +1,4 @@
-package org.gentar.report.utils;
+package org.gentar.report.utils.status;
 
 public interface PlanStatusSummaryHelper {
 }

@@ -1,15 +1,14 @@
 package org.gentar.report.collection.gene_interest;
 
 import org.gentar.biology.project.assignment.AssignmentStatus;
-import org.gentar.biology.project.assignment.AssignmentStatusServiceImpl;
-import org.gentar.biology.status.Status;
-import org.gentar.biology.status.StatusServiceImpl;
 import org.gentar.report.ReportServiceImpl;
 import org.gentar.report.ReportTypeName;
 import org.gentar.report.collection.gene_interest.gene.GeneInterestReportGeneProjection;
 import org.gentar.report.collection.gene_interest.gene.GeneInterestReportGeneServiceImpl;
 import org.gentar.report.collection.gene_interest.project.GeneInterestReportProjectProjection;
 import org.gentar.report.collection.gene_interest.project.GeneInterestReportProjectServiceImpl;
+import org.gentar.report.utils.assignment.GeneAssignmentStatusHelperImpl;
+import org.gentar.report.utils.status.GeneStatusSummaryHelperImpl;
 import org.springframework.stereotype.Component;
 
 import java.util.*;
@@ -21,13 +20,10 @@ public class GeneInterestReportServiceImpl implements GeneInterestReportService
 {
     private final GeneInterestReportProjectServiceImpl projectService;
     private final GeneInterestReportGeneServiceImpl geneService;
-    private final AssignmentStatusServiceImpl assignmentStatusService;
-    private final StatusServiceImpl statusService;
     private final ReportServiceImpl reportService;
+    private final GeneStatusSummaryHelperImpl geneStatusSummaryHelper;
+    private final GeneAssignmentStatusHelperImpl geneAssignmentStatusHelper;
 
-    private Map<String, Integer> assignmentStatusesToOrdering;
-    private Map<String, Integer> planStatusToOrdering;
-    List<String> abortedPlanStatuses;
 
     private List<GeneInterestReportProjectProjection> crisprProjectProjections;
     private List<GeneInterestReportGeneProjection> crisprGeneProjections;
@@ -36,33 +32,28 @@ public class GeneInterestReportServiceImpl implements GeneInterestReportService
     private Map<String, List<String>> projectsForCrisprGenes;
     private Map<String, String> assignmentForProjects;
 
-    private Map<String, List<String>> plansForCrisprProjects;
-    private Map<String, String> statusForCrisprPlans;
+    private Map<String, List<String>> productionPlansForCrisprProjects;
+    private Map<String, String> statusForCrisprProductionPlans;
     private Map<String, String> summaryAssignmentForCrisprGenes;
-    private Map<String, String> summaryPlanStatusForCrisprGenes;
+    private Map<String, String> summaryProductionPlanStatusForCrisprGenes;
 
     private Map<String, String> summaryAssignmentForGenes;
 
     public GeneInterestReportServiceImpl(GeneInterestReportProjectServiceImpl projectService,
                                          GeneInterestReportGeneServiceImpl geneService,
-                                         AssignmentStatusServiceImpl assignmentStatusService,
-                                         StatusServiceImpl statusService,
-                                         ReportServiceImpl reportService)
+                                         ReportServiceImpl reportService,
+                                         GeneStatusSummaryHelperImpl geneStatusSummaryHelper,
+                                         GeneAssignmentStatusHelperImpl geneAssignmentStatusHelper)
     {
         this.projectService = projectService;
         this.geneService = geneService;
-        this.assignmentStatusService = assignmentStatusService;
-        this.statusService = statusService;
         this.reportService = reportService;
+        this.geneStatusSummaryHelper = geneStatusSummaryHelper;
+        this.geneAssignmentStatusHelper = geneAssignmentStatusHelper;
     }
 
     public void generateGeneInterestReport()
     {
-
-        assignmentStatusesToOrdering = assignmentStatusService.getAssignmentStatusOrderingMap();
-
-        planStatusToOrdering = statusService.getPlanStatusOrderingMap();
-        abortedPlanStatuses = statusService.getAbortedPlanStatuses();
 
         // Will need to pull a separate set of data later for ES Cell based mutagenesis
         // (Note: should report null and conditional data separately for ES Cell based mutagenesis)
@@ -77,11 +68,12 @@ public class GeneInterestReportServiceImpl implements GeneInterestReportService
         assignmentForProjects = getAssignmentByProject();
 
         // The production status will be reported by class of project
-        plansForCrisprProjects = getPlansByProject(crisprProjectProjections, crisprGeneProjections);
-        statusForCrisprPlans = getStatusByPlan(crisprProjectProjections, crisprGeneProjections);
+        productionPlansForCrisprProjects = getPlansByProject(crisprProjectProjections, crisprGeneProjections);
 
-        summaryAssignmentForCrisprGenes = calculateGeneAssignmentSummaryStatus(projectsForCrisprGenes);
-        summaryPlanStatusForCrisprGenes = calculateGeneProductionPlanSummaryStatus(projectsForCrisprGenes, plansForCrisprProjects, statusForCrisprPlans);
+        statusForCrisprProductionPlans = getStatusByPlan(crisprProjectProjections, crisprGeneProjections);
+
+        summaryAssignmentForCrisprGenes = geneAssignmentStatusHelper.calculateGeneAssignmentStatuses(projectsForCrisprGenes, assignmentForProjects);
+        summaryProductionPlanStatusForCrisprGenes = geneStatusSummaryHelper.calculateGenePlanSummaryStatus(projectsForCrisprGenes, productionPlansForCrisprProjects, statusForCrisprProductionPlans);
 
         // requires a method to aggregate ES and Crispr gene data
         summaryAssignmentForGenes = summaryAssignmentForCrisprGenes;
@@ -94,101 +86,6 @@ public class GeneInterestReportServiceImpl implements GeneInterestReportService
 //        printSummaryAssignmentForGenes(summaryAssignmentForGenes);
 //        printGenes(crisprGenes);
 //        writeReport(crisprProjectProjections, geneProjections);
-    }
-
-    private Map<String, String> calculateGeneProductionPlanSummaryStatus( Map<String, List<String>> projectsForGenes,
-                                                                          Map<String, List<String>> plansForProjects,
-                                                                          Map<String, String> statusForPlans) 
-    {
-        return  projectsForGenes
-                .entrySet()
-                .stream()
-                .collect(Collectors.toMap(Map.Entry::getKey, e -> {
-                    return summariseGeneProductionPlanStatuses(e.getValue(), plansForProjects, statusForPlans);
-                }));
-                
-    }
-
-    private String summariseGeneProductionPlanStatuses( 
-            List<String> projects,
-            Map<String, List<String>> plansForProjects,
-            Map<String, String> statusForPlans ) 
-    {
-
-        List<String> summaryPlanStatusForAllProjects = projects
-                .stream()
-                .map(x -> summariseProductionPlanStatusesForEachProject(x, plansForProjects, statusForPlans))
-                .collect(Collectors.toList());
-
-        String summaryPlanStatusForGene = summariseListOfPlanStatuses(statusForPlans, summaryPlanStatusForAllProjects);
-
-        return summaryPlanStatusForGene;
-
-    }
-
-    private String summariseProductionPlanStatusesForEachProject( String projectTpn,
-                                                                  Map<String, List<String>> plansForProjects,
-                                                                  Map<String, String> statusForPlans ) {
-        String summaryStatusForProject = "";
-        List<String> plans = plansForProjects.get(projectTpn);
-        List<String> planStatuses = plans.stream().map(statusForPlans::get).collect(Collectors.toList());
-        if (planStatuses.size() == 1){
-            summaryStatusForProject = planStatuses.get(0);
-        }
-        else if (plans.size() > 1){
-            summaryStatusForProject = summariseListOfPlanStatuses(statusForPlans, planStatuses);
-        }
-        return summaryStatusForProject;
-    }
-
-    private String summariseListOfPlanStatuses( Map<String, String> statusForPlans, List<String> planStatuses ) {
-        String status;
-        List<String> activePlanStatuses = planStatuses
-                .stream()
-                .filter(i -> !(abortedPlanStatuses.contains(i)))
-                .collect(Collectors.toList());
-        if (activePlanStatuses.size() > 0){
-            status = comparePlanStatusToCalculateSummary(statusForPlans, activePlanStatuses);
-        } else {
-            status = comparePlanStatusToCalculateSummary(statusForPlans, planStatuses);
-        }
-        return status;
-    }
-
-    private String comparePlanStatusToCalculateSummary( Map<String, String> statusForPlans, List<String> planStatuses ) {
-        String status;
-        status = planStatuses
-                        .stream()
-                        .max(Comparator.comparing(i -> planStatusToOrdering.get(i)))
-                        .get();
-        return status;
-    }
-
-    private Map<String, String> calculateGeneAssignmentSummaryStatus(Map<String, List<String>> projectsForGenes)
-    {
-        return projectsForGenes
-                .entrySet()
-                .stream()
-                .collect(Collectors.toMap(Map.Entry::getKey, e -> summariseGeneAssignment(e.getValue())));
-    }
-
-    private String summariseGeneAssignment(List<String> projectListForGene)
-    {
-        String assignment = "";
-        if (projectListForGene.size() == 1){
-            assignment = assignmentForProjects.get(projectListForGene.get(0));
-        }
-        else if (projectListForGene.size() > 1) {
-            assignment =
-                    assignmentForProjects.get(
-                            projectListForGene
-                            .stream()
-                            .min(Comparator.comparing(i -> assignmentStatusesToOrdering.get(assignmentForProjects.get(i))))
-                            .get()
-                    );
-        }
-        return assignment;
-
     }
 
     private Map<String, String> getGenes (List<GeneInterestReportProjectProjection> pps,
@@ -382,7 +279,7 @@ public class GeneInterestReportServiceImpl implements GeneInterestReportService
                 summaryAssignmentForGenes.get(e.getKey()),
                 "",
                 "",
-                summaryPlanStatusForCrisprGenes.getOrDefault(e.getKey(), "")
+                summaryProductionPlanStatusForCrisprGenes.getOrDefault(e.getKey(), "")
         );
 
         return content
