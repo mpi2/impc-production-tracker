@@ -52,6 +52,7 @@ public class WorkUnit extends BaseEntity
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
     @IgnoreForAuditingChanges
+    @JsonIgnore
     @ManyToMany(mappedBy = "workUnits")
     private Set<WorkGroup> workGroups;
 

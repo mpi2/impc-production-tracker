@@ -223,7 +223,7 @@ public class PlanController
 
 
 
-    @GetMapping(value = {"/exons_in_wge/{marker_symbol}"})
+    @GetMapping(value = {"/exons_from_wge/{marker_symbol}"})
     public List<ExonDTO> getExonsInWge (@PathVariable String marker_symbol)
     {
         return guideService.getExonsByMarkerSymbol(capitalize(marker_symbol));

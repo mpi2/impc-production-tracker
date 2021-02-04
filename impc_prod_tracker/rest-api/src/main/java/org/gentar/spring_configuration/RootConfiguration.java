@@ -89,7 +89,7 @@ public class RootConfiguration extends WebSecurityConfigurerAdapter
             .antMatchers("/api/people/requestPasswordReset").permitAll()
             .antMatchers("/api/reports/**").permitAll()
             .antMatchers("/reports/**").permitAll()
-            .antMatchers("/tracking-api/reports/**").access("hasPermission(null, 'CDA_AND_ADMIN')")
+            .antMatchers("/tracking-api/**").access("hasPermission(null, 'CDA_AND_ADMIN')")
             .anyRequest().authenticated()
             .and()
             .addFilterBefore(jwtTokenFilter, UsernamePasswordAuthenticationFilter.class)
