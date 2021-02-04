@@ -13,7 +13,6 @@ import java.util.stream.StreamSupport;
 public class AssignmentStatusServiceImpl implements AssignmentStatusService
 {
     private AssignmentStatusRepository assignmentStatusRepository;
-    private Map<String, Integer> assignmentStatusesToOrdering;
 
     public AssignmentStatusServiceImpl(AssignmentStatusRepository assignmentStatusRepository)
     {
@@ -26,6 +25,7 @@ public class AssignmentStatusServiceImpl implements AssignmentStatusService
         return assignmentStatusRepository.findFirstByNameIgnoreCase(name);
     }
 
+    @Cacheable("allAssignmentStatuses")
     public List<AssignmentStatus> getAllAssignmentStatuses()
     {
         return StreamSupport
@@ -33,22 +33,13 @@ public class AssignmentStatusServiceImpl implements AssignmentStatusService
                 .collect(Collectors.toList());
     }
 
+    @Cacheable("assignmentStatusOrderingMap")
     public Map<String, Integer>  getAssignmentStatusOrderingMap()
     {
-        if (null == assignmentStatusesToOrdering) {
-            generateAssignmentStatusOrderingMap();
-        }
-        return assignmentStatusesToOrdering;
-    }
-
-    private void generateAssignmentStatusOrderingMap()
-    {
         List<AssignmentStatus> assignmentStatuses = getAllAssignmentStatuses();
-        assignmentStatusesToOrdering =
-            assignmentStatuses
-            .stream()
-            .collect(Collectors.toMap(AssignmentStatus::getName, AssignmentStatus::getOrdering));
-
+        return  assignmentStatuses
+                        .stream()
+                        .collect(Collectors.toMap(AssignmentStatus::getName, AssignmentStatus::getOrdering));
     }
 
 }

@@ -59,12 +59,10 @@ public class GeneInterestReportServiceImpl implements GeneInterestReportService
     public void generateGeneInterestReport()
     {
 
-        List<AssignmentStatus> assignmentStatuses = assignmentStatusService.getAllAssignmentStatuses();
-        assignmentStatusesToOrdering = getOrderingByAssignmentStatus(assignmentStatuses);
+        assignmentStatusesToOrdering = assignmentStatusService.getAssignmentStatusOrderingMap();
 
-        List<Status> statuses = statusService.getAllStatuses();
-        planStatusToOrdering = getOrderingByPlanStatus(statuses);
-        abortedPlanStatuses = getAbortedPlanStatuses(statuses);
+        planStatusToOrdering = statusService.getPlanStatusOrderingMap();
+        abortedPlanStatuses = statusService.getAbortedPlanStatuses();
 
         // Will need to pull a separate set of data later for ES Cell based mutagenesis
         // (Note: should report null and conditional data separately for ES Cell based mutagenesis)
@@ -96,14 +94,6 @@ public class GeneInterestReportServiceImpl implements GeneInterestReportService
 //        printSummaryAssignmentForGenes(summaryAssignmentForGenes);
 //        printGenes(crisprGenes);
 //        writeReport(crisprProjectProjections, geneProjections);
-    }
-
-    private List<String> getAbortedPlanStatuses( List<Status> statuses ) {
-        return statuses
-                .stream()
-                .filter(Status::getIsAbortionStatus)
-                .map(Status::getName)
-                .collect(Collectors.toList());
     }
 
     private Map<String, String> calculateGeneProductionPlanSummaryStatus( Map<String, List<String>> projectsForGenes,
@@ -174,12 +164,6 @@ public class GeneInterestReportServiceImpl implements GeneInterestReportService
         return status;
     }
 
-    private Map<String, Integer> getOrderingByPlanStatus( List<Status> statuses ) {
-        return statuses
-                .stream()
-                .collect(Collectors.toMap(Status::getName, Status::getOrdering));
-    }
-
     private Map<String, String> calculateGeneAssignmentSummaryStatus(Map<String, List<String>> projectsForGenes)
     {
         return projectsForGenes
@@ -205,13 +189,6 @@ public class GeneInterestReportServiceImpl implements GeneInterestReportService
         }
         return assignment;
 
-    }
-
-    private Map<String, Integer> getOrderingByAssignmentStatus (List<AssignmentStatus> assignmentStatuses)
-    {
-        return assignmentStatuses
-                .stream()
-                .collect(Collectors.toMap(AssignmentStatus::getName, AssignmentStatus::getOrdering));
     }
 
     private Map<String, String> getGenes (List<GeneInterestReportProjectProjection> pps,
