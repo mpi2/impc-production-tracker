@@ -32,7 +32,7 @@ public class PhenotypingColonyReportServiceImpl implements PhenotypingColonyRepo
     }
 
 
-
+    @Override
     public void generatePhenotypingColonyReport() {
 
         pap = phenotypingColonyReportService.getPhenotypingColonyReportPhenotypingAttemptProjections();

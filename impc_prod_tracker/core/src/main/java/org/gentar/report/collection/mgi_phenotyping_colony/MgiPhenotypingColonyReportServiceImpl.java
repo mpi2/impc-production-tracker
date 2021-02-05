@@ -32,7 +32,7 @@ public class MgiPhenotypingColonyReportServiceImpl implements MgiPhenotypingColo
         this.reportService = reportService;
     }
 
-
+    @Override
     public void generateMgiPhenotypingColonyReport() {
 
         pap = phenotypingColonyReportService.getPhenotypingColonyReportPhenotypingAttemptProjections();
