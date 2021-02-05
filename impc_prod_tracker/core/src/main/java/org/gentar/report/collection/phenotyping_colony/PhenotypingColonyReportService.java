@@ -3,7 +3,7 @@ package org.gentar.report.collection.phenotyping_colony;
 public interface PhenotypingColonyReportService {
 
     /**
-     * persists a Phenotyping Colony Report to the database
+     * Persists a Phenotyping Colony Report to the database, which is used internally for data releases.
      */
     void generatePhenotypingColonyReport();
 }

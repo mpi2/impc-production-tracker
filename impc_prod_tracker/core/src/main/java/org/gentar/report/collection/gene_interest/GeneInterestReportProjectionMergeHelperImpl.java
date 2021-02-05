@@ -11,9 +11,9 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 @Component
-public class GeneInterestReportProjectionMergeHelperImpl {
+public class GeneInterestReportProjectionMergeHelperImpl implements GeneInterestReportProjectionMergeHelper {
 
-
+    @Override
     public Map<String, String> getGenes (List<GeneInterestReportProjectProjection> pps,
                                   List<GeneInterestReportGeneProjection> gps)
     {
@@ -38,7 +38,7 @@ public class GeneInterestReportProjectionMergeHelperImpl {
         return geneMap;
     }
 
-
+    @Override
     public Map<String, String> getStatusByPlan(List<GeneInterestReportProjectProjection> pps,
                                         List<GeneInterestReportGeneProjection> gps)
     {
@@ -64,7 +64,7 @@ public class GeneInterestReportProjectionMergeHelperImpl {
 
     }
 
-
+    @Override
     public Map<String, List<String>> getProjectsByGene(List<GeneInterestReportProjectProjection> pps,
                                                 List<GeneInterestReportGeneProjection> gps)
     {
@@ -88,7 +88,7 @@ public class GeneInterestReportProjectionMergeHelperImpl {
         return projectsByGene;
     }
 
-
+    @Override
     public Map<String, List<String>> getPlansByProject(List<GeneInterestReportProjectProjection> pps,
                                                 List<GeneInterestReportGeneProjection> gps)
     {
@@ -113,6 +113,7 @@ public class GeneInterestReportProjectionMergeHelperImpl {
 
     }
 
+    @Override
     public Map<String, String> getAssignmentByProject(List<GeneInterestReportProjectProjection> pps,
                                                       List<GeneInterestReportGeneProjection> gps)
     {
