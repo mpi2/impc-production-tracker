@@ -1,4 +1,4 @@
-package org.gentar.report.collection.mgi_phenotyping_colony.phenotypingAttempt;
+package org.gentar.report.collection.common.phenotyping.phenotyping_attempt;
 
 import org.gentar.biology.plan.attempt.phenotyping.PhenotypingAttempt;
 import org.springframework.data.jpa.repository.Query;
@@ -6,7 +6,7 @@ import org.springframework.data.repository.CrudRepository;
 
 import java.util.List;
 
-public interface MgiPhenotypingColonyReportPhenotypingAttemptRepository extends CrudRepository<PhenotypingAttempt, Long> {
+public interface CommonPhenotypingColonyReportPhenotypingAttemptRepository extends CrudRepository<PhenotypingAttempt, Long> {
 
     @Query("select " +
             "pa.phenotypingExternalRef as colonyName, " +
@@ -67,5 +67,5 @@ public interface MgiPhenotypingColonyReportPhenotypingAttemptRepository extends 
             "o.id " +
             "having " +
             "count(psp.id)=1")
-    List<MgiPhenotypingColonyReportPhenotypingAttemptProjection> findAllPhenotypingAttemptProjectionsForMgi();
+    List<CommonPhenotypingColonyReportPhenotypingAttemptProjection> findAllPhenotypingAttemptProjections();
 }

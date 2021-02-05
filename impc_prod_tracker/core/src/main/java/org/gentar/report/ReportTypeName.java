@@ -21,7 +21,10 @@ public enum ReportTypeName implements LabeledType {
             TRUE),
     MGI_PHENOTYPING("mgi_phenotyping",
             "This report is used by MGI to support their HT mammalian phenotype load. It must be combined with ES Cell data stored in iMits.",
-            TRUE);
+            TRUE),
+    PHENOTYPING_COLONIES("phenotyping_colonies",
+                    "This report is used by IMPC to support the data release.",
+                    FALSE);
 
     private static final Map<String, ReportTypeName> BY_LABEL = new HashMap<>();
     static

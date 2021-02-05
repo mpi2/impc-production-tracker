@@ -1,9 +1,9 @@
-package org.gentar.report.collection.mgi_phenotyping_colony.mutation;
+package org.gentar.report.collection.common.phenotyping.mutation;
 
 import org.gentar.biology.gene.Gene;
 import org.springframework.beans.factory.annotation.Value;
 
-public interface MgiPhenotypingColonyReportMutationGeneProjection {
+public interface CommonPhenotypingColonyReportMutationGeneProjection {
 
     @Value("#{target.mutationId}")
     Long getMutationId();
