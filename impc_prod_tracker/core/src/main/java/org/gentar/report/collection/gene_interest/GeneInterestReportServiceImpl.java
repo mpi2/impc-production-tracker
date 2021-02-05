@@ -2,12 +2,7 @@ package org.gentar.report.collection.gene_interest;
 
 import org.gentar.report.ReportServiceImpl;
 import org.gentar.report.ReportTypeName;
-import org.gentar.report.collection.gene_interest.gene.GeneInterestReportGeneProjection;
-import org.gentar.report.collection.gene_interest.gene.GeneInterestReportGeneServiceImpl;
-import org.gentar.report.collection.gene_interest.project.GeneInterestReportProjectProjection;
-import org.gentar.report.collection.gene_interest.project.GeneInterestReportProjectServiceImpl;
-import org.gentar.report.utils.assignment.GeneAssignmentStatusHelperImpl;
-import org.gentar.report.utils.status.GeneStatusSummaryHelperImpl;
+import org.gentar.report.collection.gene_interest.production_type.GeneInterestReportCrisprProduction;
 import org.springframework.stereotype.Component;
 
 import java.util.*;
@@ -16,70 +11,44 @@ import java.util.stream.Collectors;
 @Component
 public class GeneInterestReportServiceImpl implements GeneInterestReportService
 {
-    private final GeneInterestReportProjectServiceImpl projectService;
-    private final GeneInterestReportGeneServiceImpl geneService;
     private final ReportServiceImpl reportService;
-    private final GeneStatusSummaryHelperImpl geneStatusSummaryHelper;
-    private final GeneAssignmentStatusHelperImpl geneAssignmentStatusHelper;
-    private final GeneInterestReportProjectionMergeHelperImpl projectionMergeHelper;
+    private final GeneInterestReportCrisprProduction crisprProduction;
 
 
-    private List<GeneInterestReportProjectProjection> crisprProjectProjections;
-    private List<GeneInterestReportGeneProjection> crisprGeneProjections;
     private Map<String, String> crisprGenes;
-    private Map<String, String> allGenes;
-    private Map<String, List<String>> projectsForCrisprGenes;
-    private Map<String, String> assignmentForProjects;
-
-    private Map<String, List<String>> productionPlansForCrisprProjects;
-    private Map<String, String> statusForCrisprProductionPlans;
     private Map<String, String> summaryAssignmentForCrisprGenes;
     private Map<String, String> summaryProductionPlanStatusForCrisprGenes;
 
     private Map<String, String> summaryAssignmentForGenes;
+    private Map<String, String> allGenes;
 
-    public GeneInterestReportServiceImpl(GeneInterestReportProjectServiceImpl projectService,
-                                         GeneInterestReportGeneServiceImpl geneService,
-                                         ReportServiceImpl reportService,
-                                         GeneStatusSummaryHelperImpl geneStatusSummaryHelper,
-                                         GeneAssignmentStatusHelperImpl geneAssignmentStatusHelper,
-                                         GeneInterestReportProjectionMergeHelperImpl projectionMergeHelper)
+    public GeneInterestReportServiceImpl(ReportServiceImpl reportService,
+                                         GeneInterestReportCrisprProduction crisprProduction)
     {
-        this.projectService = projectService;
-        this.geneService = geneService;
         this.reportService = reportService;
-        this.geneStatusSummaryHelper = geneStatusSummaryHelper;
-        this.geneAssignmentStatusHelper = geneAssignmentStatusHelper;
-        this.projectionMergeHelper = projectionMergeHelper;
+        this.crisprProduction = crisprProduction;
     }
 
     public void generateGeneInterestReport()
     {
 
-        // Will need to pull a separate set of data later for ES Cell based mutagenesis
-        // (Note: should report null and conditional data separately for ES Cell based mutagenesis)
-        crisprProjectProjections = projectService.getGeneInterestReportCrisprProjectProjections();
-        crisprGeneProjections = geneService.getGeneInterestReportCrisprGeneProjections();
+        processCrisprData();
 
-        crisprGenes = projectionMergeHelper.getGenes(crisprProjectProjections, crisprGeneProjections);
-        projectsForCrisprGenes = projectionMergeHelper.getProjectsByGene(crisprProjectProjections, crisprGeneProjections);
-
-        // We should aggregate the ES Cell data with Crispr data here because
-        // the assignment summary status for a gene should reflect both types of project
-        assignmentForProjects = projectionMergeHelper.getAssignmentByProject(crisprProjectProjections, crisprGeneProjections);
-
-        // The production status will be reported by class of project
-        productionPlansForCrisprProjects = projectionMergeHelper.getPlansByProject(crisprProjectProjections, crisprGeneProjections);
-
-        statusForCrisprProductionPlans = projectionMergeHelper.getStatusByPlan(crisprProjectProjections, crisprGeneProjections);
-
-        summaryAssignmentForCrisprGenes = geneAssignmentStatusHelper.calculateGeneAssignmentStatuses(projectsForCrisprGenes, assignmentForProjects);
-        summaryProductionPlanStatusForCrisprGenes = geneStatusSummaryHelper.calculateGenePlanSummaryStatus(projectsForCrisprGenes, productionPlansForCrisprProjects, statusForCrisprProductionPlans);
-
-        // requires a method to aggregate ES and Crispr gene data
+        // will require methods to aggregate ES and Crispr gene assignment data
+        // and generate a list of all Genes.
         summaryAssignmentForGenes = summaryAssignmentForCrisprGenes;
         allGenes = crisprGenes;
+
         saveReport();
+    }
+
+    private void processCrisprData() {
+
+        crisprProduction.summariseData();
+
+        crisprGenes = crisprProduction.getGeneIdToSymbolMap();
+        summaryAssignmentForCrisprGenes = crisprProduction.getGeneIdToAssignmentMap();
+        summaryProductionPlanStatusForCrisprGenes = crisprProduction.getGeneIdToProductionPlanStatusMap();
     }
 
 

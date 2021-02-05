@@ -113,8 +113,8 @@ public class GeneInterestReportProjectionMergeHelperImpl {
 
     }
 
-    Map<String, String> getAssignmentByProject(List<GeneInterestReportProjectProjection> pps,
-                                               List<GeneInterestReportGeneProjection> gps)
+    public Map<String, String> getAssignmentByProject(List<GeneInterestReportProjectProjection> pps,
+                                                      List<GeneInterestReportGeneProjection> gps)
     {
         Map<String, String> ppsProjectAssignmentMap = pps.stream()
                 .collect(Collectors.toMap(
