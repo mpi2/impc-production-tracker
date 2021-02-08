@@ -15,7 +15,8 @@ public interface MgiCrisprAlleleReportOutcomeRepository extends CrudRepository<O
             "m.symbol as symbol, " +
             "m.mgiAlleleId as mgiAlleleAccId, " +
             "m.alleleConfirmed as alleleConfirmed, " +
-            "mmt.name as mutationType " +
+            "mmt.name as mutationType, " +
+            "mmt.type as mutationCategory " +
             "from " +
             "Outcome o LEFT OUTER JOIN o.mutations m " +
             "inner join MolecularMutationType mmt on m.molecularMutationType = mmt " +

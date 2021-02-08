@@ -23,4 +23,7 @@ public interface MgiCrisprAlleleReportOutcomeMutationProjection {
     @Value("#{target.mutationType}")
     String getMutationType();
 
+    @Value("#{target.mutationCategory}")
+    String getMutationCategory();
+
 }
