@@ -1,131 +1,125 @@
 package org.gentar.report.collection.mgi_crispr_allele;
 
 import org.gentar.biology.gene.Gene;
+import org.gentar.report.ReportServiceImpl;
+import org.gentar.report.ReportTypeName;
+import org.gentar.report.collection.common.phenotyping.phenotyping_attempt.CommonPhenotypingColonyReportPhenotypingAttemptProjection;
 import org.gentar.report.collection.mgi_crispr_allele.colony.MgiCrisprAlleleReportColonyProjection;
 import org.gentar.report.collection.mgi_crispr_allele.colony.MgiCrisprAlleleReportColonyServiceImpl;
-import org.gentar.report.collection.mgi_crispr_allele.mutation.MgiCrisprAlleleReportMutationGeneProjection;
-import org.gentar.report.collection.mgi_crispr_allele.mutation.MgiCrisprAlleleReportMutationServiceImpl;
 import org.gentar.report.collection.mgi_crispr_allele.outcome.MgiCrisprAlleleReportOutcomeMutationProjection;
-import org.gentar.report.collection.mgi_crispr_allele.outcome.MgiCrisprAlleleReportOutcomeServiceImpl;
 import org.springframework.stereotype.Component;
 
+import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 @Component
 public class MgiCrisprAlleleReportServiceImpl implements MgiCrisprAlleleReportService {
 
     private final MgiCrisprAlleleReportColonyServiceImpl colonyReportService;
-    private final MgiCrisprAlleleReportOutcomeServiceImpl outcomeReportService;
-    private final MgiCrisprAlleleReportMutationServiceImpl mutationReportService;
+    private final ReportServiceImpl reportService;
 
-    public MgiCrisprAlleleReportServiceImpl( MgiCrisprAlleleReportColonyServiceImpl colonyReportService,
-                                             MgiCrisprAlleleReportOutcomeServiceImpl outcomeReportService,
-                                             MgiCrisprAlleleReportMutationServiceImpl mutationReportService ) {
+    private List<String> reportRows;
+    private List<MgiCrisprAlleleReportColonyProjection> cp;
+    private Map<Long, MgiCrisprAlleleReportOutcomeMutationProjection> filteredOutcomeMutationMap;
+    private Map<Long, Gene> filteredMutationGeneMap;
+
+    public MgiCrisprAlleleReportServiceImpl(MgiCrisprAlleleReportColonyServiceImpl colonyReportService, ReportServiceImpl reportService) {
         this.colonyReportService = colonyReportService;
-        this.outcomeReportService = outcomeReportService;
-        this.mutationReportService = mutationReportService;
+        this.reportService = reportService;
     }
 
+    @Override
     public void generateMgiCrisprAlleleReport() {
 
-        List<MgiCrisprAlleleReportColonyProjection> cp = colonyReportService.getAllColonyReportProjections();
-        List<Long> outcomeIds = cp.stream().map(x -> x.getOutcomeId()).collect(Collectors.toList());
+        cp = colonyReportService.getAllColonyReportProjections();
+        filteredOutcomeMutationMap = colonyReportService.getMutationMap();
+        filteredMutationGeneMap = colonyReportService.getGeneMap();
 
-        Map<Long, MgiCrisprAlleleReportOutcomeMutationProjection> filteredOutcomeMutationMap = getMutationMap(outcomeIds);
-        List<Long> filteredMutationIds = getFilteredMutationIds(filteredOutcomeMutationMap);
-        // checkFilteredOutcomeMutationMap(filteredOutcomeMutationMap);
-
-        Map<Long, Gene> filteredMutationGeneMap = getGeneMap(filteredMutationIds);
-        writeReport(cp, filteredOutcomeMutationMap, filteredMutationGeneMap);
+        reportRows = prepareReport();
+        saveReport();
     }
 
 
-    private void writeReport( List<MgiCrisprAlleleReportColonyProjection> cp,
-                              Map<Long, MgiCrisprAlleleReportOutcomeMutationProjection> filteredOutcomeMutationMap,
-                              Map<Long, Gene> filteredMutationGeneMap ) {
-        cp.stream()
-                .filter(x -> filteredOutcomeMutationMap.containsKey(x.getOutcomeId()))
-                .filter(x -> filteredMutationGeneMap.containsKey(filteredOutcomeMutationMap.get(x.getOutcomeId()).getMutationId()))
-                .forEach(x -> {
-                    MgiCrisprAlleleReportOutcomeMutationProjection m = filteredOutcomeMutationMap.get(x.getOutcomeId());
-                    Gene g = filteredMutationGeneMap.get(filteredOutcomeMutationMap.get(x.getOutcomeId()).getMutationId());
-                    System.out.println(
-                            g.getSymbol() + "\t" +
-                                    g.getAccId() + "\t" +
-                                    x.getStrainName() + "\t" +
-                                    x.getColonyName() + "\t" +
-                                    x.getStrainName() + "\t" +
-                                    "IMPC" + "\t" +
-                                    x.getProductionWorkUnit() + "\t" +
-                                    "endonuclease-mediated" + "\t" +
-                                    m.getMutationType() + "\t" +
-                                    m.getMutationType() + "\t" +
-                                    "description" + "\t" +
-                                    "allele symbol without gene symbol" + "\t" +
-                                    m.getMgiAlleleAccId()
+    private List<String> prepareReport() {
+        List<MgiCrisprAlleleReportColonyProjection> sortedEntries =
+                cp.stream()
+                        .filter(x -> filteredOutcomeMutationMap.containsKey(x.getOutcomeId()))
+                        .filter(x -> filteredMutationGeneMap.containsKey(filteredOutcomeMutationMap.get(x.getOutcomeId()).getMutationId()))
+                        .sorted(Comparator.comparing(x -> filteredMutationGeneMap.get(
+                                filteredOutcomeMutationMap.get(x.getOutcomeId()).getMutationId()).getSymbol()
+                                )
+                        ).collect(Collectors.toList());
 
-
-                    );
-                });
-    }
-
-    private void checkFilteredOutcomeMutationMap(
-            Map<Long, MgiCrisprAlleleReportOutcomeMutationProjection> filteredOutcomeMutationMap ) {
-
-       filteredOutcomeMutationMap
-                .entrySet()
+        return sortedEntries
                 .stream()
-                .forEach(e ->
-                        System.out.println(
-                                e.getKey() + "\t" +
-                                e.getValue().getSymbol() + "\t" +
-                                e.getValue().getMutationType())
-                );
-    }
-
-
-    private List<Long> getFilteredMutationIds( Map<Long, MgiCrisprAlleleReportOutcomeMutationProjection> filteredOutcomeMutationMap ) {
-        return filteredOutcomeMutationMap
-                .entrySet()
-                .stream()
-                .map(e -> e.getValue().getMutationId())
+                .map(x -> constructRow(x))
                 .collect(Collectors.toList());
     }
 
-
-    private Map<Long, MgiCrisprAlleleReportOutcomeMutationProjection> getMutationMap( List<Long> outcomeIds ) {
-        List<MgiCrisprAlleleReportOutcomeMutationProjection> omp = outcomeReportService.getSelectedOutcomeMutationCrisprReportProjections(outcomeIds);
-        Map<Long, Set<MgiCrisprAlleleReportOutcomeMutationProjection>> outcomeMutationMap = omp
-                .stream()
-                .collect(Collectors.groupingBy(
-                        MgiCrisprAlleleReportOutcomeMutationProjection::getOutcomeId,
-                        Collectors.mapping(entry -> entry, Collectors.toSet())));
-
-        // select outcomes associated with only one mutation - compatible with existing MGI iMits report
-        return outcomeMutationMap
-                .entrySet()
-                .stream()
-                .filter(e -> e.getValue().size() == 1)
-                .collect(Collectors.toMap(Map.Entry::getKey, e -> List.copyOf(e.getValue()).get(0)));
+    private String constructRow(MgiCrisprAlleleReportColonyProjection x) {
+        String mutationSymbol = filteredOutcomeMutationMap.get(x.getOutcomeId()).getSymbol();
+        String mutationMgiAlleleAccId = filteredOutcomeMutationMap.get(x.getOutcomeId()).getMgiAlleleAccId();
+        String mgiAlleleAccId = mutationMgiAlleleAccId == null ? "" : mutationMgiAlleleAccId;
+        String mutationCategory = filteredOutcomeMutationMap.get(x.getOutcomeId()).getMutationCategory();
+        String mutationType = filteredOutcomeMutationMap.get(x.getOutcomeId()).getMutationType();
+        Gene g = filteredMutationGeneMap.get(filteredOutcomeMutationMap.get(x.getOutcomeId()).getMutationId());
+        return g.getSymbol() + "\t" +
+                g.getAccId() + "\t" +
+                x.getStrainName() + "\t" +
+                x.getColonyName() + "\t" +
+                x.getStrainName() + "\t" +
+                "IMPC" + "\t" +
+                x.getProductionWorkUnit() + "\t" +
+                "endonuclease-mediated" + "\t" +
+                mutationCategory + "\t" +
+                mutationType + "\t" +
+                "description" + "\t" +
+                mutationSymbol + "\t" +
+                mgiAlleleAccId;
     }
 
+    private void saveReport() {
 
-    private Map<Long, Gene> getGeneMap( List<Long> filteredMutationIds ) {
-        List<MgiCrisprAlleleReportMutationGeneProjection> mgp = mutationReportService.getSelectedMutationGeneProjections(filteredMutationIds);
-        Map<Long, Set<Gene>> mutationGeneMap = mgp
-                .stream()
-                .collect(Collectors.groupingBy(
-                        MgiCrisprAlleleReportMutationGeneProjection::getMutationId,
-                        Collectors.mapping(MgiCrisprAlleleReportMutationGeneProjection::getGene, Collectors.toSet())));
+        String report = assembleReport();
+        reportService.saveReport(ReportTypeName.MGI_CRISPR, report);
+    }
 
-        // select mutations associated with only one gene - compatible with existing MGI iMits report
-        return mutationGeneMap
-                .entrySet()
+    private String assembleReport() {
+
+        String header = generateReportHeaders();
+        String report = reportRows
                 .stream()
-                .filter(e -> e.getValue().size() == 1)
-                .collect(Collectors.toMap(map -> map.getKey(), map -> List.copyOf(map.getValue()).get(0)));
+                .collect(Collectors.joining("\n"));
+
+        return Arrays.asList(header, report).stream().collect(Collectors.joining("\n"));
+
+    }
+
+    private String generateReportHeaders() {
+        List<String> headers = Arrays.asList(
+                "Gene Symbol",
+                "Gene MGI Accession ID",
+                "ES Cell Line",
+                "Colony Name",
+                "Colony Background Strain",
+                "Project Name",
+                "Production Work Unit",
+                "Mutation Class",
+                "Mutation Type",
+                "Mutation Subtype",
+                "Mutation Description",
+                "Mutation Symbol",
+                "Mutation MGI Accession ID"
+        );
+
+        String headerString = headers
+                .stream()
+                .collect(Collectors.joining("\t"));
+
+        return headerString;
+
     }
 }

@@ -17,7 +17,7 @@ public interface CommonPhenotypingColonyReportService {
 
     /**
      *
-     * @return Map of MutationId to CommonPhenotypingColonyReportMutationGeneProjection
+     * @return Map of MutationId to Gene
      *         where a mutationId maps to a single Gene.
      */
     Map<Long, Gene> getGeneMap();
