@@ -35,7 +35,7 @@ public class CommonPhenotypingColonyReportServiceImpl implements CommonPhenotypi
 
     @Override
     public Map<Long, CommonPhenotypingColonyReportOutcomeMutationProjection> getMutationMap() {
-        List<Long> outcomeIds = getOutcomeIds(pap);
+        List<Long> outcomeIds = getOutcomeIds();
         List<CommonPhenotypingColonyReportOutcomeMutationProjection> omp = outcomeReportService.getSelectedOutcomeMutationProjections(outcomeIds);
         Map<Long, Set<CommonPhenotypingColonyReportOutcomeMutationProjection>> outcomeMutationMap =
                 omp
@@ -55,7 +55,7 @@ public class CommonPhenotypingColonyReportServiceImpl implements CommonPhenotypi
     @Override
     public Map<Long, Gene> getGeneMap() {
         filteredOutcomeMutationMap = getMutationMap();
-        List<Long> filteredMutationIds = getFilteredMutationIds(filteredOutcomeMutationMap);
+        List<Long> filteredMutationIds = getFilteredMutationIds();
         List<CommonPhenotypingColonyReportMutationGeneProjection> mgp =
                 mutationReportService.getSelectedMutationGeneProjections(filteredMutationIds);
 
@@ -73,7 +73,13 @@ public class CommonPhenotypingColonyReportServiceImpl implements CommonPhenotypi
                 .collect(Collectors.toMap(map -> map.getKey(), map -> List.copyOf(map.getValue()).get(0)));
     }
 
-    private List<Long> getFilteredMutationIds(Map<Long, CommonPhenotypingColonyReportOutcomeMutationProjection> filteredOutcomeMutationMap) {
+    @Override
+    public List<CommonPhenotypingColonyReportPhenotypingAttemptProjection> getPhenotypingColonyReportPhenotypingAttemptProjections() {
+        pap = phenotypingAttemptService.getPhenotypingAttemptProjections();
+        return pap;
+    }
+
+    private List<Long> getFilteredMutationIds() {
         return filteredOutcomeMutationMap
                     .entrySet()
                     .stream()
@@ -81,14 +87,8 @@ public class CommonPhenotypingColonyReportServiceImpl implements CommonPhenotypi
                     .collect(Collectors.toList());
     }
 
-    @Cacheable("phenotypingAttemptProjections")
-    public List<CommonPhenotypingColonyReportPhenotypingAttemptProjection> getPhenotypingColonyReportPhenotypingAttemptProjections() {
-        pap = phenotypingAttemptService.getPhenotypingAttemptProjections();
-        return pap;
-    }
 
-
-    private List<Long> getOutcomeIds(List<CommonPhenotypingColonyReportPhenotypingAttemptProjection> pap) {
+    private List<Long> getOutcomeIds() {
         List<Long> outcomeIds = pap.stream().map(x -> x.getOutcomeId()).collect(Collectors.toList());
         return outcomeIds;
     }
