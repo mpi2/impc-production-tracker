@@ -41,7 +41,7 @@ public class PhenotypingAttempt extends BaseEntity
     @ManyToOne(cascade = CascadeType.ALL)
     private Strain strain;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(targetEntity = WorkUnit.class)
     private WorkUnit cohortWorkUnit;
 
     @ToString.Exclude
