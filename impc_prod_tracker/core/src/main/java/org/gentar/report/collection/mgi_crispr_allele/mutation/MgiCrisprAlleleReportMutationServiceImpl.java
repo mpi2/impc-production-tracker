@@ -15,7 +15,7 @@ public class MgiCrisprAlleleReportMutationServiceImpl implements MgiCrisprAllele
         this.mgiCrisprAlleleReportMutationRepository = mgiCrisprAlleleReportMutationRepository;
     }
 
-
+    @Override
     public List<MgiCrisprAlleleReportMutationGeneProjection> getSelectedMutationGeneProjections( List mutationIds){
         return mgiCrisprAlleleReportMutationRepository.findSelectedMutationGeneProjections(mutationIds);
     }

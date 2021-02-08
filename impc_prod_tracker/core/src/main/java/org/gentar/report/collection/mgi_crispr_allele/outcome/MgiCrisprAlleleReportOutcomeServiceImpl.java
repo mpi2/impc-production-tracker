@@ -9,11 +9,14 @@ public class MgiCrisprAlleleReportOutcomeServiceImpl implements MgiCrisprAlleleR
 
     private final MgiCrisprAlleleReportOutcomeRepository mgiCrisprAlleleReportOutcomeRepository;
 
-    public MgiCrisprAlleleReportOutcomeServiceImpl( MgiCrisprAlleleReportOutcomeRepository mgiCrisprAlleleReportOutcomeRepository ) {
+    public MgiCrisprAlleleReportOutcomeServiceImpl(
+            MgiCrisprAlleleReportOutcomeRepository mgiCrisprAlleleReportOutcomeRepository )
+    {
         this.mgiCrisprAlleleReportOutcomeRepository = mgiCrisprAlleleReportOutcomeRepository;
     }
 
 
+    @Override
     public List<MgiCrisprAlleleReportOutcomeMutationProjection> getSelectedOutcomeMutationCrisprReportProjections( List<Long> outcomeIds ) {
         return mgiCrisprAlleleReportOutcomeRepository.findSelectedOutcomeMutationCrisprReportProjections(outcomeIds);
     }
