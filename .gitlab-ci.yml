@@ -420,11 +420,19 @@ hh-dev:
       # Need to check that the docker image corresponding to this CI_COMMIT_SHA exists in Docker Hub.
       # Scheduled turnover of the container can still run for a CI_COMMIT_SHA where the build fail to complete.
       
-      TOKEN=$( curl -sSLd "username=${DOCKER_HUB_USER}&password=${DOCKER_HUB_PSWD}" https://hub.docker.com/v2/users/login | jq -r ".token" )
-      JSON=$( curl -sH "Authorization: JWT $TOKEN" "https://hub.docker.com/v2/repositories/${DOCKER_HUB_USER}/${DOCKER_HUB_REPO}/tags/${CI_COMMIT_SHA:0:12}/")
-      IMAGE_TAG_NAME=$(echo $JSON | jq  -r '.name')
+      # TOKEN=$( curl -sSLd "username=${DOCKER_HUB_USER}&password=${DOCKER_HUB_PSWD}" https://hub.docker.com/v2/users/login | jq -r ".token" )
+      # JSON=$( curl -sH "Authorization: JWT $TOKEN" "https://hub.docker.com/v2/repositories/${DOCKER_HUB_USER}/${DOCKER_HUB_REPO}/tags/${CI_COMMIT_SHA:0:12}/")
+      # IMAGE_TAG_NAME=$(echo $JSON | jq  -r '.name')
       
-      if [ "$IMAGE_TAG_NAME" = "${CI_COMMIT_SHA:0:12}" ]; then
+      # if [ "$IMAGE_TAG_NAME" = "${CI_COMMIT_SHA:0:12}" ]; then
+
+
+
+      # Check for the tag by pulling the image
+      IMAGE_TAG_FOUND=$(docker pull "${CI_REGISTRY_IMAGE}":"${CI_COMMIT_SHA:0:12}" && docker images | grep "${CI_COMMIT_SHA:0:12}")
+
+      # This relies upon the grep exit status
+      if [ "$IMAGE_TAG_FOUND" ]
           # Substitute the "latest" image tag in your deployment template
           sed -i "s/latest/${CI_COMMIT_SHA:0:12}/g" kube/wp/dev/api-service/api-service-deployment.yaml
       else
@@ -463,6 +471,7 @@ hx-dev:
     if [ ! -z ${HX_KUBERNETES_ENDPOINT+set} ]; then
     
       apk --no-cache --update add jq curl
+      echo "${CI_REGISTRY_PASSWORD}" | docker login -u "${CI_REGISTRY_USER}" --password-stdin  ${CI_REGISTRY}
 
       kubectl config set-cluster local --server="${HX_KUBERNETES_ENDPOINT}"
       kubectl config set clusters.local.certificate-authority-data "${HX_KUBERNETES_CERTIFICATE_AUTHORITY_DATA}"
@@ -482,11 +491,20 @@ hx-dev:
       # Need to check that the docker image corresponding to this CI_COMMIT_SHA exists in Docker Hub.
       # Scheduled turnover of the container can still run for a CI_COMMIT_SHA where the build fail to complete.
       
-      TOKEN=$( curl -sSLd "username=${DOCKER_HUB_USER}&password=${DOCKER_HUB_PSWD}" https://hub.docker.com/v2/users/login | jq -r ".token" )
-      JSON=$( curl -sH "Authorization: JWT $TOKEN" "https://hub.docker.com/v2/repositories/${DOCKER_HUB_USER}/${DOCKER_HUB_REPO}/tags/${CI_COMMIT_SHA:0:12}/")
-      IMAGE_TAG_NAME=$(echo $JSON | jq  -r '.name')
+      # TOKEN=$( curl -sSLd "username=${DOCKER_HUB_USER}&password=${DOCKER_HUB_PSWD}" https://hub.docker.com/v2/users/login | jq -r ".token" )
+      # JSON=$( curl -sH "Authorization: JWT $TOKEN" "https://hub.docker.com/v2/repositories/${DOCKER_HUB_USER}/${DOCKER_HUB_REPO}/tags/${CI_COMMIT_SHA:0:12}/")
+      # IMAGE_TAG_NAME=$(echo $JSON | jq  -r '.name')
       
-      if [ "$IMAGE_TAG_NAME" = "${CI_COMMIT_SHA:0:12}" ]; then
+      # This was used with Docker Hub
+      # if [ "$IMAGE_TAG_NAME" = "${CI_COMMIT_SHA:0:12}" ]; then
+
+
+
+      # Check for the tag by pulling the image
+      IMAGE_TAG_FOUND=$(docker pull "${CI_REGISTRY_IMAGE}":"${CI_COMMIT_SHA:0:12}" && docker images | grep "${CI_COMMIT_SHA:0:12}")
+
+      # This relies upon the grep exit status
+      if [ "$IMAGE_TAG_FOUND" ]
           # Substitute the "latest" image tag in your deployment template
           sed -i "s/latest/${CI_COMMIT_SHA:0:12}/g" kube/wp/dev/api-service/api-service-deployment.yaml
       else
