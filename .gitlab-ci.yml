@@ -1,4 +1,6 @@
-image: docker:stable
+# To use the Docker Hub docker image
+#image: docker:latest
+image: $CI_REGISTRY/mouse-informatics/docker
 
 variables:
    # When using dind service we need to instruct docker, to talk with the
@@ -38,8 +40,6 @@ variables:
    # see: https://gitlab.com/gitlab-com/gl-infra/production/issues/982
    DOCKER_TLS_CERTDIR: ""
 
-services:
-   - docker:dind
 
 
 stages:
@@ -52,24 +52,24 @@ stages:
 
 build_image:
     stage: build
-    except:
+    services:
+      - name: $CI_REGISTRY/mouse-informatics/dind:latest
+        alias: docker
+   except:
         - schedules
         - triggers
         - pipelines
     script:
-        - docker info
+        # - docker info
         - mkdir -p "$MOUNT_POINT"
         - echo "${CI_REGISTRY_PASSWORD}" | docker login -u "${CI_REGISTRY_USER}" --password-stdin  ${CI_REGISTRY}
    
         - cd impc_prod_tracker
-    
-         
-        # Try to pull the image from the registry so that it can be used as a cache for the docker build command
-        - docker pull $CI_REGISTRY_IMAGE:latest || true
-        
-        - docker build --cache-from $CI_REGISTRY_IMAGE:latest -t "${CI_REGISTRY_IMAGE}":"${CI_COMMIT_SHA:0:12}" -t "${CI_REGISTRY_IMAGE}":latest .  | tee ${MOUNT_POINT}/build.log
+            
+        - docker build -t "${CI_REGISTRY_IMAGE}":"${CI_COMMIT_SHA:0:12}" -t "${CI_REGISTRY_IMAGE}":latest .  | tee ${MOUNT_POINT}/build.log
                 
-        - docker push "${CI_REGISTRY_IMAGE}"  | tee ${MOUNT_POINT}/push.log
+        - docker push "${CI_REGISTRY_IMAGE}":"${CI_COMMIT_SHA:0:12}"  | tee ${MOUNT_POINT}/push.log
+        - docker push "${CI_REGISTRY_IMAGE}":latest  | tee ${MOUNT_POINT}/push.log
        
         - docker logout ${CI_REGISTRY}
 
@@ -79,7 +79,8 @@ build_image:
               echo "${DOCKER_HUB_PSWD}" | docker login -u "${DOCKER_HUB_USER}" --password-stdin
               docker tag "${CI_REGISTRY_IMAGE}":"${CI_COMMIT_SHA:0:12}" "${DOCKER_HUB_USER}"/"${DOCKER_HUB_REPO}":"${CI_COMMIT_SHA:0:12}"
               docker tag "${CI_REGISTRY_IMAGE}":"${CI_COMMIT_SHA:0:12}" "${DOCKER_HUB_USER}"/"${DOCKER_HUB_REPO}":latest
-              docker push "${DOCKER_HUB_USER}"/"${DOCKER_HUB_REPO}"  | tee ${MOUNT_POINT}/dockerhub-push-latest.log
+              docker push "${DOCKER_HUB_USER}"/"${DOCKER_HUB_REPO}":"${CI_COMMIT_SHA:0:12}"  | tee ${MOUNT_POINT}/dockerhub-push-latest.log
+              docker push "${DOCKER_HUB_USER}"/"${DOCKER_HUB_REPO}":latest  | tee ${MOUNT_POINT}/dockerhub-push-latest.log
               docker logout
           fi    
     artifacts:
@@ -106,7 +107,7 @@ build_image:
 
 hx-production:
   stage: production-deploy
-  image: dtzar/helm-kubectl:2.14.3
+  image: $CI_REGISTRY/mouse-informatics/helm-kubectl-alpine:latest
   rules:
     - if: '$PRODUCTION_DEPLOYMENT == "true" && $CI_PIPELINE_SOURCE == "schedule"'
   script:
@@ -152,7 +153,7 @@ hx-production:
 
 hh-sandbox:
   stage: sandbox-deploy
-  image: dtzar/helm-kubectl:2.14.3
+  image: $CI_REGISTRY/mouse-informatics/helm-kubectl-alpine:latest
   rules:
     - if: '$PRODUCTION_DEPLOYMENT != "true" && $CI_PROJECT_NAMESPACE == "mouse-informatics" && $CI_BUILD_REF_NAME == "master" && $CI_PIPELINE_SOURCE == "schedule"'
   script:
@@ -195,7 +196,7 @@ hh-sandbox:
 
 hx-sandbox:
   stage: sandbox-deploy
-  image: dtzar/helm-kubectl:2.14.3
+  image: $CI_REGISTRY/mouse-informatics/helm-kubectl-alpine:latest
   rules:
     - if: '$PRODUCTION_DEPLOYMENT != "true" && $CI_PROJECT_NAMESPACE == "mouse-informatics" && $CI_BUILD_REF_NAME == "master" && $CI_PIPELINE_SOURCE == "schedule"'
   script:
@@ -240,7 +241,10 @@ hx-sandbox:
 
 hh-dev:
   stage: dev-deploy
-  image: dtzar/helm-kubectl:2.14.3
+  services:
+    - name: $CI_REGISTRY/mouse-informatics/dind:latest
+      alias: docker
+  image: $CI_REGISTRY/mouse-informatics/helm-kubectl-alpine:latest
   rules:
     - if: '$PRODUCTION_DEPLOYMENT != "true" && $CI_PROJECT_NAMESPACE == "mouse-informatics"'
   script:
@@ -278,9 +282,10 @@ hh-dev:
 
       # Check for the tag by pulling the image
       IMAGE_TAG_FOUND=$(docker pull "${CI_REGISTRY_IMAGE}":"${CI_COMMIT_SHA:0:12}" && docker images | grep "${CI_COMMIT_SHA:0:12}")
-
+      docker logout ${CI_REGISTRY}
+      
       # This relies upon the grep exit status
-      if [ "$IMAGE_TAG_FOUND" ]
+      if [ "$IMAGE_TAG_FOUND" ]; then
           # Substitute the "latest" image tag in your deployment template
           sed -i "s/latest/${CI_COMMIT_SHA:0:12}/g" kube/wp/dev/api-service/api-service-deployment.yaml
       else
@@ -310,7 +315,10 @@ hh-dev:
 
 hx-dev:
   stage: dev-deploy
-  image: dtzar/helm-kubectl:2.14.3
+  services:
+    - name: $CI_REGISTRY/mouse-informatics/dind:latest
+      alias: docker
+  image: $CI_REGISTRY/mouse-informatics/helm-kubectl-alpine:latest
   rules:
     - if: '$PRODUCTION_DEPLOYMENT != "true" && $CI_PROJECT_NAMESPACE == "mouse-informatics"'
   script:
@@ -350,9 +358,10 @@ hx-dev:
 
       # Check for the tag by pulling the image
       IMAGE_TAG_FOUND=$(docker pull "${CI_REGISTRY_IMAGE}":"${CI_COMMIT_SHA:0:12}" && docker images | grep "${CI_COMMIT_SHA:0:12}")
+      docker logout ${CI_REGISTRY}
 
       # This relies upon the grep exit status
-      if [ "$IMAGE_TAG_FOUND" ]
+      if [ "$IMAGE_TAG_FOUND" ]; then
           # Substitute the "latest" image tag in your deployment template
           sed -i "s/latest/${CI_COMMIT_SHA:0:12}/g" kube/wp/dev/api-service/api-service-deployment.yaml
       else
