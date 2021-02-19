@@ -1,4 +1,4 @@
-FROM maven:3.5-jdk-11-slim as build
+FROM maven:3.6-jdk-11-slim as build
 
 COPY pom.xml /usr/src/gentar/
 COPY dto/pom.xml /usr/src/gentar/dto/
@@ -13,7 +13,7 @@ RUN mvn -f /usr/src/gentar/pom.xml clean package -P test
 
 
 # The final image should have a minimal number of layers
-FROM openjdk:11.0.2-jre-slim-stretch
+FROM openjdk:11-jre-slim-buster
 
 VOLUME /tmp
 
