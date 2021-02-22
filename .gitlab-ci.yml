@@ -65,8 +65,8 @@ build_image:
         - echo "${CI_REGISTRY_PASSWORD}" | docker login -u "${CI_REGISTRY_USER}" --password-stdin  ${CI_REGISTRY}
    
         - cd impc_prod_tracker
-        - sed -i "s|maven:3.6-jdk-11-slim|${LOCAL_GITLAB_MAVEN_IMAGE}|g" Dockerfile       
-        - sed -i "s|openjdk:11-jre-slim-buster|${LOCAL_GITLAB_OPENJDK_IMAGE}|g" Dockerfile       
+        - sed -i "s|maven|${LOCAL_GITLAB_MAVEN_IMAGE}|g" Dockerfile       
+        - sed -i "s|FROM openjdk|FROM ${LOCAL_GITLAB_OPENJDK_IMAGE}|g" Dockerfile       
             
         - docker build -t "${CI_REGISTRY_IMAGE}":"${CI_COMMIT_SHA:0:12}" -t "${CI_REGISTRY_IMAGE}":latest .  | tee ${MOUNT_POINT}/build.log
                 
