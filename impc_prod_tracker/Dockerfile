@@ -1,4 +1,4 @@
-FROM maven:3.6-jdk-11-slim as build
+FROM maven:3-openjdk-11-slim as build
 
 COPY pom.xml /usr/src/gentar/
 COPY dto/pom.xml /usr/src/gentar/dto/
