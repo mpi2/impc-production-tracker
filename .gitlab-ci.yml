@@ -1,6 +1,6 @@
 # To use the Docker Hub docker image
 #image: docker:latest
-image: $CI_REGISTRY/mouse-informatics/docker
+image: $CI_REGISTRY/mouse-informatics/docker:latest
 
 variables:
    # When using dind service we need to instruct docker, to talk with the
