@@ -5,6 +5,7 @@ import org.gentar.biology.plan.attempt.AttemptTypeChecker;
 import org.gentar.biology.plan.attempt.AttemptTypeService;
 import org.gentar.biology.plan.attempt.AttemptTypesName;
 import org.gentar.biology.plan.attempt.crispr.CrisprAttemptValidator;
+import org.gentar.biology.plan.attempt.phenotyping.PhenotypeAttemptValidator;
 import org.gentar.biology.plan.type.PlanType;
 import org.gentar.biology.plan.type.PlanTypeName;
 import org.gentar.biology.project.engine.ProjectValidator;
@@ -34,22 +35,25 @@ public class PlanValidator
     private final ContextAwarePolicyEnforcement policyEnforcement;
     private final ResourceAccessChecker<Plan> resourceAccessChecker;
     private final ProjectValidator projectValidator;
+    private final PhenotypeAttemptValidator phenotypeAttemptValidator;
 
     private static final String ATTEMPT_TYPE_PLAN_TYPE_INVALID_ASSOCIATION =
         "The attempt type [%s] cannot be associated with a plan with type [%s].";
 
     public PlanValidator(
-        CrisprAttemptValidator crisprAttemptValidator,
-        AttemptTypeService attemptTypeService,
-        ContextAwarePolicyEnforcement policyEnforcement,
-        ResourceAccessChecker<Plan> resourceAccessChecker,
-        ProjectValidator projectValidator)
+            CrisprAttemptValidator crisprAttemptValidator,
+            AttemptTypeService attemptTypeService,
+            ContextAwarePolicyEnforcement policyEnforcement,
+            ResourceAccessChecker<Plan> resourceAccessChecker,
+            ProjectValidator projectValidator,
+            PhenotypeAttemptValidator phenotypeAttemptValidator)
     {
         this.crisprAttemptValidator = crisprAttemptValidator;
         this.attemptTypeService = attemptTypeService;
         this.policyEnforcement = policyEnforcement;
         this.resourceAccessChecker = resourceAccessChecker;
         this.projectValidator = projectValidator;
+        this.phenotypeAttemptValidator = phenotypeAttemptValidator;
     }
 
     /**
@@ -60,7 +64,13 @@ public class PlanValidator
     public void validate(Plan plan)
     {
         validateBasicPlanData(plan);
-        validateAttemptData(plan);
+    }
+
+    public void validateUpdate(Plan originalPlan, Plan plan)
+    {
+        if (originalPlan.getPhenotypingAttempt() != null) {
+            validateAttemptData(originalPlan, plan);
+        }
     }
 
     private void validateBasicPlanData(Plan plan)
@@ -107,11 +117,15 @@ public class PlanValidator
         }
     }
 
-    private void validateAttemptData(Plan plan)
+    private void validateAttemptData(Plan originalPlan, Plan plan)
     {
         if (AttemptTypeChecker.CRISPR_TYPE.equalsIgnoreCase(AttemptTypeChecker.getAttemptTypeName(plan)))
         {
             crisprAttemptValidator.validate(plan.getCrisprAttempt());
+        }
+        if (AttemptTypeChecker.PHENOTYPING_TYPE.equalsIgnoreCase(AttemptTypeChecker.getAttemptTypeName(plan)))
+        {
+            phenotypeAttemptValidator.validate(originalPlan.getPhenotypingAttempt(), plan.getPhenotypingAttempt());
         }
     }
 

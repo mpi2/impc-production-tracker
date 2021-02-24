@@ -39,7 +39,7 @@ public class PlanUpdaterImpl implements PlanUpdater
     public History updatePlan(Plan originalPlan, Plan newPlan)
     {
         validatePermissionToUpdatePlan(newPlan);
-        validateData(newPlan);
+        validateUpdateData(originalPlan, newPlan);
         changeStatusIfNeeded(newPlan);
         History history = detectTrackOfChanges(originalPlan, newPlan);
         saveChanges(newPlan);
@@ -73,9 +73,16 @@ public class PlanUpdaterImpl implements PlanUpdater
     /**
      * Validates that the changes are valid.
      */
-    private void validateData(Plan newPlan)
+//    private void validateData(Plan newPlan)
+//    {
+//        planValidator.validate(newPlan);
+//    }
+    private void validateUpdateData(Plan originalPlan, Plan newPlan)
     {
         planValidator.validate(newPlan);
+        if (originalPlan.getPhenotypingAttempt() != null) {
+            planValidator.validateUpdate(originalPlan, newPlan);
+        }
     }
 
     /**
