@@ -83,11 +83,17 @@ public class UpdatePlanRequestProcessor
                     new PhenotypingAttempt(originalPlan.getPhenotypingAttempt());
             }
             PhenotypingAttempt mapedPhenotypingAttempt = mappedPlan.getPhenotypingAttempt();
+
             phenotypingAttempt.setDoNotCountTowardsCompleteness(
                 mapedPhenotypingAttempt.getDoNotCountTowardsCompleteness());
+
             phenotypingAttempt.setPhenotypingExternalRef(
                 mapedPhenotypingAttempt.getPhenotypingExternalRef());
+
             phenotypingAttempt.setStrain(mapedPhenotypingAttempt.getStrain());
+
+            phenotypingAttempt.setCohortWorkUnit(mapedPhenotypingAttempt.getCohortWorkUnit());
+
             originalPlan.setPhenotypingAttempt(phenotypingAttempt);
         }
     }

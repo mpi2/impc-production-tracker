@@ -45,9 +45,25 @@ public class OutcomeValidator
         }
     }
 
+    public void validateUpdateData(Outcome originalOutcome, Outcome outcome)
+    {
+        OutcomeType outcomeType = outcome.getOutcomeType();
+        OutcomeTypeName outcomeTypeName = OutcomeTypeName.valueOfLabel(outcomeType.getName());
+
+        if (outcomeTypeName.equals(OutcomeTypeName.COLONY))
+        {
+            validateUpdateColonyData(originalOutcome.getColony(), outcome.getColony());
+        }
+    }
+
     private void validateColonyData(Colony colony)
     {
         colonyValidator.validateData(colony);
+    }
+
+    private void validateUpdateColonyData(Colony originalColony, Colony colony)
+    {
+        colonyValidator.validateUpdateData(originalColony, colony);
     }
 
     private void validateSpecimentData(Specimen specimen)

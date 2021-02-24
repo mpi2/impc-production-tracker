@@ -27,6 +27,7 @@ public class ColonyRequestProcessor
         colonyToUpdate.setGenotypingComment(colonyDTO.getGenotypingComment());
         associateDistributionProducts(
             colonyToUpdate, originalColony, mappedColony.getDistributionProducts());
+        modifyNameIfNeeded(colonyToUpdate, colonyDTO);
         modifyStrainIfNeeded(colonyToUpdate, colonyDTO);
         colonyToUpdate.setEvent(mappedColony.getEvent());
         return colonyToUpdate;
@@ -45,12 +46,21 @@ public class ColonyRequestProcessor
 
     private void modifyStrainIfNeeded(Colony colony, ColonyDTO colonyDTO)
     {
-        // TODO check if the colony is being used in a phenotyping attempt
         String originalStrainName = colony.getStrain() == null ? "" : colony.getStrain().getName();
         String newStrainName = colonyDTO.getStrainName() == null ? "" : colonyDTO.getStrainName();
         if (!originalStrainName.equals(newStrainName))
         {
             colony.setStrain(strainService.getStrainByNameFailWhenNotFound(colonyDTO.getStrainName()));
+        }
+    }
+
+    private void modifyNameIfNeeded(Colony colony, ColonyDTO colonyDTO)
+    {
+        String originalName = colony.getName();
+        String newName = colonyDTO.getName();
+        if (!originalName.equals(newName))
+        {
+            colony.setName(colonyDTO.getName());
         }
     }
 }

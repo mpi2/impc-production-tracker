@@ -4,7 +4,8 @@ import org.gentar.biology.plan.Plan;
 
 public class AttemptTypeChecker
 {
-    public static final String CRISPR_TYPE = "Crispr";
+    public static final String CRISPR_TYPE = "crispr";
+    public static final String PHENOTYPING_TYPE = "adult and embryo phenotyping";
     public static final String NOT_DEFINED_TYPE = "Not defined";
 
     public static String getAttemptTypeName(Plan plan)

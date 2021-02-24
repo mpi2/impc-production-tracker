@@ -149,10 +149,14 @@
 
     <PHENOTYPING_ATTEMPT PLAN_ID="1"
                          PHENOTYPING_EXTERNAL_REF="CR10129"
-                         STRAIN_ID="1"/>
+                         STRAIN_ID="1"
+                         DO_NOT_COUNT_TOWARDS_COMPLETENESS="false"
+                         COHORT_WORK_UNIT_ID="1" />
     <PHENOTYPING_ATTEMPT PLAN_ID="2"
                          PHENOTYPING_EXTERNAL_REF="JR34077"
-                         STRAIN_ID="1"/>
+                         STRAIN_ID="1"
+                         DO_NOT_COUNT_TOWARDS_COMPLETENESS="false"
+                         COHORT_WORK_UNIT_ID="1" />
 
     <PHENOTYPING_STAGE ID="1"
                        PSN="PSN:000000000001"

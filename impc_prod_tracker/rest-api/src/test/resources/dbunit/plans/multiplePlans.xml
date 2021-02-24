@@ -308,11 +308,13 @@
     <PHENOTYPING_ATTEMPT PLAN_ID="3"
                          PHENOTYPING_EXTERNAL_REF="CR10129"
                          STRAIN_ID="1"
-                         DO_NOT_COUNT_TOWARDS_COMPLETENESS="false" />
+                         DO_NOT_COUNT_TOWARDS_COMPLETENESS="false"
+                         COHORT_WORK_UNIT_ID="1" />
     <PHENOTYPING_ATTEMPT PLAN_ID="4"
                          PHENOTYPING_EXTERNAL_REF="JR34077"
                          STRAIN_ID="1"
-                         DO_NOT_COUNT_TOWARDS_COMPLETENESS="false" />
+                         DO_NOT_COUNT_TOWARDS_COMPLETENESS="false"
+                         COHORT_WORK_UNIT_ID="1" />
 
     <HISTORY    ID="1"
                 USER_="gentar_test_user1@gentar.org"
