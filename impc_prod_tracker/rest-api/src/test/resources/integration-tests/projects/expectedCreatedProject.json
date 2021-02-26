@@ -104,6 +104,10 @@
       "consortiumName":"CMG"
     }
   ],
-  "colonyNames":[],
-  "phenotypingExternalReferences":[]
+  "colonyNames":[
+
+  ],
+  "phenotypingExternalRefs":[
+
+  ]
 }

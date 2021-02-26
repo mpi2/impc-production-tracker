@@ -50,7 +50,7 @@ public class ProjectFieldsDescriptors
                 "Production colonies related to the project. Read only.");
         addField(
                 descriptors,
-                "phenotypingExternalReferences",
+                "phenotypingExternalRefs",
                 "Phenotyping external references related to the project. Read only.");
         return descriptors;
     }

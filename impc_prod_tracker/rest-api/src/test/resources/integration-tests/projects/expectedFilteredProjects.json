@@ -112,7 +112,7 @@
         "colonyNames": [
 
         ],
-        "phenotypingExternalReferences": [
+        "phenotypingExternalRefs": [
 
         ]
       },
@@ -153,7 +153,7 @@
         "colonyNames": [
 
         ],
-        "phenotypingExternalReferences": [
+        "phenotypingExternalRefs": [
 
         ]
       },
@@ -194,7 +194,7 @@
         "colonyNames": [
 
         ],
-        "phenotypingExternalReferences": [
+        "phenotypingExternalRefs": [
 
         ]
       }
