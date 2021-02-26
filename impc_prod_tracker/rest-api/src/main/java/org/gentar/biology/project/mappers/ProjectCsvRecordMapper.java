@@ -22,7 +22,6 @@ public class ProjectCsvRecordMapper implements Mapper<Project, ProjectCsvRecord>
     {
         ProjectCsvRecord projectCsvRecord = new ProjectCsvRecord();
         projectCsvRecord.setTpn(project.getTpn());
-        projectCsvRecord.setExternalReference(project.getProjectExternalRef());
         projectCsvRecord.setGeneSymbolOrLocation(
             String.join(SEPARATOR, projectQueryHelper.getSymbolsOrLocations(project)));
         projectCsvRecord.setAccIds(

@@ -71,7 +71,6 @@ class ProjectCommonDataMapperTest
         project.setPrivacy(privacy);
         project.setComment(COMMENT);
         project.setReactivationDate(REACTIVATION_DATE);
-        project.setProjectExternalRef(EXTERNAL_REFERENCE);
         project.setRecovery(RECOVERY);
         ProjectConsortium projectConsortium = new ProjectConsortium();
         Consortium consortium = new Consortium();
@@ -96,7 +95,6 @@ class ProjectCommonDataMapperTest
         assertThat(projectDTO, is(notNullValue()));
         assertThat(projectDTO.getPrivacyName(), is(PRIVACY_NAME));
         assertThat(projectDTO.getComment(), is(COMMENT));
-        assertThat(projectDTO.getProjectExternalRef(), is(EXTERNAL_REFERENCE));
         assertThat(projectDTO.getRecovery(), is(RECOVERY));
     }
 
@@ -114,11 +112,9 @@ class ProjectCommonDataMapperTest
         ProjectCommonDataDTO projectCommonDataDTO = new ProjectCommonDataDTO();
         projectCommonDataDTO.setPrivacyName(PRIVACY_NAME);
         projectCommonDataDTO.setComment(COMMENT);
-        projectCommonDataDTO.setProjectExternalRef(EXTERNAL_REFERENCE);
         projectCommonDataDTO.setRecovery(RECOVERY);
         ProjectConsortiumDTO projectConsortiumDTO = new ProjectConsortiumDTO();
         projectConsortiumDTO.setConsortiumName(CONSORTIUM_NAME);
-//        projectConsortiumDTO.setInstituteNames(Arrays.asList(INSTITUTE_NAME));
         List<ProjectConsortiumDTO> projectConsortiumDTOS = new ArrayList<>();
         projectConsortiumDTOS.add(projectConsortiumDTO);
         Privacy privacy = new Privacy();
@@ -130,7 +126,6 @@ class ProjectCommonDataMapperTest
         assertThat(project, is(notNullValue()));
         assertThat(project.getPrivacy().getName(), is(PRIVACY_NAME));
         assertThat(project.getComment(), is(COMMENT));
-        assertThat(project.getProjectExternalRef(), is(EXTERNAL_REFERENCE));
         assertThat(project.getRecovery(), is(RECOVERY));
     }
 }

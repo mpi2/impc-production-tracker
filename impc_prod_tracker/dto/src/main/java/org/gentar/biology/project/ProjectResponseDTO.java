@@ -65,4 +65,12 @@ public class ProjectResponseDTO extends RepresentationModel<ProjectResponseDTO>
     // Consortia information.
     @JsonProperty("consortia")
     private List<ProjectConsortiumDTO> projectConsortiumDTOS;
+
+    // Colony names
+    @JsonProperty("colonyNames")
+    private List<String> colonyNames;
+
+    // Phenotyping external references
+    @JsonProperty("phenotypingExternalReferences")
+    private List<String> phenotypingExternalReferences;
 }

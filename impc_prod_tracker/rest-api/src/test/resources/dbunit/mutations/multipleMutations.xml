@@ -262,8 +262,7 @@ CCATGGATAGCCATATATCTGCGCAATCTGGCCTCCTTGACGCCATGACAGCAGCTGACCCGTGAGCACTGTGTAGTGGA
                 ASSIGNMENT_STATUS_ID="1"
                 SUMMARY_STATUS_ID="1"
                 RECOVERY="false"
-                COMMENT="Comment test"
-                PROJECT_EXTERNAL_REF="External reference 01"/>
+                COMMENT="Comment test" />
 
     <PLAN       ID="1"
                 PIN="PIN:0000000001"

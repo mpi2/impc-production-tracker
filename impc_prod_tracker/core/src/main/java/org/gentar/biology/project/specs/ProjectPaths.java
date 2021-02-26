@@ -1,11 +1,17 @@
 package org.gentar.biology.project.specs;
 
+import org.gentar.biology.colony.Colony;
+import org.gentar.biology.colony.Colony_;
 import org.gentar.biology.mutation.molecular_type.MolecularMutationType;
+import org.gentar.biology.mutation.molecular_type.MolecularMutationType_;
 import org.gentar.biology.gene.Gene;
 import org.gentar.biology.gene.Gene_;
-import org.gentar.biology.mutation.molecular_type.MolecularMutationType_;
+import org.gentar.biology.outcome.Outcome;
+import org.gentar.biology.outcome.Outcome_;
 import org.gentar.biology.plan.Plan;
 import org.gentar.biology.plan.Plan_;
+import org.gentar.biology.plan.attempt.phenotyping.PhenotypingAttempt;
+import org.gentar.biology.plan.attempt.phenotyping.PhenotypingAttempt_;
 import org.gentar.biology.project.Project;
 import org.gentar.biology.project.Project_;
 import org.gentar.biology.project.assignment.AssignmentStatus;
@@ -37,11 +43,6 @@ public class ProjectPaths
     public static Path<String> getTpnPath(Root<Project> root)
     {
         return root.get(Project_.tpn);
-    }
-
-    public static Path<String> getExternalReferencePath(Root<Project> root)
-    {
-        return root.get(Project_.projectExternalRef);
     }
 
     public static Path<String> getPrivacyNamePath(Root<Project> root)
@@ -121,5 +122,20 @@ public class ProjectPaths
     public static Path<Long> getImitsMiPlanPath(Root<Project> root)
     {
         return root.get(Project_.imitsMiPlan);
+    }
+
+    public static Path<String> getColonyNamePath(Root<Project> root)
+    {
+        SetJoin<Project, Plan> planSetJoin = root.join(Project_.plans);
+        SetJoin<Plan, Outcome> outcomeSetJoin = planSetJoin.join(Plan_.outcomes);
+        Path<Colony> colonyPath = outcomeSetJoin.get(Outcome_.colony);
+        return colonyPath.get(Colony_.name);
+    }
+
+    public static Path<String> getPhenotypingExternalRefName(Root<Project> root)
+    {
+        SetJoin<Project, Plan> planSetJoin = root.join(Project_.plans);
+        Path<PhenotypingAttempt> phenotypingAttemptPath = planSetJoin.get(Plan_.phenotypingAttempt);
+        return phenotypingAttemptPath.get(PhenotypingAttempt_.phenotypingExternalRef);
     }
 }

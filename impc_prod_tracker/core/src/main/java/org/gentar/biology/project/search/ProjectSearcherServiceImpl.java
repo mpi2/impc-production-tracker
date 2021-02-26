@@ -97,11 +97,12 @@ public class ProjectSearcherServiceImpl implements ProjectSearcherService
             .withTpns(filters.getTpns())
             .withWorkUnitNames(filters.getWorkUnitNames())
             .withWorkGroupNames(filters.getWorGroupNames())
-            .withExternalReference(filters.getExternalReferences())
             .withMolecularMutationTypeNames(filters.getIntentions())
             .withConsortiaNames(filters.getConsortiaNames())
             .withPrivaciesNames(filters.getPrivaciesNames())
             .withImitsMiPlans(filters.getImitsMiPlans())
+            .withColonyNames(filters.getProductionColonyNames())
+            .withPhenotypingExternalRefs(filters.getPhenotypingExternalRefs())
             .getFilteredData();
     }
 
