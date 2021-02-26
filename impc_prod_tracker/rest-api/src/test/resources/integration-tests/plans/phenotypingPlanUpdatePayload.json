@@ -8,6 +8,10 @@
   "workGroupName":"BaSH",
   "comment":"New Plan comment",
   "typeName":"phenotyping",
+  "phenotypingExternalRef":"CR10129",
+  "doNotCountTowardsCompleteness":false,
+  "phenotypingBackgroundStrainName": "C57BL/6NJ",
+  "cohortProductionWorkUnitName":"BCM",
   "statusTransition":{
     "actionToExecute":null
   }

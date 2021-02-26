@@ -55,7 +55,10 @@ public class PhenotypingAttemptCommonMapper implements Mapper<PhenotypingAttempt
 
     private void setCohortWorkUnit(PhenotypingAttempt phenotypingAttempt, PhenotypingAttemptCommonDTO dto)
     {
-        WorkUnit workUnit = workUnitMapper.toEntity(dto.getCohortWorkUnitName());
-        phenotypingAttempt.setCohortWorkUnit(workUnit);
+        if (dto.getCohortWorkUnitName() != null)
+        {
+            WorkUnit workUnit = workUnitMapper.toEntity(dto.getCohortWorkUnitName());
+            phenotypingAttempt.setCohortWorkUnit(workUnit);
+        }
     }
 }

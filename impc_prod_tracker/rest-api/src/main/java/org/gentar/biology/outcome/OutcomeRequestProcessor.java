@@ -33,6 +33,7 @@ public class OutcomeRequestProcessor
         {
             throw new UserOperationFailedException("Cannot update the outcome");
         }
+
         Outcome newOutcome = new Outcome(originalOutcome);
         if (outcomeUpdateDTO.getOutcomeCommonDTO() != null)
         {

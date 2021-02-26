@@ -36,7 +36,7 @@ public class OutcomeUpdater
     History update(Outcome originalOutcome, Outcome newOutcome)
     {
         validatePermission(newOutcome);
-        validateData(newOutcome);
+        validateUpdateData(originalOutcome, newOutcome);
         changeStatusIfNeeded(newOutcome);
         History history = detectTrackOfChanges(originalOutcome, newOutcome);
         saveChanges(newOutcome);
@@ -55,9 +55,9 @@ public class OutcomeUpdater
         outcomeValidator.validateUpdatePermission(newOutcome);
     }
 
-    private void validateData(Outcome newOutcome)
+    private void validateUpdateData(Outcome originalOutcome, Outcome newOutcome)
     {
-        // Add validations if needed
+        outcomeValidator.validateUpdateData(originalOutcome, newOutcome);
     }
 
     private void changeStatusIfNeeded(Outcome outcome)
