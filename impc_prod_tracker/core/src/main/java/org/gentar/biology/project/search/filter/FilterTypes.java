@@ -28,9 +28,10 @@ public enum FilterTypes
     CONSORTIUM("consortium"),
     ASSIGNMENT("assignmentStatus"),
     SUMMARY_STATUS("summaryStatus"),
-    EXTERNAL_REFERENCE("externalReference"),
     PRIVACY_NAME("privacyName"),
-    IMITS_MI_PLAN("imitMiPlan");
+    IMITS_MI_PLAN("imitMiPlan"),
+    PRODUCTION_COLONY_NAME("productionColonyNames"),
+    PHENOTYPING_EXTERNAL_REF("phenotypingExternalRefs");
 
     private String name;
 

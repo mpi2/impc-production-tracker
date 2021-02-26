@@ -89,7 +89,6 @@ class ProjectCreationMapperTest
         project.setPrivacy(privacy);
         project.setComment(COMMENT);
         project.setReactivationDate(REACTIVATION_DATE);
-        project.setProjectExternalRef(EXTERNAL_REFERENCE);
         project.setRecovery(RECOVERY);
         ProjectConsortium projectConsortium = new ProjectConsortium();
         Consortium consortium = new Consortium();
@@ -115,7 +114,6 @@ class ProjectCreationMapperTest
         assertThat(projectCreate.getPrivacy().getName(), is(PRIVACY_NAME));
         assertThat(projectCreate.getComment(), is(COMMENT));
         assertThat(projectCreate.getReactivationDate(), is(REACTIVATION_DATE));
-        assertThat(projectCreate.getProjectExternalRef(), is(EXTERNAL_REFERENCE));
         assertThat(projectCreate.getRecovery(), is(RECOVERY));
         verify(projectCommonDataMapper, times(1))
             .toEntity(projectCreationDTO.getProjectCommonDataDTO());

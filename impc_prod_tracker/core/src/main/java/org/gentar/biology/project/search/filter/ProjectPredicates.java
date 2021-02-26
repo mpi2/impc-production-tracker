@@ -37,10 +37,6 @@ public class ProjectPredicates {
         };
     }
 
-    public static Predicate<Project> inExternalReferences(List<String> values) {
-        return p -> values.contains(p.getProjectExternalRef());
-    }
-
     public static Predicate<Project> inMolecularMutationTypeNames(List<String> values) {
         return (p) -> {
             List<MolecularMutationType> molecularMutationTypes = getProjectMolecularMutationTypes(p);
@@ -83,5 +79,31 @@ public class ProjectPredicates {
         values.forEach(id -> ids.add(Long.valueOf(id)));
 
         return p -> ids.contains((p.getImitsMiPlan()));
+    }
+
+    public static Predicate<Project> inColonyNames(List<String> values)
+    {
+        return (p) -> {
+            boolean anyMatch = false;
+
+            var relatedColonies = p.getRelatedColonies();
+            anyMatch = relatedColonies.stream()
+                    .filter(c -> values.contains(c.getName()))
+                    .findFirst().orElse(null) != null;
+            return anyMatch;
+        };
+    }
+
+    public static Predicate<Project> inPhenotypingExternalRefNames(List<String> values)
+    {
+        return (p) -> {
+            boolean anyMatch = false;
+
+            var relatedPhenotypingAttempt = p.getPlans();
+            anyMatch = relatedPhenotypingAttempt.stream()
+                    .filter(c -> values.contains(c.getPhenotypingAttempt().getPhenotypingExternalRef()))
+                    .findFirst().orElse(null) != null;
+            return anyMatch;
+        };
     }
 }

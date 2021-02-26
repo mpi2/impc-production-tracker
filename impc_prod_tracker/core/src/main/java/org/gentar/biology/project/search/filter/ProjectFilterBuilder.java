@@ -101,14 +101,19 @@ public class ProjectFilterBuilder
         return withFilter(FilterTypes.SUMMARY_STATUS, summaryStatusNames);
     }
 
-    public ProjectFilterBuilder withExternalReference(List<String> externalReferences)
-    {
-        return withFilter(FilterTypes.EXTERNAL_REFERENCE, externalReferences);
-    }
-
     public ProjectFilterBuilder withImitsMiPlanId(List<String> imitsMiPlanIds)
     {
         return withFilter(FilterTypes.IMITS_MI_PLAN, imitsMiPlanIds);
+    }
+
+    public ProjectFilterBuilder withProductionColonyName(List<String> productionColonyNames)
+    {
+        return withFilter(FilterTypes.PRODUCTION_COLONY_NAME, productionColonyNames);
+    }
+
+    public ProjectFilterBuilder withPhenotypingExternalRef(List<String> phenotypingExternalRefs)
+    {
+        return withFilter(FilterTypes.PHENOTYPING_EXTERNAL_REF, phenotypingExternalRefs);
     }
 
     private boolean isListValid(List<String> values)

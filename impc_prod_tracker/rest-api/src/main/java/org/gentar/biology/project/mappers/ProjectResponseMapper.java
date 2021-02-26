@@ -1,8 +1,10 @@
 package org.gentar.biology.project.mappers;
 
 import org.gentar.Mapper;
+import org.gentar.biology.colony.Colony;
 import org.gentar.biology.intention.ProjectIntentionResponseDTO;
 import org.gentar.biology.intention.ProjectIntentionResponseMapper;
+import org.gentar.biology.plan.Plan;
 import org.gentar.biology.project.Project;
 import org.gentar.biology.project.ProjectConsortiumDTO;
 import org.gentar.biology.project.ProjectController;
@@ -15,10 +17,8 @@ import org.gentar.organization.work_group.WorkGroup;
 import org.gentar.organization.work_unit.WorkUnit;
 import org.springframework.hateoas.Link;
 import org.springframework.stereotype.Component;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.HashSet;
-import java.util.List;
+
+import java.util.*;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
@@ -68,7 +68,33 @@ public class ProjectResponseMapper implements Mapper<Project, ProjectResponseDTO
         setConsortiaToDto(projectResponseDTO, project);
         setSpeciesToDto(projectResponseDTO, project);
         addSelfLink(projectResponseDTO, project);
+
+        setColonyNames(projectResponseDTO, project);
+        setPhenotypingExternalReferences(projectResponseDTO, project);
+
         return projectResponseDTO;
+    }
+
+    private void setColonyNames(ProjectResponseDTO projectResponseDTO, Project project)
+    {
+        List<Colony> colonies = project.getRelatedColonies();
+        List<String> colonyNames = new ArrayList<>();
+        colonies.forEach(c -> colonyNames.add(c.getName()));
+        projectResponseDTO.setColonyNames(colonyNames);
+    }
+
+    private void setPhenotypingExternalReferences(ProjectResponseDTO projectResponseDTO, Project project)
+    {
+        List<String> phenotypingExternalReferences = new ArrayList<>();
+        Set<Plan> plans = project.getPlans();
+        plans.forEach(plan -> {
+            if (plan.getPhenotypingAttempt() != null)
+            {
+                phenotypingExternalReferences.add(
+                        plan.getPhenotypingAttempt().getPhenotypingExternalRef());
+            }
+        });
+        projectResponseDTO.setPhenotypingExternalReferences(phenotypingExternalReferences);
     }
 
     private void setStatusStampsDTO(ProjectResponseDTO projectResponseDTO, Project project)

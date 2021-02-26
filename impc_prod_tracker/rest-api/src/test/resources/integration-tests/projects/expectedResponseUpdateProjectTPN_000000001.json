@@ -24,12 +24,6 @@
           "note":"Field changed"
         },
         {
-          "field":"projectExternalRef",
-          "oldValue":"External reference 01",
-          "newValue":"new external reference",
-          "note":"Field changed"
-        },
-        {
           "field":"recovery",
           "oldValue":"false",
           "newValue":"true",

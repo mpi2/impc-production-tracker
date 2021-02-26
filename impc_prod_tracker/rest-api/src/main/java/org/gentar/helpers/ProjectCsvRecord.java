@@ -10,7 +10,6 @@ public class ProjectCsvRecord implements CsvRecord
         new String[]
             {
                 "TPN",
-                "External Reference",
                 "Gene Or Location",
                 "MGI",
                 "Mutation Intentions",
@@ -19,12 +18,13 @@ public class ProjectCsvRecord implements CsvRecord
                 "Work Group",
                 "Project Assignment",
                 "Project Summary Status",
+                "Production Colony",
+                "Phenotyping External Reference",
                 "Privacy",
                 "Consortia"
             };
 
     private String tpn;
-    private String externalReference;
     private String geneSymbolOrLocation;
     private String accIds;
     private String mutationIntentions;
@@ -33,6 +33,8 @@ public class ProjectCsvRecord implements CsvRecord
     private String workGroups;
     private String projectAssignment;
     private String projectSummaryStatus;
+    private String productionColonies;
+    private String phenotypingExternalReference;
     private String privacy;
     private String consortia;
 
@@ -40,7 +42,6 @@ public class ProjectCsvRecord implements CsvRecord
     {
         return
             tpn + SEPARATOR +
-            externalReference + SEPARATOR +
             geneSymbolOrLocation + SEPARATOR +
             accIds + SEPARATOR +
                     mutationIntentions + SEPARATOR +
@@ -49,6 +50,8 @@ public class ProjectCsvRecord implements CsvRecord
             workGroups + SEPARATOR +
             projectAssignment + SEPARATOR +
             projectSummaryStatus + SEPARATOR +
+            productionColonies + SEPARATOR +
+            phenotypingExternalReference + SEPARATOR +
             privacy + SEPARATOR +
             consortia;
     }
@@ -59,7 +62,6 @@ public class ProjectCsvRecord implements CsvRecord
         return new String[]
             {
                 tpn,
-                externalReference,
                 geneSymbolOrLocation,
                 accIds,
                 mutationIntentions,
@@ -68,6 +70,8 @@ public class ProjectCsvRecord implements CsvRecord
                 workGroups,
                 projectAssignment,
                 projectSummaryStatus,
+                productionColonies,
+                phenotypingExternalReference,
                 privacy,
                 consortia
             };
