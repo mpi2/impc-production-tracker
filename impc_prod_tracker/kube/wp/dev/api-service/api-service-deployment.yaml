@@ -18,12 +18,12 @@ spec:
       labels:
         app: api-service-dev
     spec:
+      imagePullSecrets:
+        - name: trackerapiregistrycredentials
       containers:
         - image: dockerhub.ebi.ac.uk/mouse-informatics/impc-production-tracker-mirror:latest
           imagePullPolicy: Always
           name: api-service-dev
-          imagePullSecrets:
-            - name: trackerapiregistrycredentials
           env:
           - name: EBI_PROXY
             value: "TRUE"
