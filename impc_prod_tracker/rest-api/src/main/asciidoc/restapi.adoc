@@ -310,11 +310,14 @@ a|Assignment Status Name. Possible values:
 |summaryStatusName
 |Summary Status of the project. Eg: Plan Created.
 
+|productionColonyName
+|Colony name from production plan.
+
+|phenotypingExternalRef
+|Specimen or colony name in a phenotyping plan.
+
 |privacyName
 |The privacy of the project. Any of: public, protected, restricted.
-
-|externalReference
-|External reference for the project.
 
 |imitsMiPlanId
 |Ids in iMits (if the project was migrated from iMits).
@@ -950,6 +953,8 @@ include::{snippets}/plans/putCrisprPlanStateMachine/http-response.adoc[]
 * 2021-01-26: Phenotyping Stage state machine: The rollbackPhenotypingAllDataProcessed action used by the DCC
               now moves the PhenotypingAllDataProcessed state to PhenotypingAllDataSent rather than
               PhenotypingStarted.
+* 2021-02-24: Add two new filters to projects. One for production colony names and one for phenotyping external
+              references.
 
 
 

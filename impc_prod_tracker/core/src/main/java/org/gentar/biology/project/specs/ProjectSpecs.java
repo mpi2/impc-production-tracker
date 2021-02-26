@@ -231,21 +231,6 @@ public class ProjectSpecs
         return specification;
     }
 
-    public static Specification<Project> withExternalReferences(List<String> externalReferences)
-    {
-        Specification<Project> specification = Specification.where(null);
-        if (externalReferences != null)
-        {
-            specification = (Specification<Project>) (root, query, criteriaBuilder) -> {
-                query.distinct(true);
-                Path<String> externalRefPath = ProjectPaths.getExternalReferencePath(root);
-                return PredicateBuilder.addLowerLikeOrPredicates(
-                    criteriaBuilder, externalRefPath, externalReferences);
-            };
-        }
-        return specification;
-    }
-
     /**
      * Get all the projects with a specific imitsMiPlanId (or imitsMiPlanIds).
      *
@@ -261,6 +246,42 @@ public class ProjectSpecs
                 Path<Long> imitsMiPlanPath = ProjectPaths.getImitsMiPlanPath(root);
                 query.distinct(true);
                 return PredicateBuilder.addLowerLikeOrPredicatesId(criteriaBuilder, imitsMiPlanPath, imitsMiPlans);
+            };
+        }
+        return specification;
+    }
+
+    /**
+     * Get all the projects which plans are related with the outcomes specified in productionOutcomeNames
+     *
+     * @param productionOutcomeNames List of names of the Outcome Names
+     * @return The found projects. If productionOutcomeNames is null then not filter is applied.
+     */
+    public static Specification<Project> withProductionColonyNames(List<String> productionOutcomeNames)
+    {
+        Specification<Project> specification = Specification.where(null);
+        if (productionOutcomeNames != null)
+        {
+            specification = (Specification<Project>) (root, query, criteriaBuilder) -> {
+                Path<String> outcomePath = ProjectPaths.getColonyNamePath(root);
+                query.distinct(true);
+                return PredicateBuilder.addInPredicates(
+                        criteriaBuilder, outcomePath, productionOutcomeNames);
+            };
+        }
+        return specification;
+    }
+
+    public static Specification<Project> withPhenotypingExternalRefNames(List<String> phenotypingExternalRefNames)
+    {
+        Specification<Project> specification = Specification.where(null);
+        if (phenotypingExternalRefNames != null)
+        {
+            specification = (Specification<Project>) (root, query, criteriaBuilder) -> {
+                Path<String> phenotypingAttemptPath = ProjectPaths.getPhenotypingExternalRefName(root);
+                query.distinct(true);
+                return PredicateBuilder.addInPredicates(
+                        criteriaBuilder, phenotypingAttemptPath, phenotypingExternalRefNames);
             };
         }
         return specification;

@@ -31,7 +31,6 @@ public class UpdateProjectRequestProcessor
         Project mappedFromDto = projectUpdateMapper.toEntity(projectUpdateDTO);
         projectToUpdate.setComment(mappedFromDto.getComment());
         projectToUpdate.setRecovery(mappedFromDto.getRecovery());
-        projectToUpdate.setProjectExternalRef(mappedFromDto.getProjectExternalRef());
         if (mappedFromDto.getPrivacy() != null)
         {
             projectToUpdate.setPrivacy(mappedFromDto.getPrivacy());

@@ -105,8 +105,9 @@ public class ProjectController
         @RequestParam(value = "assignmentStatusName", required = false) List<String> assignmentNames,
         @RequestParam(value = "summaryStatusName", required = false) List<String> summaryStatusNames,
         @RequestParam(value = "privacyName", required = false) List<String> privaciesNames,
-        @RequestParam(value = "externalReference", required = false) List<String> externalReferences,
-        @RequestParam(value = "imitsMiPlanId", required = false) List<String> imitsMiPlans)
+        @RequestParam(value = "imitsMiPlanId", required = false) List<String> imitsMiPlans,
+        @RequestParam(value = "colonyName", required = false) List<String> colonyNames,
+        @RequestParam(value = "phenotypingExternalRef", required = false) List<String> phenotypingExternalRefs)
     {
         ProjectFilter projectFilter = ProjectFilterBuilder.getInstance()
             .withTpns(tpns)
@@ -119,8 +120,9 @@ public class ProjectController
             .withWorkUnitNames(workUnitNames)
             .withConsortiaNames(consortia)
             .withWorkGroupNames(workGroupNames)
-            .withExternalReference(externalReferences)
             .withImitsMiPlanId(imitsMiPlans)
+            .withProductionColonyName(colonyNames)
+            .withPhenotypingExternalRef(phenotypingExternalRefs)
             .build();
         Page<Project> projectsPage = projectService.getProjects(projectFilter, pageable);
         Page<ProjectResponseDTO> projectDtos = projectsPage.map(this::getDTO);
@@ -194,8 +196,9 @@ public class ProjectController
      * @param consortia list of consortia names separated by comma.
      * @param assignmentNames list of assignment statuses names separated by comma.
      * @param summaryStatusNames list of summary statuses names separated by comma.
+     * @param productionColonyName List of colony names separated by comma.
+     * @param phenotypingExternalRefs List of phenotyping external references separated by comma.
      * @param privaciesNames list of privacy names separated by comma.
-     * @param externalReferences list of externalReferences separated by comma.
      * @param imitsMiPlans list of iMits plans separated by comma.
      * @throws IOException
      */
@@ -212,8 +215,9 @@ public class ProjectController
         @RequestParam(value = "assignmentStatusName", required = false) List<String> assignmentNames,
         @RequestParam(value = "summaryStatusName", required = false) List<String> summaryStatusNames,
         @RequestParam(value = "privacyName", required = false) List<String> privaciesNames,
-        @RequestParam(value = "externalReference", required = false) List<String> externalReferences,
-        @RequestParam(value = "imitsMiPlanId", required = false) List<String> imitsMiPlans)
+        @RequestParam(value = "imitsMiPlanId", required = false) List<String> imitsMiPlans,
+        @RequestParam(value = "productionColonyName", required = false) List<String> productionColonyName,
+        @RequestParam(value = "phenotypingExternalRef", required = false) List<String> phenotypingExternalRefs)
         throws IOException
     {
         ProjectFilter projectFilter = ProjectFilterBuilder.getInstance()
@@ -227,8 +231,9 @@ public class ProjectController
             .withWorkUnitNames(workUnitNames)
             .withConsortiaNames(consortia)
             .withWorkGroupNames(workGroupNames)
-            .withExternalReference(externalReferences)
             .withImitsMiPlanId(imitsMiPlans)
+            .withProductionColonyName(productionColonyName)
+            .withPhenotypingExternalRef(phenotypingExternalRefs)
             .build();
         var projectsPage = projectService.getProjects(projectFilter);
         List<ProjectCsvRecord> projectCsvRecords = projectCsvRecordMapper.toDtos(projectsPage);

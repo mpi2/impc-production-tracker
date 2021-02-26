@@ -7,7 +7,6 @@
         "comment":"Comment test",
         "reactivationDate":"2020-09-24T00:00:02",
         "privacyName":"public",
-        "externalReference":"External reference 01",
         "assignmentStatusName":"Assigned",
         "summaryStatusName":"Plan Created",
         "relatedWorkUnitNames":[
@@ -109,6 +108,12 @@
             "id":1,
             "consortiumName":"CMG"
           }
+        ],
+        "colonyNames": [
+
+        ],
+        "phenotypingExternalReferences": [
+
         ]
       },
       {
@@ -117,7 +122,6 @@
         "comment":null,
         "reactivationDate":null,
         "privacyName":"public",
-        "externalReference":null,
         "assignmentStatusName":"Assigned",
         "summaryStatusName":"Plan Created",
         "relatedWorkUnitNames":[
@@ -145,6 +149,12 @@
             "id":3,
             "consortiumName":"CMG"
           }
+        ],
+        "colonyNames": [
+
+        ],
+        "phenotypingExternalReferences": [
+
         ]
       },
       {
@@ -153,7 +163,6 @@
         "comment":null,
         "reactivationDate":null,
         "privacyName":"restricted",
-        "externalReference":null,
         "assignmentStatusName":"Assigned",
         "summaryStatusName":"Plan Created",
         "relatedWorkUnitNames":[
@@ -181,6 +190,12 @@
             "id":5,
             "consortiumName":"CMG"
           }
+        ],
+        "colonyNames": [
+
+        ],
+        "phenotypingExternalReferences": [
+
         ]
       }
     ]

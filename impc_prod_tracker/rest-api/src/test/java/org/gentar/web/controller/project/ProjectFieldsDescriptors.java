@@ -44,6 +44,14 @@ public class ProjectFieldsDescriptors
             descriptors,
             "assignmentStatusStamps",
             "Stamps for the changes of Assignment Status. Read only.");
+        addField(
+                descriptors,
+                "colonyNames",
+                "Production colonies related to the project. Read only.");
+        addField(
+                descriptors,
+                "phenotypingExternalReferences",
+                "Phenotyping external references related to the project. Read only.");
         return descriptors;
     }
 
@@ -92,11 +100,6 @@ public class ProjectFieldsDescriptors
         List<FieldDescriptor> sharedFieldDescriptions = new ArrayList<>();
         addField(sharedFieldDescriptions, "recovery", "[WIP]");
         addField(sharedFieldDescriptions, "comment", "Comment on this project.");
-        addField(
-            sharedFieldDescriptions,
-            "externalReference",
-            "External reference for the project. It can be an identifier in the internal systems of " +
-                "the centres.");
         addField(
             sharedFieldDescriptions,
             "privacyName",

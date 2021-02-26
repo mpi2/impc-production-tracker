@@ -2,7 +2,6 @@
   "recovery":false,
   "comment":"comment",
   "privacyName":"public",
-  "externalReference":"externalRef",
   "planDetails":{
     "funderNames":[
       "KOMP"

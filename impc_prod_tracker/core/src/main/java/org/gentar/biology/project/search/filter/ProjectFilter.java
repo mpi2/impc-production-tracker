@@ -34,11 +34,6 @@ public class ProjectFilter
         return filters.getOrDefault(FilterTypes.TPN, null);
     }
 
-    public List<String> getExternalReferences()
-    {
-        return filters.getOrDefault(FilterTypes.EXTERNAL_REFERENCE, null);
-    }
-
     public List<String> getMarkerSymbols()
     {
         return filters.getOrDefault(FilterTypes.MARKER_SYMBOL, null);
@@ -85,4 +80,8 @@ public class ProjectFilter
     }
 
     public List<String> getImitsMiPlans() { return filters.getOrDefault(FilterTypes.IMITS_MI_PLAN, null); }
+
+    public List<String> getProductionColonyNames() { return filters.getOrDefault(FilterTypes.PRODUCTION_COLONY_NAME, null); }
+
+    public List<String> getPhenotypingExternalRefs() { return filters.getOrDefault(FilterTypes.PHENOTYPING_EXTERNAL_REF, null); }
 }

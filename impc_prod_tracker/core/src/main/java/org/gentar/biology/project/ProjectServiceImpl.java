@@ -152,7 +152,6 @@ public class ProjectServiceImpl implements ProjectService
         Specification<Project> specifications =
             Specification.where(
                 ProjectSpecs.withTpns(projectFilter.getTpns())
-                .and(ProjectSpecs.withExternalReferences(projectFilter.getExternalReferences()))
                 .and(ProjectSpecs.withMarkerSymbols(projectFilter.getMarkerSymbols()))
                 .and(ProjectSpecs.withMarkerSymbolOrAccId(projectFilter.getGenes()))
                 .and(ProjectSpecs.withIntentions(projectFilter.getIntentions()))
@@ -162,7 +161,9 @@ public class ProjectServiceImpl implements ProjectService
                 .and(ProjectSpecs.withAssignments(projectFilter.getAssginmentNames()))
                 .and(ProjectSpecs.withSummaryStatuses(projectFilter.getSummaryStatusNames()))
                 .and(ProjectSpecs.withPrivacies(projectFilter.getPrivaciesNames())))
-                .and(ProjectSpecs.withImitsMiPlans(projectFilter.getImitsMiPlans()));
+                .and(ProjectSpecs.withImitsMiPlans(projectFilter.getImitsMiPlans()))
+                .and(ProjectSpecs.withProductionColonyNames(projectFilter.getProductionColonyNames()))
+                .and(ProjectSpecs.withPhenotypingExternalRefNames(projectFilter.getPhenotypingExternalRefs()));
         return specifications;
     }
 

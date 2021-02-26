@@ -18,7 +18,6 @@ class ProjectCommonDataDTOTest
         projectCommonDataDTO.setComment("comment");
         projectCommonDataDTO.setPrivacyName("public");
         projectCommonDataDTO.setRecovery(false);
-        projectCommonDataDTO.setProjectExternalRef("externalRef");
         LocalDateTime date = LocalDateTime.of(2000, 1, 1, 0, 0);
         projectCommonDataDTO.setReactivationDate(date);
 
@@ -27,6 +26,6 @@ class ProjectCommonDataDTOTest
         assertThat(json, is(notNullValue()));
         assertThat(json, is("{\"recovery\":false,\"comment\":\"comment\"," +
             "\"reactivationDate\":\"2000-01-01T00:00:00\"," +
-            "\"privacyName\":\"public\",\"externalReference\":\"externalRef\"}"));
+            "\"privacyName\":\"public\"}"));
     }
 }

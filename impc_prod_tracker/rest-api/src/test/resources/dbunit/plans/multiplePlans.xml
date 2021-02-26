@@ -174,8 +174,7 @@
                 ASSIGNMENT_STATUS_ID="1"
                 SUMMARY_STATUS_ID="1"
                 RECOVERY="false"
-                COMMENT="Comment test"
-                PROJECT_EXTERNAL_REF="External reference 01"/>
+                COMMENT="Comment test" />
     <PROJECT    ID="2"
                 TPN="TPN:000000002"
                 PRIVACY_ID="1"

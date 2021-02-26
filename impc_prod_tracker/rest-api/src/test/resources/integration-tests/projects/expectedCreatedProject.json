@@ -4,7 +4,6 @@
   "comment":"comment",
   "reactivationDate":null,
   "privacyName":"public",
-  "externalReference":"externalRef",
   "assignmentStatusName":"Assigned",
   "summaryStatusName":"Plan Created",
   "relatedWorkUnitNames":[
@@ -104,5 +103,7 @@
       "id":7,
       "consortiumName":"CMG"
     }
-  ]
+  ],
+  "colonyNames":[],
+  "phenotypingExternalReferences":[]
 }

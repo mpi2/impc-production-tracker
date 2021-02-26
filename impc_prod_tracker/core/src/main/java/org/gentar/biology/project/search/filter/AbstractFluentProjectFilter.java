@@ -42,15 +42,6 @@ public abstract class AbstractFluentProjectFilter<T>
         return this;
     }
 
-    public AbstractFluentProjectFilter<T> withExternalReference(List<String> externalReferences)
-    {
-        if (isListValid(externalReferences))
-        {
-            data = withCondition(ProjectPredicates.inExternalReferences(externalReferences));
-        }
-        return this;
-    }
-
     public AbstractFluentProjectFilter<T> withMolecularMutationTypeNames(List<String> molecularMutationTypeNames)
     {
         if (isListValid(molecularMutationTypeNames))
@@ -82,7 +73,24 @@ public abstract class AbstractFluentProjectFilter<T>
     {
         if (isListValid(imitsMiPlans))
         {
-            data = withCondition((ProjectPredicates.inImitsMiPlanIds(imitsMiPlans)));
+            data = withCondition(ProjectPredicates.inImitsMiPlanIds(imitsMiPlans));
+        }
+        return this;
+    }
+    public AbstractFluentProjectFilter<T> withColonyNames(List<String> colonyNames)
+    {
+        if(isListValid(colonyNames))
+        {
+            data = withCondition(ProjectPredicates.inColonyNames(colonyNames));
+        }
+        return this;
+    }
+
+    public AbstractFluentProjectFilter<T> withPhenotypingExternalRefs(List<String> phenotypingExternalRefs)
+    {
+        if(isListValid(phenotypingExternalRefs))
+        {
+            data = withCondition(ProjectPredicates.inPhenotypingExternalRefNames(phenotypingExternalRefs));
         }
         return this;
     }

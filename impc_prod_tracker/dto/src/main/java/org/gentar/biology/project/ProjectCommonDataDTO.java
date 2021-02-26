@@ -16,10 +16,6 @@ public class ProjectCommonDataDTO
     @JsonProperty("privacyName")
     private String privacyName;
 
-    // Reference for the project in the internal systems of the client.
-    @JsonProperty("externalReference")
-    private String projectExternalRef;
-
     // To be validated...
     private Boolean recovery;
 

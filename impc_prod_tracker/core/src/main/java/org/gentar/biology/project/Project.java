@@ -18,6 +18,8 @@ package org.gentar.biology.project;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import org.gentar.audit.diff.IgnoreForAuditingChanges;
+import org.gentar.biology.colony.Colony;
+import org.gentar.biology.outcome.Outcome;
 import org.gentar.biology.plan.type.PlanTypeName;
 import org.gentar.biology.project.summary_status.ProjectSummaryStatusStamp;
 import org.gentar.biology.status.Status;
@@ -65,7 +67,6 @@ public class Project extends BaseEntity implements Resource<Project>
         this.reactivationDate = project.reactivationDate;
         this.recovery = project.recovery;
         this.comment = project.comment;
-        this.projectExternalRef = project.projectExternalRef;
         this.privacy = project.privacy;
         this.projectIntentions =
             project.projectIntentions == null ? null : new ArrayList<>(project.projectIntentions);
@@ -118,9 +119,6 @@ public class Project extends BaseEntity implements Resource<Project>
 
     @Column(columnDefinition = "TEXT")
     private String comment;
-
-    @Column(columnDefinition = "TEXT")
-    private String projectExternalRef;
 
     @ManyToOne(targetEntity= Privacy.class)
     private Privacy privacy;
@@ -179,7 +177,6 @@ public class Project extends BaseEntity implements Resource<Project>
         restrictedProject.setReactivationDate(reactivationDate);
         restrictedProject.setComment(comment);
         restrictedProject.setRecovery(recovery);
-        restrictedProject.setProjectExternalRef(projectExternalRef);
         restrictedProject.setProjectIntentions(projectIntentions);
         restrictedProject.setIsObjectRestricted(true);
         return restrictedProject;
@@ -244,6 +241,25 @@ public class Project extends BaseEntity implements Resource<Project>
             projectConsortia.forEach(x -> relatedConsortia.add(x.getConsortium()));
         }
         return relatedConsortia;
+    }
+
+    public List<Colony> getRelatedColonies()
+    {
+        List<Colony> relatedColonies = new ArrayList<>();
+        if (plans != null)
+        {
+            plans.forEach(x -> {
+                Set<Outcome> outcomes = x.getOutcomes();
+                if (outcomes != null)
+                {
+                    outcomes.forEach(o -> {
+                        Colony colony = o.getColony();
+                        relatedColonies.add(colony);
+                    });
+                }
+            });
+        }
+        return relatedColonies;
     }
 
     public void addPlan(Plan plan)
