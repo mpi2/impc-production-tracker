@@ -19,23 +19,30 @@ spec:
         app: api-service-dev
     spec:
       containers:
-      - image: dockerhub.ebi.ac.uk/mouse-informatics/impc-production-tracker-mirror:latest
-        imagePullPolicy: Always
-        name: api-service-dev
-        imagePullSecrets:
-        - name: trackerapiregistrycredentials
-        env:
-        - name: EBI_PROXY
-          value: "TRUE"
-        - name: SERVER_SERVLET_CONTEXT_PATH
-          value: /production-tracker-dev-api
-        - name: TRACKER_POSTGRESQL_DB_HOST
-          value: production-tracker-dev-database
-        - name: TRACKER_POSTGRESQL_DB_PORT
-          value: "5432"
-        - name: REDEPLOY_KEY
-          value: "STRING_REPLACED_DURING_REDEPLOY"
-        ports:
-        - containerPort: 8080
-          protocol: TCP
-        resources: {}
+        - image: dockerhub.ebi.ac.uk/mouse-informatics/impc-production-tracker-mirror:latest
+          imagePullPolicy: Always
+          name: api-service-dev
+          imagePullSecrets:
+            - name: trackerapiregistrycredentials
+          env:
+          - name: EBI_PROXY
+            value: "TRUE"
+          - name: GENTAR_SCHEMA
+            value: "TRUE"
+          - name: AAP_DOMAIN
+            valueFrom:
+              secretKeyRef:
+                name: aap-domain
+                key: domain
+          - name: SERVER_SERVLET_CONTEXT_PATH
+            value: /production-tracker-dev-api
+          - name: TRACKER_POSTGRESQL_DB_HOST
+            value: production-tracker-dev-database
+          - name: TRACKER_POSTGRESQL_DB_PORT
+            value: "5432"
+          - name: REDEPLOY_KEY
+            value: "STRING_REPLACED_DURING_REDEPLOY"
+          ports:
+            - containerPort: 8080
+              protocol: TCP
+          resources: { }
