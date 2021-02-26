@@ -27,6 +27,13 @@ spec:
         env:
         - name: EBI_PROXY
           value: "TRUE"
+        - name: GENTAR_SCHEMA
+          value: "TRUE"
+        - name: AAP_DOMAIN
+          valueFrom:
+            secretKeyRef:
+              name: aap-domain
+              key: domain
         - name: SERVER_SERVLET_CONTEXT_PATH
           value: /production-tracker-dev-api
         - name: TRACKER_POSTGRESQL_DB_HOST
