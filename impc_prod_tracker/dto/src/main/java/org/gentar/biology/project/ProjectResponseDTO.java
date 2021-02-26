@@ -71,6 +71,6 @@ public class ProjectResponseDTO extends RepresentationModel<ProjectResponseDTO>
     private List<String> colonyNames;
 
     // Phenotyping external references
-    @JsonProperty("phenotypingExternalReferences")
+    @JsonProperty("phenotypingExternalRefs")
     private List<String> phenotypingExternalReferences;
 }
