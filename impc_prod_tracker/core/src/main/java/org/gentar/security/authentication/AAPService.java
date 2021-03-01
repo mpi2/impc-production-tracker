@@ -36,17 +36,23 @@ import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 import org.gentar.organization.person.Person;
 import java.nio.charset.Charset;
-import java.util.ArrayList;
-import java.util.List;
 
 @Component
 public class AAPService
 {
     private final RestTemplate restTemplate;
+
     @Value("${local_authentication_base_url}")
     private String EXTERNAL_SERVICE_URL;
+
     @Value("${gentar_domain_reference}")
     private String GENTAR_DOMAIN_REFERENCE;
+
+    @Value("${local_production_service_base_url:/tracker-api}")
+    private String EXPECTED_PRODUCTION_SERVICE_CONTEXT_PATH;
+
+    @Value("${server.servlet.context-path:root}")
+    private String serverServletContextPath;
 
     //  By default the AAP token issued is valid for 1 hour.
     //  The ttl attribute allows you to change this period, and
@@ -65,6 +71,8 @@ public class AAPService
         + "Authentication System.";
 
     private static final String AUTHENTICATION_ERROR = "Invalid userName/password provided.";
+
+    private static final String NON_PRODUCTION_OPERATION_ERROR = "This operation must be performed on the production service.";
 
     public AAPService(RestTemplate restTemplate)
     {
@@ -116,6 +124,9 @@ public class AAPService
      */
     public String createUser(Person person, String token) throws JsonProcessingException
     {
+        if (notWorkingWithProductionService()){
+            throw new UserOperationFailedException(NON_PRODUCTION_OPERATION_ERROR);
+        }
         person.setEmail(person.getEmail().toLowerCase());
         String authId = createLocalAccount(person);
         associateWithDomain(authId, token);
@@ -206,6 +217,9 @@ public class AAPService
      */
     public void requestPasswordReset(String email) throws JsonProcessingException
     {
+        if (notWorkingWithProductionService()){
+            throw new UserOperationFailedException(NON_PRODUCTION_OPERATION_ERROR);
+        }
         PasswordResetRequest passwordResetRequest = new PasswordResetRequest();
         passwordResetRequest.userName = email.toLowerCase();
         passwordResetRequest.email = email.toLowerCase();
@@ -228,6 +242,9 @@ public class AAPService
      */
     public void changePassword(String email, String oldPassword, String newPassword) throws JsonProcessingException
     {
+        if (notWorkingWithProductionService()){
+            throw new UserOperationFailedException(NON_PRODUCTION_OPERATION_ERROR);
+        }
         PasswordChangeRequest passwordChangeRequest = new PasswordChangeRequest();
         passwordChangeRequest.password = newPassword;
 
@@ -257,6 +274,16 @@ public class AAPService
                     "Unauthorized access.", "Check that your current credentials are correct.");
             }
         }
+    }
+
+    private Boolean notWorkingWithProductionService(){
+        if (serverServletContextPath.equals(EXPECTED_PRODUCTION_SERVICE_CONTEXT_PATH)) {
+            return Boolean.FALSE;
+        }
+        else {
+            return Boolean.TRUE;
+        }
+
     }
 
     private HttpHeaders createBasicAuthorizationHeaders(String username, String password){
