@@ -149,8 +149,86 @@
         "workUnitName":"BCM",
         "workGroupName":"BaSH",
         "comment":null,
+        "crisprAttempt":{
+          "miDate":"2018-03-26",
+          "experimental":false,
+          "comment":"crispr plan comment",
+          "mutagenesisExternalRef":"MF-26328",
+          "imitsMiAttemptId":20044,
+          "attemptExternalRef":null,
+          "nucleases":[
+            {
+              "id":2,
+              "typeName":"Cas9",
+              "concentration":250.0,
+              "className":"protein"
+            }
+          ],
+          "guides":[
+            {
+              "id":2,
+              "chr":"14",
+              "start":56912859,
+              "stop":56912881,
+              "grnaConcentration":300.0,
+              "sequence":"CCATGATCTAATCTGTGGTTAAA",
+              "truncatedGuide":false,
+              "strand":"+",
+              "genomeBuild":"GRCm38",
+              "pam3":"",
+              "pam5":"AAA",
+              "protospacerSequence":"CCATGATCTAATCTGTGGTTAAA"
+            }
+          ],
+          "mutagenesisDonors":[
+            {
+              "id":2,
+              "concentration":5.0,
+              "vectorName":"pUC18_Ikzf2_conditional",
+              "oligoSequenceFasta":"ATAATTGGCAGCCTGATTAGAAGAATGCCCATCTTGTCTAGTGACACATTAGAACAATGAGTAATTGCTCGATGCGGATCCATAACTTCGTATAGCATACATTATACGAAGTTATTCTCTGGGATTAAGAAAAAACTAACATATGAAACAGAAGCCCAGACATCTAAAACCACAAAGA",
+              "preparationTypeName":"Circular"
+            }
+          ],
+          "reagents":[
+            {
+              "id":2,
+              "reagentName":"Xrcc5",
+              "reagentDescription":"NHEJ Inhibitor",
+              "concentration":334.0
+            }
+          ],
+          "genotypePrimers":[
+            {
+              "id":2,
+              "genomicStartCoordinate":1,
+              "genomicEndCoordinate":200,
+              "name":"Gpr68wtR",
+              "sequence":"GTAGAGGGACAGGCAGTTGG"
+            }
+          ],
+          "totalEmbryosInjected":70,
+          "totalEmbryosSurvived":64,
+          "embryo2Cell":"20044",
+          "assay":{
+            "id":2,
+            "typeName":"LOA",
+            "numFounderPups":26,
+            "numFounderSelectedForBreeding":1,
+            "founderNumAssays":26,
+            "numDeletionG0Mutants":1,
+            "numG0WhereMutationDetected":1,
+            "numHdrG0Mutants":1,
+            "numHdrG0MutantsAllDonorsInserted":0,
+            "numHdrG0MutantsSubsetDonorsInserted":0,
+            "numHrG0Mutants":0,
+            "numNhejG0Mutants":0,
+            "embryoTransferDay":"Same Day",
+            "totalTransferred":72
+          },
+          "strainInjectedName":"C57BL/6NJ"
+        },
         "typeName":"production",
-        "statusName":"Plan Created",
+        "statusName":"Founder Obtained",
         "summaryStatusName":"Plan Created",
         "_links":{
           "self":{
@@ -173,23 +251,15 @@
           }
         ],
         "statusTransition":{
-          "currentStatus":"Plan Created",
+          "currentStatus":"Founder Obtained",
           "transitions":[
             {
-              "action":"abandonWhenCreated",
-              "description":"Abandon the plan that has been created",
+              "action":"abortWhenFounderObtained",
+              "description":"Abort the plan after a founder obtained",
               "triggeredByUser":true,
-              "available":true,
-              "note":null,
-              "nextStatus":"Plan Abandoned"
-            },
-            {
-              "action":"updateToInProgress",
-              "description":"Update to attempt in progress",
-              "triggeredByUser":false,
               "available":false,
-              "note":"There is not a crispr attempt yet",
-              "nextStatus":"Attempt In Progress"
+              "note":"The plan has colonies that are not aborted. Please abort them first",
+              "nextStatus":"Attempt Aborted"
             }
           ],
           "actionToExecute":null
@@ -208,14 +278,14 @@
         "phenotypingStartingPoint":{
           "_links":{
             "outcome":{
-              "href":"http://localhost:8080/api/plans/PIN:0000000001/outcomes/TPO:000000000001"
+              "href":"http://localhost:8080/api/plans/PIN:0000000002/outcomes/TPO:000000000001"
             },
             "productionPlan":{
-              "href":"http://localhost:8080/api/plans/PIN:0000000001"
+              "href":"http://localhost:8080/api/plans/PIN:0000000002"
             }
           },
           "outcomeTpo":"TPO:000000000001",
-          "productionPlanPin":"PIN:0000000001"
+          "productionPlanPin":"PIN:0000000002"
         },
         "phenotypingAttemptResponse":{
           "doNotCountTowardsCompleteness":false,
@@ -282,14 +352,14 @@
         "phenotypingStartingPoint":{
           "_links":{
             "outcome":{
-              "href":"http://localhost:8080/api/plans/PIN:0000000001/outcomes/TPO:000000000002"
+              "href":"http://localhost:8080/api/plans/PIN:0000000002/outcomes/TPO:000000000002"
             },
             "productionPlan":{
-              "href":"http://localhost:8080/api/plans/PIN:0000000001"
+              "href":"http://localhost:8080/api/plans/PIN:0000000002"
             }
           },
           "outcomeTpo":"TPO:000000000002",
-          "productionPlanPin":"PIN:0000000001"
+          "productionPlanPin":"PIN:0000000002"
         },
         "phenotypingAttemptResponse":{
           "doNotCountTowardsCompleteness":false,

@@ -48,6 +48,7 @@ public class PlanCreator
     public Plan createPlan(Plan plan)
     {
         validateData(plan);
+        validateDataCreation(plan);
         validatePermissionToCreatePlan(plan);
         setStatusAndSummaryStatus(plan);
         Plan createdPlan = savePlan(plan);
@@ -64,6 +65,11 @@ public class PlanCreator
     private void validateData(Plan plan)
     {
         planValidator.validate(plan);
+    }
+
+    private void validateDataCreation(Plan plan)
+    {
+        planValidator.validateDataCreation(plan);
     }
 
     private void setStatusAndSummaryStatus(Plan plan)

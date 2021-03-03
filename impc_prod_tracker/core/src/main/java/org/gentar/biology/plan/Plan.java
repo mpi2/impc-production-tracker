@@ -172,6 +172,7 @@ public class Plan extends BaseEntity implements Resource<Plan>, ProcessData
     @ManyToOne
     private AttemptType attemptType;
 
+    @ToString.Exclude
     @OneToOne(cascade=CascadeType.ALL, mappedBy = "plan")
     private CrisprAttempt crisprAttempt;
 

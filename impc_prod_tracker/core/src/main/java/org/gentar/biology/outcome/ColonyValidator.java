@@ -6,6 +6,7 @@ import org.gentar.biology.colony.ColonyRepository;
 import org.gentar.biology.plan.Plan;
 import org.gentar.biology.plan.starting_point.PlanStartingPoint;
 import org.gentar.biology.plan.starting_point.PlanStartingPointRepository;
+import org.gentar.biology.status.StatusNames;
 import org.gentar.exceptions.UserOperationFailedException;
 import org.springframework.stereotype.Component;
 
@@ -18,6 +19,8 @@ public class ColonyValidator
     private static final String COLONY_NAME_ALREADY_EXISTS_ERROR = "The colony [%s] already exists.";
     private static final String COLONY_IS_A_STARTING_POINT = "The name and/or the background strain can not be " +
             "change because the colony has active phenotyping data associated with it.";
+    private static final String COLONY_IS_NOT_GENOTYPE_CONFIRMED = "The colony needs to be genotype confirmed in order " +
+            "to create a phenotyping plan.";
 
     private final ColonyRepository colonyRepository;
     private final PlanStartingPointRepository planStartingPointRepository;
@@ -40,6 +43,14 @@ public class ColonyValidator
             throw new UserOperationFailedException(String.format(NULL_FIELD_ERROR, "Background Strain"));
         }
         validateNewColonyNameDoesNotExist(colony);
+    }
+
+    public void validateDataForStartingPoint(Colony colony)
+    {
+        if (!StatusNames.GENOTYPE_CONFIRMED.equals(colony.getStatus().getName()))
+        {
+            throw new UserOperationFailedException(COLONY_IS_NOT_GENOTYPE_CONFIRMED);
+        }
     }
 
     public void validateUpdateData(Colony originalColony, Colony colony)
