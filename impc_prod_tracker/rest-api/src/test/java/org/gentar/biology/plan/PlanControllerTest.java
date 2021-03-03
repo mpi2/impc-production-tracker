@@ -9,6 +9,7 @@ import org.gentar.biology.plan.attempt.crispr.CrisprAttemptDTO;
 import org.gentar.common.history.HistoryDTO;
 import org.gentar.common.history.HistoryDetailDTO;
 import org.gentar.framework.*;
+import org.gentar.framework.asserts.json.ChangeResponseCustomizations;
 import org.gentar.framework.asserts.json.PlanCustomizations;
 import org.gentar.framework.db.DBSetupFilesPaths;
 import org.gentar.helpers.LinkUtil;
@@ -120,16 +121,17 @@ class PlanControllerTest extends ControllerTestTemplate
         editCrisprPlanWithNewValues(planUpdateDTO);
 
         String contentAsString =
-            restCaller.executePutAndDocument("/api/plans/PIN:0000000001", toJson(planUpdateDTO), document("plans/putCrisprPlan"));
+            restCaller.executePutAndDocument("/api/plans/PIN:0000000001", toJson(planUpdateDTO),
+                    document("plans/putCrisprPlan"));
         ChangeResponse changeResponse = JsonHelper.fromJson(contentAsString, ChangeResponse.class);
         verifyChangeResponse(changeResponse);
 
         String projectLink = LinkUtil.getSelfHrefLinkStringFromJson(contentAsString);
 
-        verifyGetPlantEqualsJson(projectLink, "expectedUpdatedPlanGetPIN_0000000001.json");
+        verifyGetPlanEqualsJson(projectLink, "expectedUpdatedPlanGetPIN_0000000001.json");
     }
 
-    private void verifyGetPlantEqualsJson(String planLink, String jsonFileName) throws Exception
+    private void verifyGetPlanEqualsJson(String planLink, String jsonFileName) throws Exception
     {
         ResultActions callGetWithObtainedUrl = mvc().perform(MockMvcRequestBuilders
             .get(planLink)
@@ -137,10 +139,10 @@ class PlanControllerTest extends ControllerTestTemplate
             .andExpect(status().isOk());
         MvcResult obtainedProject = callGetWithObtainedUrl.andReturn();
         String obtainedPlanAsString = obtainedProject.getResponse().getContentAsString();
-        String expectedOutputAsString =
-            loadExpectedResponseFromResource(jsonFileName);
+        String expectedOutputAsString = loadExpectedResponseFromResource(jsonFileName);
 
-        JSONAssert.assertEquals(expectedOutputAsString, obtainedPlanAsString, JSONCompareMode.STRICT);
+        JSONAssert.assertEquals(expectedOutputAsString, obtainedPlanAsString,
+                new CustomComparator(JSONCompareMode.STRICT, PlanCustomizations.ignoreIdsAndDates()));
     }
 
     private void editCrisprPlanWithNewValues(PlanUpdateDTO planUpdateDTO)
@@ -231,11 +233,9 @@ class PlanControllerTest extends ControllerTestTemplate
         PlanUpdateDTO planUpdateDTO = getPlanToUpdate();
         setAbortAction(planUpdateDTO);
 
-        String contentAsString = restCaller.executePutAndDocument(
-            "/api/plans/PIN:0000000001",
-            toJson(planUpdateDTO),
-            document("plans/putCrisprPlanStateMachine"));
-
+        String contentAsString =
+                restCaller.executePutAndDocument("/api/plans/PIN:0000000001", toJson(planUpdateDTO),
+                        document("plans/putCrisprPlan"));
         ChangeResponse changeResponse = JsonHelper.fromJson(contentAsString, ChangeResponse.class);
 
         List<HistoryDTO> historyDTOS = changeResponse.getHistoryDTOs();

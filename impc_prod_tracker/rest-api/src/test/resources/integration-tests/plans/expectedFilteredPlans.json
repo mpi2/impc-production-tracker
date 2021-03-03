@@ -138,6 +138,132 @@
           ],
           "actionToExecute":null
         }
+      },
+      {
+        "pin":"PIN:0000000002",
+        "tpn":"TPN:000000001",
+        "attemptTypeName":"crispr",
+        "funderNames":[
+
+        ],
+        "workUnitName":"BCM",
+        "workGroupName":"BaSH",
+        "comment":null,
+        "crisprAttempt":{
+          "miDate":"2018-03-26",
+          "experimental":false,
+          "comment":"crispr plan comment",
+          "mutagenesisExternalRef":"MF-26328",
+          "imitsMiAttemptId":20044,
+          "attemptExternalRef":null,
+          "nucleases":[
+            {
+              "id":2,
+              "typeName":"Cas9",
+              "concentration":250.0,
+              "className":"protein"
+            }
+          ],
+          "guides":[
+            {
+              "id":2,
+              "chr":"14",
+              "start":56912859,
+              "stop":56912881,
+              "grnaConcentration":300.0,
+              "sequence":"CCATGATCTAATCTGTGGTTAAA",
+              "truncatedGuide":false,
+              "strand":"+",
+              "genomeBuild":"GRCm38",
+              "pam3":"",
+              "pam5":"AAA",
+              "protospacerSequence":"CCATGATCTAATCTGTGGTTAAA"
+            }
+          ],
+          "mutagenesisDonors":[
+            {
+              "id":2,
+              "concentration":5.0,
+              "vectorName":"pUC18_Ikzf2_conditional",
+              "oligoSequenceFasta":"ATAATTGGCAGCCTGATTAGAAGAATGCCCATCTTGTCTAGTGACACATTAGAACAATGAGTAATTGCTCGATGCGGATCCATAACTTCGTATAGCATACATTATACGAAGTTATTCTCTGGGATTAAGAAAAAACTAACATATGAAACAGAAGCCCAGACATCTAAAACCACAAAGA",
+              "preparationTypeName":"Circular"
+            }
+          ],
+          "reagents":[
+            {
+              "id":2,
+              "reagentName":"Xrcc5",
+              "reagentDescription":"NHEJ Inhibitor",
+              "concentration":334.0
+            }
+          ],
+          "genotypePrimers":[
+            {
+              "id":2,
+              "genomicStartCoordinate":1,
+              "genomicEndCoordinate":200,
+              "name":"Gpr68wtR",
+              "sequence":"GTAGAGGGACAGGCAGTTGG"
+            }
+          ],
+          "totalEmbryosInjected":70,
+          "totalEmbryosSurvived":64,
+          "embryo2Cell":"20044",
+          "assay":{
+            "id":2,
+            "typeName":"LOA",
+            "numFounderPups":26,
+            "numFounderSelectedForBreeding":1,
+            "founderNumAssays":26,
+            "numDeletionG0Mutants":1,
+            "numG0WhereMutationDetected":1,
+            "numHdrG0Mutants":1,
+            "numHdrG0MutantsAllDonorsInserted":0,
+            "numHdrG0MutantsSubsetDonorsInserted":0,
+            "numHrG0Mutants":0,
+            "numNhejG0Mutants":0,
+            "embryoTransferDay":"Same Day",
+            "totalTransferred":72
+          },
+          "strainInjectedName":"C57BL/6NJ"
+        },
+        "typeName":"production",
+        "statusName":"Founder Obtained",
+        "summaryStatusName":"Plan Created",
+        "_links":{
+          "self":{
+            "href":"http://localhost:8080/api/plans/PIN:0000000002"
+          },
+          "project":{
+            "href":"http://localhost:8080/api/projects/TPN:000000001"
+          }
+        },
+        "statusDates":[
+          {
+            "statusName":"Plan Created",
+            "date":"2020-04-14T12:46:24.706639"
+          }
+        ],
+        "summaryStatusDates":[
+          {
+            "statusName":"Plan Created",
+            "date":"2020-04-14T12:46:24.706639"
+          }
+        ],
+        "statusTransition":{
+          "currentStatus":"Founder Obtained",
+          "transitions":[
+            {
+              "action":"abortWhenFounderObtained",
+              "description":"Abort the plan after a founder obtained",
+              "triggeredByUser":true,
+              "available":false,
+              "note":"The plan has colonies that are not aborted. Please abort them first",
+              "nextStatus":"Attempt Aborted"
+            }
+          ],
+          "actionToExecute":null
+        }
       }
     ]
   },
@@ -149,7 +275,7 @@
   },
   "page":{
     "size":20,
-    "totalElements":1,
+    "totalElements":2,
     "totalPages":1,
     "number":0
   }

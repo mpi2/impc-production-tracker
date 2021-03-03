@@ -133,6 +133,11 @@
                 IS_ABORTION_STATUS="true"
                 ORDERING="258000"/>
 
+    <STATUS     ID="11"
+                NAME="Genotype Confirmed"
+                IS_ABORTION_STATUS="false"
+                ORDERING="34000"/>
+
     <CONSORTIUM ID="1"
                 NAME="CMG"/>
 
@@ -195,7 +200,7 @@
                 PROJECT_ID="1"
                 PLAN_TYPE_ID="1"
                 ATTEMPT_TYPE_ID="1"
-                STATUS_ID="1"
+                STATUS_ID="4"
                 WORK_UNIT_ID="1"
                 WORK_GROUP_ID="1"
                 SUMMARY_STATUS_ID="1"/>
@@ -232,10 +237,25 @@
                     TOTAL_EMBRYOS_INJECTED="72"
                     TOTAL_EMBRYOS_SURVIVED="70"
                     IMITS_MI_ATTEMPT="20043"
-                    EMBRYO_2_CELL="20043"/>
+                    EMBRYO_2_CELL="20043" />
+    <CRISPR_ATTEMPT PLAN_ID="2"
+                    MI_DATE="2018-03-26"
+                    MUTAGENESIS_EXTERNAL_REF="MF-26328"
+                    EXPERIMENTAL="false"
+                    STRAIN_ID="1"
+                    COMMENT="crispr plan comment"
+                    TOTAL_EMBRYOS_INJECTED="70"
+                    TOTAL_EMBRYOS_SURVIVED="64"
+                    IMITS_MI_ATTEMPT="20044"
+                    EMBRYO_2_CELL="20044" />
 
     <NUCLEASE   ID="1"
                 ATTEMPT_ID="1"
+                CONCENTRATION="250"
+                NUCLEASE_CLASS_ID="1"
+                NUCLEASE_TYPE_ID="1"/>
+    <NUCLEASE   ID="2"
+                ATTEMPT_ID="2"
                 CONCENTRATION="250"
                 NUCLEASE_CLASS_ID="1"
                 NUCLEASE_TYPE_ID="1"/>
@@ -253,9 +273,28 @@
             GRNA_CONCENTRATION="300"
             GENOME_BUILD="GRCm38"
             CHR="X"/>
+    <GUIDE  ID="2"
+            ATTEMPT_ID="2"
+            TRUNCATED_GUIDE="false"
+            SEQUENCE="CCATGATCTAATCTGTGGTTAAA"
+            STRAND="+"
+            START="56912859"
+            STOP=" 56912881"
+            PROTOSPACER_SEQUENCE="CCATGATCTAATCTGTGGTTAAA"
+            PAM3=""
+            PAM5="AAA"
+            GRNA_CONCENTRATION="300"
+            GENOME_BUILD="GRCm38"
+            CHR="14"/>
 
     <MUTAGENESIS_DONOR  ID="1"
                         ATTEMPT_ID="1"
+                        VECTOR_NAME="pUC18_Ikzf2_conditional"
+                        OLIGO_SEQUENCE_FASTA="ATAATTGGCAGCCTGATTAGAAGAATGCCCATCTTGTCTAGTGACACATTAGAACAATGAGTAATTGCTCGATGCGGATCCATAACTTCGTATAGCATACATTATACGAAGTTATTCTCTGGGATTAAGAAAAAACTAACATATGAAACAGAAGCCCAGACATCTAAAACCACAAAGA"
+                        CONCENTRATION="5"
+                        PREPARATION_TYPE_ID="1"/>
+    <MUTAGENESIS_DONOR  ID="2"
+                        ATTEMPT_ID="2"
                         VECTOR_NAME="pUC18_Ikzf2_conditional"
                         OLIGO_SEQUENCE_FASTA="ATAATTGGCAGCCTGATTAGAAGAATGCCCATCTTGTCTAGTGACACATTAGAACAATGAGTAATTGCTCGATGCGGATCCATAACTTCGTATAGCATACATTATACGAAGTTATTCTCTGGGATTAAGAAAAAACTAACATATGAAACAGAAGCCCAGACATCTAAAACCACAAAGA"
                         CONCENTRATION="5"
@@ -265,9 +304,19 @@
                             ATTEMPT_ID="1"
                             REAGENT_ID="1"
                             CONCENTRATION="334"/>
+    <CRISPR_ATTEMPT_REAGENT ID="2"
+                            ATTEMPT_ID="2"
+                            REAGENT_ID="2"
+                            CONCENTRATION="334"/>
 
     <GENOTYPE_PRIMER    ID="1"
                         ATTEMPT_ID="1"
+                        SEQUENCE="GTAGAGGGACAGGCAGTTGG"
+                        NAME="Gpr68wtR"
+                        GENOMIC_START_COORDINATE="1"
+                        GENOMIC_END_COORDINATE="200"/>
+    <GENOTYPE_PRIMER    ID="2"
+                        ATTEMPT_ID="2"
                         SEQUENCE="GTAGAGGGACAGGCAGTTGG"
                         NAME="Gpr68wtR"
                         GENOMIC_START_COORDINATE="1"
@@ -287,15 +336,38 @@
             NUM_HR_G0_MUTANTS="0"
             NUM_NHEJ_G0_MUTANTS="0"
             TOTAL_TRANSFERRED="72"/>
+    <ASSAY  ATTEMPT_ID="2"
+            ASSAY_TYPE_ID="2"
+            EMBRYO_TRANSFER_DAY="Same Day"
+            FOUNDER_NUM_ASSAYS="26"
+            NUM_DELETION_G0_MUTANTS="1"
+            NUM_FOUNDER_PUPS="26"
+            NUM_FOUNDER_SELECTED_FOR_BREEDING="1"
+            NUM_G0_WHERE_MUTATION_DETECTED="1"
+            NUM_HDR_G0_MUTANTS="1"
+            NUM_HDR_G0_MUTANTS_ALL_DONORS_INSERTED="0"
+            NUM_HDR_G0_MUTANTS_SUBSET_DONORS_INSERTED="0"
+            NUM_HR_G0_MUTANTS="0"
+            NUM_NHEJ_G0_MUTANTS="0"
+            TOTAL_TRANSFERRED="72"/>
 
     <OUTCOME    ID="1"
                 OUTCOME_TYPE_ID="1"
-                PLAN_ID="1"
+                PLAN_ID="2"
                 TPO="TPO:000000000001"/>
     <OUTCOME    ID="2"
                 OUTCOME_TYPE_ID="1"
-                PLAN_ID="1"
+                PLAN_ID="2"
                 TPO="TPO:000000000002"/>
+
+    <COLONY     OUTCOME_ID="1"
+                STATUS_ID="11"
+                STRAIN_ID="1"
+                NAME="NSG2-1" />
+    <COLONY     OUTCOME_ID="2"
+                STATUS_ID="11"
+                STRAIN_ID="1"
+                NAME="NSG2-2" />
 
     <PLAN_STARTING_POINT    ID="1"
                             PLAN_ID="3"
