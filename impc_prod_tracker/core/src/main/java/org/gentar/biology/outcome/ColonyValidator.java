@@ -4,6 +4,7 @@ import org.apache.logging.log4j.util.Strings;
 import org.gentar.biology.colony.Colony;
 import org.gentar.biology.colony.ColonyRepository;
 import org.gentar.biology.plan.Plan;
+import org.gentar.biology.plan.attempt.phenotyping.stage.PhenotypingStage;
 import org.gentar.biology.plan.starting_point.PlanStartingPoint;
 import org.gentar.biology.plan.starting_point.PlanStartingPointRepository;
 import org.gentar.biology.status.StatusNames;
@@ -11,6 +12,7 @@ import org.gentar.exceptions.UserOperationFailedException;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.Set;
 
 @Component
 public class ColonyValidator
@@ -64,14 +66,23 @@ public class ColonyValidator
         if (!originalColony.getName().equals(colony.getName()) ||
                 !originalColony.getStrain().equals(colony.getStrain()))
         {
-            List<PlanStartingPoint> planStartingPoints = planStartingPointRepository.findByOutcomeId(colony.getOutcome().getId());
+            List<PlanStartingPoint> planStartingPoints = planStartingPointRepository.findByOutcomeId(colony.getOutcome()
+                    .getId());
             if (planStartingPoints != null) {
                 planStartingPoints.forEach(planStartingPoint -> {
-                            Plan plan = planStartingPoint.getPlan();
-                            if (!plan.getStatus().getIsAbortionStatus()) {
-                                throw new UserOperationFailedException(COLONY_IS_A_STARTING_POINT);
-                            }
-                        });
+                    Set<PhenotypingStage> phenotypingStages = planStartingPoint.getPlan().getPhenotypingAttempt()
+                            .getPhenotypingStages();
+                    phenotypingStages.forEach(phenotypingStage ->
+                    {
+                        if ( (phenotypingStage.getPhenotypingStageType().getName().equals("early adult and embryo") &&
+                                phenotypingStage.getStatus().getOrdering() >= 253000) ||
+                                (phenotypingStage.getPhenotypingStageType().getName().equals("late adult") &&
+                                        phenotypingStage.getStatus().getOrdering() >= 301000) )
+                        {
+                            throw new UserOperationFailedException(COLONY_IS_A_STARTING_POINT);
+                        }
+                    });
+                });
             }
         }
     }
