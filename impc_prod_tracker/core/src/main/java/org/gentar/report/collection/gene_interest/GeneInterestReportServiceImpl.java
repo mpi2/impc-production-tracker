@@ -2,6 +2,7 @@ package org.gentar.report.collection.gene_interest;
 
 import org.gentar.report.ReportServiceImpl;
 import org.gentar.report.ReportTypeName;
+import org.gentar.report.collection.gene_interest.phenotyping.GeneInterestReportPhenotyping;
 import org.gentar.report.collection.gene_interest.production_type.GeneInterestReportCrisprProduction;
 import org.springframework.stereotype.Component;
 
@@ -13,20 +14,26 @@ public class GeneInterestReportServiceImpl implements GeneInterestReportService
 {
     private final ReportServiceImpl reportService;
     private final GeneInterestReportCrisprProduction crisprProduction;
+    private final GeneInterestReportPhenotyping phenotyping;
 
 
     private Map<String, String> crisprGenes;
     private Map<String, String> summaryAssignmentForCrisprGenes;
     private Map<String, String> summaryProductionPlanStatusForCrisprGenes;
 
+    private Map<String, String> phenotypingGenes;
+    private Map<String, String> summaryEarlyAdultPhenotypingStageStatusForPhenotypingGenes;
+
     private Map<String, String> summaryAssignmentForGenes;
     private Map<String, String> allGenes;
 
     public GeneInterestReportServiceImpl(ReportServiceImpl reportService,
-                                         GeneInterestReportCrisprProduction crisprProduction)
+                                         GeneInterestReportCrisprProduction crisprProduction,
+                                         GeneInterestReportPhenotyping phenotyping)
     {
         this.reportService = reportService;
         this.crisprProduction = crisprProduction;
+        this.phenotyping = phenotyping;
     }
 
     @Override
@@ -34,9 +41,14 @@ public class GeneInterestReportServiceImpl implements GeneInterestReportService
     {
 
         processCrisprData();
+        processPhenotypingData();
 
         // will require methods to aggregate ES and Crispr gene assignment data
         // and generate a list of all Genes.
+
+        // This is not required for the phenotyping data,
+        // because processCrisprData should have identified all the projects and genes.
+
         summaryAssignmentForGenes = summaryAssignmentForCrisprGenes;
         allGenes = crisprGenes;
 
@@ -50,6 +62,14 @@ public class GeneInterestReportServiceImpl implements GeneInterestReportService
         crisprGenes = crisprProduction.getGeneIdToSymbolMap();
         summaryAssignmentForCrisprGenes = crisprProduction.getGeneIdToAssignmentMap();
         summaryProductionPlanStatusForCrisprGenes = crisprProduction.getGeneIdToProductionPlanStatusMap();
+    }
+
+    private void processPhenotypingData() {
+
+        phenotyping.summariseData();
+
+        phenotypingGenes = phenotyping.getGeneIdToSymbolMap();
+        summaryEarlyAdultPhenotypingStageStatusForPhenotypingGenes = phenotyping.getGeneIdToEarlyAdultPhenotypingStageStatusStatusMap();
     }
 
 
@@ -81,7 +101,8 @@ public class GeneInterestReportServiceImpl implements GeneInterestReportService
                 summaryAssignmentForGenes.get(e.getKey()),
                 "",
                 "",
-                summaryProductionPlanStatusForCrisprGenes.getOrDefault(e.getKey(), "")
+                summaryProductionPlanStatusForCrisprGenes.getOrDefault(e.getKey(), ""),
+                summaryEarlyAdultPhenotypingStageStatusForPhenotypingGenes.getOrDefault(e.getKey(), "")
         );
 
         return content
@@ -96,7 +117,8 @@ public class GeneInterestReportServiceImpl implements GeneInterestReportService
                 "Assignment Status",
                 "ES Null Production Status",
                 "ES Conditional Production Status",
-                "Crispr Production Status"
+                "Crispr Production Status",
+                "Early Adult Phenotyping Status"
         );
 
         String headerString =   headers
