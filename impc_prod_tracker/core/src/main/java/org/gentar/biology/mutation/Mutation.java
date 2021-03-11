@@ -51,10 +51,13 @@ public class Mutation extends BaseEntity
 
     private String symbol;
 
+    @Column(columnDefinition = "boolean default false")
     private Boolean mgiAlleleSymbolRequiresConstruction;
 
+    @Column(columnDefinition = "boolean default false")
     private Boolean mgiAlleleSymbolWithoutImpcAbbreviation;
 
+    @Column(columnDefinition = "boolean default false")
     private Boolean alleleConfirmed;
 
     private String alleleSymbolSuperscriptTemplate;

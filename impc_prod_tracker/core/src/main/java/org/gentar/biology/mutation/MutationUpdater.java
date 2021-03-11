@@ -22,15 +22,18 @@ public class MutationUpdater
     private final MutationRepository mutationRepository;
     private final HistoryService<Mutation> historyService;
     private final ContextAwarePolicyEnforcement policyEnforcement;
+    private final MutationValidator mutationValidator;
 
     public MutationUpdater(
-        MutationRepository mutationRepository,
-        HistoryService<Mutation> historyService,
-        ContextAwarePolicyEnforcement policyEnforcement)
+            MutationRepository mutationRepository,
+            HistoryService<Mutation> historyService,
+            ContextAwarePolicyEnforcement policyEnforcement,
+            MutationValidator mutationValidator)
     {
         this.mutationRepository = mutationRepository;
         this.historyService = historyService;
         this.policyEnforcement = policyEnforcement;
+        this.mutationValidator = mutationValidator;
     }
 
     History update(Mutation originalMutation, Mutation newMutation)
@@ -71,7 +74,7 @@ public class MutationUpdater
 
     private void validateData(Mutation newMutation)
     {
-        // Add validations if needed
+        mutationValidator.validateData(newMutation);
     }
 
 

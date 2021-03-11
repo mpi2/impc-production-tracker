@@ -148,7 +148,7 @@ public class MutationController
     {
         Mutation mutation = getMutationToUpdate(pin, tpo, min, mutationUpdateDTO);
         History history = mutationService.update(mutation);
-        return buildChangeResponse(pin, tpo, min,  history);
+        return buildChangeResponse(pin, tpo, min, history);
     }
 
     @PostMapping(value = {"plans/{pin}/outcomes/{tpo}/mutations"})

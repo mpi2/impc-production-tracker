@@ -25,6 +25,7 @@ public class ReportType extends BaseEntity {
     @Column(columnDefinition="TEXT")
     private String description;
 
+    @Column(columnDefinition = "boolean default true")
     private Boolean isPublic;
 
 }

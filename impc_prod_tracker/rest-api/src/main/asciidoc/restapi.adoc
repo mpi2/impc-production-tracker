@@ -767,7 +767,6 @@ anchor:phenotypingStages[]
 This section describes the REST endpoints for phenotyping stages in the system.
 
 [TODO:DEFINITION]
-DFSDF
 
 === Fields
 These are the fields you are going to see in the body of a request in a GET or in the payload for POST or PUT
@@ -845,7 +844,7 @@ include::{snippets}/phenotypingStages/putPhenotypingStage/http-response.adoc[]
 
 == State Machine interaction
 
-==== Structure
+=== Structure
 
 Several entities in GenTaR rely on a state machine to control the logic to change from one status
 to another. The state machines for these entities are described in the following document.
@@ -918,13 +917,13 @@ to change that status.
 |===
 
 
-==== Executing a change in the state machine
+=== Executing a change in the state machine
 To execute a transition in the plan, you need to choose an action that is _triggeredByUser = true_
 and _available = true_ and send a PUT request (as a normal plan update ) passing the name of the action
 as the value _actionToExecute_ in the statusTransition section of the payload.
 
 
-===== Example Request
+==== Example Request
 
 Let's suppose you want to abort a crispr plan that has the status _Founder Obtained_. If we do a _GET_
 to the plan we want to abort, you will see the _statusTransition_ section with a single available
@@ -940,7 +939,7 @@ Curl:
 include::{snippets}/plans/putCrisprPlanStateMachine/http-request.adoc[]
 
 
-===== Example Response
+==== Example Response
 
 The response will indicate what has changed in the system, along with a link to the resource in
 case you need to retrieve the new object.

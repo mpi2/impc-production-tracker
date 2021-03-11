@@ -53,6 +53,7 @@ public class CrisprAttempt extends BaseEntity
 
     private String miExternalRef;
 
+    @Column(columnDefinition = "boolean default false")
     private Boolean experimental;
 
     private String mutagenesisExternalRef;

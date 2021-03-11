@@ -29,17 +29,19 @@
           "guides":[
             {
               "id":1,
+              "sequence":"CTTCACGTACCAAGGAGGGGTGG",
+              "guideSequence":"CTTCACGTACCAAGGAGGGG",
+              "pam":"AGG",
               "chr":"X",
               "start":46245139,
               "stop":46245161,
-              "grnaConcentration":300.0,
-              "sequence":"CTTCACGTACCAAGGAGGGGTGG",
-              "truncatedGuide":true,
               "strand":"+",
               "genomeBuild":"GRCm38",
-              "pam3":"AGG",
-              "pam5":"CCT",
-              "protospacerSequence":"CTTCACGTACCAAGGAGGGG"
+              "grnaConcentration":300.0,
+              "truncatedGuide":true,
+              "reversed":false,
+              "sangerService":false,
+              "ensemblExonId":"ENSMUSE00000000001"
             }
           ],
           "mutagenesisDonors":[
@@ -167,17 +169,19 @@
           "guides":[
             {
               "id":2,
+              "sequence":"CCATGATCTAATCTGTGGTTAAA",
+              "guideSequence":"CCATGATCTAATCTGTGGTTAAA",
+              "pam":"AAA",
               "chr":"14",
               "start":56912859,
               "stop":56912881,
-              "grnaConcentration":300.0,
-              "sequence":"CCATGATCTAATCTGTGGTTAAA",
-              "truncatedGuide":false,
               "strand":"+",
               "genomeBuild":"GRCm38",
-              "pam3":"",
-              "pam5":"AAA",
-              "protospacerSequence":"CCATGATCTAATCTGTGGTTAAA"
+              "grnaConcentration":300.0,
+              "truncatedGuide":false,
+              "reversed":false,
+              "sangerService":false,
+              "ensemblExonId":"ENSMUSE00000000002"
             }
           ],
           "mutagenesisDonors":[

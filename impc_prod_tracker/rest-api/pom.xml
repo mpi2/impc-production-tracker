@@ -95,6 +95,24 @@
 		<!-- Additional dependencies-->
 		<!--*******************************************************-->
 
+		<!-- https://mvnrepository.com/artifact/org.biojava/biojava-legacy -->
+		<dependency>
+			<groupId>org.biojava</groupId>
+			<artifactId>biojava-legacy</artifactId>
+			<version>1.9.4</version>
+			<type>pom</type>
+		</dependency>
+
+		<!-- https://mvnrepository.com/artifact/org.biojava/sequencing -->
+		<dependency>
+			<groupId>org.biojava</groupId>
+			<artifactId>sequencing</artifactId>
+			<version>1.9.4</version>
+		</dependency>
+
+
+		<!-- other biojava jars as needed -->
+
 		<!-- GenTaR core-->
 		<dependency>
 			<groupId>org.gentar</groupId>
@@ -253,6 +271,7 @@
 			<artifactId>spring-security-test</artifactId>
 			<scope>test</scope>
 		</dependency>
+
 	</dependencies>
 
 	<build>

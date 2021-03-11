@@ -1,19 +1,10 @@
 package org.gentar.biology.plan.attempt.crispr.guide;
 
-import lombok.AccessLevel;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.gentar.BaseEntity;
 import org.gentar.biology.plan.attempt.crispr.CrisprAttempt;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.SequenceGenerator;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
 
@@ -37,6 +28,10 @@ public class Guide extends BaseEntity
 
     private String sequence;
 
+    private String guideSequence;
+
+    private String pam;
+
     private String chr;
 
     private Integer start;
@@ -47,20 +42,24 @@ public class Guide extends BaseEntity
 
     private String genomeBuild;
 
-    private Boolean truncatedGuide;
+    private String ensemblExonId;
 
     private Double grnaConcentration;
 
-    private String pam3;
+    @Column(columnDefinition = "boolean default false")
+    private Boolean truncatedGuide;
 
-    private String pam5;
+    @Column(columnDefinition = "boolean default false")
+    private Boolean reversed;
 
-    private String protospacerSequence;
+    @Column(columnDefinition = "boolean default false")
+    private Boolean sangerService;
 
     public String toString()
     {
         return "(seq=" + sequence + ", chr=" + chr + ", start=" + start
-                + ", stop=" + stop + ", truncated?=" + truncatedGuide + ", grnaConcentration=" +
-                grnaConcentration + ")";
+                + ", stop=" + stop + ", strand=" + strand
+                + ", grnaConcentration=" + grnaConcentration + ")";
     }
+
 }

@@ -44,8 +44,10 @@ public class Person extends BaseEntity
 
     private String authId;
 
+    @Column(columnDefinition = "boolean default true")
     private Boolean isActive;
 
+    @Column(columnDefinition = "boolean default false")
     private Boolean contactable;
 
     // The password is not saved in the database.
@@ -56,6 +58,7 @@ public class Person extends BaseEntity
     @Pattern(regexp = "^(.+)@(.+)$", message = "Invalid email format")
     private String email;
 
+    @Column(columnDefinition = "boolean default false")
     private Boolean ebiAdmin;
 
     public Person(String email)

@@ -18,8 +18,8 @@ package org.gentar.biology.plan;
 import org.gentar.audit.history.History;
 import org.gentar.audit.history.HistoryMapper;
 import org.gentar.biology.ChangeResponse;
-import org.gentar.biology.plan.attempt.crispr.guide.GuideService;
-import org.gentar.biology.plan.attempt.crispr.guide.exons.ExonDTO;
+import org.gentar.biology.plan.attempt.crispr.ExonDTO;
+import org.gentar.biology.plan.attempt.crispr.WgeMapper;
 import org.gentar.biology.plan.filter.PlanFilter;
 import org.gentar.biology.plan.filter.PlanFilterBuilder;
 import org.gentar.biology.plan.mappers.PlanCreationMapper;
@@ -62,7 +62,7 @@ public class PlanController
     private final PlanResponseMapper planResponseMapper;
     private final UpdatePlanRequestProcessor updatePlanRequestProcessor;
     private final ProjectService projectService;
-    private final GuideService guideService;
+    private final WgeMapper wgeMapper;
 
     public PlanController(
             HistoryMapper historyMapper,
@@ -70,7 +70,8 @@ public class PlanController
             PlanCreationMapper planCreationMapper,
             PlanResponseMapper planResponseMapper,
             UpdatePlanRequestProcessor updatePlanRequestProcessor,
-            ProjectService projectService, GuideService guideService)
+            ProjectService projectService,
+            WgeMapper wgeMapper)
     {
         this.historyMapper = historyMapper;
         this.planService = planService;
@@ -78,7 +79,7 @@ public class PlanController
         this.planResponseMapper = planResponseMapper;
         this.updatePlanRequestProcessor = updatePlanRequestProcessor;
         this.projectService = projectService;
-        this.guideService = guideService;
+        this.wgeMapper = wgeMapper;
     }
 
     /**
@@ -220,12 +221,9 @@ public class PlanController
         return changeResponse;
     }
 
-
-
-
     @GetMapping(value = {"/exons_from_wge/{marker_symbol}"})
     public List<ExonDTO> getExonsInWge (@PathVariable String marker_symbol)
     {
-        return guideService.getExonsByMarkerSymbol(capitalize(marker_symbol));
+        return wgeMapper.getExonsByMarkerSymbol(capitalize(marker_symbol));
     }
 }
