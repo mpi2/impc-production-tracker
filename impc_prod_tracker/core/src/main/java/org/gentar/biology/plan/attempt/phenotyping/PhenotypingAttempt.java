@@ -31,6 +31,7 @@ public class PhenotypingAttempt extends BaseEntity
     private Long imitsPhenotypingProduction;
     private Long imitsParentColony;
 
+    @Column(columnDefinition = "boolean default false")
     private Boolean doNotCountTowardsCompleteness;
 
     @NotNull

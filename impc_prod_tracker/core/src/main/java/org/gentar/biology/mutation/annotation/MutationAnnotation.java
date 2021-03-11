@@ -55,20 +55,27 @@ public class MutationAnnotation extends BaseEntity
 
     private String txc;
 
+    @Column(columnDefinition = "boolean default false")
     private Boolean spliceDonor;
 
+    @Column(columnDefinition = "boolean default false")
     private Boolean spliceAcceptor;
 
+    @Column(columnDefinition = "boolean default false")
     private Boolean proteinCodingRegion;
 
+    @Column(columnDefinition = "boolean default false")
     private Boolean intronic;
 
+    @Column(columnDefinition = "boolean default false")
     private Boolean frameShift;
 
     private String linkedConsequence;
 
+    @Column(columnDefinition = "boolean default false")
     private Boolean downstreamOfStop;
 
+    @Column(columnDefinition = "boolean default false")
     private Boolean stopGained;
 
     private String aminoAcid;

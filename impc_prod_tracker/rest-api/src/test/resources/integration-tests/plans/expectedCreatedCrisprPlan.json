@@ -1,5 +1,5 @@
 {
-  "pin":"PIN:0000000000",
+  "pin":"PIN:0000000006",
   "tpn":"TPN:000000001",
   "attemptTypeName":"crispr",
   "funderNames":[
@@ -17,7 +17,7 @@
     "attemptExternalRef":"attempt external reference",
     "nucleases":[
       {
-        "id":0,
+        "id":4,
         "typeName":"Cas9",
         "concentration":250.0,
         "className":"protein"
@@ -25,23 +25,25 @@
     ],
     "guides":[
       {
-        "id":0,
+        "id":4,
+        "sequence":"CTTCACGTACCAAGGAGGGGTGG",
+        "guideSequence":"CTTCACGTACCAAGGAGGGG",
+        "pam":"TGG",
         "chr":"X",
         "start":46245139,
         "stop":46245161,
-        "grnaConcentration":300.0,
-        "sequence":"CTTCACGTACCAAGGAGGGGTGG",
-        "truncatedGuide":true,
         "strand":"+",
         "genomeBuild":"GRCm38",
-        "pam3":"AGG",
-        "pam5":"CCT",
-        "protospacerSequence":"CTTCACGTACCAAGGAGGGG"
+        "grnaConcentration":300.0,
+        "truncatedGuide":true,
+        "reversed":null,
+        "sangerService":null,
+        "ensemblExonId":"ENSMUSE00000000301"
       }
     ],
     "mutagenesisDonors":[
       {
-        "id":0,
+        "id":4,
         "concentration":5.0,
         "vectorName":"pUC18_Ikzf2_conditional",
         "oligoSequenceFasta":"ATAATTGGCAGCCTGATTAGAAGAATGCCCATCTTGTCTAGTGACACATTAGAACAATGAGTAATTGCTCGATGCGGATCCATAACTTCGTATAGCATACATTATACGAAGTTATTCTCTGGGATTAAGAAAAAACTAACATATGAAACAGAAGCCCAGACATCTAAAACCACAAAGA",
@@ -50,7 +52,7 @@
     ],
     "reagents":[
       {
-        "id":0,
+        "id":4,
         "reagentName":"Ligase IV",
         "reagentDescription":"NHEJ Inhibitor",
         "concentration":334.0
@@ -58,7 +60,7 @@
     ],
     "genotypePrimers":[
       {
-        "id":0,
+        "id":4,
         "genomicStartCoordinate":1,
         "genomicEndCoordinate":200,
         "name":"Gpr68wtR",
@@ -69,7 +71,7 @@
     "totalEmbryosSurvived":70,
     "embryo2Cell":"20043",
     "assay":{
-      "id":0,
+      "id":6,
       "typeName":"T7EN1",
       "numFounderPups":26,
       "numFounderSelectedForBreeding":1,
@@ -91,7 +93,7 @@
   "summaryStatusName":"Founder Obtained",
   "_links":{
     "self":{
-      "href":"http://localhost:8080/api/plans/PIN:0000000000"
+      "href":"http://localhost:8080/api/plans/PIN:0000000006"
     },
     "project":{
       "href":"http://localhost:8080/api/projects/TPN:000000001"
@@ -100,25 +102,25 @@
   "statusDates":[
     {
       "statusName":"Plan Created",
-      "date":"2020-06-02T13:34:53.840965"
+      "date":"2021-03-11T10:09:16.830573"
     },
     {
       "statusName":"Attempt In Progress",
-      "date":"2020-06-02T13:34:53.848572"
+      "date":"2021-03-11T10:09:16.835072"
     },
     {
       "statusName":"Embryos Obtained",
-      "date":"2020-06-02T13:34:53.851655"
+      "date":"2021-03-11T10:09:16.838814"
     },
     {
       "statusName":"Founder Obtained",
-      "date":"2020-06-02T13:34:53.85445"
+      "date":"2021-03-11T10:09:16.842407"
     }
   ],
   "summaryStatusDates":[
     {
       "statusName":"Founder Obtained",
-      "date":"2020-06-02T13:34:53.855373"
+      "date":"2021-03-11T10:09:16.843703"
     }
   ],
   "statusTransition":{

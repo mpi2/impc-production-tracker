@@ -1,12 +1,15 @@
 package org.gentar.biology.mutation;
 
+import org.gentar.biology.gene.Gene;
 import org.gentar.biology.outcome.Outcome;
 import org.gentar.biology.plan.Plan;
 import org.gentar.exceptions.ForbiddenAccessException;
+import org.gentar.exceptions.UserOperationFailedException;
 import org.gentar.security.abac.spring.ContextAwarePolicyEnforcement;
 import org.gentar.security.permissions.Actions;
 import org.gentar.security.permissions.Operations;
 import org.springframework.stereotype.Component;
+
 import java.util.Set;
 
 @Component
@@ -16,10 +19,20 @@ public class MutationValidator
 
     private static final String CANNOT_READ_PLAN = "The mutation is linked to the plan %s and you " +
         "do not have permission to read it.";
+    private static final String NULL_FIELD_ERROR = "%s cannot be null.";
 
     public MutationValidator(ContextAwarePolicyEnforcement policyEnforcement)
     {
         this.policyEnforcement = policyEnforcement;
+    }
+
+    public void validateData(Mutation mutation)
+    {
+        Set<Gene> genes = mutation.getGenes();
+        if (genes.isEmpty())
+        {
+            throw new UserOperationFailedException(String.format(NULL_FIELD_ERROR, "Mutation gene(s)"));
+        }
     }
 
     public void validateReadPermissions(Mutation mutation)

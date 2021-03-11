@@ -115,6 +115,7 @@ public class Project extends BaseEntity implements Resource<Project>
 
     private LocalDateTime reactivationDate;
 
+    @Column(columnDefinition = "boolean default false")
     private Boolean recovery;
 
     @Column(columnDefinition = "TEXT")

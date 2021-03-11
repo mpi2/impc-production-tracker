@@ -28,10 +28,10 @@ public class BreedingAttempt extends BaseEntity
     @Column(name = "number_of_cre_matings_successfull")
     private Integer numberOfCareMatingsSuccessful;
 
-    @Column(name = "cre_excesion")
+    @Column(name = "cre_excesion", columnDefinition = "boolean default false")
     private Boolean creExcesion;
 
-    @Column(name = "tat_cre")
+    @Column(name = "tat_cre", columnDefinition = "boolean default false")
     private Boolean tatCre;
 
     @ManyToOne

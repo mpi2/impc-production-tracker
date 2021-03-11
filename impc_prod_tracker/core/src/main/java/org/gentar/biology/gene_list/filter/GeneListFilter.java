@@ -2,8 +2,6 @@ package org.gentar.biology.gene_list.filter;
 
 import org.gentar.biology.project.search.filter.FilterTypes;
 
-import java.lang.reflect.Array;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 

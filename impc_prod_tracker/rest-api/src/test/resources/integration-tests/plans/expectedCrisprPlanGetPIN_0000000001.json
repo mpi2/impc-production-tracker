@@ -26,17 +26,19 @@
     "guides":[
       {
         "id":1,
+        "sequence":"CTTCACGTACCAAGGAGGGGTGG",
+        "guideSequence":"CTTCACGTACCAAGGAGGGG",
+        "pam":"AGG",
         "chr":"X",
         "start":46245139,
         "stop":46245161,
-        "grnaConcentration":300.0,
-        "sequence":"CTTCACGTACCAAGGAGGGGTGG",
-        "truncatedGuide":true,
         "strand":"+",
         "genomeBuild":"GRCm38",
-        "pam3":"AGG",
-        "pam5":"CCT",
-        "protospacerSequence":"CTTCACGTACCAAGGAGGGG"
+        "grnaConcentration":300.0,
+        "truncatedGuide":true,
+        "reversed":false,
+        "sangerService":false,
+        "ensemblExonId":"ENSMUSE00000000001"
       }
     ],
     "mutagenesisDonors":[

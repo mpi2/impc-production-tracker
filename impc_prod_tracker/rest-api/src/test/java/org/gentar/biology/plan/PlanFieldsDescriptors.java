@@ -142,9 +142,13 @@ public class PlanFieldsDescriptors
             "Whether or not the guide is truncated.");
         addField(crisprFields, "crisprAttempt.guides[].strand", "Strand of the guide.");
         addField(crisprFields, "crisprAttempt.guides[].genomeBuild", "Genome build.");
-        addField(crisprFields, "crisprAttempt.guides[].pam3", "PAM-3");
-        addField(crisprFields, "crisprAttempt.guides[].pam5", "PAM-5");
-        addField(crisprFields, "crisprAttempt.guides[].protospacerSequence", "Protospacer sequence");
+        addField(crisprFields, "crisprAttempt.guides[].pam", "PAM");
+        addField(crisprFields, "crisprAttempt.guides[].ensemblExonId", "ENSEMBL exon ID");
+        addField(crisprFields, "crisprAttempt.guides[].guideSequence", "Guide sequence");
+        addField(crisprFields, "crisprAttempt.guides[].reversed",
+                "Whether or not the sequence was reversed");
+        addField(crisprFields, "crisprAttempt.guides[].sangerService",
+                "Whether or not the sequence come from the sanger wge service");
 
         // Mutagenesis Donors
         addField(

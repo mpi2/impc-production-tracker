@@ -59,11 +59,17 @@ public class MutationServiceImpl implements MutationService
     @Override
     public Mutation create(Mutation mutation)
     {
+        validateData(mutation);
         Mutation createdMutation = mutationRepository.save(mutation);
         createdMutation.setMin(buildMin(createdMutation.getId()));
         saveMutationSequences(mutation);
         registerCreationInHistory(mutation);
         return createdMutation;
+    }
+
+    private void validateData(Mutation mutation)
+    {
+        mutationValidator.validateData(mutation);
     }
 
     private void registerCreationInHistory(Mutation mutation)

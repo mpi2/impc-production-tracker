@@ -31,9 +31,9 @@
         "truncatedGuide":true,
         "strand":"+",
         "genomeBuild":"GRCm38",
-        "pam3":"AGG",
-        "pam5":"CCT",
-        "protospacerSequence":"CTTCACGTACCAAGGAGGGG"
+        "pam":"TGG",
+        "ensemblExonId":"ENSMUSE00000000301",
+        "guideSequence":"CTTCACGTACCAAGGAGGGG"
       }
     ],
     "mutagenesisDonors":[
