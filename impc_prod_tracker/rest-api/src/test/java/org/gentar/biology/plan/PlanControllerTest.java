@@ -3,6 +3,7 @@ package org.gentar.biology.plan;
 import com.github.springtestdbunit.annotation.DatabaseOperation;
 import com.github.springtestdbunit.annotation.DatabaseSetup;
 import com.github.springtestdbunit.annotation.DatabaseTearDown;
+import jdk.swing.interop.SwingInterOpUtils;
 import org.gentar.audit.history.HistoryFieldsDescriptors;
 import org.gentar.biology.ChangeResponse;
 import org.gentar.biology.plan.attempt.crispr.CrisprAttemptDTO;

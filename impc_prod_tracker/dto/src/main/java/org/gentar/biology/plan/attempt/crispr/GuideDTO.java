@@ -1,5 +1,6 @@
 package org.gentar.biology.plan.attempt.crispr;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 
@@ -21,4 +22,10 @@ public class GuideDTO
     private Boolean reversed;
     private Boolean sangerService;
     private String ensemblExonId;
+
+    @JsonProperty("formatName")
+    private String formatName;
+
+    @JsonProperty("sourceName")
+    private String sourceName;
 }

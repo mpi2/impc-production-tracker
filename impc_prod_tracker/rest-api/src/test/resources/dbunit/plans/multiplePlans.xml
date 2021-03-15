@@ -60,6 +60,16 @@
     <NUCLEASE_TYPE ID="4"
                    NAME="protein"/>
 
+    <GUIDE_FORMAT ID="1"
+                  NAME="sgRNA"/>
+    <GUIDE_FORMAT ID="2"
+                  NAME="cr-tracrRNA"/>
+
+    <GUIDE_SOURCE ID="1"
+                  NAME="in-house"/>
+    <GUIDE_SOURCE ID="2"
+                  NAME="commercial"/>
+
     <OUTCOME_TYPE   ID="1"
                     NAME="Colony"/>
     <OUTCOME_TYPE   ID="2"
@@ -272,7 +282,10 @@
             ENSEMBL_EXON_ID="ENSMUSE00000000001"
             GRNA_CONCENTRATION="300"
             GENOME_BUILD="GRCm38"
-            CHR="X"/>
+            CHR="X"
+            GUIDE_FORMAT_ID="1"
+            GUIDE_SOURCE_ID="2"/>
+
     <GUIDE  ID="2"
             ATTEMPT_ID="2"
             TRUNCATED_GUIDE="false"
@@ -285,7 +298,9 @@
             ENSEMBL_EXON_ID="ENSMUSE00000000002"
             GRNA_CONCENTRATION="300"
             GENOME_BUILD="GRCm38"
-            CHR="14"/>
+            CHR="14"
+            GUIDE_FORMAT_ID="2"
+            GUIDE_SOURCE_ID="1"/>
 
     <MUTAGENESIS_DONOR  ID="1"
                         ATTEMPT_ID="1"

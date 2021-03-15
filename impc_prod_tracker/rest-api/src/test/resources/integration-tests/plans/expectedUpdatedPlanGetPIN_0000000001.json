@@ -38,7 +38,9 @@
         "truncatedGuide":true,
         "reversed":null,
         "sangerService":null,
-        "ensemblExonId":null
+        "ensemblExonId":null,
+        "formatName":"sgRNA",
+        "sourceName":"commercial"
       }
     ],
     "mutagenesisDonors":[
