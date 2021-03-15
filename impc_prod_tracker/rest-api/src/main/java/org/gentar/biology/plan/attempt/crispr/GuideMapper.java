@@ -2,6 +2,8 @@ package org.gentar.biology.plan.attempt.crispr;
 
 import org.gentar.EntityMapper;
 import org.gentar.Mapper;
+import org.gentar.biology.plan.attempt.crispr.guide.GuideFormat;
+import org.gentar.biology.plan.attempt.crispr.guide.GuideSource;
 import org.springframework.stereotype.Component;
 import org.gentar.biology.plan.attempt.crispr.guide.Guide;
 
@@ -15,10 +17,12 @@ import java.util.Set;
 public class GuideMapper implements Mapper<Guide, GuideDTO>
 {
     private EntityMapper entityMapper;
+    private CrisprAttemptService crisprAttemptService;
 
-    public GuideMapper(EntityMapper entityMapper)
+    public GuideMapper(EntityMapper entityMapper, CrisprAttemptService crisprAttemptService)
     {
         this.entityMapper = entityMapper;
+        this.crisprAttemptService = crisprAttemptService;
     }
 
     public GuideDTO toDto(Guide guide)
@@ -40,6 +44,21 @@ public class GuideMapper implements Mapper<Guide, GuideDTO>
     public Guide toEntity(GuideDTO guideDTO)
     {
         Guide guide = entityMapper.toTarget(guideDTO, Guide.class);
+        if (guide != null)
+        {
+            String formatName = guideDTO.getFormatName();
+            if (formatName != null)
+            {
+                GuideFormat guideFormat = crisprAttemptService.getGuideFormatByName(formatName);
+                guide.setGuideFormat(guideFormat);
+            }
+            String sourceName = guideDTO.getSourceName();
+            if (sourceName != null)
+            {
+                GuideSource guideSource = crisprAttemptService.getGuideSourceByName(sourceName);
+                guide.setGuideSource(guideSource);
+            }
+        }
         return guide;
     }
 

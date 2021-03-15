@@ -3,6 +3,7 @@ package org.gentar.biology.plan.attempt.crispr.guide;
 import lombok.*;
 import org.gentar.BaseEntity;
 import org.gentar.biology.plan.attempt.crispr.CrisprAttempt;
+import org.gentar.biology.plan.attempt.crispr.assay.AssayType;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -54,6 +55,12 @@ public class Guide extends BaseEntity
 
     @Column(columnDefinition = "boolean default false")
     private Boolean sangerService;
+
+    @ManyToOne(targetEntity = GuideFormat.class)
+    private GuideFormat guideFormat;
+
+    @ManyToOne(targetEntity = GuideSource.class)
+    private GuideSource guideSource;
 
     public String toString()
     {

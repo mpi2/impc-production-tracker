@@ -33,7 +33,9 @@
         "genomeBuild":"GRCm38",
         "pam":"TGG",
         "ensemblExonId":"ENSMUSE00000000301",
-        "guideSequence":"CTTCACGTACCAAGGAGGGG"
+        "guideSequence":"CTTCACGTACCAAGGAGGGG",
+        "formatName":"sgRNA",
+        "sourceName":"commercial"
       }
     ],
     "mutagenesisDonors":[

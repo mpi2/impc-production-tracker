@@ -15,6 +15,10 @@
  */
 package org.gentar.biology.plan.attempt.crispr;
 
+import org.gentar.biology.plan.attempt.crispr.guide.GuideFormat;
+import org.gentar.biology.plan.attempt.crispr.guide.GuideFormatRepository;
+import org.gentar.biology.plan.attempt.crispr.guide.GuideSource;
+import org.gentar.biology.plan.attempt.crispr.guide.GuideSourceRepository;
 import org.gentar.biology.plan.attempt.crispr.nuclease.nuclease_class.NucleaseClass;
 import org.gentar.biology.plan.attempt.crispr.nuclease.nuclease_class.NucleaseClassRepository;
 import org.springframework.stereotype.Component;
@@ -42,15 +46,19 @@ public class CrisprAttemptServiceImpl implements CrisprAttemptService
     private NucleaseClassRepository nucleaseClassRepository;
     private MutagenesisDonorRepository mutagenesisDonorRepository;
     private AssayTypeRepository assayTypeRepository;
+    private GuideFormatRepository guideFormatRepository;
+    private GuideSourceRepository guideSourceRepository;
 
     public CrisprAttemptServiceImpl(
-        CrisprAttemptRepository crisprAttemptRepository,
-        GenotypePrimerRepository genotypePrimerRepository,
-        NucleaseRepository nucleaseRepository,
-        NucleaseTypeRepository nucleaseTypeRepository,
-        NucleaseClassRepository nucleaseClassRepository,
-        MutagenesisDonorRepository mutagenesisDonorRepository,
-        AssayTypeRepository assayTypeRepository)
+            CrisprAttemptRepository crisprAttemptRepository,
+            GenotypePrimerRepository genotypePrimerRepository,
+            NucleaseRepository nucleaseRepository,
+            NucleaseTypeRepository nucleaseTypeRepository,
+            NucleaseClassRepository nucleaseClassRepository,
+            MutagenesisDonorRepository mutagenesisDonorRepository,
+            AssayTypeRepository assayTypeRepository,
+            GuideFormatRepository guideFormatRepository,
+            GuideSourceRepository guideSourceRepository)
     {
         this.crisprAttemptRepository = crisprAttemptRepository;
         this.genotypePrimerRepository = genotypePrimerRepository;
@@ -59,6 +67,8 @@ public class CrisprAttemptServiceImpl implements CrisprAttemptService
         this.nucleaseClassRepository = nucleaseClassRepository;
         this.mutagenesisDonorRepository = mutagenesisDonorRepository;
         this.assayTypeRepository = assayTypeRepository;
+        this.guideFormatRepository = guideFormatRepository;
+        this.guideSourceRepository = guideSourceRepository;
     }
 
     @Override
@@ -100,5 +110,17 @@ public class CrisprAttemptServiceImpl implements CrisprAttemptService
     {
         return nucleaseClassRepository.findByNameIgnoreCase(
                 nucleaseClassName);
+    }
+
+    @Override
+    public GuideFormat getGuideFormatByName(String guideFormatName)
+    {
+        return guideFormatRepository.findByNameIgnoreCase(guideFormatName);
+    }
+
+    @Override
+    public GuideSource getGuideSourceByName(String guideSourceName)
+    {
+        return guideSourceRepository.findByNameIgnoreCase(guideSourceName);
     }
 }

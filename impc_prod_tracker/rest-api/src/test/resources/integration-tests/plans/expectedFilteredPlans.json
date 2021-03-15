@@ -41,7 +41,9 @@
               "truncatedGuide":true,
               "reversed":false,
               "sangerService":false,
-              "ensemblExonId":"ENSMUSE00000000001"
+              "ensemblExonId":"ENSMUSE00000000001",
+              "formatName":"sgRNA",
+              "sourceName":"commercial"
             }
           ],
           "mutagenesisDonors":[
@@ -181,7 +183,9 @@
               "truncatedGuide":false,
               "reversed":false,
               "sangerService":false,
-              "ensemblExonId":"ENSMUSE00000000002"
+              "ensemblExonId":"ENSMUSE00000000002",
+              "formatName":"cr-tracrRNA",
+              "sourceName":"in-house"
             }
           ],
           "mutagenesisDonors":[

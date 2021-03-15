@@ -15,6 +15,8 @@
  */
 package org.gentar.biology.plan.attempt.crispr;
 
+import org.gentar.biology.plan.attempt.crispr.guide.GuideFormat;
+import org.gentar.biology.plan.attempt.crispr.guide.GuideSource;
 import org.gentar.biology.plan.attempt.crispr.nuclease.Nuclease;
 import org.gentar.biology.plan.attempt.crispr.genotype_primer.GenotypePrimer;
 import org.gentar.biology.plan.attempt.crispr.mutagenesis_donor.MutagenesisDonor;
@@ -39,4 +41,8 @@ public interface CrisprAttemptService
     NucleaseType getNucleaseTypeByName(String nucleaseTypeName);
 
     NucleaseClass getNucleaseClassByName(String nucleaseClassName);
+
+    GuideFormat getGuideFormatByName(String guideFormatName);
+
+    GuideSource getGuideSourceByName(String guideSourceName);
 }
