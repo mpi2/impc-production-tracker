@@ -310,7 +310,7 @@ a|Assignment Status Name. Possible values:
 |summaryStatusName
 |Summary Status of the project. Eg: Plan Created.
 
-|productionColonyName
+|colonyName
 |Colony name from production plan.
 
 |phenotypingExternalRef
