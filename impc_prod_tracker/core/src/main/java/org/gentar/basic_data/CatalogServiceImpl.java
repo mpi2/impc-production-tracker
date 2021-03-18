@@ -24,6 +24,8 @@ import org.gentar.biology.mutation.qc_results.QcTypeRepository;
 import org.gentar.biology.outcome.type.OutcomeTypeRepository;
 import org.gentar.biology.plan.attempt.AttemptTypeService;
 import org.gentar.biology.plan.attempt.crispr.assay.AssayTypeRepository;
+import org.gentar.biology.plan.attempt.crispr.guide.GuideFormatRepository;
+import org.gentar.biology.plan.attempt.crispr.guide.GuideSourceRepository;
 import org.gentar.biology.plan.attempt.crispr.nuclease.nuclease_class.NucleaseClassRepository;
 import org.gentar.biology.plan.attempt.crispr.nuclease.nuclease_type.NucleaseTypeRepository;
 import org.gentar.biology.mutation.categorizarion.MutationCategorizationRepository;
@@ -91,40 +93,42 @@ public class CatalogServiceImpl implements CatalogService
     private final PhenotypingStageTypeService phenotypingStageTypeService;
     private final MutationCategorizationService mutationCategorizationService;
     private final ListRecordTypeService listRecordTypeService;
+    private final GuideFormatRepository guideFormatRepository;
+    private final GuideSourceRepository guideSourceRepository;
 
     private final Map<String, Object> conf = new HashMap<>();
 
     public CatalogServiceImpl(
-        AttemptTypeService attemptTypeService,
-        WorkUnitRepository workUnitRepository,
-        WorkGroupService workGroupService, PlanTypeRepository planTypeRepository,
-        PrivacyRepository privacyRepository,
-        StatusRepository statusRepository,
-        AssignmentStatusRepository assignmentStatusRepository,
-        GeneticMutationTypeRepository geneticMutationTypeRepository,
-        InstituteRepository instituteRepository,
-        StrainRepository strainRepository,
-        StrainTypeRepository strainTypeRepository,
-        PreparationTypeRepository preparationTypeRepository,
-        MaterialDepositedTypeRepository materialDepositedTypeRepository,
-        SpeciesRepository speciesRepository,
-        ConsortiumService consortiumService,
-        MolecularMutationTypeRepository molecularMutationTypeRepository,
-        NucleaseTypeRepository nucleaseTypeRepository,
-        NucleaseClassRepository nucleaseClassRepository,
-        MutationCategorizationRepository mutationCategorizationRepository,
-        FunderService funderService, OutcomeTypeRepository outcomeTypeRepository,
-        SequenceTypeRepository sequenceTypeRepository,
-        SequenceCategoryRepository sequenceCategoryRepository,
-        ProductTypeRepository productTypeRepository,
-        DistributionNetworkRepository distributionNetworkRepository,
-        QcTypeRepository qcTypeRepository,
-        QcStatusRepository qcStatusRepository,
-        ReagentRepository reagentRepository,
-        AssayTypeRepository assayTypeRepository,
-        PhenotypingStageTypeService phenotypingStageTypeService,
-        MutationCategorizationService mutationCategorizationService,
-        ListRecordTypeService listRecordTypeService)
+            AttemptTypeService attemptTypeService,
+            WorkUnitRepository workUnitRepository,
+            WorkGroupService workGroupService, PlanTypeRepository planTypeRepository,
+            PrivacyRepository privacyRepository,
+            StatusRepository statusRepository,
+            AssignmentStatusRepository assignmentStatusRepository,
+            GeneticMutationTypeRepository geneticMutationTypeRepository,
+            InstituteRepository instituteRepository,
+            StrainRepository strainRepository,
+            StrainTypeRepository strainTypeRepository,
+            PreparationTypeRepository preparationTypeRepository,
+            MaterialDepositedTypeRepository materialDepositedTypeRepository,
+            SpeciesRepository speciesRepository,
+            ConsortiumService consortiumService,
+            MolecularMutationTypeRepository molecularMutationTypeRepository,
+            NucleaseTypeRepository nucleaseTypeRepository,
+            NucleaseClassRepository nucleaseClassRepository,
+            MutationCategorizationRepository mutationCategorizationRepository,
+            FunderService funderService, OutcomeTypeRepository outcomeTypeRepository,
+            SequenceTypeRepository sequenceTypeRepository,
+            SequenceCategoryRepository sequenceCategoryRepository,
+            ProductTypeRepository productTypeRepository,
+            DistributionNetworkRepository distributionNetworkRepository,
+            QcTypeRepository qcTypeRepository,
+            QcStatusRepository qcStatusRepository,
+            ReagentRepository reagentRepository,
+            AssayTypeRepository assayTypeRepository,
+            PhenotypingStageTypeService phenotypingStageTypeService,
+            MutationCategorizationService mutationCategorizationService,
+            ListRecordTypeService listRecordTypeService, GuideFormatRepository guideFormatRepository, GuideSourceRepository guideSourceRepository)
     {
         this.attemptTypeService = attemptTypeService;
         this.workUnitRepository = workUnitRepository;
@@ -158,6 +162,8 @@ public class CatalogServiceImpl implements CatalogService
         this.phenotypingStageTypeService = phenotypingStageTypeService;
         this.mutationCategorizationService = mutationCategorizationService;
         this.listRecordTypeService = listRecordTypeService;
+        this.guideFormatRepository = guideFormatRepository;
+        this.guideSourceRepository = guideSourceRepository;
     }
 
     @Override
@@ -203,8 +209,24 @@ public class CatalogServiceImpl implements CatalogService
             addPhenotypingStagesTypes();
             addPhenotypingStagesTypesByAttemptTypes();
             addRecordTypesByConsortium();
+            addGuideFormatNames();
+            addGuideSourceNames();
         }
         return conf;
+    }
+
+    private void addGuideFormatNames()
+    {
+        List<Object> guideFormatNames = new ArrayList<>();
+        guideFormatRepository.findAll().forEach(p -> guideFormatNames.add(p.getName()));
+        conf.put("guideFormatNames", guideFormatNames);
+    }
+
+    private void addGuideSourceNames()
+    {
+        List<Object> guideSourceNames = new ArrayList<>();
+        guideSourceRepository.findAll().forEach(p -> guideSourceNames.add(p.getName()));
+        conf.put("guideSourceNames", guideSourceNames);
     }
 
     private void addAttemptTypesByPlanTypes()

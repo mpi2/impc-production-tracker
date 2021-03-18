@@ -79,7 +79,6 @@ public class WgeMapper
         JSONObject json = new JSONObject(x);
         GuideDTO guideDetailsDTO = new GuideDTO();
 
-        guideDetailsDTO.setId(json.getLong("id"));
         guideDetailsDTO.setChr(json.getString("chr_name"));
         guideDetailsDTO.setStart(json.getInt("chr_start"));
         guideDetailsDTO.setStop(json.getInt("chr_end"));
