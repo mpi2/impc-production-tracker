@@ -3,26 +3,22 @@ package org.gentar.biology.plan.attempt.crispr.guide;
 import lombok.*;
 import org.gentar.BaseEntity;
 import org.gentar.biology.plan.attempt.crispr.CrisprAttempt;
-import org.gentar.biology.plan.attempt.crispr.assay.AssayType;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 
 
 @NoArgsConstructor(access= AccessLevel.PUBLIC, force=true)
 @Data
-@EqualsAndHashCode(callSuper = false)
 @Entity
 public class Guide extends BaseEntity
 {
-    @EqualsAndHashCode.Exclude
     @Id
     @SequenceGenerator(name = "guideSeq", sequenceName = "GUIDE_SEQ")
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "guideSeq")
     private Long id;
 
-    @NotNull
     @EqualsAndHashCode.Exclude
+    @ToString.Exclude
     @ManyToOne(targetEntity = CrisprAttempt.class)
     @JoinColumn(name = "attempt_id")
     private CrisprAttempt crisprAttempt;
