@@ -39,8 +39,6 @@ public class Guide extends BaseEntity
 
     private String genomeBuild;
 
-    private String ensemblExonId;
-
     private Double grnaConcentration;
 
     @Column(columnDefinition = "boolean default false")

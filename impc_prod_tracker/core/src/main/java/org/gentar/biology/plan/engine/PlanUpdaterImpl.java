@@ -73,16 +73,11 @@ public class PlanUpdaterImpl implements PlanUpdater
     /**
      * Validates that the changes are valid.
      */
-//    private void validateData(Plan newPlan)
-//    {
-//        planValidator.validate(newPlan);
-//    }
     private void validateUpdateData(Plan originalPlan, Plan newPlan)
     {
         planValidator.validate(newPlan);
-        if (originalPlan.getPhenotypingAttempt() != null) {
-            planValidator.validateUpdate(originalPlan, newPlan);
-        }
+
+        planValidator.validateUpdate(originalPlan, newPlan);
     }
 
     /**

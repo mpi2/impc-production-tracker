@@ -21,7 +21,6 @@ public class GuideDTO
     private Boolean truncatedGuide;
     private Boolean reversed;
     private Boolean sangerService;
-    private String ensemblExonId;
 
     @JsonProperty("formatName")
     private String formatName;

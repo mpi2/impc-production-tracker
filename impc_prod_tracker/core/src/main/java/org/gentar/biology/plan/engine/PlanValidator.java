@@ -1,11 +1,15 @@
 package org.gentar.biology.plan.engine;
 
-import org.gentar.biology.outcome.ColonyValidator;
+import org.gentar.biology.colony.ColonyValidator;
 import org.gentar.biology.plan.attempt.AttemptType;
 import org.gentar.biology.plan.attempt.AttemptTypeChecker;
 import org.gentar.biology.plan.attempt.AttemptTypeService;
 import org.gentar.biology.plan.attempt.AttemptTypesName;
 import org.gentar.biology.plan.attempt.crispr.CrisprAttemptValidator;
+import org.gentar.biology.plan.attempt.crispr.guide.Guide;
+import org.gentar.biology.plan.attempt.crispr.guide.GuideValidator;
+import org.gentar.biology.plan.attempt.crispr.nuclease.Nuclease;
+import org.gentar.biology.plan.attempt.crispr.nuclease.NucleaseValidator;
 import org.gentar.biology.plan.attempt.phenotyping.PhenotypeAttemptValidator;
 import org.gentar.biology.plan.starting_point.PlanStartingPoint;
 import org.gentar.biology.plan.type.PlanType;
@@ -43,6 +47,7 @@ public class PlanValidator
 
     private static final String ATTEMPT_TYPE_PLAN_TYPE_INVALID_ASSOCIATION =
         "The attempt type [%s] cannot be associated with a plan with type [%s].";
+    private static final String NULL_OBJECT_ERROR = "[%s] cannot be null.";
 
     public PlanValidator(
             CrisprAttemptValidator crisprAttemptValidator,
@@ -76,7 +81,7 @@ public class PlanValidator
     {
         if (AttemptTypeChecker.CRISPR_TYPE.equalsIgnoreCase(AttemptTypeChecker.getAttemptTypeName(plan)))
         {
-            // Checks for CRISPR attempts when creating a new plan.
+            // Checks crispr attempt type.
         }
         if (AttemptTypeChecker.PHENOTYPING_TYPE.equalsIgnoreCase(AttemptTypeChecker.getAttemptTypeName(plan)))
         {
@@ -87,9 +92,10 @@ public class PlanValidator
 
     public void validateUpdate(Plan originalPlan, Plan plan)
     {
-        if (originalPlan.getPhenotypingAttempt() != null) {
-            validateAttemptData(originalPlan, plan);
-        }
+//        if (originalPlan.getPhenotypingAttempt() != null) {
+//            validateAttemptData(originalPlan, plan);
+//        }
+        validateAttemptData(originalPlan, plan);
     }
 
     private void validateBasicPlanData(Plan plan)

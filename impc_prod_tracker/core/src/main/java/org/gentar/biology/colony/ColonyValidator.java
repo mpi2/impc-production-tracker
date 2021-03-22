@@ -1,4 +1,4 @@
-package org.gentar.biology.outcome;
+package org.gentar.biology.colony;
 
 import org.apache.logging.log4j.util.Strings;
 import org.gentar.biology.colony.Colony;

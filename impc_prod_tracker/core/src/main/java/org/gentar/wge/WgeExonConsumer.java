@@ -1,18 +1,15 @@
 package org.gentar.wge;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.gentar.exceptions.SystemOperationFailedException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
-import java.util.ArrayList;
-import java.util.List;
 
 @Component
-public class WgeExonConsumer {
+public class WgeExonConsumer
+{
     @Value("https://wge.stemcell.sanger.ac.uk/api/exon_search?species=Mouse&marker_symbol=")
     private String EXONS_URL;
 

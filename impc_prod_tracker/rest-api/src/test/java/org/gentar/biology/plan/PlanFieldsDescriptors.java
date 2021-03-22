@@ -143,7 +143,6 @@ public class PlanFieldsDescriptors
         addField(crisprFields, "crisprAttempt.guides[].strand", "Strand of the guide.");
         addField(crisprFields, "crisprAttempt.guides[].genomeBuild", "Genome build.");
         addField(crisprFields, "crisprAttempt.guides[].pam", "PAM");
-        addField(crisprFields, "crisprAttempt.guides[].ensemblExonId", "ENSEMBL exon ID");
         addField(crisprFields, "crisprAttempt.guides[].guideSequence", "Guide sequence");
         addField(crisprFields, "crisprAttempt.guides[].reversed",
                 "Whether or not the sequence was reversed");
