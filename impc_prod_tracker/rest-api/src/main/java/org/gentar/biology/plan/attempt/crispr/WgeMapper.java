@@ -83,7 +83,6 @@ public class WgeMapper
         guideDetailsDTO.setStart(json.getInt("chr_start"));
         guideDetailsDTO.setStop(json.getInt("chr_end"));
         guideDetailsDTO.setTruncatedGuide(false);
-        guideDetailsDTO.setEnsemblExonId(json.getString("ensembl_exon_id"));
         guideDetailsDTO.setGenomeBuild("GRCm38");
         guideDetailsDTO.setSangerService(true);
 

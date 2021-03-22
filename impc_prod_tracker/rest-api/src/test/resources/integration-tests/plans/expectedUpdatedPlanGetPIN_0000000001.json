@@ -30,15 +30,14 @@
         "guideSequence":null,
         "pam":null,
         "chr":"X",
-        "start":46245139,
-        "stop":46245161,
+        "start":45334016,
+        "stop":45334038,
         "strand":"+",
-        "genomeBuild":"GRCm38",
+        "genomeBuild":"GRCm39",
         "grnaConcentration":300.0,
         "truncatedGuide":true,
         "reversed":null,
         "sangerService":null,
-        "ensemblExonId":null,
         "formatName":"sgRNA",
         "sourceName":"commercial"
       }

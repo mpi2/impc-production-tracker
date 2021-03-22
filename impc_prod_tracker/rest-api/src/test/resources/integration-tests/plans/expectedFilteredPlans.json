@@ -41,7 +41,6 @@
               "truncatedGuide":true,
               "reversed":false,
               "sangerService":false,
-              "ensemblExonId":"ENSMUSE00000000001",
               "formatName":"sgRNA",
               "sourceName":"commercial"
             }
@@ -183,7 +182,6 @@
               "truncatedGuide":false,
               "reversed":false,
               "sangerService":false,
-              "ensemblExonId":"ENSMUSE00000000002",
               "formatName":"cr-tracrRNA",
               "sourceName":"in-house"
             }

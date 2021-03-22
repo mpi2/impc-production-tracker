@@ -2,10 +2,8 @@ package org.gentar.biology.plan.attempt.crispr;
 
 import org.gentar.EntityMapper;
 import org.gentar.Mapper;
-import org.gentar.biology.plan.attempt.crispr.guide.GuideFormat;
-import org.gentar.biology.plan.attempt.crispr.guide.GuideSource;
+import org.gentar.biology.plan.attempt.crispr.guide.*;
 import org.springframework.stereotype.Component;
-import org.gentar.biology.plan.attempt.crispr.guide.Guide;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -18,11 +16,21 @@ public class GuideMapper implements Mapper<Guide, GuideDTO>
 {
     private EntityMapper entityMapper;
     private CrisprAttemptService crisprAttemptService;
+    private GuideFormatRepository guideFormatRepository;
+    private GuideSourceRepository guideSourceRepository;
+    private AssemblyMapMapper assemblyMapMapper;
 
-    public GuideMapper(EntityMapper entityMapper, CrisprAttemptService crisprAttemptService)
+    public GuideMapper(EntityMapper entityMapper,
+                       CrisprAttemptService crisprAttemptService,
+                       GuideFormatRepository guideFormatRepository,
+                       GuideSourceRepository guideSourceRepository,
+                       AssemblyMapMapper assemblyMapMapper)
     {
         this.entityMapper = entityMapper;
         this.crisprAttemptService = crisprAttemptService;
+        this.guideFormatRepository = guideFormatRepository;
+        this.guideSourceRepository = guideSourceRepository;
+        this.assemblyMapMapper = assemblyMapMapper;
     }
 
     public GuideDTO toDto(Guide guide)
@@ -44,22 +52,33 @@ public class GuideMapper implements Mapper<Guide, GuideDTO>
     public Guide toEntity(GuideDTO guideDTO)
     {
         Guide guide = entityMapper.toTarget(guideDTO, Guide.class);
-        if (guide != null)
+        if (guide.getSequence() == null && guide.getGuideSequence() != null && guide.getPam() != null)
         {
-            String formatName = guideDTO.getFormatName();
-            if (formatName != null)
-            {
-                GuideFormat guideFormat = crisprAttemptService.getGuideFormatByName(formatName);
-                guide.setGuideFormat(guideFormat);
-            }
-            String sourceName = guideDTO.getSourceName();
-            if (sourceName != null)
-            {
-                GuideSource guideSource = crisprAttemptService.getGuideSourceByName(sourceName);
-                guide.setGuideSource(guideSource);
-            }
+            guide.setSequence(guideDTO.getGuideSequence() + guideDTO.getPam());
         }
+
+        if (guideDTO.getFormatName() != null)
+        {
+            GuideFormat guideFormat = guideFormatRepository.findByNameIgnoreCase(guideDTO.getFormatName());
+            guide.setGuideFormat(guideFormat);
+        }
+        if (guideDTO.getSourceName() != null)
+        {
+            GuideSource guideSource = guideSourceRepository.findByNameIgnoreCase(guideDTO.getSourceName());
+            guide.setGuideSource(guideSource);
+        }
+
+        if (guide.getGenomeBuild().equals("GRCm38"))
+        {
+            changeAssemblyIfNecessary(guide);
+        }
+
         return guide;
+    }
+
+    private void changeAssemblyIfNecessary(Guide guide)
+    {
+        assemblyMapMapper.assemblyConvertion(guide);
     }
 
     public Set<Guide> toEntities(Collection<GuideDTO> guideDTOs)

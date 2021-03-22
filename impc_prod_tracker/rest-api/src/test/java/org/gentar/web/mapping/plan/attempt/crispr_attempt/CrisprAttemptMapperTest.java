@@ -81,8 +81,6 @@ public class CrisprAttemptMapperTest
     private static final Boolean GUIDE_TRUNCATED_FALSE = false;
     private static final String GUIDE_STRAND = "strand";
     private static final String GUIDE_GENOME_BUILD = "genomeBuild";
-    private static final String GUIDE_ENSEMBL_EXON_ID = "ensemblExonID";
-
 
     private static final String NUCLEASE_TYPE_NAME = "NucleaseTypeName1";
     private static final Long NUCLEASE_ID1 = 1L;
@@ -204,7 +202,6 @@ public class CrisprAttemptMapperTest
         assertThat("Guides 1 truncated ", guideDTO1.getTruncatedGuide(), is(GUIDE_TRUNCATED_TRUE));
         assertThat("Guides 1 strand ", guideDTO1.getStrand(), is(GUIDE_STRAND + GUIDE_ID_1));
         assertThat("Guides 1 Genome Build ", guideDTO1.getGenomeBuild(), is(GUIDE_GENOME_BUILD + GUIDE_ID_1));
-        assertThat("Guides 1 Ensembl exon id ", guideDTO1.getEnsemblExonId(), is(GUIDE_ENSEMBL_EXON_ID + GUIDE_ID_1));
 
         GuideDTO guideDTO2 = findGuideDtoById(crisprAttemptDTO.getGuideDTOS(), GUIDE_ID_2);
         assertThat("Guides 2 null", guideDTO2, notNullValue());
@@ -217,7 +214,6 @@ public class CrisprAttemptMapperTest
         assertThat("Guides 2 truncated ", guideDTO2.getTruncatedGuide(), is(GUIDE_TRUNCATED_FALSE));
         assertThat("Guides 2 strand ", guideDTO2.getStrand(), is(GUIDE_STRAND + GUIDE_ID_2));
         assertThat("Guides 2 Genome Build ", guideDTO2.getGenomeBuild(), is(GUIDE_GENOME_BUILD + GUIDE_ID_2));
-        assertThat("Guides 2 Ensembl exon id ", guideDTO2.getEnsemblExonId(), is(GUIDE_ENSEMBL_EXON_ID + GUIDE_ID_2));
 
         GenotypePrimerDTO genotypePrimerDTO1 =
             findGenotypePrimerDTOById(crisprAttemptDTO.getGenotypePrimerDTOS(), GENOTYPE_PRIMER_ID_1);
@@ -294,7 +290,6 @@ public class CrisprAttemptMapperTest
         guide.setGenomeBuild(GUIDE_GENOME_BUILD + id);
         guide.setPam(GUIDE_PAM + id);
         guide.setGuideSequence(GUIDE_GUIDE_SEQ + id);
-        guide.setEnsemblExonId(GUIDE_ENSEMBL_EXON_ID + id);
 
         return guide;
     }
@@ -472,7 +467,6 @@ public class CrisprAttemptMapperTest
         assertThat("Guides 1 Genome Build ", guide1.getGenomeBuild(), is(GUIDE_GENOME_BUILD + GUIDE_ID_1));
         assertThat("Guides 1 Pam ", guide1.getPam(), is(GUIDE_PAM + GUIDE_ID_1));
         assertThat("Guides 1 guide sequence ", guide1.getGuideSequence(), is(GUIDE_GUIDE_SEQ + GUIDE_ID_1));
-        assertThat("Guides 1 Ensembl exon id ", guide1.getEnsemblExonId(), is(GUIDE_ENSEMBL_EXON_ID + GUIDE_ID_1));
 
         Guide guide2 = findGuideById(crisprAttempt.getGuides(), GUIDE_ID_2);
         assertThat("Guides 2 null", guide2, notNullValue());
@@ -485,7 +479,6 @@ public class CrisprAttemptMapperTest
         assertThat("Guides 2 Genome Build ", guide2.getGenomeBuild(), is(GUIDE_GENOME_BUILD + GUIDE_ID_2));
         assertThat("Guides 2 Pam ", guide2.getPam(), is(GUIDE_PAM + GUIDE_ID_2));
         assertThat("Guides 2 guide sequence ", guide2.getGuideSequence(), is(GUIDE_GUIDE_SEQ + GUIDE_ID_2));
-        assertThat("Guides 2 Ensembl exon id ", guide2.getEnsemblExonId(), is(GUIDE_ENSEMBL_EXON_ID + GUIDE_ID_2));
     }
 
     private void addNucleaseDTOs(CrisprAttemptDTO crisprAttemptDTO)
@@ -527,7 +520,6 @@ public class CrisprAttemptMapperTest
         guideDTO.setGenomeBuild(GUIDE_GENOME_BUILD + id);
         guideDTO.setPam(GUIDE_PAM + id);
         guideDTO.setGuideSequence(GUIDE_GUIDE_SEQ + id);
-        guideDTO.setEnsemblExonId(GUIDE_ENSEMBL_EXON_ID + id);
 
         return guideDTO;
     }
