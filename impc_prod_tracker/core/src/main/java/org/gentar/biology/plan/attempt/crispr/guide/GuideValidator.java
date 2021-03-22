@@ -24,11 +24,6 @@ public class GuideValidator
         checkSequenceInformation(guide);
         sequenceValidation(guide);
         checkCoordinates(guide);
-
-        if (guide.getGenomeBuild() == null)
-        {
-            throw new UserOperationFailedException(String.format(NULL_FIELD_ERROR, "guide(s) Genome Build"));
-        }
     }
 
     private void checkCoordinates(Guide guide)
@@ -40,28 +35,31 @@ public class GuideValidator
             }
 
             Integer totalLength = null;
-            if (guide.getSequence() != null)
+            if (guide.getSequence() != null && !guide.getSequence().isEmpty())
             {
                 totalLength = guide.getSequence().length();
-            } else if (guide.getGuideSequence() != null && guide.getPam() != null)
+            }
+            else if ((guide.getGuideSequence() != null && guide.getPam() != null) &&
+                    (!guide.getGuideSequence().isEmpty() && !guide.getPam().isEmpty()))
             {
                 totalLength = guide.getGuideSequence().length() + guide.getPam().length();
             }
 
-            if (diff+1 != totalLength && totalLength != null) {
+            Integer diff2 = diff + 1;
+            if (diff2 != totalLength && totalLength != null) {
                 throw new UserOperationFailedException(String.format(SAME_TOTAL_LENGTH,
-                        totalLength.toString(), diff.toString()));
+                        totalLength.toString(), diff2.toString()));
             }
         }
     }
 
     private void sequenceValidation(Guide guide)
     {
-        if (guide.getGuideSequence() != null)
+        if (guide.getGuideSequence() != null && !guide.getGuideSequence().isEmpty())
         {
             String guideSequence = guide.getGuideSequence();
             if (guideSequence.length() < 16) {
-                throw new UserOperationFailedException(String.format(LENGTH_GUIDE_SEQUENCE, "guide(s) sequence"));
+                throw new UserOperationFailedException(String.format(LENGTH_GUIDE_SEQUENCE, "guide sequence"));
             }
         }
     }
