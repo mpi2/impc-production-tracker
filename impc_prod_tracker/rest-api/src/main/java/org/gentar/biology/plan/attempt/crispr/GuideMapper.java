@@ -52,7 +52,10 @@ public class GuideMapper implements Mapper<Guide, GuideDTO>
     public Guide toEntity(GuideDTO guideDTO)
     {
         Guide guide = entityMapper.toTarget(guideDTO, Guide.class);
-        if (guide.getSequence() == null && guide.getGuideSequence() != null && guide.getPam() != null)
+
+        if ((guide.getSequence() == null || guide.getSequence().isEmpty()) &&
+                (guide.getGuideSequence() != null || !guide.getGuideSequence().isEmpty()) &&
+                (guide.getPam() != null || !guide.getPam().isEmpty()))
         {
             guide.setSequence(guideDTO.getGuideSequence() + guideDTO.getPam());
         }
@@ -68,9 +71,13 @@ public class GuideMapper implements Mapper<Guide, GuideDTO>
             guide.setGuideSource(guideSource);
         }
 
-        if (guide.getGenomeBuild().equals("GRCm38"))
+        if (guide.getGenomeBuild() != null && guide.getStart() != null &&
+                guide.getStop() != null && guide.getStrand() != null)
         {
-            changeAssemblyIfNecessary(guide);
+            if (guide.getGenomeBuild().equals("GRCm38"))
+            {
+                changeAssemblyIfNecessary(guide);
+            }
         }
 
         return guide;
