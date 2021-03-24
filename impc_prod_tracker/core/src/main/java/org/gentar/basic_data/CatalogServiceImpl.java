@@ -52,11 +52,9 @@ import org.gentar.biology.strain.StrainRepository;
 import org.gentar.organization.institute.InstituteRepository;
 import org.gentar.organization.work_unit.WorkUnitRepository;
 import org.gentar.biology.project.search.SearchType;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Component
 public class CatalogServiceImpl implements CatalogService
@@ -300,7 +298,11 @@ public class CatalogServiceImpl implements CatalogService
     {
         List<Object> statuses = new ArrayList<>();
         statusRepository.findAll().forEach(p -> statuses.add(p.getName()));
-        conf.put("statuses", statuses);
+        List<Object> sortedStatuses = statuses
+                .stream()
+                .sorted(Comparator.comparing(Object::toString))
+                .collect(Collectors.toList());
+        conf.put("statuses", sortedStatuses);
     }
 
     private void addAssignmentStatuses()
