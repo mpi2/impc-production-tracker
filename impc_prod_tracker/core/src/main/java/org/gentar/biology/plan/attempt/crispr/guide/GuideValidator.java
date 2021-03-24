@@ -6,14 +6,13 @@ import org.springframework.stereotype.Component;
 @Component
 public class GuideValidator
 {
-    private static final String NULL_FIELD_ERROR = "[%s] cannot be null.";
-    private static final String LENGTH_GUIDE_SEQUENCE = "[%s] needs to be at least 16bps.";
+    private static final String NULL_FIELD_ERROR = "%s cannot be null.";
+    private static final String LENGTH_GUIDE_SEQUENCE = "%s needs to be at least 16bps.";
     private static final String START_STOP_POSITIVE_DIFFERENCE = "Stop guide location needs to be bigger " +
             "than start guide location.";
     private static final String SAME_TOTAL_LENGTH = "Error guides information. Sequence has a total length of [%s]bps " +
-            "and the difference between start and stop is [%s]. Please add the correct coordinates.";
-    private static final String SEQUENCE_ERROR = "Error guides information. Please entre the whole sequence " +
-            "or the guide sequence and the PAM";
+            "and the difference between start and stop is %s. Please add the correct coordinates.";
+    private static final String SEQUENCE_ERROR = "Error guides information. Please enter the guide sequence and the PAM";
 
     public GuideValidator () {
 
@@ -50,6 +49,8 @@ public class GuideValidator
                 throw new UserOperationFailedException(String.format(SAME_TOTAL_LENGTH,
                         totalLength.toString(), diff2.toString()));
             }
+        } else {
+            throw new UserOperationFailedException(String.format(NULL_FIELD_ERROR, "Guide(s) start and stop fields"));
         }
     }
 
@@ -66,11 +67,10 @@ public class GuideValidator
 
     private void checkSequenceInformation(Guide guide)
     {
-        String sequence = guide.getSequence();
         String guideSequence = guide.getGuideSequence();
         String pam = guide.getPam();
 
-        if (sequence == null && guideSequence == null && pam == null)
+        if (guideSequence == null && pam == null)
         {
             throw new UserOperationFailedException(SEQUENCE_ERROR);
         }

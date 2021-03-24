@@ -52,10 +52,10 @@ public class GuideMapper implements Mapper<Guide, GuideDTO>
     public Guide toEntity(GuideDTO guideDTO)
     {
         Guide guide = entityMapper.toTarget(guideDTO, Guide.class);
+        guide.setGuideSequence(guide.getGuideSequence().replace(" ", ""));
+        guide.setPam(guide.getPam().replace(" ", ""));
 
-        if ((guide.getSequence() == null || guide.getSequence().isEmpty()) &&
-                (guide.getGuideSequence() != null || !guide.getGuideSequence().isEmpty()) &&
-                (guide.getPam() != null || !guide.getPam().isEmpty()))
+        if (guide.getSequence() == null || guide.getSequence().isEmpty())
         {
             guide.setSequence(guideDTO.getGuideSequence() + guideDTO.getPam());
         }
