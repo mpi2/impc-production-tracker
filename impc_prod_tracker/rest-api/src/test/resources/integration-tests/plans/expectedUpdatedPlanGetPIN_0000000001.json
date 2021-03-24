@@ -27,8 +27,8 @@
       {
         "id":1,
         "sequence":"CTTCACGTACCAAGGAGGGGTGG",
-        "guideSequence":null,
-        "pam":null,
+        "guideSequence":"CTTCACGTACCAAGGAGGGG",
+        "pam":"TGG",
         "chr":"X",
         "start":45334016,
         "stop":45334038,
