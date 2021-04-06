@@ -407,8 +407,6 @@ hh-test:
     
       apk --no-cache --update add jq curl
 
-      env
-
       kubectl config set-cluster local --server="${HH_KUBERNETES_ENDPOINT}"
       kubectl config set clusters.local.certificate-authority-data "${HH_KUBERNETES_CERTIFICATE_AUTHORITY_DATA}"
       kubectl config set-credentials ${HH_KUBERNETES_TEST_USER} --token="${HH_KUBERNETES_TEST_USER_TOKEN}"
@@ -432,15 +430,11 @@ hh-test:
       # IMAGE_TAG_NAME=$(echo $JSON | jq  -r '.name')
 
       REGISTRY_JSON=$( curl --header "PRIVATE-TOKEN: ${GITLAB_API_ACCESS_TOKEN}" "${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/registry/repositories/")
-      echo $REGISTRY_JSON
       REGISTRY_REPOSITORY_ID=$(echo $REGISTRY_JSON | jq '.[0].id')
-      echo $REGISTRY_REPOSITORY_ID
         
       JSON=$( curl --header "PRIVATE-TOKEN: ${GITLAB_API_ACCESS_TOKEN}" "${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/registry/repositories/${REGISTRY_REPOSITORY_ID}/tags/${CI_COMMIT_SHA:0:12}/")
-      echo $JSON
       IMAGE_TAG_NAME=$(echo $JSON | jq  -r '.name')
-      echo $IMAGE_TAG_NAME
-
+ 
       if [ "$IMAGE_TAG_NAME" = "${CI_COMMIT_SHA:0:12}" ]; then
           # Substitute the "latest" image tag in your deployment template
           sed -i "s/latest/${CI_COMMIT_SHA:0:12}/g" kube/wp/test/api-service/api-service-deployment.yaml
@@ -483,8 +477,6 @@ hx-test:
   # Only deploy from the MPI2 impc-production-tracker repository rather than repository forks
   - |
     if [ ! -z ${HX_KUBERNETES_ENDPOINT+set} ]; then
-
-      env
 
       apk --no-cache --update add jq curl
 
