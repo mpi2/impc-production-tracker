@@ -140,9 +140,6 @@ public class Plan extends BaseEntity implements Resource<Plan>, ProcessData
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "plan")
     private Set<PlanStartingPoint> planStartingPoints;
 
-    @Column(columnDefinition = "boolean default false")
-    private boolean experimental;
-
     // Copy Constructor
     public Plan(Plan plan)
     {

@@ -82,7 +82,7 @@ public class HistoryChangesAdaptorTest
 
         List<ChangeDescription> changeDescriptionList = testInstance.getChanges();
 
-        assertThat("", changeDescriptionList.size(), is(8));
+        assertThat("", changeDescriptionList.size(), is(6));
 
         ChangeDescription changeDescription1 =
             getChangeDescription("assignmentStatus.name", changeDescriptionList);
