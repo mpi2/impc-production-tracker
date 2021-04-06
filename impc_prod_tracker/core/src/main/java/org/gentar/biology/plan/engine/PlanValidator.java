@@ -92,9 +92,6 @@ public class PlanValidator
 
     public void validateUpdate(Plan originalPlan, Plan plan)
     {
-//        if (originalPlan.getPhenotypingAttempt() != null) {
-//            validateAttemptData(originalPlan, plan);
-//        }
         validateAttemptData(originalPlan, plan);
     }
 
@@ -150,7 +147,15 @@ public class PlanValidator
         }
         if (AttemptTypeChecker.PHENOTYPING_TYPE.equalsIgnoreCase(AttemptTypeChecker.getAttemptTypeName(plan)))
         {
-            phenotypeAttemptValidator.validate(originalPlan.getPhenotypingAttempt(), plan.getPhenotypingAttempt());
+            phenotypeAttemptValidator.validateStrainNotNull(plan.getPhenotypingAttempt());
+            phenotypeAttemptValidator.validatePhenotypingExternalRefNotNull(plan.getPhenotypingAttempt());
+
+            // If the originalAttempt already exists.
+            if (originalPlan.getPhenotypingAttempt() != null)
+            {
+                phenotypeAttemptValidator.validateDataIfPhenotypeStageExists(originalPlan.getPhenotypingAttempt(),
+                        plan.getPhenotypingAttempt());
+            }
         }
     }
 
