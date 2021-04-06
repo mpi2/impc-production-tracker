@@ -1,0 +1,21 @@
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: api-service-test
+  name: api-service-test
+  namespace: mi-production-tracker-test
+spec:
+  ports:
+  - protocol: TCP
+    port: 8080
+    targetPort: 8080
+  selector:
+    app: api-service-test
+  #
+  # Note:
+  # To use an Ingress Controller
+  # the type should be set as ClusterIP
+  # rather than NodePort or LoadBalancer.
+  #
+  type: ClusterIP

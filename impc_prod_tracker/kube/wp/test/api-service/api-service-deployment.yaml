@@ -1,0 +1,48 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: api-service-test
+  name: api-service-test
+  namespace: mi-production-tracker-test
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: api-service-test
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: api-service-test
+    spec:
+      imagePullSecrets:
+        - name: trackerapiregistrycredentials
+      containers:
+        - image: dockerhub.ebi.ac.uk/mouse-informatics/impc-production-tracker-mirror:latest
+          imagePullPolicy: Always
+          name: api-service-test
+          env:
+          - name: EBI_PROXY
+            value: "TRUE"
+          - name: GENTAR_SCHEMA
+            value: "TRUE"
+          - name: AAP_DOMAIN
+            valueFrom:
+              secretKeyRef:
+                name: aap-domain
+                key: domain
+          - name: SERVER_SERVLET_CONTEXT_PATH
+            value: /production-tracker-test-api
+          - name: TRACKER_POSTGRESQL_DB_HOST
+            value: production-tracker-test-database
+          - name: TRACKER_POSTGRESQL_DB_PORT
+            value: "5432"
+          - name: REDEPLOY_KEY
+            value: "STRING_REPLACED_DURING_REDEPLOY"
+          ports:
+            - containerPort: 8080
+              protocol: TCP
+          resources: { }
