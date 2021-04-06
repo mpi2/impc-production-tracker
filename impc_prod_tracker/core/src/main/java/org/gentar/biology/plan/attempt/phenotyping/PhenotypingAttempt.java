@@ -39,10 +39,10 @@ public class PhenotypingAttempt extends BaseEntity
     private String phenotypingExternalRef;
 
     @NotNull
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(targetEntity = Strain.class, cascade = CascadeType.ALL)
     private Strain strain;
 
-    @ManyToOne(targetEntity = WorkUnit.class)
+    @ManyToOne(targetEntity = WorkUnit.class, cascade = CascadeType.ALL)
     private WorkUnit cohortWorkUnit;
 
     @ToString.Exclude
