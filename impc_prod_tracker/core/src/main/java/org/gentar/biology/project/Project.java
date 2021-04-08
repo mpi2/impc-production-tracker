@@ -22,6 +22,7 @@ import org.gentar.biology.colony.Colony;
 import org.gentar.biology.outcome.Outcome;
 import org.gentar.biology.plan.type.PlanTypeName;
 import org.gentar.biology.project.summary_status.ProjectSummaryStatusStamp;
+import org.gentar.biology.project.type.ProjectType;
 import org.gentar.biology.status.Status;
 import org.gentar.exceptions.SystemOperationFailedException;
 import org.gentar.organization.work_group.WorkGroup;
@@ -144,6 +145,9 @@ public class Project extends BaseEntity implements Resource<Project>
     @OneToMany(cascade=CascadeType.ALL, mappedBy = "project", orphanRemoval=true)
     private Set<ProjectConsortium> projectConsortia;
 
+    @ManyToOne(targetEntity= ProjectType.class)
+    private ProjectType projectType;
+
     @Override
     @JsonIgnore
     public ResourcePrivacy getResourcePrivacy()
@@ -178,6 +182,7 @@ public class Project extends BaseEntity implements Resource<Project>
         restrictedProject.setReactivationDate(reactivationDate);
         restrictedProject.setComment(comment);
         restrictedProject.setRecovery(recovery);
+        restrictedProject.setProjectType(projectType);
         restrictedProject.setProjectIntentions(projectIntentions);
         restrictedProject.setIsObjectRestricted(true);
         return restrictedProject;
