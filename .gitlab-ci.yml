@@ -43,12 +43,17 @@ variables:
 
 
 stages:
+#   - env
    - build
    - production-deploy
    - sandbox-deploy
    - dev-deploy
    - test-deploy
 
+# env:
+#   stage: env
+#   script:
+#     - export
 
 
 build_image:
@@ -160,7 +165,7 @@ hh-sandbox:
   rules:
     - if: '$PRODUCTION_DEPLOYMENT != "true" && $CI_PROJECT_NAMESPACE == "mouse-informatics" && $CI_BUILD_REF_NAME == "master" && $CI_PIPELINE_SOURCE == "schedule"'
       when: on_success
-    - if: '$PRODUCTION_DEPLOYMENT != "true" && $CI_PROJECT_NAMESPACE == "mouse-informatics" && $CI_BUILD_REF_NAME == "master" && $CI_PIPELINE_SOURCE == "trigger"'
+    - if: '$PRODUCTION_DEPLOYMENT != "true" && $CI_PROJECT_NAMESPACE == "mouse-informatics" && $CI_BUILD_REF_NAME == "master" && $CI_PIPELINE_SOURCE == "pipeline"'
       when: on_success
   script:
   # Only deploy from the MPI2 impc-production-tracker repository rather than repository forks
@@ -206,7 +211,7 @@ hx-sandbox:
   rules:
     - if: '$PRODUCTION_DEPLOYMENT != "true" && $CI_PROJECT_NAMESPACE == "mouse-informatics" && $CI_BUILD_REF_NAME == "master" && $CI_PIPELINE_SOURCE == "schedule"'
       when: on_success
-    - if: '$PRODUCTION_DEPLOYMENT != "true" && $CI_PROJECT_NAMESPACE == "mouse-informatics" && $CI_BUILD_REF_NAME == "master" && $CI_PIPELINE_SOURCE == "trigger"'
+    - if: '$PRODUCTION_DEPLOYMENT != "true" && $CI_PROJECT_NAMESPACE == "mouse-informatics" && $CI_BUILD_REF_NAME == "master" && $CI_PIPELINE_SOURCE == "pipeline"'
       when: on_success
   script:
   # Only deploy from the MPI2 impc-production-tracker repository rather than repository forks
