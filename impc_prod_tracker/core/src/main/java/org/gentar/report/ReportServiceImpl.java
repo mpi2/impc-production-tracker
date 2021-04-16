@@ -50,7 +50,7 @@ public class ReportServiceImpl implements ReportService {
             List<Report> reportList = reportRepository.findAllByReportType_NameIs(name);
             List<Report> reportsToRemove = reportList
                     .stream()
-                    .sorted(Comparator.comparing(BaseEntity::getCreatedAt))
+                    .sorted(Comparator.comparing(BaseEntity::getCreatedAt).reversed())
                     .skip(2)
                     .collect(Collectors.toList());
             if (reportsToRemove.size() > 0) {
