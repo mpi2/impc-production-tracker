@@ -25,6 +25,7 @@ import lombok.Setter;
 import lombok.ToString;
 import org.gentar.audit.diff.IgnoreForAuditingChanges;
 import org.gentar.biology.outcome.Outcome;
+import org.gentar.biology.plan.attempt.esCell.EsCellAttempt;
 import org.gentar.biology.plan.starting_point.PlanStartingPoint;
 import org.gentar.biology.plan.status.PlanStatusStamp;
 import org.gentar.biology.plan.status.PlanSummaryStatusStamp;
@@ -183,6 +184,10 @@ public class Plan extends BaseEntity implements Resource<Plan>, ProcessData
     @ToString.Exclude
     @OneToOne(cascade=CascadeType.ALL, mappedBy = "plan")
     private BreedingAttempt breedingAttempt;
+
+    @ToString.Exclude
+    @OneToOne(cascade=CascadeType.ALL, mappedBy = "plan")
+    private EsCellAttempt esCellAttempt;
 
     @Override
     public String toString()

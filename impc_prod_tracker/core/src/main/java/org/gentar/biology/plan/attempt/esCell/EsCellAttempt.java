@@ -64,7 +64,7 @@ public class EsCellAttempt extends BaseEntity
 
     private Integer number_of_males_with_100_percent_chimerism;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     private Strain test_cross_strain_id;
 
     private LocalDate date_chimeras_mated;

@@ -14,8 +14,8 @@ import javax.validation.constraints.NotNull;
 public class EsCellCentrePipeline extends BaseEntity
 {
     @Id
-    @SequenceGenerator(name = "projectEsCellQcCommentSeq", sequenceName = "PROJECT_ES_CELL_QC_COMMENT_SEQ")
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "projectEsCellQcCommentSeq")
+    @SequenceGenerator(name = "esCellCentrePipelineSeq", sequenceName = "ES_CELL_CENTRE_PIPELINE_SEQ")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "esCellCentrePipelineSeq")
     private Long id;
 
     @NotNull
