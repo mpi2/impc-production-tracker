@@ -19,9 +19,9 @@ spec:
         app: api-service
     spec:
       imagePullSecrets:
-        - name: trackerapiregistrycredentials
+      - name: trackerapiregistrycredentials
       containers:
-        - image: dockerhub.ebi.ac.uk/mouse-informatics/impc-production-tracker-mirror:latest
+      - image: dockerhub.ebi.ac.uk/mouse-informatics/impc-production-tracker-mirror:latest
         imagePullPolicy: Always
         name: api-service
         envFrom:
