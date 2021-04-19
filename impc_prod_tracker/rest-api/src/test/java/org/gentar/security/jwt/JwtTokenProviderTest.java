@@ -9,14 +9,11 @@ import io.jsonwebtoken.SigningKeyResolverAdapter;
 import io.jsonwebtoken.impl.DefaultClaims;
 import io.jsonwebtoken.impl.crypto.MacProvider;
 import org.gentar.exceptions.OperationFailedException;
-import org.gentar.organization.person.Person;
 import org.gentar.security.PublicKeyProvider;
 import org.gentar.security.abac.subject.AapSystemSubject;
 import org.junit.After;
 import org.junit.Before;
-import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
@@ -32,6 +29,7 @@ import java.util.UUID;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.spy;
@@ -41,8 +39,6 @@ import static org.mockito.Mockito.when;
 public class JwtTokenProviderTest
 {
     private JwtTokenProvider testInstance;
-    @Rule
-    public ExpectedException exceptionRule = ExpectedException.none();
 
     @Mock
     private PublicKeyProvider publicKeyProvider;
@@ -85,18 +81,19 @@ public class JwtTokenProviderTest
         testInstance = spy(testInstance);
 
         AapSystemSubject aapSystemSubject = buildSubject(claims);
-        Person person = new Person();
+        //Person person = new Person();
        // person.setName(SUBJECT_NAME);
 
         when(systemSubject.buildSystemSubjectByPerson(any())).thenReturn(aapSystemSubject);
     }
 
     @After
-    public void tearDown() throws Exception
+    public void tearDown()
     {
     }
 
     @Test
+    @SuppressWarnings("unchecked")
     public void testGetClaims()
     {
         doReturn(signingKeyResolver).when(testInstance).getSigningKeyResolver();
@@ -128,27 +125,24 @@ public class JwtTokenProviderTest
     @Test
     public void testGetAuthenticationWithNullToken()
     {
-        exceptionRule.expect(OperationFailedException.class);
-        exceptionRule.expectMessage(JwtTokenProvider.NULL_EMPTY_TOKEN_MESSAGE);
-
-        testInstance.getAuthentication(null);
+        Exception exception = assertThrows(OperationFailedException.class, () ->
+                testInstance.getAuthentication(null));
+        assertEquals(JwtTokenProvider.NULL_EMPTY_TOKEN_MESSAGE, exception.getMessage());
     }
 
     @Test
     public void testGetAuthenticationWithEmptyToken()
     {
-        exceptionRule.expect(OperationFailedException.class);
-        exceptionRule.expectMessage(JwtTokenProvider.NULL_EMPTY_TOKEN_MESSAGE);
-
-        testInstance.getAuthentication("");
+        Exception exception = assertThrows(OperationFailedException.class, () ->
+                testInstance.getAuthentication(""));
+        assertEquals(JwtTokenProvider.NULL_EMPTY_TOKEN_MESSAGE, exception.getMessage());
     }
 
     @Test
     public void testGetAuthenticationWithMalformedToken()
     {
-        exceptionRule.expect(io.jsonwebtoken.MalformedJwtException.class);
-
-        testInstance.getAuthentication("x");
+        assertThrows(io.jsonwebtoken.MalformedJwtException.class, () ->
+                testInstance.getAuthentication("x"));
     }
 
     @Test
@@ -191,14 +185,15 @@ public class JwtTokenProviderTest
     @Test
     public void testValidateTokenWhenExpired()
     {
-        exceptionRule.expect(OperationFailedException.class);
-        exceptionRule.expectMessage(JwtTokenProvider.INVALID_TOKEN_MESSAGE);
-
         doReturn(signingKeyResolver).when(testInstance).getSigningKeyResolver();
 
         Date exp = new Date(System.currentTimeMillis() - (1000 * 30)); // 30 seconds
         String token =  generateToken(exp);
-        testInstance.validateToken(token);
+
+        Exception exception = assertThrows(OperationFailedException.class, () ->
+                testInstance.validateToken(token));
+        assertEquals(JwtTokenProvider.INVALID_TOKEN_MESSAGE, exception.getMessage());
+
     }
 
     private Claims buildClaims()
