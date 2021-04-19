@@ -18,10 +18,8 @@ spec:
       labels:
         app: api-service-sandbox
     spec:
-      imagePullSecrets:
-        - name: trackerapiregistrycredentials
       containers:
-        - image: dockerhub.ebi.ac.uk/mouse-informatics/impc-production-tracker-mirror:latest
+      - image: rwilsonebi/production-tracker:latest
         imagePullPolicy: Always
         name: api-service-sandbox
         env:
