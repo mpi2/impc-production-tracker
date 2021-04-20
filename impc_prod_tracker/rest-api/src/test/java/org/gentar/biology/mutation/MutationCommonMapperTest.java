@@ -10,10 +10,12 @@ import org.gentar.biology.outcome.Outcome;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
@@ -23,7 +25,6 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
-@SpringBootTest
 @ExtendWith(MockitoExtension.class)
 class MutationCommonMapperTest
 {
@@ -39,14 +40,11 @@ class MutationCommonMapperTest
     public static final String GENETIC_MUTATION_TYPE = "geneticMutationType";
     public static final String MOLECULAR_MUTATION_TYPE = "molecularMutationType";
     public static final String FILE_GB = "fileGb";
-    public static final String SYMBOL = "symbol";
+    public static final String SYMBOL = "MGI:123456";
     public static final String TPO = "tpo";
     public static final String MUTATION_CATEGORIZATION = "mutationCategorization";
 
     private MutationCommonMapper testInstance;
-
-    @Autowired
-    private EntityMapper entityMapper;
 
     @Mock
     private MutationQCResultMapper mutationQCResultMapper;
@@ -64,7 +62,6 @@ class MutationCommonMapperTest
     {
         testInstance =
             new MutationCommonMapper(
-                entityMapper,
                 mutationQCResultMapper,
                 mutationCategorizationMapper,
                 mutationSequenceMapper, geneticMutationTypeMapper, molecularMutationTypeMapper);
