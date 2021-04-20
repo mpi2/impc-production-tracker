@@ -131,12 +131,16 @@ public class Plan extends BaseEntity implements Resource<Plan>, ProcessData
     private Set<Protocol> protocols;
 
     @ToString.Exclude
-    @EqualsAndHashCode.Exclude
+    // @EqualsAndHashCode.Exclude
+    // The @Exclude annotation is not needed;
+    // 'onlyExplicitlyIncluded' is set above, so this member would be excluded anyway
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "plan")
     private Set<Outcome> outcomes;
 
     @ToString.Exclude
-    @EqualsAndHashCode.Exclude
+    // @EqualsAndHashCode.Exclude
+    // The @Exclude annotation is not needed;
+    // 'onlyExplicitlyIncluded' is set above, so this member would be excluded anyway
     @IgnoreForAuditingChanges
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "plan")
     private Set<PlanStartingPoint> planStartingPoints;
