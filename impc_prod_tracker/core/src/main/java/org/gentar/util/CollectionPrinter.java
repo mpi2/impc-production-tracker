@@ -8,6 +8,7 @@ import java.util.Map;
 /**
  * Utility class to print a collections in a format that is easy to visualise.
  */
+@SuppressWarnings("unchecked")
 public class CollectionPrinter
 {
     public static void print(Map map)

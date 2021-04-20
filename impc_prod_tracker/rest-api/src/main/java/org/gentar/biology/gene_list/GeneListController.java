@@ -1,4 +1,4 @@
-/******************************************************************************
+/* *************************************************************************
  Copyright 2019 EMBL - European Bioinformatics Institute
 
  Licensed under the Apache License, Version 2.0 (the
@@ -20,7 +20,6 @@ import org.gentar.biology.gene_list.filter.GeneListFilter;
 import org.gentar.biology.gene_list.filter.GeneListFilterBuilder;
 import org.gentar.biology.gene_list.record.GeneListProjection;
 import org.gentar.biology.gene_list.record.ListRecord;
-import org.gentar.biology.gene_list.record.ListRecordType;
 import org.gentar.biology.gene_list.record.ListRecordTypeService;
 import org.gentar.helpers.CsvReader;
 import org.gentar.helpers.CsvWriter;
@@ -176,9 +175,7 @@ public class GeneListController
         {
             Map<String, String> converted =
                 geneExternalService.getAccIdsByMarkerSymbols(markerSymbols);
-            converted.forEach((k, v) -> {
-                accIds.add(v);
-            });
+            converted.forEach((k, v) -> accIds.add(v));
         }
 
         return accIds;
@@ -309,7 +306,7 @@ public class GeneListController
     @Transactional(readOnly = true)
     public void exportProjection(
             HttpServletResponse response,
-            @PathVariable("consortiumName") String consortiumName) throws IOException
+            @PathVariable("consortiumName") String consortiumName)
     {
         List<GeneListProjection> glp = geneListService.getGeneListProjectionsByConsortiumName(consortiumName);
         Map<Long, List<GeneListProjection>> listRecordGenes = glp.stream().collect(Collectors.groupingBy(GeneListProjection::getId));
@@ -328,7 +325,7 @@ public class GeneListController
                 List<String> geneSymbols = listRecordGenes.get(k).stream().map(GeneListProjection::getSymbol).distinct().collect(Collectors.toList());
                 List<String> projectList = getProjectsForListRecord(k,geneSymbols, geneProjectsSet);
                 projectList.forEach(tpn ->
-                    System.out.println(geneSymbols.stream().collect(Collectors.joining(",")) +
+                    System.out.println(String.join(",", geneSymbols) +
                             "\t" + listRecordGenes.get(k).get(0).getNote() +
                             "\t" + listRecordTypeByListRecord.get(k).stream().distinct().collect(Collectors.joining(",")) +
                             "\t" + listRecordGenes.get(k).get(0).getVisible() +
@@ -338,25 +335,18 @@ public class GeneListController
 
                 );
         });
-        //        Map<String, List<String>> geneProjectsSet = glp.stream().collect(Collectors.groupingBy(GeneListProjection::getSymbol));
-//
-//        Map<String, List<String>> listRecordGenes = glp.stream()
-//                .flatMap(e -> e.getValue().stream()
-//                        .map(i -> Map.entry(e.getKey(), models.get(i).stream())))
-//                .collect(groupingBy(Map.Entry::getKey,
-//                        Collectors.flatMapping(Map.Entry::getValue, Collectors.toList())));
 
     }
 
     private List<String> getProjectsForListRecord(Long listRecordId,
                                                   List<String> geneSymbols,
                                                   Map<String, Set<String>> geneProjectsSet) {
-        List projectList = new ArrayList<>();
+        List<String> projectList = new ArrayList<>();
 
         if (geneSymbols.size() == 1) {
             projectList = List.copyOf(geneProjectsSet.get(geneSymbols.get(0)));
         } else if (geneSymbols.size() > 1) {
-            List<Set> listOfProjectSets  = new ArrayList<>();
+            List<Set<String>> listOfProjectSets  = new ArrayList<>();
             geneSymbols.forEach(s -> listOfProjectSets.add(geneProjectsSet.get(s)));
             for (int i = 1; i < listOfProjectSets.size(); i++) {
                 listOfProjectSets.get(0).retainAll(listOfProjectSets.get(i));
