@@ -12,13 +12,14 @@ import org.gentar.organization.institute.Institute;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -28,7 +29,6 @@ import static org.hamcrest.Matchers.notNullValue;
 import static org.hamcrest.core.Is.is;
 import static org.mockito.Mockito.when;
 
-@SpringBootTest
 @ExtendWith(MockitoExtension.class)
 class ProjectCommonDataMapperTest
 {
@@ -40,30 +40,20 @@ class ProjectCommonDataMapperTest
     public static final LocalDateTime REACTIVATION_DATE = LocalDateTime.of(2020, 1, 1, 1, 1);
     public static final String EXTERNAL_REFERENCE = "External reference";
     public static final boolean RECOVERY = true;
+
     private ProjectCommonDataMapper testInstance;
 
-    @Autowired
-    EntityMapper entityMapper;
-
     @Mock
-    PrivacyMapper privacyMapper;
+    private PrivacyMapper privacyMapper;
 
     @BeforeEach
     void setUp()
     {
-        testInstance = new ProjectCommonDataMapper(entityMapper, privacyMapper);
+        testInstance = new ProjectCommonDataMapper(privacyMapper);
     }
 
     @Test
-    void testToDtoEmptyEntity()
-    {
-        Project project = new Project();
-        ProjectCommonDataDTO projectDTO = testInstance.toDto(project);
-        assertThat(projectDTO, is(notNullValue()));
-    }
-
-    @Test
-    void testToDtoEntityWithData()
+    void toDto()
     {
         Project project = new Project();
         Privacy privacy = new Privacy();
@@ -99,15 +89,7 @@ class ProjectCommonDataMapperTest
     }
 
     @Test
-    void testToEntityEmptyDto()
-    {
-        ProjectCommonDataDTO projectCommonDataDTO = new ProjectCommonDataDTO();
-        Project project = testInstance.toEntity(projectCommonDataDTO);
-        assertThat(project, is(notNullValue()));
-    }
-
-    @Test
-    void testToEntityDtoWithData()
+    void toEntity()
     {
         ProjectCommonDataDTO projectCommonDataDTO = new ProjectCommonDataDTO();
         projectCommonDataDTO.setPrivacyName(PRIVACY_NAME);

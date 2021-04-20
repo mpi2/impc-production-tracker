@@ -14,7 +14,6 @@ import java.util.Set;
 @Component
 public class MutationCommonMapper implements Mapper<Mutation, MutationCommonDTO>
 {
-    private final EntityMapper entityMapper;
     private final MutationQCResultMapper mutationQCResultMapper;
     private final MutationCategorizationMapper mutationCategorizationMapper;
     private final MutationSequenceMapper mutationSequenceMapper;
@@ -22,14 +21,12 @@ public class MutationCommonMapper implements Mapper<Mutation, MutationCommonDTO>
     private final MolecularMutationTypeMapper molecularMutationTypeMapper;
 
     public MutationCommonMapper(
-        EntityMapper entityMapper,
         MutationQCResultMapper mutationQCResultMapper,
         MutationCategorizationMapper mutationCategorizationMapper,
         MutationSequenceMapper mutationSequenceMapper,
         GeneticMutationTypeMapper geneticMutationTypeMapper,
         MolecularMutationTypeMapper molecularMutationTypeMapper)
     {
-        this.entityMapper = entityMapper;
         this.mutationQCResultMapper = mutationQCResultMapper;
         this.mutationCategorizationMapper = mutationCategorizationMapper;
         this.mutationSequenceMapper = mutationSequenceMapper;
@@ -40,9 +37,13 @@ public class MutationCommonMapper implements Mapper<Mutation, MutationCommonDTO>
     @Override
     public MutationCommonDTO toDto(Mutation mutation)
     {
-        MutationCommonDTO mutationCommonDTO = entityMapper.toTarget(mutation, MutationCommonDTO.class);
+        MutationCommonDTO mutationCommonDTO = new MutationCommonDTO();
         mutationCommonDTO.setSymbol(mutation.getSymbol());
         mutationCommonDTO.setDescription(mutation.getDescription());
+        mutationCommonDTO.setMgiAlleleSymbolRequiresConstruction(mutation.getMgiAlleleSymbolRequiresConstruction());
+        mutationCommonDTO.setGeneticMutationTypeName(mutation.getGeneticMutationType().getName());
+        mutationCommonDTO.setMolecularMutationTypeName(mutation.getMolecularMutationType().getName());
+        mutationCommonDTO.setAlleleConfirmed(mutation.getAlleleConfirmed());
         mutationCommonDTO.setMutationQCResultDTOs(
             mutationQCResultMapper.toDtos(mutation.getMutationQcResults()));
         mutationCommonDTO.setMutationSequenceDTOS(
