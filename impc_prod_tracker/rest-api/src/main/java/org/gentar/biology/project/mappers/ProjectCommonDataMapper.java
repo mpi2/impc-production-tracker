@@ -13,29 +13,32 @@ import org.springframework.stereotype.Component;
 @Component
 public class ProjectCommonDataMapper implements Mapper<Project, ProjectCommonDataDTO>
 {
-    private EntityMapper entityMapper;
     private PrivacyMapper privacyMapper;
 
     public ProjectCommonDataMapper(
-        EntityMapper entityMapper,
         PrivacyMapper privacyMapper)
     {
-        this.entityMapper = entityMapper;
         this.privacyMapper = privacyMapper;
     }
 
     @Override
     public ProjectCommonDataDTO toDto(Project entity)
     {
-        ProjectCommonDataDTO projectCommonDataDTO =
-            entityMapper.toTarget(entity, ProjectCommonDataDTO.class);
+        ProjectCommonDataDTO projectCommonDataDTO = new ProjectCommonDataDTO();
+        projectCommonDataDTO.setPrivacyName(entity.getPrivacy().getName());
+        projectCommonDataDTO.setRecovery(entity.getRecovery());
+        projectCommonDataDTO.setComment(entity.getComment());
+        projectCommonDataDTO.setReactivationDate(entity.getReactivationDate());
         return projectCommonDataDTO;
     }
 
     @Override
     public Project toEntity(ProjectCommonDataDTO projectCommonDataDTO)
     {
-        Project project = entityMapper.toTarget(projectCommonDataDTO, Project.class);
+        Project project = new Project();
+        project.setRecovery(projectCommonDataDTO.getRecovery());
+        project.setComment(projectCommonDataDTO.getComment());
+        project.setReactivationDate(projectCommonDataDTO.getReactivationDate());
         setPrivacyToEntity(project, projectCommonDataDTO);
         return project;
     }

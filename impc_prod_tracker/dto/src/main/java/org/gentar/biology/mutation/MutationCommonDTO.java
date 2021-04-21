@@ -8,15 +8,14 @@ import java.util.List;
 @Data
 public class MutationCommonDTO
 {
+    private String symbol;
+    private String description;
     private Boolean mgiAlleleSymbolRequiresConstruction;
     private String geneticMutationTypeName;
     private String molecularMutationTypeName;
-    private String symbol;
 
     @JsonIgnore
     private Boolean alleleConfirmed;
-
-    private String description;
 
     @JsonProperty("mutationQcResults")
     private List<MutationQCResultDTO> mutationQCResultDTOs;
