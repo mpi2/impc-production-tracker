@@ -42,7 +42,9 @@ public class MutationCommonMapper implements Mapper<Mutation, MutationCommonDTO>
         mutationCommonDTO.setDescription(mutation.getDescription());
         mutationCommonDTO.setMgiAlleleSymbolRequiresConstruction(mutation.getMgiAlleleSymbolRequiresConstruction());
         mutationCommonDTO.setGeneticMutationTypeName(mutation.getGeneticMutationType().getName());
-        mutationCommonDTO.setMolecularMutationTypeName(mutation.getMolecularMutationType().getName());
+        if (mutation.getMolecularMutationType() != null) {
+            mutationCommonDTO.setMolecularMutationTypeName(mutation.getMolecularMutationType().getName());
+        }
         mutationCommonDTO.setAlleleConfirmed(mutation.getAlleleConfirmed());
         mutationCommonDTO.setMutationQCResultDTOs(
             mutationQCResultMapper.toDtos(mutation.getMutationQcResults()));
