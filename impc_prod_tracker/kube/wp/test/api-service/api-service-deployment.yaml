@@ -42,14 +42,7 @@ spec:
             value: "5432"
           - name: REDEPLOY_KEY
             value: "STRING_REPLACED_DURING_REDEPLOY"
-          volumeMounts:
-          - name: tz-gb
-            mountPath: /etc/localtime
           ports:
             - containerPort: 8080
               protocol: TCP
           resources: { }
-      volumes:
-        - name: tz-gb
-          hostPath:
-            path: /usr/share/zoneinfo/GB
