@@ -24,6 +24,5 @@ public class TargRepMutationType extends BaseEntity
     @NotNull
     private String code;
 
-    @NotNull
     private String alleleCode;
 }
