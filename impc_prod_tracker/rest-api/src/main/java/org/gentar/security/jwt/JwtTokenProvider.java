@@ -35,6 +35,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
 import javax.servlet.http.HttpServletRequest;
 import java.security.Key;
+import java.time.Instant;
 import java.util.Date;
 
 /**
@@ -115,7 +116,7 @@ public class JwtTokenProvider
                 .setSigningKeyResolver(getSigningKeyResolver())
                 .parseClaimsJws(token);
 
-            if (claims.getBody().getExpiration().before(new Date()))
+            if (claims.getBody().getExpiration().before(Date.from(Instant.now())))
             {
                 return false;
             }
