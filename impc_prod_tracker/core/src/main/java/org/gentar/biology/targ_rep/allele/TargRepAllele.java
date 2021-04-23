@@ -61,7 +61,7 @@ public class TargRepAllele extends BaseEntity
 
     private String floxedEndExon;
 
-    private String projectDesignId;
+    private Integer projectDesignId;
 
     private String reporter;
 
