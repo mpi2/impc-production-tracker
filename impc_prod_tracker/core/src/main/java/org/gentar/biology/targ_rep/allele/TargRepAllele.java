@@ -1,10 +1,10 @@
 package org.gentar.biology.targ_rep.allele;
 
-import com.fasterxml.jackson.databind.ser.Serializers;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+import org.gentar.BaseEntity;
 import org.gentar.biology.targ_rep.allele.genebank_file.TargRepGenebankFile;
 import org.gentar.biology.targ_rep.allele.mutation_method.TargRepMutationMethod;
 import org.gentar.biology.targ_rep.allele.mutation_subtype.TargRepMutationSubtype;
@@ -17,11 +17,11 @@ import javax.validation.constraints.NotNull;
 @NoArgsConstructor(access= AccessLevel.PUBLIC, force=true)
 @Data
 @Entity
-public class TargRepAllele extends Serializers.Base
+public class TargRepAllele extends BaseEntity
 {
     @Id
-    @SequenceGenerator(name = "projectTypeSeq", sequenceName = "PROJECT_TYPE_SEQ")
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "projectTypeSeq")
+    @SequenceGenerator(name = "targRepAlleleSeq", sequenceName = "TARG_REP_ALLELE_SEQ")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "targRepAlleleSeq")
     private Long id;
 
     @ToString.Exclude
@@ -39,23 +39,18 @@ public class TargRepAllele extends Serializers.Base
     @NotNull
     private String strand;
 
-    @NotNull
     private Integer homologyArmStart;
 
-    @NotNull
     private Integer homologyArmEnd;
 
     private Integer loxpStart;
 
     private Integer loxpEnd;
 
-    @NotNull
     private Integer cassetteStart;
 
-    @NotNull
     private Integer cassetteEnd;
 
-    @NotNull
     private String cassette;
 
     private String backbone;
@@ -66,7 +61,7 @@ public class TargRepAllele extends Serializers.Base
 
     private String floxedEndExon;
 
-    private String projectDesignId;
+    private Integer projectDesignId;
 
     private String reporter;
 
@@ -78,17 +73,16 @@ public class TargRepAllele extends Serializers.Base
     @ManyToOne
     private TargRepMutationType mutationType;
 
-    @NotNull
     @ManyToOne
     private TargRepMutationSubtype mutationSubtype;
 
-    @NotNull
     private String cassetteType;
 
     private Integer intron;
 
     private String type;
 
+    @NotNull
     @Column(columnDefinition = "boolean default false")
     private Boolean hasIssue;
 
