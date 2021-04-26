@@ -29,6 +29,7 @@ public class MutagenesisDonor extends BaseEntity
     @Column(columnDefinition = "TEXT")
     private String oligoSequenceFasta;
 
+    //    Connection to targ_rep_targeting_vector
     private String vectorName;
 
     @Override

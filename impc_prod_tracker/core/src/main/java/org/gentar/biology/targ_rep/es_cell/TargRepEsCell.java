@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 import org.gentar.BaseEntity;
 import org.gentar.biology.targ_rep.allele.TargRepAllele;
+import org.gentar.biology.targ_rep.centre.TargRepCentre;
 import org.gentar.biology.targ_rep.es_cell.mutation_subtype.TargRepEsCellMutationSubtype;
 import org.gentar.biology.targ_rep.ikmc_project.TargRepIkmcProject;
 import org.gentar.biology.targ_rep.pipeline.TargRepPipeline;
@@ -100,8 +101,8 @@ public class TargRepEsCell extends BaseEntity
 
     private String userQcKaryotypePcr;
 
-    @ManyToOne(targetEntity= WorkUnit.class)
-    private WorkUnit userQcMouseClinicId;
+    @ManyToOne(targetEntity= TargRepCentre.class)
+    private TargRepCentre userQcMouseClinicId;
 
     private String userQcChr1;
 
