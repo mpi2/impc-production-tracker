@@ -101,7 +101,7 @@ public class TargRepEsCell extends BaseEntity
     private String userQcKaryotypePcr;
 
     @ManyToOne(targetEntity= TargRepCentre.class)
-    private TargRepCentre userQcMouseClinicId;
+    private TargRepCentre userQcMouseClinic;
 
     private String userQcChr1;
 
