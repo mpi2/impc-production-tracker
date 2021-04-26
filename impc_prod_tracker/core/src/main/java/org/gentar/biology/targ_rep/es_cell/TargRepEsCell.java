@@ -33,7 +33,6 @@ public class TargRepEsCell extends BaseEntity
     private TargRepAllele allele;
 
     @ToString.Exclude
-    @NotNull
     @ManyToOne(targetEntity= TargRepTargetingVector.class)
     private TargRepTargetingVector targetingVector;
 
@@ -54,10 +53,10 @@ public class TargRepEsCell extends BaseEntity
     @ManyToOne(targetEntity= TargRepPipeline.class)
     private TargRepPipeline pipeline;
 
+    @NotNull
     @Column(columnDefinition = "boolean default true")
     private Boolean reportToPublic;
 
-    @NotNull
     @ManyToOne(targetEntity= TargRepStrain.class)
     private TargRepStrain strain;
 
