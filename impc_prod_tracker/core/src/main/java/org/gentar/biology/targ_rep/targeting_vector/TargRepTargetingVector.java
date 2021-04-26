@@ -36,10 +36,10 @@ public class TargRepTargetingVector extends BaseEntity
 
     private String intermediateVector;
 
+    @NotNull
     @Column(columnDefinition = "boolean default true")
     private Boolean reportToPublic;
 
-    @NotNull
     @ManyToOne(targetEntity= TargRepPipeline.class)
     private TargRepPipeline pipeline;
 
@@ -50,6 +50,7 @@ public class TargRepTargetingVector extends BaseEntity
 
     private String alleleTypePrediction;
 
+    @NotNull
     @Column(columnDefinition = "boolean default true")
     private Boolean productionCentreAutoUpdate;
 }

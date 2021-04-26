@@ -33,7 +33,6 @@ public class TargRepEsCell extends BaseEntity
     private TargRepAllele allele;
 
     @ToString.Exclude
-    @NotNull
     @ManyToOne(targetEntity= TargRepTargetingVector.class)
     private TargRepTargetingVector targetingVector;
 
@@ -54,16 +53,16 @@ public class TargRepEsCell extends BaseEntity
     @ManyToOne(targetEntity= TargRepPipeline.class)
     private TargRepPipeline pipeline;
 
+    @NotNull
     @Column(columnDefinition = "boolean default true")
     private Boolean reportToPublic;
 
-    @NotNull
     @ManyToOne(targetEntity= TargRepStrain.class)
     private TargRepStrain strain;
 
     private String userQcMapTest;
 
-    private String userQckaryotype;
+    private String userQcKaryotype;
 
     private String userQcTvBackboneAssay;
 
@@ -102,7 +101,7 @@ public class TargRepEsCell extends BaseEntity
     private String userQcKaryotypePcr;
 
     @ManyToOne(targetEntity= TargRepCentre.class)
-    private TargRepCentre userQcMouseClinicId;
+    private TargRepCentre userQcMouseClinic;
 
     private String userQcChr1;
 
@@ -112,7 +111,7 @@ public class TargRepEsCell extends BaseEntity
 
     private String userQcChry;
 
-    private String qcLaczQpcr;
+    private String userQcLaczQpcr;
 
     @ManyToOne(targetEntity= TargRepIkmcProject.class)
     private TargRepIkmcProject ikmcProject;

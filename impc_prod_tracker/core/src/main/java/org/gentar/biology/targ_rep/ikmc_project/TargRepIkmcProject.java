@@ -23,7 +23,6 @@ public class TargRepIkmcProject extends BaseEntity
     @NotNull
     private String name;
 
-    @NotNull
     @ManyToOne(targetEntity= TargRepIkmcProjectStatus.class)
     private TargRepIkmcProjectStatus status;
 

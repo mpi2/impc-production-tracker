@@ -25,10 +25,4 @@ public class TargRepCentre extends BaseEntity
     private String fullName;
 
     private String ilarCode;
-
-    private String contactName;
-
-    private String contactEmail;
-
-    private String superscript;
 }
