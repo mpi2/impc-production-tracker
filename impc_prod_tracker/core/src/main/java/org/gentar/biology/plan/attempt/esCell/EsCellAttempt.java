@@ -26,7 +26,7 @@ public class EsCellAttempt extends BaseEntity
     private Long imitsMiAttempt;
 
 //    Connection to targ_rep_es_cell
-//    private String esCellName;
+    private String esCellName;
 
     private LocalDate miDate;
 
