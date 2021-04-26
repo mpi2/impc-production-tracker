@@ -62,7 +62,7 @@ public class TargRepEsCell extends BaseEntity
 
     private String userQcMapTest;
 
-    private String userQckaryotype;
+    private String userQcKaryotype;
 
     private String userQcTvBackboneAssay;
 
@@ -111,7 +111,7 @@ public class TargRepEsCell extends BaseEntity
 
     private String userQcChry;
 
-    private String qcLaczQpcr;
+    private String userQcLaczQpcr;
 
     @ManyToOne(targetEntity= TargRepIkmcProject.class)
     private TargRepIkmcProject ikmcProject;
