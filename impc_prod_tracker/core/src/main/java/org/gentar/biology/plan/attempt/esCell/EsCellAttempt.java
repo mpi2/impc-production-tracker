@@ -39,65 +39,90 @@ public class EsCellAttempt extends BaseEntity
     private String comment;
 
     @ManyToOne(cascade = CascadeType.ALL)
-    private Strain blast_strain_id;
+    private Strain blastStrain;
 
-    private Integer total_blasts_injected;
+    @Column(name = "total_blasts_injected")
+    private Integer totalBlastsInjected;
 
-    private Integer total_transferred;
+    @Column(name = "total_transferred")
+    private Integer totalTransferred;
 
-    private Integer number_surrogates_receiving;
+    @Column(name = "number_surrogates_receiving")
+    private Integer numberSurrogatesReceiving;
 
-    private Integer total_pups_born;
+    @Column(name = "total_pups_born")
+    private Integer totalPupsBorn;
 
-    private Integer total_female_chimeras;
+    @Column(name = "total_female_chimeras")
+    private Integer totalFemaleChimeras;
 
-    private Integer total_male_chimeras;
+    @Column(name = "total_male_chimeras")
+    private Integer totalMaleChimeras;
 
     //   Calculate by the system: total_female_chimeras + total_male_chimeras
-    private Integer total_chimeras;
+    @Column(name = "total_chimeras")
+    private Integer totalChimeras;
 
-    private Integer number_of_males_with_0_to_39_percent_chimerism;
+    @Column(name = "number_of_males_with_0_to_39_percent_chimerism")
+    private Integer numberOfMalesWith0To39PercentChimerism;
 
-    private Integer number_of_males_with_40_to_79_percent_chimerism;
+    @Column(name = "number_of_males_with_40_to_79_percent_chimerism")
+    private Integer numberOfMalesWith40To79PercentChimerism;
 
-    private Integer number_of_males_with_80_to_99_percent_chimerism;
+    @Column(name = "number_of_males_with_80_to_99_percent_chimerism")
+    private Integer numberOfMalesWith80To99PercentChimerism;
 
-    private Integer number_of_males_with_100_percent_chimerism;
+    @Column(name = "number_of_males_with_100_percent_chimerism")
+    private Integer numberOfMalesWith100PercentChimerism;
 
     @ManyToOne
-    private Strain test_cross_strain_id;
+    private Strain testCrossStrain;
 
-    private LocalDate date_chimeras_mated;
+    @Column(name = "date_chimeras_mated")
+    private LocalDate dateChimerasMated;
 
-    private Integer number_of_chimera_matings_attempted;
+    @Column(name = "number_of_chimera_matings_attempted")
+    private Integer numberOfChimeraMatingsAttempted;
 
-    private Integer number_of_chimera_matings_successful;
+    @Column(name = "number_of_chimera_matings_successful")
+    private Integer numberOfChimeraMatingsSuccessful;
 
-    private Integer number_of_chimeras_with_glt_from_cct;
+    @Column(name = "number_of_chimeras_with_glt_from_cct")
+    private Integer numberOfChimerasWithGltFromCct;
 
-    private Integer number_of_chimeras_with_glt_from_genotyping;
+    @Column(name = "number_of_chimeras_with_glt_from_genotyping")
+    private Integer numberOfChimerasWithGltFromGenotyping;
 
-    private Integer number_of_chimeras_with_0_to_9_percent_glt;
+    @Column(name = "number_of_chimeras_with_0_to_9_percent_glt")
+    private Integer numberOfChimerasWith0To9PercentGlt;
 
-    private Integer number_of_chimeras_with_10_to_49_percent_glt;
+    @Column(name = "number_of_chimeras_with_10_to_49_percent_glt")
+    private Integer numberOfChimerasWith10To49PercentGlt;
 
-    private Integer number_of_chimeras_with_50_to_99_percent_glt;
+    @Column(name = "number_of_chimeras_with_50_to_99_percent_glt")
+    private Integer numberOfChimerasWith50To99PercentGlt;
 
-    private Integer number_of_chimeras_with_100_percent_glt;
+    @Column(name = "number_of_chimeras_with_100_percent_glt")
+    private Integer numberOfChimerasWith100PercentGlt;
 
-    private Integer total_f1_mice_from_matings;
+    @Column(name = "total_f1_mice_from_matings")
+    private Integer totalF1MiceFromMatings;
 
-    private Integer number_of_cct_offspring;
+    @Column(name = "number_of_cct_offspring")
+    private Integer numberOfCctOffspring;
 
-    private LocalDate cassette_transmission_verified;
+    @Column(name = "cassette_transmission_verified")
+    private LocalDate cassetteTransmissionVerified;
 
     //  Set by the system
-    @Column(columnDefinition = "boolean default false")
-    private Boolean cassette_transmission_verified_auto_complete;
+    @Column(name = "cassette_transmission_verified_auto_complete", columnDefinition = "boolean default false")
+    private Boolean cassetteTransmissionVerifiedAutoComplete;
 
-    private Integer number_of_het_offspring;
+    @Column(name = "number_of_het_offspring")
+    private Integer numberOfHetOffspring;
 
-    private Integer number_of_live_glt_offspring;
+    @Column(name = "number_of_live_glt_offspring")
+    private Integer numberOfLiveGltOffspring;
 }
 
 

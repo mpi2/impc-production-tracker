@@ -7,7 +7,7 @@ import lombok.ToString;
 import org.gentar.BaseEntity;
 import org.gentar.biology.targ_rep.allele.genebank_file.TargRepGenebankFile;
 import org.gentar.biology.targ_rep.es_cell.TargRepEsCell;
-import org.gentar.biology.targ_rep.mutation.type.TargRepAlleleType;
+import org.gentar.biology.targ_rep.mutation.type.TargRepEsCellMutationType;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -15,7 +15,7 @@ import javax.validation.constraints.NotNull;
 @NoArgsConstructor(access= AccessLevel.PUBLIC, force=true)
 @Data
 @Entity
-public class TargRepMutation extends BaseEntity
+public class TargRepEsCellMutation extends BaseEntity
 {
     @Id
     @SequenceGenerator(name = "targRepMutationSeq", sequenceName = "TARG_REP_MUTATION_SEQ")
@@ -41,8 +41,8 @@ public class TargRepMutation extends BaseEntity
 
     @ToString.Exclude
     @NotNull
-    @ManyToOne(targetEntity= TargRepAlleleType.class)
-    private TargRepAlleleType alleleType;
+    @ManyToOne(targetEntity= TargRepEsCellMutationType.class)
+    private TargRepEsCellMutationType alleleType;
 
     @ToString.Exclude
     @ManyToOne(targetEntity= TargRepGenebankFile.class)
