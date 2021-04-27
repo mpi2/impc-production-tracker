@@ -1,4 +1,4 @@
-package org.gentar.biology.targ_rep.allele.genebank_file;
+package org.gentar.biology.targ_rep.allele.genbank_file;
 
 import lombok.AccessLevel;
 import lombok.Data;
@@ -10,11 +10,11 @@ import javax.persistence.*;
 @NoArgsConstructor(access= AccessLevel.PUBLIC, force=true)
 @Data
 @Entity
-public class TargRepGenebankFile extends BaseEntity
+public class TargRepGenbankFile extends BaseEntity
 {
     @Id
-    @SequenceGenerator(name = "targRepGenebankFileSeq", sequenceName = "TARG_REP_GENEBANK_FILE_SEQ")
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "targRepGenebankFileSeq")
+    @SequenceGenerator(name = "targRepGenbankFileSeq", sequenceName = "TARG_REP_GENBANK_FILE_SEQ")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "targRepGenbankFileSeq")
     private Long id;
 
     @Column(columnDefinition = "TEXT")
