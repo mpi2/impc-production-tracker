@@ -72,7 +72,7 @@ public class TargRepEsCell extends BaseEntity
 
     private String userQcLossOfWtAllele;
 
-    private String userQcNewCountQpcr;
+    private String userQcNeoCountQpcr;
 
     private String userQcLaczSrPcr;
 
