@@ -14,8 +14,8 @@ import javax.validation.constraints.NotNull;
 public class TargRepEsCellMutationType extends BaseEntity
 {
     @Id
-    @SequenceGenerator(name = "targRepMutationTypeSeq", sequenceName = "TARG_REP_MUTATION_TYPE_SEQ")
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "targRepMutationTypeSeq")
+    @SequenceGenerator(name = "targRepEsCellMutationTypeSeq", sequenceName = "TARG_REP_ES_CELL_MUTATION_TYPE_SEQ")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "targRepEsCellMutationTypeSeq")
     private Long id;
 
     @NotNull
