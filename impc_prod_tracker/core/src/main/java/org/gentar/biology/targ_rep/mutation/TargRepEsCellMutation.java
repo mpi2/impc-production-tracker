@@ -18,8 +18,8 @@ import javax.validation.constraints.NotNull;
 public class TargRepEsCellMutation extends BaseEntity
 {
     @Id
-    @SequenceGenerator(name = "targRepMutationSeq", sequenceName = "TARG_REP_MUTATION_SEQ")
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "targRepMutationSeq")
+    @SequenceGenerator(name = "targRepEsCellMutationSeq", sequenceName = "TARG_REP_ES_CELL_MUTATION_SEQ")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "targRepEsCellMutationSeq")
     private Long id;
 
     @ToString.Exclude
