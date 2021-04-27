@@ -11,7 +11,7 @@ import javax.validation.constraints.NotNull;
 @NoArgsConstructor(access= AccessLevel.PUBLIC, force=true)
 @Data
 @Entity
-public class TargRepAlleleType extends BaseEntity
+public class TargRepEsCellMutationType extends BaseEntity
 {
     @Id
     @SequenceGenerator(name = "targRepMutationTypeSeq", sequenceName = "TARG_REP_MUTATION_TYPE_SEQ")
@@ -20,6 +20,4 @@ public class TargRepAlleleType extends BaseEntity
 
     @NotNull
     private String name;
-
-    private String description;
 }

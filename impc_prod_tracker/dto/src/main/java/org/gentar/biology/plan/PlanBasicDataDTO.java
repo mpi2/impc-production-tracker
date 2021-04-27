@@ -7,6 +7,7 @@ import com.fasterxml.jackson.annotation.JsonUnwrapped;
 import lombok.Data;
 import org.gentar.biology.plan.attempt.breeding.BreedingAttemptDTO;
 import org.gentar.biology.plan.attempt.crispr.CrisprAttemptDTO;
+import org.gentar.biology.plan.attempt.es_cell.EsCellAttemptDTO;
 import org.gentar.biology.plan.attempt.phenotyping.PhenotypingAttemptCreationDTO;
 import org.gentar.biology.plan.attempt.phenotyping.PhenotypingAttemptResponseDTO;
 import org.gentar.biology.plan.plan_starting_point.PlanStartingPointDTO;
@@ -41,6 +42,11 @@ public class PlanBasicDataDTO
     @JsonInclude(JsonInclude.Include.NON_NULL)
     @JsonProperty("crisprAttempt")
     private CrisprAttemptDTO crisprAttemptDTO;
+
+    // Es cell attempt information. It will only contain information if the attempt type is es_cell.
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    @JsonProperty("esCellAttempt")
+    private EsCellAttemptDTO esCellAttemptDTO;
 
     // Breeding attempt information. It will only contain information if the attempt type is breeding.
     @JsonInclude(JsonInclude.Include.NON_NULL)
