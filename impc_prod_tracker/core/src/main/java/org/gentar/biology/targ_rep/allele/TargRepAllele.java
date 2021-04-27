@@ -5,7 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 import org.gentar.BaseEntity;
-import org.gentar.biology.targ_rep.allele.genebank_file.TargRepGenebankFile;
+import org.gentar.biology.targ_rep.allele.genbank_file.TargRepGenbankFile;
 import org.gentar.biology.targ_rep.allele.mutation_method.TargRepMutationMethod;
 import org.gentar.biology.targ_rep.allele.mutation_subtype.TargRepMutationSubtype;
 import org.gentar.biology.targ_rep.allele.mutation_type.TargRepMutationType;
@@ -101,8 +101,8 @@ public class TargRepAllele extends BaseEntity
     private String wildtypeOligosSequence;
 
     @OneToOne
-    private TargRepGenebankFile alleleGenbankFile;
+    private TargRepGenbankFile alleleGenbankFile;
 
     @OneToOne
-    private TargRepGenebankFile vectorGenbankFile;
+    private TargRepGenbankFile vectorGenbankFile;
 }

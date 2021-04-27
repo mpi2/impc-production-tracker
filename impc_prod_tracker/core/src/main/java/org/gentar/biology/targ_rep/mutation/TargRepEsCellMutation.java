@@ -5,7 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 import org.gentar.BaseEntity;
-import org.gentar.biology.targ_rep.allele.genebank_file.TargRepGenebankFile;
+import org.gentar.biology.targ_rep.allele.genbank_file.TargRepGenbankFile;
 import org.gentar.biology.targ_rep.es_cell.TargRepEsCell;
 import org.gentar.biology.targ_rep.mutation.type.TargRepEsCellMutationType;
 
@@ -44,8 +44,8 @@ public class TargRepEsCellMutation extends BaseEntity
     private TargRepEsCellMutationType alleleType;
 
     @ToString.Exclude
-    @ManyToOne(targetEntity= TargRepGenebankFile.class)
-    private TargRepGenebankFile genebankFile;
+    @ManyToOne(targetEntity= TargRepGenbankFile.class)
+    private TargRepGenbankFile genbankFile;
 
     @Column(columnDefinition = "boolean default true")
     private Boolean containsLacZ;
