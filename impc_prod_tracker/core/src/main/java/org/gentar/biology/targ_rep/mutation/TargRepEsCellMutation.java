@@ -40,7 +40,6 @@ public class TargRepEsCellMutation extends BaseEntity
     private String mgiAlleleAccessionId;
 
     @ToString.Exclude
-    @NotNull
     @ManyToOne(targetEntity= TargRepEsCellMutationType.class)
     private TargRepEsCellMutationType alleleType;
 
