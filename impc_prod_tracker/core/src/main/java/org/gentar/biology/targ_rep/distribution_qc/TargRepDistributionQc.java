@@ -67,5 +67,5 @@ public class TargRepDistributionQc extends BaseEntity
 
     private String loxpSrpcr;
 
-    private String newQpcr;
+    private String neoQpcr;
 }
