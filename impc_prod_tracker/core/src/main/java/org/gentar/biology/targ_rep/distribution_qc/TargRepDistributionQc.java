@@ -41,7 +41,7 @@ public class TargRepDistributionQc extends BaseEntity
 
     private String loxp;
 
-    private String lacZ;
+    private String lacz;
 
     private String chr1;
 

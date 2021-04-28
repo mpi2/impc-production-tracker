@@ -48,5 +48,5 @@ public class TargRepEsCellMutation extends BaseEntity
     private TargRepGenbankFile genbankFile;
 
     @Column(columnDefinition = "boolean default true")
-    private Boolean containsLacZ;
+    private Boolean containsLacz;
 }
