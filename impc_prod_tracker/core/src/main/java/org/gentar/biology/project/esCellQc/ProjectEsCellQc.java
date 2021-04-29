@@ -36,7 +36,7 @@ public class ProjectEsCellQc  extends BaseEntity
     private LocalDate es_cells_received_on;
 
     @ManyToOne(targetEntity = EsCellCentrePipeline.class)
-    private EsCellCentrePipeline es_cells_received_from_id;
+    private EsCellCentrePipeline es_cells_received_from;
 
     @Column(columnDefinition = "TEXT")
     private String completionComment;
