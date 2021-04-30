@@ -27,26 +27,26 @@ public class ProjectEsCellQc  extends BaseEntity
     @ManyToOne(targetEntity = EsCellQcComment.class)
     private EsCellQcComment esCellQcComment;
 
-    private Integer number_of_es_cells_passing_qc;
+    private Integer numberOfEsCellsPassingQc;
 
-    private String completion_note;
+    private String completionNote;
 
-    private Integer number_of_es_cells_received;
+    private Integer numberOfEsCellsReceived;
 
-    private LocalDate es_cells_received_on;
+    private LocalDate esCellsReceivedOn;
 
     @ManyToOne(targetEntity = EsCellCentrePipeline.class)
-    private EsCellCentrePipeline es_cells_received_from;
+    private EsCellCentrePipeline esCellsReceivedFrom;
 
     @Column(columnDefinition = "TEXT")
     private String completionComment;
 
     @Column(columnDefinition = "boolean default false")
-    private Boolean es_cell_qc_only;
+    private Boolean esCellQcOnly;
 
-    private Integer number_of_es_cells_starting_qc;
+    private Integer numberOfEsCellsStartingQc;
 
-    private Integer number_starting_qc;
+    private Integer numberStartingQc;
 
-    private Integer number_passing_qc;
+    private Integer numberPassingQc;
 }
