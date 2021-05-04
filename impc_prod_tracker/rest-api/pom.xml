@@ -339,6 +339,7 @@
 		</plugins>
 	</build>
 
+	<!-- Fixme later remove when updating to the GA release-->
 	<repositories>
 		<repository>
 			<id>spring-milestones</id>
