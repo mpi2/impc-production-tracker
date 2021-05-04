@@ -15,10 +15,12 @@
  *******************************************************************************/
 package org.gentar.biology.colony;
 
+import org.springframework.context.annotation.Primary;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+@Primary
 public interface ColonyRepository extends CrudRepository<Colony, Long>
 {
     @Transactional(propagation = Propagation.REQUIRES_NEW)
