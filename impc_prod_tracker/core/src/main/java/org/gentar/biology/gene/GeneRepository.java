@@ -15,11 +15,9 @@
  *******************************************************************************/
 package org.gentar.biology.gene;
 
-import org.springframework.context.annotation.Primary;
 import org.springframework.data.repository.CrudRepository;
 import java.util.List;
 
-@Primary
 public interface GeneRepository extends CrudRepository<Gene, Long>
 {
     List<Gene> findBySymbolStartingWith(String symbol);
