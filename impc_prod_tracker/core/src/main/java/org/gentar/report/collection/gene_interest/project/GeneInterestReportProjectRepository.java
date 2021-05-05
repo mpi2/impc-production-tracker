@@ -3,9 +3,11 @@ package org.gentar.report.collection.gene_interest.project;
 import org.gentar.biology.project.Project;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 
 import java.util.List;
 
+@RepositoryRestResource(exported = false)
 public interface GeneInterestReportProjectRepository extends CrudRepository<Project, Long> {
     @Query("select " +
             "p.id as projectId, " +
