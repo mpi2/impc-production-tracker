@@ -3,9 +3,11 @@ package org.gentar.report.collection.gene_interest.phenotyping_attempt;
 import org.gentar.biology.plan.attempt.phenotyping.PhenotypingAttempt;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 
 import java.util.List;
 
+@RepositoryRestResource(exported = false)
 public interface GeneInterestReportPhenotypingAttemptRepository extends CrudRepository<PhenotypingAttempt, Long> {
     @Query("select proj.id as projectId, " +
             "proj.tpn as projectTpn, " +
