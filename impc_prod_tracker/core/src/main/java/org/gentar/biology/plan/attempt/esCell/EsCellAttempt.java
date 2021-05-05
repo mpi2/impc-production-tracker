@@ -9,6 +9,7 @@ import org.gentar.biology.strain.Strain;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @NoArgsConstructor(access= AccessLevel.PUBLIC, force=true)
 @Data
@@ -59,7 +60,7 @@ public class EsCellAttempt extends BaseEntity
     @Column(name = "total_male_chimeras")
     private Integer totalMaleChimeras;
 
-    //   Calculate by the system: total_female_chimeras + total_male_chimeras
+    // Calculate by the system: total_female_chimeras + total_male_chimeras
     @Column(name = "total_chimeras")
     private Integer totalChimeras;
 
@@ -111,10 +112,11 @@ public class EsCellAttempt extends BaseEntity
     @Column(name = "number_of_cct_offspring")
     private Integer numberOfCctOffspring;
 
+    // Set by the system
     @Column(name = "cassette_transmission_verified")
-    private LocalDate cassetteTransmissionVerified;
+    private LocalDateTime cassetteTransmissionVerified;
 
-    //  Set by the system
+    // Set by the system
     @Column(name = "cassette_transmission_verified_auto_complete", columnDefinition = "boolean default false")
     private Boolean cassetteTransmissionVerifiedAutoComplete;
 

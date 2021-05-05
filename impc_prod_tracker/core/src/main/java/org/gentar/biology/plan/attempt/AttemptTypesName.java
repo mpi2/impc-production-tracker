@@ -7,6 +7,7 @@ import java.util.Map;
 public enum AttemptTypesName implements LabeledType
 {
     CRISPR("crispr"),
+    ES_CELL("es cell"),
     HAPLOESSENTIAL_CRISPR("haplo-essential crispr"),
     BREEDING("breeding"),
     ADULT_PHENOTYPING("adult and embryo phenotyping"),

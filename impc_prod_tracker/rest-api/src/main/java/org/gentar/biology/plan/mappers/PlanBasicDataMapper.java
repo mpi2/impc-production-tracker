@@ -11,6 +11,9 @@ import org.gentar.biology.plan.attempt.breeding.BreedingAttemptMapper;
 import org.gentar.biology.plan.attempt.crispr.CrisprAttempt;
 import org.gentar.biology.plan.attempt.crispr.CrisprAttemptDTO;
 import org.gentar.biology.plan.attempt.crispr.CrisprAttemptMapper;
+import org.gentar.biology.plan.attempt.esCell.EsCellAttempt;
+import org.gentar.biology.plan.attempt.es_cell.EsCellAttemptDTO;
+import org.gentar.biology.plan.attempt.es_cell.EsCellAttemptMapper;
 import org.gentar.biology.plan.attempt.phenotyping.*;
 import org.gentar.biology.plan.plan_starting_point.PlanStartingPointDTO;
 import org.gentar.biology.plan.starting_point.PlanStartingPoint;
@@ -27,6 +30,7 @@ public class PlanBasicDataMapper implements Mapper<Plan, PlanBasicDataDTO>
     private PlanCommonDataMapper planCommonDataMapper;
     private PlanStartingPointMapper planStartingPointMapper;
     private CrisprAttemptMapper crisprAttemptMapper;
+    private EsCellAttemptMapper esCellAttemptMapper;
     private BreedingAttemptMapper breedingAttemptMapper;
     private PhenotypingAttemptCreationMapper phenotypingAttemptCreationMapper;
     private PhenotypingAttemptResponseMapper phenotypingAttemptResponseMapper;
@@ -35,6 +39,7 @@ public class PlanBasicDataMapper implements Mapper<Plan, PlanBasicDataDTO>
             PlanCommonDataMapper planCommonDataMapper,
             PlanStartingPointMapper planStartingPointMapper,
             CrisprAttemptMapper crisprAttemptMapper,
+            EsCellAttemptMapper esCellAttemptMapper,
             BreedingAttemptMapper breedingAttemptMapper,
             PhenotypingAttemptCreationMapper phenotypingAttemptCreationMapper,
             PhenotypingAttemptResponseMapper phenotypingAttemptResponseMapper)
@@ -42,6 +47,7 @@ public class PlanBasicDataMapper implements Mapper<Plan, PlanBasicDataDTO>
         this.planCommonDataMapper = planCommonDataMapper;
         this.planStartingPointMapper = planStartingPointMapper;
         this.crisprAttemptMapper = crisprAttemptMapper;
+        this.esCellAttemptMapper = esCellAttemptMapper;
         this.breedingAttemptMapper = breedingAttemptMapper;
         this.phenotypingAttemptCreationMapper = phenotypingAttemptCreationMapper;
         this.phenotypingAttemptResponseMapper = phenotypingAttemptResponseMapper;
@@ -69,13 +75,15 @@ public class PlanBasicDataMapper implements Mapper<Plan, PlanBasicDataDTO>
             case CRISPR: case HAPLOESSENTIAL_CRISPR:
                 setCrisprAttemptDto(planBasicDataDTO, plan);
                 break;
-            case ADULT_PHENOTYPING: case HAPLOESSENTIAL_PHENOTYPING:
-                setPhenotypingAttemptDto(planBasicDataDTO, plan);
-                setStartingPointToPhenotypingPlanDto(planBasicDataDTO, plan.getPlanStartingPoints());
-                break;
+            case ES_CELL:
+                setEsCellAttemptDto(planBasicDataDTO, plan);
             case BREEDING:
                 setBreedingAttemptDto(planBasicDataDTO, plan);
                 setStartingPointsToBreedingPlanDto(planBasicDataDTO, plan.getPlanStartingPoints());
+                break;
+            case ADULT_PHENOTYPING: case HAPLOESSENTIAL_PHENOTYPING:
+                setPhenotypingAttemptDto(planBasicDataDTO, plan);
+                setStartingPointToPhenotypingPlanDto(planBasicDataDTO, plan.getPlanStartingPoints());
                 break;
             default:
         }
@@ -104,6 +112,12 @@ public class PlanBasicDataMapper implements Mapper<Plan, PlanBasicDataDTO>
     {
         CrisprAttemptDTO crisprAttemptDTO = crisprAttemptMapper.toDto(plan.getCrisprAttempt());
         planBasicDataDTO.setCrisprAttemptDTO(crisprAttemptDTO);
+    }
+
+    private void setEsCellAttemptDto(PlanBasicDataDTO planBasicDataDTO, Plan plan)
+    {
+        EsCellAttemptDTO esCellAttemptDTO = esCellAttemptMapper.toDto(plan.getEsCellAttempt());
+        planBasicDataDTO.setEsCellAttemptDTO(esCellAttemptDTO);
     }
 
     private void setPhenotypingAttemptDto(PlanBasicDataDTO planBasicDataDTO, Plan plan)
@@ -143,6 +157,10 @@ public class PlanBasicDataMapper implements Mapper<Plan, PlanBasicDataDTO>
         {
             setCrisprAttempt(plan, planBasicDataDTO);
         }
+        else if (planBasicDataDTO.getEsCellAttemptDTO() != null)
+        {
+            setEsCellAttempt(plan, planBasicDataDTO);
+        }
         else if (planBasicDataDTO.getPhenotypingAttemptCreationDTO() != null)
         {
             setPhenotypingAttempt(plan, planBasicDataDTO);
@@ -162,6 +180,17 @@ public class PlanBasicDataMapper implements Mapper<Plan, PlanBasicDataDTO>
             crisprAttempt.setPlan(plan);
             crisprAttempt.setId(plan.getId());
             plan.setCrisprAttempt(crisprAttempt);
+        }
+    }
+
+    private void setEsCellAttempt(Plan plan, PlanBasicDataDTO planBasicDataDTO)
+    {
+        if (planBasicDataDTO.getEsCellAttemptDTO() != null)
+        {
+            EsCellAttempt esCellAttempt = esCellAttemptMapper.toEntity(planBasicDataDTO.getEsCellAttemptDTO());
+            esCellAttempt.setPlan(plan);
+            esCellAttempt.setId(plan.getId());
+            plan.setEsCellAttempt(esCellAttempt);
         }
     }
 

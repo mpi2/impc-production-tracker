@@ -5,6 +5,7 @@ import org.gentar.biology.plan.attempt.AttemptTypesName;
 import org.gentar.biology.plan.engine.breeding.BreedingPlanEvent;
 import org.gentar.biology.plan.engine.crispr.CrisprProductionPlanEvent;
 import org.gentar.biology.plan.engine.crispr.HaploessentialProductionPlanEvent;
+import org.gentar.biology.plan.engine.es_cell.EsCellProductionPlanEvent;
 import org.gentar.biology.plan.engine.phenotyping.PhenotypePlanEvent;
 import org.gentar.exceptions.SystemOperationFailedException;
 import org.gentar.statemachine.ProcessData;
@@ -63,6 +64,9 @@ public class PlanStateMachineResolver implements StateMachineResolver
                 break;
             case BREEDING:
                 processEvents = BreedingPlanEvent.getAllEvents();
+                break;
+            case ES_CELL:
+                processEvents = EsCellProductionPlanEvent.getAllEvents();
                 break;
             default:
                 throw new SystemOperationFailedException(

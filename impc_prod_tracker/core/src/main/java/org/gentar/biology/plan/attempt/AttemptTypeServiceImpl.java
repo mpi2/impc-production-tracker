@@ -58,6 +58,8 @@ public class AttemptTypeServiceImpl implements AttemptTypeService
         {
             attemptTypesNames.add(AttemptTypesName.CRISPR);
             attemptTypesNames.add(AttemptTypesName.HAPLOESSENTIAL_CRISPR);
+            attemptTypesNames.add(AttemptTypesName.ES_CELL);
+            attemptTypesNames.add(AttemptTypesName.BREEDING);
         }
         else if (PlanTypeName.PHENOTYPING.equals(planTypeName))
         {

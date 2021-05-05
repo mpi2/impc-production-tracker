@@ -28,5 +28,55 @@ public class EsCellAttemptDTO
 
     private String comment;
 
+    private String blastStrainName;
 
+    private Integer totalBlastsInjected;
+
+    private Integer totalTransferred;
+
+    private Integer numberSurrogatesReceiving;
+
+    private Integer totalPupsBorn;
+
+    private Integer totalFemaleChimeras;
+
+    private Integer totalMaleChimeras;
+
+    private Integer numberOfMalesWith0To39PercentChimerism;
+
+    private Integer numberOfMalesWith40To79PercentChimerism;
+
+    private Integer numberOfMalesWith80To99PercentChimerism;
+
+    private Integer numberOfMalesWith100PercentChimerism;
+
+    private String testCrossStrainName;
+
+    private LocalDate dateChimerasMated;
+
+    private Integer numberOfChimeraMatingsAttempted;
+
+    private Integer numberOfChimeraMatingsSuccessful;
+
+    private Integer numberOfChimerasWithGltFromCct;
+
+    private Integer numberOfChimerasWithGltFromGenotyping;
+
+    private Integer numberOfChimerasWith0To9PercentGlt;
+
+    private Integer numberOfChimerasWith10To49PercentGlt;
+
+    private Integer numberOfChimerasWith50To99PercentGlt;
+
+    private Integer numberOfChimerasWith100PercentGlt;
+
+    private Integer totalF1MiceFromMatings;
+
+    private Integer numberOfCctOffspring;
+
+    private LocalDate cassetteTransmissionVerified;
+
+    private Integer numberOfHetOffspring;
+
+    private Integer numberOfLiveGltOffspring;
 }
