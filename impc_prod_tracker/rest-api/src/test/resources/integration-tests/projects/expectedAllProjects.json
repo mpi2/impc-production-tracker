@@ -4,7 +4,7 @@
       {
         "tpn":"TPN:000000001",
         "recovery":false,
-        "esQcOnly":false,
+        "esCellQcOnly":false,
         "comment":"Comment test",
         "reactivationDate":"2020-09-24T00:00:02",
         "privacyName":"public",
@@ -120,7 +120,7 @@
       {
         "tpn":"TPN:000000002",
         "recovery":null,
-        "esQcOnly":null,
+        "esCellQcOnly":null,
         "comment":null,
         "reactivationDate":null,
         "privacyName":"public",
@@ -162,7 +162,7 @@
       {
         "tpn":"TPN:000000003",
         "recovery":null,
-        "esQcOnly":null,
+        "esCellQcOnly":null,
         "comment":null,
         "reactivationDate":null,
         "privacyName":"public",
@@ -204,7 +204,7 @@
       {
         "tpn":"TPN:000000004",
         "recovery":null,
-        "esQcOnly":null,
+        "esCellQcOnly":null,
         "comment":null,
         "reactivationDate":null,
         "privacyName":"protected",
@@ -246,7 +246,7 @@
       {
         "tpn":"TPN:000000005",
         "recovery":null,
-        "esQcOnly":null,
+        "esCellQcOnly":null,
         "comment":null,
         "reactivationDate":null,
         "privacyName":"restricted",

@@ -20,7 +20,7 @@ public class ProjectCommonDataDTO
     private Boolean recovery;
 
     // To be validated...
-    private Boolean esQcOnly;
+    private Boolean esCellQcOnly;
 
     // Any comment about this project.
     private String comment;

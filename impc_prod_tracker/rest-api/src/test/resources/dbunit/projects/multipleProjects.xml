@@ -85,7 +85,7 @@
                 ASSIGNMENT_STATUS_ID="1"
                 SUMMARY_STATUS_ID="1"
                 RECOVERY="false"
-                ES_QC_ONLY="false"
+                ES_CELL_QC_ONLY="false"
                 COMMENT="Comment test"
                 REACTIVATION_DATE="2020-09-24 00:00:02" />
     <PROJECT    ID="2"
