@@ -1,6 +1,5 @@
 package org.gentar.biology.project.mappers;
 
-import org.gentar.EntityMapper;
 import org.gentar.Mapper;
 import org.gentar.biology.project.Project;
 import org.gentar.biology.project.ProjectCommonDataDTO;
@@ -27,7 +26,7 @@ public class ProjectCommonDataMapper implements Mapper<Project, ProjectCommonDat
         ProjectCommonDataDTO projectCommonDataDTO = new ProjectCommonDataDTO();
         projectCommonDataDTO.setPrivacyName(entity.getPrivacy().getName());
         projectCommonDataDTO.setRecovery(entity.getRecovery());
-        projectCommonDataDTO.setEsQcOnly(entity.getEsQcOnly());
+        projectCommonDataDTO.setEsCellQcOnly(entity.getEsCellQcOnly());
         projectCommonDataDTO.setComment(entity.getComment());
         projectCommonDataDTO.setReactivationDate(entity.getReactivationDate());
         return projectCommonDataDTO;
@@ -38,7 +37,7 @@ public class ProjectCommonDataMapper implements Mapper<Project, ProjectCommonDat
     {
         Project project = new Project();
         project.setRecovery(projectCommonDataDTO.getRecovery());
-        project.setEsQcOnly(projectCommonDataDTO.getEsQcOnly());
+        project.setEsCellQcOnly(projectCommonDataDTO.getEsCellQcOnly());
         project.setComment(projectCommonDataDTO.getComment());
         project.setReactivationDate(projectCommonDataDTO.getReactivationDate());
         setPrivacyToEntity(project, projectCommonDataDTO);

@@ -67,7 +67,7 @@ public class Project extends BaseEntity implements Resource<Project>
         this.plans = project.plans == null ? null : new HashSet<>(project.plans);
         this.reactivationDate = project.reactivationDate;
         this.recovery = project.recovery;
-        this.esQcOnly = project.esQcOnly;
+        this.esCellQcOnly = project.esCellQcOnly;
         this.comment = project.comment;
         this.privacy = project.privacy;
         this.projectIntentions =
@@ -121,7 +121,7 @@ public class Project extends BaseEntity implements Resource<Project>
     private Boolean recovery;
 
     @Column(columnDefinition = "boolean default false")
-    private Boolean esQcOnly;
+    private Boolean esCellQcOnly;
 
     @Column(columnDefinition = "TEXT")
     private String comment;
@@ -186,7 +186,7 @@ public class Project extends BaseEntity implements Resource<Project>
         restrictedProject.setReactivationDate(reactivationDate);
         restrictedProject.setComment(comment);
         restrictedProject.setRecovery(recovery);
-        restrictedProject.setRecovery(esQcOnly);
+        restrictedProject.setRecovery(esCellQcOnly);
         restrictedProject.setProjectType(projectType);
         restrictedProject.setProjectIntentions(projectIntentions);
         restrictedProject.setIsObjectRestricted(true);
