@@ -1,6 +1,7 @@
 {
   "tpn":"TPN:000000001",
   "recovery":true,
+  "esQcOnly":true,
   "comment":"A new comment",
   "privacyName":"protected"
 }

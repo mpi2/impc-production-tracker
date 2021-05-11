@@ -24,6 +24,7 @@ class ProjectCreationDTOTest
         ProjectCreationDTO projectCreationDTO = new ProjectCreationDTO();
         ProjectCommonDataDTO projectCommonDataDTO = new ProjectCommonDataDTO();
         projectCommonDataDTO.setComment("comment");
+        projectCommonDataDTO.setEsQcOnly(true);
         projectCommonDataDTO.setPrivacyName("public");
         LocalDateTime date = LocalDateTime.of(2000, 1, 1, 0, 0);
         projectCommonDataDTO.setReactivationDate(date);
@@ -47,7 +48,7 @@ class ProjectCreationDTOTest
 
         String json = JsonConverter.toJson(projectCreationDTO);
         assertThat(json, is(notNullValue()));
-        assertThat(json, is("{\"recovery\":null,\"comment\":\"comment\"," +
+        assertThat(json, is("{\"recovery\":null,\"esQcOnly\":true,\"comment\":\"comment\"," +
             "\"reactivationDate\":\"2000-01-01T00:00:00\",\"privacyName\":\"public\"," +
             "\"planDetails\":{\"attemptTypeName\":\"crispr\"," +
             "\"typeName\":\"production\"},\"projectIntentions\":[{\"intentionByGene\":{\"gene\":" +

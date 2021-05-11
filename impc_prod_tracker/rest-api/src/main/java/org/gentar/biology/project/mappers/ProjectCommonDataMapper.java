@@ -27,6 +27,7 @@ public class ProjectCommonDataMapper implements Mapper<Project, ProjectCommonDat
         ProjectCommonDataDTO projectCommonDataDTO = new ProjectCommonDataDTO();
         projectCommonDataDTO.setPrivacyName(entity.getPrivacy().getName());
         projectCommonDataDTO.setRecovery(entity.getRecovery());
+        projectCommonDataDTO.setEsQcOnly(entity.getEsQcOnly());
         projectCommonDataDTO.setComment(entity.getComment());
         projectCommonDataDTO.setReactivationDate(entity.getReactivationDate());
         return projectCommonDataDTO;
@@ -37,6 +38,7 @@ public class ProjectCommonDataMapper implements Mapper<Project, ProjectCommonDat
     {
         Project project = new Project();
         project.setRecovery(projectCommonDataDTO.getRecovery());
+        project.setEsQcOnly(projectCommonDataDTO.getEsQcOnly());
         project.setComment(projectCommonDataDTO.getComment());
         project.setReactivationDate(projectCommonDataDTO.getReactivationDate());
         setPrivacyToEntity(project, projectCommonDataDTO);
