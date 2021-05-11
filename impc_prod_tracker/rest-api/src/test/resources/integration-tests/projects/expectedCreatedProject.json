@@ -1,6 +1,7 @@
 {
   "tpn":"TPN:000000007",
   "recovery":false,
+  "esQcOnly":false,
   "comment":"comment",
   "reactivationDate":null,
   "privacyName":"public",

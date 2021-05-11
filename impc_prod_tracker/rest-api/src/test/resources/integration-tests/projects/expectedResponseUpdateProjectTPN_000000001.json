@@ -18,6 +18,12 @@
           "note":"Field changed"
         },
         {
+          "field": "esQcOnly",
+          "oldValue": "false",
+          "newValue": "true",
+          "note": "Field changed"
+        },
+        {
           "field":"privacy.name",
           "oldValue":"public",
           "newValue":"protected",
