@@ -1,5 +1,6 @@
 {
   "recovery":false,
+  "esCellQcOnly":false,
   "comment":"comment",
   "privacyName":"public",
   "planDetails":{

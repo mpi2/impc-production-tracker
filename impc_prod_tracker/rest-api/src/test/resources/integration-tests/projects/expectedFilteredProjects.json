@@ -4,6 +4,7 @@
       {
         "tpn":"TPN:000000001",
         "recovery":false,
+        "esCellQcOnly":false,
         "comment":"Comment test",
         "reactivationDate":"2020-09-24T00:00:02",
         "privacyName":"public",
@@ -119,6 +120,7 @@
       {
         "tpn":"TPN:000000003",
         "recovery":null,
+        "esCellQcOnly":null,
         "comment":null,
         "reactivationDate":null,
         "privacyName":"public",
@@ -160,6 +162,7 @@
       {
         "tpn":"TPN:000000005",
         "recovery":null,
+        "esCellQcOnly":null,
         "comment":null,
         "reactivationDate":null,
         "privacyName":"restricted",

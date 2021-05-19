@@ -3,9 +3,11 @@ package org.gentar.report.collection.mgi_crispr_allele.colony;
 import org.gentar.biology.colony.Colony;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 
 import java.util.List;
 
+@RepositoryRestResource(exported = false)
 public interface MgiCrisprAlleleReportColonyRepository extends CrudRepository<Colony, Long> {
 
     @Query("select c.name as colonyName, s.name as strainName, pw.name as productionWorkUnit, o.id as outcomeId  " +

@@ -31,6 +31,7 @@ public class UpdateProjectRequestProcessor
         Project mappedFromDto = projectUpdateMapper.toEntity(projectUpdateDTO);
         projectToUpdate.setComment(mappedFromDto.getComment());
         projectToUpdate.setRecovery(mappedFromDto.getRecovery());
+        projectToUpdate.setEsCellQcOnly(mappedFromDto.getEsCellQcOnly());
         if (mappedFromDto.getPrivacy() != null)
         {
             projectToUpdate.setPrivacy(mappedFromDto.getPrivacy());

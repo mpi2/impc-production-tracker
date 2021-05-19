@@ -19,6 +19,9 @@ public class ProjectCommonDataDTO
     // To be validated...
     private Boolean recovery;
 
+    // To be validated...
+    private Boolean esCellQcOnly;
+
     // Any comment about this project.
     private String comment;
 

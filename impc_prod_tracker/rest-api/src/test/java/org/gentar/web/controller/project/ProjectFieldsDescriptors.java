@@ -99,6 +99,7 @@ public class ProjectFieldsDescriptors
     {
         List<FieldDescriptor> sharedFieldDescriptions = new ArrayList<>();
         addField(sharedFieldDescriptions, "recovery", "[WIP]");
+        addField(sharedFieldDescriptions, "esCellQcOnly", "Indicates if the project is only used for ES Cell QC");
         addField(sharedFieldDescriptions, "comment", "Comment on this project.");
         addField(
             sharedFieldDescriptions,

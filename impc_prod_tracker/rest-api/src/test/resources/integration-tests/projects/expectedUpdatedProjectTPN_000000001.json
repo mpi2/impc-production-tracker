@@ -1,6 +1,7 @@
 {
   "tpn":"TPN:000000001",
   "recovery":true,
+  "esCellQcOnly":true,
   "comment":"A new comment",
   "reactivationDate":"2020-09-24T00:00:02",
   "privacyName":"protected",
