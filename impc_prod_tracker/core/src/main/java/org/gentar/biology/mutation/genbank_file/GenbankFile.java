@@ -2,9 +2,8 @@ package org.gentar.biology.mutation.genbank_file;
 
 import lombok.*;
 import org.gentar.BaseEntity;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
+
+import javax.persistence.*;
 
 @NoArgsConstructor(access= AccessLevel.PUBLIC, force=true)
 @Data
@@ -12,8 +11,11 @@ import javax.persistence.Id;
 public class GenbankFile extends BaseEntity
 {
     @Id
-    @Column(name = "id")
+    @SequenceGenerator(name = "genbankFileSeq", sequenceName = "GENBANK_FILE_SEQ")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "genbankFileSeq")
     private Long id;
+
+    private Long imitsGenbankFile;
 
     @Column(name= "file_gb", columnDefinition = "TEXT")
     private String name;
