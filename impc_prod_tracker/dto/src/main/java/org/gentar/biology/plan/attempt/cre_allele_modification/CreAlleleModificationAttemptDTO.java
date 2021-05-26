@@ -13,9 +13,10 @@ public class CreAlleleModificationAttemptDTO {
     @JsonIgnore
     private Long imitsMouseAlleleMod;
 
-    private Integer numberOfCreMatingsStarted;
+    @JsonIgnore
+    private Long targRepAllele;
+
     private Integer numberOfCreMatingsSuccessful;
-    private Boolean creExcesion;
     private Boolean tatCre;
     private String deleterStrainName;
 }

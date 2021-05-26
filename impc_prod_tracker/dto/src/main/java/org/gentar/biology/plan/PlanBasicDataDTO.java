@@ -36,7 +36,7 @@ public class PlanBasicDataDTO
 
     // Starting point outcomes for breeding plans
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    @JsonProperty("BreedingStartingPoints")
+    @JsonProperty("breedingStartingPoints")
     private List<PlanStartingPointDTO> planStartingPointDTOS;
 
     // Starting point outcome for Cre Allele Modification.

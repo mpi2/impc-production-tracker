@@ -83,6 +83,7 @@ public class PlanBasicDataMapper implements Mapper<Plan, PlanBasicDataDTO>
                 break;
             case ES_CELL:
                 setEsCellAttemptDto(planBasicDataDTO, plan);
+                break;
             case BREEDING:
                 setBreedingAttemptDto(planBasicDataDTO, plan);
                 setStartingPointsToBreedingPlanDto(planBasicDataDTO, plan.getPlanStartingPoints());

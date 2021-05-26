@@ -288,9 +288,8 @@
                     FUNDER_ID="1"/>
 
     <CRE_ALLELE_MODIFICATION_ATTEMPT PLAN_ID="9"
-                                     cre_excesion="true"
                                      imits_mouse_allele_mod="1775"
-                                     number_of_cre_matings_started="2"
+                                     targ_rep_allele="1878"
                                      number_of_cre_matings_successful="1"
                                      tat_cre="false"
                                      deleter_strain_id="2"

@@ -47,7 +47,7 @@ class PlanBasicDataDTOTest
         String json = JsonConverter.toJson(planBasicDataDTO);
         assertThat(json, is(notNullValue()));
         assertThat(json, is("{\"funderNames\":null,\"workUnitName\":null,\"workGroupName\":null,\"comment\":null," +
-                "\"BreedingStartingPoints\":[{\"links\":[],\"outcomeTpo\":null," +
+                "\"breedingStartingPoints\":[{\"links\":[],\"outcomeTpo\":null," +
                 "\"productionPlanPin\":null}],\"breedingAttempt\":{\"numberOfCreMatingsStarted\":null," +
                 "\"numberOfCreMatingsSuccessful\":null,\"creExcesion\":null,\"tatCre\":null,\"deleterStrainName\":null}}"));
     }
@@ -65,8 +65,8 @@ class PlanBasicDataDTOTest
         assertThat(json, is(notNullValue()));
         assertThat(json, is("{\"funderNames\":null,\"workUnitName\":null,\"workGroupName\":null,\"comment\":null," +
                 "\"creAlleleModificationStartingPoint\":{\"links\":[],\"outcomeTpo\":null," +
-                "\"productionPlanPin\":null},\"creAlleleModificationAttempt\":{\"numberOfCreMatingsStarted\":null," +
-                "\"numberOfCreMatingsSuccessful\":null,\"creExcesion\":null,\"tatCre\":null,\"deleterStrainName\":null}}"));
+                "\"productionPlanPin\":null},\"creAlleleModificationAttempt\":{\"numberOfCreMatingsSuccessful\":null," +
+                "\"tatCre\":null,\"deleterStrainName\":null}}"));
     }
 
     @Test

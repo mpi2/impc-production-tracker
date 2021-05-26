@@ -277,11 +277,8 @@ public class PlanFieldsDescriptors
                 "Public identifier for the outcome production plan.");
 
         addField(creAlleleModificationFields, "creAlleleModificationAttempt", "Cre allele modification attempt details.");
-        addField(creAlleleModificationFields, "creAlleleModificationAttempt.numberOfCreMatingsStarted",
-                "records the number of Cre matings setup.");
         addField(creAlleleModificationFields, "creAlleleModificationAttempt.numberOfCreMatingsSuccessful",
                 "records the number of successful Cre matings.");
-        addField(creAlleleModificationFields, "creAlleleModificationAttempt.creExcesion", "Indicates Cre excision achieved.");
         addField(creAlleleModificationFields, "creAlleleModificationAttempt.tatCre", "Indicates tat Cre used for modification rather than a deleter strain.");
         addField(creAlleleModificationFields, "creAlleleModificationAttempt.deleterStrainName", "Cre allele modification attempt deleter strain");
         return creAlleleModificationFields;
