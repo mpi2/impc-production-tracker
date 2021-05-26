@@ -36,6 +36,10 @@
                     NAME="adult and embryo phenotyping"/>
     <ATTEMPT_TYPE   ID="5"
                     NAME="haplo-essential phenotyping"/>
+    <ATTEMPT_TYPE   ID="52"
+                    NAME="es cell"/>
+    <ATTEMPT_TYPE   ID="53"
+                    NAME="cre allele modification"/>
 
     <ASSAY_TYPE ID="1"
                 NAME="T7EN1"/>
@@ -148,6 +152,37 @@
                 IS_ABORTION_STATUS="false"
                 ORDERING="34000"/>
 
+    <STATUS     ID="16"
+                NAME="Mouse Allele Modification Registered"
+                IS_ABORTION_STATUS="false"
+                ORDERING="71000"/>
+    <STATUS     ID="17"
+                NAME="Cre Excision Started"
+                IS_ABORTION_STATUS="false"
+                ORDERING="72000"/>
+    <STATUS     ID="18"
+                NAME="Cre Excision Complete"
+                IS_ABORTION_STATUS="false"
+                ORDERING="73000"/>
+    <STATUS     ID="19"
+                NAME="Mouse Allele Modification Aborted"
+                IS_ABORTION_STATUS="true"
+                ORDERING="74000"/>
+
+    <STATUS     ID="53"
+                NAME="Rederivation For Modification Started"
+                IS_ABORTION_STATUS="false"
+                ORDERING="71300"/>
+    <STATUS     ID="54"
+                NAME="Rederivation For Modification Complete"
+                IS_ABORTION_STATUS="false"
+                ORDERING="71600"/>
+
+    <STATUS     ID="52"
+                NAME="Chimeras/Founder Obtained"
+                IS_ABORTION_STATUS="false"
+                ORDERING="12500"/>
+
     <CONSORTIUM ID="1"
                 NAME="CMG"/>
 
@@ -164,6 +199,9 @@
     <STRAIN  ID="1"
              NAME="C57BL/6NJ"
              MGI_STRAIN_ACC_ID="MGI:3056279"/>
+    <STRAIN  ID="2"
+             NAME="BALB/cJ"
+             MGI_STRAIN_ACC_ID="MGI:2159737"/>
 
     <PREPARATION_TYPE   ID="1"
                         NAME="Circular"/>
@@ -232,11 +270,30 @@
                 WORK_UNIT_ID="1"
                 WORK_GROUP_ID="1"
                 SUMMARY_STATUS_ID="1"/>
+    <PLAN       ID="9"
+                PIN="PIN:0000000009"
+                PROJECT_ID="1"
+                PLAN_TYPE_ID="1"
+                ATTEMPT_TYPE_ID="53"
+                STATUS_ID="18"
+                WORK_UNIT_ID="1"
+                WORK_GROUP_ID="1"
+                SUMMARY_STATUS_ID="18"/>
 
     <PLAN_FUNDER    PLAN_ID="1"
                     FUNDER_ID="1"/>
     <PLAN_FUNDER    PLAN_ID="3"
                     FUNDER_ID="1"/>
+    <PLAN_FUNDER    PLAN_ID="9"
+                    FUNDER_ID="1"/>
+
+    <CRE_ALLELE_MODIFICATION_ATTEMPT PLAN_ID="9"
+                                     imits_mouse_allele_mod="1775"
+                                     targ_rep_allele="1878"
+                                     number_of_cre_matings_successful="1"
+                                     tat_cre="false"
+                                     deleter_strain_id="2"
+                                     />
 
     <CRISPR_ATTEMPT PLAN_ID="1"
                     MI_DATE="2019-02-26"
@@ -372,6 +429,10 @@
                 OUTCOME_TYPE_ID="1"
                 PLAN_ID="2"
                 TPO="TPO:000000000002"/>
+    <OUTCOME    ID="3"
+                OUTCOME_TYPE_ID="1"
+                PLAN_ID="9"
+                TPO="TPO:000000000003"/>
 
     <COLONY     OUTCOME_ID="1"
                 STATUS_ID="11"
@@ -381,6 +442,10 @@
                 STATUS_ID="11"
                 STRAIN_ID="1"
                 NAME="NSG2-2" />
+    <COLONY     OUTCOME_ID="3"
+                STATUS_ID="11"
+                STRAIN_ID="1"
+                NAME="GSF-EPD0045_1_B11-3-1" />
 
     <PLAN_STARTING_POINT    ID="1"
                             PLAN_ID="3"
@@ -388,6 +453,9 @@
     <PLAN_STARTING_POINT    ID="2"
                             PLAN_ID="4"
                             OUTCOME_ID="2"/>
+    <PLAN_STARTING_POINT    ID="3"
+                            PLAN_ID="9"
+                            OUTCOME_ID="1"/>
 
     <PHENOTYPING_ATTEMPT PLAN_ID="3"
                          PHENOTYPING_EXTERNAL_REF="CR10129"
@@ -468,6 +536,27 @@
                         DATE="2018-02-22 20:18:00.706639"
     />
 
+    <PLAN_STATUS_STAMP  ID="17"
+                        PLAN_ID="9"
+                        STATUS_ID="1"
+                        DATE="2012-11-06 12:01:00"
+    />
+    <PLAN_STATUS_STAMP  ID="18"
+                        PLAN_ID="9"
+                        STATUS_ID="16"
+                        DATE="2012-11-06 12:08:00"
+    />
+    <PLAN_STATUS_STAMP  ID="19"
+                        PLAN_ID="9"
+                        STATUS_ID="17"
+                        DATE="2013-02-02 12:42:00"
+    />
+    <PLAN_STATUS_STAMP  ID="20"
+                        PLAN_ID="9"
+                        STATUS_ID="18"
+                        DATE="2013-04-09 12:42:00"
+    />
+
     <PLAN_SUMMARY_STATUS_STAMP  ID="7"
                                 PLAN_ID="1"
                                 STATUS_ID="4"
@@ -487,6 +576,26 @@
                                   PLAN_ID="4"
                                   STATUS_ID="1"
                                   DATE="2020-04-14 12:46:24.706639"
+    />
+    <PLAN_SUMMARY_STATUS_STAMP    ID="11"
+                                  PLAN_ID="9"
+                                  STATUS_ID="1"
+                                  DATE="2012-11-06 12:01:00"
+    />
+    <PLAN_SUMMARY_STATUS_STAMP    ID="12"
+                                  PLAN_ID="9"
+                                  STATUS_ID="16"
+                                  DATE="2012-11-06 12:08:00"
+    />
+    <PLAN_SUMMARY_STATUS_STAMP    ID="13"
+                                  PLAN_ID="9"
+                                  STATUS_ID="17"
+                                  DATE="2013-02-02 12:42:00"
+    />
+    <PLAN_SUMMARY_STATUS_STAMP    ID="14"
+                                  PLAN_ID="9"
+                                  STATUS_ID="18"
+                                  DATE="2013-04-09 12:42:00"
     />
 
     <PROJECT_SUMMARY_STATUS_STAMP/>
