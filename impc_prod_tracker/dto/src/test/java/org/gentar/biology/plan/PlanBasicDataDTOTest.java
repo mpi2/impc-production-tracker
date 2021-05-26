@@ -2,6 +2,7 @@ package org.gentar.biology.plan;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import org.gentar.biology.plan.attempt.breeding.BreedingAttemptDTO;
+import org.gentar.biology.plan.attempt.cre_allele_modification.CreAlleleModificationAttemptDTO;
 import org.gentar.biology.plan.attempt.crispr.CrisprAttemptDTO;
 import org.gentar.biology.plan.attempt.phenotyping.PhenotypingAttemptCreationDTO;
 import org.gentar.biology.plan.plan_starting_point.PlanStartingPointDTO;
@@ -48,6 +49,23 @@ class PlanBasicDataDTOTest
         assertThat(json, is("{\"funderNames\":null,\"workUnitName\":null,\"workGroupName\":null,\"comment\":null," +
                 "\"BreedingStartingPoints\":[{\"links\":[],\"outcomeTpo\":null," +
                 "\"productionPlanPin\":null}],\"breedingAttempt\":{\"numberOfCreMatingsStarted\":null," +
+                "\"numberOfCreMatingsSuccessful\":null,\"creExcesion\":null,\"tatCre\":null,\"deleterStrainName\":null}}"));
+    }
+
+    @Test
+    public void testCreAlleleModificationPlanBasicDataDTO() throws JsonProcessingException
+    {
+        PlanBasicDataDTO planBasicDataDTO = new PlanBasicDataDTO();
+        planBasicDataDTO.setPlanCommonDataDTO(new PlanCommonDataDTO());
+        CreAlleleModificationAttemptDTO creAlleleModificationAttemptDTO = new CreAlleleModificationAttemptDTO();
+        planBasicDataDTO.setCreAlleleModificationAttemptDTO(creAlleleModificationAttemptDTO);
+        planBasicDataDTO.setModificationPlanStartingPointDTO(new PlanStartingPointDTO());
+
+        String json = JsonConverter.toJson(planBasicDataDTO);
+        assertThat(json, is(notNullValue()));
+        assertThat(json, is("{\"funderNames\":null,\"workUnitName\":null,\"workGroupName\":null,\"comment\":null," +
+                "\"creAlleleModificationStartingPoint\":{\"links\":[],\"outcomeTpo\":null," +
+                "\"productionPlanPin\":null},\"creAlleleModificationAttempt\":{\"numberOfCreMatingsStarted\":null," +
                 "\"numberOfCreMatingsSuccessful\":null,\"creExcesion\":null,\"tatCre\":null,\"deleterStrainName\":null}}"));
     }
 

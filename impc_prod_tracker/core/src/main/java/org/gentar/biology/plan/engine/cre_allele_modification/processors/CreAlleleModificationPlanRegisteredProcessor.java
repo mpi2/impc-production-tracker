@@ -1,4 +1,4 @@
-package org.gentar.biology.plan.engine.breeding.processors;
+package org.gentar.biology.plan.engine.cre_allele_modification.processors;
 
 import org.gentar.biology.plan.Plan;
 import org.gentar.biology.plan.engine.PlanStateSetter;
@@ -9,9 +9,9 @@ import org.gentar.statemachine.TransitionEvaluation;
 import org.springframework.stereotype.Component;
 
 @Component
-public class BreedingStartedProcessor extends AbstractProcessor
-{
-    public BreedingStartedProcessor(PlanStateSetter planStateSetter)
+public class CreAlleleModificationPlanRegisteredProcessor extends AbstractProcessor {
+
+    public CreAlleleModificationPlanRegisteredProcessor(PlanStateSetter planStateSetter)
     {
         super(planStateSetter);
     }
@@ -21,18 +21,18 @@ public class BreedingStartedProcessor extends AbstractProcessor
     {
         TransitionEvaluation transitionEvaluation = new TransitionEvaluation();
         transitionEvaluation.setTransition(transition);
-        boolean breedingAttemptExists = breedingAttemptExists((Plan) data);
-        transitionEvaluation.setExecutable(breedingAttemptExists);
-        if (!breedingAttemptExists)
+        boolean creAlleleModificationAttemptExists = creAlleleModificationAttemptExists((Plan) data);
+        transitionEvaluation.setExecutable(creAlleleModificationAttemptExists);
+        if (!creAlleleModificationAttemptExists)
         {
             transitionEvaluation.setNote(
-                "The plan does not have a breeding attempt yet");
+                    "The plan does not have a Cre allele modification attempt yet");
         }
         return transitionEvaluation;
     }
 
-    private boolean breedingAttemptExists(Plan plan)
+    private boolean creAlleleModificationAttemptExists(Plan plan)
     {
-        return plan.getBreedingAttempt() != null;
+        return plan.getCreAlleleModificationAttempt() != null;
     }
 }

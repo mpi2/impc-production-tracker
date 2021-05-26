@@ -25,6 +25,7 @@ import lombok.Setter;
 import lombok.ToString;
 import org.gentar.audit.diff.IgnoreForAuditingChanges;
 import org.gentar.biology.outcome.Outcome;
+import org.gentar.biology.plan.attempt.cre_allele_modification.CreAlleleModificationAttempt;
 import org.gentar.biology.plan.attempt.esCell.EsCellAttempt;
 import org.gentar.biology.plan.starting_point.PlanStartingPoint;
 import org.gentar.biology.plan.status.PlanStatusStamp;
@@ -169,6 +170,7 @@ public class Plan extends BaseEntity implements Resource<Plan>, ProcessData
         this.attemptType = plan.attemptType;
         this.crisprAttempt = plan.crisprAttempt;
         this.breedingAttempt = plan.breedingAttempt;
+        this.creAlleleModificationAttempt = plan.creAlleleModificationAttempt;
         this.phenotypingAttempt = plan.phenotypingAttempt;
         this.planStartingPoints =
             plan.planStatusStamps == null ? null : new HashSet<>(plan.planStartingPoints);
@@ -188,6 +190,10 @@ public class Plan extends BaseEntity implements Resource<Plan>, ProcessData
     @ToString.Exclude
     @OneToOne(cascade=CascadeType.ALL, mappedBy = "plan")
     private BreedingAttempt breedingAttempt;
+
+    @ToString.Exclude
+    @OneToOne(cascade=CascadeType.ALL, mappedBy = "plan")
+    private CreAlleleModificationAttempt creAlleleModificationAttempt;
 
     @ToString.Exclude
     @OneToOne(cascade=CascadeType.ALL, mappedBy = "plan")

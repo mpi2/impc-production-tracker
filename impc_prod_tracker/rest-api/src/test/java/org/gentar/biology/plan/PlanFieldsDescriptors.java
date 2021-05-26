@@ -260,6 +260,33 @@ public class PlanFieldsDescriptors
         return phenotypingFields;
     }
 
+    public static List<FieldDescriptor> getCreAlleleModificationFieldDescriptors()
+    {
+        List<FieldDescriptor> creAlleleModificationFields = new ArrayList<>();
+
+        addField(creAlleleModificationFields, "creAlleleModificationStartingPoint", "Outcome information");
+        addField(creAlleleModificationFields, "creAlleleModificationStartingPoint._links", "");
+        addField(creAlleleModificationFields, "creAlleleModificationStartingPoint._links.outcome", "");
+        addField(creAlleleModificationFields, "creAlleleModificationStartingPoint._links.outcome.href", "Outcome link");
+        addField(creAlleleModificationFields, "creAlleleModificationStartingPoint._links.productionPlan", "");
+        addField(creAlleleModificationFields, "creAlleleModificationStartingPoint._links.productionPlan.href",
+                "Production plan link");
+        addField(creAlleleModificationFields, "creAlleleModificationStartingPoint.outcomeTpo",
+                "Public identifier for the outcome.");
+        addField(creAlleleModificationFields, "creAlleleModificationStartingPoint.productionPlanPin",
+                "Public identifier for the outcome production plan.");
+
+        addField(creAlleleModificationFields, "creAlleleModificationAttempt", "Cre allele modification attempt details.");
+        addField(creAlleleModificationFields, "creAlleleModificationAttempt.numberOfCreMatingsStarted",
+                "records the number of Cre matings setup.");
+        addField(creAlleleModificationFields, "creAlleleModificationAttempt.numberOfCreMatingsSuccessful",
+                "records the number of successful Cre matings.");
+        addField(creAlleleModificationFields, "creAlleleModificationAttempt.creExcesion", "Indicates Cre excision achieved.");
+        addField(creAlleleModificationFields, "creAlleleModificationAttempt.tatCre", "Indicates tat Cre used for modification rather than a deleter strain.");
+        addField(creAlleleModificationFields, "creAlleleModificationAttempt.deleterStrainName", "Cre allele modification attempt deleter strain");
+        return creAlleleModificationFields;
+    }
+
     private static void addField(List<FieldDescriptor> list, String name, String description)
     {
         list.add(fieldWithPath(name).description(description).optional());
