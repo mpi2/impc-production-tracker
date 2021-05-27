@@ -441,4 +441,29 @@ class PlanControllerTest extends ControllerTestTemplate
         phenotypingPlanFieldsDescriptions.addAll(PlanFieldsDescriptors.getPhenotypingFieldDescriptors());
         return document("plans/getPhenotypingPlan", responseFields(phenotypingPlanFieldsDescriptions));
     }
+
+
+    @Test
+    @DatabaseSetup(DBSetupFilesPaths.MULTIPLE_PLANS)
+    @DatabaseTearDown(type = DatabaseOperation.DELETE_ALL, value = DBSetupFilesPaths.MULTIPLE_PLANS)
+    void testGetOneCreAlleleModificationPlan() throws Exception
+    {
+        String url = "/api/plans/PIN:0000000009";
+        String expectedJson = getCompleteResourcePath("expectedCreAlleleModificationPlanGetPIN_0000000009.json");
+        String obtainedJson = restCaller.executeGetAndDocument(url, documentCreAlleleModificationPlan());
+        resultValidator.validateObtainedMatchesJson(obtainedJson, expectedJson);
+    }
+
+    private ResultHandler documentCreAlleleModificationPlan()
+    {
+        List<FieldDescriptor> creAlleleModificationPlanFieldsDescriptions =
+                PlanFieldsDescriptors.getSharedFieldDescriptions();
+
+        creAlleleModificationPlanFieldsDescriptions
+                .addAll(PlanFieldsDescriptors.getCreAlleleModificationFieldDescriptors());
+
+        return document("plans/getCreAlleleModificationPlan",
+                responseFields(creAlleleModificationPlanFieldsDescriptions));
+    }
+
 }

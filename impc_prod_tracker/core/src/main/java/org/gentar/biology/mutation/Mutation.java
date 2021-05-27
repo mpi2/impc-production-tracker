@@ -80,7 +80,7 @@ public class Mutation extends BaseEntity
     @ManyToOne(targetEntity= MolecularMutationType.class)
     private MolecularMutationType molecularMutationType;
 
-    @OneToOne(targetEntity = GenbankFile.class)
+    @ManyToOne(targetEntity = GenbankFile.class)
     private GenbankFile genbankFile;
 
     @Lob
