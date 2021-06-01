@@ -288,11 +288,12 @@
                     FUNDER_ID="1"/>
 
     <CRE_ALLELE_MODIFICATION_ATTEMPT PLAN_ID="9"
-                                     imits_mouse_allele_mod="1775"
-                                     targ_rep_allele="1878"
-                                     number_of_cre_matings_successful="1"
-                                     tat_cre="false"
-                                     deleter_strain_id="2"
+                                     IMITS_MOUSE_ALLELE_MOD="1775"
+                                     TARG_REP_ALLELE="1878"
+                                     MODIFICATION_EXTERNAL_REF="GSF-EPD0045_1_B11-3-1"
+                                     NUMBER_OF_CRE_MATINGS_SUCCESSFUL="1"
+                                     TAT_CRE="false"
+                                     DELETER_STRAIN_ID="2"
                                      />
 
     <CRISPR_ATTEMPT PLAN_ID="1"

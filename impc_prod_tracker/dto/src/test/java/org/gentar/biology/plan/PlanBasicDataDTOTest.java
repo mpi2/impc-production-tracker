@@ -65,8 +65,8 @@ class PlanBasicDataDTOTest
         assertThat(json, is(notNullValue()));
         assertThat(json, is("{\"funderNames\":null,\"workUnitName\":null,\"workGroupName\":null,\"comment\":null," +
                 "\"creAlleleModificationStartingPoint\":{\"links\":[],\"outcomeTpo\":null," +
-                "\"productionPlanPin\":null},\"creAlleleModificationAttempt\":{\"numberOfCreMatingsSuccessful\":null," +
-                "\"tatCre\":null,\"deleterStrainName\":null}}"));
+                "\"productionPlanPin\":null},\"creAlleleModificationAttempt\":{\"modificationExternalRef\":null," +
+                "\"numberOfCreMatingsSuccessful\":null,\"tatCre\":null,\"deleterStrainName\":null}}"));
     }
 
     @Test

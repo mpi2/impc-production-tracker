@@ -16,6 +16,8 @@ public class CreAlleleModificationAttemptDTO {
     @JsonIgnore
     private Long targRepAllele;
 
+    private String modificationExternalRef;
+
     private Integer numberOfCreMatingsSuccessful;
     private Boolean tatCre;
     private String deleterStrainName;
