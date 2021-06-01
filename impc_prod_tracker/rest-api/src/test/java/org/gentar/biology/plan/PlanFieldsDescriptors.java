@@ -277,6 +277,8 @@ public class PlanFieldsDescriptors
                 "Public identifier for the outcome production plan.");
 
         addField(creAlleleModificationFields, "creAlleleModificationAttempt", "Cre allele modification attempt details.");
+        addField(creAlleleModificationFields, "creAlleleModificationAttempt.modificationExternalRef",
+                "External reference used to track the modification. For data exported from iMits the mouse allele modification colony name has been recorded as the modification external reference.");
         addField(creAlleleModificationFields, "creAlleleModificationAttempt.numberOfCreMatingsSuccessful",
                 "records the number of successful Cre matings.");
         addField(creAlleleModificationFields, "creAlleleModificationAttempt.tatCre", "Indicates tat Cre used for modification rather than a deleter strain.");

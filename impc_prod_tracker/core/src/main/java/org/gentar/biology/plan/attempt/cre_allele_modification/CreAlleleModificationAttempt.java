@@ -38,6 +38,8 @@ public class CreAlleleModificationAttempt {
     @Column(name = "number_of_cre_matings_successful")
     private Integer numberOfCreMatingsSuccessful;
 
+    private String modificationExternalRef;
+
     @Column(name = "tat_cre", columnDefinition = "boolean default false")
     private Boolean tatCre;
 

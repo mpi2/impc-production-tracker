@@ -17,6 +17,10 @@ public class ColonyDTO
     private Long id;
 
     private String name;
+
+    @JsonIgnore
+    private String legacyModification;
+
     private String genotypingComment;
     private String statusName;
 

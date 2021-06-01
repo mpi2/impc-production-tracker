@@ -33,6 +33,9 @@ import java.util.Set;
 @NoArgsConstructor(access= AccessLevel.PUBLIC, force=true)
 @Data
 @Entity
+@Table(uniqueConstraints={
+        @UniqueConstraint(columnNames = {"name", "legacy_modification"})
+})
 public class Colony extends BaseEntity implements ProcessData
 {
     @Id
@@ -44,8 +47,10 @@ public class Colony extends BaseEntity implements ProcessData
     private Outcome outcome;
 
     @NotNull
-    @Column(unique = true)
     private String name;
+
+    @Column(name = "legacy_modification", columnDefinition = "boolean default false")
+    private Boolean legacyModification;
 
     @NotNull
     @ManyToOne(cascade=CascadeType.ALL)
@@ -74,6 +79,7 @@ public class Colony extends BaseEntity implements ProcessData
         this.id = colony.id;
         this.outcome = colony.outcome;
         this.name = colony.name;
+        this.legacyModification = colony.legacyModification;
         this.strain = colony.strain;
         this.status = colony.status;
         this.genotypingComment = colony.genotypingComment;

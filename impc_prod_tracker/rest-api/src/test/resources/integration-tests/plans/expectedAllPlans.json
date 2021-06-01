@@ -442,6 +442,7 @@
           "productionPlanPin":"PIN:0000000002"
         },
         "creAlleleModificationAttempt":{
+          "modificationExternalRef": "GSF-EPD0045_1_B11-3-1",
           "numberOfCreMatingsSuccessful": 1,
           "tatCre": false,
           "deleterStrainName": "BALB/cJ"
