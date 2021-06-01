@@ -79,6 +79,7 @@ public class Colony extends BaseEntity implements ProcessData
         this.id = colony.id;
         this.outcome = colony.outcome;
         this.name = colony.name;
+        this.legacyModification = colony.legacyModification;
         this.strain = colony.strain;
         this.status = colony.status;
         this.genotypingComment = colony.genotypingComment;
