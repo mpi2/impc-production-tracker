@@ -77,6 +77,13 @@
     "currentStatus":"Cre Excision Complete",
     "transitions": [
       {
+        "action": "updateToMouseAlleleModificationGenotypeConfirmed",
+        "description": "Update to Mouse Allele Modification Genotype Confirmed.",
+        "triggeredByUser": false,
+        "available": false,
+        "note": "A genotyped confirmed colony needs to be associated with the plan.",
+        "nextStatus": "Mouse Allele Modification Genotype Confirmed"
+      }, {
         "action": "abortWhenCreExcisionComplete",
         "description": "Abort an allele modification plan when Cre excision is complete",
         "triggeredByUser": true,
