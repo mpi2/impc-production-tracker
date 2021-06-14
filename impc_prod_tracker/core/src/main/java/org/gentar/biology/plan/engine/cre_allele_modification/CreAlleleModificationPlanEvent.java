@@ -1,9 +1,6 @@
 package org.gentar.biology.plan.engine.cre_allele_modification;
 
-import org.gentar.biology.plan.engine.cre_allele_modification.processors.CreAlleleModificationPlanAbortProcessor;
-import org.gentar.biology.plan.engine.cre_allele_modification.processors.CreAlleleModificationPlanCreExcisionCompleteProcessor;
-import org.gentar.biology.plan.engine.cre_allele_modification.processors.CreAlleleModificationPlanCreExcisionStartedProcessor;
-import org.gentar.biology.plan.engine.cre_allele_modification.processors.CreAlleleModificationPlanRegisteredProcessor;
+import org.gentar.biology.plan.engine.cre_allele_modification.processors.*;
 import org.gentar.statemachine.ProcessEvent;
 import org.gentar.statemachine.ProcessState;
 import org.gentar.statemachine.Processor;
@@ -51,6 +48,32 @@ public enum CreAlleleModificationPlanEvent implements ProcessEvent
                 public Class<? extends Processor> getNextStepProcessor()
                 {
                     return CreAlleleModificationPlanCreExcisionCompleteProcessor.class;
+                }
+            },
+    updateToMouseAlleleModificationGenotypeConfirmed(
+            "Update to Mouse Allele Modification Genotype Confirmed.",
+            CreAlleleModificationPlanState.CreExcisionComplete,
+            CreAlleleModificationPlanState.MouseAlleleModificationGenotypeConfirmed,
+            StateMachineConstants.NOT_TRIGGERED_BY_USER,
+            null)
+            {
+                @Override
+                public Class<? extends Processor> getNextStepProcessor()
+                {
+                    return CreAlleleModificationPlanGenotypeConfirmedProcessor.class;
+                }
+            },
+    revertToCreExcisionComplete(
+            "Update to Mouse Allele Modification Genotype Confirmed.",
+            CreAlleleModificationPlanState.MouseAlleleModificationGenotypeConfirmed,
+            CreAlleleModificationPlanState.CreExcisionComplete,
+            StateMachineConstants.NOT_TRIGGERED_BY_USER,
+            null)
+            {
+                @Override
+                public Class<? extends Processor> getNextStepProcessor()
+                {
+                    return CreAlleleModificationPlanRevertToCreExcisionCompleteProcessor.class;
                 }
             },
     updateToRederivationStarted(
@@ -160,6 +183,19 @@ public enum CreAlleleModificationPlanEvent implements ProcessEvent
     abortWhenCreExcisionComplete(
             "Abort an allele modification plan when Cre excision is complete",
             CreAlleleModificationPlanState.CreExcisionComplete,
+            CreAlleleModificationPlanState.MouseAlleleModificationAborted,
+            StateMachineConstants.TRIGGERED_BY_USER,
+            null)
+            {
+                @Override
+                public Class<? extends Processor> getNextStepProcessor()
+                {
+                    return CreAlleleModificationPlanAbortProcessor.class;
+                }
+            },
+    abortWhenMouseAlleleModificationGenotypeConfirmed(
+            "Abort an allele modification plan when a genotype confirmed colony exists.",
+            CreAlleleModificationPlanState.MouseAlleleModificationGenotypeConfirmed,
             CreAlleleModificationPlanState.MouseAlleleModificationAborted,
             StateMachineConstants.TRIGGERED_BY_USER,
             null)

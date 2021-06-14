@@ -14,6 +14,7 @@ public enum CreAlleleModificationPlanState implements ProcessState {
     RederivationForModificationComplete("Rederivation For Modification Complete"),
     CreExcisionStarted("Cre Excision Started"),
     CreExcisionComplete("Cre Excision Complete"),
+    MouseAlleleModificationGenotypeConfirmed("Mouse Allele Modification Genotype Confirmed"),
     MouseAlleleModificationAborted("Mouse Allele Modification Aborted");
 
     private String internalName;
