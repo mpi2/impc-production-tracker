@@ -56,20 +56,20 @@
   },
   "genes":[
     {
-      "id":4,
-      "symbol":"Dennd6b",
-      "speciesName":"Mus musculus",
-      "accessionId":"MGI:1916690",
-      "name":"DENN/MADD domain containing 6B",
-      "externalLink":"http://www.mousephenotype.org/data/genes/MGI:1916690"
-    },
-    {
       "id":2,
       "symbol":"Otog",
       "speciesName":"Mus musculus",
       "accessionId":"MGI:1202064",
       "name":"otogelin",
       "externalLink":"http://www.mousephenotype.org/data/genes/MGI:1202064"
+    },
+    {
+      "id":4,
+      "symbol":"Dennd6b",
+      "speciesName":"Mus musculus",
+      "accessionId":"MGI:1916690",
+      "name":"DENN/MADD domain containing 6B",
+      "externalLink":"http://www.mousephenotype.org/data/genes/MGI:1916690"
     }
   ]
 }

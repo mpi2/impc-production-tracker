@@ -20,7 +20,7 @@
         {
           "field":"genes.[4]",
           "oldValue":null,
-          "newValue":"Gene(id=4, symbol=Dennd6b, name=DENN/MADD domain containing 6B, type=Gene, genomeBuild=GRCm38, entrezGeneId=69440, ncbiChromosome=15, ncbiStart=89182213, ncbiStop=89198427, ncbiStrand=-, ensemblGeneId=ENSMUSG00000015377, ensemblChromosome=15, ensemblStart=89182213, ensemblStop=89196496, ensemblStrand=-, mgiCm=44.70, mgiChromosome=15, mgiStart=89182213, mgiStop=89196496, mgiStrand=-, species=Species(id=1, name=Mus musculus, taxonId=10090), accId=MGI:1916690)",
+          "newValue":"Gene(id=4, symbol=Dennd6b, name=DENN/MADD domain containing 6B, type=Gene, genomeBuild=GRCm39, entrezGeneId=69440, ncbiChromosome=15, ncbiStart=89066416, ncbiStop=89080793, ncbiStrand=-, ensemblGeneId=ENSMUSG00000015377, ensemblChromosome=15, ensemblStart=89066416, ensemblStop=89080699, ensemblStrand=-, mgiCm=44.70, mgiChromosome=15, mgiStart=89066416, mgiStop=89080699, mgiStrand=-, species=Species(id=1, name=Mus musculus, taxonId=10090), accId=MGI:1916690)",
           "note":"Element added"
         },
         {
@@ -44,13 +44,13 @@
         {
           "field":"genes.[4].ensemblStart",
           "oldValue":null,
-          "newValue":"89182213",
+          "newValue":"89066416",
           "note":"Field changed"
         },
         {
           "field":"genes.[4].ensemblStop",
           "oldValue":null,
-          "newValue":"89196496",
+          "newValue":"89080699",
           "note":"Field changed"
         },
         {
@@ -68,7 +68,7 @@
         {
           "field":"genes.[4].genomeBuild",
           "oldValue":null,
-          "newValue":"GRCm38",
+          "newValue":"GRCm39",
           "note":"Field changed"
         },
         {
@@ -86,13 +86,13 @@
         {
           "field":"genes.[4].mgiStart",
           "oldValue":null,
-          "newValue":"89182213",
+          "newValue":"89066416",
           "note":"Field changed"
         },
         {
           "field":"genes.[4].mgiStop",
           "oldValue":null,
-          "newValue":"89196496",
+          "newValue":"89080699",
           "note":"Field changed"
         },
         {
@@ -116,13 +116,13 @@
         {
           "field":"genes.[4].ncbiStart",
           "oldValue":null,
-          "newValue":"89182213",
+          "newValue":"89066416",
           "note":"Field changed"
         },
         {
           "field":"genes.[4].ncbiStop",
           "oldValue":null,
-          "newValue":"89198427",
+          "newValue":"89080793",
           "note":"Field changed"
         },
         {
