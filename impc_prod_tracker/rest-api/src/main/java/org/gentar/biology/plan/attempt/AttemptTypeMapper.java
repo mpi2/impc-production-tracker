@@ -22,6 +22,6 @@ public class AttemptTypeMapper implements Mapper<AttemptType, String>
     @Override
     public AttemptType toEntity(String attemptTypeName)
     {
-        return attemptTypeService.getAttemptTypeByName(attemptTypeName);
+        return attemptTypeService.getAttemptTypeByNameFailsIfNull(attemptTypeName);
     }
 }

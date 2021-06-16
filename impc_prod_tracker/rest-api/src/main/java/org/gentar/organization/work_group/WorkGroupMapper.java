@@ -30,14 +30,10 @@ public class WorkGroupMapper implements Mapper<WorkGroup, String>
     @Override
     public WorkGroup toEntity(String name)
     {
-        WorkGroup workGroup = null;
-        if (name != null)
+        WorkGroup workGroup = workGroupService.getWorkGroupByName(name);
+        if (workGroup == null)
         {
-            workGroup = workGroupService.getWorkGroupByName(name);
-            if (workGroup == null)
-            {
-                throw new UserOperationFailedException(String.format(WORK_GROUP_NOT_FOUND_ERROR, workGroup));
-            }
+            throw new UserOperationFailedException(String.format(WORK_GROUP_NOT_FOUND_ERROR, workGroup));
         }
         return workGroup;
     }
