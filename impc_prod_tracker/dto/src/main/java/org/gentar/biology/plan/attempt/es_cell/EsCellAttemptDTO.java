@@ -15,6 +15,8 @@ public class EsCellAttemptDTO
     @JsonIgnore
     private Long esCellAttemptId;
 
+    private String esCellName;
+
     @JsonInclude(JsonInclude.Include.NON_NULL)
     @JsonProperty("imitsMiAttemptId")
     private Long imitsMiAttempt;

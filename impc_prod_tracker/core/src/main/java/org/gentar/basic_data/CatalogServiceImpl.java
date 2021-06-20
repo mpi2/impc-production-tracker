@@ -184,6 +184,9 @@ public class CatalogServiceImpl implements CatalogService
             addInstitutes();
             addStrains();
             addBackGroundStrains();
+            addDeleterStrains();
+            addTestCrossStrains();
+            addBlastStrains();
             addMaterialTypes();
             addPreparationTypes();
             addSearchTypes();
@@ -340,6 +343,33 @@ public class CatalogServiceImpl implements CatalogService
         strainRepository.findAllByStrainTypesIn(Collections.singletonList(backgroundStrainType))
             .forEach(p -> backgroundStrains.add(p.getName()));
         conf.put("backgroundStrains", backgroundStrains);
+    }
+
+    private void addDeleterStrains()
+    {
+        List<Object> deleterStrains = new ArrayList<>();
+        StrainType deleterStrainType = strainTypeRepository.findByName("deleter");
+        strainRepository.findAllByStrainTypesIn(Collections.singletonList(deleterStrainType))
+                .forEach(p -> deleterStrains.add(p.getName()));
+        conf.put("deleterStrains", deleterStrains);
+    }
+
+    private void addTestCrossStrains()
+    {
+        List<Object> testCrossStrains = new ArrayList<>();
+        StrainType testCrossStrainType = strainTypeRepository.findByName("test cross strain");
+        strainRepository.findAllByStrainTypesIn(Collections.singletonList(testCrossStrainType))
+                .forEach(p -> testCrossStrains.add(p.getName()));
+        conf.put("testCrossStrains", testCrossStrains);
+    }
+
+    private void addBlastStrains()
+    {
+        List<Object> blastStrains = new ArrayList<>();
+        StrainType blastStrainType = strainTypeRepository.findByName("blast strain");
+        strainRepository.findAllByStrainTypesIn(Collections.singletonList(blastStrainType))
+                .forEach(p -> blastStrains.add(p.getName()));
+        conf.put("blastStrains", blastStrains);
     }
 
     private void addMaterialTypes()
