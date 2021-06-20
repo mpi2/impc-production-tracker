@@ -66,7 +66,7 @@ public class EsCellAttemptMapper implements Mapper<EsCellAttempt, EsCellAttemptD
                 }
 
                 if (date != null) {
-                    esCellAttempt.setCassetteTransmissionVerified(date);
+                    esCellAttempt.setCassetteTransmissionVerified(date.toLocalDate());
                     esCellAttempt.setCassetteTransmissionVerifiedAutoComplete(true);
                 }
             }

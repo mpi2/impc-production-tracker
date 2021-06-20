@@ -8,6 +8,7 @@ import org.gentar.biology.plan.Plan;
 import org.gentar.biology.strain.Strain;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
@@ -27,6 +28,7 @@ public class EsCellAttempt extends BaseEntity
     private Long imitsMiAttempt;
 
 //    Connection to targ_rep_es_cell
+    @NotNull
     private String esCellName;
 
     private LocalDate miDate;
@@ -114,7 +116,7 @@ public class EsCellAttempt extends BaseEntity
 
     // Set by the system
     @Column(name = "cassette_transmission_verified")
-    private LocalDateTime cassetteTransmissionVerified;
+    private LocalDate cassetteTransmissionVerified;
 
     // Set by the system
     @Column(name = "cassette_transmission_verified_auto_complete", columnDefinition = "boolean default false")
