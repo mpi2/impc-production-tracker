@@ -18,6 +18,7 @@ package org.gentar.biology.strain;
 import lombok.*;
 import org.gentar.BaseEntity;
 import org.gentar.audit.diff.IgnoreForAuditingChanges;
+import org.gentar.biology.strain.excision_type.ExcisionType;
 import org.gentar.biology.strain.strain_type.StrainType;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -38,6 +39,9 @@ public class Strain extends BaseEntity
     private String name;
 
     private String mgiStrainAccId;
+
+    @ManyToOne(targetEntity = ExcisionType.class)
+    private ExcisionType excisionType;
 
     @ToString.Exclude
     @IgnoreForAuditingChanges
