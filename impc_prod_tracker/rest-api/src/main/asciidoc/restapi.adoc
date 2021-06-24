@@ -423,6 +423,9 @@ operations.
 ==== Crispr plan.
 include::{snippets}/plans/getCrisprPlan/response-fields.adoc[]
 
+==== Cre Allele Modification plan.
+include::{snippets}/plans/getCreAlleleModificationPlan/response-fields.adoc[]
+
 ==== Phenotyping plan.
 include::{snippets}/plans/getPhenotypingPlan/response-fields.adoc[]
 
@@ -467,7 +470,8 @@ This is the list of filters you can use:
 
 * crispr
 * haplo-essential crispr
-* haplo-essential crispr
+* es cell
+* cre allele modification
 * breeding
 
 |imitsMiAttemptId
