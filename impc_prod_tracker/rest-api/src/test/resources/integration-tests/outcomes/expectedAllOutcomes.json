@@ -21,11 +21,6 @@
               "id":1,
               "propertyTypeName":"Property 1",
               "value":"Value 1"
-            },
-            {
-              "id":2,
-              "propertyTypeName":"Property 2",
-              "value":"Value 2"
             }
           ],
           "statusTransition":{

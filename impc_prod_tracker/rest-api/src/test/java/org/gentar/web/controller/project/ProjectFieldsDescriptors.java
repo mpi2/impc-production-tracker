@@ -35,9 +35,8 @@ public class ProjectFieldsDescriptors
                 "Status changed from inactive). Example: \"2020-09-24T00:00:05\". Read only.");
         addField(
             descriptors,
-            "reactivationDate",
-            "Date, represented as string, on which the project was activated again (assignment " +
-                "Status changed from inactive). Example: \"2020-09-24T00:00:05\". Read only.");
+            "imitsMiPlanId",
+            "iMits mi_plan identifier (Present if the project was transferrred from iMits). Read only.");
         addField(descriptors, "relatedWorkUnitNames", "Work units associated with the project.");
         addField(descriptors, "relatedWorkGroupNames", "Work groups associated with the project.");
         addField(

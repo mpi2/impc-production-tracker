@@ -84,6 +84,7 @@
                 PRIVACY_ID="1"
                 ASSIGNMENT_STATUS_ID="1"
                 SUMMARY_STATUS_ID="1"
+                IMITS_MI_PLAN="27136"
                 RECOVERY="false"
                 ES_CELL_QC_ONLY="false"
                 COMMENT="Comment test"
