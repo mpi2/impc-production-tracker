@@ -33,12 +33,10 @@ public class PlanFieldsDescriptors
             sharedFieldDescriptions,
             "summaryStatusDates[]",
             "Stamps of the statuses summaries the plan has gone through.");
-        addField(sharedFieldDescriptions, "funderNames", "Funders for the plan.");
         addField(
                 sharedFieldDescriptions,
                 "summaryStatusDates[].statusName",
                 "Summary status that the plan had on a specific date.");
-        addField(sharedFieldDescriptions, "funderNames", "Funders for the plan.");
         addField(
                 sharedFieldDescriptions,
                 "summaryStatusDates[].date",
