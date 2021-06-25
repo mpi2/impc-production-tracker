@@ -446,24 +446,21 @@ class PlanControllerTest extends ControllerTestTemplate
     @Test
     @DatabaseSetup(DBSetupFilesPaths.MULTIPLE_PLANS)
     @DatabaseTearDown(type = DatabaseOperation.DELETE_ALL, value = DBSetupFilesPaths.MULTIPLE_PLANS)
-    void testGetOneCreAlleleModificationPlan() throws Exception
+    void testGetOneEsCellPlan() throws Exception
     {
-        String url = "/api/plans/PIN:0000000009";
-        String expectedJson = getCompleteResourcePath("expectedCreAlleleModificationPlanGetPIN_0000000009.json");
-        String obtainedJson = restCaller.executeGetAndDocument(url, documentCreAlleleModificationPlan());
+        String url = "/api/plans/PIN:0000000010";
+        String expectedJson = getCompleteResourcePath("expectedEsCellPlanGetPIN_0000000010.json");
+        String obtainedJson = restCaller.executeGetAndDocument(url, documentEsCellPlan());
         resultValidator.validateObtainedMatchesJson(obtainedJson, expectedJson);
     }
 
-    private ResultHandler documentCreAlleleModificationPlan()
+    private ResultHandler documentEsCellPlan()
     {
-        List<FieldDescriptor> creAlleleModificationPlanFieldsDescriptions =
-                PlanFieldsDescriptors.getSharedFieldDescriptions();
+        List<FieldDescriptor> esCellPlanFieldsDescriptions = PlanFieldsDescriptors.getSharedFieldDescriptions();
 
-        creAlleleModificationPlanFieldsDescriptions
-                .addAll(PlanFieldsDescriptors.getCreAlleleModificationFieldDescriptors());
+        esCellPlanFieldsDescriptions.addAll(PlanFieldsDescriptors.getEsCellFieldDescriptors());
 
-        return document("plans/getCreAlleleModificationPlan",
-                responseFields(creAlleleModificationPlanFieldsDescriptions));
+        return document("plans/getEsCellPlan", responseFields(esCellPlanFieldsDescriptions));
     }
 
 }
