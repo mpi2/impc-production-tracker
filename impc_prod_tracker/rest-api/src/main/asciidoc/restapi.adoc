@@ -955,12 +955,18 @@ include::{snippets}/plans/putCrisprPlanStateMachine/http-response.adoc[]
 
 == Lastest updates
 
-* 2020-11-30: New filter 'doNotCountTowardsCompleteness' added for phenotyping plans.
+* 2021-06-25: - Added the field esCellQcOnly to the Project entity to support projects that only relate to ES Cell QC.
+              - Added documentation on the fields present in ES cell production plans.
+              - Add documentation on the fields present in Cre allele modification production plans.
+              - Updated the state_machine_transitions document.
+              - GET requests for ES cell and Cre allele modification production plans are
+                supported on the GenTaR Sandbox test database.
+* 2021-02-24: Add two new filters to projects. One for production colony names and one for phenotyping external
+              references.
 * 2021-01-26: Phenotyping Stage state machine: The rollbackPhenotypingAllDataProcessed action used by the DCC
               now moves the PhenotypingAllDataProcessed state to PhenotypingAllDataSent rather than
               PhenotypingStarted.
-* 2021-02-24: Add two new filters to projects. One for production colony names and one for phenotyping external
-              references.
+* 2020-11-30: New filter 'doNotCountTowardsCompleteness' added for phenotyping plans.
 
 
 
