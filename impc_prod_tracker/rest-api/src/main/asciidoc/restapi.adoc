@@ -423,6 +423,9 @@ operations.
 ==== Crispr plan.
 include::{snippets}/plans/getCrisprPlan/response-fields.adoc[]
 
+==== ES Cell plan.
+include::{snippets}/plans/getEsCellPlan/response-fields.adoc[]
+
 ==== Cre Allele Modification plan.
 include::{snippets}/plans/getCreAlleleModificationPlan/response-fields.adoc[]
 
