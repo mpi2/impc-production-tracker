@@ -442,7 +442,6 @@ class PlanControllerTest extends ControllerTestTemplate
         return document("plans/getPhenotypingPlan", responseFields(phenotypingPlanFieldsDescriptions));
     }
 
-
     @Test
     @DatabaseSetup(DBSetupFilesPaths.MULTIPLE_PLANS)
     @DatabaseTearDown(type = DatabaseOperation.DELETE_ALL, value = DBSetupFilesPaths.MULTIPLE_PLANS)
@@ -459,11 +458,32 @@ class PlanControllerTest extends ControllerTestTemplate
         List<FieldDescriptor> creAlleleModificationPlanFieldsDescriptions =
                 PlanFieldsDescriptors.getSharedFieldDescriptions();
 
-        creAlleleModificationPlanFieldsDescriptions
-                .addAll(PlanFieldsDescriptors.getCreAlleleModificationFieldDescriptors());
+        creAlleleModificationPlanFieldsDescriptions.
+                addAll(PlanFieldsDescriptors.getCreAlleleModificationFieldDescriptors());
 
         return document("plans/getCreAlleleModificationPlan",
                 responseFields(creAlleleModificationPlanFieldsDescriptions));
+    }
+
+
+    @Test
+    @DatabaseSetup(DBSetupFilesPaths.MULTIPLE_PLANS)
+    @DatabaseTearDown(type = DatabaseOperation.DELETE_ALL, value = DBSetupFilesPaths.MULTIPLE_PLANS)
+    void testGetOneEsCellPlan() throws Exception
+    {
+        String url = "/api/plans/PIN:0000000010";
+        String expectedJson = getCompleteResourcePath("expectedEsCellPlanGetPIN_0000000010.json");
+        String obtainedJson = restCaller.executeGetAndDocument(url, documentEsCellPlan());
+        resultValidator.validateObtainedMatchesJson(obtainedJson, expectedJson);
+    }
+
+    private ResultHandler documentEsCellPlan()
+    {
+        List<FieldDescriptor> esCellPlanFieldsDescriptions = PlanFieldsDescriptors.getSharedFieldDescriptions();
+
+        esCellPlanFieldsDescriptions.addAll(PlanFieldsDescriptors.getEsCellFieldDescriptors());
+
+        return document("plans/getEsCellPlan", responseFields(esCellPlanFieldsDescriptions));
     }
 
 }
