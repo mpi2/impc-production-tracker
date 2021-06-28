@@ -15,7 +15,7 @@ public enum CreAlleleModificationPlanEvent implements ProcessEvent
             "Update to mouse allele modification registered.",
             CreAlleleModificationPlanState.PlanCreated,
             CreAlleleModificationPlanState.MouseAlleleModificationRegistered,
-            StateMachineConstants.NOT_TRIGGERED_BY_USER,
+            StateMachineConstants.TRIGGERED_BY_USER,
             null)
             {
                 @Override
