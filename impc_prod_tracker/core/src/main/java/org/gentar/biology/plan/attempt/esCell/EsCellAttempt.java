@@ -27,9 +27,11 @@ public class EsCellAttempt extends BaseEntity
 
     private Long imitsMiAttempt;
 
-//    Connection to targ_rep_es_cell
+    // Connection to targ_rep_es_cell
+    // This stores the id but is not specified as a foreign key
+    // The id is converted to the EsCellName in the service and DTO.
     @NotNull
-    private String esCellName;
+    private Integer TargRepEsCellId;
 
     private LocalDate miDate;
 

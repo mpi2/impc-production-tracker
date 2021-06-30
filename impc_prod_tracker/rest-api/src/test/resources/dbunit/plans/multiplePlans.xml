@@ -303,7 +303,7 @@
                      CASSETTE_TRANSMISSION_VERIFIED_AUTO_COMPLETE="true"
                      COMMENT="additional information"
                      DATE_CHIMERAS_MATED="2007-06-18 00:00:02"
-                     ES_CELL_NAME="EPD0017_3_A07"
+                     TARG_REP_ES_CELL_ID="14210"
                      EXPERIMENTAL="false"
                      IMITS_MI_ATTEMPT="2030"
                      MI_DATE="2007-04-24 00:00:02"

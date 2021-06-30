@@ -15,6 +15,7 @@ public class EsCellAttemptDTO
     @JsonIgnore
     private Long esCellAttemptId;
 
+    @JsonIgnore
     private String esCellName;
 
     @JsonInclude(JsonInclude.Include.NON_NULL)

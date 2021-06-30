@@ -289,7 +289,7 @@ public class PlanFieldsDescriptors
         List<FieldDescriptor> esCellFields = new ArrayList<>();
 
         addField(esCellFields, "esCellAttempt", "ES cell attempt details.");
-        addField(esCellFields, "esCellAttempt.esCellName","The ES Cell used in the attempt.");
+//        addField(esCellFields, "esCellAttempt.esCellName","The ES Cell used in the attempt.");
         addField(esCellFields, "esCellAttempt.imitsMiAttemptId", "The iMits attempt identifier (This is included if the data was migrated from iMits).");
         addField(esCellFields, "esCellAttempt.miDate", "The date when the micro-injection was performed.");
         addField(esCellFields, "esCellAttempt.attemptExternalRef", "External reference used to track the ES cell attempt.");
