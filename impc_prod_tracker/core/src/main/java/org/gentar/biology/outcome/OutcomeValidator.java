@@ -2,8 +2,10 @@ package org.gentar.biology.outcome;
 
 import org.gentar.biology.colony.Colony;
 import org.gentar.biology.colony.ColonyValidator;
+import org.gentar.biology.mutation.Mutation;
 import org.gentar.biology.outcome.type.OutcomeType;
 import org.gentar.biology.outcome.type.OutcomeTypeName;
+import org.gentar.biology.plan.Plan;
 import org.gentar.biology.specimen.Specimen;
 import org.gentar.exceptions.CommonErrorMessages;
 import org.gentar.exceptions.ForbiddenAccessException;
@@ -18,10 +20,13 @@ public class OutcomeValidator
 {
     private final ContextAwarePolicyEnforcement policyEnforcement;
     private static final String NULL_FIELD_ERROR = "[%s] cannot be null.";
+    private static final String CANNOT_READ_PLAN = "The outcome is linked to the plan %s and you " +
+            "do not have permission to read it.";
 
     private final ColonyValidator colonyValidator;
 
-    public OutcomeValidator(ContextAwarePolicyEnforcement policyEnforcement, ColonyValidator colonyValidator)
+    public OutcomeValidator(ContextAwarePolicyEnforcement policyEnforcement,
+                            ColonyValidator colonyValidator)
     {
         this.policyEnforcement = policyEnforcement;
         this.colonyValidator = colonyValidator;
@@ -101,5 +106,21 @@ public class OutcomeValidator
     {
         String entityType = Outcome.class.getSimpleName();
         throw new ForbiddenAccessException(action, entityType, outcome.getTpo(), detail);
+    }
+
+    public void validateReadPermissions(Outcome outcome)
+    {
+        Plan plan = outcome.getPlan();
+        if (!policyEnforcement.hasPermission(plan, Actions.READ_PLAN_ACTION))
+        {
+            String detail = String.format(CANNOT_READ_PLAN, plan.getPin());
+            throwPermissionException(Operations.READ, outcome, detail);
+        }
+    }
+
+    private void throwPermissionException(Operations action, Outcome outcome, String details)
+    {
+        String entityType = Outcome.class.getSimpleName();
+        throw new ForbiddenAccessException(action, entityType, outcome.getTpo(), details);
     }
 }

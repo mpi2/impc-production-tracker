@@ -25,6 +25,7 @@ import org.gentar.statemachine.ProcessEvent;
 import org.gentar.statemachine.TransitionAvailabilityEvaluator;
 import org.gentar.statemachine.TransitionEvaluation;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Component;
@@ -88,9 +89,8 @@ public class PlanServiceImpl implements PlanService
     @Override
     public Page<Plan> getPageablePlans(Pageable page, PlanFilter planFilter)
     {
-        Specification<Plan> specifications = buildSpecificationsWithCriteria(planFilter);
-        Page<Plan> plans = planRepository.findAll(specifications, page);
-        return plans;
+        List<Plan> plans = getPlans(planFilter);
+        return new PageImpl<>(plans, page, plans.size());
     }
 
     private Specification<Plan> buildSpecificationsWithCriteria(PlanFilter planFilter)

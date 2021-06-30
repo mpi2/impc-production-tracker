@@ -25,6 +25,7 @@ public class OutcomeServiceImpl implements OutcomeService
     private final OutcomeTypeRepository outcomeTypeRepository;
     private final OutcomeCreator outcomeCreator;
     private final OutcomeUpdater outcomeUpdater;
+    private final OutcomeValidator outcomeValidator;
     private final PlanService planService;
     private final MutationService mutationService;
     private final MutationValidator mutationValidator;
@@ -34,20 +35,21 @@ public class OutcomeServiceImpl implements OutcomeService
     public static final String READ_OUTCOME_ACTION = "READ_OUTCOME";
 
     public OutcomeServiceImpl(
-        OutcomeRepository outcomeRepository,
-        OutcomeTypeRepository outcomeTypeRepository,
-        OutcomeCreator outcomeCreator,
-        OutcomeUpdater outcomeUpdater,
-        PlanService planService,
-        MutationService mutationService,
-        MutationValidator mutationValidator,
-        ResourceAccessChecker<Outcome> resourceAccessChecker,
-        HistoryService<Outcome> historyService)
+            OutcomeRepository outcomeRepository,
+            OutcomeTypeRepository outcomeTypeRepository,
+            OutcomeCreator outcomeCreator,
+            OutcomeUpdater outcomeUpdater,
+            OutcomeValidator outcomeValidator, PlanService planService,
+            MutationService mutationService,
+            MutationValidator mutationValidator,
+            ResourceAccessChecker<Outcome> resourceAccessChecker,
+            HistoryService<Outcome> historyService)
     {
         this.outcomeRepository = outcomeRepository;
         this.outcomeTypeRepository = outcomeTypeRepository;
         this.outcomeCreator = outcomeCreator;
         this.outcomeUpdater = outcomeUpdater;
+        this.outcomeValidator = outcomeValidator;
         this.planService = planService;
         this.mutationService = mutationService;
         this.mutationValidator = mutationValidator;
@@ -126,6 +128,7 @@ public class OutcomeServiceImpl implements OutcomeService
         {
             throw new NotFoundException("Outcome " + tpo + " does not exist.");
         }
+        outcomeValidator.validateReadPermissions(outcome);
         return outcome;
     }
 
