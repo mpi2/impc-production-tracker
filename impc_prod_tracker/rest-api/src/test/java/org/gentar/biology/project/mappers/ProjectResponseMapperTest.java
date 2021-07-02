@@ -45,6 +45,9 @@ class ProjectResponseMapperTest
     private SpeciesMapper speciesMapper;
     @Mock
     private ProjectConsortiumMapper projectConsortiumMapper;
+    @Mock
+    private ProjectEsCellQcMapper projectEsCellQcMapper;
+
 
     @BeforeEach
     void setUp()
@@ -54,7 +57,8 @@ class ProjectResponseMapperTest
             statusStampMapper,
             projectIntentionResponseMapper,
             speciesMapper,
-            projectConsortiumMapper);
+            projectConsortiumMapper,
+            projectEsCellQcMapper);
     }
 
     @Test

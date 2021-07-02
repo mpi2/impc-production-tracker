@@ -5,6 +5,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonUnwrapped;
 import lombok.Data;
 import org.gentar.biology.intention.ProjectIntentionResponseDTO;
+import org.gentar.biology.project.project_es_cell_qc.EsCellQcCommentDTO;
+import org.gentar.biology.project.project_es_cell_qc.ProjectEsCellQcDTO;
 import org.gentar.biology.status_stamps.StatusStampsDTO;
 import org.springframework.hateoas.RepresentationModel;
 import org.springframework.hateoas.server.core.Relation;
@@ -73,4 +75,8 @@ public class ProjectResponseDTO extends RepresentationModel<ProjectResponseDTO>
     // Phenotyping external references
     @JsonProperty("phenotypingExternalRefs")
     private List<String> phenotypingExternalReferences;
+
+    @JsonProperty("projectEsCellQc")
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    private ProjectEsCellQcDTO projectEsCellQcDTO;
 }
