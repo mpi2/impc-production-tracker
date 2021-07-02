@@ -289,7 +289,7 @@ public class PlanFieldsDescriptors
         List<FieldDescriptor> esCellFields = new ArrayList<>();
 
         addField(esCellFields, "esCellAttempt", "ES cell attempt details.");
-//        addField(esCellFields, "esCellAttempt.esCellName","The ES Cell used in the attempt.");
+        addField(esCellFields, "esCellAttempt.esCellName","The ES Cell used in the attempt.");
         addField(esCellFields, "esCellAttempt.imitsMiAttemptId", "The iMits attempt identifier (This is included if the data was migrated from iMits).");
         addField(esCellFields, "esCellAttempt.miDate", "The date when the micro-injection was performed.");
         addField(esCellFields, "esCellAttempt.attemptExternalRef", "External reference used to track the ES cell attempt.");
@@ -302,6 +302,7 @@ public class PlanFieldsDescriptors
         addField(esCellFields, "esCellAttempt.totalPupsBorn", "Number of pups born.");
         addField(esCellFields, "esCellAttempt.totalFemaleChimeras", "Total number of female chimeras.");
         addField(esCellFields, "esCellAttempt.totalMaleChimeras", "Total number of male chimeras.");
+        addField(esCellFields, "esCellAttempt.totalChimeras", "Total number of chimeras.");
         addField(esCellFields, "esCellAttempt.numberOfMalesWith0To39PercentChimerism", "Number of male offspring with 0-39 % chimerism.");
         addField(esCellFields, "esCellAttempt.numberOfMalesWith40To79PercentChimerism", "Number of male offspring with 40-79 % chimerism.");
         addField(esCellFields, "esCellAttempt.numberOfMalesWith80To99PercentChimerism", "Number of male offspring with 80-99 % chimerism.");

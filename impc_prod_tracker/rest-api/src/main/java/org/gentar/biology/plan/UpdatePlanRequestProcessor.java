@@ -54,13 +54,18 @@ public class UpdatePlanRequestProcessor
             plan.setComment(mappedPlan.getComment());
             setUpdatedCrisprAttempt(plan, mappedPlan);
             setUpdatedPhenotypingAttempt(plan, mappedPlan);
-            if (mappedPlan.getBreedingAttempt() != null)
-            {
-                plan.setBreedingAttempt(mappedPlan.getBreedingAttempt());
-            }
+            setUpdatedEsCellAttempt(plan, mappedPlan);
             setEvent(plan, planUpdateDTO);
         }
         return plan;
+    }
+
+    private void setUpdatedEsCellAttempt(Plan originalPlan, Plan mappedPlan)
+    {
+        if (mappedPlan.getEsCellAttempt() != null)
+        {
+            originalPlan.setEsCellAttempt(mappedPlan.getEsCellAttempt());
+        }
     }
 
     private void setUpdatedCrisprAttempt(Plan originalPlan, Plan mappedPlan)

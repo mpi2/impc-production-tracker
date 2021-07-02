@@ -166,15 +166,13 @@ public class PlanBasicDataMapper implements Mapper<Plan, PlanBasicDataDTO>
     public Plan toEntity(PlanBasicDataDTO planBasicDataDTO)
     {
         Plan plan = new Plan();
+        if (planBasicDataDTO!= null && planBasicDataDTO.getPlanCommonDataDTO() != null)
         {
-            if (planBasicDataDTO!= null && planBasicDataDTO.getPlanCommonDataDTO() != null)
-            {
-                plan = planCommonDataMapper.toEntity(planBasicDataDTO.getPlanCommonDataDTO());
-                // Set id to plan. If the object is new the id will be null.
-                plan.setId(planBasicDataDTO.getId());
+            plan = planCommonDataMapper.toEntity(planBasicDataDTO.getPlanCommonDataDTO());
+            // Set id to plan. If the object is new the id will be null.
+            plan.setId(planBasicDataDTO.getId());
 
-                setAttempt(plan, planBasicDataDTO);
-            }
+            setAttempt(plan, planBasicDataDTO);
         }
         return plan;
     }
@@ -229,6 +227,8 @@ public class PlanBasicDataMapper implements Mapper<Plan, PlanBasicDataDTO>
             EsCellAttempt esCellAttempt = esCellAttemptMapper.toEntity(planBasicDataDTO.getEsCellAttemptDTO());
             esCellAttempt.setPlan(plan);
             esCellAttempt.setId(plan.getId());
+            esCellAttemptMapper.setCassetteTransmission(planBasicDataDTO.getEsCellAttemptDTO(), esCellAttempt);
+
             plan.setEsCellAttempt(esCellAttempt);
         }
     }

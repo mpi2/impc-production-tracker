@@ -15,19 +15,16 @@ import java.util.Set;
 public class GuideMapper implements Mapper<Guide, GuideDTO>
 {
     private EntityMapper entityMapper;
-    private CrisprAttemptService crisprAttemptService;
     private GuideFormatRepository guideFormatRepository;
     private GuideSourceRepository guideSourceRepository;
     private AssemblyMapMapper assemblyMapMapper;
 
     public GuideMapper(EntityMapper entityMapper,
-                       CrisprAttemptService crisprAttemptService,
                        GuideFormatRepository guideFormatRepository,
                        GuideSourceRepository guideSourceRepository,
                        AssemblyMapMapper assemblyMapMapper)
     {
         this.entityMapper = entityMapper;
-        this.crisprAttemptService = crisprAttemptService;
         this.guideFormatRepository = guideFormatRepository;
         this.guideSourceRepository = guideSourceRepository;
         this.assemblyMapMapper = assemblyMapMapper;

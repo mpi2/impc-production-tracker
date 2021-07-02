@@ -8,6 +8,7 @@
   "comment": null,
   "esCellAttempt": {
     "miDate": "2007-04-24",
+    "esCellName": "EPD0045_1_A11",
     "experimental": false,
     "comment": "additional information",
     "blastStrainName": "C57BL/6NJ",
@@ -17,6 +18,7 @@
     "totalPupsBorn": 25,
     "totalFemaleChimeras": 5,
     "totalMaleChimeras": 2,
+    "totalChimeras": 7,
     "numberOfMalesWith0To39PercentChimerism": 1,
     "numberOfMalesWith40To79PercentChimerism": 1,
     "numberOfMalesWith80To99PercentChimerism": 0,

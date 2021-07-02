@@ -115,7 +115,7 @@ public class PlanController
         @RequestParam(value = "attemptTypeName", required = false) List<String> attemptTypeNames,
         @RequestParam(value = "imitsMiAttemptId", required = false) List<String> imitsMiAttempts,
         @RequestParam(value = "imitsPhenotypeAttemptId", required = false) List<String> imitsPhenotypeAttempts,
-        @RequestParam(value = "phenotypingExternalRef", required = false) List<String> phenotyping_external_refs,
+        @RequestParam(value = "phenotypingExternalRef", required = false) List<String> phenotypingExternalRefs,
         @RequestParam(value = "doNotCountTowardsCompleteness", required = false) List<String> doNotCountTowardsCompleteness)
     {
         PlanFilter planFilter = PlanFilterBuilder.getInstance()
@@ -129,7 +129,7 @@ public class PlanController
             .withAttemptTypeNames(attemptTypeNames)
             .withImitsMiAttemptIds(imitsMiAttempts)
             .withImitsPhenotypeAttemptIds(imitsPhenotypeAttempts)
-            .withPhenotypingExternalRefs(phenotyping_external_refs)
+            .withPhenotypingExternalRefs(phenotypingExternalRefs)
             .withDoNotCountTowardsCompleteness(doNotCountTowardsCompleteness)
             .build();
         Page<Plan> plans = planService.getPageablePlans(pageable, planFilter);
@@ -141,7 +141,7 @@ public class PlanController
                 linkTo(methodOn(PlanController.class)
                     .findAll(pageable, assembler, pins, projectTpns, workUnitNames, workGroupNames,
                         statusNames, summaryStatusNames, typeNames, attemptTypeNames,
-                        imitsMiAttempts,imitsPhenotypeAttempts, phenotyping_external_refs, doNotCountTowardsCompleteness
+                        imitsMiAttempts,imitsPhenotypeAttempts, phenotypingExternalRefs, doNotCountTowardsCompleteness
                     )).withSelfRel());
 
         HttpHeaders responseHeaders = new HttpHeaders();
@@ -175,7 +175,7 @@ public class PlanController
         return entityModel;
     }
 
-    @GetMapping(value = {"{pin}/history"})
+    @GetMapping(value = {"/{pin}/history"})
     public List<HistoryDTO> getPlanHistory(@PathVariable String pin)
     {
         Plan plan = getNotNullPlanByPin(pin);

@@ -186,7 +186,7 @@ public class Project extends BaseEntity implements Resource<Project>
         restrictedProject.setReactivationDate(reactivationDate);
         restrictedProject.setComment(comment);
         restrictedProject.setRecovery(recovery);
-        restrictedProject.setRecovery(esCellQcOnly);
+        restrictedProject.setEsCellQcOnly(esCellQcOnly);
         restrictedProject.setProjectType(projectType);
         restrictedProject.setProjectIntentions(projectIntentions);
         restrictedProject.setIsObjectRestricted(true);

@@ -674,4 +674,40 @@
     <PROJECT_SUMMARY_STATUS_STAMP/>
 
     <PERSON_ROLE_CONSORTIUM/>
+
+    <TARG_REP_GENE ID="183"/>
+
+    <TARG_REP_MUTATION_METHOD ID="1"
+                              ALLELE_PREFIX="tm"
+                              CODE="tgm"
+                              NAME="Targeted Mutation"
+    />
+
+    <TARG_REP_MUTATION_TYPE ID="1"
+                            CODE="crd"
+                            NAME="Conditional Ready"
+    />
+
+    <TARG_REP_ALLELE ID="1878"
+                     ASSEMBLY="GRCm38"
+                     CHROMOSOME="11"
+                     HAS_ISSUE="false"
+                     STRAND="-"
+                     GENE_ID="183"
+                     MUTATION_METHOD_ID="1"
+                     MUTATION_TYPE_ID="1"
+    />
+
+    <TARG_REP_PIPELINE ID="1"
+                       NAME="KOMP-CSD"
+    />
+
+    <TARG_REP_ES_CELL ID="14210"
+                      NAME="EPD0045_1_A11"
+                      ALLELE_ID="1878"
+                      PIPELINE_ID="1"
+                      REPORT_TO_PUBLIC="true"
+
+    />
+
 </dataset>
