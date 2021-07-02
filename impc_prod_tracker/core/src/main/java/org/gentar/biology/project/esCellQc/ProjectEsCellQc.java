@@ -41,9 +41,6 @@ public class ProjectEsCellQc  extends BaseEntity
     @Column(columnDefinition = "TEXT")
     private String completionComment;
 
-    @Column(columnDefinition = "boolean default false")
-    private Boolean esCellQcOnly;
-
     private Integer numberOfEsCellsStartingQc;
 
     private Integer numberStartingQc;

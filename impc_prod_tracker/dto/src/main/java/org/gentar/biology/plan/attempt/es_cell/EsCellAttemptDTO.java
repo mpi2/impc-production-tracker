@@ -15,7 +15,6 @@ public class EsCellAttemptDTO
     @JsonIgnore
     private Long esCellAttemptId;
 
-    @JsonIgnore
     private String esCellName;
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -44,6 +43,8 @@ public class EsCellAttemptDTO
     private Integer totalFemaleChimeras;
 
     private Integer totalMaleChimeras;
+
+    private Integer totalChimeras;
 
     private Integer numberOfMalesWith0To39PercentChimerism;
 

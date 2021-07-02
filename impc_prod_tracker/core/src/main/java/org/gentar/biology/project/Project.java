@@ -21,6 +21,7 @@ import org.gentar.audit.diff.IgnoreForAuditingChanges;
 import org.gentar.biology.colony.Colony;
 import org.gentar.biology.outcome.Outcome;
 import org.gentar.biology.plan.type.PlanTypeName;
+import org.gentar.biology.project.esCellQc.ProjectEsCellQc;
 import org.gentar.biology.project.summary_status.ProjectSummaryStatusStamp;
 import org.gentar.biology.project.type.ProjectType;
 import org.gentar.biology.status.Status;
@@ -75,6 +76,7 @@ public class Project extends BaseEntity implements Resource<Project>
         this.species = project.species == null ? null : new HashSet<>(project.species);
         this.projectConsortia =
             project.projectConsortia == null ? null : new HashSet<>(project.projectConsortia);
+        this.projectEsCellQc = project.projectEsCellQc;
     }
 
     @Id
@@ -149,6 +151,12 @@ public class Project extends BaseEntity implements Resource<Project>
     @OneToMany(cascade=CascadeType.ALL, mappedBy = "project", orphanRemoval=true)
     private Set<ProjectConsortium> projectConsortia;
 
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
+    @OneToOne
+    @JoinColumn(name = "project_id")
+    private ProjectEsCellQc projectEsCellQc;
+
     @ManyToOne(targetEntity= ProjectType.class)
     private ProjectType projectType;
 
@@ -186,10 +194,11 @@ public class Project extends BaseEntity implements Resource<Project>
         restrictedProject.setReactivationDate(reactivationDate);
         restrictedProject.setComment(comment);
         restrictedProject.setRecovery(recovery);
-        restrictedProject.setRecovery(esCellQcOnly);
+        restrictedProject.setEsCellQcOnly(esCellQcOnly);
         restrictedProject.setProjectType(projectType);
         restrictedProject.setProjectIntentions(projectIntentions);
         restrictedProject.setIsObjectRestricted(true);
+        restrictedProject.setProjectEsCellQc(projectEsCellQc);
         return restrictedProject;
     }
 

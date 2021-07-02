@@ -31,7 +31,7 @@ public class EsCellAttempt extends BaseEntity
     // This stores the id but is not specified as a foreign key
     // The id is converted to the EsCellName in the service and DTO.
     @NotNull
-    private Integer TargRepEsCellId;
+    private Long TargRepEsCellId;
 
     private LocalDate miDate;
 
@@ -80,7 +80,7 @@ public class EsCellAttempt extends BaseEntity
     @Column(name = "number_of_males_with_100_percent_chimerism")
     private Integer numberOfMalesWith100PercentChimerism;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     private Strain testCrossStrain;
 
     @Column(name = "date_chimeras_mated")
