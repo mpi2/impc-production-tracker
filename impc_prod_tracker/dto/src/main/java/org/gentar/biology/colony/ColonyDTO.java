@@ -21,6 +21,9 @@ public class ColonyDTO
     @JsonIgnore
     private String legacyModification;
 
+    @JsonIgnore
+    private String legacyWithoutSequence;
+
     private String genotypingComment;
     private String statusName;
 

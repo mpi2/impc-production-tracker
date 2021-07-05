@@ -52,6 +52,9 @@ public class Colony extends BaseEntity implements ProcessData
     @Column(name = "legacy_modification", columnDefinition = "boolean default false")
     private Boolean legacyModification;
 
+    @Column(name = "legacy_without_sequence", columnDefinition = "boolean default false")
+    private Boolean legacyWithoutSequence;
+
     @NotNull
     @ManyToOne(cascade=CascadeType.ALL)
     private Strain strain;
@@ -80,6 +83,7 @@ public class Colony extends BaseEntity implements ProcessData
         this.outcome = colony.outcome;
         this.name = colony.name;
         this.legacyModification = colony.legacyModification;
+        this.legacyWithoutSequence = colony.legacyWithoutSequence;
         this.strain = colony.strain;
         this.status = colony.status;
         this.genotypingComment = colony.genotypingComment;
