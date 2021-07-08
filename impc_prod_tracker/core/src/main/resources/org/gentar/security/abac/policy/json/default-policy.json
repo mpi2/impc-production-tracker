@@ -122,7 +122,7 @@
     "name": "Update phenotyping plan",
     "description": "DCC can update any phenotyping plan",
     "target": "action == 'UPDATE_PLAN' and resource.planType.name == 'phenotyping'",
-    "condition": "subject.isUserByKey('dcc_user_key')"
+    "condition": "subject.isUserByKey('dcc_user_key') OR subject.isUserByKey('dcc_user_key')"
   },
 
   {
