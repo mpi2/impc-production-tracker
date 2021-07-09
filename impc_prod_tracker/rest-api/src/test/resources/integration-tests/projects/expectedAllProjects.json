@@ -16,6 +16,8 @@
         "relatedWorkGroupNames":[
           "BaSH"
         ],
+        "completionNote":null,
+        "completionComment":null,
         "_links":{
           "self":{
             "href":"http://localhost:8080/api/projects/TPN:000000001"
@@ -31,7 +33,7 @@
             }
           ]
         },
-        "imitsMiPlanId": 27136,
+        "imitsMiPlanId":27136,
         "assignmentStatusStamps":[
 
         ],
@@ -133,6 +135,8 @@
         "relatedWorkGroupNames":[
 
         ],
+        "completionNote":null,
+        "completionComment":null,
         "_links":{
           "self":{
             "href":"http://localhost:8080/api/projects/TPN:000000002"
@@ -175,6 +179,8 @@
         "relatedWorkGroupNames":[
 
         ],
+        "completionNote":null,
+        "completionComment":null,
         "_links":{
           "self":{
             "href":"http://localhost:8080/api/projects/TPN:000000003"
@@ -217,6 +223,8 @@
         "relatedWorkGroupNames":[
 
         ],
+        "completionNote":null,
+        "completionComment":null,
         "_links":{
           "self":{
             "href":"http://localhost:8080/api/projects/TPN:000000004"
@@ -259,6 +267,8 @@
         "relatedWorkGroupNames":[
 
         ],
+        "completionNote":null,
+        "completionComment":null,
         "_links":{
           "self":{
             "href":"http://localhost:8080/api/projects/TPN:000000005"

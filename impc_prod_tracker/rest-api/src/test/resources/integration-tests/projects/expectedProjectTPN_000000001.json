@@ -13,6 +13,8 @@
   "relatedWorkGroupNames":[
     "BaSH"
   ],
+  "completionNote":null,
+  "completionComment":null,
   "_links":{
     "self":{
       "href":"http://localhost:8080/api/projects/TPN:000000001"
@@ -28,7 +30,7 @@
       }
     ]
   },
-  "imitsMiPlanId": 27136,
+  "imitsMiPlanId":27136,
   "assignmentStatusStamps":[
 
   ],
@@ -108,6 +110,10 @@
       "consortiumName":"CMG"
     }
   ],
-  "colonyNames":[],
-  "phenotypingExternalRefs":[]
+  "colonyNames":[
+
+  ],
+  "phenotypingExternalRefs":[
+
+  ]
 }

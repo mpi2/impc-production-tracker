@@ -33,6 +33,8 @@ public class ProjectFieldsDescriptors
             "reactivationDate",
             "Date, represented as string, on which the project was activated again (assignment " +
                 "Status changed from inactive). Example: \"2020-09-24T00:00:05\". Read only.");
+        addField(descriptors, "completionNote", "Project completion note.");
+        addField(descriptors, "completionComment", "Project completion comment.");
         addField(
             descriptors,
             "imitsMiPlanId",

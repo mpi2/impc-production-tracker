@@ -5,6 +5,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.gentar.BaseEntity;
 import org.gentar.biology.project.Project;
+import org.gentar.biology.project.esCellQc.centre_pipeline.EsCellCentrePipeline;
+import org.gentar.biology.project.esCellQc.comment.EsCellQcComment;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -16,34 +18,25 @@ import java.time.LocalDate;
 public class ProjectEsCellQc  extends BaseEntity
 {
     @Id
-    @SequenceGenerator(name = "projectEsCellQcSeq", sequenceName = "PROJECT_ES_CELL_QC_SEQ")
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "projectEsCellQcSeq")
+    @Column(name = "id")
     private Long id;
 
-    @NotNull
     @OneToOne
+    @JoinColumn(name = "project_id")
+    @MapsId
     private Project project;
 
-    @ManyToOne(targetEntity = EsCellQcComment.class)
-    private EsCellQcComment esCellQcComment;
-
-    private Integer numberOfEsCellsPassingQc;
-
-    private String completionNote;
-
     private Integer numberOfEsCellsReceived;
-
-    private LocalDate esCellsReceivedOn;
 
     @ManyToOne(targetEntity = EsCellCentrePipeline.class)
     private EsCellCentrePipeline esCellsReceivedFrom;
 
-    @Column(columnDefinition = "TEXT")
-    private String completionComment;
+    private LocalDate esCellsReceivedOn;
 
     private Integer numberOfEsCellsStartingQc;
 
-    private Integer numberStartingQc;
+    private Integer numberOfEsCellsPassingQc;
 
-    private Integer numberPassingQc;
+    @ManyToOne(targetEntity = EsCellQcComment.class)
+    private EsCellQcComment esCellQcComment;
 }

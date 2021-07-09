@@ -1,6 +1,5 @@
 package org.gentar.biology.project.mappers;
 
-import org.gentar.EntityMapper;
 import org.gentar.biology.project.Project;
 import org.gentar.biology.project.ProjectCommonDataDTO;
 import org.gentar.biology.project.ProjectConsortiumDTO;
@@ -12,11 +11,8 @@ import org.gentar.organization.institute.Institute;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.mock.mockito.MockBean;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -46,10 +42,13 @@ class ProjectCommonDataMapperTest
     @Mock
     private PrivacyMapper privacyMapper;
 
+    @Mock
+    private ProjectEsCellQcMapper projectEsCellQcMapper;
+
     @BeforeEach
     void setUp()
     {
-        testInstance = new ProjectCommonDataMapper(privacyMapper);
+        testInstance = new ProjectCommonDataMapper(privacyMapper, projectEsCellQcMapper);
     }
 
     @Test

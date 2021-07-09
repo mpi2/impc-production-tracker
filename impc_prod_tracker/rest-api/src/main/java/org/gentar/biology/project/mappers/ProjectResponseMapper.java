@@ -1,5 +1,6 @@
 package org.gentar.biology.project.mappers;
 
+import org.apache.logging.log4j.util.Strings;
 import org.gentar.Mapper;
 import org.gentar.biology.colony.Colony;
 import org.gentar.biology.intention.ProjectIntentionResponseDTO;
@@ -10,7 +11,6 @@ import org.gentar.biology.project.ProjectConsortiumDTO;
 import org.gentar.biology.project.ProjectController;
 import org.gentar.biology.project.ProjectResponseDTO;
 import org.gentar.biology.project.consortium.ProjectConsortiumMapper;
-import org.gentar.biology.project.project_es_cell_qc.ProjectEsCellQcDTO;
 import org.gentar.biology.species.SpeciesMapper;
 import org.gentar.biology.status.StatusStampMapper;
 import org.gentar.biology.status_stamps.StatusStampsDTO;
@@ -32,22 +32,19 @@ public class ProjectResponseMapper implements Mapper<Project, ProjectResponseDTO
     private final ProjectIntentionResponseMapper projectIntentionResponseMapper;
     private final SpeciesMapper speciesMapper;
     private final ProjectConsortiumMapper projectConsortiumMapper;
-    private final ProjectEsCellQcMapper projectEsCellQcMapper;
 
     public ProjectResponseMapper(
         ProjectCommonDataMapper projectCommonDataMapper,
         StatusStampMapper statusStampMapper,
         ProjectIntentionResponseMapper projectIntentionResponseMapper,
         SpeciesMapper speciesMapper,
-        ProjectConsortiumMapper projectConsortiumMapper,
-        ProjectEsCellQcMapper projectEsCellQcMapper)
+        ProjectConsortiumMapper projectConsortiumMapper)
     {
         this.projectCommonDataMapper = projectCommonDataMapper;
         this.statusStampMapper = statusStampMapper;
         this.projectIntentionResponseMapper = projectIntentionResponseMapper;
         this.speciesMapper = speciesMapper;
         this.projectConsortiumMapper = projectConsortiumMapper;
-        this.projectEsCellQcMapper = projectEsCellQcMapper;
     }
 
     @Override
@@ -75,8 +72,15 @@ public class ProjectResponseMapper implements Mapper<Project, ProjectResponseDTO
 
         setColonyNames(projectResponseDTO, project);
         setPhenotypingExternalReferences(projectResponseDTO, project);
-        setProjectEsCellQcDTO(projectResponseDTO, project);
 
+        if (Strings.isBlank(project.getCompletionComment())) {
+            projectResponseDTO.setCompletionComment(null);
+        } else {
+            projectResponseDTO.setCompletionComment(project.getCompletionComment());
+        }
+        if (project.getCompletionNote() != null) {
+            projectResponseDTO.setCompletionNote(project.getCompletionNote().getNote());
+        }
         return projectResponseDTO;
     }
 
@@ -100,12 +104,6 @@ public class ProjectResponseMapper implements Mapper<Project, ProjectResponseDTO
             }
         });
         projectResponseDTO.setPhenotypingExternalReferences(phenotypingExternalReferences);
-    }
-
-    private void setProjectEsCellQcDTO(ProjectResponseDTO projectResponseDTO, Project project)
-    {
-        ProjectEsCellQcDTO projectEsCellQcDTO = projectEsCellQcMapper.toDto(project.getProjectEsCellQc());
-        projectResponseDTO.setProjectEsCellQcDTO(projectEsCellQcDTO);
     }
 
     private void setStatusStampsDTO(ProjectResponseDTO projectResponseDTO, Project project)

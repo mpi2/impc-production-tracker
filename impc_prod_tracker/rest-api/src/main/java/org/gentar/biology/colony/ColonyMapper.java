@@ -75,6 +75,12 @@ public class ColonyMapper implements Mapper<Colony, ColonyDTO>
         Colony colony = entityMapper.toTarget(colonyDTO, Colony.class);
         setEvent(colony, colonyDTO);
         colony.setStrain(strainMapper.toEntity(colonyDTO.getStrainName()));
+        if (colony.getLegacyWithoutSequence() == null) {
+            colony.setLegacyWithoutSequence(false);
+        }
+        if (colony.getLegacyModification() == null) {
+            colony.setLegacyModification(false);
+        }
         setDistributionProducts(colony, colonyDTO);
         return colony;
     }

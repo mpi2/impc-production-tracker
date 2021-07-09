@@ -21,10 +21,13 @@ class ProjectUpdateMapperTest
     @Mock
     private ProjectCommonDataMapper projectCommonDataMapper;
 
+    @Mock
+    private ProjectCompletionNoteMapper projectCompletionNoteMapper;
+
     @BeforeEach
     void setUp()
     {
-        testInstance = new ProjectUpdateMapper(projectCommonDataMapper);
+        testInstance = new ProjectUpdateMapper(projectCommonDataMapper, projectCompletionNoteMapper);
     }
 
     @Test

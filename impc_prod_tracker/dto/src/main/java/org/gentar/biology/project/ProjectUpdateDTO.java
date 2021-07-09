@@ -13,6 +13,8 @@ public class ProjectUpdateDTO
 {
     // Public identifier of the project. No editable.
     private String tpn;
+    private String completionNote;
+    private String completionComment;
 
     @JsonUnwrapped
     private ProjectCommonDataDTO projectCommonDataDTO;

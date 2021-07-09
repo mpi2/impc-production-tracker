@@ -1,4 +1,4 @@
-package org.gentar.biology.project.esCellQc;
+package org.gentar.biology.project.esCellQc.centre_pipeline;
 
 import lombok.AccessLevel;
 import lombok.Data;

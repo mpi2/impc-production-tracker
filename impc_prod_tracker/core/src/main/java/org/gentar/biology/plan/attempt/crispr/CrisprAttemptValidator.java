@@ -34,7 +34,6 @@ public class CrisprAttemptValidator
         // This is a place to add validation code
         // Consider throwing an org.gentar.exceptions.UserOperationFailedException
         // e.g. throw new UserOperationFailedException(errorMessage);
-
         if (crisprAttempt != null)
         {
             validateNuclease(crisprAttempt);

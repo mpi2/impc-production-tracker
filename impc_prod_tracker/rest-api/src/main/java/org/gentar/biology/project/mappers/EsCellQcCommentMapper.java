@@ -1,13 +1,13 @@
 package org.gentar.biology.project.mappers;
 
 import org.gentar.Mapper;
-import org.gentar.biology.project.esCellQc.EsCellQcComment;
-import org.gentar.biology.project.esCellQc.EsCellQcCommentService;
+import org.gentar.biology.project.esCellQc.comment.EsCellQcComment;
+import org.gentar.biology.project.esCellQc.comment.EsCellQcCommentService;
 import org.springframework.stereotype.Component;
 
 @Component
-class EsCellQcCommentMapper implements Mapper<EsCellQcComment, String> {
-
+class EsCellQcCommentMapper implements Mapper<EsCellQcComment, String>
+{
     private final EsCellQcCommentService esCellQcCommentService;
 
     public EsCellQcCommentMapper(EsCellQcCommentService esCellQcCommentService)

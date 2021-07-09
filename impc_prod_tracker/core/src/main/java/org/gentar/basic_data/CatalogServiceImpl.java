@@ -31,6 +31,8 @@ import org.gentar.biology.plan.attempt.crispr.nuclease.nuclease_type.NucleaseTyp
 import org.gentar.biology.mutation.categorizarion.MutationCategorizationRepository;
 import org.gentar.biology.plan.attempt.crispr.reagent.ReagentRepository;
 import org.gentar.biology.plan.attempt.phenotyping.stage.type.PhenotypingStageTypeService;
+import org.gentar.biology.project.esCellQc.centre_pipeline.EsCellCentrePipelineRepository;
+import org.gentar.biology.project.esCellQc.comment.EsCellQcCommentRepository;
 import org.gentar.biology.sequence.category.SequenceCategoryRepository;
 import org.gentar.biology.sequence.type.SequenceTypeRepository;
 import org.gentar.biology.strain.strain_type.StrainType;
@@ -93,6 +95,8 @@ public class CatalogServiceImpl implements CatalogService
     private final ListRecordTypeService listRecordTypeService;
     private final GuideFormatRepository guideFormatRepository;
     private final GuideSourceRepository guideSourceRepository;
+    private final EsCellCentrePipelineRepository esCellCentrePipelineRepository;
+    private final EsCellQcCommentRepository esCellQcCommentRepository;
 
     private final Map<String, Object> conf = new HashMap<>();
 
@@ -126,7 +130,7 @@ public class CatalogServiceImpl implements CatalogService
             AssayTypeRepository assayTypeRepository,
             PhenotypingStageTypeService phenotypingStageTypeService,
             MutationCategorizationService mutationCategorizationService,
-            ListRecordTypeService listRecordTypeService, GuideFormatRepository guideFormatRepository, GuideSourceRepository guideSourceRepository)
+            ListRecordTypeService listRecordTypeService, GuideFormatRepository guideFormatRepository, GuideSourceRepository guideSourceRepository, EsCellCentrePipelineRepository esCellCentrePipelineRepository, EsCellQcCommentRepository esCellQcCommentRepository)
     {
         this.attemptTypeService = attemptTypeService;
         this.workUnitRepository = workUnitRepository;
@@ -162,6 +166,8 @@ public class CatalogServiceImpl implements CatalogService
         this.listRecordTypeService = listRecordTypeService;
         this.guideFormatRepository = guideFormatRepository;
         this.guideSourceRepository = guideSourceRepository;
+        this.esCellCentrePipelineRepository = esCellCentrePipelineRepository;
+        this.esCellQcCommentRepository = esCellQcCommentRepository;
     }
 
     @Override
@@ -212,8 +218,24 @@ public class CatalogServiceImpl implements CatalogService
             addRecordTypesByConsortium();
             addGuideFormatNames();
             addGuideSourceNames();
+            addReceivedFromCentres();
+            addQcComments();
         }
         return conf;
+    }
+
+    private void addReceivedFromCentres()
+    {
+        List<Object> receivedFromCentres = new ArrayList<>();
+        esCellCentrePipelineRepository.findAll().forEach(p -> receivedFromCentres.add(p.getName()));
+        conf.put("receivedFromCentres", receivedFromCentres);
+    }
+
+    private void addQcComments()
+    {
+        List<Object> qcComments = new ArrayList<>();
+        esCellQcCommentRepository.findAll().forEach(p -> qcComments.add(p.getName()));
+        conf.put("qcComments", qcComments);
     }
 
     private void addGuideFormatNames()

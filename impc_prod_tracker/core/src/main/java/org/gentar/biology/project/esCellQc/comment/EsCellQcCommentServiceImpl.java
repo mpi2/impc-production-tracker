@@ -1,10 +1,10 @@
-package org.gentar.biology.project.esCellQc;
+package org.gentar.biology.project.esCellQc.comment;
 
 import org.springframework.stereotype.Component;
 
 @Component
-public class EsCellQcCommentServiceImpl implements EsCellQcCommentService {
-
+public class EsCellQcCommentServiceImpl implements EsCellQcCommentService
+{
     private final EsCellQcCommentRepository esCellQcCommentRepository;
 
     public EsCellQcCommentServiceImpl(EsCellQcCommentRepository esCellQcCommentRepository) {

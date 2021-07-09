@@ -36,6 +36,7 @@ public class UpdateProjectRequestProcessor
         {
             projectToUpdate.setPrivacy(mappedFromDto.getPrivacy());
         }
+        projectToUpdate.setProjectEsCellQc(mappedFromDto.getProjectEsCellQc());
         return projectToUpdate;
     }
 
