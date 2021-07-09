@@ -3,7 +3,8 @@ package org.gentar.biology.project.mappers;
 import org.apache.logging.log4j.util.Strings;
 import org.gentar.EntityMapper;
 import org.gentar.Mapper;
-import org.gentar.biology.project.esCellQc.EsCellQcComment;
+import org.gentar.biology.project.esCellQc.centre_pipeline.EsCellCentrePipeline;
+import org.gentar.biology.project.esCellQc.comment.EsCellQcComment;
 import org.gentar.biology.project.esCellQc.ProjectEsCellQc;
 import org.gentar.biology.project.project_es_cell_qc.ProjectEsCellQcDTO;
 import org.springframework.stereotype.Component;
@@ -13,11 +14,15 @@ public class ProjectEsCellQcMapper implements Mapper<ProjectEsCellQc, ProjectEsC
 
     private final EntityMapper entityMapper;
     private final EsCellQcCommentMapper esCellQcCommentMapper;
+    private final EsCellReceivedFromMapper esCellReceivedFromMapper;
 
     public ProjectEsCellQcMapper(EntityMapper entityMapper,
-                                 EsCellQcCommentMapper esCellQcCommentMapper) {
+                                 EsCellQcCommentMapper esCellQcCommentMapper,
+                                 EsCellReceivedFromMapper esCellReceivedFromMapper)
+    {
         this.entityMapper = entityMapper;
         this.esCellQcCommentMapper = esCellQcCommentMapper;
+        this.esCellReceivedFromMapper = esCellReceivedFromMapper;
     }
 
     @Override
@@ -30,32 +35,31 @@ public class ProjectEsCellQcMapper implements Mapper<ProjectEsCellQc, ProjectEsC
             {
                 projectEsCellQcDTO.setEsCellQcComment(projectEsCellQc.getEsCellQcComment().getName());
             }
-
+            if (projectEsCellQc.getEsCellsReceivedFrom() != null)
+            {
+                projectEsCellQcDTO.setEsCellsReceivedFromName(projectEsCellQc.getEsCellsReceivedFrom().getName());
+            }
         }
         return projectEsCellQcDTO;
 
     }
 
     @Override
-    public ProjectEsCellQc toEntity(ProjectEsCellQcDTO projectEsCellQcDTO) {
+    public ProjectEsCellQc toEntity(ProjectEsCellQcDTO projectEsCellQcDTO)
+    {
         ProjectEsCellQc projectEsCellQc = entityMapper.toTarget(projectEsCellQcDTO, ProjectEsCellQc.class);
 
-        if (Strings.isBlank(projectEsCellQcDTO.getCompletionComment())) {
-            projectEsCellQc.setCompletionComment(null);
-        } else {
-            projectEsCellQc.setCompletionComment(projectEsCellQcDTO.getCompletionComment());
-        }
-
-        if (Strings.isBlank(projectEsCellQcDTO.getCompletionNote())) {
-            projectEsCellQc.setCompletionNote(null);
-        } else {
-            projectEsCellQc.setCompletionNote(projectEsCellQcDTO.getCompletionNote());
-        }
-        // entry in DTO needs validation against an enum
+        // TODO entry in DTO needs validation against an enum
         setEsCellQcCommentToEntity(projectEsCellQc, projectEsCellQcDTO);
+        setEsCellReceivedFromEntity(projectEsCellQc, projectEsCellQcDTO);
 
         return projectEsCellQc;
+    }
 
+    private void setEsCellReceivedFromEntity(ProjectEsCellQc projectEsCellQc, ProjectEsCellQcDTO projectEsCellQcDTO)
+    {
+        EsCellCentrePipeline esCellReceivedFrom = esCellReceivedFromMapper.toEntity(projectEsCellQcDTO.getEsCellsReceivedFromName());
+        projectEsCellQc.setEsCellsReceivedFrom(esCellReceivedFrom);
     }
 
     private void setEsCellQcCommentToEntity(ProjectEsCellQc projectEsCellQc, ProjectEsCellQcDTO projectEsCellQcDTO) {

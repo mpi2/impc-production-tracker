@@ -1,33 +1,20 @@
 package org.gentar.biology.project.project_es_cell_qc;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
-import org.gentar.biology.plan.attempt.es_cell.EsCellAttemptDTO;
 
 import java.time.LocalDate;
 
 @Data
 @RequiredArgsConstructor
-public class ProjectEsCellQcDTO {
-
-    private String completionComment;
-
-    private String completionNote;
-
-    private LocalDate esCellsReceivedOn;
-
-    private Integer numberOfEsCellsPassingQc;
-
+public class ProjectEsCellQcDTO
+{
+    private Long id;
     private Integer numberOfEsCellsReceived;
-
+    private String esCellsReceivedFromName;
+    private LocalDate esCellsReceivedOn;
     private Integer numberOfEsCellsStartingQc;
-
-    private Integer numberPassingQc;
-
-    private Integer numberStartingQc;
-
+    private Integer numberOfEsCellsPassingQc;
     private String esCellQcComment;
-
 }

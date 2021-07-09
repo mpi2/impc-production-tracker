@@ -37,6 +37,8 @@ public class ProjectUpdater
     public History updateProject(Project originalProject, Project newProject)
     {
         validatePermissions(newProject);
+        // TODO implement data validation for project updates.
+//        validateUpdateData(originalProject, newProject);
         History history =
             historyService.detectTrackOfChanges(originalProject, newProject, originalProject.getId());
         saveChanges(newProject);

@@ -21,6 +21,7 @@ import org.gentar.audit.diff.IgnoreForAuditingChanges;
 import org.gentar.biology.colony.Colony;
 import org.gentar.biology.outcome.Outcome;
 import org.gentar.biology.plan.type.PlanTypeName;
+import org.gentar.biology.project.completionNote.ProjectCompletionNote;
 import org.gentar.biology.project.esCellQc.ProjectEsCellQc;
 import org.gentar.biology.project.summary_status.ProjectSummaryStatusStamp;
 import org.gentar.biology.project.type.ProjectType;
@@ -153,12 +154,17 @@ public class Project extends BaseEntity implements Resource<Project>
 
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
-    @OneToOne
-    @JoinColumn(name = "project_id")
+    @OneToOne(cascade=CascadeType.ALL, mappedBy = "project", orphanRemoval=true)
     private ProjectEsCellQc projectEsCellQc;
 
     @ManyToOne(targetEntity= ProjectType.class)
     private ProjectType projectType;
+
+    @ManyToOne(targetEntity= ProjectCompletionNote.class)
+    private ProjectCompletionNote completionNote;
+
+    @Column(columnDefinition = "TEXT")
+    private String completionComment;
 
     @Override
     @JsonIgnore
@@ -199,6 +205,8 @@ public class Project extends BaseEntity implements Resource<Project>
         restrictedProject.setProjectIntentions(projectIntentions);
         restrictedProject.setIsObjectRestricted(true);
         restrictedProject.setProjectEsCellQc(projectEsCellQc);
+        restrictedProject.setCompletionNote(completionNote);
+        restrictedProject.setCompletionComment(completionComment);
         return restrictedProject;
     }
 

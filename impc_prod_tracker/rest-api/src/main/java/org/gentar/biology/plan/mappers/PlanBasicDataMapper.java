@@ -21,6 +21,7 @@ import org.gentar.biology.plan.attempt.phenotyping.*;
 import org.gentar.biology.plan.plan_starting_point.PlanStartingPointDTO;
 import org.gentar.biology.plan.starting_point.PlanStartingPoint;
 import org.gentar.biology.starting_point.PlanStartingPointMapper;
+import org.gentar.biology.strain.StrainMapper;
 import org.gentar.exceptions.UserOperationFailedException;
 import org.springframework.stereotype.Component;
 import java.util.HashSet;
@@ -38,6 +39,7 @@ public class PlanBasicDataMapper implements Mapper<Plan, PlanBasicDataDTO>
     private CreAlleleModificationAttemptMapper creAlleleModificationAttemptMapper;
     private PhenotypingAttemptCreationMapper phenotypingAttemptCreationMapper;
     private PhenotypingAttemptResponseMapper phenotypingAttemptResponseMapper;
+    private StrainMapper strainMapper;
 
     public PlanBasicDataMapper(
             PlanCommonDataMapper planCommonDataMapper,
@@ -47,7 +49,7 @@ public class PlanBasicDataMapper implements Mapper<Plan, PlanBasicDataDTO>
             BreedingAttemptMapper breedingAttemptMapper,
             CreAlleleModificationAttemptMapper creAlleleModificationAttemptMapper,
             PhenotypingAttemptCreationMapper phenotypingAttemptCreationMapper,
-            PhenotypingAttemptResponseMapper phenotypingAttemptResponseMapper)
+            PhenotypingAttemptResponseMapper phenotypingAttemptResponseMapper, StrainMapper strainMapper)
     {
         this.planCommonDataMapper = planCommonDataMapper;
         this.planStartingPointMapper = planStartingPointMapper;
@@ -57,6 +59,7 @@ public class PlanBasicDataMapper implements Mapper<Plan, PlanBasicDataDTO>
         this.creAlleleModificationAttemptMapper = creAlleleModificationAttemptMapper;
         this.phenotypingAttemptCreationMapper = phenotypingAttemptCreationMapper;
         this.phenotypingAttemptResponseMapper = phenotypingAttemptResponseMapper;
+        this.strainMapper = strainMapper;
     }
 
     @Override
@@ -239,6 +242,8 @@ public class PlanBasicDataMapper implements Mapper<Plan, PlanBasicDataDTO>
         {
             CreAlleleModificationAttempt creAlleleModificationAttempt =
                     creAlleleModificationAttemptMapper.toEntity(planBasicDataDTO.getCreAlleleModificationAttemptDTO());
+            creAlleleModificationAttempt.setDeleterStrain(strainMapper.toEntity(planBasicDataDTO.
+                    getCreAlleleModificationAttemptDTO().getDeleterStrainName()));
             creAlleleModificationAttempt.setPlan(plan);
             creAlleleModificationAttempt.setId(plan.getId());
             plan.setCreAlleleModificationAttempt(creAlleleModificationAttempt);

@@ -2,7 +2,6 @@ package org.gentar.biology.outcome;
 
 import org.gentar.biology.colony.Colony;
 import org.gentar.biology.colony.ColonyValidator;
-import org.gentar.biology.mutation.Mutation;
 import org.gentar.biology.outcome.type.OutcomeType;
 import org.gentar.biology.outcome.type.OutcomeTypeName;
 import org.gentar.biology.plan.Plan;

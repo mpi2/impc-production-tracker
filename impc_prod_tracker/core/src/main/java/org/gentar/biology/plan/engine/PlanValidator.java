@@ -145,6 +145,14 @@ public class PlanValidator
         {
             crisprAttemptValidator.validate(plan.getCrisprAttempt());
         }
+        if (AttemptTypeChecker.ES_CELL_TYPE.equalsIgnoreCase(AttemptTypeChecker.getAttemptTypeName(plan)))
+        {
+
+        }
+        if (AttemptTypeChecker.CRE_ALLELE_MODIFICATION_TYPE.equalsIgnoreCase(AttemptTypeChecker.getAttemptTypeName(plan)))
+        {
+
+        }
         if (AttemptTypeChecker.PHENOTYPING_TYPE.equalsIgnoreCase(AttemptTypeChecker.getAttemptTypeName(plan)))
         {
             phenotypeAttemptValidator.validateStrainNotNull(plan.getPhenotypingAttempt());

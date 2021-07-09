@@ -26,7 +26,6 @@ class ProjectCommonDataDTOTest
 
         assertThat(json, is(notNullValue()));
         assertThat(json, is("{\"recovery\":false,\"esCellQcOnly\":false,\"comment\":\"comment\"," +
-            "\"reactivationDate\":\"2000-01-01T00:00:00\"," +
-            "\"privacyName\":\"public\"}"));
+            "\"reactivationDate\":\"2000-01-01T00:00:00\",\"privacyName\":\"public\"}"));
     }
 }

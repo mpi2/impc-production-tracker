@@ -93,22 +93,22 @@
                 TPN="TPN:000000002"
                 PRIVACY_ID="1"
                 ASSIGNMENT_STATUS_ID="2"
-                SUMMARY_STATUS_ID="2"/>
+                SUMMARY_STATUS_ID="2" />
     <PROJECT    ID="3"
                 TPN="TPN:000000003"
                 PRIVACY_ID="1"
                 ASSIGNMENT_STATUS_ID="1"
-                SUMMARY_STATUS_ID="1"/>
+                SUMMARY_STATUS_ID="1" />
     <PROJECT    ID="4"
                 TPN="TPN:000000004"
                 PRIVACY_ID="2"
                 ASSIGNMENT_STATUS_ID="2"
-                SUMMARY_STATUS_ID="2"/>
+                SUMMARY_STATUS_ID="2" />
     <PROJECT    ID="5"
                 TPN="TPN:000000005"
                 PRIVACY_ID="3"
                 ASSIGNMENT_STATUS_ID="1"
-                SUMMARY_STATUS_ID="1"/>
+                SUMMARY_STATUS_ID="1" />
 
     <PLAN       ID="1"
                 PIN="PIN:0000000001"

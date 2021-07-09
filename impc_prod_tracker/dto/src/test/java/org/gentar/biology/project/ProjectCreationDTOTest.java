@@ -49,8 +49,8 @@ class ProjectCreationDTOTest
         String json = JsonConverter.toJson(projectCreationDTO);
         assertThat(json, is(notNullValue()));
         assertThat(json, is("{\"recovery\":null,\"esCellQcOnly\":true,\"comment\":\"comment\"," +
-            "\"reactivationDate\":\"2000-01-01T00:00:00\",\"privacyName\":\"public\"," +
-            "\"planDetails\":{\"attemptTypeName\":\"crispr\"," +
+            "\"reactivationDate\":\"2000-01-01T00:00:00\"," +
+            "\"privacyName\":\"public\",\"planDetails\":{\"attemptTypeName\":\"crispr\"," +
             "\"typeName\":\"production\"},\"projectIntentions\":[{\"intentionByGene\":{\"gene\":" +
             "{\"symbol\":\"symbol\",\"speciesName\":null,\"accessionId\":null}}," +
             "\"intentionsBySequences\":null}],\"speciesNames\":null,\"consortia\":null}"));
