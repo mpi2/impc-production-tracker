@@ -108,6 +108,8 @@ public class PlanFieldsDescriptors
             crisprFields, "crisprAttempt.embryo2Cell", "Number of embryos at the two cell stage.");
         addField(
             crisprFields, "crisprAttempt.strainInjectedName", "Name of the strain injected.");
+        addField(crisprFields, "crisprAttempt.embryoTransferDay", "Embryo transfer day.");
+        addField(crisprFields, "crisprAttempt.totalTransferred", "Total transferred");
 
         // Nucleases
         addField(
@@ -227,8 +229,6 @@ public class PlanFieldsDescriptors
             "Number of HDR G0 mutants with a subset of donors inserted.");
         addField(crisprFields, "crisprAttempt.assay.numHrG0Mutants", "Number of HR G0 mutants.");
         addField(crisprFields, "crisprAttempt.assay.numNhejG0Mutants", "Number of NHEJ G0 mutants.");
-        addField(crisprFields, "crisprAttempt.assay.embryoTransferDay", "Embryo transfer day.");
-        addField(crisprFields, "crisprAttempt.assay.totalTransferred", "Total transferred");
 
         return crisprFields;
     }

@@ -31,6 +31,7 @@ import org.gentar.biology.plan.attempt.crispr.nuclease.nuclease_type.NucleaseTyp
 import org.gentar.biology.mutation.categorizarion.MutationCategorizationRepository;
 import org.gentar.biology.plan.attempt.crispr.reagent.ReagentRepository;
 import org.gentar.biology.plan.attempt.phenotyping.stage.type.PhenotypingStageTypeService;
+import org.gentar.biology.project.completionNote.ProjectCompletionNoteRepository;
 import org.gentar.biology.project.esCellQc.centre_pipeline.EsCellCentrePipelineRepository;
 import org.gentar.biology.project.esCellQc.comment.EsCellQcCommentRepository;
 import org.gentar.biology.sequence.category.SequenceCategoryRepository;
@@ -97,6 +98,7 @@ public class CatalogServiceImpl implements CatalogService
     private final GuideSourceRepository guideSourceRepository;
     private final EsCellCentrePipelineRepository esCellCentrePipelineRepository;
     private final EsCellQcCommentRepository esCellQcCommentRepository;
+    private final ProjectCompletionNoteRepository projectCompletionNoteRepository;
 
     private final Map<String, Object> conf = new HashMap<>();
 
@@ -130,7 +132,7 @@ public class CatalogServiceImpl implements CatalogService
             AssayTypeRepository assayTypeRepository,
             PhenotypingStageTypeService phenotypingStageTypeService,
             MutationCategorizationService mutationCategorizationService,
-            ListRecordTypeService listRecordTypeService, GuideFormatRepository guideFormatRepository, GuideSourceRepository guideSourceRepository, EsCellCentrePipelineRepository esCellCentrePipelineRepository, EsCellQcCommentRepository esCellQcCommentRepository)
+            ListRecordTypeService listRecordTypeService, GuideFormatRepository guideFormatRepository, GuideSourceRepository guideSourceRepository, EsCellCentrePipelineRepository esCellCentrePipelineRepository, EsCellQcCommentRepository esCellQcCommentRepository, ProjectCompletionNoteRepository projectCompletionNoteRepository)
     {
         this.attemptTypeService = attemptTypeService;
         this.workUnitRepository = workUnitRepository;
@@ -168,6 +170,7 @@ public class CatalogServiceImpl implements CatalogService
         this.guideSourceRepository = guideSourceRepository;
         this.esCellCentrePipelineRepository = esCellCentrePipelineRepository;
         this.esCellQcCommentRepository = esCellQcCommentRepository;
+        this.projectCompletionNoteRepository = projectCompletionNoteRepository;
     }
 
     @Override
@@ -220,8 +223,16 @@ public class CatalogServiceImpl implements CatalogService
             addGuideSourceNames();
             addReceivedFromCentres();
             addQcComments();
+            addCompletionNotes();
         }
         return conf;
+    }
+
+    private void addCompletionNotes()
+    {
+        List<Object> completionNotes = new ArrayList<>();
+        projectCompletionNoteRepository.findAll().forEach(n -> completionNotes.add(n.getNote()));
+        conf.put("completionNotes", completionNotes);
     }
 
     private void addReceivedFromCentres()

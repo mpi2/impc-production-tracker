@@ -22,20 +22,18 @@ public class AssayMapper implements Mapper<Assay, AssayDTO>
     public AssayDTO toDto(Assay entity) {
         AssayDTO assayDTO = entityMapper.toTarget(entity, AssayDTO.class);
 
-        assayDTO.setId(entity.getId());
-        assayDTO.setTypeName(entity.getAssayType().getName());
-        assayDTO.setEmbryoTransferDay(entity.getEmbryoTransferDay());
-        assayDTO.setTotalTransferred(entity.getTotalTransferred());
-        assayDTO.setNumFounderPups(entity.getNumFounderPups());
-        assayDTO.setNumFounderSelectedForBreeding(entity.getNumFounderSelectedForBreeding());
-        assayDTO.setFounderNumAssays(entity.getFounderNumAssays());
-        assayDTO.setNumDeletionG0Mutants(entity.getNumDeletionG0Mutants());
-        assayDTO.setNumG0WhereMutationDetected(entity.getNumG0WhereMutationDetected());
-        assayDTO.setNumHdrG0Mutants(entity.getNumHdrG0Mutants());
-        assayDTO.setNumHdrG0MutantsAllDonorsInserted(entity.getNumHdrG0MutantsAllDonorsInserted());
-        assayDTO.setNumHdrG0MutantsSubsetDonorsInserted(entity.getNumHdrG0MutantsSubsetDonorsInserted());
-        assayDTO.setNumHrG0Mutants(entity.getNumHrG0Mutants());
-        assayDTO.setNumNhejG0Mutants(entity.getNumNhejG0Mutants());
+//        assayDTO.setId(entity.getId());
+//        assayDTO.setTypeName(entity.getAssayType().getName());
+//        assayDTO.setNumFounderPups(entity.getNumFounderPups());
+//        assayDTO.setNumFounderSelectedForBreeding(entity.getNumFounderSelectedForBreeding());
+//        assayDTO.setFounderNumAssays(entity.getFounderNumAssays());
+//        assayDTO.setNumDeletionG0Mutants(entity.getNumDeletionG0Mutants());
+//        assayDTO.setNumG0WhereMutationDetected(entity.getNumG0WhereMutationDetected());
+//        assayDTO.setNumHdrG0Mutants(entity.getNumHdrG0Mutants());
+//        assayDTO.setNumHdrG0MutantsAllDonorsInserted(entity.getNumHdrG0MutantsAllDonorsInserted());
+//        assayDTO.setNumHdrG0MutantsSubsetDonorsInserted(entity.getNumHdrG0MutantsSubsetDonorsInserted());
+//        assayDTO.setNumHrG0Mutants(entity.getNumHrG0Mutants());
+//        assayDTO.setNumNhejG0Mutants(entity.getNumNhejG0Mutants());
 
         return assayDTO;
     }

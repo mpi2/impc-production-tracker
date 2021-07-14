@@ -26,13 +26,12 @@ class PlanBasicDataDTOTest
 
         String json = JsonConverter.toJson(planBasicDataDTO);
         assertThat(json, is(notNullValue()));
-        assertThat(json, is("{\"funderNames\":null,\"workUnitName\":null,\"workGroupName\":null," +
-            "\"comment\":null," +
-            "\"crisprAttempt\":{\"miDate\":null,\"experimental\":null,\"comment\":null," +
-            "\"mutagenesisExternalRef\":null,\"attemptExternalRef\":null,\"nucleases\":null," +
-            "\"guides\":null,\"mutagenesisDonors\":null,\"reagents\":null,\"genotypePrimers\":null," +
-            "\"totalEmbryosInjected\":null,\"totalEmbryosSurvived\":null,\"embryo2Cell\":null," +
-            "\"assay\":null,\"strainInjectedName\":null}}"));
+        assertThat(json, is("{\"funderNames\":null,\"workUnitName\":null,\"workGroupName\":null,\"comment\":null," +
+                "\"crisprAttempt\":{\"miDate\":null,\"experimental\":null,\"comment\":null,\"mutagenesisExternalRef\":null," +
+                "\"attemptExternalRef\":null,\"embryoTransferDay\":null,\"totalTransferred\":null,\"nucleases\":null," +
+                "\"guides\":null,\"mutagenesisDonors\":null,\"reagents\":null,\"genotypePrimers\":null," +
+                "\"totalEmbryosInjected\":null,\"totalEmbryosSurvived\":null,\"embryo2Cell\":null,\"assay\":null," +
+                "\"strainInjectedName\":null}}"));
     }
 
     @Test

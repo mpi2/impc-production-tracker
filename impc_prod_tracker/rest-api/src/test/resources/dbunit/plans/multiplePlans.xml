@@ -353,7 +353,9 @@
                     TOTAL_EMBRYOS_INJECTED="72"
                     TOTAL_EMBRYOS_SURVIVED="70"
                     IMITS_MI_ATTEMPT="20043"
-                    EMBRYO_2_CELL="20043" />
+                    EMBRYO_2_CELL="20043"
+                    EMBRYO_TRANSFER_DAY="Same Day"
+                    TOTAL_TRANSFERRED="72" />
     <CRISPR_ATTEMPT PLAN_ID="2"
                     MI_DATE="2018-03-26"
                     MUTAGENESIS_EXTERNAL_REF="MF-26328"
@@ -363,7 +365,9 @@
                     TOTAL_EMBRYOS_INJECTED="70"
                     TOTAL_EMBRYOS_SURVIVED="64"
                     IMITS_MI_ATTEMPT="20044"
-                    EMBRYO_2_CELL="20044" />
+                    EMBRYO_2_CELL="20044"
+                    EMBRYO_TRANSFER_DAY="Same Day"
+                    TOTAL_TRANSFERRED="72" />
 
     <NUCLEASE   ID="1"
                 ATTEMPT_ID="1"
@@ -443,7 +447,6 @@
 
     <ASSAY  ATTEMPT_ID="1"
             ASSAY_TYPE_ID="1"
-            EMBRYO_TRANSFER_DAY="Same Day"
             FOUNDER_NUM_ASSAYS="26"
             NUM_DELETION_G0_MUTANTS="1"
             NUM_FOUNDER_PUPS="26"
@@ -453,11 +456,9 @@
             NUM_HDR_G0_MUTANTS_ALL_DONORS_INSERTED="0"
             NUM_HDR_G0_MUTANTS_SUBSET_DONORS_INSERTED="0"
             NUM_HR_G0_MUTANTS="0"
-            NUM_NHEJ_G0_MUTANTS="0"
-            TOTAL_TRANSFERRED="72"/>
+            NUM_NHEJ_G0_MUTANTS="0"/>
     <ASSAY  ATTEMPT_ID="2"
             ASSAY_TYPE_ID="2"
-            EMBRYO_TRANSFER_DAY="Same Day"
             FOUNDER_NUM_ASSAYS="26"
             NUM_DELETION_G0_MUTANTS="1"
             NUM_FOUNDER_PUPS="26"
@@ -467,8 +468,7 @@
             NUM_HDR_G0_MUTANTS_ALL_DONORS_INSERTED="0"
             NUM_HDR_G0_MUTANTS_SUBSET_DONORS_INSERTED="0"
             NUM_HR_G0_MUTANTS="0"
-            NUM_NHEJ_G0_MUTANTS="0"
-            TOTAL_TRANSFERRED="72"/>
+            NUM_NHEJ_G0_MUTANTS="0" />
 
     <OUTCOME    ID="1"
                 OUTCOME_TYPE_ID="1"
