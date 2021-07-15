@@ -22,7 +22,6 @@ public class ProjectEsCellQc  extends BaseEntity
     private Long id;
 
     @OneToOne
-    @JoinColumn(name = "project_id")
     @MapsId
     private Project project;
 
