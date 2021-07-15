@@ -73,11 +73,7 @@ public class ProjectResponseMapper implements Mapper<Project, ProjectResponseDTO
         setColonyNames(projectResponseDTO, project);
         setPhenotypingExternalReferences(projectResponseDTO, project);
 
-        if (Strings.isBlank(project.getCompletionComment())) {
-            projectResponseDTO.setCompletionComment(null);
-        } else {
-            projectResponseDTO.setCompletionComment(project.getCompletionComment());
-        }
+        projectResponseDTO.setCompletionComment(project.getCompletionComment());
         if (project.getCompletionNote() != null) {
             projectResponseDTO.setCompletionNote(project.getCompletionNote().getNote());
         }

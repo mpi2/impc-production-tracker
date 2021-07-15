@@ -173,8 +173,7 @@ public class ProjectController
         @PathVariable String tpn, @RequestBody ProjectUpdateDTO projectUpdateDTO)
     {
         Project currentProject = projectService.getNotNullProjectByTpn(tpn);
-        Project newProject =
-            updateProjectRequestProcessor.getProjectToUpdate(currentProject, projectUpdateDTO);
+        Project newProject = updateProjectRequestProcessor.getProjectToUpdate(currentProject, projectUpdateDTO);
         History history = projectService.updateProject(currentProject, newProject);
         HistoryDTO historyDTO = new HistoryDTO();
         if (history != null)

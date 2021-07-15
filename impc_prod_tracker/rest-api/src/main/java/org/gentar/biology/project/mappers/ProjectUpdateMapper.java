@@ -25,11 +25,7 @@ public class ProjectUpdateMapper implements Mapper<Project, ProjectUpdateDTO>
     {
         ProjectUpdateDTO projectUpdateDTO = new ProjectUpdateDTO();
         projectUpdateDTO.setProjectCommonDataDTO(projectCommonDataMapper.toDto(project));
-        if (Strings.isBlank(project.getCompletionComment())) {
-            projectUpdateDTO.setCompletionComment(null);
-        } else {
-            projectUpdateDTO.setCompletionComment(project.getCompletionComment());
-        }
+        projectUpdateDTO.setCompletionComment(project.getCompletionComment());
         if (project.getCompletionNote() != null) {
             projectUpdateDTO.setCompletionNote(project.getCompletionNote().getNote());
         }
@@ -44,11 +40,7 @@ public class ProjectUpdateMapper implements Mapper<Project, ProjectUpdateDTO>
         if (projectUpdateDTO != null)
         {
             project = projectCommonDataMapper.toEntity(projectUpdateDTO.getProjectCommonDataDTO());
-            if (Strings.isBlank(projectUpdateDTO.getCompletionComment())) {
-                project.setCompletionComment(null);
-            } else {
-                project.setCompletionComment(projectUpdateDTO.getCompletionComment());
-            }
+            project.setCompletionComment(projectUpdateDTO.getCompletionComment());
             if (projectUpdateDTO.getCompletionNote() != null) {
                 ProjectCompletionNote completionNote = projectCompletionNoteMapper.toEntity(projectUpdateDTO.getCompletionNote());
                 project.setCompletionNote(completionNote);

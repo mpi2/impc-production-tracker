@@ -10,7 +10,8 @@ import java.time.LocalDate;
 @RequiredArgsConstructor
 public class ProjectEsCellQcDTO
 {
-    private Long id;
+    @JsonIgnore
+    private Long projectEsCellQcId;
     private Integer numberOfEsCellsReceived;
     private String esCellsReceivedFromName;
     private LocalDate esCellsReceivedOn;

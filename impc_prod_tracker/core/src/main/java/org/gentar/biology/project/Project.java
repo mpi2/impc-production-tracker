@@ -154,7 +154,7 @@ public class Project extends BaseEntity implements Resource<Project>
 
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
-    @OneToOne(cascade=CascadeType.ALL, mappedBy = "project", orphanRemoval=true)
+    @OneToOne(cascade=CascadeType.ALL, mappedBy = "project")
     private ProjectEsCellQc projectEsCellQc;
 
     @ManyToOne(targetEntity= ProjectType.class)

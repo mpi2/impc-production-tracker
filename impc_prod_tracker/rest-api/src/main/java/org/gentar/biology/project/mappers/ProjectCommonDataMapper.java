@@ -50,7 +50,7 @@ public class ProjectCommonDataMapper implements Mapper<Project, ProjectCommonDat
         project.setComment(projectCommonDataDTO.getComment());
         project.setReactivationDate(projectCommonDataDTO.getReactivationDate());
         setPrivacyToEntity(project, projectCommonDataDTO);
-        setUpdateEsCellQc(project, projectCommonDataDTO);;
+        setUpdateEsCellQc(project, projectCommonDataDTO);
         return project;
     }
 
