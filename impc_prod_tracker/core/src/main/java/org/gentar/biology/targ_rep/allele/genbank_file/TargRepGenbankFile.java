@@ -17,6 +17,18 @@ public class TargRepGenbankFile extends BaseEntity
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "targRepGenbankFileSeq")
     private Long id;
 
-    @Column(columnDefinition = "TEXT")
-    private String fileGb;
+     private String host;
+
+    private String type;
+
+    private String genbank_file_path;
+
+    private String allele_image_path;
+
+    private String cassette_image_path;
+
+    private String simple_image_path;
+
+    private String vector_image_path;
+
 }
