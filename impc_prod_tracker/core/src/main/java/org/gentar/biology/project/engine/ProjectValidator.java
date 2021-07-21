@@ -1,11 +1,15 @@
 package org.gentar.biology.project.engine;
 
 import org.gentar.biology.plan.Plan;
+import org.gentar.biology.plan.attempt.phenotyping.PhenotypingAttempt;
+import org.gentar.biology.plan.attempt.phenotyping.stage.PhenotypingStage;
 import org.gentar.biology.plan.type.PlanTypeName;
 import org.gentar.biology.project.Project;
 import org.gentar.biology.project.ProjectQueryHelper;
+import org.gentar.biology.project.consortium.ProjectConsortium;
 import org.gentar.exceptions.ForbiddenAccessException;
 import org.gentar.exceptions.UserOperationFailedException;
+import org.gentar.organization.consortium.Consortium;
 import org.gentar.security.abac.ResourceAccessChecker;
 import org.gentar.security.abac.spring.ContextAwarePolicyEnforcement;
 import org.gentar.security.permissions.Actions;
@@ -15,11 +19,15 @@ import org.springframework.stereotype.Component;
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Component
 public class ProjectValidator
 {
+    private static final String PHENOTYPING_STAGE_STARTED = "The project's privacy can not be changed after data " +
+            "has been submitted to the DCC.";
+
     private final ContextAwarePolicyEnforcement policyEnforcement;
     private final ResourceAccessChecker<Project> resourceAccessChecker;
     private final ProjectQueryHelper projectQueryHelper;
@@ -40,6 +48,31 @@ public class ProjectValidator
         if (plans == null)
         {
             throw new UserOperationFailedException("There are not plans associated with the project.");
+        }
+    }
+
+    public void validatePrivacyData(Project oldProject, Project newProject)
+    {
+        if (!oldProject.getPrivacy().equals(newProject.getPrivacy()) && newProject.getProjectConsortia().stream()
+                                                .anyMatch(s -> s.getConsortium().getName().equals("IMPC"))) {
+            var plans = newProject.getPlans();
+            Set<PhenotypingStage> phenotypingStages = plans.stream()
+                    .filter(p -> p.getAttemptType().getName().contains("phenotyping"))
+                    .map(Plan::getPhenotypingAttempt)
+                    .findFirst()
+                    .filter(a -> a.getPhenotypingStages() != null)
+                    .map(PhenotypingAttempt::getPhenotypingStages)
+                    .stream().flatMap(Set::stream).collect(Collectors.toSet());
+
+            var matchPhenotypingStage = phenotypingStages.stream().anyMatch(ps -> (ps.getPhenotypingStageType().getName().equals("early adult and embryo") &&
+                    ps.getStatus().getOrdering() >= 253000) ||
+                    (ps.getPhenotypingStageType().getName().equals("late adult") &&
+                            ps.getStatus().getOrdering() >= 301000));
+
+            if (matchPhenotypingStage == true)
+            {
+                throw new UserOperationFailedException(PHENOTYPING_STAGE_STARTED);
+            }
         }
     }
 
