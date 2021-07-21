@@ -176,6 +176,7 @@ public class ProjectServiceImpl implements ProjectService
     @Override
     public History updateProject(Project oldProject, Project newProject)
     {
+        projectValidator.validatePrivacyData(oldProject, newProject);
         return projectUpdater.updateProject(oldProject, newProject);
     }
 

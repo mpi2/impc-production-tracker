@@ -1,8 +1,11 @@
 package org.gentar.biology.plan.attempt.phenotyping;
 
+import org.gentar.biology.plan.attempt.phenotyping.stage.PhenotypingStage;
 import org.gentar.exceptions.UserOperationFailedException;
 import org.gentar.organization.work_unit.WorkUnit;
 import org.springframework.stereotype.Component;
+
+import java.util.Set;
 
 
 @Component
@@ -42,21 +45,33 @@ public class PhenotypeAttemptValidator
             newWorkUnit = new WorkUnit();
         }
 
-        if (!originalWorkUnit.equals(newWorkUnit) ||
+        if ((!originalWorkUnit.equals(newWorkUnit) ||
                 !originalAttempt.getStrain().equals(phenotypingAttempt.getStrain()) ||
                 !originalAttempt.getPhenotypingExternalRef().equals(phenotypingAttempt.getPhenotypingExternalRef()))
+                && phenotypingAttempt.getPhenotypingStages() != null)
         {
-            if (phenotypingAttempt.getPhenotypingStages() != null) {
-                originalAttempt.getPhenotypingStages().forEach(phenotypingStage ->
-                {
-                    if ((phenotypingStage.getPhenotypingStageType().getName().equals("early adult and embryo") &&
-                            phenotypingStage.getStatus().getOrdering() >= 253000) ||
-                            (phenotypingStage.getPhenotypingStageType().getName().equals("late adult") &&
-                                    phenotypingStage.getStatus().getOrdering() >= 301000)) {
-                        throw new UserOperationFailedException(PHENOTYPING_STAGE_STARTED);
-                    }
-                });
+            Set<PhenotypingStage> phenotypingStages = phenotypingAttempt.getPhenotypingStages();
+            var matchPhenotypingStage = phenotypingStages.stream().anyMatch(ps -> (ps.getPhenotypingStageType()
+                    .getName().equals("early adult and embryo") && ps.getStatus().getOrdering() >= 253000) ||
+                    (ps.getPhenotypingStageType().getName().equals("late adult") &&
+                            ps.getStatus().getOrdering() >= 301000));
+
+            if (matchPhenotypingStage == true)
+            {
+                throw new UserOperationFailedException(PHENOTYPING_STAGE_STARTED);
             }
+
+//            if (phenotypingAttempt.getPhenotypingStages() != null) {
+//                originalAttempt.getPhenotypingStages().forEach(phenotypingStage ->
+//                {
+//                    if ((phenotypingStage.getPhenotypingStageType().getName().equals("early adult and embryo") &&
+//                            phenotypingStage.getStatus().getOrdering() >= 253000) ||
+//                            (phenotypingStage.getPhenotypingStageType().getName().equals("late adult") &&
+//                                    phenotypingStage.getStatus().getOrdering() >= 301000)) {
+//                        throw new UserOperationFailedException(PHENOTYPING_STAGE_STARTED);
+//                    }
+//                });
+//            }
         }
     }
 }
