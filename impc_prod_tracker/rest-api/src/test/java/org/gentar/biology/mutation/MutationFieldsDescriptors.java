@@ -13,6 +13,7 @@ public class MutationFieldsDescriptors
     public static List<FieldDescriptor> getMutationFieldsDescriptions()
     {
         List<FieldDescriptor> mutationFieldsDescriptions = new ArrayList<>();
+        addField(mutationFieldsDescriptions, "id", "id. READ ONLY");
         addField(mutationFieldsDescriptions, "min", "Public identifier for the mutation. READ ONLY");
         addField(mutationFieldsDescriptions, "mgiAlleleId", "Public identifier assigned by MGI for the allele or aberration. READ ONLY");
         addField(mutationFieldsDescriptions, "symbol", "Allele or aberration symbol. SPECIFY ONLY WHEN CREATING");
