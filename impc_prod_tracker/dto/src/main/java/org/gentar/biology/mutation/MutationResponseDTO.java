@@ -13,7 +13,6 @@ import java.util.List;
 @Data
 public class MutationResponseDTO extends RepresentationModel<MutationResponseDTO>
 {
-    @JsonIgnore
     private Long id;
     private String min;
     private String mgiAlleleId;
