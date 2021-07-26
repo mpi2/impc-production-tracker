@@ -38,6 +38,7 @@ import org.gentar.biology.project.search.filter.ProjectFilterBuilder;
 import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -282,7 +283,11 @@ public class ProjectSearcherController
                 summaryStatusNames);
         SearchReport searchReport = projectSearcherService.executeSearch(search);
         var searchCsvRecords = searchCsvRecordMapper.toDtos(searchReport.getResults());
-        csvWriter.writeListToCsv(response.getWriter(), searchCsvRecords, SearchCsvRecord.HEADERS);
+
+        PrintWriter printWriter = response.getWriter();
+        csvWriter.writeListToCsv(printWriter, searchCsvRecords, SearchCsvRecord.HEADERS);
+        printWriter.flush();
+        printWriter.close();
     }
 
     private String getCleanText(String text)
