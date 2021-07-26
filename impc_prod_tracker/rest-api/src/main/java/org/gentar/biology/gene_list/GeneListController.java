@@ -276,7 +276,11 @@ public class GeneListController
             geneListService.getAllNotPaginatedWithFilters(filter);
         records.sort(Comparator.comparing(ListRecord::getId));
         List<GeneListCsvRecord> geneListCsvRecords = geneListCsvRecordMapper.toDtos(records);
-        csvWriter.writeListToCsv(response.getWriter(), geneListCsvRecords, GeneListCsvRecord.HEADERS);
+
+        PrintWriter printWriter = response.getWriter();
+        csvWriter.writeListToCsv(printWriter, geneListCsvRecords, GeneListCsvRecord.HEADERS);
+        printWriter.flush();
+        printWriter.close();
     }
 
     @GetMapping("/{consortiumName}/exportStream")
@@ -406,6 +410,10 @@ public class GeneListController
             geneListService.getAllNotPaginatedWithFilters(filter);
         records.sort(Comparator.comparing(ListRecord::getId));
         List<GeneListCsvRecord> geneListCsvRecords = geneListCsvRecordMapper.toDtos(records);
-        csvWriter.writeListToCsv(response.getWriter(), geneListCsvRecords, GeneListCsvRecord.HEADERS);
+
+        PrintWriter printWriter = response.getWriter();
+        csvWriter.writeListToCsv(printWriter, geneListCsvRecords, GeneListCsvRecord.HEADERS);
+        printWriter.flush();
+        printWriter.close();
     }
 }

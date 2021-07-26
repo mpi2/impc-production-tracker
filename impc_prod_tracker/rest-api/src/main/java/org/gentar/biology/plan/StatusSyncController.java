@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.ArrayList;
@@ -66,7 +67,12 @@ public class StatusSyncController
                 System.out.println("--> Changed " + plan.getPin());
             }
         }
-        csvWriter.writeListToCsv(response.getWriter(), records, MassivePlanStatusUpdateCsv.HEADERS);
+
+        PrintWriter printWriter = response.getWriter();
+        csvWriter.writeListToCsv(printWriter, records, MassivePlanStatusUpdateCsv.HEADERS);
+        printWriter.flush();
+        printWriter.close();
+
         Instant end = Instant.now();
         System.out.println("Total: " + Duration.between(init, end));
     }

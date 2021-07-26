@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.sql.SQLException;
 
 @RestController
@@ -27,7 +28,10 @@ public class ReportsController {
                 filename);
         response.setHeader(headerKey, headerValue);
         try {
-            reporter.printReport(response.getWriter());
+            PrintWriter printWriter = response.getWriter();
+            reporter.printReport(printWriter);
+            printWriter.flush();
+            printWriter.close();
         } catch (IOException e) {
             e.printStackTrace();
         } catch (SQLException e) {
