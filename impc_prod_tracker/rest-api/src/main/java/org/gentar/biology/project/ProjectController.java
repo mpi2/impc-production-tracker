@@ -45,6 +45,7 @@ import org.gentar.biology.project.search.filter.ProjectFilter;
 import org.gentar.biology.project.search.filter.ProjectFilterBuilder;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.Collections;
 import java.util.List;
 
@@ -236,7 +237,11 @@ public class ProjectController
             .build();
         var projectsPage = projectService.getProjects(projectFilter);
         List<ProjectCsvRecord> projectCsvRecords = projectCsvRecordMapper.toDtos(projectsPage);
-        csvWriter.writeListToCsv(response.getWriter(), projectCsvRecords, ProjectCsvRecord.HEADERS);
+
+        PrintWriter printWriter = response.getWriter();
+        csvWriter.writeListToCsv(printWriter, projectCsvRecords, ProjectCsvRecord.HEADERS);
+        printWriter.flush();
+        printWriter.close();
     }
 
     private ProjectResponseDTO getDTO(Project project)

@@ -21,14 +21,16 @@ public class SequenceResetter
     public void resetAutoIncrementColumns(String... tableNames) {
         try {
             String resetSqlTemplate = "ALTER TABLE %s ALTER COLUMN id RESTART WITH 1";
-            try (Connection dbConnection = dataSource.getConnection()) {
-                for (String resetSqlArgument : tableNames) {
-                    try (Statement statement = dbConnection.createStatement()) {
-                        String resetSql = String.format(resetSqlTemplate, resetSqlArgument);
-                        statement.execute(resetSql);
-                    }
-                }
+            Connection dbConnection = dataSource.getConnection();
+
+            Statement statement = dbConnection.createStatement();
+            for (String resetSqlArgument : tableNames) {
+                String resetSql = String.format(resetSqlTemplate, resetSqlArgument);
+                statement.execute(resetSql);
             }
+
+            statement.close();
+            dbConnection.close();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -44,24 +46,25 @@ public class SequenceResetter
         try
         {
             String resetSqlTemplate = "ALTER SEQUENCE %s RESTART WITH %d";
-            try (Connection dbConnection = dataSource.getConnection())
+            Connection dbConnection = dataSource.getConnection();
+
+            String maxIdQueryTemplate = "select COALESCE(MAX(id),0) FROM %s";
+            String maxIdQuery = String.format(maxIdQueryTemplate, tableName);
+            int maxId = 0;
+
+            Statement statement = dbConnection.createStatement();
+            ResultSet rs = statement.executeQuery(maxIdQuery);
+            while (rs.next())
             {
-                String maxIdQueryTemplate = "select COALESCE(MAX(id),0) FROM %s";
-                String maxIdQuery = String.format(maxIdQueryTemplate, tableName);
-                int maxId = 0;
-                try (Statement statement = dbConnection.createStatement())
-                {
-                    ResultSet rs = statement.executeQuery(maxIdQuery);
-                    while (rs.next())
-                    {
-                        maxId = rs.getInt(1);
-                    }
-                    String resetSql = String.format(resetSqlTemplate, sequenceName, maxId + 1);
-                    statement.execute(resetSql);
-                    // calling nextval is preventing hibernate to generate negative ids.
-                    statement.executeQuery(String.format("SELECT nextval('%s')", sequenceName));
-                }
+                maxId = rs.getInt(1);
             }
+            String resetSql = String.format(resetSqlTemplate, sequenceName, maxId + 1);
+            statement.execute(resetSql);
+            // calling nextval is preventing hibernate to generate negative ids.
+            statement.executeQuery(String.format("SELECT nextval('%s')", sequenceName));
+
+            statement.close();
+            dbConnection.close();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
