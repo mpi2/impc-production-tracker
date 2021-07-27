@@ -70,8 +70,11 @@ public class StatusSyncController
 
         PrintWriter printWriter = response.getWriter();
         csvWriter.writeListToCsv(printWriter, records, MassivePlanStatusUpdateCsv.HEADERS);
-        printWriter.flush();
-        printWriter.close();
+        if (printWriter != null){
+            printWriter.flush();
+            printWriter.close();
+        }
+
 
         Instant end = Instant.now();
         System.out.println("Total: " + Duration.between(init, end));

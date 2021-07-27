@@ -29,6 +29,7 @@ import javax.servlet.FilterChain;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.io.PrintWriter;
 
 /**
  * This class controls exceptions that occur before even calling controllers, that is, catches exceptions that
@@ -84,7 +85,6 @@ public class ExceptionHandlerFilter extends OncePerRequestFilter
                     apiError = ApiError.of(new SystemOperationFailedException(cause));
                 }
             }
-
             addExceptionInfoToResponse(response, apiError);
         }
     }
@@ -94,7 +94,11 @@ public class ExceptionHandlerFilter extends OncePerRequestFilter
     {
         response.setStatus(apiError.getStatus().value());
         response.setContentType(MediaType.APPLICATION_JSON.toString());
-        response.getWriter().write(convertObjectToJson(apiError));
+
+        PrintWriter printWriter = response.getWriter();
+        printWriter.write(convertObjectToJson(apiError));
+        printWriter.flush();
+        printWriter.close();
     }
 
     public String convertObjectToJson(Object object)
