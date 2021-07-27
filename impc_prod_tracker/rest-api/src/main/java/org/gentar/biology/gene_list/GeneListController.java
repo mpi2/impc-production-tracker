@@ -279,8 +279,11 @@ public class GeneListController
 
         PrintWriter printWriter = response.getWriter();
         csvWriter.writeListToCsv(printWriter, geneListCsvRecords, GeneListCsvRecord.HEADERS);
-        printWriter.flush();
-        printWriter.close();
+        if (printWriter != null){
+            printWriter.flush();
+            printWriter.close();
+        }
+
     }
 
     @GetMapping("/{consortiumName}/exportStream")
@@ -386,8 +389,11 @@ public class GeneListController
             }
         )
             .forEach(entityManager::detach);
-        printWriter.flush();
-        printWriter.close();
+        if (printWriter != null){
+            printWriter.flush();
+            printWriter.close();
+        }
+
     }
 
     @GetMapping("/{consortiumName}/exportPublic")
@@ -413,7 +419,9 @@ public class GeneListController
 
         PrintWriter printWriter = response.getWriter();
         csvWriter.writeListToCsv(printWriter, geneListCsvRecords, GeneListCsvRecord.HEADERS);
-        printWriter.flush();
-        printWriter.close();
+        if (printWriter != null) {
+            printWriter.flush();
+            printWriter.close();
+        }
     }
 }

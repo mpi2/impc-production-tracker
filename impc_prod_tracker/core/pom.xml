@@ -101,11 +101,11 @@
 		</dependency>
 
 		<!-- A dependency to to asserts in jsons -->
-		<dependency>
-			<groupId>org.skyscreamer</groupId>
-			<artifactId>jsonassert</artifactId>
-			<version>1.5.0</version>
-		</dependency>
+<!--		<dependency>-->
+<!--			<groupId>org.skyscreamer</groupId>-->
+<!--			<artifactId>jsonassert</artifactId>-->
+<!--			<version>1.5.0</version>-->
+<!--		</dependency>-->
 
 
 		<!-- Auditing -->
