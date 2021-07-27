@@ -97,8 +97,10 @@ public class ExceptionHandlerFilter extends OncePerRequestFilter
 
         PrintWriter printWriter = response.getWriter();
         printWriter.write(convertObjectToJson(apiError));
-        printWriter.flush();
-        printWriter.close();
+        if (printWriter != null) {
+            printWriter.flush();
+            printWriter.close();
+        }
     }
 
     public String convertObjectToJson(Object object)
