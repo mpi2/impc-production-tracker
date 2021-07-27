@@ -286,8 +286,10 @@ public class ProjectSearcherController
 
         PrintWriter printWriter = response.getWriter();
         csvWriter.writeListToCsv(printWriter, searchCsvRecords, SearchCsvRecord.HEADERS);
-        printWriter.flush();
-        printWriter.close();
+        if (printWriter != null){
+            printWriter.flush();
+            printWriter.close();
+        }
     }
 
     private String getCleanText(String text)
