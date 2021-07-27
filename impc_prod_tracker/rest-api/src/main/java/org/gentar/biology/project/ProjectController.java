@@ -241,8 +241,11 @@ public class ProjectController
 
         PrintWriter printWriter = response.getWriter();
         csvWriter.writeListToCsv(printWriter, projectCsvRecords, ProjectCsvRecord.HEADERS);
-        printWriter.flush();
-        printWriter.close();
+        if (printWriter != null){
+            printWriter.flush();
+            printWriter.close();
+        }
+
     }
 
     private ProjectResponseDTO getDTO(Project project)

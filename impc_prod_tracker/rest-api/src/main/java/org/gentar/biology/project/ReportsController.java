@@ -21,7 +21,7 @@ public class ReportsController {
     public void getProjectSummariesPaginated(HttpServletResponse response,
                                              @PathVariable("filename") String filename)
     {
-        System.out.println("calling reports controller here");
+        // System.out.println("calling reports controller here");
         response.setContentType("text/csv");
         String headerKey = "Content-Disposition";
         String headerValue = String.format("attachment; filename=\"%s\"",
@@ -30,8 +30,10 @@ public class ReportsController {
         try {
             PrintWriter printWriter = response.getWriter();
             reporter.printReport(printWriter);
-            printWriter.flush();
-            printWriter.close();
+            if (printWriter != null){
+                printWriter.flush();
+                printWriter.close();
+            }
         } catch (IOException e) {
             e.printStackTrace();
         } catch (SQLException e) {
