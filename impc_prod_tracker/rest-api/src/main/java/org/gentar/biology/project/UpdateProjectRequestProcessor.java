@@ -4,7 +4,7 @@ import org.gentar.biology.project.esCellQc.ProjectEsCellQc;
 import org.gentar.biology.project.mappers.ProjectUpdateMapper;
 import org.gentar.exceptions.UserOperationFailedException;
 import org.springframework.stereotype.Component;
-import org.springframework.util.StringUtils;
+import org.springframework.util.ObjectUtils;
 
 @Component
 public class UpdateProjectRequestProcessor
@@ -56,8 +56,7 @@ public class UpdateProjectRequestProcessor
     private void validateTpnIsEqual(Project project, ProjectUpdateDTO projectUpdateDTO)
     {
         String tpnInUrl = project.getTpn();
-        String tpnInPayload =
-            StringUtils.isEmpty(projectUpdateDTO.getTpn()) ? tpnInUrl : projectUpdateDTO.getTpn();
+        String tpnInPayload = ObjectUtils.isEmpty(projectUpdateDTO.getTpn()) ? tpnInUrl : projectUpdateDTO.getTpn();
         if (!tpnInUrl.equals(tpnInPayload))
         {
             throw new UserOperationFailedException(
