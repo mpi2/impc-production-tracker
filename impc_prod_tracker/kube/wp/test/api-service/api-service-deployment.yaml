@@ -20,6 +20,9 @@ spec:
     spec:
       imagePullSecrets:
         - name: trackerapiregistrycredentials
+      volumes:
+        - name: tomcatlog
+          emptyDir: {}
       containers:
         - image: dockerhub.ebi.ac.uk/mouse-informatics/impc-production-tracker-mirror:latest
           imagePullPolicy: Always
@@ -42,7 +45,28 @@ spec:
             value: "5432"
           - name: REDEPLOY_KEY
             value: "STRING_REPLACED_DURING_REDEPLOY"
+          - name: SERVER_TOMCAT_BASEDIR
+            value: "/tomcat"
+          - name: SERVER_TOMCAT_ACCESSLOG_ENABLED
+            value: "TRUE"
+          - name: SERVER_TOMCAT_ACCESSLOG_DIRECTORY
+            value: "log"
+          - name: SERVER_TOMCAT_ACCESSLOG_ROTATE
+            value: "FALSE"
+          - name: SERVER_TOMCAT_ACCESSLOG_FILE-DATE-FORMAT
+            value: ""
+          - name: SERVER_TOMCAT_ACCESSLOG_PATTERN
+            value: "%t %{X-Forwarded-For}i %a \"%r\" %>s %b  %{User-Agent}i %{Referer}i (%D ms) %u %U %q"
           ports:
             - containerPort: 8080
               protocol: TCP
           resources: { }
+          volumeMounts:
+            - name: tomcatlog
+              mountPath: /tomcat/log
+        - name: api-service-test-accesslog
+          image: dockerhub.ebi.ac.uk/mouse-informatics/alpine:latest
+          args: [/bin/sh, -c, 'tail -n+1 -f /tomcat/log/access.log']
+          volumeMounts:
+            - name: tomcatlog
+              mountPath: /tomcat/log
