@@ -20,6 +20,7 @@ spec:
     spec:
       imagePullSecrets:
         - name: trackerapiregistrycredentials
+        - name: alpineregistrycredentials
       volumes:
         - name: tomcatlog
           emptyDir: {}
