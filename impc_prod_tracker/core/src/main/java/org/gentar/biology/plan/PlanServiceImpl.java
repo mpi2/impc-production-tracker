@@ -89,8 +89,11 @@ public class PlanServiceImpl implements PlanService
     @Override
     public Page<Plan> getPageablePlans(Pageable page, PlanFilter planFilter)
     {
-        List<Plan> plans = getPlans(planFilter);
-        return new PageImpl<>(plans, page, plans.size());
+        Specification<Plan> specifications = buildSpecificationsWithCriteria(planFilter);
+        Page<Plan> plans = planRepository.findAll(specifications, page);
+        return plans;
+        //List<Plan> plans = getPlans(planFilter);
+        //return new PageImpl<>(plans, page, plans.size());
     }
 
     private Specification<Plan> buildSpecificationsWithCriteria(PlanFilter planFilter)
