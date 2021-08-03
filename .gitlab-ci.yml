@@ -515,7 +515,7 @@ hx-test:
 
       if [ "$IMAGE_TAG_NAME" = "${CI_COMMIT_SHA:0:12}" ]; then
           # Substitute the "latest" image tag in your deployment template
-          impc-production-tracker-mirror:latest/impc-production-tracker-mirror:${CI_COMMIT_SHA:0:12}/g" kube/wp/test/api-service/api-service-deployment.yaml
+          sed -i "s/impc-production-tracker-mirror:latest/impc-production-tracker-mirror:${CI_COMMIT_SHA:0:12}/g" kube/wp/test/api-service/api-service-deployment.yaml
       else
           # DO NOT push out the latest tag to ensure rollback is possible.
           exit 1
