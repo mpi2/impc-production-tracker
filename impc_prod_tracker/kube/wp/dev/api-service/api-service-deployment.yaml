@@ -20,29 +20,50 @@ spec:
     spec:
       imagePullSecrets:
         - name: trackerapiregistrycredentials
+        - name: alpineregistrycredentials
+      volumes:
+        - name: tomcatlog
+          emptyDir: {}
       containers:
         - image: dockerhub.ebi.ac.uk/mouse-informatics/impc-production-tracker-mirror:latest
           imagePullPolicy: Always
           name: api-service-dev
           env:
-          - name: EBI_PROXY
-            value: "TRUE"
-          - name: GENTAR_SCHEMA
-            value: "TRUE"
-          - name: AAP_DOMAIN
-            valueFrom:
-              secretKeyRef:
-                name: aap-domain
-                key: domain
-          - name: SERVER_SERVLET_CONTEXT_PATH
-            value: /production-tracker-dev-api
-          - name: TRACKER_POSTGRESQL_DB_HOST
-            value: production-tracker-dev-database
-          - name: TRACKER_POSTGRESQL_DB_PORT
-            value: "5432"
-          - name: REDEPLOY_KEY
-            value: "STRING_REPLACED_DURING_REDEPLOY"
+            - name: EBI_PROXY
+              value: "TRUE"
+            - name: GENTAR_SCHEMA
+              value: "TRUE"
+            - name: AAP_DOMAIN
+              valueFrom:
+                secretKeyRef:
+                  name: aap-domain
+                  key: domain
+            - name: SERVER_SERVLET_CONTEXT_PATH
+              value: /production-tracker-dev-api
+            - name: TRACKER_POSTGRESQL_DB_HOST
+              value: production-tracker-dev-database
+            - name: TRACKER_POSTGRESQL_DB_PORT
+              value: "5432"
+            - name: REDEPLOY_KEY
+              value: "STRING_REPLACED_DURING_REDEPLOY"
           ports:
             - containerPort: 8080
               protocol: TCP
           resources: { }
+          volumeMounts:
+            - name: tomcatlog
+              mountPath: /tomcat/logs
+        - image: dockerhub.ebi.ac.uk/mouse-informatics/alpine:latest
+          imagePullPolicy: Always
+          name: api-service-dev-accesslog
+          args: [/bin/sh, -c, 'tail -n+1 -f /tomcat/logs/access_log.log']
+          readinessProbe:
+            exec:
+              command:
+                - ls
+                - /tomcat/logs/access_log.log
+            failureThreshold: 30
+            periodSeconds: 10
+          volumeMounts:
+            - name: tomcatlog
+              mountPath: /tomcat/logs
