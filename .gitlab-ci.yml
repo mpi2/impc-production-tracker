@@ -137,7 +137,7 @@ hx-production:
       # Substitute the "latest" image tag in your deployment template with a more specific tag
       # and record the deployment so you can rollback to this particular version.
       #
-      sed -i "s/latest/${PRODUCTION_API_TAG}/g" kube/wp/production/api-service/api-service-deployment.yaml
+      sed -i "s/impc-production-tracker-mirror:latest/impc-production-tracker-mirror:${PRODUCTION_API_TAG}/g" kube/wp/production/api-service/api-service-deployment.yaml
       sed -i "s/STRING_REPLACED_DURING_REDEPLOY/$(date)/g" kube/wp/production/api-service/api-service-deployment.yaml
 
       if kubectl apply -f kube/wp/production/api-service/api-service-deployment.yaml --record | grep -q unchanged; then
@@ -186,7 +186,7 @@ hh-sandbox:
       # Substitute the "latest" image tag in your deployment template with a more specific tag
       # and record the deployment so you can rollback to this particular version.
       #
-      sed -i "s/latest/${SANDBOX_API_TAG}/g" kube/wp/sandbox/api-service/api-service-deployment.yaml
+      sed -i "s/impc-production-tracker-mirror:latest/impc-production-tracker-mirror:${SANDBOX_API_TAG}/g" kube/wp/sandbox/api-service/api-service-deployment.yaml
       sed -i "s/STRING_REPLACED_DURING_REDEPLOY/$(date)/g" kube/wp/sandbox/api-service/api-service-deployment.yaml
 
       if kubectl apply -f kube/wp/sandbox/api-service/api-service-deployment.yaml --record | grep -q unchanged; then
@@ -232,7 +232,7 @@ hx-sandbox:
       # Substitute the "latest" image tag in your deployment template with a more specific tag
       # and record the deployment so you can rollback to this particular version.
       #
-      sed -i "s/latest/${SANDBOX_API_TAG}/g" kube/wp/sandbox/api-service/api-service-deployment.yaml
+      sed -i "s/impc-production-tracker-mirror:latest/impc-production-tracker-mirror:${SANDBOX_API_TAG}/g" kube/wp/sandbox/api-service/api-service-deployment.yaml
       sed -i "s/STRING_REPLACED_DURING_REDEPLOY/$(date)/g" kube/wp/sandbox/api-service/api-service-deployment.yaml
 
       if kubectl apply -f kube/wp/sandbox/api-service/api-service-deployment.yaml --record | grep -q unchanged; then
@@ -298,7 +298,7 @@ hh-dev:
 
       if [ "$IMAGE_TAG_NAME" = "${CI_COMMIT_SHA:0:12}" ]; then
           # Substitute the "latest" image tag in your deployment template
-          sed -i "s/latest/${CI_COMMIT_SHA:0:12}/g" kube/wp/dev/api-service/api-service-deployment.yaml
+          impc-production-tracker-mirror:latest/impc-production-tracker-mirror:${CI_COMMIT_SHA:0:12}/g" kube/wp/dev/api-service/api-service-deployment.yaml
       else
           # DO NOT push out the latest tag to ensure rollback is possible.
           exit 1
@@ -369,7 +369,7 @@ hx-dev:
 
       if [ "$IMAGE_TAG_NAME" = "${CI_COMMIT_SHA:0:12}" ]; then
           # Substitute the "latest" image tag in your deployment template
-          sed -i "s/latest/${CI_COMMIT_SHA:0:12}/g" kube/wp/dev/api-service/api-service-deployment.yaml
+          sed -i "s/impc-production-tracker-mirror:latest/impc-production-tracker-mirror:${CI_COMMIT_SHA:0:12}/g" kube/wp/dev/api-service/api-service-deployment.yaml
       else
           # DO NOT push out the latest tag to ensure rollback is possible.
           exit 1
@@ -442,7 +442,7 @@ hh-test:
  
       if [ "$IMAGE_TAG_NAME" = "${CI_COMMIT_SHA:0:12}" ]; then
           # Substitute the "latest" image tag in your deployment template
-          sed -i "s/latest/${CI_COMMIT_SHA:0:12}/g" kube/wp/test/api-service/api-service-deployment.yaml
+          sed -i "s/impc-production-tracker-mirror:latest/impc-production-tracker-mirror:${CI_COMMIT_SHA:0:12}/g" kube/wp/test/api-service/api-service-deployment.yaml
       else
           # DO NOT push out the latest tag to ensure rollback is possible.
           exit 1
@@ -515,7 +515,7 @@ hx-test:
 
       if [ "$IMAGE_TAG_NAME" = "${CI_COMMIT_SHA:0:12}" ]; then
           # Substitute the "latest" image tag in your deployment template
-          sed -i "s/latest/${CI_COMMIT_SHA:0:12}/g" kube/wp/test/api-service/api-service-deployment.yaml
+          impc-production-tracker-mirror:latest/impc-production-tracker-mirror:${CI_COMMIT_SHA:0:12}/g" kube/wp/test/api-service/api-service-deployment.yaml
       else
           # DO NOT push out the latest tag to ensure rollback is possible.
           exit 1
