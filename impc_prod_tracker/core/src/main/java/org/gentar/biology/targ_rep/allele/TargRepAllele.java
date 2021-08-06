@@ -1,9 +1,6 @@
 package org.gentar.biology.targ_rep.allele;
 
-import lombok.AccessLevel;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 import org.gentar.BaseEntity;
 import org.gentar.biology.targ_rep.allele.genbank_file.TargRepGenbankFile;
 import org.gentar.biology.targ_rep.allele.mutation_method.TargRepMutationMethod;
@@ -24,6 +21,7 @@ public class TargRepAllele extends BaseEntity
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "targRepAlleleSeq")
     private Long id;
 
+    @EqualsAndHashCode.Exclude
     @ToString.Exclude
     @NotNull
     @ManyToOne(targetEntity= TargRepGene.class)

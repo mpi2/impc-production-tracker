@@ -1,9 +1,6 @@
 package org.gentar.biology.targ_rep.es_cell;
 
-import lombok.AccessLevel;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 import org.gentar.BaseEntity;
 import org.gentar.biology.targ_rep.allele.TargRepAllele;
 import org.gentar.biology.targ_rep.centre.TargRepCentre;
@@ -27,6 +24,7 @@ public class TargRepEsCell extends BaseEntity
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "targRepEsCellSeq")
     private Long id;
 
+    @EqualsAndHashCode.Exclude
     @ToString.Exclude
     @NotNull
     @ManyToOne(targetEntity= TargRepAllele.class)
