@@ -1,7 +1,11 @@
 package org.gentar.biology.targ_rep.es_cell;
 
+import org.gentar.biology.targ_rep.allele.TargRepAllele;
+import org.gentar.exceptions.NotFoundException;
 import org.gentar.exceptions.UserOperationFailedException;
 import org.springframework.stereotype.Component;
+
+import java.util.List;
 
 @Component
 public class TargRepEsCellServiceImpl implements TargRepEsCellService
@@ -37,5 +41,17 @@ public class TargRepEsCellServiceImpl implements TargRepEsCellService
                     String.format(TARG_REP_ES_CELL_NAME_ERROR, name));
         }
         return targRepEsCell;
+    }
+
+    @Override
+    public List<TargRepEsCell> getTargRepEscellByAlleleFailsIfNull(TargRepAllele allele) throws UserOperationFailedException
+    {
+        List<TargRepEsCell> esCells = targRepEsCellRepository.findTargRepEsCellByAllele(allele);
+        if (esCells.isEmpty())
+        {
+            throw new NotFoundException("There are not ES Cells available for [" + allele.getGene().getSymbol()
+                                        + "] marker_symbol does not exist.");
+        }
+        return esCells;
     }
 }
