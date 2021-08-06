@@ -22,7 +22,9 @@ public class CrisprAttemptValidator
 
     private static final String NULL_OBJECT_ERROR = "[%s] cannot be null.";
 
-    public CrisprAttemptValidator(CrisprAttemptService crisprAttemptService, NucleaseValidator nucleaseValidator, GuideValidator guideValidator)
+    public CrisprAttemptValidator(CrisprAttemptService crisprAttemptService,
+                                  NucleaseValidator nucleaseValidator,
+                                  GuideValidator guideValidator)
     {
         this.crisprAttemptService = crisprAttemptService;
         this.nucleaseValidator = nucleaseValidator;
@@ -39,7 +41,6 @@ public class CrisprAttemptValidator
             validateNuclease(crisprAttempt);
             validateGuides(crisprAttempt);
         }
-
     }
 
     private void validateGuides(CrisprAttempt crisprAttempt)

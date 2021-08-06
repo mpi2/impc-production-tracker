@@ -19,7 +19,8 @@ public class PhenotypeAttemptValidator
 
     public void validatePhenotypingExternalRefNotNull(PhenotypingAttempt phenotypingAttempt)
     {
-        if (phenotypingAttempt.getPhenotypingExternalRef() == null || phenotypingAttempt.getPhenotypingExternalRef().isEmpty())
+        if (phenotypingAttempt.getPhenotypingExternalRef() == null ||
+                phenotypingAttempt.getPhenotypingExternalRef().isEmpty())
         {
             throw new UserOperationFailedException(String.format(CAN_NOT_BE_NULL, "Phenotyping External Reference"));
         }
@@ -60,18 +61,6 @@ public class PhenotypeAttemptValidator
             {
                 throw new UserOperationFailedException(PHENOTYPING_STAGE_STARTED);
             }
-
-//            if (phenotypingAttempt.getPhenotypingStages() != null) {
-//                originalAttempt.getPhenotypingStages().forEach(phenotypingStage ->
-//                {
-//                    if ((phenotypingStage.getPhenotypingStageType().getName().equals("early adult and embryo") &&
-//                            phenotypingStage.getStatus().getOrdering() >= 253000) ||
-//                            (phenotypingStage.getPhenotypingStageType().getName().equals("late adult") &&
-//                                    phenotypingStage.getStatus().getOrdering() >= 301000)) {
-//                        throw new UserOperationFailedException(PHENOTYPING_STAGE_STARTED);
-//                    }
-//                });
-//            }
         }
     }
 }
