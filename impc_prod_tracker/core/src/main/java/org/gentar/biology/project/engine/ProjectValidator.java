@@ -194,21 +194,23 @@ public class ProjectValidator
                     (plan.getAttemptType().getName().equals("es cell") ||
                             plan.getAttemptType().getName().equals("cre allele modification")))
             {
-                throw new UserOperationFailedException(
-                        "You are not allow to create production plans for this project.");
-            } else if (firstPlan.getAttemptType().getName().equals("es cell") &&
+                throw new UserOperationFailedException(String.format(
+                        "[%s] attempts are not allowed in this project.", plan.getAttemptType().getName()));
+            }
+            else if (firstPlan.getAttemptType().getName().equals("es cell") &&
                     (plan.getAttemptType().getName().equals("crispr") ||
                             plan.getAttemptType().getName().equals("haplo-essential crispr")))
             {
-                throw new UserOperationFailedException(
-                        "You are not allow to create production plans for this project.");
+                throw new UserOperationFailedException(String.format(
+                        "[%s] attempts are not allowed in this project.", plan.getAttemptType().getName()));
             }
 
             // Check that the work unit match the one in the first plan
             if (!firstPlan.getWorkUnit().getName().equals(plan.getWorkUnit().getName()))
             {
-                throw new UserOperationFailedException(
-                        "You are not allow to create production plans for this project.");
+                throw new UserOperationFailedException(String.format(
+                        "Your work unit [%s] cannot create production plans in this project.",
+                        plan.getWorkUnit().getName()));
             }
         }
     }
