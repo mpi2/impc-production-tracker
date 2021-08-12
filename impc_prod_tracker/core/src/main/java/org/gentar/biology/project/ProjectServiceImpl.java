@@ -229,4 +229,10 @@ public class ProjectServiceImpl implements ProjectService
         }
         return productionOutcomes;
     }
+
+    @Override
+    public Plan getFirstProductionPlan(Project project)
+    {
+        return project.getPlans().stream().sorted(Comparator.comparing(Plan::getId)).findFirst().get();
+    }
 }

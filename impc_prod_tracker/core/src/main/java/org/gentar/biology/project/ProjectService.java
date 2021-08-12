@@ -68,4 +68,11 @@ public interface ProjectService
      * project.
      */
     List<Outcome> getProductionOutcomesByProject(Project project);
+
+    /**
+     * Get first plan associated with the project.
+     * @param project Project to evaluate.
+     * @return The plan
+     */
+    Plan getFirstProductionPlan(Project project);
 }
