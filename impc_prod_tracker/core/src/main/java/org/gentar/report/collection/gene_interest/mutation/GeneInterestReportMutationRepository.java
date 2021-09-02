@@ -18,5 +18,14 @@ public interface GeneInterestReportMutationRepository extends CrudRepository<Mut
             "where " +
             "m.id IN :id")
     List<GeneInterestReportMutationGeneProjection> findSelectedMutationGeneProjectionsForGeneInterestReport(@Param("id") List mutationIds );
+
+    @Query("select " +
+            "m.id as mutationId, m.min as mutationIdentificationNumber, mc.name as mutationCategorizationName " +
+            "from " +
+            "Mutation m LEFT OUTER JOIN m.mutationCategorizations mc LEFT OUTER JOIN mc.mutationCategorizationType mct " +
+            "where " +
+            "mct.name='esc_allele_class' and " +
+            "m.min IN :min")
+    List<GeneInterestReportEsCellMutationTypeProjection> findSelectedEsCellMutationTypeProjectionsForGeneInterestReport(@Param("min") List mutationMins );
 }
 
