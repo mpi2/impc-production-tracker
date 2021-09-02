@@ -34,7 +34,8 @@ class PlanUpdateDTOTest
             "\"workGroupName\":null,\"comment\":\"plan comment\"," +
             "\"crisprAttempt\":{\"miDate\":null," +
             "\"experimental\":true,\"comment\":\"comment\",\"mutagenesisExternalRef\":null," +
-            "\"attemptExternalRef\":null,\"nucleases\":null,\"guides\":null," +
+            "\"attemptExternalRef\":null,\"embryoTransferDay\":null,\"totalTransferred\":null," +
+            "\"nucleases\":null,\"guides\":null," +
             "\"mutagenesisDonors\":null,\"reagents\":null,\"genotypePrimers\":null," +
             "\"totalEmbryosInjected\":null,\"totalEmbryosSurvived\":null,\"embryo2Cell\":null," +
             "\"assay\":null,\"strainInjectedName\":null}," +

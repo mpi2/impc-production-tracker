@@ -15,6 +15,8 @@
     "mutagenesisExternalRef":"MF-26326",
     "imitsMiAttemptId":20043,
     "attemptExternalRef":null,
+    "embryoTransferDay":"Same Day",
+    "totalTransferred":72,
     "nucleases":[
       {
         "id":1,
@@ -83,9 +85,7 @@
       "numHdrG0MutantsAllDonorsInserted":0,
       "numHdrG0MutantsSubsetDonorsInserted":0,
       "numHrG0Mutants":0,
-      "numNhejG0Mutants":0,
-      "embryoTransferDay":"Same Day",
-      "totalTransferred":72
+      "numNhejG0Mutants":0
     },
     "strainInjectedName":"C57BL/6NJ"
   },

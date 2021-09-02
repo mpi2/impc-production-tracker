@@ -21,7 +21,10 @@ import org.gentar.audit.diff.IgnoreForAuditingChanges;
 import org.gentar.biology.colony.Colony;
 import org.gentar.biology.outcome.Outcome;
 import org.gentar.biology.plan.type.PlanTypeName;
+import org.gentar.biology.project.completionNote.ProjectCompletionNote;
+import org.gentar.biology.project.esCellQc.ProjectEsCellQc;
 import org.gentar.biology.project.summary_status.ProjectSummaryStatusStamp;
+import org.gentar.biology.project.type.ProjectType;
 import org.gentar.biology.status.Status;
 import org.gentar.exceptions.SystemOperationFailedException;
 import org.gentar.organization.work_group.WorkGroup;
@@ -66,6 +69,7 @@ public class Project extends BaseEntity implements Resource<Project>
         this.plans = project.plans == null ? null : new HashSet<>(project.plans);
         this.reactivationDate = project.reactivationDate;
         this.recovery = project.recovery;
+        this.esCellQcOnly = project.esCellQcOnly;
         this.comment = project.comment;
         this.privacy = project.privacy;
         this.projectIntentions =
@@ -73,6 +77,7 @@ public class Project extends BaseEntity implements Resource<Project>
         this.species = project.species == null ? null : new HashSet<>(project.species);
         this.projectConsortia =
             project.projectConsortia == null ? null : new HashSet<>(project.projectConsortia);
+        this.projectEsCellQc = project.projectEsCellQc;
     }
 
     @Id
@@ -118,6 +123,9 @@ public class Project extends BaseEntity implements Resource<Project>
     @Column(columnDefinition = "boolean default false")
     private Boolean recovery;
 
+    @Column(columnDefinition = "boolean default false")
+    private Boolean esCellQcOnly;
+
     @Column(columnDefinition = "TEXT")
     private String comment;
 
@@ -143,6 +151,20 @@ public class Project extends BaseEntity implements Resource<Project>
     @ToString.Exclude
     @OneToMany(cascade=CascadeType.ALL, mappedBy = "project", orphanRemoval=true)
     private Set<ProjectConsortium> projectConsortia;
+
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
+    @OneToOne(cascade=CascadeType.ALL, mappedBy = "project")
+    private ProjectEsCellQc projectEsCellQc;
+
+    @ManyToOne(targetEntity= ProjectType.class)
+    private ProjectType projectType;
+
+    @ManyToOne(targetEntity= ProjectCompletionNote.class)
+    private ProjectCompletionNote completionNote;
+
+    @Column(columnDefinition = "TEXT")
+    private String completionComment;
 
     @Override
     @JsonIgnore
@@ -178,8 +200,13 @@ public class Project extends BaseEntity implements Resource<Project>
         restrictedProject.setReactivationDate(reactivationDate);
         restrictedProject.setComment(comment);
         restrictedProject.setRecovery(recovery);
+        restrictedProject.setEsCellQcOnly(esCellQcOnly);
+        restrictedProject.setProjectType(projectType);
         restrictedProject.setProjectIntentions(projectIntentions);
         restrictedProject.setIsObjectRestricted(true);
+        restrictedProject.setProjectEsCellQc(projectEsCellQc);
+        restrictedProject.setCompletionNote(completionNote);
+        restrictedProject.setCompletionComment(completionComment);
         return restrictedProject;
     }
 

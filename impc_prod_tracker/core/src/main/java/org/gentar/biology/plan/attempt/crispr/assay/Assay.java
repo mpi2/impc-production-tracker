@@ -23,10 +23,6 @@ public class Assay extends BaseEntity
     @ManyToOne(targetEntity = AssayType.class)
     private AssayType assayType;
 
-    private String embryoTransferDay;
-
-    private Integer totalTransferred;
-
     private Integer numFounderPups;
 
     private Integer numFounderSelectedForBreeding;

@@ -51,16 +51,32 @@ public class UpdatePlanRequestProcessor
             planUpdateDTO.setId(plan.getId());
 
             Plan mappedPlan = planUpdateMapper.toEntity(planUpdateDTO);
+
             plan.setComment(mappedPlan.getComment());
             setUpdatedCrisprAttempt(plan, mappedPlan);
             setUpdatedPhenotypingAttempt(plan, mappedPlan);
-            if (mappedPlan.getBreedingAttempt() != null)
-            {
-                plan.setBreedingAttempt(mappedPlan.getBreedingAttempt());
-            }
+            setUpdatedEsCellAttempt(plan, mappedPlan);
+            setUpdatedCreAlleleModificationAttempt(plan, mappedPlan);
+
             setEvent(plan, planUpdateDTO);
         }
         return plan;
+    }
+
+    private void setUpdatedCreAlleleModificationAttempt(Plan originalPlan, Plan mappedPlan)
+    {
+        if (mappedPlan.getCreAlleleModificationAttempt() != null)
+        {
+            originalPlan.setCreAlleleModificationAttempt(mappedPlan.getCreAlleleModificationAttempt());
+        }
+    }
+
+    private void setUpdatedEsCellAttempt(Plan originalPlan, Plan mappedPlan)
+    {
+        if (mappedPlan.getEsCellAttempt() != null)
+        {
+            originalPlan.setEsCellAttempt(mappedPlan.getEsCellAttempt());
+        }
     }
 
     private void setUpdatedCrisprAttempt(Plan originalPlan, Plan mappedPlan)

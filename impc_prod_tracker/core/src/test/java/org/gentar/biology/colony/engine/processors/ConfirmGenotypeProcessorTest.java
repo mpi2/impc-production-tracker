@@ -75,6 +75,8 @@ class ConfirmGenotypeProcessorTest
     public void testWhenSequenceExistsButItIsNotOutcomeCategory()
     {
         Colony colony = buildColony(1L, ColonyState.GenotypeInProgress.getInternalName());
+        colony.setLegacyModification(false);
+        colony.setLegacyWithoutSequence(false);
         Mutation mutation = new Mutation();
         MutationSequence mutationSequence = new MutationSequence();
         Sequence sequence = new Sequence();
@@ -106,7 +108,27 @@ class ConfirmGenotypeProcessorTest
 
         testInstance.process(colony);
 
-        verify(colonyStateSetter, times(1)).setStatusByName(any(Colony.class), any(String.class));
+        verify(colonyStateSetter, times(1)).setStatusByName(any(Colony.class),
+                any(String.class));
+    }
+
+    @Test
+    public void testWhenSequenceDoesNotExistsAndLegacyWithoutSequenceIsTrueAndMgiAlleleSymbolExists()
+    {
+        Colony colony = buildColony(1L, ColonyState.GenotypeInProgress.getInternalName());
+        Mutation mutation = new Mutation();
+        Set<Mutation> mutations = new HashSet<>();
+        mutations.add(mutation);
+        colony.getOutcome().setMutations(mutations);
+        mutation.setSymbol("mgiAlleleSymbol");
+        colony.setLegacyModification(false);
+        colony.setLegacyWithoutSequence(true);
+        colony.setEvent(ColonyEvent.confirmGenotypeWhenInProgress);
+
+        testInstance.process(colony);
+
+        verify(colonyStateSetter, times(1)).setStatusByName(any(Colony.class),
+                any(String.class));
     }
 
     @Test
@@ -118,6 +140,8 @@ class ConfirmGenotypeProcessorTest
         mutations.add(mutation);
         colony.getOutcome().setMutations(mutations);
         mutation.setSymbol("mgiAlleleSymbol");
+        colony.setLegacyModification(false);
+        colony.setLegacyWithoutSequence(false);
         colony.setEvent(ColonyEvent.confirmGenotypeWhenInProgress);
 
         UserOperationFailedException thrown = assertThrows(UserOperationFailedException.class,
@@ -149,6 +173,8 @@ class ConfirmGenotypeProcessorTest
     private Colony buildColonyWithOutcomeSequence(Long id)
     {
         Colony colony = buildColony(id, ColonyState.GenotypeInProgress.getInternalName());
+        colony.setLegacyModification(false);
+        colony.setLegacyWithoutSequence(false);
         Mutation mutation = new Mutation();
         MutationSequence mutationSequence = new MutationSequence();
         Sequence sequence = new Sequence();

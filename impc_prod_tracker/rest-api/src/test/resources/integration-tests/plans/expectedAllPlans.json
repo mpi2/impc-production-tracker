@@ -18,6 +18,8 @@
           "mutagenesisExternalRef":"MF-26326",
           "imitsMiAttemptId":20043,
           "attemptExternalRef":null,
+          "embryoTransferDay":"Same Day",
+          "totalTransferred":72,
           "nucleases":[
             {
               "id":1,
@@ -86,9 +88,7 @@
             "numHdrG0MutantsAllDonorsInserted":0,
             "numHdrG0MutantsSubsetDonorsInserted":0,
             "numHrG0Mutants":0,
-            "numNhejG0Mutants":0,
-            "embryoTransferDay":"Same Day",
-            "totalTransferred":72
+            "numNhejG0Mutants":0
           },
           "strainInjectedName":"C57BL/6NJ"
         },
@@ -159,6 +159,8 @@
           "mutagenesisExternalRef":"MF-26328",
           "imitsMiAttemptId":20044,
           "attemptExternalRef":null,
+          "embryoTransferDay":"Same Day",
+          "totalTransferred":72,
           "nucleases":[
             {
               "id":2,
@@ -227,9 +229,7 @@
             "numHdrG0MutantsAllDonorsInserted":0,
             "numHdrG0MutantsSubsetDonorsInserted":0,
             "numHrG0Mutants":0,
-            "numNhejG0Mutants":0,
-            "embryoTransferDay":"Same Day",
-            "totalTransferred":72
+            "numNhejG0Mutants":0
           },
           "strainInjectedName":"C57BL/6NJ"
         },
@@ -418,6 +418,195 @@
           ],
           "actionToExecute":null
         }
+      },
+      {
+        "pin":"PIN:0000000009",
+        "tpn":"TPN:000000001",
+        "attemptTypeName":"cre allele modification",
+        "funderNames":[
+          "KOMP"
+        ],
+        "workUnitName":"BCM",
+        "workGroupName":"BaSH",
+        "comment":null,
+        "creAlleleModificationStartingPoint":{
+          "_links":{
+            "outcome":{
+              "href":"http://localhost:8080/api/plans/PIN:0000000002/outcomes/TPO:000000000001"
+            },
+            "productionPlan":{
+              "href":"http://localhost:8080/api/plans/PIN:0000000002"
+            }
+          },
+          "outcomeTpo":"TPO:000000000001",
+          "productionPlanPin":"PIN:0000000002"
+        },
+        "creAlleleModificationAttempt":{
+          "modificationExternalRef":"GSF-EPD0045_1_B11-3-1",
+          "numberOfCreMatingsSuccessful":1,
+          "tatCre":false,
+          "deleterStrainName":"BALB/cJ"
+        },
+        "typeName":"production",
+        "statusName":"Cre Excision Complete",
+        "summaryStatusName":"Cre Excision Complete",
+        "_links":{
+          "self":{
+            "href":"http://localhost:8080/api/plans/PIN:0000000009"
+          },
+          "project":{
+            "href":"http://localhost:8080/api/projects/TPN:000000001"
+          }
+        },
+        "statusDates":[
+          {
+            "statusName":"Plan Created",
+            "date":"2012-11-06T12:01:00"
+          },
+          {
+            "statusName":"Mouse Allele Modification Registered",
+            "date":"2012-11-06T12:08:00"
+          },
+          {
+            "statusName":"Cre Excision Started",
+            "date":"2013-02-02T12:42:00"
+          },
+          {
+            "statusName":"Cre Excision Complete",
+            "date":"2013-04-09T12:42:00"
+          }
+        ],
+        "summaryStatusDates":[
+          {
+            "statusName":"Plan Created",
+            "date":"2012-11-06T12:01:00"
+          },
+          {
+            "statusName":"Mouse Allele Modification Registered",
+            "date":"2012-11-06T12:08:00"
+          },
+          {
+            "statusName":"Cre Excision Started",
+            "date":"2013-02-02T12:42:00"
+          },
+          {
+            "statusName":"Cre Excision Complete",
+            "date":"2013-04-09T12:42:00"
+          }
+        ],
+        "statusTransition":{
+          "currentStatus":"Cre Excision Complete",
+          "transitions":[
+            {
+              "action":"updateToMouseAlleleModificationGenotypeConfirmed",
+              "description":"Update to Mouse Allele Modification Genotype Confirmed.",
+              "triggeredByUser":false,
+              "available":false,
+              "note":"A genotyped confirmed colony needs to be associated with the plan.",
+              "nextStatus":"Mouse Allele Modification Genotype Confirmed"
+            },
+            {
+              "action":"abortWhenCreExcisionComplete",
+              "description":"Abort an allele modification plan when Cre excision is complete",
+              "triggeredByUser":true,
+              "available":false,
+              "note":"The plan has colonies that are not aborted. Please abort them first",
+              "nextStatus":"Mouse Allele Modification Aborted"
+            }
+          ],
+          "actionToExecute":null
+        }
+      },
+      {
+        "pin":"PIN:0000000010",
+        "tpn":"TPN:000000001",
+        "attemptTypeName":"es cell",
+        "funderNames":[
+          "KOMP"
+        ],
+        "workUnitName":"BCM",
+        "workGroupName":"BaSH",
+        "comment":null,
+        "esCellAttempt":{
+          "esCellName":"EPD0045_1_A11",
+          "miDate":"2007-04-24",
+          "experimental":false,
+          "comment":"additional information",
+          "blastStrainName":"C57BL/6NJ",
+          "totalBlastsInjected":44,
+          "totalTransferred":44,
+          "numberSurrogatesReceiving":0,
+          "totalPupsBorn":25,
+          "totalFemaleChimeras":5,
+          "totalMaleChimeras":2,
+          "totalChimeras":7,
+          "numberOfMalesWith0To39PercentChimerism":1,
+          "numberOfMalesWith40To79PercentChimerism":1,
+          "numberOfMalesWith80To99PercentChimerism":0,
+          "numberOfMalesWith100PercentChimerism":0,
+          "testCrossStrainName":"BALB/cJ",
+          "dateChimerasMated":"2007-06-18",
+          "numberOfChimeraMatingsAttempted":6,
+          "numberOfChimeraMatingsSuccessful":5,
+          "numberOfChimerasWithGltFromCct":1,
+          "numberOfChimerasWithGltFromGenotyping":1,
+          "numberOfChimerasWith0To9PercentGlt":0,
+          "numberOfChimerasWith10To49PercentGlt":1,
+          "numberOfChimerasWith50To99PercentGlt":0,
+          "numberOfChimerasWith100PercentGlt":0,
+          "totalF1MiceFromMatings":52,
+          "numberOfCctOffspring":3,
+          "cassetteTransmissionVerified":"2007-10-21",
+          "numberOfHetOffspring":2,
+          "numberOfLiveGltOffspring":0,
+          "imitsMiAttemptId":2030,
+          "attemptExternalRef":"MAKE"
+        },
+        "typeName":"production",
+        "statusName":"Chimeras/Founder Obtained",
+        "summaryStatusName":"Chimeras/Founder Obtained",
+        "_links":{
+          "self":{
+            "href":"http://localhost:8080/api/plans/PIN:0000000010"
+          },
+          "project":{
+            "href":"http://localhost:8080/api/projects/TPN:000000001"
+          }
+        },
+        "statusDates":[
+          {
+            "statusName":"Plan Created",
+            "date":"2007-04-24T00:00:00"
+          },
+          {
+            "statusName":"Attempt In Progress",
+            "date":"2007-05-18T00:00:00"
+          },
+          {
+            "statusName":"Chimeras/Founder Obtained",
+            "date":"2007-10-20T00:00:00"
+          }
+        ],
+        "summaryStatusDates":[
+          {
+            "statusName":"Chimeras/Founder Obtained",
+            "date":"2007-10-21T00:00:00"
+          }
+        ],
+        "statusTransition":{
+          "currentStatus":"Chimeras/Founder Obtained",
+          "transitions":[
+            {
+              "action":"abortWhenChimerasFounderObtained",
+              "description":"Abort the plan after a founder obtained",
+              "triggeredByUser":true,
+              "available":true,
+              "note":null,
+              "nextStatus":"Attempt Aborted"
+            }
+          ],
+          "actionToExecute":null
+        }
       }
     ]
   },
@@ -429,7 +618,7 @@
   },
   "page":{
     "size":20,
-    "totalElements":4,
+    "totalElements":6,
     "totalPages":1,
     "number":0
   }

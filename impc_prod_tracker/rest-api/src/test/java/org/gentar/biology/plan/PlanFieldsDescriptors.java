@@ -33,12 +33,10 @@ public class PlanFieldsDescriptors
             sharedFieldDescriptions,
             "summaryStatusDates[]",
             "Stamps of the statuses summaries the plan has gone through.");
-        addField(sharedFieldDescriptions, "funderNames", "Funders for the plan.");
         addField(
                 sharedFieldDescriptions,
                 "summaryStatusDates[].statusName",
                 "Summary status that the plan had on a specific date.");
-        addField(sharedFieldDescriptions, "funderNames", "Funders for the plan.");
         addField(
                 sharedFieldDescriptions,
                 "summaryStatusDates[].date",
@@ -110,6 +108,8 @@ public class PlanFieldsDescriptors
             crisprFields, "crisprAttempt.embryo2Cell", "Number of embryos at the two cell stage.");
         addField(
             crisprFields, "crisprAttempt.strainInjectedName", "Name of the strain injected.");
+        addField(crisprFields, "crisprAttempt.embryoTransferDay", "Embryo transfer day.");
+        addField(crisprFields, "crisprAttempt.totalTransferred", "Total transferred");
 
         // Nucleases
         addField(
@@ -229,8 +229,6 @@ public class PlanFieldsDescriptors
             "Number of HDR G0 mutants with a subset of donors inserted.");
         addField(crisprFields, "crisprAttempt.assay.numHrG0Mutants", "Number of HR G0 mutants.");
         addField(crisprFields, "crisprAttempt.assay.numNhejG0Mutants", "Number of NHEJ G0 mutants.");
-        addField(crisprFields, "crisprAttempt.assay.embryoTransferDay", "Embryo transfer day.");
-        addField(crisprFields, "crisprAttempt.assay.totalTransferred", "Total transferred");
 
         return crisprFields;
     }
@@ -258,6 +256,73 @@ public class PlanFieldsDescriptors
         addField(phenotypingFields, "phenotypingAttemptResponse.doNotCountTowardsCompleteness", "");
         addField(phenotypingFields, "phenotypingAttemptResponse.cohortProductionWorkUnitName", "");
         return phenotypingFields;
+    }
+
+    public static List<FieldDescriptor> getCreAlleleModificationFieldDescriptors()
+    {
+        List<FieldDescriptor> creAlleleModificationFields = new ArrayList<>();
+
+        addField(creAlleleModificationFields, "creAlleleModificationStartingPoint", "Outcome information");
+        addField(creAlleleModificationFields, "creAlleleModificationStartingPoint._links", "");
+        addField(creAlleleModificationFields, "creAlleleModificationStartingPoint._links.outcome", "");
+        addField(creAlleleModificationFields, "creAlleleModificationStartingPoint._links.outcome.href", "Outcome link");
+        addField(creAlleleModificationFields, "creAlleleModificationStartingPoint._links.productionPlan", "");
+        addField(creAlleleModificationFields, "creAlleleModificationStartingPoint._links.productionPlan.href",
+                "Production plan link");
+        addField(creAlleleModificationFields, "creAlleleModificationStartingPoint.outcomeTpo",
+                "Public identifier for the outcome.");
+        addField(creAlleleModificationFields, "creAlleleModificationStartingPoint.productionPlanPin",
+                "Public identifier for the outcome production plan.");
+
+        addField(creAlleleModificationFields, "creAlleleModificationAttempt", "Cre allele modification attempt details.");
+        addField(creAlleleModificationFields, "creAlleleModificationAttempt.modificationExternalRef",
+                "External reference used to track the modification. For data exported from iMits the mouse allele modification colony name has been recorded as the modification external reference.");
+        addField(creAlleleModificationFields, "creAlleleModificationAttempt.numberOfCreMatingsSuccessful",
+                "records the number of successful Cre matings.");
+        addField(creAlleleModificationFields, "creAlleleModificationAttempt.tatCre", "Indicates tat Cre used for modification rather than a deleter strain.");
+        addField(creAlleleModificationFields, "creAlleleModificationAttempt.deleterStrainName", "Cre allele modification attempt deleter strain");
+        return creAlleleModificationFields;
+    }
+
+    public static List<FieldDescriptor> getEsCellFieldDescriptors()
+    {
+        List<FieldDescriptor> esCellFields = new ArrayList<>();
+
+        addField(esCellFields, "esCellAttempt", "ES cell attempt details.");
+        addField(esCellFields, "esCellAttempt.esCellName","The ES Cell used in the attempt.");
+        addField(esCellFields, "esCellAttempt.imitsMiAttemptId", "The iMits attempt identifier (This is included if the data was migrated from iMits).");
+        addField(esCellFields, "esCellAttempt.miDate", "The date when the micro-injection was performed.");
+        addField(esCellFields, "esCellAttempt.attemptExternalRef", "External reference used to track the ES cell attempt.");
+        addField(esCellFields, "esCellAttempt.experimental", "A flag indicating if the attempt is experimental.");
+        addField(esCellFields, "esCellAttempt.comment", "A comment about the ES cell attempt.");
+        addField(esCellFields, "esCellAttempt.blastStrainName", "Name of the blastocyst strain.");
+        addField(esCellFields, "esCellAttempt.totalBlastsInjected", "Number of blastocysts injected.");
+        addField(esCellFields, "esCellAttempt.totalTransferred", "Number of blastocysts transferred.");
+        addField(esCellFields, "esCellAttempt.numberSurrogatesReceiving", "Number of surrogate mothers recieving blastocysts.");
+        addField(esCellFields, "esCellAttempt.totalPupsBorn", "Number of pups born.");
+        addField(esCellFields, "esCellAttempt.totalFemaleChimeras", "Total number of female chimeras.");
+        addField(esCellFields, "esCellAttempt.totalMaleChimeras", "Total number of male chimeras.");
+        addField(esCellFields, "esCellAttempt.totalChimeras", "Total number of chimeras.");
+        addField(esCellFields, "esCellAttempt.numberOfMalesWith0To39PercentChimerism", "Number of male offspring with 0-39 % chimerism.");
+        addField(esCellFields, "esCellAttempt.numberOfMalesWith40To79PercentChimerism", "Number of male offspring with 40-79 % chimerism.");
+        addField(esCellFields, "esCellAttempt.numberOfMalesWith80To99PercentChimerism", "Number of male offspring with 80-99 % chimerism.");
+        addField(esCellFields, "esCellAttempt.numberOfMalesWith100PercentChimerism", "Number of male offspring with 100 % chimerism.");
+        addField(esCellFields, "esCellAttempt.testCrossStrainName", "Name of the strain used for the test cross.");
+        addField(esCellFields, "esCellAttempt.dateChimerasMated", "The date when the chimeras were mated.");
+        addField(esCellFields, "esCellAttempt.numberOfChimeraMatingsAttempted", "Number of matings set up with chimeras.");
+        addField(esCellFields, "esCellAttempt.numberOfChimeraMatingsSuccessful", "Number of successful chimera matings.");
+        addField(esCellFields, "esCellAttempt.numberOfChimerasWithGltFromCct", "Number of chimeras with germ line transmission assessed by coat-colour type.");
+        addField(esCellFields, "esCellAttempt.numberOfChimerasWithGltFromGenotyping", "Number of chimeras with germ line transmission assessed by genotyping.");
+        addField(esCellFields, "esCellAttempt.numberOfChimerasWith0To9PercentGlt", "Number of chimeras with 0-9 % germ line transmission.");
+        addField(esCellFields, "esCellAttempt.numberOfChimerasWith10To49PercentGlt", "Number of chimeras with 10-49 % germ line transmission.");
+        addField(esCellFields, "esCellAttempt.numberOfChimerasWith50To99PercentGlt", "Number of chimeras with 50-99 % germ line transmission.");
+        addField(esCellFields, "esCellAttempt.numberOfChimerasWith100PercentGlt", "Number of chimeras with 100 % germ line transmission.");
+        addField(esCellFields, "esCellAttempt.totalF1MiceFromMatings", "Total number of F1 offspring from matings.");
+        addField(esCellFields, "esCellAttempt.numberOfCctOffspring", "");
+        addField(esCellFields, "esCellAttempt.cassetteTransmissionVerified", "The date when cassette transmission was confirmed.");
+        addField(esCellFields, "esCellAttempt.numberOfHetOffspring", "Number of heterozygous offspring.");
+        addField(esCellFields, "esCellAttempt.numberOfLiveGltOffspring", "Number of live germ line transmission offspring.");
+        return esCellFields;
     }
 
     private static void addField(List<FieldDescriptor> list, String name, String description)

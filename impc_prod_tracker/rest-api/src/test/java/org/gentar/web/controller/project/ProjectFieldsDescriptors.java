@@ -33,11 +33,12 @@ public class ProjectFieldsDescriptors
             "reactivationDate",
             "Date, represented as string, on which the project was activated again (assignment " +
                 "Status changed from inactive). Example: \"2020-09-24T00:00:05\". Read only.");
+        addField(descriptors, "completionNote", "Project completion note.");
+        addField(descriptors, "completionComment", "Project completion comment.");
         addField(
             descriptors,
-            "reactivationDate",
-            "Date, represented as string, on which the project was activated again (assignment " +
-                "Status changed from inactive). Example: \"2020-09-24T00:00:05\". Read only.");
+            "imitsMiPlanId",
+            "iMits mi_plan identifier (Present if the project was transferrred from iMits). Read only.");
         addField(descriptors, "relatedWorkUnitNames", "Work units associated with the project.");
         addField(descriptors, "relatedWorkGroupNames", "Work groups associated with the project.");
         addField(
@@ -99,6 +100,7 @@ public class ProjectFieldsDescriptors
     {
         List<FieldDescriptor> sharedFieldDescriptions = new ArrayList<>();
         addField(sharedFieldDescriptions, "recovery", "[WIP]");
+        addField(sharedFieldDescriptions, "esCellQcOnly", "Indicates if the project is only used for ES Cell QC");
         addField(sharedFieldDescriptions, "comment", "Comment on this project.");
         addField(
             sharedFieldDescriptions,

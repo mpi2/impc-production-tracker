@@ -68,6 +68,10 @@ public class CrisprAttempt extends BaseEntity
     @Column(columnDefinition = "TEXT")
     private String comment;
 
+    private String embryoTransferDay;
+
+    private Integer totalTransferred;
+
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
     @OneToOne(cascade=CascadeType.ALL, mappedBy = "crisprAttempt", orphanRemoval=true)

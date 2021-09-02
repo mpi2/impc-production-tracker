@@ -10,14 +10,6 @@ public class AssayDTO
 {
     private Long id;
     private String typeName;
-
-    @JsonProperty("embryoTransferDay")
-    private String embryoTransferDay;
-
-
-    @JsonProperty("totalTransferred")
-    private Integer totalTransferred;
-
     private Integer numFounderPups;
     private Integer numFounderSelectedForBreeding;
     private Integer founderNumAssays;

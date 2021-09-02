@@ -22,7 +22,9 @@ public class CrisprAttemptValidator
 
     private static final String NULL_OBJECT_ERROR = "[%s] cannot be null.";
 
-    public CrisprAttemptValidator(CrisprAttemptService crisprAttemptService, NucleaseValidator nucleaseValidator, GuideValidator guideValidator)
+    public CrisprAttemptValidator(CrisprAttemptService crisprAttemptService,
+                                  NucleaseValidator nucleaseValidator,
+                                  GuideValidator guideValidator)
     {
         this.crisprAttemptService = crisprAttemptService;
         this.nucleaseValidator = nucleaseValidator;
@@ -34,13 +36,11 @@ public class CrisprAttemptValidator
         // This is a place to add validation code
         // Consider throwing an org.gentar.exceptions.UserOperationFailedException
         // e.g. throw new UserOperationFailedException(errorMessage);
-
         if (crisprAttempt != null)
         {
             validateNuclease(crisprAttempt);
             validateGuides(crisprAttempt);
         }
-
     }
 
     private void validateGuides(CrisprAttempt crisprAttempt)

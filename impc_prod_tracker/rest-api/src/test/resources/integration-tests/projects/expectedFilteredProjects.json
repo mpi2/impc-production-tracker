@@ -4,6 +4,7 @@
       {
         "tpn":"TPN:000000001",
         "recovery":false,
+        "esCellQcOnly":false,
         "comment":"Comment test",
         "reactivationDate":"2020-09-24T00:00:02",
         "privacyName":"public",
@@ -15,6 +16,8 @@
         "relatedWorkGroupNames":[
           "BaSH"
         ],
+        "completionNote":null,
+        "completionComment":null,
         "_links":{
           "self":{
             "href":"http://localhost:8080/api/projects/TPN:000000001"
@@ -30,6 +33,7 @@
             }
           ]
         },
+        "imitsMiPlanId":27136,
         "assignmentStatusStamps":[
 
         ],
@@ -109,16 +113,17 @@
             "consortiumName":"CMG"
           }
         ],
-        "colonyNames": [
+        "colonyNames":[
 
         ],
-        "phenotypingExternalRefs": [
+        "phenotypingExternalRefs":[
 
         ]
       },
       {
         "tpn":"TPN:000000003",
         "recovery":null,
+        "esCellQcOnly":null,
         "comment":null,
         "reactivationDate":null,
         "privacyName":"public",
@@ -130,6 +135,8 @@
         "relatedWorkGroupNames":[
 
         ],
+        "completionNote":null,
+        "completionComment":null,
         "_links":{
           "self":{
             "href":"http://localhost:8080/api/projects/TPN:000000003"
@@ -150,16 +157,17 @@
             "consortiumName":"CMG"
           }
         ],
-        "colonyNames": [
+        "colonyNames":[
 
         ],
-        "phenotypingExternalRefs": [
+        "phenotypingExternalRefs":[
 
         ]
       },
       {
         "tpn":"TPN:000000005",
         "recovery":null,
+        "esCellQcOnly":null,
         "comment":null,
         "reactivationDate":null,
         "privacyName":"restricted",
@@ -171,6 +179,8 @@
         "relatedWorkGroupNames":[
 
         ],
+        "completionNote":null,
+        "completionComment":null,
         "_links":{
           "self":{
             "href":"http://localhost:8080/api/projects/TPN:000000005"
@@ -191,10 +201,10 @@
             "consortiumName":"CMG"
           }
         ],
-        "colonyNames": [
+        "colonyNames":[
 
         ],
-        "phenotypingExternalRefs": [
+        "phenotypingExternalRefs":[
 
         ]
       }

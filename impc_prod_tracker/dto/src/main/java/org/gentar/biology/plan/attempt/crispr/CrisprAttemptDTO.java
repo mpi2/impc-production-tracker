@@ -43,7 +43,14 @@ public class CrisprAttemptDTO
     private Boolean experimental;
 
     private String comment;
+
     private String mutagenesisExternalRef;
+
+    @JsonProperty("embryoTransferDay")
+    private String embryoTransferDay;
+
+    @JsonProperty("totalTransferred")
+    private Integer totalTransferred;
 
     @JsonProperty("nucleases")
     private List<NucleaseDTO> nucleaseDTOS;

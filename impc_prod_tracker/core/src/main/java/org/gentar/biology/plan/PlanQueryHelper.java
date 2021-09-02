@@ -1,6 +1,7 @@
 package org.gentar.biology.plan;
 
 import org.gentar.biology.colony.Colony;
+import org.gentar.biology.colony.engine.ColonyState;
 import org.gentar.biology.outcome.Outcome;
 import org.gentar.biology.outcome.type.OutcomeTypeName;
 import org.gentar.biology.plan.attempt.phenotyping.PhenotypingAttempt;
@@ -63,6 +64,17 @@ public class PlanQueryHelper
         if (!colonies.isEmpty())
         {
             result = colonies.stream().allMatch(x -> x.getStatus().getIsAbortionStatus());
+        }
+        return result;
+    }
+
+    public static boolean areAnyColoniesByPlanGenotypeConfirmed(Plan plan)
+    {
+        boolean result = false;
+        List<Colony> colonies = getColoniesByPlan(plan);
+        if (!colonies.isEmpty())
+        {
+            result = colonies.stream().anyMatch(x -> x.getStatus().getName().equals(ColonyState.GenotypeConfirmed.getName()));
         }
         return result;
     }

@@ -1,6 +1,7 @@
 {
   "tpn":"TPN:000000007",
   "recovery":false,
+  "esCellQcOnly":false,
   "comment":"comment",
   "reactivationDate":null,
   "privacyName":"public",
@@ -104,6 +105,8 @@
       "consortiumName":"CMG"
     }
   ],
+  "completionNote":null,
+  "completionComment":null,
   "colonyNames":[
 
   ],

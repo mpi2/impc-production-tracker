@@ -26,7 +26,7 @@ public class BreedingStartedProcessor extends AbstractProcessor
         if (!breedingAttemptExists)
         {
             transitionEvaluation.setNote(
-                "The plan does not have a breeding plan yet");
+                "The plan does not have a breeding attempt yet");
         }
         return transitionEvaluation;
     }

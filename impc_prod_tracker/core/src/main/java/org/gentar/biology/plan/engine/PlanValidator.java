@@ -5,11 +5,8 @@ import org.gentar.biology.plan.attempt.AttemptType;
 import org.gentar.biology.plan.attempt.AttemptTypeChecker;
 import org.gentar.biology.plan.attempt.AttemptTypeService;
 import org.gentar.biology.plan.attempt.AttemptTypesName;
+import org.gentar.biology.plan.attempt.cre_allele_modification.CreAlleleModificationValidator;
 import org.gentar.biology.plan.attempt.crispr.CrisprAttemptValidator;
-import org.gentar.biology.plan.attempt.crispr.guide.Guide;
-import org.gentar.biology.plan.attempt.crispr.guide.GuideValidator;
-import org.gentar.biology.plan.attempt.crispr.nuclease.Nuclease;
-import org.gentar.biology.plan.attempt.crispr.nuclease.NucleaseValidator;
 import org.gentar.biology.plan.attempt.phenotyping.PhenotypeAttemptValidator;
 import org.gentar.biology.plan.starting_point.PlanStartingPoint;
 import org.gentar.biology.plan.type.PlanType;
@@ -44,10 +41,11 @@ public class PlanValidator
     private final ProjectValidator projectValidator;
     private final PhenotypeAttemptValidator phenotypeAttemptValidator;
     private final ColonyValidator colonyValidator;
+    private final CreAlleleModificationValidator creAlleleModificationValidator;
 
     private static final String ATTEMPT_TYPE_PLAN_TYPE_INVALID_ASSOCIATION =
         "The attempt type [%s] cannot be associated with a plan with type [%s].";
-    private static final String NULL_OBJECT_ERROR = "[%s] cannot be null.";
+    private static final String NULL_OBJECT_ERROR = "%s cannot be null.";
 
     public PlanValidator(
             CrisprAttemptValidator crisprAttemptValidator,
@@ -56,7 +54,7 @@ public class PlanValidator
             ResourceAccessChecker<Plan> resourceAccessChecker,
             ProjectValidator projectValidator,
             PhenotypeAttemptValidator phenotypeAttemptValidator,
-            ColonyValidator colonyValidator)
+            ColonyValidator colonyValidator, CreAlleleModificationValidator creAlleleModificationValidator)
     {
         this.crisprAttemptValidator = crisprAttemptValidator;
         this.attemptTypeService = attemptTypeService;
@@ -65,6 +63,7 @@ public class PlanValidator
         this.projectValidator = projectValidator;
         this.phenotypeAttemptValidator = phenotypeAttemptValidator;
         this.colonyValidator = colonyValidator;
+        this.creAlleleModificationValidator = creAlleleModificationValidator;
     }
 
     /**
@@ -81,12 +80,30 @@ public class PlanValidator
     {
         if (AttemptTypeChecker.CRISPR_TYPE.equalsIgnoreCase(AttemptTypeChecker.getAttemptTypeName(plan)))
         {
-            // Checks crispr attempt type.
+            // Checks to Crispr attempt type.
+        }
+        if (AttemptTypeChecker.ES_CELL_TYPE.equalsIgnoreCase(AttemptTypeChecker.getAttemptTypeName(plan)))
+        {
+
+        }
+        if (AttemptTypeChecker.CRE_ALLELE_MODIFICATION_TYPE.equalsIgnoreCase(AttemptTypeChecker.getAttemptTypeName(plan)))
+        {
+            Set<PlanStartingPoint> planStartingPoints = plan.getPlanStartingPoints();
+            if (planStartingPoints != null)
+            {
+                planStartingPoints.forEach(x -> colonyValidator.validateDataForStartingPoint(x.getOutcome().getColony()));
+            } else {
+                throw new UserOperationFailedException(String.format(NULL_OBJECT_ERROR, "Starting Point (outcome)"));
+            }
         }
         if (AttemptTypeChecker.PHENOTYPING_TYPE.equalsIgnoreCase(AttemptTypeChecker.getAttemptTypeName(plan)))
         {
             Set<PlanStartingPoint> planStartingPoints = plan.getPlanStartingPoints();
-            planStartingPoints.forEach(x -> colonyValidator.validateDataForStartingPoint(x.getOutcome().getColony()));
+            if (planStartingPoints != null) {
+                planStartingPoints.forEach(x -> colonyValidator.validateDataForStartingPoint(x.getOutcome().getColony()));
+            } else {
+                throw new UserOperationFailedException(String.format(NULL_OBJECT_ERROR, "Starting Point (outcome)"));
+            }
         }
     }
 
@@ -144,6 +161,14 @@ public class PlanValidator
         if (AttemptTypeChecker.CRISPR_TYPE.equalsIgnoreCase(AttemptTypeChecker.getAttemptTypeName(plan)))
         {
             crisprAttemptValidator.validate(plan.getCrisprAttempt());
+        }
+        if (AttemptTypeChecker.ES_CELL_TYPE.equalsIgnoreCase(AttemptTypeChecker.getAttemptTypeName(plan)))
+        {
+
+        }
+        if (AttemptTypeChecker.CRE_ALLELE_MODIFICATION_TYPE.equalsIgnoreCase(AttemptTypeChecker.getAttemptTypeName(plan)))
+        {
+            creAlleleModificationValidator.validateModificationExternalRefNotNull(plan.getCreAlleleModificationAttempt());
         }
         if (AttemptTypeChecker.PHENOTYPING_TYPE.equalsIgnoreCase(AttemptTypeChecker.getAttemptTypeName(plan)))
         {

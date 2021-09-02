@@ -8,13 +8,20 @@ import org.gentar.biology.plan.attempt.AttemptType;
 import org.gentar.biology.plan.attempt.AttemptTypesName;
 import org.gentar.biology.plan.attempt.breeding.BreedingAttemptDTO;
 import org.gentar.biology.plan.attempt.breeding.BreedingAttemptMapper;
+import org.gentar.biology.plan.attempt.cre_allele_modification.CreAlleleModificationAttempt;
+import org.gentar.biology.plan.attempt.cre_allele_modification.CreAlleleModificationAttemptDTO;
+import org.gentar.biology.plan.attempt.cre_allele_modification.CreAlleleModificationAttemptMapper;
 import org.gentar.biology.plan.attempt.crispr.CrisprAttempt;
 import org.gentar.biology.plan.attempt.crispr.CrisprAttemptDTO;
 import org.gentar.biology.plan.attempt.crispr.CrisprAttemptMapper;
+import org.gentar.biology.plan.attempt.esCell.EsCellAttempt;
+import org.gentar.biology.plan.attempt.es_cell.EsCellAttemptDTO;
+import org.gentar.biology.plan.attempt.es_cell.EsCellAttemptMapper;
 import org.gentar.biology.plan.attempt.phenotyping.*;
 import org.gentar.biology.plan.plan_starting_point.PlanStartingPointDTO;
 import org.gentar.biology.plan.starting_point.PlanStartingPoint;
 import org.gentar.biology.starting_point.PlanStartingPointMapper;
+import org.gentar.biology.strain.StrainMapper;
 import org.gentar.exceptions.UserOperationFailedException;
 import org.springframework.stereotype.Component;
 import java.util.HashSet;
@@ -27,24 +34,32 @@ public class PlanBasicDataMapper implements Mapper<Plan, PlanBasicDataDTO>
     private PlanCommonDataMapper planCommonDataMapper;
     private PlanStartingPointMapper planStartingPointMapper;
     private CrisprAttemptMapper crisprAttemptMapper;
+    private EsCellAttemptMapper esCellAttemptMapper;
     private BreedingAttemptMapper breedingAttemptMapper;
+    private CreAlleleModificationAttemptMapper creAlleleModificationAttemptMapper;
     private PhenotypingAttemptCreationMapper phenotypingAttemptCreationMapper;
     private PhenotypingAttemptResponseMapper phenotypingAttemptResponseMapper;
+    private StrainMapper strainMapper;
 
     public PlanBasicDataMapper(
             PlanCommonDataMapper planCommonDataMapper,
             PlanStartingPointMapper planStartingPointMapper,
             CrisprAttemptMapper crisprAttemptMapper,
+            EsCellAttemptMapper esCellAttemptMapper,
             BreedingAttemptMapper breedingAttemptMapper,
+            CreAlleleModificationAttemptMapper creAlleleModificationAttemptMapper,
             PhenotypingAttemptCreationMapper phenotypingAttemptCreationMapper,
-            PhenotypingAttemptResponseMapper phenotypingAttemptResponseMapper)
+            PhenotypingAttemptResponseMapper phenotypingAttemptResponseMapper, StrainMapper strainMapper)
     {
         this.planCommonDataMapper = planCommonDataMapper;
         this.planStartingPointMapper = planStartingPointMapper;
         this.crisprAttemptMapper = crisprAttemptMapper;
+        this.esCellAttemptMapper = esCellAttemptMapper;
         this.breedingAttemptMapper = breedingAttemptMapper;
+        this.creAlleleModificationAttemptMapper = creAlleleModificationAttemptMapper;
         this.phenotypingAttemptCreationMapper = phenotypingAttemptCreationMapper;
         this.phenotypingAttemptResponseMapper = phenotypingAttemptResponseMapper;
+        this.strainMapper = strainMapper;
     }
 
     @Override
@@ -69,13 +84,20 @@ public class PlanBasicDataMapper implements Mapper<Plan, PlanBasicDataDTO>
             case CRISPR: case HAPLOESSENTIAL_CRISPR:
                 setCrisprAttemptDto(planBasicDataDTO, plan);
                 break;
-            case ADULT_PHENOTYPING: case HAPLOESSENTIAL_PHENOTYPING:
-                setPhenotypingAttemptDto(planBasicDataDTO, plan);
-                setStartingPointToPhenotypingPlanDto(planBasicDataDTO, plan.getPlanStartingPoints());
+            case ES_CELL:
+                setEsCellAttemptDto(planBasicDataDTO, plan);
                 break;
             case BREEDING:
                 setBreedingAttemptDto(planBasicDataDTO, plan);
                 setStartingPointsToBreedingPlanDto(planBasicDataDTO, plan.getPlanStartingPoints());
+                break;
+            case CRE_ALLELE_MODIFICATION:
+                setCreAlleleModificationAttemptDto(planBasicDataDTO, plan);
+                setStartingPointsToCreAlleleModificationPlanDto(planBasicDataDTO, plan.getPlanStartingPoints());
+                break;
+            case ADULT_PHENOTYPING: case HAPLOESSENTIAL_PHENOTYPING:
+                setPhenotypingAttemptDto(planBasicDataDTO, plan);
+                setStartingPointToPhenotypingPlanDto(planBasicDataDTO, plan.getPlanStartingPoints());
                 break;
             default:
         }
@@ -89,6 +111,16 @@ public class PlanBasicDataMapper implements Mapper<Plan, PlanBasicDataDTO>
         PlanStartingPoint planStartingPoint = planStartingPoints.stream().findFirst().orElse(null);
         PlanStartingPointDTO planStartingPointDTO = planStartingPointMapper.toDto(planStartingPoint);
         planBasicDataDTO.setPlanStartingPointDTO(planStartingPointDTO);
+    }
+
+    private void setStartingPointsToCreAlleleModificationPlanDto(
+            PlanBasicDataDTO planBasicDataDTO, Set<PlanStartingPoint> planStartingPoints)
+    {
+        // Cre Allele Modification plans only have a starting point
+        assert planStartingPoints.size() == 1;
+        PlanStartingPoint planStartingPoint = planStartingPoints.stream().findFirst().orElse(null);
+        PlanStartingPointDTO planStartingPointDTO = planStartingPointMapper.toDto(planStartingPoint);
+        planBasicDataDTO.setModificationPlanStartingPointDTO(planStartingPointDTO);
     }
 
     private void setStartingPointsToBreedingPlanDto(
@@ -106,6 +138,12 @@ public class PlanBasicDataMapper implements Mapper<Plan, PlanBasicDataDTO>
         planBasicDataDTO.setCrisprAttemptDTO(crisprAttemptDTO);
     }
 
+    private void setEsCellAttemptDto(PlanBasicDataDTO planBasicDataDTO, Plan plan)
+    {
+        EsCellAttemptDTO esCellAttemptDTO = esCellAttemptMapper.toDto(plan.getEsCellAttempt());
+        planBasicDataDTO.setEsCellAttemptDTO(esCellAttemptDTO);
+    }
+
     private void setPhenotypingAttemptDto(PlanBasicDataDTO planBasicDataDTO, Plan plan)
     {
         PhenotypingAttemptResponseDTO phenotypingAttemptResponseDTO =
@@ -116,23 +154,28 @@ public class PlanBasicDataMapper implements Mapper<Plan, PlanBasicDataDTO>
     private void setBreedingAttemptDto(PlanBasicDataDTO planBasicDataDTO, Plan plan)
     {
         BreedingAttemptDTO breedingAttemptDTO =
-            breedingAttemptMapper.toDto(plan.getBreedingAttempt());
+                breedingAttemptMapper.toDto(plan.getBreedingAttempt());
         planBasicDataDTO.setBreedingAttemptDTO(breedingAttemptDTO);
+    }
+
+    private void setCreAlleleModificationAttemptDto(PlanBasicDataDTO planBasicDataDTO, Plan plan)
+    {
+        CreAlleleModificationAttemptDTO creAlleleModificationAttemptDTO =
+                creAlleleModificationAttemptMapper.toDto(plan.getCreAlleleModificationAttempt());
+        planBasicDataDTO.setCreAlleleModificationAttemptDTO(creAlleleModificationAttemptDTO);
     }
 
     @Override
     public Plan toEntity(PlanBasicDataDTO planBasicDataDTO)
     {
         Plan plan = new Plan();
+        if (planBasicDataDTO!= null && planBasicDataDTO.getPlanCommonDataDTO() != null)
         {
-            if (planBasicDataDTO!= null && planBasicDataDTO.getPlanCommonDataDTO() != null)
-            {
-                plan = planCommonDataMapper.toEntity(planBasicDataDTO.getPlanCommonDataDTO());
-                // Set id to plan. If the object is new the id will be null.
-                plan.setId(planBasicDataDTO.getId());
+            plan = planCommonDataMapper.toEntity(planBasicDataDTO.getPlanCommonDataDTO());
+            // Set id to plan. If the object is new the id will be null.
+            plan.setId(planBasicDataDTO.getId());
 
-                setAttempt(plan, planBasicDataDTO);
-            }
+            setAttempt(plan, planBasicDataDTO);
         }
         return plan;
     }
@@ -143,13 +186,28 @@ public class PlanBasicDataMapper implements Mapper<Plan, PlanBasicDataDTO>
         {
             setCrisprAttempt(plan, planBasicDataDTO);
         }
+        else if (planBasicDataDTO.getEsCellAttemptDTO() != null)
+        {
+            setEsCellAttempt(plan, planBasicDataDTO);
+        }
+        else if (planBasicDataDTO.getCreAlleleModificationAttemptDTO() != null)
+        {
+            setCreAlleleModificationAttempt(plan, planBasicDataDTO);
+        }
+        // Missing an entry here for a Breeding Attempt
+        // - but note it could have more than one plan starting point
         else if (planBasicDataDTO.getPhenotypingAttemptCreationDTO() != null)
         {
             setPhenotypingAttempt(plan, planBasicDataDTO);
         }
+
         if (planBasicDataDTO.getPlanStartingPointDTO() != null)
         {
             setStartingPoint(plan, planBasicDataDTO);
+        }
+        else if (planBasicDataDTO.getModificationPlanStartingPointDTO() != null)
+        {
+            setModificationStartingPoint(plan, planBasicDataDTO);
         }
     }
 
@@ -165,10 +223,49 @@ public class PlanBasicDataMapper implements Mapper<Plan, PlanBasicDataDTO>
         }
     }
 
+    private void setEsCellAttempt(Plan plan, PlanBasicDataDTO planBasicDataDTO)
+    {
+        if (planBasicDataDTO.getEsCellAttemptDTO() != null)
+        {
+            EsCellAttempt esCellAttempt = esCellAttemptMapper.toEntity(planBasicDataDTO.getEsCellAttemptDTO());
+            esCellAttempt.setPlan(plan);
+            esCellAttempt.setId(plan.getId());
+            esCellAttemptMapper.setCassetteTransmission(planBasicDataDTO.getEsCellAttemptDTO(), esCellAttempt);
+
+            plan.setEsCellAttempt(esCellAttempt);
+        }
+    }
+
+    private void setCreAlleleModificationAttempt(Plan plan, PlanBasicDataDTO planBasicDataDTO)
+    {
+        if (planBasicDataDTO.getCreAlleleModificationAttemptDTO() != null)
+        {
+            CreAlleleModificationAttempt creAlleleModificationAttempt =
+                    creAlleleModificationAttemptMapper.toEntity(planBasicDataDTO.getCreAlleleModificationAttemptDTO());
+            creAlleleModificationAttempt.setDeleterStrain(strainMapper.toEntity(planBasicDataDTO.
+                    getCreAlleleModificationAttemptDTO().getDeleterStrainName()));
+            creAlleleModificationAttempt.setPlan(plan);
+            creAlleleModificationAttempt.setId(plan.getId());
+            plan.setCreAlleleModificationAttempt(creAlleleModificationAttempt);
+        }
+    }
+
     private void setStartingPoint(Plan plan, PlanBasicDataDTO planBasicDataDTO)
     {
         PlanStartingPoint planStartingPoint =
-            planStartingPointMapper.toEntity(planBasicDataDTO.getPlanStartingPointDTO());
+                planStartingPointMapper.toEntity(planBasicDataDTO.getPlanStartingPointDTO());
+        setOneStartingPoint(plan, planStartingPoint);
+    }
+
+    private void setModificationStartingPoint(Plan plan, PlanBasicDataDTO planBasicDataDTO)
+    {
+        PlanStartingPoint planStartingPoint =
+                planStartingPointMapper.toEntity(planBasicDataDTO.getModificationPlanStartingPointDTO());
+        setOneStartingPoint(plan, planStartingPoint);
+    }
+
+    private void setOneStartingPoint(Plan plan, PlanStartingPoint planStartingPoint)
+    {
         planStartingPoint.setPlan(plan);
         Set<PlanStartingPoint> planStartingPoints = new HashSet<>();
         planStartingPoints.add(planStartingPoint);

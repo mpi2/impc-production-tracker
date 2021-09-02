@@ -24,8 +24,6 @@ public class AssayMapper implements Mapper<Assay, AssayDTO>
 
         assayDTO.setId(entity.getId());
         assayDTO.setTypeName(entity.getAssayType().getName());
-        assayDTO.setEmbryoTransferDay(entity.getEmbryoTransferDay());
-        assayDTO.setTotalTransferred(entity.getTotalTransferred());
         assayDTO.setNumFounderPups(entity.getNumFounderPups());
         assayDTO.setNumFounderSelectedForBreeding(entity.getNumFounderSelectedForBreeding());
         assayDTO.setFounderNumAssays(entity.getFounderNumAssays());

@@ -2,6 +2,7 @@ package org.gentar.biology.plan;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import org.gentar.biology.plan.attempt.breeding.BreedingAttemptDTO;
+import org.gentar.biology.plan.attempt.cre_allele_modification.CreAlleleModificationAttemptDTO;
 import org.gentar.biology.plan.attempt.crispr.CrisprAttemptDTO;
 import org.gentar.biology.plan.attempt.phenotyping.PhenotypingAttemptCreationDTO;
 import org.gentar.biology.plan.plan_starting_point.PlanStartingPointDTO;
@@ -25,13 +26,12 @@ class PlanBasicDataDTOTest
 
         String json = JsonConverter.toJson(planBasicDataDTO);
         assertThat(json, is(notNullValue()));
-        assertThat(json, is("{\"funderNames\":null,\"workUnitName\":null,\"workGroupName\":null," +
-            "\"comment\":null," +
-            "\"crisprAttempt\":{\"miDate\":null,\"experimental\":null,\"comment\":null," +
-            "\"mutagenesisExternalRef\":null,\"attemptExternalRef\":null,\"nucleases\":null," +
-            "\"guides\":null,\"mutagenesisDonors\":null,\"reagents\":null,\"genotypePrimers\":null," +
-            "\"totalEmbryosInjected\":null,\"totalEmbryosSurvived\":null,\"embryo2Cell\":null," +
-            "\"assay\":null,\"strainInjectedName\":null}}"));
+        assertThat(json, is("{\"funderNames\":null,\"workUnitName\":null,\"workGroupName\":null,\"comment\":null," +
+                "\"crisprAttempt\":{\"miDate\":null,\"experimental\":null,\"comment\":null,\"mutagenesisExternalRef\":null," +
+                "\"attemptExternalRef\":null,\"embryoTransferDay\":null,\"totalTransferred\":null,\"nucleases\":null," +
+                "\"guides\":null,\"mutagenesisDonors\":null,\"reagents\":null,\"genotypePrimers\":null," +
+                "\"totalEmbryosInjected\":null,\"totalEmbryosSurvived\":null,\"embryo2Cell\":null,\"assay\":null," +
+                "\"strainInjectedName\":null}}"));
     }
 
     @Test
@@ -46,9 +46,26 @@ class PlanBasicDataDTOTest
         String json = JsonConverter.toJson(planBasicDataDTO);
         assertThat(json, is(notNullValue()));
         assertThat(json, is("{\"funderNames\":null,\"workUnitName\":null,\"workGroupName\":null,\"comment\":null," +
-                "\"BreedingStartingPoints\":[{\"links\":[],\"outcomeTpo\":null," +
+                "\"breedingStartingPoints\":[{\"links\":[],\"outcomeTpo\":null," +
                 "\"productionPlanPin\":null}],\"breedingAttempt\":{\"numberOfCreMatingsStarted\":null," +
                 "\"numberOfCreMatingsSuccessful\":null,\"creExcesion\":null,\"tatCre\":null,\"deleterStrainName\":null}}"));
+    }
+
+    @Test
+    public void testCreAlleleModificationPlanBasicDataDTO() throws JsonProcessingException
+    {
+        PlanBasicDataDTO planBasicDataDTO = new PlanBasicDataDTO();
+        planBasicDataDTO.setPlanCommonDataDTO(new PlanCommonDataDTO());
+        CreAlleleModificationAttemptDTO creAlleleModificationAttemptDTO = new CreAlleleModificationAttemptDTO();
+        planBasicDataDTO.setCreAlleleModificationAttemptDTO(creAlleleModificationAttemptDTO);
+        planBasicDataDTO.setModificationPlanStartingPointDTO(new PlanStartingPointDTO());
+
+        String json = JsonConverter.toJson(planBasicDataDTO);
+        assertThat(json, is(notNullValue()));
+        assertThat(json, is("{\"funderNames\":null,\"workUnitName\":null,\"workGroupName\":null,\"comment\":null," +
+                "\"creAlleleModificationStartingPoint\":{\"links\":[],\"outcomeTpo\":null," +
+                "\"productionPlanPin\":null},\"creAlleleModificationAttempt\":{\"modificationExternalRef\":null," +
+                "\"numberOfCreMatingsSuccessful\":null,\"tatCre\":null,\"deleterStrainName\":null}}"));
     }
 
     @Test

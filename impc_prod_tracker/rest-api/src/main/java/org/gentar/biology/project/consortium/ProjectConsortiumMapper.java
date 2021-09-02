@@ -32,10 +32,8 @@ public class ProjectConsortiumMapper implements Mapper<ProjectConsortium, Projec
     {
         ProjectConsortium projectConsortium = new ProjectConsortium();
         String consortiumName = projectConsortiumDTO.getConsortiumName();
-        projectConsortium.setConsortium(
-            consortiumService.getConsortiumByNameOrThrowException(consortiumName));
+        projectConsortium.setConsortium(consortiumService.getConsortiumByNameOrThrowException(consortiumName));
 //        projectConsortium.setInstitutes(addProjectConsortiumInstituteFromEntity(projectConsortiumDTO));
-
         return projectConsortium;
     }
 

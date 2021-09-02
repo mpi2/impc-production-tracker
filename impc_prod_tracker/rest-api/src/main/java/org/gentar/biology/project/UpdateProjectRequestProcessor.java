@@ -1,5 +1,6 @@
 package org.gentar.biology.project;
 
+import org.gentar.biology.project.esCellQc.ProjectEsCellQc;
 import org.gentar.biology.project.mappers.ProjectUpdateMapper;
 import org.gentar.exceptions.UserOperationFailedException;
 import org.springframework.stereotype.Component;
@@ -31,11 +32,25 @@ public class UpdateProjectRequestProcessor
         Project mappedFromDto = projectUpdateMapper.toEntity(projectUpdateDTO);
         projectToUpdate.setComment(mappedFromDto.getComment());
         projectToUpdate.setRecovery(mappedFromDto.getRecovery());
+        projectToUpdate.setEsCellQcOnly(mappedFromDto.getEsCellQcOnly());
+        projectToUpdate.setCompletionComment(mappedFromDto.getCompletionComment());
+        projectToUpdate.setCompletionNote(mappedFromDto.getCompletionNote());
         if (mappedFromDto.getPrivacy() != null)
         {
             projectToUpdate.setPrivacy(mappedFromDto.getPrivacy());
         }
+        setProjectEsCellQc(projectToUpdate, mappedFromDto);
         return projectToUpdate;
+    }
+
+    private void setProjectEsCellQc(Project projectToUpdate, Project mappedFromDto)
+    {
+        if (mappedFromDto.getProjectEsCellQc() != null) {
+            ProjectEsCellQc projectEsCellQc = mappedFromDto.getProjectEsCellQc();
+            projectEsCellQc.setId(projectToUpdate.getId());
+            projectEsCellQc.setProject(projectToUpdate);
+            projectToUpdate.setProjectEsCellQc(projectEsCellQc);
+        }
     }
 
     private void validateTpnIsEqual(Project project, ProjectUpdateDTO projectUpdateDTO)

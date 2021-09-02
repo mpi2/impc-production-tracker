@@ -31,6 +31,9 @@ import org.gentar.biology.plan.attempt.crispr.nuclease.nuclease_type.NucleaseTyp
 import org.gentar.biology.mutation.categorizarion.MutationCategorizationRepository;
 import org.gentar.biology.plan.attempt.crispr.reagent.ReagentRepository;
 import org.gentar.biology.plan.attempt.phenotyping.stage.type.PhenotypingStageTypeService;
+import org.gentar.biology.project.completionNote.ProjectCompletionNoteRepository;
+import org.gentar.biology.project.esCellQc.centre_pipeline.EsCellCentrePipelineRepository;
+import org.gentar.biology.project.esCellQc.comment.EsCellQcCommentRepository;
 import org.gentar.biology.sequence.category.SequenceCategoryRepository;
 import org.gentar.biology.sequence.type.SequenceTypeRepository;
 import org.gentar.biology.strain.strain_type.StrainType;
@@ -93,6 +96,9 @@ public class CatalogServiceImpl implements CatalogService
     private final ListRecordTypeService listRecordTypeService;
     private final GuideFormatRepository guideFormatRepository;
     private final GuideSourceRepository guideSourceRepository;
+    private final EsCellCentrePipelineRepository esCellCentrePipelineRepository;
+    private final EsCellQcCommentRepository esCellQcCommentRepository;
+    private final ProjectCompletionNoteRepository projectCompletionNoteRepository;
 
     private final Map<String, Object> conf = new HashMap<>();
 
@@ -126,7 +132,7 @@ public class CatalogServiceImpl implements CatalogService
             AssayTypeRepository assayTypeRepository,
             PhenotypingStageTypeService phenotypingStageTypeService,
             MutationCategorizationService mutationCategorizationService,
-            ListRecordTypeService listRecordTypeService, GuideFormatRepository guideFormatRepository, GuideSourceRepository guideSourceRepository)
+            ListRecordTypeService listRecordTypeService, GuideFormatRepository guideFormatRepository, GuideSourceRepository guideSourceRepository, EsCellCentrePipelineRepository esCellCentrePipelineRepository, EsCellQcCommentRepository esCellQcCommentRepository, ProjectCompletionNoteRepository projectCompletionNoteRepository)
     {
         this.attemptTypeService = attemptTypeService;
         this.workUnitRepository = workUnitRepository;
@@ -162,6 +168,9 @@ public class CatalogServiceImpl implements CatalogService
         this.listRecordTypeService = listRecordTypeService;
         this.guideFormatRepository = guideFormatRepository;
         this.guideSourceRepository = guideSourceRepository;
+        this.esCellCentrePipelineRepository = esCellCentrePipelineRepository;
+        this.esCellQcCommentRepository = esCellQcCommentRepository;
+        this.projectCompletionNoteRepository = projectCompletionNoteRepository;
     }
 
     @Override
@@ -184,6 +193,9 @@ public class CatalogServiceImpl implements CatalogService
             addInstitutes();
             addStrains();
             addBackGroundStrains();
+            addDeleterStrains();
+            addTestCrossStrains();
+            addBlastStrains();
             addMaterialTypes();
             addPreparationTypes();
             addSearchTypes();
@@ -209,8 +221,32 @@ public class CatalogServiceImpl implements CatalogService
             addRecordTypesByConsortium();
             addGuideFormatNames();
             addGuideSourceNames();
+            addReceivedFromCentres();
+            addQcComments();
+            addCompletionNotes();
         }
         return conf;
+    }
+
+    private void addCompletionNotes()
+    {
+        List<Object> completionNotes = new ArrayList<>();
+        projectCompletionNoteRepository.findAll().forEach(n -> completionNotes.add(n.getNote()));
+        conf.put("completionNotes", completionNotes);
+    }
+
+    private void addReceivedFromCentres()
+    {
+        List<Object> receivedFromCentres = new ArrayList<>();
+        esCellCentrePipelineRepository.findAll().forEach(p -> receivedFromCentres.add(p.getName()));
+        conf.put("receivedFromCentres", receivedFromCentres);
+    }
+
+    private void addQcComments()
+    {
+        List<Object> qcComments = new ArrayList<>();
+        esCellQcCommentRepository.findAll().forEach(p -> qcComments.add(p.getName()));
+        conf.put("qcComments", qcComments);
     }
 
     private void addGuideFormatNames()
@@ -340,6 +376,33 @@ public class CatalogServiceImpl implements CatalogService
         strainRepository.findAllByStrainTypesIn(Collections.singletonList(backgroundStrainType))
             .forEach(p -> backgroundStrains.add(p.getName()));
         conf.put("backgroundStrains", backgroundStrains);
+    }
+
+    private void addDeleterStrains()
+    {
+        List<Object> deleterStrains = new ArrayList<>();
+        StrainType deleterStrainType = strainTypeRepository.findByName("deleter");
+        strainRepository.findAllByStrainTypesIn(Collections.singletonList(deleterStrainType))
+                .forEach(p -> deleterStrains.add(p.getName()));
+        conf.put("deleterStrains", deleterStrains);
+    }
+
+    private void addTestCrossStrains()
+    {
+        List<Object> testCrossStrains = new ArrayList<>();
+        StrainType testCrossStrainType = strainTypeRepository.findByName("test cross strain");
+        strainRepository.findAllByStrainTypesIn(Collections.singletonList(testCrossStrainType))
+                .forEach(p -> testCrossStrains.add(p.getName()));
+        conf.put("testCrossStrains", testCrossStrains);
+    }
+
+    private void addBlastStrains()
+    {
+        List<Object> blastStrains = new ArrayList<>();
+        StrainType blastStrainType = strainTypeRepository.findByName("blast strain");
+        strainRepository.findAllByStrainTypesIn(Collections.singletonList(blastStrainType))
+                .forEach(p -> blastStrains.add(p.getName()));
+        conf.put("blastStrains", blastStrains);
     }
 
     private void addMaterialTypes()

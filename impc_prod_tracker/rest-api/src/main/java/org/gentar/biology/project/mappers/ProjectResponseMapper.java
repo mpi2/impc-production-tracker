@@ -1,5 +1,6 @@
 package org.gentar.biology.project.mappers;
 
+import org.apache.logging.log4j.util.Strings;
 import org.gentar.Mapper;
 import org.gentar.biology.colony.Colony;
 import org.gentar.biology.intention.ProjectIntentionResponseDTO;
@@ -72,6 +73,10 @@ public class ProjectResponseMapper implements Mapper<Project, ProjectResponseDTO
         setColonyNames(projectResponseDTO, project);
         setPhenotypingExternalReferences(projectResponseDTO, project);
 
+        projectResponseDTO.setCompletionComment(project.getCompletionComment());
+        if (project.getCompletionNote() != null) {
+            projectResponseDTO.setCompletionNote(project.getCompletionNote().getNote());
+        }
         return projectResponseDTO;
     }
 

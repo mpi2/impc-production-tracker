@@ -24,6 +24,7 @@ class ProjectCreationDTOTest
         ProjectCreationDTO projectCreationDTO = new ProjectCreationDTO();
         ProjectCommonDataDTO projectCommonDataDTO = new ProjectCommonDataDTO();
         projectCommonDataDTO.setComment("comment");
+        projectCommonDataDTO.setEsCellQcOnly(true);
         projectCommonDataDTO.setPrivacyName("public");
         LocalDateTime date = LocalDateTime.of(2000, 1, 1, 0, 0);
         projectCommonDataDTO.setReactivationDate(date);
@@ -47,9 +48,9 @@ class ProjectCreationDTOTest
 
         String json = JsonConverter.toJson(projectCreationDTO);
         assertThat(json, is(notNullValue()));
-        assertThat(json, is("{\"recovery\":null,\"comment\":\"comment\"," +
-            "\"reactivationDate\":\"2000-01-01T00:00:00\",\"privacyName\":\"public\"," +
-            "\"planDetails\":{\"attemptTypeName\":\"crispr\"," +
+        assertThat(json, is("{\"recovery\":null,\"esCellQcOnly\":true,\"comment\":\"comment\"," +
+            "\"reactivationDate\":\"2000-01-01T00:00:00\"," +
+            "\"privacyName\":\"public\",\"planDetails\":{\"attemptTypeName\":\"crispr\"," +
             "\"typeName\":\"production\"},\"projectIntentions\":[{\"intentionByGene\":{\"gene\":" +
             "{\"symbol\":\"symbol\",\"speciesName\":null,\"accessionId\":null}}," +
             "\"intentionsBySequences\":null}],\"speciesNames\":null,\"consortia\":null}"));

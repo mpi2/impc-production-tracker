@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonUnwrapped;
 import lombok.Data;
 import org.gentar.biology.intention.ProjectIntentionResponseDTO;
+import org.gentar.biology.project.project_es_cell_qc.ProjectEsCellQcDTO;
 import org.gentar.biology.status_stamps.StatusStampsDTO;
 import org.springframework.hateoas.RepresentationModel;
 import org.springframework.hateoas.server.core.Relation;
@@ -65,6 +66,10 @@ public class ProjectResponseDTO extends RepresentationModel<ProjectResponseDTO>
     // Consortia information.
     @JsonProperty("consortia")
     private List<ProjectConsortiumDTO> projectConsortiumDTOS;
+
+    private String completionNote;
+
+    private String completionComment;
 
     // Colony names
     @JsonProperty("colonyNames")

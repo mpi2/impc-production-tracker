@@ -1,6 +1,7 @@
 {
   "tpn":"TPN:000000001",
   "recovery":true,
+  "esCellQcOnly":true,
   "comment":"A new comment",
   "reactivationDate":"2020-09-24T00:00:02",
   "privacyName":"protected",
@@ -12,6 +13,8 @@
   "relatedWorkGroupNames":[
     "BaSH"
   ],
+  "completionNote":null,
+  "completionComment":null,
   "_links":{
     "self":{
       "href":"http://localhost:8080/api/projects/TPN:000000001"
@@ -27,6 +30,7 @@
       }
     ]
   },
+  "imitsMiPlanId": 27136,
   "assignmentStatusStamps":[
 
   ],

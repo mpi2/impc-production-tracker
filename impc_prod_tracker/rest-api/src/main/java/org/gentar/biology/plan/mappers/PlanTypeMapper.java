@@ -29,6 +29,6 @@ public class PlanTypeMapper implements Mapper<PlanType, String>
     @Override
     public PlanType toEntity(String name)
     {
-        return planTypeService.getPlanTypeByName(name);
+        return planTypeService.getPlanTypeByNameFailsIfNull(name);
     }
 }

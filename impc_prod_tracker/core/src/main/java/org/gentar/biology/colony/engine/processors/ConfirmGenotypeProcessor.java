@@ -4,6 +4,7 @@ import org.gentar.biology.colony.Colony;
 import org.gentar.biology.colony.engine.ColonyStateSetter;
 import org.gentar.biology.mutation.Mutation;
 import org.gentar.biology.mutation.sequence.MutationSequence;
+import org.gentar.biology.plan.Plan;
 import org.gentar.biology.sequence.SequenceService;
 import org.gentar.biology.sequence.category.SequenceCategoryName;
 import org.gentar.statemachine.AbstractProcessor;
@@ -51,15 +52,22 @@ public class ConfirmGenotypeProcessor extends AbstractProcessor
         Set<Mutation> mutations = colony.getOutcome().getMutations();
         if (mutations != null)
         {
-            for (Mutation mutation : mutations)
-            {
-                informationIsValidated = atLeastOneOutcomeSequenceExist(mutation)
-                    && alleleSymbolExists(mutation);
-                if (informationIsValidated)
-                {
-                    break;
-                }
-            }
+             for (Mutation mutation : mutations)
+             {
+                 Boolean legacy = colony.getLegacyWithoutSequence();
+                 if (legacy == true && legacy != null) {
+                     informationIsValidated = alleleSymbolExists(mutation);
+                     if (informationIsValidated) {
+                         break;
+                     }
+                 } else {
+                     informationIsValidated = atLeastOneOutcomeSequenceExist(mutation)
+                             && alleleSymbolExists(mutation);
+                     if (informationIsValidated) {
+                         break;
+                     }
+                 }
+             }
         }
         return informationIsValidated;
     }

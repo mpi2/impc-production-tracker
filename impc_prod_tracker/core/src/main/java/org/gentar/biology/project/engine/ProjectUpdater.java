@@ -37,10 +37,22 @@ public class ProjectUpdater
     public History updateProject(Project originalProject, Project newProject)
     {
         validatePermissions(newProject);
-        History history =
-            historyService.detectTrackOfChanges(originalProject, newProject, originalProject.getId());
+        // TODO implement data validation for project updates.
+//        validateUpdateData(originalProject, newProject);
+        History history = detectTrackOfChanges(originalProject, newProject);
         saveChanges(newProject);
         saveTrackOfChanges(history);
+        return history;
+    }
+
+    /**
+     * Detects the track of the changes between originalProject and newProject.
+     * @param originalProject The project before the update.
+     * @param newProject The updated project.
+     */
+    private History detectTrackOfChanges(Project originalProject, Project newProject)
+    {
+        History history = historyService.detectTrackOfChanges(originalProject, newProject, originalProject.getId());
         return history;
     }
 
