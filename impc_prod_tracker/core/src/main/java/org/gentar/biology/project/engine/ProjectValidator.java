@@ -16,10 +16,8 @@ import org.gentar.security.permissions.Actions;
 import org.gentar.security.permissions.Operations;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Component;
-import java.util.Collection;
-import java.util.List;
-import java.util.Objects;
-import java.util.Set;
+
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Component
@@ -177,5 +175,43 @@ public class ProjectValidator
     {
         return projects.stream()
             .map(this::getAccessChecked).filter(Objects::nonNull).collect(Collectors.toList());
+    }
+
+    /**
+     * Validate that the type of production attempt is valid for a project and
+     * that the production work unit is correct.
+     * @param project
+     * @param plan
+     */
+    public void validateProductionAttempt(Project project, Plan plan)
+    {
+        if (project.getPlans() != null && plan.getPlanType().getName().equals("production"))
+        {
+            Plan firstPlan = project.getPlans().stream().sorted(Comparator.comparing(Plan::getId)).findFirst().get();
+
+            // Check that the type of attempt matches the first plan
+            if (firstPlan.getAttemptType().getName().equals("crispr") &&
+                    (plan.getAttemptType().getName().equals("es cell") ||
+                            plan.getAttemptType().getName().equals("cre allele modification")))
+            {
+                throw new UserOperationFailedException(String.format(
+                        "[%s] attempts are not allowed in this project.", plan.getAttemptType().getName()));
+            }
+            else if (firstPlan.getAttemptType().getName().equals("es cell") &&
+                    (plan.getAttemptType().getName().equals("crispr") ||
+                            plan.getAttemptType().getName().equals("haplo-essential crispr")))
+            {
+                throw new UserOperationFailedException(String.format(
+                        "[%s] attempts are not allowed in this project.", plan.getAttemptType().getName()));
+            }
+
+            // Check that the work unit match the one in the first plan
+            if (!firstPlan.getWorkUnit().getName().equals(plan.getWorkUnit().getName()))
+            {
+                throw new UserOperationFailedException(String.format(
+                        "Your work unit [%s] cannot create production plans in this project.",
+                        plan.getWorkUnit().getName()));
+            }
+        }
     }
 }

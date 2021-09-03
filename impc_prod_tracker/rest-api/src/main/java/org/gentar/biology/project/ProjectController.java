@@ -21,6 +21,7 @@ import org.gentar.biology.outcome.Outcome;
 import org.gentar.biology.outcome.OutcomeSummaryDTO;
 import org.gentar.biology.outcome.OutcomeSummaryMapper;
 import org.gentar.biology.plan.*;
+import org.gentar.biology.plan.mappers.PlanBasicDataMapper;
 import org.gentar.biology.plan.mappers.PlanMinimumCreationMapper;
 import org.gentar.biology.plan.type.PlanTypeName;
 import org.gentar.biology.project.mappers.ProjectCreationMapper;
@@ -290,5 +291,13 @@ public class ProjectController
         Project project = projectService.getNotNullProjectByTpn(tpn);
         List<Outcome> productionOutcomes = projectService.getProductionOutcomesByProject(project);
         return outcomeSummaryMapper.toDtos(productionOutcomes);
+    }
+
+    @GetMapping(value = {"/{tpn}/firstProductionPlanData"})
+    public PlanMinimumCreationDTO getFirstProductionPlanData(@PathVariable String tpn)
+    {
+        Project project = projectService.getNotNullProjectByTpn(tpn);
+        Plan firstPlan = projectService.getFirstProductionPlan(project);
+        return planMinimumCreationMapper.toDto(firstPlan);
     }
 }

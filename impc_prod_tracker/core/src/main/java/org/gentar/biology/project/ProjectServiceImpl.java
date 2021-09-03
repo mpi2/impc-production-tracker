@@ -21,6 +21,7 @@ import org.gentar.biology.ortholog.OrthologService;
 import org.gentar.biology.intention.project_intention_gene.ProjectIntentionGene;
 import org.gentar.biology.outcome.Outcome;
 import org.gentar.biology.plan.Plan;
+import org.gentar.biology.plan.attempt.AttemptType;
 import org.gentar.biology.plan.engine.PlanValidator;
 import org.gentar.biology.plan.type.PlanTypeName;
 import org.gentar.biology.project.engine.ProjectUpdater;
@@ -205,7 +206,10 @@ public class ProjectServiceImpl implements ProjectService
             throw new UserOperationFailedException(
                 "The plan cannot be associated with the project because the plan is null");
         }
+
         planValidator.validate(plan);
+        projectValidator.validateProductionAttempt(project, plan);
+
         project.addPlan(plan);
         plan.setProject(project);
     }
@@ -224,5 +228,11 @@ public class ProjectServiceImpl implements ProjectService
             });
         }
         return productionOutcomes;
+    }
+
+    @Override
+    public Plan getFirstProductionPlan(Project project)
+    {
+        return project.getPlans().stream().sorted(Comparator.comparing(Plan::getId)).findFirst().get();
     }
 }
