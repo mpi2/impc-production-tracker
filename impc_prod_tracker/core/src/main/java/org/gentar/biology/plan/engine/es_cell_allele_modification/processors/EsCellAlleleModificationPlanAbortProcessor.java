@@ -1,4 +1,4 @@
-package org.gentar.biology.plan.engine.cre_allele_modification.processors;
+package org.gentar.biology.plan.engine.es_cell_allele_modification.processors;
 
 import org.gentar.biology.plan.Plan;
 import org.gentar.biology.plan.PlanQueryHelper;
@@ -10,11 +10,11 @@ import org.gentar.statemachine.TransitionEvaluation;
 import org.springframework.stereotype.Component;
 
 /**
- * Class with the logic to move a Cre Allele Modification Plan to the state "Mouse Allele Modification Aborted"
+ * Class with the logic to move a Es Cell Allele Modification Plan to the state "Mouse Allele Modification Aborted"
  */
 @Component
-public class CreAlleleModificationPlanAbortProcessor extends AbstractProcessor {
-    public CreAlleleModificationPlanAbortProcessor(PlanStateSetter planStateSetter)
+public class EsCellAlleleModificationPlanAbortProcessor extends AbstractProcessor {
+    public EsCellAlleleModificationPlanAbortProcessor(PlanStateSetter planStateSetter)
     {
         super(planStateSetter);
     }

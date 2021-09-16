@@ -1,4 +1,4 @@
-package org.gentar.biology.plan.attempt.esCell;
+package org.gentar.biology.plan.attempt.es_cell;
 
 import org.springframework.data.repository.CrudRepository;
 

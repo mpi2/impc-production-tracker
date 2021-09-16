@@ -1,4 +1,4 @@
-package org.gentar.biology.plan.engine.cre_allele_modification.processors;
+package org.gentar.biology.plan.engine.es_cell_allele_modification.processors;
 
 import org.gentar.biology.plan.Plan;
 import org.gentar.biology.plan.engine.PlanStateSetter;
@@ -9,9 +9,9 @@ import org.gentar.statemachine.TransitionEvaluation;
 import org.springframework.stereotype.Component;
 
 @Component
-public class CreAlleleModificationPlanRegisteredProcessor extends AbstractProcessor {
+public class EsCellAlleleModificationPlanRegisteredProcessor extends AbstractProcessor {
 
-    public CreAlleleModificationPlanRegisteredProcessor(PlanStateSetter planStateSetter)
+    public EsCellAlleleModificationPlanRegisteredProcessor(PlanStateSetter planStateSetter)
     {
         super(planStateSetter);
     }
@@ -21,18 +21,18 @@ public class CreAlleleModificationPlanRegisteredProcessor extends AbstractProces
     {
         TransitionEvaluation transitionEvaluation = new TransitionEvaluation();
         transitionEvaluation.setTransition(transition);
-        boolean creAlleleModificationAttemptExists = creAlleleModificationAttemptExists((Plan) data);
-        transitionEvaluation.setExecutable(creAlleleModificationAttemptExists);
-        if (!creAlleleModificationAttemptExists)
+        boolean esCellAlleleModificationAttemptExists = esCellAlleleModificationAttemptExists((Plan) data);
+        transitionEvaluation.setExecutable(esCellAlleleModificationAttemptExists);
+        if (!esCellAlleleModificationAttemptExists)
         {
             transitionEvaluation.setNote(
-                    "The plan does not have a Cre allele modification attempt yet");
+                    "The plan does not have a ES Cell allele modification attempt yet");
         }
         return transitionEvaluation;
     }
 
-    private boolean creAlleleModificationAttemptExists(Plan plan)
+    private boolean esCellAlleleModificationAttemptExists(Plan plan)
     {
-        return plan.getCreAlleleModificationAttempt() != null;
+        return plan.getEsCellAlleleModificationAttempt() != null;
     }
 }

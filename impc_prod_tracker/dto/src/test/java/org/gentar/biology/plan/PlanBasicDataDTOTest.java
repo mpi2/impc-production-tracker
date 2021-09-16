@@ -2,7 +2,7 @@ package org.gentar.biology.plan;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import org.gentar.biology.plan.attempt.breeding.BreedingAttemptDTO;
-import org.gentar.biology.plan.attempt.cre_allele_modification.CreAlleleModificationAttemptDTO;
+import org.gentar.biology.plan.attempt.es_cell_allele_modification.EsCellAlleleModificationAttemptDTO;
 import org.gentar.biology.plan.attempt.crispr.CrisprAttemptDTO;
 import org.gentar.biology.plan.attempt.phenotyping.PhenotypingAttemptCreationDTO;
 import org.gentar.biology.plan.plan_starting_point.PlanStartingPointDTO;
@@ -52,19 +52,19 @@ class PlanBasicDataDTOTest
     }
 
     @Test
-    public void testCreAlleleModificationPlanBasicDataDTO() throws JsonProcessingException
+    public void testEsCellAlleleModificationPlanBasicDataDTO() throws JsonProcessingException
     {
         PlanBasicDataDTO planBasicDataDTO = new PlanBasicDataDTO();
         planBasicDataDTO.setPlanCommonDataDTO(new PlanCommonDataDTO());
-        CreAlleleModificationAttemptDTO creAlleleModificationAttemptDTO = new CreAlleleModificationAttemptDTO();
-        planBasicDataDTO.setCreAlleleModificationAttemptDTO(creAlleleModificationAttemptDTO);
+        EsCellAlleleModificationAttemptDTO esCellAlleleModificationAttemptDTO = new EsCellAlleleModificationAttemptDTO();
+        planBasicDataDTO.setEsCellAlleleModificationAttemptDTO(esCellAlleleModificationAttemptDTO);
         planBasicDataDTO.setModificationPlanStartingPointDTO(new PlanStartingPointDTO());
 
         String json = JsonConverter.toJson(planBasicDataDTO);
         assertThat(json, is(notNullValue()));
         assertThat(json, is("{\"funderNames\":null,\"workUnitName\":null,\"workGroupName\":null,\"comment\":null," +
-                "\"creAlleleModificationStartingPoint\":{\"links\":[],\"outcomeTpo\":null," +
-                "\"productionPlanPin\":null},\"creAlleleModificationAttempt\":{\"modificationExternalRef\":null," +
+                "\"esCellAlleleModificationStartingPoint\":{\"links\":[],\"outcomeTpo\":null," +
+                "\"productionPlanPin\":null},\"esCellAlleleModificationAttempt\":{\"modificationExternalRef\":null," +
                 "\"numberOfCreMatingsSuccessful\":null,\"tatCre\":null,\"deleterStrainName\":null}}"));
     }
 

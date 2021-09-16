@@ -1,9 +1,7 @@
-package org.gentar.biology.plan.engine.cre_allele_modification.processors;
+package org.gentar.biology.plan.engine.es_cell_allele_modification.processors;
 
-import org.gentar.biology.outcome.Outcome;
 import org.gentar.biology.plan.Plan;
 import org.gentar.biology.plan.PlanQueryHelper;
-import org.gentar.biology.plan.attempt.cre_allele_modification.CreAlleleModificationAttempt;
 import org.gentar.biology.plan.engine.PlanStateSetter;
 import org.gentar.statemachine.AbstractProcessor;
 import org.gentar.statemachine.ProcessData;
@@ -12,9 +10,9 @@ import org.gentar.statemachine.TransitionEvaluation;
 import org.springframework.stereotype.Component;
 
 @Component
-public class CreAlleleModificationPlanGenotypeConfirmedProcessor extends AbstractProcessor {
+public class EsCellAlleleModificationPlanRevertToCreExcisionCompleteProcessor extends AbstractProcessor {
 
-    public CreAlleleModificationPlanGenotypeConfirmedProcessor(PlanStateSetter planStateSetter)
+    public EsCellAlleleModificationPlanRevertToCreExcisionCompleteProcessor(PlanStateSetter planStateSetter)
     {
         super(planStateSetter);
     }
@@ -25,13 +23,13 @@ public class CreAlleleModificationPlanGenotypeConfirmedProcessor extends Abstrac
         TransitionEvaluation transitionEvaluation = new TransitionEvaluation();
         transitionEvaluation.setTransition(transition);
 
-        boolean genotypeConfirmedColoniesExist = identifyGenotypeConfirmedColonies((Plan) data);
+        boolean genotypeConfirmedColoniesDoNotExist = !identifyGenotypeConfirmedColonies((Plan) data);
 
-        transitionEvaluation.setExecutable(genotypeConfirmedColoniesExist);
+        transitionEvaluation.setExecutable(genotypeConfirmedColoniesDoNotExist);
 
-        if (!genotypeConfirmedColoniesExist)
+        if (!genotypeConfirmedColoniesDoNotExist)
         {
-            transitionEvaluation.setNote("A genotyped confirmed colony needs to be associated with the plan.");
+            transitionEvaluation.setNote("A genotyped confirmed colony is associated with the plan.");
         }
         return transitionEvaluation;
     }

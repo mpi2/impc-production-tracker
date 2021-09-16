@@ -1,7 +1,7 @@
 package org.gentar.biology.plan.engine.es_cell.processors;
 
 import org.gentar.biology.plan.Plan;
-import org.gentar.biology.plan.attempt.esCell.EsCellAttempt;
+import org.gentar.biology.plan.attempt.es_cell.EsCellAttempt;
 import org.gentar.biology.plan.engine.PlanStateSetter;
 import org.gentar.statemachine.AbstractProcessor;
 import org.gentar.statemachine.ProcessData;

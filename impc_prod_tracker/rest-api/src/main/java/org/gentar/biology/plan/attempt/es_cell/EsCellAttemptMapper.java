@@ -5,7 +5,6 @@ import org.gentar.EntityMapper;
 import org.gentar.Mapper;
 import org.gentar.biology.colony.status_stamp.ColonyStatusStamp;
 import org.gentar.biology.outcome.Outcome;
-import org.gentar.biology.plan.attempt.esCell.EsCellAttempt;
 import org.gentar.biology.targ_rep.es_cell.TargRepEsCell;
 import org.gentar.biology.targ_rep.es_cell.TargRepEsCellService;
 import org.springframework.stereotype.Component;
