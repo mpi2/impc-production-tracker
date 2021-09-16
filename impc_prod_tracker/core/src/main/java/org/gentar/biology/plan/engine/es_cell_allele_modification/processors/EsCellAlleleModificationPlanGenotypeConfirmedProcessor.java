@@ -1,4 +1,4 @@
-package org.gentar.biology.plan.engine.cre_allele_modification.processors;
+package org.gentar.biology.plan.engine.es_cell_allele_modification.processors;
 
 import org.gentar.biology.plan.Plan;
 import org.gentar.biology.plan.PlanQueryHelper;
@@ -10,9 +10,9 @@ import org.gentar.statemachine.TransitionEvaluation;
 import org.springframework.stereotype.Component;
 
 @Component
-public class CreAlleleModificationPlanRevertToCreExcisionCompleteProcessor extends AbstractProcessor {
+public class EsCellAlleleModificationPlanGenotypeConfirmedProcessor extends AbstractProcessor {
 
-    public CreAlleleModificationPlanRevertToCreExcisionCompleteProcessor(PlanStateSetter planStateSetter)
+    public EsCellAlleleModificationPlanGenotypeConfirmedProcessor(PlanStateSetter planStateSetter)
     {
         super(planStateSetter);
     }
@@ -23,13 +23,13 @@ public class CreAlleleModificationPlanRevertToCreExcisionCompleteProcessor exten
         TransitionEvaluation transitionEvaluation = new TransitionEvaluation();
         transitionEvaluation.setTransition(transition);
 
-        boolean genotypeConfirmedColoniesDoNotExist = !identifyGenotypeConfirmedColonies((Plan) data);
+        boolean genotypeConfirmedColoniesExist = identifyGenotypeConfirmedColonies((Plan) data);
 
-        transitionEvaluation.setExecutable(genotypeConfirmedColoniesDoNotExist);
+        transitionEvaluation.setExecutable(genotypeConfirmedColoniesExist);
 
-        if (!genotypeConfirmedColoniesDoNotExist)
+        if (!genotypeConfirmedColoniesExist)
         {
-            transitionEvaluation.setNote("A genotyped confirmed colony is associated with the plan.");
+            transitionEvaluation.setNote("A genotyped confirmed colony needs to be associated with the plan.");
         }
         return transitionEvaluation;
     }

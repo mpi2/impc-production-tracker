@@ -426,8 +426,8 @@ include::{snippets}/plans/getCrisprPlan/response-fields.adoc[]
 ==== ES Cell plan.
 include::{snippets}/plans/getEsCellPlan/response-fields.adoc[]
 
-==== Cre Allele Modification plan.
-include::{snippets}/plans/getCreAlleleModificationPlan/response-fields.adoc[]
+==== ES Cell Allele Modification plan.
+include::{snippets}/plans/getEsCellAlleleModificationPlan/response-fields.adoc[]
 
 ==== Phenotyping plan.
 include::{snippets}/plans/getPhenotypingPlan/response-fields.adoc[]
@@ -474,7 +474,7 @@ This is the list of filters you can use:
 * crispr
 * haplo-essential crispr
 * es cell
-* cre allele modification
+* es cell allele modification
 * breeding
 
 |imitsMiAttemptId
@@ -957,9 +957,9 @@ include::{snippets}/plans/putCrisprPlanStateMachine/http-response.adoc[]
 
 * 2021-06-25: - Added the field esCellQcOnly to the Project entity to support projects that only relate to ES Cell QC.
               - Added documentation on the fields present in ES cell production plans.
-              - Add documentation on the fields present in Cre allele modification production plans.
+              - Add documentation on the fields present in ES cell allele modification production plans.
               - Updated the state_machine_transitions document.
-              - GET requests for ES cell and Cre allele modification production plans are
+              - GET requests for ES cell and ES cell allele modification production plans are
                 supported on the GenTaR Sandbox test database.
 * 2021-02-24: Add two new filters to projects. One for production colony names and one for phenotyping external
               references.
