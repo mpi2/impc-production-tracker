@@ -8,7 +8,7 @@ public interface GeneInterestReportEsCellMutationTypeProjection {
     Long getMutationId();
 
     @Value("#{target.mutationIdentificationNumber}")
-    Long getMutationIdentificationNumber();
+    String getMutationIdentificationNumber();
 
     @Value("#{target.mutationCategorizationName}")
     String getMutationCategorizationName();

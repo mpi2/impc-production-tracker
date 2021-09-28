@@ -37,8 +37,8 @@ public class GeneInterestReportPhenotyping {
     }
 
 
-    public void summariseData() {
-        fetchData();
+    public void summariseData(Set<Long> allOutcomes) {
+        fetchData(allOutcomes);
         phenotypingGenes = getGenes();
         phenotypingPlansForProjects = getPhenotypingPlansForProjects();
         phenotypingStageStatusForPhenotypingPlans = getPhenotypingStageStatusForPhenotypingPlans();
@@ -54,8 +54,22 @@ public class GeneInterestReportPhenotyping {
         return summaryEarlyAdultPhenotypingStageStatusForPhenotypingGenes;
     }
 
-    private void fetchData() {
-        pap = phenotypingService.getGeneInterestReportPhenotypingAttemptProjections();
+    private void fetchData(Set<Long> allOutcomes) {
+
+        // The PhenotypingAttemptProjections must be linked with the Outcomes that can be viewed.
+        // Some outcomes are excluded when retrieving Crispr and ES Cell gene projections, thus
+        // the set of PhenotypingAttemptProjections retireved from the database are filtered based on outcomeId.
+        List<GeneInterestReportPhenotypingAttemptProjection> rawPap =
+                phenotypingService.getGeneInterestReportPhenotypingAttemptProjections();
+
+        pap = rawPap
+                .stream()
+                .filter(projection -> !(allOutcomes.contains(projection.getOutcomeId())))
+                .collect(Collectors.toList());
+
+        // filteredOutcomeMutationMap select each outcome with one single mutation associated with it.
+        // Along with the map, filteredMutationGeneMap, which selects for a 1:1 match between a gene and a mutation
+        // it is no longer used.
         completeOutcomeMutationMap = phenotypingService.getMutationMap();
         filteredOutcomeMutationMap = phenotypingService.getFilteredMutationMap(completeOutcomeMutationMap);
         completeMutationGeneMap = phenotypingService.getGeneMap();

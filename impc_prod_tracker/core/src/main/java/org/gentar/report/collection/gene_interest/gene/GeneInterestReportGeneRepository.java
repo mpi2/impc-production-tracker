@@ -15,6 +15,7 @@ public interface GeneInterestReportGeneRepository extends CrudRepository<Gene, L
             "assign.name as assignmentName, " +
             "plan.pin as planIdentificationNumber, " +
             "plan_summary_status.name as planSummaryStatus, " +
+            "o.id as outcomeId, " +
             "m.min as mutationIdentificationNumber, " +
             "m.symbol as mutationSymbol, " +
             "g.accId as geneAccId, " +
@@ -47,6 +48,7 @@ public interface GeneInterestReportGeneRepository extends CrudRepository<Gene, L
             "assign.name as assignmentName, " +
             "plan.pin as planIdentificationNumber, " +
             "plan_summary_status.name as planSummaryStatus, " +
+            "o.id as outcomeId, " +
             "m.min as mutationIdentificationNumber, " +
             "m.symbol as mutationSymbol, " +
             "g.accId as geneAccId, " +

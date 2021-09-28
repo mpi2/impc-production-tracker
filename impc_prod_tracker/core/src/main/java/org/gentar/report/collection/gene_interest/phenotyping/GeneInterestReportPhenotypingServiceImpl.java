@@ -83,7 +83,7 @@ public class GeneInterestReportPhenotypingServiceImpl implements GeneInterestRep
         List<GeneInterestReportMutationGeneProjection> mgp = new ArrayList<>();
         groups.forEach(groupIds -> mutationReportService.getSelectedMutationGeneProjections(groupIds).stream().forEach(mgp::add));
 
-        System.out.println("mutationGeneMap");
+//        System.out.println("mutationGeneMap");
         return mgp
                 .stream()
 // Use to debug:

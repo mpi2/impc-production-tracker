@@ -21,13 +21,17 @@ public class GeneInterestReportServiceImpl implements GeneInterestReportService
 
 
     private Map<String, String> crisprGenes;
+    private Set<Long> crisprOutcomes;
     private Map<String, String> summaryAssignmentForCrisprGenes;
     private Map<String, String> summaryProductionPlanStatusForCrisprGenes;
 
 
     private Map<String, String> esCellGenes;
+    private Set<Long> esCellOutcomes;
     private Map<String, String> summaryAssignmentForEsCellGenes;
     private Map<String, String> summaryProductionPlanStatusForEsCellGenes;
+    private Map<String, String> summaryProductionPlanStatusForEsCellNullTargetedGenes;
+    private Map<String, String> summaryProductionPlanStatusForEsCellConditionalTargetedGenes;
 
     private Map<String, String> phenotypingGenes;
     private Map<String, String> summaryEarlyAdultPhenotypingStageStatusForPhenotypingGenes;
@@ -74,6 +78,7 @@ public class GeneInterestReportServiceImpl implements GeneInterestReportService
 
         crisprProduction.summariseData();
 
+        crisprOutcomes = crisprProduction.getCrisprOutcomeSet();
         crisprGenes = crisprProduction.getGeneIdToSymbolMap();
         summaryAssignmentForCrisprGenes = crisprProduction.getGeneIdToAssignmentMap();
         summaryProductionPlanStatusForCrisprGenes = crisprProduction.getGeneIdToProductionPlanStatusMap();
@@ -83,14 +88,23 @@ public class GeneInterestReportServiceImpl implements GeneInterestReportService
 
         esCellProduction.summariseData();
 
+        esCellOutcomes = esCellProduction.getESCellOutcomeSet();
         esCellGenes = esCellProduction.getGeneIdToSymbolMap();
         summaryAssignmentForEsCellGenes = esCellProduction.getGeneIdToAssignmentMap();
         summaryProductionPlanStatusForEsCellGenes = esCellProduction.getGeneIdToProductionPlanStatusMap();
+        summaryProductionPlanStatusForEsCellNullTargetedGenes =
+                esCellProduction.getGeneIdToProductionPlanStatusMapForNullTargetedGenes();
+        summaryProductionPlanStatusForEsCellConditionalTargetedGenes =
+                esCellProduction.getGeneIdToProductionPlanStatusMapForConditionalTargetedGenes();
+
     }
 
     private void processPhenotypingData() {
 
-        phenotyping.summariseData();
+        Set<Long> allOutcomes = new HashSet<>(crisprOutcomes);
+        allOutcomes.addAll(esCellOutcomes);
+
+        phenotyping.summariseData(allOutcomes);
 
         phenotypingGenes = phenotyping.getGeneIdToSymbolMap();
         summaryEarlyAdultPhenotypingStageStatusForPhenotypingGenes = phenotyping.getGeneIdToEarlyAdultPhenotypingStageStatusStatusMap();
@@ -123,8 +137,8 @@ public class GeneInterestReportServiceImpl implements GeneInterestReportService
                 e.getValue(),
                 e.getKey(),
                 summaryAssignmentForGenes.get(e.getKey()),
-                summaryProductionPlanStatusForEsCellGenes.getOrDefault(e.getKey(), ""),
-                "",
+                summaryProductionPlanStatusForEsCellNullTargetedGenes.getOrDefault(e.getKey(), ""),
+                summaryProductionPlanStatusForEsCellConditionalTargetedGenes.getOrDefault(e.getKey(), ""),
                 summaryProductionPlanStatusForCrisprGenes.getOrDefault(e.getKey(), ""),
                 summaryEarlyAdultPhenotypingStageStatusForPhenotypingGenes.getOrDefault(e.getKey(), "")
         );
