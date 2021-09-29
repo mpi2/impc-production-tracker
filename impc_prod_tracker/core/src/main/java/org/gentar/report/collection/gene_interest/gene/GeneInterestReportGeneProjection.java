@@ -19,6 +19,9 @@ public interface GeneInterestReportGeneProjection {
     @Value("#{target.planSummaryStatus}")
     String getPlanSummaryStatus();
 
+    @Value("#{target.outcomeId}")
+    Long getOutcomeId();
+
     @Value("#{target.mutationIdentificationNumber}")
     String getMutationIdentificationNumber();
 

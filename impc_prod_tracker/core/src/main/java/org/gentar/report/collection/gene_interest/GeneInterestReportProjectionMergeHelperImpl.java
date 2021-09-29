@@ -4,6 +4,7 @@ import org.gentar.report.collection.gene_interest.gene.GeneInterestReportGenePro
 import org.gentar.report.collection.gene_interest.project.GeneInterestReportProjectProjection;
 import org.springframework.stereotype.Component;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -137,5 +138,174 @@ public class GeneInterestReportProjectionMergeHelperImpl implements GeneInterest
                         (value1, value2) -> value1 ));
         return projectAssignemtMap;
 
+    }
+
+    public Map<String, List<String>> getProjectsByGeneFilteredForNullTargeting(
+            List<GeneInterestReportProjectProjection> esCellProjectProjections,
+            List<GeneInterestReportGeneProjection> esCellGeneProjections,
+            Map<String, String> mutationToAlleleCategory)
+    {
+        // filter the existing lists
+        List<GeneInterestReportProjectProjection> projectProjectionsNotInGeneProjections =
+                filterProjectProjections(esCellProjectProjections, esCellGeneProjections);
+
+        List<GeneInterestReportGeneProjection> esCellGeneNullTargetingProjections =
+                filterGeneProjections(esCellGeneProjections, mutationToAlleleCategory,"null");
+
+        // combine the filtered lists
+        return getProjectsByGene(projectProjectionsNotInGeneProjections, esCellGeneNullTargetingProjections);
+
+    }
+
+    public Map<String, List<String>> getProjectsByGeneFilteredForConditionalTargeting(
+            List<GeneInterestReportGeneProjection> esCellGeneProjections,
+            Map<String, String> mutationToAlleleCategory)
+    {
+        // Filter the gene projections
+        List<GeneInterestReportGeneProjection> esCellGeneConditionalTargetingProjections =
+                filterGeneProjections(esCellGeneProjections, mutationToAlleleCategory, "conditional");
+
+        Map<String, Set<String>> gpsProjectsByGene = esCellGeneConditionalTargetingProjections.stream()
+                .collect(Collectors.groupingBy(
+                        GeneInterestReportGeneProjection::getGeneAccId,
+                        Collectors.mapping(GeneInterestReportGeneProjection::getProjectTpn, Collectors.toSet())));
+
+        Map<String, List<String>> projectsByGene = gpsProjectsByGene.entrySet().stream()
+                .collect(Collectors.toMap(
+                        map -> map.getKey(),
+                        map -> List.copyOf(map.getValue()),
+                        (set1,set2) -> List.copyOf(Stream.concat(set1.stream(), set2.stream()).collect(Collectors.toSet()))));
+
+        return projectsByGene;
+    }
+
+
+    public Map<String, List<String>> getPlansByProjectFilteredForNullTargeting(
+            List<GeneInterestReportProjectProjection> esCellProjectProjections,
+            List<GeneInterestReportGeneProjection> esCellGeneProjections,
+            Map<String, String> mutationToAlleleCategory)
+    {
+        // filter the existing lists
+        List<GeneInterestReportProjectProjection> projectProjectionsNotInGeneProjections =
+                filterProjectProjections(esCellProjectProjections, esCellGeneProjections);
+
+        List<GeneInterestReportGeneProjection> esCellGeneNullTargetingProjections =
+                filterGeneProjections(esCellGeneProjections, mutationToAlleleCategory,"null");
+
+        // combine the filtered lists
+        return getPlansByProject(projectProjectionsNotInGeneProjections, esCellGeneNullTargetingProjections);
+
+    }
+
+
+
+    public Map<String, List<String>> getPlansByProjectFilteredForConditionalTargeting(
+            List<GeneInterestReportGeneProjection> esCellGeneProjections,
+            Map<String, String> mutationToAlleleCategory)
+    {
+        // Filter the gene projections
+        List<GeneInterestReportGeneProjection> esCellGeneConditionalTargetingProjections =
+                filterGeneProjections(esCellGeneProjections, mutationToAlleleCategory, "conditional");
+
+        Map<String, Set<String>> gpsPlansByProject = esCellGeneConditionalTargetingProjections.stream()
+                .collect(Collectors.groupingBy(
+                        GeneInterestReportGeneProjection::getProjectTpn,
+                        Collectors.mapping(GeneInterestReportGeneProjection::getPlanIdentificationNumber, Collectors.toSet())));
+
+        Map<String, List<String>> plansByProject = gpsPlansByProject.entrySet().stream()
+                .collect(Collectors.toMap(
+                        map -> map.getKey(),
+                        map -> List.copyOf(map.getValue()),
+                        (set1,set2) -> List.copyOf(Stream.concat(set1.stream(), set2.stream()).collect(Collectors.toSet()))));
+
+        return plansByProject;
+
+    }
+
+
+
+    public Map<String, String> getStatusByPlanFilteredForNullTargeting(
+                    List<GeneInterestReportProjectProjection> esCellProjectProjections,
+                    List<GeneInterestReportGeneProjection> esCellGeneProjections,
+                    Map<String, String> mutationToAlleleCategory)
+    {
+        // filter the existing lists
+        List<GeneInterestReportProjectProjection> projectProjectionsNotInGeneProjections =
+                filterProjectProjections(esCellProjectProjections, esCellGeneProjections);
+
+        List<GeneInterestReportGeneProjection> esCellGeneNullTargetingProjections =
+                filterGeneProjections(esCellGeneProjections, mutationToAlleleCategory,"null");
+
+        // combine the filtered lists
+        return getStatusByPlan(projectProjectionsNotInGeneProjections, esCellGeneNullTargetingProjections);
+
+    }
+
+    public Map<String, String> getStatusByPlanFilteredForConditionalTargeting(
+                    List<GeneInterestReportGeneProjection> esCellGeneProjections,
+                    Map<String, String> mutationToAlleleCategory)
+    {
+        // Filter the gene projections
+        List<GeneInterestReportGeneProjection> esCellGeneConditionalTargetingProjections =
+                filterGeneProjections(esCellGeneProjections, mutationToAlleleCategory, "conditional");
+
+        Map<String, String> gpsPlanStatusMap = esCellGeneConditionalTargetingProjections.stream()
+                .collect(Collectors.toMap(
+                        GeneInterestReportGeneProjection::getPlanIdentificationNumber,
+                        GeneInterestReportGeneProjection::getPlanSummaryStatus,
+                        (value1, value2) -> value1 ));
+
+        Map<String, String> planStatusMap = gpsPlanStatusMap.entrySet().stream()
+                .collect(Collectors.toMap(
+                        Map.Entry::getKey,
+                        Map.Entry::getValue,
+                        (value1, value2) -> value1 ));
+        return planStatusMap;
+
+    }
+
+    private List<GeneInterestReportProjectProjection> filterProjectProjections(
+                        List<GeneInterestReportProjectProjection> esCellProjectProjections,
+                        List<GeneInterestReportGeneProjection> esCellGeneProjections) {
+
+        Set<String> planPinFilterSet = generatePlanFilterSet(esCellGeneProjections);
+        return esCellProjectProjections
+                .stream()
+                .filter(pp -> !(planPinFilterSet.contains(pp.getPlanIdentificationNumber())))
+                .collect(Collectors.toList());
+    }
+
+    private List<GeneInterestReportGeneProjection> filterGeneProjections(
+                        List<GeneInterestReportGeneProjection> esCellGeneProjections,
+                        Map<String, String> mutationToAlleleCategory, String mutationClass) {
+
+        Set<String> mutationFilterSet = generateMutationFilterSet(mutationToAlleleCategory, mutationClass);
+
+        return esCellGeneProjections
+                .stream()
+                .filter(gp -> mutationFilterSet.contains(gp.getMutationIdentificationNumber()))
+                .collect(Collectors.toList());
+    }
+
+
+
+    private Set<String> generatePlanFilterSet(List<GeneInterestReportGeneProjection> geneProjections){
+        return geneProjections
+                .stream()
+                .map(i -> i.getPlanIdentificationNumber())
+                .collect(Collectors.toSet());
+    }
+
+    private Set<String> generateMutationFilterSet(Map<String, String> mutationToAlleleCategory, String mutationClass) {
+        if (!Arrays.asList("null", "conditional").contains(mutationClass)) {
+            throw new IllegalArgumentException("unable to process the mutationClass provided");
+        }
+
+        return mutationToAlleleCategory
+                .entrySet()
+                .stream()
+                .filter(e -> e.getValue().equals(mutationClass))
+                .map(e -> e.getKey())
+                .collect(Collectors.toSet());
     }
 }

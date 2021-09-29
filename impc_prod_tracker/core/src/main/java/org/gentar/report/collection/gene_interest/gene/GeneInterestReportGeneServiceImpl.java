@@ -17,4 +17,9 @@ public class GeneInterestReportGeneServiceImpl implements GeneInterestReportGene
     {
         return geneRepository.findAllGeneInterestReportCrisprGeneProjections();
     }
+
+    public List<GeneInterestReportGeneProjection> getGeneInterestReportEsCellGeneProjections()
+    {
+        return geneRepository.findAllGeneInterestReportEsCellGeneProjections();
+    }
 }

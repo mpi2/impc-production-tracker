@@ -48,6 +48,12 @@ public class GeneAssignmentStatusHelperImpl implements GeneAssignmentStatusHelpe
 
     }
 
+    public Comparator<String> compareGeneAssignementByOrdering() {
+        return Comparator.comparing(i -> assignmentStatusService
+                .getAssignmentStatusOrderingMap()
+                .get(i));
+    }
+
     private Comparator<String> compareProjectAssignementByOrdering(Map<String, String> assignmentForProjects) {
         return Comparator.comparing(i -> {
             return assignmentStatusService
