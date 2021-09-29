@@ -7,8 +7,6 @@ import org.gentar.biology.project.Project;
 import org.gentar.biology.project.ProjectCreationDTO;
 import org.gentar.biology.project.consortium.ProjectConsortium;
 import org.gentar.biology.project.consortium.ProjectConsortiumMapper;
-import org.gentar.biology.species.Species;
-import org.gentar.biology.species.SpeciesMapper;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -21,18 +19,15 @@ public class ProjectCreationMapper implements Mapper<Project, ProjectCreationDTO
 {
     private final ProjectCommonDataMapper projectCommonDataMapper;
     private final ProjectIntentionCreationMapper projectIntentionCreationMapper;
-    private final SpeciesMapper speciesMapper;
     private final ProjectConsortiumMapper projectConsortiumMapper;
 
     public ProjectCreationMapper(
         ProjectCommonDataMapper projectCommonDataMapper,
         ProjectIntentionCreationMapper projectIntentionCreationMapper,
-        SpeciesMapper speciesMapper,
         ProjectConsortiumMapper projectConsortiumMapper)
     {
         this.projectCommonDataMapper = projectCommonDataMapper;
         this.projectIntentionCreationMapper = projectIntentionCreationMapper;
-        this.speciesMapper = speciesMapper;
         this.projectConsortiumMapper = projectConsortiumMapper;
     }
 
@@ -51,7 +46,6 @@ public class ProjectCreationMapper implements Mapper<Project, ProjectCreationDTO
             projectCommonDataMapper.toEntity(projectCreationDTO.getProjectCommonDataDTO());
         setProjectIntentionsToEntity(project, projectCreationDTO);
         setConsortiaToEntity(project, projectCreationDTO);
-        setSpeciesToEntity(project, projectCreationDTO);
         return project;
     }
 
@@ -69,12 +63,5 @@ public class ProjectCreationMapper implements Mapper<Project, ProjectCreationDTO
             projectConsortiumMapper.toEntities(projectCreationDTO.getProjectConsortiumDTOS()));
         projectConsortia.forEach(x -> x.setProject(project));
         project.setProjectConsortia(projectConsortia);
-    }
-
-    private void setSpeciesToEntity(Project project, ProjectCreationDTO projectCreationDTO)
-    {
-        Set<Species> species =
-            new HashSet<>(speciesMapper.toEntities(projectCreationDTO.getSpeciesNames()));
-        project.setSpecies(species);
     }
 }

@@ -53,6 +53,6 @@ class ProjectCreationDTOTest
             "\"privacyName\":\"public\",\"planDetails\":{\"attemptTypeName\":\"crispr\"," +
             "\"typeName\":\"production\"},\"projectIntentions\":[{\"intentionByGene\":{\"gene\":" +
             "{\"symbol\":\"symbol\",\"speciesName\":null,\"accessionId\":null}}," +
-            "\"intentionsBySequences\":null}],\"speciesNames\":null,\"consortia\":null}"));
+            "\"intentionsBySequences\":null}],\"consortia\":null}"));
     }
 }

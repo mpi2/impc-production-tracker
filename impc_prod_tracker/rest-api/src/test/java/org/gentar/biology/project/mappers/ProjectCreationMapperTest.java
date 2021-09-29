@@ -42,12 +42,8 @@ class ProjectCreationMapperTest
 
     @Mock
     private ProjectCommonDataMapper projectCommonDataMapper;
-
     @Mock
     private ProjectIntentionCreationMapper projectIntentionCreationMapper;
-
-    @Mock
-    private SpeciesMapper speciesMapper;
     @Mock
     private ProjectConsortiumMapper projectConsortiumMapper;
 
@@ -58,7 +54,6 @@ class ProjectCreationMapperTest
             new ProjectCreationMapper(
                 projectCommonDataMapper,
                 projectIntentionCreationMapper,
-                speciesMapper,
                 projectConsortiumMapper);
     }
 
