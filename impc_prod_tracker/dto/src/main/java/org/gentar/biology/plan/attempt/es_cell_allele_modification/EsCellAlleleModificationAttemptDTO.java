@@ -1,4 +1,4 @@
-package org.gentar.biology.plan.attempt.cre_allele_modification;
+package org.gentar.biology.plan.attempt.es_cell_allele_modification;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
@@ -6,7 +6,7 @@ import lombok.RequiredArgsConstructor;
 
 @Data
 @RequiredArgsConstructor
-public class CreAlleleModificationAttemptDTO {
+public class EsCellAlleleModificationAttemptDTO {
     @JsonIgnore
     private Long planId;
 

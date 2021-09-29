@@ -192,7 +192,7 @@ public class ProjectValidator
             // Check that the type of attempt matches the first plan
             if (firstPlan.getAttemptType().getName().equals("crispr") &&
                     (plan.getAttemptType().getName().equals("es cell") ||
-                            plan.getAttemptType().getName().equals("cre allele modification")))
+                            plan.getAttemptType().getName().equals("es cell allele modification")))
             {
                 throw new UserOperationFailedException(String.format(
                         "[%s] attempts are not allowed in this project.", plan.getAttemptType().getName()));

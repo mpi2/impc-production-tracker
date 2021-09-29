@@ -39,7 +39,7 @@
     <ATTEMPT_TYPE   ID="52"
                     NAME="es cell"/>
     <ATTEMPT_TYPE   ID="53"
-                    NAME="cre allele modification"/>
+                    NAME="es cell allele modification"/>
 
     <ASSAY_TYPE ID="1"
                 NAME="T7EN1"/>
@@ -335,7 +335,7 @@
                      TEST_CROSS_STRAIN_ID="2"
     />
 
-    <CRE_ALLELE_MODIFICATION_ATTEMPT PLAN_ID="9"
+    <ES_CELL_ALLELE_MODIFICATION_ATTEMPT PLAN_ID="9"
                                      IMITS_MOUSE_ALLELE_MOD="1775"
                                      TARG_REP_ALLELE="1878"
                                      MODIFICATION_EXTERNAL_REF="GSF-EPD0045_1_B11-3-1"

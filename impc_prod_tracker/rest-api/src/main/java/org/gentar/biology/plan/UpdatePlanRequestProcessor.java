@@ -56,18 +56,18 @@ public class UpdatePlanRequestProcessor
             setUpdatedCrisprAttempt(plan, mappedPlan);
             setUpdatedPhenotypingAttempt(plan, mappedPlan);
             setUpdatedEsCellAttempt(plan, mappedPlan);
-            setUpdatedCreAlleleModificationAttempt(plan, mappedPlan);
+            setUpdatedEsCellAlleleModificationAttempt(plan, mappedPlan);
 
             setEvent(plan, planUpdateDTO);
         }
         return plan;
     }
 
-    private void setUpdatedCreAlleleModificationAttempt(Plan originalPlan, Plan mappedPlan)
+    private void setUpdatedEsCellAlleleModificationAttempt(Plan originalPlan, Plan mappedPlan)
     {
-        if (mappedPlan.getCreAlleleModificationAttempt() != null)
+        if (mappedPlan.getEsCellAlleleModificationAttempt() != null)
         {
-            originalPlan.setCreAlleleModificationAttempt(mappedPlan.getCreAlleleModificationAttempt());
+            originalPlan.setEsCellAlleleModificationAttempt(mappedPlan.getEsCellAlleleModificationAttempt());
         }
     }
 

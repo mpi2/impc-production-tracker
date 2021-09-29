@@ -6,7 +6,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonUnwrapped;
 import lombok.Data;
 import org.gentar.biology.plan.attempt.breeding.BreedingAttemptDTO;
-import org.gentar.biology.plan.attempt.cre_allele_modification.CreAlleleModificationAttemptDTO;
+import org.gentar.biology.plan.attempt.es_cell_allele_modification.EsCellAlleleModificationAttemptDTO;
 import org.gentar.biology.plan.attempt.crispr.CrisprAttemptDTO;
 import org.gentar.biology.plan.attempt.es_cell.EsCellAttemptDTO;
 import org.gentar.biology.plan.attempt.phenotyping.PhenotypingAttemptCreationDTO;
@@ -39,9 +39,9 @@ public class PlanBasicDataDTO
     @JsonProperty("breedingStartingPoints")
     private List<PlanStartingPointDTO> planStartingPointDTOS;
 
-    // Starting point outcome for Cre Allele Modification.
+    // Starting point outcome for Es Cell Allele Modification.
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    @JsonProperty("creAlleleModificationStartingPoint")
+    @JsonProperty("esCellAlleleModificationStartingPoint")
     private PlanStartingPointDTO modificationPlanStartingPointDTO;
 
     // Crispr attempt information. It will only contain information if the attempt type is crispr.
@@ -59,10 +59,10 @@ public class PlanBasicDataDTO
     @JsonProperty("breedingAttempt")
     private BreedingAttemptDTO breedingAttemptDTO;
 
-    // Cre Allele Modification attempt information. It will only contain information if the attempt type is 'cre allele modification'.
+    // Es Cell Allele Modification attempt information. It will only contain information if the attempt type is 'es cell allele modification'.
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    @JsonProperty("creAlleleModificationAttempt")
-    private CreAlleleModificationAttemptDTO creAlleleModificationAttemptDTO;
+    @JsonProperty("esCellAlleleModificationAttempt")
+    private EsCellAlleleModificationAttemptDTO esCellAlleleModificationAttemptDTO;
 
     // Phenotyping attempt information for creation. It will only contain information if the plan type is phenotyping.
     @JsonInclude(JsonInclude.Include.NON_NULL)
