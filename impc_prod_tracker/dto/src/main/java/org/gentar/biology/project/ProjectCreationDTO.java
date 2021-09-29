@@ -26,9 +26,6 @@ public class ProjectCreationDTO
     @JsonProperty("projectIntentions")
     private List<ProjectIntentionCreationDTO> projectIntentionCreationDTOS;
 
-    @JsonProperty("speciesNames")
-    private List<String> speciesNames;
-
     // Consortia information.
     @JsonProperty("consortia")
     private List<ProjectConsortiumDTO> projectConsortiumDTOS;

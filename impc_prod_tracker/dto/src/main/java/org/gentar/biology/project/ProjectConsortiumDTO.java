@@ -10,9 +10,5 @@ import java.util.List;
 public class ProjectConsortiumDTO
 {
     private Long id;
-
     private String consortiumName;
-
-//    @JsonProperty("institutes")
-//    private List<String> InstituteNames;
 }

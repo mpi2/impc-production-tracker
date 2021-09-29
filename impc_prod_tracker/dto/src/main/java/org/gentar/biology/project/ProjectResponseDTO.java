@@ -60,9 +60,6 @@ public class ProjectResponseDTO extends RepresentationModel<ProjectResponseDTO>
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private Set<String> relatedWorkGroupNames;
 
-    @JsonProperty("speciesNames")
-    private List<String> speciesNames;
-
     // Consortia information.
     @JsonProperty("consortia")
     private List<ProjectConsortiumDTO> projectConsortiumDTOS;

@@ -17,7 +17,6 @@ public class ProjectFieldsDescriptors
         descriptors.addAll(getOrthologsFields());
         descriptors.addAll(getConsortiaFields(true));
         descriptors.addAll(getLinksFieldsDescriptions());
-        descriptors.add(getSpeciesDescriptor());
         addField(
             descriptors,
             "assignmentStatusName",
@@ -61,7 +60,6 @@ public class ProjectFieldsDescriptors
         List<FieldDescriptor> descriptors = new ArrayList<>();
         descriptors.addAll(getSharedFieldDescriptions());
         descriptors.addAll(getIntentionsFields(false));
-        descriptors.add(getSpeciesDescriptor());
         addField(
             descriptors,
             "planDetails",
@@ -119,12 +117,6 @@ public class ProjectFieldsDescriptors
         }
         addField(descriptors, "consortia[].consortiumName", "Name of the consortium.");
         return descriptors;
-    }
-
-    private static FieldDescriptor getSpeciesDescriptor()
-    {
-        return fieldWithPath("speciesNames")
-            .description("Species associated with the project.").optional();
     }
 
     private static List<FieldDescriptor> getIntentionsFields(boolean includeIds)
