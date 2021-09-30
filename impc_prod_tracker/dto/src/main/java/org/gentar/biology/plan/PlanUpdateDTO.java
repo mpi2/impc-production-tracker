@@ -6,6 +6,8 @@ import com.fasterxml.jackson.annotation.JsonUnwrapped;
 import lombok.Data;
 import org.gentar.common.state_machine.StatusTransitionDTO;
 
+import java.util.List;
+
 /**
  * Fields that are editable in a plan and that are expected to be sent by the user in the payload
  * for an update operation (or creation, with other required fields).

@@ -69,6 +69,7 @@ public class CrisprAttemptMapper implements Mapper<CrisprAttempt, CrisprAttemptD
         if (crisprAttempt != null)
         {
             crisprAttemptDTO = entityMapper.toTarget(crisprAttempt, CrisprAttemptDTO.class);
+
             crisprAttemptDTO.setGuideDTOS(guideMapper.toDtos(crisprAttempt.getGuides()));
             crisprAttemptDTO.setGenotypePrimerDTOS(
                 genotypePrimerMapper.toDtos(crisprAttempt.getPrimers()));

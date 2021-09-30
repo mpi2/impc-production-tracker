@@ -3,6 +3,7 @@ package org.gentar.biology.plan.mappers;
 import org.gentar.biology.plan.Plan;
 import org.gentar.biology.plan.PlanBasicDataDTO;
 import org.gentar.biology.plan.PlanUpdateDTO;
+import org.gentar.organization.funder.FunderService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
