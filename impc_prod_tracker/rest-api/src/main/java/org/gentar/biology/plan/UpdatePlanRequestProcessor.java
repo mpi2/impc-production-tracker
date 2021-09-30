@@ -17,8 +17,12 @@ package org.gentar.biology.plan;
 
 import org.gentar.biology.plan.attempt.phenotyping.PhenotypingAttempt;
 import org.gentar.biology.plan.mappers.PlanUpdateMapper;
+import org.gentar.organization.funder.Funder;
+import org.gentar.organization.funder.FunderMapper;
 import org.gentar.statemachine.ProcessEvent;
 import org.springframework.stereotype.Component;
+
+import java.util.Set;
 
 /**
  * Class in charge of analysing a PlanDTO object and retrieve the Plan object
@@ -29,11 +33,15 @@ public class UpdatePlanRequestProcessor
 {
     private final PlanUpdateMapper planUpdateMapper;
     private final PlanService planService;
+    private final FunderMapper funderMapper;
 
-    public UpdatePlanRequestProcessor(PlanUpdateMapper planUpdateMapper, PlanService planService)
+    public UpdatePlanRequestProcessor(PlanUpdateMapper planUpdateMapper,
+                                      PlanService planService,
+                                      FunderMapper funderMapper)
     {
         this.planUpdateMapper = planUpdateMapper;
         this.planService = planService;
+        this.funderMapper = funderMapper;
     }
 
     /**
@@ -52,12 +60,12 @@ public class UpdatePlanRequestProcessor
 
             Plan mappedPlan = planUpdateMapper.toEntity(planUpdateDTO);
 
+            plan.setFunders(mappedPlan.getFunders());
             plan.setComment(mappedPlan.getComment());
             setUpdatedCrisprAttempt(plan, mappedPlan);
             setUpdatedPhenotypingAttempt(plan, mappedPlan);
             setUpdatedEsCellAttempt(plan, mappedPlan);
             setUpdatedEsCellAlleleModificationAttempt(plan, mappedPlan);
-
             setEvent(plan, planUpdateDTO);
         }
         return plan;

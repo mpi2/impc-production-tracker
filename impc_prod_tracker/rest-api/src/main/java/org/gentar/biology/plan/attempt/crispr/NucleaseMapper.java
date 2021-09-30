@@ -22,6 +22,8 @@ import org.springframework.stereotype.Component;
 import org.gentar.biology.plan.attempt.crispr.nuclease.Nuclease;
 import org.gentar.biology.plan.attempt.crispr.nuclease.nuclease_type.NucleaseType;
 
+import java.util.*;
+
 @Component
 public class NucleaseMapper implements Mapper<Nuclease, NucleaseDTO>
 {
@@ -38,6 +40,16 @@ public class NucleaseMapper implements Mapper<Nuclease, NucleaseDTO>
     {
         NucleaseDTO nucleaseDTO = entityMapper.toTarget(nuclease, NucleaseDTO.class);
         return nucleaseDTO;
+    }
+
+    @Override
+    public List<NucleaseDTO> toDtos(Collection<Nuclease> nucleases) {
+        List<NucleaseDTO> NucleaseDTOS = new ArrayList<>();
+        if (nucleases != null)
+        {
+            nucleases.forEach(nuclease -> NucleaseDTOS.add(toDto(nuclease)));
+        }
+        return NucleaseDTOS;
     }
 
     public Nuclease toEntity(NucleaseDTO nucleaseDTO)
@@ -57,5 +69,15 @@ public class NucleaseMapper implements Mapper<Nuclease, NucleaseDTO>
        nuclease.setNucleaseClass(nucleaseClass);
 
         return nuclease;
+    }
+
+    @Override
+    public Set<Nuclease> toEntities(Collection<NucleaseDTO> nucleaseDTOS) {
+        Set<Nuclease> nucleases = new HashSet<>();
+        if (nucleaseDTOS != null)
+        {
+            nucleaseDTOS.forEach(nucleaseDTO -> nucleases.add(toEntity(nucleaseDTO)));
+        }
+        return nucleases;
     }
 }
