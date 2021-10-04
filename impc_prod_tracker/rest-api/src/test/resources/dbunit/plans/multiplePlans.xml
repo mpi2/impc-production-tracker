@@ -20,6 +20,8 @@
                         NAME="Assigned"/>
     <ASSIGNMENT_STATUS  ID="2"
                         NAME="Inspect - Conflict"/>
+    <ASSIGNMENT_STATUS  ID="3"
+                        NAME="Inactive"/>
 
     <PLAN_TYPE  ID="1"
                 NAME="production"/>
@@ -226,19 +228,19 @@
                 TPN="TPN:000000001"
                 PRIVACY_ID="1"
                 ASSIGNMENT_STATUS_ID="1"
-                SUMMARY_STATUS_ID="1"
+                SUMMARY_STATUS_ID="11"
                 RECOVERY="false"
                 COMMENT="Comment test" />
     <PROJECT    ID="2"
-                TPN="TPN:000000002"
+                TPN="TPN:000000222"
                 PRIVACY_ID="1"
-                ASSIGNMENT_STATUS_ID="2"
-                SUMMARY_STATUS_ID="2"/>
+                ASSIGNMENT_STATUS_ID="1"
+                SUMMARY_STATUS_ID="4"/>
     <PROJECT    ID="3"
                 TPN="TPN:000000003"
                 PRIVACY_ID="1"
-                ASSIGNMENT_STATUS_ID="2"
-                SUMMARY_STATUS_ID="2"/>
+                ASSIGNMENT_STATUS_ID="1"
+                SUMMARY_STATUS_ID="1"/>
 
     <PLAN       ID="1"
                 PIN="PIN:0000000001"
@@ -250,8 +252,8 @@
                 WORK_GROUP_ID="1"
                 SUMMARY_STATUS_ID="11"/>
     <PLAN       ID="2"
-                PIN="PIN:0000000002"
-                PROJECT_ID="1"
+                PIN="PIN:0000000222"
+                PROJECT_ID="2"
                 PLAN_TYPE_ID="1"
                 ATTEMPT_TYPE_ID="1"
                 STATUS_ID="4"
@@ -686,7 +688,9 @@
                                 DATE="2007-10-21 00:00:00"
     />
 
-    <PROJECT_SUMMARY_STATUS_STAMP/>
+    <PROJECT_SUMMARY_STATUS_STAMP />
+
+    <ASSIGNMENT_STATUS_STAMP />
 
     <PERSON_ROLE_CONSORTIUM/>
 

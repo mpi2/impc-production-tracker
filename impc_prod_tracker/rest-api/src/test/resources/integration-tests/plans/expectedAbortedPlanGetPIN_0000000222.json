@@ -1,6 +1,6 @@
 {
-  "pin":"PIN:0000000002",
-  "tpn":"TPN:000000001",
+  "pin":"PIN:0000000222",
+  "tpn":"TPN:000000222",
   "attemptTypeName":"crispr",
   "funderNames":[
 
@@ -83,10 +83,10 @@
   "summaryStatusName":"Attempt Aborted",
   "_links":{
     "self":{
-      "href":"http://localhost:8080/api/plans/PIN:0000000002"
+      "href":"http://localhost:8080/api/plans/PIN:0000000222"
     },
     "project":{
-      "href":"http://localhost:8080/api/projects/TPN:000000001"
+      "href":"http://localhost:8080/api/projects/TPN:000000222"
     }
   },
   "statusDates":[
@@ -108,7 +108,7 @@
     },
     {
       "statusName":"Attempt Aborted",
-      "date":"2021-10-04T19:48:42.682393"
+      "date":"2021-10-04T21:23:22.697411"
     }
   ],
   "summaryStatusDates":[
@@ -118,7 +118,7 @@
     },
     {
       "statusName":"Attempt Aborted",
-      "date":"2021-10-04T19:48:42.686167"
+      "date":"2021-10-04T21:23:22.698576"
     }
   ],
   "statusTransition":{
