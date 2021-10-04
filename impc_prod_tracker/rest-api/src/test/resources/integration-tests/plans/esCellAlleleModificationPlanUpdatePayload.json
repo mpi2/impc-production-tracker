@@ -1,0 +1,35 @@
+{
+  "pin":"PIN:0000000009",
+  "tpn":"TPN:000000003",
+  "attemptTypeName":"es cell allele modification",
+  "funderNames":[
+    "KOMP"
+  ],
+  "workUnitName":"BCM",
+  "workGroupName":"BaSH",
+  "comment":null,
+  "esCellAlleleModificationStartingPoint":{
+    "_links":{
+      "outcome":{
+        "href":"http://localhost:8080/api/plans/PIN:0000000010/outcomes/TPO:000000000003"
+      },
+      "productionPlan":{
+        "href":"http://localhost:8080/api/plans/PIN:0000000010"
+      }
+    },
+    "outcomeTpo":"TPO:000000000003",
+    "productionPlanPin":"PIN:0000000010"
+  },
+  "esCellAlleleModificationAttempt":{
+    "modificationExternalRef":"GSF-EPD0045_1_B11-3-1",
+    "numberOfCreMatingsSuccessful":3,
+    "tatCre":true,
+    "deleterStrainName":"BALB/cJ",
+    "imitsMouseAlleleModId":1775,
+    "targRepAlleleId":1878
+  },
+  "typeName":"production",
+  "statusTransition":{
+    "actionToExecute":null
+  }
+}

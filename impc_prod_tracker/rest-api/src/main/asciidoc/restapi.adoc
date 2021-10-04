@@ -420,7 +420,7 @@ This section describes the REST endpoints for plans in the system.
 These are the fields you are going to see in the body of a request in a GET or in the payload for POST or PUT
 operations.
 
-==== Crispr plan.
+==== CRISPR plan.
 include::{snippets}/plans/getCrisprPlan/response-fields.adoc[]
 
 ==== ES Cell plan.
@@ -555,7 +555,7 @@ include::{snippets}/plans/history/http-response.adoc[]
 
 === POST
 
-==== Create a crispr plan
+==== Create a CRISPR plan
 
 ===== Example Request
 
@@ -566,7 +566,27 @@ include::{snippets}/plans/postCrisprPlan/http-request.adoc[]
 
 include::{snippets}/plans/postCrisprPlan/http-response.adoc[]
 
-==== Create a phenotyping plan
+==== Create an ES Cell plan
+
+===== Example Request
+
+Curl:
+include::{snippets}/plans/postEsCellPlan/http-request.adoc[]
+
+===== Example Response
+include::{snippets}/plans/postEsCellPlan/http-response.adoc[]
+
+==== Create an ES Cell Allele Modification plan
+
+===== Example Request
+
+Curl:
+include::{snippets}/plans/postEsCellAlleleModificationPlan/http-request.adoc[]
+
+===== Example Response
+include::{snippets}/plans/postEsCellAlleleModificationPlan/http-response.adoc[]
+
+==== Create a Phenotyping plan
 
 ===== Example Request
 
@@ -588,7 +608,7 @@ mandatory).
 
 If a value is provided for pin, the system will validate that it matches the pin in the URL parameter.
 
-==== Update a crispr plan
+==== Update a CRISPR plan
 
 ===== Example Request
 
@@ -598,6 +618,29 @@ include::{snippets}/plans/putCrisprPlan/http-request.adoc[]
 ===== Example Response
 
 include::{snippets}/plans/putCrisprPlan/http-response.adoc[]
+
+==== Update a ES Cell plan
+
+===== Example Request
+
+Curl:
+include::{snippets}/plans/putEsCellPlan/http-request.adoc[]
+
+===== Example Response
+
+include::{snippets}/plans/putEsCellPlan/http-response.adoc[]
+
+==== Update a ES Cell allele modification plan
+
+===== Example Request
+
+Curl:
+include::{snippets}/plans/putEsCellAlleleModificationPlan/http-request.adoc[]
+
+===== Example Response
+
+include::{snippets}/plans/putEsCellAlleleModificationPlan/http-response.adoc[]
+
 
 ==== Update a phenotyping plan
 
@@ -943,7 +986,7 @@ only the _statusTransition_ information in the payload. The following is an exam
 where you decide to leave out the attempt information:
 
 Curl:
-include::{snippets}/plans/putCrisprPlanStateMachine/http-request.adoc[]
+include::{snippets}/plans/putPlanStateMachine/http-request.adoc[]
 
 
 ==== Example Response
@@ -951,7 +994,7 @@ include::{snippets}/plans/putCrisprPlanStateMachine/http-request.adoc[]
 The response will indicate what has changed in the system, along with a link to the resource in
 case you need to retrieve the new object.
 
-include::{snippets}/plans/putCrisprPlanStateMachine/http-response.adoc[]
+include::{snippets}/plans/putPlanStateMachine/http-response.adoc[]
 
 == Lastest updates
 
@@ -967,6 +1010,8 @@ include::{snippets}/plans/putCrisprPlanStateMachine/http-response.adoc[]
               now moves the PhenotypingAllDataProcessed state to PhenotypingAllDataSent rather than
               PhenotypingStarted.
 * 2020-11-30: New filter 'doNotCountTowardsCompleteness' added for phenotyping plans.
+* 2021-10-04: Species field remove from project object.
+* 2021-10-04: Cre Allele modification attempt rename to ES Cell allele modification attempt.
 
 
 

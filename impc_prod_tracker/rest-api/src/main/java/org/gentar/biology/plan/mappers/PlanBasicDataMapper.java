@@ -231,7 +231,6 @@ public class PlanBasicDataMapper implements Mapper<Plan, PlanBasicDataDTO>
             esCellAttempt.setPlan(plan);
             esCellAttempt.setId(plan.getId());
             esCellAttemptMapper.setCassetteTransmission(planBasicDataDTO.getEsCellAttemptDTO(), esCellAttempt);
-
             plan.setEsCellAttempt(esCellAttempt);
         }
     }

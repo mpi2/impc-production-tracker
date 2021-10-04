@@ -11,14 +11,14 @@
   "phenotypingStartingPoint":{
     "_links":{
       "outcome":{
-        "href":"http://localhost:8080/api/plans/PIN:0000000002/outcomes/TPO:000000000001"
+        "href":"http://localhost:8080/api/plans/PIN:0000000001/outcomes/TPO:000000000001"
       },
       "productionPlan":{
-        "href":"http://localhost:8080/api/plans/PIN:0000000002"
+        "href":"http://localhost:8080/api/plans/PIN:0000000001"
       }
     },
     "outcomeTpo":"TPO:000000000001",
-    "productionPlanPin":"PIN:0000000002"
+    "productionPlanPin":"PIN:0000000001"
   },
   "phenotypingAttemptResponse":{
     "doNotCountTowardsCompleteness":false,

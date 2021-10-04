@@ -176,6 +176,7 @@ class OutcomeControllerTest extends ControllerTestTemplate
             restCaller.executePutAndDocument(url, payload, document("outcomes/putColonyOutcome"));
         ChangeResponse changeResponse = JsonHelper.fromJson(obtainedJson, ChangeResponse.class);
         verifyChangeResponse(changeResponse);
+
         String outcomeUrl = LinkUtil.getSelfHrefLinkStringFromJson(obtainedJson);
         verifyUpdatedOutcome(outcomeUrl, expectedJson);
     }

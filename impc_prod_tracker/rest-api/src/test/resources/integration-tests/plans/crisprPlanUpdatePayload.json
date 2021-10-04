@@ -1,4 +1,5 @@
 {
+  "pin":"PIN:0000000001",
   "tpn":"TPN:000000001",
   "attemptTypeName":"crispr",
   "funderNames":[
@@ -6,16 +7,19 @@
   ],
   "workUnitName":"BCM",
   "workGroupName":"BaSH",
-  "comment":"example of crispr plan creation",
+  "comment":"New Plan comment",
   "crisprAttempt":{
     "miDate":"2019-02-26",
-    "experimental":true,
-    "comment":"crispr plan comment",
+    "experimental":false,
+    "comment":"New Crispr Comment",
     "mutagenesisExternalRef":"MF-26326",
     "imitsMiAttemptId":20043,
-    "attemptExternalRef":"attempt external reference",
+    "attemptExternalRef":"Attempt external ref",
+    "embryoTransferDay":"Same Day",
+    "totalTransferred":72,
     "nucleases":[
       {
+        "id":1,
         "typeName":"Cas9",
         "concentration":250.0,
         "className":"protein"
@@ -23,20 +27,26 @@
     ],
     "guides":[
       {
-        "chr":"X",
-        "start":46245139,
-        "stop":46245161,
-        "grnaConcentration":300.0,
+        "id":1,
         "sequence":"CTTCACGTACCAAGGAGGGGTGG",
-        "truncatedGuide":true,
-        "strand":"+",
-        "genomeBuild":"GRCm38",
+        "guideSequence":"CTTCACGTACCAAGGAGGGG",
         "pam":"TGG",
-        "guideSequence":"CTTCACGTACCAAGGAGGGG"
+        "chr":"X",
+        "start":45334016,
+        "stop":45334038,
+        "strand":"+",
+        "genomeBuild":"GRCm39",
+        "grnaConcentration":300.0,
+        "truncatedGuide":true,
+        "reversed":false,
+        "sangerService":false,
+        "formatName":"sgRNA",
+        "sourceName":"commercial"
       }
     ],
     "mutagenesisDonors":[
       {
+        "id":1,
         "concentration":5.0,
         "vectorName":"pUC18_Ikzf2_conditional",
         "oligoSequenceFasta":"ATAATTGGCAGCCTGATTAGAAGAATGCCCATCTTGTCTAGTGACACATTAGAACAATGAGTAATTGCTCGATGCGGATCCATAACTTCGTATAGCATACATTATACGAAGTTATTCTCTGGGATTAAGAAAAAACTAACATATGAAACAGAAGCCCAGACATCTAAAACCACAAAGA",
@@ -45,6 +55,7 @@
     ],
     "reagents":[
       {
+        "id":1,
         "reagentName":"Ligase IV",
         "reagentDescription":"NHEJ Inhibitor",
         "concentration":334.0
@@ -52,16 +63,18 @@
     ],
     "genotypePrimers":[
       {
+        "id":1,
         "genomicStartCoordinate":1,
         "genomicEndCoordinate":200,
         "name":"Gpr68wtR",
         "sequence":"GTAGAGGGACAGGCAGTTGG"
       }
     ],
-    "totalEmbryosInjected":72,
-    "totalEmbryosSurvived":70,
+    "totalEmbryosInjected":10,
+    "totalEmbryosSurvived":5,
     "embryo2Cell":"20043",
     "assay":{
+      "id":1,
       "typeName":"T7EN1",
       "numFounderPups":26,
       "numFounderSelectedForBreeding":1,
@@ -72,11 +85,57 @@
       "numHdrG0MutantsAllDonorsInserted":0,
       "numHdrG0MutantsSubsetDonorsInserted":0,
       "numHrG0Mutants":0,
-      "numNhejG0Mutants":0,
-      "embryoTransferDay":"Same Day",
-      "totalTransferred":72
+      "numNhejG0Mutants":0
     },
     "strainInjectedName":"C57BL/6NJ"
   },
-  "typeName":"production"
+  "typeName":"production",
+  "statusName":"Founder Obtained",
+  "summaryStatusName":"Genotype Confirmed",
+  "_links":{
+    "self":{
+      "href":"http://localhost:8080/api/plans/PIN:0000000001"
+    },
+    "project":{
+      "href":"http://localhost:8080/api/projects/TPN:000000001"
+    }
+  },
+  "statusDates":[
+    {
+      "statusName":"Plan Created",
+      "date":"2018-01-15T00:00:00.706639"
+    },
+    {
+      "statusName":"Attempt In Progress",
+      "date":"2018-01-16T00:00:00.706639"
+    },
+    {
+      "statusName":"Founder Obtained",
+      "date":"2018-02-22T20:18:00.706639"
+    },
+    {
+      "statusName":"Embryos Obtained",
+      "date":"2018-04-04T14:32:00.706639"
+    }
+  ],
+  "summaryStatusDates":[
+    {
+      "statusName":"Genotype Confirmed",
+      "date":"2019-08-06T20:09:51.706639"
+    }
+  ],
+  "statusTransition":{
+    "currentStatus":"Founder Obtained",
+    "transitions":[
+      {
+        "action":"abortWhenFounderObtained",
+        "description":"Abort the plan after a founder obtained",
+        "triggeredByUser":true,
+        "available":false,
+        "note":"The plan has colonies that are not aborted. Please abort them first",
+        "nextStatus":"Attempt Aborted"
+      }
+    ],
+    "actionToExecute":null
+  }
 }

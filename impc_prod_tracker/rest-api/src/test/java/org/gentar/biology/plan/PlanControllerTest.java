@@ -5,7 +5,6 @@ import com.github.springtestdbunit.annotation.DatabaseSetup;
 import com.github.springtestdbunit.annotation.DatabaseTearDown;
 import org.gentar.audit.history.HistoryFieldsDescriptors;
 import org.gentar.biology.ChangeResponse;
-import org.gentar.biology.plan.attempt.crispr.CrisprAttemptDTO;
 import org.gentar.common.history.HistoryDTO;
 import org.gentar.common.history.HistoryDetailDTO;
 import org.gentar.framework.*;
@@ -20,19 +19,14 @@ import org.skyscreamer.jsonassert.JSONCompareMode;
 import org.skyscreamer.jsonassert.comparator.CustomComparator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.restdocs.payload.FieldDescriptor;
-import org.springframework.test.web.servlet.MvcResult;
-import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.ResultHandler;
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import java.io.IOException;
 import java.util.List;
 
-import static org.gentar.util.JsonHelper.toJson;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.nullValue;
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 class PlanControllerTest extends ControllerTestTemplate
 {
@@ -111,60 +105,22 @@ class PlanControllerTest extends ControllerTestTemplate
     @DatabaseTearDown(type = DatabaseOperation.DELETE_ALL, value = DBSetupFilesPaths.MULTIPLE_PLANS)
     void testUpdateCrisprPlan() throws Exception
     {
-        sequenceResetter.syncSequence("PLAN_STATUS_STAMP_SEQ", "PLAN_STATUS_STAMP");
-        sequenceResetter.syncSequence("PLAN_SUMMARY_STATUS_STAMP_SEQ", "PLAN_SUMMARY_STATUS_STAMP");
         sequenceResetter.syncSequence("HISTORY_SEQ", "HISTORY");
         sequenceResetter.syncSequence("HISTORY_DETAIL_SEQ", "HISTORY_DETAIL");
 
-        PlanUpdateDTO planUpdateDTO = getPlanToUpdate();
-        editCrisprPlanWithNewValues(planUpdateDTO);
+        String payload = loadFromResource("crisprPlanUpdatePayload.json");
+        String url = "/api/plans/PIN:0000000001";
 
-        String contentAsString =
-            restCaller.executePutAndDocument("/api/plans/PIN:0000000001", toJson(planUpdateDTO),
-                    document("plans/putCrisprPlan"));
-        ChangeResponse changeResponse = JsonHelper.fromJson(contentAsString, ChangeResponse.class);
-        verifyChangeResponse(changeResponse);
+        String obtainedJson =
+                restCaller.executePutAndDocument(url, payload, document("plans/putCrisprPlan"));
+        ChangeResponse changeResponse = JsonHelper.fromJson(obtainedJson, ChangeResponse.class);
+        verifyChangeResponseCrisprUpdate(changeResponse);
 
-        String projectLink = LinkUtil.getSelfHrefLinkStringFromJson(contentAsString);
-
-        verifyGetPlanEqualsJson(projectLink, "expectedUpdatedPlanGetPIN_0000000001.json");
+        String cripsrPlanUrl = LinkUtil.getSelfHrefLinkStringFromJson(obtainedJson);
+        verifyGetPlantEqualsJsonIgnoringIdsAndDates(cripsrPlanUrl, "expectedUpdatedPlanGetPIN_0000000001.json");
     }
 
-    private void verifyGetPlanEqualsJson(String planLink, String jsonFileName) throws Exception
-    {
-        ResultActions callGetWithObtainedUrl = mvc().perform(MockMvcRequestBuilders
-            .get(planLink)
-            .header("Authorization", accessToken))
-            .andExpect(status().isOk());
-        MvcResult obtainedProject = callGetWithObtainedUrl.andReturn();
-        String obtainedPlanAsString = obtainedProject.getResponse().getContentAsString();
-        String expectedOutputAsString = loadExpectedResponseFromResource(jsonFileName);
-
-        JSONAssert.assertEquals(expectedOutputAsString, obtainedPlanAsString,
-                new CustomComparator(JSONCompareMode.STRICT, PlanCustomizations.ignoreIdsAndDates()));
-    }
-
-    private void editCrisprPlanWithNewValues(PlanUpdateDTO planUpdateDTO)
-    {
-        PlanBasicDataDTO planBasicDataDTO = planUpdateDTO.getPlanBasicDataDTO();
-        CrisprAttemptDTO crisprAttemptDTO = planBasicDataDTO.getCrisprAttemptDTO();
-        crisprAttemptDTO.setComment("New Crispr Comment");
-        crisprAttemptDTO.setExperimental(false);
-        crisprAttemptDTO.setMiExternalRef("New external reference");
-        crisprAttemptDTO.setTotalEmbryosInjected(10);
-        crisprAttemptDTO.setTotalEmbryosSurvived(5);
-        PlanCommonDataDTO planCommonDataDTO = planBasicDataDTO.getPlanCommonDataDTO();
-        planCommonDataDTO.setComment("New Plan comment");
-    }
-
-    private PlanUpdateDTO getPlanToUpdate() throws IOException
-    {
-        String originalPlan =
-            loadExpectedResponseFromResource("expectedUpdatedPlanGetPIN_0000000001.json");
-        return JsonHelper.fromJson(originalPlan, PlanUpdateDTO.class);
-    }
-
-    private void verifyChangeResponse(ChangeResponse changeResponse)
+    private void verifyChangeResponseCrisprUpdate(ChangeResponse changeResponse)
     {
         List<HistoryDTO> historyDTOS = changeResponse.getHistoryDTOs();
         assertThat(historyDTOS.size(), is(1));
@@ -173,37 +129,27 @@ class PlanControllerTest extends ControllerTestTemplate
         assertThat(historyDTO.getComment(), is("Plan updated"));
 
         List<HistoryDetailDTO> historyDetailDTOS = historyDTO.getDetails();
-        assertThat(historyDetailDTOS.size(), is(13));
+        assertThat(historyDetailDTOS.size(), is(4));
 
         HistoryDetailDTO historyDetailDTO1 =
-            getHistoryDetailByField(historyDetailDTOS, "crisprAttempt.comment");
-        assertThat(historyDetailDTO1.getOldValue(), is("crispr plan comment"));
-        assertThat(historyDetailDTO1.getNewValue(), is("New Crispr Comment"));
+                getHistoryDetailByField(historyDetailDTOS, "comment");
+        assertThat(historyDetailDTO1.getOldValue(), is(nullValue()));
+        assertThat(historyDetailDTO1.getNewValue(), is("New Plan comment"));
 
         HistoryDetailDTO historyDetailDTO2 =
-            getHistoryDetailByField(historyDetailDTOS, "crisprAttempt.totalEmbryosInjected");
-        assertThat(historyDetailDTO2.getOldValue(), is("72"));
-        assertThat(historyDetailDTO2.getNewValue(), is("10"));
+            getHistoryDetailByField(historyDetailDTOS, "crisprAttempt.comment");
+        assertThat(historyDetailDTO2.getOldValue(), is("crispr plan comment"));
+        assertThat(historyDetailDTO2.getNewValue(), is("New Crispr Comment"));
 
         HistoryDetailDTO historyDetailDTO3 =
-            getHistoryDetailByField(historyDetailDTOS, "crisprAttempt.miExternalRef");
-        assertThat(historyDetailDTO3.getOldValue(), is(nullValue()));
-        assertThat(historyDetailDTO3.getNewValue(), is("New external reference"));
+            getHistoryDetailByField(historyDetailDTOS, "crisprAttempt.totalEmbryosInjected");
+        assertThat(historyDetailDTO3.getOldValue(), is("72"));
+        assertThat(historyDetailDTO3.getNewValue(), is("10"));
 
         HistoryDetailDTO historyDetailDTO4 =
             getHistoryDetailByField(historyDetailDTOS, "crisprAttempt.totalEmbryosSurvived");
         assertThat(historyDetailDTO4.getOldValue(), is("70"));
         assertThat(historyDetailDTO4.getNewValue(), is("5"));
-
-        HistoryDetailDTO historyDetailDTO5 =
-            getHistoryDetailByField(historyDetailDTOS, "crisprAttempt.experimental");
-        assertThat(historyDetailDTO5.getOldValue(), is("true"));
-        assertThat(historyDetailDTO5.getNewValue(), is("false"));
-
-        HistoryDetailDTO historyDetailDTO6 =
-            getHistoryDetailByField(historyDetailDTOS, "comment");
-        assertThat(historyDetailDTO6.getOldValue(), is(nullValue()));
-        assertThat(historyDetailDTO6.getNewValue(), is("New Plan comment"));
     }
 
     private HistoryDetailDTO getHistoryDetailByField(
@@ -219,48 +165,7 @@ class PlanControllerTest extends ControllerTestTemplate
         return historyDetailDTO;
     }
 
-    @Test
-    @DatabaseSetup(DBSetupFilesPaths.MULTIPLE_PLANS)
-    @DatabaseTearDown(type = DatabaseOperation.DELETE_ALL, value = DBSetupFilesPaths.MULTIPLE_PLANS)
-    void testUpdateStateMachineCrisprPlan() throws Exception
-    {
-        sequenceResetter.syncSequence("PLAN_STATUS_STAMP_SEQ", "PLAN_STATUS_STAMP");
-        sequenceResetter.syncSequence("PLAN_SUMMARY_STATUS_STAMP_SEQ", "PLAN_SUMMARY_STATUS_STAMP");
-        sequenceResetter.syncSequence("HISTORY_SEQ", "HISTORY");
-        sequenceResetter.syncSequence("HISTORY_DETAIL_SEQ", "HISTORY_DETAIL");
 
-        PlanUpdateDTO planUpdateDTO = getPlanToUpdate();
-        setAbortAction(planUpdateDTO);
-
-        String contentAsString =
-                restCaller.executePutAndDocument("/api/plans/PIN:0000000001", toJson(planUpdateDTO),
-                        document("plans/putCrisprPlan"));
-        ChangeResponse changeResponse = JsonHelper.fromJson(contentAsString, ChangeResponse.class);
-
-        List<HistoryDTO> historyDTOS = changeResponse.getHistoryDTOs();
-        assertThat(historyDTOS.size(), is(1));
-
-        HistoryDTO historyDTO = historyDTOS.get(0);
-        assertThat(historyDTO.getComment(), is("Plan updated"));
-
-        List<HistoryDetailDTO> historyDetailDTOS = historyDTO.getDetails();
-        assertThat(historyDetailDTOS.size(), is(3));
-
-        HistoryDetailDTO historyDetailDTO1 =
-            getHistoryDetailByField(historyDetailDTOS, "status.name");
-        assertThat(historyDetailDTO1.getOldValue(), is("Founder Obtained"));
-        assertThat(historyDetailDTO1.getNewValue(), is("Attempt Aborted"));
-
-        HistoryDetailDTO historyDetailDTO2 =
-            getHistoryDetailByField(historyDetailDTOS, "summaryStatus.name");
-        assertThat(historyDetailDTO2.getOldValue(), is("Founder Obtained"));
-        assertThat(historyDetailDTO2.getNewValue(), is("Attempt Aborted"));
-
-        String planLink = LinkUtil.getSelfHrefLinkStringFromJson(contentAsString);
-
-        verifyGetPlantEqualsJsonIgnoringIdsAndDates(
-            planLink, "expectedAbortedPlanGetPIN_0000000001.json");
-    }
 
     private void verifyGetPlantEqualsJsonIgnoringIdsAndDates(String planLink, String jsonFileName)
         throws Exception
@@ -272,14 +177,6 @@ class PlanControllerTest extends ControllerTestTemplate
             expectedOutputAsString,
             obtainedPlanAsString,
             new CustomComparator(JSONCompareMode.STRICT, PlanCustomizations.ignoreIdsAndDates()));
-    }
-
-    private void setAbortAction(PlanUpdateDTO planUpdateDTO)
-    {
-        planUpdateDTO.getStatusTransitionDTO().setActionToExecute("abortWhenFounderObtained");
-        PlanBasicDataDTO planBasicDataDTO = planUpdateDTO.getPlanBasicDataDTO();
-        planBasicDataDTO.setCrisprAttemptDTO(null);
-        planUpdateDTO.setPlanBasicDataDTO(planBasicDataDTO);
     }
 
     @Test
@@ -304,6 +201,43 @@ class PlanControllerTest extends ControllerTestTemplate
             restCaller.executePostAndDocument("/api/plans", payload, document("plans/postCrisprPlan"));
         String planLink = LinkUtil.getSelfHrefLinkStringFromJson(contentAsString);
         verifyGetPlantEqualsJsonIgnoringIdsAndPinAndDates(planLink, "expectedCreatedCrisprPlan.json");
+    }
+
+    @Test
+    @DatabaseSetup(DBSetupFilesPaths.MULTIPLE_PLANS)
+    @DatabaseTearDown(type = DatabaseOperation.DELETE_ALL, value = DBSetupFilesPaths.MULTIPLE_PLANS)
+    void testCreateEsCellPlan() throws Exception
+    {
+        sequenceResetter.syncSequence("PLAN_SEQ", "PLAN");
+        sequenceResetter.syncSequence("PLAN_STATUS_STAMP_SEQ", "PLAN_STATUS_STAMP");
+        sequenceResetter.syncSequence("PLAN_SUMMARY_STATUS_STAMP_SEQ", "PLAN_SUMMARY_STATUS_STAMP");
+        sequenceResetter.syncSequence("HISTORY_SEQ", "HISTORY");
+        sequenceResetter.syncSequence("HISTORY_DETAIL_SEQ", "HISTORY_DETAIL");
+
+        String payload = loadExpectedResponseFromResource("esCellPlanCreationPayload.json");
+
+        String contentAsString =
+                restCaller.executePostAndDocument("/api/plans", payload, document("plans/postEsCellPlan"));
+        String planLink = LinkUtil.getSelfHrefLinkStringFromJson(contentAsString);
+        verifyGetPlantEqualsJsonIgnoringIdsAndPinAndDates(planLink, "expectedCreatedEsCellPlan.json");
+    }
+
+    @Test
+    @DatabaseSetup(DBSetupFilesPaths.MULTIPLE_PLANS)
+    @DatabaseTearDown(type = DatabaseOperation.DELETE_ALL, value = DBSetupFilesPaths.MULTIPLE_PLANS)
+    void testCreateEsCellAlleleModificationPlan() throws Exception
+    {
+        sequenceResetter.syncSequence("PLAN_SEQ", "PLAN");
+        sequenceResetter.syncSequence("PLAN_STATUS_STAMP_SEQ", "PLAN_STATUS_STAMP");
+        sequenceResetter.syncSequence("PLAN_SUMMARY_STATUS_STAMP_SEQ", "PLAN_SUMMARY_STATUS_STAMP");
+        sequenceResetter.syncSequence("HISTORY_SEQ", "HISTORY");
+        sequenceResetter.syncSequence("HISTORY_DETAIL_SEQ", "HISTORY_DETAIL");
+
+        String payload = loadExpectedResponseFromResource("esCellAlleleModificationPlanCreationPayload.json");
+        String contentAsString =
+                restCaller.executePostAndDocument("/api/plans", payload, document("plans/postEsCellAlleleModificationPlan"));
+        String planLink = LinkUtil.getSelfHrefLinkStringFromJson(contentAsString);
+        verifyGetPlantEqualsJsonIgnoringIdsAndPinAndDates(planLink, "expectedCreatedEsCellAlleleModificationPlan.json");
     }
 
     private void verifyGetPlantEqualsJsonIgnoringIdsAndPinAndDates(
@@ -347,6 +281,8 @@ class PlanControllerTest extends ControllerTestTemplate
     @DatabaseTearDown(type = DatabaseOperation.DELETE_ALL, value = DBSetupFilesPaths.MULTIPLE_PLANS)
     void testUpdatePhenotypingAttemptPlan() throws Exception
     {
+        sequenceResetter.syncSequence("PLAN_STATUS_STAMP_SEQ", "PLAN_STATUS_STAMP");
+        sequenceResetter.syncSequence("PLAN_SUMMARY_STATUS_STAMP_SEQ", "PLAN_SUMMARY_STATUS_STAMP");
         sequenceResetter.syncSequence("HISTORY_SEQ", "HISTORY");
         sequenceResetter.syncSequence("HISTORY_DETAIL_SEQ", "HISTORY_DETAIL");
 
@@ -354,10 +290,12 @@ class PlanControllerTest extends ControllerTestTemplate
         String url = "/api/plans/PIN:0000000003";
         String expectedJson =
             getCompleteResourcePath("expectedUpdatedPhenotypingPlanGetPIN_0000000003.json");
+
         String obtainedJson =
             restCaller.executePutAndDocument(url, payload, document("plans/putPhenotypingPlan"));
         ChangeResponse changeResponse = JsonHelper.fromJson(obtainedJson, ChangeResponse.class);
         verifyChangeResponsePhenotyping(changeResponse);
+
         String phenotypingPlanUrl = LinkUtil.getSelfHrefLinkStringFromJson(obtainedJson);
         verifyUpdatedPhenotypingPlan(phenotypingPlanUrl, expectedJson);
     }
@@ -485,5 +423,124 @@ class PlanControllerTest extends ControllerTestTemplate
 
         return document("plans/getEsCellPlan", responseFields(esCellPlanFieldsDescriptions));
     }
+
+    @Test
+    @DatabaseSetup(DBSetupFilesPaths.MULTIPLE_PLANS)
+    @DatabaseTearDown(type = DatabaseOperation.DELETE_ALL, value = DBSetupFilesPaths.MULTIPLE_PLANS)
+    void testUpdateEsCellAttemptPlan() throws Exception
+    {
+        sequenceResetter.syncSequence("PLAN_STATUS_STAMP_SEQ", "PLAN_STATUS_STAMP");
+        sequenceResetter.syncSequence("PLAN_SUMMARY_STATUS_STAMP_SEQ", "PLAN_SUMMARY_STATUS_STAMP");
+        sequenceResetter.syncSequence("HISTORY_SEQ", "HISTORY");
+        sequenceResetter.syncSequence("HISTORY_DETAIL_SEQ", "HISTORY_DETAIL");
+
+        String payload = loadFromResource("esCellPlanUpdatePayload.json");
+        String url = "/api/plans/PIN:0000000010";
+        String expectedJson =
+                getCompleteResourcePath("expectedUpdatedEsCellPlanGetPIN_0000000010.json");
+        String obtainedJson =
+                restCaller.executePutAndDocument(url, payload, document("plans/putEsCellPlan"));
+
+        ChangeResponse changeResponse = JsonHelper.fromJson(obtainedJson, ChangeResponse.class);
+        verifyChangeResponseEsCell(changeResponse);
+
+        String attemptLink = LinkUtil.getSelfHrefLinkStringFromJson(obtainedJson);
+        verifyUpdatedEsCellPlan(attemptLink, expectedJson);
+    }
+
+    private void verifyChangeResponseEsCell(ChangeResponse changeResponse)
+    {
+        List<HistoryDTO> historyDTOS = changeResponse.getHistoryDTOs();
+        assertThat(historyDTOS.size(), is(1));
+
+        HistoryDTO historyDTO = historyDTOS.get(0);
+        assertThat(historyDTO.getComment(), is("Plan updated"));
+
+        List<HistoryDetailDTO> historyDetailDTOS = historyDTO.getDetails();
+        assertThat(historyDetailDTOS.size(), is(4));
+
+        HistoryDetailDTO historyDetailDTO1 =
+                getHistoryDetailByField(historyDetailDTOS, "comment");
+        assertThat(historyDetailDTO1.getOldValue(), is(nullValue()));
+        assertThat(historyDetailDTO1.getNewValue(), is("New Plan comment"));
+
+        HistoryDetailDTO historyDetailDTO2 =
+                getHistoryDetailByField(historyDetailDTOS, "esCellAttempt.cassetteTransmissionVerifiedAutoComplete");
+        assertThat(historyDetailDTO2.getOldValue(), is("false"));
+        assertThat(historyDetailDTO2.getNewValue(), is("true"));
+
+        HistoryDetailDTO historyDetailDTO3 =
+                getHistoryDetailByField(historyDetailDTOS, "esCellAttempt.totalF1MiceFromMatings");
+        assertThat(historyDetailDTO3.getOldValue(), is("52"));
+        assertThat(historyDetailDTO3.getNewValue(), is("32"));
+
+        HistoryDetailDTO historyDetailDTO4 =
+                getHistoryDetailByField(historyDetailDTOS, "esCellAttempt.totalTransferred");
+        assertThat(historyDetailDTO4.getOldValue(), is("44"));
+        assertThat(historyDetailDTO4.getNewValue(), is("40"));
+    }
+
+    private void verifyUpdatedEsCellPlan(
+            String esCellPlanUrl, String expectedJson) throws Exception
+    {
+        String obtainedEsCellPlan = restCaller.executeGet(esCellPlanUrl);
+        resultValidator.validateObtainedMatchesJson(
+                obtainedEsCellPlan, expectedJson, PlanCustomizations.ignoreIdsAndPinAndDates());
+    }
+
+    @Test
+    @DatabaseSetup(DBSetupFilesPaths.MULTIPLE_PLANS)
+    @DatabaseTearDown(type = DatabaseOperation.DELETE_ALL, value = DBSetupFilesPaths.MULTIPLE_PLANS)
+    void testUpdateEsCellAlleleModificationAttemptPlan() throws Exception
+    {
+        sequenceResetter.syncSequence("PLAN_STATUS_STAMP_SEQ", "PLAN_STATUS_STAMP");
+        sequenceResetter.syncSequence("PLAN_SUMMARY_STATUS_STAMP_SEQ", "PLAN_SUMMARY_STATUS_STAMP");
+        sequenceResetter.syncSequence("HISTORY_SEQ", "HISTORY");
+        sequenceResetter.syncSequence("HISTORY_DETAIL_SEQ", "HISTORY_DETAIL");
+
+        String payload = loadFromResource("esCellAlleleModificationPlanUpdatePayload.json");
+        String url = "/api/plans/PIN:0000000009";
+        String expectedJson =
+                getCompleteResourcePath("expectedUpdatedEsCellAlleleModificationPlanGetPIN_0000000009.json");
+        String obtainedJson =
+                restCaller.executePutAndDocument(url, payload, document("plans/putEsCellAlleleModificationPlan"));
+
+        ChangeResponse changeResponse = JsonHelper.fromJson(obtainedJson, ChangeResponse.class);
+        verifyChangeResponseEsCellAlleleModification(changeResponse);
+
+        String attemptLink = LinkUtil.getSelfHrefLinkStringFromJson(obtainedJson);
+        verifyUpdatedEsCellAlleleModificationPlan(attemptLink, expectedJson);
+    }
+
+    private void verifyChangeResponseEsCellAlleleModification(ChangeResponse changeResponse)
+    {
+        List<HistoryDTO> historyDTOS = changeResponse.getHistoryDTOs();
+        assertThat(historyDTOS.size(), is(1));
+
+        HistoryDTO historyDTO = historyDTOS.get(0);
+        assertThat(historyDTO.getComment(), is("Plan updated"));
+
+        List<HistoryDetailDTO> historyDetailDTOS = historyDTO.getDetails();
+        assertThat(historyDetailDTOS.size(), is(2));
+
+        HistoryDetailDTO historyDetailDTO1 =
+                getHistoryDetailByField(historyDetailDTOS, "esCellAlleleModificationAttempt.numberOfCreMatingsSuccessful");
+        assertThat(historyDetailDTO1.getOldValue(), is("1"));
+        assertThat(historyDetailDTO1.getNewValue(), is("3"));
+
+        HistoryDetailDTO historyDetailDTO2 =
+                getHistoryDetailByField(historyDetailDTOS, "esCellAlleleModificationAttempt.tatCre");
+        assertThat(historyDetailDTO2.getOldValue(), is("false"));
+        assertThat(historyDetailDTO2.getNewValue(), is("true"));
+    }
+
+    private void verifyUpdatedEsCellAlleleModificationPlan(
+            String esCellPlanUrl, String expectedJson) throws Exception
+    {
+        String obtainedEsCellPlan = restCaller.executeGet(esCellPlanUrl);
+        resultValidator.validateObtainedMatchesJson(
+                obtainedEsCellPlan, expectedJson, PlanCustomizations.ignoreIdsAndPinAndDates());
+    }
+
 
 }

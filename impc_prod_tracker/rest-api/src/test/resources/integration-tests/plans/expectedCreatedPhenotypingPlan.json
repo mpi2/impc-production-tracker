@@ -1,5 +1,5 @@
 {
-  "pin":"PIN:0000000006",
+  "pin":"PIN:0000000012",
   "tpn":"TPN:000000001",
   "attemptTypeName":"adult and embryo phenotyping",
   "funderNames":[
@@ -11,14 +11,14 @@
   "phenotypingStartingPoint":{
     "_links":{
       "outcome":{
-        "href":"http://localhost:8080/api/plans/PIN:0000000002/outcomes/TPO:000000000001"
+        "href":"http://localhost:8080/api/plans/PIN:0000000001/outcomes/TPO:000000000001"
       },
       "productionPlan":{
-        "href":"http://localhost:8080/api/plans/PIN:0000000002"
+        "href":"http://localhost:8080/api/plans/PIN:0000000001"
       }
     },
     "outcomeTpo":"TPO:000000000001",
-    "productionPlanPin":"PIN:0000000002"
+    "productionPlanPin":"PIN:0000000001"
   },
   "phenotypingAttemptResponse":{
     "doNotCountTowardsCompleteness":false,
@@ -31,7 +31,7 @@
   "summaryStatusName":"Plan Created",
   "_links":{
     "self":{
-      "href":"http://localhost:8080/api/plans/PIN:0000000006"
+      "href":"http://localhost:8080/api/plans/PIN:0000000012"
     },
     "project":{
       "href":"http://localhost:8080/api/projects/TPN:000000001"
@@ -40,13 +40,13 @@
   "statusDates":[
     {
       "statusName":"Plan Created",
-      "date":"2021-03-02T13:45:05.628604"
+      "date":"2021-10-04T16:32:09.431827"
     }
   ],
   "summaryStatusDates":[
     {
       "statusName":"Plan Created",
-      "date":"2021-03-02T13:45:05.631977"
+      "date":"2021-10-04T16:32:09.435633"
     }
   ],
   "statusTransition":{

@@ -30,7 +30,7 @@ public class EsCellAttempt extends BaseEntity
     // This stores the id but is not specified as a foreign key
     // The id is converted to the EsCellName in the service and DTO.
     @NotNull
-    private Long TargRepEsCellId;
+    private Long targRepEsCellId;
 
     private LocalDate miDate;
 

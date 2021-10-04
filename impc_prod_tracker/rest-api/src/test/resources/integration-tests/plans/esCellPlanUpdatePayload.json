@@ -7,7 +7,7 @@
   ],
   "workUnitName":"BCM",
   "workGroupName":"BaSH",
-  "comment":null,
+  "comment":"New Plan comment",
   "esCellAttempt":{
     "targRepEsCellName":"EPD0045_1_A11",
     "miDate":"2007-04-24",
@@ -15,7 +15,7 @@
     "comment":"additional information",
     "blastStrainName":"C57BL/6NJ",
     "totalBlastsInjected":44,
-    "totalTransferred":44,
+    "totalTransferred":40,
     "numberSurrogatesReceiving":0,
     "totalPupsBorn":25,
     "totalFemaleChimeras":5,
@@ -35,7 +35,7 @@
     "numberOfChimerasWith10To49PercentGlt":1,
     "numberOfChimerasWith50To99PercentGlt":0,
     "numberOfChimerasWith100PercentGlt":0,
-    "totalF1MiceFromMatings":52,
+    "totalF1MiceFromMatings":32,
     "numberOfCctOffspring":3,
     "cassetteTransmissionVerified":"2007-10-21",
     "numberOfHetOffspring":2,
@@ -44,48 +44,7 @@
     "attemptExternalRef":"MAKE"
   },
   "typeName":"production",
-  "statusName":"Chimeras/Founder Obtained",
-  "summaryStatusName":"Genotype Confirmed",
-  "_links":{
-    "self":{
-      "href":"http://localhost:8080/api/plans/PIN:0000000010"
-    },
-    "project":{
-      "href":"http://localhost:8080/api/projects/TPN:000000003"
-    }
-  },
-  "statusDates":[
-    {
-      "statusName":"Plan Created",
-      "date":"2007-04-24T00:00:00"
-    },
-    {
-      "statusName":"Attempt In Progress",
-      "date":"2007-05-18T00:00:00"
-    },
-    {
-      "statusName":"Chimeras/Founder Obtained",
-      "date":"2007-10-20T00:00:00"
-    }
-  ],
-  "summaryStatusDates":[
-    {
-      "statusName":"Chimeras/Founder Obtained",
-      "date":"2007-10-21T00:00:00"
-    }
-  ],
   "statusTransition":{
-    "currentStatus":"Chimeras/Founder Obtained",
-    "transitions":[
-      {
-        "action":"abortWhenChimerasFounderObtained",
-        "description":"Abort the plan after a founder obtained",
-        "triggeredByUser":true,
-        "available":false,
-        "note":"The plan has colonies that are not aborted. Please abort them first",
-        "nextStatus":"Attempt Aborted"
-      }
-    ],
     "actionToExecute":null
   }
 }
