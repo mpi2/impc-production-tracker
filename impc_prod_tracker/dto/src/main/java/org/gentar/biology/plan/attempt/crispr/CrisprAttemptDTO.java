@@ -29,7 +29,7 @@ import java.util.List;
 public class CrisprAttemptDTO
 {
     @JsonIgnore
-    private Long crisprAttemptId;
+    private Long planId;
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
     @JsonProperty("imitsMiAttemptId")

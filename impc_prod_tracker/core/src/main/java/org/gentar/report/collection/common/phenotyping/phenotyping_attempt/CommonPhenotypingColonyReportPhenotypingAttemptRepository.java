@@ -170,7 +170,7 @@ public interface CommonPhenotypingColonyReportPhenotypingAttemptRepository exten
             "INNER JOIN OutcomeType ot ON o.outcomeType = ot " +
             "INNER JOIN Plan prod_plan ON o.plan = prod_plan " +
             "INNER JOIN EsCellAttempt prod_es_attempt on prod_plan=prod_es_attempt.plan " +
-            "INNER JOIN TargRepEsCell targ_rep_es_cell on prod_es_attempt.TargRepEsCellId = targ_rep_es_cell.id " +
+            "INNER JOIN TargRepEsCell targ_rep_es_cell on prod_es_attempt.targRepEsCellId = targ_rep_es_cell.id " +
             "INNER JOIN Project prod_proj ON prod_plan.project = prod_proj " +
             "INNER JOIN Privacy prod_priv ON prod_proj.privacy = prod_priv " +
             "INNER JOIN PlanType prod_pt ON prod_plan.planType = prod_pt " +
@@ -259,7 +259,7 @@ public interface CommonPhenotypingColonyReportPhenotypingAttemptRepository exten
             "INNER JOIN Status es_prod_status ON es_prod_plan.status = es_prod_status " +
             "INNER JOIN AttemptType es_prod_at ON es_prod_plan.attemptType = es_prod_at " +
             "INNER JOIN EsCellAttempt es_prod_es_attempt on es_prod_plan=es_prod_es_attempt.plan " +
-            "INNER JOIN TargRepEsCell targ_rep_es_cell on es_prod_es_attempt.TargRepEsCellId = targ_rep_es_cell.id " +
+            "INNER JOIN TargRepEsCell targ_rep_es_cell on es_prod_es_attempt.targRepEsCellId = targ_rep_es_cell.id " +
             "INNER JOIN WorkUnit es_prod_w ON es_prod_plan.workUnit = es_prod_w " +
             "INNER JOIN WorkGroup es_prod_wg ON es_prod_plan.workGroup = es_prod_wg " +
             "where " +

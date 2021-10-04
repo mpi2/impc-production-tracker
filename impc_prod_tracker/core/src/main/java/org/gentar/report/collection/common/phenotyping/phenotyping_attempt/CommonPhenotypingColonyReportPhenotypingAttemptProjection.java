@@ -13,7 +13,7 @@ public interface CommonPhenotypingColonyReportPhenotypingAttemptProjection {
     @Value("#{target.strainAccId}")
     String getStrainAccId();
 
-    @Value("#{target.esCellName}")
+    @Value("#{target.targRepEsCellName}")
     String getEsCellName();
 
     @Value("#{target.productionWorkUnit}")

@@ -22,8 +22,8 @@
   },
   "esCellAlleleModificationAttempt":{
     "modificationExternalRef":"GSF-EPD0045_1_B11-3-1",
-    "numberOfCreMatingsSuccessful":1,
-    "tatCre":false,
+    "numberOfCreMatingsSuccessful":3,
+    "tatCre":true,
     "deleterStrainName":"BALB/cJ",
     "imitsMouseAlleleModId":1775,
     "targRepAlleleId":1878

@@ -1,0 +1,74 @@
+{
+  "pin":"PIN:0000000012",
+  "tpn":"TPN:000000003",
+  "attemptTypeName":"es cell allele modification",
+  "funderNames":[
+    "KOMP"
+  ],
+  "workUnitName":"BCM",
+  "workGroupName":"BaSH",
+  "comment":"es cell allele modification comment",
+  "esCellAlleleModificationStartingPoint":{
+    "_links":{
+      "outcome":{
+        "href":"http://localhost:8080/api/plans/PIN:0000000010/outcomes/TPO:000000000004"
+      },
+      "productionPlan":{
+        "href":"http://localhost:8080/api/plans/PIN:0000000010"
+      }
+    },
+    "outcomeTpo":"TPO:000000000004",
+    "productionPlanPin":"PIN:0000000010"
+  },
+  "esCellAlleleModificationAttempt":{
+    "modificationExternalRef":"H-GNAO1-G05-TM1B",
+    "numberOfCreMatingsSuccessful":3,
+    "tatCre":true,
+    "deleterStrainName":"C57BL/6NJ"
+  },
+  "typeName":"production",
+  "statusName":"Plan Created",
+  "summaryStatusName":"Plan Created",
+  "_links":{
+    "self":{
+      "href":"http://localhost:8080/api/plans/PIN:0000000012"
+    },
+    "project":{
+      "href":"http://localhost:8080/api/projects/TPN:000000003"
+    }
+  },
+  "statusDates":[
+    {
+      "statusName":"Plan Created",
+      "date":"2021-09-21T15:49:02.545636"
+    }
+  ],
+  "summaryStatusDates":[
+    {
+      "statusName":"Plan Created",
+      "date":"2021-09-21T15:49:02.558102"
+    }
+  ],
+  "statusTransition":{
+    "currentStatus":"Plan Created",
+    "transitions":[
+      {
+        "action":"updateToMouseAlleleModificationRegistered",
+        "description":"Update to mouse allele modification registered.",
+        "triggeredByUser":true,
+        "available":true,
+        "note":null,
+        "nextStatus":"Mouse Allele Modification Registered"
+      },
+      {
+        "action":"abandonWhenCreated",
+        "description":"Abandon a Es Cell allele modification plan that has been created",
+        "triggeredByUser":true,
+        "available":true,
+        "note":null,
+        "nextStatus":"Plan Abandoned"
+      }
+    ],
+    "actionToExecute":null
+  }
+}

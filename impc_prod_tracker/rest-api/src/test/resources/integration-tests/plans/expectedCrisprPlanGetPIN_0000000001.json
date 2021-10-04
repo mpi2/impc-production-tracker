@@ -10,11 +10,11 @@
   "comment":null,
   "crisprAttempt":{
     "miDate":"2019-02-26",
-    "experimental":true,
+    "experimental":false,
     "comment":"crispr plan comment",
     "mutagenesisExternalRef":"MF-26326",
     "imitsMiAttemptId":20043,
-    "attemptExternalRef":null,
+    "attemptExternalRef":"Attempt external ref",
     "embryoTransferDay":"Same Day",
     "totalTransferred":72,
     "nucleases":[
@@ -30,12 +30,12 @@
         "id":1,
         "sequence":"CTTCACGTACCAAGGAGGGGTGG",
         "guideSequence":"CTTCACGTACCAAGGAGGGG",
-        "pam":"AGG",
+        "pam":"TGG",
         "chr":"X",
-        "start":46245139,
-        "stop":46245161,
+        "start":45334016,
+        "stop":45334038,
         "strand":"+",
-        "genomeBuild":"GRCm38",
+        "genomeBuild":"GRCm39",
         "grnaConcentration":300.0,
         "truncatedGuide":true,
         "reversed":false,
@@ -91,7 +91,7 @@
   },
   "typeName":"production",
   "statusName":"Founder Obtained",
-  "summaryStatusName":"Founder Obtained",
+  "summaryStatusName":"Genotype Confirmed",
   "_links":{
     "self":{
       "href":"http://localhost:8080/api/plans/PIN:0000000001"
@@ -120,7 +120,7 @@
   ],
   "summaryStatusDates":[
     {
-      "statusName":"Founder Obtained",
+      "statusName":"Genotype Confirmed",
       "date":"2019-08-06T20:09:51.706639"
     }
   ],
@@ -131,8 +131,8 @@
         "action":"abortWhenFounderObtained",
         "description":"Abort the plan after a founder obtained",
         "triggeredByUser":true,
-        "available":true,
-        "note":null,
+        "available":false,
+        "note":"The plan has colonies that are not aborted. Please abort them first",
         "nextStatus":"Attempt Aborted"
       }
     ],
