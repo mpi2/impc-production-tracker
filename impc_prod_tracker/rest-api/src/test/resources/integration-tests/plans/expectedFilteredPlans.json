@@ -143,8 +143,8 @@
         }
       },
       {
-        "pin":"PIN:0000000002",
-        "tpn":"TPN:000000001",
+        "pin":"PIN:0000000222",
+        "tpn":"TPN:000000222",
         "attemptTypeName":"crispr",
         "funderNames":[
 
@@ -227,10 +227,10 @@
         "summaryStatusName":"Founder Obtained",
         "_links":{
           "self":{
-            "href":"http://localhost:8080/api/plans/PIN:0000000002"
+            "href":"http://localhost:8080/api/plans/PIN:0000000222"
           },
           "project":{
-            "href":"http://localhost:8080/api/projects/TPN:000000001"
+            "href":"http://localhost:8080/api/projects/TPN:000000222"
           }
         },
         "statusDates":[

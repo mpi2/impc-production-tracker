@@ -105,6 +105,8 @@ class PlanControllerTest extends ControllerTestTemplate
     @DatabaseTearDown(type = DatabaseOperation.DELETE_ALL, value = DBSetupFilesPaths.MULTIPLE_PLANS)
     void testUpdateCrisprPlan() throws Exception
     {
+        sequenceResetter.syncSequence("PLAN_STATUS_STAMP_SEQ", "PLAN_STATUS_STAMP");
+        sequenceResetter.syncSequence("PLAN_SUMMARY_STATUS_STAMP_SEQ", "PLAN_SUMMARY_STATUS_STAMP");
         sequenceResetter.syncSequence("HISTORY_SEQ", "HISTORY");
         sequenceResetter.syncSequence("HISTORY_DETAIL_SEQ", "HISTORY_DETAIL");
 
@@ -164,8 +166,6 @@ class PlanControllerTest extends ControllerTestTemplate
         }
         return historyDetailDTO;
     }
-
-
 
     private void verifyGetPlantEqualsJsonIgnoringIdsAndDates(String planLink, String jsonFileName)
         throws Exception
@@ -257,9 +257,9 @@ class PlanControllerTest extends ControllerTestTemplate
     @DatabaseTearDown(type = DatabaseOperation.DELETE_ALL, value = DBSetupFilesPaths.MULTIPLE_PLANS)
     void testGetPlanHistory() throws Exception
     {
-        String url = "/api/plans/PIN:0000000002/history";
+        String url = "/api/plans/PIN:0000000222/history";
         String expectedJson =
-            getCompleteResourcePath("expectedAttemptHistoryPIN_0000000002.json");
+            getCompleteResourcePath("expectedAttemptHistoryPIN_0000000222.json");
         String obtainedJson = restCaller.executeGetAndDocument(url, documentPhenotypingStageHistory());
         resultValidator.validateObtainedMatchesJson(obtainedJson, expectedJson);
     }
@@ -403,7 +403,6 @@ class PlanControllerTest extends ControllerTestTemplate
                 responseFields(esCellAlleleModificationPlanFieldsDescriptions));
     }
 
-
     @Test
     @DatabaseSetup(DBSetupFilesPaths.MULTIPLE_PLANS)
     @DatabaseTearDown(type = DatabaseOperation.DELETE_ALL, value = DBSetupFilesPaths.MULTIPLE_PLANS)
@@ -418,9 +417,7 @@ class PlanControllerTest extends ControllerTestTemplate
     private ResultHandler documentEsCellPlan()
     {
         List<FieldDescriptor> esCellPlanFieldsDescriptions = PlanFieldsDescriptors.getSharedFieldDescriptions();
-
         esCellPlanFieldsDescriptions.addAll(PlanFieldsDescriptors.getEsCellFieldDescriptors());
-
         return document("plans/getEsCellPlan", responseFields(esCellPlanFieldsDescriptions));
     }
 
@@ -541,6 +538,5 @@ class PlanControllerTest extends ControllerTestTemplate
         resultValidator.validateObtainedMatchesJson(
                 obtainedEsCellPlan, expectedJson, PlanCustomizations.ignoreIdsAndPinAndDates());
     }
-
 
 }
