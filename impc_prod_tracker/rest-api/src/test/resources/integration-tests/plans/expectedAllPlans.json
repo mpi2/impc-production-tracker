@@ -297,6 +297,9 @@
         "phenotypingAttemptResponse":{
           "doNotCountTowardsCompleteness":false,
           "phenotypingExternalRef":"CR10129",
+          "imitsPhenotypeAttemptId":9040,
+          "imitsPhenotypingProductionId":9243,
+          "imitsParentColonyId":20829,
           "phenotypingBackgroundStrainName":"C57BL/6NJ",
           "cohortProductionWorkUnitName":"BCM"
         },
