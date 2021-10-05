@@ -4,6 +4,7 @@ import lombok.AccessLevel;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.gentar.BaseEntity;
+import org.gentar.audit.diff.IgnoreForAuditingChanges;
 import org.gentar.biology.plan.Plan;
 import org.gentar.biology.strain.Strain;
 
@@ -24,6 +25,8 @@ public class EsCellAttempt extends BaseEntity
     @MapsId
     private Plan plan;
 
+    @IgnoreForAuditingChanges
+    @Column(unique = true, insertable = false, updatable = false)
     private Long imitsMiAttempt;
 
     // Connection to targ_rep_es_cell

@@ -1010,8 +1010,10 @@ include::{snippets}/plans/putPlanStateMachine/http-response.adoc[]
               now moves the PhenotypingAllDataProcessed state to PhenotypingAllDataSent rather than
               PhenotypingStarted.
 * 2020-11-30: New filter 'doNotCountTowardsCompleteness' added for phenotyping plans.
-* 2021-10-04: Species field remove from project object.
-* 2021-10-04: Cre Allele modification attempt rename to ES Cell allele modification attempt.
-
-
+* 2021-10-04: 'species' field have been removed from project object.
+* 2021-10-04: 'funders' field in plans can be updated after plan created.
+* 2021-10-04: creAlleleModificationAttempt object have been renamed to eSCellAlleleModificationAttempt.
+* 2021-10-04: Two new fields have been added to the esCellAlleleModificationAttempt object: 'imitsMouseAlleleModId' and
+              'imitsTargRepAlleleId', but only if they contain data.
+* 2021-10-04: 'imitsAllele' field in mutations has been renamed to 'imitsAlleleId' for consistency.
 

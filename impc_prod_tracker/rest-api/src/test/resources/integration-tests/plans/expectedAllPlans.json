@@ -448,7 +448,7 @@
           "tatCre":false,
           "deleterStrainName":"BALB/cJ",
           "imitsMouseAlleleModId":1775,
-          "targRepAlleleId":1878
+          "imitsTargRepAlleleId":1878
         },
         "typeName":"production",
         "statusName":"Cre Excision Complete",
@@ -561,7 +561,7 @@
           "cassetteTransmissionVerified":"2007-10-21",
           "numberOfHetOffspring":2,
           "numberOfLiveGltOffspring":0,
-          "targRepEsCellName":"EPD0045_1_A11",
+          "esCellName":"EPD0045_1_A11",
           "imitsMiAttemptId":2030,
           "attemptExternalRef":"MAKE"
         },

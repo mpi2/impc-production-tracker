@@ -21,6 +21,7 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 import org.gentar.BaseEntity;
+import org.gentar.audit.diff.IgnoreForAuditingChanges;
 import org.gentar.biology.plan.attempt.crispr.assay.Assay;
 import org.gentar.biology.plan.attempt.crispr.reagent.CrisprAttemptReagent;
 import org.gentar.biology.plan.attempt.crispr.genotype_primer.GenotypePrimer;
@@ -47,6 +48,8 @@ public class CrisprAttempt extends BaseEntity
     @MapsId
     private Plan plan;
 
+    @IgnoreForAuditingChanges
+    @Column(unique = true, insertable = false, updatable = false)
     private Long imitsMiAttempt;
 
     private LocalDate miDate;

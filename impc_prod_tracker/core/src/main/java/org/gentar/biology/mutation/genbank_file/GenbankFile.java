@@ -2,6 +2,7 @@ package org.gentar.biology.mutation.genbank_file;
 
 import lombok.*;
 import org.gentar.BaseEntity;
+import org.gentar.audit.diff.IgnoreForAuditingChanges;
 
 import javax.persistence.*;
 
@@ -15,6 +16,8 @@ public class GenbankFile extends BaseEntity
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "genbankFileSeq")
     private Long id;
 
+    @IgnoreForAuditingChanges
+    @Column(unique = true, insertable = false, updatable = false)
     private Long imitsGenbankFile;
 
     @Column(name= "file_gb", columnDefinition = "TEXT")

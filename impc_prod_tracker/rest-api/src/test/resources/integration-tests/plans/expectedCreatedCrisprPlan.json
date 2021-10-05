@@ -13,7 +13,6 @@
     "experimental":true,
     "comment":"crispr plan comment",
     "mutagenesisExternalRef":"MF-26326",
-    "imitsMiAttemptId":20043,
     "attemptExternalRef":"attempt external reference",
     "embryoTransferDay":"Same Day",
     "totalTransferred":72,

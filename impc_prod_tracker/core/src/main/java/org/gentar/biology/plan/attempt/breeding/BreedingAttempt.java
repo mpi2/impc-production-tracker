@@ -2,6 +2,7 @@ package org.gentar.biology.plan.attempt.breeding;
 
 import lombok.*;
 import org.gentar.BaseEntity;
+import org.gentar.audit.diff.IgnoreForAuditingChanges;
 import org.gentar.biology.plan.Plan;
 import org.gentar.biology.strain.Strain;
 
@@ -20,6 +21,8 @@ public class BreedingAttempt extends BaseEntity
     @MapsId
     private Plan plan;
 
+    @IgnoreForAuditingChanges
+    @Column(unique = true, insertable = false, updatable = false)
     private Long imitsMouseAlleleMod;
 
     @Column(name = "number_of_cre_matings_started")
