@@ -27,8 +27,16 @@ public class PhenotypingAttempt extends BaseEntity
     @IgnoreForAuditingChanges
     private Plan plan;
 
+    @IgnoreForAuditingChanges
+    @Column(unique = true, insertable = false, updatable = false)
     private Long imitsPhenotypeAttempt;
+
+    @IgnoreForAuditingChanges
+    @Column(unique = true, insertable = false, updatable = false)
     private Long imitsPhenotypingProduction;
+
+    @IgnoreForAuditingChanges
+    @Column(unique = true, insertable = false, updatable = false)
     private Long imitsParentColony;
 
     @Column(columnDefinition = "boolean default false")

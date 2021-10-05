@@ -71,7 +71,8 @@ public class Mutation extends BaseEntity
     @ToString.Exclude
     private String autoDescription;
 
-    @Column(unique = true)
+    @IgnoreForAuditingChanges
+    @Column(unique = true, insertable = false, updatable = false)
     private Long imitsAllele;
 
     @ManyToOne(targetEntity= GeneticMutationType.class)

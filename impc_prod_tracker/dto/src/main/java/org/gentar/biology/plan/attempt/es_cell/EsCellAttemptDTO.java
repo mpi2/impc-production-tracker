@@ -15,7 +15,8 @@ public class EsCellAttemptDTO
     @JsonIgnore
     private Long planId;
 
-    private String TargRepEsCellName;
+    @JsonProperty("esCellName")
+    private String targRepEsCellName;
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
     @JsonProperty("imitsMiAttemptId")

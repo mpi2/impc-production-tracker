@@ -22,7 +22,7 @@ import java.util.List;
 
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
 
-public class MutationControllerTest extends ControllerTestTemplate
+class MutationControllerTest extends ControllerTestTemplate
 {
     private static final String TEST_RESOURCES_FOLDER = INTEGRATION_TESTS_RESOURCE_PATH + "mutations/";
 

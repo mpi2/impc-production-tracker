@@ -17,7 +17,7 @@ public class EsCellAlleleModificationAttemptDTO {
     private Long imitsMouseAlleleMod;
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    @JsonProperty("targRepAlleleId")
+    @JsonProperty("imitsTargRepAlleleId")
     private Long targRepAllele;
 
     private String modificationExternalRef;

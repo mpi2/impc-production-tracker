@@ -5,7 +5,7 @@
         "id": 2,
         "min":"MIN:000000000002",
         "mgiAlleleId":"MGI:6342258",
-        "imitsAllele":266843,
+        "imitsAlleleId":266843,
         "mgiAlleleSymbolWithoutImpcAbbreviation":false,
         "mgiAlleleSymbolRequiresConstruction":true,
         "geneticMutationTypeName":"Not Tested",
