@@ -1010,10 +1010,13 @@ include::{snippets}/plans/putPlanStateMachine/http-response.adoc[]
               now moves the PhenotypingAllDataProcessed state to PhenotypingAllDataSent rather than
               PhenotypingStarted.
 * 2020-11-30: New filter 'doNotCountTowardsCompleteness' added for phenotyping plans.
-* 2021-10-04: 'species' field have been removed from project object.
-* 2021-10-04: 'funders' field in plans can be updated after plan created.
-* 2021-10-04: creAlleleModificationAttempt object have been renamed to eSCellAlleleModificationAttempt.
-* 2021-10-04: Two new fields have been added to the esCellAlleleModificationAttempt object: 'imitsMouseAlleleModId' and
-              'imitsTargRepAlleleId', but only if they contain data.
-* 2021-10-04: 'imitsAllele' field in mutations has been renamed to 'imitsAlleleId' for consistency.
+* 2021-10-04: The 'species' field have been removed from project object.
+* 2021-10-04: The 'funders' field in plans can be updated after plan created.
+* 2021-10-04: The creAlleleModificationAttempt object have been *renamed* to eSCellAlleleModificationAttempt.
+* 2021-10-04: Two *legacy* fields have been added to the esCellAlleleModificationAttempt object: 'imitsMouseAlleleModId' and
+              'imitsTargRepAlleleId'. They will be read_only and only be there is the data was migrated from iMits.
+* 2021-10-04: Three *legacy* fields have been added to the phenotypingAttemptResponse object: 'imitsPhenotypeAttemptId',
+              'imitsPhenotypingProductionId' and 'imitsParentColonyId'. They will be read_only and only be there is the data was migrated from iMits.
+* 2021-10-04: The *legacy* field 'imitsAllele' in mutation object has been renamed to 'imitsAlleleId' for consistency.
+              It will be read_only and only be there is the data was migrated from iMits.
 

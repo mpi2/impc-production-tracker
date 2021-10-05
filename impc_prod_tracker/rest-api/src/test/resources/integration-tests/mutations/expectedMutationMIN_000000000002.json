@@ -1,14 +1,13 @@
 {
-  "id": 2,
+  "id":2,
   "min":"MIN:000000000002",
   "mgiAlleleId":"MGI:6342258",
-  "imitsAlleleId":266843,
   "mgiAlleleSymbolWithoutImpcAbbreviation":false,
+  "symbol":"em1(IMPC)J",
+  "description":"",
   "mgiAlleleSymbolRequiresConstruction":true,
   "geneticMutationTypeName":"Not Tested",
   "molecularMutationTypeName":"Deletion",
-  "symbol":"em1(IMPC)J",
-  "description":"",
   "mutationQcResults":[
     {
       "id":1,

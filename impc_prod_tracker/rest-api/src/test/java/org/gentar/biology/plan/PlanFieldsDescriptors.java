@@ -96,7 +96,8 @@ public class PlanFieldsDescriptors
         addField(crisprFields, "crisprAttempt.comment", "Crispt attempt comment.");
         addField(
             crisprFields, "crisprAttempt.mutagenesisExternalRef", "Mutagenesis external reference.");
-        addField(crisprFields, "crisprAttempt.imitsMiAttemptId", "Id in iMits for this record.");
+        addField(crisprFields, "crisprAttempt.imitsMiAttemptId", "iMits mi_attempt identifier " +
+                "(present if the attempt was transferred from iMits)");
         addField(
             crisprFields, "crisprAttempt.attemptExternalRef", "External reference for the attempt.");
 
@@ -255,6 +256,13 @@ public class PlanFieldsDescriptors
                 "Phenotyping attempt background strain.");
         addField(phenotypingFields, "phenotypingAttemptResponse.doNotCountTowardsCompleteness", "");
         addField(phenotypingFields, "phenotypingAttemptResponse.cohortProductionWorkUnitName", "");
+
+        addField(phenotypingFields, "phenotypingAttemptResponse.imitsPhenotypeAttemptId",
+                "iMits phenotype_attempt identifier, (present if the phenotype_attempt was transferred from iMits)");
+        addField(phenotypingFields, "phenotypingAttemptResponse.imitsPhenotypingProductionId",
+                "iMits phenotyping_production identifier, (present if the phenotyping_production was transferred from iMits)");
+        addField(phenotypingFields, "phenotypingAttemptResponse.imitsParentColonyId",
+                "iMits parent_colony identifier, (present if the phenotype_attempt was transferred from iMits)");
         return phenotypingFields;
     }
 
@@ -279,10 +287,14 @@ public class PlanFieldsDescriptors
                 "External reference used to track the modification. For data exported from iMits the mouse allele modification colony name has been recorded as the modification external reference.");
         addField(esCellAlleleModificationFields, "esCellAlleleModificationAttempt.numberOfCreMatingsSuccessful",
                 "records the number of successful Cre matings.");
-        addField(esCellAlleleModificationFields, "esCellAlleleModificationAttempt.tatCre", "Indicates tat Cre used for modification rather than a deleter strain.");
-        addField(esCellAlleleModificationFields, "esCellAlleleModificationAttempt.deleterStrainName", "ES cell allele modification attempt deleter strain");
-        addField(esCellAlleleModificationFields, "esCellAlleleModificationAttempt.imitsMouseAlleleModId", "iMits Moude Allele Modification identifier, for legacy data");
-        addField(esCellAlleleModificationFields, "esCellAlleleModificationAttempt.imitsTargRepAlleleId", "TargRep Allele identifier");
+        addField(esCellAlleleModificationFields, "esCellAlleleModificationAttempt.tatCre",
+                "Indicates tat Cre used for modification rather than a deleter strain.");
+        addField(esCellAlleleModificationFields, "esCellAlleleModificationAttempt.deleterStrainName",
+                "ES cell allele modification attempt deleter strain");
+        addField(esCellAlleleModificationFields, "esCellAlleleModificationAttempt.imitsMouseAlleleModId",
+                "iMits mouse_allele_mod identifier, (present if the mouse_allele_mod was transferred from iMits)");
+        addField(esCellAlleleModificationFields, "esCellAlleleModificationAttempt.imitsTargRepAlleleId",
+                "iMits TargRep Allele identifier, (present if the mouse_allele_mod was transferred from iMits)");
         return esCellAlleleModificationFields;
     }
 
@@ -292,7 +304,7 @@ public class PlanFieldsDescriptors
 
         addField(esCellFields, "esCellAttempt", "ES cell attempt details.");
         addField(esCellFields, "esCellAttempt.esCellName","The ES Cell used in the attempt.");
-        addField(esCellFields, "esCellAttempt.imitsMiAttemptId", "The iMits attempt identifier (This is included if the data was migrated from iMits).");
+        addField(esCellFields, "esCellAttempt.imitsMiAttemptId", "iMits mi_attempt identifier, (present if the attempt was transferred from iMits).");
         addField(esCellFields, "esCellAttempt.miDate", "The date when the micro-injection was performed.");
         addField(esCellFields, "esCellAttempt.attemptExternalRef", "External reference used to track the ES cell attempt.");
         addField(esCellFields, "esCellAttempt.experimental", "A flag indicating if the attempt is experimental.");

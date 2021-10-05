@@ -21,7 +21,6 @@ public class MutationFieldsDescriptors
         addField(mutationFieldsDescriptions, "mgiAlleleSymbolRequiresConstruction", "[THIS FIELD IS DEPRECATED AND WILL BE REMOVED] Indicates if the allele symbol needs to be constructed from a superscript recorded in the mgiAlleleSymbol field and the associated gene information. SPECIFY ONLY WHEN CREATING");
         addField(mutationFieldsDescriptions, "geneticMutationTypeName", "Formal classification of the mutation in genetic terms, or an indication that the mutation has not been tested genetically.");
         addField(mutationFieldsDescriptions, "molecularMutationTypeName", "The type of the molecular lesion associated with the mutation.");
-        addField(mutationFieldsDescriptions, "imitsAlleleId", "The identifier assigned to the allele in iMits. READ ONLY");
 
         addField(
             mutationFieldsDescriptions, "mutationQcResults[]", "Array containing the results of QC tests carried out on the mutation.");
