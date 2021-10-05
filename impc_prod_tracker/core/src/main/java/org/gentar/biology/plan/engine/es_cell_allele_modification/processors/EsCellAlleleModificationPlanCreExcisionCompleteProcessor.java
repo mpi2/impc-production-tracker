@@ -1,7 +1,7 @@
-package org.gentar.biology.plan.engine.cre_allele_modification.processors;
+package org.gentar.biology.plan.engine.es_cell_allele_modification.processors;
 
 import org.gentar.biology.plan.Plan;
-import org.gentar.biology.plan.attempt.cre_allele_modification.CreAlleleModificationAttempt;
+import org.gentar.biology.plan.attempt.es_cell_allele_modification.EsCellAlleleModificationAttempt;
 import org.gentar.biology.plan.engine.PlanStateSetter;
 import org.gentar.statemachine.AbstractProcessor;
 import org.gentar.statemachine.ProcessData;
@@ -10,9 +10,9 @@ import org.gentar.statemachine.TransitionEvaluation;
 import org.springframework.stereotype.Component;
 
 @Component
-public class CreAlleleModificationPlanCreExcisionCompleteProcessor extends AbstractProcessor {
+public class EsCellAlleleModificationPlanCreExcisionCompleteProcessor extends AbstractProcessor {
 
-    public CreAlleleModificationPlanCreExcisionCompleteProcessor(PlanStateSetter planStateSetter)
+    public EsCellAlleleModificationPlanCreExcisionCompleteProcessor(PlanStateSetter planStateSetter)
     {
         super(planStateSetter);
     }
@@ -38,14 +38,14 @@ public class CreAlleleModificationPlanCreExcisionCompleteProcessor extends Abstr
     private boolean identifySuccessfulMatingsAndDeleterStrainOrTatCre(Plan plan)
     {
         boolean result = false;
-        CreAlleleModificationAttempt creAlleleModificationAttempt = plan.getCreAlleleModificationAttempt();
-        if (creAlleleModificationAttempt != null)
+        EsCellAlleleModificationAttempt esCellAlleleModificationAttempt = plan.getEsCellAlleleModificationAttempt();
+        if (esCellAlleleModificationAttempt != null)
         {
             int successfulCreMatings =
-                    creAlleleModificationAttempt.getNumberOfCreMatingsSuccessful() == null ? 0 :
-                            creAlleleModificationAttempt.getNumberOfCreMatingsSuccessful();
-            boolean deleterStrainExists = !(creAlleleModificationAttempt.getDeleterStrain() == null);
-            result = (successfulCreMatings > 0 && deleterStrainExists) || creAlleleModificationAttempt.getTatCre();
+                    esCellAlleleModificationAttempt.getNumberOfCreMatingsSuccessful() == null ? 0 :
+                            esCellAlleleModificationAttempt.getNumberOfCreMatingsSuccessful();
+            boolean deleterStrainExists = !(esCellAlleleModificationAttempt.getDeleterStrain() == null);
+            result = (successfulCreMatings > 0 && deleterStrainExists) || esCellAlleleModificationAttempt.getTatCre();
         }
         return result;
     }

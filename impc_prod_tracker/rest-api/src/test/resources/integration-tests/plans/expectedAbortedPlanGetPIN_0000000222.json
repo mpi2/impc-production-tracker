@@ -1,0 +1,131 @@
+{
+  "pin":"PIN:0000000222",
+  "tpn":"TPN:000000222",
+  "attemptTypeName":"crispr",
+  "funderNames":[
+    "KOMP2"
+  ],
+  "workUnitName":"UCD",
+  "workGroupName":"DTCC",
+  "comment":"Plan aborted",
+  "crisprAttempt":{
+    "miDate":"2018-03-26",
+    "experimental":false,
+    "comment":"crispr plan comment",
+    "mutagenesisExternalRef":"MF-26328",
+    "imitsMiAttemptId":20044,
+    "attemptExternalRef":"Attempt external ref 2",
+    "embryoTransferDay":"Same Day",
+    "totalTransferred":72,
+    "nucleases":[
+      {
+        "id":2,
+        "typeName":"Cas9",
+        "concentration":250.0,
+        "className":"protein"
+      }
+    ],
+    "guides":[
+      {
+        "id":2,
+        "sequence":"CCATGATCTAATCTGTGGTTAAA",
+        "guideSequence":"CCATGATCTAATCTGTGGTTAAA",
+        "pam":"AAA",
+        "chr":"14",
+        "start":57150316,
+        "stop":57150338,
+        "strand":"+",
+        "genomeBuild":"GRCm39",
+        "grnaConcentration":300.0,
+        "truncatedGuide":false,
+        "reversed":false,
+        "sangerService":false,
+        "formatName":"cr-tracrRNA",
+        "sourceName":"in-house"
+      }
+    ],
+    "mutagenesisDonors":[
+
+    ],
+    "reagents":[
+
+    ],
+    "genotypePrimers":[
+      {
+        "id":2,
+        "genomicStartCoordinate":1,
+        "genomicEndCoordinate":200,
+        "name":"Gpr68wtR",
+        "sequence":"GTAGAGGGACAGGCAGTTGG"
+      }
+    ],
+    "totalEmbryosInjected":70,
+    "totalEmbryosSurvived":64,
+    "embryo2Cell":"20044",
+    "assay":{
+      "id":2,
+      "typeName":"LOA",
+      "numFounderPups":4,
+      "numFounderSelectedForBreeding":1,
+      "founderNumAssays":4,
+      "numDeletionG0Mutants":1,
+      "numG0WhereMutationDetected":1,
+      "numHdrG0Mutants":null,
+      "numHdrG0MutantsAllDonorsInserted":null,
+      "numHdrG0MutantsSubsetDonorsInserted":null,
+      "numHrG0Mutants":null,
+      "numNhejG0Mutants":null
+    },
+    "strainInjectedName":"C57BL/6NJ"
+  },
+  "typeName":"production",
+  "statusName":"Attempt Aborted",
+  "summaryStatusName":"Attempt Aborted",
+  "_links":{
+    "self":{
+      "href":"http://localhost:8080/api/plans/PIN:0000000222"
+    },
+    "project":{
+      "href":"http://localhost:8080/api/projects/TPN:000000222"
+    }
+  },
+  "statusDates":[
+    {
+      "statusName":"Plan Created",
+      "date":"2018-06-25T00:00:00"
+    },
+    {
+      "statusName":"Attempt In Progress",
+      "date":"2018-06-25T00:00:00"
+    },
+    {
+      "statusName":"Founder Obtained",
+      "date":"2020-01-10T20:25:12.783017"
+    },
+    {
+      "statusName":"Embryos Obtained",
+      "date":"2020-01-10T20:25:12.783017"
+    },
+    {
+      "statusName":"Attempt Aborted",
+      "date":"2021-10-05T09:08:22.506549"
+    }
+  ],
+  "summaryStatusDates":[
+    {
+      "statusName":"Founder Obtained",
+      "date":"2020-01-10T20:25:12.783017"
+    },
+    {
+      "statusName":"Attempt Aborted",
+      "date":"2021-10-05T09:08:22.507551"
+    }
+  ],
+  "statusTransition":{
+    "currentStatus":"Attempt Aborted",
+    "transitions":[
+
+    ],
+    "actionToExecute":null
+  }
+}

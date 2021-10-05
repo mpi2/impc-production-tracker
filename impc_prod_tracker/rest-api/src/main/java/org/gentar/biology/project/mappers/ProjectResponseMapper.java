@@ -1,6 +1,5 @@
 package org.gentar.biology.project.mappers;
 
-import org.apache.logging.log4j.util.Strings;
 import org.gentar.Mapper;
 import org.gentar.biology.colony.Colony;
 import org.gentar.biology.intention.ProjectIntentionResponseDTO;
@@ -11,7 +10,6 @@ import org.gentar.biology.project.ProjectConsortiumDTO;
 import org.gentar.biology.project.ProjectController;
 import org.gentar.biology.project.ProjectResponseDTO;
 import org.gentar.biology.project.consortium.ProjectConsortiumMapper;
-import org.gentar.biology.species.SpeciesMapper;
 import org.gentar.biology.status.StatusStampMapper;
 import org.gentar.biology.status_stamps.StatusStampsDTO;
 import org.gentar.organization.work_group.WorkGroup;
@@ -30,20 +28,17 @@ public class ProjectResponseMapper implements Mapper<Project, ProjectResponseDTO
     private final ProjectCommonDataMapper projectCommonDataMapper;
     private final StatusStampMapper statusStampMapper;
     private final ProjectIntentionResponseMapper projectIntentionResponseMapper;
-    private final SpeciesMapper speciesMapper;
     private final ProjectConsortiumMapper projectConsortiumMapper;
 
     public ProjectResponseMapper(
         ProjectCommonDataMapper projectCommonDataMapper,
         StatusStampMapper statusStampMapper,
         ProjectIntentionResponseMapper projectIntentionResponseMapper,
-        SpeciesMapper speciesMapper,
         ProjectConsortiumMapper projectConsortiumMapper)
     {
         this.projectCommonDataMapper = projectCommonDataMapper;
         this.statusStampMapper = statusStampMapper;
         this.projectIntentionResponseMapper = projectIntentionResponseMapper;
-        this.speciesMapper = speciesMapper;
         this.projectConsortiumMapper = projectConsortiumMapper;
     }
 
@@ -67,7 +62,6 @@ public class ProjectResponseMapper implements Mapper<Project, ProjectResponseDTO
         setRelatedWorkUnitsDTOS(projectResponseDTO, project);
         setRelatedWorkGroupsDTOS(projectResponseDTO, project);
         setConsortiaToDto(projectResponseDTO, project);
-        setSpeciesToDto(projectResponseDTO, project);
         addSelfLink(projectResponseDTO, project);
 
         setColonyNames(projectResponseDTO, project);
@@ -144,12 +138,6 @@ public class ProjectResponseMapper implements Mapper<Project, ProjectResponseDTO
         List<ProjectConsortiumDTO> projectConsortiumDTOS =
             projectConsortiumMapper.toDtos(project.getProjectConsortia());
         projectResponseDTO.setProjectConsortiumDTOS(projectConsortiumDTOS);
-    }
-
-    private void setSpeciesToDto(ProjectResponseDTO projectResponseDTO, Project project)
-    {
-        List<String> speciesNames = speciesMapper.toDtos(project.getSpecies());
-        projectResponseDTO.setSpeciesNames(speciesNames);
     }
 
     private void addSelfLink(ProjectResponseDTO projectResponseDTO, Project project)

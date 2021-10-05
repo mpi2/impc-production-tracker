@@ -1,8 +1,9 @@
-package org.gentar.biology.plan.attempt.cre_allele_modification;
+package org.gentar.biology.plan.attempt.es_cell_allele_modification;
 
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.gentar.BaseEntity;
 import org.gentar.biology.plan.Plan;
 import org.gentar.biology.strain.Strain;
 
@@ -11,7 +12,8 @@ import javax.persistence.*;
 @NoArgsConstructor(access= AccessLevel.PUBLIC, force=true)
 @Data
 @Entity
-public class CreAlleleModificationAttempt {
+public class EsCellAlleleModificationAttempt extends BaseEntity
+{
 
     @Id
     @Column(name = "id")

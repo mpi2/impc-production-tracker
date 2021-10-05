@@ -104,9 +104,6 @@
             ]
           }
         ],
-        "speciesNames":[
-          "Mus musculus"
-        ],
         "consortia":[
           {
             "id":1,
@@ -148,9 +145,6 @@
         "projectIntentions":[
 
         ],
-        "speciesNames":[
-          "Homo sapiens"
-        ],
         "consortia":[
           {
             "id":2,
@@ -190,9 +184,6 @@
 
         ],
         "projectIntentions":[
-
-        ],
-        "speciesNames":[
 
         ],
         "consortia":[
@@ -236,9 +227,6 @@
         "projectIntentions":[
 
         ],
-        "speciesNames":[
-
-        ],
         "consortia":[
           {
             "id":4,
@@ -278,9 +266,6 @@
 
         ],
         "projectIntentions":[
-
-        ],
-        "speciesNames":[
 
         ],
         "consortia":[

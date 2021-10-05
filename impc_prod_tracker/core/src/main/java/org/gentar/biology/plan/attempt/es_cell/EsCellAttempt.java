@@ -1,4 +1,4 @@
-package org.gentar.biology.plan.attempt.esCell;
+package org.gentar.biology.plan.attempt.es_cell;
 
 import lombok.AccessLevel;
 import lombok.Data;
@@ -10,7 +10,6 @@ import org.gentar.biology.strain.Strain;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 
 @NoArgsConstructor(access= AccessLevel.PUBLIC, force=true)
 @Data
@@ -31,7 +30,7 @@ public class EsCellAttempt extends BaseEntity
     // This stores the id but is not specified as a foreign key
     // The id is converted to the EsCellName in the service and DTO.
     @NotNull
-    private Long TargRepEsCellId;
+    private Long targRepEsCellId;
 
     private LocalDate miDate;
 

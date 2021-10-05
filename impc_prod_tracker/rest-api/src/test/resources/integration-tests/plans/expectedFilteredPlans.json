@@ -13,11 +13,11 @@
         "comment":null,
         "crisprAttempt":{
           "miDate":"2019-02-26",
-          "experimental":true,
+          "experimental":false,
           "comment":"crispr plan comment",
           "mutagenesisExternalRef":"MF-26326",
           "imitsMiAttemptId":20043,
-          "attemptExternalRef":null,
+          "attemptExternalRef":"Attempt external ref",
           "embryoTransferDay":"Same Day",
           "totalTransferred":72,
           "nucleases":[
@@ -33,12 +33,12 @@
               "id":1,
               "sequence":"CTTCACGTACCAAGGAGGGGTGG",
               "guideSequence":"CTTCACGTACCAAGGAGGGG",
-              "pam":"AGG",
+              "pam":"TGG",
               "chr":"X",
-              "start":46245139,
-              "stop":46245161,
+              "start":45334016,
+              "stop":45334038,
               "strand":"+",
-              "genomeBuild":"GRCm38",
+              "genomeBuild":"GRCm39",
               "grnaConcentration":300.0,
               "truncatedGuide":true,
               "reversed":false,
@@ -94,7 +94,7 @@
         },
         "typeName":"production",
         "statusName":"Founder Obtained",
-        "summaryStatusName":"Founder Obtained",
+        "summaryStatusName":"Genotype Confirmed",
         "_links":{
           "self":{
             "href":"http://localhost:8080/api/plans/PIN:0000000001"
@@ -123,7 +123,7 @@
         ],
         "summaryStatusDates":[
           {
-            "statusName":"Founder Obtained",
+            "statusName":"Genotype Confirmed",
             "date":"2019-08-06T20:09:51.706639"
           }
         ],
@@ -134,8 +134,8 @@
               "action":"abortWhenFounderObtained",
               "description":"Abort the plan after a founder obtained",
               "triggeredByUser":true,
-              "available":true,
-              "note":null,
+              "available":false,
+              "note":"The plan has colonies that are not aborted. Please abort them first",
               "nextStatus":"Attempt Aborted"
             }
           ],
@@ -143,14 +143,14 @@
         }
       },
       {
-        "pin":"PIN:0000000002",
-        "tpn":"TPN:000000001",
+        "pin":"PIN:0000000222",
+        "tpn":"TPN:000000222",
         "attemptTypeName":"crispr",
         "funderNames":[
-
+          "KOMP2"
         ],
-        "workUnitName":"BCM",
-        "workGroupName":"BaSH",
+        "workUnitName":"UCD",
+        "workGroupName":"DTCC",
         "comment":null,
         "crisprAttempt":{
           "miDate":"2018-03-26",
@@ -158,7 +158,7 @@
           "comment":"crispr plan comment",
           "mutagenesisExternalRef":"MF-26328",
           "imitsMiAttemptId":20044,
-          "attemptExternalRef":null,
+          "attemptExternalRef":"Attempt external ref 2",
           "embryoTransferDay":"Same Day",
           "totalTransferred":72,
           "nucleases":[
@@ -176,10 +176,10 @@
               "guideSequence":"CCATGATCTAATCTGTGGTTAAA",
               "pam":"AAA",
               "chr":"14",
-              "start":56912859,
-              "stop":56912881,
+              "start":57150316,
+              "stop":57150338,
               "strand":"+",
-              "genomeBuild":"GRCm38",
+              "genomeBuild":"GRCm39",
               "grnaConcentration":300.0,
               "truncatedGuide":false,
               "reversed":false,
@@ -189,21 +189,10 @@
             }
           ],
           "mutagenesisDonors":[
-            {
-              "id":2,
-              "concentration":5.0,
-              "vectorName":"pUC18_Ikzf2_conditional",
-              "oligoSequenceFasta":"ATAATTGGCAGCCTGATTAGAAGAATGCCCATCTTGTCTAGTGACACATTAGAACAATGAGTAATTGCTCGATGCGGATCCATAACTTCGTATAGCATACATTATACGAAGTTATTCTCTGGGATTAAGAAAAAACTAACATATGAAACAGAAGCCCAGACATCTAAAACCACAAAGA",
-              "preparationTypeName":"Circular"
-            }
+
           ],
           "reagents":[
-            {
-              "id":2,
-              "reagentName":"Xrcc5",
-              "reagentDescription":"NHEJ Inhibitor",
-              "concentration":334.0
-            }
+
           ],
           "genotypePrimers":[
             {
@@ -220,40 +209,52 @@
           "assay":{
             "id":2,
             "typeName":"LOA",
-            "numFounderPups":26,
+            "numFounderPups":4,
             "numFounderSelectedForBreeding":1,
-            "founderNumAssays":26,
+            "founderNumAssays":4,
             "numDeletionG0Mutants":1,
             "numG0WhereMutationDetected":1,
-            "numHdrG0Mutants":1,
-            "numHdrG0MutantsAllDonorsInserted":0,
-            "numHdrG0MutantsSubsetDonorsInserted":0,
-            "numHrG0Mutants":0,
-            "numNhejG0Mutants":0
+            "numHdrG0Mutants":null,
+            "numHdrG0MutantsAllDonorsInserted":null,
+            "numHdrG0MutantsSubsetDonorsInserted":null,
+            "numHrG0Mutants":null,
+            "numNhejG0Mutants":null
           },
           "strainInjectedName":"C57BL/6NJ"
         },
         "typeName":"production",
         "statusName":"Founder Obtained",
-        "summaryStatusName":"Plan Created",
+        "summaryStatusName":"Founder Obtained",
         "_links":{
           "self":{
-            "href":"http://localhost:8080/api/plans/PIN:0000000002"
+            "href":"http://localhost:8080/api/plans/PIN:0000000222"
           },
           "project":{
-            "href":"http://localhost:8080/api/projects/TPN:000000001"
+            "href":"http://localhost:8080/api/projects/TPN:000000222"
           }
         },
         "statusDates":[
           {
             "statusName":"Plan Created",
-            "date":"2020-04-14T12:46:24.706639"
+            "date":"2018-06-25T00:00:00"
+          },
+          {
+            "statusName":"Attempt In Progress",
+            "date":"2018-06-25T00:00:00"
+          },
+          {
+            "statusName":"Founder Obtained",
+            "date":"2020-01-10T20:25:12.783017"
+          },
+          {
+            "statusName":"Embryos Obtained",
+            "date":"2020-01-10T20:25:12.783017"
           }
         ],
         "summaryStatusDates":[
           {
-            "statusName":"Plan Created",
-            "date":"2020-04-14T12:46:24.706639"
+            "statusName":"Founder Obtained",
+            "date":"2020-01-10T20:25:12.783017"
           }
         ],
         "statusTransition":{
@@ -263,8 +264,8 @@
               "action":"abortWhenFounderObtained",
               "description":"Abort the plan after a founder obtained",
               "triggeredByUser":true,
-              "available":false,
-              "note":"The plan has colonies that are not aborted. Please abort them first",
+              "available":true,
+              "note":null,
               "nextStatus":"Attempt Aborted"
             }
           ],

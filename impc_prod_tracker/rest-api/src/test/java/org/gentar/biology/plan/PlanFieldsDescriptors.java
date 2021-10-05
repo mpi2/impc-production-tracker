@@ -258,30 +258,32 @@ public class PlanFieldsDescriptors
         return phenotypingFields;
     }
 
-    public static List<FieldDescriptor> getCreAlleleModificationFieldDescriptors()
+    public static List<FieldDescriptor> getEsCellAlleleModificationFieldDescriptors()
     {
-        List<FieldDescriptor> creAlleleModificationFields = new ArrayList<>();
+        List<FieldDescriptor> esCellAlleleModificationFields = new ArrayList<>();
 
-        addField(creAlleleModificationFields, "creAlleleModificationStartingPoint", "Outcome information");
-        addField(creAlleleModificationFields, "creAlleleModificationStartingPoint._links", "");
-        addField(creAlleleModificationFields, "creAlleleModificationStartingPoint._links.outcome", "");
-        addField(creAlleleModificationFields, "creAlleleModificationStartingPoint._links.outcome.href", "Outcome link");
-        addField(creAlleleModificationFields, "creAlleleModificationStartingPoint._links.productionPlan", "");
-        addField(creAlleleModificationFields, "creAlleleModificationStartingPoint._links.productionPlan.href",
+        addField(esCellAlleleModificationFields, "esCellAlleleModificationStartingPoint", "Outcome information");
+        addField(esCellAlleleModificationFields, "esCellAlleleModificationStartingPoint._links", "");
+        addField(esCellAlleleModificationFields, "esCellAlleleModificationStartingPoint._links.outcome", "");
+        addField(esCellAlleleModificationFields, "esCellAlleleModificationStartingPoint._links.outcome.href", "Outcome link");
+        addField(esCellAlleleModificationFields, "esCellAlleleModificationStartingPoint._links.productionPlan", "");
+        addField(esCellAlleleModificationFields, "esCellAlleleModificationStartingPoint._links.productionPlan.href",
                 "Production plan link");
-        addField(creAlleleModificationFields, "creAlleleModificationStartingPoint.outcomeTpo",
+        addField(esCellAlleleModificationFields, "esCellAlleleModificationStartingPoint.outcomeTpo",
                 "Public identifier for the outcome.");
-        addField(creAlleleModificationFields, "creAlleleModificationStartingPoint.productionPlanPin",
+        addField(esCellAlleleModificationFields, "esCellAlleleModificationStartingPoint.productionPlanPin",
                 "Public identifier for the outcome production plan.");
 
-        addField(creAlleleModificationFields, "creAlleleModificationAttempt", "Cre allele modification attempt details.");
-        addField(creAlleleModificationFields, "creAlleleModificationAttempt.modificationExternalRef",
+        addField(esCellAlleleModificationFields, "esCellAlleleModificationAttempt", "ES cell allele modification attempt details.");
+        addField(esCellAlleleModificationFields, "esCellAlleleModificationAttempt.modificationExternalRef",
                 "External reference used to track the modification. For data exported from iMits the mouse allele modification colony name has been recorded as the modification external reference.");
-        addField(creAlleleModificationFields, "creAlleleModificationAttempt.numberOfCreMatingsSuccessful",
+        addField(esCellAlleleModificationFields, "esCellAlleleModificationAttempt.numberOfCreMatingsSuccessful",
                 "records the number of successful Cre matings.");
-        addField(creAlleleModificationFields, "creAlleleModificationAttempt.tatCre", "Indicates tat Cre used for modification rather than a deleter strain.");
-        addField(creAlleleModificationFields, "creAlleleModificationAttempt.deleterStrainName", "Cre allele modification attempt deleter strain");
-        return creAlleleModificationFields;
+        addField(esCellAlleleModificationFields, "esCellAlleleModificationAttempt.tatCre", "Indicates tat Cre used for modification rather than a deleter strain.");
+        addField(esCellAlleleModificationFields, "esCellAlleleModificationAttempt.deleterStrainName", "ES cell allele modification attempt deleter strain");
+        addField(esCellAlleleModificationFields, "esCellAlleleModificationAttempt.imitsMouseAlleleModId", "iMits Moude Allele Modification identifier, for legacy data");
+        addField(esCellAlleleModificationFields, "esCellAlleleModificationAttempt.targRepAlleleId", "TargRep Allele identifier");
+        return esCellAlleleModificationFields;
     }
 
     public static List<FieldDescriptor> getEsCellFieldDescriptors()
@@ -289,7 +291,7 @@ public class PlanFieldsDescriptors
         List<FieldDescriptor> esCellFields = new ArrayList<>();
 
         addField(esCellFields, "esCellAttempt", "ES cell attempt details.");
-        addField(esCellFields, "esCellAttempt.esCellName","The ES Cell used in the attempt.");
+        addField(esCellFields, "esCellAttempt.targRepEsCellName","The ES Cell used in the attempt.");
         addField(esCellFields, "esCellAttempt.imitsMiAttemptId", "The iMits attempt identifier (This is included if the data was migrated from iMits).");
         addField(esCellFields, "esCellAttempt.miDate", "The date when the micro-injection was performed.");
         addField(esCellFields, "esCellAttempt.attemptExternalRef", "External reference used to track the ES cell attempt.");

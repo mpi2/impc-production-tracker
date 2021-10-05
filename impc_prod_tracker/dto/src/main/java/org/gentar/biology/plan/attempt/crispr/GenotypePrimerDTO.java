@@ -15,7 +15,6 @@
  *******************************************************************************/
 package org.gentar.biology.plan.attempt.crispr;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -26,8 +25,6 @@ import lombok.NoArgsConstructor;
 public class GenotypePrimerDTO
 {
     private Long id;
-    @JsonIgnore
-    private Long attempt_id;
     private Integer genomicStartCoordinate;
     private Integer genomicEndCoordinate;
     private String name;

@@ -4,6 +4,7 @@ import org.gentar.report.ReportServiceImpl;
 import org.gentar.report.ReportTypeName;
 import org.gentar.report.collection.gene_interest.phenotyping.GeneInterestReportPhenotyping;
 import org.gentar.report.collection.gene_interest.production_type.GeneInterestReportCrisprProduction;
+import org.gentar.report.collection.gene_interest.production_type.GeneInterestReportEsCellProduction;
 import org.springframework.stereotype.Component;
 
 import java.util.*;
@@ -14,12 +15,23 @@ public class GeneInterestReportServiceImpl implements GeneInterestReportService
 {
     private final ReportServiceImpl reportService;
     private final GeneInterestReportCrisprProduction crisprProduction;
+    private final GeneInterestReportEsCellProduction esCellProduction;
     private final GeneInterestReportPhenotyping phenotyping;
+    private final GeneInterestReportMergeHelperImpl mergeHelper;
 
 
     private Map<String, String> crisprGenes;
+    private Set<Long> crisprOutcomes;
     private Map<String, String> summaryAssignmentForCrisprGenes;
     private Map<String, String> summaryProductionPlanStatusForCrisprGenes;
+
+
+    private Map<String, String> esCellGenes;
+    private Set<Long> esCellOutcomes;
+    private Map<String, String> summaryAssignmentForEsCellGenes;
+    private Map<String, String> summaryProductionPlanStatusForEsCellGenes;
+    private Map<String, String> summaryProductionPlanStatusForEsCellNullTargetedGenes;
+    private Map<String, String> summaryProductionPlanStatusForEsCellConditionalTargetedGenes;
 
     private Map<String, String> phenotypingGenes;
     private Map<String, String> summaryEarlyAdultPhenotypingStageStatusForPhenotypingGenes;
@@ -29,11 +41,15 @@ public class GeneInterestReportServiceImpl implements GeneInterestReportService
 
     public GeneInterestReportServiceImpl(ReportServiceImpl reportService,
                                          GeneInterestReportCrisprProduction crisprProduction,
-                                         GeneInterestReportPhenotyping phenotyping)
+                                         GeneInterestReportEsCellProduction esCellProduction,
+                                         GeneInterestReportPhenotyping phenotyping,
+                                         GeneInterestReportMergeHelperImpl mergeHelper)
     {
         this.reportService = reportService;
         this.crisprProduction = crisprProduction;
+        this.esCellProduction = esCellProduction;
         this.phenotyping = phenotyping;
+        this.mergeHelper = mergeHelper;
     }
 
     @Override
@@ -41,6 +57,7 @@ public class GeneInterestReportServiceImpl implements GeneInterestReportService
     {
 
         processCrisprData();
+        processEsCellData();
         processPhenotypingData();
 
         // will require methods to aggregate ES and Crispr gene assignment data
@@ -49,8 +66,10 @@ public class GeneInterestReportServiceImpl implements GeneInterestReportService
         // This is not required for the phenotyping data,
         // because processCrisprData should have identified all the projects and genes.
 
-        summaryAssignmentForGenes = summaryAssignmentForCrisprGenes;
-        allGenes = crisprGenes;
+        summaryAssignmentForGenes = mergeHelper.mergeSummaryAssignmentForGenes(
+                summaryAssignmentForCrisprGenes,summaryAssignmentForEsCellGenes);
+
+        allGenes = mergeHelper.mergeGenes(crisprGenes,esCellGenes);
 
         saveReport();
     }
@@ -59,14 +78,33 @@ public class GeneInterestReportServiceImpl implements GeneInterestReportService
 
         crisprProduction.summariseData();
 
+        crisprOutcomes = crisprProduction.getCrisprOutcomeSet();
         crisprGenes = crisprProduction.getGeneIdToSymbolMap();
         summaryAssignmentForCrisprGenes = crisprProduction.getGeneIdToAssignmentMap();
         summaryProductionPlanStatusForCrisprGenes = crisprProduction.getGeneIdToProductionPlanStatusMap();
     }
 
+    private void processEsCellData() {
+
+        esCellProduction.summariseData();
+
+        esCellOutcomes = esCellProduction.getESCellOutcomeSet();
+        esCellGenes = esCellProduction.getGeneIdToSymbolMap();
+        summaryAssignmentForEsCellGenes = esCellProduction.getGeneIdToAssignmentMap();
+        summaryProductionPlanStatusForEsCellGenes = esCellProduction.getGeneIdToProductionPlanStatusMap();
+        summaryProductionPlanStatusForEsCellNullTargetedGenes =
+                esCellProduction.getGeneIdToProductionPlanStatusMapForNullTargetedGenes();
+        summaryProductionPlanStatusForEsCellConditionalTargetedGenes =
+                esCellProduction.getGeneIdToProductionPlanStatusMapForConditionalTargetedGenes();
+
+    }
+
     private void processPhenotypingData() {
 
-        phenotyping.summariseData();
+        Set<Long> allOutcomes = new HashSet<>(crisprOutcomes);
+        allOutcomes.addAll(esCellOutcomes);
+
+        phenotyping.summariseData(allOutcomes);
 
         phenotypingGenes = phenotyping.getGeneIdToSymbolMap();
         summaryEarlyAdultPhenotypingStageStatusForPhenotypingGenes = phenotyping.getGeneIdToEarlyAdultPhenotypingStageStatusStatusMap();
@@ -99,8 +137,8 @@ public class GeneInterestReportServiceImpl implements GeneInterestReportService
                 e.getValue(),
                 e.getKey(),
                 summaryAssignmentForGenes.get(e.getKey()),
-                "",
-                "",
+                summaryProductionPlanStatusForEsCellNullTargetedGenes.getOrDefault(e.getKey(), ""),
+                summaryProductionPlanStatusForEsCellConditionalTargetedGenes.getOrDefault(e.getKey(), ""),
                 summaryProductionPlanStatusForCrisprGenes.getOrDefault(e.getKey(), ""),
                 summaryEarlyAdultPhenotypingStageStatusForPhenotypingGenes.getOrDefault(e.getKey(), "")
         );

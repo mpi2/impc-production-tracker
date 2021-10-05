@@ -129,8 +129,7 @@ public class PlanServiceImpl implements PlanService
     @Override
     public History updatePlan(String pin, Plan plan)
     {
-        Plan existingPlan = getNotNullPlanByPin(pin);
-        Plan originalPlan = new Plan(existingPlan);
+        Plan originalPlan = getNotNullPlanByPin(pin);
         return planUpdater.updatePlan(originalPlan, plan);
     }
 

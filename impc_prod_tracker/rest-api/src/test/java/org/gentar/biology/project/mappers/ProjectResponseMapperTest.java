@@ -6,7 +6,6 @@ import org.gentar.biology.project.Project;
 import org.gentar.biology.project.ProjectResponseDTO;
 import org.gentar.biology.project.assignment.AssignmentStatus;
 import org.gentar.biology.project.consortium.ProjectConsortiumMapper;
-import org.gentar.biology.species.SpeciesMapper;
 import org.gentar.biology.status.Status;
 import org.gentar.biology.status.StatusStampMapper;
 import org.gentar.organization.work_group.WorkGroup;
@@ -42,8 +41,6 @@ class ProjectResponseMapperTest
     @Mock
     private ProjectIntentionResponseMapper projectIntentionResponseMapper;
     @Mock
-    private SpeciesMapper speciesMapper;
-    @Mock
     private ProjectConsortiumMapper projectConsortiumMapper;
 
 
@@ -55,7 +52,6 @@ class ProjectResponseMapperTest
             projectCommonDataMapper,
             statusStampMapper,
             projectIntentionResponseMapper,
-            speciesMapper,
             projectConsortiumMapper);
     }
 
@@ -68,7 +64,6 @@ class ProjectResponseMapperTest
         verify(projectCommonDataMapper, times(1)).toDto(project);
         verify(statusStampMapper, times(1)).toDtos(project.getAssignmentStatusStamps());
         verify(projectIntentionResponseMapper, times(1)).toDtos(project.getProjectIntentions());
-        verify(speciesMapper, times(1)).toDtos(project.getSpecies());
         verify(projectConsortiumMapper, times(1)).toDtos(project.getProjectConsortia());
         assertThat(projectResponseDTO.getTpn(), is(TPN));
         assertThat(projectResponseDTO.getAssignmentStatusName(), is(ASSIGNMENT_STATUS));

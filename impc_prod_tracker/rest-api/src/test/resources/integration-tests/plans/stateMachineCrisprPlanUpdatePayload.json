@@ -1,0 +1,16 @@
+{
+  "pin":"PIN:0000000222",
+  "tpn":"TPN:000000222",
+  "attemptTypeName":"crispr",
+  "funderNames":[
+    "KOMP2"
+  ],
+  "workUnitName":"UCD",
+  "workGroupName":"DTCC",
+  "comment":"Plan aborted",
+  "typeName":"production",
+  "statusName":"Founder Obtained",
+  "statusTransition":{
+    "actionToExecute":"abortWhenFounderObtained"
+  }
+}

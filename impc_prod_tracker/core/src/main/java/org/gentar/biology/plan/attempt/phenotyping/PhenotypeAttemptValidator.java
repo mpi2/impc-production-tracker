@@ -37,13 +37,20 @@ public class PhenotypeAttemptValidator
     public void validateDataIfPhenotypeStageExists(PhenotypingAttempt originalAttempt, PhenotypingAttempt phenotypingAttempt)
     {
         // The cohort work unit can be null, so we are going to check this first.
-        WorkUnit originalWorkUnit = originalAttempt.getCohortWorkUnit();
-        WorkUnit newWorkUnit = phenotypingAttempt.getCohortWorkUnit();
-        if (originalWorkUnit == null) {
-            originalWorkUnit = new WorkUnit();
+        WorkUnit originalWorkUnit = new WorkUnit();
+        if (originalAttempt.getCohortWorkUnit() != null)
+        {
+            originalWorkUnit = originalAttempt.getCohortWorkUnit();
+        } else if (originalAttempt.getPlan().getWorkUnit() != null)
+        {
+            originalWorkUnit = originalAttempt.getPlan().getWorkUnit();
         }
-        if (newWorkUnit == null) {
-            newWorkUnit = new WorkUnit();
+
+        WorkUnit newWorkUnit = new WorkUnit();
+        if (phenotypingAttempt.getCohortWorkUnit() != null) {
+            newWorkUnit = phenotypingAttempt.getCohortWorkUnit();
+        } else if (phenotypingAttempt.getPlan().getWorkUnit() != null) {
+            newWorkUnit = phenotypingAttempt.getPlan().getWorkUnit();
         }
 
         if ((!originalWorkUnit.equals(newWorkUnit) ||
@@ -52,10 +59,11 @@ public class PhenotypeAttemptValidator
                 && phenotypingAttempt.getPhenotypingStages() != null)
         {
             Set<PhenotypingStage> phenotypingStages = phenotypingAttempt.getPhenotypingStages();
-            var matchPhenotypingStage = phenotypingStages.stream().anyMatch(ps -> (ps.getPhenotypingStageType()
-                    .getName().equals("early adult and embryo") && ps.getStatus().getOrdering() >= 253000) ||
+            var matchPhenotypingStage = phenotypingStages.stream().anyMatch(ps ->
+                    (ps.getPhenotypingStageType().getName().equals("early adult and embryo")
+                            && ps.getStatus().getOrdering() >= 151000 && ps.getStatus().getOrdering() <= 257000) ||
                     (ps.getPhenotypingStageType().getName().equals("late adult") &&
-                            ps.getStatus().getOrdering() >= 301000));
+                            ps.getStatus().getOrdering() >= 301000 && ps.getStatus().getOrdering() <= 305000));
 
             if (matchPhenotypingStage == true)
             {
@@ -64,3 +72,6 @@ public class PhenotypeAttemptValidator
         }
     }
 }
+
+
+

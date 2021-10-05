@@ -1,0 +1,94 @@
+{
+  "pin":"PIN:0000000012",
+  "tpn":"TPN:000000003",
+  "attemptTypeName":"es cell",
+  "funderNames":[
+    "KOMP"
+  ],
+  "workUnitName":"BCM",
+  "workGroupName":"BaSH",
+  "comment":"example of es cell plan creation",
+  "esCellAttempt":{
+    "targRepEsCellName":"EPD0045_1_A11",
+    "miDate":"2019-02-26",
+    "experimental":true,
+    "comment":"es cell plan comment",
+    "blastStrainName":"C57BL/6NJ",
+    "totalBlastsInjected":10,
+    "totalTransferred":8,
+    "numberSurrogatesReceiving":6,
+    "totalPupsBorn":6,
+    "totalFemaleChimeras":2,
+    "totalMaleChimeras":0,
+    "totalChimeras":2,
+    "numberOfMalesWith0To39PercentChimerism":1,
+    "numberOfMalesWith40To79PercentChimerism":1,
+    "numberOfMalesWith80To99PercentChimerism":1,
+    "numberOfMalesWith100PercentChimerism":3,
+    "testCrossStrainName":"C57BL/6NJ",
+    "dateChimerasMated":"2019-02-26",
+    "numberOfChimeraMatingsAttempted":2,
+    "numberOfChimeraMatingsSuccessful":1,
+    "numberOfChimerasWithGltFromCct":2,
+    "numberOfChimerasWithGltFromGenotyping":2,
+    "numberOfChimerasWith0To9PercentGlt":1,
+    "numberOfChimerasWith10To49PercentGlt":1,
+    "numberOfChimerasWith50To99PercentGlt":1,
+    "numberOfChimerasWith100PercentGlt":3,
+    "totalF1MiceFromMatings":4,
+    "numberOfCctOffspring":2,
+    "cassetteTransmissionVerified":null,
+    "numberOfHetOffspring":2,
+    "numberOfLiveGltOffspring":1,
+    "attemptExternalRef":"attempt external reference"
+  },
+  "typeName":"production",
+  "statusName":"Attempt In Progress",
+  "summaryStatusName":"Attempt In Progress",
+  "_links":{
+    "self":{
+      "href":"http://localhost:8080/api/plans/PIN:0000000012"
+    },
+    "project":{
+      "href":"http://localhost:8080/api/projects/TPN:000000003"
+    }
+  },
+  "statusDates":[
+    {
+      "statusName":"Plan Created",
+      "date":"2021-09-21T12:39:39.425348"
+    },
+    {
+      "statusName":"Attempt In Progress",
+      "date":"2021-09-21T12:39:39.434092"
+    }
+  ],
+  "summaryStatusDates":[
+    {
+      "statusName":"Attempt In Progress",
+      "date":"2021-09-21T12:39:39.436142"
+    }
+  ],
+  "statusTransition":{
+    "currentStatus":"Attempt In Progress",
+    "transitions":[
+      {
+        "action":"abortWhenInProgress",
+        "description":"Abort the plan that is in progress",
+        "triggeredByUser":true,
+        "available":true,
+        "note":null,
+        "nextStatus":"Attempt Aborted"
+      },
+      {
+        "action":"updateToChimerasFounderObtained",
+        "description":"Update to chimeras/founder obtained for the attempt",
+        "triggeredByUser":false,
+        "available":false,
+        "note":"There is not chimeras information.",
+        "nextStatus":"Chimeras/Founder Obtained"
+      }
+    ],
+    "actionToExecute":null
+  }
+}

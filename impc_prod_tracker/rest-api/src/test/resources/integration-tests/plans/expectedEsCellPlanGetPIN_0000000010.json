@@ -1,81 +1,91 @@
 {
-  "pin": "PIN:0000000010",
-  "tpn": "TPN:000000001",
-  "attemptTypeName": "es cell",
-  "funderNames": ["KOMP"],
-  "workUnitName": "BCM",
-  "workGroupName": "BaSH",
-  "comment": null,
-  "esCellAttempt": {
-    "miDate": "2007-04-24",
-    "esCellName": "EPD0045_1_A11",
-    "experimental": false,
-    "comment": "additional information",
-    "blastStrainName": "C57BL/6NJ",
-    "totalBlastsInjected": 44,
-    "totalTransferred": 44,
-    "numberSurrogatesReceiving": 0,
-    "totalPupsBorn": 25,
-    "totalFemaleChimeras": 5,
-    "totalMaleChimeras": 2,
-    "totalChimeras": 7,
-    "numberOfMalesWith0To39PercentChimerism": 1,
-    "numberOfMalesWith40To79PercentChimerism": 1,
-    "numberOfMalesWith80To99PercentChimerism": 0,
-    "numberOfMalesWith100PercentChimerism": 0,
-    "testCrossStrainName": "BALB/cJ",
-    "dateChimerasMated": "2007-06-18",
-    "numberOfChimeraMatingsAttempted": 6,
-    "numberOfChimeraMatingsSuccessful": 5,
-    "numberOfChimerasWithGltFromCct": 1,
-    "numberOfChimerasWithGltFromGenotyping": 1,
-    "numberOfChimerasWith0To9PercentGlt": 0,
-    "numberOfChimerasWith10To49PercentGlt": 1,
-    "numberOfChimerasWith50To99PercentGlt": 0,
-    "numberOfChimerasWith100PercentGlt": 0,
-    "totalF1MiceFromMatings": 52,
-    "numberOfCctOffspring": 3,
-    "cassetteTransmissionVerified": "2007-10-21",
-    "numberOfHetOffspring": 2,
-    "numberOfLiveGltOffspring": 0,
-    "imitsMiAttemptId": 2030,
-    "attemptExternalRef": "MAKE"
+  "pin":"PIN:0000000010",
+  "tpn":"TPN:000000003",
+  "attemptTypeName":"es cell",
+  "funderNames":[
+    "KOMP"
+  ],
+  "workUnitName":"BCM",
+  "workGroupName":"BaSH",
+  "comment":null,
+  "esCellAttempt":{
+    "targRepEsCellName":"EPD0045_1_A11",
+    "miDate":"2007-04-24",
+    "experimental":false,
+    "comment":"additional information",
+    "blastStrainName":"C57BL/6NJ",
+    "totalBlastsInjected":44,
+    "totalTransferred":44,
+    "numberSurrogatesReceiving":0,
+    "totalPupsBorn":25,
+    "totalFemaleChimeras":5,
+    "totalMaleChimeras":2,
+    "totalChimeras":7,
+    "numberOfMalesWith0To39PercentChimerism":1,
+    "numberOfMalesWith40To79PercentChimerism":1,
+    "numberOfMalesWith80To99PercentChimerism":0,
+    "numberOfMalesWith100PercentChimerism":0,
+    "testCrossStrainName":"BALB/cJ",
+    "dateChimerasMated":"2007-06-18",
+    "numberOfChimeraMatingsAttempted":6,
+    "numberOfChimeraMatingsSuccessful":5,
+    "numberOfChimerasWithGltFromCct":1,
+    "numberOfChimerasWithGltFromGenotyping":1,
+    "numberOfChimerasWith0To9PercentGlt":0,
+    "numberOfChimerasWith10To49PercentGlt":1,
+    "numberOfChimerasWith50To99PercentGlt":0,
+    "numberOfChimerasWith100PercentGlt":0,
+    "totalF1MiceFromMatings":52,
+    "numberOfCctOffspring":3,
+    "cassetteTransmissionVerified":"2007-10-21",
+    "numberOfHetOffspring":2,
+    "numberOfLiveGltOffspring":0,
+    "imitsMiAttemptId":2030,
+    "attemptExternalRef":"MAKE"
   },
-  "typeName": "production",
-  "statusName": "Chimeras/Founder Obtained",
-  "summaryStatusName": "Chimeras/Founder Obtained",
-  "_links": {
-    "self": {
-      "href": "http://localhost:8080/api/plans/PIN:0000000010"
+  "typeName":"production",
+  "statusName":"Chimeras/Founder Obtained",
+  "summaryStatusName":"Genotype Confirmed",
+  "_links":{
+    "self":{
+      "href":"http://localhost:8080/api/plans/PIN:0000000010"
     },
-    "project": {
-      "href": "http://localhost:8080/api/projects/TPN:000000001"
+    "project":{
+      "href":"http://localhost:8080/api/projects/TPN:000000003"
     }
   },
-  "statusDates": [{
-    "statusName": "Plan Created",
-    "date": "2007-04-24T00:00:00"
-  }, {
-    "statusName": "Attempt In Progress",
-    "date": "2007-05-18T00:00:00"
-  }, {
-    "statusName": "Chimeras/Founder Obtained",
-    "date": "2007-10-20T00:00:00"
-  }],
-  "summaryStatusDates": [{
-    "statusName": "Chimeras/Founder Obtained",
-    "date": "2007-10-21T00:00:00"
-  }],
-  "statusTransition": {
-    "currentStatus": "Chimeras/Founder Obtained",
-    "transitions": [{
-      "action": "abortWhenChimerasFounderObtained",
-      "description": "Abort the plan after a founder obtained",
-      "triggeredByUser": true,
-      "available": true,
-      "note": null,
-      "nextStatus": "Attempt Aborted"
-    }],
-    "actionToExecute": null
+  "statusDates":[
+    {
+      "statusName":"Plan Created",
+      "date":"2007-04-24T00:00:00"
+    },
+    {
+      "statusName":"Attempt In Progress",
+      "date":"2007-05-18T00:00:00"
+    },
+    {
+      "statusName":"Chimeras/Founder Obtained",
+      "date":"2007-10-20T00:00:00"
+    }
+  ],
+  "summaryStatusDates":[
+    {
+      "statusName":"Chimeras/Founder Obtained",
+      "date":"2007-10-21T00:00:00"
+    }
+  ],
+  "statusTransition":{
+    "currentStatus":"Chimeras/Founder Obtained",
+    "transitions":[
+      {
+        "action":"abortWhenChimerasFounderObtained",
+        "description":"Abort the plan after a founder obtained",
+        "triggeredByUser":true,
+        "available":false,
+        "note":"The plan has colonies that are not aborted. Please abort them first",
+        "nextStatus":"Attempt Aborted"
+      }
+    ],
+    "actionToExecute":null
   }
 }

@@ -13,9 +13,9 @@ import java.time.LocalDate;
 public class EsCellAttemptDTO
 {
     @JsonIgnore
-    private Long esCellAttemptId;
+    private Long planId;
 
-    private String esCellName;
+    private String TargRepEsCellName;
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
     @JsonProperty("imitsMiAttemptId")

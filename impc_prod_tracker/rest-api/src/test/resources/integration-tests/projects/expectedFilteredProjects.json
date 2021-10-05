@@ -104,9 +104,6 @@
             ]
           }
         ],
-        "speciesNames":[
-          "Mus musculus"
-        ],
         "consortia":[
           {
             "id":1,
@@ -148,9 +145,6 @@
         "projectIntentions":[
 
         ],
-        "speciesNames":[
-
-        ],
         "consortia":[
           {
             "id":3,
@@ -190,9 +184,6 @@
 
         ],
         "projectIntentions":[
-
-        ],
-        "speciesNames":[
 
         ],
         "consortia":[

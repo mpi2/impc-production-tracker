@@ -3,7 +3,7 @@ package org.gentar.biology.plan.engine;
 import org.gentar.biology.plan.Plan;
 import org.gentar.biology.plan.attempt.AttemptTypesName;
 import org.gentar.biology.plan.engine.breeding.BreedingPlanEvent;
-import org.gentar.biology.plan.engine.cre_allele_modification.CreAlleleModificationPlanEvent;
+import org.gentar.biology.plan.engine.es_cell_allele_modification.EsCellAlleleModificationPlanEvent;
 import org.gentar.biology.plan.engine.crispr.CrisprProductionPlanEvent;
 import org.gentar.biology.plan.engine.crispr.HaploessentialProductionPlanEvent;
 import org.gentar.biology.plan.engine.es_cell.EsCellProductionPlanEvent;
@@ -66,8 +66,8 @@ public class PlanStateMachineResolver implements StateMachineResolver
             case BREEDING:
                 processEvents = BreedingPlanEvent.getAllEvents();
                 break;
-            case CRE_ALLELE_MODIFICATION:
-                processEvents = CreAlleleModificationPlanEvent.getAllEvents();
+            case ES_CELL_ALLELE_MODIFICATION:
+                processEvents = EsCellAlleleModificationPlanEvent.getAllEvents();
                 break;
             case ES_CELL:
                 processEvents = EsCellProductionPlanEvent.getAllEvents();

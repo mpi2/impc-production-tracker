@@ -14,7 +14,7 @@
     "comment":"New Crispr Comment",
     "mutagenesisExternalRef":"MF-26326",
     "imitsMiAttemptId":20043,
-    "attemptExternalRef":"New external reference",
+    "attemptExternalRef":"Attempt external ref",
     "embryoTransferDay":"Same Day",
     "totalTransferred":72,
     "nucleases":[
@@ -38,8 +38,8 @@
         "genomeBuild":"GRCm39",
         "grnaConcentration":300.0,
         "truncatedGuide":true,
-        "reversed":null,
-        "sangerService":null,
+        "reversed":false,
+        "sangerService":false,
         "formatName":"sgRNA",
         "sourceName":"commercial"
       }
@@ -91,7 +91,7 @@
   },
   "typeName":"production",
   "statusName":"Founder Obtained",
-  "summaryStatusName":"Founder Obtained",
+  "summaryStatusName":"Genotype Confirmed",
   "_links":{
     "self":{
       "href":"http://localhost:8080/api/plans/PIN:0000000001"
@@ -107,7 +107,7 @@
     },
     {
       "statusName":"Attempt In Progress",
-      "date":"2018-01-15T00:00:00.706639"
+      "date":"2018-01-16T00:00:00.706639"
     },
     {
       "statusName":"Founder Obtained",
@@ -120,7 +120,7 @@
   ],
   "summaryStatusDates":[
     {
-      "statusName":"Founder Obtained",
+      "statusName":"Genotype Confirmed",
       "date":"2019-08-06T20:09:51.706639"
     }
   ],
@@ -131,8 +131,8 @@
         "action":"abortWhenFounderObtained",
         "description":"Abort the plan after a founder obtained",
         "triggeredByUser":true,
-        "available":true,
-        "note":null,
+        "available":false,
+        "note":"The plan has colonies that are not aborted. Please abort them first",
         "nextStatus":"Attempt Aborted"
       }
     ],

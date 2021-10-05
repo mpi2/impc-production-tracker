@@ -18,7 +18,9 @@ public class GeneInterestReportPhenotyping {
     private final GeneStatusSummaryHelperImpl geneStatusSummaryHelper;
 
     private List<GeneInterestReportPhenotypingAttemptProjection> pap;
+    private Map<Long, Set<GeneInterestReportOutcomeMutationProjection>> completeOutcomeMutationMap;
     private Map<Long, GeneInterestReportOutcomeMutationProjection> filteredOutcomeMutationMap;
+    private Map<Long, Set<Gene>> completeMutationGeneMap;
     private Map<Long, Gene> filteredMutationGeneMap;
 
     private Map<String, String> phenotypingGenes;
@@ -35,8 +37,8 @@ public class GeneInterestReportPhenotyping {
     }
 
 
-    public void summariseData() {
-        fetchData();
+    public void summariseData(Set<Long> allOutcomes) {
+        fetchData(allOutcomes);
         phenotypingGenes = getGenes();
         phenotypingPlansForProjects = getPhenotypingPlansForProjects();
         phenotypingStageStatusForPhenotypingPlans = getPhenotypingStageStatusForPhenotypingPlans();
@@ -52,16 +54,33 @@ public class GeneInterestReportPhenotyping {
         return summaryEarlyAdultPhenotypingStageStatusForPhenotypingGenes;
     }
 
-    private void fetchData() {
-        pap = phenotypingService.getGeneInterestReportPhenotypingAttemptProjections();
-        filteredOutcomeMutationMap = phenotypingService.getMutationMap();
-        filteredMutationGeneMap = phenotypingService.getGeneMap();
+    private void fetchData(Set<Long> allOutcomes) {
+
+        // The PhenotypingAttemptProjections must be linked with the Outcomes that can be viewed.
+        // Some outcomes are excluded when retrieving Crispr and ES Cell gene projections, thus
+        // the set of PhenotypingAttemptProjections retireved from the database are filtered based on outcomeId.
+        List<GeneInterestReportPhenotypingAttemptProjection> rawPap =
+                phenotypingService.getGeneInterestReportPhenotypingAttemptProjections();
+
+        pap = rawPap
+                .stream()
+                .filter(projection -> !(allOutcomes.contains(projection.getOutcomeId())))
+                .collect(Collectors.toList());
+
+        // filteredOutcomeMutationMap select each outcome with one single mutation associated with it.
+        // Along with the map, filteredMutationGeneMap, which selects for a 1:1 match between a gene and a mutation
+        // it is no longer used.
+        completeOutcomeMutationMap = phenotypingService.getMutationMap();
+        filteredOutcomeMutationMap = phenotypingService.getFilteredMutationMap(completeOutcomeMutationMap);
+        completeMutationGeneMap = phenotypingService.getGeneMap();
+        filteredMutationGeneMap = phenotypingService.getFilteredGeneMap(completeMutationGeneMap);
     }
 
     private Map<String, String> getGenes() {
-        return filteredMutationGeneMap
+        return completeMutationGeneMap
                 .values()
                 .stream()
+                .flatMap(x -> x.stream())
                 .collect(Collectors.toMap(Gene::getAccId,
                         Gene::getSymbol,
                         (value1, value2) -> value1));
@@ -110,19 +129,64 @@ public class GeneInterestReportPhenotyping {
      }
 
     private Map<String, Set<String>> getGenesForProjects() {
-        return pap
-                .stream()
-//                .collect(Collectors.toMap(GeneInterestReportPhenotypingAttemptProjection::getProjectTpn,
-//                        e -> fetchGenesByOutcomeId(e.getOutcomeId())));
-        .collect(Collectors.groupingBy(
-                GeneInterestReportPhenotypingAttemptProjection::getProjectTpn,
-                Collectors.mapping(e -> fetchGenesByOutcomeId(e.getOutcomeId()), Collectors.toSet())));
+        return pap.stream()
+                .map(x -> {
+                            List<Map<String, GeneInterestReportOutcomeMutationProjection>> projectToMutationMapping = new ArrayList<>();
+                            for (GeneInterestReportOutcomeMutationProjection mutationMapping: completeOutcomeMutationMap.get(x.getOutcomeId())){
+                                Map<String, GeneInterestReportOutcomeMutationProjection> entry = new HashMap<>();
+                                entry.put(x.getProjectTpn(), mutationMapping);
+                                projectToMutationMapping.add(entry);
+                            }
+                            return projectToMutationMapping;
+                        })
+                .flatMap(a -> a.stream())
+
+                // unpack each map in the stream of maps in a second flatMap operation
+                .flatMap(projectMutationMap -> projectMutationMap.entrySet().stream())
+                .map(y -> {
+                    List<Map<String, Gene>> projectGenePairs = new ArrayList<>();
+                    for (Gene gene: completeMutationGeneMap.get(y.getValue().getMutationId())){
+                        Map<String, Gene> geneMapping = new HashMap<>();
+                        geneMapping.put(y.getKey(), gene);
+                        projectGenePairs.add(geneMapping);
+                    }
+                    return projectGenePairs;
+                })
+                .flatMap(b -> b.stream())
+
+                // unpack each map in the stream of maps in a second flatMap operation
+                .flatMap(projectToGenesMapping -> projectToGenesMapping.entrySet().stream())
+//
+//              Alternative way to generate the output - Collectors.groupingBy is used below instead
+//                .collect(Collectors.toMap(x -> x.getKey(),
+//                        x -> new HashSet<>(Arrays.asList(x.getValue().getAccId())),
+//                        (x,y)->{x.addAll(y);return x;} ));
+//
+                .collect(Collectors.groupingBy(x -> x.getKey(),
+                        Collectors.mapping(x -> x.getValue().getAccId(), Collectors.toSet())));
+
+
+
+        // old version
+//        return pap
+//                .stream()
+//                .peek(e -> System.out.println(e.getOutcomeId() + ": " + e.getProjectTpn() + ": " + fetchGenesByOutcomeId(e.getOutcomeId())))
+////                .collect(Collectors.toMap(GeneInterestReportPhenotypingAttemptProjection::getProjectTpn,
+////                        e -> fetchGenesByOutcomeId(e.getOutcomeId())));
+//        .collect(Collectors.groupingBy(
+//                GeneInterestReportPhenotypingAttemptProjection::getProjectTpn,
+//                Collectors.mapping(e -> fetchGenesByOutcomeId(e.getOutcomeId()), Collectors.toSet())));
 
     }
 
     private String fetchGenesByOutcomeId(Long outcomeId) {
         // Currently only selects for 1:1 mappings (selection happens when producing the filtered Maps)
+//        System.out.println("outcomeId: " + outcomeId);
         GeneInterestReportOutcomeMutationProjection omp = filteredOutcomeMutationMap.get(outcomeId);
+//        System.out.println("omp: " + omp);
+//        System.out.println("omp.getMutationId(): " + omp.getMutationId());
+//        System.out.println("filteredMutationGeneMap.get(omp.getMutationId()): " + filteredMutationGeneMap.get(omp.getMutationId()));
+//        System.out.println("filteredMutationGeneMap.get(omp.getMutationId()).getAccId(): " + filteredMutationGeneMap.get(omp.getMutationId()).getAccId());
         String gene = filteredMutationGeneMap.get(omp.getMutationId()).getAccId();
         return gene;
     }

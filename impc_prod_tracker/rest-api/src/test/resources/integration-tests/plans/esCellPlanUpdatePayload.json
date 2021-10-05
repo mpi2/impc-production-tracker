@@ -1,0 +1,50 @@
+{
+  "pin":"PIN:0000000010",
+  "tpn":"TPN:000000003",
+  "attemptTypeName":"es cell",
+  "funderNames":[
+    "KOMP"
+  ],
+  "workUnitName":"BCM",
+  "workGroupName":"BaSH",
+  "comment":"New Plan comment",
+  "esCellAttempt":{
+    "targRepEsCellName":"EPD0045_1_A11",
+    "miDate":"2007-04-24",
+    "experimental":false,
+    "comment":"additional information",
+    "blastStrainName":"C57BL/6NJ",
+    "totalBlastsInjected":44,
+    "totalTransferred":40,
+    "numberSurrogatesReceiving":0,
+    "totalPupsBorn":25,
+    "totalFemaleChimeras":5,
+    "totalMaleChimeras":2,
+    "totalChimeras":7,
+    "numberOfMalesWith0To39PercentChimerism":1,
+    "numberOfMalesWith40To79PercentChimerism":1,
+    "numberOfMalesWith80To99PercentChimerism":0,
+    "numberOfMalesWith100PercentChimerism":0,
+    "testCrossStrainName":"BALB/cJ",
+    "dateChimerasMated":"2007-06-18",
+    "numberOfChimeraMatingsAttempted":6,
+    "numberOfChimeraMatingsSuccessful":5,
+    "numberOfChimerasWithGltFromCct":1,
+    "numberOfChimerasWithGltFromGenotyping":1,
+    "numberOfChimerasWith0To9PercentGlt":0,
+    "numberOfChimerasWith10To49PercentGlt":1,
+    "numberOfChimerasWith50To99PercentGlt":0,
+    "numberOfChimerasWith100PercentGlt":0,
+    "totalF1MiceFromMatings":32,
+    "numberOfCctOffspring":3,
+    "cassetteTransmissionVerified":"2007-10-21",
+    "numberOfHetOffspring":2,
+    "numberOfLiveGltOffspring":0,
+    "imitsMiAttemptId":2030,
+    "attemptExternalRef":"MAKE"
+  },
+  "typeName":"production",
+  "statusTransition":{
+    "actionToExecute":null
+  }
+}

@@ -1,23 +1,26 @@
-package org.gentar.biology.plan.attempt.cre_allele_modification;
+package org.gentar.biology.plan.attempt.es_cell_allele_modification;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 
 @Data
 @RequiredArgsConstructor
-public class CreAlleleModificationAttemptDTO {
+public class EsCellAlleleModificationAttemptDTO {
     @JsonIgnore
     private Long planId;
 
-    @JsonIgnore
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    @JsonProperty("imitsMouseAlleleModId")
     private Long imitsMouseAlleleMod;
 
-    @JsonIgnore
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    @JsonProperty("targRepAlleleId")
     private Long targRepAllele;
 
     private String modificationExternalRef;
-
     private Integer numberOfCreMatingsSuccessful;
     private Boolean tatCre;
     private String deleterStrainName;

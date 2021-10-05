@@ -15,7 +15,6 @@
  */
 package org.gentar.biology.plan.attempt.crispr;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 
@@ -24,8 +23,6 @@ import lombok.RequiredArgsConstructor;
 public class NucleaseDTO
 {
     private Long id;
-    @JsonIgnore
-    private Long crisprAttemptId;
     private String typeName;
     private Double concentration;
     private String className;
