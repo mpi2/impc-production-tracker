@@ -3,10 +3,10 @@
   "tpn":"TPN:000000222",
   "attemptTypeName":"crispr",
   "funderNames":[
-
+    "KOMP2"
   ],
-  "workUnitName":"BCM",
-  "workGroupName":"BaSH",
+  "workUnitName":"UCD",
+  "workGroupName":"DTCC",
   "comment":"Plan aborted",
   "crisprAttempt":{
     "miDate":"2018-03-26",
@@ -14,7 +14,7 @@
     "comment":"crispr plan comment",
     "mutagenesisExternalRef":"MF-26328",
     "imitsMiAttemptId":20044,
-    "attemptExternalRef":"Attempt external ref",
+    "attemptExternalRef":"Attempt external ref 2",
     "embryoTransferDay":"Same Day",
     "totalTransferred":72,
     "nucleases":[
@@ -92,33 +92,33 @@
   "statusDates":[
     {
       "statusName":"Plan Created",
-      "date":"2018-01-15T00:00:00.706639"
+      "date":"2018-06-25T00:00:00"
     },
     {
       "statusName":"Attempt In Progress",
-      "date":"2018-01-16T00:00:00.706639"
-    },
-    {
-      "statusName":"Embryos Obtained",
-      "date":"2018-04-04T14:32:00.706639"
+      "date":"2018-06-25T00:00:00"
     },
     {
       "statusName":"Founder Obtained",
-      "date":"2018-04-04T14:32:00.70664"
+      "date":"2020-01-10T20:25:12.783017"
+    },
+    {
+      "statusName":"Embryos Obtained",
+      "date":"2020-01-10T20:25:12.783017"
     },
     {
       "statusName":"Attempt Aborted",
-      "date":"2021-10-04T21:23:22.697411"
+      "date":"2021-10-05T09:08:22.506549"
     }
   ],
   "summaryStatusDates":[
     {
       "statusName":"Founder Obtained",
-      "date":"2018-02-22T20:18:00.706639"
+      "date":"2020-01-10T20:25:12.783017"
     },
     {
       "statusName":"Attempt Aborted",
-      "date":"2021-10-04T21:23:22.698576"
+      "date":"2021-10-05T09:08:22.507551"
     }
   ],
   "statusTransition":{

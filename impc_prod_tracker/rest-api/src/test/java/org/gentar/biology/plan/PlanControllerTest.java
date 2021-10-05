@@ -103,6 +103,52 @@ class PlanControllerTest extends ControllerTestTemplate
     @Test
     @DatabaseSetup(DBSetupFilesPaths.MULTIPLE_PLANS)
     @DatabaseTearDown(type = DatabaseOperation.DELETE_ALL, value = DBSetupFilesPaths.MULTIPLE_PLANS)
+    void testUpdateStateMachineCrisprPlan() throws Exception
+    {
+        sequenceResetter.syncSequence("PROJECT_SUMMARY_STATUS_STAMP_SEQ", "PROJECT_SUMMARY_STATUS_STAMP");
+        sequenceResetter.syncSequence("ASSIGNMENT_STATUS_STAMP_SEQ", "ASSIGNMENT_STATUS_STAMP");
+        sequenceResetter.syncSequence("PLAN_STATUS_STAMP_SEQ", "PLAN_STATUS_STAMP");
+        sequenceResetter.syncSequence("PLAN_SUMMARY_STATUS_STAMP_SEQ", "PLAN_SUMMARY_STATUS_STAMP");
+        sequenceResetter.syncSequence("HISTORY_SEQ", "HISTORY");
+        sequenceResetter.syncSequence("HISTORY_DETAIL_SEQ", "HISTORY_DETAIL");
+
+        String payload = loadFromResource("stateMachineCrisprPlanUpdatePayload.json");
+        String url = "/api/plans/PIN:0000000222";
+
+        String obtainedJson =
+                restCaller.executePutAndDocument(url, payload, document("plans/putPlanStateMachine"));
+        ChangeResponse changeResponse = JsonHelper.fromJson(obtainedJson, ChangeResponse.class);
+        verifyChangeResponseUpdateStateMachineCrispr(changeResponse);
+
+        String cripsrPlanUrl = LinkUtil.getSelfHrefLinkStringFromJson(obtainedJson);
+        verifyGetPlantEqualsJsonIgnoringIdsAndDates(cripsrPlanUrl, "expectedAbortedPlanGetPIN_0000000222.json");
+    }
+
+    private void verifyChangeResponseUpdateStateMachineCrispr(ChangeResponse changeResponse)
+    {
+        List<HistoryDTO> historyDTOS = changeResponse.getHistoryDTOs();
+        assertThat(historyDTOS.size(), is(1));
+
+        HistoryDTO historyDTO = historyDTOS.get(0);
+        assertThat(historyDTO.getComment(), is("Plan updated"));
+
+        List<HistoryDetailDTO> historyDetailDTOS = historyDTO.getDetails();
+        assertThat(historyDetailDTOS.size(), is(3));
+
+        HistoryDetailDTO historyDetailDTO1 =
+                getHistoryDetailByField(historyDetailDTOS, "status.name");
+        assertThat(historyDetailDTO1.getOldValue(), is("Founder Obtained"));
+        assertThat(historyDetailDTO1.getNewValue(), is("Attempt Aborted"));
+
+        HistoryDetailDTO historyDetailDTO2 =
+                getHistoryDetailByField(historyDetailDTOS, "summaryStatus.name");
+        assertThat(historyDetailDTO2.getOldValue(), is("Founder Obtained"));
+        assertThat(historyDetailDTO2.getNewValue(), is("Attempt Aborted"));
+    }
+
+    @Test
+    @DatabaseSetup(DBSetupFilesPaths.MULTIPLE_PLANS)
+    @DatabaseTearDown(type = DatabaseOperation.DELETE_ALL, value = DBSetupFilesPaths.MULTIPLE_PLANS)
     void testUpdateCrisprPlan() throws Exception
     {
         sequenceResetter.syncSequence("PLAN_STATUS_STAMP_SEQ", "PLAN_STATUS_STAMP");
