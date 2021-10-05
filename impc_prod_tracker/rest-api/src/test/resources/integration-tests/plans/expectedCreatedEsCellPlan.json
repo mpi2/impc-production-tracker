@@ -9,7 +9,7 @@
   "workGroupName":"BaSH",
   "comment":"example of es cell plan creation",
   "esCellAttempt":{
-    "targRepEsCellName":"EPD0045_1_A11",
+    "esCellName":"EPD0045_1_A11",
     "miDate":"2019-02-26",
     "experimental":true,
     "comment":"es cell plan comment",

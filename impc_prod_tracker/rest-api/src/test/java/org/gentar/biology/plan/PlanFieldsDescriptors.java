@@ -282,7 +282,7 @@ public class PlanFieldsDescriptors
         addField(esCellAlleleModificationFields, "esCellAlleleModificationAttempt.tatCre", "Indicates tat Cre used for modification rather than a deleter strain.");
         addField(esCellAlleleModificationFields, "esCellAlleleModificationAttempt.deleterStrainName", "ES cell allele modification attempt deleter strain");
         addField(esCellAlleleModificationFields, "esCellAlleleModificationAttempt.imitsMouseAlleleModId", "iMits Moude Allele Modification identifier, for legacy data");
-        addField(esCellAlleleModificationFields, "esCellAlleleModificationAttempt.targRepAlleleId", "TargRep Allele identifier");
+        addField(esCellAlleleModificationFields, "esCellAlleleModificationAttempt.imitsTargRepAlleleId", "TargRep Allele identifier");
         return esCellAlleleModificationFields;
     }
 
@@ -291,7 +291,7 @@ public class PlanFieldsDescriptors
         List<FieldDescriptor> esCellFields = new ArrayList<>();
 
         addField(esCellFields, "esCellAttempt", "ES cell attempt details.");
-        addField(esCellFields, "esCellAttempt.targRepEsCellName","The ES Cell used in the attempt.");
+        addField(esCellFields, "esCellAttempt.esCellName","The ES Cell used in the attempt.");
         addField(esCellFields, "esCellAttempt.imitsMiAttemptId", "The iMits attempt identifier (This is included if the data was migrated from iMits).");
         addField(esCellFields, "esCellAttempt.miDate", "The date when the micro-injection was performed.");
         addField(esCellFields, "esCellAttempt.attemptExternalRef", "External reference used to track the ES cell attempt.");

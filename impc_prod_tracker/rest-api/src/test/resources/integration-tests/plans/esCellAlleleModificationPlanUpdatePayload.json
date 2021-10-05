@@ -26,7 +26,7 @@
     "tatCre":true,
     "deleterStrainName":"BALB/cJ",
     "imitsMouseAlleleModId":1775,
-    "targRepAlleleId":1878
+    "imitsTargRepAlleleId":1878
   },
   "typeName":"production",
   "statusTransition":{

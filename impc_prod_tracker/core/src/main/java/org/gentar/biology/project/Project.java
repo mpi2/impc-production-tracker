@@ -87,7 +87,8 @@ public class Project extends BaseEntity implements Resource<Project>
 
     private String tpn;
 
-    @Column(unique = true)
+    @IgnoreForAuditingChanges
+    @Column(unique = true, insertable = false, updatable = false)
     private Long imitsMiPlan;
 
     @EqualsAndHashCode.Exclude

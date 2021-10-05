@@ -4,6 +4,7 @@ import lombok.AccessLevel;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.gentar.BaseEntity;
+import org.gentar.audit.diff.IgnoreForAuditingChanges;
 import org.gentar.biology.plan.Plan;
 import org.gentar.biology.strain.Strain;
 
@@ -23,6 +24,8 @@ public class EsCellAlleleModificationAttempt extends BaseEntity
     @MapsId
     private Plan plan;
 
+    @IgnoreForAuditingChanges
+    @Column(unique = true, insertable = false, updatable = false)
     private Long imitsMouseAlleleMod;
 
     /*
@@ -35,6 +38,8 @@ public class EsCellAlleleModificationAttempt extends BaseEntity
     table when specified appeared correct. We have migrated the data in case it is required later,
     but do intend to expose the field publicly.
      */
+    @IgnoreForAuditingChanges
+    @Column(unique = true, insertable = false, updatable = false)
     private Long targRepAllele;
 
     @Column(name = "number_of_cre_matings_successful")

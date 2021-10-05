@@ -9,7 +9,7 @@
   "workGroupName":"BaSH",
   "comment":"New Plan comment",
   "esCellAttempt":{
-    "targRepEsCellName":"EPD0045_1_A11",
+    "esCellName":"EPD0045_1_A11",
     "miDate":"2007-04-24",
     "experimental":false,
     "comment":"additional information",

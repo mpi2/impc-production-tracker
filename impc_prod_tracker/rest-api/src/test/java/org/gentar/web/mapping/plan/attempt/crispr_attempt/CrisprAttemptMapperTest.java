@@ -321,7 +321,6 @@ public class CrisprAttemptMapperTest
     private CrisprAttempt buildCrisprAttempt()
     {
         CrisprAttempt crisprAttempt = new CrisprAttempt();
-        crisprAttempt.setImitsMiAttempt(IMITS_MI_ATTEMPT);
         crisprAttempt.setMiDate(MI_DATE);
         crisprAttempt.setMiExternalRef(MI_EXTERNAL_REF);
         crisprAttempt.setExperimental(EXPERIMENTAL_TRUE);
