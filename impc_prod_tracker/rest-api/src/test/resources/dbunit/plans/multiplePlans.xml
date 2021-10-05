@@ -521,7 +521,10 @@
                          PHENOTYPING_EXTERNAL_REF="CR10129"
                          STRAIN_ID="1"
                          DO_NOT_COUNT_TOWARDS_COMPLETENESS="false"
-                         COHORT_WORK_UNIT_ID="1" />
+                         COHORT_WORK_UNIT_ID="1"
+                         IMITS_PHENOTYPE_ATTEMPT="9040"
+                         IMITS_PHENOTYPING_PRODUCTION="9243"
+                         IMITS_PARENT_COLONY="20829" />
     <PHENOTYPING_ATTEMPT PLAN_ID="4"
                          PHENOTYPING_EXTERNAL_REF="JR34077"
                          STRAIN_ID="1"

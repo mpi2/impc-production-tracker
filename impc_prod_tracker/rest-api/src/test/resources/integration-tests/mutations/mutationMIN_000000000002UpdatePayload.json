@@ -1,7 +1,6 @@
 {
   "min":"MIN:000000000002",
   "mgiAlleleId":"MGI:6342258",
-  "imitsAlleleId":266843,
   "symbol":"em1(IMPC)J",
   "mgiAlleleSymbolWithoutImpcAbbreviation":false,
   "mgiAlleleSymbolRequiresConstruction":true,
