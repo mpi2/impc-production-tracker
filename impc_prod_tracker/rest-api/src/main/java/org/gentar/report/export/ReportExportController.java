@@ -11,7 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 @RestController
-@RequestMapping("/api/reports/")
+@RequestMapping("/api/reports")
 public class ReportExportController{
 
     private final ReportServiceImpl reportService;
@@ -20,7 +20,7 @@ public class ReportExportController{
         this.reportService = reportService;
     }
 
-    @GetMapping(value = {"{reportName}"})
+    @GetMapping(value = {"/{reportName}"})
     @Transactional(readOnly = true)
     public void export(HttpServletResponse response, @PathVariable String reportName) throws IOException
     {
