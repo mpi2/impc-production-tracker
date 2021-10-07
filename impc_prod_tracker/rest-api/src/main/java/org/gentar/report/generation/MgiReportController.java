@@ -8,7 +8,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 @RestController
-@RequestMapping("/tracking-api/reports/generate/")
+@RequestMapping("/tracking-api/reports/generate")
 public class MgiReportController {
 
     private final MgiCrisprAlleleReportServiceImpl mgiCrisprAlleleService;
