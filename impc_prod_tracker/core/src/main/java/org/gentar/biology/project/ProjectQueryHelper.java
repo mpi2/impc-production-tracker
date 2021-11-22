@@ -89,7 +89,7 @@ public class ProjectQueryHelper
     public Set<String> getWorkGroupsNames(Project project)
     {
         Set<String> workGroupsNames = new HashSet<>();
-        project.getRelatedWorkUnits().forEach(x -> workGroupsNames.add(x.getName()));
+        project.getRelatedWorkGroups().forEach(x -> workGroupsNames.add(x.getName()));
         return workGroupsNames;
     }
 
