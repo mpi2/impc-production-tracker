@@ -58,7 +58,7 @@ public interface GeneInterestReportProjectRepository extends CrudRepository<Proj
             "where " +
             "priv.name='public' and " +
             "pt.name='production' and " +
-            "at.name in ('es cell', 'cre allele modification') and " +
+            "at.name in ('es cell', 'es cell allele modification') and " +
             "(esa.experimental IS NULL OR esa.experimental=false) and " +   // Critera used in iMits to exclude some data
             "p.esCellQcOnly=false and " +                                   // Critera used in iMits to exclude some data
             "wg.name <> 'EUCOMMToolsCre' ")                                 // Critera used in iMits to exclude some data
