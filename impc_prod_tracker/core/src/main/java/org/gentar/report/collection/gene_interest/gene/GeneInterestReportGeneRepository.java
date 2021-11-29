@@ -69,7 +69,7 @@ public interface GeneInterestReportGeneRepository extends CrudRepository<Gene, L
             "INNER JOIN AssignmentStatus assign on p.assignmentStatus = assign " +
             "where " +
             "priv.name='public' and " +
-            "at.name in ('es cell', 'cre allele modification') and " + // Ensure no haplo-essential production plans included (production plans are implicit)
+            "at.name in ('es cell', 'es cell allele modification') and " + // Ensure no haplo-essential production plans included (production plans are implicit)
             "esa.experimental = false  and " +    // Critera used in iMits to exclude some data
             "wg.name <> 'EUCOMMToolsCre' and " +  // Critera used in iMits to exclude some data
             "p.esCellQcOnly = false and " +       // Critera used in iMits to exclude some data

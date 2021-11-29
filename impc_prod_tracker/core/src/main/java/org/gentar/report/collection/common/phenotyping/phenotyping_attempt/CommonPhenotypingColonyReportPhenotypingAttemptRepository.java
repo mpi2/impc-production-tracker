@@ -269,7 +269,7 @@ public interface CommonPhenotypingColonyReportPhenotypingAttemptRepository exten
             "ot.name='Colony' and " +
             "prod_priv.name='public' and " +
             "prod_pt.name='production' and " +
-            "prod_at.name='cre allele modification' and " +
+            "prod_at.name='es cell allele modification' and " +
             "pst.name='early adult and embryo' and " +
             "ps_status.name <> 'Phenotype Production Aborted' and " +
             "p_status.name <> 'Phenotyping Plan Aborted' and " +
