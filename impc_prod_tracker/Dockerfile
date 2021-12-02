@@ -12,25 +12,10 @@ COPY rest-api/src /usr/src/gentar/rest-api/src
 RUN mvn -f /usr/src/gentar/pom.xml clean package -P test
 
 
-FROM amazoncorretto:11-alpine as jre-build
-
-# Create a custom Java runtime
-RUN $JAVA_HOME/bin/jlink \
-         --add-modules ALL-MODULE-PATH \
-         --strip-debug \
-         --no-man-pages \
-         --no-header-files \
-         --compress=2 \
-         --output /tmp/java-jre
-
-
 # The final image should have a minimal number of layers
 FROM amazoncorretto:11-alpine
 
 VOLUME /tmp
-
-RUN find /usr/lib/jvm/default-jvm -delete
-COPY --from=jre-build /tmp/java-jre $JAVA_HOME
 
 COPY  --from=build /usr/src/gentar/rest-api/target/*.jar app.jar
 COPY docker-scripts/start.sh /
