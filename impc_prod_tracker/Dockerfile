@@ -20,7 +20,7 @@ RUN adduser \
     --gecos "" \
     --no-create-home \
     --uid 10002 \
-    containeruser \
+    containeruser
 
 VOLUME /tmp
 
