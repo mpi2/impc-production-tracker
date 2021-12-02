@@ -15,21 +15,20 @@ RUN mvn -f /usr/src/gentar/pom.xml clean package -P test
 # The final image should have a minimal number of layers
 FROM amazoncorretto:11-alpine
 
+VOLUME /tmp
+
+COPY  --from=build /usr/src/gentar/rest-api/target/*.jar app.jar
+COPY docker-scripts/start.sh /
+
 RUN adduser \
     --disabled-password \
     --gecos "" \
     --no-create-home \
     --uid 10002 \
-    containeruser
-
-VOLUME /tmp
-
-COPY  --from=build /usr/src/gentar/rest-api/target/*.jar app.jar
-RUN ["chown", "containeruser:containeruser", "app.jar"]
-
-COPY docker-scripts/start.sh /
-RUN ["chown", "containeruser:containeruser", "start.sh"]
-RUN ["chmod", "+x", "/start.sh"]
+    containeruser && \
+    chown containeruser:containeruser app.jar && \
+    chown containeruser:containeruser start.sh && \
+    chmod +x /start.sh
 
 ENTRYPOINT ["/start.sh"]
 USER containeruser
