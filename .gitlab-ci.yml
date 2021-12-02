@@ -72,7 +72,7 @@ build_image:
    
         - cd impc_prod_tracker
         - sed -i "s|maven|${LOCAL_GITLAB_MAVEN_IMAGE}|g" Dockerfile       
-        - sed -i "s|FROM openjdk|FROM ${LOCAL_GITLAB_OPENJDK_IMAGE}|g" Dockerfile       
+        - sed -i "s|FROM amazoncorretto|FROM ${LOCAL_GITLAB_CORRETTO_IMAGE}|g" Dockerfile     
             
         - docker build -t "${CI_REGISTRY_IMAGE}":"${CI_COMMIT_SHA:0:12}" -t "${CI_REGISTRY_IMAGE}":latest .  | tee ${MOUNT_POINT}/build.log
                 
