@@ -1,4 +1,4 @@
-FROM maven:3-openjdk-11-slim as build
+FROM maven:3-amazoncorretto-11 as build
 
 COPY pom.xml /usr/src/gentar/
 COPY dto/pom.xml /usr/src/gentar/dto/
@@ -13,13 +13,22 @@ RUN mvn -f /usr/src/gentar/pom.xml clean package -P test
 
 
 # The final image should have a minimal number of layers
-FROM openjdk:11-jre-slim-buster
+FROM amazoncorretto:11-alpine
 
 VOLUME /tmp
 
 COPY  --from=build /usr/src/gentar/rest-api/target/*.jar app.jar
 COPY docker-scripts/start.sh /
 
-RUN ["chmod", "+x", "/start.sh"]
+RUN adduser \
+    --disabled-password \
+    --gecos "" \
+    --no-create-home \
+    --uid 20256 \
+    containeruser && \
+    chown containeruser:containeruser app.jar && \
+    chown containeruser:containeruser start.sh && \
+    chmod +x /start.sh
 
 ENTRYPOINT ["/start.sh"]
+USER containeruser

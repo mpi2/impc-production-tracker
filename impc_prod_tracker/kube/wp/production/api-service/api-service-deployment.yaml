@@ -50,6 +50,13 @@ spec:
               value: /tracker-api
             - name: REDEPLOY_KEY
               value: "STRING_REPLACED_DURING_REDEPLOY"
+          securityContext:
+            readOnlyRootFilesystem: true
+            privileged: false
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+                - all
           ports:
             - containerPort: 8080
               protocol: TCP
@@ -61,6 +68,16 @@ spec:
           imagePullPolicy: Always
           name: api-service-accesslog
           args: [/bin/sh, -c, 'tail -n+1 -f /tomcat/logs/access_log.log']
+          securityContext:
+            runAsNonRoot: true
+            runAsUser: 10512
+            runAsGroup: 10512
+            readOnlyRootFilesystem: true
+            privileged: false
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+                - all
           readinessProbe:
             exec:
               command:
