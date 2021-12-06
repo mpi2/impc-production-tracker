@@ -61,6 +61,16 @@ spec:
           imagePullPolicy: Always
           name: api-service-accesslog
           args: [/bin/sh, -c, 'tail -n+1 -f /tomcat/logs/access_log.log']
+          securityContext:
+            runAsNonRoot: true
+            runAsUser: 10512
+            runAsGroup: 10512
+            readOnlyRootFilesystem: true
+            privileged: false
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+                - all
           readinessProbe:
             exec:
               command:
