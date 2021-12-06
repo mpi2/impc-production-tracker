@@ -46,6 +46,13 @@ spec:
               value: "5432"
             - name: REDEPLOY_KEY
               value: "STRING_REPLACED_DURING_REDEPLOY"
+          securityContext:
+            readOnlyRootFilesystem: true
+            privileged: false
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+                - all
           ports:
             - containerPort: 8080
               protocol: TCP
