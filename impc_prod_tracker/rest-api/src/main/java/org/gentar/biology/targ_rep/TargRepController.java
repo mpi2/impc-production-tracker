@@ -7,8 +7,8 @@ import org.gentar.biology.targ_rep.es_cell.TargRepEsCellMapper;
 import org.gentar.biology.targ_rep.es_cell.TargRepEsCellService;
 import org.gentar.biology.targ_rep.gene.TargRepGene;
 import org.gentar.biology.targ_rep.gene.TargRepGeneService;
-import org.springframework.hateoas.CollectionModel;
-import org.springframework.http.ResponseEntity;
+import org.gentar.biology.targ_rep.pipeline.*;
+import org.springframework.hateoas.EntityModel;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -23,18 +23,25 @@ import static org.apache.tomcat.util.IntrospectionUtils.capitalize;
 public class TargRepController
 {
     private final TargRepEsCellMapper esCellMapper;
+    private final TargRepPipelineResponseMapper targRepPipelineResponseMapper;
     private final TargRepAlleleService alleleService;
     private final TargRepEsCellService esCellService;
+    private final TargRepPipelineServiceImpl targRepPipelineService;
     private final TargRepGeneService geneService;
 
+
     public TargRepController(TargRepEsCellMapper esCellMapper,
+                             TargRepPipelineResponseMapper targRepPipelineResponseMapper,
                              TargRepAlleleService alleleService,
                              TargRepEsCellService esCellService,
+                             TargRepPipelineServiceImpl targRepPipelineService,
                              TargRepGeneService geneService)
     {
         this.esCellMapper = esCellMapper;
+        this.targRepPipelineResponseMapper = targRepPipelineResponseMapper;
         this.alleleService = alleleService;
         this.esCellService = esCellService;
+        this.targRepPipelineService = targRepPipelineService;
         this.geneService = geneService;
     }
 
@@ -65,5 +72,31 @@ public class TargRepController
         TargRepEsCell esCellList = esCellService.getTargRepEsCellByNameFailsIfNull(name);
         return esCellMapper.toDto(esCellList);
     }
+
+//    /**
+//     * Get the targ rep pipelines.
+//     * @return A collection  of {@link TargRepPipelineResponseDTO} objects.
+//     */
+//    @GetMapping(value = {"/pipelines"})
+//    public TargRepPipelinesDTO findEsCellByName(@PathVariable String name)
+//    {
+//        TargRepEsCell esCellList = esCellService.getTargRepEsCellByNameFailsIfNull(name);
+//        return esCellMapper.toDto(esCellList);
+//    }
+
+    /**
+     * Get a specific targ rep pipeline.
+     * @param id Pipeline identifier.
+     * @return Entity with the targ rep pipeline information.
+     */
+    @GetMapping(value = {"/pipelines/{id}"})
+    public EntityModel<?> findTargRepPipelineById(@PathVariable Long id)
+    {
+        EntityModel<TargRepPipelineResponseDTO> entityModel = null;
+        TargRepPipeline targRepPipeline = targRepPipelineService.getNotNullTargRepPipelineById(id);
+        entityModel = EntityModel.of(targRepPipelineResponseMapper.toDto(targRepPipeline));
+        return entityModel;
+    }
+
 
 }

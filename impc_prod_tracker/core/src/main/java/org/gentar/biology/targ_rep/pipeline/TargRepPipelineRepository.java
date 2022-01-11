@@ -4,4 +4,5 @@ import org.springframework.data.repository.CrudRepository;
 
 public interface TargRepPipelineRepository extends CrudRepository<TargRepPipeline, Long>
 {
+    TargRepPipeline findTargRepPipelineById(Long id);
 }
