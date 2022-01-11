@@ -9,13 +9,23 @@ import org.gentar.biology.targ_rep.gene.TargRepGene;
 import org.gentar.biology.targ_rep.gene.TargRepGeneService;
 import org.gentar.biology.targ_rep.pipeline.*;
 import org.springframework.hateoas.EntityModel;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.gentar.helpers.LinkUtil;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PagedResourcesAssembler;
+import org.springframework.hateoas.PagedModel;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
 import static org.apache.tomcat.util.IntrospectionUtils.capitalize;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 @RestController
 @RequestMapping("/api/targ_rep")
@@ -73,16 +83,35 @@ public class TargRepController
         return esCellMapper.toDto(esCellList);
     }
 
-//    /**
-//     * Get the targ rep pipelines.
-//     * @return A collection  of {@link TargRepPipelineResponseDTO} objects.
-//     */
-//    @GetMapping(value = {"/pipelines"})
-//    public TargRepPipelinesDTO findEsCellByName(@PathVariable String name)
-//    {
-//        TargRepEsCell esCellList = esCellService.getTargRepEsCellByNameFailsIfNull(name);
-//        return esCellMapper.toDto(esCellList);
-//    }
+    /**
+     * Get the targ rep pipelines.
+     * @return A collection  of {@link TargRepPipelineResponseDTO} objects.
+     */
+    @GetMapping(value = {"/pipelines"})
+    public ResponseEntity findAll(
+            Pageable pageable,
+            PagedResourcesAssembler assembler) {
+
+        Page<TargRepPipeline> targRepPipelines = targRepPipelineService.getPageableTargRepPipeline(pageable);
+        Page<TargRepPipelineResponseDTO> targRepPipelineResponseDTOSPage = targRepPipelines.map(this::getDTO);
+
+        PagedModel pr =
+                assembler.toModel(targRepPipelineResponseDTOSPage,
+                        linkTo(methodOn(TargRepController.class).findAll(pageable, assembler)).withSelfRel());
+
+        HttpHeaders responseHeaders = new HttpHeaders();
+        responseHeaders.add("Link", LinkUtil.createLinkHeader(pr));
+
+        return new ResponseEntity<>(pr, responseHeaders, HttpStatus.OK);
+    }
+
+    private TargRepPipelineResponseDTO getDTO(TargRepPipeline targRepPipeline) {
+        TargRepPipelineResponseDTO targRepPipelineResponseDTO = new TargRepPipelineResponseDTO();
+        if (targRepPipeline != null) {
+            targRepPipelineResponseDTO = targRepPipelineResponseMapper.toDto(targRepPipeline);
+        }
+        return targRepPipelineResponseDTO;
+    }
 
     /**
      * Get a specific targ rep pipeline.

@@ -1,6 +1,11 @@
 package org.gentar.biology.targ_rep.pipeline;
 
+import org.gentar.biology.plan.Plan;
+import org.gentar.biology.plan.filter.PlanFilter;
 import org.gentar.exceptions.NotFoundException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -23,5 +28,14 @@ public class TargRepPipelineServiceImpl implements TargRepPipelineService {
             throw new NotFoundException(String.format(TARG_REP_PIPELINE_NOT_EXISTS_ERROR, id));
         }
         return targRepPipeline;
+    }
+
+    @Override
+    public Page<TargRepPipeline> getPageableTargRepPipeline(Pageable page)
+    {
+        Page<TargRepPipeline> targRepPipelines = targRepPipelineRepository.findAll(page);
+        return targRepPipelines;
+        //List<Plan> plans = getPlans(planFilter);
+        //return new PageImpl<>(plans, page, plans.size());
     }
 }
