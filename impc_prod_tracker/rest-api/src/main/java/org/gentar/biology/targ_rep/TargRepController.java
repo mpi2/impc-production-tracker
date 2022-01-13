@@ -1,6 +1,7 @@
 package org.gentar.biology.targ_rep;
 
 import org.gentar.biology.targ_rep.allele.TargRepAllele;
+import org.gentar.biology.targ_rep.allele.TargRepAlleleResponseMapper;
 import org.gentar.biology.targ_rep.allele.TargRepAlleleService;
 import org.gentar.biology.targ_rep.es_cell.TargRepEsCell;
 import org.gentar.biology.targ_rep.es_cell.TargRepEsCellMapper;
@@ -34,24 +35,30 @@ public class TargRepController
 {
     private final TargRepEsCellMapper esCellMapper;
     private final TargRepPipelineResponseMapper targRepPipelineResponseMapper;
+    private final TargRepAlleleResponseMapper targRepAlleleResponseMapper;
     private final TargRepAlleleService alleleService;
     private final TargRepEsCellService esCellService;
-    private final TargRepPipelineServiceImpl targRepPipelineService;
+    private final TargRepPipelineService targRepPipelineService;
+    private final TargRepAlleleService targRepAlleleService;
     private final TargRepGeneService geneService;
 
 
     public TargRepController(TargRepEsCellMapper esCellMapper,
                              TargRepPipelineResponseMapper targRepPipelineResponseMapper,
+                             TargRepAlleleResponseMapper targRepAlleleResponseMapper,
                              TargRepAlleleService alleleService,
                              TargRepEsCellService esCellService,
                              TargRepPipelineServiceImpl targRepPipelineService,
+                             TargRepAlleleService targRepAlleleService,
                              TargRepGeneService geneService)
     {
         this.esCellMapper = esCellMapper;
         this.targRepPipelineResponseMapper = targRepPipelineResponseMapper;
+        this.targRepAlleleResponseMapper = targRepAlleleResponseMapper;
         this.alleleService = alleleService;
         this.esCellService = esCellService;
         this.targRepPipelineService = targRepPipelineService;
+        this.targRepAlleleService = targRepAlleleService;
         this.geneService = geneService;
     }
 
@@ -88,16 +95,16 @@ public class TargRepController
      * @return A collection  of {@link TargRepPipelineResponseDTO} objects.
      */
     @GetMapping(value = {"/pipelines"})
-    public ResponseEntity findAll(
-            Pageable pageable,
-            PagedResourcesAssembler assembler) {
+    public ResponseEntity findAllTargRepPipelines(
+            final Pageable pageable,
+            final PagedResourcesAssembler assembler) {
 
         Page<TargRepPipeline> targRepPipelines = targRepPipelineService.getPageableTargRepPipeline(pageable);
         Page<TargRepPipelineResponseDTO> targRepPipelineResponseDTOSPage = targRepPipelines.map(this::getDTO);
 
         PagedModel pr =
                 assembler.toModel(targRepPipelineResponseDTOSPage,
-                        linkTo(methodOn(TargRepController.class).findAll(pageable, assembler)).withSelfRel());
+                        linkTo(methodOn(TargRepController.class).findAllTargRepPipelines(pageable, assembler)).withSelfRel());
 
         HttpHeaders responseHeaders = new HttpHeaders();
         responseHeaders.add("Link", LinkUtil.createLinkHeader(pr));
@@ -113,6 +120,30 @@ public class TargRepController
         return targRepPipelineResponseDTO;
     }
 
+
+    /**
+     * Get the targ rep alleles.
+     * @return A collection  of {@link TargRepAlleleResponseDTO} objects.
+     */
+    @GetMapping(value = {"/alleles"})
+    public ResponseEntity findAllTargRepAlleles(
+            final Pageable allelePageable,
+            final PagedResourcesAssembler alleleAssembler)
+    {
+
+        Page<TargRepAllele> targRepAlleles = targRepAlleleService.getPageableTargRepAllele(allelePageable);
+        Page<TargRepAlleleResponseDTO> targRepAlleleResponseDTOSPage = targRepAlleles.map(x -> targRepAlleleResponseMapper.toDto(x));
+
+        PagedModel pr =
+                alleleAssembler.toModel(targRepAlleleResponseDTOSPage,
+                        linkTo(methodOn(TargRepController.class).findAllTargRepAlleles(allelePageable, alleleAssembler)).withSelfRel());
+
+        HttpHeaders responseHeaders = new HttpHeaders();
+        responseHeaders.add("Link", LinkUtil.createLinkHeader(pr));
+
+        return new ResponseEntity<>(pr, responseHeaders, HttpStatus.OK);
+    }
+
     /**
      * Get a specific targ rep pipeline.
      * @param id Pipeline identifier.
@@ -124,6 +155,21 @@ public class TargRepController
         EntityModel<TargRepPipelineResponseDTO> entityModel = null;
         TargRepPipeline targRepPipeline = targRepPipelineService.getNotNullTargRepPipelineById(id);
         entityModel = EntityModel.of(targRepPipelineResponseMapper.toDto(targRepPipeline));
+        return entityModel;
+    }
+
+
+    /**
+     * Get a specific targ rep allele.
+     * @param id TargRep Allele identifier.
+     * @return Entity with the targ rep allele information.
+     */
+    @GetMapping(value = {"/alleles/{id}"})
+    public EntityModel<?> findTargRepAlleleById(@PathVariable Long id)
+    {
+        EntityModel<TargRepAlleleResponseDTO> entityModel = null;
+        TargRepAllele targRepAllele = targRepAlleleService.getNotNullTargRepAlelleById(id);
+        entityModel = EntityModel.of(targRepAlleleResponseMapper.toDto(targRepAllele));
         return entityModel;
     }
 

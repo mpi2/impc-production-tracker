@@ -1,16 +1,9 @@
 package org.gentar.biology.targ_rep.pipeline;
 
 import org.gentar.Mapper;
-import org.gentar.biology.plan.Plan;
-import org.gentar.biology.plan.PlanResponseDTO;
-import org.gentar.biology.project.Project;
-import org.gentar.biology.project.ProjectController;
 import org.gentar.biology.targ_rep.TargRepController;
 import org.gentar.biology.targ_rep.TargRepPipelineResponseDTO;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.hateoas.Link;
-import org.springframework.hateoas.PagedModel;
 import org.springframework.stereotype.Component;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
