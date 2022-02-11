@@ -4,4 +4,5 @@ import org.springframework.data.repository.CrudRepository;
 
 public interface TargRepIkmcProjectStatusRepository extends CrudRepository<TargRepIkmcProjectStatus, Long>
 {
+    TargRepIkmcProjectStatus findTargRepIkmcProjectStatusByNameIgnoreCase(String name);
 }
