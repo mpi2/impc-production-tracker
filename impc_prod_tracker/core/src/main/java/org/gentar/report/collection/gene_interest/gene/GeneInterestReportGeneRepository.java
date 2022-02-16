@@ -35,8 +35,7 @@ public interface GeneInterestReportGeneRepository extends CrudRepository<Gene, L
             "INNER JOIN AssignmentStatus assign on p.assignmentStatus = assign " +
             "where " +
             "priv.name='public' and " +
-            "at.name='crispr' and " + // Ensure no haplo-essential production plans included (production plans are implicit)
-            "crispr_attempt.experimental=false and " +    // Critera used in iMits to exclude some data
+            "at.name='crispr' and " + // Ensure no haplo-essential production plans included (production plans are implicit) //            "crispr_attempt.experimental=false and " +    // Critera used in iMits to exclude some data
             "ot.name = 'Colony'  and " +
             "colony_status.name <> 'Colony Aborted' " // Make sure no mutations are linked to aborted colonies when looking for projects
     )
@@ -61,16 +60,14 @@ public interface GeneInterestReportGeneRepository extends CrudRepository<Gene, L
             "INNER JOIN Status colony_status ON c.status = colony_status " +
             "INNER JOIN Plan plan on o.plan=plan " +
             "INNER JOIN Status plan_summary_status ON plan.summaryStatus = plan_summary_status " +
-            "INNER JOIN AttemptType at ON plan.attemptType = at " +
-            "INNER JOIN EsCellAttempt esa ON plan = esa.plan " +
+            "INNER JOIN AttemptType at ON plan.attemptType = at " + //           "INNER JOIN EsCellAttempt esa ON plan = esa.plan " +
             "INNER JOIN WorkGroup wg ON plan.workGroup = wg " +
             "INNER JOIN Project p on plan.project=p " +
             "INNER JOIN Privacy priv on p.privacy=priv " +
             "INNER JOIN AssignmentStatus assign on p.assignmentStatus = assign " +
             "where " +
             "priv.name='public' and " +
-            "at.name in ('es cell', 'es cell allele modification') and " + // Ensure no haplo-essential production plans included (production plans are implicit)
-            "esa.experimental = false  and " +    // Critera used in iMits to exclude some data
+            "at.name in ('es cell', 'es cell allele modification') and " + // Ensure no haplo-essential production plans included (production plans are implicit) //           "esa.experimental = false  and " +    // Critera used in iMits to exclude some data
             "wg.name <> 'EUCOMMToolsCre' and " +  // Critera used in iMits to exclude some data
             "p.esCellQcOnly = false and " +       // Critera used in iMits to exclude some data
             "ot.name = 'Colony'  and " +
