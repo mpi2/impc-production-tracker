@@ -14,6 +14,9 @@ public interface MgiCrisprAlleleReportOutcomeMutationProjection {
     @Value("#{target.symbol}")
     String getSymbol();
 
+    @Value("#{target.description}")
+    String getDescription();
+
     @Value("#{target.mgiAlleleAccId}")
     String getMgiAlleleAccId();
 

@@ -1,10 +1,14 @@
 package org.gentar.report.collection.mgi_crispr_allele.colony;
 
 import org.gentar.biology.gene.Gene;
+import org.gentar.report.collection.mgi_crispr_allele.guide.MgiCrisprAlleleReportGuideProjection;
+import org.gentar.report.collection.mgi_crispr_allele.nuclease.MgiCrisprAlleleReportNucleaseProjection;
 import org.gentar.report.collection.mgi_crispr_allele.outcome.MgiCrisprAlleleReportOutcomeMutationProjection;
+import org.gentar.report.collection.mgi_crispr_allele.sequence.MgiCrisprAlleleReportMutationSequenceProjection;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 public interface MgiCrisprAlleleReportColonyService {
 
@@ -21,6 +25,26 @@ public interface MgiCrisprAlleleReportColonyService {
      *         where an outcomeId maps to a single Mutation.
      */
     Map<Long, MgiCrisprAlleleReportOutcomeMutationProjection> getMutationMap();
+
+    /**
+     *
+     * @return Map of Production PlanId to a set of MgiCrisprAlleleReportGuideProjection
+     *         the planId will often map to more than one Guide.
+     */
+    Map<Long, Set<MgiCrisprAlleleReportGuideProjection>> getGuideMap();
+
+    /**
+     *
+     * @return Map of Production PlanId to a set of MgiCrisprAlleleReportGuideProjection
+     *         the planId will often map to more than one Guide.
+     */
+    Map<Long, Set<MgiCrisprAlleleReportNucleaseProjection>> getNucleaseMap();
+
+    /**
+     *
+     * @return Map of MutationId to Sequence data.
+     */
+    Map<Long, Set<MgiCrisprAlleleReportMutationSequenceProjection>> getMutationSequenceMap();
 
     /**
      *
