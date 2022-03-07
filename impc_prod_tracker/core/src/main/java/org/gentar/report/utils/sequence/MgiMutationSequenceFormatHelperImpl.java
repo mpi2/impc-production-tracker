@@ -8,7 +8,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 @Component
-public class MgiMutationSequenceFormatHelperImpl implements MgiMutationSeqeunceFormatHelper{
+public class MgiMutationSequenceFormatHelperImpl implements MgiMutationSequenceFormatHelper {
 
     @Override
     public String formatMutationSeqeunceData(Set<MgiCrisprAlleleReportMutationSequenceProjection> mutationSequenceProjections) {

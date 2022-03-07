@@ -2,6 +2,8 @@ package org.gentar.report.collection.mgi_crispr_allele.colony;
 
 import org.gentar.biology.gene.Gene;
 import org.gentar.report.collection.mgi_crispr_allele.guide.MgiCrisprAlleleReportGuideProjection;
+import org.gentar.report.collection.mgi_crispr_allele.mutagenesis_donor.MgiCrisprAlleleReportMutagenesisDonorProjection;
+import org.gentar.report.collection.mgi_crispr_allele.mutation_characterization.MgiCrisprAlleleReportMutationCategorizationProjection;
 import org.gentar.report.collection.mgi_crispr_allele.nuclease.MgiCrisprAlleleReportNucleaseProjection;
 import org.gentar.report.collection.mgi_crispr_allele.outcome.MgiCrisprAlleleReportOutcomeMutationProjection;
 import org.gentar.report.collection.mgi_crispr_allele.sequence.MgiCrisprAlleleReportMutationSequenceProjection;
@@ -42,9 +44,21 @@ public interface MgiCrisprAlleleReportColonyService {
 
     /**
      *
+     * @return Map of Production PlanId to a set of MgiCrisprAlleleReportMutagenesisDonorProjection
+     */
+    Map<Long, Set<MgiCrisprAlleleReportMutagenesisDonorProjection>> getMutagenesisDonorMap();
+
+    /**
+     *
      * @return Map of MutationId to Sequence data.
      */
     Map<Long, Set<MgiCrisprAlleleReportMutationSequenceProjection>> getMutationSequenceMap();
+
+    /**
+     *
+     * @return Map of MutationId to MutationCategorization data.
+     */
+    Map<Long, Set<MgiCrisprAlleleReportMutationCategorizationProjection>> getMutationCategorizationMap();
 
     /**
      *

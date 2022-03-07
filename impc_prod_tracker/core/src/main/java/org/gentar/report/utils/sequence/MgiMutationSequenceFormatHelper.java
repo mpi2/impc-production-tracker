@@ -5,7 +5,7 @@ import org.gentar.report.collection.mgi_crispr_allele.sequence.MgiCrisprAlleleRe
 
 import java.util.Set;
 
-public interface MgiMutationSeqeunceFormatHelper {
+public interface MgiMutationSequenceFormatHelper {
 
     /**
      *

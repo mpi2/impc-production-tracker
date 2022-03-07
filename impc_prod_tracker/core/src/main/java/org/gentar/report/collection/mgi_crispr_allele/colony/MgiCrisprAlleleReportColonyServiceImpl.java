@@ -3,8 +3,12 @@ package org.gentar.report.collection.mgi_crispr_allele.colony;
 import org.gentar.biology.gene.Gene;
 import org.gentar.report.collection.mgi_crispr_allele.guide.MgiCrisprAlleleReportGuideProjection;
 import org.gentar.report.collection.mgi_crispr_allele.guide.MgiCrisprAlleleReportGuideServiceImpl;
+import org.gentar.report.collection.mgi_crispr_allele.mutagenesis_donor.MgiCrisprAlleleReportMutagenesisDonorProjection;
+import org.gentar.report.collection.mgi_crispr_allele.mutagenesis_donor.MgiCrisprAlleleReportMutagenesisDonorService;
 import org.gentar.report.collection.mgi_crispr_allele.mutation.MgiCrisprAlleleReportMutationGeneProjection;
 import org.gentar.report.collection.mgi_crispr_allele.mutation.MgiCrisprAlleleReportMutationServiceImpl;
+import org.gentar.report.collection.mgi_crispr_allele.mutation_characterization.MgiCrisprAlleleReportMutationCategorizationProjection;
+import org.gentar.report.collection.mgi_crispr_allele.mutation_characterization.MgiCrisprAlleleReportMutationCategorizationServiceImpl;
 import org.gentar.report.collection.mgi_crispr_allele.nuclease.MgiCrisprAlleleReportNucleaseProjection;
 import org.gentar.report.collection.mgi_crispr_allele.nuclease.MgiCrisprAlleleReportNucleaseServiceImpl;
 import org.gentar.report.collection.mgi_crispr_allele.outcome.MgiCrisprAlleleReportOutcomeMutationProjection;
@@ -26,7 +30,9 @@ public class MgiCrisprAlleleReportColonyServiceImpl implements MgiCrisprAlleleRe
     private final MgiCrisprAlleleReportMutationServiceImpl mutationReportService;
     private final MgiCrisprAlleleReportGuideServiceImpl guideReportService;
     private final MgiCrisprAlleleReportNucleaseServiceImpl nucleaseReportService;
+    private final MgiCrisprAlleleReportMutagenesisDonorService mutagenesisDonorReportService;
     private final MgiCrisprAlleleReportMutationSequenceServiceImpl mutationSequenceReportService;
+    private final MgiCrisprAlleleReportMutationCategorizationServiceImpl mutationCategorizationReportService;
 
     private List<MgiCrisprAlleleReportColonyProjection> cp;
     private Map<Long, MgiCrisprAlleleReportOutcomeMutationProjection> filteredOutcomeMutationMap;
@@ -37,14 +43,18 @@ public class MgiCrisprAlleleReportColonyServiceImpl implements MgiCrisprAlleleRe
                                                   MgiCrisprAlleleReportMutationServiceImpl mutationReportService,
                                                   MgiCrisprAlleleReportGuideServiceImpl guideReportService,
                                                   MgiCrisprAlleleReportNucleaseServiceImpl nucleaseReportService,
-                                                  MgiCrisprAlleleReportMutationSequenceServiceImpl mutationSequenceReportService)
+                                                  MgiCrisprAlleleReportMutagenesisDonorService mutagenesisDonorReportService,
+                                                  MgiCrisprAlleleReportMutationSequenceServiceImpl mutationSequenceReportService,
+                                                  MgiCrisprAlleleReportMutationCategorizationServiceImpl mutationCategorizationReportService)
     {
         this.mgiCrisprAlleleReportColonyRepository = mgiCrisprAlleleReportColonyRepository;
         this.outcomeReportService = outcomeReportService;
         this.mutationReportService = mutationReportService;
         this.guideReportService = guideReportService;
         this.nucleaseReportService = nucleaseReportService;
+        this.mutagenesisDonorReportService = mutagenesisDonorReportService;
         this.mutationSequenceReportService = mutationSequenceReportService;
+        this.mutationCategorizationReportService = mutationCategorizationReportService;
     }
 
     @Override
@@ -109,6 +119,23 @@ public class MgiCrisprAlleleReportColonyServiceImpl implements MgiCrisprAlleleRe
     }
 
     @Override
+    public Map<Long, Set<MgiCrisprAlleleReportMutagenesisDonorProjection>> getMutagenesisDonorMap() {
+        List<Long> planIds = getPlanIds();
+
+        List<MgiCrisprAlleleReportMutagenesisDonorProjection> mutagenesisDonorProjections =
+                mutagenesisDonorReportService.getSelectedMutagenesisDonorProjections(planIds);
+
+        Map<Long, Set<MgiCrisprAlleleReportMutagenesisDonorProjection>> mutagenesisDonorProjectionsMap =
+                mutagenesisDonorProjections
+                .stream()
+                .collect(Collectors.groupingBy(
+                        MgiCrisprAlleleReportMutagenesisDonorProjection::getPlanId,
+                        Collectors.mapping(entry -> entry, Collectors.toSet())));
+
+        return mutagenesisDonorProjectionsMap;
+    }
+
+    @Override
     public Map<Long, Set<MgiCrisprAlleleReportMutationSequenceProjection>> getMutationSequenceMap() {
         getMutationMap();
         List<Long> filteredMutationIds = getFilteredMutationIds();
@@ -123,6 +150,25 @@ public class MgiCrisprAlleleReportColonyServiceImpl implements MgiCrisprAlleleRe
                         Collectors.mapping(entry -> entry, Collectors.toSet())));
 
         return mutationSequenceMap;
+    }
+
+    @Override
+    public Map<Long, Set<MgiCrisprAlleleReportMutationCategorizationProjection>> getMutationCategorizationMap() {
+        getMutationMap();
+        List<Long> filteredMutationIds = getFilteredMutationIds();
+
+        List<MgiCrisprAlleleReportMutationCategorizationProjection> mutationCategorizationProjections =
+                mutationCategorizationReportService
+                        .getSelectedMutationCategorizationProjections(filteredMutationIds);
+
+        Map<Long, Set<MgiCrisprAlleleReportMutationCategorizationProjection>> mutationCategorizationMap =
+                mutationCategorizationProjections
+                .stream()
+                .collect(Collectors.groupingBy(
+                        MgiCrisprAlleleReportMutationCategorizationProjection::getMutationId,
+                        Collectors.mapping(entry -> entry, Collectors.toSet())));
+
+        return mutationCategorizationMap;
     }
 
     @Override

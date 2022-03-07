@@ -1,17 +1,21 @@
 package org.gentar.report.collection.mgi_crispr_allele;
 
 import org.gentar.biology.gene.Gene;
-import org.gentar.report.ReportServiceImpl;
+import org.gentar.report.ReportService;
 import org.gentar.report.ReportTypeName;
 import org.gentar.report.collection.mgi_crispr_allele.colony.MgiCrisprAlleleReportColonyProjection;
-import org.gentar.report.collection.mgi_crispr_allele.colony.MgiCrisprAlleleReportColonyServiceImpl;
+import org.gentar.report.collection.mgi_crispr_allele.colony.MgiCrisprAlleleReportColonyService;
 import org.gentar.report.collection.mgi_crispr_allele.guide.MgiCrisprAlleleReportGuideProjection;
+import org.gentar.report.collection.mgi_crispr_allele.mutagenesis_donor.MgiCrisprAlleleReportMutagenesisDonorProjection;
+import org.gentar.report.collection.mgi_crispr_allele.mutation_characterization.MgiCrisprAlleleReportMutationCategorizationProjection;
 import org.gentar.report.collection.mgi_crispr_allele.nuclease.MgiCrisprAlleleReportNucleaseProjection;
 import org.gentar.report.collection.mgi_crispr_allele.outcome.MgiCrisprAlleleReportOutcomeMutationProjection;
 import org.gentar.report.collection.mgi_crispr_allele.sequence.MgiCrisprAlleleReportMutationSequenceProjection;
-import org.gentar.report.utils.guide.MgiGuideFormatHelperImpl;
-import org.gentar.report.utils.nuclease.MgiNucleaseFormatHelperImpl;
-import org.gentar.report.utils.sequence.MgiMutationSeqeunceFormatHelper;
+import org.gentar.report.utils.guide.MgiGuideFormatHelper;
+import org.gentar.report.utils.mutagenesis_donor.MgiMutagenesisDonorFormatHelper;
+import org.gentar.report.utils.mutation_categorization.MgiMutationCategorizationFormatHelper;
+import org.gentar.report.utils.nuclease.MgiNucleaseFormatHelper;
+import org.gentar.report.utils.sequence.MgiMutationSequenceFormatHelper;
 import org.springframework.stereotype.Component;
 
 import java.util.*;
@@ -20,30 +24,39 @@ import java.util.stream.Collectors;
 @Component
 public class MgiCrisprAlleleReportServiceImpl implements MgiCrisprAlleleReportService {
 
-    private final MgiCrisprAlleleReportColonyServiceImpl colonyReportService;
-    private final ReportServiceImpl reportService;
-    private final MgiGuideFormatHelperImpl mgiGuideFormatHelper;
-    private final MgiNucleaseFormatHelperImpl mgiNucleaseFormatHelper;
-    private final MgiMutationSeqeunceFormatHelper mgiMutationSeqeunceFormatHelper;
+    private final MgiCrisprAlleleReportColonyService colonyReportService;
+    private final ReportService reportService;
+
+    private final MgiGuideFormatHelper mgiGuideFormatHelper;
+    private final MgiNucleaseFormatHelper mgiNucleaseFormatHelper;
+    private final MgiMutationSequenceFormatHelper mgiMutationSeqeunceFormatHelper;
+    private final MgiMutationCategorizationFormatHelper mgiMutationCategorizationFormatHelper;
+    private final MgiMutagenesisDonorFormatHelper mgiMutagenesisDonorFormatHelper;
 
     private List<String> reportRows;
     private List<MgiCrisprAlleleReportColonyProjection> cp;
     private Map<Long, Set<MgiCrisprAlleleReportGuideProjection>> guideMap;
     private Map<Long, Set<MgiCrisprAlleleReportNucleaseProjection>> nucleaseMap;
+    private Map<Long, Set<MgiCrisprAlleleReportMutagenesisDonorProjection>> mutagenesisDonorMap;
     private Map<Long, Set<MgiCrisprAlleleReportMutationSequenceProjection>> sequenceMap;
+    private Map<Long, Set<MgiCrisprAlleleReportMutationCategorizationProjection>> categorizationMap;
     private Map<Long, MgiCrisprAlleleReportOutcomeMutationProjection> filteredOutcomeMutationMap;
     private Map<Long, Gene> filteredMutationGeneMap;
 
-    public MgiCrisprAlleleReportServiceImpl(MgiCrisprAlleleReportColonyServiceImpl colonyReportService,
-                                            ReportServiceImpl reportService,
-                                            MgiGuideFormatHelperImpl mgiGuideFormatHelper,
-                                            MgiNucleaseFormatHelperImpl mgiNucleaseFormatHelper,
-                                            MgiMutationSeqeunceFormatHelper mgiMutationSeqeunceFormatHelper) {
+    public MgiCrisprAlleleReportServiceImpl(MgiCrisprAlleleReportColonyService colonyReportService,
+                                            ReportService reportService,
+                                            MgiGuideFormatHelper mgiGuideFormatHelper,
+                                            MgiNucleaseFormatHelper mgiNucleaseFormatHelper,
+                                            MgiMutationSequenceFormatHelper mgiMutationSeqeunceFormatHelper,
+                                            MgiMutationCategorizationFormatHelper mgiMutationCategorizationFormatHelper,
+                                            MgiMutagenesisDonorFormatHelper mgiMutagenesisDonorFormatHelper) {
         this.colonyReportService = colonyReportService;
         this.reportService = reportService;
         this.mgiGuideFormatHelper = mgiGuideFormatHelper;
         this.mgiNucleaseFormatHelper = mgiNucleaseFormatHelper;
         this.mgiMutationSeqeunceFormatHelper = mgiMutationSeqeunceFormatHelper;
+        this.mgiMutationCategorizationFormatHelper = mgiMutationCategorizationFormatHelper;
+        this.mgiMutagenesisDonorFormatHelper = mgiMutagenesisDonorFormatHelper;
     }
 
     @Override
@@ -52,9 +65,11 @@ public class MgiCrisprAlleleReportServiceImpl implements MgiCrisprAlleleReportSe
         cp = colonyReportService.getAllColonyReportProjections();
         guideMap = colonyReportService.getGuideMap();
         nucleaseMap = colonyReportService.getNucleaseMap();
+        mutagenesisDonorMap = colonyReportService.getMutagenesisDonorMap();
         filteredOutcomeMutationMap = colonyReportService.getMutationMap();
         filteredMutationGeneMap = colonyReportService.getGeneMap();
         sequenceMap = colonyReportService.getMutationSequenceMap();
+        categorizationMap = colonyReportService.getMutationCategorizationMap();
 
         reportRows = prepareReport();
         saveReport();
@@ -94,16 +109,22 @@ public class MgiCrisprAlleleReportServiceImpl implements MgiCrisprAlleleReportSe
         Set<MgiCrisprAlleleReportMutationSequenceProjection> mutationSequenceProjections =
                 sequenceMap.get(mutationProjection.getMutationId());
 
+        Set<MgiCrisprAlleleReportMutationCategorizationProjection> categorizationProjections =
+                categorizationMap.get(mutationProjection.getMutationId());
+
         Gene g = filteredMutationGeneMap.get(mutationProjection.getMutationId());
 
         Set<MgiCrisprAlleleReportGuideProjection> guideProjections = guideMap.get(x.getPlanId());
         Set<MgiCrisprAlleleReportNucleaseProjection> nucleaseProjections = nucleaseMap.get(x.getPlanId());
+        Set<MgiCrisprAlleleReportMutagenesisDonorProjection> mutagenesisDonorProjections =
+                mutagenesisDonorMap.get(x.getPlanId());
 
         return g.getSymbol() + "\t" +
                 g.getAccId() + "\t" +
-                "" + "\t" +
+                mgiMutagenesisDonorFormatHelper.formatMutagenesisDonorData(mutagenesisDonorProjections) + "\t" +
                 mgiNucleaseFormatHelper.formatNucleaseData(nucleaseProjections) + "\t" +
                 mgiGuideFormatHelper.formatGuideData(guideProjections) + "\t" +
+                mgiMutationCategorizationFormatHelper.formatRepairMechanism(categorizationProjections) + "\t" +
                 x.getColonyName() + "\t" +
                 x.getStrainName() + "\t" +
                 genotypingComment + "\t" +
@@ -112,6 +133,7 @@ public class MgiCrisprAlleleReportServiceImpl implements MgiCrisprAlleleReportSe
                 "endonuclease-mediated" + "\t" +
                 mutationCategory + "\t" +
                 mutationType + "\t" +
+                mgiMutationCategorizationFormatHelper.formatAlleleCategory(categorizationProjections) + "\t" +
                 mgiMutationSeqeunceFormatHelper.formatMutationSeqeunceData(mutationSequenceProjections) + "\t" +
                 mutationSymbol + "\t" +
                 mgiAlleleAccId + "\t" +
@@ -139,9 +161,10 @@ public class MgiCrisprAlleleReportServiceImpl implements MgiCrisprAlleleReportSe
         List<String> headers = Arrays.asList(
                 "Gene Symbol",
                 "Gene MGI Accession ID",
-                "ES Cell Line",
+                "Mutagenesis Donors",
                 "Nucleases",
                 "Guides",
+                "Repair Mechanism",
                 "Colony Name",
                 "Colony Background Strain",
                 "Colony Genotyping Comments",
@@ -150,6 +173,7 @@ public class MgiCrisprAlleleReportServiceImpl implements MgiCrisprAlleleReportSe
                 "Mutation Class",
                 "Mutation Type",
                 "Mutation Subtype",
+                "Mutation Category",
                 "Mutation Sequence",
                 "Mutation Symbol",
                 "Mutation MGI Accession ID",
