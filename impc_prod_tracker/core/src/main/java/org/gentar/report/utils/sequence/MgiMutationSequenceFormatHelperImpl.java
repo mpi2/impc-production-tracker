@@ -22,6 +22,7 @@ public class MgiMutationSequenceFormatHelperImpl implements MgiMutationSequenceF
                     .collect(Collectors.joining("**"));
         }
 
+        result = '"' + result + '"';
         return result;
     }
 
@@ -32,11 +33,10 @@ public class MgiMutationSequenceFormatHelperImpl implements MgiMutationSequenceF
         String sequenceType = projection.getSequenceType() == null ? "" : projection.getSequenceType();
         String sequenceCategory = projection.getSequenceCategory() == null ? "" : projection.getSequenceCategory();
 
-        return  '"' + "index::" + index + "||" +
+        return  "index::" + index + "||" +
                 "mutationSeqeunce::" + sequence + "||" +
                 "sequenceType::" + sequenceType + "||" +
-                "sequenceCategory::" + sequenceCategory +
-                '"';
+                "sequenceCategory::" + sequenceCategory;
 
     }
 }

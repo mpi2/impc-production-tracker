@@ -1,6 +1,8 @@
 package org.gentar.report.collection.mgi_crispr_allele.colony;
 
 import org.gentar.biology.gene.Gene;
+import org.gentar.report.collection.mgi_crispr_allele.genotype_primer.MgiCrisprAlleleReportGenotypePrimerProjection;
+import org.gentar.report.collection.mgi_crispr_allele.genotype_primer.MgiCrisprAlleleReportGenotypePrimerService;
 import org.gentar.report.collection.mgi_crispr_allele.guide.MgiCrisprAlleleReportGuideProjection;
 import org.gentar.report.collection.mgi_crispr_allele.guide.MgiCrisprAlleleReportGuideServiceImpl;
 import org.gentar.report.collection.mgi_crispr_allele.mutagenesis_donor.MgiCrisprAlleleReportMutagenesisDonorProjection;
@@ -31,6 +33,7 @@ public class MgiCrisprAlleleReportColonyServiceImpl implements MgiCrisprAlleleRe
     private final MgiCrisprAlleleReportGuideServiceImpl guideReportService;
     private final MgiCrisprAlleleReportNucleaseServiceImpl nucleaseReportService;
     private final MgiCrisprAlleleReportMutagenesisDonorService mutagenesisDonorReportService;
+    private final MgiCrisprAlleleReportGenotypePrimerService genotypePrimerReportService;
     private final MgiCrisprAlleleReportMutationSequenceServiceImpl mutationSequenceReportService;
     private final MgiCrisprAlleleReportMutationCategorizationServiceImpl mutationCategorizationReportService;
 
@@ -44,6 +47,7 @@ public class MgiCrisprAlleleReportColonyServiceImpl implements MgiCrisprAlleleRe
                                                   MgiCrisprAlleleReportGuideServiceImpl guideReportService,
                                                   MgiCrisprAlleleReportNucleaseServiceImpl nucleaseReportService,
                                                   MgiCrisprAlleleReportMutagenesisDonorService mutagenesisDonorReportService,
+                                                  MgiCrisprAlleleReportGenotypePrimerService genotypePrimerReportService,
                                                   MgiCrisprAlleleReportMutationSequenceServiceImpl mutationSequenceReportService,
                                                   MgiCrisprAlleleReportMutationCategorizationServiceImpl mutationCategorizationReportService)
     {
@@ -53,6 +57,7 @@ public class MgiCrisprAlleleReportColonyServiceImpl implements MgiCrisprAlleleRe
         this.guideReportService = guideReportService;
         this.nucleaseReportService = nucleaseReportService;
         this.mutagenesisDonorReportService = mutagenesisDonorReportService;
+        this.genotypePrimerReportService = genotypePrimerReportService;
         this.mutationSequenceReportService = mutationSequenceReportService;
         this.mutationCategorizationReportService = mutationCategorizationReportService;
     }
@@ -133,6 +138,23 @@ public class MgiCrisprAlleleReportColonyServiceImpl implements MgiCrisprAlleleRe
                         Collectors.mapping(entry -> entry, Collectors.toSet())));
 
         return mutagenesisDonorProjectionsMap;
+    }
+
+    @Override
+    public Map<Long, Set<MgiCrisprAlleleReportGenotypePrimerProjection>> getGenotypePrimerMap() {
+        List<Long> planIds = getPlanIds();
+
+        List<MgiCrisprAlleleReportGenotypePrimerProjection> genotypePrimerProjections =
+                genotypePrimerReportService.getSelectedGenotypePrimerProjections(planIds);
+
+        Map<Long, Set<MgiCrisprAlleleReportGenotypePrimerProjection>> getGenotypePrimerProjectionsMap =
+                genotypePrimerProjections
+                        .stream()
+                        .collect(Collectors.groupingBy(
+                                MgiCrisprAlleleReportGenotypePrimerProjection::getPlanId,
+                                Collectors.mapping(entry -> entry, Collectors.toSet())));
+
+        return getGenotypePrimerProjectionsMap;
     }
 
     @Override

@@ -19,7 +19,7 @@ class MgiMutagenesisDonorFormatHelperImpl implements MgiMutagenesisDonorFormatHe
                     .map(p -> formatMutagenesisDonor(p))
                     .collect(Collectors.joining("**"));
         }
-
+        result = '"' + result + '"';
         return result;
     }
 
@@ -30,10 +30,8 @@ class MgiMutagenesisDonorFormatHelperImpl implements MgiMutagenesisDonorFormatHe
         String preparationType = projection.getPreparationType() == null ? "" : projection.getPreparationType();
 
 
-        return  '"' +
-                "preparationType::" + preparationType + "||" +
+        return  "preparationType::" + preparationType + "||" +
                 "vector::" + vector + "||" +
-                "sequence::" + sequence +
-                '"';
+                "sequence::" + sequence;
     }
 }
