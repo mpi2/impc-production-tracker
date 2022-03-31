@@ -23,14 +23,13 @@ public class GeneInterestReportMutationServiceImpl implements GeneInterestReport
     }
 
 
+    @Override
     public List<GeneInterestReportMutationGeneProjection> getSelectedMutationGeneProjections(List mutationIds){
         return geneInterestReportMutationRepository.findSelectedMutationGeneProjectionsForGeneInterestReport(mutationIds);
     }
 
-
-    public List<GeneInterestReportEsCellMutationTypeProjection> getSelectedEsCellMutationTypeProjections(
-            List<GeneInterestReportGeneProjection> geneProjections)
-    {
+    @Override
+    public List<GeneInterestReportEsCellMutationTypeProjection> getSelectedEsCellMutationTypeProjections(List<GeneInterestReportGeneProjection> geneProjections) {
         List<String> mutationMins =
                 geneProjections
                         .stream()
@@ -39,6 +38,7 @@ public class GeneInterestReportMutationServiceImpl implements GeneInterestReport
 
         return geneInterestReportMutationRepository.findSelectedEsCellMutationTypeProjectionsForGeneInterestReport(mutationMins);
     }
+
 
     public Map<String, String> assignAlleleCategories(List<GeneInterestReportEsCellMutationTypeProjection> mutationTypeProjections ){
         return mutationTypeProjections
