@@ -1,7 +1,8 @@
 package org.gentar.report.collection.mgi_modification_allele.modification_colony;
 
 import org.gentar.report.collection.mgi_crispr_allele.colony.MgiCrisprAlleleReportColonyProjection;
-import org.gentar.report.collection.mgi_crispr_allele.outcome.MgiCrisprAlleleReportOutcomeMutationProjection;
+import org.gentar.report.collection.mgi_modification_allele.outcome.MgiModificationAlleleReportOutcomeMutationProjection;
+import org.gentar.report.collection.mgi_modification_allele.outcome.MgiModificationAlleleReportOutcomeService;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -13,13 +14,17 @@ import java.util.stream.Collectors;
 class MgiModificationAlleleReportColonyServiceImpl implements MgiModificationAlleleReportColonyService{
 
     private final MgiModificationAlleleReportColonyRepository mgiModificationAlleleReportColonyRepository;
+    private final MgiModificationAlleleReportOutcomeService mgiModificationAlleleReportOutcomeService;
 
     private List<MgiModificationAlleleReportColonyProjection> cp;
+    private Map<Long, MgiModificationAlleleReportOutcomeMutationProjection> filteredOutcomeMutationMap;
 
-
-    MgiModificationAlleleReportColonyServiceImpl(MgiModificationAlleleReportColonyRepository mgiModificationAlleleReportColonyRepository) {
+    MgiModificationAlleleReportColonyServiceImpl(MgiModificationAlleleReportColonyRepository mgiModificationAlleleReportColonyRepository,
+                                                 MgiModificationAlleleReportOutcomeService mgiModificationAlleleReportOutcomeService) {
         this.mgiModificationAlleleReportColonyRepository = mgiModificationAlleleReportColonyRepository;
+        this.mgiModificationAlleleReportOutcomeService = mgiModificationAlleleReportOutcomeService;
     }
+
 
     @Override
     public List<MgiModificationAlleleReportColonyProjection> getAllMgiModificationAlleleReportColonyProjections() {
@@ -36,11 +41,12 @@ class MgiModificationAlleleReportColonyServiceImpl implements MgiModificationAll
 
         List<Long> outcomeIds = getOutcomeIds();
 
-        List<MgiCrisprAlleleReportOutcomeMutationProjection> omp = outcomeReportService.getSelectedOutcomeMutationCrisprReportProjections(outcomeIds);
-        Map<Long, Set<MgiCrisprAlleleReportOutcomeMutationProjection>> outcomeMutationMap = omp
+        List<MgiModificationAlleleReportOutcomeMutationProjection> omp =
+                mgiModificationAlleleReportOutcomeService.getSelectedOutcomeMutationProjections(outcomeIds);
+        Map<Long, Set<MgiModificationAlleleReportOutcomeMutationProjection>> outcomeMutationMap = omp
                 .stream()
                 .collect(Collectors.groupingBy(
-                        MgiCrisprAlleleReportOutcomeMutationProjection::getOutcomeId,
+                        MgiModificationAlleleReportOutcomeMutationProjection::getOutcomeId,
                         Collectors.mapping(entry -> entry, Collectors.toSet())));
 
         // select outcomes associated with only one mutation - compatible with existing MGI iMits report
@@ -52,4 +58,10 @@ class MgiModificationAlleleReportColonyServiceImpl implements MgiModificationAll
 
         return filteredOutcomeMutationMap;
     }
+    private List<Long> getOutcomeIds() {
+        return cp.stream()
+                .map(MgiModificationAlleleReportColonyProjection::getModificationOutcomeId)
+                .collect(Collectors.toList());
+    }
+
 }
