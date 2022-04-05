@@ -1,6 +1,5 @@
 package org.gentar.report.collection.mgi_crispr_allele.outcome;
 
-import org.gentar.biology.mutation.Mutation;
 import org.gentar.biology.outcome.Outcome;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
