@@ -29,6 +29,7 @@ public class ReportServiceImpl implements ReportService {
     }
 
     @Transactional
+    @Override
     public void saveReport(ReportTypeName reportTypeName, String reportText)
     {
         ReportType reportType = reportTypeRepository.findReportTypeByNameIs(reportTypeName.getLabel());
@@ -38,12 +39,14 @@ public class ReportServiceImpl implements ReportService {
         reportRepository.save(report);
      }
 
+    @Override
     public void cleanAllReports() {
         ReportTypeName
                 .stream()
                 .forEach(rt -> cleanReportsByReportType(rt.getLabel()));
     }
 
+    @Override
     public void cleanReportsByReportType(String name) {
 
         if (reportTypeNameExists(name)) {
@@ -59,6 +62,7 @@ public class ReportServiceImpl implements ReportService {
         }
     }
 
+    @Override
     public void writeReport(HttpServletResponse response, String name) throws IOException {
 
         String reportTypeName = name.toLowerCase();

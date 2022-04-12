@@ -66,7 +66,7 @@ public class MgiPhenotypingColonyReportServiceImpl implements MgiPhenotypingColo
         return g.getSymbol() + "\t" +
                 g.getAccId() + "\t" +
                 x.getColonyName() + "\t" +
-                "\t" +
+                x.getEsCellName() + "\t" +
                 x.getStrainName() + "\t" +
                 x.getStrainAccId() + "\t" +
                 x.getProductionWorkUnit() + "\t" +

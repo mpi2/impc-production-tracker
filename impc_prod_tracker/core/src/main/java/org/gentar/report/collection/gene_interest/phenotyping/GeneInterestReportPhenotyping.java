@@ -64,7 +64,7 @@ public class GeneInterestReportPhenotyping {
 
         pap = rawPap
                 .stream()
-                .filter(projection -> !(allOutcomes.contains(projection.getOutcomeId())))
+                .filter(projection -> (allOutcomes.contains(projection.getOutcomeId())))
                 .collect(Collectors.toList());
 
         // filteredOutcomeMutationMap select each outcome with one single mutation associated with it.
@@ -81,6 +81,8 @@ public class GeneInterestReportPhenotyping {
                 .values()
                 .stream()
                 .flatMap(x -> x.stream())
+// Use to debug:
+//                .peek(x -> System.out.println(x.getAccId() + ": " + x.getSymbol()))
                 .collect(Collectors.toMap(Gene::getAccId,
                         Gene::getSymbol,
                         (value1, value2) -> value1));
@@ -89,6 +91,8 @@ public class GeneInterestReportPhenotyping {
 
     private Map<String, List<String>> getPhenotypingPlansForProjects(){
         return pap.stream()
+// Use to debug:
+//                .peek(x -> System.out.println(x.getProjectTpn() + ": " + x.getPlanIdentificationNumber()))
                 .collect(Collectors.groupingBy(GeneInterestReportPhenotypingAttemptProjection::getProjectTpn,
                         Collectors.mapping(GeneInterestReportPhenotypingAttemptProjection::getPlanIdentificationNumber, Collectors.toList())));
     }

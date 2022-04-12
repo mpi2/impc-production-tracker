@@ -10,7 +10,7 @@ import java.util.List;
 @RepositoryRestResource(exported = false)
 public interface MgiCrisprAlleleReportColonyRepository extends CrudRepository<Colony, Long> {
 
-    @Query("select c.name as colonyName, s.name as strainName, pw.name as productionWorkUnit, o.id as outcomeId  " +
+    @Query("select c.name as colonyName, c.genotypingComment as genotypingComment, s.name as strainName, p.id as planId, pw.name as productionWorkUnit, o.id as outcomeId  " +
             "from " +
             "Colony c " +
             "INNER JOIN Strain s ON c.strain = s " +
@@ -28,7 +28,7 @@ public interface MgiCrisprAlleleReportColonyRepository extends CrudRepository<Co
             "priv.name='public' and " +
             "pt.name='production' and " +
             "at.name='crispr' and " +
-            "c_status.name <> 'Colony Aborted' and " +
+            "c_status.name IN ('Genotype Confirmed', 'Genotype Extinct') and " +
             "p_status.name <> 'Plan Abandoned'")
     List<MgiCrisprAlleleReportColonyProjection> findAllColonyReportProjections();
 

@@ -1,0 +1,61 @@
+package org.gentar.report.collection.mgi_modification_allele.mutation;
+
+import org.gentar.report.utils.mutation.EsCellMutationType;
+import org.springframework.stereotype.Component;
+
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
+
+@Component
+class MgiModificationAlleleReportMutationServiceImpl implements MgiModificationAlleleReportMutationService{
+    private final MgiModificationAlleleReportMutationRepository modificationAlleleReportMutationRepository;
+
+    MgiModificationAlleleReportMutationServiceImpl(MgiModificationAlleleReportMutationRepository modificationAlleleReportMutationRepository) {
+        this.modificationAlleleReportMutationRepository = modificationAlleleReportMutationRepository;
+    }
+
+    @Override
+    public List<MgiModificationAlleleReportMutationGeneProjection> getSelectedMutationGeneProjections(List mutationIds) {
+        return modificationAlleleReportMutationRepository.findSelectedMutationGeneProjections(mutationIds);
+    }
+
+    @Override
+    public List<MgiModificationAlleleReportEsCellMutationTypeProjection> getSelectedEsCellMutationTypeProjections(
+            List<MgiModificationAlleleReportMutationGeneProjection> mutationGeneProjections) {
+        List<String> mutationMins =
+                mutationGeneProjections
+                        .stream()
+                        .map(i -> i.getMutationIdentificationNumber())
+                        .collect(Collectors.toList());
+
+        return modificationAlleleReportMutationRepository.findSelectedEsCellMutationTypeProjections(mutationMins);
+    }
+
+
+    public Map<String, String> assignAlleleCategories(List<MgiModificationAlleleReportEsCellMutationTypeProjection> mutationTypeProjections ){
+        return mutationTypeProjections
+                .stream()
+                .collect(Collectors.toMap(
+                        MgiModificationAlleleReportEsCellMutationTypeProjection::getMutationIdentificationNumber,
+                        ( i -> { return classifyMutationType(i.getMutationCategorizationName());}),
+                        (value1, value2) -> value1 ));
+    }
+
+    private String classifyMutationType(String type){
+        EsCellMutationType esCellMutationType = EsCellMutationType.valueOfLabel(type);
+        if (esCellMutationType != null) {
+            return esCellMutationType.getClassification();
+        } else {
+            return "";
+        }
+    }
+
+    private static <T> List<List<T>> getBatches(List<T> collection, int batchSize) {
+        return IntStream.iterate(0, i -> i < collection.size(), i -> i + batchSize)
+                .mapToObj(i -> collection.subList(i, Math.min(i + batchSize, collection.size())))
+                .collect(Collectors.toList());
+    }
+
+}
