@@ -44,18 +44,27 @@ public class GeneInterestReportPhenotypingServiceImpl implements GeneInterestRep
 
     @Override
     public Map<Long, Set<GeneInterestReportOutcomeMutationProjection>> getMutationMap() {
+
+        // Fetch outcomeIds from the GeneInterestReportPhenotypingAttemptProjections
         List<Long> outcomeIds = getOutcomeIds();
 //        System.out.println("outcomeIds");
 //        outcomeIds.stream()
 //                .forEach(System.out::println);
+
+        //Split outcomeIds into batches
         List<List<Long>> groups = getBatches(outcomeIds, 1000);
+
+
         List<GeneInterestReportOutcomeMutationProjection> omp = new ArrayList<>();
         groups.forEach(groupIds -> outcomeReportService.getSelectedOutcomeMutationProjections(groupIds).stream().forEach(omp::add));
+
 //        System.out.println("omp");
 //        omp.stream()
 //                .forEach(x -> System.out.println(x.getMutationId() + ": " + x.getMutationId() + ": " + x.getSymbol()));
+
         return omp
                         .stream()
+                        .filter(m -> m.getSymbol() != null && m.getSymbol() != "")
                         .collect(Collectors.groupingBy(
                                 GeneInterestReportOutcomeMutationProjection::getOutcomeId,
                                 Collectors.mapping(entry -> entry, Collectors.toSet())));
@@ -67,7 +76,7 @@ public class GeneInterestReportPhenotypingServiceImpl implements GeneInterestRep
         return outcomeMutationMap
                 .entrySet()
                 .stream()
-// Use to debug:
+ //Use to debug:
 //                .peek(e -> System.out.println(e.getKey() + ": " + e.getValue().size() + ": " + List.copyOf(e.getValue()).get(0).getMutationId()))
                 .filter(e -> e.getValue().size() == 1)
                 .collect(Collectors.toMap(Map.Entry::getKey, e -> List.copyOf(e.getValue()).get(0)));

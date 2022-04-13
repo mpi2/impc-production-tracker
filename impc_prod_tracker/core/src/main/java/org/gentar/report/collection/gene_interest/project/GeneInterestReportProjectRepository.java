@@ -26,13 +26,11 @@ public interface GeneInterestReportProjectRepository extends CrudRepository<Proj
             "INNER JOIN Plan plan on plan.project = p " +
             "INNER JOIN PlanType pt ON plan.planType = pt " +
             "INNER JOIN AttemptType at ON plan.attemptType = at " +
-            "INNER JOIN Status plan_summary_status ON plan.summaryStatus = plan_summary_status " +
-            "LEFT JOIN CrisprAttempt ca ON plan = ca.plan " +  // Require LEFT JOIN as not all plans have attempts
+            "INNER JOIN Status plan_summary_status ON plan.summaryStatus = plan_summary_status " + // "LEFT JOIN CrisprAttempt ca ON plan = ca.plan " +  // Require LEFT JOIN as not all plans have attempts
             "where " +
             "priv.name='public' and " +
             "pt.name='production' and " +
-            "at.name='crispr' and " +
-            "(ca.experimental IS NULL OR ca.experimental=false) ") // Critera used in iMits to exclude some data
+            "at.name='crispr' ") // and " + "(ca.experimental IS NULL OR ca.experimental=false) ") // Critera used in iMits to exclude some data
     List<GeneInterestReportProjectProjection> findAllGeneInterestReportCrisprProjectProjections();
 
     @Query("select " +
@@ -53,13 +51,11 @@ public interface GeneInterestReportProjectRepository extends CrudRepository<Proj
             "INNER JOIN PlanType pt ON plan.planType = pt " +
             "INNER JOIN AttemptType at ON plan.attemptType = at " +
             "INNER JOIN Status plan_summary_status ON plan.summaryStatus = plan_summary_status " +
-            "INNER JOIN WorkGroup wg ON plan.workGroup = wg " +
-            "LEFT JOIN EsCellAttempt esa ON plan = esa.plan " +  // Require LEFT JOIN as not all plans have attempts
+            "INNER JOIN WorkGroup wg ON plan.workGroup = wg " + // "LEFT JOIN EsCellAttempt esa ON plan = esa.plan " +  // Require LEFT JOIN as not all plans have attempts
             "where " +
             "priv.name='public' and " +
             "pt.name='production' and " +
-            "at.name in ('es cell', 'es cell allele modification') and " +
-            "(esa.experimental IS NULL OR esa.experimental=false) and " +   // Critera used in iMits to exclude some data
+            "at.name in ('es cell', 'es cell allele modification') and " + //           "(esa.experimental IS NULL OR esa.experimental=false) and " +   // Critera used in iMits to exclude some data
             "p.esCellQcOnly=false and " +                                   // Critera used in iMits to exclude some data
             "wg.name <> 'EUCOMMToolsCre' ")                                 // Critera used in iMits to exclude some data
     List<GeneInterestReportProjectProjection> findAllGeneInterestReportEsCellProjectProjections();
