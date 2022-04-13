@@ -1,6 +1,19 @@
 package org.gentar.biology.targ_rep.es_cell;
 
-import lombok.*;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import javax.persistence.SequenceGenerator;
+import javax.validation.constraints.NotNull;
+import lombok.AccessLevel;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
 import org.gentar.BaseEntity;
 import org.gentar.biology.targ_rep.allele.TargRepAllele;
 import org.gentar.biology.targ_rep.centre.TargRepCentre;
@@ -9,16 +22,15 @@ import org.gentar.biology.targ_rep.ikmc_project.TargRepIkmcProject;
 import org.gentar.biology.targ_rep.pipeline.TargRepPipeline;
 import org.gentar.biology.targ_rep.strain.TargRepStrain;
 import org.gentar.biology.targ_rep.targeting_vector.TargRepTargetingVector;
-import org.gentar.organization.work_unit.WorkUnit;
 
-import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 
-@NoArgsConstructor(access= AccessLevel.PUBLIC, force=true)
+/**
+ * TargRepEsCell.
+ */
+@NoArgsConstructor(access = AccessLevel.PUBLIC, force = true)
 @Data
 @Entity
-public class TargRepEsCell extends BaseEntity
-{
+public class TargRepEsCell extends BaseEntity {
     @Id
     @SequenceGenerator(name = "targRepEsCellSeq", sequenceName = "TARG_REP_ES_CELL_SEQ")
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "targRepEsCellSeq")
@@ -27,17 +39,17 @@ public class TargRepEsCell extends BaseEntity
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
     @NotNull
-    @ManyToOne(targetEntity= TargRepAllele.class)
+    @ManyToOne(targetEntity = TargRepAllele.class)
     private TargRepAllele allele;
 
     @ToString.Exclude
-    @ManyToOne(targetEntity= TargRepTargetingVector.class)
+    @ManyToOne(targetEntity = TargRepTargetingVector.class)
     private TargRepTargetingVector targetingVector;
 
     private String parentalCellLine;
 
     @NotNull
-    @Column(unique=true)
+    @Column(unique = true)
     private String name;
 
     @Column(columnDefinition = "TEXT")
@@ -48,14 +60,14 @@ public class TargRepEsCell extends BaseEntity
     private String ikmcProjectName;
 
     @NotNull
-    @ManyToOne(targetEntity= TargRepPipeline.class)
+    @ManyToOne(targetEntity = TargRepPipeline.class)
     private TargRepPipeline pipeline;
 
     @NotNull
     @Column(columnDefinition = "boolean default true")
     private Boolean reportToPublic;
 
-    @ManyToOne(targetEntity= TargRepStrain.class)
+    @ManyToOne(targetEntity = TargRepStrain.class)
     private TargRepStrain strain;
 
     private String userQcMapTest;
@@ -63,7 +75,6 @@ public class TargRepEsCell extends BaseEntity
     private String userQcKaryotype;
 
     private String userQcTvBackboneAssay;
-
     private String userQcLoxpConfirmation;
 
     private String userQcSouthernBlot;
@@ -87,7 +98,7 @@ public class TargRepEsCell extends BaseEntity
     @Column(columnDefinition = "TEXT")
     private String userQcComment;
 
-    @ManyToOne(targetEntity= TargRepEsCellMutationSubtype.class)
+    @ManyToOne(targetEntity = TargRepEsCellMutationSubtype.class)
     private TargRepEsCellMutationSubtype mutationSubtype;
 
     private Boolean productionCentreAutoUpdate;
@@ -98,7 +109,7 @@ public class TargRepEsCell extends BaseEntity
 
     private String userQcKaryotypePcr;
 
-    @ManyToOne(targetEntity= TargRepCentre.class)
+    @ManyToOne(targetEntity = TargRepCentre.class)
     private TargRepCentre userQcMouseClinic;
 
     private String userQcChr1;
@@ -111,7 +122,7 @@ public class TargRepEsCell extends BaseEntity
 
     private String userQcLaczQpcr;
 
-    @ManyToOne(targetEntity= TargRepIkmcProject.class)
+    @ManyToOne(targetEntity = TargRepIkmcProject.class)
     private TargRepIkmcProject ikmcProject;
 }
 

@@ -1,7 +1,6 @@
 package org.gentar.biology.targ_rep.pipeline;
 
 import org.gentar.Mapper;
-import org.gentar.biology.targ_rep.TargRepController;
 import org.gentar.biology.targ_rep.TargRepPipelineResponseDTO;
 import org.springframework.hateoas.Link;
 import org.springframework.stereotype.Component;
@@ -32,7 +31,7 @@ public class TargRepPipelineResponseMapper implements Mapper<TargRepPipeline, Ta
     }
 
     private void addSelfLink(TargRepPipelineResponseDTO targRepPipelineDTO, TargRepPipeline targRepPipeline) {
-        Link link = linkTo(methodOn(TargRepController.class).findTargRepPipelineById(targRepPipeline.getId())).withSelfRel();
+        Link link = linkTo(methodOn(TargRepPipelineController.class).findTargRepPipelineById(targRepPipeline.getId())).withSelfRel();
         targRepPipelineDTO.add(link);
     }
 }

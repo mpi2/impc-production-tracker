@@ -7,12 +7,16 @@ import org.gentar.biology.targ_rep.allele.mutation_type.TargRepMutationTypeServi
 import org.gentar.exceptions.UserOperationFailedException;
 import org.springframework.stereotype.Component;
 
+/**
+ * TargRepMutationTypeMapper.
+ */
 @Component
-public class TargRepMutationTypeMapper implements Mapper<TargRepMutationType, TargRepMutationTypeDTO> {
+public class TargRepMutationTypeMapper
+    implements Mapper<TargRepMutationType, TargRepMutationTypeDTO> {
 
     private final TargRepMutationTypeService targRepMutationTypeService;
     private static final String TARG_REP_MUTATION_TYPE_NOT_FOUND_ERROR
-            = "targ_rep_mutation_subtype '%s' does not exist.";
+        = "targ_rep_mutation_subtype '%s' does not exist.";
 
     public TargRepMutationTypeMapper(TargRepMutationTypeService targRepMutationTypeService) {
         this.targRepMutationTypeService = targRepMutationTypeService;
@@ -21,22 +25,21 @@ public class TargRepMutationTypeMapper implements Mapper<TargRepMutationType, Ta
 
     @Override
     public TargRepMutationTypeDTO toDto(TargRepMutationType entity) {
-        TargRepMutationTypeDTO targRepMutationTypeDTO = new TargRepMutationTypeDTO();
+        TargRepMutationTypeDTO targRepMutationTypeDto = new TargRepMutationTypeDTO();
         if (entity != null) {
-            targRepMutationTypeDTO.setName(entity.getName());
+            targRepMutationTypeDto.setName(entity.getName());
         }
-        return targRepMutationTypeDTO;
+        return targRepMutationTypeDto;
     }
 
     @Override
-    public TargRepMutationType toEntity(TargRepMutationTypeDTO dto)
-    {
+    public TargRepMutationType toEntity(TargRepMutationTypeDTO dto) {
         String name = dto.getName();
         TargRepMutationType targRepMutationType =
-                targRepMutationTypeService.getTargRepMutationTypeByName(name);
-        if (targRepMutationType == null)
-        {
-            throw new UserOperationFailedException(String.format(TARG_REP_MUTATION_TYPE_NOT_FOUND_ERROR, name));
+            targRepMutationTypeService.getTargRepMutationTypeByName(name);
+        if (targRepMutationType == null) {
+            throw new UserOperationFailedException(
+                String.format(TARG_REP_MUTATION_TYPE_NOT_FOUND_ERROR, name));
         }
         return targRepMutationType;
     }

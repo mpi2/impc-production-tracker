@@ -1,10 +1,15 @@
 package org.gentar.biology.targ_rep.allele.mutation_type;
 
+/**
+ * TargRepMutationTypeService.
+ */
 public interface TargRepMutationTypeService {
     /**
      * Get a {@link TargRepMutationType} object identified by the given name.
-     * @param name
+     *
      * @return TargRepMutationType identified by name. Null if not found.
      */
-    TargRepMutationType getTargRepMutationTypeByName(String name);
+    default TargRepMutationType getTargRepMutationTypeByName(String name) {
+        return null;
+    }
 }

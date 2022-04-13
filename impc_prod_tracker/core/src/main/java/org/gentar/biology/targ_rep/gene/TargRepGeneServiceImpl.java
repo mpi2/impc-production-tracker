@@ -5,25 +5,25 @@ import org.gentar.exceptions.UserOperationFailedException;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Component;
 
+/**
+ * TargRepGeneServiceImpl.
+ */
 @Component
-public class TargRepGeneServiceImpl implements TargRepGeneService
-{
+public class TargRepGeneServiceImpl implements TargRepGeneService {
     private final TargRepGeneRepository geneRepository;
 
-    public TargRepGeneServiceImpl(TargRepGeneRepository geneRepository)
-    {
+    public TargRepGeneServiceImpl(TargRepGeneRepository geneRepository) {
         this.geneRepository = geneRepository;
     }
 
     @Override
     @Cacheable("geneBySymbol")
-    public TargRepGene getGeneBySymbolFailIfNull(String symbol) throws UserOperationFailedException
-    {
+    public TargRepGene getGeneBySymbolFailIfNull(String symbol)
+        throws UserOperationFailedException {
         TargRepGene gene = geneRepository.findBySymbol(symbol);
-        if (gene == null)
-        {
+        if (gene == null) {
             throw new NotFoundException(
-                    "Gene with accession id or symbol [" + symbol + "] does not exist.");
+                "Gene with accession id or symbol [" + symbol + "] does not exist.");
         }
         return gene;
     }

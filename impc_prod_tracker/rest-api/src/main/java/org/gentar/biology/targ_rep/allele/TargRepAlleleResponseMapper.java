@@ -1,121 +1,126 @@
 package org.gentar.biology.targ_rep.allele;
 
-import org.gentar.Mapper;
-import org.gentar.biology.targ_rep.TargRepAlleleResponseDTO;
-import org.gentar.biology.targ_rep.TargRepController;
-import org.gentar.biology.targ_rep.TargRepMutationSubtypeDTO;
-import org.gentar.biology.targ_rep.TargRepMutationTypeDTO;
-import org.springframework.hateoas.Link;
-import org.springframework.stereotype.Component;
-
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
+import org.gentar.Mapper;
+import org.gentar.biology.targ_rep.TargRepAlleleResponseDTO;
+import org.gentar.biology.targ_rep.TargRepMutationSubtypeDTO;
+import org.gentar.biology.targ_rep.TargRepMutationTypeDTO;
+import org.gentar.biology.targ_rep.allele.DistributionQc.MgiAlleleAccessionMapper;
+import org.springframework.hateoas.Link;
+import org.springframework.stereotype.Component;
+
+/**
+ * TargRepAlleleResponseMapper.
+ */
 @Component
-public class TargRepAlleleResponseMapper implements Mapper<TargRepAllele, TargRepAlleleResponseDTO> {
+public class TargRepAlleleResponseMapper
+    implements Mapper<TargRepAllele, TargRepAlleleResponseDTO> {
+    private final MgiAlleleAccessionMapper mgiAlleleAccessionMapper;
 
     private final TargRepMutationTypeMapper targRepMutationTypeMapper;
     private final TargRepMutationSubtypeMapper targRepMutationSubtypeMapper;
 
-    public TargRepAlleleResponseMapper(TargRepMutationTypeMapper targRepMutationTypeMapper,
-                                       TargRepMutationSubtypeMapper targRepMutationSubtypeMapper)
-    {
+    public TargRepAlleleResponseMapper(
+        MgiAlleleAccessionMapper mgiAlleleAccessionMapper,
+        TargRepMutationTypeMapper targRepMutationTypeMapper,
+        TargRepMutationSubtypeMapper targRepMutationSubtypeMapper) {
+        this.mgiAlleleAccessionMapper = mgiAlleleAccessionMapper;
         this.targRepMutationTypeMapper = targRepMutationTypeMapper;
         this.targRepMutationSubtypeMapper = targRepMutationSubtypeMapper;
     }
 
     @Override
-    public TargRepAlleleResponseDTO toDto(TargRepAllele targRepAllele){
+    public TargRepAlleleResponseDTO toDto(TargRepAllele targRepAllele) {
 
-        TargRepAlleleResponseDTO targRepAlleleResponseDTO = new TargRepAlleleResponseDTO();
+        TargRepAlleleResponseDTO targRepAlleleResponseDto = new TargRepAlleleResponseDTO();
 
-        targRepAlleleResponseDTO.setId(targRepAllele.getId());
-        targRepAlleleResponseDTO.setAssembly(targRepAllele.getAssembly());
-        targRepAlleleResponseDTO.setChromosome(targRepAllele.getChromosome());
-        targRepAlleleResponseDTO.setProjectDesignId(targRepAllele.getProjectDesignId());
-        targRepAlleleResponseDTO.setSubtypeDescription(targRepAllele.getSubtypeDescription());
-        targRepAlleleResponseDTO.setHomologyArmStart(targRepAllele.getHomologyArmStart());
-        targRepAlleleResponseDTO.setHomologyArmEnd(targRepAllele.getHomologyArmEnd());
-        targRepAlleleResponseDTO.setCassetteStart(targRepAllele.getCassetteStart());
-        targRepAlleleResponseDTO.setCassetteEnd(targRepAllele.getCassetteEnd());
-        targRepAlleleResponseDTO.setLoxpStart(targRepAllele.getLoxpStart());
-        targRepAlleleResponseDTO.setLoxpEnd(targRepAllele.getLoxpEnd());
-        targRepAlleleResponseDTO.setCassette(targRepAllele.getCassette());
-        targRepAlleleResponseDTO.setCassetteType(targRepAllele.getCassetteType());
-        targRepAlleleResponseDTO.setBackbone(targRepAllele.getBackbone());
-        targRepAlleleResponseDTO.setFloxedStartExon(targRepAllele.getFloxedStartExon());
-        targRepAlleleResponseDTO.setFloxedEndExon(targRepAllele.getFloxedEndExon());
+        targRepAlleleResponseDto.setId(targRepAllele.getId());
+        targRepAlleleResponseDto.setAssembly(targRepAllele.getAssembly());
+        targRepAlleleResponseDto.setChromosome(targRepAllele.getChromosome());
+        targRepAlleleResponseDto.setProjectDesignId(targRepAllele.getProjectDesignId());
+        targRepAlleleResponseDto.setSubtypeDescription(targRepAllele.getSubtypeDescription());
+        targRepAlleleResponseDto.setHomologyArmStart(targRepAllele.getHomologyArmStart());
+        targRepAlleleResponseDto.setHomologyArmEnd(targRepAllele.getHomologyArmEnd());
+        targRepAlleleResponseDto.setCassetteStart(targRepAllele.getCassetteStart());
+        targRepAlleleResponseDto.setCassetteEnd(targRepAllele.getCassetteEnd());
+        targRepAlleleResponseDto.setLoxpStart(targRepAllele.getLoxpStart());
+        targRepAlleleResponseDto.setLoxpEnd(targRepAllele.getLoxpEnd());
+        targRepAlleleResponseDto.setCassette(targRepAllele.getCassette());
+        targRepAlleleResponseDto.setCassetteType(targRepAllele.getCassetteType());
+        targRepAlleleResponseDto.setBackbone(targRepAllele.getBackbone());
+        targRepAlleleResponseDto.setFloxedStartExon(targRepAllele.getFloxedStartExon());
+        targRepAlleleResponseDto.setFloxedEndExon(targRepAllele.getFloxedEndExon());
+        targRepAlleleResponseDto=mgiAlleleAccessionMapper.mgiAlleleIdToDto(targRepAllele,targRepAlleleResponseDto);
+        setTargRepMutationTypeDto(targRepAlleleResponseDto, targRepAllele);
+        setTargRepMutationSubtypeDto(targRepAlleleResponseDto, targRepAllele);
 
-        setTargRepMutationTypeDTO(targRepAlleleResponseDTO, targRepAllele);
-        setTargRepMutationSubtypeDTO(targRepAlleleResponseDTO, targRepAllele);
 
-        addSelfLink(targRepAlleleResponseDTO, targRepAllele);
+        addSelfLink(targRepAlleleResponseDto, targRepAllele);
 
-        return targRepAlleleResponseDTO;
+        return targRepAlleleResponseDto;
     }
 
     @Override
-    public TargRepAllele toEntity(TargRepAlleleResponseDTO targRepAlleleResponseDTO)
-    {
+    public TargRepAllele toEntity(TargRepAlleleResponseDTO targRepAlleleResponseDto) {
         TargRepAllele targRepAllele = new TargRepAllele();
-        targRepAllele.setId(targRepAlleleResponseDTO.getId());
-        targRepAllele.setAssembly(targRepAlleleResponseDTO.getAssembly());
-        targRepAllele.setChromosome(targRepAlleleResponseDTO.getChromosome());
-        targRepAllele.setProjectDesignId(targRepAlleleResponseDTO.getProjectDesignId());
-        targRepAllele.setSubtypeDescription(targRepAlleleResponseDTO.getSubtypeDescription());
-        targRepAllele.setHomologyArmStart(targRepAlleleResponseDTO.getHomologyArmStart());
-        targRepAllele.setHomologyArmEnd(targRepAlleleResponseDTO.getHomologyArmEnd());
-        targRepAllele.setCassetteStart(targRepAlleleResponseDTO.getCassetteStart());
-        targRepAllele.setCassetteEnd(targRepAlleleResponseDTO.getCassetteEnd());
-        targRepAllele.setLoxpStart(targRepAlleleResponseDTO.getLoxpStart());
-        targRepAllele.setLoxpEnd(targRepAlleleResponseDTO.getLoxpEnd());
-        targRepAllele.setCassette(targRepAlleleResponseDTO.getCassette());
-        targRepAllele.setCassetteType(targRepAlleleResponseDTO.getCassetteType());
-        targRepAllele.setBackbone(targRepAlleleResponseDTO.getBackbone());
-        targRepAllele.setFloxedStartExon(targRepAlleleResponseDTO.getFloxedStartExon());
-        targRepAllele.setFloxedEndExon(targRepAlleleResponseDTO.getFloxedEndExon());
+        targRepAllele.setId(targRepAlleleResponseDto.getId());
+        targRepAllele.setAssembly(targRepAlleleResponseDto.getAssembly());
+        targRepAllele.setChromosome(targRepAlleleResponseDto.getChromosome());
+        targRepAllele.setProjectDesignId(targRepAlleleResponseDto.getProjectDesignId());
+        targRepAllele.setSubtypeDescription(targRepAlleleResponseDto.getSubtypeDescription());
+        targRepAllele.setHomologyArmStart(targRepAlleleResponseDto.getHomologyArmStart());
+        targRepAllele.setHomologyArmEnd(targRepAlleleResponseDto.getHomologyArmEnd());
+        targRepAllele.setCassetteStart(targRepAlleleResponseDto.getCassetteStart());
+        targRepAllele.setCassetteEnd(targRepAlleleResponseDto.getCassetteEnd());
+        targRepAllele.setLoxpStart(targRepAlleleResponseDto.getLoxpStart());
+        targRepAllele.setLoxpEnd(targRepAlleleResponseDto.getLoxpEnd());
+        targRepAllele.setCassette(targRepAlleleResponseDto.getCassette());
+        targRepAllele.setCassetteType(targRepAlleleResponseDto.getCassetteType());
+        targRepAllele.setBackbone(targRepAlleleResponseDto.getBackbone());
+        targRepAllele.setFloxedStartExon(targRepAlleleResponseDto.getFloxedStartExon());
+        targRepAllele.setFloxedEndExon(targRepAlleleResponseDto.getFloxedEndExon());
 
-        setTargRepMutationTypeToEntity(targRepAllele, targRepAlleleResponseDTO);
-        setTargRepMutationSubtypeToEntity(targRepAllele, targRepAlleleResponseDTO);
+        setTargRepMutationTypeToEntity(targRepAllele, targRepAlleleResponseDto);
+        setTargRepMutationSubtypeToEntity(targRepAllele, targRepAlleleResponseDto);
 
         return targRepAllele;
     }
 
-    private void setTargRepMutationTypeDTO(
-            TargRepAlleleResponseDTO targRepAlleleResponseDTO, TargRepAllele targRepAllele)
-    {
-        TargRepMutationTypeDTO targRepMutationTypeDTO =
-                targRepMutationTypeMapper.toDto(targRepAllele.getMutationType());
-        targRepAlleleResponseDTO.setMutationType(targRepMutationTypeDTO);
+    private void setTargRepMutationTypeDto(
+        TargRepAlleleResponseDTO targRepAlleleResponseDto, TargRepAllele targRepAllele) {
+        TargRepMutationTypeDTO targRepMutationTypeDto =
+            targRepMutationTypeMapper.toDto(targRepAllele.getMutationType());
+        targRepAlleleResponseDto.setMutationType(targRepMutationTypeDto);
     }
 
-    private void setTargRepMutationSubtypeDTO(
-            TargRepAlleleResponseDTO targRepAlleleResponseDTO, TargRepAllele targRepAllele)
-    {
-        TargRepMutationSubtypeDTO targRepMutationSubtypeDTO =
-                targRepMutationSubtypeMapper.toDto(targRepAllele.getMutationSubtype());
-        targRepAlleleResponseDTO.setMutationSubtype(targRepMutationSubtypeDTO);
+    private void setTargRepMutationSubtypeDto(
+        TargRepAlleleResponseDTO targRepAlleleResponseDto, TargRepAllele targRepAllele) {
+        TargRepMutationSubtypeDTO targRepMutationSubtypeDto =
+            targRepMutationSubtypeMapper.toDto(targRepAllele.getMutationSubtype());
+        targRepAlleleResponseDto.setMutationSubtype(targRepMutationSubtypeDto);
     }
 
     private void setTargRepMutationTypeToEntity(TargRepAllele targRepAllele,
-                                                TargRepAlleleResponseDTO targRepAlleleResponseDTO)
-    {
+                                                TargRepAlleleResponseDTO targRepAlleleResponseDto) {
         targRepAllele.setMutationType(
-                targRepMutationTypeMapper.toEntity(targRepAlleleResponseDTO.getMutationType()));
+            targRepMutationTypeMapper.toEntity(targRepAlleleResponseDto.getMutationType()));
     }
 
-    private void setTargRepMutationSubtypeToEntity(TargRepAllele targRepAllele,
-                                                   TargRepAlleleResponseDTO targRepAlleleResponseDTO)
-    {
+    private void setTargRepMutationSubtypeToEntity(
+        TargRepAllele targRepAllele,
+        TargRepAlleleResponseDTO targRepAlleleResponseDto) {
         targRepAllele.setMutationSubtype(
-                targRepMutationSubtypeMapper.toEntity(targRepAlleleResponseDTO.getMutationSubtype()));
+            targRepMutationSubtypeMapper.toEntity(targRepAlleleResponseDto.getMutationSubtype()));
     }
 
-
-    private void addSelfLink(TargRepAlleleResponseDTO targRepAlleleResponseDTO, TargRepAllele targRepAllele)
-    {
-        Link link = linkTo(methodOn(TargRepController.class).findTargRepAlleleById(targRepAllele.getId())).withSelfRel();
-        targRepAlleleResponseDTO.add(link);
+    private void addSelfLink(TargRepAlleleResponseDTO targRepAlleleResponseDto,
+                             TargRepAllele targRepAllele) {
+        Link link = linkTo(
+            methodOn(TargRepAlleleController.class).findTargRepAlleleById(targRepAllele.getId()))
+            .withSelfRel();
+        targRepAlleleResponseDto.add(link);
     }
 
 }

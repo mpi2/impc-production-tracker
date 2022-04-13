@@ -1,13 +1,11 @@
 package org.gentar.biology.targ_rep;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.List;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
-import org.gentar.biology.gene_list.GeneByListRecordDTO;
 import org.springframework.hateoas.RepresentationModel;
 import org.springframework.hateoas.server.core.Relation;
-
-import java.util.List;
 
 @Relation(collectionRelation = "targrep_alleles")
 @Data
@@ -19,7 +17,6 @@ public class TargRepAlleleResponseDTO extends RepresentationModel<TargRepAlleleR
     private String chromosome;
     private String strand;
 
-    // mgi_accession_id;
 
     @JsonProperty("project_design_id")
     private Integer projectDesignId;
@@ -51,6 +48,8 @@ public class TargRepAlleleResponseDTO extends RepresentationModel<TargRepAlleleR
     @JsonProperty("loxp_end")
     private Integer loxpEnd;
 
+    @JsonProperty("mgi_accession_id")
+    private List<String> mgiAccessionId;
 
     private String cassette;
 
