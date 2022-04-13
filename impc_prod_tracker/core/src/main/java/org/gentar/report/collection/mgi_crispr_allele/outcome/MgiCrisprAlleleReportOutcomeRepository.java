@@ -15,13 +15,14 @@ public interface MgiCrisprAlleleReportOutcomeRepository extends CrudRepository<O
             "o.id as outcomeId, " +
             "m.id as mutationId, " +
             "m.symbol as symbol, " +
+            "m.description as description, " +
             "m.mgiAlleleId as mgiAlleleAccId, " +
             "m.alleleConfirmed as alleleConfirmed, " +
             "mmt.name as mutationType, " +
             "mmt.type as mutationCategory " +
             "from " +
             "Outcome o LEFT OUTER JOIN o.mutations m " +
-            "inner join MolecularMutationType mmt on m.molecularMutationType = mmt " +
+            "INNER JOIN MolecularMutationType mmt on m.molecularMutationType = mmt " +
             "where " +
             "o.id IN :ids")
     List<MgiCrisprAlleleReportOutcomeMutationProjection> findSelectedOutcomeMutationCrisprReportProjections( @Param("ids") List<Long> outcomeIds);

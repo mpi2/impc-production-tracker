@@ -101,8 +101,7 @@ public interface CommonPhenotypingColonyReportPhenotypingAttemptRepository exten
             "LEFT OUTER JOIN PlanStartingPoint psp ON p=psp.plan " +
             "INNER JOIN Outcome o ON psp.outcome = o " +
             "INNER JOIN OutcomeType ot ON o.outcomeType = ot " +
-            "INNER JOIN Plan prod_plan ON o.plan = prod_plan " +
-            "INNER JOIN CrisprAttempt prod_crispr_attempt on prod_plan=prod_crispr_attempt.plan " +
+            "INNER JOIN Plan prod_plan ON o.plan = prod_plan " + // "INNER JOIN CrisprAttempt prod_crispr_attempt on prod_plan=prod_crispr_attempt.plan " +
             "INNER JOIN Project prod_proj ON prod_plan.project = prod_proj " +
             "INNER JOIN Privacy prod_priv ON prod_proj.privacy = prod_priv " +
             "INNER JOIN PlanType prod_pt ON prod_plan.planType = prod_pt " +
@@ -120,8 +119,7 @@ public interface CommonPhenotypingColonyReportPhenotypingAttemptRepository exten
             "ot.name='Colony' and " +
             "prod_priv.name='public' and " +
             "prod_pt.name='production' and " +
-            "prod_at.name='crispr' and " + // Ensure no haplo-essential production plans included (production plans are implicit)
-            "prod_crispr_attempt.experimental=false and " +    // Critera used in iMits to exclude some data
+            "prod_at.name='crispr' and " + // Ensure no haplo-essential production plans included (production plans are implicit) -- // "prod_crispr_attempt.experimental=false and " +    // Critera used in iMits to exclude some data
             "pst.name='early adult and embryo' and " +
             "ps_status.name <> 'Phenotype Production Aborted' and " +
             "p_status.name <> 'Phenotyping Plan Aborted' and prod_status.name <> 'Plan Abandoned' " +
@@ -188,8 +186,7 @@ public interface CommonPhenotypingColonyReportPhenotypingAttemptRepository exten
             "ot.name='Colony' and " +
             "prod_priv.name='public' and " +
             "prod_pt.name='production' and " +
-            "prod_at.name='es cell' and " +
-            "prod_es_attempt.experimental = false  and " +    // Critera used in iMits to exclude some data
+            "prod_at.name='es cell' and " +             //            "prod_es_attempt.experimental = false  and " +    // Critera used in iMits to exclude some data
             "prod_wg.name <> 'EUCOMMToolsCre' and " +  // Critera used in iMits to exclude some data
             "prod_proj.esCellQcOnly = false and " +       // Critera used in iMits to exclude some data
             "pst.name='early adult and embryo' and " +
@@ -276,8 +273,7 @@ public interface CommonPhenotypingColonyReportPhenotypingAttemptRepository exten
             "prod_status.name <> 'Plan Abandoned' and " +
             "es_prod_priv.name='public' and " +
             "es_prod_pt.name='production' and " +
-            "es_prod_at.name='es cell' and " +
-            "es_prod_es_attempt.experimental = false  and " +
+            "es_prod_at.name='es cell' and " + //           "es_prod_es_attempt.experimental = false  and " +
             "es_prod_wg.name <> 'EUCOMMToolsCre' and " +
             "es_prod_proj.esCellQcOnly = false " +
             "group by " +
