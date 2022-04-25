@@ -27,7 +27,7 @@ public interface WorkUnitService
 
     Set<WorkGroup> getWorkGroupsByWorkUnitName(String name);
 
-    @Cacheable("workUnitsNames")
+
     WorkUnit getWorkUnitByName(String name);
 
     WorkUnit getWorkUnitByNameOrThrowException(String name);
