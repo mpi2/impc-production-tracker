@@ -45,7 +45,7 @@ public class WorkUnitServiceImpl implements WorkUnitService
         return null;
     }
 
-    @Cacheable("workUnitsNames")
+
     public WorkUnit getWorkUnitByName(String name)
     {
         return workUnitRepository.findWorkUnitByNameIgnoreCase(name);
