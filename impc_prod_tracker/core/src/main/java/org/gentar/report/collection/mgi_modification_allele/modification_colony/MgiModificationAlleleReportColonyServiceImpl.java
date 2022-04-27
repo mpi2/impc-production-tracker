@@ -1,6 +1,5 @@
 package org.gentar.report.collection.mgi_modification_allele.modification_colony;
 
-import org.gentar.report.collection.mgi_crispr_allele.colony.MgiCrisprAlleleReportColonyProjection;
 import org.gentar.report.collection.mgi_modification_allele.outcome.MgiModificationAlleleReportOutcomeMutationProjection;
 import org.gentar.report.collection.mgi_modification_allele.outcome.MgiModificationAlleleReportOutcomeService;
 import org.springframework.stereotype.Component;
@@ -43,6 +42,7 @@ class MgiModificationAlleleReportColonyServiceImpl implements MgiModificationAll
 
         List<MgiModificationAlleleReportOutcomeMutationProjection> omp =
                 mgiModificationAlleleReportOutcomeService.getSelectedOutcomeMutationProjections(outcomeIds);
+
         Map<Long, Set<MgiModificationAlleleReportOutcomeMutationProjection>> outcomeMutationMap = omp
                 .stream()
                 .collect(Collectors.groupingBy(

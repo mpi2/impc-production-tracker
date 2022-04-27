@@ -2,21 +2,34 @@ package org.gentar.report.collection.mgi_modification_allele;
 
 import org.gentar.report.ReportServiceImpl;
 import org.gentar.report.ReportTypeName;
+import org.gentar.report.collection.mgi_modification_allele.modification_colony.MgiModificationAlleleReportColonyProjection;
+import org.gentar.report.collection.mgi_modification_allele.modification_colony.MgiModificationAlleleReportColonyService;
+import org.gentar.report.collection.mgi_modification_allele.mutation.MgiModificationAlleleReportMutationGeneProjection;
+import org.gentar.report.collection.mgi_modification_allele.outcome.MgiModificationAlleleReportOutcomeMutationProjection;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Component
 public class MgiModificationAlleleServiceImpl implements MgiModificationAlleleService{
 
+    private final MgiModificationAlleleReportColonyService colonyReportService;
     private final ReportServiceImpl reportService;
 
     private List<String> reportRows;
+    private List<MgiModificationAlleleReportColonyProjection> cp;
+    private Map<Long, MgiModificationAlleleReportOutcomeMutationProjection> filteredOutcomeMutationMap;
+    private Map<Long, MgiModificationAlleleReportMutationGeneProjection> filteredMutationGeneMap;
 
-    public MgiModificationAlleleServiceImpl(ReportServiceImpl reportService) {
+
+    public MgiModificationAlleleServiceImpl(MgiModificationAlleleReportColonyService colonyReportService,
+                                            ReportServiceImpl reportService)
+    {
+        this.colonyReportService = colonyReportService;
         this.reportService = reportService;
     }
 
@@ -27,6 +40,11 @@ public class MgiModificationAlleleServiceImpl implements MgiModificationAlleleSe
     }
 
     private List<String> prepareReport( ) {
+        cp = colonyReportService.getAllMgiModificationAlleleReportColonyProjections();
+        filteredOutcomeMutationMap = colonyReportService.getMutationMap();
+        filteredMutationGeneMap = colonyReportService.getGeneMap();
+
+
         return new ArrayList<String>();
     }
 
