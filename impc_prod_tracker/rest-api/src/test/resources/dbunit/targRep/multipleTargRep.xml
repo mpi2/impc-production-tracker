@@ -1,0 +1,144 @@
+<dataset>
+
+
+    <PERSON ID="123"
+            EMAIL="gentar_test_user1@gentar.org"
+            AUTH_ID="usr-3bc9e4f6-652a-4abf-ad92-77397f8bdd3f"/>
+
+    <TARG_REP_GENE ID="183"
+                   SYMBOL="Spanxn4"
+                   ACC_ID="MGI:1920559"/>
+
+    <TARG_REP_MUTATION_METHOD ID="1"
+                              ALLELE_PREFIX="tm"
+                              CODE="tgm"
+                              NAME="Targeted Mutation"/>
+
+    <TARG_REP_MUTATION_TYPE ID="1"
+                            CODE="crd"
+                            NAME="Conditional Ready"/>
+
+    <TARG_REP_MUTATION_SUBTYPE ID="1"
+                               CODE="crd"
+                               NAME="Frameshift"/>
+
+
+    <TARG_REP_ALLELE ID="142"
+                     ASSEMBLY="GRCm38"
+                     CHROMOSOME="5"
+                     STRAND="-"
+                     BACKBONE="L3L4_pD223_DTA_T_spec"
+                     CASSETTE="L1L2_Bact_P"
+                     CASSETTE_END="24421446"
+                     CASSETTE_START="24421536"
+                     CASSETTE_TYPE="Promotor Driven"
+                     FLOXED_END_EXON="ENSMUSE00000183963"
+                     FLOXED_START_EXON="ENSMUSE00000183967"
+                     HOMOLOGY_ARM_END="24416109"
+                     HOMOLOGY_ARM_START="24427320"
+                     LOXP_END="24420125"
+                     LOXP_START="24420131"
+                     PROJECT_DESIGN_ID="175471"
+                     SUBTYPE_DESCRIPTION=""
+                     HAS_ISSUE="false"
+                     GENE_ID="183"
+                     MUTATION_METHOD_ID="1"
+                     MUTATION_TYPE_ID="1"
+                     MUTATION_SUBTYPE_ID="1"/>
+
+
+    <TARG_REP_PIPELINE ID="4"
+                       NAME="EUCOMM"
+                       DESCRIPTION="EUCOMM consortia"/>
+
+    <TARG_REP_IKMC_PROJECT ID="41713"
+                           NAME="41713"
+                           PIPELINE_ID="4"
+    />
+
+    <TARG_REP_TARGETING_VECTOR ID="158"
+                               ALLELE_ID="142"
+                               PIPELINE_ID="4"
+                               INTERMEDIATE_VECTOR="PCS00073_A_H01"
+                               IKMC_PROJECT_NAME="41713"
+                               MGI_ALLELE_NAME_PREDICTION="tm1a(EUCOMM)Wtsi"
+                               PRODUCTION_CENTRE_AUTO_UPDATE="true"
+                               ALLELE_TYPE_PREDICTION="a"
+                               NAME="PG00138_Y_5_B05"/>
+
+
+
+    <TARG_REP_ES_CELL ID="14210"
+                      NAME="EPD0045_1_A11"
+                      ALLELE_ID="142"
+                      PIPELINE_ID="4"
+                      TARGETING_VECTOR_ID="158"
+                      IKMC_PROJECT_ID="41713"
+                      PARENTAL_CELL_LINE="JM8.N4"
+                      COMMENT=""
+                      REPORT_TO_PUBLIC="true"
+                      USER_QC_COMMENT="pass"
+                      USER_QC_FIVE_PRIME_CASSETTE_INTEGRITY="pass"
+                      USER_QC_FIVE_PRIME_LR_PCR="pass"
+                      USER_QC_KARYOTYPE="pass"
+                      USER_QC_LACZ_SR_PCR="pass"
+                      USER_QC_LOSS_OF_WT_ALLELE="pass"
+                      USER_QC_LOXP_CONFIRMATION="pass"
+                      USER_QC_MAP_TEST="pass"
+                      USER_QC_MUTANT_SPECIFIC_SR_PCR="pass"
+                      USER_QC_NEO_COUNT_QPCR="pass"
+                      USER_QC_NEO_SR_PCR="pass"
+                      USER_QC_SOUTHERN_BLOT="pass"
+                      USER_QC_THREE_PRIME_LR_PCR="pass"
+                      USER_QC_TV_BACKBONE_ASSAY="pass"
+
+    />
+
+    <TARG_REP_PRODUCTION_QC
+            ID="1"
+            ES_CELL_ID="14210"
+            FIVE_PRIME_SCREEN="pass"
+            LOXP_SCREEN="pass"
+            LOSS_OF_ALLELE="pass"
+            VECTOR_INTEGRITY="pass"
+            THREE_PRIME_SCREEN="not confirmed"/>
+
+    <TARG_REP_ES_CELL_DISTRIBUTION_CENTRE
+            ID="2"
+            NAME="KOMP"
+
+    />
+    <TARG_REP_DISTRIBUTION_QC ID="2967"
+                              ES_CELL_ID="14210"
+                              ES_CELL_DISTRIBUTION_CENTRE_ID="2"
+                              KARYOTYPE_HIGH="0.4"
+                              KARYOTYPE_LOW="0.31"
+                              COPY_NUMBER="pass"
+                              FIVE_PRIME_LR_PCR="pass"
+                              FIVE_PRIME_SR_PCR="pass"
+                              THAWING="pass"
+                              THREE_PRIME_LR_PCR="pass"
+                              THREE_PRIME_SR_PCR="pass"
+                              LOA="pass"
+                              LOXP="pass"
+                              LACZ="pass"
+                              CHR1="pass"
+                              CHR8A="pass"
+                              CHR8B="pass"
+                              CHR11A="pass"
+                              CHR11B="pass"
+                              CHRY="pass"
+    />
+    <TARG_REP_ES_CELL_MUTATION ID="28677"
+                               ES_CELL_ID="14210"
+                               MGI_ALLELE_ACCESSION_ID="MGI:4432925"
+                               MGI_ALLELE_SYMBOL_SUPERSCRIPT="tm1@(EUCOMM)Wtsi"/>
+
+
+    <TARG_REP_IKMC_PROJECT_STATUS ID="12"
+                                  NAME="ES Cells - Targeting Confirmed"
+                                  ORDER_BY="150"
+                                  />
+
+
+</dataset>

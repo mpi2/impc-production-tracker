@@ -1,16 +1,26 @@
 package org.gentar.biology.targ_rep.gene;
 
-import lombok.*;
+
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.SequenceGenerator;
+import javax.validation.constraints.Pattern;
+import lombok.AccessLevel;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.gentar.BaseEntity;
 
-import javax.persistence.*;
-import javax.validation.constraints.Pattern;
 
-@NoArgsConstructor(access= AccessLevel.PUBLIC, force=true)
+
+/**
+ * TargRepGene.
+ */
+@NoArgsConstructor(access = AccessLevel.PUBLIC, force = true)
 @Data
 @Entity
-public class TargRepGene extends BaseEntity
-{
+public class TargRepGene extends BaseEntity {
     @Id
     @SequenceGenerator(name = "targRepGeneSeq", sequenceName = "TARG_REP_GENE_SEQ")
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "targRepGeneSeq")
@@ -32,7 +42,8 @@ public class TargRepGene extends BaseEntity
 
     private Long ncbiStop;
 
-    @Pattern(regexp = "^([\\+-\\?]{1}|)$", message = "The values allowed for the strand are: '+', '-', or if the value es unknown enter '?'.")
+    @Pattern(regexp = "^([\\+-\\?]{1}|)$",
+        message = "The values allowed for the strand are: '+', '-', or if the value es unknown enter '?'.")
     private String ncbiStrand;
 
     private String ensemblGeneId;
@@ -43,7 +54,8 @@ public class TargRepGene extends BaseEntity
 
     private Long ensemblStop;
 
-    @Pattern(regexp = "^([\\+-\\?]{1}|)$", message = "The values allowed for the strand are: '+', '-', or if the value es unknown enter '?'.")
+    @Pattern(regexp = "^([\\+-\\?]{1}|)$",
+        message = "The values allowed for the strand are: '+', '-', or if the value es unknown enter '?'.")
     private String ensemblStrand;
 
     private String mgiCm;
@@ -54,7 +66,8 @@ public class TargRepGene extends BaseEntity
 
     private Long mgiStop;
 
-    @Pattern(regexp = "^([\\+-\\?]{1}|)$", message = "The values allowed for the strand are: '+', '-', or if the value es unknown enter '?'.")
+    @Pattern(regexp = "^([\\+-\\?]{1}|)$",
+        message = "The values allowed for the strand are: '+', '-', or if the value es unknown enter '?'.")
     private String mgiStrand;
 
     private String accId;

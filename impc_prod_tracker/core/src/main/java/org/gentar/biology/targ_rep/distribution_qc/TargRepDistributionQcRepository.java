@@ -1,7 +1,13 @@
 package org.gentar.biology.targ_rep.distribution_qc;
 
+import java.util.List;
 import org.springframework.data.repository.CrudRepository;
 
-public interface TargRepDistributionQcRepository extends CrudRepository<TargRepDistributionQc, Long>
-{
+/**
+ * TargRepDistributionQcRepository.
+ */
+public interface TargRepDistributionQcRepository
+    extends CrudRepository<TargRepDistributionQc, Long> {
+
+    List<TargRepDistributionQc> findTargRepDistributionQcByEsCellId(Long id);
 }

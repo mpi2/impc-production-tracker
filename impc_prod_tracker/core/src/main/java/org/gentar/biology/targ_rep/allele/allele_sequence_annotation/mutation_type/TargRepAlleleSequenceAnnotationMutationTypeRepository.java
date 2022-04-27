@@ -2,7 +2,9 @@ package org.gentar.biology.targ_rep.allele.allele_sequence_annotation.mutation_t
 
 import org.springframework.data.repository.CrudRepository;
 
+/**
+ * TargRepAlleleSequenceAnnotationMutationTypeRepository.
+ */
 public interface TargRepAlleleSequenceAnnotationMutationTypeRepository extends
-        CrudRepository<TargRepAlleleSequenceAnnotationMutationType, Long>
-{
+    CrudRepository<TargRepAlleleSequenceAnnotationMutationType, Long> {
 }

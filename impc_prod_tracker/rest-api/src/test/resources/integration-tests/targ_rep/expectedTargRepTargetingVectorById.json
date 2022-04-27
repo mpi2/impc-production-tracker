@@ -1,0 +1,68 @@
+{
+  "id": 158,
+  "name": "PG00138_Y_5_B05",
+  "intermediateVector": "PCS00073_A_H01",
+  "reportToPublic": true,
+  "ikmcProjectName": "41713",
+  "allele": {
+    "id": 142,
+    "assembly": "GRCm38",
+    "chromosome": "5",
+    "mgi_accession_id": null,
+    "strand": "-",
+    "cassette": "L1L2_Bact_P",
+    "backbone": "L3L4_pD223_DTA_T_spec",
+    "design_subtype": {
+      "name": "Frameshift"
+    },
+    "_links": {
+      "allele": [
+        {
+          "href": "http://localhost:8080/api/targ_rep/alleles/142"
+        }
+      ]
+    },
+    "project_design_id": 175471,
+    "design_type": {
+      "name": "Conditional Ready"
+    },
+    "subtype_description": "",
+    "homology_arm_start": 24427320,
+    "homology_arm_end": 24416109,
+    "cassette_start": 24421536,
+    "cassette_end": 24421446,
+    "loxp_start": 24420131,
+    "loxp_end": 24420125,
+    "cassette_type": "Promotor Driven",
+    "floxed_start_exon": "ENSMUSE00000183967",
+    "floxed_end_exon": "ENSMUSE00000183963"
+  },
+  "pipeline": {
+    "id": 4,
+    "name": "EUCOMM",
+    "description": "EUCOMM consortia",
+    "_links": {
+      "pipeline": [
+        {
+          "href": "http://localhost:8080/api/targ_rep/pipelines/4"
+        }
+      ]
+    },
+    "geneTrap": false,
+    "reportToPublic": true
+  },
+  "mgiAlleleNamePrediction": "tm1a(EUCOMM)Wtsi",
+  "productionCentreAutoUpdate": null,
+  "alleleTypePrediction": "a",
+  "_links": {
+    "self": {
+      "href": "http://localhost:8080/api/targ_rep/targeting_vectors/158"
+    }
+  },
+  "ikmc_project": {
+    "id": null,
+    "name": null,
+    "status": null,
+    "pipeline_id": null
+  }
+}

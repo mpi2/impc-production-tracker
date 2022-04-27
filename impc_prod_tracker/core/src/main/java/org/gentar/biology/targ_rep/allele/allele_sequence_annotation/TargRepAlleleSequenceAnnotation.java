@@ -1,5 +1,13 @@
 package org.gentar.biology.targ_rep.allele.allele_sequence_annotation;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import javax.persistence.SequenceGenerator;
+import javax.validation.constraints.NotNull;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -8,21 +16,22 @@ import org.gentar.BaseEntity;
 import org.gentar.biology.targ_rep.allele.TargRepAllele;
 import org.gentar.biology.targ_rep.allele.allele_sequence_annotation.mutation_type.TargRepAlleleSequenceAnnotationMutationType;
 
-import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 
-@NoArgsConstructor(access= AccessLevel.PUBLIC, force=true)
+/**
+ * TargRepAlleleSequenceAnnotation.
+ */
+@NoArgsConstructor(access = AccessLevel.PUBLIC, force = true)
 @Data
 @Entity
-public class TargRepAlleleSequenceAnnotation extends BaseEntity
-{
+public class TargRepAlleleSequenceAnnotation extends BaseEntity {
     @Id
     @SequenceGenerator(name = "targRepAlleleSequenceAnnotationSeq",
-            sequenceName = "TARG_REP_ALLELE_SEQUENCE_ANNOTATION_SEQ")
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "targRepAlleleSequenceAnnotationSeq")
+        sequenceName = "TARG_REP_ALLELE_SEQUENCE_ANNOTATION_SEQ")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE,
+        generator = "targRepAlleleSequenceAnnotationSeq")
     private Long id;
 
-    @ManyToOne(targetEntity= TargRepAlleleSequenceAnnotationMutationType.class)
+    @ManyToOne(targetEntity = TargRepAlleleSequenceAnnotationMutationType.class)
     private TargRepAlleleSequenceAnnotationMutationType mutationType;
 
     private String expected;
@@ -44,6 +53,6 @@ public class TargRepAlleleSequenceAnnotation extends BaseEntity
 
     @ToString.Exclude
     @NotNull
-    @ManyToOne(targetEntity= TargRepAllele.class)
+    @ManyToOne(targetEntity = TargRepAllele.class)
     private TargRepAllele allele;
 }
