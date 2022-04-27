@@ -1,5 +1,13 @@
 package org.gentar.biology.targ_rep.targeting_vector;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import javax.persistence.SequenceGenerator;
+import javax.validation.constraints.NotNull;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -9,22 +17,23 @@ import org.gentar.biology.targ_rep.allele.TargRepAllele;
 import org.gentar.biology.targ_rep.ikmc_project.TargRepIkmcProject;
 import org.gentar.biology.targ_rep.pipeline.TargRepPipeline;
 
-import javax.persistence.*;
-import javax.validation.constraints.NotNull;
-
-@NoArgsConstructor(access= AccessLevel.PUBLIC, force=true)
+/**
+ * TargRepTargetingVector.
+ */
+@NoArgsConstructor(access = AccessLevel.PUBLIC, force = true)
 @Data
 @Entity
-public class TargRepTargetingVector extends BaseEntity
-{
+public class TargRepTargetingVector extends BaseEntity {
     @Id
-    @SequenceGenerator(name = "targRepTargetingVectorSeq", sequenceName = "TARG_REP_TARGETING_VECTOR_SEQ")
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "targRepTargetingVectorSeq")
+    @SequenceGenerator(name = "targRepTargetingVectorSeq",
+        sequenceName = "TARG_REP_TARGETING_VECTOR_SEQ")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE,
+        generator = "targRepTargetingVectorSeq")
     private Long id;
 
     @ToString.Exclude
     @NotNull
-    @ManyToOne(targetEntity= TargRepAllele.class)
+    @ManyToOne(targetEntity = TargRepAllele.class)
     private TargRepAllele allele;
 
     @NotNull
@@ -40,10 +49,10 @@ public class TargRepTargetingVector extends BaseEntity
     @Column(columnDefinition = "boolean default true")
     private Boolean reportToPublic;
 
-    @ManyToOne(targetEntity= TargRepPipeline.class)
+    @ManyToOne(targetEntity = TargRepPipeline.class)
     private TargRepPipeline pipeline;
 
-    @ManyToOne(targetEntity= TargRepIkmcProject.class)
+    @ManyToOne(targetEntity = TargRepIkmcProject.class)
     private TargRepIkmcProject ikmcProject;
 
     private String mgiAlleleNamePrediction;

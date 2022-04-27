@@ -1,7 +1,15 @@
 package org.gentar.biology.targ_rep.targeting_vector;
 
-import org.springframework.data.repository.CrudRepository;
+import java.util.List;
+import org.springframework.data.repository.PagingAndSortingRepository;
 
-public interface TargRepTargetingVectorRepository extends CrudRepository<TargRepTargetingVector, Long>
-{
+/**
+ * TargRepTargetingVectorRepository.
+ */
+public interface TargRepTargetingVectorRepository
+    extends PagingAndSortingRepository<TargRepTargetingVector, Long> {
+
+    List<TargRepTargetingVector> findAll();
+
+    TargRepTargetingVector findTargRepTargetingVectorById(Long id);
 }

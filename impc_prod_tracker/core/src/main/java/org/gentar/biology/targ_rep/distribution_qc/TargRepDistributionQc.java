@@ -1,5 +1,12 @@
 package org.gentar.biology.targ_rep.distribution_qc;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import javax.persistence.SequenceGenerator;
+import javax.validation.constraints.NotNull;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -8,17 +15,19 @@ import org.gentar.BaseEntity;
 import org.gentar.biology.targ_rep.distribution_qc.distribution_centre.TargRepEsCellDistributionCentre;
 import org.gentar.biology.targ_rep.es_cell.TargRepEsCell;
 
-import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 
-@NoArgsConstructor(access= AccessLevel.PUBLIC, force=true)
+/**
+ * TargRepDistributionQc.
+ */
+@NoArgsConstructor(access = AccessLevel.PUBLIC, force = true)
 @Data
 @Entity
-public class TargRepDistributionQc extends BaseEntity
-{
+public class TargRepDistributionQc extends BaseEntity {
     @Id
-    @SequenceGenerator(name = "targRepDistributionQcSeq", sequenceName = "TARG_REP_DISTRIBUTION_QC_SEQ")
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "targRepDistributionQcSeq")
+    @SequenceGenerator(name = "targRepDistributionQcSeq",
+        sequenceName = "TARG_REP_DISTRIBUTION_QC_SEQ")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE,
+        generator = "targRepDistributionQcSeq")
     private Long id;
 
     private String fivePrimeSrPcr;
@@ -57,12 +66,12 @@ public class TargRepDistributionQc extends BaseEntity
 
     @ToString.Exclude
     @NotNull
-    @ManyToOne(targetEntity= TargRepEsCell.class)
+    @ManyToOne(targetEntity = TargRepEsCell.class)
     private TargRepEsCell esCell;
 
     @ToString.Exclude
     @NotNull
-    @ManyToOne(targetEntity= TargRepEsCellDistributionCentre.class)
+    @ManyToOne(targetEntity = TargRepEsCellDistributionCentre.class)
     private TargRepEsCellDistributionCentre esCellDistributionCentre;
 
     private String loxpSrpcr;

@@ -1,7 +1,16 @@
 package org.gentar.biology.targ_rep.pipeline;
 
-import org.springframework.data.repository.CrudRepository;
+import java.util.List;
+import org.springframework.data.repository.PagingAndSortingRepository;
 
-public interface TargRepPipelineRepository extends CrudRepository<TargRepPipeline, Long>
-{
+
+/**
+ * TargRepPipelineRepository.
+ */
+public interface TargRepPipelineRepository
+    extends PagingAndSortingRepository<TargRepPipeline, Long> {
+
+    List<TargRepPipeline> findAll();
+
+    TargRepPipeline findTargRepPipelineById(Long id);
 }
