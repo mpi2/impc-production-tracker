@@ -4,6 +4,7 @@ import static org.apache.tomcat.util.IntrospectionUtils.capitalize;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -67,18 +68,17 @@ public class TargRepEsCellController {
      * @return Entity with the es cell names for a gene.
      */
     @GetMapping(value = {"/es_cell_by_symbol/{marker_symbol}"})
-    public List<TargRepEsCellLegacyResponseDTO> findEsCellByGene(@PathVariable String marker_symbol) {
+    public List<TargRepEsCellLegacyResponseDTO> findEsCellByGene(
+        @PathVariable String marker_symbol) {
         TargRepGene gene = geneService.getGeneBySymbolFailIfNull(capitalize(marker_symbol));
         List<TargRepAllele> alleleList = alleleService.getTargRepAllelesByGeneFailIfNull(gene);
-        Set<TargRepEsCell> esCellList =
-            alleleList.stream()
-                .map(esCellService::getTargRepEscellByAlleleFailsIfNull)
-                .findAny()
-                .stream()
-                .flatMap(List::stream)
-                .collect(Collectors.toSet());
+        List<TargRepEsCell> esCellList = new ArrayList();
+        alleleList
+            .forEach(allele -> esCellList
+                .addAll(esCellService.getTargRepEscellByAlleleFailsIfNull(allele)));
 
-        return esCellList.stream().map(targRepEsCellLegacyMapper::toDto).collect(Collectors.toList());
+        return esCellList.stream().map(targRepEsCellLegacyMapper::toDto)
+            .collect(Collectors.toList());
 
     }
 

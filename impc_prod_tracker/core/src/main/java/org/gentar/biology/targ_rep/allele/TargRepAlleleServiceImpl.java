@@ -28,7 +28,7 @@ public class TargRepAlleleServiceImpl implements TargRepAlleleService {
         List<TargRepAllele> alleles = alleleRepository.findByGene(gene);
         if (alleles.isEmpty()) {
             throw new NotFoundException(
-                "There are not ES Cells available for [" + gene.getSymbol()
+                "There are not Allele available for [" + gene.getSymbol()
                     + "] marker_symbol does not exist.");
         }
         return alleles;

@@ -42,7 +42,7 @@ class TargRepAlleleServiceImplTest {
                 testInstance.getTargRepAllelesByGeneFailIfNull(gene);
         });
 
-        String expectedMessage = "There are not ES Cells available for [" + gene.getSymbol()
+        String expectedMessage = "There are not Allele available for [" + gene.getSymbol()
             + "] marker_symbol does not exist.";
         String actualMessage = exception.getMessage();
 
