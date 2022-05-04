@@ -47,11 +47,6 @@ public class TargRepEsCellServiceImpl implements TargRepEsCellService {
     public List<TargRepEsCell> getTargRepEscellByAlleleFailsIfNull(TargRepAllele allele)
         throws UserOperationFailedException {
         List<TargRepEsCell> esCells = targRepEsCellRepository.findTargRepEsCellByAllele(allele);
-        if (esCells.isEmpty()) {
-            throw new NotFoundException(
-                "There are not ES Cells available for [" + allele.getGene().getSymbol()
-                    + "] marker_symbol does not exist.");
-        }
         return esCells;
     }
 

@@ -98,23 +98,6 @@ class TargRepEsCellServiceImplTest {
         assertEquals("EPD0974_4_A06", targRepEsCell.get(0).getName());
     }
 
-    @Test
-    @DisplayName("getTargRepEscellByAlleleFailsIfNull Throw Exception If Null")
-    void getTargRepEscellByAlleleFailsIfNullTrowException() {
-        TargRepEsCell targRepEsCellResponse = new TargRepEsCell();
-        targRepEsCellResponse.setName("EPD0974_4_A06");
-        Exception exception = assertThrows(NotFoundException.class, () -> {
-            List<TargRepEsCell> targRepEsCell =
-                testInstance.getTargRepEscellByAlleleFailsIfNull(getTargRepAllele());
-        });
-
-        String expectedMessage =
-            "There are not ES Cells available for [Spanxn4] marker_symbol does not exist.";
-        String actualMessage = exception.getMessage();
-
-        assertTrue(actualMessage.contains(expectedMessage));
-    }
-
     private TargRepAllele getTargRepAllele() {
         TargRepAllele targRepAllele = new TargRepAllele();
         targRepAllele.setId(44909L);
