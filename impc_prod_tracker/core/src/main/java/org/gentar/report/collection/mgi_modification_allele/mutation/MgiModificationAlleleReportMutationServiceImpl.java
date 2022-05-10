@@ -1,5 +1,6 @@
 package org.gentar.report.collection.mgi_modification_allele.mutation;
 
+import org.gentar.report.utils.mutation.EsCellModificationAlleleReportMutationType;
 import org.gentar.report.utils.mutation.EsCellMutationType;
 import org.springframework.stereotype.Component;
 
@@ -9,7 +10,7 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 @Component
-class MgiModificationAlleleReportMutationServiceImpl implements MgiModificationAlleleReportMutationService{
+public class MgiModificationAlleleReportMutationServiceImpl implements MgiModificationAlleleReportMutationService{
     private final MgiModificationAlleleReportMutationRepository modificationAlleleReportMutationRepository;
 
     MgiModificationAlleleReportMutationServiceImpl(MgiModificationAlleleReportMutationRepository modificationAlleleReportMutationRepository) {
@@ -34,17 +35,18 @@ class MgiModificationAlleleReportMutationServiceImpl implements MgiModificationA
     }
 
 
-    public Map<String, String> assignAlleleCategories(List<MgiModificationAlleleReportEsCellMutationTypeProjection> mutationTypeProjections ){
+    public Map<Long, String> assignAlleleCategories(List<MgiModificationAlleleReportEsCellMutationTypeProjection> mutationTypeProjections ){
         return mutationTypeProjections
                 .stream()
                 .collect(Collectors.toMap(
-                        MgiModificationAlleleReportEsCellMutationTypeProjection::getMutationIdentificationNumber,
+                        MgiModificationAlleleReportEsCellMutationTypeProjection::getMutationId,
                         ( i -> { return classifyMutationType(i.getMutationCategorizationName());}),
                         (value1, value2) -> value1 ));
     }
 
     private String classifyMutationType(String type){
-        EsCellMutationType esCellMutationType = EsCellMutationType.valueOfLabel(type);
+        EsCellModificationAlleleReportMutationType esCellMutationType =
+                EsCellModificationAlleleReportMutationType.valueOfLabel(type);
         if (esCellMutationType != null) {
             return esCellMutationType.getClassification();
         } else {

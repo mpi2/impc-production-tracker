@@ -14,4 +14,6 @@ public interface MgiModificationAlleleReportOutcomeMutationProjection {
     @Value("#{target.symbol}")
     String getSymbol();
 
+    @Value("#{target.mgiAlleleAccId}")
+    String getMgiAlleleAccId();
 }
