@@ -1,0 +1,414 @@
+<dataset>
+    <PRIVACY    ID="1"
+                NAME="public"/>
+    <PRIVACY    ID="2"
+                NAME="protected"/>
+    <PRIVACY    ID="3"
+                NAME="restricted"/>
+
+    <SPECIES    ID="1"
+                NAME="Mus musculus"
+                TAXON_ID="10090"/>
+    <SPECIES    ID="2"
+                NAME="Homo sapiens"
+                TAXON_ID="9606"/>
+
+    <FUNDER ID="1"
+            NAME="KOMP"/>
+
+
+    <ASSIGNMENT_STATUS  ID="1"
+                        NAME="Assigned"/>
+    <ASSIGNMENT_STATUS  ID="2"
+                        NAME="Inspect - Conflict"/>
+    <ASSIGNMENT_STATUS  ID="3"
+                        NAME="Inactive"/>
+
+    <PLAN_TYPE  ID="1"
+                NAME="production"/>
+    <PLAN_TYPE  ID="2"
+                NAME="phenotyping"/>
+
+    <ATTEMPT_TYPE   ID="1"
+                    NAME="crispr"/>
+    <ATTEMPT_TYPE   ID="2"
+                    NAME="haplo-essential crispr"/>
+    <ATTEMPT_TYPE   ID="3"
+                    NAME="breeding"/>
+    <ATTEMPT_TYPE   ID="4"
+                    NAME="adult and embryo phenotyping"/>
+    <ATTEMPT_TYPE   ID="5"
+                    NAME="haplo-essential phenotyping"/>
+    <ATTEMPT_TYPE   ID="52"
+                    NAME="es cell"/>
+    <ATTEMPT_TYPE   ID="53"
+                    NAME="es cell allele modification"/>
+
+    <ASSAY_TYPE ID="1"
+                NAME="T7EN1"/>
+    <ASSAY_TYPE ID="2"
+                NAME="LOA"/>
+    <ASSAY_TYPE ID="3"
+                NAME="PCR"/>
+    <ASSAY_TYPE ID="4"
+                NAME="Surveyor"/>
+
+    <NUCLEASE_CLASS ID="1"
+                    NAME="protein"/>
+    <NUCLEASE_CLASS ID="2"
+                    NAME="mRNA"/>
+
+    <NUCLEASE_TYPE ID="1"
+                   NAME="Cas9"/>
+    <NUCLEASE_TYPE ID="2"
+                   NAME="D10A"/>
+    <NUCLEASE_TYPE ID="3"
+                   NAME="Cpf1"/>
+    <NUCLEASE_TYPE ID="4"
+                   NAME="protein"/>
+
+    <GUIDE_FORMAT ID="1"
+                  NAME="sgRNA"/>
+    <GUIDE_FORMAT ID="2"
+                  NAME="cr-tracrRNA"/>
+
+    <GUIDE_SOURCE ID="1"
+                  NAME="in-house"/>
+    <GUIDE_SOURCE ID="2"
+                  NAME="commercial"/>
+
+    <OUTCOME_TYPE   ID="1"
+                    NAME="Colony"/>
+    <OUTCOME_TYPE   ID="2"
+                    NAME="Specimen"/>
+
+    <WORK_UNIT  ID="1"
+                NAME="BCM"/>
+    <WORK_UNIT  ID="2"
+                NAME="TCP"/>
+    <WORK_UNIT  ID="3"
+                NAME="UCD"/>
+    <WORK_UNIT  ID="4"
+                NAME="Harwell"/>
+
+    <WORK_GROUP ID="1"
+                NAME="BaSH"/>
+    <WORK_GROUP  ID="2"
+                 NAME="DTCC"/>
+
+    <STATUS     ID="1"
+                NAME="Plan Created"
+                IS_ABORTION_STATUS="false"
+                ORDERING="1000"/>
+    <STATUS     ID="2"
+                NAME="Attempt In Progress"
+                IS_ABORTION_STATUS="false"
+                ORDERING="11000"/>
+    <STATUS     ID="3"
+                NAME="Embryos Obtained"
+                IS_ABORTION_STATUS="false"
+                ORDERING="12000"/>
+    <STATUS     ID="4"
+                NAME="Founder Obtained"
+                IS_ABORTION_STATUS="false"
+                ORDERING="13000"/>
+    <STATUS     ID="5"
+                NAME="Attempt Aborted"
+                IS_ABORTION_STATUS="true"
+                ORDERING="14000"/>
+    <STATUS     ID="22"
+                NAME="Phenotyping Registered"
+                IS_ABORTION_STATUS="false"
+                ORDERING="120000"/>
+    <STATUS     ID="23"
+                NAME="Late Adult Phenotyping Registered"
+                IS_ABORTION_STATUS="false"
+                ORDERING="130000"/>
+    <STATUS     ID="34"
+                NAME="Rederivation Started"
+                IS_ABORTION_STATUS="false"
+                ORDERING="251000"/>
+    <STATUS     ID="35"
+                NAME="Rederivation Complete"
+                IS_ABORTION_STATUS="false"
+                ORDERING="252000"/>
+    <STATUS     ID="36"
+                NAME="Phenotyping Started"
+                IS_ABORTION_STATUS="false"
+                ORDERING="253000"/>
+    <STATUS     ID="37"
+                NAME="Phenotyping All Data Sent"
+                IS_ABORTION_STATUS="false"
+                ORDERING="255000"/>
+    <STATUS     ID="38"
+                NAME="Phenotyping All Data Processed"
+                IS_ABORTION_STATUS="false"
+                ORDERING="256000"/>
+    <STATUS     ID="39"
+                NAME="Phenotyping Finished"
+                IS_ABORTION_STATUS="false"
+                ORDERING="257000"/>
+    <STATUS     ID="40"
+                NAME="Phenotype Production Aborted"
+                IS_ABORTION_STATUS="true"
+                ORDERING="258000"/>
+    <STATUS     ID="11"
+                NAME="Genotype Confirmed"
+                IS_ABORTION_STATUS="false"
+                ORDERING="34000"/>
+    <STATUS     ID="16"
+                NAME="Mouse Allele Modification Registered"
+                IS_ABORTION_STATUS="false"
+                ORDERING="71000"/>
+    <STATUS     ID="17"
+                NAME="Cre Excision Started"
+                IS_ABORTION_STATUS="false"
+                ORDERING="72000"/>
+    <STATUS     ID="18"
+                NAME="Cre Excision Complete"
+                IS_ABORTION_STATUS="false"
+                ORDERING="73000"/>
+    <STATUS     ID="19"
+                NAME="Mouse Allele Modification Aborted"
+                IS_ABORTION_STATUS="true"
+                ORDERING="74000"/>
+
+    <STATUS     ID="53"
+                NAME="Rederivation For Modification Started"
+                IS_ABORTION_STATUS="false"
+                ORDERING="71300"/>
+    <STATUS     ID="54"
+                NAME="Rederivation For Modification Complete"
+                IS_ABORTION_STATUS="false"
+                ORDERING="71600"/>
+
+    <STATUS     ID="52"
+                NAME="Chimeras/Founder Obtained"
+                IS_ABORTION_STATUS="false"
+                ORDERING="12500"/>
+
+    <CONSORTIUM ID="1"
+                NAME="CMG"/>
+
+    <INSTITUTE  ID="1"
+                NAME="Broad"/>
+    <INSTITUTE  ID="2"
+                NAME="Yale"/>
+
+    <MOLECULAR_MUTATION_TYPE    ID="1"
+                                NAME="Point Mutation"/>
+    <MOLECULAR_MUTATION_TYPE    ID="2"
+                                NAME="Deletion"/>
+
+    <STRAIN  ID="1"
+             NAME="C57BL/6NJ"
+             MGI_STRAIN_ACC_ID="MGI:3056279"/>
+    <STRAIN  ID="2"
+             NAME="BALB/cJ"
+             MGI_STRAIN_ACC_ID="MGI:2159737"/>
+
+    <PREPARATION_TYPE   ID="1"
+                        NAME="Circular"/>
+    <PREPARATION_TYPE   ID="2"
+                        NAME="Linearized"/>
+    <PREPARATION_TYPE   ID="3"
+                        NAME="Supercoiled"/>
+    <PREPARATION_TYPE   ID="4"
+                        NAME="Oligo"/>
+    <PREPARATION_TYPE   ID="5"
+                        NAME="ssDNA Oligo"/>
+
+    <REAGENT    ID="1"
+                NAME="Ligase IV"
+                DESCRIPTION="NHEJ Inhibitor"/>
+    <REAGENT    ID="2"
+                NAME="Xrcc5"
+                DESCRIPTION="NHEJ Inhibitor"/>
+
+    <PROJECT    ID="1"
+                TPN="TPN:000000001"
+                PRIVACY_ID="1"
+                ASSIGNMENT_STATUS_ID="1"
+                SUMMARY_STATUS_ID="11"
+                RECOVERY="false"
+                COMMENT="Comment test" />
+
+
+    <PLAN       ID="11"
+                PIN="PIN:0000000001"
+                PROJECT_ID="1"
+                PLAN_TYPE_ID="1"
+                ATTEMPT_TYPE_ID="1"
+                STATUS_ID="4"
+                WORK_UNIT_ID="1"
+                WORK_GROUP_ID="1"
+                SUMMARY_STATUS_ID="11"/>
+
+
+
+    <PLAN_FUNDER    PLAN_ID="11"
+                    FUNDER_ID="1"/>
+
+
+    <CRISPR_ATTEMPT PLAN_ID="11"
+                    MI_DATE="2019-02-26"
+                    MUTAGENESIS_EXTERNAL_REF="MF-26326"
+                    EXPERIMENTAL="false"
+                    STRAIN_ID="1"
+                    COMMENT="crispr plan comment"
+                    TOTAL_EMBRYOS_INJECTED="72"
+                    TOTAL_EMBRYOS_SURVIVED="70"
+                    IMITS_MI_ATTEMPT="20043"
+                    EMBRYO_2_CELL="20043"
+                    EMBRYO_TRANSFER_DAY="Same Day"
+                    TOTAL_TRANSFERRED="72"
+                    MI_EXTERNAL_REF="Attempt external ref" />
+
+
+    <NUCLEASE   ID="1"
+                ATTEMPT_ID="11"
+                CONCENTRATION="250"
+                NUCLEASE_CLASS_ID="1"
+                NUCLEASE_TYPE_ID="1"/>
+
+
+    <GUIDE  ID="1"
+            ATTEMPT_ID="11"
+            TRUNCATED_GUIDE="true"
+            SEQUENCE="CTTCACGTACCAAGGAGGGGTGG"
+            STRAND="+"
+            START="45334016"
+            STOP="45334038"
+            GUIDE_SEQUENCE="CTTCACGTACCAAGGAGGGG"
+            PAM="TGG"
+            GRNA_CONCENTRATION="300"
+            GENOME_BUILD="GRCm39"
+            CHR="X"
+            GUIDE_FORMAT_ID="1"
+            GUIDE_SOURCE_ID="2"
+            REVERSED="false"
+            SANGER_SERVICE="false" />
+
+
+    <MUTAGENESIS_DONOR  ID="1"
+                        ATTEMPT_ID="11"
+                        VECTOR_NAME="pUC18_Ikzf2_conditional"
+                        OLIGO_SEQUENCE_FASTA="ATAATTGGCAGCCTGATTAGAAGAATGCCCATCTTGTCTAGTGACACATTAGAACAATGAGTAATTGCTCGATGCGGATCCATAACTTCGTATAGCATACATTATACGAAGTTATTCTCTGGGATTAAGAAAAAACTAACATATGAAACAGAAGCCCAGACATCTAAAACCACAAAGA"
+                        CONCENTRATION="5"
+                        PREPARATION_TYPE_ID="1"/>
+
+    <CRISPR_ATTEMPT_REAGENT ID="1"
+                            ATTEMPT_ID="11"
+                            REAGENT_ID="1"
+                            CONCENTRATION="334"/>
+
+    <GENOTYPE_PRIMER    ID="1"
+                        ATTEMPT_ID="11"
+                        SEQUENCE="GTAGAGGGACAGGCAGTTGG"
+                        NAME="Gpr68wtR"
+                        GENOMIC_START_COORDINATE="1"
+                        GENOMIC_END_COORDINATE="200"/>
+
+
+    <ASSAY  ATTEMPT_ID="11"
+            ASSAY_TYPE_ID="1"
+            FOUNDER_NUM_ASSAYS="26"
+            NUM_DELETION_G0_MUTANTS="1"
+            NUM_FOUNDER_PUPS="26"
+            NUM_FOUNDER_SELECTED_FOR_BREEDING="1"
+            NUM_G0_WHERE_MUTATION_DETECTED="1"
+            NUM_HDR_G0_MUTANTS="1"
+            NUM_HDR_G0_MUTANTS_ALL_DONORS_INSERTED="0"
+            NUM_HDR_G0_MUTANTS_SUBSET_DONORS_INSERTED="0"
+            NUM_HR_G0_MUTANTS="0"
+            NUM_NHEJ_G0_MUTANTS="0"/>
+
+
+    <OUTCOME    ID="1"
+                OUTCOME_TYPE_ID="1"
+                PLAN_ID="11"
+                TPO="TPO:000000000001"/>
+    <OUTCOME    ID="2"
+                OUTCOME_TYPE_ID="1"
+                PLAN_ID="11"
+                TPO="TPO:000000000002"/>
+
+
+    <COLONY     OUTCOME_ID="1"
+                STATUS_ID="11"
+                STRAIN_ID="1"
+                NAME="NSG2-1" />
+    <COLONY     OUTCOME_ID="2"
+                STATUS_ID="11"
+                STRAIN_ID="1"
+                NAME="NSG2-2" />
+
+
+    <PLAN_STARTING_POINT    ID="2"
+                            PLAN_ID="11"
+                            OUTCOME_ID="1"/>
+
+
+    <PHENOTYPING_ATTEMPT PLAN_ID="11"
+                         PHENOTYPING_EXTERNAL_REF="CR10129"
+                         STRAIN_ID="1"
+                         DO_NOT_COUNT_TOWARDS_COMPLETENESS="false"
+                         COHORT_WORK_UNIT_ID="1"
+                         IMITS_PHENOTYPE_ATTEMPT="9040"
+                         IMITS_PHENOTYPING_PRODUCTION="9243"
+                         IMITS_PARENT_COLONY="20829" />
+
+
+
+    <PERSON     ID="123"
+                EMAIL="gentar_test_user1@gentar.org"
+                AUTH_ID="usr-3bc9e4f6-652a-4abf-ad92-77397f8bdd3f"/>
+
+    <ROLE   ID="1"
+            NAME="manager"/>
+    <ROLE   ID="2"
+            NAME="general"/>
+
+    <PERSON_ROLE_WORK_UNIT  ID="1"
+                            PERSON_ID="123"
+                            ROLE_ID="2"
+                            WORK_UNIT_ID="1"/>
+    <PERSON_ROLE_WORK_UNIT  ID="2"
+                            PERSON_ID="123"
+                            ROLE_ID="2"
+                            WORK_UNIT_ID="3"/>
+
+
+
+    <PLAN_STATUS_STAMP  ID="15"
+                        PLAN_ID="11"
+                        STATUS_ID="1"
+                        DATE="2018-01-15 00:00:00.706639"
+    />
+    <PLAN_STATUS_STAMP  ID="16"
+                        PLAN_ID="11"
+                        STATUS_ID="2"
+                        DATE="2018-01-16 00:00:00.706639"
+    />
+    <PLAN_STATUS_STAMP  ID="17"
+                        PLAN_ID="11"
+                        STATUS_ID="3"
+                        DATE="2018-04-04 14:32:00.706639"
+    />
+    <PLAN_STATUS_STAMP  ID="18"
+                        PLAN_ID="11"
+                        STATUS_ID="4"
+                        DATE="2018-02-22 20:18:00.706639"
+    />
+
+
+    <PLAN_SUMMARY_STATUS_STAMP  ID="8"
+                                PLAN_ID="11"
+                                STATUS_ID="11"
+                                DATE="2019-08-06 20:09:51.706639"
+    />
+
+
+
+
+</dataset>
