@@ -1,0 +1,96 @@
+{
+  "_embedded": {
+    "targrep_es_cells": [
+      {
+        "pipelineId": 4,
+        "alleleId": 142,
+        "name": "EPD0045_1_A11",
+        "targetingVectorId": 158,
+        "parentalCellLine": "JM8.N4",
+        "ikmcProjectId": "41713",
+        "mgiAlleleId": null,
+        "alleleSymbolSuperscript": null,
+        "comment": "",
+        "contact": null,
+        "reportToPublic": true,
+        "productionQcFivePrimeScreen": "pass",
+        "productionQcLossOfAllele": "pass",
+        "productionQcLoxpScreen": "pass",
+        "productionQcThreePrimeScreen": "not confirmed",
+        "productionQcVectorIntegrity": "pass",
+        "userQcComment": "pass",
+        "userQcFivePrimeCassetteIntegrity": "pass",
+        "userQcFivePrimeLrPcr": "pass",
+        "userQcKaryotype": "pass",
+        "userQcLaczSrPcr": "pass",
+        "userQcLossOfWtAllele": "pass",
+        "userQcLoxpConfirmation": "pass",
+        "userQcMapTest": "pass",
+        "userQcMutantSpecificSrPcr": "pass",
+        "userQcNeoCountQpcr": "pass",
+        "userQcNeoSrPcr": "pass",
+        "userQcSouthernBlot": "pass",
+        "userQcThreePrimeLrPcr": "pass",
+        "userQcTvBackboneAssay": "pass",
+        "id": 14210,
+        "targRepDistributionQcList": [
+          {
+            "id": 2967,
+            "karyotypeHigh": 0.4,
+            "karyotypeLow": 0.31,
+            "copyNumber": "pass",
+            "fivePrimeLrPcr": "pass",
+            "fivePrimeSrPcr": "pass",
+            "thawing": "pass",
+            "threePrimeLrPcr": null,
+            "threePrimeSrPcr": "pass",
+            "loa": "pass",
+            "loxp": "pass",
+            "lacz": "pass",
+            "chr1": "pass",
+            "chr8a": "pass",
+            "chr8b": "pass",
+            "chr11a": "pass",
+            "chr11b": "pass",
+            "chry": "pass",
+            "esCellDistributionCentre": {
+              "id": 2,
+              "name": "KOMP"
+            }
+          }
+        ],
+        "_links": {
+          "pipeline": [
+            {
+              "href": "http://localhost:8080/api/targ_rep/pipelines/4"
+            }
+          ],
+          "targeting_vector": [
+            {
+              "href": "http://localhost:8080/api/targ_rep/targeting_vectors/158"
+            }
+          ],
+          "allele": [
+            {
+              "href": "http://localhost:8080/api/targ_rep/alleles/142"
+            }
+          ],
+          "self": {
+            "href": "http://localhost:8080/api/targ_rep/es_cell/14210"
+          }
+        }
+      }
+    ]
+  },
+  "_links": {
+    "self": {
+      "href": "http://localhost:8080/api/targ_rep/es_cell"
+    }
+  },
+  "page": {
+    "size": 20,
+    "totalElements": 1,
+    "totalPages": 1,
+    "number": 0
+  }
+}
