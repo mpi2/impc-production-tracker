@@ -125,7 +125,7 @@ public class MgiModificationAlleleReportColonyServiceImpl implements MgiModifica
                 mutationReportService.getSelectedMutationGeneProjections(filteredMutationIds);
         List<MgiModificationAlleleReportEsCellMutationTypeProjection> mtp =
                 mutationReportService.getSelectedEsCellMutationTypeProjections(mgp);
-        mtp.stream().forEach(x -> System.out.println(x.getMutationIdentificationNumber() + "\t" + x.getMutationCategorizationName()));
+        // mtp.stream().forEach(x -> System.out.println(x.getMutationIdentificationNumber() + "\t" + x.getMutationCategorizationName()));
         return mutationReportService.assignAlleleCategories(mtp);
     }
 

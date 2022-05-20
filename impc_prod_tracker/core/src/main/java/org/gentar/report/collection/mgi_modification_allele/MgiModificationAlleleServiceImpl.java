@@ -88,7 +88,7 @@ public class MgiModificationAlleleServiceImpl implements MgiModificationAlleleSe
 
         String alleleCategory = "";
         if (productionMutationProjection != null) {
-            alleleCategory = filteredAlleleCategoryMap.get(productionMutationProjection.getMutationId());
+            alleleCategory = filteredAlleleCategoryMap.get(modificationMutationProjection.getMutationId());
         }
 
 
