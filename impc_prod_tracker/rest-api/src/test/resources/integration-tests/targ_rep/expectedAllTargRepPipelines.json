@@ -1,0 +1,29 @@
+{
+  "_embedded": {
+    "targrep_pipelines": [
+      {
+        "id": 4,
+        "name": "EUCOMM",
+        "description": "EUCOMM consortia",
+        "_links": {
+          "self": {
+            "href": "http://localhost:8080/api/targ_rep/pipelines/4"
+          }
+        },
+        "geneTrap": false,
+        "reportToPublic": true
+      }
+    ]
+  },
+  "_links": {
+    "self": {
+      "href": "http://localhost:8080/api/targ_rep/pipelines"
+    }
+  },
+  "page": {
+    "size": 20,
+    "totalElements": 1,
+    "totalPages": 1,
+    "number": 0
+  }
+}

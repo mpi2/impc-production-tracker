@@ -1,0 +1,12 @@
+{
+  "id": 4,
+  "name": "EUCOMM",
+  "description": "EUCOMM consortia",
+  "_links": {
+    "self": {
+      "href": "http://localhost:8080/api/targ_rep/pipelines/4"
+    }
+  },
+  "geneTrap": false,
+  "reportToPublic": true
+}

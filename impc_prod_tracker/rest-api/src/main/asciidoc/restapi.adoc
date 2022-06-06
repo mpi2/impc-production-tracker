@@ -891,7 +891,6 @@ include::{snippets}/phenotypingStages/putPhenotypingStage/http-request.adoc[]
 ===== Example Response
 include::{snippets}/phenotypingStages/putPhenotypingStage/http-response.adoc[]
 
-
 == State Machine interaction
 
 === Structure
@@ -995,6 +994,173 @@ The response will indicate what has changed in the system, along with a link to 
 case you need to retrieve the new object.
 
 include::{snippets}/plans/putPlanStateMachine/http-response.adoc[]
+
+
+
+== Targrep Allele
+anchor:alleles[]
+This section describes the REST endpoints for alleles in the system.
+
+=== Fields
+These are the fields you are going to see in the body of a request in a GET operations.
+include::{snippets}/targrep/allele/alleleById/response-fields.adoc[]
+
+=== GET
+==== Get all TargRepAlleles
+This endpoint shows all the TargRep Alleles the user has permission to see.
+
+===== Example Request
+
+Curl:
+include::{snippets}/targrep/allele/allAlleles/curl-request.adoc[]
+
+===== Example Response
+
+include::{snippets}/targrep/allele/allAlleles/http-response.adoc[]
+
+==== Get spesific TargRepAlleles by Id
+This endpoint shows spesific TargRep Allele the user has permission to see.
+
+===== Example Request
+
+Curl:
+include::{snippets}/targrep/allele/alleleById/curl-request.adoc[]
+
+===== Example Response
+
+include::{snippets}/targrep/allele/alleleById/http-response.adoc[]
+
+
+
+== Targrep EsCell
+anchor:es_cell[]
+This section describes the REST endpoints for es_cell in the system.
+
+=== Fields
+These are the fields you are going to see in the body of a request in a GET operations.
+include::{snippets}/targrep/esCell/EsCellById/response-fields.adoc[]
+
+=== GET
+==== Get All TargRepEssCell
+This endpoint shows the All  TargRep Es Cells the user has permission to see.
+
+===== Example Request
+
+Curl:
+include::{snippets}/targrep/esCell/allEsCells/curl-request.adoc[]
+
+===== Example Response
+
+include::{snippets}/targrep/esCell/allEsCells/http-response.adoc[]
+
+==== Get specific TargRepEsCell by Id
+This endpoint shows specific TargRep es cell by id the user has permission to see.
+
+===== Example Request
+
+Curl:
+include::{snippets}/targrep/esCell/EsCellById/curl-request.adoc[]
+
+===== Example Response
+
+include::{snippets}/targrep/esCell/EsCellById/http-response.adoc[]
+
+
+==== Get specific TargRepEsCell by Gene
+This endpoint shows specific TargRep es cell by gene symbol the user has permission to see.
+
+===== Example Request
+
+Curl:
+include::{snippets}/targrep/esCell/es_cell_by_symbol/curl-request.adoc[]
+
+===== Example Response
+
+include::{snippets}/targrep/esCell/es_cell_by_symbol/http-response.adoc[]
+
+
+==== Get specific TargRepEsCell by name
+This endpoint shows specific TargRep es cell by  name the user has permission to see.
+
+===== Example Request
+
+Curl:
+include::{snippets}/targrep/esCell/es_cell_by_name/curl-request.adoc[]
+
+===== Example Response
+
+include::{snippets}/targrep/esCell/es_cell_by_name/http-response.adoc[]
+
+
+== Targrep pipeline
+anchor:pipeline[]
+This section describes the REST endpoints for pipeline in the system.
+
+=== Fields
+These are the fields you are going to see in the body of a request in a GET operations.
+include::{snippets}/targrep/pipeline/pipelineById/response-fields.adoc[]
+
+=== GET
+==== Get All TargRepPipeline
+This endpoint shows the specific  TargRep Pipeline the user has permission to see.
+
+===== Example Request
+
+Curl:
+include::{snippets}/targrep/pipeline/allPipelines/curl-request.adoc[]
+
+===== Example Response
+
+include::{snippets}/targrep/pipeline/allPipelines/http-response.adoc[]
+
+==== Get specific TargRepPipeline by Id
+This endpoint shows specific TargRep Pipeline the user has permission to see.
+
+===== Example Request
+
+Curl:
+include::{snippets}/targrep/pipeline/pipelineById/curl-request.adoc[]
+
+===== Example Response
+
+include::{snippets}/targrep/pipeline/pipelineById/http-response.adoc[]
+
+
+
+== Targrep Targeting Vector
+anchor:targeting_vector[]
+This section describes the REST endpoints for targeting vector in the system.
+
+=== Fields
+These are the fields you are going to see in the body of a request in a GET operations.
+include::{snippets}/targrep/targetingVector/targetingVectorById/response-fields.adoc[]
+
+=== GET
+==== Get All TargRepTargetingVector
+This endpoint shows the specific  TargRep targeting vector the user has permission to see.
+
+===== Example Request
+
+Curl:
+include::{snippets}/targrep/targetingVector/AllTargetingVector/curl-request.adoc[]
+
+===== Example Response
+
+include::{snippets}/targrep/targetingVector/AllTargetingVector/http-response.adoc[]
+
+==== Get specific TargRepTargetingVector by Id
+This endpoint shows specific TargRep targeting vector the user has permission to see.
+
+===== Example Request
+
+Curl:
+include::{snippets}/targrep/targetingVector/targetingVectorById/curl-request.adoc[]
+
+===== Example Response
+
+include::{snippets}/targrep/targetingVector/targetingVectorById/http-response.adoc[]
+
+
 
 == Lastest updates
 
