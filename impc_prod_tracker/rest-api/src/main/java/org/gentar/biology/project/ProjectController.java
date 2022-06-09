@@ -21,7 +21,6 @@ import org.gentar.biology.outcome.Outcome;
 import org.gentar.biology.outcome.OutcomeSummaryDTO;
 import org.gentar.biology.outcome.OutcomeSummaryMapper;
 import org.gentar.biology.plan.*;
-import org.gentar.biology.plan.mappers.PlanBasicDataMapper;
 import org.gentar.biology.plan.mappers.PlanMinimumCreationMapper;
 import org.gentar.biology.plan.type.PlanTypeName;
 import org.gentar.biology.project.mappers.ProjectCreationMapper;
@@ -46,7 +45,6 @@ import org.gentar.biology.project.search.filter.ProjectFilter;
 import org.gentar.biology.project.search.filter.ProjectFilterBuilder;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.Collections;
 import java.util.List;
 
@@ -66,6 +64,7 @@ public class ProjectController
     private final PlanMinimumCreationMapper planMinimumCreationMapper;
     private final ProjectResponseMapper projectResponseMapper;
     private final OutcomeSummaryMapper outcomeSummaryMapper;
+    private final ProjectSearchDownloadServiceImpl projectSearchDownloadService;
 
     ProjectController(
         ProjectService projectService,
@@ -76,7 +75,8 @@ public class ProjectController
         ProjectCreationMapper projectCreationMapper,
         PlanMinimumCreationMapper planMinimumCreationMapper,
         ProjectResponseMapper projectResponseMapper,
-        OutcomeSummaryMapper outcomeSummaryMapper)
+        OutcomeSummaryMapper outcomeSummaryMapper,
+        ProjectSearchDownloadServiceImpl projectSearchDownloadService)
     {
         this.projectService = projectService;
         this.historyMapper = historyMapper;
@@ -87,6 +87,7 @@ public class ProjectController
         this.planMinimumCreationMapper = planMinimumCreationMapper;
         this.projectResponseMapper = projectResponseMapper;
         this.outcomeSummaryMapper = outcomeSummaryMapper;
+        this.projectSearchDownloadService = projectSearchDownloadService;
     }
 
     /**
@@ -217,7 +218,7 @@ public class ProjectController
         @RequestParam(value = "summaryStatusName", required = false) List<String> summaryStatusNames,
         @RequestParam(value = "privacyName", required = false) List<String> privaciesNames,
         @RequestParam(value = "imitsMiPlanId", required = false) List<String> imitsMiPlans,
-        @RequestParam(value = "productionColonyName", required = false) List<String> productionColonyName,
+        @RequestParam(value = "colonyName", required = false) List<String> productionColonyName,
         @RequestParam(value = "phenotypingExternalRef", required = false) List<String> phenotypingExternalRefs)
         throws IOException
     {
@@ -236,15 +237,8 @@ public class ProjectController
             .withProductionColonyName(productionColonyName)
             .withPhenotypingExternalRef(phenotypingExternalRefs)
             .build();
-        var projectsPage = projectService.getProjects(projectFilter);
-        List<ProjectCsvRecord> projectCsvRecords = projectCsvRecordMapper.toDtos(projectsPage);
 
-        PrintWriter printWriter = response.getWriter();
-        csvWriter.writeListToCsv(printWriter, projectCsvRecords, ProjectCsvRecord.HEADERS);
-        if (printWriter != null){
-            printWriter.flush();
-            printWriter.close();
-        }
+        projectSearchDownloadService.writeReport(response,projectFilter);
 
     }
 
