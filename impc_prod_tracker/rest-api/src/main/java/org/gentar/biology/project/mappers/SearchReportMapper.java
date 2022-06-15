@@ -1,5 +1,6 @@
 package org.gentar.biology.project.mappers;
 
+import java.util.stream.Collectors;
 import org.gentar.Mapper;
 import org.gentar.biology.project.search.SearchReport;
 import org.gentar.common.filters.FilterDTO;
@@ -36,7 +37,12 @@ public class SearchReportMapper implements Mapper<SearchReport, SearchReportDTO>
     private void setSearchResultsDtos(SearchReportDTO searchReportDTO, SearchReport searchReport)
     {
         List<SearchResultDTO> searchResultDTOS = searchResultMapper.toDtos(searchReport.getResults());
-        searchReportDTO.setResults(searchResultDTOS);
+        searchReportDTO.setResults(getNotNullResultDTOList(searchResultDTOS));
+    }
+
+    private List<SearchResultDTO> getNotNullResultDTOList(List<SearchResultDTO> searchResultDTOS) {
+        return searchResultDTOS.stream().filter(s -> s.getProject() != null).collect(
+            Collectors.toList());
     }
 
     private void setFiltersDto(SearchReportDTO searchReportDTO, SearchReport searchReport)
