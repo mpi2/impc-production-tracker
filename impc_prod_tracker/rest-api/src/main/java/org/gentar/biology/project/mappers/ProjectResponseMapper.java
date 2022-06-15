@@ -4,6 +4,7 @@ import org.gentar.Mapper;
 import org.gentar.biology.colony.Colony;
 import org.gentar.biology.intention.ProjectIntentionResponseDTO;
 import org.gentar.biology.intention.ProjectIntentionResponseMapper;
+import org.gentar.biology.intention.project_intention.ProjectIntention;
 import org.gentar.biology.plan.Plan;
 import org.gentar.biology.project.Project;
 import org.gentar.biology.project.ProjectConsortiumDTO;
@@ -106,9 +107,13 @@ public class ProjectResponseMapper implements Mapper<Project, ProjectResponseDTO
 
     private void setProjectIntentionsDTOS(ProjectResponseDTO projectResponseDTO, Project project)
     {
-        List<ProjectIntentionResponseDTO> projectIntentionDTOs =
-            projectIntentionResponseMapper.toDtos(project.getProjectIntentions());
-        projectResponseDTO.setProjectIntentionDTOS(projectIntentionDTOs);
+       for(ProjectIntention projectIntention:project.getProjectIntentions()){
+           if(projectIntention.getProjectIntentionGene()!=null) {
+               List<ProjectIntentionResponseDTO> projectIntentionDTOs =
+                   projectIntentionResponseMapper.toDtos(project.getProjectIntentions());
+               projectResponseDTO.setProjectIntentionDTOS(projectIntentionDTOs);
+           }
+       }
     }
 
     private void setRelatedWorkUnitsDTOS(ProjectResponseDTO projectResponseDTO, Project project)

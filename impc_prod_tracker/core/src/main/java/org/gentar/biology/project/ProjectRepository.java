@@ -18,15 +18,15 @@ public interface ProjectRepository extends
     @Query(value = "SELECT pr.tpn as tpn,\n" +
         "           g.symbol as gene,\n" +
         "           g.acc_id as acc_id,\n" +
-        "           mmt.type as intention,\n" +
-        "           array_to_string(array_agg(DISTINCT wu.name), ':')  as workUnitName,\n" +
-        "           array_to_string(array_agg(DISTINCT wg.name), ':') as workGroup,\n" +
+        "           mmt.name as intention,\n" +
+        "           string_agg(DISTINCT wu.name, ':')  as workUnitName,\n" +
+        "           string_agg(DISTINCT wg.name, ':') as workGroup,\n" +
         "           ast.name as assignmentStatus,\n" +
         "           s.name as summaryStatus,\n" +
         "           prv.name as privacyName,\n" +
-        "           array_to_string(array_agg(DISTINCT pa.phenotyping_external_ref), ':') as phenotypingExternalRef,\n" +
-        "           array_to_string(array_agg(DISTINCT  co.name), ':') as colonyName,\n" +
-        "           array_to_string(array_agg(DISTINCT c.name), ':') as consortium\n" +
+        "           string_agg(DISTINCT pa.phenotyping_external_ref, ':') as phenotypingExternalRef,\n" +
+        "           string_agg(DISTINCT  co.name, ':') as colonyName,\n" +
+        "           string_agg(DISTINCT c.name, ':') as consortium\n" +
         "                            FROM Project pr LEFT JOIN project_intention pi\n" +
         "                            on pr.id = pi.project_id\n" +
         "                                left Join project_intention_gene pig on pi.id = pig.project_intention_id\n" +
@@ -44,7 +44,7 @@ public interface ProjectRepository extends
         "                                left join project_consortium pc on pr.id = pc.project_id\n" +
         "                                left join consortium c on pc.consortium_id = c.id" +
         "                            where   (:#{#filterString.getTpn().get(0)}='null' or pr.tpn IN :#{#filterString.getTpn()}) " +
-        "                                AND (:#{#filterString.getIntention().get(0)}='null' or mmt.type IN :#{#filterString.getIntention()}) " +
+        "                                AND (:#{#filterString.getIntention().get(0)}='null' or mmt.name IN :#{#filterString.getIntention()}) " +
         "                                AND  (:#{#filterString.getGeneSymbolOrMgi().get(0)}='null'  or g.acc_id IN :#{#filterString.getGeneSymbolOrMgi()} or g.symbol IN :#{#filterString.getGeneSymbolOrMgi()})" +
         "                                AND (:#{#filterString.getWorkUnit().get(0)}='null' or wu.name IN :#{#filterString.getWorkUnit()}) " +
         "                                AND (:#{#filterString.getWorkGroup().get(0)}='null' or wg.name IN :#{#filterString.getWorkGroup()}) " +
@@ -53,7 +53,7 @@ public interface ProjectRepository extends
         "                                AND (:#{#filterString.getConsortia().get(0)}='null' or c.name IN :#{#filterString.getConsortia()}) " +
         "                                AND (:#{#filterString.getPhenotypingExternalRef().get(0)}='null' or pa.phenotyping_external_ref IN :#{#filterString.getPhenotypingExternalRef()}) " +
         "                                AND (:#{#filterString.getProductionColonyName().get(0)}='null' or co.name IN :#{#filterString.getProductionColonyName()}) " +
-        "  group by pr.tpn, g.symbol, g.acc_id, mmt.type, ast.name, prv.name, s.name",
+        "  group by pr.tpn, g.symbol, g.acc_id, mmt.name, ast.name, prv.name, s.name",
         nativeQuery = true)
     List<ProjectSearchDownloadProjection> findAllProjectsForCsvFile(
         @Param("filterString") ProjectSearchDownloadProjectionListDto filterString);

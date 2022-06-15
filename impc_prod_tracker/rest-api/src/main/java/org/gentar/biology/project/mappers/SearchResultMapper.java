@@ -13,6 +13,7 @@
  * language governing permissions and limitations under the
  * License.
  *******************************************************************************/
+
 package org.gentar.biology.project.mappers;
 
 import org.gentar.Mapper;
@@ -22,25 +23,27 @@ import org.gentar.biology.project.search.SearchResultDTO;
 import org.springframework.stereotype.Component;
 
 @Component
-public class SearchResultMapper implements Mapper<SearchResult, SearchResultDTO>
-{
+public class SearchResultMapper implements Mapper<SearchResult, SearchResultDTO> {
     private final ProjectResponseMapper projectResponseMapper;
 
-    public SearchResultMapper(ProjectResponseMapper projectResponseMapper)
-    {
+    public SearchResultMapper(ProjectResponseMapper projectResponseMapper) {
         this.projectResponseMapper = projectResponseMapper;
     }
 
-    public SearchResultDTO toDto(SearchResult searchResult)
-    {
+    public SearchResultDTO toDto(SearchResult searchResult) {
         SearchResultDTO searchResultDTO = new SearchResultDTO();
         searchResultDTO.setInput(searchResult.getInput());
         searchResultDTO.setComment(searchResult.getComment());
         Project project = searchResult.getProject();
-        if (project != null)
-        {
+
+        if (project != null && isProjectGeneExist(project)) {
             searchResultDTO.setProject(projectResponseMapper.toDto(project));
         }
         return searchResultDTO;
+    }
+
+    private boolean isProjectGeneExist(Project project) {
+        return project.getProjectIntentions().stream()
+            .anyMatch(p -> p.getProjectIntentionGene() != null);
     }
 }
