@@ -36,7 +36,7 @@ public class ProjectSearchDownloadServiceImpl implements ProjectSearchDownloadSe
     private final ProjectValidator projectValidator;
     private final OrthologService orthologService;
     private final Searcher searcher;
-    private static final String SEPARATOR = ";";
+    private static final String SEPARATOR = "\",\"";
 
     public ProjectSearchDownloadServiceImpl(ProjectRepository projectRepository,
                                             ProjectValidator projectValidator,
@@ -162,7 +162,7 @@ public class ProjectSearchDownloadServiceImpl implements ProjectSearchDownloadSe
 
     private String generateReportHeaders() {
         List<String> headers = Arrays.asList(
-            "Tpn",
+            "\"Tpn",
             "Gene/Location",
             "Mgi",
             "Best Human ortholog",
@@ -174,7 +174,7 @@ public class ProjectSearchDownloadServiceImpl implements ProjectSearchDownloadSe
             "Production Colony",
             "Phenotyping External Reference",
             "Privacy",
-            "Consortia"
+            "Consortia\""
 
         );
 
