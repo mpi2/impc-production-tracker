@@ -5,7 +5,7 @@ import org.gentar.biology.project.projection.ProjectSearchDownloadProjection;
 
 public class ProjectSearchDownloadMapper {
 
-    private static final String SEPARATOR = ";";
+    private static final String SEPARATOR = "\",\"";
 
     public static ProjectSearchDownloadProjectionDto projectProjectionToDto(
         ProjectSearchDownloadProjection projectSearchDownloadProjection) {
@@ -40,6 +40,7 @@ public class ProjectSearchDownloadMapper {
     public static String mapOrthologToString(
         ProjectSearchDownloadProjectionDto projectSearchDownloadProjectionDto) {
         String projectProjectionDtoString = "";
+        projectProjectionDtoString+="\"";
         projectProjectionDtoString += projectSearchDownloadProjectionDto.getTpn() + SEPARATOR;
         projectProjectionDtoString +=
             projectSearchDownloadProjectionDto.getGeneOrLocation() + SEPARATOR;
@@ -59,8 +60,8 @@ public class ProjectSearchDownloadMapper {
         projectProjectionDtoString +=
             projectSearchDownloadProjectionDto.getPhenotypingExternalRef() + SEPARATOR;
         projectProjectionDtoString += projectSearchDownloadProjectionDto.getPrivacy() + SEPARATOR;
-        projectProjectionDtoString += projectSearchDownloadProjectionDto.getConsortia() + SEPARATOR;
+        projectProjectionDtoString += projectSearchDownloadProjectionDto.getConsortia() +"\"";
 
-        return projectProjectionDtoString;
+        return projectProjectionDtoString.replace("null","");
     }
 }
