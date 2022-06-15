@@ -56,7 +56,8 @@ public class ProjectSearchDownloadServiceImpl implements ProjectSearchDownloadSe
         ProjectSearchDownloadProjectionListDto filterString = generateFilterString(projectFilter);
 
         List<ProjectSearchDownloadProjectionDto> projectSearchDownloadProjectionDtos =
-            projectRepository.findAllProjectsForCsvFile(filterString).stream().map(
+            projectRepository.findAllProjectsForCsvFile(filterString).stream()
+                .filter(p -> p.getMgi() != null).map(
                 ProjectSearchDownloadMapper::projectProjectionToDto).collect(Collectors.toList());
 
         addSynonyms(projectFilter, filterString, projectSearchDownloadProjectionDtos);
@@ -74,25 +75,25 @@ public class ProjectSearchDownloadServiceImpl implements ProjectSearchDownloadSe
 
         List<ProjectSearchDownloadProjectionDto> synonymsDto = new ArrayList<>();
 
-            if (!filterString.getGeneSymbolOrMgi().get(0).equals("null")) {
-                filterString.getGeneSymbolOrMgi().forEach(x -> {
-                    List<String> filters = new ArrayList<>();
-                    filters.add(x);
-                    if (!x.equals("") && projectSearchDownloadProjectionDtos.stream()
-                        .noneMatch(y -> y.getGeneOrLocation().equals(x)) && !isAccessionId(x)) {
-                        Search search =
-                            new Search("gene", filters, projectFilter);
+        if (!filterString.getGeneSymbolOrMgi().get(0).equals("null")) {
+            filterString.getGeneSymbolOrMgi().forEach(x -> {
+                List<String> filters = new ArrayList<>();
+                filters.add(x);
+                if (!x.equals("") && projectSearchDownloadProjectionDtos.stream()
+                    .noneMatch(y -> y.getGeneOrLocation().equals(x)) && !isAccessionId(x)) {
+                    Search search =
+                        new Search("gene", filters, projectFilter);
 
-                        List<SearchResult> result = new ArrayList<>();
-                        result.addAll(searcher.execute(search));
-                        if (result.get(0).getProject() != null) {
-                            synonymsDto.add(getDownloadProjectionDto(result));
-                        }
+                    List<SearchResult> result = new ArrayList<>();
+                    result.addAll(searcher.execute(search));
+                    if (result.get(0).getProject() != null) {
+                        synonymsDto.add(getDownloadProjectionDto(result));
                     }
-                });
+                }
+            });
 
-                projectSearchDownloadProjectionDtos.addAll(synonymsDto);
-            }
+            projectSearchDownloadProjectionDtos.addAll(synonymsDto);
+        }
     }
 
     @Override
