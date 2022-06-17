@@ -286,4 +286,17 @@ public class ProjectSpecs
         }
         return specification;
     }
+
+    public static Specification<Project> withoutNullGenesSymbols() {
+        Specification<Project> specification = Specification.where(null);
+
+            specification = (Specification<Project>) (root, query, criteriaBuilder) -> {
+                Path<String> symbolNamePath = ProjectPaths.getMarkerSymbolPath(root);
+                query.distinct(true);
+                return PredicateBuilder.notInPredicates(
+                    criteriaBuilder, symbolNamePath);
+            };
+
+        return specification;
+    }
 }
