@@ -5,6 +5,7 @@ import java.io.PrintWriter;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -24,7 +25,6 @@ import org.gentar.biology.project.search.filter.ProjectFilter;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
 
 /**
  * DownloadService.
@@ -36,7 +36,7 @@ public class ProjectSearchDownloadServiceImpl implements ProjectSearchDownloadSe
     private final ProjectValidator projectValidator;
     private final OrthologService orthologService;
     private final Searcher searcher;
-    private static final String SEPARATOR = ";";
+    private static final String SEPARATOR = "\",\"";
 
     public ProjectSearchDownloadServiceImpl(ProjectRepository projectRepository,
                                             ProjectValidator projectValidator,
@@ -66,7 +66,15 @@ public class ProjectSearchDownloadServiceImpl implements ProjectSearchDownloadSe
 
         addOrthologs(projectSearchDownloadProjectionDtos);
 
-        printReport(response, projectSearchDownloadProjectionDtos);
+        printReport(response, getSortedByTpnProjectionDtos(projectSearchDownloadProjectionDtos));
+    }
+
+    private List<ProjectSearchDownloadProjectionDto> getSortedByTpnProjectionDtos(
+        List<ProjectSearchDownloadProjectionDto> projectSearchDownloadProjectionDtos) {
+
+          return  projectSearchDownloadProjectionDtos.stream()
+                .sorted(Comparator.comparing(ProjectSearchDownloadProjectionDto::getTpn)).collect(
+                Collectors.toList());
     }
 
     private void addSynonyms(ProjectFilter projectFilter,
@@ -86,7 +94,8 @@ public class ProjectSearchDownloadServiceImpl implements ProjectSearchDownloadSe
 
                     List<SearchResult> result = new ArrayList<>();
                     result.addAll(searcher.execute(search));
-                    if (result.get(0).getProject() != null) {
+                    if (result.get(0).getProject() != null &&
+                        !isAnyMatch(projectSearchDownloadProjectionDtos, result)) {
                         synonymsDto.add(getDownloadProjectionDto(result));
                     }
                 }
@@ -94,6 +103,13 @@ public class ProjectSearchDownloadServiceImpl implements ProjectSearchDownloadSe
 
             projectSearchDownloadProjectionDtos.addAll(synonymsDto);
         }
+    }
+
+    private boolean isAnyMatch(
+        List<ProjectSearchDownloadProjectionDto> projectSearchDownloadProjectionDtos,
+        List<SearchResult> result) {
+        return projectSearchDownloadProjectionDtos.stream()
+            .anyMatch(p -> p.getTpn().equals(getDownloadProjectionDto(result).getTpn()));
     }
 
     @Override
@@ -162,7 +178,7 @@ public class ProjectSearchDownloadServiceImpl implements ProjectSearchDownloadSe
 
     private String generateReportHeaders() {
         List<String> headers = Arrays.asList(
-            "Tpn",
+            "\"Tpn",
             "Gene/Location",
             "Mgi",
             "Best Human ortholog",
@@ -174,7 +190,7 @@ public class ProjectSearchDownloadServiceImpl implements ProjectSearchDownloadSe
             "Production Colony",
             "Phenotyping External Reference",
             "Privacy",
-            "Consortia"
+            "Consortia\""
 
         );
 
@@ -230,44 +246,49 @@ public class ProjectSearchDownloadServiceImpl implements ProjectSearchDownloadSe
             .entrySet()) {
             switch (searchFilter.getKey().getName()) {
                 case "tpn":
-                    projectSearchDownloadProjectionListDto.setTpn(searchFilter.getValue());
+                    projectSearchDownloadProjectionListDto.setTpn(getLowerCaseValue(searchFilter));
                     break;
                 case "intention":
-                    projectSearchDownloadProjectionListDto.setIntention(searchFilter.getValue());
+                    projectSearchDownloadProjectionListDto.setIntention(getLowerCaseValue(searchFilter));
                     break;
                 case "workUnitName":
-                    projectSearchDownloadProjectionListDto.setWorkUnit(searchFilter.getValue());
+                    projectSearchDownloadProjectionListDto.setWorkUnit(getLowerCaseValue(searchFilter));
                     break;
                 case "workGroup":
-                    projectSearchDownloadProjectionListDto.setWorkGroup(searchFilter.getValue());
+                    projectSearchDownloadProjectionListDto.setWorkGroup(getLowerCaseValue(searchFilter));
                     break;
                 case "privacyName":
-                    projectSearchDownloadProjectionListDto.setPrivacy(searchFilter.getValue());
+                    projectSearchDownloadProjectionListDto.setPrivacy(getLowerCaseValue(searchFilter));
                     break;
                 case "summaryStatus":
                     projectSearchDownloadProjectionListDto
-                        .setProjectSummaryStatus(searchFilter.getValue());
+                        .setProjectSummaryStatus(getLowerCaseValue(searchFilter));
                     break;
                 case "consortium":
-                    projectSearchDownloadProjectionListDto.setConsortia(searchFilter.getValue());
+                    projectSearchDownloadProjectionListDto.setConsortia(getLowerCaseValue(searchFilter));
                     break;
                 case "gene":
                     projectSearchDownloadProjectionListDto
-                        .setGeneSymbolOrMgi(searchFilter.getValue());
+                        .setGeneSymbolOrMgi(getLowerCaseValue(searchFilter));
                     break;
                 case "phenotypingExternalRefs":
                     projectSearchDownloadProjectionListDto
-                        .setPhenotypingExternalRef(searchFilter.getValue());
+                        .setPhenotypingExternalRef(getLowerCaseValue(searchFilter));
                     break;
                 case "colonyName":
                     projectSearchDownloadProjectionListDto
-                        .setProductionColonyName(searchFilter.getValue());
+                        .setProductionColonyName(getLowerCaseValue(searchFilter));
                     break;
                 default:
                     break;
             }
         }
         return projectSearchDownloadProjectionListDto;
+    }
+
+    private List<String> getLowerCaseValue(Map.Entry<FilterTypes, List<String>> searchFilter) {
+        return searchFilter.getValue().stream().map(
+            String::toLowerCase).collect(Collectors.toList());
     }
 
     private ProjectSearchDownloadProjectionDto getDownloadProjectionDto(

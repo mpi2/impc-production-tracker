@@ -13,9 +13,13 @@
  * language governing permissions and limitations under the
  * License.
  *******************************************************************************/
+
 package org.gentar.biology.project.search;
 
+import java.util.Comparator;
+import java.util.stream.Collectors;
 import org.apache.commons.lang3.NotImplementedException;
+import org.gentar.biology.project.projection.dto.ProjectSearchDownloadProjectionDto;
 import org.springframework.stereotype.Component;
 import java.util.ArrayList;
 import java.util.List;
@@ -25,32 +29,28 @@ import java.util.List;
  * the search.
  */
 @Component
-public class Searcher
-{
+public class Searcher {
     private SearchExecutor searchExecutor;
     private SearchExecutorByGene searchExecutorByGene;
 
-    public Searcher(SearchExecutorByGene searchExecutorByGene)
-    {
+    public Searcher(SearchExecutorByGene searchExecutorByGene) {
         this.searchExecutorByGene = searchExecutorByGene;
     }
 
     /**
      * Executes a search.
+     *
      * @param search Parameters of the search.
      * @return List of {@link SearchResult} with the results of the search.
      */
-    public List<SearchResult> execute(Search search)
-    {
+    public List<SearchResult> execute(Search search) {
         resolveSearchExecutor(search);
 
         return getResults(search);
     }
 
-    private void resolveSearchExecutor(Search search)
-    {
-        switch (search.getSearchType())
-        {
+    private void resolveSearchExecutor(Search search) {
+        switch (search.getSearchType()) {
             case BY_GENE:
                 searchExecutor = searchExecutorByGene;
                 break;
@@ -62,32 +62,37 @@ public class Searcher
         }
     }
 
-    private List<SearchResult> getResults(Search search)
-    {
+    private List<SearchResult> getResults(Search search) {
         List<SearchResult> results = new ArrayList<>();
-        for (String input : search.getInputs())
-        {
+        for (String input : search.getInputs()) {
             results.addAll(getResultsByInput(input));
         }
-        return results;
+        return getSortedByTpnSearchResult(results);
+
     }
 
-    private List<SearchResult> getResultsByInput(String input)
-    {
+    private List<SearchResult> getResultsByInput(String input) {
         List<SearchResult> foundProjects = searchExecutor.findProjects(input);
 
-        if (foundProjects.isEmpty())
-        {
+        if (foundProjects.isEmpty()) {
             addEmptyResult(foundProjects, input);
         }
         return foundProjects;
     }
 
-    private void addEmptyResult(List<SearchResult> searchResults, String input)
-    {
+    private void addEmptyResult(List<SearchResult> searchResults, String input) {
         SearchResult searchResult = new SearchResult();
         searchResult.setInput(input);
         searchResult.setProject(null);
         searchResults.add(searchResult);
     }
+
+    private List<SearchResult> getSortedByTpnSearchResult(
+        List<SearchResult> searchresults) {
+        return
+            searchresults.stream().filter(s -> s.getProject() != null)
+                .sorted(Comparator.comparing(p -> p.getProject().getTpn())).collect(
+                Collectors.toList());
+    }
+
 }

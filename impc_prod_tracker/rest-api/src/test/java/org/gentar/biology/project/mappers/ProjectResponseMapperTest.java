@@ -63,8 +63,10 @@ class ProjectResponseMapperTest
 
         verify(projectCommonDataMapper, times(1)).toDto(project);
         verify(statusStampMapper, times(1)).toDtos(project.getAssignmentStatusStamps());
+        if(project.getProjectIntentions()!=null){
         verify(projectIntentionResponseMapper, times(1)).toDtos(project.getProjectIntentions());
-        verify(projectConsortiumMapper, times(1)).toDtos(project.getProjectConsortia());
+    }
+    verify(projectConsortiumMapper, times(1)).toDtos(project.getProjectConsortia());
         assertThat(projectResponseDTO.getTpn(), is(TPN));
         assertThat(projectResponseDTO.getAssignmentStatusName(), is(ASSIGNMENT_STATUS));
         assertThat(projectResponseDTO.getSummaryStatusName(), is(SUMMARY_STATUS));

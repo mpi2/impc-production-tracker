@@ -59,7 +59,9 @@ public class ProjectResponseMapper implements Mapper<Project, ProjectResponseDTO
             projectResponseDTO.setSummaryStatusName(project.getSummaryStatus().getName());
         }
         setStatusStampsDTO(projectResponseDTO, project);
+        if(project.getProjectIntentions()!=null){
         setProjectIntentionsDTOS(projectResponseDTO, project);
+        }
         setRelatedWorkUnitsDTOS(projectResponseDTO, project);
         setRelatedWorkGroupsDTOS(projectResponseDTO, project);
         setConsortiaToDto(projectResponseDTO, project);

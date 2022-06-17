@@ -25,6 +25,8 @@ import org.gentar.helpers.CsvReader;
 import org.gentar.helpers.CsvWriter;
 import org.gentar.util.TextUtil;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -86,7 +88,7 @@ public class ProjectSearcherController
      */
     @GetMapping
     public ResponseEntity search(
-        Pageable pageable,
+        @PageableDefault(size = 40, sort = "tpn", direction = Sort.Direction.ASC) Pageable pageable,
         @RequestParam(value = "searchTypeName", required = false) String searchTypeName,
         @RequestParam(value = "input", required = false) List<String> inputs,
         @RequestParam(value = "tpn", required = false) List<String> tpns,
@@ -130,7 +132,7 @@ public class ProjectSearcherController
      */
     @PostMapping
     public ResponseEntity searchByFile(
-        Pageable pageable,
+        @PageableDefault(size = 40, sort = "tpn", direction = Sort.Direction.ASC) Pageable pageable,
         @RequestParam(value = "searchTypeName", required = false) String searchTypeName,
         @RequestParam("file") MultipartFile file,
         @RequestParam(value = "tpn", required = false) List<String> tpns,
