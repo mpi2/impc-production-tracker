@@ -16,33 +16,32 @@
 
 package org.gentar.biology.project;
 
-import org.gentar.audit.history.HistoryService;
-import org.gentar.biology.ortholog.Ortholog;
-import org.gentar.biology.ortholog.OrthologService;
-import org.gentar.biology.intention.project_intention_gene.ProjectIntentionGene;
-import org.gentar.biology.outcome.Outcome;
-import org.gentar.biology.plan.Plan;
-import org.gentar.biology.plan.attempt.AttemptType;
-import org.gentar.biology.plan.engine.PlanValidator;
-import org.gentar.biology.plan.type.PlanTypeName;
-import org.gentar.biology.project.engine.ProjectUpdater;
-import org.gentar.biology.project.engine.ProjectValidator;
-import org.gentar.biology.project.specs.ProjectSpecs;
-import org.gentar.exceptions.NotFoundException;
-import org.gentar.exceptions.UserOperationFailedException;
-import org.gentar.biology.project.search.filter.ProjectFilter;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.domain.Specification;
-import org.springframework.stereotype.Component;
-import org.gentar.audit.history.History;
-import org.gentar.biology.project.engine.ProjectCreator;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import org.gentar.audit.history.History;
+import org.gentar.audit.history.HistoryService;
+import org.gentar.biology.intention.project_intention_gene.ProjectIntentionGene;
+import org.gentar.biology.ortholog.Ortholog;
+import org.gentar.biology.ortholog.OrthologService;
+import org.gentar.biology.outcome.Outcome;
+import org.gentar.biology.plan.Plan;
+import org.gentar.biology.plan.engine.PlanValidator;
+import org.gentar.biology.plan.type.PlanTypeName;
+import org.gentar.biology.project.engine.ProjectCreator;
+import org.gentar.biology.project.engine.ProjectUpdater;
+import org.gentar.biology.project.engine.ProjectValidator;
+import org.gentar.biology.project.search.filter.ProjectFilter;
+import org.gentar.biology.project.specs.ProjectSpecs;
+import org.gentar.exceptions.NotFoundException;
+import org.gentar.exceptions.UserOperationFailedException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
+import org.springframework.stereotype.Component;
 
 @Component
 public class ProjectServiceImpl implements ProjectService {
@@ -150,7 +149,7 @@ public class ProjectServiceImpl implements ProjectService {
                     .and(ProjectSpecs.withConsortia(projectFilter.getConsortiaNames()))
                     .and(ProjectSpecs.withAssignments(projectFilter.getAssginmentNames()))
                     .and(ProjectSpecs.withSummaryStatuses(projectFilter.getSummaryStatusNames()))
-                    .and(ProjectSpecs.withPrivacies(projectFilter.getPrivaciesNames())))
+                    .and(ProjectSpecs.withPrivacies(projectValidator.getAccessChecked(projectFilter.getPrivaciesNames()))))
                 .and(ProjectSpecs.withImitsMiPlans(projectFilter.getImitsMiPlans()))
                 .and(ProjectSpecs
                     .withProductionColonyNames(projectFilter.getProductionColonyNames()))
