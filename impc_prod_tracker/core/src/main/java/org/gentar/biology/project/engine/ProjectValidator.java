@@ -1,24 +1,25 @@
 package org.gentar.biology.project.engine;
 
+import java.util.Collection;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Objects;
+import java.util.Set;
+import java.util.stream.Collectors;
 import org.gentar.biology.plan.Plan;
 import org.gentar.biology.plan.attempt.phenotyping.PhenotypingAttempt;
 import org.gentar.biology.plan.attempt.phenotyping.stage.PhenotypingStage;
 import org.gentar.biology.plan.type.PlanTypeName;
 import org.gentar.biology.project.Project;
 import org.gentar.biology.project.ProjectQueryHelper;
-import org.gentar.biology.project.consortium.ProjectConsortium;
 import org.gentar.exceptions.ForbiddenAccessException;
 import org.gentar.exceptions.UserOperationFailedException;
-import org.gentar.organization.consortium.Consortium;
 import org.gentar.security.abac.ResourceAccessChecker;
 import org.gentar.security.abac.spring.ContextAwarePolicyEnforcement;
 import org.gentar.security.permissions.Actions;
 import org.gentar.security.permissions.Operations;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Component;
-
-import java.util.*;
-import java.util.stream.Collectors;
 
 @Component
 public class ProjectValidator
@@ -170,6 +171,12 @@ public class ProjectValidator
     {
         return (Project) resourceAccessChecker.checkAccess(project, Actions.READ_PROJECT_ACTION);
     }
+
+    public List<String> getAccessChecked(List<String> privacyNames)
+    {
+        return resourceAccessChecker.getUserAccessLevel(privacyNames);
+    }
+
 
     public List<Project> getCheckedCollection(Collection<Project> projects)
     {

@@ -43,4 +43,10 @@ public class PredicateBuilder
     {
         return criteriaBuilder.equal(path, Long.parseLong(value));
     }
+
+    public static Predicate notInPredicates(
+        CriteriaBuilder criteriaBuilder, Path<String> path)
+    {
+        return criteriaBuilder.isNotNull(path);
+    }
 }
