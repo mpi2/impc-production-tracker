@@ -15,6 +15,7 @@
  */
 package org.gentar.biology.project.mappers;
 
+import org.gentar.biology.project.ProjectSearchDownloadServiceImpl;
 import org.gentar.biology.project.search.ProjectSearcherService;
 import org.gentar.biology.project.search.Search;
 import org.gentar.helpers.SearchCsvRecord;
@@ -24,7 +25,8 @@ import org.gentar.helpers.CsvReader;
 import org.gentar.helpers.CsvWriter;
 import org.gentar.util.TextUtil;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpHeaders;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -38,7 +40,6 @@ import org.gentar.biology.project.search.filter.ProjectFilterBuilder;
 import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -55,21 +56,20 @@ public class ProjectSearcherController
     private final ProjectSearcherService projectSearcherService;
     private final SearchReportMapper searchReportMapper;
     private final CsvReader csvReader;
-    private final CsvWriter<SearchCsvRecord> csvWriter;
-    private final SearchCsvRecordMapper searchCsvRecordMapper;
+    private final ProjectSearchDownloadServiceImpl projectSearchDownloadService;
 
     public ProjectSearcherController(
         ProjectSearcherService projectSearcherService,
         SearchReportMapper searchReportMapper,
         CsvReader csvReader,
         CsvWriter<SearchCsvRecord> csvWriter,
-        SearchCsvRecordMapper searchCsvRecordMapper)
+        SearchCsvRecordMapper searchCsvRecordMapper,
+        ProjectSearchDownloadServiceImpl projectSearchDownloadService)
     {
         this.projectSearcherService = projectSearcherService;
         this.searchReportMapper = searchReportMapper;
         this.csvReader = csvReader;
-        this.csvWriter = csvWriter;
-        this.searchCsvRecordMapper = searchCsvRecordMapper;
+        this.projectSearchDownloadService = projectSearchDownloadService;
     }
 
     /**
@@ -88,7 +88,7 @@ public class ProjectSearcherController
      */
     @GetMapping
     public ResponseEntity search(
-        Pageable pageable,
+        @PageableDefault(size = 40, sort = "tpn", direction = Sort.Direction.ASC) Pageable pageable,
         @RequestParam(value = "searchTypeName", required = false) String searchTypeName,
         @RequestParam(value = "input", required = false) List<String> inputs,
         @RequestParam(value = "tpn", required = false) List<String> tpns,
@@ -132,7 +132,7 @@ public class ProjectSearcherController
      */
     @PostMapping
     public ResponseEntity searchByFile(
-        Pageable pageable,
+        @PageableDefault(size = 40, sort = "tpn", direction = Sort.Direction.ASC) Pageable pageable,
         @RequestParam(value = "searchTypeName", required = false) String searchTypeName,
         @RequestParam("file") MultipartFile file,
         @RequestParam(value = "tpn", required = false) List<String> tpns,
@@ -194,7 +194,7 @@ public class ProjectSearcherController
         @RequestParam(value = "privacyName", required = false) List<String> privacies,
         @RequestParam(value = "workUnitName", required = false) List<String> workUnitsNames,
         @RequestParam(value = "workGroupName", required = false) List<String> workGroupNames,
-        @RequestParam(value = "consortiaName", required = false) List<String> consortiaNames,
+        @RequestParam(value = "consortiumName", required = false) List<String> consortiaNames,
         @RequestParam(value = "summaryStatusName", required = false) List<String> summaryStatusNames)
         throws Exception
     {
@@ -266,10 +266,6 @@ public class ProjectSearcherController
         List<String> consortiaNames,
         List<String> summaryStatusNames) throws IOException
     {
-        String filename = "download.csv";
-        response.setContentType("text/csv");
-        response.setHeader(
-            HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + filename + "\"");
         Search search =
             buildSearch(
                 searchTypeName,
@@ -281,15 +277,7 @@ public class ProjectSearcherController
                 workGroupNames,
                 consortiaNames,
                 summaryStatusNames);
-        SearchReport searchReport = projectSearcherService.executeSearch(search);
-        var searchCsvRecords = searchCsvRecordMapper.toDtos(searchReport.getResults());
-
-        PrintWriter printWriter = response.getWriter();
-        csvWriter.writeListToCsv(printWriter, searchCsvRecords, SearchCsvRecord.HEADERS);
-        if (printWriter != null){
-            printWriter.flush();
-            printWriter.close();
-        }
+        projectSearchDownloadService.writeReport(response,search.getFilters());
     }
 
     private String getCleanText(String text)
@@ -310,6 +298,7 @@ public class ProjectSearcherController
     {
         ProjectFilter projectFilter = ProjectFilterBuilder.getInstance()
             .withTpns(tpns)
+            .withGenes(inputs)
             .withIntentions(intentionTypeNames)
             .withWorkUnitNames(workUnitsNames)
             .withWorkGroupNames(workGroupNames)

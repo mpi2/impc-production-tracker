@@ -92,16 +92,88 @@ public class ProjectSearcherServiceImpl implements ProjectSearcherService
 
     private List<SearchResult> applyFiltersToResults(List<SearchResult> allResults, ProjectFilter filters)
     {
-        FluentSearchResultFilter fluentSearchResultFilter = new FluentSearchResultFilter(allResults);
-        return fluentSearchResultFilter
+        List<SearchResult> allFilteredResults= applyTpnsFiltersToResults(allResults ,filters);
+        allFilteredResults= applyWorkUnitNamesFiltersToResults(allFilteredResults ,filters);
+        allFilteredResults= applyWorkGroupNamesFiltersToResults(allFilteredResults ,filters);
+        allFilteredResults= applyMolecularMutationTypeNamesFiltersToResults(allFilteredResults ,filters);
+        allFilteredResults= applyConsortiaNamesFiltersToResults(allFilteredResults ,filters);
+        allFilteredResults= applyPrivaciesNamesFiltersToResults(allFilteredResults ,filters);
+        allFilteredResults= applyImitsMiPlansFiltersToResults(allFilteredResults ,filters);
+        allFilteredResults= applyColonyNamesFiltersToResults(allFilteredResults ,filters);
+        allFilteredResults= applyPhenotypingExternalRefsFiltersToResults(allFilteredResults ,filters);
+
+        return allFilteredResults;
+
+
+    }
+
+    private List<SearchResult> applyTpnsFiltersToResults(List<SearchResult> allResults, ProjectFilter filters)
+    {
+        return new FluentSearchResultFilter(allResults)
             .withTpns(filters.getTpns())
+            .getFilteredData();
+    }
+
+    private List<SearchResult> applyWorkUnitNamesFiltersToResults(List<SearchResult> allResults, ProjectFilter filters)
+    {
+        return new FluentSearchResultFilter(allResults)
             .withWorkUnitNames(filters.getWorkUnitNames())
+            .getFilteredData();
+    }
+
+    private List<SearchResult> applyWorkGroupNamesFiltersToResults(List<SearchResult> allResults, ProjectFilter filters)
+    {
+        return new FluentSearchResultFilter(allResults)
+
             .withWorkGroupNames(filters.getWorGroupNames())
+
+            .getFilteredData();
+
+
+    }
+
+    private List<SearchResult> applyMolecularMutationTypeNamesFiltersToResults(List<SearchResult> allResults, ProjectFilter filters)
+    {
+        return new FluentSearchResultFilter(allResults)
+
             .withMolecularMutationTypeNames(filters.getIntentions())
+
+            .getFilteredData();
+
+
+    }
+
+    private List<SearchResult> applyConsortiaNamesFiltersToResults(List<SearchResult> allResults, ProjectFilter filters)
+    {
+        return new FluentSearchResultFilter(allResults)
             .withConsortiaNames(filters.getConsortiaNames())
+            .getFilteredData();
+    }
+
+    private List<SearchResult> applyPrivaciesNamesFiltersToResults(List<SearchResult> allResults, ProjectFilter filters)
+    {
+        return new FluentSearchResultFilter(allResults)
             .withPrivaciesNames(filters.getPrivaciesNames())
+            .getFilteredData();
+    }
+
+    private List<SearchResult> applyImitsMiPlansFiltersToResults(List<SearchResult> allResults, ProjectFilter filters)
+    {
+        return new FluentSearchResultFilter(allResults)
             .withImitsMiPlans(filters.getImitsMiPlans())
+            .getFilteredData();
+    }
+
+    private List<SearchResult> applyColonyNamesFiltersToResults(List<SearchResult> allResults, ProjectFilter filters)
+    {
+        return new FluentSearchResultFilter(allResults)
             .withColonyNames(filters.getProductionColonyNames())
+            .getFilteredData();
+    }
+
+    private List<SearchResult> applyPhenotypingExternalRefsFiltersToResults(List<SearchResult> allResults, ProjectFilter filters)
+    {
+        return new FluentSearchResultFilter(allResults)
             .withPhenotypingExternalRefs(filters.getPhenotypingExternalRefs())
             .getFilteredData();
     }
