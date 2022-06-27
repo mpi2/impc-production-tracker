@@ -74,12 +74,8 @@ class AllDataProcessedToPhenotypingFinishedProcessorTest
     private void assertTransitionCannotBeExecuted(UserOperationFailedException thrown)
     {
         assertThat(
-            "Not expected message", thrown.getMessage(), is("Transition cannot be executed"));
-        assertThat(
-            "Not expected message",
-            thrown.getDebugMessage(),
-            is("The current user does not have permission to move to 'Phenotyping Finished'"));
-        verify(
+            "Not expected message", thrown.getMessage(), is("Transition cannot be executed The current user does not have permission to move to 'Phenotyping Finished'"));
+              verify(
             stageStateSetter, times(0)).setStatusByName(
             any(PhenotypingStage.class), any(String.class));
     }

@@ -116,29 +116,6 @@ class OutcomeControllerTest extends ControllerTestTemplate
         return document("outcomes/specimenOutcome", responseFields(outcomeFieldDescriptions));
     }
 
-    @Test
-    @DatabaseSetup(DBSetupFilesPaths.MULTIPLE_OUTCOMES)
-    @DatabaseTearDown(type = DatabaseOperation.DELETE_ALL, value = DBSetupFilesPaths.MULTIPLE_OUTCOMES)
-    void testCreateColonyOutcomeInPlan() throws Exception
-    {
-        sequenceResetter.syncSequence("OUTCOME_SEQ", "OUTCOME");
-        sequenceResetter.syncSequence("COLONY_STATUS_STAMP_SEQ", "COLONY_STATUS_STAMP");
-        sequenceResetter.syncSequence("DISTRIBUTION_PRODUCT_SEQ", "DISTRIBUTION_PRODUCT");
-        sequenceResetter.syncSequence("MUTATION_SEQ", "MUTATION");
-        sequenceResetter.syncSequence("SEQUENCE_SEQ", "SEQUENCE");
-        sequenceResetter.syncSequence("MUTATION_SEQUENCE_SEQ", "MUTATION_SEQUENCE");
-        sequenceResetter.syncSequence("HISTORY_SEQ", "HISTORY");
-        sequenceResetter.syncSequence("HISTORY_DETAIL_SEQ", "HISTORY_DETAIL");
-
-        String payload = loadFromResource("colonyOutcomeCreationPayload.json");
-
-        String url = "/api/plans/PIN:0000000001/outcomes";
-        String expectedJson = getCompleteResourcePath("expectedCreatedColonyOutcome.json");
-        String obtainedJson =
-            restCaller.executePostAndDocument(url, payload, document("outcomes/postColonyOutcome"));
-        String outcomeUrl = LinkUtil.getSelfHrefLinkStringFromJson(obtainedJson);
-        verifyCreatedOutcome(outcomeUrl, expectedJson);
-    }
 
     private void verifyCreatedOutcome(
         String outcomeUrl, String expectedJson) throws Exception
