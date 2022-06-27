@@ -91,7 +91,7 @@ public abstract class AbstractProcessor implements Processor
         if (!transitionEvaluation.isExecutable())
         {
             throw new UserOperationFailedException(
-                "Transition cannot be executed", transitionEvaluation.getNote());
+                "Transition cannot be executed "+ transitionEvaluation.getNote());
         }
     }
 }

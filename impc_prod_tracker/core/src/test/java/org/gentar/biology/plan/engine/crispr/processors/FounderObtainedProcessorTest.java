@@ -51,11 +51,7 @@ class FounderObtainedProcessorTest
         UserOperationFailedException thrown = assertThrows(UserOperationFailedException.class,
             () -> testInstance.process(plan), "Exception not thrown");
         assertThat(
-            "Not expected message", thrown.getMessage(), is("Transition cannot be executed"));
-        assertThat(
-            "Not expected message",
-            thrown.getDebugMessage(),
-            is("There is not mutants information."));
+            "Not expected message", thrown.getMessage(), is("Transition cannot be executed There is not mutants information."));
 
         verify(planStateSetter, times(0)).setStatusByName(any(Plan.class), any(String.class));
     }

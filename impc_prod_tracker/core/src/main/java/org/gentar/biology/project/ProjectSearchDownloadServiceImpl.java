@@ -24,6 +24,7 @@ import org.gentar.biology.project.search.filter.FilterTypes;
 import org.gentar.biology.project.search.filter.ProjectFilter;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.event.EventListener;
+import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
 
 /**
@@ -32,16 +33,20 @@ import org.springframework.stereotype.Service;
 @Service
 public class ProjectSearchDownloadServiceImpl implements ProjectSearchDownloadService {
 
+
+    private final Environment env;
     ProjectRepository projectRepository;
     private final ProjectValidator projectValidator;
     private final OrthologService orthologService;
     private final Searcher searcher;
     private static final String SEPARATOR = "\",\"";
 
-    public ProjectSearchDownloadServiceImpl(ProjectRepository projectRepository,
+    public ProjectSearchDownloadServiceImpl(Environment env,
+                                            ProjectRepository projectRepository,
                                             ProjectValidator projectValidator,
                                             OrthologService orthologService,
                                             Searcher searcher) {
+        this.env = env;
         this.projectRepository = projectRepository;
         this.projectValidator = projectValidator;
         this.orthologService = orthologService;
@@ -129,7 +134,11 @@ public class ProjectSearchDownloadServiceImpl implements ProjectSearchDownloadSe
 
     @EventListener(ApplicationReadyEvent.class)
     private void init() {
+
+       if(Arrays.stream(env.getActiveProfiles()).noneMatch(p->p.equals("devgentarschema"))){
         writeReportCaches();
+       }
+
     }
 
 

@@ -29,9 +29,15 @@ public class MutationValidator
     public void validateData(Mutation mutation)
     {
         Set<Gene> genes = mutation.getGenes();
-        if (genes.isEmpty())
-        {
-            throw new UserOperationFailedException(String.format(NULL_FIELD_ERROR, "Mutation gene(s)"));
+        if (genes.isEmpty()) {
+            throw new UserOperationFailedException(
+                String.format(NULL_FIELD_ERROR, "Mutation: Gene(s) "));
+        }else if (mutation.getMolecularMutationType() == null) {
+            throw new UserOperationFailedException(
+                String.format(NULL_FIELD_ERROR, "Mutation: Molecular Mutation Type(s)"));
+        } else if (mutation.getSymbol() == null || mutation.getSymbol().equals("")) {
+            throw new UserOperationFailedException(
+                String.format(NULL_FIELD_ERROR, "Mutation: Mutation symbol(s)"));
         }
     }
 
