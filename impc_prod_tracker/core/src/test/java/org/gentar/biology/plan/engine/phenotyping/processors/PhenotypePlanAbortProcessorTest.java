@@ -91,11 +91,7 @@ class PhenotypePlanAbortProcessorTest
         UserOperationFailedException thrown = assertThrows(UserOperationFailedException.class,
             () -> testInstance.process(plan), "Exception not thrown");
         assertThat(
-            "Not expected message", thrown.getMessage(), is("Transition cannot be executed"));
-        assertThat(
-            "Not expected message",
-            thrown.getDebugMessage(),
-            is("The plan has phenotyping stages that are not aborted. Please abort them first."));
+            "Not expected message", thrown.getMessage(), is("Transition cannot be executed The plan has phenotyping stages that are not aborted. Please abort them first."));
 
         verify(planStateSetter, times(0)).setStatusByName(any(Plan.class), any(String.class));
     }

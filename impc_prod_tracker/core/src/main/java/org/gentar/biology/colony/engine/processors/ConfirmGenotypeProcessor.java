@@ -31,7 +31,7 @@ public class ConfirmGenotypeProcessor extends AbstractProcessor {
         TransitionEvaluation transitionEvaluation = new TransitionEvaluation();
         transitionEvaluation.setTransition(transition);
 
-        if (((Colony) data).getOutcome().getMutations().size() == 0) {
+        if (((Colony) data).getOutcome().getMutations() != null && ((Colony) data).getOutcome().getMutations().size() == 0) {
             transitionEvaluation
                 .setNote("The colony must have at least one mutation to move to the Genotype Confirmed state.");
         } else {
@@ -55,6 +55,10 @@ public class ConfirmGenotypeProcessor extends AbstractProcessor {
     }
 
     private boolean legacyInformationValidated(Colony colony) {
+
+        if(colony.getOutcome().getMutations()==null){
+            return false;
+        }
         for (Mutation mutation : colony.getOutcome().getMutations()) {
             if (colony.getLegacyWithoutSequence() && !alleleSymbolExists(mutation)) {
                 return false;
@@ -99,6 +103,9 @@ public class ConfirmGenotypeProcessor extends AbstractProcessor {
     }
 
     private boolean isEsCellAttempt(Outcome outcome) {
+        if(outcome.getPlan()==null){
+            return false;
+        }
         return getAttemptType(outcome).equals(AttemptTypesName.ES_CELL.getLabel()) ||
             getAttemptType(outcome)
                 .equals(AttemptTypesName.ES_CELL_ALLELE_MODIFICATION.getLabel());
