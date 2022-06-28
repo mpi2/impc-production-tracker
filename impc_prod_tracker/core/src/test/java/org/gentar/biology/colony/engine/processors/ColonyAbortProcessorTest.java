@@ -115,11 +115,8 @@ class ColonyAbortProcessorTest
         UserOperationFailedException thrown = assertThrows(UserOperationFailedException.class,
             () -> testInstance.process(colony), "Exception not thrown");
         assertThat(
-            "Not expected message", thrown.getMessage(), is("Transition cannot be executed"));
-        assertThat(
-            "Not expected message",
-            thrown.getDebugMessage(),
-            is("The colony is used in plans that are not aborted"));
+            "Not expected message", thrown.getMessage(), is("Transition cannot be executed The colony is used in plans that are not aborted"));
+
 
         verify(colonyStateSetter, times(0)).setStatusByName(any(Colony.class), any(String.class));
     }
