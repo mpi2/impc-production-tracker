@@ -1,15 +1,14 @@
 package org.gentar.biology.project.mappers;
 
-import java.util.stream.Collectors;
-import org.gentar.Mapper;
-import org.gentar.biology.project.search.SearchReport;
-import org.gentar.common.filters.FilterDTO;
-import org.gentar.biology.project.search.SearchReportDTO;
-import org.gentar.biology.project.search.SearchResultDTO;
-import org.springframework.stereotype.Component;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import org.gentar.Mapper;
+import org.gentar.biology.project.search.SearchReport;
+import org.gentar.biology.project.search.SearchReportDTO;
+import org.gentar.biology.project.search.SearchResultDTO;
+import org.gentar.common.filters.FilterDTO;
+import org.springframework.stereotype.Component;
 
 @Component
 public class SearchReportMapper implements Mapper<SearchReport, SearchReportDTO>
@@ -37,12 +36,7 @@ public class SearchReportMapper implements Mapper<SearchReport, SearchReportDTO>
     private void setSearchResultsDtos(SearchReportDTO searchReportDTO, SearchReport searchReport)
     {
         List<SearchResultDTO> searchResultDTOS = searchResultMapper.toDtos(searchReport.getResults());
-        searchReportDTO.setResults(getNotNullResultDTOList(searchResultDTOS));
-    }
-
-    private List<SearchResultDTO> getNotNullResultDTOList(List<SearchResultDTO> searchResultDTOS) {
-        return searchResultDTOS.stream().filter(s -> s.getProject() != null).collect(
-            Collectors.toList());
+        searchReportDTO.setResults(searchResultDTOS);
     }
 
     private void setFiltersDto(SearchReportDTO searchReportDTO, SearchReport searchReport)
