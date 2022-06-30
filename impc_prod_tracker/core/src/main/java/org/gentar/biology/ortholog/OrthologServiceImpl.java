@@ -218,7 +218,7 @@ public class OrthologServiceImpl implements OrthologService {
         ProjectSearchDownloadOrthologDto bestOrtholog = bestOrthologs.stream()
             .filter(y -> y.getMgiGeneAccId().equals(x.getMgiGeneAccId())).collect(
                 Collectors.toList()).stream()
-            .max(Comparator.comparing(ProjectSearchDownloadOrthologDto::getMgiGeneAccId))
+            .max(Comparator.comparing(ProjectSearchDownloadOrthologDto::getSupportCount))
             .orElseThrow(NoSuchElementException::new);
         return bestOrtholog;
     }

@@ -16,13 +16,12 @@
 
 package org.gentar.biology.project.search;
 
+import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.List;
 import java.util.stream.Collectors;
 import org.apache.commons.lang3.NotImplementedException;
-import org.gentar.biology.project.projection.dto.ProjectSearchDownloadProjectionDto;
 import org.springframework.stereotype.Component;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Class in charge of taking a {@link Search} and return a {@link SearchReport} with the results of
@@ -90,8 +89,9 @@ public class Searcher {
     private List<SearchResult> getSortedByTpnSearchResult(
         List<SearchResult> searchresults) {
         return
-            searchresults.stream().filter(s -> s.getProject() != null)
-                .sorted(Comparator.comparing(p -> p.getProject().getTpn())).collect(
+            searchresults.stream()
+                .sorted(Comparator.comparing(
+                    p -> p.getProject() != null ? p.getProject().getTpn() : p.getInput())).collect(
                 Collectors.toList());
     }
 
