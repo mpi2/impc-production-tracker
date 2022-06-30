@@ -148,7 +148,8 @@ public class ProjectSearchDownloadServiceImpl implements ProjectSearchDownloadSe
         ProjectSearchDownloadProjectionDto projectSearchDownloadProjectionDto) {
         Project project = new Project();
         Privacy privacy = new Privacy();
-        privacy.setName(projectSearchDownloadProjectionDto.getPrivacy());
+        privacy.setName(projectSearchDownloadProjectionDto.getPrivacy() != null ?
+            projectSearchDownloadProjectionDto.getPrivacy() : "public");
         project.setPrivacy(privacy);
         return projectValidator.getAccessChecked(project) == null;
     }
