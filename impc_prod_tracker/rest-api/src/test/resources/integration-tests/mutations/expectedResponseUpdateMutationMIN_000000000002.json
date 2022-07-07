@@ -14,139 +14,7 @@
         {
           "field":"description",
           "oldValue":"",
-          "newValue":"Otog<em1(IMPC)J>:\\r\\nThis allele was generated at The Jackson Laboratory by electroporating Cas9 protein and 2 guide sequences CTTCACGTACCAAGGAGGGG and TCTTGCTTCCTACTTCCAGT, which resulted in a 520 bp deletion beginning at Chromosome 7 position 46,245,130 bp and ending after 46,245,649 bp (GRCm38/mm10). This mutation deletes ENSMUSE00000204147 (exon 4) and 444 bp of flanking intronic sequence including the splice acceptor and donor and is predicted to cause a change of amino acid sequence after residue 71 and early truncation 34 amino acids later. \\r\\n\\r\\n\\r\\n",
-          "note":"Field changed"
-        },
-        {
-          "field":"genes.[4]",
-          "oldValue":null,
-          "newValue":"Gene(id=4, symbol=Dennd6b, name=DENN/MADD domain containing 6B, type=Gene, genomeBuild=GRCm39, entrezGeneId=69440, ncbiChromosome=15, ncbiStart=89066416, ncbiStop=89080793, ncbiStrand=-, ensemblGeneId=ENSMUSG00000015377, ensemblChromosome=15, ensemblStart=89066416, ensemblStop=89080699, ensemblStrand=-, mgiCm=44.70, mgiChromosome=15, mgiStart=89066416, mgiStop=89080699, mgiStrand=-, species=Species(id=1, name=Mus musculus, taxonId=10090), accId=MGI:1916690)",
-          "note":"Element added"
-        },
-        {
-          "field":"genes.[4].accId",
-          "oldValue":null,
-          "newValue":"MGI:1916690",
-          "note":"Field changed"
-        },
-        {
-          "field":"genes.[4].ensemblChromosome",
-          "oldValue":null,
-          "newValue":"15",
-          "note":"Field changed"
-        },
-        {
-          "field":"genes.[4].ensemblGeneId",
-          "oldValue":null,
-          "newValue":"ENSMUSG00000015377",
-          "note":"Field changed"
-        },
-        {
-          "field":"genes.[4].ensemblStart",
-          "oldValue":null,
-          "newValue":"89066416",
-          "note":"Field changed"
-        },
-        {
-          "field":"genes.[4].ensemblStop",
-          "oldValue":null,
-          "newValue":"89080699",
-          "note":"Field changed"
-        },
-        {
-          "field":"genes.[4].ensemblStrand",
-          "oldValue":null,
-          "newValue":"-",
-          "note":"Field changed"
-        },
-        {
-          "field":"genes.[4].entrezGeneId",
-          "oldValue":null,
-          "newValue":"69440",
-          "note":"Field changed"
-        },
-        {
-          "field":"genes.[4].genomeBuild",
-          "oldValue":null,
-          "newValue":"GRCm39",
-          "note":"Field changed"
-        },
-        {
-          "field":"genes.[4].mgiChromosome",
-          "oldValue":null,
-          "newValue":"15",
-          "note":"Field changed"
-        },
-        {
-          "field":"genes.[4].mgiCm",
-          "oldValue":null,
-          "newValue":"44.70",
-          "note":"Field changed"
-        },
-        {
-          "field":"genes.[4].mgiStart",
-          "oldValue":null,
-          "newValue":"89066416",
-          "note":"Field changed"
-        },
-        {
-          "field":"genes.[4].mgiStop",
-          "oldValue":null,
-          "newValue":"89080699",
-          "note":"Field changed"
-        },
-        {
-          "field":"genes.[4].mgiStrand",
-          "oldValue":null,
-          "newValue":"-",
-          "note":"Field changed"
-        },
-        {
-          "field":"genes.[4].name",
-          "oldValue":null,
-          "newValue":"DENN/MADD domain containing 6B",
-          "note":"Field changed"
-        },
-        {
-          "field":"genes.[4].ncbiChromosome",
-          "oldValue":null,
-          "newValue":"15",
-          "note":"Field changed"
-        },
-        {
-          "field":"genes.[4].ncbiStart",
-          "oldValue":null,
-          "newValue":"89066416",
-          "note":"Field changed"
-        },
-        {
-          "field":"genes.[4].ncbiStop",
-          "oldValue":null,
-          "newValue":"89080793",
-          "note":"Field changed"
-        },
-        {
-          "field":"genes.[4].ncbiStrand",
-          "oldValue":null,
-          "newValue":"-",
-          "note":"Field changed"
-        },
-        {
-          "field":"genes.[4].species.name",
-          "oldValue":null,
-          "newValue":"Mus musculus",
-          "note":"Field changed"
-        },
-        {
-          "field":"genes.[4].symbol",
-          "oldValue":null,
-          "newValue":"Dennd6b",
-          "note":"Field changed"
-        },
-        {
-          "field":"genes.[4].type",
-          "oldValue":null,
-          "newValue":"Gene",
+          "newValue":"Otog<em1(IMPC)Bcm>:\\r\\nThis allele was generated at The Jackson Laboratory by electroporating Cas9 protein and 2 guide sequences CTTCACGTACCAAGGAGGGG and TCTTGCTTCCTACTTCCAGT, which resulted in a 520 bp deletion beginning at Chromosome 7 position 46,245,130 bp and ending after 46,245,649 bp (GRCm38/mm10). This mutation deletes ENSMUSE00000204147 (exon 4) and 444 bp of flanking intronic sequence including the splice acceptor and donor and is predicted to cause a change of amino acid sequence after residue 71 and early truncation 34 amino acids later. \\r\\n\\r\\n\\r\\n",
           "note":"Field changed"
         },
         {
@@ -162,23 +30,23 @@
           "note":"Field changed"
         },
         {
-          "field":"mutationCategorizations.[9]",
-          "oldValue":null,
-          "newValue":"id:9, name:HR, description: null, mutationCategorizationTypeName:repair_mechanism",
-          "note":"Element added"
-        },
+         "field":"mutationCategorizations.[9]",
+         "oldValue":null,
+         "newValue":"id:9, name:HR, description: null, mutationCategorizationTypeName:repair_mechanism",
+         "note":"Element added"
+       },
         {
-          "field":"mutationCategorizations.[9].mutationCategorizationType.name",
-          "oldValue":null,
-          "newValue":"repair_mechanism",
-          "note":"Field changed"
-        },
-        {
-          "field":"mutationCategorizations.[9].name",
-          "oldValue":null,
-          "newValue":"HR",
-          "note":"Field changed"
-        },
+         "field":"mutationCategorizations.[9].mutationCategorizationType.name",
+         "oldValue":null,
+         "newValue":"repair_mechanism",
+         "note":"Field changed"
+       },
+       {
+         "field":"mutationCategorizations.[9].name",
+         "oldValue":null,
+         "newValue":"HR",
+         "note":"Field changed"
+       },
         {
           "field":"mutationQcResults.[id:null, QC type name:loxp_screen, QC status:fail]",
           "oldValue":null,
@@ -195,6 +63,12 @@
           "field":"mutationQcResults.[id:null, QC type name:loxp_screen, QC status:fail].status.name",
           "oldValue":null,
           "newValue":"fail",
+          "note":"Field changed"
+        },
+        {
+          "field":"symbol",
+          "oldValue":"em1(IMPC)J",
+          "newValue":"Otog<em1(IMPC)Bcm>",
           "note":"Field changed"
         }
       ]
