@@ -1,5 +1,7 @@
 package org.gentar.biology.mutation.symbolConstructor;
 
+import static org.gentar.biology.mutation.constant.MutationErrors.*;
+
 import java.util.List;
 import java.util.stream.Collectors;
 import org.apache.logging.log4j.util.Strings;
@@ -29,17 +31,17 @@ public class AlleleSymbolConstructorImpl implements AlleleSymbolConstructor {
         String result;
         String geneSymbol = getGeneSymbolByMutation(mutation);
         if (geneSymbol == null) {
-            return "Error: Please Enter Gene";
+            return ERROR_PLEASE_ENTER_GENE;
         }
         if ((attemptTypesName.equals(AttemptTypesName.ES_CELL)
             || attemptTypesName.equals(AttemptTypesName.ES_CELL_ALLELE_MODIFICATION))
             && getEscAlleleClass(mutation).size() == 0) {
-            return "Error: Please Select Mutation Type";
+            return ERROR_PLEASE_SELECT_MUTATION_TYPE;
         }
         if (isEsCellAttemptTypeWrong(mutation)) {
-            return "Error: Please Select one of these mutation types for es cell attempts (a, e, '')";
+            return THE_INITIAL_ES_CELL_PRODUCTION_ATTEMPT_A_E;
         } else if (isEsCellModificationAttemptTypeWrong(mutation)) {
-            return "Error: Please Select one of these mutation types for es cell modification attempts (b, c, d, e.1, .1, .2)";
+            return TYPES_FOR_ES_CELL_MODIFICATION_ATTEMPT_B_C_D_E_1_1_2;
         }
 
         int nextId = getNextId(geneSymbol, symbolSuggestionRequest.getIlarCode());

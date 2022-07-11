@@ -1,5 +1,7 @@
 package org.gentar.biology.mutation;
 
+import static org.gentar.biology.mutation.constant.MutationErrors.*;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -18,15 +20,17 @@ import org.gentar.security.permissions.Actions;
 import org.gentar.security.permissions.Operations;
 import org.springframework.stereotype.Component;
 
+
 @Component
 public class MutationValidator {
+
     private final ContextAwarePolicyEnforcement policyEnforcement;
     private final MutationRepository mutationRepository;
     private static final String CANNOT_READ_PLAN =
         "The mutation is linked to the plan %s and you " +
             "do not have permission to read it.";
     private static final String NULL_FIELD_ERROR = "%s cannot be null.";
-    private static List<String> newEnteredMutationSymbols = new ArrayList<>();
+    private static final List<String> newEnteredMutationSymbols = new ArrayList<>();
 
     public MutationValidator(ContextAwarePolicyEnforcement policyEnforcement,
                              MutationRepository mutationRepository,
@@ -39,28 +43,28 @@ public class MutationValidator {
         Set<Gene> genes = mutation.getGenes();
         if (genes.isEmpty()) {
             throw new UserOperationFailedException(
-                String.format(NULL_FIELD_ERROR, "Mutation: Gene(s) "));
+                String.format(NULL_FIELD_ERROR, MUTATION_GENE_S));
         } else if (mutation.getMolecularMutationType() == null) {
             throw new UserOperationFailedException(
-                String.format(NULL_FIELD_ERROR, "Mutation: Molecular Mutation Type(s)"));
+                String.format(NULL_FIELD_ERROR, MUTATION_MOLECULAR_MUTATION_TYPE_S));
         } else if (mutation.getSymbol() == null || mutation.getSymbol().equals("")) {
             throw new UserOperationFailedException(
-                String.format(NULL_FIELD_ERROR, "Mutation: Mutation symbol(s)"));
+                String.format(NULL_FIELD_ERROR, MUTATION_MUTATION_SYMBOL_S));
         } else if (!isSymbolInCorrectFormat(mutation)) {
             throw new UserOperationFailedException(
-                "Mutation:(" + mutation.getSymbol() +
-                    ") Mutation symbol(s) are not in the correct format");
+                MUTATION + mutation.getSymbol() +
+                    SYMBOL_S_ARE_NOT_IN_THE_CORRECT_FORMAT);
         } else if (!isMutationSymbolUnique(mutation)) {
             throw new UserOperationFailedException(
-                "Mutation:(" + mutation.getSymbol() +
-                    ") Entered mutation symbol(s) are not unique");
+                MUTATION + mutation.getSymbol() +
+                    SYMBOL_S_ARE_NOT_UNIQUE);
         } else if (isEsCellAttemptTypeWrong(mutation)) {
             throw new UserOperationFailedException(
-                "Error: Please Select one of these mutation types for es cell attempts (a, e, '')");
+                THE_INITIAL_ES_CELL_PRODUCTION_ATTEMPT_A_E);
 
         } else if (isEsCellModificationAttemptTypeWrong(mutation)) {
             throw new UserOperationFailedException(
-                "Error: Please Select one of these mutation types for es cell modification attempts (b, c, d, e.1, .1, .2)");
+                TYPES_FOR_ES_CELL_MODIFICATION_ATTEMPT_B_C_D_E_1_1_2);
         }
     }
 
@@ -73,7 +77,8 @@ public class MutationValidator {
         if (!symbol.contains("<") || !symbol.contains(">")) {
             return false;
         }
-        if (!symbol.toLowerCase().contains(getWorkUnitIlarCode(mutation).toLowerCase())) {
+
+        if (!isWorkUnitIlarCodeValid(symbol,mutation)) {
             return false;
         }
 
@@ -192,10 +197,18 @@ public class MutationValidator {
                 Collectors.toList()).get(0);
     }
 
-    private String getWorkUnitIlarCode(Mutation mutation) {
-        return mutation.getOutcomes().stream().map(Outcome::getPlan).collect(Collectors.toList())
-            .stream().map(p -> p.getWorkUnit().getName()).collect(
-                Collectors.toList()).get(0);
+    private boolean isWorkUnitIlarCodeValid(String symbol, Mutation mutation) {
+        List<String> ilarCodes =
+            mutation.getOutcomes().stream().map(Outcome::getPlan).collect(Collectors.toList())
+                .stream().map(p -> p.getWorkUnit().getName()).collect(
+                Collectors.toList());
+
+        for (String ilarCode : ilarCodes) {
+            if (symbol.toLowerCase().contains(ilarCode.toLowerCase())) {
+                return true;
+            }
+        }
+        return false;
     }
 
 
