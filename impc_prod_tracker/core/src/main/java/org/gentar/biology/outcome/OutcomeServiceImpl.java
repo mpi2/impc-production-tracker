@@ -9,6 +9,7 @@ import org.gentar.biology.outcome.type.OutcomeType;
 import org.gentar.biology.outcome.type.OutcomeTypeRepository;
 import org.gentar.biology.plan.Plan;
 import org.gentar.biology.plan.PlanService;
+import org.gentar.biology.plan.attempt.AttemptTypesName;
 import org.gentar.exceptions.NotFoundException;
 import org.gentar.exceptions.UserOperationFailedException;
 import org.gentar.security.abac.ResourceAccessChecker;
@@ -207,14 +208,52 @@ public class OutcomeServiceImpl implements OutcomeService
     }
 
     @Override
-    public void associateOutcomeToPlan(Outcome outcome, String pin)
-    {
+    public Boolean associateOutcomeToPlan(Outcome outcome, String pin) {
+
         Plan plan = planService.getNotNullPlanByPin(pin);
-        if (plan.getOutcomes() == null)
-        {
-            plan.setOutcomes(new HashSet<>());
+
+        if(canCreate(plan)) {
+            if (plan.getOutcomes() == null) {
+                plan.setOutcomes(new HashSet<>());
+            }
+            plan.getOutcomes().add(outcome);
+            outcome.setPlan(plan);
+            return true;
         }
-        plan.getOutcomes().add(outcome);
-        outcome.setPlan(plan);
+
+        return false;
+    }
+
+    private boolean canCreate(Plan plan) {
+
+        if (plan.getStatus().getIsAbortionStatus()) {
+            return false;
+        }
+
+        if (plan.getAttemptType().getName().equals(AttemptTypesName.ES_CELL.getLabel()) &&
+            !plan.getStatus().getName().equals("Chimeras/Founder Obtained")) {
+            return false;
+        }
+
+        if (plan.getAttemptType().getName()
+            .equals(AttemptTypesName.ES_CELL_ALLELE_MODIFICATION.getLabel()) &&
+            !plan.getStatus().getName().equals("Cre Excision Complete")) {
+            return false;
+        }
+
+        if (plan.getAttemptType().getName().equals(AttemptTypesName.CRISPR.getLabel()) &&
+            !plan.getStatus().getName().equals("Founder Obtained")) {
+            return false;
+        }
+
+        if (plan.getAttemptType().getName()
+            .equals(AttemptTypesName.HAPLOESSENTIAL_CRISPR.getLabel()) &&
+            !plan.getStatus().getName().equals("Embryos Obtained")) {
+            return false;
+        }
+
+        return plan.getOutcomes().size() != 1 || (!plan.getAttemptType().getName()
+            .equals(AttemptTypesName.ES_CELL_ALLELE_MODIFICATION.getLabel()) &&
+            !plan.getAttemptType().getName().equals(AttemptTypesName.ES_CELL.getLabel()));
     }
 }
