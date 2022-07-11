@@ -9,10 +9,12 @@ import java.util.stream.Collectors;
 import org.gentar.biology.gene.Gene;
 import org.gentar.biology.mutation.categorizarion.MutationCategorization;
 import org.gentar.biology.mutation.categorizarion.MutationCategorizationService;
+import org.gentar.biology.mutation.sequence.MutationSequence;
 import org.gentar.biology.outcome.Outcome;
 import org.gentar.biology.plan.Plan;
 import org.gentar.biology.plan.attempt.AttemptType;
 import org.gentar.biology.plan.attempt.AttemptTypesName;
+import org.gentar.biology.sequence.Sequence;
 import org.gentar.exceptions.ForbiddenAccessException;
 import org.gentar.exceptions.UserOperationFailedException;
 import org.gentar.security.abac.spring.ContextAwarePolicyEnforcement;
@@ -65,6 +67,9 @@ public class MutationValidator {
         } else if (isEsCellModificationAttemptTypeWrong(mutation)) {
             throw new UserOperationFailedException(
                 TYPES_FOR_ES_CELL_MODIFICATION_ATTEMPT_B_C_D_E_1_1_2);
+        } else if (!isSequenceInFastaFormat(mutation)) {
+            throw new UserOperationFailedException(
+                ERROR_FASTA_FORMAT);
         }
     }
 
@@ -78,7 +83,7 @@ public class MutationValidator {
             return false;
         }
 
-        if (!isWorkUnitIlarCodeValid(symbol,mutation)) {
+        if (!isWorkUnitIlarCodeValid(symbol, mutation)) {
             return false;
         }
 
@@ -154,10 +159,6 @@ public class MutationValidator {
                 .equals(AttemptTypesName.ES_CELL_ALLELE_MODIFICATION.getLabel());
     }
 
-    private List<String> naturalNumbers() {
-        return List.of("0", "1", "2", "3", "4", "5", "6", "7", "8", "9");
-    }
-
     public void validateReadPermissions(Mutation mutation) {
         Set<Outcome> outcomes = mutation.getOutcomes();
         if (outcomes != null) {
@@ -228,6 +229,54 @@ public class MutationValidator {
             (!getEscAlleleClassName(mutation).equals("a") &&
                 !getEscAlleleClassName(mutation).equals("e") &&
                 !getEscAlleleClassName(mutation).equals("''"));
+    }
+
+    private boolean isSequenceInFastaFormat(Mutation mutation) {
+        List<Sequence> sequences = mutation.getMutationSequences().stream().map(
+            MutationSequence::getSequence)
+            .collect(Collectors.toList());
+
+        if(sequences.stream().anyMatch(s->s.getSequence()==null)){
+            return false;
+        }
+        List<String> sequenceString= sequences.stream().map(Sequence::getSequence)
+            .collect(Collectors.toList());
+
+        return sequenceString.stream().noneMatch(s ->
+            !isStartWithBiggerSymbol(s) || !isSequenceHeaderSingleLine(s) ||
+                !isDnaFormatCorrect(s));
+    }
+
+    private Boolean isStartWithBiggerSymbol(String sequence) {
+        return sequence.charAt(0) == '>';
+    }
+
+    private Boolean isSequenceHeaderSingleLine(String sequence) {
+        return sequence.split("\n").length == 2 &&
+            (sequence.split("\n")[0].length() > 0 && sequence.split("\n")[0].length() < 256);
+
+    }
+
+    private Boolean isDnaFormatCorrect(String sequence) {
+
+        String dna = sequence.split("\n")[1];
+        for (int i = 0; i < dna.length(); i++) {
+            if (!dnaCharacters().contains(dna.charAt(i))) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private List<String> naturalNumbers() {
+        return List.of("0", "1", "2", "3", "4", "5", "6", "7", "8", "9");
+    }
+
+    private List<Character> dnaCharacters() {
+        return List
+            .of('A', 'C', 'G', 'T', 'U', 'I', 'R', 'Y', 'K', 'M', 'S', 'W', 'B', 'D', 'H', 'V',
+                'N','a', 'c', 'g', 't', 'u', 'i', 'r', 'y', 'k', 'm', 's', 'w', 'b', 'd', 'h', 'v',
+                'n');
     }
 
 }

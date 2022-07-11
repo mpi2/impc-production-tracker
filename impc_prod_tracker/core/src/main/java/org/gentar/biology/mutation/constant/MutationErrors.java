@@ -18,4 +18,7 @@ public class MutationErrors {
     public static final String ERROR_PLEASE_ENTER_GENE = "Error: Please Enter Gene";
     public static final String ERROR_PLEASE_SELECT_MUTATION_TYPE =
         "Error: Please Select Mutation Type";
+
+    public static final String ERROR_FASTA_FORMAT =
+        "Error: Sequence Is Not In Fasta Format";
 }
