@@ -45,8 +45,8 @@ class PlanResponseDTOTest
             "\"mutagenesisDonors\":null,\"reagents\":null,\"genotypePrimers\":null," +
             "\"totalEmbryosInjected\":null,\"totalEmbryosSurvived\":null,\"embryo2Cell\":null," +
             "\"assay\":null,\"strainInjectedName\":null},\"typeName\":null," +
-            "\"statusName\":\"status name\",\"summaryStatusName\":\"summary status name\"," +
-            "\"links\":[],\"statusDates\":[{\"statusName\":null,\"date\":\"2020-01-01T01:01:00\"}]," +
+            "\"statusName\":\"status name\",\"summaryStatusName\":\"summary status name\",\"links\":[],\"isAbortionStatus\":false,\"statusDates" +
+            "\":[{\"statusName\":null,\"date\":\"2020-01-01T01:01:00\"}]," +
             "\"summaryStatusDates\":null," +
             "\"statusTransition\":{\"currentStatus\":\"current status name\"," +
             "\"transitions\":[{\"action\":null,\"description\":\"transition description\"," +

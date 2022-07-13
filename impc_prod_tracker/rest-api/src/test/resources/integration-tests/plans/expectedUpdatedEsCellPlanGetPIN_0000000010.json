@@ -45,6 +45,7 @@
   },
   "typeName":"production",
   "statusName":"Chimeras/Founder Obtained",
+  "isAbortionStatus": false,
   "summaryStatusName":"Genotype Confirmed",
   "_links":{
     "self":{

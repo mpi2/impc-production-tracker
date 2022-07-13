@@ -105,7 +105,7 @@ public class OutcomeController
         Outcome outcome = outcomeCreationMapper.toEntity(outcomeCreationDTO);
        boolean canUpdate = outcomeService.associateOutcomeToPlan(outcome, pin);
        if(!canUpdate) {
-           throw new UserOperationFailedException("You can not create outcome in current state");
+           throw new UserOperationFailedException("You can not create an outcome in current state");
        }
         Outcome createdOutcome = outcomeService.create(outcome);
         return buildChangeResponse(
