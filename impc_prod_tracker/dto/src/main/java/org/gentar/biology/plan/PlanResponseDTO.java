@@ -22,6 +22,10 @@ public class PlanResponseDTO extends RepresentationModel<PlanResponseDTO>
     // Name of the status in the plan.
     private String statusName;
 
+    // Name of the status in the plan.
+    @JsonProperty("isAbortionStatus")
+    private boolean isAbortionStatus;
+
     // List of stamps with all the different statuses this plan has had.
     @JsonProperty("statusDates")
     private List<StatusStampsDTO> statusStampsDTOS;

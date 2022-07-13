@@ -20,5 +20,5 @@ public class MutationErrors {
         "Error: Please Select Mutation Type";
 
     public static final String ERROR_FASTA_FORMAT =
-        "Error: Sequence Is Not In Fasta Format";
+        "Error: Sequence Is Not In FASTA Format";
 }

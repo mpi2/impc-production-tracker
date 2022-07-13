@@ -50,6 +50,8 @@ public class PlanResponseMapper implements Mapper<Plan, PlanResponseDTO>
         if (plan.getStatus() != null)
         {
             planResponseDTO.setStatusName(plan.getStatus().getName());
+            planResponseDTO.setAbortionStatus(plan.getStatus().getIsAbortionStatus() == null ||
+                plan.getStatus().getIsAbortionStatus());
         }
         if (plan.getSummaryStatus() != null)
         {

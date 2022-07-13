@@ -90,6 +90,7 @@
   },
   "typeName":"production",
   "statusName":"Founder Obtained",
+  "isAbortionStatus": false,
   "summaryStatusName":"Founder Obtained",
   "_links":{
     "self":{
