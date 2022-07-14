@@ -99,5 +99,5 @@ public interface OutcomeService
      */
     List<History> getOutcomeHistory(Outcome outcome);
 
-    Boolean associateOutcomeToPlan(Outcome outcome, String pin);
+    void associateOutcomeToPlan(Outcome outcome, String pin);
 }

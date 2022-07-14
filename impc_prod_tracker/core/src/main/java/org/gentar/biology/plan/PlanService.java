@@ -73,4 +73,6 @@ public interface PlanService
      * @return A {@link ProcessEvent} corresponding to the given 'name'.
      */
     ProcessEvent getProcessEventByName(Plan plan, String name);
+
+    boolean canCreateOutcome(String pin);
 }

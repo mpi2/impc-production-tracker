@@ -94,7 +94,6 @@
         },
         "typeName":"production",
         "statusName":"Founder Obtained",
-        "isAbortionStatus": false,
         "summaryStatusName":"Genotype Confirmed",
         "_links":{
           "self":{
@@ -225,7 +224,7 @@
         },
         "typeName":"production",
         "statusName":"Founder Obtained",
-        "isAbortionStatus": false,
+
         "summaryStatusName":"Founder Obtained",
         "_links":{
           "self":{

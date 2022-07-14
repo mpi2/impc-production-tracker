@@ -17,7 +17,6 @@ public class PlanFieldsDescriptors
         addField(sharedFieldDescriptions, "attemptTypeName", "Attempt type.");
         addField(sharedFieldDescriptions, "comment", "Comment for the plan");
         addField(sharedFieldDescriptions, "statusName", "Current status of the plan.");
-        addField(sharedFieldDescriptions, "isAbortionStatus", "Abortion status of the plan.");
         addField(sharedFieldDescriptions, "statusDates[]",
                 "Stamps of the statuses the plan has gone through.");
         addField(sharedFieldDescriptions, "statusDates[].statusName",

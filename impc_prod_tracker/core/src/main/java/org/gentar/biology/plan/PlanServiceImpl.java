@@ -15,6 +15,7 @@
  */
 package org.gentar.biology.plan;
 
+import org.gentar.biology.plan.attempt.AttemptTypesName;
 import org.gentar.biology.plan.engine.PlanCreator;
 import org.gentar.biology.plan.engine.PlanStateMachineResolver;
 import org.gentar.biology.plan.engine.PlanValidator;
@@ -160,4 +161,40 @@ public class PlanServiceImpl implements PlanService
         return planStateMachineResolver.getProcessEventByActionName(plan, name);
     }
 
+
+    @Override
+    public boolean canCreateOutcome(String pin) {
+
+        Plan plan = getNotNullPlanByPin(pin);
+
+        if (plan.getStatus().getIsAbortionStatus()) {
+            return false;
+        }
+
+        if (plan.getAttemptType().getName().equals(AttemptTypesName.ES_CELL.getLabel()) &&
+            !plan.getStatus().getName().equals("Chimeras/Founder Obtained")) {
+            return false;
+        }
+
+        if (plan.getAttemptType().getName()
+            .equals(AttemptTypesName.ES_CELL_ALLELE_MODIFICATION.getLabel()) &&
+            !plan.getStatus().getName().equals("Cre Excision Complete")) {
+            return false;
+        }
+
+        if (plan.getAttemptType().getName().equals(AttemptTypesName.CRISPR.getLabel()) &&
+            !plan.getStatus().getName().equals("Founder Obtained")) {
+            return false;
+        }
+
+        if (plan.getAttemptType().getName()
+            .equals(AttemptTypesName.HAPLOESSENTIAL_CRISPR.getLabel()) &&
+            !plan.getStatus().getName().equals("Embryos Obtained")) {
+            return false;
+        }
+
+        return plan.getOutcomes().size() != 1 || (!plan.getAttemptType().getName()
+            .equals(AttemptTypesName.ES_CELL_ALLELE_MODIFICATION.getLabel()) &&
+            !plan.getAttemptType().getName().equals(AttemptTypesName.ES_CELL.getLabel()));
+    }
 }

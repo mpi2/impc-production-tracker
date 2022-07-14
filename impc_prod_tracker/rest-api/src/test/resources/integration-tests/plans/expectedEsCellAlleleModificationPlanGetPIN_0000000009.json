@@ -30,7 +30,6 @@
   },
   "typeName":"production",
   "statusName":"Cre Excision Complete",
-  "isAbortionStatus": false,
   "summaryStatusName":"Cre Excision Complete",
   "_links":{
     "self":{

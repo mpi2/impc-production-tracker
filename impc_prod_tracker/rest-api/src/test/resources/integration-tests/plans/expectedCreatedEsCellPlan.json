@@ -44,7 +44,6 @@
   },
   "typeName":"production",
   "statusName":"Attempt In Progress",
-  "isAbortionStatus": false,
   "summaryStatusName":"Attempt In Progress",
   "_links":{
     "self":{
