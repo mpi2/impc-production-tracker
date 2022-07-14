@@ -28,7 +28,6 @@
   },
   "typeName":"phenotyping",
   "statusName":"Plan Created",
-  "isAbortionStatus": false,
   "summaryStatusName":"Plan Created",
   "_links":{
     "self":{

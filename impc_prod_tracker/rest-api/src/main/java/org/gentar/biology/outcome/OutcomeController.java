@@ -103,10 +103,11 @@ public class OutcomeController
         @PathVariable String pin, @RequestBody OutcomeCreationDTO outcomeCreationDTO)
     {
         Outcome outcome = outcomeCreationMapper.toEntity(outcomeCreationDTO);
-       boolean canUpdate = outcomeService.associateOutcomeToPlan(outcome, pin);
-       if(!canUpdate) {
+       boolean canCreate = planService.canCreateOutcome(pin);
+       if(!canCreate) {
            throw new UserOperationFailedException("You can not create an outcome in current state");
        }
+        outcomeService.associateOutcomeToPlan(outcome, pin);
         Outcome createdOutcome = outcomeService.create(outcome);
         return buildChangeResponse(
             pin, createdOutcome.getTpo(), outcomeService.getOutcomeHistory(createdOutcome));

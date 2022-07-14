@@ -80,7 +80,6 @@
   },
   "typeName":"production",
   "statusName":"Attempt Aborted",
-  "isAbortionStatus": false,
   "summaryStatusName":"Attempt Aborted",
   "_links":{
     "self":{
