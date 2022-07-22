@@ -1,80 +1,129 @@
 package org.gentar.biology.mutation.symbolConstructor;
 
+import static org.gentar.biology.mutation.constant.MutationErrors.*;
+
 import java.util.List;
+import java.util.stream.Collectors;
 import org.apache.logging.log4j.util.Strings;
 import org.gentar.biology.gene.Gene;
 import org.gentar.biology.mutation.Mutation;
 import org.gentar.biology.mutation.MutationRepository;
+import org.gentar.biology.mutation.categorizarion.MutationCategorization;
+import org.gentar.biology.plan.attempt.AttemptTypesName;
 
-public class AlleleSymbolConstructorImpl implements AlleleSymbolConstructor
-{
+public class AlleleSymbolConstructorImpl implements AlleleSymbolConstructor {
     private final MutationRepository mutationRepository;
-    private static final String GENE_SYMBOL_SECTION= "[GENE_SYMBOL]";
+    private static final String GENE_SYMBOL_SECTION = "[GENE_SYMBOL]";
     private static final String ID_SECTION = "[ID]";
-    private static final String CONSORTIUM_ABBREVIATION_SECTION= "[CONSORTIUM_ABBREVIATION]";
+    private static final String CONSORTIUM_ABBREVIATION_SECTION = "[CONSORTIUM_ABBREVIATION]";
     private static final String ILAR_CODE_SECTION = "[ILARCODE]";
-    private String mutationName = "";
+    private AttemptTypesName attemptTypesName;
 
-    public AlleleSymbolConstructorImpl(MutationRepository mutationRepository, String mutationName)
-    {
+    public AlleleSymbolConstructorImpl(MutationRepository mutationRepository,
+                                       AttemptTypesName attemptTypesName) {
         this.mutationRepository = mutationRepository;
-        this.mutationName=mutationName;
+        this.attemptTypesName = attemptTypesName;
     }
 
     @Override
     public String calculateAlleleSymbol(
-        SymbolSuggestionRequest symbolSuggestionRequest, Mutation mutation)
-    {
+        SymbolSuggestionRequest symbolSuggestionRequest, Mutation mutation) {
         String result;
         String geneSymbol = getGeneSymbolByMutation(mutation);
-        if(geneSymbol==null){
-            return "Enter Gene";
+        if (geneSymbol == null) {
+            return ERROR_PLEASE_ENTER_GENE;
         }
+        if ((attemptTypesName.equals(AttemptTypesName.ES_CELL)
+            || attemptTypesName.equals(AttemptTypesName.ES_CELL_ALLELE_MODIFICATION))
+            && getEscAlleleClass(mutation).size() == 0) {
+            return ERROR_PLEASE_SELECT_MUTATION_TYPE;
+        }
+        if (isEsCellAttemptTypeWrong(mutation)) {
+            return THE_INITIAL_ES_CELL_PRODUCTION_ATTEMPT_A_E;
+        } else if (isEsCellModificationAttemptTypeWrong(mutation)) {
+            return TYPES_FOR_ES_CELL_MODIFICATION_ATTEMPT_B_C_D_E_1_1_2;
+        }
+
         int nextId = getNextId(geneSymbol, symbolSuggestionRequest.getIlarCode());
-        result = generateTemplate(mutationName).replace(GENE_SYMBOL_SECTION, geneSymbol);
-        result = result.replace(ID_SECTION, nextId + "");
-        if (Strings.isBlank(symbolSuggestionRequest.getConsortiumAbbreviation()))
-        {
+        result = generateTemplate(getMutationType()).replace(GENE_SYMBOL_SECTION, geneSymbol);
+        result = result.replace(ID_SECTION,
+            nextId + getEscAlleleClassName(mutation) + "");
+        if (Strings.isBlank(symbolSuggestionRequest.getConsortiumAbbreviation())) {
             result = result.replace(CONSORTIUM_ABBREVIATION_SECTION, "");
-        }
-        else
-        {
+        } else {
             String consortiumAbbreviation =
-                "(" +  symbolSuggestionRequest.getConsortiumAbbreviation() + ")";
+                "(" + symbolSuggestionRequest.getConsortiumAbbreviation() + ")";
             result = result.replace(CONSORTIUM_ABBREVIATION_SECTION, consortiumAbbreviation);
         }
         result = result.replace(ILAR_CODE_SECTION, symbolSuggestionRequest.getIlarCode());
         return result;
     }
 
-    private int getNextId(String geneSymbol, String ilarCode)
-    {
-        String searchTerm = geneSymbol + "<" + mutationName + "%" + ilarCode + ">";
+    private List<String> getEscAlleleClass(Mutation mutation) {
+        return mutation.getMutationCategorizations().stream()
+            .filter(m -> m.getMutationCategorizationType().getName().equals("esc_allele_class"))
+            .map(MutationCategorization::getName).collect(
+                Collectors.toList());
+    }
+
+    private String getEscAlleleClassName(Mutation mutation) {
+        return getEscAlleleClass(mutation).size() != 0 ? getEscAlleleClass(mutation).get(0) :
+            "";
+    }
+
+    private int getNextId(String geneSymbol, String ilarCode) {
+        String searchTerm = geneSymbol + "<" + getMutationType() + "%" + ilarCode + ">";
         List<Mutation> mutations = mutationRepository.findAllBySymbolLike(searchTerm);
         return mutations.size() + 1;
     }
 
     /**
      * Returns the gene symbol in the mutation. This assumes that only one gene exist for that mutation.
+     *
      * @param mutation Mutation object.
      * @return Gene symbol
      */
-    private String getGeneSymbolByMutation(Mutation mutation)
-    {
+    private String getGeneSymbolByMutation(Mutation mutation) {
         String geneSymbol = null;
-        if (!mutation.getGenes().isEmpty())
-        {
+        if (!mutation.getGenes().isEmpty()) {
             Gene gene = mutation.getGenes().iterator().next();
             geneSymbol = gene.getSymbol();
         }
         return geneSymbol;
     }
 
-    private String generateTemplate(String mutationName){
-        return    GENE_SYMBOL_SECTION +
+    private String generateTemplate(String mutationName) {
+        return GENE_SYMBOL_SECTION +
             "<" +
             mutationName + ID_SECTION + CONSORTIUM_ABBREVIATION_SECTION + ILAR_CODE_SECTION +
             ">";
-
     }
+
+    private String getMutationType() {
+        if (attemptTypesName.equals(AttemptTypesName.CRISPR)) {
+            return "em";
+        } else if (attemptTypesName.equals(AttemptTypesName.ES_CELL) ||
+            attemptTypesName.equals(AttemptTypesName.ES_CELL_ALLELE_MODIFICATION)) {
+            return "tm";
+        }
+        return "";
+    }
+
+    private boolean isEsCellModificationAttemptTypeWrong(Mutation mutation) {
+        return attemptTypesName.equals(AttemptTypesName.ES_CELL_ALLELE_MODIFICATION) &&
+            (!getEscAlleleClassName(mutation).equals("b") &&
+                !getEscAlleleClassName(mutation).equals("c") &&
+                !getEscAlleleClassName(mutation).equals("d") &&
+                !getEscAlleleClassName(mutation).equals("e.1") &&
+                !getEscAlleleClassName(mutation).equals(".1") &&
+                !getEscAlleleClassName(mutation).equals(".2"));
+    }
+
+    private boolean isEsCellAttemptTypeWrong(Mutation mutation) {
+        return attemptTypesName.equals(AttemptTypesName.ES_CELL) &&
+            (!getEscAlleleClassName(mutation).equals("a") &&
+                !getEscAlleleClassName(mutation).equals("e") &&
+                !getEscAlleleClassName(mutation).equals("''"));
+    }
+
 }

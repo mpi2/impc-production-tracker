@@ -175,6 +175,17 @@ public class PlanController
         return entityModel;
     }
 
+    /**
+     * getCanCreateOutcome.
+     * @param pin Plan identifier.
+     * @return Entity with the plan information.
+     */
+    @GetMapping(value = {"can-create-outcome/{pin}"})
+    public Boolean getCanCreateOutcome(@PathVariable String pin)
+    {
+        return planService.canCreateOutcome(pin);
+    }
+
     @GetMapping(value = {"/{pin}/history"})
     public List<HistoryDTO> getPlanHistory(@PathVariable String pin)
     {
@@ -226,4 +237,5 @@ public class PlanController
     {
         return wgeMapper.getExonsByMarkerSymbol(capitalize(marker_symbol));
     }
+
 }

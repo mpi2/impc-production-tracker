@@ -6,25 +6,19 @@ import org.gentar.biology.plan.attempt.AttemptTypesName;
 import org.springframework.stereotype.Component;
 
 @Component
-public class AlleleSymbolHandler
-{
+public class AlleleSymbolHandler {
     private final MutationRepository mutationRepository;
 
-    public AlleleSymbolHandler(MutationRepository mutationRepository)
-    {
+
+    public AlleleSymbolHandler(MutationRepository mutationRepository) {
         this.mutationRepository = mutationRepository;
     }
 
-    public AlleleSymbolConstructor getAlleleSymbolConstructor(Plan plan)
-    {
-        AlleleSymbolConstructor alleleSymbolConstructor = null;
+    public AlleleSymbolConstructor getAlleleSymbolConstructor(Plan plan) {
         AttemptTypesName attemptTypesName =
             AttemptTypesName.valueOfLabel(plan.getAttemptType().getName());
-        if (attemptTypesName.equals(AttemptTypesName.CRISPR))
-        {
-            alleleSymbolConstructor = new CrisprAlleleSymbolConstructor(mutationRepository);
-        }
+        return new AlleleSymbolConstructorImpl(mutationRepository, attemptTypesName);
 
-        return alleleSymbolConstructor;
     }
+
 }

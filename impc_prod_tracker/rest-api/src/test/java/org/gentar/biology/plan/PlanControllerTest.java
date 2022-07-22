@@ -441,6 +441,16 @@ class PlanControllerTest extends ControllerTestTemplate
         resultValidator.validateObtainedMatchesJson(obtainedJson, expectedJson);
     }
 
+    @Test
+    @DatabaseSetup(DBSetupFilesPaths.MULTIPLE_PLANS)
+    @DatabaseTearDown(type = DatabaseOperation.DELETE_ALL, value = DBSetupFilesPaths.MULTIPLE_PLANS)
+    void testGetCanAddOutcome() throws Exception
+    {
+        String url = "/api/plans/can-create-outcome/PIN:0000000009";
+        String obtainedJson = restCaller.executeGet(url);
+        assertThat(obtainedJson, is("true"));
+    }
+
     private ResultHandler documentEsCellAlleleModificationPlan()
     {
         List<FieldDescriptor> esCellAlleleModificationPlanFieldsDescriptions =

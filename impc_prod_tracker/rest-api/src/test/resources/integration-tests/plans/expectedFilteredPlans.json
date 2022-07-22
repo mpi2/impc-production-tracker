@@ -224,6 +224,7 @@
         },
         "typeName":"production",
         "statusName":"Founder Obtained",
+
         "summaryStatusName":"Founder Obtained",
         "_links":{
           "self":{
