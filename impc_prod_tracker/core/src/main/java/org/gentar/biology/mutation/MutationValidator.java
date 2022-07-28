@@ -17,6 +17,8 @@ import org.gentar.biology.plan.attempt.AttemptTypesName;
 import org.gentar.biology.sequence.Sequence;
 import org.gentar.exceptions.ForbiddenAccessException;
 import org.gentar.exceptions.UserOperationFailedException;
+import org.gentar.organization.work_unit.WorkUnit;
+import org.gentar.organization.work_unit.WorkUnitService;
 import org.gentar.security.abac.spring.ContextAwarePolicyEnforcement;
 import org.gentar.security.permissions.Actions;
 import org.gentar.security.permissions.Operations;
@@ -28,6 +30,7 @@ public class MutationValidator {
 
     private final ContextAwarePolicyEnforcement policyEnforcement;
     private final MutationRepository mutationRepository;
+    private final WorkUnitService workUnitService;
     private static final String CANNOT_READ_PLAN =
         "The mutation is linked to the plan %s and you " +
             "do not have permission to read it.";
@@ -36,47 +39,52 @@ public class MutationValidator {
 
     public MutationValidator(ContextAwarePolicyEnforcement policyEnforcement,
                              MutationRepository mutationRepository,
-                             MutationCategorizationService mutationCategorizationService) {
+                             MutationCategorizationService mutationCategorizationService,
+                             WorkUnitService workUnitService) {
         this.policyEnforcement = policyEnforcement;
         this.mutationRepository = mutationRepository;
+        this.workUnitService = workUnitService;
     }
 
     public void validateData(Mutation mutation) {
         Set<Gene> genes = mutation.getGenes();
-        if (genes.isEmpty()) {
-            throw new UserOperationFailedException(
-                String.format(NULL_FIELD_ERROR, MUTATION_GENE_S));
-        } else if (mutation.getMolecularMutationType() == null) {
-            throw new UserOperationFailedException(
-                String.format(NULL_FIELD_ERROR, MUTATION_MOLECULAR_MUTATION_TYPE_S));
-        } else if (mutation.getSymbol() == null || mutation.getSymbol().equals("")) {
-            throw new UserOperationFailedException(
-                String.format(NULL_FIELD_ERROR, MUTATION_MUTATION_SYMBOL_S));
-        } else if (!isSymbolInCorrectFormat(mutation)) {
-            throw new UserOperationFailedException(
-                MUTATION + mutation.getSymbol() +
-                    SYMBOL_S_ARE_NOT_IN_THE_CORRECT_FORMAT);
-        } else if (!isMutationSymbolUnique(mutation)) {
-            throw new UserOperationFailedException(
-                MUTATION + mutation.getSymbol() +
-                    SYMBOL_S_ARE_NOT_UNIQUE);
-        } else if (isEsCellAttemptTypeWrong(mutation)) {
-            throw new UserOperationFailedException(
-                THE_INITIAL_ES_CELL_PRODUCTION_ATTEMPT_A_E);
+        if (mutation.getMin() == null) {
+            if (genes.isEmpty()) {
+                throw new UserOperationFailedException(
+                    String.format(NULL_FIELD_ERROR, MUTATION_GENE_S));
+            } else if (mutation.getMolecularMutationType() == null) {
+                throw new UserOperationFailedException(
+                    String.format(NULL_FIELD_ERROR, MUTATION_MOLECULAR_MUTATION_TYPE_S));
+            } else if (mutation.getSymbol() == null || mutation.getSymbol().equals("")) {
+                throw new UserOperationFailedException(
+                    String.format(NULL_FIELD_ERROR, MUTATION_MUTATION_SYMBOL_S));
+            } else if (!mutation.getMolecularMutationType().getName().equals("Complex rearrangement") &&
+                !isSymbolInCorrectFormat(mutation)) {
+                throw new UserOperationFailedException(
+                    MUTATION + mutation.getSymbol() +
+                        SYMBOL_S_ARE_NOT_IN_THE_CORRECT_FORMAT);
+            } else if (!isMutationSymbolUnique(mutation)) {
+                throw new UserOperationFailedException(
+                    MUTATION + mutation.getSymbol() +
+                        SYMBOL_S_ARE_NOT_UNIQUE);
+            } else if (isEsCellAttemptTypeWrong(mutation)) {
+                throw new UserOperationFailedException(
+                    THE_INITIAL_ES_CELL_PRODUCTION_ATTEMPT_A_E);
 
-        } else if (isEsCellModificationAttemptTypeWrong(mutation)) {
-            throw new UserOperationFailedException(
-                TYPES_FOR_ES_CELL_MODIFICATION_ATTEMPT_B_C_D_E_1_1_2);
-        } else if (!isSequenceInFastaFormat(mutation)) {
-            throw new UserOperationFailedException(
-                ERROR_FASTA_FORMAT);
+            } else if (isEsCellModificationAttemptTypeWrong(mutation)) {
+                throw new UserOperationFailedException(
+                    TYPES_FOR_ES_CELL_MODIFICATION_ATTEMPT_B_C_D_E_1_1_2);
+            } else if (!isSequenceInFastaFormat(mutation)) {
+                throw new UserOperationFailedException(
+                    ERROR_FASTA_FORMAT);
+            }
         }
     }
 
+
     private boolean isSymbolInCorrectFormat(Mutation mutation) {
         String symbol = mutation.getSymbol();
-        if ((mutation.getGenes().size() != 1) ||
-            mutation.getMolecularMutationType().getName().equals("Complex rearrangement")) {
+        if (mutation.getGenes().size() != 1) {
             return false;
         }
         if (!symbol.contains("<") || !symbol.contains(">")) {
@@ -199,13 +207,20 @@ public class MutationValidator {
     }
 
     private boolean isWorkUnitIlarCodeValid(String symbol, Mutation mutation) {
-        List<String> ilarCodes =
-            mutation.getOutcomes().stream().map(Outcome::getPlan).collect(Collectors.toList())
-                .stream().map(p -> p.getWorkUnit().getName()).collect(
-                Collectors.toList());
+        List<String> ilarCodesAndNames = new ArrayList<>();
+        List<WorkUnit> workUnits = workUnitService.getAllWorkUnits();
 
-        for (String ilarCode : ilarCodes) {
-            if (symbol.toLowerCase().contains(ilarCode.toLowerCase())) {
+        List<String> ilarCodes = workUnits.stream().map(WorkUnit::getIlarCode).collect(Collectors.toList());
+
+        List<String> names =workUnits.stream().map(WorkUnit::getName).collect(Collectors.toList());
+
+
+        ilarCodesAndNames.addAll(ilarCodes);
+        ilarCodesAndNames.addAll(names);
+        ilarCodesAndNames.add("Vlcg");
+
+        for (String workUnit: ilarCodesAndNames) {
+            if (workUnit!=null && symbol.toLowerCase().contains(workUnit.toLowerCase())) {
                 return true;
             }
         }
