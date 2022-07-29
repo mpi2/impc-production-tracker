@@ -113,6 +113,50 @@ build_image:
  
 
 
+hh-production:
+  stage: production-deploy
+  image: $CI_REGISTRY/mouse-informatics/helm-kubectl-alpine:latest
+  rules:
+    - if: '$PRODUCTION_DEPLOYMENT == "true" && $CI_PIPELINE_SOURCE == "schedule"'
+  script:
+  # Only deploy from the MPI2 impc-production-tracker repository rather than repository forks
+  - |
+    if [ ! -z ${HH_KUBERNETES_ENDPOINT+set} ]; then
+
+      kubectl config set-cluster local --server="${HH_KUBERNETES_ENDPOINT}"
+      kubectl config set clusters.local.certificate-authority-data "${HH_KUBERNETES_CERTIFICATE_AUTHORITY_DATA}"
+      kubectl config set-credentials ${HH_KUBERNETES_USER} --token="${HH_KUBERNETES_USER_TOKEN}"
+      kubectl config set-context "${HH_KUBERNETES_NAMESPACE}" --cluster=local --user=${HH_KUBERNETES_USER} --namespace="${HH_KUBERNETES_NAMESPACE}"
+      kubectl config use-context "${HH_KUBERNETES_NAMESPACE}"
+      kubectl version
+     
+      cd impc_prod_tracker
+     
+      #
+      #
+      # Substitute the "latest" image tag in your deployment template with a more specific tag
+      # and record the deployment so you can rollback to this particular version.
+      #
+      sed -i "s/impc-production-tracker-mirror:latest/impc-production-tracker-mirror:${PRODUCTION_API_TAG}/g" kube/wp/production/api-service/api-service-deployment.yaml
+      sed -i "s/STRING_REPLACED_DURING_REDEPLOY/$(date)/g" kube/wp/production/api-service/api-service-deployment.yaml
+
+      if kubectl apply -f kube/wp/production/api-service/api-service-deployment.yaml --record | grep -q unchanged; then
+          echo "=> Patching deployment to force image update."
+          kubectl patch -f kube/wp/production/api-service/api-service-deployment.yaml --record -p "{\"spec\":{\"template\":{\"metadata\":{\"annotations\":{\"ci-last-updated\":\"$(date +'%s')\"}}}}}"
+      else
+          echo "=> Deployment apply has changed the object, no need to force image update."
+      fi
+      #
+      #
+      # Log the status of the application deployment
+      #
+      kubectl rollout status -f kube/wp/production/api-service/api-service-deployment.yaml
+      kubectl get pod,deployment,rs,svc,ing
+    fi
+
+
+
+
 hx-production:
   stage: production-deploy
   image: $CI_REGISTRY/mouse-informatics/helm-kubectl-alpine:latest

@@ -224,6 +224,7 @@
         },
         "typeName":"production",
         "statusName":"Founder Obtained",
+
         "summaryStatusName":"Founder Obtained",
         "_links":{
           "self":{
@@ -305,6 +306,7 @@
         },
         "typeName":"phenotyping",
         "statusName":"Plan Created",
+
         "summaryStatusName":"Plan Created",
         "_links":{
           "self":{
@@ -379,6 +381,7 @@
         },
         "typeName":"phenotyping",
         "statusName":"Plan Created",
+
         "summaryStatusName":"Plan Created",
         "_links":{
           "self":{
@@ -455,6 +458,7 @@
         },
         "typeName":"production",
         "statusName":"Cre Excision Complete",
+
         "summaryStatusName":"Cre Excision Complete",
         "_links":{
           "self":{
@@ -570,6 +574,7 @@
         },
         "typeName":"production",
         "statusName":"Chimeras/Founder Obtained",
+
         "summaryStatusName":"Genotype Confirmed",
         "_links":{
           "self":{
