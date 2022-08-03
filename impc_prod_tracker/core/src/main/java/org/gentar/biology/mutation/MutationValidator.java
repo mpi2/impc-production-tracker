@@ -35,7 +35,6 @@ public class MutationValidator {
         "The mutation is linked to the plan %s and you " +
             "do not have permission to read it.";
     private static final String NULL_FIELD_ERROR = "%s cannot be null.";
-    private static final List<String> newEnteredMutationSymbols = new ArrayList<>();
 
     public MutationValidator(ContextAwarePolicyEnforcement policyEnforcement,
                              MutationRepository mutationRepository,
@@ -186,23 +185,11 @@ public class MutationValidator {
     }
 
     private Boolean isMutationSymbolUnique(Mutation mutation) {
-        if (mutation.getMin() != null) {
-            newEnteredMutationSymbols.clear();
-            return true;
-        }
-        if (mutationRepository.findAllBySymbolLike(mutation.getSymbol()).size() == 0 &&
-            !newEnteredMutationSymbols
-                .contains(mutation.getSymbol())) {
-            newEnteredMutationSymbols.add(mutation.getSymbol());
-            return true;
-        }
-        return false;
+        return mutationRepository.findAllBySymbolLike(mutation.getSymbol()).size() == 0;
     }
 
     private String getAttemptTypeName(Mutation mutation) {
-        return mutation.getOutcomes().stream().map(Outcome::getPlan).collect(Collectors.toList())
-            .stream().map(Plan::getAttemptType).collect(Collectors.toList()).stream()
-            .map(AttemptType::getName).collect(
+        return mutation.getOutcomes().stream().map(Outcome::getPlan).map(Plan::getAttemptType).map(AttemptType::getName).collect(
                 Collectors.toList()).get(0);
     }
 
@@ -247,19 +234,24 @@ public class MutationValidator {
     }
 
     private boolean isSequenceInFastaFormat(Mutation mutation) {
-        List<Sequence> sequences = mutation.getMutationSequences().stream().map(
-            MutationSequence::getSequence)
-            .collect(Collectors.toList());
+        List<Sequence> sequences = getSequences(mutation);
 
         if(sequences.stream().anyMatch(s->s.getSequence()==null)){
             return false;
         }
+
         List<String> sequenceString= sequences.stream().map(Sequence::getSequence)
             .collect(Collectors.toList());
 
         return sequenceString.stream().noneMatch(s ->
             !isStartWithBiggerSymbol(s) || !isSequenceHeaderSingleLine(s) ||
                 !isDnaFormatCorrect(s));
+    }
+
+    private List<Sequence> getSequences(Mutation mutation) {
+        return mutation.getMutationSequences().stream().map(
+            MutationSequence::getSequence)
+            .collect(Collectors.toList());
     }
 
     private Boolean isStartWithBiggerSymbol(String sequence) {
