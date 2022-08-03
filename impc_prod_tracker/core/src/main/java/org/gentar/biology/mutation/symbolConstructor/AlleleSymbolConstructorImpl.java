@@ -55,7 +55,9 @@ public class AlleleSymbolConstructorImpl implements AlleleSymbolConstructor {
                 "(" + symbolSuggestionRequest.getConsortiumAbbreviation() + ")";
             result = result.replace(CONSORTIUM_ABBREVIATION_SECTION, consortiumAbbreviation);
         }
-        result = result.replace(ILAR_CODE_SECTION, symbolSuggestionRequest.getIlarCode());
+
+        result = result.replace(ILAR_CODE_SECTION, symbolSuggestionRequest.getIlarCode()!=null?symbolSuggestionRequest.getIlarCode():"");
+
         return result;
     }
 

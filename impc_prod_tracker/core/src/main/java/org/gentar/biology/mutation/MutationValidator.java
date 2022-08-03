@@ -4,6 +4,7 @@ import static org.gentar.biology.mutation.constant.MutationErrors.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 import org.gentar.biology.gene.Gene;
@@ -207,13 +208,20 @@ public class MutationValidator {
     }
 
     private boolean isWorkUnitIlarCodeValid(String symbol, Mutation mutation) {
+
+        Optional<WorkUnit> workUnitIlarCode =
+            mutation.getOutcomes().stream().map(Outcome::getPlan).map(Plan::getWorkUnit).filter(w->w.getIlarCode()!=null).findFirst();
+        
+        if(workUnitIlarCode.isEmpty()){
+            return true;
+        }
+
         List<String> ilarCodesAndNames = new ArrayList<>();
         List<WorkUnit> workUnits = workUnitService.getAllWorkUnits();
 
         List<String> ilarCodes = workUnits.stream().map(WorkUnit::getIlarCode).collect(Collectors.toList());
 
         List<String> names =workUnits.stream().map(WorkUnit::getName).collect(Collectors.toList());
-
 
         ilarCodesAndNames.addAll(ilarCodes);
         ilarCodesAndNames.addAll(names);
