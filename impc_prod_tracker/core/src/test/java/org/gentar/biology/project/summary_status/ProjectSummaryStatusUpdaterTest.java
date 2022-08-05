@@ -61,7 +61,7 @@ class ProjectSummaryStatusUpdaterTest
     void testCalculateSummaryStatusWhenOnePlanAndActive()
     {
         Plan plan = new Plan();
-        plan.setStatus(STATUS_1);
+        plan.setPlanStatus(STATUS_1);
         plan.setSummaryStatus(STATUS_1);
         Project project =
             buildProjectWithAssignmentStatus(AssignmentStatusNames.ASSIGNED_STATUS_NAME);
@@ -129,7 +129,7 @@ class ProjectSummaryStatusUpdaterTest
         Plan plan = new Plan();
         plan.setId(id);
         plan.setPin("PIN:"+id);
-        plan.setStatus(status);
+        plan.setPlanStatus(status);
         plan.setSummaryStatus(status);
         return plan;
     }

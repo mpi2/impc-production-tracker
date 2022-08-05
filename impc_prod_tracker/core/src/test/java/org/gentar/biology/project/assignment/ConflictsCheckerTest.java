@@ -288,7 +288,7 @@ class ConflictsCheckerTest
         Plan plan = new Plan();
         Status status = new Status();
         status.setName(statusName);
-        plan.setStatus(status);
+        plan.setPlanStatus(status);
         plan.setSummaryStatus(status);
         return plan;
     }
