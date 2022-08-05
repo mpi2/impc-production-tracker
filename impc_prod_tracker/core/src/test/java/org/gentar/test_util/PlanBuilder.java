@@ -33,7 +33,7 @@ public class PlanBuilder
             status.setIsAbortionStatus(isStatusAbortion);
             status.setOrdering(statusOrder);
         }
-        plan.setStatus(status);
+        plan.setPlanStatus(status);
         plan.setSummaryStatus(summaryStatus);
         return plan;
     }

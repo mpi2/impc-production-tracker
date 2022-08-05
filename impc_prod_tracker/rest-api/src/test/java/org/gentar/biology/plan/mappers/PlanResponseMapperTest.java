@@ -75,7 +75,7 @@ class PlanResponseMapperTest
         plan.setAttemptType(attemptType);
         Status status = new Status();
         status.setName(STATUS_NAME);
-        plan.setStatus(status);
+        plan.setPlanStatus(status);
         Set<PlanStatusStamp> statusStamps = new HashSet<>();
         PlanStatusStamp planStatusStamp = new PlanStatusStamp();
         statusStamps.add(planStatusStamp);
