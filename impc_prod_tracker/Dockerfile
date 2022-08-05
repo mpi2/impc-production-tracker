@@ -1,4 +1,4 @@
-FROM maven:3-amazoncorretto-11 as build
+FROM maven:3-amazoncorretto-17 as build
 
 COPY pom.xml /usr/src/gentar/
 COPY dto/pom.xml /usr/src/gentar/dto/
@@ -13,7 +13,7 @@ RUN mvn -f /usr/src/gentar/pom.xml clean package -P test
 
 
 # The final image should have a minimal number of layers
-FROM amazoncorretto:11-alpine
+FROM amazoncorretto:17
 
 VOLUME /tmp
 
@@ -25,6 +25,7 @@ RUN adduser \
     --gecos "" \
     --no-create-home \
     --uid 20256 \
+    --add-opens java.base/java.time=ALL-UNNAMED
     containeruser && \
     chown containeruser:containeruser app.jar && \
     chown containeruser:containeruser start.sh && \
