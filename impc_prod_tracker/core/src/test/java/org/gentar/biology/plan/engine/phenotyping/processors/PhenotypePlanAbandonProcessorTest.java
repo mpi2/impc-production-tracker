@@ -97,7 +97,7 @@ public class PhenotypePlanAbandonProcessorTest {
         PhenotypingStage phenotypingStage = new PhenotypingStage();
         Status status = new Status();
         status.setIsAbortionStatus(isAborted);
-        phenotypingStage.setStatus(status);
+        phenotypingStage.setProcessDataStatus(status);
         return phenotypingStage;
     }
 

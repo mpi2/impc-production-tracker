@@ -10,5 +10,5 @@ public interface ProcessData
     ProcessEvent getEvent();
     void setEvent(ProcessEvent processEvent);
     Status getStatus();
-    void setStatus(Status status);
+    void setProcessDataStatus(Status status);
 }

@@ -182,7 +182,7 @@ class PhenotypingStartedProcessorWithTissueCreationTest
         PhenotypingStage phenotypingStage = new PhenotypingStage();
         Status status = new Status();
         status.setName(statusName);
-        phenotypingStage.setStatus(status);
+        phenotypingStage.setProcessDataStatus(status);
         Plan plan = new Plan();
         PhenotypingAttempt phenotypingAttempt = new PhenotypingAttempt();
         phenotypingAttempt.setPlan(plan);

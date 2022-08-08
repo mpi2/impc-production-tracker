@@ -95,7 +95,6 @@ public class Plan extends BaseEntity implements Resource<Plan>, ProcessData
 
     @NotNull
     @ManyToOne(targetEntity= Status.class)
-    @Setter(AccessLevel.NONE)
     private Status status;
 
     @IgnoreForAuditingChanges
@@ -234,11 +233,7 @@ public class Plan extends BaseEntity implements Resource<Plan>, ProcessData
     }
 
     @Override
-    public void setStatus(Status status) {
-        this.status=status;
-    }
-
-    public void setPlanStatus(Status status) {
+    public void setProcessDataStatus(Status status) {
         this.status=status;
     }
 

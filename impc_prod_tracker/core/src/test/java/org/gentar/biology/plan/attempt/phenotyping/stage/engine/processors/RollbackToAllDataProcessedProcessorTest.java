@@ -83,7 +83,7 @@ class RollbackToAllDataProcessedProcessorTest
         PhenotypingStage phenotypingStage = new PhenotypingStage();
         Status status = new Status();
         status.setName(statusName);
-        phenotypingStage.setStatus(status);
+        phenotypingStage.setProcessDataStatus(status);
         return phenotypingStage;
     }
 }
