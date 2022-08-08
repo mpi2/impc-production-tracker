@@ -69,7 +69,7 @@ class PlanSummaryStatusUpdaterTest
     {
         Plan plan = new Plan();
         Status planStatus = new Status(1L, "Plan Status", "", 100, false);
-        plan.setStatus(planStatus);
+        plan.setPlanStatus(planStatus);
 
         Outcome outcome1 = OutcomeBuilder.getInstance()
             .withId(1L)
@@ -91,7 +91,7 @@ class PlanSummaryStatusUpdaterTest
     {
         Plan plan = new Plan();
         Status planStatus = new Status(1L, "Plan Status", "", 100, false);
-        plan.setStatus(planStatus);
+        plan.setPlanStatus(planStatus);
 
         Outcome outcome1 = OutcomeBuilder.getInstance()
             .withId(1L)
@@ -122,7 +122,7 @@ class PlanSummaryStatusUpdaterTest
     {
         Plan plan = new Plan();
         Status planStatus = new Status(1L, "Plan Status", "", 100, false);
-        plan.setStatus(planStatus);
+        plan.setPlanStatus(planStatus);
 
         Outcome outcome1 = OutcomeBuilder.getInstance()
             .withId(1L)

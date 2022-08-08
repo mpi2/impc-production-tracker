@@ -69,7 +69,7 @@ public class GuideMapper implements Mapper<Guide, GuideDTO>
         }
 
         if (guide.getGenomeBuild() != null && guide.getStart() != null &&
-                guide.getStop() != null && guide.getStrand() != null)
+                guide.getStop() != null && guide.getStrand() != null && guide.getChr() != null)
         {
             if (guide.getGenomeBuild().equals("GRCm38"))
             {
