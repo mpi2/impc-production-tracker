@@ -50,7 +50,7 @@ class PhenotypingStageResponseMapperTest
         phenotypingStage.setPsn("psn");
         Status status = new Status();
         status.setName("statusName");
-        phenotypingStage.setStatus(status);
+        phenotypingStage.setProcessDataStatus(status);
         PhenotypingStageType phenotypingStageType = new PhenotypingStageType();
         phenotypingStageType.setName("typeName");
         phenotypingStage.setPhenotypingStageType(phenotypingStageType);

@@ -56,4 +56,8 @@ public class Specimen extends BaseEntity implements ProcessData
 
     private transient ProcessEvent event;
 
+    @Override
+    public void setProcessDataStatus(Status status) {
+        this.status=status;
+    }
 }

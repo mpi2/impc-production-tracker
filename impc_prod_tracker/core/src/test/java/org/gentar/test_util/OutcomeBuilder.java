@@ -27,7 +27,7 @@ public class OutcomeBuilder
         outcome.setOutcomeType(outcomeType);
         if (colony != null)
         {
-            colony.setStatus(buildStatus(isAbortionStatusColony, statusOrder));
+            colony.setProcessDataStatus(buildStatus(isAbortionStatusColony, statusOrder));
             outcome.setColony(colony);
             colony.setOutcome(outcome);
         }

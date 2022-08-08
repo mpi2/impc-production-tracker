@@ -107,4 +107,9 @@ public class PhenotypingStage extends BaseEntity implements ProcessData
         values.add("initialDataReleaseDate=" + initialDataReleaseDate);
         return String.join(",", values);
     }
+
+    @Override
+    public void setProcessDataStatus(Status status) {
+        this.status=status;
+    }
 }

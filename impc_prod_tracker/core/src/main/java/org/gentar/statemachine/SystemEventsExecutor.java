@@ -74,7 +74,7 @@ public class SystemEventsExecutor
             Status newStatus = stateTransitionManager.processEvent(entity).getStatus();
             statusChanged = !statusNameBeforeTransition.equals(newStatus.getName());
             // Already set in processor, needed here because assignation is lost in tests
-            entity.setStatus(newStatus);
+            entity.setProcessDataStatus(newStatus);
             if (statusChanged)
             {
                 validateNoUserTriggeredTransitionIsPresent();

@@ -126,7 +126,7 @@ class ColonyAbortProcessorTest
         Colony colony = new Colony();
         Status status = new Status();
         status.setName(statusName);
-        colony.setStatus(status);
+        colony.setProcessDataStatus(status);
         Outcome outcome = new Outcome();
         colony.setOutcome(outcome);
         return colony;

@@ -24,7 +24,7 @@ public class SpecimenStateSetter implements StateSetter
     @Override
     public void setStatus(ProcessData entity, Status status)
     {
-        entity.setStatus(status);
+        entity.setProcessDataStatus(status);
         registerStatusStamp((Specimen)entity);
     }
 

@@ -163,7 +163,7 @@ class ConfirmGenotypeProcessorTest
         Status status = new Status();
         status.setName(statusName);
         Colony colony = outcome.getColony();
-        colony.setStatus(status);
+        colony.setProcessDataStatus(status);
         return colony;
     }
 
