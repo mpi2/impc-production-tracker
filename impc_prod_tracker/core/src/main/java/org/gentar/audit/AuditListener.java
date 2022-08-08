@@ -1,5 +1,6 @@
 package org.gentar.audit;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import org.gentar.audit.diff.ObjectIdExtractor;
 import org.gentar.audit.history.HistoryService;
 import org.gentar.util.BeanUtil;
@@ -23,8 +24,7 @@ public class AuditListener
     private static final Logger LOGGER = LoggerFactory.getLogger(AuditListener.class);
 
     @PostLoad
-    private void postLoad(Object object)
-    {
+    private void postLoad(Object object) throws JsonProcessingException {
         originalObject = Cloner.cloneThroughJson(object);
     }
 

@@ -10,7 +10,6 @@ if [ -z "${DOCKER_PRODUCTION}" ]; then
 
       java -Djava.security.egd=file:/dev/./urandom -jar app.jar \
         --server.port="${port}" --spring.profiles.active=docker
-        --add-opens java.base/java.time=ALL-UNNAMED
 
     else
 
@@ -25,7 +24,6 @@ if [ -z "${DOCKER_PRODUCTION}" ]; then
         -Dftp.nonProxyHosts=*.ebi.ac.uk\|localhost\|127.0.0.1 \
         -jar app.jar \
         --server.port="${port}" --spring.profiles.active=docker
-        --add-opens java.base/java.time=ALL-UNNAMED
 
     fi
 
@@ -35,7 +33,6 @@ if [ -z "${DOCKER_PRODUCTION}" ]; then
 
       java -Djava.security.egd=file:/dev/./urandom -jar app.jar \
         --server.port="${port}" --spring.profiles.active=dockergentarschema
-        --add-opens java.base/java.time=ALL-UNNAMED
 
     else
 
@@ -50,7 +47,6 @@ if [ -z "${DOCKER_PRODUCTION}" ]; then
         -Dftp.nonProxyHosts=*.ebi.ac.uk\|localhost\|127.0.0.1 \
         -jar app.jar \
         --server.port="${port}" --spring.profiles.active=dockergentarschema
-        --add-opens java.base/java.time=ALL-UNNAMED
 
     fi
 
@@ -62,8 +58,6 @@ else
 
     java -Djava.security.egd=file:/dev/./urandom -jar app.jar \
       --server.port="${port}" --spring.profiles.active=dockerproduction
-      --add-opens java.base/java.time=ALL-UNNAMED
-
   else
 
     java -Djava.security.egd=file:/dev/./urandom \
@@ -77,7 +71,6 @@ else
       -Dftp.nonProxyHosts=*.ebi.ac.uk\|localhost\|127.0.0.1 \
       -jar app.jar \
       --server.port="${port}" --spring.profiles.active=dockerproduction
-      --add-opens java.base/java.time=ALL-UNNAMED
 
   fi
 
