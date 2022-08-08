@@ -25,7 +25,6 @@ RUN adduser \
     --gecos "" \
     --no-create-home \
     --uid 20256 \
-    --add-opens java.base/java.time=ALL-UNNAMED
     containeruser && \
     chown containeruser:containeruser app.jar && \
     chown containeruser:containeruser start.sh && \
