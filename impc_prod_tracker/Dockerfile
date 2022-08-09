@@ -13,7 +13,7 @@ RUN mvn -f /usr/src/gentar/pom.xml clean package -P test
 
 
 # The final image should have a minimal number of layers
-FROM amazoncorretto:17
+FROM amazoncorretto:17-alpine
 
 VOLUME /tmp
 
