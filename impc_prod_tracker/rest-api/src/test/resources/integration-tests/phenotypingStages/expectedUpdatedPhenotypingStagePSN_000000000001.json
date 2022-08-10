@@ -18,7 +18,7 @@
 			"href": "http://localhost:8080/api/plans/PIN:0000000001/phenotypingStages/PSN:000000000001"
 		},
 		"plan": {
-			"href": "http://localhost:8080/api/plans/PIN:0000000001"
+			"href": "http://localhost:8080/api/plans/PIN%3A0000000001"
 		}
 	},
 	"statusDates": [{

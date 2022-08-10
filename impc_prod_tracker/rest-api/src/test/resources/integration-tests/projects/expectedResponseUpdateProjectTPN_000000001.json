@@ -1,7 +1,7 @@
 {
   "_links":{
     "self":{
-      "href":"http://localhost:8080/api/projects/TPN:000000001"
+      "href":"http://localhost:8080/api/projects/TPN%3A000000001"
     }
   },
   "history":[

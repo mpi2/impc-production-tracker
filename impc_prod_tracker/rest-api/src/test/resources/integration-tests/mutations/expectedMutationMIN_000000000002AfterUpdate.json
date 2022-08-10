@@ -46,11 +46,11 @@
   ],
   "_links":{
     "self":{
-      "href":"http://localhost:8080/api/mutations/MIN:000000000002"
+      "href":"http://localhost:8080/api/mutations/MIN%3A000000000002"
     },
     "outcomes":[
       {
-        "href":"http://localhost:8080/api/plans/PIN:0000000001/outcomes/TPO:000000000002"
+        "href":"http://localhost:8080/api/plans/PIN%3A0000000001/outcomes/TPO%3A000000000002"
       }
     ]
   },

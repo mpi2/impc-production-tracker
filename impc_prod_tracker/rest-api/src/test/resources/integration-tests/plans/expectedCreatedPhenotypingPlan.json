@@ -11,10 +11,10 @@
   "phenotypingStartingPoint":{
     "_links":{
       "outcome":{
-        "href":"http://localhost:8080/api/plans/PIN:0000000001/outcomes/TPO:000000000001"
+        "href":"http://localhost:8080/api/plans/PIN%3A0000000001/outcomes/TPO%3A000000000001"
       },
       "productionPlan":{
-        "href":"http://localhost:8080/api/plans/PIN:0000000001"
+        "href":"http://localhost:8080/api/plans/PIN%3A0000000001"
       }
     },
     "outcomeTpo":"TPO:000000000001",
@@ -34,7 +34,7 @@
       "href":"http://localhost:8080/api/plans/PIN:0000000012"
     },
     "project":{
-      "href":"http://localhost:8080/api/projects/TPN:000000001"
+      "href":"http://localhost:8080/api/projects/TPN%3A000000001"
     }
   },
   "statusDates":[

@@ -57,11 +57,11 @@
   "_links":{
     "mutations":[
       {
-        "href":"http://localhost:8080/api/plans/PIN:0000000001/outcomes/TPO:000000000007/mutations/MIN:000000000003"
+        "href":"http://localhost:8080/api/plans/PIN%3A0000000001/outcomes/TPO:000000000007/mutations/MIN:000000000003"
       }
     ],
     "self":{
-      "href":"http://localhost:8080/api/plans/PIN:0000000001/outcomes/TPO:000000000007"
+      "href":"http://localhost:8080/api/plans/PIN%3A0000000001/outcomes/TPO:000000000007"
     }
   }
 }

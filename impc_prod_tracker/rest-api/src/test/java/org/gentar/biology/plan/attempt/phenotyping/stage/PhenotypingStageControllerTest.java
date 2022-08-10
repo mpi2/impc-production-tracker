@@ -145,7 +145,7 @@ class PhenotypingStageControllerTest extends ControllerTestTemplate
                 url, payload, document("phenotypingStages/putPhenotypingStage"));
         ChangeResponse changeResponse = JsonHelper.fromJson(obtainedJson, ChangeResponse.class);
         verifyChangeResponse(changeResponse);
-        String phenotypingStageUrl = LinkUtil.getSelfHrefLinkStringFromJson(obtainedJson);
+        String phenotypingStageUrl = LinkUtil.getSelfHrefLinkStringFromJson(obtainedJson).replaceAll("%3A",":");
         verifyUpdatedPhenotypingStage(phenotypingStageUrl, expectedJson);
     }
 

@@ -51,7 +51,7 @@
       "href":"http://localhost:8080/api/plans/PIN:0000000010"
     },
     "project":{
-      "href":"http://localhost:8080/api/projects/TPN:000000003"
+      "href":"http://localhost:8080/api/projects/TPN%3A000000003"
     }
   },
   "statusDates":[

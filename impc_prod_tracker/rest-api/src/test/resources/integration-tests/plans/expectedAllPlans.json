@@ -97,10 +97,10 @@
         "summaryStatusName":"Genotype Confirmed",
         "_links":{
           "self":{
-            "href":"http://localhost:8080/api/plans/PIN:0000000001"
+            "href":"http://localhost:8080/api/plans/PIN%3A0000000001"
           },
           "project":{
-            "href":"http://localhost:8080/api/projects/TPN:000000001"
+            "href":"http://localhost:8080/api/projects/TPN%3A000000001"
           }
         },
         "statusDates":[
@@ -228,10 +228,10 @@
         "summaryStatusName":"Founder Obtained",
         "_links":{
           "self":{
-            "href":"http://localhost:8080/api/plans/PIN:0000000222"
+            "href":"http://localhost:8080/api/plans/PIN%3A0000000222"
           },
           "project":{
-            "href":"http://localhost:8080/api/projects/TPN:000000222"
+            "href":"http://localhost:8080/api/projects/TPN%3A000000222"
           }
         },
         "statusDates":[
@@ -286,10 +286,10 @@
         "phenotypingStartingPoint":{
           "_links":{
             "outcome":{
-              "href":"http://localhost:8080/api/plans/PIN:0000000001/outcomes/TPO:000000000001"
+              "href":"http://localhost:8080/api/plans/PIN%3A0000000001/outcomes/TPO%3A000000000001"
             },
             "productionPlan":{
-              "href":"http://localhost:8080/api/plans/PIN:0000000001"
+              "href":"http://localhost:8080/api/plans/PIN%3A0000000001"
             }
           },
           "outcomeTpo":"TPO:000000000001",
@@ -310,10 +310,10 @@
         "summaryStatusName":"Plan Created",
         "_links":{
           "self":{
-            "href":"http://localhost:8080/api/plans/PIN:0000000003"
+            "href":"http://localhost:8080/api/plans/PIN%3A0000000003"
           },
           "project":{
-            "href":"http://localhost:8080/api/projects/TPN:000000001"
+            "href":"http://localhost:8080/api/projects/TPN%3A000000001"
           }
         },
         "statusDates":[
@@ -364,10 +364,10 @@
         "phenotypingStartingPoint":{
           "_links":{
             "outcome":{
-              "href":"http://localhost:8080/api/plans/PIN:0000000001/outcomes/TPO:000000000002"
+              "href":"http://localhost:8080/api/plans/PIN%3A0000000001/outcomes/TPO%3A000000000002"
             },
             "productionPlan":{
-              "href":"http://localhost:8080/api/plans/PIN:0000000001"
+              "href":"http://localhost:8080/api/plans/PIN%3A0000000001"
             }
           },
           "outcomeTpo":"TPO:000000000002",
@@ -385,10 +385,10 @@
         "summaryStatusName":"Plan Created",
         "_links":{
           "self":{
-            "href":"http://localhost:8080/api/plans/PIN:0000000004"
+            "href":"http://localhost:8080/api/plans/PIN%3A0000000004"
           },
           "project":{
-            "href":"http://localhost:8080/api/projects/TPN:000000001"
+            "href":"http://localhost:8080/api/projects/TPN%3A000000001"
           }
         },
         "statusDates":[
@@ -439,10 +439,10 @@
         "esCellAlleleModificationStartingPoint":{
           "_links":{
             "outcome":{
-              "href":"http://localhost:8080/api/plans/PIN:0000000010/outcomes/TPO:000000000003"
+              "href":"http://localhost:8080/api/plans/PIN%3A0000000010/outcomes/TPO%3A000000000003"
             },
             "productionPlan":{
-              "href":"http://localhost:8080/api/plans/PIN:0000000010"
+              "href":"http://localhost:8080/api/plans/PIN%3A0000000010"
             }
           },
           "outcomeTpo":"TPO:000000000003",
@@ -462,10 +462,10 @@
         "summaryStatusName":"Cre Excision Complete",
         "_links":{
           "self":{
-            "href":"http://localhost:8080/api/plans/PIN:0000000009"
+            "href":"http://localhost:8080/api/plans/PIN%3A0000000009"
           },
           "project":{
-            "href":"http://localhost:8080/api/projects/TPN:000000003"
+            "href":"http://localhost:8080/api/projects/TPN%3A000000003"
           }
         },
         "statusDates":[
@@ -578,10 +578,10 @@
         "summaryStatusName":"Genotype Confirmed",
         "_links":{
           "self":{
-            "href":"http://localhost:8080/api/plans/PIN:0000000010"
+            "href":"http://localhost:8080/api/plans/PIN%3A0000000010"
           },
           "project":{
-            "href":"http://localhost:8080/api/projects/TPN:000000003"
+            "href":"http://localhost:8080/api/projects/TPN%3A000000003"
           }
         },
         "statusDates":[

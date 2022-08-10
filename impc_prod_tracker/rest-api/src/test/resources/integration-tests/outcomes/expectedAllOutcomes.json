@@ -41,11 +41,11 @@
         "_links":{
           "mutations":[
             {
-              "href":"http://localhost:8080/api/plans/PIN:0000000001/outcomes/TPO:000000000004/mutations/MIN:000000000001"
+              "href":"http://localhost:8080/api/plans/PIN%3A0000000001/outcomes/TPO%3A000000000004/mutations/MIN%3A000000000001"
             }
           ],
           "self":{
-            "href":"http://localhost:8080/api/plans/PIN:0000000001/outcomes/TPO:000000000004"
+            "href":"http://localhost:8080/api/plans/PIN%3A0000000001/outcomes/TPO%3A000000000004"
           }
         }
       },
@@ -108,11 +108,11 @@
         "_links":{
           "mutations":[
             {
-              "href":"http://localhost:8080/api/plans/PIN:0000000001/outcomes/TPO:000000000001/mutations/MIN:000000000001"
+              "href":"http://localhost:8080/api/plans/PIN%3A0000000001/outcomes/TPO%3A000000000001/mutations/MIN%3A000000000001"
             }
           ],
           "self":{
-            "href":"http://localhost:8080/api/plans/PIN:0000000001/outcomes/TPO:000000000001"
+            "href":"http://localhost:8080/api/plans/PIN%3A0000000001/outcomes/TPO%3A000000000001"
           }
         }
       },
@@ -122,7 +122,7 @@
         "outcomeTypeName":"Colony",
         "_links":{
           "self":{
-            "href":"http://localhost:8080/api/plans/PIN:0000000001/outcomes/TPO:000000000002"
+            "href":"http://localhost:8080/api/plans/PIN%3A0000000001/outcomes/TPO%3A000000000002"
           }
         }
       },
@@ -132,7 +132,7 @@
         "outcomeTypeName":"Specimen",
         "_links":{
           "self":{
-            "href":"http://localhost:8080/api/plans/PIN:0000000001/outcomes/TPO:000000000003"
+            "href":"http://localhost:8080/api/plans/PIN%3A0000000001/outcomes/TPO%3A000000000003"
           }
         }
       },
@@ -142,7 +142,7 @@
         "outcomeTypeName":"Colony",
         "_links":{
           "self":{
-            "href":"http://localhost:8080/api/plans/PIN:0000000001/outcomes/TPO:000000000005"
+            "href":"http://localhost:8080/api/plans/PIN%3A0000000001/outcomes/TPO%3A000000000005"
           }
         }
       }
