@@ -26,9 +26,9 @@ import static org.springframework.restdocs.payload.PayloadDocumentation.requestF
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-class ProjectControllerTest extends ControllerTestTemplate
-{
-    private static final String TEST_RESOURCES_FOLDER = INTEGRATION_TESTS_RESOURCE_PATH + "projects/";
+class ProjectControllerTest extends ControllerTestTemplate {
+    private static final String TEST_RESOURCES_FOLDER =
+        INTEGRATION_TESTS_RESOURCE_PATH + "projects/";
 
     @Autowired
     private SequenceResetter sequenceResetter;
@@ -37,8 +37,7 @@ class ProjectControllerTest extends ControllerTestTemplate
     private RestCaller restCaller;
 
     @BeforeEach
-    public void setup() throws Exception
-    {
+    public void setup() throws Exception {
         setTestUserSecurityContext();
         resultValidator = new ResultValidator();
         restCaller = new RestCaller(mvc(), accessToken);
@@ -47,16 +46,14 @@ class ProjectControllerTest extends ControllerTestTemplate
     @Test
     @DatabaseSetup(DBSetupFilesPaths.MULTIPLE_PROJECTS)
     @DatabaseTearDown(type = DatabaseOperation.DELETE_ALL, value = DBSetupFilesPaths.MULTIPLE_PROJECTS)
-    void testGetOneProject() throws Exception
-    {
+    void testGetOneProject() throws Exception {
         String url = "/api/projects/TPN:000000001";
         String expectedJsonPath = getCompleteResourcePath("expectedProjectTPN_000000001.json");
         String obtainedJson = restCaller.executeGetAndDocument(url, documentSingleProject());
         resultValidator.validateObtainedMatchesJson(obtainedJson, expectedJsonPath);
     }
 
-    private ResultHandler documentSingleProject()
-    {
+    private ResultHandler documentSingleProject() {
         return document(
             "projects/getProject",
             responseFields(ProjectFieldsDescriptors.getResponseFieldDescriptions()));
@@ -65,8 +62,7 @@ class ProjectControllerTest extends ControllerTestTemplate
     @Test
     @DatabaseSetup(DBSetupFilesPaths.MULTIPLE_PROJECTS)
     @DatabaseTearDown(type = DatabaseOperation.DELETE_ALL, value = DBSetupFilesPaths.MULTIPLE_PROJECTS)
-    void testGetOneProjectNotExisting() throws Exception
-    {
+    void testGetOneProjectNotExisting() throws Exception {
         mvc().perform(MockMvcRequestBuilders
             .get("/api/projects/TPN:01X")
             .header("Authorization", accessToken))
@@ -76,30 +72,29 @@ class ProjectControllerTest extends ControllerTestTemplate
     @Test
     @DatabaseSetup(DBSetupFilesPaths.MULTIPLE_PROJECTS)
     @DatabaseTearDown(type = DatabaseOperation.DELETE_ALL, value = DBSetupFilesPaths.MULTIPLE_PROJECTS)
-    void testGetAllProjects() throws Exception
-    {
+    void testGetAllProjects() throws Exception {
         String url = "/api/projects";
         String expectedJsonPath = getCompleteResourcePath("expectedAllProjects.json");
-        String obtainedJson = restCaller.executeGetAndDocument(url, document("projects/allProjects"));
+        String obtainedJson =
+            restCaller.executeGetAndDocument(url, document("projects/allProjects"));
         resultValidator.validateObtainedMatchesJson(obtainedJson, expectedJsonPath);
     }
 
     @Test
     @DatabaseSetup(DBSetupFilesPaths.MULTIPLE_PROJECTS)
     @DatabaseTearDown(type = DatabaseOperation.DELETE_ALL, value = DBSetupFilesPaths.MULTIPLE_PROJECTS)
-    void testGetAllProjectsWithFilter() throws Exception
-    {
+    void testGetAllProjectsWithFilter() throws Exception {
         String url = "/api/projects?assignmentStatusName=Assigned";
         String expectedJsonPath = getCompleteResourcePath("expectedFilteredProjects.json");
-        String obtainedJson = restCaller.executeGetAndDocument(url, document("projects/allProjectsWithFilter"));
+        String obtainedJson =
+            restCaller.executeGetAndDocument(url, document("projects/allProjectsWithFilter"));
         resultValidator.validateObtainedMatchesJson(obtainedJson, expectedJsonPath);
     }
 
     @Test
     @DatabaseSetup(DBSetupFilesPaths.MULTIPLE_PROJECTS)
     @DatabaseTearDown(type = DatabaseOperation.DELETE_ALL, value = DBSetupFilesPaths.MULTIPLE_PROJECTS)
-    void testUpdateProject() throws Exception
-    {
+    void testUpdateProject() throws Exception {
         String payload = loadFromResource("projectTPN_000000001UpdatePayload.json");
         String url = "/api/projects/TPN:000000001";
         String obtainedJson =
@@ -109,22 +104,20 @@ class ProjectControllerTest extends ControllerTestTemplate
         verifyUpdatedProject(projectUrl, "expectedUpdatedProjectTPN_000000001.json");
     }
 
-    private void verifyUpdateResponse(String obtainedJson, String expectedJsonPath) throws Exception
-    {
+    private void verifyUpdateResponse(String obtainedJson, String expectedJsonPath)
+        throws Exception {
         String expectedJsonCompletePath = getCompleteResourcePath(expectedJsonPath);
         resultValidator.validateObtainedMatchesJson(
             obtainedJson, expectedJsonCompletePath, ChangeResponseCustomizations.ignoreDates());
     }
 
-    private void verifyUpdatedProject(String projectUrl, String expectedJsonPath) throws Exception
-    {
+    private void verifyUpdatedProject(String projectUrl, String expectedJsonPath) throws Exception {
         String expectedJsonCompletePath = getCompleteResourcePath(expectedJsonPath);
         String obtainedMProject = restCaller.executeGet(projectUrl);
         resultValidator.validateObtainedMatchesJson(obtainedMProject, expectedJsonCompletePath);
     }
 
-    private ResultHandler documentUpdateOfProject()
-    {
+    private ResultHandler documentUpdateOfProject() {
         List<FieldDescriptor> descriptors = ProjectFieldsDescriptors.getSharedFieldDescriptions();
         descriptors.add(ProjectFieldsDescriptors.getTpnDescriptor());
         return document(
@@ -136,11 +129,11 @@ class ProjectControllerTest extends ControllerTestTemplate
     @Test
     @DatabaseSetup(DBSetupFilesPaths.MULTIPLE_PROJECTS)
     @DatabaseTearDown(type = DatabaseOperation.DELETE_ALL, value = DBSetupFilesPaths.MULTIPLE_PROJECTS)
-    void testCreateProject() throws Exception
-    {
+    void testCreateProject() throws Exception {
         sequenceResetter.syncSequence("PROJECT_CONSORTIUM_SEQ", "PROJECT_CONSORTIUM");
         sequenceResetter.syncSequence("PROJECT_INTENTION_SEQ", "PROJECT_INTENTION");
-        sequenceResetter.syncSequence("PROJECT_INTENTION_SEQUENCE_SEQ", "PROJECT_INTENTION_SEQUENCE");
+        sequenceResetter
+            .syncSequence("PROJECT_INTENTION_SEQUENCE_SEQ", "PROJECT_INTENTION_SEQUENCE");
         sequenceResetter.syncSequence("PROJECT_SEQ", "PROJECT");
         sequenceResetter.syncSequence("PLAN_SEQ", "PLAN");
         sequenceResetter.syncSequence("SEQUENCE_SEQ", "SEQUENCE");
@@ -156,23 +149,26 @@ class ProjectControllerTest extends ControllerTestTemplate
         verifyProjectCreation(projectLink, "expectedCreatedProject.json");
     }
 
-    private void verifyCreationResponse(String obtainedJson, String expectedJsonPath) throws Exception
-    {
+    private void verifyCreationResponse(String obtainedJson, String expectedJsonPath)
+        throws Exception {
         String expectedJsonCompletePath = getCompleteResourcePath(expectedJsonPath);
         resultValidator.validateObtainedMatchesJson(
             obtainedJson, expectedJsonCompletePath, ChangeResponseCustomizations.ignoreDates());
     }
 
-    private void verifyProjectCreation(String projectLink, String expectedJsonPath) throws Exception
-    {
+    private void verifyProjectCreation(String projectLink, String expectedJsonPath)
+        throws Exception {
         String expectedJsonCompletePath = getCompleteResourcePath(expectedJsonPath);
-        String obtained = restCaller.executeGet(projectLink);
+        String obtained = restCaller.executeGet(projectLink)
+            .replaceAll("http://localhost:8080/api/plans/PIN:0000000004",
+                "http://localhost:8080/api/plans/PIN%3A0000000004")
+            .replaceAll("http://localhost:8080/api/plans/PIN:0000000016",
+                "http://localhost:8080/api/plans/PIN%3A0000000016");
         resultValidator.validateObtainedMatchesJson(
-             obtained, expectedJsonCompletePath, ProjectCustomizations.ignoreIdsAndDates());
+            obtained, expectedJsonCompletePath, ProjectCustomizations.ignoreIdsAndDates());
     }
 
-    private ResultHandler documentCreationOfProject()
-    {
+    private ResultHandler documentCreationOfProject() {
         return document(
             "projects/postProject",
             requestFields(ProjectFieldsDescriptors.getCreationFieldDescriptions()),
@@ -181,14 +177,12 @@ class ProjectControllerTest extends ControllerTestTemplate
     }
 
     private String loadFromResource(String resourceName)
-        throws IOException
-    {
+        throws IOException {
         String completeResourcePath = getCompleteResourcePath(resourceName);
         return TestResourceLoader.loadJsonFromResource(completeResourcePath);
     }
 
-    private String getCompleteResourcePath(String resourceJsonName)
-    {
+    private String getCompleteResourcePath(String resourceJsonName) {
         return TEST_RESOURCES_FOLDER + resourceJsonName;
     }
 }

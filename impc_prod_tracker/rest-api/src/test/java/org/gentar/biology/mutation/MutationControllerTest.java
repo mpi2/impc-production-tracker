@@ -102,7 +102,7 @@ class MutationControllerTest extends ControllerTestTemplate
         String obtainedJson =
             restCaller.executePutAndDocument(url, payload, document("mutations/mutation/putMutation"));
         verifyUpdateResponse(obtainedJson, "expectedResponseUpdateMutationMIN_000000000002.json");
-        String mutationUrl = LinkUtil.getSelfHrefLinkStringFromJson(obtainedJson);
+        String mutationUrl = LinkUtil.getSelfHrefLinkStringFromJson(obtainedJson).replaceAll("%3A",":");
         verifyUpdatedMutation(mutationUrl, "expectedMutationMIN_000000000002AfterUpdate.json");
     }
 

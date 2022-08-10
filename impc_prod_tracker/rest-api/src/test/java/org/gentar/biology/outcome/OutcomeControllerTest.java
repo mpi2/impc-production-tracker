@@ -154,7 +154,7 @@ class OutcomeControllerTest extends ControllerTestTemplate
         ChangeResponse changeResponse = JsonHelper.fromJson(obtainedJson, ChangeResponse.class);
         verifyChangeResponse(changeResponse);
 
-        String outcomeUrl = LinkUtil.getSelfHrefLinkStringFromJson(obtainedJson);
+        String outcomeUrl = LinkUtil.getSelfHrefLinkStringFromJson(obtainedJson).replaceAll("%3A",":");
         verifyUpdatedOutcome(outcomeUrl, expectedJson);
     }
 

@@ -11,10 +11,10 @@
   "esCellAlleleModificationStartingPoint":{
     "_links":{
       "outcome":{
-        "href":"http://localhost:8080/api/plans/PIN:0000000010/outcomes/TPO:000000000003"
+        "href":"http://localhost:8080/api/plans/PIN%3A0000000010/outcomes/TPO%3A000000000003"
       },
       "productionPlan":{
-        "href":"http://localhost:8080/api/plans/PIN:0000000010"
+        "href":"http://localhost:8080/api/plans/PIN%3A0000000010"
       }
     },
     "outcomeTpo":"TPO:000000000003",
@@ -33,10 +33,10 @@
   "summaryStatusName":"Cre Excision Complete",
   "_links":{
     "self":{
-      "href":"http://localhost:8080/api/plans/PIN:0000000009"
+      "href":"http://localhost:8080/api/plans/PIN%3A0000000009"
     },
     "project":{
-      "href":"http://localhost:8080/api/projects/TPN:000000003"
+      "href":"http://localhost:8080/api/projects/TPN%3A000000003"
     }
   },
   "statusDates":[

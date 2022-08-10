@@ -17,10 +17,10 @@
   ],
   "_links":{
     "self":{
-      "href":"http://localhost:8080/api/plans/PIN:0000000002/phenotypingStages/PSN:000000000000"
+      "href":"http://localhost:8080/api/plans/PIN%3A0000000002/phenotypingStages/PSN:000000000000"
     },
     "plan":{
-      "href":"http://localhost:8080/api/plans/PIN:0000000002"
+      "href":"http://localhost:8080/api/plans/PIN%3A0000000002"
     }
   },
   "statusDates":[

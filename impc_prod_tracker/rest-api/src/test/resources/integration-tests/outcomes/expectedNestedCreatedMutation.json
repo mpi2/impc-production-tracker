@@ -36,7 +36,7 @@
     },
     "outcomes":[
       {
-        "href":"http://localhost:8080/api/plans/PIN:0000000001/outcomes/TPO:000000000007"
+        "href":"http://localhost:8080/api/plans/PIN%3A0000000001/outcomes/TPO:000000000007"
       }
     ]
   },

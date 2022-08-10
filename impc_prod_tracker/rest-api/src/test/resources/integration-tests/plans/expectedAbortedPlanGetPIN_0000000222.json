@@ -83,10 +83,10 @@
   "summaryStatusName":"Attempt Aborted",
   "_links":{
     "self":{
-      "href":"http://localhost:8080/api/plans/PIN:0000000222"
+      "href":"http://localhost:8080/api/plans/PIN%3A0000000222"
     },
     "project":{
-      "href":"http://localhost:8080/api/projects/TPN:000000222"
+      "href":"http://localhost:8080/api/projects/TPN%3A000000222"
     }
   },
   "statusDates":[
