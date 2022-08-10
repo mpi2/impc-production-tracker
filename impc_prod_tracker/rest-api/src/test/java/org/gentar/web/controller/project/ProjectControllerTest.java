@@ -163,7 +163,9 @@ class ProjectControllerTest extends ControllerTestTemplate {
             .replaceAll("http://localhost:8080/api/plans/PIN:0000000004",
                 "http://localhost:8080/api/plans/PIN%3A0000000004")
             .replaceAll("http://localhost:8080/api/plans/PIN:0000000016",
-                "http://localhost:8080/api/plans/PIN%3A0000000016");
+                "http://localhost:8080/api/plans/PIN%3A0000000016")
+            .replaceAll("http://localhost:8080/api/plans/PIN:0000000018",
+                "http://localhost:8080/api/plans/PIN%3A0000000018");
         resultValidator.validateObtainedMatchesJson(
             obtained, expectedJsonCompletePath, ProjectCustomizations.ignoreIdsAndDates());
     }
