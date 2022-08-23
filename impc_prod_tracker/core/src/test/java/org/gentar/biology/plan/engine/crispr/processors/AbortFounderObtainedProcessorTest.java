@@ -47,7 +47,7 @@ class AbortFounderObtainedProcessorTest
             .withStatus(CrisprProductionPlanState.FounderObtained.getInternalName())
             .build();
 
-        plan.setEvent(CrisprProductionPlanEvent.abortWhenFounderObtained);
+        plan.setProcessDataEvent(CrisprProductionPlanEvent.abortWhenFounderObtained);
         testInstance.process(plan);
 
         verify(planStateSetter, times(1)).setStatusByName(any(Plan.class), any(String.class));
@@ -66,7 +66,7 @@ class AbortFounderObtainedProcessorTest
         outcomes.add(outcome2);
         plan.setOutcomes(outcomes);
 
-        plan.setEvent(CrisprProductionPlanEvent.abortWhenFounderObtained);
+        plan.setProcessDataEvent(CrisprProductionPlanEvent.abortWhenFounderObtained);
         testInstance.process(plan);
 
         verify(planStateSetter, times(1)).setStatusByName(any(Plan.class), any(String.class));
@@ -85,7 +85,7 @@ class AbortFounderObtainedProcessorTest
         outcomes.add(outcome2);
         plan.setOutcomes(outcomes);
 
-        plan.setEvent(CrisprProductionPlanEvent.abortWhenFounderObtained);
+        plan.setProcessDataEvent(CrisprProductionPlanEvent.abortWhenFounderObtained);
         UserOperationFailedException thrown = assertThrows(UserOperationFailedException.class,
             () -> testInstance.process(plan), "Exception not thrown");
         assertThat(

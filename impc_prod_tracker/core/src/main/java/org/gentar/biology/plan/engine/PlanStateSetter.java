@@ -59,7 +59,7 @@ public class PlanStateSetter implements StateSetter
         }
         PlanStatusStamp planStatusStamp = new PlanStatusStamp();
         planStatusStamp.setPlan(plan);
-        planStatusStamp.setStatus(plan.getStatus());
+        planStatusStamp.setStatus(plan.getProcessDataStatus());
         planStatusStamp.setDate(LocalDateTime.now());
         stamps.add(planStatusStamp);
         plan.setPlanStatusStamps(stamps);

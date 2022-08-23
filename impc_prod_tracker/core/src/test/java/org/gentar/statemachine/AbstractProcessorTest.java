@@ -51,7 +51,7 @@ class AbstractProcessorTest
     public void testNoStatusChangeWhenEventIsNull()
     {
         Plan plan = new Plan();
-        plan.setEvent(null);
+        plan.setProcessDataEvent(null);
 
         testInstance.process(plan);
 
@@ -62,7 +62,7 @@ class AbstractProcessorTest
     public void testNoStatusChangeWhenNoConditionsMet()
     {
         Plan plan = new Plan();
-        plan.setEvent(null);
+        plan.setProcessDataEvent(null);
 
         testInstance.process(plan);
 
@@ -75,7 +75,7 @@ class AbstractProcessorTest
         Plan plan = PlanBuilder.getInstance()
             .withStatus(CrisprProductionPlanState.EmbryosObtained.getInternalName())
             .build();
-        plan.setEvent(CrisprProductionPlanEvent.updateToInProgress);
+        plan.setProcessDataEvent(CrisprProductionPlanEvent.updateToInProgress);
 
         UserOperationFailedException thrown = assertThrows(UserOperationFailedException.class,
             () -> testInstance.process(plan),
@@ -94,7 +94,7 @@ class AbstractProcessorTest
         Plan plan = PlanBuilder.getInstance()
             .withStatus(CrisprProductionPlanState.PlanCreated.getInternalName())
             .build();
-        plan.setEvent(CrisprProductionPlanEvent.updateToInProgress);
+        plan.setProcessDataEvent(CrisprProductionPlanEvent.updateToInProgress);
 
         testInstance.process(plan);
 

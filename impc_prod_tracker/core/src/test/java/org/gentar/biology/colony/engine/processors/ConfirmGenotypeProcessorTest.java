@@ -53,7 +53,7 @@ class ConfirmGenotypeProcessorTest
     public void testWhenNoInformationExists()
     {
         Colony colony = buildColony(1L, ColonyState.GenotypeInProgress.getInternalName());
-        colony.setEvent(ColonyEvent.confirmGenotypeWhenInProgress);
+        colony.setProcessDataEvent(ColonyEvent.confirmGenotypeWhenInProgress);
 
         UserOperationFailedException thrown = assertThrows(UserOperationFailedException.class,
             () -> testInstance.process(colony), "Exception not thrown");
@@ -64,7 +64,7 @@ class ConfirmGenotypeProcessorTest
     public void testWhenOutcomeSequenceExists()
     {
         Colony colony = buildColonyWithOutcomeSequence(1L);
-        colony.setEvent(ColonyEvent.confirmGenotypeWhenInProgress);
+        colony.setProcessDataEvent(ColonyEvent.confirmGenotypeWhenInProgress);
 
         UserOperationFailedException thrown = assertThrows(UserOperationFailedException.class,
             () -> testInstance.process(colony), "Transition cannot be executed At least one sequence and All mutation symbols must exist.");
@@ -91,7 +91,7 @@ class ConfirmGenotypeProcessorTest
         Set<Mutation> mutations = new HashSet<>();
         mutations.add(mutation);
         colony.getOutcome().setMutations(mutations);
-        colony.setEvent(ColonyEvent.confirmGenotypeWhenInProgress);
+        colony.setProcessDataEvent(ColonyEvent.confirmGenotypeWhenInProgress);
 
         UserOperationFailedException thrown = assertThrows(UserOperationFailedException.class,
             () -> testInstance.process(colony), "Exception not thrown");
@@ -104,7 +104,7 @@ class ConfirmGenotypeProcessorTest
         Colony colony = buildColonyWithOutcomeSequence(1L);
         Mutation mutation = colony.getOutcome().getMutations().iterator().next();
         mutation.setSymbol("mgiAlleleSymbol");
-        colony.setEvent(ColonyEvent.confirmGenotypeWhenInProgress);
+        colony.setProcessDataEvent(ColonyEvent.confirmGenotypeWhenInProgress);
 
         testInstance.process(colony);
 
@@ -142,7 +142,7 @@ class ConfirmGenotypeProcessorTest
         mutation.setSymbol("mgiAlleleSymbol");
         colony.setLegacyModification(false);
         colony.setLegacyWithoutSequence(false);
-        colony.setEvent(ColonyEvent.confirmGenotypeWhenInProgress);
+        colony.setProcessDataEvent(ColonyEvent.confirmGenotypeWhenInProgress);
 
         UserOperationFailedException thrown = assertThrows(UserOperationFailedException.class,
             () -> testInstance.process(colony), "Exception not thrown");

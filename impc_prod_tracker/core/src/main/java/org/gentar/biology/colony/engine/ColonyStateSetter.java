@@ -50,7 +50,7 @@ public class ColonyStateSetter implements StateSetter
         }
         ColonyStatusStamp colonyStatusStamp = new ColonyStatusStamp();
         colonyStatusStamp.setColony(colony);
-        colonyStatusStamp.setStatus(colony.getStatus());
+        colonyStatusStamp.setStatus(colony.getProcessDataStatus());
         colonyStatusStamp.setDate(LocalDateTime.now());
         stamps.add(colonyStatusStamp);
         colony.setColonyStatusStamps(stamps);

@@ -45,7 +45,7 @@ class PhenotypePlanAbortProcessorTest
                 .withStatus(PhenotypePlanState.PlanCreated.getInternalName())
                 .build();
 
-        plan.setEvent(PhenotypePlanEvent.abortPhenotypingPlan);
+        plan.setProcessDataEvent(PhenotypePlanEvent.abortPhenotypingPlan);
         testInstance.process(plan);
 
         verify(planStateSetter, times(1)).setStatusByName(any(Plan.class), any(String.class));
@@ -66,7 +66,7 @@ class PhenotypePlanAbortProcessorTest
         phenotypingAttempt.setPhenotypingStages(phenotypingStages);
         plan.setPhenotypingAttempt(phenotypingAttempt);
 
-        plan.setEvent(PhenotypePlanEvent.abortPhenotypingPlan);
+        plan.setProcessDataEvent(PhenotypePlanEvent.abortPhenotypingPlan);
         testInstance.process(plan);
 
         verify(planStateSetter, times(1)).setStatusByName(any(Plan.class), any(String.class));
@@ -87,7 +87,7 @@ class PhenotypePlanAbortProcessorTest
         phenotypingAttempt.setPhenotypingStages(phenotypingStages);
         plan.setPhenotypingAttempt(phenotypingAttempt);
 
-        plan.setEvent(PhenotypePlanEvent.abortPhenotypingPlan);
+        plan.setProcessDataEvent(PhenotypePlanEvent.abortPhenotypingPlan);
         UserOperationFailedException thrown = assertThrows(UserOperationFailedException.class,
             () -> testInstance.process(plan), "Exception not thrown");
         assertThat(

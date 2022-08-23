@@ -7,8 +7,8 @@ import org.gentar.biology.status.Status;
  */
 public interface ProcessData
 {
-    ProcessEvent getEvent();
-    void setEvent(ProcessEvent processEvent);
-    Status getStatus();
+    ProcessEvent getProcessDataEvent();
+    void setProcessDataEvent(ProcessEvent processEvent);
+    Status getProcessDataStatus();
     void setProcessDataStatus(Status status);
 }

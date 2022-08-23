@@ -1,9 +1,6 @@
 package org.gentar.biology.colony;
 
 import org.apache.logging.log4j.util.Strings;
-import org.gentar.biology.colony.Colony;
-import org.gentar.biology.colony.ColonyRepository;
-import org.gentar.biology.plan.Plan;
 import org.gentar.biology.plan.attempt.phenotyping.stage.PhenotypingStage;
 import org.gentar.biology.plan.starting_point.PlanStartingPoint;
 import org.gentar.biology.plan.starting_point.PlanStartingPointRepository;
@@ -49,7 +46,7 @@ public class ColonyValidator
 
     public void validateDataForStartingPoint(Colony colony)
     {
-        if (!StatusNames.GENOTYPE_CONFIRMED.equals(colony.getStatus().getName()))
+        if (!StatusNames.GENOTYPE_CONFIRMED.equals(colony.getProcessDataStatus().getName()))
         {
             throw new UserOperationFailedException(COLONY_IS_NOT_GENOTYPE_CONFIRMED);
         }
@@ -75,9 +72,9 @@ public class ColonyValidator
                     phenotypingStages.forEach(phenotypingStage ->
                     {
                         if ( (phenotypingStage.getPhenotypingStageType().getName().equals("early adult and embryo") &&
-                                phenotypingStage.getStatus().getOrdering() >= 253000) ||
+                                phenotypingStage.getProcessDataStatus().getOrdering() >= 253000) ||
                                 (phenotypingStage.getPhenotypingStageType().getName().equals("late adult") &&
-                                        phenotypingStage.getStatus().getOrdering() >= 301000) )
+                                        phenotypingStage.getProcessDataStatus().getOrdering() >= 301000) )
                         {
                             throw new UserOperationFailedException(COLONY_IS_A_STARTING_POINT);
                         }

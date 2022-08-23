@@ -1,10 +1,9 @@
 package org.gentar.biology.plan.attempt.phenotyping.stage;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 import org.gentar.Mapper;
-import org.gentar.biology.mutation.Mutation;
-import org.gentar.biology.mutation.MutationController;
-import org.gentar.biology.mutation.MutationResponseDTO;
-import org.gentar.biology.outcome.Outcome;
 import org.gentar.biology.plan.PlanController;
 import org.gentar.biology.plan.attempt.phenotyping.stage.status_stamp.PhenotypingStageStatusStamp;
 import org.gentar.biology.status_stamps.StatusStampsDTO;
@@ -47,7 +46,7 @@ public class PhenotypingStageResponseMapper implements Mapper<PhenotypingStage, 
         {
             PhenotypingStageCommonDTO phenotypingStageCommonDTO =
                 phenotypingStageCommonMapper.toDto(phenotypingStage);
-            phenotypingStageResponseDTO.setStatusName(phenotypingStage.getStatus().getName());
+            phenotypingStageResponseDTO.setStatusName(phenotypingStage.getProcessDataStatus().getName());
             phenotypingStageResponseDTO.setPhenotypingStageCommonDTO(phenotypingStageCommonDTO);
             phenotypingStageResponseDTO.setId(phenotypingStage.getId());
             phenotypingStageResponseDTO.setPhenotypingExternalRef(
@@ -93,7 +92,7 @@ public class PhenotypingStageResponseMapper implements Mapper<PhenotypingStage, 
     private StatusTransitionDTO buildStatusTransitionDTO(PhenotypingStage phenotypingStage)
     {
         StatusTransitionDTO statusTransitionDTO = new StatusTransitionDTO();
-        statusTransitionDTO.setCurrentStatus(phenotypingStage.getStatus().getName());
+        statusTransitionDTO.setCurrentStatus(phenotypingStage.getProcessDataStatus().getName());
         statusTransitionDTO.setTransitions(getTransitions(phenotypingStage));
         return statusTransitionDTO;
     }
@@ -113,6 +112,7 @@ public class PhenotypingStageResponseMapper implements Mapper<PhenotypingStage, 
                 phenotypingStage.getPhenotypingAttempt().getPlan().getPin(),
                 phenotypingStage.getPsn()))
             .withSelfRel();
+        link = link.withHref(decode(link.getHref()));
         phenotypingStageResponseDTO.add(link);
     }
 
@@ -121,6 +121,7 @@ public class PhenotypingStageResponseMapper implements Mapper<PhenotypingStage, 
     {
         Link link = linkTo(methodOn(PlanController.class)
             .findOne(phenotypingStage.getPhenotypingAttempt().getPlan().getPin())).withRel("plan");
+        link = link.withHref(decode(link.getHref()));
         phenotypingStageResponseDTO.add(link);
     }
 
@@ -130,4 +131,14 @@ public class PhenotypingStageResponseMapper implements Mapper<PhenotypingStage, 
         // A PhenotypingStage response does not need to be converted to an entity.
         return null;
     }
+
+    private String decode(String value) {
+        try {
+            return URLDecoder.decode(value, StandardCharsets.UTF_8.toString());
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        return value;
+    }
+
 }

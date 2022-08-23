@@ -121,7 +121,7 @@ class FounderObtainedProcessorTest
         Assay assay = new Assay();
         crisprAttempt.setAssay(assay);
         plan.setCrisprAttempt(crisprAttempt);
-        plan.setEvent(CrisprProductionPlanEvent.updateToFounderObtained);
+        plan.setProcessDataEvent(CrisprProductionPlanEvent.updateToFounderObtained);
         return plan;
     }
 }

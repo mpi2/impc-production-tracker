@@ -1,5 +1,8 @@
 package org.gentar.biology.plan.mappers;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 import org.gentar.Mapper;
 import org.gentar.biology.plan.Plan;
 import org.gentar.biology.plan.PlanController;
@@ -22,8 +25,7 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 @Component
-public class PlanResponseMapper implements Mapper<Plan, PlanResponseDTO>
-{
+public class PlanResponseMapper implements Mapper<Plan, PlanResponseDTO> {
     private final PlanCreationMapper planCreationMapper;
     private final StatusStampMapper statusStampMapper;
     private final PlanService planService;
@@ -33,8 +35,7 @@ public class PlanResponseMapper implements Mapper<Plan, PlanResponseDTO>
         PlanCreationMapper planCreationMapper,
         StatusStampMapper statusStampMapper,
         PlanService planService,
-        TransitionMapper transitionMapper)
-    {
+        TransitionMapper transitionMapper) {
         this.planCreationMapper = planCreationMapper;
         this.statusStampMapper = statusStampMapper;
         this.planService = planService;
@@ -42,17 +43,14 @@ public class PlanResponseMapper implements Mapper<Plan, PlanResponseDTO>
     }
 
     @Override
-    public PlanResponseDTO toDto(Plan plan)
-    {
+    public PlanResponseDTO toDto(Plan plan) {
         PlanResponseDTO planResponseDTO = new PlanResponseDTO();
         planResponseDTO.setPlanCreationDTO(planCreationMapper.toDto(plan));
         planResponseDTO.setPin(plan.getPin());
-        if (plan.getStatus() != null)
-        {
-            planResponseDTO.setStatusName(plan.getStatus().getName());
+        if (plan.getProcessDataStatus() != null) {
+            planResponseDTO.setStatusName(plan.getProcessDataStatus().getName());
         }
-        if (plan.getSummaryStatus() != null)
-        {
+        if (plan.getSummaryStatus() != null) {
             planResponseDTO.setSummaryStatusName(plan.getSummaryStatus().getName());
         }
         setStatusStampsDTOS(planResponseDTO, plan);
@@ -63,61 +61,64 @@ public class PlanResponseMapper implements Mapper<Plan, PlanResponseDTO>
         return planResponseDTO;
     }
 
-    private void setStatusStampsDTOS(PlanResponseDTO planResponseDTO, Plan plan)
-    {
+    private void setStatusStampsDTOS(PlanResponseDTO planResponseDTO, Plan plan) {
         List<StatusStampsDTO> statusStampsDTOS =
             statusStampMapper.toDtos(plan.getPlanStatusStamps());
         statusStampsDTOS.sort(Comparator.comparing(StatusStampsDTO::getDate));
         planResponseDTO.setStatusStampsDTOS(statusStampsDTOS);
     }
 
-    private void setSummaryStatusStampsDTOS(PlanResponseDTO planResponseDTO, Plan plan)
-    {
+    private void setSummaryStatusStampsDTOS(PlanResponseDTO planResponseDTO, Plan plan) {
         List<StatusStampsDTO> statusStampsDTOS =
             statusStampMapper.toDtos(plan.getPlanSummaryStatusStamps());
         statusStampsDTOS.sort(Comparator.comparing(StatusStampsDTO::getDate));
         planResponseDTO.setSummaryStatusStampsDTOS(statusStampsDTOS);
     }
 
-    private void setStatusTransitionDTO(PlanResponseDTO planResponseDTO, Plan plan)
-    {
+    private void setStatusTransitionDTO(PlanResponseDTO planResponseDTO, Plan plan) {
         StatusTransitionDTO statusTransitionDTO = new StatusTransitionDTO();
-        assert plan.getStatus() != null : "Status is null";
-        statusTransitionDTO.setCurrentStatus(plan.getStatus().getName());
+        assert plan.getProcessDataStatus() != null : "Status is null";
+        statusTransitionDTO.setCurrentStatus(plan.getProcessDataStatus().getName());
         statusTransitionDTO.setTransitions(getTransitionsByPlanType(plan));
         planResponseDTO.setStatusTransitionDTO(statusTransitionDTO);
     }
 
-    private List<TransitionDTO> getTransitionsByPlanType(Plan plan)
-    {
+    private List<TransitionDTO> getTransitionsByPlanType(Plan plan) {
         List<TransitionEvaluation> transitionEvaluations =
             planService.evaluateNextTransitions(plan);
         return transitionMapper.toDtos(transitionEvaluations);
     }
 
-    private void addSelfLink(PlanResponseDTO planResponseDTO, Plan plan)
-    {
+    private void addSelfLink(PlanResponseDTO planResponseDTO, Plan plan) {
         Link link = linkTo(methodOn(PlanController.class).findOne(plan.getPin())).withSelfRel();
+        link = link.withHref(decode(link.getHref()));
         planResponseDTO.add(link);
     }
 
-    private void addProjectLink(PlanResponseDTO planResponseDTO, Plan plan)
-    {
+    private void addProjectLink(PlanResponseDTO planResponseDTO, Plan plan) {
         Project project = plan.getProject();
-        if (project != null)
-        {
-            planResponseDTO.add(
-                linkTo(methodOn(ProjectController.class).findOne(project.getTpn()))
-                    .withRel("project"));
+        if (project != null) {
+            Link link = linkTo(methodOn(ProjectController.class).findOne(project.getTpn()))
+                .withRel("project");
+            link = link.withHref(decode(link.getHref()));
+            planResponseDTO.add(link);
         }
     }
 
     @Override
-    public Plan toEntity(PlanResponseDTO planResponseDTO)
-    {
+    public Plan toEntity(PlanResponseDTO planResponseDTO) {
         // We don't need to convert a plan response into a entity. The PlanResponseDTO is meant
         // only to show a response: the transformation of a plan entity into a dto that the user
         // can see.
         return null;
+    }
+
+    private String decode(String value) {
+        try {
+            return URLDecoder.decode(value, StandardCharsets.UTF_8.toString());
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        return value;
     }
 }

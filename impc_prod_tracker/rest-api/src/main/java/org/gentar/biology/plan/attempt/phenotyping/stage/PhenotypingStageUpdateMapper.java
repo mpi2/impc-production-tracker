@@ -48,6 +48,6 @@ public class PhenotypingStageUpdateMapper implements Mapper<PhenotypingStage, Ph
             String action = statusTransitionDTO.getActionToExecute();
             processEvent = phenotypingStageService.getProcessEventByName(phenotypingStage, action);
         }
-        phenotypingStage.setEvent(processEvent);
+        phenotypingStage.setProcessDataEvent(processEvent);
     }
 }

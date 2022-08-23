@@ -26,7 +26,6 @@ import org.gentar.statemachine.ProcessEvent;
 import org.gentar.statemachine.TransitionAvailabilityEvaluator;
 import org.gentar.statemachine.TransitionEvaluation;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Component;
@@ -167,29 +166,29 @@ public class PlanServiceImpl implements PlanService
 
         Plan plan = getNotNullPlanByPin(pin);
 
-        if (plan.getStatus().getIsAbortionStatus()) {
+        if (plan.getProcessDataStatus().getIsAbortionStatus()) {
             return false;
         }
 
         if (plan.getAttemptType().getName().equals(AttemptTypesName.ES_CELL.getLabel()) &&
-            !plan.getStatus().getName().equals("Chimeras/Founder Obtained")) {
+            !plan.getProcessDataStatus().getName().equals("Chimeras/Founder Obtained")) {
             return false;
         }
 
         if (plan.getAttemptType().getName()
             .equals(AttemptTypesName.ES_CELL_ALLELE_MODIFICATION.getLabel()) &&
-            !plan.getStatus().getName().equals("Cre Excision Complete")) {
+            !plan.getProcessDataStatus().getName().equals("Cre Excision Complete")) {
             return false;
         }
 
         if (plan.getAttemptType().getName().equals(AttemptTypesName.CRISPR.getLabel()) &&
-            !plan.getStatus().getName().equals("Founder Obtained")) {
+            !plan.getProcessDataStatus().getName().equals("Founder Obtained")) {
             return false;
         }
 
         if (plan.getAttemptType().getName()
             .equals(AttemptTypesName.HAPLOESSENTIAL_CRISPR.getLabel()) &&
-            !plan.getStatus().getName().equals("Embryos Obtained")) {
+            !plan.getProcessDataStatus().getName().equals("Embryos Obtained")) {
             return false;
         }
 

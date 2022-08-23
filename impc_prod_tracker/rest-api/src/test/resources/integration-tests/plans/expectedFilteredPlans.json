@@ -97,10 +97,10 @@
         "summaryStatusName":"Genotype Confirmed",
         "_links":{
           "self":{
-            "href":"http://localhost:8080/api/plans/PIN%3A0000000001"
+            "href":"http://localhost:8080/api/plans/PIN:0000000001"
           },
           "project":{
-            "href":"http://localhost:8080/api/projects/TPN%3A000000001"
+            "href":"http://localhost:8080/api/projects/TPN:000000001"
           }
         },
         "statusDates":[
@@ -228,10 +228,10 @@
         "summaryStatusName":"Founder Obtained",
         "_links":{
           "self":{
-            "href":"http://localhost:8080/api/plans/PIN%3A0000000222"
+            "href":"http://localhost:8080/api/plans/PIN:0000000222"
           },
           "project":{
-            "href":"http://localhost:8080/api/projects/TPN%3A000000222"
+            "href":"http://localhost:8080/api/projects/TPN:000000222"
           }
         },
         "statusDates":[
@@ -277,7 +277,7 @@
   },
   "_links":{
     "self":{
-      "href":"http://localhost:8080/api/plans?statusName=Founder%20Obtained&attemptTypeName=crispr{&pin,tpn,workUnitName,workGroupName,summaryStatusName,typeName,imitsMiAttemptId,imitsPhenotypeAttemptId,phenotypingExternalRef,doNotCountTowardsCompleteness}",
+      "href":"http://localhost:8080/api/plans?statusName=Founder Obtained&attemptTypeName=crispr{&pin,tpn,workUnitName,workGroupName,summaryStatusName,typeName,imitsMiAttemptId,imitsPhenotypeAttemptId,phenotypingExternalRef,doNotCountTowardsCompleteness}",
       "templated":true
     }
   },

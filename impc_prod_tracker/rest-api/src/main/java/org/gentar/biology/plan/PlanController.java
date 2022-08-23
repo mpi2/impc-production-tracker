@@ -15,6 +15,9 @@
  */
 package org.gentar.biology.plan;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 import org.gentar.audit.history.History;
 import org.gentar.audit.history.HistoryMapper;
 import org.gentar.biology.ChangeResponse;
@@ -31,6 +34,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PagedResourcesAssembler;
 import org.springframework.hateoas.EntityModel;
+import org.springframework.hateoas.Link;
 import org.springframework.hateoas.PagedModel;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -135,14 +139,19 @@ public class PlanController
         Page<Plan> plans = planService.getPageablePlans(pageable, planFilter);
         Page<PlanResponseDTO> planDTOSPage = plans.map(this::getDTO);
 
+        Link link = linkTo(methodOn(PlanController.class)
+            .findAll(pageable, assembler, pins, projectTpns, workUnitNames, workGroupNames,
+                statusNames, summaryStatusNames, typeNames, attemptTypeNames,
+                imitsMiAttempts, imitsPhenotypeAttempts, phenotypingExternalRefs,
+                doNotCountTowardsCompleteness
+            )).withSelfRel();
+
+        link = link.withHref(decode(link.getHref()));
+
         PagedModel pr =
             assembler.toModel(
                 planDTOSPage,
-                linkTo(methodOn(PlanController.class)
-                    .findAll(pageable, assembler, pins, projectTpns, workUnitNames, workGroupNames,
-                        statusNames, summaryStatusNames, typeNames, attemptTypeNames,
-                        imitsMiAttempts,imitsPhenotypeAttempts, phenotypingExternalRefs, doNotCountTowardsCompleteness
-                    )).withSelfRel());
+                link);
 
         HttpHeaders responseHeaders = new HttpHeaders();
         responseHeaders.add("Link", LinkUtil.createLinkHeader(pr));
@@ -228,7 +237,9 @@ public class PlanController
     {
         ChangeResponse changeResponse = new ChangeResponse();
         changeResponse.setHistoryDTOs(historyList);
-        changeResponse.add(linkTo(PlanController.class).slash(plan.getPin()).withSelfRel());
+        Link link = linkTo(PlanController.class).slash(plan.getPin()).withSelfRel();
+        link = link.withHref(decode(link.getHref()));
+        changeResponse.add(link);
         return changeResponse;
     }
 
@@ -236,6 +247,15 @@ public class PlanController
     public List<ExonDTO> getExonsInWge (@PathVariable String marker_symbol)
     {
         return wgeMapper.getExonsByMarkerSymbol(capitalize(marker_symbol));
+    }
+
+    private String decode(String value) {
+        try {
+            return URLDecoder.decode(value, StandardCharsets.UTF_8.toString());
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        return value;
     }
 
 }

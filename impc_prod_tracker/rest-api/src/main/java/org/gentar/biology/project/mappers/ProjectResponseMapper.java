@@ -1,5 +1,8 @@
 package org.gentar.biology.project.mappers;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 import org.gentar.Mapper;
 import org.gentar.biology.colony.Colony;
 import org.gentar.biology.intention.ProjectIntentionResponseDTO;
@@ -152,6 +155,7 @@ public class ProjectResponseMapper implements Mapper<Project, ProjectResponseDTO
         Link link = linkTo(methodOn(ProjectController.class)
             .findOne(project.getTpn()))
             .withSelfRel();
+        link = link.withHref(decode(link.getHref()));
         projectResponseDTO.add(link);
     }
 
@@ -163,4 +167,14 @@ public class ProjectResponseMapper implements Mapper<Project, ProjectResponseDTO
         // can see.
         return null;
     }
+
+    private String decode(String value) {
+        try {
+            return URLDecoder.decode(value, StandardCharsets.UTF_8.toString());
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        return value;
+    }
+
 }

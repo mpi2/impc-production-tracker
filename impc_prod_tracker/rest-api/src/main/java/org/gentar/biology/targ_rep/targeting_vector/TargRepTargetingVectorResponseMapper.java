@@ -3,6 +3,9 @@ package org.gentar.biology.targ_rep.targeting_vector;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 import org.gentar.Mapper;
 import org.gentar.biology.targ_rep.TargRepAlleleResponseDTO;
 import org.gentar.biology.targ_rep.TargRepIkmcProjectDTO;
@@ -156,6 +159,7 @@ public class TargRepTargetingVectorResponseMapper
                              TargRepTargetingVector targRepTargetingVector) {
         Link link = linkTo(methodOn(TargRepTargetingVectorController.class)
             .findTargRepTargetingVectorById(targRepTargetingVector.getId())).withSelfRel();
+        link = link.withHref(decode(link.getHref()));
         targetingVectorResponseDTO.add(link);
     }
 
@@ -163,6 +167,7 @@ public class TargRepTargetingVectorResponseMapper
                                  TargRepPipeline targRepPipeline) {
         Link link = linkTo(methodOn(TargRepPipelineController.class)
             .findTargRepPipelineById(targRepPipeline.getId())).withRel("pipeline");
+        link = link.withHref(decode(link.getHref()));
         targRepPipelineDTO.add(link);
     }
 
@@ -172,7 +177,16 @@ public class TargRepTargetingVectorResponseMapper
         Link link = linkTo(
             methodOn(TargRepAlleleController.class).findTargRepAlleleById(targRepAllele.getId()))
             .withRel("allele");
+        link = link.withHref(decode(link.getHref()));
         targRepAlleleResponseDto.add(link);
     }
 
+    private static String decode(String value) {
+        try {
+            return URLDecoder.decode(value, StandardCharsets.UTF_8.toString());
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        return value;
+    }
 }

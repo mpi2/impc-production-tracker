@@ -34,7 +34,7 @@ class PhenotypingStageProcessorWithoutValidationsTest
     {
         PhenotypingStage phenotypingStage = buildPhenotypingStage(
             PhenotypingStageState.PhenotypingRegistered.getInternalName());
-        phenotypingStage.setEvent(PhenotypingStageEvent.updateToPhenotypingStarted);
+        phenotypingStage.setProcessDataEvent(PhenotypingStageEvent.updateToPhenotypingStarted);
 
         testInstance.process(phenotypingStage);
 

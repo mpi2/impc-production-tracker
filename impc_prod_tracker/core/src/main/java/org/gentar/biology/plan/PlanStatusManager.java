@@ -84,7 +84,7 @@ public class PlanStatusManager
 
     private void executeUserTriggeredTransitions(Plan plan)
     {
-        if (plan.getEvent() != null)
+        if (plan.getProcessDataEvent() != null)
         {
             stateTransitionManager.processEvent(plan);
         }

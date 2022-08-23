@@ -106,13 +106,13 @@ public class ColonyMapper implements Mapper<Colony, ColonyDTO>
             String action = statusTransitionDTO.getActionToExecute();
             processEvent = colonyService.getProcessEventByName(colony, action);
         }
-        colony.setEvent(processEvent);
+        colony.setProcessDataEvent(processEvent);
     }
 
     private StatusTransitionDTO buildStatusTransitionDTO(Colony colony)
     {
         StatusTransitionDTO statusTransitionDTO = new StatusTransitionDTO();
-        statusTransitionDTO.setCurrentStatus(colony.getStatus().getName());
+        statusTransitionDTO.setCurrentStatus(colony.getProcessDataStatus().getName());
         statusTransitionDTO.setTransitions(getTransitions(colony));
         return statusTransitionDTO;
     }

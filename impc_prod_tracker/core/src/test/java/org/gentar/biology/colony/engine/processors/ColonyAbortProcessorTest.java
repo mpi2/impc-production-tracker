@@ -45,7 +45,7 @@ class ColonyAbortProcessorTest
     {
         Colony colony = buildColony(ColonyState.GenotypeNotConfirmed.getInternalName());
 
-        colony.setEvent(ColonyEvent.abortGenotypeNotConfirmed);
+        colony.setProcessDataEvent(ColonyEvent.abortGenotypeNotConfirmed);
         testInstance.process(colony);
 
         verify(colonyStateSetter, times(1)).setStatusByName(any(Colony.class), any(String.class));
@@ -78,7 +78,7 @@ class ColonyAbortProcessorTest
         planStartingPoints.add(planStartingPoint2);
         colony.getOutcome().setPlanStartingPoints(planStartingPoints);
 
-        colony.setEvent(ColonyEvent.abortGenotypeNotConfirmed);
+        colony.setProcessDataEvent(ColonyEvent.abortGenotypeNotConfirmed);
         testInstance.process(colony);
 
         verify(colonyStateSetter, times(1)).setStatusByName(any(Colony.class), any(String.class));
@@ -111,7 +111,7 @@ class ColonyAbortProcessorTest
         planStartingPoints.add(planStartingPoint2);
         colony.getOutcome().setPlanStartingPoints(planStartingPoints);
 
-        colony.setEvent(ColonyEvent.abortGenotypeNotConfirmed);
+        colony.setProcessDataEvent(ColonyEvent.abortGenotypeNotConfirmed);
         UserOperationFailedException thrown = assertThrows(UserOperationFailedException.class,
             () -> testInstance.process(colony), "Exception not thrown");
         assertThat(

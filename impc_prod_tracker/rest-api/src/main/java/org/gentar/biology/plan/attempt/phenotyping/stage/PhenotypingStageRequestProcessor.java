@@ -75,7 +75,7 @@ public class PhenotypingStageRequestProcessor
         {
             String action = phenotypingStageUpdateDTO.getStatusTransitionDTO().getActionToExecute();
             ProcessEvent processEvent = phenotypingStageService.getProcessEventByName(phenotypingStage, action);
-            phenotypingStage.setEvent(processEvent);
+            phenotypingStage.setProcessDataEvent(processEvent);
         }
     }
 

@@ -110,7 +110,7 @@ public class PhenotypingStageStateSetter implements StateSetter
         }
         PhenotypingStageStatusStamp phenotypingStageStatusStamp = new PhenotypingStageStatusStamp();
         phenotypingStageStatusStamp.setPhenotypingStage(phenotypingStage);
-        phenotypingStageStatusStamp.setStatus(phenotypingStage.getStatus());
+        phenotypingStageStatusStamp.setStatus(phenotypingStage.getProcessDataStatus());
         phenotypingStageStatusStamp.setDate(LocalDateTime.now());
         stamps.add(phenotypingStageStatusStamp);
         phenotypingStage.setPhenotypingStageStatusStamps(stamps);

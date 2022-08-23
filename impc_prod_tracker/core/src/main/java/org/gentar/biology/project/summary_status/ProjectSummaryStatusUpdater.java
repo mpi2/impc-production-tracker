@@ -57,7 +57,7 @@ public class ProjectSummaryStatusUpdater
         {
             List<Status> summaryStatusesNotAbortedPlans =
                 plans.stream()
-                    .filter(x -> !x.getStatus().getIsAbortionStatus())
+                    .filter(x -> !x.getProcessDataStatus().getIsAbortionStatus())
                     .map(Plan::getSummaryStatus)
                     .collect(Collectors.toList());
             mostAdvancedSummaryStatus = summaryStatusesNotAbortedPlans
