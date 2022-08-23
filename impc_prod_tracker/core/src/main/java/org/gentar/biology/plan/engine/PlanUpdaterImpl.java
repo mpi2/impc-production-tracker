@@ -1,6 +1,5 @@
 package org.gentar.biology.plan.engine;
 
-import org.gentar.audit.history.detail.HistoryDetail;
 import org.gentar.biology.plan.PlanStatusManager;
 import org.gentar.biology.plan.Plan_;
 import org.gentar.biology.project.ProjectService;
@@ -41,9 +40,9 @@ public class PlanUpdaterImpl implements PlanUpdater
     {
         validatePermissionToUpdatePlan(newPlan);
         History history = new History();
-        if (newPlan.getEvent() != null && newPlan.getEvent().getName().equals("abandonWhenCreated")) {
+        if (newPlan.getProcessDataEvent() != null && newPlan.getProcessDataEvent().getName().equals("abandonWhenCreated")) {
             Plan newOriginalPlan = new Plan(originalPlan);
-            newOriginalPlan.setEvent(newPlan.getEvent());
+            newOriginalPlan.setProcessDataEvent(newPlan.getProcessDataEvent());
             changeStatusIfNeeded(newOriginalPlan);
             history = detectTrackOfChanges(originalPlan, newOriginalPlan);
             saveChanges(newOriginalPlan);

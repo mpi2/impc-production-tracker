@@ -233,6 +233,21 @@ public class Plan extends BaseEntity implements Resource<Plan>, ProcessData
     }
 
     @Override
+    public ProcessEvent getProcessDataEvent() {
+        return this.event;
+    }
+
+    @Override
+    public void setProcessDataEvent(ProcessEvent processEvent) {
+        this.event=processEvent;
+    }
+
+    @Override
+    public Status getProcessDataStatus() {
+        return this.status;
+    }
+
+    @Override
     public void setProcessDataStatus(Status status) {
         this.status=status;
     }

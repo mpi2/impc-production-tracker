@@ -50,7 +50,7 @@ public class SpecimenStateSetter implements StateSetter
         }
         SpecimenStatusStamp SpecimenStatusStamp = new SpecimenStatusStamp();
         SpecimenStatusStamp.setSpecimen(Specimen);
-        SpecimenStatusStamp.setStatus(Specimen.getStatus());
+        SpecimenStatusStamp.setStatus(Specimen.getProcessDataStatus());
         SpecimenStatusStamp.setDate(LocalDateTime.now());
         stamps.add(SpecimenStatusStamp);
         Specimen.setSpecimenStatusStamps(stamps);

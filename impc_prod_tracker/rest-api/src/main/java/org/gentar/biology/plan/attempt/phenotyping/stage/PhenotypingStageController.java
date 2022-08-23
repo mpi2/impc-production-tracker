@@ -1,5 +1,8 @@
 package org.gentar.biology.plan.attempt.phenotyping.stage;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 import org.gentar.audit.history.History;
 import org.gentar.audit.history.HistoryMapper;
 import org.gentar.biology.ChangeResponse;
@@ -141,11 +144,13 @@ public class PhenotypingStageController
         ChangeResponse changeResponse = new ChangeResponse();
         changeResponse.setHistoryDTOs(historyList);
 
-        changeResponse.add(linkTo(PhenotypingStageController.class)
+        Link link = linkTo(PhenotypingStageController.class)
             .slash("plans")
             .slash(phenotypingStage.getPhenotypingAttempt().getPlan().getPin())
             .slash("phenotypingStages")
-            .slash(phenotypingStage.getPsn()).withSelfRel());
+            .slash(phenotypingStage.getPsn()).withSelfRel();
+        link = link.withHref(decode(link.getHref()));
+        changeResponse.add(link);
         return changeResponse;
     }
 
@@ -157,7 +162,18 @@ public class PhenotypingStageController
 
     private Link buildPhenotypingStageLink(String pin, String psn)
     {
-        return linkTo(methodOn(PhenotypingStageController.class).findOneByPlanAndPsn(pin, psn))
+        Link link = linkTo(methodOn(PhenotypingStageController.class).findOneByPlanAndPsn(pin, psn))
             .withSelfRel();
+        link = link.withHref(decode(link.getHref()));
+        return link;
+    }
+
+    private String decode(String value) {
+        try {
+            return URLDecoder.decode(value, StandardCharsets.UTF_8.toString());
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        return value;
     }
 }

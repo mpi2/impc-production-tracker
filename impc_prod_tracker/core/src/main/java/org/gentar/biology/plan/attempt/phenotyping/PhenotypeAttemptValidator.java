@@ -61,9 +61,9 @@ public class PhenotypeAttemptValidator
             Set<PhenotypingStage> phenotypingStages = phenotypingAttempt.getPhenotypingStages();
             var matchPhenotypingStage = phenotypingStages.stream().anyMatch(ps ->
                     (ps.getPhenotypingStageType().getName().equals("early adult and embryo")
-                            && ps.getStatus().getOrdering() >= 151000 && ps.getStatus().getOrdering() <= 257000) ||
+                            && ps.getProcessDataStatus().getOrdering() >= 151000 && ps.getProcessDataStatus().getOrdering() <= 257000) ||
                     (ps.getPhenotypingStageType().getName().equals("late adult") &&
-                            ps.getStatus().getOrdering() >= 301000 && ps.getStatus().getOrdering() <= 305000));
+                            ps.getProcessDataStatus().getOrdering() >= 301000 && ps.getProcessDataStatus().getOrdering() <= 305000));
 
             if (matchPhenotypingStage == true)
             {

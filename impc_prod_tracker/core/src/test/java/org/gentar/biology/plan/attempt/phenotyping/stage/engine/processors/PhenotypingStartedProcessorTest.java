@@ -45,7 +45,7 @@ class PhenotypingStartedProcessorTest
     {
         PhenotypingStage phenotypingStage = buildPhenotypingStage(
             PhenotypingStageState.PhenotypingRegistered.getInternalName());
-        phenotypingStage.setEvent(PhenotypingStageEvent.updateToPhenotypingStarted);
+        phenotypingStage.setProcessDataEvent(PhenotypingStageEvent.updateToPhenotypingStarted);
         when(policyEnforcement.hasPermission(any(), anyString())).thenReturn(true);
 
         testInstance.process(phenotypingStage);
@@ -61,7 +61,7 @@ class PhenotypingStartedProcessorTest
     {
         PhenotypingStage phenotypingStage = buildPhenotypingStage(
             PhenotypingStageState.PhenotypingAllDataSent.getInternalName());
-        phenotypingStage.setEvent(PhenotypingStageEvent.updateToPhenotypingStarted);
+        phenotypingStage.setProcessDataEvent(PhenotypingStageEvent.updateToPhenotypingStarted);
         when(policyEnforcement.hasPermission(any(), anyString())).thenReturn(false);
 
         UserOperationFailedException thrown = assertThrows(UserOperationFailedException.class,

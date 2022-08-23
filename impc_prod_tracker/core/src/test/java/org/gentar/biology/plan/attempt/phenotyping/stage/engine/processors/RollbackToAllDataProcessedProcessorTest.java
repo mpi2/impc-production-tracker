@@ -45,7 +45,7 @@ class RollbackToAllDataProcessedProcessorTest
     {
         PhenotypingStage phenotypingStage = buildPhenotypingStage(
             PhenotypingStageState.PhenotypingFinished.getInternalName());
-        phenotypingStage.setEvent(PhenotypingStageEvent.rollbackPhenotypingFinished);
+        phenotypingStage.setProcessDataEvent(PhenotypingStageEvent.rollbackPhenotypingFinished);
         when(policyEnforcement.hasPermission(any(), anyString())).thenReturn(true);
 
         testInstance.process(phenotypingStage);
@@ -61,7 +61,7 @@ class RollbackToAllDataProcessedProcessorTest
     {
         PhenotypingStage phenotypingStage = buildPhenotypingStage(
             PhenotypingStageState.PhenotypingRegistered.getInternalName());
-        phenotypingStage.setEvent(PhenotypingStageEvent.rollbackPhenotypingAllDataProcessed);
+        phenotypingStage.setProcessDataEvent(PhenotypingStageEvent.rollbackPhenotypingAllDataProcessed);
         when(policyEnforcement.hasPermission(any(), anyString())).thenReturn(false);
 
         UserOperationFailedException thrown = assertThrows(UserOperationFailedException.class,

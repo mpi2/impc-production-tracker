@@ -15,6 +15,9 @@
  */
 package org.gentar.biology.gene_list;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 import org.gentar.biology.gene.external_ref.GeneExternalService;
 import org.gentar.biology.gene_list.filter.GeneListFilter;
 import org.gentar.biology.gene_list.filter.GeneListFilterBuilder;
@@ -31,6 +34,7 @@ import org.gentar.organization.consortium.ConsortiumService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PagedResourcesAssembler;
+import org.springframework.hateoas.Link;
 import org.springframework.hateoas.PagedModel;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -187,10 +191,12 @@ public class GeneListController
     {
         Page<ListRecordDTO> geneListRecordDTOPage =
             geneListRecordsPage.map(listRecordMapper::toDto);
+        Link link = linkTo(GeneListController.class).slash(slashContent).withSelfRel();
+        link = link.withHref(decode(link.getHref()));
         PagedModel pr =
             assembler.toModel(
                 geneListRecordDTOPage,
-                linkTo(GeneListController.class).slash(slashContent).withSelfRel());
+                link);
         HttpHeaders responseHeaders = new HttpHeaders();
         responseHeaders.add("Link", LinkUtil.createLinkHeader(pr));
 
@@ -423,5 +429,14 @@ public class GeneListController
             printWriter.flush();
             printWriter.close();
         }
+    }
+
+    private static String decode(String value) {
+        try {
+            return URLDecoder.decode(value, StandardCharsets.UTF_8.toString());
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        return value;
     }
 }

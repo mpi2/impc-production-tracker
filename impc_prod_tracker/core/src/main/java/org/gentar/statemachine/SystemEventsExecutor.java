@@ -43,7 +43,7 @@ public class SystemEventsExecutor
 
     public void execute(ProcessData entity)
     {
-        originalEvent = entity.getEvent();
+        originalEvent = entity.getProcessDataEvent();
         executeNextTransitions(entity);
         resetOriginalEvent(entity);
     }
@@ -65,13 +65,13 @@ public class SystemEventsExecutor
     private boolean tryToExecuteTransition(ProcessEvent transition, ProcessData entity)
     {
         boolean statusChanged = false;
-        String statusNameBeforeTransition = entity.getStatus().getName();
-        entity.setEvent(transition);
+        String statusNameBeforeTransition = entity.getProcessDataStatus().getName();
+        entity.setProcessDataEvent(transition);
         TransitionEvaluation transitionEvaluation =
             stateTransitionManager.evaluateTransition(transition, entity);
         if (transitionEvaluation.isExecutable())
         {
-            Status newStatus = stateTransitionManager.processEvent(entity).getStatus();
+            Status newStatus = stateTransitionManager.processEvent(entity).getProcessDataStatus();
             statusChanged = !statusNameBeforeTransition.equals(newStatus.getName());
             // Already set in processor, needed here because assignation is lost in tests
             entity.setProcessDataStatus(newStatus);
@@ -111,6 +111,6 @@ public class SystemEventsExecutor
     // Set the original event the plan had before any system transition was performed.
     private void resetOriginalEvent(ProcessData entity)
     {
-        entity.setEvent(originalEvent);
+        entity.setProcessDataEvent(originalEvent);
     }
 }

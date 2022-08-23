@@ -49,7 +49,7 @@ class BreedingStartedProcessorTest
         BreedingAttempt breedingAttempt = new BreedingAttempt();
         plan.setBreedingAttempt(breedingAttempt);
 
-        plan.setEvent(BreedingPlanEvent.updateToBreedingStarted);
+        plan.setProcessDataEvent(BreedingPlanEvent.updateToBreedingStarted);
         testInstance.process(plan);
 
         verify(planStateSetter, times(1)).setStatusByName(any(Plan.class), any(String.class));

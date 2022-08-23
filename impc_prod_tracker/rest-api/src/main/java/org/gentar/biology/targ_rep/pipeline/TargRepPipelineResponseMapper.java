@@ -1,5 +1,8 @@
 package org.gentar.biology.targ_rep.pipeline;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 import org.gentar.Mapper;
 import org.gentar.biology.targ_rep.TargRepPipelineResponseDTO;
 import org.springframework.hateoas.Link;
@@ -32,6 +35,16 @@ public class TargRepPipelineResponseMapper implements Mapper<TargRepPipeline, Ta
 
     private void addSelfLink(TargRepPipelineResponseDTO targRepPipelineDTO, TargRepPipeline targRepPipeline) {
         Link link = linkTo(methodOn(TargRepPipelineController.class).findTargRepPipelineById(targRepPipeline.getId())).withSelfRel();
+        link = link.withHref(decode(link.getHref()));
         targRepPipelineDTO.add(link);
+    }
+
+    private static String decode(String value) {
+        try {
+            return URLDecoder.decode(value, StandardCharsets.UTF_8.toString());
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        return value;
     }
 }

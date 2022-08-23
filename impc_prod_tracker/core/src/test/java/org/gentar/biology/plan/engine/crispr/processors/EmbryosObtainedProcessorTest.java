@@ -69,7 +69,7 @@ class EmbryosObtainedProcessorTest
         crisprAttempt.setTotalEmbryosInjected(1);
         crisprAttempt.setTotalEmbryosSurvived(0);
         plan.setCrisprAttempt(crisprAttempt);
-        plan.setEvent(CrisprProductionPlanEvent.updateToEmbryosObtained);
+        plan.setProcessDataEvent(CrisprProductionPlanEvent.updateToEmbryosObtained);
 
         testInstance.process(plan);
 
@@ -89,7 +89,7 @@ class EmbryosObtainedProcessorTest
         crisprAttempt.setTotalEmbryosInjected(0);
         crisprAttempt.setTotalEmbryosSurvived(1);
         plan.setCrisprAttempt(crisprAttempt);
-        plan.setEvent(CrisprProductionPlanEvent.updateToEmbryosObtained);
+        plan.setProcessDataEvent(CrisprProductionPlanEvent.updateToEmbryosObtained);
 
         testInstance.process(plan);
 

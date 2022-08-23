@@ -3,12 +3,16 @@ package org.gentar.biology.targ_rep.pipeline;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 import org.gentar.biology.targ_rep.TargRepPipelineResponseDTO;
 import org.gentar.helpers.LinkUtil;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PagedResourcesAssembler;
 import org.springframework.hateoas.EntityModel;
+import org.springframework.hateoas.Link;
 import org.springframework.hateoas.PagedModel;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -51,10 +55,12 @@ public class TargRepPipelineController {
         Page<TargRepPipelineResponseDTO> targRepPipelineResponseDtosPage =
             targRepPipelines.map(this::getDto);
 
+        Link link = linkTo(methodOn(TargRepPipelineController.class)
+            .findAllTargRepPipelines(pageable, assembler)).withSelfRel();
+        link = link.withHref(decode(link.getHref()));
         PagedModel pr =
             assembler.toModel(targRepPipelineResponseDtosPage,
-                linkTo(methodOn(TargRepPipelineController.class)
-                    .findAllTargRepPipelines(pageable, assembler)).withSelfRel());
+                link);
 
         HttpHeaders responseHeaders = new HttpHeaders();
         responseHeaders.add("Link", LinkUtil.createLinkHeader(pr));
@@ -83,6 +89,15 @@ public class TargRepPipelineController {
         TargRepPipeline targRepPipeline = targRepPipelineService.getNotNullTargRepPipelineById(id);
         entityModel = EntityModel.of(targRepPipelineResponseMapper.toDto(targRepPipeline));
         return entityModel;
+    }
+
+    private static String decode(String value) {
+        try {
+            return URLDecoder.decode(value, StandardCharsets.UTF_8.toString());
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        return value;
     }
 
 }

@@ -15,6 +15,9 @@
  */
 package org.gentar.biology.project;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 import org.gentar.audit.history.History;
 import org.gentar.biology.ChangeResponse;
 import org.gentar.biology.outcome.Outcome;
@@ -38,6 +41,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.data.web.PagedResourcesAssembler;
 import org.springframework.hateoas.EntityModel;
+import org.springframework.hateoas.Link;
 import org.springframework.hateoas.PagedModel;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -131,10 +135,12 @@ public class ProjectController
             .build();
         Page<Project> projectsPage = projectService.getProjects(projectFilter, pageable);
         Page<ProjectResponseDTO> projectDtos = projectsPage.map(this::getDTO);
+        Link link = linkTo(ProjectController.class).withSelfRel();
+        link = link.withHref(decode(link.getHref()));
         PagedModel pr =
             assembler.toModel(
                 projectDtos,
-                linkTo(ProjectController.class).withSelfRel());
+                link);
 
         HttpHeaders responseHeaders = new HttpHeaders();
         responseHeaders.add("Link", LinkUtil.createLinkHeader(pr));
@@ -169,7 +175,9 @@ public class ProjectController
         ChangeResponse changeResponse = new ChangeResponse();
         changeResponse.setHistoryDTOs(historyList);
 
-        changeResponse.add(linkTo(ProjectController.class).slash(project.getTpn()).withSelfRel());
+        Link link = linkTo(ProjectController.class).slash(project.getTpn()).withSelfRel();
+        link = link.withHref(decode(link.getHref()));
+        changeResponse.add(link);
         return changeResponse;
     }
 
@@ -295,5 +303,14 @@ public class ProjectController
         Project project = projectService.getNotNullProjectByTpn(tpn);
         Plan firstPlan = projectService.getFirstProductionPlan(project);
         return planMinimumCreationMapper.toDto(firstPlan);
+    }
+
+    private static String decode(String value) {
+        try {
+            return URLDecoder.decode(value, StandardCharsets.UTF_8.toString());
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        return value;
     }
 }

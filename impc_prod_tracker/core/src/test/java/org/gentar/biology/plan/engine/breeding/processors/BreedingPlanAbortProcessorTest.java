@@ -47,7 +47,7 @@ class BreedingPlanAbortProcessorTest
             .withStatus(BreedingPlanState.BreedingComplete.getInternalName())
             .build();
 
-        plan.setEvent(BreedingPlanEvent.abortWhenBreedingComplete);
+        plan.setProcessDataEvent(BreedingPlanEvent.abortWhenBreedingComplete);
         testInstance.process(plan);
 
         verify(planStateSetter, times(1)).setStatusByName(any(Plan.class), any(String.class));
@@ -66,7 +66,7 @@ class BreedingPlanAbortProcessorTest
         outcomes.add(outcome2);
         plan.setOutcomes(outcomes);
 
-        plan.setEvent(BreedingPlanEvent.abortWhenBreedingComplete);
+        plan.setProcessDataEvent(BreedingPlanEvent.abortWhenBreedingComplete);
         testInstance.process(plan);
 
         verify(planStateSetter, times(1)).setStatusByName(any(Plan.class), any(String.class));
@@ -85,7 +85,7 @@ class BreedingPlanAbortProcessorTest
         outcomes.add(outcome2);
         plan.setOutcomes(outcomes);
 
-        plan.setEvent(BreedingPlanEvent.abortWhenBreedingComplete);
+        plan.setProcessDataEvent(BreedingPlanEvent.abortWhenBreedingComplete);
 
         UserOperationFailedException thrown = assertThrows(UserOperationFailedException.class,
             () -> testInstance.process(plan), "Exception not thrown");

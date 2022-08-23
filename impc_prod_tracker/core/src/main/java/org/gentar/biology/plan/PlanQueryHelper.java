@@ -63,7 +63,7 @@ public class PlanQueryHelper
         List<Colony> colonies = getColoniesByPlan(plan);
         if (!colonies.isEmpty())
         {
-            result = colonies.stream().allMatch(x -> x.getStatus().getIsAbortionStatus());
+            result = colonies.stream().allMatch(x -> x.getProcessDataStatus().getIsAbortionStatus());
         }
         return result;
     }
@@ -74,7 +74,7 @@ public class PlanQueryHelper
         List<Colony> colonies = getColoniesByPlan(plan);
         if (!colonies.isEmpty())
         {
-            result = colonies.stream().anyMatch(x -> x.getStatus().getName().equals(ColonyState.GenotypeConfirmed.getName()));
+            result = colonies.stream().anyMatch(x -> x.getProcessDataStatus().getName().equals(ColonyState.GenotypeConfirmed.getName()));
         }
         return result;
     }
@@ -103,7 +103,7 @@ public class PlanQueryHelper
         List<Specimen> specimens = getSpecimensByPlan(plan);
         if (!specimens.isEmpty())
         {
-            result = specimens.stream().allMatch(x -> x.getStatus().getIsAbortionStatus());
+            result = specimens.stream().allMatch(x -> x.getProcessDataStatus().getIsAbortionStatus());
         }
         return result;
     }
@@ -135,7 +135,7 @@ public class PlanQueryHelper
     {
         List<Status> phenotypingStagesStatuses = new ArrayList<>();
         List<PhenotypingStage> phenotypingStages = getPhenotypingStages(plan);
-        phenotypingStages.forEach(x -> phenotypingStagesStatuses.add(x.getStatus()));
+        phenotypingStages.forEach(x -> phenotypingStagesStatuses.add(x.getProcessDataStatus()));
         return phenotypingStagesStatuses;
     }
 }

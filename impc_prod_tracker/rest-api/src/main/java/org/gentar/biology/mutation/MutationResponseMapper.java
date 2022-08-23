@@ -1,5 +1,8 @@
 package org.gentar.biology.mutation;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 import org.gentar.Mapper;
 import org.gentar.biology.gene.mappers.GeneResponseMapper;
 import org.gentar.biology.outcome.Outcome;
@@ -50,10 +53,13 @@ public class MutationResponseMapper implements Mapper<Mutation, MutationResponse
         Set<Outcome> outcomes = mutation.getOutcomes();
         if (outcomes != null)
         {
-            outcomes.forEach(x ->
-                links.add(linkTo(methodOn(MutationController.class)
+            outcomes.forEach(x -> {
+                Link link = linkTo(methodOn(MutationController.class)
                     .findMutationByMin(mutation.getMin()))
-                    .withSelfRel()));
+                    .withSelfRel();
+                link = link.withHref(decode(link.getHref()));
+                links.add(link);
+            });
         }
         mutationResponseDTO.add(links);
     }
@@ -64,10 +70,13 @@ public class MutationResponseMapper implements Mapper<Mutation, MutationResponse
         Set<Outcome> outcomes = mutation.getOutcomes();
         if (outcomes != null)
         {
-            outcomes.forEach(x ->
-                links.add(linkTo(methodOn(OutcomeController.class)
+            outcomes.forEach(x -> {
+                Link link = linkTo(methodOn(OutcomeController.class)
                     .findOneByPlanAndTpo(x.getPlan().getPin(), x.getTpo()))
-                    .withRel("outcomes")));
+                    .withRel("outcomes");
+                link = link.withHref(decode(link.getHref()));
+                links.add(link);
+            });
         }
         mutationResponseDTO.add(links);
     }
@@ -77,5 +86,14 @@ public class MutationResponseMapper implements Mapper<Mutation, MutationResponse
     {
         // We don't have to make an entity from a response.
         return null;
+    }
+
+    private String decode(String value) {
+        try {
+            return URLDecoder.decode(value, StandardCharsets.UTF_8.toString());
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        return value;
     }
 }

@@ -4,12 +4,16 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 import org.gentar.biology.targ_rep.TargRepTargetingVectorResponseDTO;
 import org.gentar.helpers.LinkUtil;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PagedResourcesAssembler;
 import org.springframework.hateoas.EntityModel;
+import org.springframework.hateoas.Link;
 import org.springframework.hateoas.PagedModel;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -49,10 +53,13 @@ public class TargRepTargetingVectorController {
         Page<TargRepTargetingVectorResponseDTO> targRepTargetingVectorResponseDTOS =
             targetingVectors.map(targetingVectorResponseMapper::toDto);
 
+        Link link = linkTo(methodOn(TargRepTargetingVectorController.class)
+            .findAllTargRepTargetingVector(targetingVectorPageable, targetingVectorAssembler))
+            .withSelfRel();
+        link = link.withHref(decode(link.getHref()));
         PagedModel pr =
             targetingVectorAssembler.toModel(targRepTargetingVectorResponseDTOS,
-                linkTo(methodOn(TargRepTargetingVectorController.class)
-                    .findAllTargRepTargetingVector(targetingVectorPageable, targetingVectorAssembler)).withSelfRel());
+                link);
 
         HttpHeaders responseHeaders = new HttpHeaders();
         responseHeaders.add("Link", LinkUtil.createLinkHeader(pr));
@@ -69,5 +76,12 @@ public class TargRepTargetingVectorController {
         return entityModel;
     }
 
-
+    private static String decode(String value) {
+        try {
+            return URLDecoder.decode(value, StandardCharsets.UTF_8.toString());
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        return value;
+    }
 }

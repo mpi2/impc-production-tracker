@@ -3,6 +3,9 @@ package org.gentar.biology.plan;
 import com.github.springtestdbunit.annotation.DatabaseOperation;
 import com.github.springtestdbunit.annotation.DatabaseSetup;
 import com.github.springtestdbunit.annotation.DatabaseTearDown;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 import org.gentar.audit.history.HistoryFieldsDescriptors;
 import org.gentar.biology.ChangeResponse;
 import org.gentar.common.history.HistoryDTO;
@@ -598,5 +601,4 @@ class PlanControllerTest extends ControllerTestTemplate
         resultValidator.validateObtainedMatchesJson(
                 obtainedEsCellPlan, expectedJson, PlanCustomizations.ignoreIdsAndPinAndDates());
     }
-
 }

@@ -63,7 +63,7 @@ public class OutcomeUpdater
     private void changeStatusIfNeeded(Outcome outcome)
     {
         Colony colony = outcome.getColony();
-        if (colony != null && colony.getEvent() != null)
+        if (colony != null && colony.getProcessDataEvent() != null)
         {
             stateTransitionsManager.processEvent(colony);
         }

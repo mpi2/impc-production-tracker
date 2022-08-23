@@ -48,9 +48,9 @@ public class StatusSyncController
         for (Plan plan : plans)
         {
             System.out.println(plan.getPin());
-            String initialStatusName = plan.getStatus().getName();
+            String initialStatusName = plan.getProcessDataStatus().getName();
             planService.updatePlan(plan.getPin(), plan);
-            String newStatusName = plan.getStatus().getName();
+            String newStatusName = plan.getProcessDataStatus().getName();
             count ++;
             if (count % 10 == 0)
             {
