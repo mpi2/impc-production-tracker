@@ -1,8 +1,15 @@
 package org.gentar.organization.person;
 
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.doReturn;
+import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
+
 import com.github.springtestdbunit.annotation.DatabaseOperation;
 import com.github.springtestdbunit.annotation.DatabaseSetup;
 import com.github.springtestdbunit.annotation.DatabaseTearDown;
+import java.io.IOException;
+import java.util.List;
 import org.gentar.framework.ControllerTestTemplate;
 import org.gentar.framework.RestCaller;
 import org.gentar.framework.ResultValidator;
@@ -13,25 +20,14 @@ import org.gentar.framework.db.DBSetupFilesPaths;
 import org.gentar.security.authentication.AAPService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.runner.RunWith;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.SpyBean;
 import org.springframework.restdocs.payload.FieldDescriptor;
 import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.test.web.servlet.MvcResult;
-import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.ResultHandler;
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import java.io.IOException;
-import java.util.List;
 
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.doReturn;
-import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@RunWith(SpringRunner.class)
 class PersonControllerTest extends ControllerTestTemplate
 {
     private static final String TEST_RESOURCES_FOLDER = INTEGRATION_TESTS_RESOURCE_PATH + "people/";

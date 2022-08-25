@@ -121,7 +121,7 @@ public class GeneListService
 
     private void addOrReplaceListRecords(List<ListRecord> listRecords, GeneList geneList)
     {
-        var currentListRecords = geneList.getListRecords();
+        List<ListRecord> currentListRecords = new ArrayList<>(geneList.getListRecords());
         listRecords.forEach(x -> {
             var index = indexOfRecordIdInList(x.getId(), currentListRecords);
             if (index == -1)

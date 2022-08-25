@@ -5,6 +5,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.PipedInputStream;
 import java.io.PipedOutputStream;
+import java.io.Serializable;
 import java.util.Objects;
 
 public class Cloner
@@ -30,11 +31,12 @@ public class Cloner
 
             // Write the object to the pipe
             ObjectOutputStream out = new ObjectOutputStream(pos);
-            out.writeObject(orig);
+            if(orig instanceof Serializable) {
+                out.writeObject(orig);
 
             // Wait for the object to be deserialized
             obj = des.getDeserializedObject();
-
+            }
             // See if something went wrong
             if (obj == ERROR)
                 obj = null;

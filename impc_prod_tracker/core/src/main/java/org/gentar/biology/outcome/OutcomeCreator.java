@@ -21,7 +21,7 @@ import java.util.Set;
 class OutcomeCreator
 {
     @PersistenceContext
-    private EntityManager entityManager;
+    private final EntityManager entityManager;
     private final HistoryService<Outcome> historyService;
     private final ColonyStateSetter colonyStateSetter;
     private final SpecimenStateSetter specimenStateSetter;
@@ -30,13 +30,14 @@ class OutcomeCreator
     private final PlanUpdater planUpdater;
 
     OutcomeCreator(
-        HistoryService<Outcome> historyService,
+        EntityManager entityManager, HistoryService<Outcome> historyService,
         ColonyStateSetter colonyStateSetter,
         SpecimenStateSetter specimenStateSetter,
         MutationService mutationService,
         OutcomeValidator outcomeValidator,
         PlanUpdater planUpdater)
     {
+        this.entityManager = entityManager;
         this.historyService = historyService;
         this.colonyStateSetter = colonyStateSetter;
         this.specimenStateSetter = specimenStateSetter;
