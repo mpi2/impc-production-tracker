@@ -376,11 +376,11 @@ This allele from project Fxn-5659J-A was generated at The Jackson Laboratory by 
     <SPECIMEN_PROPERTY  ID="1"
                         PROPERTY_TYPE_ID="1"
                         SPECIMEN_OUTCOME_ID="4"
-                        VALUE="Value 1"/>
+                        PROPERTY_VALUE="Value 1"/>
     <SPECIMEN_PROPERTY  ID="2"
                         PROPERTY_TYPE_ID="2"
                         SPECIMEN_OUTCOME_ID="4"
-                        VALUE="Value 2"/>
+                        PROPERTY_VALUE="Value 2"/>
     <SPECIMEN_STATUS_STAMP  ID="1"
                             SPECIMEN_ID="4"
                             STATUS_ID="7"

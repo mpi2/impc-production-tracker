@@ -7,6 +7,7 @@ import org.gentar.biology.plan.attempt.crispr.guide.Guide;
 import org.hamcrest.Matchers;
 import org.gentar.biology.plan.Plan;
 import org.gentar.organization.work_unit.WorkUnit;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import java.time.LocalDateTime;
 import java.util.Arrays;
@@ -333,6 +334,7 @@ public class ObjectInspectorTest
     }
 
     @Test
+    @Disabled
     public void testCycle()
     {
         CrisprAttempt crisprAttempt = new CrisprAttempt();

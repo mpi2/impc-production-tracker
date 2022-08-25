@@ -15,6 +15,7 @@
  *******************************************************************************/
 package org.gentar.biology.project.privacy;
 
+import java.io.Serializable;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -34,7 +35,7 @@ import javax.validation.constraints.NotNull;
 @Data
 @EqualsAndHashCode(callSuper = false)
 @Entity
-public class Privacy extends BaseEntity
+public class Privacy extends BaseEntity implements Serializable
 {
     @Id
     @SequenceGenerator(name = "privacySeq", sequenceName = "PRIVACY_SEQ")
