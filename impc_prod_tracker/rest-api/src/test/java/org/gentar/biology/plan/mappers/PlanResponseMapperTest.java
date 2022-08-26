@@ -20,7 +20,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.util.HashSet;
 import java.util.Set;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -75,7 +74,7 @@ class PlanResponseMapperTest
         plan.setAttemptType(attemptType);
         Status status = new Status();
         status.setName(STATUS_NAME);
-        plan.setPlanStatus(status);
+        plan.setStatus(status);
         Set<PlanStatusStamp> statusStamps = new HashSet<>();
         PlanStatusStamp planStatusStamp = new PlanStatusStamp();
         statusStamps.add(planStatusStamp);

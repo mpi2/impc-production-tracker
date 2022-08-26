@@ -1,6 +1,5 @@
 package org.gentar.biology.project.assignment;
 
-import org.gentar.audit.history.HistoryService;
 import org.gentar.biology.project.Project;
 import org.springframework.stereotype.Component;
 import java.time.LocalDateTime;
@@ -75,7 +74,7 @@ public class AssignmentStatusUpdater
         boolean areAllPlansAborted = false;
         if (plans != null)
         {
-            areAllPlansAborted = plans.stream().allMatch(x -> x.getStatus().getIsAbortionStatus());
+            areAllPlansAborted = plans.stream().allMatch(x -> x.getProcessDataStatus().getIsAbortionStatus());
         }
         if (areAllPlansAborted)
         {

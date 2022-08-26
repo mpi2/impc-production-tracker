@@ -34,6 +34,6 @@ public class SpecimenStateMachineResolver implements StateMachineResolver
     public List<ProcessEvent> getAvailableTransitionsByEntityStatus(ProcessData processData)
     {
         return getAvailableEventsByStateName(
-            getProcessEventsBySpecimen(), processData.getStatus().getName());
+            getProcessEventsBySpecimen(), processData.getProcessDataStatus().getName());
     }
 }

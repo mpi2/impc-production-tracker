@@ -62,7 +62,7 @@ class SystemEventsExecutorTest
         verify(stateTransitionsManager, times(2)).processEvent(any(Plan.class));
         assertThat(
             "Not expected status",
-            planCreated.getStatus().getName(),
+            planCreated.getProcessDataStatus().getName(),
             is(CrisprProductionPlanState.AttemptInProgress.getInternalName()));
     }
 
@@ -96,7 +96,7 @@ class SystemEventsExecutorTest
         verify(stateTransitionsManager, times(3)).processEvent(any(Plan.class));
         assertThat(
             "Not expected status",
-            planCreated.getStatus().getName(),
+            planCreated.getProcessDataStatus().getName(),
             is(CrisprProductionPlanState.EmbryosObtained.getInternalName()));
     }
 
@@ -133,7 +133,7 @@ class SystemEventsExecutorTest
             .thenReturn(validTransitionEvaluation);
 
 
-        planCreated.setEvent(CrisprProductionPlanEvent.abandonWhenCreated);
+        planCreated.setProcessDataEvent(CrisprProductionPlanEvent.abandonWhenCreated);
 
         UserOperationFailedException thrown = assertThrows(UserOperationFailedException.class,
             () -> testInstance.execute(planCreated),

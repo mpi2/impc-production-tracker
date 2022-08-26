@@ -29,7 +29,7 @@ public class ColonyRequestProcessor
             colonyToUpdate, originalColony, mappedColony.getDistributionProducts());
         modifyNameIfNeeded(colonyToUpdate, colonyDTO);
         modifyStrainIfNeeded(colonyToUpdate, colonyDTO);
-        colonyToUpdate.setEvent(mappedColony.getEvent());
+        colonyToUpdate.setProcessDataEvent(mappedColony.getProcessDataEvent());
         return colonyToUpdate;
     }
 

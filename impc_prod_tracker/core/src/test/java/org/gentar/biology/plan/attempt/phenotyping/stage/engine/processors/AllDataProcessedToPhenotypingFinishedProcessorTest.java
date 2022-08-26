@@ -47,7 +47,7 @@ class AllDataProcessedToPhenotypingFinishedProcessorTest
     {
         PhenotypingStage phenotypingStage = buildPhenotypingStage(
             PhenotypingStageState.PhenotypingAllDataProcessed.getInternalName());
-        phenotypingStage.setEvent(PhenotypingStageEvent.updateToPhenotypingFinished);
+        phenotypingStage.setProcessDataEvent(PhenotypingStageEvent.updateToPhenotypingFinished);
         when(policyEnforcement.hasPermission(any(), anyString())).thenReturn(true);
 
         testInstance.process(phenotypingStage);
@@ -63,7 +63,7 @@ class AllDataProcessedToPhenotypingFinishedProcessorTest
     {
         PhenotypingStage phenotypingStage = buildPhenotypingStage(
             PhenotypingStageState.PhenotypingAllDataProcessed.getInternalName());
-        phenotypingStage.setEvent(PhenotypingStageEvent.updateToPhenotypingFinished);
+        phenotypingStage.setProcessDataEvent(PhenotypingStageEvent.updateToPhenotypingFinished);
         when(policyEnforcement.hasPermission(any(), anyString())).thenReturn(false);
 
         UserOperationFailedException thrown = assertThrows(UserOperationFailedException.class,
@@ -85,7 +85,7 @@ class AllDataProcessedToPhenotypingFinishedProcessorTest
         PhenotypingStage phenotypingStage = new PhenotypingStage();
         Status status = new Status();
         status.setName(statusName);
-        phenotypingStage.setStatus(status);
+        phenotypingStage.setProcessDataStatus(status);
         return phenotypingStage;
     }
 }

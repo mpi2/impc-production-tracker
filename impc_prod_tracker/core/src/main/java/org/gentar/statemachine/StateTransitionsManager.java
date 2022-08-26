@@ -36,7 +36,7 @@ public class StateTransitionsManager
      */
     private ProcessData processStateTransition(ProcessData data)
     {
-        ProcessEvent processEvent = data.getEvent();
+        ProcessEvent processEvent = data.getProcessDataEvent();
         if (processEvent != null)
         {
             Class<? extends Processor> processor = processEvent.getNextStepProcessor();

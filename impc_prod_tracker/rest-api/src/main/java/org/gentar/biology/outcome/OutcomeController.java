@@ -3,6 +3,9 @@ package org.gentar.biology.outcome;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 import java.util.Collection;
 import java.util.List;
 import java.util.Set;
@@ -186,6 +189,18 @@ public class OutcomeController
 
     private Link buildOutcomeLink(String pin, String tpo)
     {
-        return linkTo(methodOn(OutcomeController.class).findOneByPlanAndTpo(pin, tpo)).withSelfRel();
+        Link link =
+            linkTo(methodOn(OutcomeController.class).findOneByPlanAndTpo(pin, tpo)).withSelfRel();
+        link = link.withHref(decode(link.getHref()));
+        return link;
+    }
+
+    private String decode(String value) {
+        try {
+            return URLDecoder.decode(value, StandardCharsets.UTF_8.toString());
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        return value;
     }
 }

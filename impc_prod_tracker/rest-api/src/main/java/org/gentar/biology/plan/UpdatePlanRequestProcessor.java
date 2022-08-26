@@ -17,12 +17,9 @@ package org.gentar.biology.plan;
 
 import org.gentar.biology.plan.attempt.phenotyping.PhenotypingAttempt;
 import org.gentar.biology.plan.mappers.PlanUpdateMapper;
-import org.gentar.organization.funder.Funder;
 import org.gentar.organization.funder.FunderMapper;
 import org.gentar.statemachine.ProcessEvent;
 import org.springframework.stereotype.Component;
-
-import java.util.Set;
 
 /**
  * Class in charge of analysing a PlanDTO object and retrieve the Plan object
@@ -132,7 +129,7 @@ public class UpdatePlanRequestProcessor
         if (action != null)
         {
             ProcessEvent processEvent = planService.getProcessEventByName(plan, action);
-            plan.setEvent(processEvent);
+            plan.setProcessDataEvent(processEvent);
         }
     }
 }

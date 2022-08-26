@@ -39,7 +39,7 @@ public class PhenotypingStageStateSetter implements StateSetter
     @Override
     public void setStatus(ProcessData entity, Status status)
     {
-        entity.setStatus(status);
+        entity.setProcessDataStatus(status);
         registerStatusStamp((PhenotypingStage)entity);
     }
 
@@ -110,7 +110,7 @@ public class PhenotypingStageStateSetter implements StateSetter
         }
         PhenotypingStageStatusStamp phenotypingStageStatusStamp = new PhenotypingStageStatusStamp();
         phenotypingStageStatusStamp.setPhenotypingStage(phenotypingStage);
-        phenotypingStageStatusStamp.setStatus(phenotypingStage.getStatus());
+        phenotypingStageStatusStamp.setStatus(phenotypingStage.getProcessDataStatus());
         phenotypingStageStatusStamp.setDate(LocalDateTime.now());
         stamps.add(phenotypingStageStatusStamp);
         phenotypingStage.setPhenotypingStageStatusStamps(stamps);
