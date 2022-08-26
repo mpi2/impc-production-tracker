@@ -72,15 +72,19 @@ public class MutationFormatterServiceImpl implements MutationFormatterService {
     private List<Mutation> getMutationsByWorkUnit(List<Mutation> mutations, String workUnit) {
         List<Mutation> mutationsByWorkUnit = new ArrayList<>();
         for (Mutation mutation : mutations) {
-            for (Outcome outcome : mutation.getOutcomes()) {
-                if (outcome.getPlan().getWorkUnit().getName().equals(workUnit)) {
-                    mutationsByWorkUnit.add(mutation);
-                }
-            }
+            fillMutationsByWorkUnits(workUnit, mutationsByWorkUnit, mutation);
         }
         return mutationsByWorkUnit;
     }
 
+    private void fillMutationsByWorkUnits(String workUnit, List<Mutation> mutationsByWorkUnit,
+                                          Mutation mutation) {
+        for (Outcome outcome : mutation.getOutcomes()) {
+            if (outcome.getPlan().getWorkUnit().getName().equals(workUnit)) {
+                mutationsByWorkUnit.add(mutation);
+            }
+        }
+    }
 
     private boolean isSequenceInFastaFormat(Mutation mutation) {
         List<Sequence> sequences = getSequences(mutation);
