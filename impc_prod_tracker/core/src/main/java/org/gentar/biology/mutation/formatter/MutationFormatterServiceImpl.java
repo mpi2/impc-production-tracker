@@ -33,7 +33,7 @@ public class MutationFormatterServiceImpl implements MutationFormatterService {
             List<Mutation> allMutations = (List<Mutation>) mutationRepository.findAll();
             List<Mutation> unValidatedMutations =
                 getUnValidatedMutations(workUnit, allMutations);
-            LOGGER.info("unValidatedMutations size:" + unValidatedMutations.size());
+            LOGGER.info("UnValidated Mutations size:" + unValidatedMutations.size());
             unValidatedMutations.forEach(mutation -> {
                 Mutation validatedMutation = getValidatedMutation(mutation);
                 mutationService.update(validatedMutation);
