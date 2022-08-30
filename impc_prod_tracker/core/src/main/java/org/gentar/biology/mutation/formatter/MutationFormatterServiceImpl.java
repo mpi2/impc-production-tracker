@@ -10,13 +10,15 @@ import org.gentar.biology.mutation.MutationServiceImpl;
 import org.gentar.biology.mutation.sequence.MutationSequence;
 import org.gentar.biology.outcome.Outcome;
 import org.gentar.biology.sequence.Sequence;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 @Component
 public class MutationFormatterServiceImpl implements MutationFormatterService {
     private final MutationRepository mutationRepository;
     private final MutationServiceImpl mutationService;
-
+    private static final Logger LOGGER = LoggerFactory.getLogger(MutationFormatterServiceImpl.class);;
     public MutationFormatterServiceImpl(
         MutationRepository mutationRepository,
         MutationServiceImpl mutationService) {
@@ -28,14 +30,16 @@ public class MutationFormatterServiceImpl implements MutationFormatterService {
     @Override
     public void formatSequence(String workUnit) {
         try {
+            LOGGER.error("Inside formatSequence");
             List<Mutation> allMutations = (List<Mutation>) mutationRepository.findAll();
-
+            LOGGER.error("allMutations Fetched");
             List<Mutation> unValidatedMutations =
                 getUnValidatedMutations(workUnit, allMutations);
-
+            LOGGER.error("unValidatedMutations found");
             unValidatedMutations.forEach(mutation -> {
                 Mutation validatedMutation = getValidatedMutation(mutation);
                 mutationService.update(validatedMutation);
+                LOGGER.error("unValidatedMutations formatted");
             });
         } catch (Exception e) {
             e.printStackTrace();
