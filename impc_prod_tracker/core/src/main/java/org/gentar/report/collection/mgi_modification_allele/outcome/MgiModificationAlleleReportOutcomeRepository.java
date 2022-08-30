@@ -11,6 +11,6 @@ import java.util.List;
 @RepositoryRestResource(exported = false)
 public interface MgiModificationAlleleReportOutcomeRepository extends CrudRepository<Outcome, Long> {
 
-    @Query("select o.id as outcomeId, m.id as mutationId, m.symbol as symbol from Outcome o LEFT OUTER JOIN o.mutations m where o.id IN :ids")
+    @Query("select o.id as outcomeId, m.id as mutationId, m.mgiAlleleId as mgiAlleleAccId, m.symbol as symbol from Outcome o LEFT OUTER JOIN o.mutations m where o.id IN :ids")
     List<MgiModificationAlleleReportOutcomeMutationProjection> findSelectedOutcomeMutationProjections(@Param("ids") List<Long> outcomeIds);
 }
