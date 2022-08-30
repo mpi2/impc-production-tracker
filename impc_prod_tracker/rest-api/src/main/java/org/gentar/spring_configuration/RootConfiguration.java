@@ -88,6 +88,7 @@ public class RootConfiguration extends WebSecurityConfigurerAdapter
             .antMatchers("/api/mutations/**").permitAll()
             .antMatchers("/api/people/requestPasswordReset").permitAll()
             .antMatchers("/api/reports/**").permitAll()
+            .antMatchers("/api/format/**").access("hasPermission(null, 'CDA_AND_ADMIN')")
             .antMatchers("/reports/**").permitAll()
             .antMatchers("/tracking-api/**").access("hasPermission(null, 'CDA_AND_ADMIN')")
             .anyRequest().authenticated()
