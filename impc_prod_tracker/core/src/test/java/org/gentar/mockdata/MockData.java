@@ -42,7 +42,9 @@ import org.gentar.biology.outcome.Outcome;
 import org.gentar.biology.outcome.type.OutcomeType;
 import org.gentar.biology.plan.Plan;
 import org.gentar.biology.plan.attempt.AttemptType;
+import org.gentar.biology.plan.attempt.phenotyping.PhenotypingAttempt;
 import org.gentar.biology.plan.attempt.phenotyping.stage.PhenotypingStage;
+import org.gentar.biology.plan.attempt.phenotyping.stage.type.PhenotypingStageType;
 import org.gentar.biology.plan.type.PlanType;
 import org.gentar.biology.project.Project;
 import org.gentar.biology.project.assignment.AssignmentStatus;
@@ -73,6 +75,7 @@ public class MockData {
     public static final String TPO_000000001 = "TPO:000000001";
     public static final String PIN_000000001 = "PIN:000000001";
     public static final String MIN_000000001 = "MIN:000000001";
+    public static final String PSN_000000001 = "PSN:000000001";
     public static final String TEST_COMMENT = "Test Comment";
     public static final String COMPLETION_COMMENT = "Completion Comment";
     public static final String TEST_NAME = "Test Name";
@@ -903,9 +906,21 @@ public class MockData {
 
     public static PhenotypingStage phenotypingStageMockData(){
         PhenotypingStage phenotypingStage = new PhenotypingStage();
-
         phenotypingStage.setId(1L);
+        phenotypingStage.setPsn(PSN_000000001);
         return phenotypingStage;
+    }
 
+    public static PhenotypingAttempt phenotypingAttemptMockData(){
+        PhenotypingAttempt phenotypingAttempt = new PhenotypingAttempt();
+        phenotypingAttempt.setId(1L);
+        return phenotypingAttempt;
+    }
+
+    public static PhenotypingStageType phenotypingStageTypeMockData(){
+        PhenotypingStageType phenotypingStageType = new PhenotypingStageType();
+        phenotypingStageType.setId(1L);
+        phenotypingStageType.setName(TEST_NAME);
+        return phenotypingStageType;
     }
 }
