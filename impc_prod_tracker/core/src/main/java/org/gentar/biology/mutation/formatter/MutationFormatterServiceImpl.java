@@ -33,26 +33,23 @@ public class MutationFormatterServiceImpl implements MutationFormatterService {
             List<Mutation> allMutations = (List<Mutation>) mutationRepository.findAll();
             List<Mutation> unValidatedMutations =
                 getUnValidatedMutations(workUnit, allMutations);
-            LOGGER.error("unValidatedMutations size:" + unValidatedMutations.size());
+            LOGGER.info("unValidatedMutations size:" + unValidatedMutations.size());
             unValidatedMutations.forEach(mutation -> {
                 Mutation validatedMutation = getValidatedMutation(mutation);
-                LOGGER.error(" Mutation validatedMutation");
                 mutationService.update(validatedMutation);
-                LOGGER.error("unValidatedMutations formatted");
             });
+            LOGGER.info("Formatting Finished");
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
     private Mutation getValidatedMutation(Mutation mutation) {
-        LOGGER.error("getValidatedMutation");
         Mutation validatedMutation = new Mutation(mutation);
         validatedMutation.getMutationSequences().forEach(ms ->
             ms.setSequence(sequenceFormatter(getColonyNames(mutation).get(0),
                 getSequences(mutation).get(0)))
         );
-        LOGGER.error("getValidatedMutation end");
         return validatedMutation;
     }
 
@@ -143,7 +140,6 @@ public class MutationFormatterServiceImpl implements MutationFormatterService {
     }
 
     private Sequence sequenceFormatter(String colonyName, Sequence sequence) {
-        LOGGER.error("sequenceFormatter");
         Sequence formattedSequence = new Sequence(sequence);
         formattedSequence
             .setSequence(">" + colonyName + System.lineSeparator() + sequence.getSequence());
