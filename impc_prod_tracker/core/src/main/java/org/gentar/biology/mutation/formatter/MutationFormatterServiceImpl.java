@@ -30,14 +30,13 @@ public class MutationFormatterServiceImpl implements MutationFormatterService {
     @Override
     public void formatSequence(String workUnit) {
         try {
-            LOGGER.error("Inside formatSequence");
             List<Mutation> allMutations = (List<Mutation>) mutationRepository.findAll();
-            LOGGER.error("allMutations Fetched");
             List<Mutation> unValidatedMutations =
                 getUnValidatedMutations(workUnit, allMutations);
-            LOGGER.error("unValidatedMutations found");
+            LOGGER.error("unValidatedMutations size:" + unValidatedMutations.size());
             unValidatedMutations.forEach(mutation -> {
                 Mutation validatedMutation = getValidatedMutation(mutation);
+                LOGGER.error(" Mutation validatedMutation");
                 mutationService.update(validatedMutation);
                 LOGGER.error("unValidatedMutations formatted");
             });
@@ -47,16 +46,17 @@ public class MutationFormatterServiceImpl implements MutationFormatterService {
     }
 
     private Mutation getValidatedMutation(Mutation mutation) {
+        LOGGER.error("getValidatedMutation");
         Mutation validatedMutation = new Mutation(mutation);
         validatedMutation.getMutationSequences().forEach(ms ->
             ms.setSequence(sequenceFormatter(getColonyNames(mutation).get(0),
                 getSequences(mutation).get(0)))
         );
+        LOGGER.error("getValidatedMutation end");
         return validatedMutation;
     }
 
     private List<Mutation> getUnValidatedMutations(String workUnit, List<Mutation> allMutations) {
-        LOGGER.error("getUnValidatedMutations");
         return getMutationsByWorkUnit(allMutations, workUnit)
             .stream()
             .filter(s -> !isSequenceInFastaFormat(s))
@@ -79,7 +79,6 @@ public class MutationFormatterServiceImpl implements MutationFormatterService {
     }
 
     private List<Mutation> getMutationsByWorkUnit(List<Mutation> mutations, String workUnit) {
-        LOGGER.error("getMutationsByWorkUnit");
         List<Mutation> mutationsByWorkUnit = new ArrayList<>();
         for (Mutation mutation : mutations) {
             fillMutationsByWorkUnits(workUnit, mutationsByWorkUnit, mutation);
@@ -89,7 +88,6 @@ public class MutationFormatterServiceImpl implements MutationFormatterService {
 
     private void fillMutationsByWorkUnits(String workUnit, List<Mutation> mutationsByWorkUnit,
                                           Mutation mutation) {
-        LOGGER.error("fillMutationsByWorkUnits");
         for (Outcome outcome : mutation.getOutcomes()) {
             if (outcome.getPlan().getWorkUnit().getName().equals(workUnit)) {
                 mutationsByWorkUnit.add(mutation);
@@ -99,7 +97,6 @@ public class MutationFormatterServiceImpl implements MutationFormatterService {
 
     private boolean isSequenceInFastaFormat(Mutation mutation) {
         List<Sequence> sequences = getSequences(mutation);
-        LOGGER.error("isSequenceInFastaFormat");
         if (sequences.stream().anyMatch(s -> s.getSequence() == null)) {
             return false;
         }
@@ -146,6 +143,7 @@ public class MutationFormatterServiceImpl implements MutationFormatterService {
     }
 
     private Sequence sequenceFormatter(String colonyName, Sequence sequence) {
+        LOGGER.error("sequenceFormatter");
         Sequence formattedSequence = new Sequence(sequence);
         formattedSequence
             .setSequence(">" + colonyName + System.lineSeparator() + sequence.getSequence());

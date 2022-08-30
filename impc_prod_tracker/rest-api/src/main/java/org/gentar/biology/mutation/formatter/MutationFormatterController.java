@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api")
 public class MutationFormatterController {
     private final MutationFormatterServiceImpl mutationFormatterService;
-    private static final Logger LOGGER = LoggerFactory.getLogger(MutationFormatterController.class);;
 
     public MutationFormatterController(
         MutationFormatterServiceImpl mutationFormatterService) {
@@ -24,7 +23,6 @@ public class MutationFormatterController {
     // http://localhost:8080/tracking-api/format/sequence/UCD
     @PutMapping(value = {"/format/sequence/{workUnit}"})
     public void formatSequence(HttpServletResponse response, @PathVariable String workUnit) {
-       LOGGER.error("reachable methode");
         mutationFormatterService.formatSequence(workUnit);
     }
 
