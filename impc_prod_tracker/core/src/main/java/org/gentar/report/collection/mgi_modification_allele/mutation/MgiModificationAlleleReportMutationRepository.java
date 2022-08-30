@@ -21,7 +21,7 @@ public interface MgiModificationAlleleReportMutationRepository extends CrudRepos
     @Query("select " +
             "m.id as mutationId, m.min as mutationIdentificationNumber, mc.name as mutationCategorizationName " +
             "from " +
-            "Mutation m LEFT OUTER JOIN m.mutationCategorizations mc LEFT OUTER JOIN mc.mutationCategorizationType mct " +
+            "Mutation m LEFT OUTER JOIN m.mutationCategorizations mc INNER JOIN mc.mutationCategorizationType mct " +
             "where " +
             "mct.name='esc_allele_class' and " +
             "m.min IN :min")
