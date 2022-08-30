@@ -27,15 +27,19 @@ public class MutationFormatterServiceImpl implements MutationFormatterService {
 
     @Override
     public void formatSequence(String workUnit) {
-        List<Mutation> allMutations = (List<Mutation>) mutationRepository.findAll();
+        try {
+            List<Mutation> allMutations = (List<Mutation>) mutationRepository.findAll();
 
-        List<Mutation> unValidatedMutations =
-            getUnValidatedMutations(workUnit, allMutations);
+            List<Mutation> unValidatedMutations =
+                getUnValidatedMutations(workUnit, allMutations);
 
-        unValidatedMutations.forEach(mutation -> {
-            Mutation validatedMutation = getValidatedMutation(mutation);
-            mutationService.update(validatedMutation);
-        });
+            unValidatedMutations.forEach(mutation -> {
+                Mutation validatedMutation = getValidatedMutation(mutation);
+                mutationService.update(validatedMutation);
+            });
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private Mutation getValidatedMutation(Mutation mutation) {
