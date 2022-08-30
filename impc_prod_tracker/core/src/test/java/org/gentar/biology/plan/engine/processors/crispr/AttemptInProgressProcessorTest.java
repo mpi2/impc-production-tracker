@@ -48,7 +48,7 @@ class AttemptInProgressProcessorTest
         CrisprAttempt crisprAttempt = new CrisprAttempt();
         plan.setCrisprAttempt(crisprAttempt);
         crisprAttempt.setPlan(plan);
-        plan.setEvent(CrisprProductionPlanEvent.updateToInProgress);
+        plan.setProcessDataEvent(CrisprProductionPlanEvent.updateToInProgress);
 
         testInstance.process(plan);
 

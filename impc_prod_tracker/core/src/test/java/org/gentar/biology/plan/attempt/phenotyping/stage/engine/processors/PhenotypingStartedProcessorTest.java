@@ -45,7 +45,7 @@ class PhenotypingStartedProcessorTest
     {
         PhenotypingStage phenotypingStage = buildPhenotypingStage(
             PhenotypingStageState.PhenotypingRegistered.getInternalName());
-        phenotypingStage.setEvent(PhenotypingStageEvent.updateToPhenotypingStarted);
+        phenotypingStage.setProcessDataEvent(PhenotypingStageEvent.updateToPhenotypingStarted);
         when(policyEnforcement.hasPermission(any(), anyString())).thenReturn(true);
 
         testInstance.process(phenotypingStage);
@@ -61,7 +61,7 @@ class PhenotypingStartedProcessorTest
     {
         PhenotypingStage phenotypingStage = buildPhenotypingStage(
             PhenotypingStageState.PhenotypingAllDataSent.getInternalName());
-        phenotypingStage.setEvent(PhenotypingStageEvent.updateToPhenotypingStarted);
+        phenotypingStage.setProcessDataEvent(PhenotypingStageEvent.updateToPhenotypingStarted);
         when(policyEnforcement.hasPermission(any(), anyString())).thenReturn(false);
 
         UserOperationFailedException thrown = assertThrows(UserOperationFailedException.class,
@@ -72,12 +72,8 @@ class PhenotypingStartedProcessorTest
     private void assertTransitionCannotBeExecuted(UserOperationFailedException thrown)
     {
         assertThat(
-            "Not expected message", thrown.getMessage(), is("Transition cannot be executed"));
-        assertThat(
-            "Not expected message",
-            thrown.getDebugMessage(),
-            is("The current user does not have permission to move to 'Phenotyping Started'"));
-        verify(
+            "Not expected message", thrown.getMessage(), is("Transition cannot be executed The current user does not have permission to move to 'Phenotyping Started'"));
+             verify(
             stageStateSetter, times(0)).setStatusByName(
                 any(PhenotypingStage.class), any(String.class));
     }
@@ -87,7 +83,7 @@ class PhenotypingStartedProcessorTest
         PhenotypingStage phenotypingStage = new PhenotypingStage();
         Status status = new Status();
         status.setName(statusName);
-        phenotypingStage.setStatus(status);
+        phenotypingStage.setProcessDataStatus(status);
         return phenotypingStage;
     }
 }

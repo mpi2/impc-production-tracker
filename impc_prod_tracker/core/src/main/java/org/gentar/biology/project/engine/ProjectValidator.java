@@ -64,9 +64,9 @@ public class ProjectValidator
                     .stream().flatMap(Set::stream).collect(Collectors.toSet());
 
             var matchPhenotypingStage = phenotypingStages.stream().anyMatch(ps -> (ps.getPhenotypingStageType().getName().equals("early adult and embryo") &&
-                    ps.getStatus().getOrdering() >= 253000) ||
+                    ps.getProcessDataStatus().getOrdering() >= 253000) ||
                     (ps.getPhenotypingStageType().getName().equals("late adult") &&
-                            ps.getStatus().getOrdering() >= 301000));
+                            ps.getProcessDataStatus().getOrdering() >= 301000));
 
             if (matchPhenotypingStage == true)
             {

@@ -24,7 +24,7 @@ public class ColonyStateSetter implements StateSetter
     @Override
     public void setStatus(ProcessData entity, Status status)
     {
-        entity.setStatus(status);
+        entity.setProcessDataStatus(status);
         registerStatusStamp((Colony)entity);
     }
 
@@ -50,7 +50,7 @@ public class ColonyStateSetter implements StateSetter
         }
         ColonyStatusStamp colonyStatusStamp = new ColonyStatusStamp();
         colonyStatusStamp.setColony(colony);
-        colonyStatusStamp.setStatus(colony.getStatus());
+        colonyStatusStamp.setStatus(colony.getProcessDataStatus());
         colonyStatusStamp.setDate(LocalDateTime.now());
         stamps.add(colonyStatusStamp);
         colony.setColonyStatusStamps(stamps);

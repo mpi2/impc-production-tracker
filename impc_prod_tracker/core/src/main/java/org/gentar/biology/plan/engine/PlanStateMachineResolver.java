@@ -37,7 +37,7 @@ public class PlanStateMachineResolver implements StateMachineResolver
     public List<ProcessEvent> getAvailableTransitionsByEntityStatus(ProcessData processData)
     {
         List<ProcessEvent> allTransitionsByPlanType = getAvailableEventsByStateName(
-            getProcessEventsByPlan((Plan)processData), processData.getStatus().getName());
+            getProcessEventsByPlan((Plan)processData), processData.getProcessDataStatus().getName());
         return allTransitionsByPlanType;
     }
 

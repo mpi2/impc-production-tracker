@@ -45,7 +45,7 @@ public class ColonyAbortProcessor extends AbstractProcessor
         List<Plan> plans = getDependantPlans(colony);
         if (!plans.isEmpty())
         {
-            result = plans.stream().allMatch(x -> x.getStatus().getIsAbortionStatus());
+            result = plans.stream().allMatch(x -> x.getProcessDataStatus().getIsAbortionStatus());
         }
         return result;
     }

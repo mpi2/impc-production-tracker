@@ -26,5 +26,5 @@ public class SpecimenProperty  extends BaseEntity implements Serializable
     private PropertyType propertyType;
 
     @Column(columnDefinition = "TEXT")
-    private String value;
+    private String propertyValue;
 }

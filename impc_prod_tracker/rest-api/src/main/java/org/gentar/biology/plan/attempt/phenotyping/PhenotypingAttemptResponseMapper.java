@@ -1,5 +1,8 @@
 package org.gentar.biology.plan.attempt.phenotyping;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 import org.gentar.EntityMapper;
 import org.gentar.Mapper;
 import org.gentar.biology.plan.attempt.phenotyping.stage.PhenotypingStageController;
@@ -49,10 +52,13 @@ public class PhenotypingAttemptResponseMapper implements Mapper<PhenotypingAttem
         Set<PhenotypingStage> phenotypingStages = phenotypingAttempt.getPhenotypingStages();
         if (phenotypingStages != null)
         {
-            phenotypingStages.forEach(x ->
-                    links.add(linkTo(methodOn(PhenotypingStageController.class)
-                            .findOneByPlanAndPsn(phenotypingAttempt.getPlan().getPin(), x.getPsn()))
-                    .withRel("phenotypingStages")));
+            phenotypingStages.forEach(x ->{
+                Link link = linkTo(methodOn(PhenotypingStageController.class)
+                    .findOneByPlanAndPsn(phenotypingAttempt.getPlan().getPin(), x.getPsn()))
+                    .withRel("phenotypingStages");
+                link = link.withHref(decode(link.getHref()));
+                links.add(link);
+                });
         }
         phenotypingAttemptResponseDTO.add(links);
     }
@@ -61,5 +67,14 @@ public class PhenotypingAttemptResponseMapper implements Mapper<PhenotypingAttem
     public PhenotypingAttempt toEntity(PhenotypingAttemptResponseDTO dto)
     {
         return null;
+    }
+
+    private String decode(String value) {
+        try {
+            return URLDecoder.decode(value, StandardCharsets.UTF_8.toString());
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        return value;
     }
 }

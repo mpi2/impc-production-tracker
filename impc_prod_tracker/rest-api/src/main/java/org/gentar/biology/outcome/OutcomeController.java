@@ -1,13 +1,21 @@
 package org.gentar.biology.outcome;
 
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
+
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
+import java.util.Collection;
+import java.util.List;
+import java.util.Set;
 import org.gentar.audit.history.History;
 import org.gentar.audit.history.HistoryMapper;
 import org.gentar.biology.ChangeResponse;
-import org.gentar.biology.mutation.Mutation;
-import org.gentar.biology.mutation.MutationResponseDTO;
 import org.gentar.biology.plan.Plan;
 import org.gentar.biology.plan.PlanService;
 import org.gentar.common.history.HistoryDTO;
+import org.gentar.exceptions.UserOperationFailedException;
 import org.gentar.helpers.ChangeResponseCreator;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.Link;
@@ -22,12 +30,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import java.util.Collection;
-import java.util.List;
-import java.util.Set;
-
-import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
-import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 @RestController
 @RequestMapping("/api")
@@ -104,6 +106,10 @@ public class OutcomeController
         @PathVariable String pin, @RequestBody OutcomeCreationDTO outcomeCreationDTO)
     {
         Outcome outcome = outcomeCreationMapper.toEntity(outcomeCreationDTO);
+       boolean canCreate = planService.canCreateOutcome(pin);
+       if(!canCreate) {
+           throw new UserOperationFailedException("You can not create an outcome in current state");
+       }
         outcomeService.associateOutcomeToPlan(outcome, pin);
         Outcome createdOutcome = outcomeService.create(outcome);
         return buildChangeResponse(
@@ -183,6 +189,18 @@ public class OutcomeController
 
     private Link buildOutcomeLink(String pin, String tpo)
     {
-        return linkTo(methodOn(OutcomeController.class).findOneByPlanAndTpo(pin, tpo)).withSelfRel();
+        Link link =
+            linkTo(methodOn(OutcomeController.class).findOneByPlanAndTpo(pin, tpo)).withSelfRel();
+        link = link.withHref(decode(link.getHref()));
+        return link;
+    }
+
+    private String decode(String value) {
+        try {
+            return URLDecoder.decode(value, StandardCharsets.UTF_8.toString());
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        return value;
     }
 }

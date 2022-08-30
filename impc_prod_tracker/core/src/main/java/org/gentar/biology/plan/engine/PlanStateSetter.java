@@ -29,7 +29,7 @@ public class PlanStateSetter implements StateSetter
     @Override
     public void setStatus(ProcessData entity, Status status)
     {
-        entity.setStatus(status);
+        entity.setProcessDataStatus(status);
         registerStatusStamp((Plan)entity);
     }
 
@@ -59,7 +59,7 @@ public class PlanStateSetter implements StateSetter
         }
         PlanStatusStamp planStatusStamp = new PlanStatusStamp();
         planStatusStamp.setPlan(plan);
-        planStatusStamp.setStatus(plan.getStatus());
+        planStatusStamp.setStatus(plan.getProcessDataStatus());
         planStatusStamp.setDate(LocalDateTime.now());
         stamps.add(planStatusStamp);
         plan.setPlanStatusStamps(stamps);

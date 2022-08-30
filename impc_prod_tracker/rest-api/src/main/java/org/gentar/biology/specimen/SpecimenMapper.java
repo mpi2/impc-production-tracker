@@ -65,7 +65,7 @@ public class SpecimenMapper implements Mapper<Specimen, SpecimenDTO>
     private void addStatusTransitionDTO(SpecimenDTO specimenDTO, Specimen specimen)
     {
         StatusTransitionDTO statusTransitionDTO = new StatusTransitionDTO();
-        statusTransitionDTO.setCurrentStatus(specimen.getStatus().getName());
+        statusTransitionDTO.setCurrentStatus(specimen.getProcessDataStatus().getName());
         statusTransitionDTO.setTransitions(getTransitions(specimen));
         specimenDTO.setStatusTransitionDTO(statusTransitionDTO);
     }
@@ -103,6 +103,6 @@ public class SpecimenMapper implements Mapper<Specimen, SpecimenDTO>
             String action = statusTransitionDTO.getActionToExecute();
             processEvent = specimenService.getProcessEventByName(specimen, action);
         }
-        specimen.setEvent(processEvent);
+        specimen.setProcessDataEvent(processEvent);
     }
 }

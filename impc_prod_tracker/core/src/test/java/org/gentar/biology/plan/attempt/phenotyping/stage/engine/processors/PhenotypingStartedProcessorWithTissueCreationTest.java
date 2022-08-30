@@ -70,7 +70,7 @@ class PhenotypingStartedProcessorWithTissueCreationTest
         PhenotypingStage phenotypingStage = buildPhenotypingStage(
             PhenotypingStageState.PhenotypingRegistered.getInternalName(),
             AUTOMATIC_TISSUE_CREATION_WORK_UNIT);
-        phenotypingStage.setEvent(PhenotypingStageEvent.updateToPhenotypingStarted);
+        phenotypingStage.setProcessDataEvent(PhenotypingStageEvent.updateToPhenotypingStarted);
         when(policyEnforcement.hasPermission(null, Actions.UPDATE_TO_PHENOTYPING_STARTED)).thenReturn(true);
         when(materialDepositedTypeService.getMaterialDepositedTypeByName(FIXED_TISSUE_NAME))
             .thenReturn(fixedMaterialDepositedType);
@@ -106,7 +106,7 @@ class PhenotypingStartedProcessorWithTissueCreationTest
         existingTissueDistribution.setEndDate(LocalDate.now());
         existingTissueDistribution.setMaterialDepositedType(fixedMaterialDepositedType);
         phenotypingStage.addTissueDistribution(existingTissueDistribution);
-        phenotypingStage.setEvent(PhenotypingStageEvent.updateToPhenotypingStarted);
+        phenotypingStage.setProcessDataEvent(PhenotypingStageEvent.updateToPhenotypingStarted);
         when(policyEnforcement.hasPermission(null, Actions.UPDATE_TO_PHENOTYPING_STARTED)).thenReturn(true);
         testInstance.process(phenotypingStage);
 
@@ -132,7 +132,7 @@ class PhenotypingStartedProcessorWithTissueCreationTest
         PhenotypingStage phenotypingStage = buildPhenotypingStage(
             PhenotypingStageState.PhenotypingRegistered.getInternalName(),
             NOT_AUTOMATIC_TISSUE_CREATION_WORK_UNIT);
-        phenotypingStage.setEvent(PhenotypingStageEvent.updateToPhenotypingStarted);
+        phenotypingStage.setProcessDataEvent(PhenotypingStageEvent.updateToPhenotypingStarted);
         when(policyEnforcement.hasPermission(null, Actions.UPDATE_TO_PHENOTYPING_STARTED)).thenReturn(true);
 
         testInstance.process(phenotypingStage);
@@ -156,7 +156,7 @@ class PhenotypingStartedProcessorWithTissueCreationTest
         existingTissueDistribution.setEndDate(LocalDate.now());
         existingTissueDistribution.setMaterialDepositedType(paraffinMaterialDepositedType);
         phenotypingStage.addTissueDistribution(existingTissueDistribution);
-        phenotypingStage.setEvent(PhenotypingStageEvent.updateToPhenotypingStarted);
+        phenotypingStage.setProcessDataEvent(PhenotypingStageEvent.updateToPhenotypingStarted);
         when(policyEnforcement.hasPermission(null, Actions.UPDATE_TO_PHENOTYPING_STARTED)).thenReturn(true);
 
         testInstance.process(phenotypingStage);
@@ -182,7 +182,7 @@ class PhenotypingStartedProcessorWithTissueCreationTest
         PhenotypingStage phenotypingStage = new PhenotypingStage();
         Status status = new Status();
         status.setName(statusName);
-        phenotypingStage.setStatus(status);
+        phenotypingStage.setProcessDataStatus(status);
         Plan plan = new Plan();
         PhenotypingAttempt phenotypingAttempt = new PhenotypingAttempt();
         phenotypingAttempt.setPlan(plan);

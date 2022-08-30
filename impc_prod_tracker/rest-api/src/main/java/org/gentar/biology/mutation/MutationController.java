@@ -1,5 +1,8 @@
 package org.gentar.biology.mutation;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 import org.gentar.audit.history.History;
 import org.gentar.audit.history.HistoryMapper;
 import org.gentar.biology.ChangeResponse;
@@ -172,14 +175,17 @@ public class MutationController
     private ChangeResponse buildChangeResponse(String pin, String tpo, String min, History history)
     {
         Link link = buildMutationLink(pin, tpo, min);
+
         return changeResponseCreator.create(link, history);
     }
 
     private Link buildMutationLink(String pin, String tpo, String min)
     {
-        return linkTo(
+        Link link = linkTo(
             methodOn(MutationController.class)
                 .findMutationInOutcomeById(pin, tpo, min)).withSelfRel();
+        link = link.withHref(decode(link.getHref()));
+        return link;
     }
 
     private Mutation getMutationToCreate(Outcome outcome, MutationCreationDTO mutationCreationDTO)
@@ -216,4 +222,12 @@ public class MutationController
         return result;
     }
 
+    private static String decode(String value) {
+        try {
+            return URLDecoder.decode(value, StandardCharsets.UTF_8.toString());
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        return value;
+    }
 }

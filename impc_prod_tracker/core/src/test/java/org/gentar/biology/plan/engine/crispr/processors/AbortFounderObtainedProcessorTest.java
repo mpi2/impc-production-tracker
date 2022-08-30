@@ -12,7 +12,6 @@ import org.gentar.biology.status.Status;
 import org.gentar.exceptions.UserOperationFailedException;
 import org.gentar.test_util.PlanBuilder;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
@@ -48,7 +47,7 @@ class AbortFounderObtainedProcessorTest
             .withStatus(CrisprProductionPlanState.FounderObtained.getInternalName())
             .build();
 
-        plan.setEvent(CrisprProductionPlanEvent.abortWhenFounderObtained);
+        plan.setProcessDataEvent(CrisprProductionPlanEvent.abortWhenFounderObtained);
         testInstance.process(plan);
 
         verify(planStateSetter, times(1)).setStatusByName(any(Plan.class), any(String.class));
@@ -67,7 +66,7 @@ class AbortFounderObtainedProcessorTest
         outcomes.add(outcome2);
         plan.setOutcomes(outcomes);
 
-        plan.setEvent(CrisprProductionPlanEvent.abortWhenFounderObtained);
+        plan.setProcessDataEvent(CrisprProductionPlanEvent.abortWhenFounderObtained);
         testInstance.process(plan);
 
         verify(planStateSetter, times(1)).setStatusByName(any(Plan.class), any(String.class));
@@ -86,15 +85,11 @@ class AbortFounderObtainedProcessorTest
         outcomes.add(outcome2);
         plan.setOutcomes(outcomes);
 
-        plan.setEvent(CrisprProductionPlanEvent.abortWhenFounderObtained);
+        plan.setProcessDataEvent(CrisprProductionPlanEvent.abortWhenFounderObtained);
         UserOperationFailedException thrown = assertThrows(UserOperationFailedException.class,
             () -> testInstance.process(plan), "Exception not thrown");
         assertThat(
-            "Not expected message", thrown.getMessage(), is("Transition cannot be executed"));
-        assertThat(
-            "Not expected message",
-            thrown.getDebugMessage(),
-            is("The plan has colonies that are not aborted. Please abort them first"));
+            "Not expected message", thrown.getMessage(), is("Transition cannot be executed The plan has colonies that are not aborted. Please abort them first"));
 
         verify(planStateSetter, times(0)).setStatusByName(any(Plan.class), any(String.class));
     }
@@ -111,7 +106,7 @@ class AbortFounderObtainedProcessorTest
         outcome.setOutcomeType(outcomeType);
         Status status = new Status();
         status.setIsAbortionStatus(isAborted);
-        colony.setStatus(status);
+        colony.setProcessDataStatus(status);
         return outcome;
     }
 }

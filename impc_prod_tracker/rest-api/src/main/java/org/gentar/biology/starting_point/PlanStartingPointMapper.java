@@ -1,5 +1,8 @@
 package org.gentar.biology.starting_point;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 import org.gentar.Mapper;
 import org.gentar.biology.outcome.Outcome;
 import org.gentar.biology.outcome.OutcomeController;
@@ -52,10 +55,13 @@ public class PlanStartingPointMapper implements Mapper<PlanStartingPoint, PlanSt
         outcomes.add(outcome);
         if (outcomes != null)
         {
-            outcomes.forEach(x ->
-                links.add(linkTo(methodOn(PlanController.class)
+            outcomes.forEach(x -> {
+                Link link = linkTo(methodOn(PlanController.class)
                     .findOne(outcome.getPlan().getPin()))
-                    .withRel("productionPlan")));
+                    .withRel("productionPlan");
+                link = link.withHref(decode(link.getHref()));
+                links.add(link);
+            });
         }
         planStartingPointDTO.add(links);
     }
@@ -69,10 +75,13 @@ public class PlanStartingPointMapper implements Mapper<PlanStartingPoint, PlanSt
         outcomes.add(outcome);
         if (outcomes != null)
         {
-            outcomes.forEach(x ->
-                links.add(linkTo(methodOn(OutcomeController.class)
+            outcomes.forEach(x ->{
+                Link link = linkTo(methodOn(OutcomeController.class)
                     .findOneByPlanAndTpo(outcome.getPlan().getPin(), planStartingPointDTO.getTpo()))
-                    .withRel("outcome")));
+                    .withRel("outcome");
+                link = link.withHref(decode(link.getHref()));
+                links.add(link);
+            });
         }
         planStartingPointDTO.add(links);
     }
@@ -85,5 +94,14 @@ public class PlanStartingPointMapper implements Mapper<PlanStartingPoint, PlanSt
         Outcome outcome = outcomeService.getByTpoFailsIfNotFound(planStartingPointDTO.getTpo());
         planStartingPoint.setOutcome(outcome);
         return planStartingPoint;
+    }
+
+    private String decode(String value) {
+        try {
+            return URLDecoder.decode(value, StandardCharsets.UTF_8.toString());
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        return value;
     }
 }

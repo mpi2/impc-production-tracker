@@ -1,5 +1,6 @@
 package org.gentar.biology.project;
 
+import org.gentar.biology.intention.project_intention_gene.ProjectIntentionGene;
 import org.gentar.biology.plan.Plan;
 import org.gentar.biology.plan.type.PlanType;
 import org.gentar.biology.plan.type.PlanTypeName;
@@ -7,24 +8,28 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.junit.jupiter.MockitoExtension;
 
+import static org.gentar.mockdata.MockData.MGI_00000001;
+import static org.gentar.mockdata.MockData.projectIntentionGeneListMockData;
+import static org.gentar.mockdata.MockData.projectIntentionGeneMockData;
+import static org.gentar.mockdata.MockData.projectMockData;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 import static org.junit.jupiter.api.Assertions.*;
 
-class ProjectQueryHelperTest
-{
+@ExtendWith(MockitoExtension.class)
+class ProjectQueryHelperTest {
     private ProjectQueryHelper testInstance;
 
     @BeforeEach
-    void setup()
-    {
+    void setup() {
         testInstance = new ProjectQueryHelper();
     }
 
     @Test
-    void testGetProductionPlansByTypeWhenNoPlans()
-    {
+    void testGetProductionPlansByTypeWhenNoPlans() {
         Project project = new Project();
         List<Plan> plans = testInstance.getPlansByType(project, PlanTypeName.PRODUCTION);
 
@@ -32,8 +37,7 @@ class ProjectQueryHelperTest
     }
 
     @Test
-    void testGetPhenotypingPlansByTypeWhenNoPlans()
-    {
+    void testGetPhenotypingPlansByTypeWhenNoPlans() {
         Project project = new Project();
         List<Plan> plans = testInstance.getPlansByType(project, PlanTypeName.PHENOTYPING);
 
@@ -41,8 +45,7 @@ class ProjectQueryHelperTest
     }
 
     @Test
-    void testGetProductionPlansByTypeWhenNoProductionPlans()
-    {
+    void testGetProductionPlansByTypeWhenNoProductionPlans() {
         Project project = new Project();
 
         Plan phenotypingPlan = buildPlanByTypeName("pin1", PlanTypeName.PHENOTYPING);
@@ -53,8 +56,7 @@ class ProjectQueryHelperTest
     }
 
     @Test
-    void testGetPhenotypingPlansByTypeWhenNoProductionPlans()
-    {
+    void testGetPhenotypingPlansByTypeWhenNoProductionPlans() {
         Project project = new Project();
 
         Plan productionPlan = buildPlanByTypeName("pin1", PlanTypeName.PRODUCTION);
@@ -65,8 +67,7 @@ class ProjectQueryHelperTest
     }
 
     @Test
-    void testGetProductionPlans()
-    {
+    void testGetProductionPlans() {
         Project project = new Project();
 
         Plan plan1 = buildPlanByTypeName("pin1", PlanTypeName.PHENOTYPING);
@@ -84,8 +85,7 @@ class ProjectQueryHelperTest
     }
 
     @Test
-    void testGetPhenotypingPlans()
-    {
+    void testGetPhenotypingPlans() {
         Project project = new Project();
 
         Plan plan1 = buildPlanByTypeName("pin1", PlanTypeName.PRODUCTION);
@@ -102,8 +102,24 @@ class ProjectQueryHelperTest
         assertThat("Unexpected plan", plans.get(1).getPin(), is("pin3"));
     }
 
-    private Plan buildPlanByTypeName(String pin, PlanTypeName planTypeName)
-    {
+    @Test
+    void testGetIntentionGenesByProject() {
+
+        List<ProjectIntentionGene> intentionGenes =
+            testInstance.getIntentionGenesByProject(projectMockData());
+        assertEquals(intentionGenes, projectIntentionGeneListMockData());
+    }
+
+    @Test
+    void testGetAccIdsByProject() {
+
+        List<String> accIds = testInstance.getAccIdsByProject(projectMockData());
+
+        assertEquals(accIds, List.of(MGI_00000001));
+
+    }
+
+    private Plan buildPlanByTypeName(String pin, PlanTypeName planTypeName) {
         Plan plan = new Plan();
         plan.setPin(pin);
         PlanType planType = new PlanType();

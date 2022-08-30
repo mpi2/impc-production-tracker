@@ -129,7 +129,7 @@ public class EsCellAttemptMapper implements Mapper<EsCellAttempt, EsCellAttemptD
             if (esCellAttempt.getPlan().getOutcomes() != null)
             {
                 Outcome outcome = esCellAttempt.getPlan().getOutcomes().stream()
-                        .filter(outcome1 -> "Genotype Confirmed".equals(outcome1.getColony().getStatus().getName()))
+                        .filter(outcome1 -> "Genotype Confirmed".equals(outcome1.getColony().getProcessDataStatus().getName()))
                         .findFirst()
                         .orElse(null);
                 ColonyStatusStamp statusStamp = outcome.getColony().getColonyStatusStamps().stream()

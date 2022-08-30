@@ -3,6 +3,9 @@ package org.gentar.biology.plan;
 import com.github.springtestdbunit.annotation.DatabaseOperation;
 import com.github.springtestdbunit.annotation.DatabaseSetup;
 import com.github.springtestdbunit.annotation.DatabaseTearDown;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 import org.gentar.audit.history.HistoryFieldsDescriptors;
 import org.gentar.biology.ChangeResponse;
 import org.gentar.common.history.HistoryDTO;
@@ -441,6 +444,16 @@ class PlanControllerTest extends ControllerTestTemplate
         resultValidator.validateObtainedMatchesJson(obtainedJson, expectedJson);
     }
 
+    @Test
+    @DatabaseSetup(DBSetupFilesPaths.MULTIPLE_PLANS)
+    @DatabaseTearDown(type = DatabaseOperation.DELETE_ALL, value = DBSetupFilesPaths.MULTIPLE_PLANS)
+    void testGetCanAddOutcome() throws Exception
+    {
+        String url = "/api/plans/can-create-outcome/PIN:0000000009";
+        String obtainedJson = restCaller.executeGet(url);
+        assertThat(obtainedJson, is("true"));
+    }
+
     private ResultHandler documentEsCellAlleleModificationPlan()
     {
         List<FieldDescriptor> esCellAlleleModificationPlanFieldsDescriptions =
@@ -588,5 +601,4 @@ class PlanControllerTest extends ControllerTestTemplate
         resultValidator.validateObtainedMatchesJson(
                 obtainedEsCellPlan, expectedJson, PlanCustomizations.ignoreIdsAndPinAndDates());
     }
-
 }

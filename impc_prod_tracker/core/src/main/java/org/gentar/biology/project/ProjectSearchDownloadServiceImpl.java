@@ -24,6 +24,7 @@ import org.gentar.biology.project.search.filter.FilterTypes;
 import org.gentar.biology.project.search.filter.ProjectFilter;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.event.EventListener;
+import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
 
 /**
@@ -32,16 +33,20 @@ import org.springframework.stereotype.Service;
 @Service
 public class ProjectSearchDownloadServiceImpl implements ProjectSearchDownloadService {
 
+
+    private final Environment env;
     ProjectRepository projectRepository;
     private final ProjectValidator projectValidator;
     private final OrthologService orthologService;
     private final Searcher searcher;
     private static final String SEPARATOR = "\",\"";
 
-    public ProjectSearchDownloadServiceImpl(ProjectRepository projectRepository,
+    public ProjectSearchDownloadServiceImpl(Environment env,
+                                            ProjectRepository projectRepository,
                                             ProjectValidator projectValidator,
                                             OrthologService orthologService,
                                             Searcher searcher) {
+        this.env = env;
         this.projectRepository = projectRepository;
         this.projectValidator = projectValidator;
         this.orthologService = orthologService;
@@ -72,8 +77,10 @@ public class ProjectSearchDownloadServiceImpl implements ProjectSearchDownloadSe
     private List<ProjectSearchDownloadProjectionDto> getSortedByTpnProjectionDtos(
         List<ProjectSearchDownloadProjectionDto> projectSearchDownloadProjectionDtos) {
 
-          return  projectSearchDownloadProjectionDtos.stream()
-                .sorted(Comparator.comparing(ProjectSearchDownloadProjectionDto::getTpn)).collect(
+        return projectSearchDownloadProjectionDtos.stream()
+            .sorted(
+                Comparator.comparing(p -> p.getTpn() != null ? p.getTpn() : p.getBestOrtholog()))
+            .collect(
                 Collectors.toList());
     }
 
@@ -92,11 +99,11 @@ public class ProjectSearchDownloadServiceImpl implements ProjectSearchDownloadSe
                     Search search =
                         new Search("gene", filters, projectFilter);
 
-                    List<SearchResult> result = new ArrayList<>();
-                    result.addAll(searcher.execute(search));
-                    if (result.get(0).getProject() != null &&
-                        !isAnyMatch(projectSearchDownloadProjectionDtos, result)) {
-                        synonymsDto.add(getDownloadProjectionDto(result));
+                    List<SearchResult> results = new ArrayList<>(searcher.execute(search));
+                    for (SearchResult result : results) {
+                        if (!isAnyMatch(projectSearchDownloadProjectionDtos, result)) {
+                            synonymsDto.add(getDownloadProjectionDto(result));
+                        }
                     }
                 }
             });
@@ -107,7 +114,7 @@ public class ProjectSearchDownloadServiceImpl implements ProjectSearchDownloadSe
 
     private boolean isAnyMatch(
         List<ProjectSearchDownloadProjectionDto> projectSearchDownloadProjectionDtos,
-        List<SearchResult> result) {
+        SearchResult result) {
         return projectSearchDownloadProjectionDtos.stream()
             .anyMatch(p -> p.getTpn().equals(getDownloadProjectionDto(result).getTpn()));
     }
@@ -129,7 +136,11 @@ public class ProjectSearchDownloadServiceImpl implements ProjectSearchDownloadSe
 
     @EventListener(ApplicationReadyEvent.class)
     private void init() {
+
+       if(Arrays.stream(env.getActiveProfiles()).noneMatch(p->p.equals("devgentarschema"))){
         writeReportCaches();
+       }
+
     }
 
 
@@ -137,7 +148,8 @@ public class ProjectSearchDownloadServiceImpl implements ProjectSearchDownloadSe
         ProjectSearchDownloadProjectionDto projectSearchDownloadProjectionDto) {
         Project project = new Project();
         Privacy privacy = new Privacy();
-        privacy.setName(projectSearchDownloadProjectionDto.getPrivacy());
+        privacy.setName(projectSearchDownloadProjectionDto.getPrivacy() != null ?
+            projectSearchDownloadProjectionDto.getPrivacy() : "public");
         project.setPrivacy(privacy);
         return projectValidator.getAccessChecked(project) == null;
     }
@@ -292,35 +304,54 @@ public class ProjectSearchDownloadServiceImpl implements ProjectSearchDownloadSe
     }
 
     private ProjectSearchDownloadProjectionDto getDownloadProjectionDto(
-        List<SearchResult> result) {
+        SearchResult result) {
         ProjectSearchDownloadProjectionDto dto =
             new ProjectSearchDownloadProjectionDto();
-        dto.setTpn(result.get(0).getProject().getTpn());
+        if (result.getProject() == null) {
+            setEmptyDto(result, dto);
+            return dto;
+        }
+
+        dto.setTpn(result.getProject().getTpn());
         dto.setGeneOrLocation(
-            result.get(0).getProject().getProjectIntentions().get(0)
+            result.getProject().getProjectIntentions().get(0)
                 .getProjectIntentionGene().getGene().getSymbol());
         dto.setMgi(
-            result.get(0).getProject().getProjectIntentions().get(0)
+            result.getProject().getProjectIntentions().get(0)
                 .getProjectIntentionGene().getGene().getAccId());
         dto.setMutationIntentions(
-            result.get(0).getProject().getProjectIntentions().get(0)
+            result.getProject().getProjectIntentions().get(0)
                 .getMolecularMutationType().getName());
         dto.setWorkUnit(
-            result.get(0).getProject().getPlans().iterator().next()
+            result.getProject().getPlans().iterator().next()
                 .getWorkUnit()
                 .getName());
         dto.setWorkGroup(
-            result.get(0).getProject().getPlans().iterator().next()
+            result.getProject().getPlans().iterator().next()
                 .getWorkGroup()
                 .getName());
         dto.setProjectAssignment(
-            result.get(0).getProject().getAssignmentStatus().getName());
+            result.getProject().getAssignmentStatus().getName());
         dto.setProjectSummaryStatus(
-            result.get(0).getProject().getSummaryStatus().getName());
-        dto.setPrivacy(result.get(0).getProject().getPrivacy().getName());
+            result.getProject().getSummaryStatus().getName());
+        dto.setPrivacy(result.getProject().getPrivacy().getName());
         dto.setConsortia(
-            result.get(0).getProject().getProjectConsortia().iterator().next()
+            result.getProject().getProjectConsortia().iterator().next()
                 .getConsortium().getName());
+
         return dto;
+    }
+
+    private void setEmptyDto(SearchResult result, ProjectSearchDownloadProjectionDto dto) {
+        if (!result.getInput().contains(":")) {
+            dto.setGeneOrLocation(result.getInput().substring(0, 1).toUpperCase() + result.getInput().substring(1));
+        } else {
+            dto.setMgi(result.getInput().substring(0, 1).toUpperCase() + result.getInput().substring(1));
+        }
+        if(result.getComment()==null) {
+            dto.setTpn("No Project Found");
+        }else{
+            dto.setTpn(result.getComment());
+        }
     }
 }

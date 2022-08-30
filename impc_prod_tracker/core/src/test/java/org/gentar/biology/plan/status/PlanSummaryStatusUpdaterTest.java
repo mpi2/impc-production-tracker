@@ -76,7 +76,7 @@ class PlanSummaryStatusUpdaterTest
             .withColony()
             .build();
         Status outcome1Status = new Status(2L, "Outcome 1 Status", "", 200, false);
-        outcome1.getColony().setStatus(outcome1Status);
+        outcome1.getColony().setProcessDataStatus(outcome1Status);
         Set<Outcome> outcomes = new HashSet<>();
         outcomes.add(outcome1);
         plan.setOutcomes(outcomes);
@@ -98,14 +98,14 @@ class PlanSummaryStatusUpdaterTest
             .withColony()
             .build();
         Status outcome1Status = new Status(2L, "Outcome 1 Status", "", 200, false);
-        outcome1.getColony().setStatus(outcome1Status);
+        outcome1.getColony().setProcessDataStatus(outcome1Status);
 
         Outcome outcome2 = OutcomeBuilder.getInstance()
             .withId(2L)
             .withColony()
             .build();
         Status outcome2Status = new Status(3L, "Outcome 2 Status", "", 201, false);
-        outcome2.getColony().setStatus(outcome2Status);
+        outcome2.getColony().setProcessDataStatus(outcome2Status);
 
         Set<Outcome> outcomes = new HashSet<>();
         outcomes.add(outcome1);
@@ -129,21 +129,21 @@ class PlanSummaryStatusUpdaterTest
             .withColony()
             .build();
         Status outcome1Status = new Status(2L, "Outcome 1 Status", "", 200, false);
-        outcome1.getColony().setStatus(outcome1Status);
+        outcome1.getColony().setProcessDataStatus(outcome1Status);
 
         Outcome outcome2 = OutcomeBuilder.getInstance()
             .withId(2L)
             .withColony()
             .build();
         Status outcome2Status = new Status(3L, "Outcome 2 Status", "", 201, false);
-        outcome2.getColony().setStatus(outcome2Status);
+        outcome2.getColony().setProcessDataStatus(outcome2Status);
 
         Outcome outcome3 = OutcomeBuilder.getInstance()
             .withId(3L)
             .withColony()
             .build();
         Status outcome3Status = new Status(4L, "Outcome 3 Status(aborted)", "", 2000, true);
-        outcome3.getColony().setStatus(outcome3Status);
+        outcome3.getColony().setProcessDataStatus(outcome3Status);
 
         Set<Outcome> outcomes = new HashSet<>();
         outcomes.add(outcome1);

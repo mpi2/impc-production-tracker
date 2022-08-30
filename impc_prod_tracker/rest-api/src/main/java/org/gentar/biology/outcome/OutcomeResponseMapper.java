@@ -1,5 +1,8 @@
 package org.gentar.biology.outcome;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 import org.gentar.Mapper;
 import org.gentar.biology.mutation.Mutation;
 import org.gentar.biology.mutation.MutationController;
@@ -52,6 +55,7 @@ public class OutcomeResponseMapper implements Mapper<Outcome, OutcomeResponseDTO
             methodOn(OutcomeController.class).findOneByPlanAndTpo(
                 outcome.getPlan().getPin(), outcome.getTpo()))
             .withSelfRel();
+        link = link.withHref(decode(link.getHref()));
         outcomeResponseDTO.add(link);
     }
 
@@ -61,10 +65,14 @@ public class OutcomeResponseMapper implements Mapper<Outcome, OutcomeResponseDTO
         Set<Mutation> mutations = outcome.getMutations();
         if (mutations != null)
         {
-            mutations.forEach(x ->
-                links.add(linkTo(methodOn(MutationController.class)
-                    .findMutationInOutcomeById(outcome.getPlan().getPin(), outcome.getTpo(), x.getMin()))
-                    .withRel("mutations")));
+            mutations.forEach(x ->{
+                Link link = linkTo(methodOn(MutationController.class)
+                    .findMutationInOutcomeById(outcome.getPlan().getPin(), outcome.getTpo(),
+                        x.getMin()))
+                    .withRel("mutations");
+                link = link.withHref(decode(link.getHref()));
+                links.add(link);
+            });
         }
         outcomeResponseDTO.add(links);
     }
@@ -74,5 +82,14 @@ public class OutcomeResponseMapper implements Mapper<Outcome, OutcomeResponseDTO
     {
         // An Outcome response does not need to be converted to an entity.
         return null;
+    }
+
+    private String decode(String value) {
+        try {
+            return URLDecoder.decode(value, StandardCharsets.UTF_8.toString());
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        return value;
     }
 }

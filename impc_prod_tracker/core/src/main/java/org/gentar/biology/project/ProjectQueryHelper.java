@@ -1,17 +1,17 @@
 package org.gentar.biology.project;
 
-import org.apache.commons.collections.CollectionUtils;
-import org.gentar.biology.ortholog.Ortholog;
-import org.gentar.biology.intention.project_intention.ProjectIntention;
-import org.gentar.biology.intention.project_intention_gene.ProjectIntentionGene;
-import org.gentar.biology.plan.Plan;
-import org.gentar.biology.plan.type.PlanTypeName;
-import org.springframework.stereotype.Component;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
+import org.apache.commons.collections.CollectionUtils;
+import org.gentar.biology.intention.project_intention.ProjectIntention;
+import org.gentar.biology.intention.project_intention_gene.ProjectIntentionGene;
+import org.gentar.biology.ortholog.Ortholog;
+import org.gentar.biology.plan.Plan;
+import org.gentar.biology.plan.type.PlanTypeName;
+import org.springframework.stereotype.Component;
 
 /**
  * A class with common queries to a project
@@ -19,21 +19,6 @@ import java.util.stream.Collectors;
 @Component
 public class ProjectQueryHelper
 {
-    public List<String> getBestOrthologsSymbols(Project project)
-    {
-        List<String> bestOrthologsSymbols = new ArrayList<>();
-        List<ProjectIntentionGene> intentionGenes = getIntentionGenesByProject(project);
-        if (!CollectionUtils.isEmpty(intentionGenes))
-        {
-            ProjectIntentionGene projectIntentionGene = intentionGenes.get(0);
-            List<Ortholog> bestOrthologs = projectIntentionGene.getBestOrthologs();
-            if (!CollectionUtils.isEmpty(bestOrthologs))
-            {
-                bestOrthologs.forEach(x -> bestOrthologsSymbols.add(x.getSymbol()));
-            }
-        }
-        return bestOrthologsSymbols;
-    }
 
     public List<ProjectIntentionGene> getIntentionGenesByProject(Project project)
     {
@@ -52,6 +37,42 @@ public class ProjectQueryHelper
         return projectIntentionGenes;
     }
 
+    public List<String> getAccIdsByProject(Project project)
+    {
+        List<String> accIds = new ArrayList<>();
+        List<ProjectIntentionGene> projectIntentionGenes = getIntentionGenesByProject(project);
+        projectIntentionGenes.forEach(x -> accIds.add(x.getGene().getAccId()));
+        return accIds;
+    }
+
+    public List<Plan> getPlansByType(Project project, PlanTypeName planTypeName)
+    {
+        List<Plan> plansByType = new ArrayList<>();
+        Set<Plan> allPlans = project.getPlans();
+        if (allPlans != null)
+        {
+            plansByType = allPlans.stream()
+                .filter(x -> x.getPlanType().getName().equals(planTypeName.getLabel()))
+                .collect(Collectors.toList());
+        }
+        return plansByType;
+    }
+
+    public List<String> getBestOrthologsSymbols(Project project)
+    {
+        List<String> bestOrthologsSymbols = new ArrayList<>();
+        List<ProjectIntentionGene> intentionGenes = getIntentionGenesByProject(project);
+        if (!CollectionUtils.isEmpty(intentionGenes))
+        {
+            ProjectIntentionGene projectIntentionGene = intentionGenes.get(0);
+            List<Ortholog> bestOrthologs = projectIntentionGene.getBestOrthologs();
+            if (!CollectionUtils.isEmpty(bestOrthologs))
+            {
+                bestOrthologs.forEach(x -> bestOrthologsSymbols.add(x.getSymbol()));
+            }
+        }
+        return bestOrthologsSymbols;
+    }
     public List<String> getSymbolsOrLocations(Project project)
     {
         List<String> targetNames = new ArrayList<>();
@@ -69,14 +90,6 @@ public class ProjectQueryHelper
             projectIntentionGenes.forEach(x -> molecularMutationTypeNames.add(x.getMolecularMutationType().getName()));
         }
         return molecularMutationTypeNames;
-    }
-
-    public List<String> getAccIdsByProject(Project project)
-    {
-        List<String> accIds = new ArrayList<>();
-        List<ProjectIntentionGene> projectIntentionGenes = getIntentionGenesByProject(project);
-        projectIntentionGenes.forEach(x -> accIds.add(x.getGene().getAccId()));
-        return accIds;
     }
 
     public Set<String> getWorkUnitsNames(Project project)
@@ -98,18 +111,5 @@ public class ProjectQueryHelper
         List<String> consortiaNames = new ArrayList<>();
         project.getRelatedConsortia().forEach(x -> consortiaNames.add(x.getName()));
         return consortiaNames;
-    }
-
-    public List<Plan> getPlansByType(Project project, PlanTypeName planTypeName)
-    {
-        List<Plan> plansByType = new ArrayList<>();
-        Set<Plan> allPlans = project.getPlans();
-        if (allPlans != null)
-        {
-            plansByType = allPlans.stream()
-                .filter(x -> x.getPlanType().getName().equals(planTypeName.getLabel()))
-                .collect(Collectors.toList());
-        }
-        return plansByType;
     }
 }

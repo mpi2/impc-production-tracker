@@ -59,7 +59,7 @@ public class PhenotypingStageStateMachineResolver implements StateMachineResolve
     {
         List<ProcessEvent> allTransitionsByPlanType = getAvailableEventsByStateName(
             getProcessEventsByPhenotypingStage(
-                (PhenotypingStage)processData), processData.getStatus().getName());
+                (PhenotypingStage)processData), processData.getProcessDataStatus().getName());
         return allTransitionsByPlanType;
     }
 

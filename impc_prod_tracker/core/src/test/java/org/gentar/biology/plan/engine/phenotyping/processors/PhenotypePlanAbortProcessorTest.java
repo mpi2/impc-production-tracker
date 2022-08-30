@@ -45,7 +45,7 @@ class PhenotypePlanAbortProcessorTest
                 .withStatus(PhenotypePlanState.PlanCreated.getInternalName())
                 .build();
 
-        plan.setEvent(PhenotypePlanEvent.abortPhenotypingPlan);
+        plan.setProcessDataEvent(PhenotypePlanEvent.abortPhenotypingPlan);
         testInstance.process(plan);
 
         verify(planStateSetter, times(1)).setStatusByName(any(Plan.class), any(String.class));
@@ -66,7 +66,7 @@ class PhenotypePlanAbortProcessorTest
         phenotypingAttempt.setPhenotypingStages(phenotypingStages);
         plan.setPhenotypingAttempt(phenotypingAttempt);
 
-        plan.setEvent(PhenotypePlanEvent.abortPhenotypingPlan);
+        plan.setProcessDataEvent(PhenotypePlanEvent.abortPhenotypingPlan);
         testInstance.process(plan);
 
         verify(planStateSetter, times(1)).setStatusByName(any(Plan.class), any(String.class));
@@ -87,15 +87,11 @@ class PhenotypePlanAbortProcessorTest
         phenotypingAttempt.setPhenotypingStages(phenotypingStages);
         plan.setPhenotypingAttempt(phenotypingAttempt);
 
-        plan.setEvent(PhenotypePlanEvent.abortPhenotypingPlan);
+        plan.setProcessDataEvent(PhenotypePlanEvent.abortPhenotypingPlan);
         UserOperationFailedException thrown = assertThrows(UserOperationFailedException.class,
             () -> testInstance.process(plan), "Exception not thrown");
         assertThat(
-            "Not expected message", thrown.getMessage(), is("Transition cannot be executed"));
-        assertThat(
-            "Not expected message",
-            thrown.getDebugMessage(),
-            is("The plan has phenotyping stages that are not aborted. Please abort them first."));
+            "Not expected message", thrown.getMessage(), is("Transition cannot be executed The plan has phenotyping stages that are not aborted. Please abort them first."));
 
         verify(planStateSetter, times(0)).setStatusByName(any(Plan.class), any(String.class));
     }
@@ -105,7 +101,7 @@ class PhenotypePlanAbortProcessorTest
         PhenotypingStage phenotypingStage = new PhenotypingStage();
         Status status = new Status();
         status.setIsAbortionStatus(isAborted);
-        phenotypingStage.setStatus(status);
+        phenotypingStage.setProcessDataStatus(status);
         return phenotypingStage;
     }
 }

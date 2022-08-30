@@ -3,6 +3,9 @@ package org.gentar.biology.targ_rep.es_cell;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 import org.gentar.Mapper;
 import org.gentar.biology.targ_rep.TargRepEsCellResponseDTO;
 import org.gentar.biology.targ_rep.allele.TargRepAllele;
@@ -99,6 +102,7 @@ public class TargRepEsCellMapper implements Mapper<TargRepEsCell, TargRepEsCellR
                                  TargRepPipeline targRepPipeline) {
         Link link = linkTo(methodOn(TargRepPipelineController.class)
             .findTargRepPipelineById(targRepPipeline.getId())).withRel("pipeline");
+        link = link.withHref(decode(link.getHref()));
         targRepEsCellResponseDTO.add(link);
     }
 
@@ -107,6 +111,7 @@ public class TargRepEsCellMapper implements Mapper<TargRepEsCell, TargRepEsCellR
         Link link = linkTo(
             methodOn(TargRepAlleleController.class).findTargRepAlleleById(targRepAllele.getId()))
             .withRel("allele");
+        link = link.withHref(decode(link.getHref()));
         targRepEsCellResponseDTO.add(link);
     }
 
@@ -116,6 +121,16 @@ public class TargRepEsCellMapper implements Mapper<TargRepEsCell, TargRepEsCellR
             methodOn(TargRepTargetingVectorController.class)
                 .findTargRepTargetingVectorById(targRepTargetingVector.getId()))
             .withRel("targeting_vector");
+        link = link.withHref(decode(link.getHref()));
         targRepEsCellResponseDTO.add(link);
+    }
+
+    private static String decode(String value) {
+        try {
+            return URLDecoder.decode(value, StandardCharsets.UTF_8.toString());
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        return value;
     }
 }

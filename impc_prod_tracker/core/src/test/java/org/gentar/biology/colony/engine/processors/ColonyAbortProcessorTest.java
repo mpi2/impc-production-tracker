@@ -45,7 +45,7 @@ class ColonyAbortProcessorTest
     {
         Colony colony = buildColony(ColonyState.GenotypeNotConfirmed.getInternalName());
 
-        colony.setEvent(ColonyEvent.abortGenotypeNotConfirmed);
+        colony.setProcessDataEvent(ColonyEvent.abortGenotypeNotConfirmed);
         testInstance.process(colony);
 
         verify(colonyStateSetter, times(1)).setStatusByName(any(Colony.class), any(String.class));
@@ -78,7 +78,7 @@ class ColonyAbortProcessorTest
         planStartingPoints.add(planStartingPoint2);
         colony.getOutcome().setPlanStartingPoints(planStartingPoints);
 
-        colony.setEvent(ColonyEvent.abortGenotypeNotConfirmed);
+        colony.setProcessDataEvent(ColonyEvent.abortGenotypeNotConfirmed);
         testInstance.process(colony);
 
         verify(colonyStateSetter, times(1)).setStatusByName(any(Colony.class), any(String.class));
@@ -111,15 +111,12 @@ class ColonyAbortProcessorTest
         planStartingPoints.add(planStartingPoint2);
         colony.getOutcome().setPlanStartingPoints(planStartingPoints);
 
-        colony.setEvent(ColonyEvent.abortGenotypeNotConfirmed);
+        colony.setProcessDataEvent(ColonyEvent.abortGenotypeNotConfirmed);
         UserOperationFailedException thrown = assertThrows(UserOperationFailedException.class,
             () -> testInstance.process(colony), "Exception not thrown");
         assertThat(
-            "Not expected message", thrown.getMessage(), is("Transition cannot be executed"));
-        assertThat(
-            "Not expected message",
-            thrown.getDebugMessage(),
-            is("The colony is used in plans that are not aborted"));
+            "Not expected message", thrown.getMessage(), is("Transition cannot be executed The colony is used in plans that are not aborted"));
+
 
         verify(colonyStateSetter, times(0)).setStatusByName(any(Colony.class), any(String.class));
     }
@@ -129,7 +126,7 @@ class ColonyAbortProcessorTest
         Colony colony = new Colony();
         Status status = new Status();
         status.setName(statusName);
-        colony.setStatus(status);
+        colony.setProcessDataStatus(status);
         Outcome outcome = new Outcome();
         colony.setOutcome(outcome);
         return colony;

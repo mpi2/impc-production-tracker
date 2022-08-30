@@ -43,7 +43,7 @@ public abstract class AbstractProcessor implements Processor
 
     private void tryToExecuteTransition(ProcessData entity)
     {
-        ProcessEvent processEvent = entity.getEvent();
+        ProcessEvent processEvent = entity.getProcessDataEvent();
         if (processEvent != null)
         {
             validateTransitionCanBeExecuted(processEvent, entity);
@@ -63,7 +63,7 @@ public abstract class AbstractProcessor implements Processor
      */
     private ProcessState getValidatedEndState(ProcessData entity, ProcessEvent transition)
     {
-        String currentStatusName = entity.getStatus().getName();
+        String currentStatusName = entity.getProcessDataStatus().getName();
         String initialStatusTransitionName = transition.getInitialState().getInternalName();
         // Using 'contains' to handle the case of generic state machines which initial state is
         // a more generic name that the status in the entity.
@@ -79,7 +79,7 @@ public abstract class AbstractProcessor implements Processor
                     transition.getInitialState().getInternalName(),
                     transition.getEndState().getInternalName(),
                     entity.getClass().getSimpleName(),
-                    entity.getStatus().getName()
+                    entity.getProcessDataStatus().getName()
                     ));
         }
         return transition.getEndState();
@@ -91,7 +91,7 @@ public abstract class AbstractProcessor implements Processor
         if (!transitionEvaluation.isExecutable())
         {
             throw new UserOperationFailedException(
-                "Transition cannot be executed", transitionEvaluation.getNote());
+                "Transition cannot be executed "+ transitionEvaluation.getNote());
         }
     }
 }

@@ -15,6 +15,7 @@
  */
 package org.gentar.biology.plan;
 
+import org.gentar.biology.plan.attempt.AttemptTypesName;
 import org.gentar.biology.plan.engine.PlanCreator;
 import org.gentar.biology.plan.engine.PlanStateMachineResolver;
 import org.gentar.biology.plan.engine.PlanValidator;
@@ -25,7 +26,6 @@ import org.gentar.statemachine.ProcessEvent;
 import org.gentar.statemachine.TransitionAvailabilityEvaluator;
 import org.gentar.statemachine.TransitionEvaluation;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Component;
@@ -160,4 +160,40 @@ public class PlanServiceImpl implements PlanService
         return planStateMachineResolver.getProcessEventByActionName(plan, name);
     }
 
+
+    @Override
+    public boolean canCreateOutcome(String pin) {
+
+        Plan plan = getNotNullPlanByPin(pin);
+
+        if (plan.getProcessDataStatus().getIsAbortionStatus()) {
+            return false;
+        }
+
+        if (plan.getAttemptType().getName().equals(AttemptTypesName.ES_CELL.getLabel()) &&
+            !plan.getProcessDataStatus().getName().equals("Chimeras/Founder Obtained")) {
+            return false;
+        }
+
+        if (plan.getAttemptType().getName()
+            .equals(AttemptTypesName.ES_CELL_ALLELE_MODIFICATION.getLabel()) &&
+            !plan.getProcessDataStatus().getName().equals("Cre Excision Complete")) {
+            return false;
+        }
+
+        if (plan.getAttemptType().getName().equals(AttemptTypesName.CRISPR.getLabel()) &&
+            !plan.getProcessDataStatus().getName().equals("Founder Obtained")) {
+            return false;
+        }
+
+        if (plan.getAttemptType().getName()
+            .equals(AttemptTypesName.HAPLOESSENTIAL_CRISPR.getLabel()) &&
+            !plan.getProcessDataStatus().getName().equals("Embryos Obtained")) {
+            return false;
+        }
+
+        return plan.getOutcomes().size() != 1 || (!plan.getAttemptType().getName()
+            .equals(AttemptTypesName.ES_CELL_ALLELE_MODIFICATION.getLabel()) &&
+            !plan.getAttemptType().getName().equals(AttemptTypesName.ES_CELL.getLabel()));
+    }
 }

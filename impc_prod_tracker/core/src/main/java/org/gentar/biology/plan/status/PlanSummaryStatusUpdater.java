@@ -2,7 +2,6 @@ package org.gentar.biology.plan.status;
 
 import org.gentar.biology.colony.Colony;
 import org.gentar.biology.outcome.Outcome;
-import org.gentar.biology.outcome.type.OutcomeType;
 import org.gentar.biology.outcome.type.OutcomeTypeName;
 import org.gentar.biology.plan.Plan;
 import org.gentar.biology.plan.attempt.phenotyping.PhenotypingAttempt;
@@ -24,11 +23,11 @@ public class PlanSummaryStatusUpdater
     public void setSummaryStatus(Plan plan)
     {
         List<Status> statuses = getChildrenStatus(plan);
-        statuses.add(plan.getStatus());
+        statuses.add(plan.getProcessDataStatus());
         Status mostAdvancedStatus = getMostAdvanceStatusIgnoringAborted(statuses);
         if (mostAdvancedStatus == null)
         {
-            mostAdvancedStatus = plan.getStatus();
+            mostAdvancedStatus = plan.getProcessDataStatus();
         }
         setSummaryStatus(plan, mostAdvancedStatus);
     }
@@ -63,7 +62,7 @@ public class PlanSummaryStatusUpdater
                     Colony colony = x.getColony();
                     if (colony != null)
                     {
-                        outcomeStatuses.add(colony.getStatus());
+                        outcomeStatuses.add(colony.getProcessDataStatus());
                     }
                 }
 
@@ -72,7 +71,7 @@ public class PlanSummaryStatusUpdater
                     Specimen specimen = x.getSpecimen();
                     if (specimen != null)
                     {
-                        outcomeStatuses.add(specimen.getStatus());
+                        outcomeStatuses.add(specimen.getProcessDataStatus());
                     }
                 }
             });
@@ -89,7 +88,7 @@ public class PlanSummaryStatusUpdater
         if (phenotypingStages != null )
         {
             phenotypingStages.forEach(x -> {
-                phenotypingStagesStatuses.add(x.getStatus());
+                phenotypingStagesStatuses.add(x.getProcessDataStatus());
             });
         }
         return phenotypingStagesStatuses;
