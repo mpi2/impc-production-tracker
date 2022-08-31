@@ -40,6 +40,7 @@ public class ReportServiceImpl implements ReportService {
      }
 
     @Override
+    @Transactional
     public void cleanAllReports() {
         ReportTypeName
                 .stream()
