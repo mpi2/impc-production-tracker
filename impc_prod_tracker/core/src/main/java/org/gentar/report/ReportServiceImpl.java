@@ -47,6 +47,7 @@ public class ReportServiceImpl implements ReportService {
     }
 
     @Override
+    @Transactional
     public void cleanReportsByReportType(String name) {
 
         if (reportTypeNameExists(name)) {
@@ -63,6 +64,7 @@ public class ReportServiceImpl implements ReportService {
     }
 
     @Override
+    @Transactional
     public void writeReport(HttpServletResponse response, String name) throws IOException {
 
         String reportTypeName = name.toLowerCase();

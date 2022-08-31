@@ -10,6 +10,8 @@ import java.util.List;
 
 public interface ReportRepository extends CrudRepository<Report, Long> {
 
+    @Lock(LockModeType.PESSIMISTIC_READ)
+    @QueryHints({@QueryHint(name = "javax.persistence.lock.timeout", value ="1000")})
     Report findFirstByReportType_NameIsOrderByCreatedAtDesc(String reportName);
 
     @Lock(LockModeType.PESSIMISTIC_READ)
