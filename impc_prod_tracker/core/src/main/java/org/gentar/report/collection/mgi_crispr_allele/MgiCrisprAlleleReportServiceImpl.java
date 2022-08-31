@@ -119,6 +119,8 @@ public class MgiCrisprAlleleReportServiceImpl implements MgiCrisprAlleleReportSe
         Set<MgiCrisprAlleleReportMutationCategorizationProjection> categorizationProjections =
                 categorizationMap.get(mutationProjection.getMutationId());
 
+        String gentarMutationIdentifier = mutationProjection.getMutationMin();
+
         Gene g = filteredMutationGeneMap.get(mutationProjection.getMutationId());
         String formattedMutationSymbol = checkMutationSymbol(mutationSymbol, g.getSymbol());
 
@@ -143,7 +145,7 @@ public class MgiCrisprAlleleReportServiceImpl implements MgiCrisprAlleleReportSe
                 "endonuclease-mediated" + "\t" +
                 mutationCategory + "\t" +
                 mutationType + "\t" +
-                mgiMutationCategorizationFormatHelper.formatAlleleCategory(categorizationProjections) + "\t" +
+                gentarMutationIdentifier + "\t" +
                 mgiMutationSeqeunceFormatHelper.formatMutationSeqeunceData(mutationSequenceProjections) + "\t" +
                 formattedMutationSymbol + "\t" +
                 mgiAlleleAccId + "\t" +
@@ -198,7 +200,7 @@ public class MgiCrisprAlleleReportServiceImpl implements MgiCrisprAlleleReportSe
                 "Mutation Class",
                 "Mutation Type",
                 "Mutation Subtype",
-                "Mutation Category",
+                "GenTaR Mutation ID",
                 "Mutation Sequence",
                 "Mutation Symbol",
                 "Mutation MGI Accession ID",

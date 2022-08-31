@@ -10,6 +10,9 @@ public interface MgiCrisprAlleleReportOutcomeMutationProjection {
     @Value("#{target.mutationId}")
     Long getMutationId();
 
+    @Value("#{target.mutationMin}")
+    String getMutationMin();
+
     // Note: retrieving the entire mutation as part of the projection is slow
     @Value("#{target.symbol}")
     String getSymbol();

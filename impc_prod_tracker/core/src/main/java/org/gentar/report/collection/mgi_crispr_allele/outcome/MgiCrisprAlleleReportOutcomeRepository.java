@@ -14,6 +14,7 @@ public interface MgiCrisprAlleleReportOutcomeRepository extends CrudRepository<O
     @Query("select " +
             "o.id as outcomeId, " +
             "m.id as mutationId, " +
+            "m.min as mutationMin, " +
             "m.symbol as symbol, " +
             "m.description as description, " +
             "m.mgiAlleleId as mgiAlleleAccId, " +
