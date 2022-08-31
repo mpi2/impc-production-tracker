@@ -2,7 +2,7 @@
   "id": 3,
   "min":"MIN:NNNNNNNNNNNN",
   "mgiAlleleId":null,
-  "symbol":null,
+  "symbol":"Serpinb10<em1(IMPC)J>",
   "mgiAlleleSymbolWithoutImpcAbbreviation":null,
   "mgiAlleleSymbolRequiresConstruction":true,
   "geneticMutationTypeName":"Not Tested",
@@ -16,7 +16,7 @@
       "index":1,
       "sequence":{
         "id":4,
-        "sequence":"TCTAAAAGGNACAGTTGGTGACTGCAGCTTAAACTCTGAGTGCAGCAGG",
+        "sequence":">twat\nTCTAAAAGGNACAGTTGGTGACTGCAGCTTAAACTCTGAGTGCAGCAGG",
         "typeName":"partial",
         "categoryName":"outcome sequence"
       }
