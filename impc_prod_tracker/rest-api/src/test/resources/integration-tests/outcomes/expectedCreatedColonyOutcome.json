@@ -30,8 +30,8 @@
           "action":"confirmGenotypeWhenInProgress",
           "description":"Confirm Genotype when Genotype In Progress",
           "triggeredByUser":true,
-          "available":false,
-          "note":"A sequence and an allele symbol must exist.",
+          "available":true,
+          "note":null,
           "nextStatus":"Genotype Confirmed"
         },
         {

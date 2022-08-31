@@ -106,7 +106,6 @@ class PlanControllerTest extends ControllerTestTemplate
 
     // This test works locally but fails when run by GitHub Actions (It also fails when run locally in debug mode)
     // TODO: Investigate reasons for failing test
-    @Disabled
     @Test
     @DatabaseSetup(DBSetupFilesPaths.MULTIPLE_PLANS)
     @DatabaseTearDown(type = DatabaseOperation.DELETE_ALL, value = DBSetupFilesPaths.MULTIPLE_PLANS)
