@@ -18,6 +18,7 @@
   },
   "mutations":[
     {
+      "symbol":"Serpinb10<em1(IMPC)J>",
       "mgiAlleleSymbolWithoutImpcAbbreviation":false,
       "mgiAlleleSymbolRequiresConstruction":true,
       "geneticMutationTypeName":"Not Tested",
@@ -34,7 +35,7 @@
       "mutationSequences":[
         {
           "sequence":{
-            "sequence": "TCTAAAAGGNACAGTTGGTGACTGCAGCTTAAACTCTGAGTGCAGCAGG",
+            "sequence": ">twat\nTCTAAAAGGNACAGTTGGTGACTGCAGCTTAAACTCTGAGTGCAGCAGG",
             "typeName": "partial",
             "categoryName": "intention target sequence"
           },

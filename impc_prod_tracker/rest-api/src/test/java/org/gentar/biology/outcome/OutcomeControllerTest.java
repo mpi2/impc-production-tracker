@@ -1,8 +1,14 @@
 package org.gentar.biology.outcome;
 
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.is;
+import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
+
 import com.github.springtestdbunit.annotation.DatabaseOperation;
 import com.github.springtestdbunit.annotation.DatabaseSetup;
 import com.github.springtestdbunit.annotation.DatabaseTearDown;
+import java.io.IOException;
+import java.util.List;
 import org.gentar.audit.history.HistoryFieldsDescriptors;
 import org.gentar.audit.history.HistoryValidator;
 import org.gentar.biology.ChangeResponse;
@@ -23,12 +29,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.restdocs.payload.FieldDescriptor;
 import org.springframework.test.web.servlet.ResultHandler;
-import java.io.IOException;
-import java.util.List;
-
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.is;
-import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
 
 class OutcomeControllerTest extends ControllerTestTemplate
 {
@@ -116,6 +116,29 @@ class OutcomeControllerTest extends ControllerTestTemplate
         return document("outcomes/specimenOutcome", responseFields(outcomeFieldDescriptions));
     }
 
+
+    @Test
+    @DatabaseSetup(DBSetupFilesPaths.MULTIPLE_OUTCOMES)
+    @DatabaseTearDown(type = DatabaseOperation.DELETE_ALL, value = DBSetupFilesPaths.MULTIPLE_OUTCOMES)
+    void testCreateColonyOutcomeInPlan() throws Exception
+    {
+        sequenceResetter.syncSequence("OUTCOME_SEQ", "OUTCOME");
+        sequenceResetter.syncSequence("COLONY_STATUS_STAMP_SEQ", "COLONY_STATUS_STAMP");
+        sequenceResetter.syncSequence("DISTRIBUTION_PRODUCT_SEQ", "DISTRIBUTION_PRODUCT");
+        sequenceResetter.syncSequence("MUTATION_SEQ", "MUTATION");
+        sequenceResetter.syncSequence("SEQUENCE_SEQ", "SEQUENCE");
+        sequenceResetter.syncSequence("MUTATION_SEQUENCE_SEQ", "MUTATION_SEQUENCE");
+
+        String payload = loadFromResource("colonyOutcomeCreationPayload.json");
+
+        String url = "/api/plans/PIN:0000000001/outcomes";
+        String expectedJson = getCompleteResourcePath("expectedCreatedColonyOutcome.json");
+        String obtainedJson =
+            restCaller.executePostAndDocument(url, payload, document("outcomes/postColonyOutcome"));
+        String outcomeUrl = LinkUtil.getSelfHrefLinkStringFromJson(obtainedJson);
+
+        verifyCreatedOutcome(outcomeUrl, expectedJson);
+    }
 
     private void verifyCreatedOutcome(
         String outcomeUrl, String expectedJson) throws Exception
