@@ -37,6 +37,7 @@ public class MutationFormatterServiceImpl implements MutationFormatterService {
             unValidatedMutations.forEach(mutation -> {
                 Mutation validatedMutation = getValidatedMutation(mutation);
                 mutationService.update(validatedMutation);
+                LOGGER.info("Mutation Sequence Formatted For "+mutation.getMin() + " || "+  mutation.getSymbol());
             });
             LOGGER.info("Formatting Finished");
         } catch (Exception e) {
