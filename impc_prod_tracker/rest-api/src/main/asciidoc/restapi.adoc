@@ -227,7 +227,7 @@ include::{snippets}/people/updateOwnUser/http-response.adoc[]
 
 
 == Projects
-anchor:chapter-configure[]
+anchor:projects[]
 This section describes the REST endpoints for projects in the system.
 
 A project in GenTaR is a top level object. It specifies an intention,
@@ -413,7 +413,7 @@ include::{snippets}/projects/putProject/http-response.adoc[]
 include::{snippets}/projects/putProject/response-fields.adoc[]
 
 == Plans
-anchor:chapter-configure[]
+anchor:plans[]
 This section describes the REST endpoints for plans in the system.
 
 === Fields
@@ -658,8 +658,6 @@ include::{snippets}/plans/putPhenotypingPlan/http-response.adoc[]
 == Outcomes
 anchor:outcomes[]
 This section describes the REST endpoints for outcomes in the system.
-
-[TODO:DEFINITION]
 
 An outcome can be either a colony or a specimen.
 
