@@ -31,6 +31,7 @@ public class MutationFormatterServiceImpl implements MutationFormatterService {
     public void formatSequence(String workUnit) {
         try {
             List<Mutation> allMutations = (List<Mutation>) mutationRepository.findAll();
+            LOGGER.info("Finding UnValidated Sequences Started");
             List<Mutation> unValidatedMutations =
                 getUnValidatedMutations(workUnit, allMutations);
             LOGGER.info("UnValidated Mutations size:" + unValidatedMutations.size());
