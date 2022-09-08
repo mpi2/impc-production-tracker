@@ -103,12 +103,12 @@ class PhenotypingStageServiceImplTest {
 
         lenient().when(
             phenotypingStageStateMachineResolver
-                .getProcessEventByActionName(Mockito.any(PhenotypingStage.class), eq(TEST_NAME)))
+                .getProcessEventByActionName(Mockito.any(PhenotypingStage.class), eq("early adult and embryo")))
             .thenReturn(processEventMockData());
         ProcessEvent processEvent =
-            testInstance.getProcessEventByName(phenotypingStageMockData(), TEST_NAME);
+            testInstance.getProcessEventByName(phenotypingStageMockData(), "early adult and embryo");
 
-        assertEquals(processEvent.getName(), TEST_NAME);
+        assertEquals(processEvent.getName(), "abandonWhenCreated");
     }
 
     @Test
@@ -230,9 +230,9 @@ class PhenotypingStageServiceImplTest {
 
         Exception exception = assertThrows(NotFoundException.class, () -> {
             PhenotypingStageType phenotypingStageType =
-                testInstance.getPhenotypingStageTypeByNameFailingWhenNull(TEST_NAME);
+                testInstance.getPhenotypingStageTypeByNameFailingWhenNull("early adult and embryo");
         });
-        String expectedMessage =  "Phenotyping stage type " + TEST_NAME + " does not exist.";
+        String expectedMessage =  "Phenotyping stage type " + "early adult and embryo" + " does not exist.";
         String actualMessage = exception.getMessage();
 
         assertTrue(actualMessage.contains(expectedMessage));    }
@@ -240,15 +240,15 @@ class PhenotypingStageServiceImplTest {
     @Test
     void getPhenotypingStageTypeByNameFailingWhenNullNotNull() {
         lenient()
-            .when(phenotypingStageTypeRepository.findByNameIgnoreCase(TEST_NAME))
+            .when(phenotypingStageTypeRepository.findByNameIgnoreCase("early adult and embryo"))
             .thenReturn(phenotypingStageTypeMockData());
 
 
             PhenotypingStageType phenotypingStageType =
-                testInstance.getPhenotypingStageTypeByNameFailingWhenNull(TEST_NAME);
+                testInstance.getPhenotypingStageTypeByNameFailingWhenNull("early adult and embryo");
 
 
-        assertEquals(phenotypingStageType.getName(),TEST_NAME);
+        assertEquals(phenotypingStageType.getName(),"early adult and embryo");
     }
 
 
@@ -256,14 +256,14 @@ class PhenotypingStageServiceImplTest {
     void getPhenotypingStageTypeByName() {
 
         lenient()
-            .when(phenotypingStageTypeRepository.findByNameIgnoreCase(TEST_NAME))
+            .when(phenotypingStageTypeRepository.findByNameIgnoreCase("early adult and embryo"))
             .thenReturn(phenotypingStageTypeMockData());
 
 
         PhenotypingStageType phenotypingStageType =
-            testInstance.getPhenotypingStageTypeByName(TEST_NAME);
+            testInstance.getPhenotypingStageTypeByName("early adult and embryo");
 
 
-        assertEquals(phenotypingStageType.getName(),TEST_NAME);
+        assertEquals(phenotypingStageType.getName(),"early adult and embryo");
     }
 }

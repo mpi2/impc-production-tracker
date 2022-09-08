@@ -99,15 +99,16 @@ public class GeneExternalServiceImpl implements GeneExternalService
         return getSymbolsFromExternalData(query);
     }
 
-    private Map<String, String> getAccIdsBySingleMarkerSymbol(String input)
-    {
-        String query = QueryBuilder.getInstance()
-                .withRoot("mouse_gene")
-                .withColumnInLikeValuesIgnoreCase("symbol", Arrays.asList(input))
-                .withFields(Arrays.asList("mgi_gene_acc_id", "symbol"))
-                .build();
-        return getAccIdsFromExternalData(query);
-    }
+    // Not Used Method
+//    private Map<String, String> getAccIdsBySingleMarkerSymbol(String input)
+//    {
+//        String query = QueryBuilder.getInstance()
+//                .withRoot("mouse_gene")
+//                .withColumnInLikeValuesIgnoreCase("symbol", Arrays.asList(input))
+//                .withFields(Arrays.asList("mgi_gene_acc_id", "symbol"))
+//                .build();
+//        return getAccIdsFromExternalData(query);
+//    }
 
     private Map<String, String> getAccIdsByCollectionMarkerSymbols(List<String> inputs)
     {

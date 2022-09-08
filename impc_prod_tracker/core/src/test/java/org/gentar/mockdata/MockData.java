@@ -34,6 +34,7 @@ import org.gentar.biology.gene_list.GeneList;
 import org.gentar.biology.gene_list.record.GeneByListRecord;
 import org.gentar.biology.gene_list.record.GeneListProjection;
 import org.gentar.biology.gene_list.record.ListRecord;
+import org.gentar.biology.gene_list.record.ListRecordType;
 import org.gentar.biology.intention.project_intention.ProjectIntention;
 import org.gentar.biology.intention.project_intention_gene.ProjectIntentionGene;
 import org.gentar.biology.mutation.Mutation;
@@ -42,10 +43,14 @@ import org.gentar.biology.outcome.Outcome;
 import org.gentar.biology.outcome.type.OutcomeType;
 import org.gentar.biology.plan.Plan;
 import org.gentar.biology.plan.attempt.AttemptType;
+import org.gentar.biology.plan.attempt.AttemptTypeChecker;
 import org.gentar.biology.plan.attempt.phenotyping.PhenotypingAttempt;
 import org.gentar.biology.plan.attempt.phenotyping.stage.PhenotypingStage;
 import org.gentar.biology.plan.attempt.phenotyping.stage.type.PhenotypingStageType;
+import org.gentar.biology.plan.attempt.phenotyping.stage.type.PhenotypingStageTypeName;
+import org.gentar.biology.plan.starting_point.PlanStartingPoint;
 import org.gentar.biology.plan.type.PlanType;
+import org.gentar.biology.plan.type.PlanTypeName;
 import org.gentar.biology.project.Project;
 import org.gentar.biology.project.assignment.AssignmentStatus;
 import org.gentar.biology.project.assignment.AssignmentStatusStamp;
@@ -59,10 +64,15 @@ import org.gentar.biology.project.type.ProjectType;
 import org.gentar.biology.species.Species;
 import org.gentar.biology.status.Status;
 import org.gentar.organization.consortium.Consortium;
+import org.gentar.organization.funder.Funder;
 import org.gentar.organization.work_group.WorkGroup;
 import org.gentar.organization.work_unit.WorkUnit;
 import org.gentar.report.collection.gene_interest.gene.GeneInterestReportGeneProjection;
+import org.gentar.report.collection.gene_interest.mutation.GeneInterestReportMutationGeneProjection;
+import org.gentar.report.collection.gene_interest.outcome.GeneInterestReportOutcomeMutationProjection;
+import org.gentar.report.collection.gene_interest.phenotyping_attempt.GeneInterestReportPhenotypingAttemptProjection;
 import org.gentar.report.collection.gene_interest.project.GeneInterestReportProjectProjection;
+import org.gentar.statemachine.ProcessData;
 import org.gentar.statemachine.ProcessEvent;
 import org.gentar.statemachine.ProcessState;
 import org.gentar.statemachine.Processor;
@@ -75,7 +85,7 @@ public class MockData {
     public static final String TPO_000000001 = "TPO:000000001";
     public static final String PIN_000000001 = "PIN:000000001";
     public static final String MIN_000000001 = "MIN:000000001";
-    public static final String PSN_000000001 = "PSN:000000001";
+    public static final String PSN_000000001 = "PSN:000000000001";
     public static final String TEST_COMMENT = "Test Comment";
     public static final String COMPLETION_COMMENT = "Completion Comment";
     public static final String TEST_NAME = "Test Name";
@@ -161,6 +171,8 @@ public class MockData {
         plan.setOutcomes(outcomesSetMockData());
         plan.setWorkUnit(workUnitMockData());
         plan.setWorkGroup(workGroupMockData());
+        plan.setPlanStartingPoints(Set.of(planStartingPointMockData()));
+        plan.setFunders(Set.of(funderMockData()));
         return plan;
     }
 
@@ -235,14 +247,14 @@ public class MockData {
     public static PlanType planTypeMockData() {
         PlanType planType = new PlanType();
         planType.setId(1L);
-        planType.setName(TEST_NAME);
+        planType.setName(PlanTypeName.PRODUCTION.getLabel());
         return planType;
     }
 
     public static AttemptType attemptTypeMockData() {
         AttemptType attemptType = new AttemptType();
         attemptType.setId(1L);
-        attemptType.setName(TEST_NAME);
+        attemptType.setName(AttemptTypeChecker.ES_CELL_TYPE);
         return attemptType;
     }
 
@@ -284,6 +296,7 @@ public class MockData {
         Gene gene = new Gene();
         gene.setId(1L);
         gene.setAccId(MGI_00000001);
+        gene.setSymbol("Rsph3b");
         return gene;
     }
 
@@ -448,6 +461,12 @@ public class MockData {
         return listRecord;
     }
 
+    public static ListRecordType listRecordTypeMockData() {
+        ListRecordType listRecordType = new ListRecordType();
+        listRecordType.setId(1L);
+        return listRecordType;
+    }
+
     public static GeneByListRecord geneByListRecordMockData() {
         GeneByListRecord geneByListRecord = new GeneByListRecord();
         geneByListRecord.setId(1L);
@@ -504,8 +523,8 @@ public class MockData {
         };
     }
 
-    public static  ProcessEvent processEventMockData(){
-        ProcessEvent processEvent =new ProcessEvent() {
+    public static ProcessEvent processEventMockData() {
+        ProcessEvent processEvent = new ProcessEvent() {
             @Override
             public Class<? extends Processor> getNextStepProcessor() {
                 return null;
@@ -513,7 +532,7 @@ public class MockData {
 
             @Override
             public String getName() {
-                return TEST_NAME;
+                return "abandonWhenCreated";
             }
 
             @Override
@@ -545,13 +564,13 @@ public class MockData {
         return processEvent;
     }
 
-    public static TransitionEvaluation transitionEvaluationMockData(){
+    public static TransitionEvaluation transitionEvaluationMockData() {
         TransitionEvaluation transitionEvaluation = new TransitionEvaluation();
         transitionEvaluation.setTransition(processEventMockData());
         return transitionEvaluation;
     }
 
-    public static Root<Plan> rootMockData(){
+    public static Root<Plan> rootMockData() {
         Root<Plan> root = new Root<Plan>() {
             @Override
             public EntityType<Plan> getModel() {
@@ -811,7 +830,7 @@ public class MockData {
         return root;
     }
 
-    public static GeneInterestReportProjectProjection geneInterestReportProjectProjectionMockData(){
+    public static GeneInterestReportProjectProjection geneInterestReportProjectProjectionMockData() {
         return new GeneInterestReportProjectProjection() {
             @Override
             public Long getProjectId() {
@@ -850,7 +869,7 @@ public class MockData {
         };
     }
 
-    public static GeneInterestReportGeneProjection geneInterestReportGeneProjectionMockData(){
+    public static GeneInterestReportGeneProjection geneInterestReportGeneProjectionMockData() {
         return new GeneInterestReportGeneProjection() {
             @Override
             public Long getProjectId() {
@@ -904,23 +923,146 @@ public class MockData {
         };
     }
 
-    public static PhenotypingStage phenotypingStageMockData(){
+    public static PhenotypingStage phenotypingStageMockData() {
         PhenotypingStage phenotypingStage = new PhenotypingStage();
         phenotypingStage.setId(1L);
         phenotypingStage.setPsn(PSN_000000001);
+        phenotypingStage.setPhenotypingAttempt(phenotypingAttemptMockData());
+        phenotypingStage.setPhenotypingStageType(phenotypingStageTypeMockData());
         return phenotypingStage;
     }
 
-    public static PhenotypingAttempt phenotypingAttemptMockData(){
+    public static PhenotypingAttempt phenotypingAttemptMockData() {
         PhenotypingAttempt phenotypingAttempt = new PhenotypingAttempt();
         phenotypingAttempt.setId(1L);
+        phenotypingAttempt.setPlan(planMockData());
         return phenotypingAttempt;
     }
 
-    public static PhenotypingStageType phenotypingStageTypeMockData(){
+    public static PhenotypingStageType phenotypingStageTypeMockData() {
         PhenotypingStageType phenotypingStageType = new PhenotypingStageType();
         phenotypingStageType.setId(1L);
-        phenotypingStageType.setName(TEST_NAME);
+        phenotypingStageType.setName(PhenotypingStageTypeName.EARLY_ADULT.getLabel());
         return phenotypingStageType;
+    }
+
+    public static PlanStartingPoint planStartingPointMockData() {
+        PlanStartingPoint planStartingPoint = new PlanStartingPoint();
+        planStartingPoint.setId(1L);
+        planStartingPoint.setOutcome(outcomeMockData());
+        return planStartingPoint;
+    }
+
+    public static Funder funderMockData() {
+        Funder funder = new Funder();
+        funder.setId(1L);
+        return funder;
+    }
+
+    public static GeneInterestReportPhenotypingAttemptProjection geneInterestReportPhenotypingAttemptProjectionMockData() {
+      return  new GeneInterestReportPhenotypingAttemptProjection() {
+          @Override
+          public Long getProjectId() {
+              return 1L;
+          }
+
+          @Override
+          public String getProjectTpn() {
+              return TPN_000000001;
+          }
+
+          @Override
+          public String getPlanIdentificationNumber() {
+              return TEST_IDENTIFICATION_NUMBER;
+          }
+
+          @Override
+          public String getPhenotypingWorkUnit() {
+              return null;
+          }
+
+          @Override
+          public String getPhenotypingWorkGroup() {
+              return null;
+          }
+
+          @Override
+          public String getCohortProductionWorkUnit() {
+              return null;
+          }
+
+          @Override
+          public String getPhenotypingStageStatus() {
+              return "Created";
+          }
+
+          @Override
+          public Long getOutcomeId() {
+              return 1L;
+          }
+      };
+    }
+
+    public  static GeneInterestReportOutcomeMutationProjection geneInterestReportOutcomeMutationProjectionMockData(){
+        return new GeneInterestReportOutcomeMutationProjection() {
+            @Override
+            public Long getOutcomeId() {
+                return 1L;
+            }
+
+            @Override
+            public Long getMutationId() {
+                return 1L;
+            }
+
+            @Override
+            public String getSymbol() {
+                return MGI_00000001;
+            }
+        };
+    }
+
+
+    public static GeneInterestReportMutationGeneProjection geneInterestReportMutationGeneProjectionMockData(){
+        return new GeneInterestReportMutationGeneProjection() {
+            @Override
+            public Long getMutationId() {
+                return 1L;
+            }
+
+            @Override
+            public Long getGeneId() {
+                return 1L;
+            }
+
+            @Override
+            public Gene getGene() {
+                return geneMockData();
+            }
+        };
+    }
+
+    public static ProcessData processDataMockData(){
+        return new ProcessData() {
+            @Override
+            public ProcessEvent getProcessDataEvent() {
+                return null;
+            }
+
+            @Override
+            public void setProcessDataEvent(ProcessEvent processEvent) {
+
+            }
+
+            @Override
+            public Status getProcessDataStatus() {
+                return null;
+            }
+
+            @Override
+            public void setProcessDataStatus(Status status) {
+
+            }
+        };
     }
 }

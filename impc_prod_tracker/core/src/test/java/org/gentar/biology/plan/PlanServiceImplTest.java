@@ -240,7 +240,7 @@ class PlanServiceImplTest {
         ProcessEvent processEvent =
             testInstance.getProcessEventByName(planMockData(), TEST_NAME);
 
-        assertEquals(processEvent.getName(), TEST_NAME);
+        assertEquals(processEvent.getName(), "abandonWhenCreated");
     }
 
     @Test
