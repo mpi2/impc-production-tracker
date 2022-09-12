@@ -39,6 +39,7 @@ import org.gentar.biology.intention.project_intention.ProjectIntention;
 import org.gentar.biology.intention.project_intention_gene.ProjectIntentionGene;
 import org.gentar.biology.mutation.Mutation;
 import org.gentar.biology.mutation.molecular_type.MolecularMutationType;
+import org.gentar.biology.mutation.sequence.MutationSequence;
 import org.gentar.biology.ortholog.Ortholog;
 import org.gentar.biology.outcome.Outcome;
 import org.gentar.biology.outcome.type.OutcomeType;
@@ -64,6 +65,7 @@ import org.gentar.biology.project.projection.dto.ProjectSearchDownloadOrthologDt
 import org.gentar.biology.project.search.SearchResult;
 import org.gentar.biology.project.summary_status.ProjectSummaryStatusStamp;
 import org.gentar.biology.project.type.ProjectType;
+import org.gentar.biology.sequence.Sequence;
 import org.gentar.biology.species.Species;
 import org.gentar.biology.status.Status;
 import org.gentar.organization.consortium.Consortium;
@@ -87,6 +89,10 @@ import org.gentar.report.collection.mgi_crispr_allele.mutation_characterization.
 import org.gentar.report.collection.mgi_crispr_allele.nuclease.MgiCrisprAlleleReportNucleaseProjection;
 import org.gentar.report.collection.mgi_crispr_allele.outcome.MgiCrisprAlleleReportOutcomeMutationProjection;
 import org.gentar.report.collection.mgi_crispr_allele.sequence.MgiCrisprAlleleReportMutationSequenceProjection;
+import org.gentar.report.collection.mgi_modification_allele.modification_colony.MgiModificationAlleleReportColonyProjection;
+import org.gentar.report.collection.mgi_modification_allele.mutation.MgiModificationAlleleReportEsCellMutationTypeProjection;
+import org.gentar.report.collection.mgi_modification_allele.mutation.MgiModificationAlleleReportMutationGeneProjection;
+import org.gentar.report.collection.mgi_modification_allele.outcome.MgiModificationAlleleReportOutcomeMutationProjection;
 import org.gentar.statemachine.ProcessData;
 import org.gentar.statemachine.ProcessEvent;
 import org.gentar.statemachine.ProcessState;
@@ -979,6 +985,21 @@ public class MockData {
         return searchResult;
     }
 
+    public static MutationSequence mutationSequenceMockData() {
+        MutationSequence mutationSequence = new MutationSequence();
+        mutationSequence.setId(1L);
+        mutationSequence.setSequence(sequenceMockData());
+        return mutationSequence;
+    }
+
+    public static Sequence sequenceMockData() {
+        Sequence sequence = new Sequence();
+        sequence.setId(1L);
+        sequence.setSequence("ATTTGGGCCC");
+        return sequence;
+    }
+
+
     public static GeneInterestReportPhenotypingAttemptProjection geneInterestReportPhenotypingAttemptProjectionMockData() {
         return new GeneInterestReportPhenotypingAttemptProjection() {
             @Override
@@ -1103,7 +1124,7 @@ public class MockData {
         return report;
     }
 
-    public static Person personMockData(){
+    public static Person personMockData() {
         Person person = new Person();
         person.setId(1L);
         person.setName("testAdmin");
@@ -1112,21 +1133,22 @@ public class MockData {
         return person;
     }
 
-    public static Ortholog orthologMockData(){
+    public static Ortholog orthologMockData() {
         Ortholog ortholog = new Ortholog();
         ortholog.setSymbol("Rsp3b");
         ortholog.setSupportCount(5);
         return ortholog;
     }
 
-    public static ProjectSearchDownloadOrthologDto projectSearchDownloadOrthologDtoMockData(){
-        ProjectSearchDownloadOrthologDto projectSearchDownloadOrthologDto = new ProjectSearchDownloadOrthologDto();
+    public static ProjectSearchDownloadOrthologDto projectSearchDownloadOrthologDtoMockData() {
+        ProjectSearchDownloadOrthologDto projectSearchDownloadOrthologDto =
+            new ProjectSearchDownloadOrthologDto();
         projectSearchDownloadOrthologDto.setMgiGeneAccId(MGI_00000001);
         projectSearchDownloadOrthologDto.setSupportCount(5L);
         return projectSearchDownloadOrthologDto;
     }
 
-    public static MgiCrisprAlleleReportColonyProjection mgiCrisprAlleleReportColonyProjectionMockData(){
+    public static MgiCrisprAlleleReportColonyProjection mgiCrisprAlleleReportColonyProjectionMockData() {
         return new MgiCrisprAlleleReportColonyProjection() {
             @Override
             public String getColonyName() {
@@ -1160,8 +1182,7 @@ public class MockData {
         };
     }
 
-
-    public static MgiCrisprAlleleReportOutcomeMutationProjection mgiCrisprAlleleReportOutcomeMutationProjectionMockData(){
+    public static MgiCrisprAlleleReportOutcomeMutationProjection mgiCrisprAlleleReportOutcomeMutationProjectionMockData() {
         return new MgiCrisprAlleleReportOutcomeMutationProjection() {
             @Override
             public Long getOutcomeId() {
@@ -1210,7 +1231,7 @@ public class MockData {
         };
     }
 
-    public static MgiCrisprAlleleReportGuideProjection mgiCrisprAlleleReportGuideProjectionMockData(){
+    public static MgiCrisprAlleleReportGuideProjection mgiCrisprAlleleReportGuideProjectionMockData() {
         return new MgiCrisprAlleleReportGuideProjection() {
             @Override
             public Long getGuideId() {
@@ -1264,7 +1285,7 @@ public class MockData {
         };
     }
 
-    public static MgiCrisprAlleleReportNucleaseProjection mgiCrisprAlleleReportNucleaseProjectionMockData(){
+    public static MgiCrisprAlleleReportNucleaseProjection mgiCrisprAlleleReportNucleaseProjectionMockData() {
         return new MgiCrisprAlleleReportNucleaseProjection() {
             @Override
             public Long getNucleaseId() {
@@ -1288,7 +1309,7 @@ public class MockData {
         };
     }
 
-    public static MgiCrisprAlleleReportMutagenesisDonorProjection mgiCrisprAlleleReportMutagenesisDonorProjectionMockData(){
+    public static MgiCrisprAlleleReportMutagenesisDonorProjection mgiCrisprAlleleReportMutagenesisDonorProjectionMockData() {
         return new MgiCrisprAlleleReportMutagenesisDonorProjection() {
             @Override
             public Long getMutagenesisDonorId() {
@@ -1317,7 +1338,7 @@ public class MockData {
         };
     }
 
-    public static MgiCrisprAlleleReportGenotypePrimerProjection mgiCrisprAlleleReportGenotypePrimerProjectionMockData(){
+    public static MgiCrisprAlleleReportGenotypePrimerProjection mgiCrisprAlleleReportGenotypePrimerProjectionMockData() {
         return new MgiCrisprAlleleReportGenotypePrimerProjection() {
             @Override
             public Long getGenotypePrimerId() {
@@ -1341,7 +1362,7 @@ public class MockData {
         };
     }
 
-    public static MgiCrisprAlleleReportMutationSequenceProjection mgiCrisprAlleleReportMutationSequenceProjectionMockData(){
+    public static MgiCrisprAlleleReportMutationSequenceProjection mgiCrisprAlleleReportMutationSequenceProjectionMockData() {
         return new MgiCrisprAlleleReportMutationSequenceProjection() {
             @Override
             public Long getMutationId() {
@@ -1374,7 +1395,8 @@ public class MockData {
             }
         };
     }
-    public static MgiCrisprAlleleReportMutationCategorizationProjection mgiCrisprAlleleReportMutationCategorizationProjectionMockData(){
+
+    public static MgiCrisprAlleleReportMutationCategorizationProjection mgiCrisprAlleleReportMutationCategorizationProjectionMockData() {
         return new MgiCrisprAlleleReportMutationCategorizationProjection() {
             @Override
             public Long getMutationId() {
@@ -1392,7 +1414,8 @@ public class MockData {
             }
         };
     }
-    public static MgiCrisprAlleleReportMutationGeneProjection mgiCrisprAlleleReportMutationGeneProjectionMockData(){
+
+    public static MgiCrisprAlleleReportMutationGeneProjection mgiCrisprAlleleReportMutationGeneProjectionMockData() {
         return new MgiCrisprAlleleReportMutationGeneProjection() {
             @Override
             public Long getMutationId() {
@@ -1407,6 +1430,157 @@ public class MockData {
             @Override
             public Gene getGene() {
                 return geneMockData();
+            }
+        };
+    }
+
+    public static MgiModificationAlleleReportColonyProjection mgiModificationAlleleReportColonyProjectionMockData() {
+        return new MgiModificationAlleleReportColonyProjection() {
+            @Override
+            public Long getProductionPlanId() {
+                return 1L;
+            }
+
+            @Override
+            public String getProductionColonyName() {
+                return TEST_NAME;
+            }
+
+            @Override
+            public String getProductionStrainName() {
+                return TEST_NAME;
+            }
+
+            @Override
+            public String getProductionWorkUnit() {
+                return null;
+            }
+
+            @Override
+            public Long getProductionOutcomeId() {
+                return 1L;
+            }
+
+            @Override
+            public String getEsCellName() {
+                return TEST_NAME;
+            }
+
+            @Override
+            public String getParentalEsCellName() {
+                return TEST_NAME;
+            }
+
+            @Override
+            public String getEsCellAlleleSymbol() {
+                return null;
+            }
+
+            @Override
+            public String getEsCellAlleleAccessionId() {
+                return "1L";
+            }
+
+            @Override
+            public Boolean getTatCre() {
+                return null;
+            }
+
+            @Override
+            public String getDeleterStrainName() {
+                return TEST_NAME;
+            }
+
+            @Override
+            public String getModificationColonyName() {
+                return TEST_NAME;
+            }
+
+            @Override
+            public String getModificationStrainName() {
+                return TEST_NAME;
+            }
+
+            @Override
+            public Long getModificationPlanId() {
+                return 1L;
+            }
+
+            @Override
+            public String getModificationWorkUnit() {
+                return null;
+            }
+
+            @Override
+            public Long getModificationOutcomeId() {
+                return 1L;
+            }
+        };
+    }
+
+    public static MgiModificationAlleleReportOutcomeMutationProjection mgiModificationAlleleReportOutcomeMutationProjectionMockData() {
+        return new MgiModificationAlleleReportOutcomeMutationProjection() {
+            @Override
+            public Long getOutcomeId() {
+                return 1L;
+            }
+
+            @Override
+            public Long getMutationId() {
+                return 1L;
+            }
+
+            @Override
+            public String getSymbol() {
+                return null;
+            }
+
+            @Override
+            public String getMgiAlleleAccId() {
+                return "1L";
+            }
+        };
+    }
+
+    public static MgiModificationAlleleReportMutationGeneProjection mgiModificationAlleleReportMutationGeneProjectionMockData() {
+        return new MgiModificationAlleleReportMutationGeneProjection() {
+            @Override
+            public Long getMutationId() {
+                return 1L;
+            }
+
+            @Override
+            public String getMutationIdentificationNumber() {
+                return null;
+            }
+
+            @Override
+            public Long getGeneId() {
+                return 1L;
+            }
+
+            @Override
+            public Gene getGene() {
+                return geneMockData();
+            }
+        };
+    }
+
+    public static MgiModificationAlleleReportEsCellMutationTypeProjection mgiModificationAlleleReportEsCellMutationTypeProjection() {
+        return new MgiModificationAlleleReportEsCellMutationTypeProjection() {
+            @Override
+            public Long getMutationId() {
+                return 1L;
+            }
+
+            @Override
+            public String getMutationIdentificationNumber() {
+                return null;
+            }
+
+            @Override
+            public String getMutationCategorizationName() {
+                return TEST_NAME;
             }
         };
     }
