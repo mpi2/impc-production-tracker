@@ -39,6 +39,7 @@ import org.gentar.biology.intention.project_intention.ProjectIntention;
 import org.gentar.biology.intention.project_intention_gene.ProjectIntentionGene;
 import org.gentar.biology.mutation.Mutation;
 import org.gentar.biology.mutation.molecular_type.MolecularMutationType;
+import org.gentar.biology.ortholog.Ortholog;
 import org.gentar.biology.outcome.Outcome;
 import org.gentar.biology.outcome.type.OutcomeType;
 import org.gentar.biology.plan.Plan;
@@ -59,19 +60,33 @@ import org.gentar.biology.project.consortium.ProjectConsortium;
 import org.gentar.biology.project.esCellQc.ProjectEsCellQc;
 import org.gentar.biology.project.privacy.Privacy;
 import org.gentar.biology.project.projection.ProjectSearchDownloadProjection;
+import org.gentar.biology.project.projection.dto.ProjectSearchDownloadOrthologDto;
+import org.gentar.biology.project.search.SearchResult;
 import org.gentar.biology.project.summary_status.ProjectSummaryStatusStamp;
 import org.gentar.biology.project.type.ProjectType;
 import org.gentar.biology.species.Species;
 import org.gentar.biology.status.Status;
 import org.gentar.organization.consortium.Consortium;
 import org.gentar.organization.funder.Funder;
+import org.gentar.organization.person.Person;
 import org.gentar.organization.work_group.WorkGroup;
 import org.gentar.organization.work_unit.WorkUnit;
+import org.gentar.report.Report;
+import org.gentar.report.ReportType;
 import org.gentar.report.collection.gene_interest.gene.GeneInterestReportGeneProjection;
 import org.gentar.report.collection.gene_interest.mutation.GeneInterestReportMutationGeneProjection;
 import org.gentar.report.collection.gene_interest.outcome.GeneInterestReportOutcomeMutationProjection;
 import org.gentar.report.collection.gene_interest.phenotyping_attempt.GeneInterestReportPhenotypingAttemptProjection;
 import org.gentar.report.collection.gene_interest.project.GeneInterestReportProjectProjection;
+import org.gentar.report.collection.mgi_crispr_allele.colony.MgiCrisprAlleleReportColonyProjection;
+import org.gentar.report.collection.mgi_crispr_allele.genotype_primer.MgiCrisprAlleleReportGenotypePrimerProjection;
+import org.gentar.report.collection.mgi_crispr_allele.guide.MgiCrisprAlleleReportGuideProjection;
+import org.gentar.report.collection.mgi_crispr_allele.mutagenesis_donor.MgiCrisprAlleleReportMutagenesisDonorProjection;
+import org.gentar.report.collection.mgi_crispr_allele.mutation.MgiCrisprAlleleReportMutationGeneProjection;
+import org.gentar.report.collection.mgi_crispr_allele.mutation_characterization.MgiCrisprAlleleReportMutationCategorizationProjection;
+import org.gentar.report.collection.mgi_crispr_allele.nuclease.MgiCrisprAlleleReportNucleaseProjection;
+import org.gentar.report.collection.mgi_crispr_allele.outcome.MgiCrisprAlleleReportOutcomeMutationProjection;
+import org.gentar.report.collection.mgi_crispr_allele.sequence.MgiCrisprAlleleReportMutationSequenceProjection;
 import org.gentar.statemachine.ProcessData;
 import org.gentar.statemachine.ProcessEvent;
 import org.gentar.statemachine.ProcessState;
@@ -99,6 +114,7 @@ public class MockData {
     public static final String TEST_SUMMARY_STATUS = "Test Summary Status";
     public static final String TEST_ASSIGMENT_NAME = "Test Assigment Name";
     public static final String TEST_IDENTIFICATION_NUMBER = "Test Identification Number";
+    public static final String TEST_INPUT = "test Input";
 
     public static Project projectMockData() {
         Project project = new Project();
@@ -114,14 +130,14 @@ public class MockData {
         project.setEsCellQcOnly(true);
         project.setComment(TEST_COMMENT);
         project.setPrivacy(privacyMockData());
-        project.setProjectIntentions(projectIntentionListMockData());
+        project.setProjectIntentions(List.of(projectIntentionMockData()));
         project.setSpecies(speciesSetMockData());
         project.setProjectConsortia(projectConsortiumSetMockData());
         project.setProjectEsCellQc(projectEsCellQcMockData());
         project.setProjectType(projectTypeMockData());
         project.setCompletionNote(ProjectCompletionNoteMockData());
         project.setCompletionComment(COMPLETION_COMMENT);
-
+        project.setAssignmentStatus(assignmentStatusMockData());
         return project;
     }
 
@@ -129,8 +145,8 @@ public class MockData {
         Status status = new Status();
         status.setId(1L);
         status.setName(TEST_NAME);
+        status.setOrdering(301001);
         status.setDescription(TEST_DESCRIPTION);
-        status.setOrdering(1);
         status.setIsAbortionStatus(false);
         return status;
     }
@@ -183,16 +199,11 @@ public class MockData {
         return privacy;
     }
 
-    public static List<ProjectIntention> projectIntentionListMockData() {
-        List<ProjectIntention> projectIntentions = new ArrayList<>();
-        projectIntentions.add(projectIntentionMockData());
-        return projectIntentions;
-    }
-
     public static ProjectIntention projectIntentionMockData() {
         ProjectIntention projectIntention = new ProjectIntention();
         projectIntention.setId(1L);
         projectIntention.setProjectIntentionGene(projectIntentionGeneMockData());
+        projectIntention.setMolecularMutationType(molecularMutationTypeMockData());
         return projectIntention;
     }
 
@@ -329,7 +340,7 @@ public class MockData {
     public static Consortium consortiumMockData() {
         Consortium consortium = new Consortium();
         consortium.setId(1L);
-        consortium.setName(TEST_NAME);
+        consortium.setName("IMPC");
         consortium.setDescription(TEST_DESCRIPTION);
         return consortium;
     }
@@ -943,6 +954,7 @@ public class MockData {
         PhenotypingStageType phenotypingStageType = new PhenotypingStageType();
         phenotypingStageType.setId(1L);
         phenotypingStageType.setName(PhenotypingStageTypeName.EARLY_ADULT.getLabel());
+
         return phenotypingStageType;
     }
 
@@ -959,51 +971,59 @@ public class MockData {
         return funder;
     }
 
-    public static GeneInterestReportPhenotypingAttemptProjection geneInterestReportPhenotypingAttemptProjectionMockData() {
-      return  new GeneInterestReportPhenotypingAttemptProjection() {
-          @Override
-          public Long getProjectId() {
-              return 1L;
-          }
-
-          @Override
-          public String getProjectTpn() {
-              return TPN_000000001;
-          }
-
-          @Override
-          public String getPlanIdentificationNumber() {
-              return TEST_IDENTIFICATION_NUMBER;
-          }
-
-          @Override
-          public String getPhenotypingWorkUnit() {
-              return null;
-          }
-
-          @Override
-          public String getPhenotypingWorkGroup() {
-              return null;
-          }
-
-          @Override
-          public String getCohortProductionWorkUnit() {
-              return null;
-          }
-
-          @Override
-          public String getPhenotypingStageStatus() {
-              return "Created";
-          }
-
-          @Override
-          public Long getOutcomeId() {
-              return 1L;
-          }
-      };
+    public static SearchResult searchResultMockData() {
+        SearchResult searchResult = new SearchResult();
+        searchResult.setInput(TEST_INPUT);
+        searchResult.setComment(TEST_COMMENT);
+        searchResult.setProject(projectMockData());
+        return searchResult;
     }
 
-    public  static GeneInterestReportOutcomeMutationProjection geneInterestReportOutcomeMutationProjectionMockData(){
+    public static GeneInterestReportPhenotypingAttemptProjection geneInterestReportPhenotypingAttemptProjectionMockData() {
+        return new GeneInterestReportPhenotypingAttemptProjection() {
+            @Override
+            public Long getProjectId() {
+                return 1L;
+            }
+
+            @Override
+            public String getProjectTpn() {
+                return TPN_000000001;
+            }
+
+            @Override
+            public String getPlanIdentificationNumber() {
+                return TEST_IDENTIFICATION_NUMBER;
+            }
+
+            @Override
+            public String getPhenotypingWorkUnit() {
+                return null;
+            }
+
+            @Override
+            public String getPhenotypingWorkGroup() {
+                return null;
+            }
+
+            @Override
+            public String getCohortProductionWorkUnit() {
+                return null;
+            }
+
+            @Override
+            public String getPhenotypingStageStatus() {
+                return "Created";
+            }
+
+            @Override
+            public Long getOutcomeId() {
+                return 1L;
+            }
+        };
+    }
+
+    public static GeneInterestReportOutcomeMutationProjection geneInterestReportOutcomeMutationProjectionMockData() {
         return new GeneInterestReportOutcomeMutationProjection() {
             @Override
             public Long getOutcomeId() {
@@ -1023,7 +1043,7 @@ public class MockData {
     }
 
 
-    public static GeneInterestReportMutationGeneProjection geneInterestReportMutationGeneProjectionMockData(){
+    public static GeneInterestReportMutationGeneProjection geneInterestReportMutationGeneProjectionMockData() {
         return new GeneInterestReportMutationGeneProjection() {
             @Override
             public Long getMutationId() {
@@ -1042,7 +1062,7 @@ public class MockData {
         };
     }
 
-    public static ProcessData processDataMockData(){
+    public static ProcessData processDataMockData() {
         return new ProcessData() {
             @Override
             public ProcessEvent getProcessDataEvent() {
@@ -1062,6 +1082,331 @@ public class MockData {
             @Override
             public void setProcessDataStatus(Status status) {
 
+            }
+        };
+    }
+
+    public static ReportType reportTypeMockData() {
+        ReportType reportType = new ReportType();
+        reportType.setId(1L);
+        reportType.setName(TEST_NAME);
+        reportType.setDescription(TEST_DESCRIPTION);
+        reportType.setIsPublic(true);
+        return reportType;
+    }
+
+
+    public static Report reportMockData() {
+        Report report = new Report();
+        report.setId(1L);
+        report.setCreatedAt(LocalDateTime.now());
+        return report;
+    }
+
+    public static Person personMockData(){
+        Person person = new Person();
+        person.setId(1L);
+        person.setName("testAdmin");
+        person.setPassword("testAdmin");
+        person.setEmail("testadmin@ebi.ac.uk");
+        return person;
+    }
+
+    public static Ortholog orthologMockData(){
+        Ortholog ortholog = new Ortholog();
+        ortholog.setSymbol("Rsp3b");
+        ortholog.setSupportCount(5);
+        return ortholog;
+    }
+
+    public static ProjectSearchDownloadOrthologDto projectSearchDownloadOrthologDtoMockData(){
+        ProjectSearchDownloadOrthologDto projectSearchDownloadOrthologDto = new ProjectSearchDownloadOrthologDto();
+        projectSearchDownloadOrthologDto.setMgiGeneAccId(MGI_00000001);
+        projectSearchDownloadOrthologDto.setSupportCount(5L);
+        return projectSearchDownloadOrthologDto;
+    }
+
+    public static MgiCrisprAlleleReportColonyProjection mgiCrisprAlleleReportColonyProjectionMockData(){
+        return new MgiCrisprAlleleReportColonyProjection() {
+            @Override
+            public String getColonyName() {
+                return null;
+            }
+
+            @Override
+            public String getGenotypingComment() {
+                return null;
+            }
+
+            @Override
+            public String getStrainName() {
+                return null;
+            }
+
+            @Override
+            public Long getPlanId() {
+                return 1L;
+            }
+
+            @Override
+            public String getProductionWorkUnit() {
+                return null;
+            }
+
+            @Override
+            public Long getOutcomeId() {
+                return 1l;
+            }
+        };
+    }
+
+
+    public static MgiCrisprAlleleReportOutcomeMutationProjection mgiCrisprAlleleReportOutcomeMutationProjectionMockData(){
+        return new MgiCrisprAlleleReportOutcomeMutationProjection() {
+            @Override
+            public Long getOutcomeId() {
+                return 1L;
+            }
+
+            @Override
+            public Long getMutationId() {
+                return 1L;
+            }
+
+            @Override
+            public String getMutationMin() {
+                return null;
+            }
+
+            @Override
+            public String getSymbol() {
+                return null;
+            }
+
+            @Override
+            public String getDescription() {
+                return null;
+            }
+
+            @Override
+            public String getMgiAlleleAccId() {
+                return null;
+            }
+
+            @Override
+            public Boolean getAlleleConfirmed() {
+                return null;
+            }
+
+            @Override
+            public String getMutationType() {
+                return null;
+            }
+
+            @Override
+            public String getMutationCategory() {
+                return null;
+            }
+        };
+    }
+
+    public static MgiCrisprAlleleReportGuideProjection mgiCrisprAlleleReportGuideProjectionMockData(){
+        return new MgiCrisprAlleleReportGuideProjection() {
+            @Override
+            public Long getGuideId() {
+                return null;
+            }
+
+            @Override
+            public Long getPlanId() {
+                return 1L;
+            }
+
+            @Override
+            public String getSequence() {
+                return null;
+            }
+
+            @Override
+            public String getGuideSequence() {
+                return null;
+            }
+
+            @Override
+            public String getPam() {
+                return null;
+            }
+
+            @Override
+            public String getChr() {
+                return null;
+            }
+
+            @Override
+            public Integer getStart() {
+                return null;
+            }
+
+            @Override
+            public Integer getStop() {
+                return null;
+            }
+
+            @Override
+            public String getStrand() {
+                return null;
+            }
+
+            @Override
+            public String getGenomeBuild() {
+                return null;
+            }
+        };
+    }
+
+    public static MgiCrisprAlleleReportNucleaseProjection mgiCrisprAlleleReportNucleaseProjectionMockData(){
+        return new MgiCrisprAlleleReportNucleaseProjection() {
+            @Override
+            public Long getNucleaseId() {
+                return 1L;
+            }
+
+            @Override
+            public Long getPlanId() {
+                return 1L;
+            }
+
+            @Override
+            public String getNucleaseType() {
+                return null;
+            }
+
+            @Override
+            public String getNucleaseClass() {
+                return null;
+            }
+        };
+    }
+
+    public static MgiCrisprAlleleReportMutagenesisDonorProjection mgiCrisprAlleleReportMutagenesisDonorProjectionMockData(){
+        return new MgiCrisprAlleleReportMutagenesisDonorProjection() {
+            @Override
+            public Long getMutagenesisDonorId() {
+                return 1L;
+            }
+
+            @Override
+            public Long getPlanId() {
+                return 1L;
+            }
+
+            @Override
+            public String getSequence() {
+                return null;
+            }
+
+            @Override
+            public String getVector() {
+                return null;
+            }
+
+            @Override
+            public String getPreparationType() {
+                return null;
+            }
+        };
+    }
+
+    public static MgiCrisprAlleleReportGenotypePrimerProjection mgiCrisprAlleleReportGenotypePrimerProjectionMockData(){
+        return new MgiCrisprAlleleReportGenotypePrimerProjection() {
+            @Override
+            public Long getGenotypePrimerId() {
+                return 1L;
+            }
+
+            @Override
+            public Long getPlanId() {
+                return 1L;
+            }
+
+            @Override
+            public String getName() {
+                return null;
+            }
+
+            @Override
+            public String getSequence() {
+                return null;
+            }
+        };
+    }
+
+    public static MgiCrisprAlleleReportMutationSequenceProjection mgiCrisprAlleleReportMutationSequenceProjectionMockData(){
+        return new MgiCrisprAlleleReportMutationSequenceProjection() {
+            @Override
+            public Long getMutationId() {
+                return 1L;
+            }
+
+            @Override
+            public Long getIndex() {
+                return null;
+            }
+
+            @Override
+            public Long getSequenceId() {
+                return 1L;
+            }
+
+            @Override
+            public String getSequence() {
+                return null;
+            }
+
+            @Override
+            public String getSequenceType() {
+                return null;
+            }
+
+            @Override
+            public String getSequenceCategory() {
+                return null;
+            }
+        };
+    }
+    public static MgiCrisprAlleleReportMutationCategorizationProjection mgiCrisprAlleleReportMutationCategorizationProjectionMockData(){
+        return new MgiCrisprAlleleReportMutationCategorizationProjection() {
+            @Override
+            public Long getMutationId() {
+                return 1L;
+            }
+
+            @Override
+            public String getMutationCategorization() {
+                return null;
+            }
+
+            @Override
+            public String getMutationCategorizationType() {
+                return null;
+            }
+        };
+    }
+    public static MgiCrisprAlleleReportMutationGeneProjection mgiCrisprAlleleReportMutationGeneProjectionMockData(){
+        return new MgiCrisprAlleleReportMutationGeneProjection() {
+            @Override
+            public Long getMutationId() {
+                return 1L;
+            }
+
+            @Override
+            public Long getGeneId() {
+                return 1L;
+            }
+
+            @Override
+            public Gene getGene() {
+                return geneMockData();
             }
         };
     }
