@@ -157,7 +157,7 @@ public class OrthologServiceImpl implements OrthologService {
     }
 
 
-    private List<ProjectSearchDownloadOrthologDto> calculateBestSearchDownloadOrthologs(
+    public List<ProjectSearchDownloadOrthologDto> calculateBestSearchDownloadOrthologs(
         List<ProjectSearchDownloadOrthologDto> orthologs) {
 
         List<ProjectSearchDownloadOrthologDto> bestOrthologs = new ArrayList<>(orthologs);

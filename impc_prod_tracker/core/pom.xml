@@ -21,12 +21,12 @@
 		<jacoco.plugin.version>0.8.8</jacoco.plugin.version>
 		<skip.coverage>false</skip.coverage>
 
-		<coverage.ratio.instruction>0.3000</coverage.ratio.instruction>
-		<coverage.ratio.branch>0.3000</coverage.ratio.branch>
-		<coverage.ratio.method>0.3000</coverage.ratio.method>
-		<coverage.ratio.complexity>0.3000</coverage.ratio.complexity>
-		<coverage.ratio.line>0.3000</coverage.ratio.line>
-		<coverage.ratio.class>0.3000</coverage.ratio.class>
+		<coverage.ratio.instruction>0.6200</coverage.ratio.instruction>
+		<coverage.ratio.branch>0.4500</coverage.ratio.branch>
+		<coverage.ratio.method>0.5600</coverage.ratio.method>
+		<coverage.ratio.complexity>0.4900</coverage.ratio.complexity>
+		<coverage.ratio.line>0.6300</coverage.ratio.line>
+		<coverage.ratio.class>0.6800</coverage.ratio.class>
 
 	</properties>
 

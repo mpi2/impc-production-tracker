@@ -35,7 +35,7 @@ import java.util.Set;
 public class ProjectCreator
 {
     @PersistenceContext
-    private EntityManager entityManager;
+    private final EntityManager entityManager;
 
     private final AssignmentStatusUpdater assignmentStatusUpdater;
     private final HistoryService<Project> historyService;
@@ -43,11 +43,13 @@ public class ProjectCreator
     private final PlanCreator planCreator;
 
     public ProjectCreator(
+        EntityManager entityManager,
         AssignmentStatusUpdater assignmentStatusUpdater,
         HistoryService<Project> historyService,
         ProjectValidator projectValidator,
         PlanCreator planCreator)
     {
+        this.entityManager = entityManager;
         this.assignmentStatusUpdater = assignmentStatusUpdater;
         this.historyService = historyService;
         this.projectValidator = projectValidator;
