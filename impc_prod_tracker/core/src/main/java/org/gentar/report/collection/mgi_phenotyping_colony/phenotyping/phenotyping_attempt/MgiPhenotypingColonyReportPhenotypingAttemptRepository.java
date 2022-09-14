@@ -1,4 +1,4 @@
-package org.gentar.report.collection.common.phenotyping.phenotyping_attempt;
+package org.gentar.report.collection.mgi_phenotyping_colony.phenotyping.phenotyping_attempt;
 
 import org.gentar.biology.plan.attempt.phenotyping.PhenotypingAttempt;
 import org.springframework.data.jpa.repository.Query;
@@ -8,7 +8,11 @@ import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 import java.util.List;
 
 @RepositoryRestResource(exported = false)
-public interface CommonPhenotypingColonyReportPhenotypingAttemptRepository extends CrudRepository<PhenotypingAttempt, Long> {
+public interface MgiPhenotypingColonyReportPhenotypingAttemptRepository extends CrudRepository<PhenotypingAttempt, Long> {
+
+    // Note these queries differ from the ones used for the IMPC phenotyping_colony report
+    // because they exclude colonies registered for phenotyping.
+
 
     @Query("select " +
             "pa.phenotypingExternalRef as colonyName, " +
@@ -57,7 +61,8 @@ public interface CommonPhenotypingColonyReportPhenotypingAttemptRepository exten
             "prod_pt.name='production' and " +
             "prod_at.name='crispr' and " +
             "pst.name='early adult and embryo' and " +
-            "ps_status.name <> 'Phenotype Production Aborted' and " +
+            "ps_status.name <> 'Phenotype Production Aborted' and ps_status.name <> 'Phenotyping Registered' and " +
+            "ps_status.name <> 'Rederivation Started' and ps_status.name <> 'Rederivation Complete' and " +
             "p_status.name <> 'Phenotyping Plan Aborted' and prod_status.name <> 'Plan Abandoned' " +
             "group by " +
             "pa.phenotypingExternalRef, " +
@@ -72,7 +77,7 @@ public interface CommonPhenotypingColonyReportPhenotypingAttemptRepository exten
             "o.id " +
             "having " +
             "count(psp.id)=1")
-    List<CommonPhenotypingColonyReportPhenotypingAttemptProjection> findAllPhenotypingAttemptProjections();
+    List<MgiPhenotypingColonyReportPhenotypingAttemptProjection> findAllPhenotypingAttemptProjections();
 
     @Query("select " +
             "pa.phenotypingExternalRef as colonyName, " +
@@ -121,7 +126,8 @@ public interface CommonPhenotypingColonyReportPhenotypingAttemptRepository exten
             "prod_pt.name='production' and " +
             "prod_at.name='crispr' and " + // Ensure no haplo-essential production plans included (production plans are implicit) -- // "prod_crispr_attempt.experimental=false and " +    // Critera used in iMits to exclude some data
             "pst.name='early adult and embryo' and " +
-            "ps_status.name <> 'Phenotype Production Aborted' and " +
+            "ps_status.name <> 'Phenotype Production Aborted' and ps_status.name <> 'Phenotyping Registered' and " +
+            "ps_status.name <> 'Rederivation Started' and ps_status.name <> 'Rederivation Complete' and " +
             "p_status.name <> 'Phenotyping Plan Aborted' and prod_status.name <> 'Plan Abandoned' " +
             "group by " +
             "pa.phenotypingExternalRef, " +
@@ -136,7 +142,7 @@ public interface CommonPhenotypingColonyReportPhenotypingAttemptRepository exten
             "o.id " +
             "having " +
             "count(psp.id)=1")
-    List<CommonPhenotypingColonyReportPhenotypingAttemptProjection> findPhenotypingAttemptProjectionsFromCrisprProduction();
+    List<MgiPhenotypingColonyReportPhenotypingAttemptProjection> findPhenotypingAttemptProjectionsFromCrisprProduction();
 
 
 
@@ -190,7 +196,8 @@ public interface CommonPhenotypingColonyReportPhenotypingAttemptRepository exten
             "prod_wg.name <> 'EUCOMMToolsCre' and " +  // Critera used in iMits to exclude some data
             "prod_proj.esCellQcOnly = false and " +       // Critera used in iMits to exclude some data
             "pst.name='early adult and embryo' and " +
-            "ps_status.name <> 'Phenotype Production Aborted' and " +
+            "ps_status.name <> 'Phenotype Production Aborted'  and ps_status.name <> 'Phenotyping Registered' and " +
+            "ps_status.name <> 'Rederivation Started' and ps_status.name <> 'Rederivation Complete' and " +
             "p_status.name <> 'Phenotyping Plan Aborted' and prod_status.name <> 'Plan Abandoned' " +
             "group by " +
             "pa.phenotypingExternalRef, " +
@@ -205,7 +212,7 @@ public interface CommonPhenotypingColonyReportPhenotypingAttemptRepository exten
             "o.id " +
             "having " +
             "count(psp.id)=1")
-    List<CommonPhenotypingColonyReportPhenotypingAttemptProjection> findPhenotypingAttemptProjectionsFromEsCellProduction();
+    List<MgiPhenotypingColonyReportPhenotypingAttemptProjection> findPhenotypingAttemptProjectionsFromEsCellProduction();
 
 
     @Query("select " +
@@ -268,7 +275,8 @@ public interface CommonPhenotypingColonyReportPhenotypingAttemptRepository exten
             "prod_pt.name='production' and " +
             "prod_at.name='es cell allele modification' and " +
             "pst.name='early adult and embryo' and " +
-            "ps_status.name <> 'Phenotype Production Aborted' and " +
+            "ps_status.name <> 'Phenotype Production Aborted'  and ps_status.name <> 'Phenotyping Registered' and " +
+            "ps_status.name <> 'Rederivation Started' and ps_status.name <> 'Rederivation Complete' and " +
             "p_status.name <> 'Phenotyping Plan Aborted' and " +
             "prod_status.name <> 'Plan Abandoned' and " +
             "es_prod_priv.name='public' and " +
@@ -290,6 +298,6 @@ public interface CommonPhenotypingColonyReportPhenotypingAttemptRepository exten
             "o.id " +
             "having " +
             "count(psp.id)=1 ")
-    List<CommonPhenotypingColonyReportPhenotypingAttemptProjection> findPhenotypingAttemptProjectionsFromEsCellModificationProduction();
+    List<MgiPhenotypingColonyReportPhenotypingAttemptProjection> findPhenotypingAttemptProjectionsFromEsCellModificationProduction();
 
 }

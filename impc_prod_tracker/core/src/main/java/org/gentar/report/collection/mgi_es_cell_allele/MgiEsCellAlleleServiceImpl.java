@@ -2,6 +2,7 @@ package org.gentar.report.collection.mgi_es_cell_allele;
 
 import org.gentar.report.ReportServiceImpl;
 import org.gentar.report.ReportTypeName;
+import org.gentar.report.collection.mgi_es_cell_allele.targ_rep.MgiEsCellAlleleTargRepProjection;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -13,6 +14,7 @@ import java.util.stream.Collectors;
 public class MgiEsCellAlleleServiceImpl implements MgiEsCellAlleleService{
 
     private final ReportServiceImpl reportService;
+    private List<MgiEsCellAlleleTargRepProjection> trp;
 
     private List<String> reportRows;
 

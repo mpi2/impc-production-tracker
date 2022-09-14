@@ -1,7 +1,6 @@
 package org.gentar.report.collection.gene_interest.phenotyping;
 
 import org.gentar.biology.gene.Gene;
-import org.gentar.report.collection.common.phenotyping.mutation.CommonPhenotypingColonyReportMutationGeneProjection;
 import org.gentar.report.collection.gene_interest.outcome.GeneInterestReportOutcomeMutationProjection;
 import org.gentar.report.collection.gene_interest.phenotyping_attempt.GeneInterestReportPhenotypingAttemptProjection;
 import org.gentar.report.utils.status.GeneStatusSummaryHelperImpl;

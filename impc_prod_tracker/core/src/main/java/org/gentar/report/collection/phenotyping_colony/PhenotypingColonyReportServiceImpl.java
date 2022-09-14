@@ -3,9 +3,9 @@ package org.gentar.report.collection.phenotyping_colony;
 import org.gentar.biology.gene.Gene;
 import org.gentar.report.ReportServiceImpl;
 import org.gentar.report.ReportTypeName;
-import org.gentar.report.collection.common.phenotyping.CommonPhenotypingColonyReportServiceImpl;
-import org.gentar.report.collection.common.phenotyping.outcome.CommonPhenotypingColonyReportOutcomeMutationProjection;
-import org.gentar.report.collection.common.phenotyping.phenotyping_attempt.CommonPhenotypingColonyReportPhenotypingAttemptProjection;
+import org.gentar.report.collection.phenotyping_colony.phenotyping.PhenotypingColonyReportPhenotypingServiceImpl;
+import org.gentar.report.collection.phenotyping_colony.phenotyping.outcome.PhenotypingColonyReportOutcomeMutationProjection;
+import org.gentar.report.collection.phenotyping_colony.phenotyping.phenotyping_attempt.PhenotypingColonyReportPhenotypingAttemptProjection;
 import org.springframework.stereotype.Component;
 
 import java.util.Arrays;
@@ -17,15 +17,15 @@ import java.util.stream.Collectors;
 @Component
 public class PhenotypingColonyReportServiceImpl implements PhenotypingColonyReportService {
 
-    private final CommonPhenotypingColonyReportServiceImpl phenotypingColonyReportService;
+    private final PhenotypingColonyReportPhenotypingServiceImpl phenotypingColonyReportService;
     private final ReportServiceImpl reportService;
 
     private List<String> reportRows;
-    private List<CommonPhenotypingColonyReportPhenotypingAttemptProjection> pap;
-    private Map<Long, CommonPhenotypingColonyReportOutcomeMutationProjection> filteredOutcomeMutationMap;
+    private List<PhenotypingColonyReportPhenotypingAttemptProjection> pap;
+    private Map<Long, PhenotypingColonyReportOutcomeMutationProjection> filteredOutcomeMutationMap;
     private Map<Long, Gene> filteredMutationGeneMap;
 
-    public PhenotypingColonyReportServiceImpl(CommonPhenotypingColonyReportServiceImpl phenotypingColonyReportService,
+    public PhenotypingColonyReportServiceImpl(PhenotypingColonyReportPhenotypingServiceImpl phenotypingColonyReportService,
                                               ReportServiceImpl reportService) {
         this.phenotypingColonyReportService = phenotypingColonyReportService;
         this.reportService = reportService;
@@ -44,7 +44,7 @@ public class PhenotypingColonyReportServiceImpl implements PhenotypingColonyRepo
     }
 
     private List<String> prepareReport( ) {
-        List<CommonPhenotypingColonyReportPhenotypingAttemptProjection> sortedEntries =
+        List<PhenotypingColonyReportPhenotypingAttemptProjection> sortedEntries =
                 pap.stream()
                 .filter(x -> filteredOutcomeMutationMap.containsKey(x.getOutcomeId()))
                 .filter(x -> filteredMutationGeneMap.containsKey(filteredOutcomeMutationMap.get(x.getOutcomeId()).getMutationId()))
@@ -59,7 +59,7 @@ public class PhenotypingColonyReportServiceImpl implements PhenotypingColonyRepo
                 .collect(Collectors.toList());
     }
 
-    private String constructRow(CommonPhenotypingColonyReportPhenotypingAttemptProjection x) {
+    private String constructRow(PhenotypingColonyReportPhenotypingAttemptProjection x) {
         String mutationSymbol = filteredOutcomeMutationMap.get(x.getOutcomeId()).getSymbol();
         Gene g = filteredMutationGeneMap.get(filteredOutcomeMutationMap.get(x.getOutcomeId()).getMutationId());
         String cohortProductionWorkUnit = x.getCohortProductionWorkUnit() == null ? x.getPhenotypingWorkUnit() : x.getCohortProductionWorkUnit();
