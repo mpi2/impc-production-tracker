@@ -10,26 +10,26 @@ public interface MgiEsCellAlleleTargRepProjection {
     @Value("#{target.assembly}")
     String getAssembly();
 
-    @Value("#{target.cassette ?: ''}")
+    @Value("#{target.cassette}")
     String getCassette();
 
-    @Value("#{target.cassetteStart ?: NULL}")
+    @Value("#{target.cassetteStart}")
     Long getCassetteStart();
 
-    @Value("#{target.cassetteEnd ?: NULL}")
+    @Value("#{target.cassetteEnd}")
     Long getCassetteEnd();
 
-    @Value("#{target.loxpStart ?: NULL}")
+    @Value("#{target.loxpStart}")
     Long getLoxpStart();
 
-    @Value("#{target.loxpEnd ?: NULL}")
+    @Value("#{target.loxpEnd}")
     Long getLoxpEnd();
 
     @Value("#{target.pipeline}")
     String getPipeline();
 
-    @Value("#{target.ikmcProjectId ?: NULL }")
-    Long getIkmcProjectId();
+    @Value("#{target.ikmcProjectId}")
+    String getIkmcProjectId();
 
     @Value("#{target.esCellClone}")
     String getEsCellClone();
@@ -37,9 +37,12 @@ public interface MgiEsCellAlleleTargRepProjection {
     @Value("#{target.parentCellLine}")
     String getParentCellLine();
 
+    @Value("#{target.alleleSymbolSuperscript}")
+    String getAlleleSymbolSuperscript();
+
     @Value("#{target.mutationType}")
     String getMutationType();
 
-    @Value("#{target.mutationSubtype ?: ''}")
+    @Value("#{target.mutationSubtype}")
     String getMutationSubtype();
 }

@@ -9,5 +9,13 @@ public interface MgiEsCellAlleleTargRepService {
      * @return a list of MgiEsCellAlleleTargRepProjection Spring database projections
      *
      */
-    List<MgiEsCellAlleleTargRepProjection> getTargRepProjections();
+    List<MgiEsCellAlleleTargRepProjection> getSelectedTargRepProjections(List<String> cloneList);
+
+
+    /**
+     *
+     * @return a list of MgiESCellAlleleTargRepESCellCloneProjection Spring database projections
+     *
+     */
+    List<MgiESCellAlleleTargRepESCellCloneProjection> getTargRepClones();
 }
