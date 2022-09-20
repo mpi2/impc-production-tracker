@@ -65,7 +65,7 @@ public class CrisprAttemptMapper implements Mapper<CrisprAttempt, CrisprAttemptD
     @Override
     public CrisprAttemptDTO toDto(CrisprAttempt crisprAttempt)
     {
-        CrisprAttemptDTO crisprAttemptDTO = new CrisprAttemptDTO();
+        CrisprAttemptDTO crisprAttemptDTO = null;
         if (crisprAttempt != null)
         {
             crisprAttemptDTO = entityMapper.toTarget(crisprAttempt, CrisprAttemptDTO.class);
