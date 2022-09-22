@@ -10,6 +10,9 @@ public interface MgiPhenotypingColonyReportOutcomeMutationProjection {
     @Value("#{target.mutationId}")
     Long getMutationId();
 
+    @Value("#{target.mutationIdentificationNumber}")
+    String getMutationIdentificationNumber();
+
     // Note: retrieving the entire mutation as part of the projection is slow
     @Value("#{target.symbol}")
     String getSymbol();
