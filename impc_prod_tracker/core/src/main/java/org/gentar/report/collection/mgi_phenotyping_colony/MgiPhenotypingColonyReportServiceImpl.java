@@ -61,6 +61,7 @@ public class MgiPhenotypingColonyReportServiceImpl implements MgiPhenotypingColo
 
     private String constructRow(MgiPhenotypingColonyReportPhenotypingAttemptProjection x) {
         String mutationSymbol = filteredOutcomeMutationMap.get(x.getOutcomeId()).getSymbol();
+        String mutationMin = filteredOutcomeMutationMap.get(x.getOutcomeId()).getMutationIdentificationNumber();
         Gene g = filteredMutationGeneMap.get(filteredOutcomeMutationMap.get(x.getOutcomeId()).getMutationId());
         String cohortProductionWorkUnit = x.getCohortProductionWorkUnit() == null ? x.getPhenotypingWorkUnit() : x.getCohortProductionWorkUnit();
         return g.getSymbol() + "\t" +
@@ -74,7 +75,8 @@ public class MgiPhenotypingColonyReportServiceImpl implements MgiPhenotypingColo
                 x.getPhenotypingWorkUnit() + "\t" +
                 x.getPhenotypingWorkGroup() + "\t" +
                 cohortProductionWorkUnit + "\t" +
-                mutationSymbol;
+                mutationSymbol + "\t" +
+                mutationMin;
     }
 
     private void saveReport() {
@@ -107,7 +109,8 @@ public class MgiPhenotypingColonyReportServiceImpl implements MgiPhenotypingColo
                 "Phenotyping Work Unit",
                 "Phenotyping Work Group",
                 "Cohort Work Unit",
-                "Mutation Symbol"
+                "Mutation Symbol",
+                "GenTaR Mutation Identifier"
         );
 
         String headerString =   headers
