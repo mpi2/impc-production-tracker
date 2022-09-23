@@ -30,7 +30,10 @@ public enum ReportTypeName implements LabeledType {
             TRUE),
     PHENOTYPING_COLONIES("phenotyping_colonies",
                     "This report is used by IMPC to support the data release.",
-                    FALSE);
+                    FALSE),
+    PRODUCTS("products",
+            "This report is used by IMPC to support the data release.",
+            FALSE);
 
     private static final Map<String, ReportTypeName> BY_LABEL = new HashMap<>();
     static
