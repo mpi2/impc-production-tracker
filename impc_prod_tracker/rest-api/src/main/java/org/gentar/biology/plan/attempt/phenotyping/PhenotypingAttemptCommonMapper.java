@@ -41,9 +41,16 @@ public class PhenotypingAttemptCommonMapper implements Mapper<PhenotypingAttempt
     public PhenotypingAttempt toEntity(PhenotypingAttemptCommonDTO dto)
     {
         PhenotypingAttempt phenotypingAttempt = entityMapper.toTarget(dto, PhenotypingAttempt.class);
+        if (phenotypingAttempt.getPhenotypingExternalRef() != null){
+            removeWhitespaceFromPhenotypingExternalRef(phenotypingAttempt);
+        }
         setStrain(phenotypingAttempt, dto);
         setCohortWorkUnit(phenotypingAttempt, dto);
         return phenotypingAttempt;
+    }
+
+    private void removeWhitespaceFromPhenotypingExternalRef(PhenotypingAttempt phenotypingAttempt) {
+        phenotypingAttempt.setPhenotypingExternalRef(phenotypingAttempt.getPhenotypingExternalRef().strip());
     }
 
 
