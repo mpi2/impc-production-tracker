@@ -34,4 +34,6 @@ public interface MutationRepository extends CrudRepository<Mutation, Long>
 
     List<Mutation> findAllBySymbolLike(String symbolSearchTerm);
 
+    List<Mutation> findBySymbolContaining(String symbolSearchTerm);
+
 }

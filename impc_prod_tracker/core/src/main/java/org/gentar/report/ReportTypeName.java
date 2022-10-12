@@ -30,7 +30,11 @@ public enum ReportTypeName implements LabeledType {
             TRUE),
     PHENOTYPING_COLONIES("phenotyping_colonies",
                     "This report is used by IMPC to support the data release.",
-                    FALSE);
+                    FALSE),
+    GENE_SYMBOL_UPDATE_LOG("gene_symbol_update_log",
+                             "This report is used record gene symbol updates in gentar",
+                         FALSE);
+
 
     private static final Map<String, ReportTypeName> BY_LABEL = new HashMap<>();
     static
