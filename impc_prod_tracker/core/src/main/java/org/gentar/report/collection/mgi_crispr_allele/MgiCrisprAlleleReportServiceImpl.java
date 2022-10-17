@@ -18,6 +18,7 @@ import org.gentar.report.utils.mutagenesis_donor.MgiMutagenesisDonorFormatHelper
 import org.gentar.report.utils.mutation_categorization.MgiMutationCategorizationFormatHelper;
 import org.gentar.report.utils.nuclease.MgiNucleaseFormatHelper;
 import org.gentar.report.utils.sequence.MgiMutationSequenceFormatHelper;
+import org.gentar.report.utils.stringencoding.Formatter;
 import org.springframework.stereotype.Component;
 
 import java.util.*;
@@ -107,11 +108,11 @@ public class MgiCrisprAlleleReportServiceImpl implements MgiCrisprAlleleReportSe
         String mutationSymbol = mutationProjection.getSymbol();
         String mutationMgiAlleleAccId = mutationProjection.getMgiAlleleAccId();
         String mgiAlleleAccId = mutationMgiAlleleAccId == null ? "" : mutationMgiAlleleAccId;
-        String genotypingComment = x.getGenotypingComment() == null ? "" : '"' + x.getGenotypingComment() + '"';
+        String genotypingComment = x.getGenotypingComment() == null ? "" : '"' + Formatter.clean(x.getGenotypingComment()) + '"';
         String mutationCategory = mutationProjection.getMutationCategory();
         String mutationType = mutationProjection.getMutationType();
         String mutationDescription =
-                mutationProjection.getDescription() == null ? "" : '"' + mutationProjection.getDescription() + '"';
+                mutationProjection.getDescription() == null ? "" : '"' + Formatter.clean(mutationProjection.getDescription()) + '"';
 
         Set<MgiCrisprAlleleReportMutationSequenceProjection> mutationSequenceProjections =
                 sequenceMap.get(mutationProjection.getMutationId());
