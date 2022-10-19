@@ -1,6 +1,7 @@
 package org.gentar.report.utils.sequence;
 
 import org.gentar.report.collection.mgi_crispr_allele.sequence.MgiCrisprAlleleReportMutationSequenceProjection;
+import org.gentar.report.utils.stringencoding.Formatter;
 import org.springframework.stereotype.Component;
 
 import java.util.Comparator;
@@ -29,9 +30,12 @@ public class MgiMutationSequenceFormatHelperImpl implements MgiMutationSequenceF
     private String formatSeqeunce(MgiCrisprAlleleReportMutationSequenceProjection projection) {
 
         String index = projection.getIndex() == null ? "" : projection.getIndex().toString();
-        String sequence = projection.getSequence() == null ? "" : projection.getSequence();
-        String sequenceType = projection.getSequenceType() == null ? "" : projection.getSequenceType();
-        String sequenceCategory = projection.getSequenceCategory() == null ? "" : projection.getSequenceCategory();
+        String sequence = projection.getSequence() == null ? "" :
+                                            Formatter.clean(projection.getSequence());
+        String sequenceType = projection.getSequenceType() == null ? "" :
+                                            Formatter.clean(projection.getSequenceType());
+        String sequenceCategory = projection.getSequenceCategory() == null ? "" :
+                                            Formatter.clean(projection.getSequenceCategory());
 
         return  "index::" + index + "||" +
                 "mutationSeqeunce::" + sequence + "||" +

@@ -1,6 +1,7 @@
 package org.gentar.report.utils.mutagenesis_donor;
 
 import org.gentar.report.collection.mgi_crispr_allele.mutagenesis_donor.MgiCrisprAlleleReportMutagenesisDonorProjection;
+import org.gentar.report.utils.stringencoding.Formatter;
 import org.springframework.stereotype.Component;
 
 import java.util.Set;
@@ -25,9 +26,12 @@ class MgiMutagenesisDonorFormatHelperImpl implements MgiMutagenesisDonorFormatHe
 
     private String formatMutagenesisDonor(MgiCrisprAlleleReportMutagenesisDonorProjection projection) {
 
-        String sequence = projection.getSequence() == null ? "" : projection.getSequence();
-        String vector = projection.getVector() == null ? "" : projection.getVector();
-        String preparationType = projection.getPreparationType() == null ? "" : projection.getPreparationType();
+        String sequence = projection.getSequence() == null ? "" :
+                                    Formatter.clean(projection.getSequence());
+        String vector = projection.getVector() == null ? "" :
+                                    Formatter.clean(projection.getVector());
+        String preparationType = projection.getPreparationType() == null ? "" :
+                                    Formatter.clean(projection.getPreparationType());
 
 
         return  "preparationType::" + preparationType + "||" +
