@@ -1,6 +1,7 @@
 package org.gentar.report.utils.genotype_primer;
 
 import org.gentar.report.collection.mgi_crispr_allele.genotype_primer.MgiCrisprAlleleReportGenotypePrimerProjection;
+import org.gentar.report.utils.stringencoding.Formatter;
 import org.springframework.stereotype.Component;
 
 import java.util.Set;
@@ -25,8 +26,8 @@ public class MgiGenotypePrimerFormatHelperImpl implements MgiGenotypePrimerForma
 
     private String formatGenotypePrimer(MgiCrisprAlleleReportGenotypePrimerProjection projection) {
 
-        String sequence = projection.getSequence() == null ? "" : projection.getSequence();
-        String name = projection.getName() == null ? "" : projection.getName();
+        String sequence = projection.getSequence() == null ? "" : Formatter.clean(projection.getSequence());
+        String name = projection.getName() == null ? "" : Formatter.clean(projection.getName());
 
 
         return

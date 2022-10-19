@@ -68,6 +68,10 @@ public class MgiModificationAlleleServiceImpl implements MgiModificationAlleleSe
         if (productionMutationProjection != null){
             productionMutationSymbol = productionMutationProjection.getSymbol() == null ? "" : productionMutationProjection.getSymbol();
         }
+        String productionMutationMin = "";
+        if (productionMutationProjection != null){
+            productionMutationMin = productionMutationProjection.getMutationIdentificationNumber() == null ? "" : productionMutationProjection.getMutationIdentificationNumber();
+        }
 
         MgiModificationAlleleReportOutcomeMutationProjection modificationMutationProjection =
                 filteredOutcomeMutationMap.get(x.getModificationOutcomeId());
@@ -109,7 +113,8 @@ public class MgiModificationAlleleServiceImpl implements MgiModificationAlleleSe
                 x.getModificationStrainName() + "\t" +
                 x.getModificationWorkUnit() + "\t" +
                 modificationMgiAlleleAccId + "\t" +
-                modificationFormattedMutationSymbol;
+                modificationFormattedMutationSymbol + "\t" +
+                productionMutationMin;
     }
 
     private String checkMutationSymbol(String mutationSymbol, String geneSymbol) {
@@ -150,8 +155,8 @@ public class MgiModificationAlleleServiceImpl implements MgiModificationAlleleSe
                 "Production Work Unit",
                 "Production Mutation Symbol",
                 "ES Cell Allele Symbol",
-                "ES Cell Allele Accession ID",
                 "ES Cell Name",
+                "ES Cell Allele Accession ID",
                 "ES Cell Parent",
                 "Modification Plan Colony Name",
                 "Excision Type",
@@ -160,7 +165,8 @@ public class MgiModificationAlleleServiceImpl implements MgiModificationAlleleSe
                 "Modification Plan Colony Background Strain",
                 "Modification Work Unit",
                 "Modification Mutation Accession ID",
-                "Modification Mutation Symbol"
+                "Modification Mutation Symbol",
+                "GenTaR Mutation Identifier"
         );
 
         String headerString =   headers

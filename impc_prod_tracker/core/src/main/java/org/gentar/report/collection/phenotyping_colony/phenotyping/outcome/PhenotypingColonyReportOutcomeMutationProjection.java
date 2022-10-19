@@ -1,8 +1,8 @@
-package org.gentar.report.collection.common.phenotyping.outcome;
+package org.gentar.report.collection.phenotyping_colony.phenotyping.outcome;
 
 import org.springframework.beans.factory.annotation.Value;
 
-public interface CommonPhenotypingColonyReportOutcomeMutationProjection {
+public interface PhenotypingColonyReportOutcomeMutationProjection {
 
     @Value("#{target.outcomeId}")
     Long getOutcomeId();
