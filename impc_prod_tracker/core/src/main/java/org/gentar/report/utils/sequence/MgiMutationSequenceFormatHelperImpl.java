@@ -23,7 +23,7 @@ public class MgiMutationSequenceFormatHelperImpl implements MgiMutationSequenceF
                     .collect(Collectors.joining("**"));
         }
 
-        result = '"' + result + '"';
+        //result = '"' + result + '"';
         return result;
     }
 
