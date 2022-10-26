@@ -14,6 +14,10 @@ public class Formatter {
         return inputString.replaceAll("\\r", "++n++");
     }
 
+    public static String replaceInternalTabs(String inputString){
+        return inputString.replaceAll("\\t", "++t++");
+    }
+
     public static String threePrime(String inputString){
         return inputString.replace("3’", "3'");
     }
@@ -36,9 +40,11 @@ public class Formatter {
                 Formatter.oddCharacters(
                          Formatter.fivePrime(
                             Formatter.threePrime(
-                                Formatter.replaceInternalLineFeeds(
-                                    Formatter.replaceInternalNewLines(
-                                        Formatter.cleanNewLines(inputString)
+                                Formatter.replaceInternalTabs(
+                                    Formatter.replaceInternalLineFeeds(
+                                        Formatter.replaceInternalNewLines(
+                                            Formatter.cleanNewLines(inputString)
+                                        )
                                     )
                                 )
                             )
