@@ -1531,6 +1531,11 @@ public class MockData {
             }
 
             @Override
+            public String getMutationIdentificationNumber() {
+                return "";
+            }
+
+            @Override
             public String getSymbol() {
                 return null;
             }
