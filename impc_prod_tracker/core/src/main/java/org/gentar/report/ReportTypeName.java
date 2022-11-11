@@ -19,9 +19,6 @@ public enum ReportTypeName implements LabeledType {
     MGI_CRISPR("mgi_crispr",
             "This report is used by MGI to support their endonuclease-mediated allele load",
             TRUE),
-    MGI_INITIAL_CRISPR("mgi_initial_crispr",
-            "This report is an initial version used by MGI to support their endonuclease-mediated allele load",
-            TRUE),
     MGI_ES_CELL("mgi_es_cell",
             "This report is used by MGI to support their ES Cell allele load",
             TRUE),
@@ -36,7 +33,13 @@ public enum ReportTypeName implements LabeledType {
                     FALSE),
     PRODUCTS("products",
             "This report is used by IMPC to support the data release.",
-            FALSE);
+            FALSE),
+    GENE_SYMBOL_UPDATE_LOG("gene_symbol_update_log",
+        "This report is used record gene symbol updates in gentar",
+        FALSE),
+    LANGUISHING_PROJECT_REPORT("languishing_project_report",
+                                                  "This report is to identify projects that not changed status as genotyping confirmed after a certain time",
+                                          FALSE);
 
     private static final Map<String, ReportTypeName> BY_LABEL = new HashMap<>();
     static

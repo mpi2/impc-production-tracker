@@ -91,16 +91,9 @@ public class ReportServiceImpl implements ReportService {
 
         response.setHeader("Pragma", "no-cache");
         response.setHeader("Expires", "0");
-//        response.setContentType("text/tab-separated-values; charset=utf-8");
-//        response.setContentType("application/txt");
-        response.setHeader("X-Content-Type-Options", "nosniff");
-        response.setContentType("application/octet-stream");
         response.setHeader("Content-disposition", "attachment; filename=" + reportName + "_" + report.getCreatedAt() + ".tsv");
 
-        String data = report.getReport();
-        response.setContentLength(data.length());
-
-        output.println(data);
+        output.println(report.getReport());
         output.flush();
         output.close();
     }

@@ -9,4 +9,6 @@ import org.springframework.data.repository.CrudRepository;
 @Primary
 public interface TargRepGeneRepository extends CrudRepository<TargRepGene, Long> {
     TargRepGene findBySymbol(String symbol);
+
+    TargRepGene findFirstByAccIdIgnoreCase(String accId);
 }

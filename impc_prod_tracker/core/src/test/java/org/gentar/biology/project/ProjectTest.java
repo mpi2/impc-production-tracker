@@ -122,6 +122,6 @@ class ProjectTest {
     void testToString() {
 
         String projectAsString =testInstance.toString();
-        assertEquals(projectAsString,"tpn=TPN:000000001,assignmentStatus=Not defined");
+        assertEquals(projectAsString,"tpn=TPN:000000001,assignmentStatus=null");
     }
 }

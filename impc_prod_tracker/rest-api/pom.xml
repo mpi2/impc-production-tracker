@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.7.5</version>
+        <version>2.7.3</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>org.gentar</groupId>
@@ -16,6 +16,17 @@
 
 	<properties>
 		<java.version>17</java.version>
+		<equalsverifier.version>3.10</equalsverifier.version>
+
+		<jacoco.plugin.version>0.8.8</jacoco.plugin.version>
+		<skip.coverage>false</skip.coverage>
+
+		<coverage.ratio.instruction>0.5800</coverage.ratio.instruction>
+		<coverage.ratio.branch>0.3700</coverage.ratio.branch>
+		<coverage.ratio.method>0.5400</coverage.ratio.method>
+		<coverage.ratio.complexity>0.4600</coverage.ratio.complexity>
+		<coverage.ratio.line>0.6000</coverage.ratio.line>
+		<coverage.ratio.class>0.6800</coverage.ratio.class>
 	</properties>
 
 	<profiles>
@@ -331,6 +342,102 @@
 									</directory>
 								</resource>
 							</resources>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.jacoco</groupId>
+				<artifactId>jacoco-maven-plugin</artifactId>
+				<version>${jacoco.plugin.version}</version>
+				<configuration>
+					<dataFile>${project.build.directory}/coverage-reports/jacoco.exec</dataFile>
+					<outputDirectory>${project.build.directory}/coverage-reports/</outputDirectory>
+					<skip>true</skip>
+					<excludes>
+						<exclude>**/*Config.*</exclude>
+						<exclude>**/*ConfigProd.*</exclude>
+						<exclude>**/*Application.*</exclude>
+						<exclude>**/*ConfigDev.*</exclude>
+						<exclude>**/*ConfigNonDev.*</exclude>
+						<exclude>**/*Constants.*</exclude>
+						<exclude>**/*Properties.*</exclude>
+						<exclude>**/*Exception.*</exclude>
+						<exclude>**/*Serializer.*</exclude>
+						<exclude>**/*Deserializer.*</exclude>
+						<exclude>**/constants/**/*</exclude>
+						<exclude>**/constants/*.*</exclude>
+						<exclude>**/*Advice.*</exclude>
+					</excludes>
+				</configuration>
+				<executions>
+					<execution>
+						<id>prepare-agent</id>
+						<goals>
+							<goal>prepare-agent</goal>
+						</goals>
+						<configuration>
+							<skip>${skip.coverage}</skip>
+							<destFile>${project.build.directory}/coverage-reports/jacoco.exec</destFile>
+						</configuration>
+					</execution>
+					<execution>
+						<id>report</id>
+						<!-- Run before maven-scr-plugin adds in the service methods -->
+						<phase>integration-test</phase>
+						<goals>
+							<goal>report</goal>
+						</goals>
+						<configuration>
+							<skip>${skip.coverage}</skip>
+						</configuration>
+					</execution>
+					<execution>
+						<id>check</id>
+						<!-- Run before maven-scr-plugin adds in the service methods -->
+						<phase>integration-test</phase>
+						<goals>
+							<goal>check</goal>
+						</goals>
+						<configuration>
+							<skip>${skip.coverage}</skip>
+							<rules>
+								<rule>
+									<element>BUNDLE</element>
+									<limits>
+										<limit>
+											<counter>INSTRUCTION</counter>
+											<value>COVEREDRATIO</value>
+											<minimum>${coverage.ratio.instruction}</minimum>
+										</limit>
+										<limit>
+											<counter>LINE</counter>
+											<value>COVEREDRATIO</value>
+											<minimum>${coverage.ratio.line}</minimum>
+										</limit>
+										<limit>
+											<counter>BRANCH</counter>
+											<value>COVEREDRATIO</value>
+											<minimum>${coverage.ratio.branch}</minimum>
+										</limit>
+										<limit>
+											<counter>METHOD</counter>
+											<value>COVEREDRATIO</value>
+											<minimum>${coverage.ratio.method}</minimum>
+										</limit>
+										<limit>
+											<counter>CLASS</counter>
+											<value>COVEREDRATIO</value>
+											<minimum>${coverage.ratio.class}</minimum>
+										</limit>
+										<limit>
+											<counter>COMPLEXITY</counter>
+											<value>COVEREDRATIO</value>
+											<minimum>${coverage.ratio.complexity}</minimum>
+										</limit>
+									</limits>
+								</rule>
+							</rules>
 						</configuration>
 					</execution>
 				</executions>
