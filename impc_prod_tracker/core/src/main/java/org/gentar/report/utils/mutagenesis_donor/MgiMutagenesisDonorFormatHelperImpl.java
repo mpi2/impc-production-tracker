@@ -20,7 +20,7 @@ class MgiMutagenesisDonorFormatHelperImpl implements MgiMutagenesisDonorFormatHe
                     .map(p -> formatMutagenesisDonor(p))
                     .collect(Collectors.joining("**"));
         }
-        result = '"' + result + '"';
+        //result = '"' + result + '"';
         return result;
     }
 

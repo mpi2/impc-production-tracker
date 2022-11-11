@@ -83,42 +83,52 @@ public class MgiCrisprAlleleReportServiceImpl implements MgiCrisprAlleleReportSe
         saveReport();
     }
 
+    public void generateMgiSimpleCrisprAlleleReport() {
+
+        cp = colonyReportService.getAllColonyReportProjections();
+        filteredOutcomeMutationMap = colonyReportService.getMutationMap();
+        filteredMutationGeneMap = colonyReportService.getGeneMap();
+
+        reportRows = prepareSimpleReport();
+        saveSimpleReport();
+    }
+
 
     private List<String> prepareReport() {
         List<MgiCrisprAlleleReportColonyProjection> sortedEntries =
-                cp.stream()
-                        .filter(x -> filteredOutcomeMutationMap.containsKey(x.getOutcomeId()))
-                        .filter(x -> filteredMutationGeneMap.containsKey(filteredOutcomeMutationMap.get(x.getOutcomeId()).getMutationId()))
-                        .sorted(Comparator.comparing(x -> filteredMutationGeneMap.get(
-                                filteredOutcomeMutationMap.get(x.getOutcomeId()).getMutationId()).getSymbol()
-                                )
-                        ).collect(Collectors.toList());
+            cp.stream()
+                .filter(x -> filteredOutcomeMutationMap.containsKey(x.getOutcomeId()))
+                .filter(x -> filteredMutationGeneMap.containsKey(filteredOutcomeMutationMap.get(x.getOutcomeId()).getMutationId()))
+                .sorted(Comparator.comparing(x -> filteredMutationGeneMap.get(
+                    filteredOutcomeMutationMap.get(x.getOutcomeId()).getMutationId()).getSymbol()
+                    )
+                ).collect(Collectors.toList());
 
         return sortedEntries
-                .stream()
-                .map(x -> constructRow(x))
-                .collect(Collectors.toList());
+            .stream()
+            .map(x -> constructRow(x))
+            .collect(Collectors.toList());
     }
 
     private String constructRow(MgiCrisprAlleleReportColonyProjection x) {
 
         MgiCrisprAlleleReportOutcomeMutationProjection mutationProjection =
-                filteredOutcomeMutationMap.get(x.getOutcomeId());
+            filteredOutcomeMutationMap.get(x.getOutcomeId());
 
         String mutationSymbol = mutationProjection.getSymbol();
         String mutationMgiAlleleAccId = mutationProjection.getMgiAlleleAccId();
         String mgiAlleleAccId = mutationMgiAlleleAccId == null ? "" : mutationMgiAlleleAccId;
-        String genotypingComment = x.getGenotypingComment() == null ? "" : '"' + Formatter.clean(x.getGenotypingComment()) + '"';
+        String genotypingComment = x.getGenotypingComment() == null ? "" : Formatter.clean(x.getGenotypingComment());
         String mutationCategory = mutationProjection.getMutationCategory();
         String mutationType = mutationProjection.getMutationType();
         String mutationDescription =
-                mutationProjection.getDescription() == null ? "" : '"' + Formatter.clean(mutationProjection.getDescription()) + '"';
+            mutationProjection.getDescription() == null ? "" : Formatter.clean(mutationProjection.getDescription());
 
         Set<MgiCrisprAlleleReportMutationSequenceProjection> mutationSequenceProjections =
-                sequenceMap.get(mutationProjection.getMutationId());
+            sequenceMap.get(mutationProjection.getMutationId());
 
         Set<MgiCrisprAlleleReportMutationCategorizationProjection> categorizationProjections =
-                categorizationMap.get(mutationProjection.getMutationId());
+            categorizationMap.get(mutationProjection.getMutationId());
 
         String gentarMutationIdentifier = mutationProjection.getMutationMin();
 
@@ -128,29 +138,78 @@ public class MgiCrisprAlleleReportServiceImpl implements MgiCrisprAlleleReportSe
         Set<MgiCrisprAlleleReportGuideProjection> guideProjections = guideMap.get(x.getPlanId());
         Set<MgiCrisprAlleleReportNucleaseProjection> nucleaseProjections = nucleaseMap.get(x.getPlanId());
         Set<MgiCrisprAlleleReportMutagenesisDonorProjection> mutagenesisDonorProjections =
-                mutagenesisDonorMap.get(x.getPlanId());
+            mutagenesisDonorMap.get(x.getPlanId());
         Set<MgiCrisprAlleleReportGenotypePrimerProjection> genotypePrimerProjections =
-                genotypePrimerMap.get(x.getPlanId());
+            genotypePrimerMap.get(x.getPlanId());
+
+//        if (g.getSymbol().equals("Zmynd19")){
+//            System.out.println(mutationProjection.getDescription());
+//            System.out.println(mutationDescription);
+//        }
 
         return g.getSymbol() + "\t" +
-                g.getAccId() + "\t" +
-                mgiMutagenesisDonorFormatHelper.formatMutagenesisDonorData(mutagenesisDonorProjections) + "\t" +
-                mgiNucleaseFormatHelper.formatNucleaseData(nucleaseProjections) + "\t" +
-                mgiGuideFormatHelper.formatGuideData(guideProjections) + "\t" +
-                mgiMutationCategorizationFormatHelper.formatRepairMechanism(categorizationProjections) + "\t" +
-                mgiGenotypePrimerFormatHelper.formatGenotypePrimerData(genotypePrimerProjections) + "\t" +
-                x.getColonyName() + "\t" +
-                x.getStrainName() + "\t" +
-                genotypingComment + "\t" +
-                x.getProductionWorkUnit() + "\t" +
-                "endonuclease-mediated" + "\t" +
-                mutationCategory + "\t" +
-                mutationType + "\t" +
-                gentarMutationIdentifier + "\t" +
-                mgiMutationSeqeunceFormatHelper.formatMutationSeqeunceData(mutationSequenceProjections) + "\t" +
-                formattedMutationSymbol + "\t" +
-                mgiAlleleAccId + "\t" +
-                mutationDescription;
+            g.getAccId() + "\t" +
+            mgiMutagenesisDonorFormatHelper.formatMutagenesisDonorData(mutagenesisDonorProjections) + "\t" +
+            mgiNucleaseFormatHelper.formatNucleaseData(nucleaseProjections) + "\t" +
+            mgiGuideFormatHelper.formatGuideData(guideProjections) + "\t" +
+            mgiMutationCategorizationFormatHelper.formatRepairMechanism(categorizationProjections) + "\t" +
+            mgiGenotypePrimerFormatHelper.formatGenotypePrimerData(genotypePrimerProjections) + "\t" +
+            x.getColonyName() + "\t" +
+            x.getStrainName() + "\t" +
+            genotypingComment + "\t" +
+            x.getProductionWorkUnit() + "\t" +
+            "endonuclease-mediated" + "\t" +
+            mutationCategory + "\t" +
+            mutationType + "\t" +
+            gentarMutationIdentifier + "\t" +
+            mgiMutationSeqeunceFormatHelper.formatMutationSeqeunceData(mutationSequenceProjections) + "\t" +
+            formattedMutationSymbol + "\t" +
+            mgiAlleleAccId + "\t" +
+            mutationDescription;
+    }
+
+
+    private List<String> prepareSimpleReport() {
+        List<MgiCrisprAlleleReportColonyProjection> sortedEntries =
+            cp.stream()
+                .filter(x -> filteredOutcomeMutationMap.containsKey(x.getOutcomeId()))
+                .filter(x -> filteredMutationGeneMap.containsKey(filteredOutcomeMutationMap.get(x.getOutcomeId()).getMutationId()))
+                .sorted(Comparator.comparing(x -> filteredMutationGeneMap.get(
+                    filteredOutcomeMutationMap.get(x.getOutcomeId()).getMutationId()).getSymbol()
+                    )
+                ).collect(Collectors.toList());
+
+        return sortedEntries
+            .stream()
+            .map(x -> constructSimpleReportRow(x))
+            .collect(Collectors.toList());
+    }
+
+    private String constructSimpleReportRow(MgiCrisprAlleleReportColonyProjection x) {
+
+        MgiCrisprAlleleReportOutcomeMutationProjection mutationProjection =
+            filteredOutcomeMutationMap.get(x.getOutcomeId());
+
+        String mutationSymbol = mutationProjection.getSymbol();
+        String mutationMgiAlleleAccId = mutationProjection.getMgiAlleleAccId();
+        String mgiAlleleAccId = mutationMgiAlleleAccId == null ? "" : mutationMgiAlleleAccId;
+        String mutationCategory = mutationProjection.getMutationCategory();
+        String mutationType = mutationProjection.getMutationType();
+
+
+        Gene g = filteredMutationGeneMap.get(mutationProjection.getMutationId());
+        String formattedMutationSymbol = checkMutationSymbol(mutationSymbol, g.getSymbol());
+
+
+        return g.getSymbol() + "\t" +
+            g.getAccId() + "\t" +
+            x.getColonyName() + "\t" +
+            x.getStrainName() + "\t" +
+            "endonuclease-mediated" + "\t" +
+            mutationCategory + "\t" +
+            mutationType + "\t" +
+            formattedMutationSymbol + "\t" +
+            mgiAlleleAccId;
     }
 
     private String checkMutationSymbol(String mutationSymbol, String geneSymbol) {
@@ -178,8 +237,26 @@ public class MgiCrisprAlleleReportServiceImpl implements MgiCrisprAlleleReportSe
 
         String header = generateReportHeaders();
         String report = reportRows
-                .stream()
-                .collect(Collectors.joining("\n"));
+            .stream()
+            .collect(Collectors.joining("\n"));
+
+        return Arrays.asList(header, report).stream().collect(Collectors.joining("\n"));
+
+    }
+
+    private void saveSimpleReport() {
+
+        String report = assembleSimpleReport();
+        reportService.saveReport(ReportTypeName.MGI_INITIAL_CRISPR, report);
+    }
+
+
+    private String assembleSimpleReport() {
+
+        String header = generateSimpleReportHeaders();
+        String report = reportRows
+            .stream()
+            .collect(Collectors.joining("\n"));
 
         return Arrays.asList(header, report).stream().collect(Collectors.joining("\n"));
 
@@ -187,32 +264,52 @@ public class MgiCrisprAlleleReportServiceImpl implements MgiCrisprAlleleReportSe
 
     private String generateReportHeaders() {
         List<String> headers = Arrays.asList(
-                "Gene Symbol",
-                "Gene MGI Accession ID",
-                "Mutagenesis Donors",
-                "Nucleases",
-                "Guides",
-                "Repair Mechanism",
-                "Genotype Primers",
-                "Colony Name",
-                "Colony Background Strain",
-                "Colony Genotyping Comments",
-                "Production Work Unit",
-                "Mutation Class",
-                "Mutation Type",
-                "Mutation Subtype",
-                "GenTaR Mutation ID",
-                "Mutation Sequence",
-                "Mutation Symbol",
-                "Mutation MGI Accession ID",
-                "Mutation Description"
+            "Gene Symbol",
+            "Gene MGI Accession ID",
+            "Mutagenesis Donors",
+            "Nucleases",
+            "Guides",
+            "Repair Mechanism",
+            "Genotype Primers",
+            "Colony Name",
+            "Colony Background Strain",
+            "Colony Genotyping Comments",
+            "Production Work Unit",
+            "Mutation Class",
+            "Mutation Type",
+            "Mutation Subtype",
+            "GenTaR Mutation ID",
+            "Mutation Sequence",
+            "Mutation Symbol",
+            "Mutation MGI Accession ID",
+            "Mutation Description"
         );
 
         String headerString = headers
-                .stream()
-                .collect(Collectors.joining("\t"));
+            .stream()
+            .collect(Collectors.joining("\t"));
 
         return headerString;
 
+    }
+
+    private String generateSimpleReportHeaders() {
+        List<String> headers = Arrays.asList(
+            "Gene Symbol",
+            "Gene MGI Accession ID",
+            "Colony Name",
+            "Colony Background Strain",
+            "Mutation Class",
+            "Mutation Type",
+            "Mutation Subtype",
+            "Mutation Symbol",
+            "Mutation MGI Accession ID"
+        );
+
+        String headerString = headers
+            .stream()
+            .collect(Collectors.joining("\t"));
+
+        return headerString;
     }
 }
