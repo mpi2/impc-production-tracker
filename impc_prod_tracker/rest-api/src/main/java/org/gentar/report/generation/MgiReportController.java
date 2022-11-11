@@ -39,6 +39,13 @@ public class MgiReportController {
     }
 
 
+    @GetMapping("/mgi/initial_crispr")
+    public void exportSimpleCrisprAlleles(HttpServletResponse response) throws IOException
+    {
+        mgiCrisprAlleleService.generateMgiSimpleCrisprAlleleReport();
+    }
+
+
     @GetMapping("/mgi/modification_alleles")
     public void exportModificationAlleles(HttpServletResponse response) throws IOException
     {
