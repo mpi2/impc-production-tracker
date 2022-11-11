@@ -19,7 +19,7 @@ public class MgiGenotypePrimerFormatHelperImpl implements MgiGenotypePrimerForma
                     .map(p -> formatGenotypePrimer(p))
                     .collect(Collectors.joining("**"));
         }
-        result = '"' + result + '"';
+        //result = '"' + result + '"';
 
         return result;
     }

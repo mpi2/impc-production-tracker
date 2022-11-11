@@ -37,14 +37,14 @@ public class ReportServiceImpl implements ReportService {
         report.setReport(reportText);
         report.setReportType(reportType);
         reportRepository.save(report);
-     }
+    }
 
     @Override
     @Transactional
     public void cleanAllReports() {
         ReportTypeName
-                .stream()
-                .forEach(rt -> cleanReportsByReportType(rt.getLabel()));
+            .stream()
+            .forEach(rt -> cleanReportsByReportType(rt.getLabel()));
     }
 
     @Override
@@ -54,10 +54,10 @@ public class ReportServiceImpl implements ReportService {
         if (reportTypeNameExists(name)) {
             List<Report> reportList = reportRepository.findAllByReportType_NameIs(name);
             List<Report> reportsToRemove = reportList
-                    .stream()
-                    .sorted(Comparator.comparing(BaseEntity::getCreatedAt).reversed())
-                    .skip(2)
-                    .collect(Collectors.toList());
+                .stream()
+                .sorted(Comparator.comparing(BaseEntity::getCreatedAt).reversed())
+                .skip(2)
+                .collect(Collectors.toList());
             if (reportsToRemove.size() > 0) {
                 reportRepository.deleteAll(reportsToRemove);
             }
@@ -91,9 +91,16 @@ public class ReportServiceImpl implements ReportService {
 
         response.setHeader("Pragma", "no-cache");
         response.setHeader("Expires", "0");
+//        response.setContentType("text/tab-separated-values; charset=utf-8");
+//        response.setContentType("application/txt");
+        response.setHeader("X-Content-Type-Options", "nosniff");
+        response.setContentType("application/octet-stream");
         response.setHeader("Content-disposition", "attachment; filename=" + reportName + "_" + report.getCreatedAt() + ".tsv");
 
-        output.println(report.getReport());
+        String data = report.getReport();
+        response.setContentLength(data.length());
+
+        output.println(data);
         output.flush();
         output.close();
     }
@@ -108,7 +115,7 @@ public class ReportServiceImpl implements ReportService {
 
     private Boolean reportTypeNameExists(String reportTypeName){
         if (reportTypeService.reportTypeNameExists(reportTypeName) &&
-                reportTypeService.reportTypeExistsInDatabase(reportTypeName)) {
+            reportTypeService.reportTypeExistsInDatabase(reportTypeName)) {
             return Boolean.TRUE;
         }
         else {
