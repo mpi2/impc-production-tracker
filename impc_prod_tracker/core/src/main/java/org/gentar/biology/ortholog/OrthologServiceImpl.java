@@ -19,7 +19,7 @@ public class OrthologServiceImpl implements OrthologService {
         "http://localhost:8090/api/ortholog/find_one_to_many_by_mgi_ids?mgiIds=";
 
     public static final String ORTHOLOG_API_URL =
-        "https://www.gentar.org/orthology-api/api/ortholog/find_all_by_mgi_ids?mgiIds=";
+        "http://api-ortholog-service-reference-db.mi-reference-data.svc.cluster.local:8080/orthology-api/api/ortholog/find_all_by_mgi_ids?mgiIds=";
 
     public final int CHUNK_SIZE = 200;
     private final GraphQLConsumer graphQLConsumer;
