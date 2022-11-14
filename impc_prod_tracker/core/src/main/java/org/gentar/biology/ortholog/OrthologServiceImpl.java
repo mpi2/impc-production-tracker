@@ -18,6 +18,9 @@ public class OrthologServiceImpl implements OrthologService {
     public static final String LOCALHOST_ORTHOLOG_API_URL =
         "http://localhost:8090/api/ortholog/find_one_to_many_by_mgi_ids?mgiIds=";
 
+    public static final String GENTAR_ORTHOLOG_API_URL =
+        "https://www.gentar.org/orthology-api/api/ortholog/find_all_by_mgi_ids?mgiIds=";
+
     public static final String ORTHOLOG_API_URL =
         "http://api-ortholog-service-reference-db.mi-reference-data.svc.cluster.local:8080/orthology-api/api/ortholog/find_all_by_mgi_ids?mgiIds=";
 
