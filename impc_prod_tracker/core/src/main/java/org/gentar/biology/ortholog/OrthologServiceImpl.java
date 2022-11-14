@@ -21,7 +21,7 @@ public class OrthologServiceImpl implements OrthologService {
     public static final String ORTHOLOG_API_URL =
         "https://www.gentar.org/orthology-api/api/ortholog/find_all_by_mgi_ids?mgiIds=";
 
-    public final int CHUNK_SIZE = 500;
+    public final int CHUNK_SIZE = 200;
     private final GraphQLConsumer graphQLConsumer;
     private final JSONToOrthologsMapper jsonToOrthologsMapper;
     private static Logger LOGGER = Logger.getLogger("InfoLogging");
