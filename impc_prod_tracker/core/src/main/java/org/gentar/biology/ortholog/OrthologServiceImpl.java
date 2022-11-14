@@ -117,7 +117,7 @@ public class OrthologServiceImpl implements OrthologService {
         mgiChunks.forEach(mgiChunk -> {
 
             final String harlowOrthologUri =
-                ORTHOLOG_API_URL +
+                GENTAR_ORTHOLOG_API_URL +
                     String.join(",", mgiChunk);
 
             ResponseEntity<ProjectSearchDownloadOrthologDto[]> response =
