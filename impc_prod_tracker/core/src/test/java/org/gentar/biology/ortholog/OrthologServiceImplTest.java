@@ -58,7 +58,6 @@ class OrthologServiceImplTest {
     }
 
     @Test
-    @Disabled
     void getOrthologs() {
 
         List<ProjectSearchDownloadOrthologDto> projectSearchDownloadOrthologDtoList =
