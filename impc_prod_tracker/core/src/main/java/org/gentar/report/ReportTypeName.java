@@ -38,12 +38,17 @@ public enum ReportTypeName implements LabeledType {
             "This report is used by IMPC to support the data release.",
             FALSE),
     GENE_SYMBOL_UPDATE_LOG("gene_symbol_update_log",
-        "This report is used record gene symbol updates in gentar",
+        "This report is used record gene symbol updates in gentar.",
         FALSE),
     LANGUISHING_PROJECT_REPORT("languishing_project_report",
-                                                  "This report is to identify projects that not changed status as genotyping confirmed after a certain time",
-                                          FALSE);
-
+                                                  "This report is to identify projects that not changed status as genotyping confirmed after a certain time.",
+                                          FALSE),
+    MULTIPLE_ASSIGNED_PROJECT_REPORT("multiple_assigned_project_report",
+                                   "This report is To identify genes which have multiple projects where more than one project is in the assigned state.",
+                               FALSE),
+    NO_ASSIGNED_PROJECT_REPORT("no_assigned_project_report",
+                                   "This report is To identify genes where there is at least one project that is active, but none of the project have the assigned state.",
+                               FALSE);
     private static final Map<String, ReportTypeName> BY_LABEL = new HashMap<>();
     static
     {
