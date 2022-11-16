@@ -1,11 +1,9 @@
 package org.gentar.biology.ortholog;
 
 import static org.gentar.mockdata.MockData.MGI_00000001;
-import static org.gentar.mockdata.MockData.historyMockData;
 import static org.gentar.mockdata.MockData.orthologMockData;
-import static org.gentar.mockdata.MockData.projectMockData;
 import static org.gentar.mockdata.MockData.projectSearchDownloadOrthologDtoMockData;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.lenient;
 
@@ -14,18 +12,12 @@ import java.util.List;
 import java.util.Map;
 import org.gentar.biology.project.projection.dto.ProjectSearchDownloadOrthologDto;
 import org.gentar.graphql.GraphQLConsumer;
-import org.hamcrest.Matchers;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.client.RestTemplate;
 
 @ExtendWith(MockitoExtension.class)
 class OrthologServiceImplTest {
