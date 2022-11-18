@@ -15,6 +15,8 @@
  */
 package org.gentar.biology.project.mappers;
 
+import java.util.Collections;
+import java.util.stream.Collectors;
 import org.gentar.biology.project.ProjectSearchDownloadServiceImpl;
 import org.gentar.biology.project.search.ProjectSearcherService;
 import org.gentar.biology.project.search.Search;
@@ -296,6 +298,11 @@ public class ProjectSearcherController
         List<String> consortiaNames,
         List<String> summaryStatusNames)
     {
+
+        inputs = inputs == null ? Collections.emptyList() : inputs.stream()
+            .filter(o -> !o.equals(""))
+            .collect(Collectors.toList());
+
         ProjectFilter projectFilter = ProjectFilterBuilder.getInstance()
             .withTpns(tpns)
             .withGenes(inputs)
