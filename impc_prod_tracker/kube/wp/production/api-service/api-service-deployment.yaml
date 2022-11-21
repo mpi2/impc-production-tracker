@@ -38,6 +38,8 @@ spec:
               value: "TRUE"
             - name: EBI_PROXY
               value: "TRUE"
+            - name: HL_PROXY
+              value: "TRUE"
             - name: AAP_DOMAIN
               valueFrom:
                 secretKeyRef:
