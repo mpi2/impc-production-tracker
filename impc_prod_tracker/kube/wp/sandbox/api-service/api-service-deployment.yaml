@@ -33,6 +33,8 @@ spec:
           env:
             - name: EBI_PROXY
               value: "TRUE"
+            - name: HL_PROXY
+              value: "TRUE"
             - name: GENTAR_SCHEMA
               value: "TRUE"
             - name: AAP_DOMAIN

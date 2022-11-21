@@ -183,6 +183,7 @@ hx-production:
       #
       sed -i "s/impc-production-tracker-mirror:latest/impc-production-tracker-mirror:${PRODUCTION_API_TAG}/g" kube/wp/production/api-service/api-service-deployment.yaml
       sed -i "s/STRING_REPLACED_DURING_REDEPLOY/$(date)/g" kube/wp/production/api-service/api-service-deployment.yaml
+      sed -i "s/HL_PROXY/HX_PROXY/g" kube/wp/production/api-service/api-service-deployment.yaml
 
       if kubectl apply -f kube/wp/production/api-service/api-service-deployment.yaml --record | grep -q unchanged; then
           echo "=> Patching deployment to force image update."
@@ -278,6 +279,7 @@ hx-sandbox:
       #
       sed -i "s/impc-production-tracker-mirror:latest/impc-production-tracker-mirror:${SANDBOX_API_TAG}/g" kube/wp/sandbox/api-service/api-service-deployment.yaml
       sed -i "s/STRING_REPLACED_DURING_REDEPLOY/$(date)/g" kube/wp/sandbox/api-service/api-service-deployment.yaml
+      sed -i "s/HL_PROXY/HX_PROXY/g" kube/wp/sandbox/api-service/api-service-deployment.yaml
 
       if kubectl apply -f kube/wp/sandbox/api-service/api-service-deployment.yaml --record | grep -q unchanged; then
           echo "=> Patching deployment to force image update."
