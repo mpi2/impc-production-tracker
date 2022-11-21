@@ -40,6 +40,7 @@ if [ -z "${DOCKER_PRODUCTION}" ]; then
           -Dftp.nonProxyHosts=*.ebi.ac.uk\|localhost\|127.0.0.1 \
           -jar app.jar \
           --server.port="${port}" --spring.profiles.active=docker
+      fi
     
 
     fi
@@ -80,7 +81,7 @@ if [ -z "${DOCKER_PRODUCTION}" ]; then
           -Dftp.nonProxyHosts=*.ebi.ac.uk\|localhost\|127.0.0.1 \
           -jar app.jar \
           --server.port="${port}" --spring.profiles.active=dockergentarschema
-     
+      fi
 
     fi
 
@@ -121,7 +122,7 @@ else
         -Dftp.nonProxyHosts=*.ebi.ac.uk\|localhost\|127.0.0.1 \
         -jar app.jar \
         --server.port="${port}" --spring.profiles.active=dockerproduction
-
+    fi
 
   fi
 
