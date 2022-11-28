@@ -1,5 +1,17 @@
 package org.gentar.biology.ortholog;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.NoSuchElementException;
+import java.util.Objects;
+import java.util.Set;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import org.apache.commons.collections.CollectionUtils;
@@ -8,8 +20,6 @@ import org.gentar.graphql.GraphQLConsumer;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
-import java.util.*;
-import java.util.concurrent.atomic.AtomicInteger;
 import org.springframework.web.client.RestTemplate;
 
 @Component
@@ -23,6 +33,9 @@ public class OrthologServiceImpl implements OrthologService {
 
     public static final String ORTHOLOG_API_URL =
         "http://api-ortholog-service-reference-db.mi-reference-data.svc.cluster.local:8080/orthology-api/api/ortholog/find_all_by_mgi_ids?mgiIds=";
+
+    private static final String HGNC_URL =
+        "https://www.genenames.org/data/gene-symbol-report/#!/hgnc_id/";
 
     public final int CHUNK_SIZE = 200;
     private final GraphQLConsumer graphQLConsumer;
@@ -59,26 +72,18 @@ public class OrthologServiceImpl implements OrthologService {
     }
 
     @Override
-    public Map<String, List<Ortholog>> getOrthologsByAccIds(List<String> accIds) {
-        Map<String, List<Ortholog>> orthologs = new HashMap<>();
-        if (accIds != null && !accIds.isEmpty()) {
-            String query = buildQuery(accIds);
-            String result = graphQLConsumer.executeQuery(query);
-            orthologs = jsonToOrthologsMapper.toOrthologs(result);
-        }
-        return orthologs;
+    public Map<String, List<Ortholog>> getOrthologsByAccIds(List<String> mgiIds) {
+
+        List<ProjectSearchDownloadOrthologDto> cachedOrthologs = getOrthologs(mgiIds);
+
+        return mapDtoToOrtholog(cachedOrthologs);
+
     }
 
-    private String buildQuery(List<String> accIds) {
-        String query = "";
-        AtomicInteger counter = new AtomicInteger();
-        StringBuilder builder = new StringBuilder();
-        accIds.forEach(x -> {
-            String subQueryName = "query" + counter.getAndIncrement();
-            builder.append(String.format(ORTHOLOGS_BODY_QUERY, subQueryName, x));
-        });
-        query = String.format(ORTHOLOGS_BY_ACC_ID_QUERY, builder.toString());
-        return query;
+    @Override
+    public Map<String, List<Ortholog>> formatOrthologs(
+        List<ProjectSearchDownloadOrthologDto> projectSearchDownloadOrthologDto) {
+        return mapDtoToOrtholog(projectSearchDownloadOrthologDto);
     }
 
     public List<Ortholog> calculateBestOrthologs(List<Ortholog> orthologs) {
@@ -107,7 +112,7 @@ public class OrthologServiceImpl implements OrthologService {
     @Cacheable("mgiIds")
     public List<ProjectSearchDownloadOrthologDto> getOrthologs(List<String> mgiIds) {
 
-        LOGGER.info("ortholog caching started");
+        LOGGER.info("ortholog caching started, number of MGI=" + mgiIds.size());
 
         final Collection<List<String>> mgiChunks = groupMgiIdsToChunks(mgiIds);
 
@@ -135,7 +140,7 @@ public class OrthologServiceImpl implements OrthologService {
         List<ProjectSearchDownloadOrthologDto>
             sortedDownloadOrthologDtos = sortDownloadOrthologDtos(calculatedOrthologDtos);
 
-        LOGGER.info("ortholog caching ended");
+        LOGGER.info("ortholog caching ended, cached ortholog=" + sortedDownloadOrthologDtos.size());
         return sortedDownloadOrthologDtos;
 
     }
@@ -208,12 +213,10 @@ public class OrthologServiceImpl implements OrthologService {
     private List<ProjectSearchDownloadOrthologDto> getBestOrthologWithSameSupportCount(
         List<ProjectSearchDownloadOrthologDto> bestOrthologs, ProjectSearchDownloadOrthologDto x,
         ProjectSearchDownloadOrthologDto bestOrtholog) {
-        List<ProjectSearchDownloadOrthologDto> bestOrthologSameSupportCount =
-            bestOrthologs.stream().filter(
-                y -> y.getMgiGeneAccId().equals(x.getMgiGeneAccId()) &&
-                    bestOrtholog.getSupportCount().equals(y.getSupportCount())).collect(
-                Collectors.toList());
-        return bestOrthologSameSupportCount;
+        return bestOrthologs.stream().filter(
+            y -> y.getMgiGeneAccId().equals(x.getMgiGeneAccId()) &&
+                bestOrtholog.getSupportCount().equals(y.getSupportCount())).collect(
+            Collectors.toList());
     }
 
     private ProjectSearchDownloadOrthologDto getBestOrthologs(
@@ -226,4 +229,33 @@ public class OrthologServiceImpl implements OrthologService {
         return bestOrtholog;
     }
 
+
+    private Map<String, List<Ortholog>> mapDtoToOrtholog(
+        List<ProjectSearchDownloadOrthologDto> projectSearchDownloadOrthologDtos) {
+
+        Map<String, List<Ortholog>> orthologMaps = new HashMap<>();
+        if (projectSearchDownloadOrthologDtos != null) {
+            for (ProjectSearchDownloadOrthologDto projectSearchDownloadOrthologDto : projectSearchDownloadOrthologDtos) {
+
+                List<String> bestOrthologs =
+                    Arrays.asList(projectSearchDownloadOrthologDto.getHumanGeneSymbol().split(":"));
+                List<Ortholog> orthologs = new ArrayList<>();
+                for (String bestOrtholog : bestOrthologs) {
+                    Ortholog ortholog = new Ortholog();
+                    ortholog.setSymbol(bestOrtholog);
+                    ortholog
+                        .setSupportCount(
+                            projectSearchDownloadOrthologDto.getSupportCount() == null ? 0 :
+                                projectSearchDownloadOrthologDto.getSupportCount().intValue());
+                    ortholog.setCategory(projectSearchDownloadOrthologDto.getCategory());
+                    ortholog.setLink(HGNC_URL + bestOrtholog);
+                    orthologs.add(ortholog);
+                }
+                orthologMaps
+                    .put(projectSearchDownloadOrthologDto.getMgiGeneAccId(), orthologs);
+            }
+        }
+
+        return orthologMaps;
+    }
 }
