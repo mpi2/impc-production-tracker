@@ -52,7 +52,7 @@
                 {
                   "symbol":"SERPINB10",
                   "category":"MODERATE",
-                  "support":"HGNC,OMA,HomoloGene,OrthoMCL,Panther,NCBI,Ensembl,Inparanoid",
+                  "support":null,
                   "supportCount":8,
                   "link":"https://www.genenames.org/data/gene-symbol-report/#!/hgnc_id/SERPINB10"
                 }
@@ -61,7 +61,7 @@
                 {
                   "symbol":"SERPINB10",
                   "category":"MODERATE",
-                  "support":"HGNC,OMA,HomoloGene,OrthoMCL,Panther,NCBI,Ensembl,Inparanoid",
+                  "support":null,
                   "supportCount":8,
                   "link":"https://www.genenames.org/data/gene-symbol-report/#!/hgnc_id/SERPINB10"
                 }
