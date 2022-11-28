@@ -234,25 +234,26 @@ public class OrthologServiceImpl implements OrthologService {
         List<ProjectSearchDownloadOrthologDto> projectSearchDownloadOrthologDtos) {
 
         Map<String, List<Ortholog>> orthologMaps = new HashMap<>();
+        if (projectSearchDownloadOrthologDtos != null) {
+            for (ProjectSearchDownloadOrthologDto projectSearchDownloadOrthologDto : projectSearchDownloadOrthologDtos) {
 
-        for (ProjectSearchDownloadOrthologDto projectSearchDownloadOrthologDto : projectSearchDownloadOrthologDtos) {
-
-            List<String> bestOrthologs =
-                Arrays.asList(projectSearchDownloadOrthologDto.getHumanGeneSymbol().split(":"));
-            List<Ortholog> orthologs = new ArrayList<>();
-            for (String bestOrtholog : bestOrthologs) {
-                Ortholog ortholog = new Ortholog();
-                ortholog.setSymbol(bestOrtholog);
-                ortholog
-                    .setSupportCount(
-                        projectSearchDownloadOrthologDto.getSupportCount() == null ? 0 :
-                            projectSearchDownloadOrthologDto.getSupportCount().intValue());
-                ortholog.setCategory(projectSearchDownloadOrthologDto.getCategory());
-                ortholog.setLink(HGNC_URL + bestOrtholog);
-                orthologs.add(ortholog);
+                List<String> bestOrthologs =
+                    Arrays.asList(projectSearchDownloadOrthologDto.getHumanGeneSymbol().split(":"));
+                List<Ortholog> orthologs = new ArrayList<>();
+                for (String bestOrtholog : bestOrthologs) {
+                    Ortholog ortholog = new Ortholog();
+                    ortholog.setSymbol(bestOrtholog);
+                    ortholog
+                        .setSupportCount(
+                            projectSearchDownloadOrthologDto.getSupportCount() == null ? 0 :
+                                projectSearchDownloadOrthologDto.getSupportCount().intValue());
+                    ortholog.setCategory(projectSearchDownloadOrthologDto.getCategory());
+                    ortholog.setLink(HGNC_URL + bestOrtholog);
+                    orthologs.add(ortholog);
+                }
+                orthologMaps
+                    .put(projectSearchDownloadOrthologDto.getMgiGeneAccId(), orthologs);
             }
-            orthologMaps
-                .put(projectSearchDownloadOrthologDto.getMgiGeneAccId(), orthologs);
         }
 
         return orthologMaps;
