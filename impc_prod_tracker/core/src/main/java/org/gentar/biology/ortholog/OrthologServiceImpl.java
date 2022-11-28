@@ -237,8 +237,8 @@ public class OrthologServiceImpl implements OrthologService {
         if (projectSearchDownloadOrthologDtos != null) {
             for (ProjectSearchDownloadOrthologDto projectSearchDownloadOrthologDto : projectSearchDownloadOrthologDtos) {
 
-                List<String> bestOrthologs =
-                    Arrays.asList(projectSearchDownloadOrthologDto.getHumanGeneSymbol().split(":"));
+                String[] bestOrthologs =
+                    projectSearchDownloadOrthologDto.getHumanGeneSymbol().split(":");
                 List<Ortholog> orthologs = new ArrayList<>();
                 for (String bestOrtholog : bestOrthologs) {
                     Ortholog ortholog = new Ortholog();
