@@ -34,6 +34,7 @@ import org.gentar.biology.plan.type.PlanTypeName;
 import org.gentar.biology.project.engine.ProjectCreator;
 import org.gentar.biology.project.engine.ProjectUpdater;
 import org.gentar.biology.project.engine.ProjectValidator;
+import org.gentar.biology.project.projection.dto.ProjectSearchDownloadOrthologDto;
 import org.gentar.biology.project.search.filter.ProjectFilter;
 import org.gentar.biology.project.specs.ProjectSpecs;
 import org.gentar.exceptions.NotFoundException;
@@ -115,7 +116,7 @@ public class ProjectServiceImpl implements ProjectService {
     private void addOrthologs(List<Project> projects) {
         List<String> accIds = new ArrayList<>();
         projects.forEach(x -> accIds.addAll(projectQueryHelper.getAccIdsByProject(x)));
-        Map<String, List<Ortholog>> orthologs = orthologService.getOrthologsByAccIds(accIds);
+        Map<String, List<Ortholog>> orthologs = getCachedOrthologsByAccIds(accIds);
         List<ProjectIntentionGene> projectIntentionGenes = getIntentionGenesByProjects(projects);
         projectIntentionGenes.forEach(i -> {
             String accId = i.getGene().getAccId();
@@ -218,4 +219,14 @@ public class ProjectServiceImpl implements ProjectService {
         return project.getPlans().stream().sorted(Comparator.comparing(Plan::getId)).findFirst()
             .get();
     }
+
+
+    private Map<String, List<Ortholog>> getCachedOrthologsByAccIds(List<String> mgiIds) {
+
+        List<ProjectSearchDownloadOrthologDto> cachedOrthologs = orthologService.getOrthologs(mgiIds);
+
+        return orthologService.formatOrthologs(cachedOrthologs);
+
+    }
+
 }

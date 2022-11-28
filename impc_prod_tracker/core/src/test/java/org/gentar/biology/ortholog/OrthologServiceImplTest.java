@@ -38,24 +38,13 @@ class OrthologServiceImplTest {
     void getOrthologsByAccIdsAccIdNull() {
 
         Map<String, List<Ortholog>> orthologs =
-            testInstance.getOrthologsByAccIds(null);
+            testInstance.formatOrthologs(null);
 
         assertEquals(orthologs.size(), 0);
 
     }
 
-    @Test
-    void getOrthologsByAccIds() {
 
-        Map<String, List<Ortholog>> orthologMock = new HashMap<>();
-        orthologMock.put("Rsph3b", List.of(orthologMockData()));
-        lenient().when(jsonToOrthologsMapper.toOrthologs(any())).thenReturn(orthologMock);
-        Map<String, List<Ortholog>> orthologs =
-            testInstance.getOrthologsByAccIds(List.of(MGI_00000001));
-
-        assertEquals(orthologs.size(), 1);
-
-    }
 
     @Test
     void getOrthologs() {
