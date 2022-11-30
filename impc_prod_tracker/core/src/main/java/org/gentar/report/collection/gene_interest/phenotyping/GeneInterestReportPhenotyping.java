@@ -181,18 +181,18 @@ public class GeneInterestReportPhenotyping {
 //                Collectors.mapping(e -> fetchGenesByOutcomeId(e.getOutcomeId()), Collectors.toSet())));
 
     }
-    // Not Used Method
-//    private String fetchGenesByOutcomeId(Long outcomeId) {
-//        // Currently only selects for 1:1 mappings (selection happens when producing the filtered Maps)
-////        System.out.println("outcomeId: " + outcomeId);
-//        GeneInterestReportOutcomeMutationProjection omp = filteredOutcomeMutationMap.get(outcomeId);
-////        System.out.println("omp: " + omp);
-////        System.out.println("omp.getMutationId(): " + omp.getMutationId());
-////        System.out.println("filteredMutationGeneMap.get(omp.getMutationId()): " + filteredMutationGeneMap.get(omp.getMutationId()));
-////        System.out.println("filteredMutationGeneMap.get(omp.getMutationId()).getAccId(): " + filteredMutationGeneMap.get(omp.getMutationId()).getAccId());
-//        String gene = filteredMutationGeneMap.get(omp.getMutationId()).getAccId();
-//        return gene;
-//    }
+
+    private String fetchGenesByOutcomeId(Long outcomeId) {
+        // Currently only selects for 1:1 mappings (selection happens when producing the filtered Maps)
+//        System.out.println("outcomeId: " + outcomeId);
+        GeneInterestReportOutcomeMutationProjection omp = filteredOutcomeMutationMap.get(outcomeId);
+//        System.out.println("omp: " + omp);
+//        System.out.println("omp.getMutationId(): " + omp.getMutationId());
+//        System.out.println("filteredMutationGeneMap.get(omp.getMutationId()): " + filteredMutationGeneMap.get(omp.getMutationId()));
+//        System.out.println("filteredMutationGeneMap.get(omp.getMutationId()).getAccId(): " + filteredMutationGeneMap.get(omp.getMutationId()).getAccId());
+        String gene = filteredMutationGeneMap.get(omp.getMutationId()).getAccId();
+        return gene;
+    }
 
 
     private void setGeneEarlyAdultPhenotypingStageSummaryStatuses(){

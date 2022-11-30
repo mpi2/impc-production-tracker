@@ -130,15 +130,15 @@ public class GeneInterestReportPhenotypingServiceImpl implements GeneInterestRep
                 .distinct()
                 .collect(Collectors.toList());
     }
-    // Not Used Method
-//    private List<Long> getFilteredMutationIds() {
-//        return filteredOutcomeMutationMap
-//                .entrySet()
-//                .stream()
-//                .map(e -> e.getValue().getMutationId())
-//                .distinct()
-//                .collect(Collectors.toList());
-//    }
+
+    private List<Long> getFilteredMutationIds() {
+        return filteredOutcomeMutationMap
+                .entrySet()
+                .stream()
+                .map(e -> e.getValue().getMutationId())
+                .distinct()
+                .collect(Collectors.toList());
+    }
 
 
     private List<Long> getOutcomeIds() {

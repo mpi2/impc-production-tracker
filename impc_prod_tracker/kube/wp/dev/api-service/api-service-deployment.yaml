@@ -24,12 +24,16 @@ spec:
       volumes:
         - name: tomcatlog
           emptyDir: {}
+        - name: tomcatwork
+          emptyDir: {}
       containers:
         - image: dockerhub.ebi.ac.uk/mouse-informatics/impc-production-tracker-mirror:latest
           imagePullPolicy: Always
           name: api-service-dev
           env:
             - name: EBI_PROXY
+              value: "TRUE"
+            - name: HL_PROXY
               value: "TRUE"
             - name: GENTAR_SCHEMA
               value: "TRUE"
@@ -60,6 +64,8 @@ spec:
           volumeMounts:
             - name: tomcatlog
               mountPath: /tomcat/logs
+            - name: tomcatwork
+              mountPath: /tomcat/work
         - image: dockerhub.ebi.ac.uk/mouse-informatics/alpine:latest
           imagePullPolicy: Always
           name: api-service-dev-accesslog

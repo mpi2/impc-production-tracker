@@ -1120,6 +1120,7 @@ public class MockData {
     public static Report reportMockData() {
         Report report = new Report();
         report.setId(1L);
+        report.setReport("Report");
         report.setCreatedAt(LocalDateTime.now());
         return report;
     }
