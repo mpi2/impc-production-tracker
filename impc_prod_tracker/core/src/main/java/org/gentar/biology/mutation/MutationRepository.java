@@ -32,8 +32,11 @@ public interface MutationRepository extends CrudRepository<Mutation, Long>
 
     Mutation findByMin(String min);
 
+   List<Mutation> findBySymbol(String symbol);
+
     List<Mutation> findAllBySymbolLike(String symbolSearchTerm);
 
     List<Mutation> findBySymbolContaining(String symbolSearchTerm);
+
 
 }
