@@ -20,7 +20,7 @@ public class mgiAlleleUpdaterController {
     }
 
     // http://localhost:8080/tracking-api/mgiAllele
-    @PutMapping(value = {"/mgiAllele"})
+    @PutMapping(value = {"/mutation/mgiAllele/update"})
     public MgiAlleleResponseDto update(HttpServletResponse response, @RequestBody List<MgiAlleleDto> mgiAlleleDto) {
         return mutationService.updateMutationMgiAlleleId(mgiAlleleDto);
     }
