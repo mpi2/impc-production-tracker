@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/tracking-api")
 public class mgiAlleleUpdaterController {
     private final MutationServiceImpl mutationService;
 
