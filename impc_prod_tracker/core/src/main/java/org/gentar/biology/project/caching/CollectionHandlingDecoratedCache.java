@@ -104,7 +104,7 @@ public abstract class CollectionHandlingDecoratedCache implements Cache {
 
         if (key instanceof Iterable) {
 
-            if (value instanceof Iterable) {
+            if (value instanceof Iterable && ((ArrayList) value).size() != 0) {
                 pairsFromKeysAndValues(toList((Iterable<?>) key), toList((Iterable<?>) value))
                     .forEach(pair -> getCache().put(pair.getFirst(), pair.getSecond()));
             }
