@@ -6,7 +6,7 @@ import org.gentar.biology.colony.Colony;
 import org.gentar.biology.colony.distribution.distribution_network.DistributionNetwork;
 import org.gentar.biology.colony.distribution.product_type.ProductType;
 import org.gentar.organization.work_unit.WorkUnit;
-import javax.persistence.*;
+import jakarta.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 

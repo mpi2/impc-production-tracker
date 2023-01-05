@@ -5,7 +5,7 @@ import org.gentar.BaseEntity;
 import org.gentar.biology.intention.project_intention.ProjectIntention;
 import org.gentar.biology.plan.protocol.Protocol;
 import org.gentar.biology.sequence.Sequence;
-import javax.persistence.*;
+import jakarta.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 

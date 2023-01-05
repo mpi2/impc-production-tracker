@@ -7,7 +7,7 @@ import org.gentar.audit.diff.IgnoreForAuditingChanges;
 import org.gentar.biology.intention.project_intention.ProjectIntention;
 import org.gentar.biology.mutation.categorizarion.type.MutationCategorizationType;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.Set;
 

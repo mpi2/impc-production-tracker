@@ -16,22 +16,23 @@
 package org.gentar.biology.mutation;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import java.sql.Types;
 import lombok.*;
 import org.gentar.audit.diff.IgnoreForAuditingChanges;
 import org.gentar.biology.mutation.categorizarion.MutationCategorization;
 import org.gentar.biology.mutation.genetic_type.GeneticMutationType;
 import org.gentar.biology.mutation.qc_results.MutationQcResult;
 import org.gentar.biology.mutation.sequence.MutationSequence;
-import org.hibernate.annotations.Type;
 import org.gentar.BaseEntity;
 import org.gentar.biology.mutation.genbank_file.GenbankFile;
 import org.gentar.biology.gene.Gene;
 import org.gentar.biology.mutation.molecular_type.MolecularMutationType;
 import org.gentar.biology.outcome.Outcome;
-import javax.persistence.*;
+import jakarta.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
+import org.hibernate.annotations.JdbcTypeCode;
 
 @NoArgsConstructor(access= AccessLevel.PUBLIC, force=true)
 @Data
@@ -85,23 +86,20 @@ public class Mutation extends BaseEntity
     private GenbankFile genbankFile;
 
     @Lob
-    @Column(name="bam_file")
-    @Type(type="org.hibernate.type.BinaryType")
+    @JdbcTypeCode(Types.BINARY)
     private byte[] bamFile;
 
     @Lob
-    @Column(name="bam_file_index")
-    @Type(type="org.hibernate.type.BinaryType")
+    @JdbcTypeCode(Types.BINARY)
     private byte[] bamFileIndex;
 
     @Lob
-    @Column(name="vcf_file")
-    @Type(type="org.hibernate.type.BinaryType")
+    @JdbcTypeCode(Types.BINARY)
+
     private byte[] vcfFile;
 
     @Lob
-    @Column(name="vcf_file_index")
-    @Type(type="org.hibernate.type.BinaryType")
+    @JdbcTypeCode(Types.BINARY)
     private byte[] vcfFileIndex;
 
     @ToString.Exclude

@@ -9,7 +9,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpServletResponse;
 import org.gentar.biology.ortholog.OrthologService;
 import org.gentar.biology.project.descriptor.ProjectSearchDownloadMapper;
 import org.gentar.biology.project.engine.ProjectValidator;

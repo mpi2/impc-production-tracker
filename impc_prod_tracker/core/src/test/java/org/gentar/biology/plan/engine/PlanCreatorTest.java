@@ -6,7 +6,7 @@ import static org.gentar.mockdata.MockData.planMockData;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.util.Set;
-import javax.persistence.EntityManager;
+import jakarta.persistence.EntityManager;
 import org.gentar.audit.history.HistoryService;
 import org.gentar.biology.plan.Plan;
 import org.gentar.biology.plan.PlanStatusManager;

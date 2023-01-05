@@ -3,7 +3,7 @@ package org.gentar.biology.plan.attempt.phenotyping.stage.material_deposited_typ
 import lombok.*;
 import org.gentar.BaseEntity;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 
 @NoArgsConstructor(access= AccessLevel.PUBLIC, force=true)
 @Data

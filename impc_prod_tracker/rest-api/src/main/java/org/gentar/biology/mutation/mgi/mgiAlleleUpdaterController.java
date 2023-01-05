@@ -1,7 +1,7 @@
 package org.gentar.biology.mutation.mgi;
 
 import java.util.List;
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpServletResponse;
 
 import org.gentar.biology.mutation.MutationServiceImpl;
 import org.springframework.web.bind.annotation.PutMapping;

@@ -20,7 +20,7 @@ import org.gentar.BaseEntity;
 import org.gentar.biology.gene.Gene;
 import org.gentar.biology.ortholog.Ortholog;
 import org.gentar.biology.intention.project_intention.ProjectIntention;
-import javax.persistence.*;
+import jakarta.persistence.*;
 import java.util.List;
 
 @NoArgsConstructor(access= AccessLevel.PUBLIC, force=true)

@@ -7,7 +7,7 @@ import org.springframework.hateoas.LinkRelation;
 import org.springframework.hateoas.mediatype.hal.HalConfiguration;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.filter.ShallowEtagHeaderFilter;
-import javax.servlet.Filter;
+import jakarta.servlet.Filter;
 
 @Configuration
 public class RestConfiguration

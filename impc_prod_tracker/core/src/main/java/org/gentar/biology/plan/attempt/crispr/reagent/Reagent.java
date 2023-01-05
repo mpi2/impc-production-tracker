@@ -18,7 +18,7 @@ package org.gentar.biology.plan.attempt.crispr.reagent;
 import lombok.*;
 import org.gentar.BaseEntity;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 
 @NoArgsConstructor(access= AccessLevel.PRIVATE, force=true)
 @Data

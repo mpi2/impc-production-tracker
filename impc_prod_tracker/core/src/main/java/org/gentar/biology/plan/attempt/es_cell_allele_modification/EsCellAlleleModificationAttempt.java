@@ -8,7 +8,7 @@ import org.gentar.audit.diff.IgnoreForAuditingChanges;
 import org.gentar.biology.plan.Plan;
 import org.gentar.biology.strain.Strain;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 
 @NoArgsConstructor(access= AccessLevel.PUBLIC, force=true)
 @Data

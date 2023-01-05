@@ -4,7 +4,7 @@ import lombok.*;
 import org.gentar.BaseEntity;
 import org.gentar.biology.plan.attempt.crispr.CrisprAttempt;
 import org.gentar.biology.plan.attempt.crispr.mutagenesis_donor.preparation_type.PreparationType;
-import javax.persistence.*;
+import jakarta.persistence.*;
 
 @NoArgsConstructor(access= AccessLevel.PUBLIC, force=true)
 @Data

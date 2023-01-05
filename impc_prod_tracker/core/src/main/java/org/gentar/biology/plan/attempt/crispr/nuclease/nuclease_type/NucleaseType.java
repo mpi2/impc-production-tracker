@@ -1,9 +1,13 @@
 package org.gentar.biology.plan.attempt.crispr.nuclease.nuclease_type;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.SequenceGenerator;
 import lombok.*;
 import org.gentar.BaseEntity;
 
-import javax.persistence.*;
 
 @NoArgsConstructor(access= AccessLevel.PRIVATE, force=true)
 @Data

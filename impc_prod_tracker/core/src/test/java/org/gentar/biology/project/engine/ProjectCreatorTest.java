@@ -3,7 +3,7 @@ package org.gentar.biology.project.engine;
 import static org.gentar.mockdata.MockData.projectMockData;
 import static org.junit.jupiter.api.Assertions.*;
 
-import javax.persistence.EntityManager;
+import jakarta.persistence.EntityManager;
 import org.gentar.audit.history.HistoryService;
 import org.gentar.biology.plan.engine.PlanCreator;
 import org.gentar.biology.project.Project;

@@ -12,7 +12,7 @@ import org.gentar.biology.intention.project_intention_gene.ProjectIntentionGene;
 import org.gentar.biology.intention.project_intention_sequence.ProjectIntentionSequence;
 import org.gentar.biology.sequence_location.SequenceLocation;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 import java.util.List;
 import java.util.Set;
 

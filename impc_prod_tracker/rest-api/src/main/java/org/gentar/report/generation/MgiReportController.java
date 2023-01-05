@@ -5,7 +5,7 @@ import org.gentar.report.collection.mgi_modification_allele.MgiModificationAllel
 import org.gentar.report.collection.mgi_phenotyping_colony.MgiPhenotypingColonyReportServiceImpl;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 @RestController

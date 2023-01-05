@@ -7,7 +7,7 @@ import org.gentar.BaseEntity;
 import org.gentar.audit.diff.IgnoreForAuditingChanges;
 import org.gentar.biology.outcome.Outcome;
 import org.gentar.biology.plan.Plan;
-import javax.persistence.*;
+import jakarta.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 

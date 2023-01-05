@@ -19,12 +19,12 @@ import lombok.*;
 import org.gentar.BaseEntity;
 import org.gentar.audit.diff.IgnoreForAuditingChanges;
 import org.gentar.biology.plan.Plan;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.ManyToMany;
-import javax.persistence.SequenceGenerator;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.ManyToMany;
+import jakarta.persistence.SequenceGenerator;
 import javax.validation.constraints.NotNull;
 import java.util.Set;
 
