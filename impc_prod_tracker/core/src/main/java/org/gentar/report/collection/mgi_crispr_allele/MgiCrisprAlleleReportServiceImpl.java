@@ -195,6 +195,7 @@ public class MgiCrisprAlleleReportServiceImpl implements MgiCrisprAlleleReportSe
         String mgiAlleleAccId = mutationMgiAlleleAccId == null ? "" : mutationMgiAlleleAccId;
         String mutationCategory = mutationProjection.getMutationCategory();
         String mutationType = mutationProjection.getMutationType();
+        String gentarMutationIdentifier = mutationProjection.getMutationMin();
 
 
         Gene g = filteredMutationGeneMap.get(mutationProjection.getMutationId());
@@ -209,7 +210,9 @@ public class MgiCrisprAlleleReportServiceImpl implements MgiCrisprAlleleReportSe
             mutationCategory + "\t" +
             mutationType + "\t" +
             formattedMutationSymbol + "\t" +
-            mgiAlleleAccId;
+            mgiAlleleAccId + "\t" +
+            gentarMutationIdentifier
+        ;
     }
 
     private String checkMutationSymbol(String mutationSymbol, String geneSymbol) {
@@ -303,7 +306,9 @@ public class MgiCrisprAlleleReportServiceImpl implements MgiCrisprAlleleReportSe
             "Mutation Type",
             "Mutation Subtype",
             "Mutation Symbol",
-            "Mutation MGI Accession ID"
+            "Mutation MGI Accession ID",
+            "GenTaR Mutation ID"
+
         );
 
         String headerString = headers

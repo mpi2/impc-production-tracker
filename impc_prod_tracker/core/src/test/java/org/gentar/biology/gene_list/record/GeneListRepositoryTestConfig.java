@@ -10,7 +10,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.web.client.RestTemplate;
 
-import javax.persistence.Entity;
+import jakarta.persistence.Entity;
 
 @Configuration
 @EnableJpaRepositories(basePackages={"org.gentar"})

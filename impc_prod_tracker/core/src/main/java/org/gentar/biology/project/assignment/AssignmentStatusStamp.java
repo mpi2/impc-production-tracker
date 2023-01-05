@@ -5,7 +5,7 @@ import org.gentar.BaseEntity;
 import org.gentar.biology.project.Project;
 import org.gentar.biology.status.StatusStamp;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.time.LocalDateTime;

@@ -1,17 +1,20 @@
 package org.gentar.biology.project;
 
 import java.util.List;
+import org.gentar.biology.plan.Plan;
 import org.gentar.biology.project.projection.ProjectSearchDownloadProjection;
 import org.gentar.biology.project.projection.dto.ProjectSearchDownloadProjectionListDto;
 import org.springframework.context.annotation.Primary;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.data.repository.query.Param;
 
 @Primary
 public interface ProjectRepository extends
-    PagingAndSortingRepository<Project, Long>, JpaSpecificationExecutor<Project> {
+    PagingAndSortingRepository<Project, Long>, JpaSpecificationExecutor<Project>,
+    CrudRepository<Project, Long> {
     @Query("SELECT max(p.tpn) FROM Project p")
     String getMaxTpn();
 

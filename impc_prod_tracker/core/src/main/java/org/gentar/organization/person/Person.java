@@ -22,7 +22,7 @@ import org.springframework.data.rest.core.annotation.RestResource;
 import org.gentar.BaseEntity;
 import org.gentar.organization.person.associations.PersonRoleConsortium;
 import org.gentar.organization.person.associations.PersonRoleWorkUnit;
-import javax.persistence.*;
+import jakarta.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import java.util.Collection;

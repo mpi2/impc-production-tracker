@@ -3,7 +3,7 @@ package org.gentar.biology.strain.strain_type;
 import lombok.*;
 import org.gentar.BaseEntity;
 import org.gentar.biology.strain.Strain;
-import javax.persistence.*;
+import jakarta.persistence.*;
 import java.util.Set;
 
 @NoArgsConstructor(access= AccessLevel.PUBLIC, force=true)

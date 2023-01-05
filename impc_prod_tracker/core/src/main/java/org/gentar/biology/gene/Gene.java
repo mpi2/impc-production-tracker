@@ -24,7 +24,7 @@ import org.gentar.biology.mutation.Mutation;
 import org.gentar.biology.gene.flag.GeneFlag;
 import org.gentar.biology.intention.project_intention_gene.ProjectIntentionGene;
 import org.gentar.biology.species.Species;
-import javax.persistence.*;
+import jakarta.persistence.*;
 import javax.validation.constraints.Pattern;
 import java.util.Set;
 

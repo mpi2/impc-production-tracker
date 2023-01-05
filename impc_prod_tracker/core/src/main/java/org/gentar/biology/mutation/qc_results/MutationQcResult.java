@@ -3,7 +3,7 @@ package org.gentar.biology.mutation.qc_results;
 import lombok.*;
 import org.gentar.BaseEntity;
 import org.gentar.biology.mutation.Mutation;
-import javax.persistence.*;
+import jakarta.persistence.*;
 import java.io.Serializable;
 
 @NoArgsConstructor(access= AccessLevel.PUBLIC, force=true)

@@ -15,10 +15,10 @@
  *******************************************************************************/
 package org.gentar.security.abac.policy;
 
+import jakarta.annotation.PostConstruct;
 import org.springframework.expression.ExpressionParser;
 import org.springframework.expression.spel.standard.SpelExpressionParser;
 import org.springframework.stereotype.Component;
-import javax.annotation.PostConstruct;
 import java.util.ArrayList;
 import java.util.List;
 

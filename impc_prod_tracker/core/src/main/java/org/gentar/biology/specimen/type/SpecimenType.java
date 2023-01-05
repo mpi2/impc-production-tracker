@@ -4,7 +4,7 @@ import lombok.AccessLevel;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.gentar.BaseEntity;
-import javax.persistence.*;
+import jakarta.persistence.*;
 
 @NoArgsConstructor(access= AccessLevel.PRIVATE, force=true)
 @Data

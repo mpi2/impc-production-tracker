@@ -8,7 +8,7 @@ import org.gentar.biology.mutation.sequence.MutationSequence;
 import org.gentar.biology.sequence.category.SequenceCategory;
 import org.gentar.biology.sequence.type.SequenceType;
 import org.gentar.biology.sequence_location.SequenceLocation;
-import javax.persistence.*;
+import jakarta.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;

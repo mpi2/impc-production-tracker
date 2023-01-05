@@ -5,9 +5,9 @@ import org.gentar.audit.history.HistoryService;
 import org.gentar.biology.plan.attempt.phenotyping.PhenotypingAttempt;
 import org.gentar.biology.plan.engine.PlanUpdater;
 import org.springframework.stereotype.Component;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import javax.transaction.Transactional;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
+import jakarta.transaction.Transactional;
 
 /**
  * Logic to create a phenotyping stage in the system.

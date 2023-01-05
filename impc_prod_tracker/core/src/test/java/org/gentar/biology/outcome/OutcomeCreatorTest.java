@@ -3,8 +3,8 @@ package org.gentar.biology.outcome;
 import static org.gentar.mockdata.MockData.outcomeMockData;
 import static org.junit.jupiter.api.Assertions.*;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 import org.gentar.audit.history.HistoryService;
 import org.gentar.biology.colony.engine.ColonyStateSetter;
 import org.gentar.biology.mutation.MutationService;

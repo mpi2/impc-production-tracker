@@ -1,6 +1,6 @@
 package org.gentar.biology.mutation.formatter;
 
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpServletResponse;
 import org.gentar.audit.AuditListener;
 import org.gentar.audit.diff.PropertyChecker;
 import org.slf4j.Logger;

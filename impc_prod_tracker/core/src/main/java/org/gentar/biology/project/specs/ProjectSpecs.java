@@ -19,7 +19,7 @@ import org.gentar.biology.project.Project;
 import org.gentar.util.PredicateBuilder;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Component;
-import javax.persistence.criteria.Path;
+import jakarta.persistence.criteria.Path;
 import java.util.List;
 import java.util.stream.Collectors;
 

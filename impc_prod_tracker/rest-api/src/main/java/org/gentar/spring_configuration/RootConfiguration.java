@@ -15,22 +15,21 @@
  *******************************************************************************/
 package org.gentar.spring_configuration;
 
-import org.gentar.spring_configuration.filters.CORSFilter;
+import org.gentar.error_management.ExceptionHandlerFilter;
 import org.gentar.security.jwt.JwtTokenFilter;
+import org.gentar.spring_configuration.filters.CORSFilter;
 import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 import org.springframework.hateoas.config.EnableHypermediaSupport;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.access.channel.ChannelProcessingFilter;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.gentar.error_management.ExceptionHandlerFilter;
 
 /**
  * Sets the authentication mechanism for the end points.
@@ -41,7 +40,7 @@ import org.gentar.error_management.ExceptionHandlerFilter;
 @EnableWebSecurity
 @EnableJpaAuditing
 @EnableHypermediaSupport(type = { EnableHypermediaSupport.HypermediaType.HAL })
-public class RootConfiguration extends WebSecurityConfigurerAdapter
+public class RootConfiguration
 {
     private final JwtTokenFilter jwtTokenFilter;
     private final ExceptionHandlerFilter exceptionHandlerFilter;
@@ -54,12 +53,6 @@ public class RootConfiguration extends WebSecurityConfigurerAdapter
     }
 
     @Bean
-    @Override
-    protected AuthenticationManager authenticationManager() throws Exception {
-        return super.authenticationManager();
-    }
-
-    @Bean
     public ModelMapper modelMapper() {
         return new ModelMapper();
     }
@@ -69,9 +62,9 @@ public class RootConfiguration extends WebSecurityConfigurerAdapter
         return new BCryptPasswordEncoder();
     }
 
-    @Override
-    protected void configure(HttpSecurity http) throws Exception
-    {
+
+    @Bean
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
             .httpBasic().disable()
             .cors().and()
@@ -79,23 +72,26 @@ public class RootConfiguration extends WebSecurityConfigurerAdapter
             .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
             .and()
             .authorizeRequests()
-            .antMatchers("/docs/**").permitAll()
-            .antMatchers("/auth/signin").permitAll()
-            .antMatchers("/api/conf").permitAll()
-            .antMatchers("/api/projects/**").permitAll()
-            .antMatchers("/api/plans/**").permitAll()
-            .antMatchers("/api/outcomes/**").permitAll()
-            .antMatchers("/api/mutations/**").permitAll()
-            .antMatchers("/api/people/requestPasswordReset").permitAll()
-            .antMatchers("/api/reports/**").permitAll()
-            .antMatchers("/api/format/**").access("hasPermission(null, 'CDA_AND_ADMIN')")
-            .antMatchers("/reports/**").permitAll()
-            .antMatchers("/tracking-api/**").access("hasPermission(null, 'CDA_AND_ADMIN')")
+            .requestMatchers("/docs/**").permitAll()
+            .requestMatchers("/auth/signin").permitAll()
+            .requestMatchers("/api/conf").permitAll()
+            .requestMatchers("/api/projects/**").permitAll()
+            .requestMatchers("/api/plans/**").permitAll()
+            .requestMatchers("/api/outcomes/**").permitAll()
+            .requestMatchers("/api/mutations/**").permitAll()
+            .requestMatchers("/api/people/requestPasswordReset").permitAll()
+            .requestMatchers("/api/reports/**").permitAll()
+            .requestMatchers("/api/format/**").access("hasPermission(null, 'CDA_AND_ADMIN')")
+            .requestMatchers("/reports/**").permitAll()
+            .requestMatchers("/tracking-api/**").access("hasPermission(null, 'CDA_AND_ADMIN')")
             .anyRequest().authenticated()
             .and()
             .addFilterBefore(jwtTokenFilter, UsernamePasswordAuthenticationFilter.class)
             .addFilterBefore(exceptionHandlerFilter, JwtTokenFilter.class)
             .addFilterBefore(new CORSFilter(), ChannelProcessingFilter.class)
         ;
+
+        return http.build();
     }
+
 }

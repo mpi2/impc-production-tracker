@@ -19,7 +19,7 @@ import lombok.*;
 import org.gentar.BaseEntity;
 import org.gentar.biology.gene.Gene;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 import java.util.Set;
 
 @NoArgsConstructor(access= AccessLevel.PRIVATE, force=true)

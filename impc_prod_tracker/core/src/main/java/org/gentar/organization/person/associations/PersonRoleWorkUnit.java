@@ -8,7 +8,7 @@ import org.gentar.organization.person.Person;
 import org.gentar.organization.role.Role;
 import org.gentar.organization.work_unit.WorkUnit;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 

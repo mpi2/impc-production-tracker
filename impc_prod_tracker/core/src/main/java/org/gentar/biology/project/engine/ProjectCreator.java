@@ -22,9 +22,9 @@ import org.gentar.biology.plan.engine.PlanCreator;
 import org.gentar.biology.project.assignment.AssignmentStatusUpdater;
 import org.springframework.stereotype.Component;
 import org.gentar.biology.project.Project;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import javax.transaction.Transactional;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
+import jakarta.transaction.Transactional;
 import java.util.Set;
 
 /**

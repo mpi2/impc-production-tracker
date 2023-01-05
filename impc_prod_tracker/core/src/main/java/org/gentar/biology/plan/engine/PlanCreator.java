@@ -6,9 +6,9 @@ import org.gentar.biology.plan.Plan;
 import org.gentar.biology.plan.PlanStatusManager;
 import org.gentar.biology.project.engine.ProjectUpdater;
 import org.springframework.stereotype.Component;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import javax.transaction.Transactional;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
+import jakarta.transaction.Transactional;
 
 /**
  * Class with the logic to save a plan in the system.

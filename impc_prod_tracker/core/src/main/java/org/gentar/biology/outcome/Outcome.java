@@ -14,7 +14,7 @@ import org.gentar.organization.consortium.Consortium;
 import org.gentar.organization.work_unit.WorkUnit;
 import org.gentar.security.abac.Resource;
 import org.gentar.security.abac.ResourcePrivacy;
-import javax.persistence.*;
+import jakarta.persistence.*;
 import java.util.*;
 
 @NoArgsConstructor(access= AccessLevel.PUBLIC, force=true)

@@ -7,7 +7,7 @@ import org.gentar.biology.sequence_location.SequenceLocation;
 import org.gentar.biology.species.Species;
 import org.gentar.biology.strain.Strain;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 import javax.validation.constraints.Pattern;
 import java.util.ArrayList;
 import java.util.HashMap;

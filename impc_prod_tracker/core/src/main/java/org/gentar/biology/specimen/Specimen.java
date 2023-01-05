@@ -12,7 +12,7 @@ import org.gentar.biology.status.Status;
 import org.gentar.statemachine.ProcessData;
 import org.gentar.statemachine.ProcessEvent;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.Set;
 
