@@ -2,6 +2,7 @@ package org.gentar.biology.mutation;
 
 import static org.gentar.biology.mutation.constant.MutationErrors.*;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -48,7 +49,8 @@ public class MutationValidator {
 
     public void validateData(Mutation mutation) {
         Set<Gene> genes = mutation.getGenes();
-        if (mutation.getMin() == null) {
+        if (mutation.getMin() == null || mutation.getCreatedAt()== null || mutation.getCreatedAt().isAfter(
+            LocalDateTime.of(2022, 10, 1, 0, 0))) {
             if (genes.isEmpty()) {
                 throw new UserOperationFailedException(
                     String.format(NULL_FIELD_ERROR, MUTATION_GENE_S));
@@ -63,7 +65,7 @@ public class MutationValidator {
                 throw new UserOperationFailedException(
                     MUTATION + mutation.getSymbol() +
                         SYMBOL_S_ARE_NOT_IN_THE_CORRECT_FORMAT);
-            } else if (!isMutationSymbolUnique(mutation)) {
+            } else if (!isMutationSymbolUnique(mutation) && mutation.getMin() == null) {
                 throw new UserOperationFailedException(
                     MUTATION + mutation.getSymbol() +
                         SYMBOL_S_ARE_NOT_UNIQUE);
