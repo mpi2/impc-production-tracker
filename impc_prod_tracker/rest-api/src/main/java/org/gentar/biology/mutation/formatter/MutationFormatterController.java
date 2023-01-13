@@ -20,7 +20,7 @@ public class MutationFormatterController {
         this.mutationFormatterService = mutationFormatterService;
     }
 
-    // http://localhost:8080/tracking-api/format/sequence/UCD
+    // http://localhost:8080/api/format/sequence/UCD
     @PutMapping(value = {"/format/sequence/{workUnit}"})
     public void formatSequence(HttpServletResponse response, @PathVariable String workUnit) {
         mutationFormatterService.formatSequence(workUnit);
