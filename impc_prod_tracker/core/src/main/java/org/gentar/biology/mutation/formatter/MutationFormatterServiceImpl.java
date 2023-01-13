@@ -147,11 +147,11 @@ public class MutationFormatterServiceImpl implements MutationFormatterService {
     private Sequence sequenceFormatter(String colonyName, Sequence sequence) {
         Sequence formattedSequence = new Sequence(sequence);
         String newSequenceString = sequence.getSequence().replaceAll("\t", "");
+        newSequenceString = newSequenceString.replaceAll("\n", "");
         newSequenceString = newSequenceString.replaceAll("> ", "");
         newSequenceString = newSequenceString.replaceAll(" >", "");
+        newSequenceString = newSequenceString.replaceAll("\\s+$", "");
         if (!isSequenceHeaderSingleLine(sequence.getSequence())) {
-            newSequenceString = newSequenceString.replaceAll("\n", "");
-            newSequenceString = newSequenceString.replaceAll("\\s+$", "");
             newSequenceString =
                 newSequenceString.substring(0, findFirstUpperLetterIndex(newSequenceString)) +
                     "\n" +
@@ -159,7 +159,6 @@ public class MutationFormatterServiceImpl implements MutationFormatterService {
             formattedSequence
                 .setSequence(newSequenceString);
         }
-
         if (!isStartWithBiggerSymbol(newSequenceString)) {
             if (newSequenceString.contains("\n")) {
                 formattedSequence
