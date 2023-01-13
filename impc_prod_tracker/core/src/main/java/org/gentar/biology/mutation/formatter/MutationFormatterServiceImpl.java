@@ -147,7 +147,6 @@ public class MutationFormatterServiceImpl implements MutationFormatterService {
     private Sequence sequenceFormatter(String colonyName, Sequence sequence) {
         Sequence formattedSequence = new Sequence(sequence);
         String newSequenceString = sequence.getSequence().replaceAll("\t", "");
-        ;
         if (!isSequenceHeaderSingleLine(sequence.getSequence())) {
             newSequenceString = newSequenceString.replaceAll("\n", "");
             newSequenceString = newSequenceString.replaceAll("\\s+$", "");
@@ -168,7 +167,8 @@ public class MutationFormatterServiceImpl implements MutationFormatterService {
                     .setSequence(">" + colonyName + System.lineSeparator() + newSequenceString);
             }
         }
-        LOGGER.info("Formatted Sequence "+formattedSequence.getSequence());
+        LOGGER.info("Old Sequence :"+sequence.getSequence());
+        LOGGER.info("Formatted Sequence :"+formattedSequence.getSequence());
         return formattedSequence;
     }
 
