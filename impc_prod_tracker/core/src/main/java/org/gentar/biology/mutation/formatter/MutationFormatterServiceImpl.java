@@ -148,6 +148,8 @@ public class MutationFormatterServiceImpl implements MutationFormatterService {
         Sequence formattedSequence = new Sequence(sequence);
         String newSequenceString = sequence.getSequence().replaceAll("\t", "");
         newSequenceString = newSequenceString.replaceAll("\n", "");
+        newSequenceString = newSequenceString.replaceAll("> \n", "");
+        newSequenceString = newSequenceString.replaceAll(" >\n", "");
         newSequenceString = newSequenceString.replaceAll("> ", "");
         newSequenceString = newSequenceString.replaceAll(" >", "");
         newSequenceString = newSequenceString.replaceAll("\\s+$", "");
