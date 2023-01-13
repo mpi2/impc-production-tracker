@@ -151,6 +151,8 @@ public class MutationFormatterServiceImpl implements MutationFormatterService {
         newSequenceString = newSequenceString.replaceAll("\n", "");
         newSequenceString = newSequenceString.replaceAll("> ", " ");
         newSequenceString = newSequenceString.replaceAll(" >", " ");
+        newSequenceString = newSequenceString.replaceAll(">", " ");
+        newSequenceString = newSequenceString.replaceAll(">", " ");
         newSequenceString = newSequenceString.replaceAll("\\s+$", "");
         if (!isSequenceHeaderSingleLine(newSequenceString)) {
             newSequenceString =
@@ -184,7 +186,7 @@ public class MutationFormatterServiceImpl implements MutationFormatterService {
                     firstIndex = i;
                 }
                 count++;
-                if (count == 8) {
+                if (count == 12) {
                     return firstIndex;
                 }
             } else {
