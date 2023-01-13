@@ -143,8 +143,44 @@ public class MutationFormatterServiceImpl implements MutationFormatterService {
 
     private Sequence sequenceFormatter(String colonyName, Sequence sequence) {
         Sequence formattedSequence = new Sequence(sequence);
-        formattedSequence
-            .setSequence(">" + colonyName + System.lineSeparator() + sequence.getSequence());
+        String newSequenceString=sequence.getSequence().replaceAll("\t", "");;
+        if(!isSequenceHeaderSingleLine(sequence.getSequence())){
+            newSequenceString = newSequenceString.replaceAll("\n", "");
+            newSequenceString = newSequenceString.replaceAll("\\s+$", "");
+                newSequenceString = newSequenceString.substring(0,findFirstUpperLetterIndex(newSequenceString) )+"\n"+newSequenceString.substring(findFirstUpperLetterIndex(newSequenceString));
+            formattedSequence
+                .setSequence(newSequenceString);
+        }
+
+        if(!isStartWithBiggerSymbol(newSequenceString)){
+            if(newSequenceString.contains("\n")){
+                formattedSequence
+                    .setSequence(">" + newSequenceString);
+            } else {
+                formattedSequence
+                    .setSequence(">" + colonyName + System.lineSeparator() + newSequenceString);
+            }
+            }
         return formattedSequence;
+    }
+
+    public static int findFirstUpperLetterIndex(String str) {
+        int count = 0;
+        int firstIndex = -1;
+        for (int i = 0; i < str.length(); i++) {
+            char c = str.charAt(i);
+            if (!Character.isDigit(c) && Character.isUpperCase(c)) {
+                if (count == 0) {
+                    firstIndex = i;
+                }
+                count++;
+                if (count == 8) {
+                    return firstIndex;
+                }
+            } else {
+                count = 0;
+            }
+        }
+        return -1;
     }
 }
