@@ -18,7 +18,10 @@ import org.springframework.stereotype.Component;
 public class MutationFormatterServiceImpl implements MutationFormatterService {
     private final MutationRepository mutationRepository;
     private final MutationServiceImpl mutationService;
-    private static final Logger LOGGER = LoggerFactory.getLogger(MutationFormatterServiceImpl.class);;
+    private static final Logger LOGGER =
+        LoggerFactory.getLogger(MutationFormatterServiceImpl.class);
+    ;
+
     public MutationFormatterServiceImpl(
         MutationRepository mutationRepository,
         MutationServiceImpl mutationService) {
@@ -143,24 +146,29 @@ public class MutationFormatterServiceImpl implements MutationFormatterService {
 
     private Sequence sequenceFormatter(String colonyName, Sequence sequence) {
         Sequence formattedSequence = new Sequence(sequence);
-        String newSequenceString=sequence.getSequence().replaceAll("\t", "");;
-        if(!isSequenceHeaderSingleLine(sequence.getSequence())){
+        String newSequenceString = sequence.getSequence().replaceAll("\t", "");
+        ;
+        if (!isSequenceHeaderSingleLine(sequence.getSequence())) {
             newSequenceString = newSequenceString.replaceAll("\n", "");
             newSequenceString = newSequenceString.replaceAll("\\s+$", "");
-                newSequenceString = newSequenceString.substring(0,findFirstUpperLetterIndex(newSequenceString) )+"\n"+newSequenceString.substring(findFirstUpperLetterIndex(newSequenceString));
+            newSequenceString =
+                newSequenceString.substring(0, findFirstUpperLetterIndex(newSequenceString)) +
+                    "\n" +
+                    newSequenceString.substring(findFirstUpperLetterIndex(newSequenceString));
             formattedSequence
                 .setSequence(newSequenceString);
         }
 
-        if(!isStartWithBiggerSymbol(newSequenceString)){
-            if(newSequenceString.contains("\n")){
+        if (!isStartWithBiggerSymbol(newSequenceString)) {
+            if (newSequenceString.contains("\n")) {
                 formattedSequence
                     .setSequence(">" + newSequenceString);
             } else {
                 formattedSequence
                     .setSequence(">" + colonyName + System.lineSeparator() + newSequenceString);
             }
-            }
+        }
+        LOGGER.info("Formatted Sequence "+formattedSequence.getSequence());
         return formattedSequence;
     }
 
