@@ -17,6 +17,8 @@ package org.gentar.error_management;
 
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
+import jakarta.persistence.EntityNotFoundException;
+import jakarta.validation.ConstraintViolationException;
 import lombok.extern.slf4j.Slf4j;
 import org.gentar.exceptions.ForbiddenAccessException;
 import org.gentar.exceptions.InvalidRequestException;
@@ -42,8 +44,6 @@ import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 import org.springframework.web.servlet.NoHandlerFoundException;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
-import javax.persistence.EntityNotFoundException;
-import javax.validation.ConstraintViolationException;
 
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
 import static org.springframework.http.HttpStatus.NOT_FOUND;
@@ -107,7 +107,6 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler
      * @param request WebRequest
      * @return the ApiError object
      */
-    @Override
     protected ResponseEntity<Object> handleMissingServletRequestParameter(
         MissingServletRequestParameterException ex,
         HttpHeaders headers,
@@ -128,7 +127,6 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler
      * @param request WebRequest
      * @return the ApiError object
      */
-    @Override
     protected ResponseEntity<Object> handleHttpMediaTypeNotSupported(
         HttpMediaTypeNotSupportedException ex,
         HttpHeaders headers,
@@ -153,7 +151,6 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler
      * @param request WebRequest
      * @return the ApiError object
      */
-    @Override
     protected ResponseEntity<Object> handleMethodArgumentNotValid(
         MethodArgumentNotValidException ex,
         HttpHeaders headers,
@@ -234,7 +231,6 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler
      * @param request WebRequest
      * @return the ApiError object
      */
-    @Override
     protected ResponseEntity<Object> handleHttpMessageNotReadable(
         HttpMessageNotReadableException ex,
         HttpHeaders headers,
@@ -266,7 +262,6 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler
      * @param request WebRequest
      * @return the ApiError object
      */
-    @Override
     protected ResponseEntity<Object> handleHttpMessageNotWritable(
         HttpMessageNotWritableException ex, HttpHeaders headers, HttpStatus status, WebRequest request)
     {
@@ -283,7 +278,6 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler
      * @param request WebRequest
      * @return the ApiError object
      */
-    @Override
     protected ResponseEntity<Object> handleNoHandlerFoundException(
         NoHandlerFoundException ex, HttpHeaders headers, HttpStatus status, WebRequest request)
     {

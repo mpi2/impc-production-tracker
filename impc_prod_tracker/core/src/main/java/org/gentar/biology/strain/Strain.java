@@ -20,7 +20,7 @@ import org.gentar.BaseEntity;
 import org.gentar.audit.diff.IgnoreForAuditingChanges;
 import org.gentar.biology.strain.excision_type.ExcisionType;
 import org.gentar.biology.strain.strain_type.StrainType;
-import javax.persistence.*;
+import jakarta.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.Set;
 

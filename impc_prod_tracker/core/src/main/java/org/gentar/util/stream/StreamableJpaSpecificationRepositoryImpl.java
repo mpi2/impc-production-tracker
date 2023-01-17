@@ -1,15 +1,16 @@
 package org.gentar.util.stream;
 
+import static org.hibernate.jpa.HibernateHints.HINT_FETCH_SIZE;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.domain.Specification;
 
-import javax.persistence.EntityManager;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Root;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.criteria.CriteriaBuilder;
+import jakarta.persistence.criteria.CriteriaQuery;
+import jakarta.persistence.criteria.Root;
 import java.util.stream.Stream;
 
-import static org.hibernate.jpa.QueryHints.HINT_FETCH_SIZE;
 
 /**
  * Taken from https://itnext.io/scrolling-through-large-datasets-in-spring-data-jpa-with-streams-and-specification-2fd975129758.

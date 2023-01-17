@@ -22,7 +22,7 @@ import org.gentar.audit.diff.IgnoreForAuditingChanges;
 import org.gentar.biology.plan.Plan;
 import org.gentar.organization.work_group.WorkGroup;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 import java.util.Set;
 
 @NoArgsConstructor(access= AccessLevel.PUBLIC, force=true)

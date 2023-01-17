@@ -85,6 +85,7 @@ public class MutationRequestProcessor
         newMutation.setGeneticMutationType(mappedMutation.getGeneticMutationType());
         newMutation.setMolecularMutationType(mappedMutation.getMolecularMutationType());
         newMutation.setDescription(mappedMutation.getDescription());
+        newMutation.setCreatedAt(originalMutation.getCreatedAt());
         if (mutationUpdateDTO.getGeneUpdateDTOS() != null)
         {
             newMutation.setGenes(mappedMutation.getGenes());

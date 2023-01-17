@@ -4,8 +4,8 @@ import static org.gentar.mockdata.MockData.PSN_000000001;
 import static org.gentar.mockdata.MockData.phenotypingStageMockData;
 import static org.junit.jupiter.api.Assertions.*;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 import org.checkerframework.checker.units.qual.C;
 import org.gentar.audit.history.HistoryService;
 import org.gentar.biology.plan.engine.PlanUpdater;

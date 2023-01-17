@@ -8,7 +8,7 @@ import lombok.ToString;
 import org.gentar.biology.project.Project;
 import org.gentar.organization.consortium.Consortium;
 import org.gentar.organization.institute.Institute;
-import javax.persistence.*;
+import jakarta.persistence.*;
 import java.util.Set;
 
 @NoArgsConstructor(access= AccessLevel.PUBLIC, force=true)

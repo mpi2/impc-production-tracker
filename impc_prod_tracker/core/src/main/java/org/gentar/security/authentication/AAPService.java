@@ -289,8 +289,7 @@ public class AAPService
     private HttpHeaders createBasicAuthorizationHeaders(String username, String password){
         return new HttpHeaders() {{
             String auth = username + ":" + password;
-            byte[] encodedAuth = Base64.encodeBase64(
-                auth.getBytes(Charset.forName("US-ASCII")) );
+            byte[] encodedAuth = Base64.encodeBase64(auth.getBytes(Charset.forName("US-ASCII")),true);
             String authHeader = "Basic " + new String( encodedAuth );
             set( "Authorization", authHeader );
         }};

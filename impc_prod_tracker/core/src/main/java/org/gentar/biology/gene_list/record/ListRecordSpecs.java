@@ -1,15 +1,16 @@
 package org.gentar.biology.gene_list.record;
 
+import jakarta.persistence.criteria.Path;
+import jakarta.persistence.criteria.Predicate;
+import jakarta.persistence.criteria.SetJoin;
 import org.gentar.biology.gene_list.GeneList;
 import org.gentar.biology.gene_list.GeneList_;
 import org.gentar.organization.consortium.Consortium;
 import org.gentar.organization.consortium.Consortium_;
 import org.springframework.data.jpa.domain.Specification;
-import javax.persistence.criteria.Path;
-import javax.persistence.criteria.SetJoin;
 import java.util.ArrayList;
 import java.util.List;
-import javax.persistence.criteria.Predicate;
+
 
 public class ListRecordSpecs
 {

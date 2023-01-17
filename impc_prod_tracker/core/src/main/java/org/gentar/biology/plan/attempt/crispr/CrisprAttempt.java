@@ -31,7 +31,7 @@ import org.gentar.biology.plan.attempt.crispr.nuclease.Nuclease;
 import org.gentar.biology.plan.Plan;
 import org.gentar.biology.strain.Strain;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 import java.time.LocalDate;
 import java.util.Set;
 

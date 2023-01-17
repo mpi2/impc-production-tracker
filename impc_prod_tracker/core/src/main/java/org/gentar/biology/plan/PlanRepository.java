@@ -15,14 +15,17 @@
  */
 package org.gentar.biology.plan;
 
+import org.gentar.biology.mutation.Mutation;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.gentar.biology.project.Project;
 
 import java.util.List;
 
-public interface PlanRepository extends PagingAndSortingRepository<Plan, Long>, JpaSpecificationExecutor<Plan>
+public interface PlanRepository extends PagingAndSortingRepository<Plan, Long>, JpaSpecificationExecutor<Plan>,
+    CrudRepository<Plan, Long>
 {
 
     List<Plan> findAll();

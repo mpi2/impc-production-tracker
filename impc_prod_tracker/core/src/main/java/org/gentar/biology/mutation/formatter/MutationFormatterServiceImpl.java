@@ -18,7 +18,10 @@ import org.springframework.stereotype.Component;
 public class MutationFormatterServiceImpl implements MutationFormatterService {
     private final MutationRepository mutationRepository;
     private final MutationServiceImpl mutationService;
-    private static final Logger LOGGER = LoggerFactory.getLogger(MutationFormatterServiceImpl.class);;
+    private static final Logger LOGGER =
+        LoggerFactory.getLogger(MutationFormatterServiceImpl.class);
+    ;
+
     public MutationFormatterServiceImpl(
         MutationRepository mutationRepository,
         MutationServiceImpl mutationService) {
@@ -143,8 +146,53 @@ public class MutationFormatterServiceImpl implements MutationFormatterService {
 
     private Sequence sequenceFormatter(String colonyName, Sequence sequence) {
         Sequence formattedSequence = new Sequence(sequence);
-        formattedSequence
-            .setSequence(">" + colonyName + System.lineSeparator() + sequence.getSequence());
+        String newSequenceString = sequence.getSequence().replaceAll("\t", "");
+
+        newSequenceString = newSequenceString.replaceAll("\n", "");
+        newSequenceString = newSequenceString.replaceAll("> ", " ");
+        newSequenceString = newSequenceString.replaceAll(" >", " ");
+        newSequenceString = newSequenceString.replaceAll(">", " ");
+        newSequenceString = newSequenceString.replaceAll(">", " ");
+        newSequenceString = newSequenceString.replaceAll("\\s+$", "");
+        if (!isSequenceHeaderSingleLine(newSequenceString)) {
+            newSequenceString =
+                newSequenceString.substring(0, findFirstUpperLetterIndex(newSequenceString)) +
+                    "\n" +
+                    newSequenceString.substring(findFirstUpperLetterIndex(newSequenceString));
+            formattedSequence
+                .setSequence(newSequenceString);
+        }
+        if (!isStartWithBiggerSymbol(newSequenceString)) {
+            if (newSequenceString.contains("\n")) {
+                formattedSequence
+                    .setSequence(">" + newSequenceString);
+            } else {
+                formattedSequence
+                    .setSequence(">" + colonyName + System.lineSeparator() + newSequenceString);
+            }
+        }
+        LOGGER.info("Old Sequence :"+sequence.getSequence());
+        LOGGER.info("Formatted Sequence :"+formattedSequence.getSequence());
         return formattedSequence;
+    }
+
+    public static int findFirstUpperLetterIndex(String str) {
+        int count = 0;
+        int firstIndex = -1;
+        for (int i = 0; i < str.length(); i++) {
+            char c = str.charAt(i);
+            if (!Character.isDigit(c) && Character.isUpperCase(c)) {
+                if (count == 0) {
+                    firstIndex = i;
+                }
+                count++;
+                if (count == 12) {
+                    return firstIndex;
+                }
+            } else {
+                count = 0;
+            }
+        }
+        return -1;
     }
 }

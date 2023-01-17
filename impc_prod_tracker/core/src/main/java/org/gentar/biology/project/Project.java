@@ -40,7 +40,7 @@ import org.gentar.biology.species.Species;
 import org.gentar.organization.consortium.Consortium;
 import org.gentar.organization.work_unit.WorkUnit;
 import org.gentar.security.abac.ResourcePrivacy;
-import javax.persistence.*;
+import jakarta.persistence.*;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -64,8 +64,7 @@ public class Project extends BaseEntity implements Resource<Project>
         this.summaryStatus = project.summaryStatus;
         this.assignmentStatusStamps =
             project.assignmentStatusStamps == null ? null : new HashSet<>(project.assignmentStatusStamps);
-        this.summaryStatusStamps =
-            project.summaryStatusStamps == null ? null : new HashSet<>(project.summaryStatusStamps);
+        this.summaryStatusStamps.addAll(project.summaryStatusStamps);
         this.plans = project.plans == null ? null : new HashSet<>(project.plans);
         this.reactivationDate = project.reactivationDate;
         this.recovery = project.recovery;
@@ -111,7 +110,7 @@ public class Project extends BaseEntity implements Resource<Project>
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
     @OneToMany(cascade= CascadeType.ALL, mappedBy = "project", orphanRemoval=true, fetch=FetchType.EAGER)
-    private Set<ProjectSummaryStatusStamp> summaryStatusStamps;
+    private Set<ProjectSummaryStatusStamp> summaryStatusStamps = new HashSet<>();;
 
     @EqualsAndHashCode.Exclude
     @ToString.Exclude

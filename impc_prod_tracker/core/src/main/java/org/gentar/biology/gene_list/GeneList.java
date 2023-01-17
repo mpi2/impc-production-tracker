@@ -20,7 +20,7 @@ import org.gentar.BaseEntity;
 import org.gentar.biology.gene_list.record.ListRecord;
 import org.gentar.organization.consortium.Consortium;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 import java.util.List;
 
 @NoArgsConstructor(access= AccessLevel.PUBLIC, force=true)

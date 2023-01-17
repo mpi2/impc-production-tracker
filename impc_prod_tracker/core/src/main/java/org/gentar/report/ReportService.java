@@ -1,6 +1,6 @@
 package org.gentar.report;
 
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 public interface ReportService {
