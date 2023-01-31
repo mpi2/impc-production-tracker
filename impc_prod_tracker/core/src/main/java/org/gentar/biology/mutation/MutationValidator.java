@@ -49,36 +49,42 @@ public class MutationValidator {
 
     public void validateData(Mutation mutation) {
         Set<Gene> genes = mutation.getGenes();
-        if (mutation.getMin() == null || mutation.getCreatedAt()== null || mutation.getCreatedAt().isAfter(
-            LocalDateTime.of(2022, 10, 1, 0, 0))) {
-            if (genes.isEmpty()) {
-                throw new UserOperationFailedException(
-                    String.format(NULL_FIELD_ERROR, MUTATION_GENE_S));
-            } else if (mutation.getMolecularMutationType() == null) {
-                throw new UserOperationFailedException(
-                    String.format(NULL_FIELD_ERROR, MUTATION_MOLECULAR_MUTATION_TYPE_S));
-            } else if (mutation.getSymbol() == null || mutation.getSymbol().equals("")) {
-                throw new UserOperationFailedException(
-                    String.format(NULL_FIELD_ERROR, MUTATION_MUTATION_SYMBOL_S));
-            } else if (!mutation.getMolecularMutationType().getName().equals("Complex rearrangement") &&
-                !isSymbolInCorrectFormat(mutation)) {
-                throw new UserOperationFailedException(
-                    MUTATION + mutation.getSymbol() +
-                        SYMBOL_S_ARE_NOT_IN_THE_CORRECT_FORMAT);
-            } else if (!isMutationSymbolUnique(mutation) && mutation.getMin() == null) {
-                throw new UserOperationFailedException(
-                    MUTATION + mutation.getSymbol() +
-                        SYMBOL_S_ARE_NOT_UNIQUE);
-            } else if (isEsCellAttemptTypeWrong(mutation)) {
-                throw new UserOperationFailedException(
-                    THE_INITIAL_ES_CELL_PRODUCTION_ATTEMPT_A_E);
+        if (mutation.getMin() == null || mutation.getCreatedAt() == null ||
+            mutation.getCreatedAt().isAfter(
+                LocalDateTime.of(2022, 10, 1, 0, 0))) {
+            if (!(mutation.getSymbol() != null && (mutation.getSymbol().contains("EUCOMM") ||
+                mutation.getSymbol().contains("KOMP")) &&
+                isWorkUnitIlarCodeValid(mutation))) {
+                if (genes.isEmpty()) {
+                    throw new UserOperationFailedException(
+                        String.format(NULL_FIELD_ERROR, MUTATION_GENE_S));
+                } else if (mutation.getMolecularMutationType() == null) {
+                    throw new UserOperationFailedException(
+                        String.format(NULL_FIELD_ERROR, MUTATION_MOLECULAR_MUTATION_TYPE_S));
+                } else if (mutation.getSymbol() == null || mutation.getSymbol().equals("")) {
+                    throw new UserOperationFailedException(
+                        String.format(NULL_FIELD_ERROR, MUTATION_MUTATION_SYMBOL_S));
+                } else if (!mutation.getMolecularMutationType().getName()
+                    .equals("Complex rearrangement") &&
+                    !isSymbolInCorrectFormat(mutation)) {
+                    throw new UserOperationFailedException(
+                        MUTATION + mutation.getSymbol() +
+                            SYMBOL_S_ARE_NOT_IN_THE_CORRECT_FORMAT);
+                } else if (!isMutationSymbolUnique(mutation) && mutation.getMin() == null) {
+                    throw new UserOperationFailedException(
+                        MUTATION + mutation.getSymbol() +
+                            SYMBOL_S_ARE_NOT_UNIQUE);
+                } else if (isEsCellAttemptTypeWrong(mutation)) {
+                    throw new UserOperationFailedException(
+                        THE_INITIAL_ES_CELL_PRODUCTION_ATTEMPT_A_E);
 
-            } else if (isEsCellModificationAttemptTypeWrong(mutation)) {
-                throw new UserOperationFailedException(
-                    TYPES_FOR_ES_CELL_MODIFICATION_ATTEMPT_B_C_D_E_1_1_2);
-            } else if (!isSequenceInFastaFormat(mutation)) {
-                throw new UserOperationFailedException(
-                    ERROR_FASTA_FORMAT);
+                } else if (isEsCellModificationAttemptTypeWrong(mutation)) {
+                    throw new UserOperationFailedException(
+                        TYPES_FOR_ES_CELL_MODIFICATION_ATTEMPT_B_C_D_E_1_1_2);
+                } else if (!isSequenceInFastaFormat(mutation)) {
+                    throw new UserOperationFailedException(
+                        ERROR_FASTA_FORMAT);
+                }
             }
         }
     }
@@ -93,7 +99,7 @@ public class MutationValidator {
             return false;
         }
 
-        if (!isWorkUnitIlarCodeValid(symbol, mutation)) {
+        if (!isWorkUnitIlarCodeValid(mutation)) {
             return false;
         }
 
@@ -192,32 +198,36 @@ public class MutationValidator {
     }
 
     private String getAttemptTypeName(Mutation mutation) {
-        return mutation.getOutcomes().stream().map(Outcome::getPlan).map(Plan::getAttemptType).map(AttemptType::getName).collect(
+        return mutation.getOutcomes().stream().map(Outcome::getPlan).map(Plan::getAttemptType)
+            .map(AttemptType::getName).collect(
                 Collectors.toList()).get(0);
     }
 
-    private boolean isWorkUnitIlarCodeValid(String symbol, Mutation mutation) {
+    private boolean isWorkUnitIlarCodeValid(Mutation mutation) {
 
         Optional<WorkUnit> workUnitIlarCode =
-            mutation.getOutcomes().stream().map(Outcome::getPlan).map(Plan::getWorkUnit).filter(w->w.getIlarCode()!=null).findFirst();
-        
-        if(workUnitIlarCode.isEmpty()){
+            mutation.getOutcomes().stream().map(Outcome::getPlan).map(Plan::getWorkUnit)
+                .filter(w -> w.getIlarCode() != null).findFirst();
+
+        if (workUnitIlarCode.isEmpty()) {
             return true;
         }
 
         List<String> ilarCodesAndNames = new ArrayList<>();
         List<WorkUnit> workUnits = workUnitService.getAllWorkUnits();
 
-        List<String> ilarCodes = workUnits.stream().map(WorkUnit::getIlarCode).collect(Collectors.toList());
+        List<String> ilarCodes =
+            workUnits.stream().map(WorkUnit::getIlarCode).collect(Collectors.toList());
 
-        List<String> names =workUnits.stream().map(WorkUnit::getName).collect(Collectors.toList());
+        List<String> names = workUnits.stream().map(WorkUnit::getName).collect(Collectors.toList());
 
         ilarCodesAndNames.addAll(ilarCodes);
         ilarCodesAndNames.addAll(names);
         ilarCodesAndNames.add("Vlcg");
 
-        for (String workUnit: ilarCodesAndNames) {
-            if (workUnit!=null && symbol.toLowerCase().contains(workUnit.toLowerCase())) {
+        for (String workUnit : ilarCodesAndNames) {
+            if (workUnit != null &&
+                mutation.getSymbol().toLowerCase().contains(workUnit.toLowerCase())) {
                 return true;
             }
         }
@@ -246,11 +256,11 @@ public class MutationValidator {
     private boolean isSequenceInFastaFormat(Mutation mutation) {
         List<Sequence> sequences = getSequences(mutation);
 
-        if(sequences.stream().anyMatch(s->s.getSequence()==null)){
+        if (sequences.stream().anyMatch(s -> s.getSequence() == null)) {
             return false;
         }
 
-        List<String> sequenceString= sequences.stream().map(Sequence::getSequence)
+        List<String> sequenceString = sequences.stream().map(Sequence::getSequence)
             .collect(Collectors.toList());
 
         return sequenceString.stream().noneMatch(s ->
@@ -292,7 +302,7 @@ public class MutationValidator {
     private List<Character> dnaCharacters() {
         return List
             .of('A', 'C', 'G', 'T', 'U', 'I', 'R', 'Y', 'K', 'M', 'S', 'W', 'B', 'D', 'H', 'V',
-                'N','a', 'c', 'g', 't', 'u', 'i', 'r', 'y', 'k', 'm', 's', 'w', 'b', 'd', 'h', 'v',
+                'N', 'a', 'c', 'g', 't', 'u', 'i', 'r', 'y', 'k', 'm', 's', 'w', 'b', 'd', 'h', 'v',
                 'n');
     }
 
