@@ -1,15 +1,13 @@
 package org.gentar.report.report_type;
 
+import jakarta.servlet.http.HttpServletResponse;
 import org.gentar.report.ReportTypeServiceImpl;
-import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.List;
 
 @RestController
 @RequestMapping("/tracking-api/reports/types")
