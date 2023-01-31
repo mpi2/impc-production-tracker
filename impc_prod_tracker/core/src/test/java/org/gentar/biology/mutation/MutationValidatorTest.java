@@ -103,14 +103,14 @@ class MutationValidatorTest {
         geneList.add(geneMockData("Rsph3d"));
         mutation.setGenes(geneList);
         mutation.setMolecularMutationType(molecularMutationTypeMockData());
-        mutation.setSymbol("Rsph3b<tm1a(KOMP)Wtsi>");
+        mutation.setSymbol("Rsph3b<tm1a(IMPC)Wtsi>");
 
         Exception exception = assertThrows(UserOperationFailedException.class, () -> {
             testInstance.validateData(mutation);
         });
 
         String expectedMessage =
-            "Mutation:(Rsph3b<tm1a(KOMP)Wtsi>) Mutation symbol(s) are not in the correct format";
+            "Mutation:(Rsph3b<tm1a(IMPC)Wtsi>) Mutation symbol(s) are not in the correct format";
         String actualMessage = exception.getMessage();
 
         assertTrue(actualMessage.contains(expectedMessage));
@@ -123,14 +123,14 @@ class MutationValidatorTest {
         geneList.add(geneMockData("Rsph3b"));
         mutation.setGenes(geneList);
         mutation.setMolecularMutationType(molecularMutationTypeMockData());
-        mutation.setSymbol("Rsph3btm1a(KOMP)Wtsi>");
+        mutation.setSymbol("Rsph3btm1a(IMPC)Wtsi>");
 
         Exception exception = assertThrows(UserOperationFailedException.class, () -> {
             testInstance.validateData(mutation);
         });
 
         String expectedMessage =
-            "Mutation:(Rsph3btm1a(KOMP)Wtsi>) Mutation symbol(s) are not in the correct format";
+            "Mutation:(Rsph3btm1a(IMPC)Wtsi>) Mutation symbol(s) are not in the correct format";
         String actualMessage = exception.getMessage();
 
         assertTrue(actualMessage.contains(expectedMessage));
@@ -143,7 +143,7 @@ class MutationValidatorTest {
         geneList.add(geneMockData("Rsph3b"));
         mutation.setGenes(geneList);
         mutation.setMolecularMutationType(molecularMutationTypeMockData());
-        mutation.setSymbol("Rsph3b<tm1a(KOMP)Wtsi>");
+        mutation.setSymbol("Rsph3b<tm1a(IMPC)Wtsi>");
         mutation.setOutcomes(outcomesSetMockData(AttemptTypesName.ES_CELL.getLabel(), "Wtsi"));
         lenient().when(workUnitService.getAllWorkUnits())
             .thenReturn(List.of(workUnitMockData("KMPC")));
@@ -152,7 +152,7 @@ class MutationValidatorTest {
         });
 
         String expectedMessage =
-            "Mutation:(Rsph3b<tm1a(KOMP)Wtsi>) Mutation symbol(s) are not in the correct format";
+            "Mutation:(Rsph3b<tm1a(IMPC)Wtsi>) Mutation symbol(s) are not in the correct format";
         String actualMessage = exception.getMessage();
 
         assertTrue(actualMessage.contains(expectedMessage));
@@ -165,7 +165,7 @@ class MutationValidatorTest {
         geneList.add(geneMockData("Rsph3d"));
         mutation.setGenes(geneList);
         mutation.setMolecularMutationType(molecularMutationTypeMockData());
-        mutation.setSymbol("Rsph3b<tm1a(KOMP)Wtsi>");
+        mutation.setSymbol("Rsph3b<tm1a(IMPC)Wtsi>");
         mutation.setOutcomes(outcomesSetMockData(AttemptTypesName.ES_CELL.getLabel(), "Wtsi"));
 
         lenient().when(workUnitService.getAllWorkUnits())
@@ -176,7 +176,7 @@ class MutationValidatorTest {
         });
 
         String expectedMessage =
-            "Mutation:(Rsph3b<tm1a(KOMP)Wtsi>) Mutation symbol(s) are not in the correct format";
+            "Mutation:(Rsph3b<tm1a(IMPC)Wtsi>) Mutation symbol(s) are not in the correct format";
         String actualMessage = exception.getMessage();
 
         assertTrue(actualMessage.contains(expectedMessage));
@@ -190,7 +190,7 @@ class MutationValidatorTest {
         geneList.add(geneMockData("Rsph3b"));
         mutation.setGenes(geneList);
         mutation.setMolecularMutationType(molecularMutationTypeMockData());
-        mutation.setSymbol("Rsph3b<em1a(KOMP)Wtsi>");
+        mutation.setSymbol("Rsph3b<em1a(IMPC)Wtsi>");
         mutation.setOutcomes(outcomesSetMockData(AttemptTypesName.ES_CELL.getLabel(), "Wtsi"));
 
         lenient().when(workUnitService.getAllWorkUnits())
@@ -201,7 +201,7 @@ class MutationValidatorTest {
         });
 
         String expectedMessage =
-            "Mutation:(Rsph3b<em1a(KOMP)Wtsi>) Mutation symbol(s) are not in the correct format";
+            "Mutation:(Rsph3b<em1a(IMPC)Wtsi>) Mutation symbol(s) are not in the correct format";
         String actualMessage = exception.getMessage();
 
         assertTrue(actualMessage.contains(expectedMessage));
@@ -215,7 +215,7 @@ class MutationValidatorTest {
         geneList.add(geneMockData("Rsph3b"));
         mutation.setGenes(geneList);
         mutation.setMolecularMutationType(molecularMutationTypeMockData());
-        mutation.setSymbol("Rsph3b<tm1a(KOMP)Wtsi>");
+        mutation.setSymbol("Rsph3b<tm1a(IMPC)Wtsi>");
         mutation.setOutcomes(outcomesSetMockData(AttemptTypesName.CRISPR.getLabel(), "Wtsi"));
 
         lenient().when(workUnitService.getAllWorkUnits())
@@ -226,7 +226,7 @@ class MutationValidatorTest {
         });
 
         String expectedMessage =
-            "Mutation:(Rsph3b<tm1a(KOMP)Wtsi>) Mutation symbol(s) are not in the correct format";
+            "Mutation:(Rsph3b<tm1a(IMPC)Wtsi>) Mutation symbol(s) are not in the correct format";
         String actualMessage = exception.getMessage();
 
         assertTrue(actualMessage.contains(expectedMessage));
@@ -239,7 +239,7 @@ class MutationValidatorTest {
         geneList.add(geneMockData("Rsph3b"));
         mutation.setGenes(geneList);
         mutation.setMolecularMutationType(molecularMutationTypeMockData());
-        mutation.setSymbol("Rsph3b<tma(KOMP)Wtsi>");
+        mutation.setSymbol("Rsph3b<tma(IMPC)Wtsi>");
         mutation.setOutcomes(outcomesSetMockData(AttemptTypesName.ES_CELL.getLabel(), "Wtsi"));
 
         lenient().when(workUnitService.getAllWorkUnits())
@@ -250,7 +250,7 @@ class MutationValidatorTest {
         });
 
         String expectedMessage =
-            "Mutation:(Rsph3b<tma(KOMP)Wtsi>) Mutation symbol(s) are not in the correct format";
+            "Mutation:(Rsph3b<tma(IMPC)Wtsi>) Mutation symbol(s) are not in the correct format";
         String actualMessage = exception.getMessage();
 
         assertTrue(actualMessage.contains(expectedMessage));
@@ -287,7 +287,7 @@ class MutationValidatorTest {
         geneList.add(geneMockData("Rsph3b"));
         mutation.setGenes(geneList);
         mutation.setMolecularMutationType(molecularMutationTypeMockData());
-        mutation.setSymbol("Rsph3b<tm1(KOMP)Wtsi>");
+        mutation.setSymbol("Rsph3b<tm1(IMPC)Wtsi>");
         mutation.setOutcomes(outcomesSetMockData(AttemptTypesName.ES_CELL.getLabel(), "Wtsi"));
         mutation.setMutationCategorizations(MutationCategorizationSetMockData("es Cell"));
         lenient().when(workUnitService.getAllWorkUnits())
@@ -298,7 +298,7 @@ class MutationValidatorTest {
         });
 
         String expectedMessage =
-            "Mutation:(Rsph3b<tm1(KOMP)Wtsi>) Mutation symbol(s) are not in the correct format";
+            "Mutation:(Rsph3b<tm1(IMPC)Wtsi>) Mutation symbol(s) are not in the correct format";
         String actualMessage = exception.getMessage();
 
         assertTrue(actualMessage.contains(expectedMessage));
@@ -312,7 +312,7 @@ class MutationValidatorTest {
         geneList.add(geneMockData("Rsph3b"));
         mutation.setGenes(geneList);
         mutation.setMolecularMutationType(molecularMutationTypeMockData());
-        mutation.setSymbol("Rsph3b<tm1a(KOMP)Wtsi>");
+        mutation.setSymbol("Rsph3b<tm1a(IMPC)Wtsi>");
         mutation.setOutcomes(outcomesSetMockData(AttemptTypesName.ES_CELL.getLabel(), "Wtsi"));
         mutation.setMutationCategorizations(MutationCategorizationSetMockData("a"));
         lenient().when(workUnitService.getAllWorkUnits())
@@ -325,7 +325,7 @@ class MutationValidatorTest {
         });
 
         String expectedMessage =
-            "Mutation:(Rsph3b<tm1a(KOMP)Wtsi>) Entered mutation symbol(s) are not unique";
+            "Mutation:(Rsph3b<tm1a(IMPC)Wtsi>) Entered mutation symbol(s) are not unique";
         String actualMessage = exception.getMessage();
 
         assertTrue(actualMessage.contains(expectedMessage));
@@ -339,7 +339,7 @@ class MutationValidatorTest {
         geneList.add(geneMockData("Rsph3b"));
         mutation.setGenes(geneList);
         mutation.setMolecularMutationType(molecularMutationTypeMockData());
-        mutation.setSymbol("Rsph3b<tm1b(KOMP)Wtsi>");
+        mutation.setSymbol("Rsph3b<tm1b(IMPC)Wtsi>");
         mutation.setOutcomes(outcomesSetMockData(AttemptTypesName.ES_CELL.getLabel(), "Wtsi"));
         mutation.setMutationCategorizations(MutationCategorizationSetMockData("b"));
         lenient().when(workUnitService.getAllWorkUnits())
@@ -363,7 +363,7 @@ class MutationValidatorTest {
         geneList.add(geneMockData("Rsph3b"));
         mutation.setGenes(geneList);
         mutation.setMolecularMutationType(molecularMutationTypeMockData());
-        mutation.setSymbol("Rsph3b<tm1a(KOMP)Wtsi>");
+        mutation.setSymbol("Rsph3b<tm1a(IMPC)Wtsi>");
         mutation.setOutcomes(
             outcomesSetMockData(AttemptTypesName.ES_CELL_ALLELE_MODIFICATION.getLabel(), "Wtsi"));
         mutation.setMutationCategorizations(MutationCategorizationSetMockData("a"));
@@ -387,7 +387,7 @@ class MutationValidatorTest {
         geneList.add(geneMockData("Rsph3b"));
         mutation.setGenes(geneList);
         mutation.setMolecularMutationType(molecularMutationTypeMockData());
-        mutation.setSymbol("Rsph3b<tm1a(KOMP)Wtsi>");
+        mutation.setSymbol("Rsph3b<tm1a(IMPC)Wtsi>");
         mutation.setOutcomes(outcomesSetMockData(AttemptTypesName.ES_CELL.getLabel(), "Wtsi"));
         mutation.setMutationCategorizations(MutationCategorizationSetMockData("a"));
         mutation.setMutationSequences(mutationSequencesSetMockData("AATTTCCCGGGGD"));
@@ -413,7 +413,7 @@ class MutationValidatorTest {
         geneList.add(geneMockData("Rsph3b"));
         mutation.setGenes(geneList);
         mutation.setMolecularMutationType(molecularMutationTypeMockData());
-        mutation.setSymbol("Rsph3b<tm1a(KOMP)Wtsi>");
+        mutation.setSymbol("Rsph3b<tm1a(IMPC)Wtsi>");
         mutation.setOutcomes(outcomesSetMockData(AttemptTypesName.ES_CELL.getLabel(), "Wtsi"));
         mutation.setMutationCategorizations(MutationCategorizationSetMockData("a"));
         mutation
