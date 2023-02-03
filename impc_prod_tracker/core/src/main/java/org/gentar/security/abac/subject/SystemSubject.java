@@ -53,6 +53,8 @@ public interface SystemSubject
 
     boolean belongsToAnyWorkUnit(Collection<WorkUnit> workUnits);
 
+    boolean belongsToWTSIWorkUnit(Collection<WorkUnit> workUnits);
+
     List<String> getRelatedRolesNames();
 
     FluentPersonRoleWorkUnitList getFluentRoleWorkUnits();

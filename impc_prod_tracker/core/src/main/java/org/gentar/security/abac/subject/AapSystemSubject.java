@@ -13,6 +13,7 @@
  language governing permissions and limitations under the
  License.
  */
+
 package org.gentar.security.abac.subject;
 
 import lombok.NoArgsConstructor;
@@ -43,8 +44,7 @@ import java.util.Set;
  */
 @Component
 @NoArgsConstructor
-public class AapSystemSubject implements SystemSubject
-{
+public class AapSystemSubject implements SystemSubject {
     private String login;
     private String name;
     private String userRefId;
@@ -67,24 +67,24 @@ public class AapSystemSubject implements SystemSubject
 
     private final static String DCC_USER_KEY = "dcc_user_key";
 
-    private final static String NOT_USER_INFORMATION_MESSAGE = "There is not associated information in the system for " +
-        "the user [%s].";
-    private final static String NULL_AUTH_ID_MESSAGE = "AuthId cannot be null. The jwt token may not have" +
-        "all the needed information.";
+    private final static String NOT_USER_INFORMATION_MESSAGE =
+        "There is not associated information in the system for " +
+            "the user [%s].";
+    private final static String NULL_AUTH_ID_MESSAGE =
+        "AuthId cannot be null. The jwt token may not have" +
+            "all the needed information.";
     private final static String NOT_USER_INFORMATION_DEBUG_MESSAGE =
         "The user [%s] with reference id [%s] was successfully logged in but there is no related information for them " +
             "in the system. Please contact an administrator.";
 
     @Autowired
-    public AapSystemSubject(PersonRepository personRepository, WorkUnitService workUnitService)
-    {
+    public AapSystemSubject(PersonRepository personRepository, WorkUnitService workUnitService) {
         this.personRepository = personRepository;
         this.workUnitService = workUnitService;
     }
 
     public AapSystemSubject(
-        PersonRepository personRepository, WorkUnitService workUnitService, Person person)
-    {
+        PersonRepository personRepository, WorkUnitService workUnitService, Person person) {
         this.personRepository = personRepository;
         this.workUnitService = workUnitService;
         this.person = person;
@@ -96,151 +96,145 @@ public class AapSystemSubject implements SystemSubject
      *
      * @param login
      */
-    public AapSystemSubject(String login)
-    {
+    public AapSystemSubject(String login) {
         this.login = login;
     }
 
-    private void loadPersonInformation(String authId)
-    {
-        if (authId == null)
-        {
+    private void loadPersonInformation(String authId) {
+        if (authId == null) {
             throw new UserOperationFailedException(NULL_AUTH_ID_MESSAGE);
         }
         this.person = personRepository.findPersonByAuthIdEquals(authId);
-        if (person == null)
-        {
+        if (person == null) {
             throw new UserOperationFailedException(
                 String.format(NOT_USER_INFORMATION_MESSAGE, login),
                 String.format(NOT_USER_INFORMATION_DEBUG_MESSAGE, login, authId));
-        }
-        else
-        {
+        } else {
             setPersonData(person);
         }
     }
 
-    private void setPersonData(Person person)
-    {
+    private void setPersonData(Person person) {
         isEbiAdmin = person.getEbiAdmin() == null ? false : person.getEbiAdmin();
         roleWorkUnits = new ArrayList<>(person.getPersonRolesWorkUnits());
         roleConsortia = new ArrayList<>(person.getPersonRolesConsortia());
     }
 
     @Override
-    public Person getPerson()
-    {
+    public Person getPerson() {
         return person;
     }
 
     @Override
-    public String getLogin()
-    {
+    public String getLogin() {
         return person.getEmail();
     }
 
     @Override
-    public String getName()
-    {
+    public String getName() {
         return person.getName();
     }
 
     @Override
-    public String getUserRefId()
-    {
+    public String getUserRefId() {
         return person.getAuthId();
     }
 
     @Override
-    public String getEmail()
-    {
+    public String getEmail() {
         return person.getEmail();
     }
 
     @Override
-    public List<PersonRoleWorkUnit> getRoleWorkUnits()
-    {
+    public List<PersonRoleWorkUnit> getRoleWorkUnits() {
         return roleWorkUnits;
     }
 
     @Override
-    public List<PersonRoleConsortium> getRoleConsortia()
-    {
+    public List<PersonRoleConsortium> getRoleConsortia() {
         return roleConsortia;
     }
 
     @Override
-    public Boolean isAdmin()
-    {
+    public Boolean isAdmin() {
         return isEbiAdmin;
     }
 
     @Override
-    public boolean belongsToConsortia(Collection<Consortium> consortia)
-    {
+    public boolean belongsToConsortia(Collection<Consortium> consortia) {
         return personBelongsToConsortia(consortia) || workUnitBelongsToConsortia(consortia);
     }
 
-    private boolean personBelongsToConsortia(Collection<Consortium> consortia)
-    {
+    private boolean personBelongsToConsortia(Collection<Consortium> consortia) {
         boolean result = false;
-        if (roleConsortia != null)
-        {
+        if (roleConsortia != null) {
             result = roleConsortia.stream().anyMatch(x -> consortia.contains(x.getConsortium()));
         }
         return result;
     }
 
-    private boolean workUnitBelongsToConsortia(Collection<Consortium> consortia)
-    {
+    private boolean workUnitBelongsToConsortia(Collection<Consortium> consortia) {
         boolean result = false;
 
-        if (roleWorkUnits != null)
-        {
+        if (roleWorkUnits != null) {
             List<Consortium> consortiaByWorkUnits = new ArrayList<>();
-            roleWorkUnits.forEach(x -> consortiaByWorkUnits.addAll(getConsortiaByWorkUnit(x.getWorkUnit())));
+            roleWorkUnits
+                .forEach(x -> consortiaByWorkUnits.addAll(getConsortiaByWorkUnit(x.getWorkUnit())));
             result = consortiaByWorkUnits.stream().anyMatch(consortia::contains);
         }
         return result;
     }
 
-    private Set<Consortium> getConsortiaByWorkUnit(WorkUnit workUnit)
-    {
+    private Set<Consortium> getConsortiaByWorkUnit(WorkUnit workUnit) {
         Set<Consortium> result = Collections.emptySet();
         WorkUnit workUnitWithConsortia =
             workUnitService.getWorkUnitWithConsortia(workUnit.getId());
-        if (workUnitWithConsortia != null)
-        {
+        if (workUnitWithConsortia != null) {
             result = workUnitWithConsortia.getConsortia();
         }
         return result;
     }
 
     @Override
-    public List<WorkUnit> getRelatedWorkUnits()
-    {
+    public List<WorkUnit> getRelatedWorkUnits() {
         List<WorkUnit> relatedWorkUnits = new ArrayList<>();
-        if (roleWorkUnits != null)
-        {
+        if (roleWorkUnits != null) {
             roleWorkUnits.forEach(x -> relatedWorkUnits.add(x.getWorkUnit()));
         }
         return relatedWorkUnits;
     }
 
     @Override
-    public boolean belongsToAnyWorkUnit(Collection<WorkUnit> workUnits)
-    {
+    public boolean belongsToAnyWorkUnit(Collection<WorkUnit> workUnits) {
         boolean result = false;
-        if (workUnits != null)
-        {
+        if (workUnits != null) {
             result = getRelatedWorkUnits().stream().anyMatch(workUnits::contains);
         }
         return result;
     }
 
+    /**
+     *  After Sanger closed Harwel took over the sanger projects
+     *  this methode will allow Harwell to update WTSI projects
+     * @param workUnits
+     * @return
+     */
     @Override
-    public List<String> getRelatedRolesNames()
-    {
+    public boolean belongsToWTSIWorkUnit(Collection<WorkUnit> workUnits) {
+
+        boolean result = false;
+        if (workUnits != null) {
+            result = workUnits.stream().anyMatch(x -> x.getName().equals("WTSI")) &&
+                getRelatedWorkUnits().stream().anyMatch(x -> x.getName().equals("Harwell"));
+        }
+        return result;
+
+
+
+    }
+
+    @Override
+    public List<String> getRelatedRolesNames() {
         List<String> relatedRolesNames = new ArrayList<>();
         roleWorkUnits.forEach(x -> relatedRolesNames.add(x.getRole().getName()));
         roleConsortia.forEach(x -> relatedRolesNames.add(x.getRole().getName()));
@@ -248,20 +242,17 @@ public class AapSystemSubject implements SystemSubject
     }
 
     @Override
-    public FluentPersonRoleWorkUnitList getFluentRoleWorkUnits()
-    {
+    public FluentPersonRoleWorkUnitList getFluentRoleWorkUnits() {
         return new FluentPersonRoleWorkUnitList(roleWorkUnits);
     }
 
     @Override
-    public FluentPersonRoleConsortiumList getFluentRoleConsortia()
-    {
+    public FluentPersonRoleConsortiumList getFluentRoleConsortia() {
         return new FluentPersonRoleConsortiumList(roleConsortia);
     }
 
     @Override
-    public boolean managesAnyWorkUnit(Collection<WorkUnit> workUnits)
-    {
+    public boolean managesAnyWorkUnit(Collection<WorkUnit> workUnits) {
         return new FluentPersonRoleWorkUnitList(roleWorkUnits)
             .whereUserHasRole("manager")
             .getWorkUnits().stream()
@@ -269,8 +260,7 @@ public class AapSystemSubject implements SystemSubject
     }
 
     @Override
-    public boolean managesAnyConsortia(Collection<Consortium> consortia)
-    {
+    public boolean managesAnyConsortia(Collection<Consortium> consortia) {
         return getFluentRoleConsortia()
             .whereUserHasRole("manager")
             .getConsortia().stream()
@@ -278,56 +268,45 @@ public class AapSystemSubject implements SystemSubject
     }
 
     @Override
-    public FluentPersonRoleConsortiumList whereUserHasRole(String role)
-    {
+    public FluentPersonRoleConsortiumList whereUserHasRole(String role) {
         return getFluentRoleConsortia().whereUserHasRole(role);
     }
 
     @Override
-    public boolean isUserByKey(String key)
-    {
+    public boolean isUserByKey(String key) {
         boolean result = false;
         String configuredLogin = null;
-        if (key.equals(CDA_USER_KEY))
-        {
+        if (key.equals(CDA_USER_KEY)) {
             configuredLogin = CDA_USER_VALUE;
-        }
-        else if (key.equals(DCC_USER_KEY))
-        {
+        } else if (key.equals(DCC_USER_KEY)) {
             configuredLogin = DCC_USER_VALUE;
         }
 
-        if (configuredLogin != null)
-        {
+        if (configuredLogin != null) {
             result = person.getEmail().equals(configuredLogin);
         }
 
         return result;
     }
 
-    public List<WorkUnit> getRelatedWorkUnitsByUserMail(String email)
-    {
+    public List<WorkUnit> getRelatedWorkUnitsByUserMail(String email) {
         List<WorkUnit> workUnits = new ArrayList<>();
         Person person = personRepository.findPersonByEmail(email);
-        if (person != null)
-        {
+        if (person != null) {
             Set<PersonRoleWorkUnit> personRoleWorkUnits = person.getPersonRolesWorkUnits();
-            if (personRoleWorkUnits != null)
-            {
+            if (personRoleWorkUnits != null) {
                 personRoleWorkUnits.forEach(x -> workUnits.add(x.getWorkUnit()));
             }
         }
         return workUnits;
     }
 
-    public SystemSubject buildSystemSubjectByPerson(Person person)
-    {
+    public SystemSubject buildSystemSubjectByPerson(Person person) {
         loadPersonInformation(person.getAuthId());
         return this;
     }
 
-    public void setUserRefId(String subject)
-    {
+    public void setUserRefId(String subject) {
         this.userRefId = subject;
     }
 }
