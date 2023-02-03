@@ -221,7 +221,14 @@ public class PermissionServiceImpl implements PermissionService {
                 projectService.getProjectByPinWithoutCheckPermissions(tpn));
             result = true;
         } catch (Exception e) {
-            result = false;
+            try {
+                projectValidator.validatePermissionToUpdateWTSIProjectByHarwell(
+                    projectService.getProjectByPinWithoutCheckPermissions(tpn));
+                result = true;
+            } catch (Exception x) {
+                result = false;
+
+            }
         }
 
         return result;
