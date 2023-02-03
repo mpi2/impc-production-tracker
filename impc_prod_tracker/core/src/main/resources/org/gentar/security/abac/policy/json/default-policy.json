@@ -81,6 +81,12 @@
     "target": "action == 'UPDATE_PROJECT'",
     "condition": "subject.belongsToAnyWorkUnit(resource.getRelatedProductionPlanWorkUnits())"
   },
+  {
+    "name": "Update WTSI project by HARWELL",
+    "description": "A HARWELL user can modify a WTSI project if they have production plans associated with it.",
+    "target": "action == 'UPDATE_WTSI_PROJECTS_BY_HARWELL'",
+    "condition": "subject.belongsToWTSIWorkUnit(resource.getRelatedProductionPlanWorkUnits())"
+  },
 
   {
     "name": "Read Public plans",

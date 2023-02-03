@@ -13,4 +13,5 @@ public class Actions
     public static final String UPDATE_USER = "UPDATE_USER";
     public static final String MANAGE_GENE_LIST_ACTION = "MANAGE_GENE_LISTS";
     public static final String UPDATE_TO_PHENOTYPING_STARTED = "UPDATE_TO_PHENOTYPING_STARTED";
+    public static final String UPDATE_WTSI_PROJECTS_BY_HARWELL = "UPDATE_WTSI_PROJECTS_BY_HARWELL";
 }

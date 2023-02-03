@@ -13,6 +13,7 @@
  * language governing permissions and limitations under the
  * License.
  *******************************************************************************/
+
 package org.gentar.security.permissions;
 
 import org.gentar.biology.project.ProjectQueryHelper;
@@ -31,8 +32,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Component
-public class PermissionServiceImpl implements PermissionService
-{
+public class PermissionServiceImpl implements PermissionService {
     private static final String MANAGE_USERS_KEY = "manageUsers";
     private static final String EXECUTE_MANAGER_TASKS_KEY = "executeManagerTasks";
 
@@ -59,8 +59,7 @@ public class PermissionServiceImpl implements PermissionService
         PersonRepository personRepository,
         WorkUnitService workUnitService,
         ProjectQueryHelper projectQueryHelper,
-        ProjectValidator projectValidator)
-    {
+        ProjectValidator projectValidator) {
         this.policyEnforcement = policyEnforcement;
         this.planService = planService;
         this.projectService = projectService;
@@ -72,8 +71,7 @@ public class PermissionServiceImpl implements PermissionService
     }
 
     @Override
-    public List<ActionPermission> getPermissionsLoggedUser()
-    {
+    public List<ActionPermission> getPermissionsLoggedUser() {
         List<ActionPermission> actionPermissions = new ArrayList<>();
         actionPermissions.add(getManageUsersPermissionLoggedUser());
         actionPermissions.add(getExecutingManagementTasksLoggedUser());
@@ -82,8 +80,7 @@ public class PermissionServiceImpl implements PermissionService
     }
 
     @Override
-    public List<ActionPermission> getPermissionsByUser(String userEmail)
-    {
+    public List<ActionPermission> getPermissionsByUser(String userEmail) {
         Person user = personService.getPersonByEmail(userEmail);
         SystemSubject personAsSystemSubject
             = new AapSystemSubject(personRepository, workUnitService, user);
@@ -95,16 +92,15 @@ public class PermissionServiceImpl implements PermissionService
         return actionPermissions;
     }
 
-    private ActionPermission getManageUsersPermissionLoggedUser()
-    {
+    private ActionPermission getManageUsersPermissionLoggedUser() {
         ActionPermission actionPermission = new ActionPermission();
         actionPermission.setActionName(MANAGE_USERS_KEY);
-        actionPermission.setValue(policyEnforcement.hasPermission(null, Actions.MANAGE_USERS_ACTION));
+        actionPermission
+            .setValue(policyEnforcement.hasPermission(null, Actions.MANAGE_USERS_ACTION));
         return actionPermission;
     }
 
-    private ActionPermission getExecutingManagementTasksLoggedUser()
-    {
+    private ActionPermission getExecutingManagementTasksLoggedUser() {
         ActionPermission actionPermission = new ActionPermission();
         actionPermission.setActionName(EXECUTE_MANAGER_TASKS_KEY);
         actionPermission.setValue(
@@ -112,8 +108,7 @@ public class PermissionServiceImpl implements PermissionService
         return actionPermission;
     }
 
-    private ActionPermission getManageGeneListsLoggedUser()
-    {
+    private ActionPermission getManageGeneListsLoggedUser() {
         ActionPermission actionPermission = new ActionPermission();
         actionPermission.setActionName(MANAGE_GENE_LISTS);
         actionPermission.setValue(
@@ -121,16 +116,15 @@ public class PermissionServiceImpl implements PermissionService
         return actionPermission;
     }
 
-    private ActionPermission getManageUsersPermissionByUser(SystemSubject user)
-    {
+    private ActionPermission getManageUsersPermissionByUser(SystemSubject user) {
         ActionPermission actionPermission = new ActionPermission();
         actionPermission.setActionName(MANAGE_USERS_KEY);
-        actionPermission.setValue(policyEnforcement.hasPermission(user, null, Actions.MANAGE_USERS_ACTION));
+        actionPermission
+            .setValue(policyEnforcement.hasPermission(user, null, Actions.MANAGE_USERS_ACTION));
         return actionPermission;
     }
 
-    private ActionPermission getExecutingManagementTasksByUser(SystemSubject user)
-    {
+    private ActionPermission getExecutingManagementTasksByUser(SystemSubject user) {
         ActionPermission actionPermission = new ActionPermission();
         actionPermission.setActionName(EXECUTE_MANAGER_TASKS_KEY);
         actionPermission.setValue(
@@ -138,8 +132,7 @@ public class PermissionServiceImpl implements PermissionService
         return actionPermission;
     }
 
-    private ActionPermission getManageGeneListsByUser(SystemSubject user)
-    {
+    private ActionPermission getManageGeneListsByUser(SystemSubject user) {
         ActionPermission actionPermission = new ActionPermission();
         actionPermission.setActionName(MANAGE_GENE_LISTS);
         actionPermission.setValue(
@@ -148,11 +141,9 @@ public class PermissionServiceImpl implements PermissionService
     }
 
     @Override
-    public boolean getPermissionByActionOnResource(String action, String resourceId)
-    {
+    public boolean getPermissionByActionOnResource(String action, String resourceId) {
         boolean hasPermission;
-        switch (action)
-        {
+        switch (action) {
             case UPDATE_PLAN:
                 hasPermission = canUpdatePlan(resourceId);
                 break;
@@ -176,72 +167,78 @@ public class PermissionServiceImpl implements PermissionService
         return hasPermission;
     }
 
-    private boolean canUpdatePlan(String pin)
-    {
+    private boolean canUpdatePlan(String pin) {
         return checkPermissionByPolicyAction(
             planService.getPlanByPinWithoutCheckPermissions(pin), Actions.UPDATE_PLAN_ACTION);
     }
 
-    private boolean canUpdateProject(String tpn)
-    {
+    private boolean canUpdateProject(String tpn) {
         boolean result;
-        try
-        {
+        try {
+
+
             projectValidator.validatePermissionToUpdateProject(
                 projectService.getProjectByPinWithoutCheckPermissions(tpn));
             result = true;
-        }
-        catch (Exception e)
-        {
-            result = false;
+        } catch (Exception e) {
+            try {
+                projectValidator.validatePermissionToUpdateWTSIProjectByHarwell(
+                    projectService.getProjectByPinWithoutCheckPermissions(tpn));
+                result = true;
+            } catch (Exception x) {
+                result = false;
+
+            }
         }
 
         return result;
     }
 
-    private boolean canCreateProductionPlan(String tpn)
-    {
+    private boolean canCreateProductionPlan(String tpn) {
         boolean result;
-        try
-        {
+        try {
             projectValidator.validatePermissionToAddProductionPlan(
                 projectService.getProjectByPinWithoutCheckPermissions(tpn));
             result = true;
-        }
-        catch (Exception e)
-        {
-            result = false;
+        } catch (Exception e) {
+            try {
+                projectValidator.validatePermissionToUpdateWTSIProjectByHarwell(
+                    projectService.getProjectByPinWithoutCheckPermissions(tpn));
+                result = true;
+            } catch (Exception x) {
+                result = false;
+
+            }
         }
 
         return result;
     }
 
-    private boolean canCreatePhenotypingPlan(String tpn)
-    {
+    private boolean canCreatePhenotypingPlan(String tpn) {
         boolean result;
-        try
-        {
+        try {
             projectValidator.validatePermissionToAddPhenotypingPlan(
                 projectService.getProjectByPinWithoutCheckPermissions(tpn));
             result = true;
-        }
-        catch (Exception e)
-        {
-            result = false;
+        } catch (Exception e) {
+            try {
+                projectValidator.validatePermissionToUpdateWTSIProjectByHarwell(
+                    projectService.getProjectByPinWithoutCheckPermissions(tpn));
+                result = true;
+            } catch (Exception x) {
+                result = false;
+
+            }
         }
 
         return result;
     }
 
-    private boolean checkPermissionByPolicyAction(Object resource, String action)
-    {
+    private boolean checkPermissionByPolicyAction(Object resource, String action) {
         boolean result;
-        if (resource == null)
-        {
+        if (resource == null) {
             result = false;
-        }
-        else
-        {
+        } else {
             result = policyEnforcement.hasPermission(resource, action);
         }
         return result;
