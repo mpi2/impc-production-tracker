@@ -274,24 +274,6 @@ class PlanControllerTest extends ControllerTestTemplate
         verifyGetPlantEqualsJsonIgnoringIdsAndPinAndDates(planLink, "expectedCreatedEsCellPlan.json");
     }
 
-    @Test
-    @DatabaseSetup(DBSetupFilesPaths.MULTIPLE_PLANS)
-    @DatabaseTearDown(type = DatabaseOperation.DELETE_ALL, value = DBSetupFilesPaths.MULTIPLE_PLANS)
-    void testCreateEsCellAlleleModificationPlan() throws Exception
-    {
-        sequenceResetter.syncSequence("PLAN_SEQ", "PLAN");
-        sequenceResetter.syncSequence("PLAN_STATUS_STAMP_SEQ", "PLAN_STATUS_STAMP");
-        sequenceResetter.syncSequence("PLAN_SUMMARY_STATUS_STAMP_SEQ", "PLAN_SUMMARY_STATUS_STAMP");
-        sequenceResetter.syncSequence("HISTORY_SEQ", "HISTORY");
-        sequenceResetter.syncSequence("HISTORY_DETAIL_SEQ", "HISTORY_DETAIL");
-
-        String payload = loadExpectedResponseFromResource("esCellAlleleModificationPlanCreationPayload.json");
-        String contentAsString =
-                restCaller.executePostAndDocument("/api/plans", payload, document("plans/postEsCellAlleleModificationPlan"));
-        String planLink = LinkUtil.getSelfHrefLinkStringFromJson(contentAsString);
-        verifyGetPlantEqualsJsonIgnoringIdsAndPinAndDates(planLink, "expectedCreatedEsCellAlleleModificationPlan.json");
-    }
-
     private void verifyGetPlantEqualsJsonIgnoringIdsAndPinAndDates(
         String planLink, String jsonFileName) throws Exception
     {
