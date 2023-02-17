@@ -26,7 +26,9 @@ public class EsCellAlleleModificationPlanCreExcisionStartedProcessor extends Abs
         transitionEvaluation.setExecutable(deleterStrainOrTatCreExists);
         if (!deleterStrainOrTatCreExists)
         {
-            transitionEvaluation.setNote("A deleter strain or tat Cre needs to be specified.");
+            transitionEvaluation.setNote("A deleter strain or tat Cre needs to be specified, or specify rederivation as the Next Step.");
+        } else {
+            transitionEvaluation.setNote("Please update again to continue Cre Excision Started state.");
         }
         return transitionEvaluation;
     }
@@ -38,7 +40,7 @@ public class EsCellAlleleModificationPlanCreExcisionStartedProcessor extends Abs
         if (esCellAlleleModificationAttempt != null)
         {
             boolean deleterStrainExists = !(esCellAlleleModificationAttempt.getDeleterStrain() == null);
-            result = deleterStrainExists || esCellAlleleModificationAttempt.getTatCre();
+            result = deleterStrainExists  || (esCellAlleleModificationAttempt.getTatCre()!= null && esCellAlleleModificationAttempt.getTatCre());
         }
         return result;
     }

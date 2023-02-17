@@ -74,7 +74,7 @@ public class PlanQueryHelper
         List<Colony> colonies = getColoniesByPlan(plan);
         if (!colonies.isEmpty())
         {
-            result = colonies.stream().anyMatch(x -> x.getProcessDataStatus().getName().equals(ColonyState.GenotypeConfirmed.getName()));
+            result = colonies.stream().anyMatch(x -> x.getProcessDataStatus().getName().equals(ColonyState.GenotypeConfirmed.getInternalName()));
         }
         return result;
     }
