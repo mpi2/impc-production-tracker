@@ -211,11 +211,15 @@ public class ProjectValidator {
             }
 
             // Check that the work unit match the one in the first plan
-            if (!firstPlan.getWorkUnit().getName().equals(plan.getWorkUnit().getName())) {
-                throw new UserOperationFailedException(String.format(
-                    "Your work unit [%s] cannot create production plans in this project.",
-                    plan.getWorkUnit().getName()));
+            if (!(firstPlan.getWorkUnit().getName().equals("WTSI") &&
+                plan.getWorkUnit().getName().equals("Harwell"))) {
+                if (!firstPlan.getWorkUnit().getName().equals(plan.getWorkUnit().getName())) {
+                    throw new UserOperationFailedException(String.format(
+                        "Your work unit [%s] cannot create production plans in this project.",
+                        plan.getWorkUnit().getName()));
+                }
             }
+
         }
     }
 }

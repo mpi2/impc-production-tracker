@@ -115,7 +115,7 @@ public class MockData {
     public static final String MGI_00000001 = "MGI:00000001";
     public static final String TEST_WORK_UNIT_NAME = "Test Work Unit Name";
     public static final String TEST_WORK_GROUP_NAME = "Test Work Group Name";
-    public static final String TEST_OUTCOME_TYPE_NAME = "Test OutcomeType Name";
+    public static final String TEST_OUTCOME_TYPE_NAME = "Colony";
     public static final String MOLECULAR_MUTATION_TYPE_NAME = "Molecular Mutation Type Name";
     public static final String TEST_SUMMARY_STATUS = "Test Summary Status";
     public static final String TEST_ASSIGMENT_NAME = "Test Assigment Name";
@@ -153,7 +153,7 @@ public class MockData {
         status.setName(TEST_NAME);
         status.setOrdering(301001);
         status.setDescription(TEST_DESCRIPTION);
-        status.setIsAbortionStatus(false);
+        status.setIsAbortionStatus(true);
         return status;
     }
 
@@ -355,6 +355,7 @@ public class MockData {
         Colony colony = new Colony();
         colony.setId(1L);
         colony.setName(TEST_NAME);
+        colony.setStatus(statusMockData());
         return colony;
     }
 

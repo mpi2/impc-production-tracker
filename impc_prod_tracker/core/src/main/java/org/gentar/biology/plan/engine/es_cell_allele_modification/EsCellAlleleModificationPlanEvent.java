@@ -1,6 +1,7 @@
 package org.gentar.biology.plan.engine.es_cell_allele_modification;
 
 import org.gentar.biology.plan.engine.es_cell_allele_modification.processors.*;
+import org.gentar.biology.plan.engine.processors.PlanProcessorWithoutValidations;
 import org.gentar.statemachine.ProcessEvent;
 import org.gentar.statemachine.ProcessState;
 import org.gentar.statemachine.Processor;
@@ -86,7 +87,7 @@ public enum EsCellAlleleModificationPlanEvent implements ProcessEvent
                 @Override
                 public Class<? extends Processor> getNextStepProcessor()
                 {
-                    return null;
+                    return PlanProcessorWithoutValidations.class;
                 }
             },
     updateToRederivationComplete(
@@ -99,7 +100,7 @@ public enum EsCellAlleleModificationPlanEvent implements ProcessEvent
                 @Override
                 public Class<? extends Processor> getNextStepProcessor()
                 {
-                    return null;
+                    return PlanProcessorWithoutValidations.class;
                 }
             },
     updateToCreExcisionStartedAfterRederivation(
