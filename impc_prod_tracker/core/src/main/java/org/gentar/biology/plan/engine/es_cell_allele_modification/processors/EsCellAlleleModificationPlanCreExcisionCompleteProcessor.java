@@ -12,40 +12,44 @@ import org.springframework.stereotype.Component;
 @Component
 public class EsCellAlleleModificationPlanCreExcisionCompleteProcessor extends AbstractProcessor {
 
-    public EsCellAlleleModificationPlanCreExcisionCompleteProcessor(PlanStateSetter planStateSetter)
-    {
+    public EsCellAlleleModificationPlanCreExcisionCompleteProcessor(
+        PlanStateSetter planStateSetter) {
         super(planStateSetter);
     }
 
     @Override
-    public TransitionEvaluation evaluateTransition(ProcessEvent transition, ProcessData data)
-    {
+    public TransitionEvaluation evaluateTransition(ProcessEvent transition, ProcessData data) {
         TransitionEvaluation transitionEvaluation = new TransitionEvaluation();
         transitionEvaluation.setTransition(transition);
 
         boolean successfulMatingsAndEitherDeleterStrainOrTatCreExists =
-                identifySuccessfulMatingsAndDeleterStrainOrTatCre((Plan) data);
+            identifySuccessfulMatingsAndDeleterStrainOrTatCre((Plan) data);
 
         transitionEvaluation.setExecutable(successfulMatingsAndEitherDeleterStrainOrTatCreExists);
 
-        if (!successfulMatingsAndEitherDeleterStrainOrTatCreExists)
-        {
-            transitionEvaluation.setNote("A deleter strain or tat Cre needs to be specified together with successful matings.");
+        if (!successfulMatingsAndEitherDeleterStrainOrTatCreExists) {
+            transitionEvaluation.setNote(
+                "Successful matings need to be specified to continue Cre Excision Completed state.");
+        } else {
+            transitionEvaluation.setNote(
+                "Please update again to continue Cre Excision Completed state.");
         }
         return transitionEvaluation;
     }
 
-    private boolean identifySuccessfulMatingsAndDeleterStrainOrTatCre(Plan plan)
-    {
+    private boolean identifySuccessfulMatingsAndDeleterStrainOrTatCre(Plan plan) {
         boolean result = false;
-        EsCellAlleleModificationAttempt esCellAlleleModificationAttempt = plan.getEsCellAlleleModificationAttempt();
-        if (esCellAlleleModificationAttempt != null)
-        {
+        EsCellAlleleModificationAttempt esCellAlleleModificationAttempt =
+            plan.getEsCellAlleleModificationAttempt();
+        if (esCellAlleleModificationAttempt != null) {
             int successfulCreMatings =
-                    esCellAlleleModificationAttempt.getNumberOfCreMatingsSuccessful() == null ? 0 :
-                            esCellAlleleModificationAttempt.getNumberOfCreMatingsSuccessful();
-            boolean deleterStrainExists = !(esCellAlleleModificationAttempt.getDeleterStrain() == null);
-            result = (successfulCreMatings > 0 && deleterStrainExists) || esCellAlleleModificationAttempt.getTatCre();
+                esCellAlleleModificationAttempt.getNumberOfCreMatingsSuccessful() == null ? 0 :
+                    esCellAlleleModificationAttempt.getNumberOfCreMatingsSuccessful();
+            boolean deleterStrainExists =
+                !(esCellAlleleModificationAttempt.getDeleterStrain() == null);
+            result = (successfulCreMatings > 0 && deleterStrainExists) ||
+                (esCellAlleleModificationAttempt.getTatCre() != null &&
+                    esCellAlleleModificationAttempt.getTatCre());
         }
         return result;
     }
