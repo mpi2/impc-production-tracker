@@ -2,8 +2,10 @@ package org.gentar.biology.project.caching;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.concurrent.Callable;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -150,28 +152,34 @@ public abstract class CollectionHandlingDecoratedCache implements Cache {
 
     private <K, V> List<Pair<K, V>> pairsFromKeysAndValues(List<K> keys, List<V> values) {
 
-        int keysSize = keys.size();
 
         if (values.size() > 0 && values.get(0) instanceof ProjectSearchDownloadOrthologDto) {
             List<ProjectSearchDownloadOrthologDto> orthologs = new ArrayList<>();
             for (V value : values) {
                 orthologs.add((ProjectSearchDownloadOrthologDto) value);
             }
+
             List<String> mgis = new ArrayList<>();
             for (K key : keys) {
                 mgis.add((String) key);
             }
 
+            List<String> dublicateMgis = findDuplicates(mgis);
+            keys.removeAll(dublicateMgis);
+
             List<String> missingMgis = missingMgis(mgis, orthologs);
             keys.removeAll(missingMgis);
 
 
-            values.addAll((Collection<? extends V>) fillEmptyOrthologs(missingMgis));
 
+
+            values.addAll((Collection<? extends V>) fillEmptyOrthologs(missingMgis));
             keys.addAll((Collection<? extends K>) missingMgis);
+            keys.addAll((Collection<? extends K>) dublicateMgis);
 
         }
 
+        int keysSize = keys.size();
         Assert.isTrue(keysSize == values.size(),
             String.format("The number of values [%1$d] must match the number of keys [%2$d]",
                 values.size(), keysSize));
@@ -187,8 +195,6 @@ public abstract class CollectionHandlingDecoratedCache implements Cache {
         List<String> missingMgis = new ArrayList<>();
         mgiIds.forEach(mgiId -> {
             if (!isMissingOrtholog(projectSearchDownloadOrthologDtos, mgiId)) {
-                ProjectSearchDownloadOrthologDto orthologDto =
-                    new ProjectSearchDownloadOrthologDto();
                 missingMgis.add(mgiId);
             }
         });
@@ -213,6 +219,20 @@ public abstract class CollectionHandlingDecoratedCache implements Cache {
             ortholog.add(orthologDto);
         });
         return ortholog;
+    }
+
+
+    public static List<String> findDuplicates(List<String> mgis) {
+        List<String> duplicates = new ArrayList<>();
+        Set<String> seenStrings = new HashSet<>();
+
+        for (String mgi : mgis) {
+            if (!seenStrings.add(mgi)) {
+                duplicates.add(mgi);
+            }
+        }
+
+        return duplicates;
     }
 
 }
