@@ -42,7 +42,7 @@ public class EsCellAlleleModificationPlanRegisteredProcessor extends AbstractPro
         }
         else if (doesTwoDifferentStepsNeeded((Plan) data))
         {
-            throw new UserOperationFailedException(USER_ACTION_PRESENT_ERROR_MESSAGE);
+            transitionEvaluation.setNote(USER_ACTION_PRESENT_ERROR_MESSAGE);
         }
 
 
