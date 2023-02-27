@@ -44,16 +44,13 @@ class EsCellAlleleModificationPlanRegisteredProcessorTest {
     void evaluateTransitionWhenTwoDifferentStepsNeeded() {
 
 
-        Exception exception = assertThrows(UserOperationFailedException.class, () -> {
+
             TransitionEvaluation transitionEvaluation =
                 testInstance.evaluateTransition(processEventMockData(),
                     planMockData());
-        });
 
-        String expectedMessage = "Trying to execute action [updateToMouseAlleleModificationRegistered] but also modifying data that causes a change in status. Please do this in two different steps.";
-        String actualMessage = exception.getMessage();
 
-        assertTrue(actualMessage.contains(expectedMessage));
+        assertEquals(transitionEvaluation.getNote(),"Trying to execute action [updateToMouseAlleleModificationRegistered] but also modifying data that causes a change in status. Please do this in two different steps.");
 
 
 
