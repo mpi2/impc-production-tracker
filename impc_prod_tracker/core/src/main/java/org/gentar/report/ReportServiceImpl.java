@@ -85,6 +85,19 @@ public class ReportServiceImpl implements ReportService {
     }
 
 
+    @Override
+    public void writeReport(HttpServletResponse response, String name, Report report) throws IOException {
+
+        if (report!=null && reportExists(report)) {
+            printReport(response, name, report);
+        } else {
+            response.setStatus(HttpStatus.NOT_FOUND.value());
+        }
+
+    }
+
+
+
     private void printReport(HttpServletResponse response, String reportName, Report report) throws IOException {
 
         PrintWriter output = response.getWriter();
