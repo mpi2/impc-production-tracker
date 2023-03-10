@@ -21,28 +21,32 @@ public class GltAttemptsController {
     }
 
 
-    //http://localhost:8080/api/reports/glt_attempts?attempt=crispr&workunit=IMPC&startingyear=2016&endingyear=2023
-    @GetMapping("/glt_attempts")
+    //http://localhost:8080/api/reports/glt_production_numbers?attempt=crispr&workunit=IMPC&startingyear=2016&endingyear=2023
+    @GetMapping("/glt_production_numbers")
     @Transactional(readOnly = true)
     public void exportGltAttemptsWithMonth(HttpServletResponse response,
                                            @RequestParam(value = "reporttype")
                                                String reportType,
                                            @RequestParam(value = "attempt")
-                                                   String attempt,
+                                               String attempt,
                                            @RequestParam(value = "workunit", required = false)
                                                String workUnit,
                                            @RequestParam(value = "workGroup", required = false)
-                                                   String workGroup,
+                                               String workGroup,
                                            @RequestParam(value = "startyear", required = false)
-                                                   String startYear,
+                                               String startYear,
                                            @RequestParam(value = "endyear", required = false)
                                                String endYear,
                                            @RequestParam(value = "startmonth", required = false)
-                                                   String starMonth,
+                                               String starMonth,
                                            @RequestParam(value = "endmonth", required = false)
-                                                   String endMonth)
+                                               String endMonth)
         throws IOException, ParseException {
+        if (attempt.equals("escell")) {
+            attempt = "es cell";
+        }
         gltAttemptsService
-            .generateGltAttemptsReport(response,reportType, attempt,workUnit,workGroup,startYear, endYear,starMonth, endMonth);
+            .generateGltAttemptsReport(response, reportType, attempt, workUnit, workGroup,
+                startYear, endYear, starMonth, endMonth);
     }
 }
