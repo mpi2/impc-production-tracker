@@ -2,8 +2,10 @@ package org.gentar.biology.project.caching;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.Callable;
@@ -172,10 +174,10 @@ public abstract class CollectionHandlingDecoratedCache implements Cache {
 
 
 
-
+            keys.addAll((Collection<? extends K>) dublicateMgis);
             values.addAll((Collection<? extends V>) fillEmptyOrthologs(missingMgis));
             keys.addAll((Collection<? extends K>) missingMgis);
-            keys.addAll((Collection<? extends K>) dublicateMgis);
+
 
         }
 
@@ -224,15 +226,22 @@ public abstract class CollectionHandlingDecoratedCache implements Cache {
 
     public static List<String> findDuplicates(List<String> mgis) {
         List<String> duplicates = new ArrayList<>();
-        Set<String> seenStrings = new HashSet<>();
+        Map<String, Boolean> seenStrings = new HashMap<>();
 
         for (String mgi : mgis) {
-            if (!seenStrings.add(mgi)) {
-                duplicates.add(mgi);
+            if (seenStrings.containsKey(mgi)) {
+                if (!seenStrings.get(mgi)) {
+                    duplicates.add(mgi);
+                    seenStrings.put(mgi, true);
+                }
+            } else {
+                seenStrings.put(mgi, false);
             }
         }
 
         return duplicates;
     }
+
+
 
 }
