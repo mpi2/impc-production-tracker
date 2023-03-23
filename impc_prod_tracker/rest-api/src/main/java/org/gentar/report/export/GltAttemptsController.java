@@ -50,16 +50,16 @@ public class GltAttemptsController {
                 startYear, endYear, starMonth, endMonth);
     }
 
-    //http://localhost:8080/api/reports/glt_production_numbers/intersection
-    @GetMapping("/glt_production_numbers/intersection")
+    //http://localhost:8080/api/reports/glt_production_numbers/overlap/intersection
+    @GetMapping("/glt_production_numbers/overlap/intersection")
     @Transactional(readOnly = true)
     public void exportGltAttemptsIntersection(HttpServletResponse response) throws IOException {
         gltAttemptsService
             .generateGltAttemptsIntersectionReport(response);
     }
 
-    //http://localhost:8080/api/reports/glt_production_numbers/union
-    @GetMapping("/glt_production_numbers/union")
+    //http://localhost:8080/api/reports/glt_production_numbers/overlap/union
+    @GetMapping("/glt_production_numbers/overlap/union")
     @Transactional(readOnly = true)
     public void exportGltAttemptsUnion(HttpServletResponse response) throws IOException {
         gltAttemptsService
