@@ -18,4 +18,10 @@ public interface GltAttemptProjection {
 
     @Value("#{target.sum}")
     Long getSum();
+
+    @Value("#{target.symbol}")
+    String getSymbol();
+
+    @Value("#{target.count}")
+    Long getCount();
 }

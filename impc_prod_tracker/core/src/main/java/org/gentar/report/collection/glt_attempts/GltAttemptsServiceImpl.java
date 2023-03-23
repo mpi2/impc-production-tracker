@@ -59,6 +59,28 @@ public class GltAttemptsServiceImpl implements GltAttemptsService {
 
     }
 
+    @Override
+    public void generateGltAttemptsIntersectionReport(HttpServletResponse response)
+        throws IOException {
+
+        List<GltAttemptProjection> gltAttemptProjections;
+
+        gltAttemptProjections = gltAttemptRepository
+            .findGltAttemptsIntersection();
+
+        formatProjectionIntersectionReportText(response, gltAttemptProjections);
+    }
+
+    @Override
+    public void generateGltAttemptsUnionReport(HttpServletResponse response) throws IOException {
+        List<GltAttemptProjection> gltAttemptProjections;
+
+        gltAttemptProjections = gltAttemptRepository
+            .findGltAttemptsUnion();
+
+        formatProjectionUnionReportText(response, gltAttemptProjections);
+    }
+
     private void gltAttemptsByAttemptWithWorkUnit(HttpServletResponse response,
                                                   String reportType,
                                                   String attempt,
@@ -68,11 +90,11 @@ public class GltAttemptsServiceImpl implements GltAttemptsService {
                                                   String startMonth,
                                                   String endMonth)
         throws IOException, ParseException {
-        if ("year".equals(reportType)) {
+        if ("year".equalsIgnoreCase(reportType)) {
             gltAttemptsByAttemptWithWorkUnitForYear(response, reportType, attempt, workUnit,
                 startYear, endYear);
 
-        } else if ("month".equals(reportType)) {
+        } else if ("month".equalsIgnoreCase(reportType)) {
             gltAttemptsByAttemptWithWorkUnitForMonth(response, reportType, attempt, workUnit,
                 startYear, endYear, startMonth,
                 endMonth);
@@ -133,12 +155,13 @@ public class GltAttemptsServiceImpl implements GltAttemptsService {
                                                            String startMonth,
                                                            String endMonth)
         throws IOException, ParseException {
-        if ("year".equals(reportType)) {
+
+        if ("year".equalsIgnoreCase(reportType)) {
             gltAttemptsByAttemptWithWorkUnitWorkGroupForYear(response, reportType, attempt,
                 workUnit, workGroup,
                 startYear, endYear);
 
-        } else if ("month".equals(reportType)) {
+        } else if ("month".equalsIgnoreCase(reportType)) {
             gltAttemptsByAttemptWithWorkUnitWorkGroupForMonth(response, reportType, attempt,
                 workUnit, workGroup,
                 startYear, endYear, startMonth,
@@ -206,13 +229,13 @@ public class GltAttemptsServiceImpl implements GltAttemptsService {
         List<GltAttemptProjection>
             gltAttemptProjectionsResult = new ArrayList<>();
 
-        if ("year".equals(reportType)) {
+        if ("year".equalsIgnoreCase(reportType)) {
 
             gltAttemptsByAttemptWithoutWorkUnitForYear(response, reportType, attempt, startYear,
                 endYear,
                 gltAttemptProjectionsResult);
 
-        } else if ("month".equals(reportType)) {
+        } else if ("month".equalsIgnoreCase(reportType)) {
             gltAttemptsByAttemptWithoutWorkUnitForMonth(response, reportType, attempt, startYear,
                 endYear, startMonth, endMonth,
                 gltAttemptProjectionsResult);
@@ -277,18 +300,14 @@ public class GltAttemptsServiceImpl implements GltAttemptsService {
                                             String tsvType)
         throws IOException {
         StringBuilder reportText = new StringBuilder();
-        if (tsvType.equals("workUnitYearMonth")) {
-            reportText.append("Work Unit\tYear\tMonth\tSum\n");
-        } else if (tsvType.equals("workUnitYear")) {
-            reportText.append("Work Unit\tYear\tSum\n");
-        } else if (tsvType.equals("workUnitWorkGroupYearMonth")) {
-            reportText.append("Work Unit\tWork Group\tYear\tMonth\tSum\n");
-        } else if (tsvType.equals("workUnitWorkGroupYear")) {
-            reportText.append("Work Unit\tWork Group\tYear\tSum\n");
-        } else if (tsvType.equals("YearMonth")) {
-            reportText.append("Year\tMonth\tSum\n");
-        } else if (tsvType.equals("Year")) {
-            reportText.append("Year\tSum\n");
+        switch (tsvType) {
+            case "workUnitYearMonth" -> reportText.append("Work Unit\tYear\tMonth\tSum\n");
+            case "workUnitYear" -> reportText.append("Work Unit\tYear\tSum\n");
+            case "workUnitWorkGroupYearMonth" -> reportText
+                .append("Work Unit\tWork Group\tMonth\tYear\tSum\n");
+            case "workUnitWorkGroupYear" -> reportText.append("Work Unit\tWork Group\tYear\tSum\n");
+            case "YearMonth" -> reportText.append("Year\tMonth\tSum\n");
+            case "Year" -> reportText.append("Year\tSum\n");
         }
 
 
@@ -324,10 +343,47 @@ public class GltAttemptsServiceImpl implements GltAttemptsService {
         report.setReport(reportText.toString());
         report.setCreatedAt(LocalDateTime.now());
         reportService
-            .writeReport(response, "GLT_Production_Number_Report",
+            .writeReport(response, "Production_Numbers_" + reportType + "_" + attempt,
                 report);
     }
 
+    private void formatProjectionIntersectionReportText(HttpServletResponse response,
+                                                        List<GltAttemptProjection> gltAttemptProjections)
+        throws IOException {
+        StringBuilder reportText = new StringBuilder();
+        reportText.append("Symbol\n");
+
+
+        for (GltAttemptProjection gltAttemptProjection : gltAttemptProjections) {
+            reportText.append(gltAttemptProjection.getSymbol()).append("\n");
+
+        }
+        Report report = new Report();
+        report.setReport(reportText.toString());
+        report.setCreatedAt(LocalDateTime.now());
+        reportService
+            .writeReport(response, "Production_Numbers_Intersection",
+                report);
+    }
+
+    private void formatProjectionUnionReportText(HttpServletResponse response,
+                                                        List<GltAttemptProjection> gltAttemptProjections)
+        throws IOException {
+        StringBuilder reportText = new StringBuilder();
+        reportText.append("count\n");
+
+
+        for (GltAttemptProjection gltAttemptProjection : gltAttemptProjections) {
+            reportText.append(gltAttemptProjection.getCount());
+
+        }
+        Report report = new Report();
+        report.setReport(reportText.toString());
+        report.setCreatedAt(LocalDateTime.now());
+        reportService
+            .writeReport(response, "Production_Numbers_Union",
+                report);
+    }
 
     private Timestamp getEndDate(String endYear,
                                  String endMonth)
@@ -367,5 +423,4 @@ public class GltAttemptsServiceImpl implements GltAttemptsService {
         Date startDate = dateFormat.parse(startDateString);
         return new Timestamp(startDate.getTime());
     }
-
 }

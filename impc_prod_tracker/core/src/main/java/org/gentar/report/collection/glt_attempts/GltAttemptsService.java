@@ -18,4 +18,7 @@ public interface GltAttemptsService {
         throws IOException, ParseException;
 
 
+    void generateGltAttemptsIntersectionReport(HttpServletResponse response) throws IOException;
+
+    void generateGltAttemptsUnionReport(HttpServletResponse response) throws IOException;
 }
