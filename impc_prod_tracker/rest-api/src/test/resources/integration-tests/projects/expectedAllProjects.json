@@ -51,18 +51,18 @@
               "bestOrthologs":[
                 {
                   "symbol":"SERPINB10",
-                  "category":"MODERATE",
+                  "category":"GOOD",
                   "support":null,
-                  "supportCount":8,
+                  "supportCount":9,
                   "link":"https://www.genenames.org/data/gene-symbol-report/#!/hgnc_id/SERPINB10"
                 }
               ],
               "allOrthologs":[
                 {
                   "symbol":"SERPINB10",
-                  "category":"MODERATE",
+                  "category":"GOOD",
                   "support":null,
-                  "supportCount":8,
+                  "supportCount":9,
                   "link":"https://www.genenames.org/data/gene-symbol-report/#!/hgnc_id/SERPINB10"
                 }
               ],
