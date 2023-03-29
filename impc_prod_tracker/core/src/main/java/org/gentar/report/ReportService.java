@@ -8,5 +8,6 @@ public interface ReportService {
     void saveReport(ReportTypeName reportTypeName, String reportText);
     void cleanAllReports();
     void cleanReportsByReportType(String name);
-    void writeReport(HttpServletResponse response, String name) throws IOException;
+    void writeReport(HttpServletResponse response, String name)throws IOException;
+    void writeReport(HttpServletResponse response, String name, Report report) throws IOException;
 }
