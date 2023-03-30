@@ -11,4 +11,7 @@ public interface TargRepGeneRepository extends CrudRepository<TargRepGene, Long>
     TargRepGene findBySymbol(String symbol);
 
     TargRepGene findFirstByAccIdIgnoreCase(String accId);
+
+    TargRepGene findBySymbolIgnoreCase(String symbol);
+
 }
