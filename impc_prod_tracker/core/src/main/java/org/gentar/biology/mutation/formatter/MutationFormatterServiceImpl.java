@@ -155,6 +155,7 @@ public class MutationFormatterServiceImpl implements MutationFormatterService {
         newSequenceString = newSequenceString.replaceAll(">", " ");
         newSequenceString = newSequenceString.replaceAll("\\s+$", "");
         newSequenceString = newSequenceString.replaceAll(" ", "");
+        newSequenceString = newSequenceString.replaceAll("\\d+", "");
 
         if (!isSequenceHeaderSingleLine(newSequenceString)) {
             if(!newSequenceString.toLowerCase().equals(newSequenceString)){
