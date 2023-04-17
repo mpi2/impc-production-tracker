@@ -158,7 +158,7 @@ public class MutationFormatterServiceImpl implements MutationFormatterService {
         newSequenceString = newSequenceString.replaceAll("\\d+", "");
 
         if (!isSequenceHeaderSingleLine(newSequenceString)) {
-            if(!newSequenceString.toLowerCase().equals(newSequenceString)){
+            if(!newSequenceString.toLowerCase().equals(newSequenceString) && findFirstUpperLetterIndex(newSequenceString)!=-1){
                 newSequenceString =
                     newSequenceString.substring(0, findFirstUpperLetterIndex(newSequenceString)) +
                         "\n" +
