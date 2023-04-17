@@ -141,7 +141,7 @@ public class MutationFormatterServiceImpl implements MutationFormatterService {
         return List
             .of('A', 'C', 'G', 'T', 'U', 'I', 'R', 'Y', 'K', 'M', 'S', 'W', 'B', 'D', 'H', 'V',
                 'N', 'a', 'c', 'g', 't', 'u', 'i', 'r', 'y', 'k', 'm', 's', 'w', 'b', 'd', 'h', 'v',
-                'n');
+                'n', '-');
     }
 
     private Sequence sequenceFormatter(String colonyName, Sequence sequence) {
@@ -154,13 +154,19 @@ public class MutationFormatterServiceImpl implements MutationFormatterService {
         newSequenceString = newSequenceString.replaceAll(">", " ");
         newSequenceString = newSequenceString.replaceAll(">", " ");
         newSequenceString = newSequenceString.replaceAll("\\s+$", "");
+        newSequenceString = newSequenceString.replaceAll(" ", "");
+        newSequenceString = newSequenceString.replaceAll("\\d+", "");
+
         if (!isSequenceHeaderSingleLine(newSequenceString)) {
-            newSequenceString =
-                newSequenceString.substring(0, findFirstUpperLetterIndex(newSequenceString)) +
-                    "\n" +
-                    newSequenceString.substring(findFirstUpperLetterIndex(newSequenceString));
-            formattedSequence
-                .setSequence(newSequenceString);
+            if(!newSequenceString.toLowerCase().equals(newSequenceString) && findFirstUpperLetterIndex(newSequenceString)!=-1){
+                newSequenceString =
+                    newSequenceString.substring(0, findFirstUpperLetterIndex(newSequenceString)) +
+                        "\n" +
+                        newSequenceString.substring(findFirstUpperLetterIndex(newSequenceString));
+                formattedSequence
+                    .setSequence(newSequenceString);
+            }
+
         }
         if (!isStartWithBiggerSymbol(newSequenceString)) {
             if (newSequenceString.contains("\n")) {
