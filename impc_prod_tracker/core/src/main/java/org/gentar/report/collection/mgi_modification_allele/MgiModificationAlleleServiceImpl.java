@@ -86,9 +86,15 @@ public class MgiModificationAlleleServiceImpl implements MgiModificationAlleleSe
         String deleterStrain = x.getDeleterStrainName() == null ? "" : x.getDeleterStrainName();
 
         Gene g = filteredMutationGeneMap.get(modificationMutationProjection.getMutationId());
-        String modificationFormattedMutationSymbol = checkMutationSymbol(modificationMutationSymbol, g.getSymbol());
-        String productionFormattedMutationSymbol = checkMutationSymbol(productionMutationSymbol, g.getSymbol());
-        String esCellAlleleFormattedSymbol = checkMutationSymbol(esCellAlleleSymbol, g.getSymbol());
+
+        // The symbols should now be correct in the GenTaR database - or updated by the symbol updater service
+        String modificationFormattedMutationSymbol = modificationMutationSymbol;
+        String productionFormattedMutationSymbol = productionMutationSymbol;
+        String esCellAlleleFormattedSymbol = esCellAlleleSymbol;
+
+        // String esCellAlleleFormattedSymbol = checkMutationSymbol(esCellAlleleSymbol, g.getSymbol());
+        // String modificationFormattedMutationSymbol = checkMutationSymbol(modificationMutationSymbol, g.getSymbol());
+        // String productionFormattedMutationSymbol = checkMutationSymbol(productionMutationSymbol, g.getSymbol());
 
         String alleleCategory = "";
         if (productionMutationProjection != null) {
