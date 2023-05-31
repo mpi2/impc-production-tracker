@@ -95,6 +95,7 @@ public class MgiModificationAlleleServiceImpl implements MgiModificationAlleleSe
         // String esCellAlleleFormattedSymbol = checkMutationSymbol(esCellAlleleSymbol, g.getSymbol());
         // String modificationFormattedMutationSymbol = checkMutationSymbol(modificationMutationSymbol, g.getSymbol());
         // String productionFormattedMutationSymbol = checkMutationSymbol(productionMutationSymbol, g.getSymbol());
+        // Additional line to test trigger of mirror build.
 
         String alleleCategory = "";
         if (productionMutationProjection != null) {
