@@ -37,9 +37,35 @@ public enum ReportTypeName implements LabeledType {
     PRODUCTS("products",
             "This report is used by IMPC to support the data release.",
             FALSE),
+
+    PRODUCTS_INTERMEDIATE_VECTORS("products_intermediate_vectors",
+            "This report is used by IMPC to support the data release.",
+            FALSE),
+
+    PRODUCTS_TARGETING_VECTORS("products_targeting_vectors",
+            "This report is used by IMPC to support the data release.",
+            FALSE),
+
+    PRODUCTS_ES_CELLS("products_es_cells",
+            "This report is used by IMPC to support the data release.",
+            FALSE),
+
+    PRODUCTS_MICE("products_mice",
+            "This report is used by IMPC to support the data release.",
+            FALSE),
+
+    PRODUCTS_CRISPR("products_crispr",
+            "This report is used by IMPC to support the data release.",
+            FALSE),
+
+    PRODUCTS_ORDER("products_order",
+            "This report is used by IMPC to support the data release.",
+            FALSE),
+
     GENE_SYMBOL_UPDATE_LOG("gene_symbol_update_log",
         "This report is used record gene symbol updates in gentar.",
         FALSE),
+
     LANGUISHING_PROJECT_REPORT("languishing_project_report",
                                                   "This report is to identify projects that not changed status as genotyping confirmed after a certain time.",
                                           FALSE),
