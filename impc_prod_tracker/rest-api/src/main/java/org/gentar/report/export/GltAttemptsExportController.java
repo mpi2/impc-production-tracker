@@ -12,11 +12,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api/reports")
-public class GltAttemptsController {
+public class GltAttemptsExportController {
 
     private final GltAttemptsServiceImpl gltAttemptsService;
 
-    public GltAttemptsController(GltAttemptsServiceImpl gltAttemptsService) {
+    public GltAttemptsExportController(GltAttemptsServiceImpl gltAttemptsService) {
         this.gltAttemptsService = gltAttemptsService;
     }
 
