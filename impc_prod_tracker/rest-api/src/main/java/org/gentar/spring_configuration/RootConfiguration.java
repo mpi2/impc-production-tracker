@@ -81,6 +81,7 @@ public class RootConfiguration
             .requestMatchers("/api/mutations/**").permitAll()
             .requestMatchers("/api/people/requestPasswordReset").permitAll()
             .requestMatchers("/api/reports/**").permitAll()
+            .requestMatchers("/api/glt_production_numbers/**").permitAll()
             .requestMatchers("/api/format/**").access("hasPermission(null, 'CDA_AND_ADMIN')")
             .requestMatchers("/reports/**").permitAll()
             .requestMatchers("/tracking-api/**").access("hasPermission(null, 'CDA_AND_ADMIN')")
