@@ -11,6 +11,7 @@
         "molecularMutationTypeName":"Deletion",
         "symbol":"em1(IMPC)J",
         "description":"",
+        "qcNote":"",
         "mutationQcResults":[
           {
             "id":1,

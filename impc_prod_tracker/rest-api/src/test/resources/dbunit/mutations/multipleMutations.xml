@@ -323,6 +323,7 @@ CCATGGATAGCCATATATCTGCGCAATCTGGCCTCCTTGACGCCATGACAGCAGCTGACCCGTGAGCACTGTGTAGTGGA
                 AUTO_DESCRIPTION="Frameshift mutation caused by a 4bp deletion in ENSMUST00000081333"
                 DESCRIPTION="Molecular description of Frataxin ex1 CRISPR KO Fxn[em1]:
 This allele from project Fxn-5659J-A was generated at The Jackson Laboratory by injecting Cas9 RNA and guide sequence AGTAGCATGTGGGCGTTCGG, which resulted in a 4 bp deletion TTCG in exon1 beginning at Chromosome 19 negative strand position 24280556 bp (GRCm38/mm10) and is predicted to cause a frameshift mutation with early truncation."
+                QC_NOTE=""
                 MGI_ALLELE_ID="MGI:5571595"
                 SYMBOL="em1(IMPC)J"
                 MGI_ALLELE_SYMBOL_REQUIRES_CONSTRUCTION="true"
@@ -336,6 +337,7 @@ This allele from project Fxn-5659J-A was generated at The Jackson Laboratory by 
                 ALLELE_SYMBOL_SUPERSCRIPT_TEMPLATE="9"
                 AUTO_DESCRIPTION=""
                 DESCRIPTION=""
+                QC_NOTE=""
                 MGI_ALLELE_ID="MGI:6342258"
                 SYMBOL="em1(IMPC)J"
                 MGI_ALLELE_SYMBOL_REQUIRES_CONSTRUCTION="true"

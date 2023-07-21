@@ -23,6 +23,7 @@
     }
   ],
   "description": "",
+  "qcNote": "",
   "mutationCategorizations":[
     {
       "name":"NHEJ",
