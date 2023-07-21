@@ -35,6 +35,7 @@ class MutationCommonMapperTest
     public static final boolean ALLELE_CONFIRMED = false;
     public static final String ALLELE_SYMBOL_SUPERSCRIPT_TEMPLATE = "alleleSymbolSuperscriptTemplate";
     public static final String DESCRIPTION = "description";
+    public static final String QC_NOTE = "qc_Note";
     public static final String AUTO_DESCRIPTION = "autoDescription";
     public static final long IMITS_ALLELE = 2L;
     public static final String GENETIC_MUTATION_TYPE = "geneticMutationType";
@@ -96,6 +97,7 @@ class MutationCommonMapperTest
         mutation.setAlleleConfirmed(ALLELE_CONFIRMED);
         mutation.setAlleleSymbolSuperscriptTemplate(ALLELE_SYMBOL_SUPERSCRIPT_TEMPLATE);
         mutation.setDescription(DESCRIPTION);
+        mutation.setQcNote(QC_NOTE);
         mutation.setAutoDescription(AUTO_DESCRIPTION);
         mutation.setImitsAllele(IMITS_ALLELE);
         GeneticMutationType geneticMutationType = new GeneticMutationType();

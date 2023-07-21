@@ -10,6 +10,7 @@ public class MutationCommonDTO
 {
     private String symbol;
     private String description;
+    private String qcNote;
     private Boolean mgiAlleleSymbolRequiresConstruction;
     private String geneticMutationTypeName;
     private String molecularMutationTypeName;

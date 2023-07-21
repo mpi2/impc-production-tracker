@@ -58,6 +58,7 @@ public class MutationFieldsDescriptors
                 "- outcome sequence\n\n" +
                 "A mutation should always be specified as 'outcome sequence'.");
         addField(mutationFieldsDescriptions, "description", "Mutation description note.");
+        addField(mutationFieldsDescriptions, "qcNote", "Mutation Qc note.");
         addField(
             mutationFieldsDescriptions, "mutationCategorizations[]", "A list classifying the mutation.");
         addField(
