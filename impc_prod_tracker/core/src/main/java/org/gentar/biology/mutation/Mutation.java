@@ -139,6 +139,11 @@ public class Mutation extends BaseEntity
     @OneToMany(mappedBy = "mutation", cascade= CascadeType.ALL, orphanRemoval=true)
     private Set<MutationSequence> mutationSequences;
 
+
+    @Column(columnDefinition = "TEXT")
+    @ToString.Exclude
+    private String qcNote;
+
     // Copy Constructor
     public Mutation(Mutation mutation)
     {
@@ -181,5 +186,6 @@ public class Mutation extends BaseEntity
                 .map(MutationSequence::new).collect(Collectors.toSet());
         }
         this.setCreatedBy(mutation.getCreatedBy());
+        this.qcNote = mutation.qcNote;
     }
 }

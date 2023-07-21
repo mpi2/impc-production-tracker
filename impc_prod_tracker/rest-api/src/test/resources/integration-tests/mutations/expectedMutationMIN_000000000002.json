@@ -5,6 +5,7 @@
   "mgiAlleleSymbolWithoutImpcAbbreviation":false,
   "symbol":"em1(IMPC)J",
   "description":"",
+  "qcNote":"",
   "mgiAlleleSymbolRequiresConstruction":true,
   "geneticMutationTypeName":"Not Tested",
   "molecularMutationTypeName":"Deletion",
