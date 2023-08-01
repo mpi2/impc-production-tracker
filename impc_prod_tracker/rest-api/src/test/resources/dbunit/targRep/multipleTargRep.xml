@@ -94,14 +94,6 @@
 
     />
 
-    <TARG_REP_PRODUCTION_QC
-            ID="1"
-            ES_CELL_ID="14210"
-            FIVE_PRIME_SCREEN="pass"
-            LOXP_SCREEN="pass"
-            LOSS_OF_ALLELE="pass"
-            VECTOR_INTEGRITY="pass"
-            THREE_PRIME_SCREEN="not confirmed"/>
 
     <TARG_REP_ES_CELL_DISTRIBUTION_CENTRE
             ID="2"
@@ -132,7 +124,13 @@
     <TARG_REP_ES_CELL_MUTATION ID="28677"
                                ES_CELL_ID="14210"
                                MGI_ALLELE_ACCESSION_ID="MGI:4432925"
-                               MGI_ALLELE_SYMBOL_SUPERSCRIPT="tm1@(EUCOMM)Wtsi"/>
+                               MGI_ALLELE_SYMBOL_SUPERSCRIPT="tm1@(EUCOMM)Wtsi"
+                               FIVE_PRIME_SCREEN="pass"
+                               LOSS_OF_ALLELE="pass"
+                               LOXP_SCREEN="pass"
+                               THREE_PRIME_SCREEN="not confirmed"
+                               VECTOR_INTEGRITY="pass"
+    />
 
 
     <TARG_REP_IKMC_PROJECT_STATUS ID="12"

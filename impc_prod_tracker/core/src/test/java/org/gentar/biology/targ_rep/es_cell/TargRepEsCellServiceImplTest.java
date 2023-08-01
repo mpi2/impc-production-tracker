@@ -1,13 +1,13 @@
 package org.gentar.biology.targ_rep.es_cell;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.Collections;
 import java.util.List;
 import org.gentar.biology.targ_rep.allele.TargRepAllele;
-import org.gentar.biology.targ_rep.production_qc.TargRepProductionQcService;
 import org.gentar.biology.targ_rep.gene.TargRepGene;
-import org.gentar.exceptions.NotFoundException;
 import org.gentar.exceptions.UserOperationFailedException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -22,9 +22,6 @@ class TargRepEsCellServiceImplTest {
 
     @Mock
     private TargRepEsCellRepository esCellRepository;
-
-    @Mock
-    private TargRepProductionQcService targRepProductionQcService;
 
     private TargRepEsCellServiceImpl testInstance = new TargRepEsCellServiceImpl(esCellRepository);
 
