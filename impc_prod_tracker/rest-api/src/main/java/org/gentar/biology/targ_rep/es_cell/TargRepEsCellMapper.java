@@ -11,7 +11,8 @@ import org.gentar.biology.targ_rep.TargRepEsCellResponseDTO;
 import org.gentar.biology.targ_rep.allele.TargRepAllele;
 import org.gentar.biology.targ_rep.allele.TargRepAlleleController;
 import org.gentar.biology.targ_rep.es_cell.distribution_qc.DistributionQcMapper;
-import org.gentar.biology.targ_rep.production_qc.ProductionQcMapper;
+import org.gentar.biology.targ_rep.mutation.TargRepEsCellMutation;
+import org.gentar.biology.targ_rep.mutation.TargRepEsCellMutationService;
 import org.gentar.biology.targ_rep.pipeline.TargRepPipeline;
 import org.gentar.biology.targ_rep.pipeline.TargRepPipelineController;
 import org.gentar.biology.targ_rep.targeting_vector.TargRepTargetingVector;
@@ -26,13 +27,13 @@ import org.springframework.stereotype.Component;
 public class TargRepEsCellMapper implements Mapper<TargRepEsCell, TargRepEsCellResponseDTO> {
 
     private final DistributionQcMapper distributionQcMapper;
-    private final ProductionQcMapper productionQcMapper;
+    private final TargRepEsCellMutationService targRepEsCellMutationService;
 
 
     public TargRepEsCellMapper(DistributionQcMapper distributionQcMapper,
-                               ProductionQcMapper productionQcMapper) {
+                               TargRepEsCellMutationService targRepEsCellMutationService) {
         this.distributionQcMapper = distributionQcMapper;
-        this.productionQcMapper = productionQcMapper;
+        this.targRepEsCellMutationService = targRepEsCellMutationService;
     }
 
     @Override
@@ -76,7 +77,7 @@ public class TargRepEsCellMapper implements Mapper<TargRepEsCell, TargRepEsCellR
             esCellDto.setUserQcThreePrimeLrPcr(entity.getUserQcThreePrimeLrPcr());
             esCellDto.setUserQcTvBackboneAssay(entity.getUserQcTvBackboneAssay());
             esCellDto = distributionQcMapper.toDistributionQcDto(esCellDto);
-            esCellDto = productionQcMapper.toProductionQcServiceDto(esCellDto);
+            esCellDto = toProductionQcServiceDto(esCellDto);
             addSelfLink(esCellDto, entity);
 
         }
@@ -132,5 +133,24 @@ public class TargRepEsCellMapper implements Mapper<TargRepEsCell, TargRepEsCellR
             e.printStackTrace();
         }
         return value;
+    }
+
+
+    public TargRepEsCellResponseDTO toProductionQcServiceDto(TargRepEsCellResponseDTO esCellDto) {
+        TargRepEsCellMutation targRepEsCellMutation =
+            getTargRepEsCellMutationByEcCellId(esCellDto.getId());
+        if (targRepEsCellMutation != null) {
+            esCellDto.setProductionQcFivePrimeScreen(targRepEsCellMutation.getFivePrimeScreen());
+            esCellDto.setProductionQcLossOfAllele(targRepEsCellMutation.getLossOfAllele());
+            esCellDto.setProductionQcLoxpScreen(targRepEsCellMutation.getLoxpScreen());
+            esCellDto.setProductionQcThreePrimeScreen(targRepEsCellMutation.getThreePrimeScreen());
+            esCellDto.setProductionQcVectorIntegrity(targRepEsCellMutation.getVectorIntegrity());
+        }
+        return esCellDto;
+    }
+
+
+    private TargRepEsCellMutation getTargRepEsCellMutationByEcCellId(Long esCEllId) {
+        return targRepEsCellMutationService.getTargRepEsCellMutationByEsCellId(esCEllId);
     }
 }

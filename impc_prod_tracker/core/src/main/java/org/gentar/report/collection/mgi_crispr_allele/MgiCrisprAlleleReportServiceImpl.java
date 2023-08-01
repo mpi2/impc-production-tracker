@@ -133,7 +133,9 @@ public class MgiCrisprAlleleReportServiceImpl implements MgiCrisprAlleleReportSe
         String gentarMutationIdentifier = mutationProjection.getMutationMin();
 
         Gene g = filteredMutationGeneMap.get(mutationProjection.getMutationId());
-        String formattedMutationSymbol = checkMutationSymbol(mutationSymbol, g.getSymbol());
+        // See below - simple report - for why this is no longer needed
+        // String formattedMutationSymbol = checkMutationSymbol(mutationSymbol, g.getSymbol());
+        String formattedMutationSymbol = mutationSymbol;
 
         Set<MgiCrisprAlleleReportGuideProjection> guideProjections = guideMap.get(x.getPlanId());
         Set<MgiCrisprAlleleReportNucleaseProjection> nucleaseProjections = nucleaseMap.get(x.getPlanId());
@@ -199,7 +201,13 @@ public class MgiCrisprAlleleReportServiceImpl implements MgiCrisprAlleleReportSe
 
 
         Gene g = filteredMutationGeneMap.get(mutationProjection.getMutationId());
-        String formattedMutationSymbol = checkMutationSymbol(mutationSymbol, g.getSymbol());
+        //
+        // No longer needed - mutation symbols cleaned in GenTaR DB
+        // - all should have gene symbols.
+        // Issue more likely to be having wrong gene symbol, which is addressed by the symbol updater
+        //
+        // String formattedMutationSymbol = checkMutationSymbol(mutationSymbol, g.getSymbol());
+        String formattedMutationSymbol = mutationSymbol;
 
 
         return g.getSymbol() + "\t" +
