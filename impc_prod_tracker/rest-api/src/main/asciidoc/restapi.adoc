@@ -1183,4 +1183,5 @@ include::{snippets}/targrep/targetingVector/targetingVectorById/http-response.ad
               'imitsPhenotypingProductionId' and 'imitsParentColonyId'. They will be read_only and only be there is the data was migrated from iMits.
 * 2021-10-04: The *legacy* field 'imitsAllele' in mutation object has been renamed to 'imitsAlleleId' for consistency.
               It will be read_only and only be there is the data was migrated from iMits.
+* 2023-08-01: QcNote filed added to mutation table
 
