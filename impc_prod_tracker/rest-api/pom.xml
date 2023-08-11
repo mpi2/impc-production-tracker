@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>3.0.0</version>
+		<version>3.1.0</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>org.gentar</groupId>
@@ -155,9 +155,8 @@
 		<!-- Others -->
 		<!-- https://mvnrepository.com/artifact/org.hibernate/hibernate-jpamodelgen -->
 		<dependency>
-			<groupId>org.hibernate</groupId>
+			<groupId>org.hibernate.orm</groupId>
 			<artifactId>hibernate-jpamodelgen</artifactId>
-			<version>6.1.6.Final</version>
 		</dependency>
 		<dependency>
 			<groupId>com.fasterxml.jackson.datatype</groupId>
@@ -206,9 +205,8 @@
 
 		<!-- Auditing -->
 		<dependency>
-			<groupId>org.hibernate</groupId>
+			<groupId>org.hibernate.orm</groupId>
 			<artifactId>hibernate-envers</artifactId>
-			<version>6.1.6.Final</version>
 		</dependency>
 
 		<!-- Dev Tools -->
