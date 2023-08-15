@@ -74,6 +74,9 @@ public enum ReportTypeName implements LabeledType {
                                FALSE),
     NO_ASSIGNED_PROJECT_REPORT("no_assigned_project_report",
                                    "This report is To identify genes where there is at least one project that is active, but none of the project have the assigned state.",
+                               FALSE),
+    ALL_INACTIVE_PROJECT_REPORT("all_inactive_project_report",
+                                   "This report is to list all genes that has that all project are inactive status.",
                                FALSE);
     private static final Map<String, ReportTypeName> BY_LABEL = new HashMap<>();
     static
