@@ -4,7 +4,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.text.ParseException;
 import java.util.List;
-import org.gentar.report.collection.glt_attempts.projection.GltAttemptProjection;
+import org.gentar.report.collection.glt_attempts.projection.GltAttemptsProjection;
 
 public interface GltAttemptsService {
 
@@ -19,7 +19,7 @@ public interface GltAttemptsService {
                                    String endMonth)
         throws IOException, ParseException;
 
-    List<GltAttemptProjection>  generateGltAttemptsJson(
+    List<GltAttemptsProjection>  generateGltAttemptsJson(
         String reportType,
         String attempt,
         String workUnit,
@@ -33,11 +33,11 @@ public interface GltAttemptsService {
 
     void generateGltAttemptsIntersectionReport(HttpServletResponse response) throws IOException;
 
-    List<GltAttemptProjection> getGltAttemptsIntersectionJson();
+    List<GltAttemptsProjection> getGltAttemptsIntersectionJson();
 
     void generateGltAttemptsUnionReport(HttpServletResponse response) throws IOException;
 
-    List<GltAttemptProjection> getGltAttemptsUnionJson();
+    List<GltAttemptsProjection> getGltAttemptsUnionJson();
 
 
 

@@ -2,7 +2,7 @@ package org.gentar.report.collection.glt_attempts.projection;
 
 import org.springframework.beans.factory.annotation.Value;
 
-public interface GltAttemptProjection {
+public interface GltAttemptsProjection {
 
     @Value("#{target.year}")
     Long getYear();

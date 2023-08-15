@@ -3,14 +3,14 @@ package org.gentar.report.collection.glt_attempts.repository;
 import java.sql.Timestamp;
 import java.util.List;
 import org.gentar.organization.work_unit.WorkUnit;
-import org.gentar.report.collection.glt_attempts.projection.GltAttemptProjection;
+import org.gentar.report.collection.glt_attempts.projection.GltAttemptsProjection;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 
 @RepositoryRestResource(exported = false)
-public interface GltAttemptRepository extends CrudRepository<WorkUnit, Long> {
+public interface GltAttemptsRepository extends CrudRepository<WorkUnit, Long> {
 
 
     @Query(value = "with plans as (select DISTINCT " +
@@ -47,7 +47,7 @@ public interface GltAttemptRepository extends CrudRepository<WorkUnit, Long> {
         "       sum(count)              over (order by year asc rows between unbounded preceding and current row) " +
         "from data",
         nativeQuery = true)
-    List<GltAttemptProjection> findGltAttemptsByAttemptTypeByWorkUnitWithYear(
+    List<GltAttemptsProjection> findGltAttemptsByAttemptTypeByWorkUnitWithYear(
         @Param("attempt") String attempt,
         @Param("workUnit") String workUnit,
         @Param("startDate") Timestamp startDate,
@@ -84,7 +84,7 @@ public interface GltAttemptRepository extends CrudRepository<WorkUnit, Long> {
         "  sum(count) over (order by month, year asc rows between unbounded preceding and current row)" +
         "from data",
         nativeQuery = true)
-    List<GltAttemptProjection> findGltAttemptsByAttemptTypeByWorkUnitWithMonth(
+    List<GltAttemptsProjection> findGltAttemptsByAttemptTypeByWorkUnitWithMonth(
         @Param("attempt") String attempt,
         @Param("workUnit") String workUnit,
         @Param("startDate") Timestamp startDate,
@@ -126,7 +126,7 @@ public interface GltAttemptRepository extends CrudRepository<WorkUnit, Long> {
         "       sum(count)              over (order by year asc rows between unbounded preceding and current row) " +
         "   from data",
         nativeQuery = true)
-    List<GltAttemptProjection> findGltAttemptsByAttemptTypeByWorkUnitWorkGroupWithYear(
+    List<GltAttemptsProjection> findGltAttemptsByAttemptTypeByWorkUnitWorkGroupWithYear(
         @Param("attempt") String attempt,
         @Param("workUnit") String workUnit,
         @Param("workGroup") String workGroup,
@@ -165,7 +165,7 @@ public interface GltAttemptRepository extends CrudRepository<WorkUnit, Long> {
         "  sum(count) over (order by month, year asc rows between unbounded preceding and current row)" +
         "   from data",
         nativeQuery = true)
-    List<GltAttemptProjection> findGltAttemptsByAttemptTypeByWorkUnitWorkGroupWithMonth(
+    List<GltAttemptsProjection> findGltAttemptsByAttemptTypeByWorkUnitWorkGroupWithMonth(
         @Param("attempt") String attempt,
         @Param("workUnit") String workUnit,
         @Param("workGroup") String workGroup,
@@ -202,7 +202,7 @@ public interface GltAttemptRepository extends CrudRepository<WorkUnit, Long> {
         "  sum(count) over (order by year asc rows between unbounded preceding and current row)" +
         "   from data;",
         nativeQuery = true)
-    List<GltAttemptProjection> findGltAttemptsByAttemptTypeWithYear(
+    List<GltAttemptsProjection> findGltAttemptsByAttemptTypeWithYear(
         @Param("attempt") String attempt,
         @Param("startDate") Timestamp startDate,
         @Param("endDate") Timestamp endDate);
@@ -241,7 +241,7 @@ public interface GltAttemptRepository extends CrudRepository<WorkUnit, Long> {
         "  sum(count) over (order by month, year asc rows between unbounded preceding and current row)" +
         "   from data",
         nativeQuery = true)
-    List<GltAttemptProjection> findGltAttemptsByAttemptTypeWithMonth(
+    List<GltAttemptsProjection> findGltAttemptsByAttemptTypeWithMonth(
         @Param("attempt") String attempt,
         @Param("startDate") Timestamp startDate,
         @Param("endDate") Timestamp endDate);
@@ -286,7 +286,7 @@ public interface GltAttemptRepository extends CrudRepository<WorkUnit, Long> {
         "  select symbol from crispr_glt intersect select symbol from es_glt order by symbol) " +
         " select symbol from glt_intersection;",
         nativeQuery = true)
-    List<GltAttemptProjection> findGltAttemptsIntersection();
+    List<GltAttemptsProjection> findGltAttemptsIntersection();
 
 
 
@@ -328,6 +328,6 @@ public interface GltAttemptRepository extends CrudRepository<WorkUnit, Long> {
         "  select distinct(symbol) as symbol from crispr_glt union select symbol from es_glt order by symbol) " +
         " select count(symbol) from glt_union;",
         nativeQuery = true)
-    List<GltAttemptProjection> findGltAttemptsUnion();
+    List<GltAttemptsProjection> findGltAttemptsUnion();
 }
 

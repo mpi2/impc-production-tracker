@@ -4,12 +4,9 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.text.ParseException;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
 import java.util.stream.Collectors;
-import org.gentar.biology.gene_list.record.GeneListProjection;
 import org.gentar.report.collection.glt_attempts.GltAttemptsServiceImpl;
-import org.gentar.report.collection.glt_attempts.projection.GltAttemptProjection;
+import org.gentar.report.collection.glt_attempts.projection.GltAttemptsProjection;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -54,12 +51,12 @@ public class GltAttemptsJsonController {
         }
 
         try {
-            List<GltAttemptProjection> gltAttemptProjections = gltAttemptsService
+            List<GltAttemptsProjection> gltAttemptsProjections = gltAttemptsService
                 .generateGltAttemptsJson(reportType, attempt, workUnit, workGroup,
                     startYear, endYear, starMonth, endMonth);
 
             List<GltAttemptProjectionDto>  gltAttemptProjectionsDto =
-                gltAttemptProjections.stream().map(this::mapToDto).collect(Collectors.toList());
+                gltAttemptsProjections.stream().map(this::mapToDto).collect(Collectors.toList());
 
             return ResponseEntity.ok(gltAttemptProjectionsDto);
         } catch (Exception e) {
@@ -77,11 +74,11 @@ public class GltAttemptsJsonController {
     public ResponseEntity<List<String>> exportGltAttemptsIntersection() {
 
         try {
-            List<GltAttemptProjection> gltAttemptProjections = gltAttemptsService
+            List<GltAttemptsProjection> gltAttemptsProjections = gltAttemptsService
                 .getGltAttemptsIntersectionJson();
 
             List<String> symbols =
-                gltAttemptProjections.stream().map(GltAttemptProjection::getSymbol).collect(Collectors.toList());
+                gltAttemptsProjections.stream().map(GltAttemptsProjection::getSymbol).collect(Collectors.toList());
 
             return ResponseEntity.ok(symbols);
         } catch (Exception e) {
@@ -97,11 +94,11 @@ public class GltAttemptsJsonController {
     @Transactional(readOnly = true)
     public ResponseEntity<List<Long>> exportGltAttemptsUnion() {
         try {
-            List<GltAttemptProjection> gltAttemptProjections = gltAttemptsService
+            List<GltAttemptsProjection> gltAttemptsProjections = gltAttemptsService
                 .getGltAttemptsUnionJson();
 
             List<Long> count =
-                gltAttemptProjections.stream().map(GltAttemptProjection::getCount).collect(Collectors.toList());
+                gltAttemptsProjections.stream().map(GltAttemptsProjection::getCount).collect(Collectors.toList());
 
             return ResponseEntity.ok(count);
         } catch (Exception e) {
@@ -112,47 +109,47 @@ public class GltAttemptsJsonController {
         }
     }
 
-    private GltAttemptProjectionDto mapToDto(GltAttemptProjection gltAttemptProjection) {
+    private GltAttemptProjectionDto mapToDto(GltAttemptsProjection gltAttemptsProjection) {
         GltAttemptProjectionDto gltAttemptProjectionDto = new GltAttemptProjectionDto();
 
         try {
-            gltAttemptProjectionDto.setYear(gltAttemptProjection.getYear());
+            gltAttemptProjectionDto.setYear(gltAttemptsProjection.getYear());
         } catch (Exception e) {
             // Handle the exception (e.g., log an error) and continue with the next line
         }
 
         try {
-            gltAttemptProjectionDto.setMonth(gltAttemptProjection.getMonth());
+            gltAttemptProjectionDto.setMonth(gltAttemptsProjection.getMonth());
         } catch (Exception e) {
             // Handle the exception (e.g., log an error) and continue with the next line
         }
 
         try {
-            gltAttemptProjectionDto.setWorkUnitName(gltAttemptProjection.getWorkUnitName());
+            gltAttemptProjectionDto.setWorkUnitName(gltAttemptsProjection.getWorkUnitName());
         } catch (Exception e) {
             // Handle the exception (e.g., log an error) and continue with the next line
         }
 
         try {
-            gltAttemptProjectionDto.setWorkGroupName(gltAttemptProjection.getWorkGroupName());
+            gltAttemptProjectionDto.setWorkGroupName(gltAttemptsProjection.getWorkGroupName());
         } catch (Exception e) {
             // Handle the exception (e.g., log an error) and continue with the next line
         }
 
         try {
-            gltAttemptProjectionDto.setSum(gltAttemptProjection.getSum());
+            gltAttemptProjectionDto.setSum(gltAttemptsProjection.getSum());
         } catch (Exception e) {
             // Handle the exception (e.g., log an error) and continue with the next line
         }
 
         try {
-            gltAttemptProjectionDto.setSymbol(gltAttemptProjection.getSymbol());
+            gltAttemptProjectionDto.setSymbol(gltAttemptsProjection.getSymbol());
         } catch (Exception e) {
             // Handle the exception (e.g., log an error) and continue with the next line
         }
 
         try {
-            gltAttemptProjectionDto.setCount(gltAttemptProjection.getCount());
+            gltAttemptProjectionDto.setCount(gltAttemptsProjection.getCount());
         } catch (Exception e) {
             // Handle the exception (e.g., log an error) and continue with the next line
         }

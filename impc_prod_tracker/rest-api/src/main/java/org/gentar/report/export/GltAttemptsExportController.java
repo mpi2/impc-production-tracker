@@ -3,7 +3,7 @@ package org.gentar.report.export;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.text.ParseException;
-import org.gentar.report.collection.glt_attempts.GltAttemptsServiceImpl;
+import org.gentar.report.collection.glt_attempts.GltAttemptsService;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -14,9 +14,9 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/reports")
 public class GltAttemptsExportController {
 
-    private final GltAttemptsServiceImpl gltAttemptsService;
+    private final GltAttemptsService gltAttemptsService;
 
-    public GltAttemptsExportController(GltAttemptsServiceImpl gltAttemptsService) {
+    public GltAttemptsExportController(GltAttemptsService gltAttemptsService) {
         this.gltAttemptsService = gltAttemptsService;
     }
 
