@@ -16,6 +16,6 @@ public interface WorkUnitAttemptsProjection {
     @Value("#{target.mutation_symbol}")
     String getMutationSymbol();
 
-    @Value("#{target.mutation_symbol}")
+    @Value("#{target.gene_symbol}")
     String getGeneSymbol();
 }
