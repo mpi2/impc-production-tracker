@@ -1,6 +1,9 @@
 package org.gentar.report;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import java.util.ArrayList;
 import org.gentar.BaseEntity;
+import org.gentar.report.dto.crispr_product.CrisprProductDTO;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,8 +24,7 @@ public class ReportServiceImpl implements ReportService {
 
     public ReportServiceImpl(ReportRepository reportRepository,
                              ReportTypeRepository reportTypeRepository,
-                             ReportTypeServiceImpl reportTypeService)
-    {
+                             ReportTypeServiceImpl reportTypeService) {
         this.reportRepository = reportRepository;
         this.reportTypeRepository = reportTypeRepository;
         this.reportTypeService = reportTypeService;
@@ -30,9 +32,9 @@ public class ReportServiceImpl implements ReportService {
 
     @Transactional
     @Override
-    public void saveReport(ReportTypeName reportTypeName, String reportText)
-    {
-        ReportType reportType = reportTypeRepository.findReportTypeByNameIs(reportTypeName.getLabel());
+    public void saveReport(ReportTypeName reportTypeName, String reportText) {
+        ReportType reportType =
+            reportTypeRepository.findReportTypeByNameIs(reportTypeName.getLabel());
         Report report = new Report();
         report.setReport(reportText);
         report.setReportType(reportType);
@@ -71,7 +73,8 @@ public class ReportServiceImpl implements ReportService {
 
         if (reportTypeNameExists(reportTypeName)) {
 
-            Report report = reportRepository.findFirstByReportType_NameIsOrderByCreatedAtDesc(reportTypeName);
+            Report report =
+                reportRepository.findFirstByReportType_NameIsOrderByCreatedAtDesc(reportTypeName);
             if (reportExists(report)) {
                 printReport(response, reportTypeName, report);
             } else {
@@ -79,16 +82,17 @@ public class ReportServiceImpl implements ReportService {
             }
 
 
-        }else{
+        } else {
             response.setStatus(HttpStatus.NOT_FOUND.value());
         }
     }
 
 
     @Override
-    public void writeReport(HttpServletResponse response, String name, Report report) throws IOException {
+    public void writeReport(HttpServletResponse response, String name, Report report)
+        throws IOException {
 
-        if (report!=null && reportExists(report)) {
+        if (report != null && reportExists(report)) {
             printReport(response, name, report);
         } else {
             response.setStatus(HttpStatus.NOT_FOUND.value());
@@ -96,9 +100,53 @@ public class ReportServiceImpl implements ReportService {
 
     }
 
+    @Override
+    public String getReportAsJson(String name) {
+
+        String reportTypeName = name.toLowerCase();
+
+        if (reportTypeNameExists(reportTypeName)) {
+
+            Report report =
+                reportRepository.findFirstByReportType_NameIsOrderByCreatedAtDesc(reportTypeName);
+            if (reportExists(report)) {
+                return report.getReport();
+            } else {
+                return "report name does not exist";
+            }
+
+        } else {
+            return "report does not exist";
+        }
+    }
 
 
-    private void printReport(HttpServletResponse response, String reportName, Report report) throws IOException {
+    public List<CrisprProductDTO> getReportsAsDtoList(String reportType) {
+        List<CrisprProductDTO> dtoList = new ArrayList<>();
+
+       String crisprProductData =  getReportAsJson(reportType);
+
+        String[] jsonObjects = crisprProductData.split("\n");
+
+            for (String report : jsonObjects) {
+
+                // Use ObjectMapper to deserialize the JSON into MutationDTO
+                ObjectMapper objectMapper = new ObjectMapper();
+                try {
+                    CrisprProductDTO dto = objectMapper.readValue(report, CrisprProductDTO.class);
+                    dtoList.add(dto);
+                } catch (Exception e) {
+                    // Handle any exceptions, e.g., JSON parsing errors
+                    e.printStackTrace();
+                    // You may want to continue processing other reports or handle the error differently
+                }
+            }
+
+            return dtoList;
+    }
+
+    private void printReport(HttpServletResponse response, String reportName, Report report)
+        throws IOException {
 
         PrintWriter output = response.getWriter();
 
@@ -108,7 +156,8 @@ public class ReportServiceImpl implements ReportService {
 //        response.setContentType("application/txt");
         response.setHeader("X-Content-Type-Options", "nosniff");
         response.setContentType("application/octet-stream");
-        response.setHeader("Content-disposition", "attachment; filename=" + reportName + "_" + report.getCreatedAt() + ".tsv");
+        response.setHeader("Content-disposition",
+            "attachment; filename=" + reportName + "_" + report.getCreatedAt() + ".tsv");
 
         String data = report.getReport();
         response.setContentLength(data.length());
@@ -119,19 +168,18 @@ public class ReportServiceImpl implements ReportService {
     }
 
     private Boolean reportExists(Report report) {
-        if (report == null){
+        if (report == null) {
             return Boolean.FALSE;
         } else {
             return Boolean.TRUE;
         }
     }
 
-    private Boolean reportTypeNameExists(String reportTypeName){
+    private Boolean reportTypeNameExists(String reportTypeName) {
         if (reportTypeService.reportTypeNameExists(reportTypeName) &&
             reportTypeService.reportTypeExistsInDatabase(reportTypeName)) {
             return Boolean.TRUE;
-        }
-        else {
+        } else {
             return Boolean.FALSE;
         }
     }
