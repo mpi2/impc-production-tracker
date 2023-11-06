@@ -31,7 +31,7 @@ public interface GltAttemptsRepository extends CrudRepository<WorkUnit, Long> {
         "  WHERE s.name IN ('Genotype Confirmed', 'Genotype Extinct' ) " +
         "  AND UPPER(a.name) = UPPER(:attempt) " +
         "  AND wg.name NOT IN ('EUCOMMToolsCre') AND " +
-        "    UPPER(wu.name) IN (UPPER(:workUnit)) AND" +
+        "    UPPER(wu.name) IN (:workUnit) AND" +
         "   css.date BETWEEN :startDate AND :endDate " +
         "order by g.id, css.date), " +
         "    data as ( " +
@@ -49,7 +49,7 @@ public interface GltAttemptsRepository extends CrudRepository<WorkUnit, Long> {
         nativeQuery = true)
     List<GltAttemptsProjection> findGltAttemptsByAttemptTypeByWorkUnitWithYear(
         @Param("attempt") String attempt,
-        @Param("workUnit") String workUnit,
+        @Param("workUnit") List<String> workUnit,
         @Param("startDate") Timestamp startDate,
         @Param("endDate") Timestamp endDate);
 
@@ -66,7 +66,7 @@ public interface GltAttemptsRepository extends CrudRepository<WorkUnit, Long> {
         "  WHERE s.name IN ('Genotype Confirmed', 'Genotype Extinct' ) AND" +
         "  UPPER(a.name) = UPPER(:attempt) AND" +
         "  wg.name NOT IN ('EUCOMMToolsCre') AND" +
-        "  UPPER(wu.name) IN (UPPER(:workUnit)) AND " +
+        "  UPPER(wu.name) IN (:workUnit) AND " +
         "   css.date BETWEEN :startDate AND :endDate " +
         "  order by p.id, css.date)," +
         "  data as (" +
@@ -78,7 +78,7 @@ public interface GltAttemptsRepository extends CrudRepository<WorkUnit, Long> {
         "  from plans" +
         "  group by year, month, 1, plans.name)" +
         "select" +
-        "    work_unit_name as \"work_unit_name\"," +
+        "    :workUnit as \"work_unit_name\"," +
         "  EXTRACT(year from year) as \"year\"," +
         "  EXTRACT(month from month) as \"month\"," +
         "  sum(count) over (order by month, year asc rows between unbounded preceding and current row)" +
@@ -86,7 +86,7 @@ public interface GltAttemptsRepository extends CrudRepository<WorkUnit, Long> {
         nativeQuery = true)
     List<GltAttemptsProjection> findGltAttemptsByAttemptTypeByWorkUnitWithMonth(
         @Param("attempt") String attempt,
-        @Param("workUnit") String workUnit,
+        @Param("workUnit") List<String> workUnit,
         @Param("startDate") Timestamp startDate,
         @Param("endDate") Timestamp endDate);
 
@@ -109,7 +109,7 @@ public interface GltAttemptsRepository extends CrudRepository<WorkUnit, Long> {
         "  WHERE s.name IN ('Genotype Confirmed', 'Genotype Extinct' ) " +
         "  AND UPPER(a.name) = UPPER(:attempt) " +
         "  AND wg.name NOT IN ('EUCOMMToolsCre') AND " +
-        "    UPPER(wu.name) IN (UPPER(:workUnit)) AND" +
+        "    UPPER(wu.name) IN (:workUnit) AND" +
         "    UPPER(wg.name) IN (UPPER(:workGroup)) AND" +
         "   css.date BETWEEN :startDate AND :endDate " +
         "   order by g.id, css.date), " +
@@ -128,7 +128,7 @@ public interface GltAttemptsRepository extends CrudRepository<WorkUnit, Long> {
         nativeQuery = true)
     List<GltAttemptsProjection> findGltAttemptsByAttemptTypeByWorkUnitWorkGroupWithYear(
         @Param("attempt") String attempt,
-        @Param("workUnit") String workUnit,
+        @Param("workUnit") List<String> workUnit,
         @Param("workGroup") String workGroup,
         @Param("startDate") Timestamp startDate,
         @Param("endDate") Timestamp endDate);
@@ -146,7 +146,7 @@ public interface GltAttemptsRepository extends CrudRepository<WorkUnit, Long> {
         "  WHERE s.name IN ('Genotype Confirmed', 'Genotype Extinct' ) AND" +
         "  UPPER(a.name) = UPPER(:attempt) AND" +
         "  wg.name NOT IN ('EUCOMMToolsCre') AND" +
-        "  UPPER(wu.name) IN (UPPER(:workUnit)) AND " +
+        "  UPPER(wu.name) IN (:workUnit) AND " +
         "   UPPER(wg.name) IN (UPPER(:workGroup)) AND" +
         "   css.date BETWEEN :startDate AND :endDate " +
         "  order by p.id, css.date)," +
@@ -167,7 +167,7 @@ public interface GltAttemptsRepository extends CrudRepository<WorkUnit, Long> {
         nativeQuery = true)
     List<GltAttemptsProjection> findGltAttemptsByAttemptTypeByWorkUnitWorkGroupWithMonth(
         @Param("attempt") String attempt,
-        @Param("workUnit") String workUnit,
+        @Param("workUnit") List<String> workUnit,
         @Param("workGroup") String workGroup,
         @Param("startDate") Timestamp startDate,
         @Param("endDate") Timestamp endDate);

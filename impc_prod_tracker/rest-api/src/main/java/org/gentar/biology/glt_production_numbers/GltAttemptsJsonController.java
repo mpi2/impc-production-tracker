@@ -1,8 +1,7 @@
 package org.gentar.biology.glt_production_numbers;
 
 import jakarta.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.text.ParseException;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 import org.gentar.report.collection.glt_attempts.GltAttemptsServiceImpl;
@@ -44,19 +43,29 @@ public class GltAttemptsJsonController {
                                            @RequestParam(value = "startmonth", required = false)
                                                String starMonth,
                                            @RequestParam(value = "endmonth", required = false)
-                                               String endMonth)
-        throws IOException, ParseException {
+                                               String endMonth) {
         if (attempt.equals("escell")) {
             attempt = "es cell";
         }
 
         try {
+            List<String> workUnits= Arrays.stream(workUnit.split(","))
+                .map(String::trim) // Remove spaces
+                .map(String::toUpperCase) // Convert to uppercase without specifying Locale
+                .collect(Collectors.toList());
+
             List<GltAttemptsProjection> gltAttemptsProjections = gltAttemptsService
-                .generateGltAttemptsJson(reportType, attempt, workUnit, workGroup,
+                .generateGltAttemptsJson(reportType, attempt, workUnits, workGroup,
                     startYear, endYear, starMonth, endMonth);
+
 
             List<GltAttemptProjectionDto>  gltAttemptProjectionsDto =
                 gltAttemptsProjections.stream().map(this::mapToDto).collect(Collectors.toList());
+
+            if(workUnits.size()>1){
+                gltAttemptProjectionsDto
+                    .forEach(dto -> dto.setWorkUnitName(workUnit));
+            }
 
             return ResponseEntity.ok(gltAttemptProjectionsDto);
         } catch (Exception e) {
