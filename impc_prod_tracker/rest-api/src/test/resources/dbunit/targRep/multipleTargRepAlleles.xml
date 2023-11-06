@@ -299,6 +299,16 @@
                 WORK_GROUP_ID="1"
                 SUMMARY_STATUS_ID="11"/>
 
+    <PLAN       ID="11"
+                PIN="PIN:0000000011"
+                PROJECT_ID="3"
+                PLAN_TYPE_ID="1"
+                ATTEMPT_TYPE_ID="54"
+                STATUS_ID="52"
+                WORK_UNIT_ID="1"
+                WORK_GROUP_ID="1"
+                SUMMARY_STATUS_ID="11"/>
+
     <PLAN_FUNDER    PLAN_ID="1"
                     FUNDER_ID="1"/>
     <PLAN_FUNDER    PLAN_ID="2"
@@ -516,6 +526,10 @@
     <PLAN_STARTING_POINT    ID="4"
                             PLAN_ID="9"
                             OUTCOME_ID="3"/>
+
+    <PLAN_STARTING_POINT    ID="5"
+                            PLAN_ID="11"
+                            OUTCOME_ID="4"/>
 
     <PHENOTYPING_ATTEMPT PLAN_ID="3"
                          PHENOTYPING_EXTERNAL_REF="CR10129"

@@ -3,6 +3,7 @@ package org.gentar.biology.plan.engine;
 import org.gentar.biology.plan.Plan;
 import org.gentar.biology.plan.attempt.AttemptTypesName;
 import org.gentar.biology.plan.engine.breeding.BreedingPlanEvent;
+import org.gentar.biology.plan.engine.crispr_allele_modification.CrisprAlleleModificationPlanEvent;
 import org.gentar.biology.plan.engine.es_cell_allele_modification.EsCellAlleleModificationPlanEvent;
 import org.gentar.biology.plan.engine.crispr.CrisprProductionPlanEvent;
 import org.gentar.biology.plan.engine.crispr.HaploessentialProductionPlanEvent;
@@ -68,6 +69,9 @@ public class PlanStateMachineResolver implements StateMachineResolver
                 break;
             case ES_CELL_ALLELE_MODIFICATION:
                 processEvents = EsCellAlleleModificationPlanEvent.getAllEvents();
+                break;
+            case CRISPR_ALLELE_MODIFICATION:
+                processEvents = CrisprAlleleModificationPlanEvent.getAllEvents();
                 break;
             case ES_CELL:
                 processEvents = EsCellProductionPlanEvent.getAllEvents();

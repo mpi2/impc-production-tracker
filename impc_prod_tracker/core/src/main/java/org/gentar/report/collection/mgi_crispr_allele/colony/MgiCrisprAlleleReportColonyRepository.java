@@ -27,7 +27,7 @@ public interface MgiCrisprAlleleReportColonyRepository extends CrudRepository<Co
             "where " +
             "priv.name='public' and " +
             "pt.name='production' and " +
-            "at.name='crispr' and " +
+            "at.name IN ('crispr', 'crispr allele modification') and " +
             "c_status.name IN ('Genotype Confirmed', 'Genotype Extinct') and " +
             "p_status.name <> 'Plan Abandoned'")
     List<MgiCrisprAlleleReportColonyProjection> findAllColonyReportProjections();

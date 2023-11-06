@@ -181,6 +181,12 @@ public class PlanServiceImpl implements PlanService
             return false;
         }
 
+        if (plan.getAttemptType().getName()
+            .equals(AttemptTypesName.CRISPR_ALLELE_MODIFICATION.getLabel()) &&
+            !plan.getProcessDataStatus().getName().equals("Cre Excision Complete")) {
+            return false;
+        }
+
         if (plan.getAttemptType().getName().equals(AttemptTypesName.CRISPR.getLabel()) &&
             !plan.getProcessDataStatus().getName().equals("Founder Obtained")) {
             return false;

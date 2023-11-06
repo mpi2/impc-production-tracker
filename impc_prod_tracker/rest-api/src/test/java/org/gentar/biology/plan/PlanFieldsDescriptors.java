@@ -298,6 +298,35 @@ public class PlanFieldsDescriptors
         return esCellAlleleModificationFields;
     }
 
+
+    public static List<FieldDescriptor> getCrisprAlleleModificationFieldDescriptors()
+    {
+        List<FieldDescriptor> crisprAlleleModificationFields = new ArrayList<>();
+
+        addField(crisprAlleleModificationFields, "crisprAlleleModificationStartingPoint", "Outcome information");
+        addField(crisprAlleleModificationFields, "crisprAlleleModificationStartingPoint._links", "");
+        addField(crisprAlleleModificationFields, "crisprAlleleModificationStartingPoint._links.outcome", "");
+        addField(crisprAlleleModificationFields, "crisprAlleleModificationStartingPoint._links.outcome.href", "Outcome link");
+        addField(crisprAlleleModificationFields, "crisprAlleleModificationStartingPoint._links.productionPlan", "");
+        addField(crisprAlleleModificationFields, "crisprAlleleModificationStartingPoint._links.productionPlan.href",
+            "Production plan link");
+        addField(crisprAlleleModificationFields, "crisprAlleleModificationStartingPoint.outcomeTpo",
+            "Public identifier for the outcome.");
+        addField(crisprAlleleModificationFields, "crisprAlleleModificationStartingPoint.productionPlanPin",
+            "Public identifier for the outcome production plan.");
+
+        addField(crisprAlleleModificationFields, "crisprAlleleModificationAttempt", "ES cell allele modification attempt details.");
+        addField(crisprAlleleModificationFields, "crisprAlleleModificationAttempt.modificationExternalRef",
+            "External reference used to track the modification. For data exported from iMits the mouse allele modification colony name has been recorded as the modification external reference.");
+        addField(crisprAlleleModificationFields, "crisprAlleleModificationAttempt.numberOfCreMatingsSuccessful",
+            "records the number of successful Cre matings.");
+        addField(crisprAlleleModificationFields, "crisprAlleleModificationAttempt.tatCre",
+            "Indicates tat Cre used for modification rather than a deleter strain.");
+        addField(crisprAlleleModificationFields, "crisprAlleleModificationAttempt.deleterStrainName",
+            "Crispr allele modification attempt deleter strain");
+        return crisprAlleleModificationFields;
+    }
+
     public static List<FieldDescriptor> getEsCellFieldDescriptors()
     {
         List<FieldDescriptor> esCellFields = new ArrayList<>();
