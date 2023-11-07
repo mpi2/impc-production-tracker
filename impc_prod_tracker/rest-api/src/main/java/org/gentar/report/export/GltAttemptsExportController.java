@@ -48,12 +48,13 @@ public class GltAttemptsExportController {
         if (attempt.equals("escell")) {
             attempt = "es cell";
         }
-
-        List<String> workUnits= Arrays.stream(workUnit.split(","))
-            .map(String::trim) // Remove spaces
-            .map(String::toUpperCase) // Convert to uppercase without specifying Locale
-            .collect(Collectors.toList());
-
+        List<String> workUnits = null;
+        if(workUnit!=null) {
+            workUnits = Arrays.stream(workUnit.split(","))
+                .map(String::trim) // Remove spaces
+                .map(String::toUpperCase) // Convert to uppercase without specifying Locale
+                .collect(Collectors.toList());
+        }
         gltAttemptsService
             .generateGltAttemptsReport(response, reportType, attempt, workUnits, workGroup,
                 startYear, endYear, starMonth, endMonth);
