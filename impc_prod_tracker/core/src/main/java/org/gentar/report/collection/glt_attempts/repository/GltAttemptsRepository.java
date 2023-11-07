@@ -78,7 +78,7 @@ public interface GltAttemptsRepository extends CrudRepository<WorkUnit, Long> {
         "  from plans" +
         "  group by year, month, 1, plans.name)" +
         "select" +
-        "    :workUnit as \"work_unit_name\"," +
+        "  work_unit_name as \"work_unit_name\"," +
         "  EXTRACT(year from year) as \"year\"," +
         "  EXTRACT(month from month) as \"month\"," +
         "  sum(count) over (order by month, year asc rows between unbounded preceding and current row)" +
