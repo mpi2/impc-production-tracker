@@ -11,7 +11,7 @@ public interface GltAttemptsService {
     void generateGltAttemptsReport(HttpServletResponse response,
                                    String reportType,
                                    String attempt,
-                                   String workUnit,
+                                   List<String> workUnit,
                                    String workGroup,
                                    String startYear,
                                    String endYear,
@@ -22,7 +22,7 @@ public interface GltAttemptsService {
     List<GltAttemptsProjection>  generateGltAttemptsJson(
         String reportType,
         String attempt,
-        String workUnit,
+        List<String> workUnit,
         String workGroup,
         String startYear,
         String endYear,

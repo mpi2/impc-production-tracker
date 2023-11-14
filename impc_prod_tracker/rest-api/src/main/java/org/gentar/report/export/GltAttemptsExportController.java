@@ -3,6 +3,9 @@ package org.gentar.report.export;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.text.ParseException;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
 import org.gentar.report.collection.glt_attempts.GltAttemptsService;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -45,8 +48,15 @@ public class GltAttemptsExportController {
         if (attempt.equals("escell")) {
             attempt = "es cell";
         }
+        List<String> workUnits = null;
+        if(workUnit!=null) {
+            workUnits = Arrays.stream(workUnit.split(","))
+                .map(String::trim) // Remove spaces
+                .map(String::toUpperCase) // Convert to uppercase without specifying Locale
+                .collect(Collectors.toList());
+        }
         gltAttemptsService
-            .generateGltAttemptsReport(response, reportType, attempt, workUnit, workGroup,
+            .generateGltAttemptsReport(response, reportType, attempt, workUnits, workGroup,
                 startYear, endYear, starMonth, endMonth);
     }
 

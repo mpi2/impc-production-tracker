@@ -7,8 +7,14 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
 import org.gentar.report.Report;
 import org.gentar.report.ReportService;
 import org.gentar.report.collection.glt_attempts.projection.GltAttemptsProjection;
@@ -31,7 +37,7 @@ public class GltAttemptsServiceImpl implements GltAttemptsService {
     public void generateGltAttemptsReport(HttpServletResponse response,
                                           String reportType,
                                           String attempt,
-                                          String workUnit,
+                                          List<String> workUnit,
                                           String workGroup,
                                           String startYear,
                                           String endYear,
@@ -63,7 +69,7 @@ public class GltAttemptsServiceImpl implements GltAttemptsService {
     public List<GltAttemptsProjection> generateGltAttemptsJson(
         String reportType,
         String attempt,
-        String workUnit,
+        List<String> workUnit,
         String workGroup,
         String startYear,
         String endYear,
@@ -137,7 +143,7 @@ public class GltAttemptsServiceImpl implements GltAttemptsService {
     private void gltAttemptsByAttemptWithWorkUnit(HttpServletResponse response,
                                                   String reportType,
                                                   String attempt,
-                                                  String workUnit,
+                                                  List<String> workUnit,
                                                   String startYear,
                                                   String endYear,
                                                   String startMonth,
@@ -156,18 +162,18 @@ public class GltAttemptsServiceImpl implements GltAttemptsService {
 
     private List<GltAttemptsProjection> gltAttemptsByAttemptWithWorkUnitJson(String reportType,
                                                                              String attempt,
-                                                                             String workUnit,
+                                                                             List<String> workUnit,
                                                                              String startYear,
                                                                              String endYear,
                                                                              String startMonth,
                                                                              String endMonth)
-        throws IOException, ParseException {
+        throws ParseException {
         if ("year".equalsIgnoreCase(reportType)) {
-            return gltAttemptsByAttemptWithWorkUnitForYearJson(reportType, attempt, workUnit,
+            return gltAttemptsByAttemptWithWorkUnitForYearJson(attempt, workUnit,
                 startYear, endYear);
 
         } else if ("month".equalsIgnoreCase(reportType)) {
-            return gltAttemptsByAttemptWithWorkUnitForMonthJson(reportType, attempt, workUnit,
+            return gltAttemptsByAttemptWithWorkUnitForMonthJson(attempt, workUnit,
                 startYear, endYear, startMonth,
                 endMonth);
         }
@@ -178,7 +184,7 @@ public class GltAttemptsServiceImpl implements GltAttemptsService {
     private void gltAttemptsByAttemptWithWorkUnitForYear(HttpServletResponse response,
                                                          String reportType,
                                                          String attempt,
-                                                         String workUnit,
+                                                         List<String> workUnit,
                                                          String startYear,
                                                          String endYear)
         throws IOException, ParseException {
@@ -192,32 +198,41 @@ public class GltAttemptsServiceImpl implements GltAttemptsService {
             .findGltAttemptsByAttemptTypeByWorkUnitWithYear(attempt, workUnit, startTimestamp,
                 endTimestamp);
 
+        if (workUnit.size() > 1) {
+            gltAttemptsProjections =
+                formatGltAttemptsProjectionsForMultipleWorkunitForYear(gltAttemptsProjections);
+        }
+
         formatProjectionReportText(response, reportType, attempt,
             gltAttemptsProjections, "workUnitYear");
     }
 
     private List<GltAttemptsProjection> gltAttemptsByAttemptWithWorkUnitForYearJson(
-        String reportType,
         String attempt,
-        String workUnit,
+        List<String> workUnit,
         String startYear,
         String endYear)
-        throws IOException, ParseException {
+        throws ParseException {
 
 
         Timestamp startTimestamp = getStartDate(startYear, "");
         Timestamp endTimestamp = getEndDate(endYear, "");
 
-        return gltAttemptsRepository
+        List<GltAttemptsProjection> gltAttemptsProjections = gltAttemptsRepository
             .findGltAttemptsByAttemptTypeByWorkUnitWithYear(attempt, workUnit, startTimestamp,
                 endTimestamp);
+
+        if (workUnit.size() > 1) {
+            return formatGltAttemptsProjectionsForMultipleWorkunitForYear(gltAttemptsProjections);
+        }
+        return gltAttemptsProjections;
 
     }
 
     private void gltAttemptsByAttemptWithWorkUnitForMonth(HttpServletResponse response,
                                                           String reportType,
                                                           String attempt,
-                                                          String workUnit,
+                                                          List<String> workUnit,
                                                           String startYear,
                                                           String endYear,
                                                           String startMonth,
@@ -233,34 +248,44 @@ public class GltAttemptsServiceImpl implements GltAttemptsService {
                 .findGltAttemptsByAttemptTypeByWorkUnitWithMonth(attempt, workUnit, startTimestamp,
                     endTimestamp);
 
+        if(workUnit.size()>1) {
+            gltAttemptsProjections =
+                formatGltAttemptsProjectionsForMultipleWorkunitForMonth(gltAttemptsProjections);
+        }
         formatProjectionReportText(response, reportType, attempt,
             gltAttemptsProjections, "workUnitYearMonth");
     }
 
     private List<GltAttemptsProjection> gltAttemptsByAttemptWithWorkUnitForMonthJson(
-        String reportType,
         String attempt,
-        String workUnit,
+        List<String> workUnit,
         String startYear,
         String endYear,
         String startMonth,
         String endMonth)
-        throws IOException, ParseException {
+        throws ParseException {
+        List<GltAttemptsProjection> gltAttemptsProjections;
 
         Timestamp startTimestamp = getStartDate(startYear, startMonth);
         Timestamp endTimestamp = getEndDate(endYear, endMonth);
 
-        return
-            gltAttemptsRepository
-                .findGltAttemptsByAttemptTypeByWorkUnitWithMonth(attempt, workUnit, startTimestamp,
-                    endTimestamp);
+        gltAttemptsProjections =  gltAttemptsRepository
+            .findGltAttemptsByAttemptTypeByWorkUnitWithMonth(attempt, workUnit, startTimestamp,
+                endTimestamp);
+
+        if(workUnit.size()>1) {
+          return
+                formatGltAttemptsProjectionsForMultipleWorkunitForMonth(gltAttemptsProjections);
+        }
+
+        return gltAttemptsProjections;
 
     }
 
     private void gltAttemptsByAttemptWithWorkUnitWorkGroup(HttpServletResponse response,
                                                            String reportType,
                                                            String attempt,
-                                                           String workUnit,
+                                                           List<String> workUnit,
                                                            String workGroup,
                                                            String startYear,
                                                            String endYear,
@@ -285,7 +310,7 @@ public class GltAttemptsServiceImpl implements GltAttemptsService {
     private List<GltAttemptsProjection> gltAttemptsByAttemptWithWorkUnitWorkGroupJson(
         String reportType,
         String attempt,
-        String workUnit,
+        List<String> workUnit,
         String workGroup,
         String startYear,
         String endYear,
@@ -294,12 +319,12 @@ public class GltAttemptsServiceImpl implements GltAttemptsService {
         throws IOException, ParseException {
 
         if ("year".equalsIgnoreCase(reportType)) {
-            return gltAttemptsByAttemptWithWorkUnitWorkGroupForYearJson(reportType, attempt,
+            return gltAttemptsByAttemptWithWorkUnitWorkGroupForYearJson(attempt,
                 workUnit, workGroup,
                 startYear, endYear);
 
         } else if ("month".equalsIgnoreCase(reportType)) {
-            return gltAttemptsByAttemptWithWorkUnitWorkGroupForMonthJson(reportType, attempt,
+            return gltAttemptsByAttemptWithWorkUnitWorkGroupForMonthJson(attempt,
                 workUnit, workGroup,
                 startYear, endYear, startMonth,
                 endMonth);
@@ -311,7 +336,7 @@ public class GltAttemptsServiceImpl implements GltAttemptsService {
     private void gltAttemptsByAttemptWithWorkUnitWorkGroupForYear(HttpServletResponse response,
                                                                   String reportType,
                                                                   String attempt,
-                                                                  String workUnit,
+                                                                  List<String> workUnit,
                                                                   String workGroup,
                                                                   String startYear,
                                                                   String endYear)
@@ -327,18 +352,21 @@ public class GltAttemptsServiceImpl implements GltAttemptsService {
                 startTimestamp,
                 endTimestamp);
 
+        if (workUnit.size() > 1) {
+
+        }
+
         formatProjectionReportText(response, reportType, attempt,
             gltAttemptsProjections, "workUnitWorkGroupYear");
     }
 
     private List<GltAttemptsProjection> gltAttemptsByAttemptWithWorkUnitWorkGroupForYearJson(
-        String reportType,
         String attempt,
-        String workUnit,
+        List<String> workUnit,
         String workGroup,
         String startYear,
         String endYear)
-        throws IOException, ParseException {
+        throws ParseException {
 
 
         Timestamp startTimestamp = getStartDate(startYear, "");
@@ -354,7 +382,7 @@ public class GltAttemptsServiceImpl implements GltAttemptsService {
     private void gltAttemptsByAttemptWithWorkUnitWorkGroupForMonth(HttpServletResponse response,
                                                                    String reportType,
                                                                    String attempt,
-                                                                   String workUnit,
+                                                                   List<String> workUnit,
                                                                    String workGroup,
                                                                    String startYear,
                                                                    String endYear,
@@ -377,15 +405,14 @@ public class GltAttemptsServiceImpl implements GltAttemptsService {
     }
 
     private List<GltAttemptsProjection> gltAttemptsByAttemptWithWorkUnitWorkGroupForMonthJson(
-        String reportType,
         String attempt,
-        String workUnit,
+        List<String> workUnit,
         String workGroup,
         String startYear,
         String endYear,
         String startMonth,
         String endMonth)
-        throws IOException, ParseException {
+        throws ParseException {
 
         Timestamp startTimestamp = getStartDate(startYear, startMonth);
         Timestamp endTimestamp = getEndDate(endYear, endMonth);
@@ -562,7 +589,9 @@ public class GltAttemptsServiceImpl implements GltAttemptsService {
             if (tsvType.equals("workUnitYearMonth") || tsvType.equals("workUnitYear") ||
                 tsvType.equals("workUnitWorkGroupYearMonth") ||
                 tsvType.equals("workUnitWorkGroupYear")) {
-                reportText.append(gltAttemptsProjection.getWorkUnitName()).append("\t");
+
+
+                reportText.append(concatenateUniqueWorkUnits(gltAttemptsProjections)).append("\t");
 
                 if (tsvType.equals("workUnitWorkGroupYearMonth") ||
                     tsvType.equals("workUnitWorkGroupYear")) {
@@ -669,5 +698,49 @@ public class GltAttemptsServiceImpl implements GltAttemptsService {
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         Date startDate = dateFormat.parse(startDateString);
         return new Timestamp(startDate.getTime());
+    }
+
+
+    private List<GltAttemptsProjection> formatGltAttemptsProjectionsForMultipleWorkunitForYear(
+        List<GltAttemptsProjection> gltAttemptsProjections) {
+
+        Map<Long, GltAttemptsProjection> lastYearAttempts = new LinkedHashMap<>();
+
+        for (GltAttemptsProjection gltAttemptsProjection : gltAttemptsProjections) {
+            lastYearAttempts.put(gltAttemptsProjection.getYear(), gltAttemptsProjection);
+        }
+
+        return new ArrayList<>(lastYearAttempts.values());
+
+    }
+
+    private List<GltAttemptsProjection> formatGltAttemptsProjectionsForMultipleWorkunitForMonth(
+        List<GltAttemptsProjection> gltAttemptsProjections) {
+
+        Map<Long, Map<Long, GltAttemptsProjection>> yearMonthAttempts = new LinkedHashMap<>();
+
+        for (GltAttemptsProjection gltAttemptsProjection : gltAttemptsProjections) {
+            Long year = gltAttemptsProjection.getYear();
+            Long month = gltAttemptsProjection.getMonth();
+
+            yearMonthAttempts
+                .computeIfAbsent(year, k -> new LinkedHashMap<>())
+                .put(month, gltAttemptsProjection);
+        }
+
+        List<GltAttemptsProjection> filteredGltAttemptsProjection = new ArrayList<>();
+        yearMonthAttempts.forEach((year, monthMap) -> filteredGltAttemptsProjection.addAll(monthMap.values()));
+
+        return filteredGltAttemptsProjection;
+
+    }
+
+
+    private static String concatenateUniqueWorkUnits(List<GltAttemptsProjection> gltAttemptsProjections) {
+        Set<String> uniqueWorkUnits = gltAttemptsProjections.stream()
+            .map(GltAttemptsProjection::getWorkUnitName) // Replace "YourObject" with your actual class name
+            .collect(Collectors.toSet());
+
+        return String.join(" ", uniqueWorkUnits); // Join unique values with a space delimiter
     }
 }

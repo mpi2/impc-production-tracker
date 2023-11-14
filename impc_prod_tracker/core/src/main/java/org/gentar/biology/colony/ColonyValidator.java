@@ -1,6 +1,7 @@
 package org.gentar.biology.colony;
 
 import org.apache.logging.log4j.util.Strings;
+import org.gentar.biology.plan.attempt.phenotyping.PhenotypingAttempt;
 import org.gentar.biology.plan.attempt.phenotyping.stage.PhenotypingStage;
 import org.gentar.biology.plan.starting_point.PlanStartingPoint;
 import org.gentar.biology.plan.starting_point.PlanStartingPointRepository;
@@ -67,9 +68,10 @@ public class ColonyValidator
                     .getId());
             if (planStartingPoints != null) {
                 planStartingPoints.forEach(planStartingPoint -> {
-                    Set<PhenotypingStage> phenotypingStages = planStartingPoint.getPlan().getPhenotypingAttempt()
-                            .getPhenotypingStages();
-                    phenotypingStages.forEach(phenotypingStage ->
+
+                    PhenotypingAttempt phenotypingAttempt =planStartingPoint.getPlan().getPhenotypingAttempt();
+                    if(phenotypingAttempt != null){
+                    phenotypingAttempt.getPhenotypingStages().forEach(phenotypingStage ->
                     {
                         if ( (phenotypingStage.getPhenotypingStageType().getName().equals("early adult and embryo") &&
                                 phenotypingStage.getProcessDataStatus().getOrdering() >= 253000) ||
@@ -79,6 +81,7 @@ public class ColonyValidator
                             throw new UserOperationFailedException(COLONY_IS_A_STARTING_POINT);
                         }
                     });
+                    }
                 });
             }
         }
