@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonUnwrapped;
 import lombok.Data;
 import org.gentar.biology.plan.attempt.breeding.BreedingAttemptDTO;
+import org.gentar.biology.plan.attempt.crispr_allele_modification.CrisprAlleleModificationAttemptDTO;
 import org.gentar.biology.plan.attempt.es_cell_allele_modification.EsCellAlleleModificationAttemptDTO;
 import org.gentar.biology.plan.attempt.crispr.CrisprAttemptDTO;
 import org.gentar.biology.plan.attempt.es_cell.EsCellAttemptDTO;
@@ -44,6 +45,11 @@ public class PlanBasicDataDTO
     @JsonProperty("esCellAlleleModificationStartingPoint")
     private PlanStartingPointDTO modificationPlanStartingPointDTO;
 
+    // Starting point outcome for Es Cell Allele Modification.
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    @JsonProperty("crisprAlleleModificationStartingPoint")
+    private PlanStartingPointDTO crisprModificationPlanStartingPointDTO;
+
     // Crispr attempt information. It will only contain information if the attempt type is crispr.
     @JsonInclude(JsonInclude.Include.NON_NULL)
     @JsonProperty("crisprAttempt")
@@ -63,6 +69,11 @@ public class PlanBasicDataDTO
     @JsonInclude(JsonInclude.Include.NON_NULL)
     @JsonProperty("esCellAlleleModificationAttempt")
     private EsCellAlleleModificationAttemptDTO esCellAlleleModificationAttemptDTO;
+
+    // Es Cell Allele Modification attempt information. It will only contain information if the attempt type is 'es cell allele modification'.
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    @JsonProperty("crisprAlleleModificationAttempt")
+    private CrisprAlleleModificationAttemptDTO crisprAlleleModificationAttemptDTO;
 
     // Phenotyping attempt information for creation. It will only contain information if the plan type is phenotyping.
     @JsonInclude(JsonInclude.Include.NON_NULL)

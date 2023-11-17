@@ -13,11 +13,15 @@
  language governing permissions and limitations under the
  License.
  */
+
 package org.gentar.biology.project;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
+import java.util.Objects;
+import java.util.Set;
+import java.util.concurrent.atomic.AtomicBoolean;
 import org.gentar.audit.history.History;
 import org.gentar.biology.ChangeResponse;
 import org.gentar.biology.outcome.Outcome;
@@ -59,8 +63,7 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 @RestController
 @RequestMapping("/api/projects")
 @CrossOrigin(origins = "*")
-public class ProjectController
-{
+public class ProjectController {
     private final ProjectService projectService;
     private final HistoryMapper historyMapper;
     private final CsvWriter<ProjectCsvRecord> csvWriter;
@@ -82,8 +85,7 @@ public class ProjectController
         PlanMinimumCreationMapper planMinimumCreationMapper,
         ProjectResponseMapper projectResponseMapper,
         OutcomeSummaryMapper outcomeSummaryMapper,
-        ProjectSearchDownloadServiceImpl projectSearchDownloadService)
-    {
+        ProjectSearchDownloadServiceImpl projectSearchDownloadService) {
         this.projectService = projectService;
         this.historyMapper = historyMapper;
         this.csvWriter = csvWriter;
@@ -98,6 +100,7 @@ public class ProjectController
 
     /**
      * Get all the projects in the system.
+     *
      * @return A collection of {@link ProjectResponseDTO} objects.
      */
     @GetMapping
@@ -111,13 +114,15 @@ public class ProjectController
         @RequestParam(value = "workUnitName", required = false) List<String> workUnitNames,
         @RequestParam(value = "workGroupName", required = false) List<String> workGroupNames,
         @RequestParam(value = "consortiumName", required = false) List<String> consortia,
-        @RequestParam(value = "assignmentStatusName", required = false) List<String> assignmentNames,
-        @RequestParam(value = "summaryStatusName", required = false) List<String> summaryStatusNames,
+        @RequestParam(value = "assignmentStatusName", required = false)
+        List<String> assignmentNames,
+        @RequestParam(value = "summaryStatusName", required = false)
+        List<String> summaryStatusNames,
         @RequestParam(value = "privacyName", required = false) List<String> privaciesNames,
         @RequestParam(value = "imitsMiPlanId", required = false) List<String> imitsMiPlans,
         @RequestParam(value = "colonyName", required = false) List<String> colonyNames,
-        @RequestParam(value = "phenotypingExternalRef", required = false) List<String> phenotypingExternalRefs)
-    {
+        @RequestParam(value = "phenotypingExternalRef", required = false)
+        List<String> phenotypingExternalRefs) {
         ProjectFilter projectFilter = ProjectFilterBuilder.getInstance()
             .withTpns(tpns)
             .withMarkerSymbols(markerSymbols)
@@ -150,12 +155,12 @@ public class ProjectController
 
     /**
      * Creates a new project in the system.
+     *
      * @param projectCreationDTO Request with data of the project to be created.
      * @return {@link ChangeResponse} object with information about the creation.
      */
     @PostMapping
-    public ChangeResponse createProject(@RequestBody ProjectCreationDTO projectCreationDTO)
-    {
+    public ChangeResponse createProject(@RequestBody ProjectCreationDTO projectCreationDTO) {
         Project projectToBeCreated = projectCreationMapper.toEntity(projectCreationDTO);
         Plan planToBeCreated = planMinimumCreationMapper.toEntity(
             projectCreationDTO.getPlanMinimumCreationDTO());
@@ -164,14 +169,13 @@ public class ProjectController
         return buildChangeResponse(createdProject);
     }
 
-    private ChangeResponse buildChangeResponse(Project project)
-    {
-        List<HistoryDTO> historyList = historyMapper.toDtos(projectService.getProjectHistory(project));
+    private ChangeResponse buildChangeResponse(Project project) {
+        List<HistoryDTO> historyList =
+            historyMapper.toDtos(projectService.getProjectHistory(project));
         return buildChangeResponse(project, historyList);
     }
 
-    private ChangeResponse buildChangeResponse(Project project, List<HistoryDTO> historyList)
-    {
+    private ChangeResponse buildChangeResponse(Project project, List<HistoryDTO> historyList) {
         ChangeResponse changeResponse = new ChangeResponse();
         changeResponse.setHistoryDTOs(historyList);
 
@@ -183,14 +187,13 @@ public class ProjectController
 
     @PutMapping(value = {"/{tpn}"})
     public ChangeResponse updateProject(
-        @PathVariable String tpn, @RequestBody ProjectUpdateDTO projectUpdateDTO)
-    {
+        @PathVariable String tpn, @RequestBody ProjectUpdateDTO projectUpdateDTO) {
         Project currentProject = projectService.getNotNullProjectByTpn(tpn);
-        Project newProject = updateProjectRequestProcessor.getProjectToUpdate(currentProject, projectUpdateDTO);
+        Project newProject =
+            updateProjectRequestProcessor.getProjectToUpdate(currentProject, projectUpdateDTO);
         History history = projectService.updateProject(currentProject, newProject);
         HistoryDTO historyDTO = new HistoryDTO();
-        if (history != null)
-        {
+        if (history != null) {
             historyDTO = historyMapper.toDto(history);
         }
         return buildChangeResponse(newProject, Collections.singletonList(historyDTO));
@@ -198,20 +201,21 @@ public class ProjectController
 
     /**
      * Export the projects to a csv file.
-     * @param response Http response.
-     * @param tpns list of tpns separated by comma.
-     * @param markerSymbols list of marker symbols separated by comma.
-     * @param genes list of marker symbols/accIds separated by comma.
-     * @param intentions list of intention names separated by comma.
-     * @param workUnitNames list of work units names separated by comma.
-     * @param workGroupNames list of work groups names separated by comma.
-     * @param consortia list of consortia names separated by comma.
-     * @param assignmentNames list of assignment statuses names separated by comma.
-     * @param summaryStatusNames list of summary statuses names separated by comma.
-     * @param productionColonyName List of colony names separated by comma.
+     *
+     * @param response                Http response.
+     * @param tpns                    list of tpns separated by comma.
+     * @param markerSymbols           list of marker symbols separated by comma.
+     * @param genes                   list of marker symbols/accIds separated by comma.
+     * @param intentions              list of intention names separated by comma.
+     * @param workUnitNames           list of work units names separated by comma.
+     * @param workGroupNames          list of work groups names separated by comma.
+     * @param consortia               list of consortia names separated by comma.
+     * @param assignmentNames         list of assignment statuses names separated by comma.
+     * @param summaryStatusNames      list of summary statuses names separated by comma.
+     * @param productionColonyName    List of colony names separated by comma.
      * @param phenotypingExternalRefs List of phenotyping external references separated by comma.
-     * @param privaciesNames list of privacy names separated by comma.
-     * @param imitsMiPlans list of iMits plans separated by comma.
+     * @param privaciesNames          list of privacy names separated by comma.
+     * @param imitsMiPlans            list of iMits plans separated by comma.
      * @throws IOException
      */
     @GetMapping("/exportProjects")
@@ -224,14 +228,16 @@ public class ProjectController
         @RequestParam(value = "workUnitName", required = false) List<String> workUnitNames,
         @RequestParam(value = "workGroupName", required = false) List<String> workGroupNames,
         @RequestParam(value = "consortiumName", required = false) List<String> consortia,
-        @RequestParam(value = "assignmentStatusName", required = false) List<String> assignmentNames,
-        @RequestParam(value = "summaryStatusName", required = false) List<String> summaryStatusNames,
+        @RequestParam(value = "assignmentStatusName", required = false)
+        List<String> assignmentNames,
+        @RequestParam(value = "summaryStatusName", required = false)
+        List<String> summaryStatusNames,
         @RequestParam(value = "privacyName", required = false) List<String> privaciesNames,
         @RequestParam(value = "imitsMiPlanId", required = false) List<String> imitsMiPlans,
         @RequestParam(value = "colonyName", required = false) List<String> productionColonyName,
-        @RequestParam(value = "phenotypingExternalRef", required = false) List<String> phenotypingExternalRefs)
-        throws IOException
-    {
+        @RequestParam(value = "phenotypingExternalRef", required = false)
+        List<String> phenotypingExternalRefs)
+        throws IOException {
         ProjectFilter projectFilter = ProjectFilterBuilder.getInstance()
             .withTpns(tpns)
             .withMarkerSymbols(markerSymbols)
@@ -248,32 +254,32 @@ public class ProjectController
             .withPhenotypingExternalRef(phenotypingExternalRefs)
             .build();
 
-        projectSearchDownloadService.writeReport(response,projectFilter);
+        projectSearchDownloadService.writeReport(response, projectFilter);
 
     }
 
-    private ProjectResponseDTO getDTO(Project project)
-    {
+    private ProjectResponseDTO getDTO(Project project) {
         ProjectResponseDTO projectResponseDTO = new ProjectResponseDTO();
-        if (project != null)
-        {
+        if (project != null) {
             projectResponseDTO = projectResponseMapper.toDto(project);
             projectResponseDTO.add(
-                PlanLinkBuilder.buildPlanLinks(project, PlanTypeName.PRODUCTION, "productionPlans"));
+                PlanLinkBuilder.buildPlanLinks(project, PlanTypeName.PRODUCTION,
+                    "productionPlans"));
             projectResponseDTO.add(
-                PlanLinkBuilder.buildPlanLinks(project, PlanTypeName.PHENOTYPING, "phenotypingPlans"));
+                PlanLinkBuilder.buildPlanLinks(project, PlanTypeName.PHENOTYPING,
+                    "phenotypingPlans"));
         }
         return projectResponseDTO;
     }
 
     /**
      * Get a specific project.
+     *
      * @param tpn tpn Project identifier.
      * @return Entity with the project information.
      */
     @GetMapping(value = {"/{tpn}"})
-    public EntityModel<?> findOne(@PathVariable String tpn)
-    {
+    public EntityModel<?> findOne(@PathVariable String tpn) {
         EntityModel<ProjectResponseDTO> entityModel = null;
         Project project = projectService.getNotNullProjectByTpn(tpn);
         ProjectResponseDTO projectResponseDTO = getDTO(project);
@@ -282,27 +288,42 @@ public class ProjectController
     }
 
     @GetMapping(value = {"/{tpn}/history"})
-    public List<HistoryDTO> getProjectHistory(@PathVariable String tpn)
-    {
+    public List<HistoryDTO> getProjectHistory(@PathVariable String tpn) {
         Project project = projectService.getNotNullProjectByTpn(tpn);
 
         return historyMapper.toDtos(projectService.getProjectHistory(project));
     }
 
     @GetMapping(value = {"/{tpn}/productionOutcomesSummaries"})
-    public List<OutcomeSummaryDTO> getProductionOutcomesSummaries(@PathVariable String tpn)
-    {
+    public List<OutcomeSummaryDTO> getProductionOutcomesSummaries(@PathVariable String tpn) {
         Project project = projectService.getNotNullProjectByTpn(tpn);
         List<Outcome> productionOutcomes = projectService.getProductionOutcomesByProject(project);
         return outcomeSummaryMapper.toDtos(productionOutcomes);
     }
 
     @GetMapping(value = {"/{tpn}/firstProductionPlanData"})
-    public PlanMinimumCreationDTO getFirstProductionPlanData(@PathVariable String tpn)
-    {
+    public PlanMinimumCreationDTO getFirstProductionPlanData(@PathVariable String tpn) {
         Project project = projectService.getNotNullProjectByTpn(tpn);
         Plan firstPlan = projectService.getFirstProductionPlan(project);
         return planMinimumCreationMapper.toDto(firstPlan);
+    }
+
+    @GetMapping(value = {"/{tpn}/hasConditionalCrisprPlan"})
+    public boolean hasConditionalCrisprPlan(@PathVariable String tpn) {
+        Project project = projectService.getNotNullProjectByTpn(tpn);
+        Set<Plan> plans = project.getPlans();
+
+        if (plans != null) {
+            return plans.stream()
+                .flatMap(plan -> plan.getOutcomes().stream())
+                .flatMap(outcome -> outcome.getMutations().stream())
+                .flatMap(mutation -> mutation.getMutationCategorizations().stream())
+                .anyMatch(mutationCategorization ->
+                    "Conditional".equals(mutationCategorization.getName()) ||
+                        "Conditional Ready".equals(mutationCategorization.getName()));
+        }
+
+        return false;
     }
 
     private static String decode(String value) {

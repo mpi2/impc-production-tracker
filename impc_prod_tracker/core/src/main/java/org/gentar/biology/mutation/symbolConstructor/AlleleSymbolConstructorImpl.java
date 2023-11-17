@@ -102,7 +102,8 @@ public class AlleleSymbolConstructorImpl implements AlleleSymbolConstructor {
     }
 
     private String getMutationType() {
-        if (attemptTypesName.equals(AttemptTypesName.CRISPR)) {
+        if (attemptTypesName.equals(AttemptTypesName.CRISPR) ||
+            attemptTypesName.equals(AttemptTypesName.CRISPR_ALLELE_MODIFICATION)) {
             return "em";
         } else if (attemptTypesName.equals(AttemptTypesName.ES_CELL) ||
             attemptTypesName.equals(AttemptTypesName.ES_CELL_ALLELE_MODIFICATION)) {

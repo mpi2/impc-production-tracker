@@ -18,6 +18,7 @@ import org.gentar.biology.plan.attempt.AttemptTypeChecker;
 import org.gentar.biology.plan.attempt.AttemptTypeService;
 import org.gentar.biology.plan.attempt.AttemptTypesName;
 import org.gentar.biology.plan.attempt.crispr.CrisprAttemptValidator;
+import org.gentar.biology.plan.attempt.crispr_allele_modification.CrisprAlleleModificationValidator;
 import org.gentar.biology.plan.attempt.es_cell_allele_modification.EsCellAlleleModificationValidator;
 import org.gentar.biology.plan.attempt.phenotyping.PhenotypeAttemptValidator;
 import org.gentar.biology.plan.attempt.phenotyping.PhenotypingAttempt;
@@ -61,6 +62,9 @@ class PlanValidatorTest {
     @Mock
     private EsCellAlleleModificationValidator esCellAlleleModificationValidator;
 
+    @Mock
+    private CrisprAlleleModificationValidator crisprAlleleModificationValidator;
+
     private static final String ATTEMPT_TYPE_PLAN_TYPE_INVALID_ASSOCIATION =
         "The attempt type [%s] cannot be associated with a plan with type [%s].";
     private static final String NULL_OBJECT_ERROR = "%s cannot be null.";
@@ -76,7 +80,8 @@ class PlanValidatorTest {
             projectValidator,
             phenotypeAttemptValidator,
             colonyValidator,
-            esCellAlleleModificationValidator);
+            esCellAlleleModificationValidator,
+            crisprAlleleModificationValidator );
     }
 
     @Test

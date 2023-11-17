@@ -2,9 +2,11 @@ package org.gentar.biology.plan.engine;
 
 import org.gentar.biology.plan.Plan;
 import org.gentar.biology.plan.attempt.AttemptTypesName;
+import org.gentar.biology.plan.attempt.crispr_allele_modification.CrisprAlleleModificationAttempt;
 import org.gentar.biology.plan.engine.breeding.BreedingPlanEvent;
 import org.gentar.biology.plan.engine.crispr.CrisprProductionPlanEvent;
 import org.gentar.biology.plan.engine.crispr.HaploessentialProductionPlanEvent;
+import org.gentar.biology.plan.engine.crispr_allele_modification.CrisprAlleleModificationPlanEvent;
 import org.gentar.biology.plan.engine.es_cell.EsCellProductionPlanEvent;
 import org.gentar.biology.plan.engine.es_cell_allele_modification.EsCellAlleleModificationPlanEvent;
 import org.gentar.biology.plan.type.PlanTypeName;
@@ -107,6 +109,26 @@ class PlanStateMachineResolverTest
             "Invalid event",
             processEvent.getName(),
             is(EsCellAlleleModificationPlanEvent.abandonWhenCreated.getName()));
+    }
+
+    @Test
+    public void testWhenCrisprModification()
+    {
+        Plan plan = PlanBuilder.getInstance()
+            .withPlanType(PlanTypeName.PRODUCTION.getLabel())
+            .withAttemptType(AttemptTypesName.CRISPR_ALLELE_MODIFICATION.getLabel())
+            .build();
+        ProcessEvent processEvent =
+            testInstance.getProcessEventByActionName(
+                plan, CrisprAlleleModificationPlanEvent.abandonWhenCreated.getName());
+        assertThat(
+            "Invalid state machine",
+            (processEvent instanceof CrisprAlleleModificationPlanEvent),
+            is(true));
+        assertThat(
+            "Invalid event",
+            processEvent.getName(),
+            is(CrisprAlleleModificationPlanEvent.abandonWhenCreated.getName()));
     }
 
     @Test
