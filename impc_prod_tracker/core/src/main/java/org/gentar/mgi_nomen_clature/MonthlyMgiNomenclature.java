@@ -16,31 +16,15 @@ package org.gentar.mgi_nomen_clature;
  * License.
  *******************************************************************************/
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.JoinTable;
-import jakarta.persistence.ManyToMany;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
 import jakarta.persistence.SequenceGenerator;
-import java.util.Set;
-import javax.validation.constraints.Pattern;
 import lombok.AccessLevel;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
-import lombok.ToString;
 import org.gentar.BaseEntity;
-import org.gentar.audit.diff.IgnoreForAuditingChanges;
-import org.gentar.biology.gene.flag.GeneFlag;
-import org.gentar.biology.intention.project_intention_gene.ProjectIntentionGene;
-import org.gentar.biology.mutation.Mutation;
-import org.gentar.biology.species.Species;
 
 @NoArgsConstructor(access = AccessLevel.PUBLIC, force = true)
 @Data
