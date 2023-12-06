@@ -63,6 +63,7 @@ public class Colony extends BaseEntity implements ProcessData
     @ManyToOne
     private Status status;
 
+    @Column(columnDefinition="TEXT")
     private String genotypingComment;
 
     @IgnoreForAuditingChanges
