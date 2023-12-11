@@ -56,6 +56,8 @@ public class Guide extends BaseEntity
     @ManyToOne(targetEntity = GuideSource.class)
     private GuideSource guideSource;
 
+    private String gid;
+
     public String toString()
     {
         return "(seq=" + sequence + ", chr=" + chr + ", start=" + start
