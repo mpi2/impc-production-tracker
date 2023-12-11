@@ -56,7 +56,9 @@ public class AlleleSymbolConstructorImpl implements AlleleSymbolConstructor {
             result = result.replace(CONSORTIUM_ABBREVIATION_SECTION, consortiumAbbreviation);
         }
 
-        result = result.replace(ILAR_CODE_SECTION, symbolSuggestionRequest.getIlarCode()!=null?symbolSuggestionRequest.getIlarCode():"");
+        result = result.replace(ILAR_CODE_SECTION,
+            symbolSuggestionRequest.getIlarCode() != null ? symbolSuggestionRequest.getIlarCode() :
+                "");
 
         return result;
     }
@@ -74,9 +76,19 @@ public class AlleleSymbolConstructorImpl implements AlleleSymbolConstructor {
     }
 
     private int getNextId(String geneSymbol, String ilarCode) {
+
+
         String searchTerm = geneSymbol + "<" + getMutationType() + "%" + ilarCode + ">";
         List<Mutation> mutations = mutationRepository.findAllBySymbolLike(searchTerm);
-        return mutations.size() + 1;
+
+        Integer nextId = mutations.size() + 1;
+
+        for (Mutation mutation : mutations) {
+            if (nextId <= findSymbolNextId(mutation.getSymbol())) {
+                nextId = findSymbolNextId(mutation.getSymbol())+1;
+            }
+        }
+        return nextId;
     }
 
     /**
@@ -126,6 +138,35 @@ public class AlleleSymbolConstructorImpl implements AlleleSymbolConstructor {
             (!getEscAlleleClassName(mutation).equals("a") &&
                 !getEscAlleleClassName(mutation).equals("e") &&
                 !getEscAlleleClassName(mutation).equals("''"));
+    }
+
+
+    public static String extractTextAfterSymbol(String symbol) {
+        int index = symbol.indexOf('<');
+
+        if (index != -1 && index < symbol.length() - 1) {
+            // Found the symbol, and it's not the last character in the string
+            return symbol.substring(index + 1);
+        } else {
+            // Symbol not found or found at the end of the string
+            return null;
+        }
+    }
+
+    public static int findSymbolNextId(String symbol) {
+
+        String superScript = extractTextAfterSymbol(symbol);
+        String[] numbers = superScript.split("\\D+"); // Split by non-digit characters
+        int maxNumber = Integer.MIN_VALUE;
+
+        for (String number : numbers) {
+            if (!number.isEmpty()) {
+                int currentNumber = Integer.parseInt(number);
+                maxNumber = Math.max(maxNumber, currentNumber);
+            }
+        }
+
+        return maxNumber;
     }
 
 }
