@@ -183,7 +183,7 @@ class PlanControllerTest extends ControllerTestTemplate
         assertThat(historyDTO.getComment(), is("Plan updated"));
 
         List<HistoryDetailDTO> historyDetailDTOS = historyDTO.getDetails();
-        assertThat(historyDetailDTOS.size(), is(4));
+        assertThat(historyDetailDTOS.size(), is(6));
 
         HistoryDetailDTO historyDetailDTO1 =
                 getHistoryDetailByField(historyDetailDTOS, "comment");

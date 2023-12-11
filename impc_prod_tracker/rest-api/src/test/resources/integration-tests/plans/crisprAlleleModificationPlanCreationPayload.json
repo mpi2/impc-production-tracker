@@ -8,10 +8,10 @@
   "workUnitName":"BCM",
   "workGroupName":"BaSH",
   "comment":"crispr allele modification comment",
-  "esCellAlleleModificationStartingPoint":{
+  "crisprAlleleModificationStartingPoint":{
     "outcomeTpo":"TPO:000000000004"
   },
-  "esCellAlleleModificationAttempt":{
+  "crisprAlleleModificationAttempt":{
     "modificationExternalRef":"H-GNAO1-G05-TM1B",
     "numberOfCreMatingsSuccessful":3,
     "tatCre":true,
