@@ -11,12 +11,11 @@ public interface GuideRepository extends CrudRepository<Guide, Long> {
 
     @Transactional
     @Modifying
-    @Query(value = "UPDATE guide " +
-        "SET gid              = 'GID:' || LPAD(id::text, 12, '0'), " +
+    @Query(value = "UPDATE guide  " +
+        "SET gid = 'GID:' || LPAD(CAST(id AS VARCHAR(12)), 12, '0'), " +
         "    last_modified_by = 'mouse-informatics@ebi.ac.uk', " +
-        "    last_modified = now() " +
-        "where gid is null " +
-        "   or gid = '';",
+        "    last_modified = NOW() " +
+        "WHERE gid IS NULL OR gid = '';",
         nativeQuery = true)
     void updateGidForNull();
 }

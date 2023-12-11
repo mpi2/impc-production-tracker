@@ -287,7 +287,8 @@
             GUIDE_FORMAT_ID="1"
             GUIDE_SOURCE_ID="2"
             REVERSED="false"
-            SANGER_SERVICE="false" />
+            SANGER_SERVICE="false"
+            GID="GID:00000000001"/>
 
 
     <MUTAGENESIS_DONOR  ID="1"
