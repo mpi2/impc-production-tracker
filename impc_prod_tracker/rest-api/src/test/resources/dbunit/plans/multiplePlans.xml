@@ -438,7 +438,8 @@
             GUIDE_FORMAT_ID="1"
             GUIDE_SOURCE_ID="2"
             REVERSED="false"
-            SANGER_SERVICE="false" />
+            SANGER_SERVICE="false"
+            GID="GID:00000000001"/>
 
     <GUIDE  ID="2"
             ATTEMPT_ID="2"
@@ -455,7 +456,8 @@
             GUIDE_FORMAT_ID="2"
             GUIDE_SOURCE_ID="1"
             REVERSED="false"
-            SANGER_SERVICE="false" />
+            SANGER_SERVICE="false"
+            GID="GID:00000000002" />
 
     <MUTAGENESIS_DONOR  ID="1"
                         ATTEMPT_ID="1"
