@@ -217,9 +217,7 @@ public class AAPService
      */
     public void requestPasswordReset(String email) throws JsonProcessingException
     {
-        if (notWorkingWithProductionService()){
-            throw new UserOperationFailedException(NON_PRODUCTION_OPERATION_ERROR);
-        }
+
         PasswordResetRequest passwordResetRequest = new PasswordResetRequest();
         passwordResetRequest.userName = email.toLowerCase();
         passwordResetRequest.email = email.toLowerCase();
@@ -242,9 +240,6 @@ public class AAPService
      */
     public void changePassword(String email, String oldPassword, String newPassword) throws JsonProcessingException
     {
-        if (notWorkingWithProductionService()){
-            throw new UserOperationFailedException(NON_PRODUCTION_OPERATION_ERROR);
-        }
         PasswordChangeRequest passwordChangeRequest = new PasswordChangeRequest();
         passwordChangeRequest.password = newPassword;
 
