@@ -151,7 +151,7 @@ public class PlanFieldsDescriptors
                 "Whether or not the sequence come from the sanger wge service");
         addField(crisprFields, "crisprAttempt.guides[].formatName", "Format of the guide. For example: sgRNA.");
         addField(crisprFields, "crisprAttempt.guides[].sourceName", "Source of the guide. For example: in-house.");
-
+        addField(crisprFields, "crisprAttempt.guides[].gid", "Guide Id that out generated ");
         // Mutagenesis Donors
         addField(
             crisprFields,

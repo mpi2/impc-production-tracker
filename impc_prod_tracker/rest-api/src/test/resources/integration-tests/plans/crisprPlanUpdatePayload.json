@@ -41,7 +41,8 @@
         "reversed":false,
         "sangerService":false,
         "formatName":"sgRNA",
-        "sourceName":"commercial"
+        "sourceName":"commercial",
+        "gid":"GID:00000000001"
       }
     ],
     "mutagenesisDonors":[
