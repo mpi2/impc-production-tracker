@@ -44,7 +44,8 @@
               "reversed":false,
               "sangerService":false,
               "formatName":"sgRNA",
-              "sourceName":"commercial"
+              "sourceName":"commercial",
+              "gid":"GID:00000000001"
             }
           ],
           "mutagenesisDonors":[
@@ -185,7 +186,8 @@
               "reversed":false,
               "sangerService":false,
               "formatName":"cr-tracrRNA",
-              "sourceName":"in-house"
+              "sourceName":"in-house",
+              "gid":"GID:00000000002"
             }
           ],
           "mutagenesisDonors":[
