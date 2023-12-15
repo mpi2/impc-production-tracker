@@ -12,5 +12,4 @@ public class WebApiApplication {
 		SpringApplication.run(WebApiApplication.class, args);
 	}
 
-
 }
