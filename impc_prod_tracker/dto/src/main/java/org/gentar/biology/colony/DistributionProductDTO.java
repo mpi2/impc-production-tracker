@@ -14,4 +14,5 @@ public class DistributionProductDTO
     private String distributionNetworkName;
     private LocalDate startDate;
     private LocalDate endDate;
+    private String distributionIdentifier;
 }
