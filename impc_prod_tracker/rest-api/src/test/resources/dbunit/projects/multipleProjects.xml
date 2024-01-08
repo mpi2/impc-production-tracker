@@ -67,9 +67,13 @@
                 NAME="DTCC"/>
 
     <STATUS     ID="1"
-                NAME="Plan Created"/>
+                NAME="Plan Created"
+                IS_ABORTION_STATUS="false"
+                ORDERING="1000"/>
     <STATUS     ID="2"
-                NAME="Attempt In Progress"/>
+                NAME="Attempt In Progress"
+                IS_ABORTION_STATUS="false"
+                ORDERING="1100"/>
 
     <CONSORTIUM ID="1"
                 NAME="CMG"/>
