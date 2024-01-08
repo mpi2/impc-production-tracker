@@ -48,6 +48,7 @@ public class DistributionProductMapper implements Mapper<DistributionProduct, Di
         }
         distributionProductDTO.setStartDate(distributionProduct.getStartDate());
         distributionProductDTO.setEndDate(distributionProduct.getEndDate());
+        distributionProductDTO.setDistributionIdentifier(distributionProduct.getDistributionIdentifier());
         return distributionProductDTO;
     }
 
@@ -61,6 +62,7 @@ public class DistributionProductMapper implements Mapper<DistributionProduct, Di
         setProductType(distributionProduct, distributionProductDTO);
         distributionProduct.setStartDate(distributionProductDTO.getStartDate());
         distributionProduct.setEndDate(distributionProductDTO.getEndDate());
+        distributionProduct.setDistributionIdentifier(distributionProductDTO.getDistributionIdentifier());
         return distributionProduct;
     }
 
