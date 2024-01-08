@@ -35,6 +35,8 @@ public class WorkUnitsAttemptsExportController {
             attempt = "es cell";
         }  else if (attempt.equals("escellallelemodification")) {
             attempt = "es cell allele modification";
+        } else if (attempt.equals("crisprallelemodification")) {
+            attempt = "crispr allele modification";
         }
         workUnitAttemptsService
             .generateWorkUnitAttemptsReport(response, workUnit, attempt);

@@ -27,4 +27,6 @@ public class GuideDTO
 
     @JsonProperty("sourceName")
     private String sourceName;
+
+    private String gid;
 }

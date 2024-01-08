@@ -1,0 +1,33 @@
+{
+  "pin":"PIN:0000000011",
+  "tpn":"TPN:000000004",
+  "attemptTypeName":"crispr allele modification",
+  "funderNames":[
+    "KOMP"
+  ],
+  "workUnitName":"BCM",
+  "workGroupName":"BaSH",
+  "comment":null,
+  "crisprAlleleModificationStartingPoint":{
+    "_links":{
+      "outcome":{
+        "href":"http://localhost:8080/api/plans/PIN:0000000011/outcomes/TPO:000000000005"
+      },
+      "productionPlan":{
+        "href":"http://localhost:8080/api/plans/PIN:0000000011"
+      }
+    },
+    "outcomeTpo":"TPO:000000000005",
+    "productionPlanPin":"PIN:0000000011"
+  },
+  "crisprAlleleModificationAttempt":{
+    "modificationExternalRef":"GSF-EPD0045_1_B11-3-1",
+    "numberOfCreMatingsSuccessful":3,
+    "tatCre":true,
+    "deleterStrainName":"BALB/cJ"
+  },
+  "typeName":"production",
+  "statusTransition":{
+    "actionToExecute":null
+  }
+}

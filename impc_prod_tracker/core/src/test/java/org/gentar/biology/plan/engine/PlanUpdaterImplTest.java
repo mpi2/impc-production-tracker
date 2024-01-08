@@ -2,7 +2,6 @@ package org.gentar.biology.plan.engine;
 
 import static org.gentar.mockdata.MockData.PIN_000000001;
 import static org.gentar.mockdata.MockData.planMockData;
-import static org.gentar.mockdata.MockData.processEventMockData;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.lenient;
 
@@ -11,8 +10,8 @@ import org.gentar.audit.history.HistoryService;
 import org.gentar.biology.plan.Plan;
 import org.gentar.biology.plan.PlanRepository;
 import org.gentar.biology.plan.PlanStatusManager;
+import org.gentar.biology.plan.attempt.crispr.guide.GuideRepository;
 import org.gentar.biology.project.ProjectService;
-import org.gentar.statemachine.ProcessEvent;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -27,6 +26,8 @@ class PlanUpdaterImplTest {
     @Mock
     private PlanRepository planRepository;
     @Mock
+    private GuideRepository guideRepository;
+    @Mock
     private PlanValidator planValidator;
     @Mock
     private ProjectService projectService;
@@ -39,7 +40,7 @@ class PlanUpdaterImplTest {
     void setUp() {
         testInstance = new PlanUpdaterImpl(historyService,
             planRepository,
-            planValidator,
+            guideRepository, planValidator,
             projectService,
             planStatusManager);
     }

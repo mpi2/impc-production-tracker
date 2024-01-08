@@ -11,6 +11,7 @@ public enum AttemptTypesName implements LabeledType
     HAPLOESSENTIAL_CRISPR("haplo-essential crispr"),
     BREEDING("breeding"),
     ES_CELL_ALLELE_MODIFICATION("es cell allele modification"),
+    CRISPR_ALLELE_MODIFICATION("crispr allele modification"),
     ADULT_PHENOTYPING("adult and embryo phenotyping"),
     HAPLOESSENTIAL_PHENOTYPING("haplo-essential phenotyping");
 

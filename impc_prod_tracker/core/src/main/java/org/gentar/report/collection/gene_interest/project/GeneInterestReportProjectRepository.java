@@ -30,7 +30,7 @@ public interface GeneInterestReportProjectRepository extends CrudRepository<Proj
             "where " +
             "priv.name='public' and " +
             "pt.name='production' and " +
-            "at.name='crispr' ") // and " + "(ca.experimental IS NULL OR ca.experimental=false) ") // Critera used in iMits to exclude some data
+            "at.name IN ('crispr', 'crispr allele modification') ") // and " + "(ca.experimental IS NULL OR ca.experimental=false) ") // Critera used in iMits to exclude some data
     List<GeneInterestReportProjectProjection> findAllGeneInterestReportCrisprProjectProjections();
 
     @Query("select " +

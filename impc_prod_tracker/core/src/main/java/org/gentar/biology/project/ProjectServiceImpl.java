@@ -207,8 +207,10 @@ public class ProjectServiceImpl implements ProjectService {
             projectQueryHelper.getPlansByType(project, PlanTypeName.PRODUCTION);
         if (productionPlans != null) {
             productionPlans.forEach(x -> {
-                Set<Outcome> outcomes = x.getOutcomes();
-                productionOutcomes.addAll(outcomes);
+               if(!x.getAttemptType().getName().contains("modification")) {
+                   Set<Outcome> outcomes = x.getOutcomes();
+                   productionOutcomes.addAll(outcomes);
+               }
             });
         }
         return productionOutcomes;

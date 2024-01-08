@@ -35,7 +35,7 @@ public interface GeneInterestReportGeneRepository extends CrudRepository<Gene, L
             "INNER JOIN AssignmentStatus assign on p.assignmentStatus = assign " +
             "where " +
             "priv.name='public' and " +
-            "at.name='crispr' and " + // Ensure no haplo-essential production plans included (production plans are implicit) //            "crispr_attempt.experimental=false and " +    // Critera used in iMits to exclude some data
+            "at.name IN ('crispr', 'crispr allele modification') and " + // Ensure no haplo-essential production plans included (production plans are implicit) //            "crispr_attempt.experimental=false and " +    // Critera used in iMits to exclude some data
             "ot.name = 'Colony'  and " +
             "colony_status.name <> 'Colony Aborted' " // Make sure no mutations are linked to aborted colonies when looking for projects
     )

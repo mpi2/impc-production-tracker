@@ -1,0 +1,20 @@
+{
+  "tpn":"TPN:000000004",
+  "attemptTypeName":"crispr allele modification",
+  "typeName":"production",
+  "funderNames":[
+    "KOMP"
+  ],
+  "workUnitName":"BCM",
+  "workGroupName":"BaSH",
+  "comment":"crispr allele modification comment",
+  "crisprAlleleModificationStartingPoint":{
+    "outcomeTpo":"TPO:000000000004"
+  },
+  "crisprAlleleModificationAttempt":{
+    "modificationExternalRef":"H-GNAO1-G05-TM1B",
+    "numberOfCreMatingsSuccessful":3,
+    "tatCre":true,
+    "deleterStrainName":"C57BL/6NJ"
+  }
+}

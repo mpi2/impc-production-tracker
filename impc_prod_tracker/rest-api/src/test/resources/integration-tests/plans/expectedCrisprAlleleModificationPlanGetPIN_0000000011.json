@@ -1,0 +1,98 @@
+{
+  "pin":"PIN:0000000011",
+  "tpn":"TPN:000000004",
+  "attemptTypeName":"crispr allele modification",
+  "funderNames":[
+    "KOMP"
+  ],
+  "workUnitName":"BCM",
+  "workGroupName":"BaSH",
+  "comment":null,
+  "crisprAlleleModificationStartingPoint":{
+    "_links":{
+      "outcome":{
+        "href":"http://localhost:8080/api/plans/PIN:0000000011/outcomes/TPO:000000000005"
+      },
+      "productionPlan":{
+        "href":"http://localhost:8080/api/plans/PIN:0000000011"
+      }
+    },
+    "outcomeTpo":"TPO:000000000005",
+    "productionPlanPin":"PIN:0000000011"
+  },
+  "crisprAlleleModificationAttempt":{
+    "modificationExternalRef":"GSF-EPD0045_1_B11-3-1",
+    "numberOfCreMatingsSuccessful":1,
+    "tatCre":false,
+    "deleterStrainName":"BALB/cJ"
+  },
+  "typeName":"production",
+  "statusName":"Cre Excision Complete",
+  "summaryStatusName":"Cre Excision Complete",
+  "_links":{
+    "self":{
+      "href":"http://localhost:8080/api/plans/PIN:0000000011"
+    },
+    "project":{
+      "href":"http://localhost:8080/api/projects/TPN:000000004"
+    }
+  },
+  "statusDates":[
+    {
+      "statusName":"Plan Created",
+      "date":"2012-11-06T12:01:00"
+    },
+    {
+      "statusName":"Mouse Allele Modification Registered",
+      "date":"2012-11-06T12:08:00"
+    },
+    {
+      "statusName":"Cre Excision Started",
+      "date":"2013-02-02T12:42:00"
+    },
+    {
+      "statusName":"Cre Excision Complete",
+      "date":"2013-04-09T12:42:00"
+    }
+  ],
+  "summaryStatusDates":[
+    {
+      "statusName":"Plan Created",
+      "date":"2012-11-06T12:01:00"
+    },
+    {
+      "statusName":"Mouse Allele Modification Registered",
+      "date":"2012-11-06T12:08:00"
+    },
+    {
+      "statusName":"Cre Excision Started",
+      "date":"2013-02-02T12:42:00"
+    },
+    {
+      "statusName":"Cre Excision Complete",
+      "date":"2013-04-09T12:42:00"
+    }
+  ],
+  "statusTransition":{
+    "currentStatus":"Cre Excision Complete",
+    "transitions":[
+      {
+        "action":"updateToMouseAlleleModificationGenotypeConfirmed",
+        "description":"Update to Mouse Allele Modification Genotype Confirmed.",
+        "triggeredByUser":false,
+        "available":false,
+        "note":"A genotyped confirmed colony needs to be associated with the plan.",
+        "nextStatus":"Mouse Allele Modification Genotype Confirmed"
+      },
+      {
+        "action":"abortWhenCreExcisionComplete",
+        "description":"Abort an allele modification plan when Cre excision is complete",
+        "triggeredByUser":true,
+        "available":true,
+        "note":null,
+        "nextStatus":"Mouse Allele Modification Aborted"
+      }
+    ],
+    "actionToExecute":null
+  }
+}
