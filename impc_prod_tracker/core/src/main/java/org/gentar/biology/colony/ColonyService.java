@@ -24,4 +24,6 @@ public interface ColonyService
      * @return A {@link ProcessEvent} corresponding to the given 'name'.
      */
     ProcessEvent getProcessEventByName(Colony colony, String name);
+
+    Colony getColonyByColonyName(String name);
 }
