@@ -11,15 +11,14 @@ import java.util.List;
 @Component
 public class ColonyServiceImpl implements ColonyService {
 
-    private final PermissionService permissionService;
+
     private final ColonyRepository colonyRepository;
     private final ColonyStateMachineResolver colonyStateMachineResolver;
     private final TransitionAvailabilityEvaluator transitionAvailabilityEvaluator;
 
-    public ColonyServiceImpl(
-            PermissionService permissionService, ColonyRepository colonyRepository, ColonyStateMachineResolver colonyStateMachineResolver,
+    public ColonyServiceImpl(ColonyRepository colonyRepository, ColonyStateMachineResolver colonyStateMachineResolver,
             TransitionAvailabilityEvaluator transitionAvailabilityEvaluator) {
-        this.permissionService = permissionService;
+
         this.colonyRepository = colonyRepository;
         this.colonyStateMachineResolver = colonyStateMachineResolver;
         this.transitionAvailabilityEvaluator = transitionAvailabilityEvaluator;
@@ -39,11 +38,8 @@ public class ColonyServiceImpl implements ColonyService {
 
     @Override
     public Colony getColonyByColonyName(String name) {
+        return colonyRepository.findByNameAndLegacyModificationIsFalseIgnoreCase(name);
 
-        Colony colony = colonyRepository.findByNameAndLegacyModificationIsFalse(name);
-
-        boolean canUpdatePlan = permissionService.getPermissionByActionOnResource("canUpdatePlan", colony.getOutcome().getPlan().getPin());
-        return canUpdatePlan ? colony : null;
     }
 
 

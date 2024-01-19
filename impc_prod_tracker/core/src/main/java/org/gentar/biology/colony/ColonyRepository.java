@@ -26,5 +26,5 @@ public interface ColonyRepository extends CrudRepository<Colony, Long>
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     Colony findByName(String name);
 
-    Colony findByNameAndLegacyModificationIsFalse(String name);
+    Colony findByNameAndLegacyModificationIsFalseIgnoreCase(String name);
 }
