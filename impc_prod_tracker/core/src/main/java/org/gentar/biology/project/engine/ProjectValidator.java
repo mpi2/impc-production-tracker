@@ -204,7 +204,8 @@ public class ProjectValidator {
                     plan.getAttemptType().getName()));
             } else if (firstPlan.getAttemptType().getName().equals("es cell") &&
                 (plan.getAttemptType().getName().equals("crispr") ||
-                    plan.getAttemptType().getName().equals("haplo-essential crispr"))) {
+                    plan.getAttemptType().getName().equals("haplo-essential crispr")
+                ||plan.getAttemptType().getName().equals("crispr allele modification"))) {
                 throw new UserOperationFailedException(String.format(
                     "[%s] attempts are not allowed in this project.",
                     plan.getAttemptType().getName()));

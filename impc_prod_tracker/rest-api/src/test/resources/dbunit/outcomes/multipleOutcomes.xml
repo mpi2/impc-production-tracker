@@ -249,7 +249,8 @@ CCATGGATAGCCATATATCTGCGCAATCTGGCCTCCTTGACGCCATGACAGCAGCTGACCCGTGAGCACTGTGTAGTGGA
                             END_DATE="2018-11-09 00:00:00"
                             DISTRIBUTION_CENTRE_ID="1"
                             DISTRIBUTION_NETWORK_ID="1"
-                            PRODUCT_TYPE_ID="1"/>
+                            PRODUCT_TYPE_ID="1"
+                            DISTRIBUTION_IDENTIFIER="11"/>
 
     <MUTATION   ID="1"
                 MIN="MIN:000000000001"

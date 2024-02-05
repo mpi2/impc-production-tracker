@@ -1,22 +1,29 @@
 package org.gentar.biology.plan;
 
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.nullValue;
+import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
+
 import com.github.springtestdbunit.annotation.DatabaseOperation;
 import com.github.springtestdbunit.annotation.DatabaseSetup;
 import com.github.springtestdbunit.annotation.DatabaseTearDown;
-import java.io.UnsupportedEncodingException;
-import java.net.URLDecoder;
-import java.nio.charset.StandardCharsets;
+import java.io.IOException;
+import java.util.List;
 import org.gentar.audit.history.HistoryFieldsDescriptors;
 import org.gentar.biology.ChangeResponse;
 import org.gentar.common.history.HistoryDTO;
 import org.gentar.common.history.HistoryDetailDTO;
-import org.gentar.framework.*;
+import org.gentar.framework.ControllerTestTemplate;
+import org.gentar.framework.RestCaller;
+import org.gentar.framework.ResultValidator;
+import org.gentar.framework.SequenceResetter;
+import org.gentar.framework.TestResourceLoader;
 import org.gentar.framework.asserts.json.PlanCustomizations;
 import org.gentar.framework.db.DBSetupFilesPaths;
 import org.gentar.helpers.LinkUtil;
 import org.gentar.util.JsonHelper;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.skyscreamer.jsonassert.JSONAssert;
 import org.skyscreamer.jsonassert.JSONCompareMode;
@@ -24,13 +31,6 @@ import org.skyscreamer.jsonassert.comparator.CustomComparator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.restdocs.payload.FieldDescriptor;
 import org.springframework.test.web.servlet.ResultHandler;
-import java.io.IOException;
-import java.util.List;
-
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.nullValue;
-import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
 
 class PlanControllerTest extends ControllerTestTemplate
 {
@@ -428,6 +428,17 @@ class PlanControllerTest extends ControllerTestTemplate
     @Test
     @DatabaseSetup(DBSetupFilesPaths.MULTIPLE_PLANS)
     @DatabaseTearDown(type = DatabaseOperation.DELETE_ALL, value = DBSetupFilesPaths.MULTIPLE_PLANS)
+    void testGetOneCrisprAlleleModificationPlan() throws Exception
+    {
+        String url = "/api/plans/PIN:0000000011";
+        String expectedJson = getCompleteResourcePath("expectedCrisprAlleleModificationPlanGetPIN_0000000011.json");
+        String obtainedJson = restCaller.executeGetAndDocument(url, documentCrisprAlleleModificationPlan());
+        resultValidator.validateObtainedMatchesJson(obtainedJson, expectedJson);
+    }
+
+    @Test
+    @DatabaseSetup(DBSetupFilesPaths.MULTIPLE_PLANS)
+    @DatabaseTearDown(type = DatabaseOperation.DELETE_ALL, value = DBSetupFilesPaths.MULTIPLE_PLANS)
     void testGetCanAddOutcome() throws Exception
     {
         String url = "/api/plans/can-create-outcome/PIN:0000000009";
@@ -445,6 +456,18 @@ class PlanControllerTest extends ControllerTestTemplate
 
         return document("plans/getEsCellAlleleModificationPlan",
                 responseFields(esCellAlleleModificationPlanFieldsDescriptions));
+    }
+
+    private ResultHandler documentCrisprAlleleModificationPlan()
+    {
+        List<FieldDescriptor> crisprAlleleModificationPlanFieldsDescriptions =
+            PlanFieldsDescriptors.getSharedFieldDescriptions();
+
+        crisprAlleleModificationPlanFieldsDescriptions.
+            addAll(PlanFieldsDescriptors.getCrisprAlleleModificationFieldDescriptors());
+
+        return document("plans/getCrisprAlleleModificationPlan",
+            responseFields(crisprAlleleModificationPlanFieldsDescriptions));
     }
 
     @Test
@@ -581,5 +604,59 @@ class PlanControllerTest extends ControllerTestTemplate
         String obtainedEsCellPlan = restCaller.executeGet(esCellPlanUrl);
         resultValidator.validateObtainedMatchesJson(
                 obtainedEsCellPlan, expectedJson, PlanCustomizations.ignoreIdsAndPinAndDates());
+    }
+
+    @Test
+    @DatabaseSetup(DBSetupFilesPaths.MULTIPLE_PLANS)
+    @DatabaseTearDown(type = DatabaseOperation.DELETE_ALL, value = DBSetupFilesPaths.MULTIPLE_PLANS)
+    void testUpdateCrisprAlleleModificationAttemptPlan() throws Exception
+    {
+        sequenceResetter.syncSequence("PLAN_STATUS_STAMP_SEQ", "PLAN_STATUS_STAMP");
+        sequenceResetter.syncSequence("PLAN_SUMMARY_STATUS_STAMP_SEQ", "PLAN_SUMMARY_STATUS_STAMP");
+        sequenceResetter.syncSequence("HISTORY_SEQ", "HISTORY");
+        sequenceResetter.syncSequence("HISTORY_DETAIL_SEQ", "HISTORY_DETAIL");
+
+        String payload = loadFromResource("crisprAlleleModificationPlanUpdatePayload.json");
+        String url = "/api/plans/PIN:0000000011";
+        String expectedJson =
+            getCompleteResourcePath("expectedUpdatedCrisprAlleleModificationPlanGetPIN_0000000011.json");
+        String obtainedJson =
+            restCaller.executePutAndDocument(url, payload, document("plans/putCrisprAlleleModificationPlan"));
+
+        ChangeResponse changeResponse = JsonHelper.fromJson(obtainedJson, ChangeResponse.class);
+        verifyChangeResponseCrisprAlleleModification(changeResponse);
+
+        String attemptLink = LinkUtil.getSelfHrefLinkStringFromJson(obtainedJson);
+         verifyUpdatedCrisprAlleleModificationPlan(attemptLink, expectedJson);
+    }
+
+    private void verifyChangeResponseCrisprAlleleModification(ChangeResponse changeResponse)
+    {
+        List<HistoryDTO> historyDTOS = changeResponse.getHistoryDTOs();
+        assertThat(historyDTOS.size(), is(1));
+
+        HistoryDTO historyDTO = historyDTOS.get(0);
+        assertThat(historyDTO.getComment(), is("Plan updated"));
+
+        List<HistoryDetailDTO> historyDetailDTOS = historyDTO.getDetails();
+        assertThat(historyDetailDTOS.size(), is(2));
+
+        HistoryDetailDTO historyDetailDTO1 =
+            getHistoryDetailByField(historyDetailDTOS, "crisprAlleleModificationAttempt.numberOfCreMatingsSuccessful");
+        assertThat(historyDetailDTO1.getOldValue(), is("1"));
+        assertThat(historyDetailDTO1.getNewValue(), is("3"));
+
+        HistoryDetailDTO historyDetailDTO2 =
+            getHistoryDetailByField(historyDetailDTOS, "crisprAlleleModificationAttempt.tatCre");
+        assertThat(historyDetailDTO2.getOldValue(), is("false"));
+        assertThat(historyDetailDTO2.getNewValue(), is("true"));
+    }
+
+    private void verifyUpdatedCrisprAlleleModificationPlan(
+        String crisprPlanUrl, String expectedJson) throws Exception
+    {
+        String obtainedCrisprPlan = restCaller.executeGet(crisprPlanUrl);
+        resultValidator.validateObtainedMatchesJson(
+            obtainedCrisprPlan, expectedJson, PlanCustomizations.ignoreIdsAndPinAndDates());
     }
 }

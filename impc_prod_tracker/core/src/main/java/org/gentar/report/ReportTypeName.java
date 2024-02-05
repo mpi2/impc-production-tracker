@@ -77,7 +77,12 @@ public enum ReportTypeName implements LabeledType {
                                FALSE),
     ALL_INACTIVE_PROJECT_REPORT("all_inactive_project_report",
                                    "This report is to list all genes that has that all project are inactive status.",
-                               FALSE);
+                               FALSE),
+
+    PRODUCTS_ALLELE("products_allele",
+                           "This report is used by IMPC to support the data release.",
+                   FALSE);
+
     private static final Map<String, ReportTypeName> BY_LABEL = new HashMap<>();
     static
     {

@@ -2,7 +2,7 @@ package org.gentar.biology.outcome;
 
 import org.gentar.Mapper;
 import org.gentar.biology.colony.Colony;
-import org.gentar.biology.colony.ColonyMapper;
+import org.gentar.biology.colony.mappers.ColonyMapper;
 import org.gentar.biology.specimen.Specimen;
 import org.gentar.biology.specimen.SpecimenMapper;
 import org.springframework.stereotype.Component;
@@ -10,8 +10,8 @@ import org.springframework.stereotype.Component;
 @Component
 public class OutcomeCommonMapper implements Mapper<Outcome, OutcomeCommonDTO>
 {
-    private ColonyMapper colonyMapper;
-    private SpecimenMapper specimenMapper;
+    private final ColonyMapper colonyMapper;
+    private final SpecimenMapper specimenMapper;
 
     public OutcomeCommonMapper(ColonyMapper colonyMapper, SpecimenMapper specimenMapper)
     {

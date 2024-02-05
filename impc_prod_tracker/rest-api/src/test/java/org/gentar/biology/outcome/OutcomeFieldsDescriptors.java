@@ -80,6 +80,10 @@ public class OutcomeFieldsDescriptors
         statusTransitionFieldsDescriptors.forEach(x -> {
             addField(outcomeFieldDescriptions, "colony." + x.getPath(), x.getDescription().toString());
         });
+        addField(
+                outcomeFieldDescriptions,
+                "colony.distributionProducts[].distributionIdentifier",
+                "Rr id for distribution.");
         return outcomeFieldDescriptions;
     }
 

@@ -42,10 +42,8 @@ public class Status extends BaseEntity
     private String description;
 
     @NotNull
-    @Column(columnDefinition = "bigint default 0")
     private Integer ordering;
 
     @NotNull
-    @Column(columnDefinition = "boolean default false")
     private Boolean isAbortionStatus;
 }

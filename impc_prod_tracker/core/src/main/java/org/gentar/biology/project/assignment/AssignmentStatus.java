@@ -40,6 +40,5 @@ public class AssignmentStatus extends BaseEntity
     private String description;
 
     @NotNull
-    @Column(columnDefinition = "bigint default 0")
     private Integer ordering;
 }

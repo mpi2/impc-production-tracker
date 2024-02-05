@@ -2,7 +2,7 @@ package org.gentar.biology.outcome;
 
 import org.gentar.biology.colony.Colony;
 import org.gentar.biology.colony.ColonyDTO;
-import org.gentar.biology.colony.ColonyMapper;
+import org.gentar.biology.colony.mappers.ColonyMapper;
 import org.gentar.biology.specimen.Specimen;
 import org.gentar.biology.specimen.SpecimenDTO;
 import org.gentar.biology.specimen.SpecimenMapper;

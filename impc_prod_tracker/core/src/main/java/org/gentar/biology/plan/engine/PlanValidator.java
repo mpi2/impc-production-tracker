@@ -5,6 +5,7 @@ import org.gentar.biology.plan.attempt.AttemptType;
 import org.gentar.biology.plan.attempt.AttemptTypeChecker;
 import org.gentar.biology.plan.attempt.AttemptTypeService;
 import org.gentar.biology.plan.attempt.AttemptTypesName;
+import org.gentar.biology.plan.attempt.crispr_allele_modification.CrisprAlleleModificationValidator;
 import org.gentar.biology.plan.attempt.es_cell_allele_modification.EsCellAlleleModificationValidator;
 import org.gentar.biology.plan.attempt.crispr.CrisprAttemptValidator;
 import org.gentar.biology.plan.attempt.phenotyping.PhenotypeAttemptValidator;
@@ -42,6 +43,7 @@ public class PlanValidator
     private final PhenotypeAttemptValidator phenotypeAttemptValidator;
     private final ColonyValidator colonyValidator;
     private final EsCellAlleleModificationValidator esCellAlleleModificationValidator;
+    private final CrisprAlleleModificationValidator crisprAlleleModificationValidator;
 
     private static final String ATTEMPT_TYPE_PLAN_TYPE_INVALID_ASSOCIATION =
         "The attempt type [%s] cannot be associated with a plan with type [%s].";
@@ -54,7 +56,8 @@ public class PlanValidator
             ResourceAccessChecker<Plan> resourceAccessChecker,
             ProjectValidator projectValidator,
             PhenotypeAttemptValidator phenotypeAttemptValidator,
-            ColonyValidator colonyValidator, EsCellAlleleModificationValidator esCellAlleleModificationValidator)
+            ColonyValidator colonyValidator, EsCellAlleleModificationValidator esCellAlleleModificationValidator,
+            CrisprAlleleModificationValidator crisprAlleleModificationValidator)
     {
         this.crisprAttemptValidator = crisprAttemptValidator;
         this.attemptTypeService = attemptTypeService;
@@ -64,6 +67,7 @@ public class PlanValidator
         this.phenotypeAttemptValidator = phenotypeAttemptValidator;
         this.colonyValidator = colonyValidator;
         this.esCellAlleleModificationValidator = esCellAlleleModificationValidator;
+        this.crisprAlleleModificationValidator = crisprAlleleModificationValidator;
     }
 
     /**
@@ -87,6 +91,16 @@ public class PlanValidator
 
         }
         if (AttemptTypeChecker.ES_CELL_ALLELE_MODIFICATION_TYPE.equalsIgnoreCase(AttemptTypeChecker.getAttemptTypeName(plan)))
+        {
+            Set<PlanStartingPoint> planStartingPoints = plan.getPlanStartingPoints();
+            if (planStartingPoints != null)
+            {
+                planStartingPoints.forEach(x -> colonyValidator.validateDataForStartingPoint(x.getOutcome().getColony()));
+            } else {
+                throw new UserOperationFailedException(String.format(NULL_OBJECT_ERROR, "Starting Point (outcome)"));
+            }
+        }
+        if (AttemptTypeChecker.CRISPR_ALLELE_MODIFICATION_TYPE.equalsIgnoreCase(AttemptTypeChecker.getAttemptTypeName(plan)))
         {
             Set<PlanStartingPoint> planStartingPoints = plan.getPlanStartingPoints();
             if (planStartingPoints != null)
@@ -169,6 +183,10 @@ public class PlanValidator
         if (AttemptTypeChecker.ES_CELL_ALLELE_MODIFICATION_TYPE.equalsIgnoreCase(AttemptTypeChecker.getAttemptTypeName(plan)))
         {
             esCellAlleleModificationValidator.validateModificationExternalRefNotNull(plan.getEsCellAlleleModificationAttempt());
+        }
+        if (AttemptTypeChecker.CRISPR_ALLELE_MODIFICATION_TYPE.equalsIgnoreCase(AttemptTypeChecker.getAttemptTypeName(plan)))
+        {
+            crisprAlleleModificationValidator.validateModificationExternalRefNotNull(plan.getCrisprAlleleModificationAttempt());
         }
         if (AttemptTypeChecker.PHENOTYPING_TYPE.equalsIgnoreCase(AttemptTypeChecker.getAttemptTypeName(plan)))
         {

@@ -35,7 +35,8 @@
         "pam":"TGG",
         "guideSequence":"CTTCACGTACCAAGGAGGGG",
         "formatName":"sgRNA",
-        "sourceName":"commercial"
+        "sourceName":"commercial",
+        "gid":"GID:00000000001"
       }
     ],
     "mutagenesisDonors":[

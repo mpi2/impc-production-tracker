@@ -27,6 +27,7 @@ import org.gentar.biology.plan.attempt.AttemptType;
 import org.gentar.biology.plan.attempt.AttemptTypeService;
 import org.gentar.biology.plan.attempt.AttemptTypesName;
 import org.gentar.biology.plan.attempt.crispr.CrisprAttemptValidator;
+import org.gentar.biology.plan.attempt.crispr_allele_modification.CrisprAlleleModificationValidator;
 import org.gentar.biology.plan.attempt.es_cell_allele_modification.EsCellAlleleModificationValidator;
 import org.gentar.biology.plan.attempt.phenotyping.PhenotypeAttemptValidator;
 import org.gentar.biology.plan.engine.PlanCreator;
@@ -91,6 +92,8 @@ class PlanServiceImplTest {
     private ColonyValidator colonyValidator;
     @Mock
     private EsCellAlleleModificationValidator esCellAlleleModificationValidator;
+    @Mock
+    private CrisprAlleleModificationValidator crisprAlleleModificationValidator;
 
     private static final String PLAN_NOT_EXISTS_ERROR =
         "The plan[%s] does not exist.";
@@ -115,7 +118,8 @@ class PlanServiceImplTest {
                 projectValidator,
                 phenotypeAttemptValidator,
                 colonyValidator,
-                esCellAlleleModificationValidator);
+                esCellAlleleModificationValidator,
+                crisprAlleleModificationValidator);
     }
 
 

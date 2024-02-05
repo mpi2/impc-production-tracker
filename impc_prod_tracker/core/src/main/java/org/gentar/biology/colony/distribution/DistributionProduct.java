@@ -41,6 +41,9 @@ public class DistributionProduct extends BaseEntity
     @Column(name = "end_date")
     private LocalDate endDate;
 
+    @Column(name = "distributionIdentifier")
+    private String distributionIdentifier;
+
     public String toString()
     {
         String distributionCentreName =
@@ -50,6 +53,6 @@ public class DistributionProduct extends BaseEntity
             distributionNetwork == null ? "Not defined" : distributionNetwork.getName();
         return "id:" +id + ", distributionCentre:" + distributionCentreName + ", productType: "
             + productTypeName + ", distributionNetworkName:" +distributionNetworkName
-            + ", startDate: " + startDate + ", endDate:" + endDate;
+            + ", startDate: " + startDate + ", endDate:" + endDate+ ", distributionIdentifier:" + distributionIdentifier;
     }
 }
