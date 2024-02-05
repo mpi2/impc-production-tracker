@@ -58,7 +58,7 @@ public class GeneController {
     @GetMapping(value = {"/genesNamesInExternalData"})
     public List<String> getGenesNamesInExternalData (@RequestParam String input)
     {
-        validateInput(input);
+
         List<Gene> data = geneExternalService.getGenesFromExternalDataBySymbolOrAccId(input);
         return data.stream().map(Gene::getSymbol).collect(Collectors.toList());
     }

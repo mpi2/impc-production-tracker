@@ -1,6 +1,7 @@
-package org.gentar.biology.colony;
+package org.gentar.biology.colony.mappers;
 
 import org.gentar.Mapper;
+import org.gentar.biology.colony.DistributionProductDTO;
 import org.gentar.biology.colony.distribution.DistributionProduct;
 import org.gentar.biology.colony.distribution.distribution_network.DistributionNetwork;
 import org.gentar.biology.colony.distribution.distribution_network.DistributionNetworkService;
@@ -13,9 +14,9 @@ import org.springframework.stereotype.Component;
 @Component
 public class DistributionProductMapper implements Mapper<DistributionProduct, DistributionProductDTO>
 {
-    private WorkUnitService workUnitService;
-    private DistributionNetworkService distributionNetworkService;
-    private ProductTypeService productTypeService;
+    private final WorkUnitService workUnitService;
+    private final DistributionNetworkService distributionNetworkService;
+    private final ProductTypeService productTypeService;
 
     public DistributionProductMapper(
         WorkUnitService workUnitService,

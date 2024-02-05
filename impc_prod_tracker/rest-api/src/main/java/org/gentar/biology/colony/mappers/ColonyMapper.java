@@ -1,7 +1,10 @@
-package org.gentar.biology.colony;
+package org.gentar.biology.colony.mappers;
 
 import org.gentar.EntityMapper;
 import org.gentar.Mapper;
+import org.gentar.biology.colony.Colony;
+import org.gentar.biology.colony.ColonyDTO;
+import org.gentar.biology.colony.ColonyService;
 import org.gentar.biology.colony.distribution.DistributionProduct;
 import org.gentar.biology.status.StatusStampMapper;
 import org.gentar.biology.status_stamps.StatusStampsDTO;
@@ -20,12 +23,12 @@ import java.util.Set;
 @Component
 public class ColonyMapper implements Mapper<Colony, ColonyDTO>
 {
-    private EntityMapper entityMapper;
-    private StrainMapper strainMapper;
-    private ColonyService colonyService;
-    private TransitionMapper transitionMapper;
-    private StatusStampMapper statusStampMapper;
-    private DistributionProductMapper distributionProductMapper;
+    private final EntityMapper entityMapper;
+    private final StrainMapper strainMapper;
+    private final ColonyService colonyService;
+    private final TransitionMapper transitionMapper;
+    private final StatusStampMapper statusStampMapper;
+    private final DistributionProductMapper distributionProductMapper;
 
     public ColonyMapper(
         EntityMapper entityMapper,
