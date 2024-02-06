@@ -1,9 +1,5 @@
 package org.gentar.biology.targ_rep.allele;
 
-import static org.junit.jupiter.api.Assertions.*;
-
-import java.util.Arrays;
-import java.util.List;
 import org.gentar.biology.targ_rep.gene.TargRepGene;
 import org.gentar.exceptions.NotFoundException;
 import org.junit.jupiter.api.BeforeEach;
@@ -17,6 +13,10 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+
+import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(MockitoExtension.class)
 class TargRepAlleleServiceImplTest {
@@ -57,9 +57,9 @@ class TargRepAlleleServiceImplTest {
         TargRepGene gene = getTargRepGene(44909L, "Spanxn4");
 
         Mockito.when(alleleRepository.findByGene(gene))
-            .thenReturn(Arrays.asList(getTargRepAllele()));
+            .thenReturn(List.of(getTargRepAllele()));
         List<TargRepAllele> targRepAllele = testInstance.getTargRepAllelesByGeneFailIfNull(gene);
-        assertEquals("GRCm38", targRepAllele.get(0).getAssembly());
+        assertEquals("GRCm38", targRepAllele.getFirst().getAssembly());
 
     }
 
@@ -91,7 +91,7 @@ class TargRepAlleleServiceImplTest {
     @DisplayName("getPageableTargRepAllele Should Find Pageable")
     void getPageableTargRepAllele() {
         Pageable pageable = PageRequest.of(0, 1);
-        final Page<TargRepAllele> page = new PageImpl<>(Arrays.asList(getTargRepAllele()));
+        final Page<TargRepAllele> page = new PageImpl<>(List.of(getTargRepAllele()));
         Mockito.when(alleleRepository.findAll(pageable))
             .thenReturn(page);
 

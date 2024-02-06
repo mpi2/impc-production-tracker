@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class SequenceService
 {
-    private SequenceRepository sequenceRepository;
+    private final SequenceRepository sequenceRepository;
 
     private static final String NOT_FOUND_ERROR = "The sequence with if [%s] does not exist.";
 

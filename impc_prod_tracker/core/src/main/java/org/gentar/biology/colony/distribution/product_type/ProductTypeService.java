@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class ProductTypeService
 {
-    private ProductTypeRepository productTypeRepository;
+    private final ProductTypeRepository productTypeRepository;
 
     public ProductTypeService(ProductTypeRepository productTypeRepository)
     {

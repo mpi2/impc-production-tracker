@@ -1,11 +1,5 @@
 package org.gentar.biology.targ_rep.allele;
 
-import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
-import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
-
-import java.io.UnsupportedEncodingException;
-import java.net.URLDecoder;
-import java.nio.charset.StandardCharsets;
 import org.gentar.Mapper;
 import org.gentar.biology.targ_rep.TargRepAlleleResponseDTO;
 import org.gentar.biology.targ_rep.TargRepMutationSubtypeDTO;
@@ -13,6 +7,12 @@ import org.gentar.biology.targ_rep.TargRepMutationTypeDTO;
 import org.gentar.biology.targ_rep.allele.DistributionQc.MgiAlleleAccessionMapper;
 import org.springframework.hateoas.Link;
 import org.springframework.stereotype.Component;
+
+import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
+
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 /**
  * TargRepAlleleResponseMapper.
@@ -128,11 +128,6 @@ public class TargRepAlleleResponseMapper
     }
 
     private static String decode(String value) {
-        try {
-            return URLDecoder.decode(value, StandardCharsets.UTF_8.toString());
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        }
-        return value;
+        return URLDecoder.decode(value, StandardCharsets.UTF_8);
     }
 }

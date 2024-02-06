@@ -18,7 +18,7 @@ import org.springframework.util.CollectionUtils;
 
 @Component
 public class ConfirmGenotypeProcessor extends AbstractProcessor {
-    private SequenceService sequenceService;
+    private final SequenceService sequenceService;
 
     public ConfirmGenotypeProcessor(
         ColonyStateSetter colonyStateSetter, SequenceService sequenceService) {
@@ -31,7 +31,7 @@ public class ConfirmGenotypeProcessor extends AbstractProcessor {
         TransitionEvaluation transitionEvaluation = new TransitionEvaluation();
         transitionEvaluation.setTransition(transition);
 
-        if (((Colony) data).getOutcome().getMutations() != null && ((Colony) data).getOutcome().getMutations().size() == 0) {
+        if (((Colony) data).getOutcome().getMutations() != null && ((Colony) data).getOutcome().getMutations().isEmpty()) {
             transitionEvaluation
                 .setNote("The colony must have at least one mutation to move to the Genotype Confirmed state.");
         } else {
@@ -60,7 +60,7 @@ public class ConfirmGenotypeProcessor extends AbstractProcessor {
             return false;
         }
         for (Mutation mutation : colony.getOutcome().getMutations()) {
-            if (colony.getLegacyWithoutSequence() && !alleleSymbolExists(mutation)) {
+            if (colony.getLegacyWithoutSequence() && alleleSymbolExists(mutation)) {
                 return false;
             }
         }
@@ -71,11 +71,11 @@ public class ConfirmGenotypeProcessor extends AbstractProcessor {
         Set<Mutation> mutations = outcome.getMutations();
         for (Mutation mutation : mutations) {
             if (isEsCellAttempt(outcome)) {
-                if (!alleleSymbolExists(mutation)) {
+                if (alleleSymbolExists(mutation)) {
                     return false;
                 }
             } else if (!atLeastOneOutcomeSequenceExist(mutation)
-                || !alleleSymbolExists(mutation)) {
+                || alleleSymbolExists(mutation)) {
 
                 return false;
             }
@@ -99,7 +99,7 @@ public class ConfirmGenotypeProcessor extends AbstractProcessor {
     }
 
     private boolean alleleSymbolExists(Mutation mutation) {
-        return mutation.getSymbol() != null && !mutation.getSymbol().equals("");
+        return mutation.getSymbol() == null || mutation.getSymbol().isEmpty();
     }
 
     private boolean isEsCellAttempt(Outcome outcome) {

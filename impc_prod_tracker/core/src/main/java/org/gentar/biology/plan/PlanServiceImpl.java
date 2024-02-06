@@ -90,15 +90,14 @@ public class PlanServiceImpl implements PlanService
     public Page<Plan> getPageablePlans(Pageable page, PlanFilter planFilter)
     {
         Specification<Plan> specifications = buildSpecificationsWithCriteria(planFilter);
-        Page<Plan> plans = planRepository.findAll(specifications, page);
-        return plans;
+        return planRepository.findAll(specifications, page);
         //List<Plan> plans = getPlans(planFilter);
         //return new PageImpl<>(plans, page, plans.size());
     }
 
     private Specification<Plan> buildSpecificationsWithCriteria(PlanFilter planFilter)
     {
-        Specification<Plan> specifications =
+       return
             Specification.where(PlanSpecs.withProjectTpns(planFilter.getTpns()))
                 .and(Specification.where(PlanSpecs.withWorkUnitNames(planFilter.getWorkUnitNames())))
                 .and(Specification.where(PlanSpecs.withWorkGroupNames(planFilter.getWorGroupNames())))
@@ -117,7 +116,7 @@ public class PlanServiceImpl implements PlanService
                         PlanSpecs.withPhenotypingExternalRefs(planFilter.getPhenotypingExternalRefs())))
                 .and(Specification.where(
                         PlanSpecs.withDoNotCountTowardsCompleteness(planFilter.getDoNotCountTowardsCompleteness())));
-        return specifications;
+
     }
 
     @Override

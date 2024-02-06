@@ -16,7 +16,7 @@ import java.util.stream.Collectors;
 class PropertyMapGrouper
 {
     static final String ROOT = "root";
-    private Map<String, Map<String, ChangeEntry>> groupedProperties = new HashMap<>();
+    private final Map<String, Map<String, ChangeEntry>> groupedProperties = new HashMap<>();
     private static final String PROPERTY_NAME_SEPARATOR = ".";
     private static final String ELEMENT_IN_A_COLLECTION_IDENTIFIER = "#";
 

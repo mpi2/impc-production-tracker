@@ -10,7 +10,7 @@ import java.util.List;
 @Component
 public class EntityMapper
 {
-    private ModelMapper modelMapper;
+    private final ModelMapper modelMapper;
 
     public EntityMapper(ModelMapper modelMapper)
     {

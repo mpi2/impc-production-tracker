@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class ProjectCsvRecordMapper implements Mapper<Project, ProjectCsvRecord>
 {
-    private ProjectQueryHelper projectQueryHelper;
+    private final ProjectQueryHelper projectQueryHelper;
     private static final String SEPARATOR = ",";
 
     public ProjectCsvRecordMapper(ProjectQueryHelper projectQueryHelper)

@@ -1,24 +1,7 @@
 package org.gentar.report.collection.mgi_crispr_allele;
 
-import static org.gentar.mockdata.MockData.geneMockData;
-import static org.gentar.mockdata.MockData.mgiCrisprAlleleReportColonyProjectionMockData;
-import static org.gentar.mockdata.MockData.mgiCrisprAlleleReportGenotypePrimerProjectionMockData;
-import static org.gentar.mockdata.MockData.mgiCrisprAlleleReportGuideProjectionMockData;
-import static org.gentar.mockdata.MockData.mgiCrisprAlleleReportMutagenesisDonorProjectionMockData;
-import static org.gentar.mockdata.MockData.mgiCrisprAlleleReportMutationCategorizationProjectionMockData;
-import static org.gentar.mockdata.MockData.mgiCrisprAlleleReportMutationSequenceProjectionMockData;
-import static org.gentar.mockdata.MockData.mgiCrisprAlleleReportNucleaseProjectionMockData;
-import static org.gentar.mockdata.MockData.mgiCrisprAlleleReportOutcomeMutationProjectionMockData;
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.lenient;
-
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
 import org.gentar.biology.gene.Gene;
 import org.gentar.report.ReportService;
-import org.gentar.report.collection.mgi_crispr_allele.colony.MgiCrisprAlleleReportColonyProjection;
 import org.gentar.report.collection.mgi_crispr_allele.colony.MgiCrisprAlleleReportColonyService;
 import org.gentar.report.collection.mgi_crispr_allele.genotype_primer.MgiCrisprAlleleReportGenotypePrimerProjection;
 import org.gentar.report.collection.mgi_crispr_allele.guide.MgiCrisprAlleleReportGuideProjection;
@@ -38,6 +21,15 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+import static org.gentar.mockdata.MockData.*;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.mockito.Mockito.lenient;
 
 @ExtendWith(MockitoExtension.class)
 class MgiCrisprAlleleReportServiceImplTest {

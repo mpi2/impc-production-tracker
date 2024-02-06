@@ -6,7 +6,6 @@ public interface GeneInterestReportOutcomeService {
 
     /**
      *
-     * @param outcomeIds
      * @return a list of GeneInterestReportOutcomeMutationProjection Spring database projections containing
      *         an Outcome Id and the associated Mutation Id and Mutation Symbol
      */

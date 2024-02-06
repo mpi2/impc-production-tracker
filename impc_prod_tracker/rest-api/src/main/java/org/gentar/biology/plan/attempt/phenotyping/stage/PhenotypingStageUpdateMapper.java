@@ -8,8 +8,8 @@ import org.springframework.stereotype.Component;
 @Component
 public class PhenotypingStageUpdateMapper implements Mapper<PhenotypingStage, PhenotypingStageUpdateDTO>
 {
-    private PhenotypingStageCommonMapper phenotypingStageCommonMapper;
-    private PhenotypingStageService phenotypingStageService;
+    private final PhenotypingStageCommonMapper phenotypingStageCommonMapper;
+    private final PhenotypingStageService phenotypingStageService;
 
     public PhenotypingStageUpdateMapper(PhenotypingStageCommonMapper phenotypingStageCommonMapper,
                                         PhenotypingStageService phenotypingStageService)

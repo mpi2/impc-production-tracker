@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class SequenceTypeMapper implements Mapper<SequenceType, String>
 {
-    private SequenceTypeService sequenceTypeService;
+    private final SequenceTypeService sequenceTypeService;
 
     private static final String SEQUENCE_TYPE_NOT_FOUND_ERROR = "Sequence type '%s' does not exist.";
 

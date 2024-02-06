@@ -22,7 +22,7 @@ import org.gentar.biology.gene_list.record.GeneByListRecordRepository;
 @Component
 public class GeneByGeneListRecordService
 {
-    private GeneByListRecordRepository geneByListRecordRepository;
+    private final GeneByListRecordRepository geneByListRecordRepository;
 
     public GeneByGeneListRecordService(
         GeneByListRecordRepository geneByListRecordRepository)

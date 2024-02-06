@@ -10,8 +10,8 @@ import java.util.*;
 @Component
 public class CrisprAttemptReagentMapper implements Mapper<CrisprAttemptReagent, CrisprAttemptReagentDTO>
 {
-    private EntityMapper entityMapper;
-    private ReagentMapper reagentMapper;
+    private final EntityMapper entityMapper;
+    private final ReagentMapper reagentMapper;
 
     public CrisprAttemptReagentMapper(EntityMapper entityMapper, ReagentMapper reagentMapper)
     {

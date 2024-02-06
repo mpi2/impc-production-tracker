@@ -1,5 +1,6 @@
 package org.gentar.biology.location;
 
+import jakarta.persistence.*;
 import lombok.*;
 import org.gentar.BaseEntity;
 import org.gentar.audit.diff.IgnoreForAuditingChanges;
@@ -7,11 +8,8 @@ import org.gentar.biology.sequence_location.SequenceLocation;
 import org.gentar.biology.species.Species;
 import org.gentar.biology.strain.Strain;
 
-import jakarta.persistence.*;
 import javax.validation.constraints.Pattern;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 
 @NoArgsConstructor(access= AccessLevel.PUBLIC, force=true)
@@ -30,7 +28,7 @@ public class Location extends BaseEntity
 
     private Long stop;
 
-    @Pattern(regexp = "^[\\+-\\?]{1}$", message = "The values allowed for the strand are: '+', '-', or if the value es unknown enter '?'.")
+    @Pattern(regexp = "^[+-?]{1}$", message = "The values allowed for the strand are: '+', '-', or if the value es unknown enter '?'.")
     private String strand;
 
     private String genomeBuild;

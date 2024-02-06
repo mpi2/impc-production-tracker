@@ -18,7 +18,7 @@ public class PipelineFieldsDescriptors {
         addField(pipelineFieldsDescriptions, prefix + "geneTrap",
             "generic transcriptome analysis pipeline");
         addField(pipelineFieldsDescriptions, prefix + "_links.self.href", "Pipeline Link");
-        if (!prefix.equals("")) {
+        if (!prefix.isEmpty()) {
             addField(pipelineFieldsDescriptions, "_links.self.href", "Pipeline Link");
             addField(pipelineFieldsDescriptions, "page.size", "Page Size");
             addField(pipelineFieldsDescriptions, "page.totalElements", "Total Element");

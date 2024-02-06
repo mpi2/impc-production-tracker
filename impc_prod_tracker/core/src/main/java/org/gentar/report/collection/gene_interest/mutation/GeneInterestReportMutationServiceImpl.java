@@ -1,6 +1,5 @@
 package org.gentar.report.collection.gene_interest.mutation;
 
-import org.gentar.report.ReportTypeName;
 import org.gentar.report.collection.gene_interest.gene.GeneInterestReportGeneProjection;
 import org.gentar.report.utils.mutation.EsCellMutationType;
 import org.springframework.stereotype.Component;
@@ -33,7 +32,7 @@ public class GeneInterestReportMutationServiceImpl implements GeneInterestReport
         List<String> mutationMins =
                 geneProjections
                         .stream()
-                        .map(i -> i.getMutationIdentificationNumber())
+                        .map(GeneInterestReportGeneProjection::getMutationIdentificationNumber)
                         .collect(Collectors.toList());
 
         return geneInterestReportMutationRepository.findSelectedEsCellMutationTypeProjectionsForGeneInterestReport(mutationMins);
@@ -45,7 +44,7 @@ public class GeneInterestReportMutationServiceImpl implements GeneInterestReport
                 .stream()
                 .collect(Collectors.toMap(
                         GeneInterestReportEsCellMutationTypeProjection::getMutationIdentificationNumber,
-                        ( i -> { return classifyMutationType(i.getMutationCategorizationName());}),
+                        ( i -> classifyMutationType(i.getMutationCategorizationName())),
                         (value1, value2) -> value1 ));
     }
 

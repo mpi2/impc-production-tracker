@@ -8,7 +8,7 @@ import org.gentar.organization.institute.Institute;
 @Component
 public class ProjectConsortiumInstituteMapper implements Mapper<Institute, String>
 {
-    private InstituteService instituteService;
+    private final InstituteService instituteService;
 
     public ProjectConsortiumInstituteMapper(InstituteService instituteService)
     {

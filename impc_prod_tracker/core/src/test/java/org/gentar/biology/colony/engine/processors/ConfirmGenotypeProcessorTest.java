@@ -41,7 +41,7 @@ class ConfirmGenotypeProcessorTest
     @Mock
     private SequenceRepository sequenceRepository;
 
-    private SequenceService sequenceService = new SequenceService(sequenceRepository);
+    private final SequenceService sequenceService = new SequenceService(sequenceRepository);
 
     @BeforeEach
     void setUp()

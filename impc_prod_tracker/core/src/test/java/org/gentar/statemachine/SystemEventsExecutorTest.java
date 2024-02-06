@@ -26,7 +26,7 @@ import static org.mockito.Mockito.when;
 class SystemEventsExecutorTest
 {
     private SystemEventsExecutor testInstance;
-    private PlanStateMachineResolver planStateMachineResolver = new PlanStateMachineResolver();
+    private final PlanStateMachineResolver planStateMachineResolver = new PlanStateMachineResolver();
 
     @Mock
     private StateTransitionsManager stateTransitionsManager;

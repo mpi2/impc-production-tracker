@@ -13,9 +13,6 @@ public interface PlanUpdater
      * Check if the current logged user has permission to update the plan.
      * Validates that the new data is consistent with the type of plan and its status.
      * Save the changes in an audit table to keep trace of the changes.
-     * @param originalPlan
-     * @param newPlan
-     * @return
      */
     History updatePlan(Plan originalPlan, Plan newPlan);
 

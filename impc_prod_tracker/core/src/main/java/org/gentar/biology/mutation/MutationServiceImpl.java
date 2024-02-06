@@ -96,16 +96,16 @@ public class MutationServiceImpl implements MutationService {
 
         for (MgiAlleleDto mgiAlleleDto : mgiAlleleDtos) {
             List<Mutation> mutations = mutationRepository.findBySymbol(mgiAlleleDto.getSymbol());
-            if (mutations.size() == 0) {
+            if (mutations.isEmpty()) {
                 nullMutations.add(mgiAlleleDto);
             } else if (mutations.size() > 1) {
                 duplicateMutations.add(mgiAlleleDto);
-            } else if (mgiAlleleDto.getAccId().equals(mutations.get(0).getMgiAlleleId()) &&
-                mgiAlleleDto.getSymbol().equals(mutations.get(0).getSymbol())) {
+            } else if (mgiAlleleDto.getAccId().equals(mutations.getFirst().getMgiAlleleId()) &&
+                mgiAlleleDto.getSymbol().equals(mutations.getFirst().getSymbol())) {
                 noUpdateNecessaryMutations.add(mgiAlleleDto);
             } else {
-                mutations.get(0).setMgiAlleleId(mgiAlleleDto.getAccId());
-                update(mutations.get(0));
+                mutations.getFirst().setMgiAlleleId(mgiAlleleDto.getAccId());
+                update(mutations.getFirst());
                 updatedMutations.add(mgiAlleleDto);
             }
         }

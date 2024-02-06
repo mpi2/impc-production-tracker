@@ -1,11 +1,11 @@
 /*******************************************************************************
  * Copyright 2019 EMBL - European Bioinformatics Institute
- *
+ * <p>
  * Licensed under the Apache License, Version 2.0 (the
  * "License"); you may not use this file except in compliance
  * with the License. You may obtain a copy of the License at
  * http://www.apache.org/licenses/LICENSE-2.0
- *
+ * <p>
  * Unless required by applicable law or agreed to in writing,
  * software distributed under the License is distributed on an
  * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
@@ -30,7 +30,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class Searcher {
     private SearchExecutor searchExecutor;
-    private SearchExecutorByGene searchExecutorByGene;
+    private final SearchExecutorByGene searchExecutorByGene;
 
     public Searcher(SearchExecutorByGene searchExecutorByGene) {
         this.searchExecutorByGene = searchExecutorByGene;
@@ -50,13 +50,9 @@ public class Searcher {
 
     private void resolveSearchExecutor(Search search) {
         switch (search.getSearchType()) {
-            case BY_GENE:
-                searchExecutor = searchExecutorByGene;
-                break;
-            case BY_LOCATION:
-                throw new NotImplementedException("Search by location not implemented yet.");
-            default:
-                throw new IllegalArgumentException(
+            case BY_GENE -> searchExecutor = searchExecutorByGene;
+            case BY_LOCATION -> throw new NotImplementedException("Search by location not implemented yet.");
+            default-> throw new IllegalArgumentException(
                     "Search [" + search.getSearchType().getName() + " not supported.");
         }
     }

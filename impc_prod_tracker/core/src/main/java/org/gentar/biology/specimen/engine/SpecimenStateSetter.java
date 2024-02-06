@@ -14,7 +14,7 @@ import java.util.Set;
 @Component
 public class SpecimenStateSetter implements StateSetter
 {
-    private StatusService statusService;
+    private final StatusService statusService;
 
     public SpecimenStateSetter(StatusService statusService)
     {

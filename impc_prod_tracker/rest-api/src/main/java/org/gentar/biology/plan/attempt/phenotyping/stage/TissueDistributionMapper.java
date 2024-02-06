@@ -11,9 +11,9 @@ import java.util.*;
 @Component
 public class TissueDistributionMapper implements Mapper<TissueDistribution, TissueDistributionDTO>
 {
-    private EntityMapper entityMapper;
-    private WorkUnitMapper workUnitMapper;
-    private MaterialDepositedTypeMapper materialDepositedTypeMapper;
+    private final EntityMapper entityMapper;
+    private final WorkUnitMapper workUnitMapper;
+    private final MaterialDepositedTypeMapper materialDepositedTypeMapper;
 
     public TissueDistributionMapper(EntityMapper entityMapper, WorkUnitMapper workUnitMapper, MaterialDepositedTypeMapper materialDepositedTypeMapper)
     {

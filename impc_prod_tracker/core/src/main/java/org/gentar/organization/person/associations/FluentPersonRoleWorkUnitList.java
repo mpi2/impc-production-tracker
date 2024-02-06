@@ -15,6 +15,7 @@
  */
 package org.gentar.organization.person.associations;
 
+import lombok.Getter;
 import org.gentar.organization.work_unit.WorkUnit;
 import java.util.ArrayList;
 import java.util.List;
@@ -22,14 +23,10 @@ import java.util.stream.Collectors;
 
 public class FluentPersonRoleWorkUnitList
 {
-    private List<PersonRoleWorkUnit> personRoleWorkUnits;
+    private final List<PersonRoleWorkUnit> personRoleWorkUnits;
 
+    @Getter
     private List<PersonRoleWorkUnit> personRoleWorkUnitsFiltered;
-
-    public List<PersonRoleWorkUnit> getPersonRoleWorkUnitsFiltered()
-    {
-        return personRoleWorkUnitsFiltered;
-    }
 
     public FluentPersonRoleWorkUnitList(List<PersonRoleWorkUnit> personRoleWorkUnits)
     {
@@ -75,6 +72,6 @@ public class FluentPersonRoleWorkUnitList
     public List<String> toWorkUnitsNames()
     {
         return getWorkUnits().stream()
-            .map(x -> x.getName()).collect(Collectors.toList());
+            .map(WorkUnit::getName).collect(Collectors.toList());
     }
 }

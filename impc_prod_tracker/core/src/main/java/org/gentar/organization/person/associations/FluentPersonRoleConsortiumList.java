@@ -1,5 +1,6 @@
 package org.gentar.organization.person.associations;
 
+import lombok.Getter;
 import org.gentar.organization.consortium.Consortium;
 
 import java.util.ArrayList;
@@ -8,7 +9,8 @@ import java.util.stream.Collectors;
 
 public class FluentPersonRoleConsortiumList
 {
-    private List<PersonRoleConsortium> personRoleConsortia;
+    private final List<PersonRoleConsortium> personRoleConsortia;
+    @Getter
     private List<PersonRoleConsortium> personRoleConsortiaFiltered;
 
     public FluentPersonRoleConsortiumList(List<PersonRoleConsortium> personRoleConsortia)
@@ -23,11 +25,6 @@ public class FluentPersonRoleConsortiumList
             this.personRoleConsortia = new ArrayList<>();
             this.personRoleConsortiaFiltered = new ArrayList<>();
         }
-    }
-
-    public List<PersonRoleConsortium> getPersonRoleConsortiaFiltered()
-    {
-        return personRoleConsortiaFiltered;
     }
 
     public FluentPersonRoleConsortiumList clearFilters()
@@ -59,7 +56,7 @@ public class FluentPersonRoleConsortiumList
     public List<String> toConsortiaNames()
     {
         return getConsortia().stream()
-            .map(x -> x.getName()).collect(Collectors.toList());
+            .map(Consortium::getName).collect(Collectors.toList());
     }
 
 }

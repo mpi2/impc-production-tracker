@@ -44,6 +44,7 @@ public class OutcomeResponseMapper implements Mapper<Outcome, OutcomeResponseDTO
                 outcomeResponseDTO.setOutcomeTypeName(outcome.getOutcomeType().getName());
             }
         }
+        assert outcome != null;
         addSelfLink(outcomeResponseDTO, outcome);
         addMutationLinks(outcomeResponseDTO, outcome);
         return outcomeResponseDTO;
@@ -85,11 +86,6 @@ public class OutcomeResponseMapper implements Mapper<Outcome, OutcomeResponseDTO
     }
 
     private String decode(String value) {
-        try {
-            return URLDecoder.decode(value, StandardCharsets.UTF_8.toString());
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        }
-        return value;
+        return URLDecoder.decode(value, StandardCharsets.UTF_8);
     }
 }

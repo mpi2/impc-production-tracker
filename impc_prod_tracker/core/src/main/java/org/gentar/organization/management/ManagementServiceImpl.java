@@ -5,7 +5,6 @@ import org.gentar.organization.person.Person;
 import org.gentar.organization.person.PersonRepository;
 import org.gentar.organization.person.associations.PersonRoleConsortium;
 import org.gentar.organization.person.associations.PersonRoleWorkUnit;
-import org.gentar.organization.role.RoleService;
 import org.gentar.organization.role.RoleServiceImpl;
 import org.gentar.organization.work_unit.WorkUnit;
 import org.gentar.organization.work_unit.WorkUnitService;
@@ -22,9 +21,9 @@ import java.util.stream.Collectors;
 @Component
 public class ManagementServiceImpl implements ManagementService
 {
-    private PersonRepository personRepository;
-    private WorkUnitService workUnitService;
-    private RoleServiceImpl roleService;
+    private final PersonRepository personRepository;
+    private final WorkUnitService workUnitService;
+    private final RoleServiceImpl roleService;
 
 
     public ManagementServiceImpl(PersonRepository personRepository, WorkUnitService workUnitService, RoleServiceImpl roleService)
@@ -39,7 +38,7 @@ public class ManagementServiceImpl implements ManagementService
         List<PersonRoleWorkUnit> personRoleWorkUnits = systemSubject.getRoleWorkUnits();
         return
                 personRoleWorkUnits.stream()
-                        .filter(x -> roleService.MANAGER_ROLE.equalsIgnoreCase(x.getRole().getName()))
+                        .filter(x -> RoleServiceImpl.MANAGER_ROLE.equalsIgnoreCase(x.getRole().getName()))
                         .map(PersonRoleWorkUnit::getWorkUnit)
                         .collect(Collectors.toList());
     }
@@ -49,7 +48,7 @@ public class ManagementServiceImpl implements ManagementService
         List<PersonRoleConsortium> personRoleConsortia = systemSubject.getRoleConsortia();
         return
                 personRoleConsortia.stream()
-                        .filter(x -> roleService.MANAGER_ROLE.equalsIgnoreCase(x.getRole().getName()))
+                        .filter(x -> RoleServiceImpl.MANAGER_ROLE.equalsIgnoreCase(x.getRole().getName()))
                         .map(PersonRoleConsortium::getConsortium)
                         .collect(Collectors.toList());
     }
@@ -91,7 +90,7 @@ public class ManagementServiceImpl implements ManagementService
         boolean result = false;
         var consortiaWhereIsGeneralMember =
                 personAsSystemSubject.getFluentRoleConsortia()
-                        .whereUserHasRole(roleService.GENERAL_ROLE)
+                        .whereUserHasRole(RoleServiceImpl.GENERAL_ROLE)
                         .getConsortia();
         if (consortiaWhereIsGeneralMember != null)
         {
@@ -121,7 +120,7 @@ public class ManagementServiceImpl implements ManagementService
         boolean result = false;
         var workUnitsWhereIsGeneralMember =
                 personAsSystemSubject.getFluentRoleWorkUnits()
-                        .whereUserHasRole(roleService.GENERAL_ROLE)
+                        .whereUserHasRole(RoleServiceImpl.GENERAL_ROLE)
                         .getWorkUnits();
         if (workUnitsWhereIsGeneralMember != null)
         {

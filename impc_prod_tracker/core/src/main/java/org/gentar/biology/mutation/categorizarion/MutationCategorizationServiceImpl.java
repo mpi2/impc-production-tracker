@@ -2,14 +2,10 @@ package org.gentar.biology.mutation.categorizarion;
 
 import org.gentar.biology.mutation.categorizarion.type.MutationCategorizationType;
 import org.gentar.biology.mutation.categorizarion.type.MutationCategorizationTypeRepository;
-import org.gentar.biology.plan.attempt.AttemptTypesName;
-import org.gentar.biology.plan.attempt.phenotyping.stage.type.PhenotypingStageTypeName;
-import org.gentar.biology.plan.type.PlanTypeName;
 import org.gentar.exceptions.UserOperationFailedException;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;

@@ -6,7 +6,7 @@ public enum PhenotypingStageTypes {
     HAPLOESSENTIAL("haplo-essential"),
     EMBRYO("embryo");
 
-    private String typeName;
+    private final String typeName;
 
     PhenotypingStageTypes(String typeName)
     {

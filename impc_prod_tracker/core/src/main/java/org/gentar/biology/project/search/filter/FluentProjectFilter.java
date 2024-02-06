@@ -8,7 +8,7 @@ import java.util.stream.Collectors;
 
 public class FluentProjectFilter extends AbstractFluentProjectFilter<Project>
 {
-    private List<Project> data;
+    private final List<Project> data;
 
     public FluentProjectFilter(List<Project> data)
     {

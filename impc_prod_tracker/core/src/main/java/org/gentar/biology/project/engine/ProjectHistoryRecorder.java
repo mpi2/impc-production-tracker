@@ -14,7 +14,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class ProjectHistoryRecorder
 {
-    private HistoryService<Project> historyService;
+    private final HistoryService<Project> historyService;
 
     public ProjectHistoryRecorder(HistoryService<Project> historyService)
     {

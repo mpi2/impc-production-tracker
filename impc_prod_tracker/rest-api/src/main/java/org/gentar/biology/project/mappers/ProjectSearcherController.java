@@ -184,7 +184,6 @@ public class ProjectSearcherController
      * @param workGroupNames List of work groups to use as filter.
      * @param consortiaNames List of consortia to use as filter.
      * @param summaryStatusNames List of summary status to use as filter.
-     * @throws Exception
      */
     @GetMapping("/exportSearch")
     public void exportCSV(
@@ -300,7 +299,7 @@ public class ProjectSearcherController
     {
 
         inputs = inputs == null ? Collections.emptyList() : inputs.stream()
-            .filter(o -> !o.equals(""))
+            .filter(o -> !o.isEmpty())
             .collect(Collectors.toList());
 
         ProjectFilter projectFilter = ProjectFilterBuilder.getInstance()

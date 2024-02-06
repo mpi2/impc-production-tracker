@@ -15,7 +15,7 @@ import javax.sql.DataSource;
  * "Potential problem found: The configured data type factory
  * 'class org.dbunit.dataset.datatype.DefaultDataTypeFactory' might cause problems with the current
  * database 'H2' (e.g. some datatypes may not be supported properly).
- * Solution taken from https://stackoverflow.com/questions/27652689/spring-test-dbunit-warning
+ * Solution taken from <a href="https://stackoverflow.com/questions/27652689/spring-test-dbunit-warning">...</a>
  */
 
 @Configuration

@@ -92,7 +92,7 @@ class TargRepEsCellServiceImplTest {
         List<TargRepEsCell> targRepEsCell =
             testInstance.getTargRepEscellByAlleleFailsIfNull(getTargRepAllele());
 
-        assertEquals("EPD0974_4_A06", targRepEsCell.get(0).getName());
+        assertEquals("EPD0974_4_A06", targRepEsCell.getFirst().getName());
     }
 
     private TargRepAllele getTargRepAllele() {

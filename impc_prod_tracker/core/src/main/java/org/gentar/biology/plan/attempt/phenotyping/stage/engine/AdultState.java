@@ -13,7 +13,7 @@ public enum AdultState implements ProcessState
     PhenotypingFinished("Phenotyping Finished"),
     PhenotypeProductionAborted("Phenotype Production Aborted");
 
-    private String internalName;
+    private final String internalName;
 
     AdultState(String internalName)
     {

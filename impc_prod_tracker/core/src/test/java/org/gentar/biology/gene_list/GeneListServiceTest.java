@@ -55,7 +55,7 @@ class GeneListServiceTest {
     void getAll() {
         lenient().when(geneListRepository.findAll()).thenReturn(geneListListMockData());
         List<GeneList> geneLists = testInstance.getAll();
-        assertEquals(geneLists.get(0).getId(), 1L);
+        assertEquals(geneLists.getFirst().getId(), 1L);
     }
 
     @Test
@@ -83,7 +83,7 @@ class GeneListServiceTest {
         lenient().when(geneListRecordService.getAllNotPaginated(filter))
             .thenReturn(List.of(listRecordMockData()));
         List<ListRecord> listRecords = testInstance.getAllNotPaginatedWithFilters(filter);
-        assertEquals(listRecords.get(0).getId(), 1);
+        assertEquals(listRecords.getFirst().getId(), 1);
     }
 
     @Test
@@ -157,7 +157,7 @@ class GeneListServiceTest {
 
         List<GeneListProjection> listRecords =
             testInstance.getGeneListProjectionsByConsortiumName(TEST_NAME);
-        assertEquals(listRecords.get(0).getId(), 1);
+        assertEquals(listRecords.getFirst().getId(), 1);
     }
 
     @Test

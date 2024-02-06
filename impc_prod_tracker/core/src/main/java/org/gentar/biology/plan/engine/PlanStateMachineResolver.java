@@ -3,17 +3,17 @@ package org.gentar.biology.plan.engine;
 import org.gentar.biology.plan.Plan;
 import org.gentar.biology.plan.attempt.AttemptTypesName;
 import org.gentar.biology.plan.engine.breeding.BreedingPlanEvent;
-import org.gentar.biology.plan.engine.crispr_allele_modification.CrisprAlleleModificationPlanEvent;
-import org.gentar.biology.plan.engine.es_cell_allele_modification.EsCellAlleleModificationPlanEvent;
 import org.gentar.biology.plan.engine.crispr.CrisprProductionPlanEvent;
 import org.gentar.biology.plan.engine.crispr.HaploessentialProductionPlanEvent;
+import org.gentar.biology.plan.engine.crispr_allele_modification.CrisprAlleleModificationPlanEvent;
 import org.gentar.biology.plan.engine.es_cell.EsCellProductionPlanEvent;
+import org.gentar.biology.plan.engine.es_cell_allele_modification.EsCellAlleleModificationPlanEvent;
 import org.gentar.biology.plan.engine.phenotyping.PhenotypePlanEvent;
-import org.gentar.exceptions.SystemOperationFailedException;
 import org.gentar.statemachine.ProcessData;
 import org.gentar.statemachine.ProcessEvent;
 import org.gentar.statemachine.StateMachineResolver;
 import org.springframework.stereotype.Component;
+
 import java.util.List;
 
 /**
@@ -37,9 +37,8 @@ public class PlanStateMachineResolver implements StateMachineResolver
     @Override
     public List<ProcessEvent> getAvailableTransitionsByEntityStatus(ProcessData processData)
     {
-        List<ProcessEvent> allTransitionsByPlanType = getAvailableEventsByStateName(
+        return getAvailableEventsByStateName(
             getProcessEventsByPlan((Plan)processData), processData.getProcessDataStatus().getName());
-        return allTransitionsByPlanType;
     }
 
     /**
@@ -53,33 +52,15 @@ public class PlanStateMachineResolver implements StateMachineResolver
     {
         List<ProcessEvent> processEvents;
         AttemptTypesName attemptType = AttemptTypesName.valueOfLabel(plan.getAttemptType().getName());
-        switch (attemptType)
-        {
-            case CRISPR:
-                processEvents = CrisprProductionPlanEvent.getAllEvents();
-                break;
-            case HAPLOESSENTIAL_CRISPR:
-                processEvents = HaploessentialProductionPlanEvent.getAllEvents();
-                break;
-            case ADULT_PHENOTYPING: case HAPLOESSENTIAL_PHENOTYPING:
-                processEvents = PhenotypePlanEvent.getAllEvents();
-                break;
-            case BREEDING:
-                processEvents = BreedingPlanEvent.getAllEvents();
-                break;
-            case ES_CELL_ALLELE_MODIFICATION:
-                processEvents = EsCellAlleleModificationPlanEvent.getAllEvents();
-                break;
-            case CRISPR_ALLELE_MODIFICATION:
-                processEvents = CrisprAlleleModificationPlanEvent.getAllEvents();
-                break;
-            case ES_CELL:
-                processEvents = EsCellProductionPlanEvent.getAllEvents();
-                break;
-            default:
-                throw new SystemOperationFailedException(
-                    "State machine cannot be resolved", "plan: " + plan.toString());
-        }
+        processEvents = switch (attemptType) {
+            case CRISPR -> CrisprProductionPlanEvent.getAllEvents();
+            case HAPLOESSENTIAL_CRISPR -> HaploessentialProductionPlanEvent.getAllEvents();
+            case ADULT_PHENOTYPING, HAPLOESSENTIAL_PHENOTYPING -> PhenotypePlanEvent.getAllEvents();
+            case BREEDING -> BreedingPlanEvent.getAllEvents();
+            case ES_CELL_ALLELE_MODIFICATION -> EsCellAlleleModificationPlanEvent.getAllEvents();
+            case CRISPR_ALLELE_MODIFICATION -> CrisprAlleleModificationPlanEvent.getAllEvents();
+            case ES_CELL -> EsCellProductionPlanEvent.getAllEvents();
+        };
         return processEvents;
     }
 }

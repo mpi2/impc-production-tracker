@@ -1,10 +1,8 @@
 package org.gentar.biology.status;
 
-import org.gentar.biology.project.assignment.AssignmentStatus;
 import org.gentar.exceptions.UserOperationFailedException;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 

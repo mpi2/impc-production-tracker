@@ -6,7 +6,7 @@ import java.util.Map;
 
 public class PlanFilterBuilder
 {
-    private Map<PlanFilterType, List<String>> filters;
+    private final Map<PlanFilterType, List<String>> filters;
 
     // Prevents instantiation.
     private PlanFilterBuilder()

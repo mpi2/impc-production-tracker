@@ -1,11 +1,11 @@
 package org.gentar.biology.intention.project_intention_sequence;
 
+import jakarta.persistence.*;
 import lombok.*;
 import org.gentar.BaseEntity;
 import org.gentar.biology.intention.project_intention.ProjectIntention;
-import org.gentar.biology.plan.protocol.Protocol;
 import org.gentar.biology.sequence.Sequence;
-import jakarta.persistence.*;
+
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 

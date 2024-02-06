@@ -6,7 +6,6 @@ public interface PhenotypingColonyReportMutationService {
 
     /**
      *
-     * @param mutationIds
      * @return a list of PhenotypingColonyReportMutationGeneProjection Spring database projections containing
      *         an Mutation Id and the associated Gene Id and Gene Symbol
      */

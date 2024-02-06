@@ -224,7 +224,7 @@ public class HistoryBuilderTest
 
     @Data
     @AllArgsConstructor
-    public class WorkUnitMock
+    public static class WorkUnitMock
     {
         Long id;
         String workUnitName;
@@ -238,7 +238,7 @@ public class HistoryBuilderTest
 
     @Data
     @AllArgsConstructor
-    public class PrivacyMock
+    public static class PrivacyMock
     {
         Long id;
         String privacyName;
@@ -255,7 +255,7 @@ public class HistoryBuilderTest
 
     @Data
     @AllArgsConstructor
-    public class SubStatusMock
+    public static class SubStatusMock
     {
         Long id;
         String subStatusName;

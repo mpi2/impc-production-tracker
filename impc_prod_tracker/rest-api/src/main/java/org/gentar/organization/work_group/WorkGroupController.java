@@ -11,8 +11,8 @@ import java.util.Set;
 @RequestMapping("/api")
 public class WorkGroupController {
 
-    private WorkUnitService workUnitService;
-    private WorkGroupService workGroupService;
+    private final WorkUnitService workUnitService;
+    private final WorkGroupService workGroupService;
 
     public WorkGroupController(WorkUnitService workUnitService, WorkGroupService workGroupService)
     {

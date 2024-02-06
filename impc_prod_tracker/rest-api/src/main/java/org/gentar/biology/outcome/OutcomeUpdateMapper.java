@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class OutcomeUpdateMapper implements Mapper<Outcome, OutcomeUpdateDTO>
 {
-    private OutcomeCommonMapper outcomeCommonMapper;
+    private final OutcomeCommonMapper outcomeCommonMapper;
 
     public OutcomeUpdateMapper(OutcomeCommonMapper outcomeCommonMapper)
     {

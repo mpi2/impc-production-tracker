@@ -20,7 +20,7 @@ import java.util.Map;
 @Service
 public class JSONToOrthologsMapper
 {
-    private static ObjectMapper mapper = new ObjectMapper();
+    private static final ObjectMapper mapper = new ObjectMapper();
     private static final String HGNC_URL = "https://www.genenames.org/data/gene-symbol-report/#!/hgnc_id/";
 
     Map<String, List<Ortholog>> toOrthologs(String json)

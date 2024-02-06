@@ -11,12 +11,12 @@ public class LinkUtil
         final StringBuilder linkHeader = new StringBuilder();
         if (!pm.getLinks("first").isEmpty())
         {
-            linkHeader.append(buildLinkHeader(pm.getLinks("first").get(0).getHref(), "first"));
+            linkHeader.append(buildLinkHeader(pm.getLinks("first").getFirst().getHref(), "first"));
             linkHeader.append(", ");
         }
         if (!pm.getLinks("next").isEmpty())
         {
-            linkHeader.append(buildLinkHeader(pm.getLinks("next").get(0).getHref(), "next"));
+            linkHeader.append(buildLinkHeader(pm.getLinks("next").getFirst().getHref(), "next"));
         }
         return linkHeader.toString();
     }

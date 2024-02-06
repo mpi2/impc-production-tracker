@@ -1,5 +1,6 @@
 package org.gentar.report;
 
+import lombok.Getter;
 import org.gentar.util.LabeledType;
 
 import java.util.HashMap;
@@ -93,7 +94,9 @@ public enum ReportTypeName implements LabeledType {
     }
 
     private final String label;
+    @Getter
     private final String description;
+    @Getter
     private final Boolean isPublic;
 
     ReportTypeName(String label, String description, Boolean isPublic)
@@ -118,8 +121,5 @@ public enum ReportTypeName implements LabeledType {
         return label;
     }
 
-    public String getDescription() { return description;}
-
-    public Boolean getIsPublic() { return isPublic;}
 }
 

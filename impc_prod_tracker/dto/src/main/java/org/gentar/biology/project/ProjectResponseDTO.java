@@ -5,15 +5,15 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonUnwrapped;
 import lombok.Data;
 import org.gentar.biology.intention.ProjectIntentionResponseDTO;
-import org.gentar.biology.project.project_es_cell_qc.ProjectEsCellQcDTO;
 import org.gentar.biology.status_stamps.StatusStampsDTO;
 import org.springframework.hateoas.RepresentationModel;
 import org.springframework.hateoas.server.core.Relation;
+
 import java.util.List;
 import java.util.Set;
 
 /**
- * Class to represent the response to return in a endpoint requesting information about a project.
+ * Class to represent the response to return in an endpoint requesting information about a project.
  * The fields added in this class correspond to read only information.
  */
 @Relation(collectionRelation = "projects")
@@ -23,7 +23,7 @@ public class ProjectResponseDTO extends RepresentationModel<ProjectResponseDTO>
     // Public identifier of the project. No editable.
     private String tpn;
 
-    // Id of the project in the iMits system where the equivalent for a project is a plan.
+    // Ids of the project in the iMits system where the equivalent for a project is a plan.
     // No editable.
     @JsonInclude(JsonInclude.Include.NON_NULL)
     @JsonProperty("imitsMiPlanId")

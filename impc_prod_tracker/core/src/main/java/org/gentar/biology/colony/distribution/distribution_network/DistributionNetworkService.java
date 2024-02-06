@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class DistributionNetworkService
 {
-    private DistributionNetworkRepository distributionNetworkRepository;
+    private final DistributionNetworkRepository distributionNetworkRepository;
 
     public DistributionNetworkService(DistributionNetworkRepository distributionNetworkRepository)
     {

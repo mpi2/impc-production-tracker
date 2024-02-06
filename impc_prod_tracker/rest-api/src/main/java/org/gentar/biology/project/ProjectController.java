@@ -16,28 +16,26 @@
 
 package org.gentar.biology.project;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URLDecoder;
-import java.nio.charset.StandardCharsets;
-import java.util.Objects;
-import java.util.Set;
-import java.util.concurrent.atomic.AtomicBoolean;
+import jakarta.servlet.http.HttpServletResponse;
 import org.gentar.audit.history.History;
+import org.gentar.audit.history.HistoryMapper;
 import org.gentar.biology.ChangeResponse;
 import org.gentar.biology.outcome.Outcome;
 import org.gentar.biology.outcome.OutcomeSummaryDTO;
 import org.gentar.biology.outcome.OutcomeSummaryMapper;
-import org.gentar.biology.plan.*;
+import org.gentar.biology.plan.Plan;
+import org.gentar.biology.plan.PlanMinimumCreationDTO;
 import org.gentar.biology.plan.mappers.PlanMinimumCreationMapper;
 import org.gentar.biology.plan.type.PlanTypeName;
 import org.gentar.biology.project.mappers.ProjectCreationMapper;
 import org.gentar.biology.project.mappers.ProjectCsvRecordMapper;
 import org.gentar.biology.project.mappers.ProjectResponseMapper;
-import org.gentar.helpers.CsvWriter;
-import org.gentar.helpers.PlanLinkBuilder;
-import org.gentar.helpers.LinkUtil;
+import org.gentar.biology.project.search.filter.ProjectFilter;
+import org.gentar.biology.project.search.filter.ProjectFilterBuilder;
 import org.gentar.common.history.HistoryDTO;
-import org.gentar.audit.history.HistoryMapper;
+import org.gentar.helpers.CsvWriter;
+import org.gentar.helpers.LinkUtil;
+import org.gentar.helpers.PlanLinkBuilder;
 import org.gentar.helpers.ProjectCsvRecord;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -51,12 +49,13 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.gentar.biology.project.search.filter.ProjectFilter;
-import org.gentar.biology.project.search.filter.ProjectFilterBuilder;
-import jakarta.servlet.http.HttpServletResponse;
+
 import java.io.IOException;
+import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 
@@ -216,7 +215,6 @@ public class ProjectController {
      * @param phenotypingExternalRefs List of phenotyping external references separated by comma.
      * @param privaciesNames          list of privacy names separated by comma.
      * @param imitsMiPlans            list of iMits plans separated by comma.
-     * @throws IOException
      */
     @GetMapping("/exportProjects")
     public void exportProjects(
@@ -280,7 +278,7 @@ public class ProjectController {
      */
     @GetMapping(value = {"/{tpn}"})
     public EntityModel<?> findOne(@PathVariable String tpn) {
-        EntityModel<ProjectResponseDTO> entityModel = null;
+        EntityModel<ProjectResponseDTO> entityModel;
         Project project = projectService.getNotNullProjectByTpn(tpn);
         ProjectResponseDTO projectResponseDTO = getDTO(project);
         entityModel = EntityModel.of(projectResponseDTO);
@@ -327,11 +325,6 @@ public class ProjectController {
     }
 
     private static String decode(String value) {
-        try {
-            return URLDecoder.decode(value, StandardCharsets.UTF_8.toString());
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        }
-        return value;
+        return URLDecoder.decode(value, StandardCharsets.UTF_8);
     }
 }

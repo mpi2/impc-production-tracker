@@ -1,19 +1,18 @@
 package org.gentar.biology.project.search;
 
-import static org.gentar.mockdata.MockData.TPN_000000001;
-import static org.junit.jupiter.api.Assertions.*;
-
-import java.util.List;
 import org.apache.commons.lang3.NotImplementedException;
 import org.gentar.biology.project.search.filter.ProjectFilter;
 import org.gentar.biology.project.search.filter.ProjectFilterBuilder;
-import org.gentar.exceptions.CommonErrorMessages;
-import org.gentar.exceptions.UserOperationFailedException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+
+import java.util.List;
+
+import static org.gentar.mockdata.MockData.TPN_000000001;
+import static org.junit.jupiter.api.Assertions.*;
 
 
 @ExtendWith(MockitoExtension.class)
@@ -77,7 +76,7 @@ class SearcherTest {
         });
 
         String expectedMessage =
-            String.format("Search by location not implemented yet.");
+                "Search by location not implemented yet.";
         String actualMessage = exception.getMessage();
 
         assertTrue(actualMessage.contains(expectedMessage));

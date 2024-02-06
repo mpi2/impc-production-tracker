@@ -30,13 +30,12 @@ public class GeneInterestReportProjectionMergeHelperImpl implements GeneInterest
                         GeneInterestReportGeneProjection::getGeneSymbol,
                         (value1, value2) -> value1 ));
 
-        Map<String, String> geneMap = Stream.concat(
+        return Stream.concat(
                 ppsGeneMap.entrySet().stream(),gpsGeneMap.entrySet().stream())
                 .collect(Collectors.toMap(
                         Map.Entry::getKey,
                         Map.Entry::getValue,
                         (value1, value2) -> value1 ));
-        return geneMap;
     }
 
     @Override
@@ -55,13 +54,12 @@ public class GeneInterestReportProjectionMergeHelperImpl implements GeneInterest
                         GeneInterestReportGeneProjection::getPlanSummaryStatus,
                         (value1, value2) -> value1 ));
 
-        Map<String, String> planStatusMap = Stream.concat(
+        return Stream.concat(
                 ppsPlanStatusMap.entrySet().stream(),gpsPlanStatusMap.entrySet().stream())
                 .collect(Collectors.toMap(
                         Map.Entry::getKey,
                         Map.Entry::getValue,
                         (value1, value2) -> value1 ));
-        return planStatusMap;
 
     }
 
@@ -79,14 +77,12 @@ public class GeneInterestReportProjectionMergeHelperImpl implements GeneInterest
                         GeneInterestReportGeneProjection::getGeneAccId,
                         Collectors.mapping(GeneInterestReportGeneProjection::getProjectTpn, Collectors.toSet())));
 
-        Map<String, List<String>> projectsByGene = Stream.concat(
+        return Stream.concat(
                 ppsProjectsByGene.entrySet().stream(), gpsProjectsByGene.entrySet().stream() )
                 .collect(Collectors.toMap(
-                        map -> map.getKey(),
+                        Map.Entry::getKey,
                         map -> List.copyOf(map.getValue()),
                         (set1,set2) -> List.copyOf(Stream.concat(set1.stream(), set2.stream()).collect(Collectors.toSet()))));
-
-        return projectsByGene;
     }
 
     @Override
@@ -103,14 +99,12 @@ public class GeneInterestReportProjectionMergeHelperImpl implements GeneInterest
                         GeneInterestReportGeneProjection::getProjectTpn,
                         Collectors.mapping(GeneInterestReportGeneProjection::getPlanIdentificationNumber, Collectors.toSet())));
 
-        Map<String, List<String>> plansByProject = Stream.concat(
+        return Stream.concat(
                 ppsPlansByProject.entrySet().stream(), gpsPlansByProject.entrySet().stream() )
                 .collect(Collectors.toMap(
-                        map -> map.getKey(),
+                        Map.Entry::getKey,
                         map -> List.copyOf(map.getValue()),
                         (set1,set2) -> List.copyOf(Stream.concat(set1.stream(), set2.stream()).collect(Collectors.toSet()))));
-
-        return plansByProject;
 
     }
 
@@ -130,13 +124,12 @@ public class GeneInterestReportProjectionMergeHelperImpl implements GeneInterest
                         GeneInterestReportGeneProjection::getAssignmentName,
                         (value1, value2) -> value1 ));
 
-        Map<String, String> projectAssignemtMap = Stream.concat(
+        return Stream.concat(
                 ppsProjectAssignmentMap.entrySet().stream(),gpsProjectAssignmentMap.entrySet().stream())
                 .collect(Collectors.toMap(
                         Map.Entry::getKey,
                         Map.Entry::getValue,
                         (value1, value2) -> value1 ));
-        return projectAssignemtMap;
 
     }
 
@@ -170,13 +163,11 @@ public class GeneInterestReportProjectionMergeHelperImpl implements GeneInterest
                         GeneInterestReportGeneProjection::getGeneAccId,
                         Collectors.mapping(GeneInterestReportGeneProjection::getProjectTpn, Collectors.toSet())));
 
-        Map<String, List<String>> projectsByGene = gpsProjectsByGene.entrySet().stream()
+        return gpsProjectsByGene.entrySet().stream()
                 .collect(Collectors.toMap(
-                        map -> map.getKey(),
+                        Map.Entry::getKey,
                         map -> List.copyOf(map.getValue()),
                         (set1,set2) -> List.copyOf(Stream.concat(set1.stream(), set2.stream()).collect(Collectors.toSet()))));
-
-        return projectsByGene;
     }
 
 
@@ -212,13 +203,11 @@ public class GeneInterestReportProjectionMergeHelperImpl implements GeneInterest
                         GeneInterestReportGeneProjection::getProjectTpn,
                         Collectors.mapping(GeneInterestReportGeneProjection::getPlanIdentificationNumber, Collectors.toSet())));
 
-        Map<String, List<String>> plansByProject = gpsPlansByProject.entrySet().stream()
+        return gpsPlansByProject.entrySet().stream()
                 .collect(Collectors.toMap(
-                        map -> map.getKey(),
+                        Map.Entry::getKey,
                         map -> List.copyOf(map.getValue()),
                         (set1,set2) -> List.copyOf(Stream.concat(set1.stream(), set2.stream()).collect(Collectors.toSet()))));
-
-        return plansByProject;
 
     }
 
@@ -255,12 +244,11 @@ public class GeneInterestReportProjectionMergeHelperImpl implements GeneInterest
                         GeneInterestReportGeneProjection::getPlanSummaryStatus,
                         (value1, value2) -> value1 ));
 
-        Map<String, String> planStatusMap = gpsPlanStatusMap.entrySet().stream()
+        return gpsPlanStatusMap.entrySet().stream()
                 .collect(Collectors.toMap(
                         Map.Entry::getKey,
                         Map.Entry::getValue,
                         (value1, value2) -> value1 ));
-        return planStatusMap;
 
     }
 
@@ -292,7 +280,7 @@ public class GeneInterestReportProjectionMergeHelperImpl implements GeneInterest
     private Set<String> generatePlanFilterSet(List<GeneInterestReportGeneProjection> geneProjections){
         return geneProjections
                 .stream()
-                .map(i -> i.getPlanIdentificationNumber())
+                .map(GeneInterestReportGeneProjection::getPlanIdentificationNumber)
                 .collect(Collectors.toSet());
     }
 
@@ -305,7 +293,7 @@ public class GeneInterestReportProjectionMergeHelperImpl implements GeneInterest
                 .entrySet()
                 .stream()
                 .filter(e -> e.getValue().equals(mutationClass))
-                .map(e -> e.getKey())
+                .map(Map.Entry::getKey)
                 .collect(Collectors.toSet());
     }
 }

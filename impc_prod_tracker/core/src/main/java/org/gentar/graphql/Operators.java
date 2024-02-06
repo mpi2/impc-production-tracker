@@ -1,5 +1,8 @@
 package org.gentar.graphql;
 
+import lombok.Getter;
+
+@Getter
 public enum Operators
 {
     AND("_and"),
@@ -20,15 +23,11 @@ public enum Operators
     NSIMILAR("_nsimilar"),
     SIMILAR("_similar");
 
-    private String name;
+    private final String name;
 
     Operators(String name)
     {
         this.name = name;
-    }
-
-    public String getName() {
-        return name;
     }
 
 }

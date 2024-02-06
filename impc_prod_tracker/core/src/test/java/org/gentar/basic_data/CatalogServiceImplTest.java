@@ -1,8 +1,5 @@
 package org.gentar.basic_data;
 
-import static org.junit.jupiter.api.Assertions.*;
-
-import java.util.Map;
 import org.gentar.biology.colony.distribution.distribution_network.DistributionNetworkRepository;
 import org.gentar.biology.colony.distribution.product_type.ProductTypeRepository;
 import org.gentar.biology.gene_list.record.ListRecordTypeService;
@@ -13,7 +10,6 @@ import org.gentar.biology.mutation.molecular_type.MolecularMutationTypeRepositor
 import org.gentar.biology.mutation.qc_results.QcStatusRepository;
 import org.gentar.biology.mutation.qc_results.QcTypeRepository;
 import org.gentar.biology.outcome.type.OutcomeTypeRepository;
-import org.gentar.biology.plan.PlanSpecs;
 import org.gentar.biology.plan.attempt.AttemptTypeService;
 import org.gentar.biology.plan.attempt.crispr.assay.AssayTypeRepository;
 import org.gentar.biology.plan.attempt.crispr.guide.GuideFormatRepository;
@@ -46,6 +42,10 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+
+import java.util.Map;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @ExtendWith(MockitoExtension.class)
 class CatalogServiceImplTest {

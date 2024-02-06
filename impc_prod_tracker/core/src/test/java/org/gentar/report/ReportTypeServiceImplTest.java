@@ -113,7 +113,7 @@ class ReportTypeServiceImplTest {
             .thenReturn(List.of(reportTypeMockData()));
 
         List<ReportType> reportTypes = testInstance.listPublicReportTypes();
-        assertEquals(reportTypes.get(0).getId(), 1L);
+        assertEquals(reportTypes.getFirst().getId(), 1L);
     }
 
 }
