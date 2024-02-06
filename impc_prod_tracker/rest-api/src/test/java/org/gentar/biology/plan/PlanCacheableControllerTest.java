@@ -34,7 +34,6 @@ class PlanCacheableControllerTest extends ControllerTestTemplate
         restCaller = new RestCaller(mvc(), accessToken);
     }
 
-
     /**
      * This Test will Fails when getWorkUnitByName() methode is Cashed.
      * Dont write '@Cacheable("workUnitsNames")' annotation.
