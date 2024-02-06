@@ -79,7 +79,7 @@ public class GeneInterestReportPhenotyping {
         return completeMutationGeneMap
                 .values()
                 .stream()
-                .flatMap(x -> x.stream())
+                .flatMap(Collection::stream)
 // Use to debug:
 //                .peek(x -> System.out.println(x.getAccId() + ": " + x.getSymbol()))
                 .collect(Collectors.toMap(Gene::getAccId,
@@ -125,7 +125,7 @@ public class GeneInterestReportPhenotyping {
                     return pairs;
                 }
 
-                ).flatMap(x -> x.stream())
+                ).flatMap(Collection::stream)
                 .flatMap(map -> map.entrySet().stream())
                 .collect(Collectors.groupingBy(Map.Entry::getKey,
                         Collectors.mapping(Map.Entry::getValue, Collectors.toList())));
@@ -142,7 +142,7 @@ public class GeneInterestReportPhenotyping {
                             }
                             return projectToMutationMapping;
                         })
-                .flatMap(a -> a.stream())
+                .flatMap(Collection::stream)
 
                 // unpack each map in the stream of maps in a second flatMap operation
                 .flatMap(projectMutationMap -> projectMutationMap.entrySet().stream())
@@ -155,7 +155,7 @@ public class GeneInterestReportPhenotyping {
                     }
                     return projectGenePairs;
                 })
-                .flatMap(b -> b.stream())
+                .flatMap(Collection::stream)
 
                 // unpack each map in the stream of maps in a second flatMap operation
                 .flatMap(projectToGenesMapping -> projectToGenesMapping.entrySet().stream())
@@ -165,7 +165,7 @@ public class GeneInterestReportPhenotyping {
 //                        x -> new HashSet<>(Arrays.asList(x.getValue().getAccId())),
 //                        (x,y)->{x.addAll(y);return x;} ));
 //
-                .collect(Collectors.groupingBy(x -> x.getKey(),
+                .collect(Collectors.groupingBy(Map.Entry::getKey,
                         Collectors.mapping(x -> x.getValue().getAccId(), Collectors.toSet())));
 
 
@@ -190,8 +190,7 @@ public class GeneInterestReportPhenotyping {
 //        System.out.println("omp.getMutationId(): " + omp.getMutationId());
 //        System.out.println("filteredMutationGeneMap.get(omp.getMutationId()): " + filteredMutationGeneMap.get(omp.getMutationId()));
 //        System.out.println("filteredMutationGeneMap.get(omp.getMutationId()).getAccId(): " + filteredMutationGeneMap.get(omp.getMutationId()).getAccId());
-        String gene = filteredMutationGeneMap.get(omp.getMutationId()).getAccId();
-        return gene;
+        return filteredMutationGeneMap.get(omp.getMutationId()).getAccId();
     }
 
 

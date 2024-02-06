@@ -5,7 +5,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class PrivacyServiceImpl implements PrivacyService
 {
-    private PrivacyRepository privacyRepository;
+    private final PrivacyRepository privacyRepository;
 
     public PrivacyServiceImpl(PrivacyRepository privacyRepository)
     {

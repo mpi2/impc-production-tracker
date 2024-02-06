@@ -1,21 +1,5 @@
 package org.gentar.biology.gene_list;
 
-import static org.gentar.mockdata.MockData.MGI_00000001;
-import static org.gentar.mockdata.MockData.TEST_NAME;
-import static org.gentar.mockdata.MockData.consortiumMockData;
-import static org.gentar.mockdata.MockData.geneByListRecordMockData;
-import static org.gentar.mockdata.MockData.geneListListMockData;
-import static org.gentar.mockdata.MockData.listRecordMockData;
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.lenient;
-
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.Set;
-import java.util.stream.Stream;
 import org.gentar.biology.gene_list.filter.GeneListFilter;
 import org.gentar.biology.gene_list.record.GeneByListRecordRepository;
 import org.gentar.biology.gene_list.record.ListRecord;
@@ -33,6 +17,14 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
+
+import java.util.*;
+import java.util.stream.Stream;
+
+import static org.gentar.mockdata.MockData.*;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.lenient;
 
 @ExtendWith(MockitoExtension.class)
 class GeneListRecordServiceTest {
@@ -79,7 +71,7 @@ class GeneListRecordServiceTest {
         lenient().when(listRecordRepository.findAll(Mockito.any(Specification.class)))
             .thenReturn(List.of(listRecordMockData()));
         List<ListRecord> listRecord = testInstance.getAllNotPaginated(filter);
-        assertEquals(listRecord.get(0).getId(), 1L);
+        assertEquals(listRecord.getFirst().getId(), 1L);
     }
 
     @Test
@@ -153,9 +145,7 @@ class GeneListRecordServiceTest {
         ListRecord listRecord = listRecordMockData();
         listRecord.setGenesByRecord(Set.of(geneByListRecordMockData()));
 
-        Exception exception = assertThrows(UserOperationFailedException.class, () -> {
-            testInstance.validateNewRecord(listRecord, geneRecordHashes, MGI_00000001);
-        });
+        Exception exception = assertThrows(UserOperationFailedException.class, () -> testInstance.validateNewRecord(listRecord, geneRecordHashes, MGI_00000001));
 
         String expectedMessage =
             "Gene(s) [" + MGI_00000001 + "] already in this list.";

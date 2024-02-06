@@ -11,8 +11,8 @@ import java.util.Set;
 @Component
 public class OutcomeRequestProcessor
 {
-    private PlanService planService;
-    private ColonyRequestProcessor colonyRequestProcessor;
+    private final PlanService planService;
+    private final ColonyRequestProcessor colonyRequestProcessor;
 
     public OutcomeRequestProcessor(
         PlanService planService, ColonyRequestProcessor colonyRequestProcessor)

@@ -36,7 +36,7 @@ public class AlleleFieldsDescriptors {
         addField(alleleFieldsDescriptions, prefix + "design_subtype.name",
             "Allele Design Subtype name");
         addField(alleleFieldsDescriptions, prefix + "_links.self.href", "Allele Link");
-        if (!prefix.equals("")) {
+        if (!prefix.isEmpty()) {
             addField(alleleFieldsDescriptions, "_links.self.href", "Allele Link");
             addField(alleleFieldsDescriptions, "page.size", "Page Size");
             addField(alleleFieldsDescriptions, "page.totalElements", "Total Element");

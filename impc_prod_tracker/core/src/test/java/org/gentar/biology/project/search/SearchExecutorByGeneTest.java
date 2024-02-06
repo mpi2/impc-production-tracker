@@ -1,12 +1,6 @@
 package org.gentar.biology.project.search;
 
-import static org.gentar.mockdata.MockData.MGI_00000001;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.Mockito.lenient;
-
-import java.util.List;
 import org.gentar.biology.gene.external_ref.GeneExternalService;
-import org.gentar.biology.project.Project;
 import org.gentar.biology.project.ProjectService;
 import org.gentar.biology.project.search.filter.ProjectFilterBuilder;
 import org.gentar.mockdata.MockData;
@@ -15,6 +9,12 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+
+import java.util.List;
+
+import static org.gentar.mockdata.MockData.MGI_00000001;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.Mockito.lenient;
 
 
 @ExtendWith(MockitoExtension.class)

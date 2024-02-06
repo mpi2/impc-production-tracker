@@ -8,7 +8,7 @@ import java.util.List;
 @Component
 public class InstituteServiceImpl implements InstituteService
 {
-    private InstituteRepository instituteRepository;
+    private final InstituteRepository instituteRepository;
 
     private static final String INSTITUTE_NOT_EXISTS_ERROR = "Institute '%s' does not exist.";
 

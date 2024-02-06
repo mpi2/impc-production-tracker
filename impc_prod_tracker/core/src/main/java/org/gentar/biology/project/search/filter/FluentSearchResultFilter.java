@@ -8,7 +8,7 @@ import java.util.stream.Collectors;
 
 public class FluentSearchResultFilter extends AbstractFluentProjectFilter<SearchResult>
 {
-    private List<SearchResult> data;
+    private final List<SearchResult> data;
 
     public FluentSearchResultFilter(List<SearchResult> data)
     {

@@ -9,7 +9,7 @@ import org.springframework.util.Assert;
  */
 class CheckedClassesTree
 {
-    private Node<Class<?>> tree;
+    private final Node<Class<?>> tree;
 
     CheckedClassesTree()
     {

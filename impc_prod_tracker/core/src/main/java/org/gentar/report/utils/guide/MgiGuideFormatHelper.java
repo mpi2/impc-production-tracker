@@ -8,7 +8,6 @@ public interface MgiGuideFormatHelper {
 
     /**
      *
-     * @param guideProjections
      * @return a String containing data on a set of guides used in a Crispr Attempt.
      */
     String formatGuideData (Set<MgiCrisprAlleleReportGuideProjection> guideProjections);

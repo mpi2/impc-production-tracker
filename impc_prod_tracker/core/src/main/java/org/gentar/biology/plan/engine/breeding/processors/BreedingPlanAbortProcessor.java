@@ -1,6 +1,5 @@
 package org.gentar.biology.plan.engine.breeding.processors;
 
-import org.gentar.biology.colony.Colony;
 import org.gentar.biology.plan.Plan;
 import org.gentar.biology.plan.PlanQueryHelper;
 import org.gentar.biology.plan.engine.PlanStateSetter;
@@ -9,7 +8,6 @@ import org.gentar.statemachine.ProcessData;
 import org.gentar.statemachine.ProcessEvent;
 import org.gentar.statemachine.TransitionEvaluation;
 import org.springframework.stereotype.Component;
-import java.util.List;
 
 /**
  * Class with the logic to move a Breeding Plan to the state "Breeding Aborted"

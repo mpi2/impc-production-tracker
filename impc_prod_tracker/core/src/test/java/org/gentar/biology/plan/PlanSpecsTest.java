@@ -1,18 +1,12 @@
 package org.gentar.biology.plan;
 
-import static org.gentar.mockdata.MockData.TEST_WORK_UNIT_NAME;
-import static org.gentar.mockdata.MockData.TPN_000000001;
-import static org.gentar.mockdata.MockData.rootMockData;
-import static org.junit.jupiter.api.Assertions.*;
-
-import java.util.List;
-import org.gentar.biology.plan.filter.PlanFilter;
-import org.gentar.biology.plan.filter.PlanFilterBuilder;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.jpa.domain.Specification;
+
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @ExtendWith(MockitoExtension.class)
 class PlanSpecsTest {

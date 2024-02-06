@@ -20,10 +20,10 @@ public class GenotypePrimer extends BaseEntity
 
     private String sequence;
 
-    @Column(nullable = true)
+    @Column()
     private Integer genomicStartCoordinate;
 
-    @Column(nullable = true)
+    @Column()
     private Integer genomicEndCoordinate;
 
     @EqualsAndHashCode.Exclude

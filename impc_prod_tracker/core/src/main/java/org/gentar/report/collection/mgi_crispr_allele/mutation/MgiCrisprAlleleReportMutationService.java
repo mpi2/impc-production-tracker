@@ -6,7 +6,6 @@ public interface MgiCrisprAlleleReportMutationService {
 
     /**
      *
-     * @param mutationIds
      * @return a list of MgiCrisprAlleleReportMutationGeneProjection Spring database projections
      *         that correspond to the list of mutationIds provided.
       */

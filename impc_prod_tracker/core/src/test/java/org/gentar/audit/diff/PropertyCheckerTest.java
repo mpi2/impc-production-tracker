@@ -12,7 +12,7 @@ import static org.hamcrest.Matchers.nullValue;
 public class PropertyCheckerTest
 {
 
-    private ClassA classA = new ClassA("a", LocalDateTime.now());
+    private final ClassA classA = new ClassA("a", LocalDateTime.now());
     @Test
     public void testGetPropertyNamesList()
     {
@@ -82,7 +82,7 @@ public class PropertyCheckerTest
     }
 
     @Data
-    public class ClassA
+    public static class ClassA
     {
         private String p1;
         private LocalDateTime p2;

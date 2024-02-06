@@ -17,8 +17,8 @@ public class GraphQLConsumer
     @Value("${external_service_url}")
     private String EXTERNAL_SERVICE_URL;
 
-    private RestTemplate restTemplate;
-    private static ObjectMapper mapper = new ObjectMapper();
+    private final RestTemplate restTemplate;
+    private static final ObjectMapper mapper = new ObjectMapper();
 
     public GraphQLConsumer(RestTemplate restTemplate)
     {
@@ -61,7 +61,7 @@ public class GraphQLConsumer
     {
         JsonNode errors = root.path("errors");
 
-        if (errors.size() > 0)
+        if (!errors.isEmpty())
         {
             List<String> errorMessages = new ArrayList<>();
             for (final JsonNode objNode : errors)

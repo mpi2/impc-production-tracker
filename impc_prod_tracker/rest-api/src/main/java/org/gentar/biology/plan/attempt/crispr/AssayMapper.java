@@ -9,8 +9,8 @@ import org.gentar.biology.plan.attempt.crispr.assay.AssayType;
 @Component
 public class AssayMapper implements Mapper<Assay, AssayDTO>
 {
-    private EntityMapper entityMapper;
-    private CrisprAttemptService crisprAttemptService;
+    private final EntityMapper entityMapper;
+    private final CrisprAttemptService crisprAttemptService;
 
     public AssayMapper(EntityMapper entityMapper, CrisprAttemptService crisprAttemptService)
     {

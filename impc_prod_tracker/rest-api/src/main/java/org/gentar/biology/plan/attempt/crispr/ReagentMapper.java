@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class ReagentMapper implements Mapper<Reagent, String>
 {
-    private ReagentService reagentService;
+    private final ReagentService reagentService;
 
     private static final String REAGENT_NAME_NOT_FOUND_ERROR = "Reagent name '%s' does not exist.";
 

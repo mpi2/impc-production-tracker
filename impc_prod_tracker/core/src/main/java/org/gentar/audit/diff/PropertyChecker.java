@@ -35,7 +35,7 @@ public class PropertyChecker
     {
         List<String> propertyNamesList = new ArrayList<>();
         Field[] fields = type.getDeclaredFields();
-        Arrays.asList(fields).stream()
+        Arrays.stream(fields)
             .filter(x -> !x.getName().startsWith("this$"))
             .forEach(x -> propertyNamesList.add(x.getName()));
 
@@ -47,7 +47,7 @@ public class PropertyChecker
         List<PropertyDefinition> dataList = new ArrayList<>();
         Field[] fields = type.getDeclaredFields();
 
-        Arrays.asList(fields).stream()
+        Arrays.stream(fields)
             .filter(x -> !x.getName().startsWith("this$"))
             .forEach(x ->
             {

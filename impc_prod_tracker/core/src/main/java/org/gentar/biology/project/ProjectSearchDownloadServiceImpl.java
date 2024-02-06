@@ -90,11 +90,11 @@ public class ProjectSearchDownloadServiceImpl implements ProjectSearchDownloadSe
 
         List<ProjectSearchDownloadProjectionDto> synonymsDto = new ArrayList<>();
 
-        if (!filterString.getGeneSymbolOrMgi().get(0).equals("null")) {
+        if (!filterString.getGeneSymbolOrMgi().getFirst().equals("null")) {
             filterString.getGeneSymbolOrMgi().forEach(x -> {
                 List<String> filters = new ArrayList<>();
                 filters.add(x);
-                if (!x.equals("") && projectSearchDownloadProjectionDtos.stream()
+                if (!x.isEmpty() && projectSearchDownloadProjectionDtos.stream()
                     .noneMatch(y -> y.getGeneOrLocation().equals(x)) && !isAccessionId(x)) {
                     Search search =
                         new Search("gene", filters, projectFilter);
@@ -257,42 +257,16 @@ public class ProjectSearchDownloadServiceImpl implements ProjectSearchDownloadSe
         for (Map.Entry<FilterTypes, List<String>> searchFilter : searchFilters.getFilters()
             .entrySet()) {
             switch (searchFilter.getKey().getName()) {
-                case "tpn":
-                    projectSearchDownloadProjectionListDto.setTpn(getLowerCaseValue(searchFilter));
-                    break;
-                case "intention":
-                    projectSearchDownloadProjectionListDto.setIntention(getLowerCaseValue(searchFilter));
-                    break;
-                case "workUnitName":
-                    projectSearchDownloadProjectionListDto.setWorkUnit(getLowerCaseValue(searchFilter));
-                    break;
-                case "workGroup":
-                    projectSearchDownloadProjectionListDto.setWorkGroup(getLowerCaseValue(searchFilter));
-                    break;
-                case "privacyName":
-                    projectSearchDownloadProjectionListDto.setPrivacy(getLowerCaseValue(searchFilter));
-                    break;
-                case "summaryStatus":
-                    projectSearchDownloadProjectionListDto
-                        .setProjectSummaryStatus(getLowerCaseValue(searchFilter));
-                    break;
-                case "consortium":
-                    projectSearchDownloadProjectionListDto.setConsortia(getLowerCaseValue(searchFilter));
-                    break;
-                case "gene":
-                    projectSearchDownloadProjectionListDto
-                        .setGeneSymbolOrMgi(getLowerCaseValue(searchFilter));
-                    break;
-                case "phenotypingExternalRefs":
-                    projectSearchDownloadProjectionListDto
-                        .setPhenotypingExternalRef(getLowerCaseValue(searchFilter));
-                    break;
-                case "colonyName":
-                    projectSearchDownloadProjectionListDto
-                        .setProductionColonyName(getLowerCaseValue(searchFilter));
-                    break;
-                default:
-                    break;
+                case "tpn"-> projectSearchDownloadProjectionListDto.setTpn(getLowerCaseValue(searchFilter));
+                case "intention"-> projectSearchDownloadProjectionListDto.setIntention(getLowerCaseValue(searchFilter));
+                case "workUnitName"-> projectSearchDownloadProjectionListDto.setWorkUnit(getLowerCaseValue(searchFilter));
+                case "workGroup"-> projectSearchDownloadProjectionListDto.setWorkGroup(getLowerCaseValue(searchFilter));
+                case "privacyName"-> projectSearchDownloadProjectionListDto.setPrivacy(getLowerCaseValue(searchFilter));
+                case "summaryStatus"-> projectSearchDownloadProjectionListDto.setProjectSummaryStatus(getLowerCaseValue(searchFilter));
+                case "consortium"-> projectSearchDownloadProjectionListDto.setConsortia(getLowerCaseValue(searchFilter));
+                case "gene"-> projectSearchDownloadProjectionListDto.setGeneSymbolOrMgi(getLowerCaseValue(searchFilter));
+                case "phenotypingExternalRefs"-> projectSearchDownloadProjectionListDto.setPhenotypingExternalRef(getLowerCaseValue(searchFilter));
+                case "colonyName"-> projectSearchDownloadProjectionListDto.setProductionColonyName(getLowerCaseValue(searchFilter));
             }
         }
         return projectSearchDownloadProjectionListDto;
@@ -314,13 +288,13 @@ public class ProjectSearchDownloadServiceImpl implements ProjectSearchDownloadSe
 
         dto.setTpn(result.getProject().getTpn());
         dto.setGeneOrLocation(
-            result.getProject().getProjectIntentions().get(0)
+            result.getProject().getProjectIntentions().getFirst()
                 .getProjectIntentionGene().getGene().getSymbol());
         dto.setMgi(
-            result.getProject().getProjectIntentions().get(0)
+            result.getProject().getProjectIntentions().getFirst()
                 .getProjectIntentionGene().getGene().getAccId());
         dto.setMutationIntentions(
-            result.getProject().getProjectIntentions().get(0)
+            result.getProject().getProjectIntentions().getFirst()
                 .getMolecularMutationType().getName());
         dto.setWorkUnit(
             result.getProject().getPlans().iterator().next()

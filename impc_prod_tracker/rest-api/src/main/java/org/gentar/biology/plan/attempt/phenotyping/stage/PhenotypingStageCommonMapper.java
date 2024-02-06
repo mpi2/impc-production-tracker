@@ -9,7 +9,7 @@ import java.util.Set;
 @Component
 public class PhenotypingStageCommonMapper implements Mapper<PhenotypingStage, PhenotypingStageCommonDTO>
 {
-    private TissueDistributionMapper tissueDistributionMapper;
+    private final TissueDistributionMapper tissueDistributionMapper;
 
     public PhenotypingStageCommonMapper(TissueDistributionMapper tissueDistributionMapper) {
         this.tissueDistributionMapper = tissueDistributionMapper;

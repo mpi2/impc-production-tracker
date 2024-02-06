@@ -40,7 +40,7 @@ public class OrthologServiceImpl implements OrthologService {
     public final int CHUNK_SIZE = 200;
     private final GraphQLConsumer graphQLConsumer;
     private final JSONToOrthologsMapper jsonToOrthologsMapper;
-    private static Logger LOGGER = Logger.getLogger("InfoLogging");
+    private static final Logger LOGGER = Logger.getLogger("InfoLogging");
     private static final int THRESHOLD_SUPPORT_COUNT = 4;
 
     static final String ORTHOLOGS_BY_ACC_ID_QUERY =
@@ -147,12 +147,12 @@ public class OrthologServiceImpl implements OrthologService {
 
     private List<ProjectSearchDownloadOrthologDto> sortDownloadOrthologDtos(
         List<ProjectSearchDownloadOrthologDto> downloadOrthologDtos) {
-        List<ProjectSearchDownloadOrthologDto> sortedDownloadOrthologDtos =
+        return
             downloadOrthologDtos.stream()
                 .sorted(Comparator.comparing(ProjectSearchDownloadOrthologDto::getMgiGeneAccId))
                 .collect(
                     Collectors.toList());
-        return sortedDownloadOrthologDtos;
+
     }
 
     private Collection<List<String>> groupMgiIdsToChunks(List<String> mgiIds) {
@@ -206,8 +206,7 @@ public class OrthologServiceImpl implements OrthologService {
     private void removeDuplicatedOrthologs(List<ProjectSearchDownloadOrthologDto> bestOrthologs,
                                            ProjectSearchDownloadOrthologDto x) {
         bestOrthologs.removeAll(bestOrthologs.stream().filter(
-            y -> y.getMgiGeneAccId().equals(x.getMgiGeneAccId())).collect(
-            Collectors.toList()));
+            y -> y.getMgiGeneAccId().equals(x.getMgiGeneAccId())).toList());
     }
 
     private List<ProjectSearchDownloadOrthologDto> getBestOrthologWithSameSupportCount(
@@ -221,12 +220,10 @@ public class OrthologServiceImpl implements OrthologService {
 
     private ProjectSearchDownloadOrthologDto getBestOrthologs(
         List<ProjectSearchDownloadOrthologDto> bestOrthologs, ProjectSearchDownloadOrthologDto x) {
-        ProjectSearchDownloadOrthologDto bestOrtholog = bestOrthologs.stream()
-            .filter(y -> y.getMgiGeneAccId().equals(x.getMgiGeneAccId())).collect(
-                Collectors.toList()).stream()
+        return bestOrthologs.stream()
+            .filter(y -> y.getMgiGeneAccId().equals(x.getMgiGeneAccId())).toList().stream()
             .max(Comparator.comparing(ProjectSearchDownloadOrthologDto::getSupportCount))
             .orElseThrow(NoSuchElementException::new);
-        return bestOrtholog;
     }
 
 

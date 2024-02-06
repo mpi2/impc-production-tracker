@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class ResourceAccessCheckerImpl<T> implements ResourceAccessChecker<T> {
-    private ContextAwarePolicyEnforcement policyEnforcement;
+    private final ContextAwarePolicyEnforcement policyEnforcement;
 
     public ResourceAccessCheckerImpl(ContextAwarePolicyEnforcement policyEnforcement) {
         this.policyEnforcement = policyEnforcement;

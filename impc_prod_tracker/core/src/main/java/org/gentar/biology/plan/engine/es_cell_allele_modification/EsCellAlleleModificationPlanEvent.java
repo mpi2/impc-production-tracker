@@ -246,11 +246,11 @@ public enum EsCellAlleleModificationPlanEvent implements ProcessEvent
         return triggerNote;
     }
 
-    private String description;
-    private ProcessState initialState;
-    private ProcessState endState;
-    private boolean triggeredByUser;
-    private String triggerNote;
+    private final String description;
+    private final ProcessState initialState;
+    private final ProcessState endState;
+    private final boolean triggeredByUser;
+    private final String triggerNote;
 
     @Override
     public String getName()

@@ -1,44 +1,25 @@
 package org.gentar.security.jwt;
 
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.JwsHeader;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
-import io.jsonwebtoken.SigningKeyResolver;
-import io.jsonwebtoken.SigningKeyResolverAdapter;
+import io.jsonwebtoken.*;
 import io.jsonwebtoken.impl.DefaultClaims;
 import io.jsonwebtoken.impl.crypto.MacProvider;
+import jakarta.servlet.http.HttpServletRequest;
 import org.gentar.exceptions.OperationFailedException;
 import org.gentar.security.PublicKeyProvider;
 import org.gentar.security.abac.subject.AapSystemSubject;
-
-import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
-
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.security.core.Authentication;
-import jakarta.servlet.http.HttpServletRequest;
+
 import java.security.Key;
-import java.util.Arrays;
-import java.util.Base64;
-import java.util.Date;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.doReturn;
-import static org.mockito.Mockito.spy;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 
 public class JwtTokenProviderTest
@@ -87,8 +68,6 @@ public class JwtTokenProviderTest
         testInstance = spy(testInstance);
 
         AapSystemSubject aapSystemSubject = buildSubject(claims);
-        //Person person = new Person();
-       // person.setName(SUBJECT_NAME);
 
         when(systemSubject.buildSystemSubjectByPerson(any())).thenReturn(aapSystemSubject);
     }
@@ -110,9 +89,6 @@ public class JwtTokenProviderTest
         List<String> domains = (List<String>) claims.get("domains");
 
         assertEquals("Unexpected subject", SUBJECT_NAME, claims.getSubject());
-//        assertEquals("Unexpected nickname", LOGIN, claims.get("nickname"));
-//        assertEquals("Unexpected email", EMAIL, claims.get("email"));
-//        assertEquals("Unexpected number of domains", 2, domains.size());
         assertEquals("Unexpected domains", DOMAINS.get(0), domains.get(0));
         assertEquals("Unexpected domains", DOMAINS.get(1), domains.get(1));
     }
@@ -125,7 +101,7 @@ public class JwtTokenProviderTest
 
         Authentication authentication = testInstance.getAuthentication(VALID_TOKEN);
 
-        assertTrue(authentication.getPrincipal() instanceof AapSystemSubject);
+        assertInstanceOf(AapSystemSubject.class, authentication.getPrincipal());
         AapSystemSubject subject = (AapSystemSubject) authentication.getPrincipal();
         assertEquals("Error", SUBJECT_NAME, subject.getUserRefId());
     }
@@ -232,7 +208,7 @@ public class JwtTokenProviderTest
         String id = UUID.randomUUID().toString().replace("-", "");
         Date now = new Date();
 
-        String token = Jwts.builder()
+        return Jwts.builder()
             .setSubject(SUBJECT_NAME)
             .claim("nickname", LOGIN)
             .claim("email", EMAIL)
@@ -243,8 +219,6 @@ public class JwtTokenProviderTest
             .setExpiration(exp)
             .signWith(SignatureAlgorithm.HS256, base64SecretBytes)
             .compact();
-
-        return token;
     }
 
     private static String generateToken()
@@ -253,7 +227,7 @@ public class JwtTokenProviderTest
         return generateToken(exp);
     }
 
-    private SigningKeyResolver signingKeyResolver = new SigningKeyResolverAdapter()
+    private final SigningKeyResolver signingKeyResolver = new SigningKeyResolverAdapter()
     {
         @Override
         public byte[] resolveSigningKeyBytes(JwsHeader header, Claims claims)

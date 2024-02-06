@@ -2,9 +2,12 @@ package org.gentar.biology.plan.engine.crispr_allele_modification;
 
 import java.util.Arrays;
 import java.util.List;
+
+import lombok.Getter;
 import org.gentar.statemachine.EnumStateHelper;
 import org.gentar.statemachine.ProcessState;
 
+@Getter
 public enum CrisprAlleleModificationPlanState implements ProcessState {
     PlanCreated("Plan Created"),
     PlanAbandoned("Plan Abandoned"),
@@ -16,14 +19,10 @@ public enum CrisprAlleleModificationPlanState implements ProcessState {
     MouseAlleleModificationGenotypeConfirmed("Mouse Allele Modification Genotype Confirmed"),
     MouseAlleleModificationAborted("Mouse Allele Modification Aborted");
 
-    private String internalName;
+    private final String internalName;
 
     CrisprAlleleModificationPlanState(String internalName) {
         this.internalName = internalName;
-    }
-
-    public String getInternalName() {
-        return internalName;
     }
 
     public static List<ProcessState> getAllStates() {

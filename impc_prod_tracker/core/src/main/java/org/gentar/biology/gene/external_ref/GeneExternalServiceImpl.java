@@ -13,12 +13,7 @@ import org.springframework.stereotype.Component;
 import org.gentar.biology.gene.Gene;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Component
 public class GeneExternalServiceImpl implements GeneExternalService {
@@ -93,7 +88,7 @@ public class GeneExternalServiceImpl implements GeneExternalService {
     private Map<String, String> getAccIdsBySingleMarkerSymbol(String input) {
         String query = QueryBuilder.getInstance()
                 .withRoot("mouse_gene")
-                .withColumnInLikeValuesIgnoreCase("symbol", Arrays.asList(input))
+                .withColumnInLikeValuesIgnoreCase("symbol", Collections.singletonList(input))
                 .withFields(Arrays.asList("mgi_gene_acc_id", "symbol"))
                 .build();
         return getAccIdsFromExternalData(query);
@@ -136,7 +131,7 @@ public class GeneExternalServiceImpl implements GeneExternalService {
         Gene gene = null;
         List<Gene> genes = getGenesFromExternalData(query);
         if (!genes.isEmpty()) {
-            gene = genes.get(0);
+            gene = genes.getFirst();
         }
         return gene;
     }

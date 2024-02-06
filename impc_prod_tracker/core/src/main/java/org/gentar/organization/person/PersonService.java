@@ -16,7 +16,7 @@
 package org.gentar.organization.person;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import org.gentar.organization.person.Person;
+
 import java.util.List;
 
 /**
@@ -35,7 +35,6 @@ public interface PersonService
 
     /**
      * Returns the {@link Person} object representing the current user.
-     * @return
      */
     Person getLoggedPerson();
 
@@ -65,7 +64,7 @@ public interface PersonService
     /**
      * Updates information for the current logged user in the system.
      * @param person Person object representing
-     * @param token JWT token to communicate with AAP in case of need.
+     * @param oldPassword JWT token to communicate with AAP in case of need.
      * @return Updated person.
      */
     Person updateOwnPerson(Person person, String oldPassword, String newPassword) throws JsonProcessingException;

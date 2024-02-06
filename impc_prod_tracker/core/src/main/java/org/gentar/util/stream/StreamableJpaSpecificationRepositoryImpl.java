@@ -13,7 +13,7 @@ import java.util.stream.Stream;
 
 
 /**
- * Taken from https://itnext.io/scrolling-through-large-datasets-in-spring-data-jpa-with-streams-and-specification-2fd975129758.
+ * Taken from <a href="https://itnext.io/scrolling-through-large-datasets-in-spring-data-jpa-with-streams-and-specification-2fd975129758">...</a>.
  * @param <T>
  */
 public class StreamableJpaSpecificationRepositoryImpl <T> implements StreamableJpaSpecificationRepository<T>

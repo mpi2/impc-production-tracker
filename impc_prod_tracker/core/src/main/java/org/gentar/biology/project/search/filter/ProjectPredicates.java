@@ -1,14 +1,14 @@
 package org.gentar.biology.project.search.filter;
 
+import org.gentar.biology.intention.project_intention.ProjectIntention;
 import org.gentar.biology.mutation.molecular_type.MolecularMutationType;
 import org.gentar.biology.project.Project;
-import org.gentar.biology.intention.project_intention.ProjectIntention;
 import org.gentar.organization.work_group.WorkGroup;
 import org.gentar.organization.work_unit.WorkUnit;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Predicate;
-import java.util.stream.Collectors;
 
 public class ProjectPredicates {
     public static Predicate<Project> inTpns(List<String> tpns) {
@@ -17,7 +17,7 @@ public class ProjectPredicates {
 
     public static Predicate<Project> inWorkUnitNames(List<String> values) {
         return (p) -> {
-            WorkUnit match = null;
+            WorkUnit match;
             List<WorkUnit> workUnitsByProject = p.getRelatedWorkUnits();
             match = workUnitsByProject.stream()
                     .filter(wu -> values.contains(wu.getName()))
@@ -28,7 +28,7 @@ public class ProjectPredicates {
 
     public static Predicate<Project> inWorkGroupNames(List<String> values) {
         return (p) -> {
-            WorkGroup match = null;
+            WorkGroup match;
             List<WorkGroup> workGroupsByProject = p.getRelatedWorkGroups();
             match = workGroupsByProject.stream()
                     .filter(wg -> values.contains(wg.getName()))
@@ -59,7 +59,7 @@ public class ProjectPredicates {
 
     public static Predicate<Project> inConsortiaNames(List<String> values) {
         return (p) -> {
-            boolean anyMatch = false;
+            boolean anyMatch;
 
             var relatedConsortia = p.getRelatedConsortia();
             anyMatch = relatedConsortia.stream()
@@ -84,7 +84,7 @@ public class ProjectPredicates {
     public static Predicate<Project> inColonyNames(List<String> values)
     {
         return (p) -> {
-            boolean anyMatch = false;
+            boolean anyMatch;
 
             var relatedColonies = p.getRelatedColonies();
             anyMatch = relatedColonies.stream()
@@ -97,7 +97,7 @@ public class ProjectPredicates {
     public static Predicate<Project> inPhenotypingExternalRefNames(List<String> values)
     {
         return (p) -> {
-            boolean anyMatch = false;
+            boolean anyMatch;
 
             var relatedPhenotypingAttempt = p.getPlans();
             anyMatch = relatedPhenotypingAttempt.stream()

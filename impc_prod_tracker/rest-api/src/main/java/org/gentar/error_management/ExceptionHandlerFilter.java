@@ -1,11 +1,11 @@
 /*******************************************************************************
  * Copyright 2019 EMBL - European Bioinformatics Institute
- *
+ * <p>
  * Licensed under the Apache License, Version 2.0 (the
  * "License"); you may not use this file except in compliance
  * with the License. You may obtain a copy of the License at
  * http://www.apache.org/licenses/LICENSE-2.0
- *
+ * <p>
  * Unless required by applicable law or agreed to in writing,
  * software distributed under the License is distributed on an
  * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
@@ -19,6 +19,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import lombok.NonNull;
 import org.gentar.exceptions.OperationFailedException;
 import org.gentar.exceptions.SystemOperationFailedException;
 import org.springframework.http.HttpStatus;
@@ -39,7 +40,7 @@ import java.io.PrintWriter;
 @Component
 public class ExceptionHandlerFilter extends OncePerRequestFilter
 {
-    private ObjectMapper mapper = new ObjectMapper();
+    private final ObjectMapper mapper = new ObjectMapper();
     public ExceptionHandlerFilter()
     {
         mapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
@@ -48,7 +49,7 @@ public class ExceptionHandlerFilter extends OncePerRequestFilter
 
     @Override
     public void doFilterInternal(
-        HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
+            @NonNull HttpServletRequest request, @NonNull HttpServletResponse response, @NonNull FilterChain filterChain)
     throws IOException
     {
         ApiError apiError;
@@ -75,9 +76,8 @@ public class ExceptionHandlerFilter extends OncePerRequestFilter
             }
             else
             {
-                if (cause instanceof OperationFailedException)
+                if (cause instanceof OperationFailedException ofe)
                 {
-                    OperationFailedException ofe = (OperationFailedException) cause;
                     apiError = ApiError.of(ofe);
                 }
                 else
@@ -97,10 +97,8 @@ public class ExceptionHandlerFilter extends OncePerRequestFilter
 
         PrintWriter printWriter = response.getWriter();
         printWriter.write(convertObjectToJson(apiError));
-        if (printWriter != null) {
-            printWriter.flush();
-            printWriter.close();
-        }
+        printWriter.flush();
+        printWriter.close();
     }
 
     public String convertObjectToJson(Object object)

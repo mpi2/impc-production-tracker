@@ -1,9 +1,5 @@
 package org.gentar.biology.plan.attempt.phenotyping.stage;
 
-import static org.gentar.mockdata.MockData.PSN_000000001;
-import static org.gentar.mockdata.MockData.phenotypingStageMockData;
-import static org.junit.jupiter.api.Assertions.*;
-
 import org.gentar.audit.history.HistoryService;
 import org.gentar.biology.plan.engine.PlanUpdater;
 import org.gentar.security.abac.spring.ContextAwarePolicyEnforcement;
@@ -13,6 +9,9 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+
+import static org.gentar.mockdata.MockData.phenotypingStageMockData;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 
 
 @ExtendWith(MockitoExtension.class)

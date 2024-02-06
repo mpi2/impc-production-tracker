@@ -1,23 +1,22 @@
 package org.gentar.biology.project.search;
 
+import lombok.Getter;
+
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Getter
 public enum SearchType
 {
     BY_GENE("gene"),
     BY_LOCATION("location");
 
-    private String name;
+    private final String name;
 
     SearchType(String name)
     {
         this.name = name;
-    }
-
-    public String getName() {
-        return name;
     }
 
     public static SearchType valueOfName(String name) {

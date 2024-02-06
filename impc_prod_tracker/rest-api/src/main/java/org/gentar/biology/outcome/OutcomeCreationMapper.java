@@ -13,9 +13,9 @@ import java.util.Set;
 @Component
 public class OutcomeCreationMapper implements Mapper<Outcome, OutcomeCreationDTO>
 {
-    private OutcomeCommonMapper outcomeCommonMapper;
-    private OutcomeService outcomeService;
-    private MutationCreationMapper mutationCreationMapper;
+    private final OutcomeCommonMapper outcomeCommonMapper;
+    private final OutcomeService outcomeService;
+    private final MutationCreationMapper mutationCreationMapper;
 
     public OutcomeCreationMapper(
         OutcomeCommonMapper outcomeCommonMapper,

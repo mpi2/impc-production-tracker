@@ -3,7 +3,6 @@ package org.gentar.biology.outcome;
 import org.gentar.audit.history.History;
 import org.gentar.biology.mutation.Mutation;
 import org.gentar.biology.outcome.type.OutcomeType;
-import org.gentar.biology.project.Project;
 import org.gentar.exceptions.UserOperationFailedException;
 
 import java.util.List;
@@ -39,7 +38,6 @@ public interface OutcomeService
     /**
      * Updates an existing outcome.
      * @param outcome New data for the outcome.
-     * @return
      */
     History update(Outcome outcome);
 

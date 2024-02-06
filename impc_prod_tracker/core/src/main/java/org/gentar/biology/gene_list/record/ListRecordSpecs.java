@@ -16,7 +16,7 @@ public class ListRecordSpecs
 {
     public static Specification<ListRecord> withConsortiumName(String consortiumName)
     {
-        return (Specification<ListRecord>) (root, query, criteriaBuilder) -> {
+        return (root, query, criteriaBuilder) -> {
             if (consortiumName == null)
             {
                 return criteriaBuilder.isTrue(criteriaBuilder.literal(true));
@@ -31,13 +31,13 @@ public class ListRecordSpecs
             predicates.add(consortiumNamePath.in(consortiumName));
 
             query.distinct(true);
-            return criteriaBuilder.and(predicates.toArray(new Predicate[predicates.size()]));
+            return criteriaBuilder.and(predicates.toArray(new Predicate[0]));
         };
     }
 
     public static Specification<ListRecord> withAccIds(List<String> accIds)
     {
-        return (Specification<ListRecord>) (root, query, criteriaBuilder) -> {
+        return (root, query, criteriaBuilder) -> {
             if (accIds == null || accIds.isEmpty())
             {
                 return criteriaBuilder.isTrue(criteriaBuilder.literal(true));
@@ -52,13 +52,13 @@ public class ListRecordSpecs
             predicates.add(accId.in(accIds));
 
             query.distinct(true);
-            return criteriaBuilder.and(predicates.toArray(new Predicate[predicates.size()]));
+            return criteriaBuilder.and(predicates.toArray(new Predicate[0]));
         };
     }
 
     public static Specification<ListRecord> withVisible(Boolean visible)
     {
-        return (Specification<ListRecord>) (root, query, criteriaBuilder) -> {
+        return (root, query, criteriaBuilder) -> {
             if (visible == null)
             {
                 return criteriaBuilder.isTrue(criteriaBuilder.literal(true));
@@ -67,7 +67,7 @@ public class ListRecordSpecs
             Path<Boolean> visiblePath = root.get(ListRecord_.visible);
             predicates.add(criteriaBuilder.equal(visiblePath, visible));
             query.distinct(true);
-            return criteriaBuilder.and(predicates.toArray(new Predicate[predicates.size()]));
+            return criteriaBuilder.and(predicates.toArray(new Predicate[0]));
         };
     }
 }

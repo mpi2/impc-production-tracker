@@ -1,16 +1,15 @@
 package org.gentar.biology.plan.attempt.phenotyping;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URLDecoder;
-import java.nio.charset.StandardCharsets;
 import org.gentar.EntityMapper;
 import org.gentar.Mapper;
-import org.gentar.biology.plan.attempt.phenotyping.stage.PhenotypingStageController;
 import org.gentar.biology.plan.attempt.phenotyping.stage.PhenotypingStage;
+import org.gentar.biology.plan.attempt.phenotyping.stage.PhenotypingStageController;
 import org.gentar.biology.strain.StrainMapper;
 import org.springframework.hateoas.Link;
 import org.springframework.stereotype.Component;
 
+import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -23,7 +22,7 @@ public class PhenotypingAttemptResponseMapper implements Mapper<PhenotypingAttem
 {
     private EntityMapper entityMapper;
     private StrainMapper strainMapper;
-    private PhenotypingAttemptCommonMapper phenotypingAttemptCommonMapper;
+    private final PhenotypingAttemptCommonMapper phenotypingAttemptCommonMapper;
 
     public PhenotypingAttemptResponseMapper(EntityMapper entityMapper, StrainMapper strainMapper, PhenotypingAttemptCommonMapper phenotypingAttemptCommonMapper)
     {
@@ -70,11 +69,6 @@ public class PhenotypingAttemptResponseMapper implements Mapper<PhenotypingAttem
     }
 
     private String decode(String value) {
-        try {
-            return URLDecoder.decode(value, StandardCharsets.UTF_8.toString());
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        }
-        return value;
+        return URLDecoder.decode(value, StandardCharsets.UTF_8);
     }
 }

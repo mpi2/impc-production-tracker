@@ -3,7 +3,8 @@ package org.gentar.biology.plan;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import org.junit.jupiter.api.Test;
 import org.util.JsonConverter;
-import java.util.Arrays;
+
+import java.util.List;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.notNullValue;
@@ -22,7 +23,7 @@ class PlanCommonDataDTOTest
         PlanCommonDataDTO planCommonDataDTO = new PlanCommonDataDTO();
         planCommonDataDTO.setWorkUnitName(WORK_UNIT_NAME);
         planCommonDataDTO.setWorkGroupName(WORK_GROUP_NAME);
-        planCommonDataDTO.setFunderNames(Arrays.asList(FUNDER_NAME));
+        planCommonDataDTO.setFunderNames(List.of(FUNDER_NAME));
         planCommonDataDTO.setComment(COMMENT);
         String json = JsonConverter.toJson(planCommonDataDTO);
         assertThat(json, is(notNullValue()));

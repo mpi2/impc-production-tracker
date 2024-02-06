@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class GeneticMutationTypeMapper implements Mapper<GeneticMutationType, String>
 {
-    private GeneticMutationTypeService geneticMutationTypeService;
+    private final GeneticMutationTypeService geneticMutationTypeService;
 
     public GeneticMutationTypeMapper(GeneticMutationTypeService geneticMutationTypeService)
     {

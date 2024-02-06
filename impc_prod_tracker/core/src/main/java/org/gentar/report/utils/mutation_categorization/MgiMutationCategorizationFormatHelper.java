@@ -8,14 +8,12 @@ public interface MgiMutationCategorizationFormatHelper {
 
     /**
      *
-     * @param mutationCategorizationProjections
      * @return a String containing the repair mechanism associated with the mutation.
      */
     String formatRepairMechanism (Set<MgiCrisprAlleleReportMutationCategorizationProjection> mutationCategorizationProjections);
 
     /**
      *
-     * @param mutationCategorizationProjections
      * @return a String containing the allele categories associated with the mutation.
      */
     String formatAlleleCategory (Set<MgiCrisprAlleleReportMutationCategorizationProjection> mutationCategorizationProjections);

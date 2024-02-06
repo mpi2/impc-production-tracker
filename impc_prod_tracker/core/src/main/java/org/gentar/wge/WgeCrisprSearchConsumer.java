@@ -12,7 +12,7 @@ public class WgeCrisprSearchConsumer
     @Value("https://wge.stemcell.sanger.ac.uk//api/crispr_search?exon_id[]=")
     private String CRISPR_SEARCH_URL;
 
-    private RestTemplate restTemplate;
+    private final RestTemplate restTemplate;
 
     public WgeCrisprSearchConsumer(RestTemplate restTemplate) { this.restTemplate = restTemplate; }
 
@@ -34,8 +34,7 @@ public class WgeCrisprSearchConsumer
 
     private String processResponseBody(ResponseEntity<String> response)
     {
-        String result = response.getBody();
-        return result;
+        return response.getBody();
     }
 
 }

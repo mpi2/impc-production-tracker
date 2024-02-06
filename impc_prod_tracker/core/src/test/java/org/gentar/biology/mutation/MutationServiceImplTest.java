@@ -1,26 +1,19 @@
 package org.gentar.biology.mutation;
 
-import static org.gentar.mockdata.MockData.MIN_000000001;
-import static org.gentar.mockdata.MockData.PIN_000000001;
-import static org.gentar.mockdata.MockData.TPO_000000001;
-import static org.gentar.mockdata.MockData.mutationMockData;
-import static org.gentar.mockdata.MockData.outcomeMockData;
-import static org.gentar.mockdata.MockData.planMockData;
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.lenient;
-
-import org.gentar.audit.history.History;
 import org.gentar.audit.history.HistoryService;
 import org.gentar.biology.mutation.sequence.MutationSequenceService;
-import org.gentar.biology.outcome.Outcome;
 import org.gentar.biology.sequence.SequenceService;
 import org.gentar.exceptions.NotFoundException;
-import org.gentar.exceptions.UserOperationFailedException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+
+import static org.gentar.mockdata.MockData.MIN_000000001;
+import static org.gentar.mockdata.MockData.mutationMockData;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.lenient;
 
 @ExtendWith(MockitoExtension.class)
 class MutationServiceImplTest {

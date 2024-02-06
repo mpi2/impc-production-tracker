@@ -27,8 +27,8 @@ import java.util.*;
 @Component
 public class NucleaseMapper implements Mapper<Nuclease, NucleaseDTO>
 {
-    private EntityMapper entityMapper;
-    private CrisprAttemptService crisprAttemptService;
+    private final EntityMapper entityMapper;
+    private final CrisprAttemptService crisprAttemptService;
 
     public NucleaseMapper(EntityMapper entityMapper, CrisprAttemptService crisprAttemptService)
     {
@@ -38,8 +38,7 @@ public class NucleaseMapper implements Mapper<Nuclease, NucleaseDTO>
 
     public NucleaseDTO toDto(Nuclease nuclease)
     {
-        NucleaseDTO nucleaseDTO = entityMapper.toTarget(nuclease, NucleaseDTO.class);
-        return nucleaseDTO;
+        return entityMapper.toTarget(nuclease, NucleaseDTO.class);
     }
 
     @Override

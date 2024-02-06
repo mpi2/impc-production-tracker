@@ -34,16 +34,16 @@ import java.util.Set;
 @Component
 public class PlanBasicDataMapper implements Mapper<Plan, PlanBasicDataDTO>
 {
-    private PlanCommonDataMapper planCommonDataMapper;
-    private PlanStartingPointMapper planStartingPointMapper;
-    private CrisprAttemptMapper crisprAttemptMapper;
-    private EsCellAttemptMapper esCellAttemptMapper;
-    private BreedingAttemptMapper breedingAttemptMapper;
-    private EsCellAlleleModificationAttemptMapper esCellAlleleModificationAttemptMapper;
-    private CrisprAlleleModificationAttemptMapper crisprAlleleModificationAttemptMapper;
-    private PhenotypingAttemptCreationMapper phenotypingAttemptCreationMapper;
-    private PhenotypingAttemptResponseMapper phenotypingAttemptResponseMapper;
-    private StrainMapper strainMapper;
+    private final PlanCommonDataMapper planCommonDataMapper;
+    private final PlanStartingPointMapper planStartingPointMapper;
+    private final CrisprAttemptMapper crisprAttemptMapper;
+    private final EsCellAttemptMapper esCellAttemptMapper;
+    private final BreedingAttemptMapper breedingAttemptMapper;
+    private final EsCellAlleleModificationAttemptMapper esCellAlleleModificationAttemptMapper;
+    private final CrisprAlleleModificationAttemptMapper crisprAlleleModificationAttemptMapper;
+    private final PhenotypingAttemptCreationMapper phenotypingAttemptCreationMapper;
+    private final PhenotypingAttemptResponseMapper phenotypingAttemptResponseMapper;
+    private final StrainMapper strainMapper;
 
     public PlanBasicDataMapper(
             PlanCommonDataMapper planCommonDataMapper,
@@ -87,29 +87,26 @@ public class PlanBasicDataMapper implements Mapper<Plan, PlanBasicDataDTO>
         AttemptTypesName attemptTypesName = getAttemptTypesName(plan.getAttemptType());
         switch (attemptTypesName)
         {
-            case CRISPR: case HAPLOESSENTIAL_CRISPR:
+            case CRISPR, HAPLOESSENTIAL_CRISPR->
                 setCrisprAttemptDto(planBasicDataDTO, plan);
-                break;
-            case ES_CELL:
+            case ES_CELL->
                 setEsCellAttemptDto(planBasicDataDTO, plan);
-                break;
-            case BREEDING:
+            case BREEDING-> {
                 setBreedingAttemptDto(planBasicDataDTO, plan);
                 setStartingPointsToBreedingPlanDto(planBasicDataDTO, plan.getPlanStartingPoints());
-                break;
-            case ES_CELL_ALLELE_MODIFICATION:
+            }
+            case ES_CELL_ALLELE_MODIFICATION->{
                 setEsCellAlleleModificationAttemptDto(planBasicDataDTO, plan);
                 setStartingPointsToEsCellAlleleModificationPlanDto(planBasicDataDTO, plan.getPlanStartingPoints());
-                break;
-            case CRISPR_ALLELE_MODIFICATION:
+            }
+            case CRISPR_ALLELE_MODIFICATION-> {
                 setCrisprAlleleModificationAttemptDto(planBasicDataDTO, plan);
                 setStartingPointsToCrisprAlleleModificationPlanDto(planBasicDataDTO, plan.getPlanStartingPoints());
-                break;
-            case ADULT_PHENOTYPING: case HAPLOESSENTIAL_PHENOTYPING:
+            }
+            case ADULT_PHENOTYPING, HAPLOESSENTIAL_PHENOTYPING-> {
                 setPhenotypingAttemptDto(planBasicDataDTO, plan);
                 setStartingPointToPhenotypingPlanDto(planBasicDataDTO, plan.getPlanStartingPoints());
-                break;
-            default:
+            }
         }
     }
 

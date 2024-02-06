@@ -1,5 +1,6 @@
 package org.gentar.report.utils.mutation;
 
+import lombok.Getter;
 import org.gentar.util.LabeledType;
 
 import java.util.HashMap;
@@ -33,6 +34,7 @@ public enum EsCellModificationAlleleReportMutationType implements LabeledType {
     }
 
     private final String label;
+    @Getter
     private final String classification;
 
     EsCellModificationAlleleReportMutationType(String label, String classification) {
@@ -52,10 +54,6 @@ public enum EsCellModificationAlleleReportMutationType implements LabeledType {
     @Override
     public String getLabel() {
         return label;
-    }
-
-    public String getClassification() {
-        return classification;
     }
 
 }

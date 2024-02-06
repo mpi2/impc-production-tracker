@@ -85,9 +85,7 @@ public class GeneListRecordService
         StringBuilder result = new StringBuilder();
         if (genes != null)
         {
-            genes.forEach(x -> {
-                result.append(x.getAccId()).append("-");
-            } );
+            genes.forEach(x -> result.append(x.getAccId()).append("-"));
         }
         return result.toString();
     }

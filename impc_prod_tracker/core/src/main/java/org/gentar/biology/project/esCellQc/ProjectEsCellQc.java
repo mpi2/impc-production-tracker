@@ -1,5 +1,6 @@
 package org.gentar.biology.project.esCellQc;
 
+import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -8,8 +9,6 @@ import org.gentar.biology.project.Project;
 import org.gentar.biology.project.esCellQc.centre_pipeline.EsCellCentrePipeline;
 import org.gentar.biology.project.esCellQc.comment.EsCellQcComment;
 
-import jakarta.persistence.*;
-import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 
 @NoArgsConstructor(access= AccessLevel.PUBLIC, force=true)

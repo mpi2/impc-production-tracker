@@ -102,11 +102,11 @@ public class MgiCrisprAlleleReportServiceImpl implements MgiCrisprAlleleReportSe
                 .sorted(Comparator.comparing(x -> filteredMutationGeneMap.get(
                     filteredOutcomeMutationMap.get(x.getOutcomeId()).getMutationId()).getSymbol()
                     )
-                ).collect(Collectors.toList());
+                ).toList();
 
         return sortedEntries
             .stream()
-            .map(x -> constructRow(x))
+            .map(this::constructRow)
             .collect(Collectors.toList());
     }
 
@@ -135,7 +135,6 @@ public class MgiCrisprAlleleReportServiceImpl implements MgiCrisprAlleleReportSe
         Gene g = filteredMutationGeneMap.get(mutationProjection.getMutationId());
         // See below - simple report - for why this is no longer needed
         // String formattedMutationSymbol = checkMutationSymbol(mutationSymbol, g.getSymbol());
-        String formattedMutationSymbol = mutationSymbol;
 
         Set<MgiCrisprAlleleReportGuideProjection> guideProjections = guideMap.get(x.getPlanId());
         Set<MgiCrisprAlleleReportNucleaseProjection> nucleaseProjections = nucleaseMap.get(x.getPlanId());
@@ -165,7 +164,7 @@ public class MgiCrisprAlleleReportServiceImpl implements MgiCrisprAlleleReportSe
             mutationType + "\t" +
             gentarMutationIdentifier + "\t" +
             mgiMutationSeqeunceFormatHelper.formatMutationSeqeunceData(mutationSequenceProjections) + "\t" +
-            formattedMutationSymbol + "\t" +
+                mutationSymbol + "\t" +
             mgiAlleleAccId + "\t" +
             mutationDescription;
     }
@@ -179,11 +178,11 @@ public class MgiCrisprAlleleReportServiceImpl implements MgiCrisprAlleleReportSe
                 .sorted(Comparator.comparing(x -> filteredMutationGeneMap.get(
                     filteredOutcomeMutationMap.get(x.getOutcomeId()).getMutationId()).getSymbol()
                     )
-                ).collect(Collectors.toList());
+                ).toList();
 
         return sortedEntries
             .stream()
-            .map(x -> constructSimpleReportRow(x))
+            .map(this::constructSimpleReportRow)
             .collect(Collectors.toList());
     }
 
@@ -207,7 +206,6 @@ public class MgiCrisprAlleleReportServiceImpl implements MgiCrisprAlleleReportSe
         // Issue more likely to be having wrong gene symbol, which is addressed by the symbol updater
         //
         // String formattedMutationSymbol = checkMutationSymbol(mutationSymbol, g.getSymbol());
-        String formattedMutationSymbol = mutationSymbol;
 
 
         return g.getSymbol() + "\t" +
@@ -217,7 +215,7 @@ public class MgiCrisprAlleleReportServiceImpl implements MgiCrisprAlleleReportSe
             "endonuclease-mediated" + "\t" +
             mutationCategory + "\t" +
             mutationType + "\t" +
-            formattedMutationSymbol + "\t" +
+                mutationSymbol + "\t" +
             mgiAlleleAccId + "\t" +
             gentarMutationIdentifier
         ;
@@ -247,11 +245,9 @@ public class MgiCrisprAlleleReportServiceImpl implements MgiCrisprAlleleReportSe
     private String assembleReport() {
 
         String header = generateReportHeaders();
-        String report = reportRows
-            .stream()
-            .collect(Collectors.joining("\n"));
+        String report = String.join("\n", reportRows);
 
-        return Arrays.asList(header, report).stream().collect(Collectors.joining("\n"));
+        return String.join("\n", header, report);
 
     }
 
@@ -265,11 +261,9 @@ public class MgiCrisprAlleleReportServiceImpl implements MgiCrisprAlleleReportSe
     private String assembleSimpleReport() {
 
         String header = generateSimpleReportHeaders();
-        String report = reportRows
-            .stream()
-            .collect(Collectors.joining("\n"));
+        String report = String.join("\n", reportRows);
 
-        return Arrays.asList(header, report).stream().collect(Collectors.joining("\n"));
+        return String.join("\n", header, report);
 
     }
 
@@ -296,11 +290,7 @@ public class MgiCrisprAlleleReportServiceImpl implements MgiCrisprAlleleReportSe
             "Mutation Description"
         );
 
-        String headerString = headers
-            .stream()
-            .collect(Collectors.joining("\t"));
-
-        return headerString;
+        return String.join("\t", headers);
 
     }
 
@@ -319,10 +309,6 @@ public class MgiCrisprAlleleReportServiceImpl implements MgiCrisprAlleleReportSe
 
         );
 
-        String headerString = headers
-            .stream()
-            .collect(Collectors.joining("\t"));
-
-        return headerString;
+        return String.join("\t", headers);
     }
 }

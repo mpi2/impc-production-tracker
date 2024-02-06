@@ -1,17 +1,16 @@
 package org.gentar.biology.mutation;
 
-import org.gentar.Mapper;
-import org.gentar.biology.mutation.categorizarion.MutationCategorizationService;
-import org.gentar.biology.mutation.categorizarion.type.MutationCategorizationType;
-import org.springframework.stereotype.Component;
-import org.gentar.biology.mutation.categorizarion.MutationCategorization;
 import org.gentar.EntityMapper;
+import org.gentar.Mapper;
+import org.gentar.biology.mutation.categorizarion.MutationCategorization;
+import org.gentar.biology.mutation.categorizarion.MutationCategorizationService;
+import org.springframework.stereotype.Component;
 
 @Component
 public class MutationCategorizationMapper implements Mapper<MutationCategorization, MutationCategorizationDTO>
 {
-    private EntityMapper entityMapper;
-    private MutationCategorizationService mutationCategorizationService;
+    private final EntityMapper entityMapper;
+    private final MutationCategorizationService mutationCategorizationService;
 
     public MutationCategorizationMapper(
         EntityMapper entityMapper, MutationCategorizationService mutationCategorizationService)

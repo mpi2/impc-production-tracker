@@ -57,10 +57,9 @@ public class PhenotypingStageStateMachineResolver implements StateMachineResolve
     @Override
     public List<ProcessEvent> getAvailableTransitionsByEntityStatus(ProcessData processData)
     {
-        List<ProcessEvent> allTransitionsByPlanType = getAvailableEventsByStateName(
+        return getAvailableEventsByStateName(
             getProcessEventsByPhenotypingStage(
                 (PhenotypingStage)processData), processData.getProcessDataStatus().getName());
-        return allTransitionsByPlanType;
     }
 
     // This needs to be overridden because we need a special logic to match the names of the statuses.

@@ -14,8 +14,8 @@ import java.util.Set;
 @Component
 public class AssignmentStatusUpdater
 {
-    private ConflictsChecker conflictsChecker;
-    private AssignmentStatusService assignmentStatusService;
+    private final ConflictsChecker conflictsChecker;
+    private final AssignmentStatusService assignmentStatusService;
 
     public AssignmentStatusUpdater(
         ConflictsChecker conflictsChecker, AssignmentStatusService assignmentStatusService)

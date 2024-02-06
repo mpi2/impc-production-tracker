@@ -1,4 +1,4 @@
-FROM maven:3-amazoncorretto-17 as build
+FROM maven:3-amazoncorretto-21 as build
 
 COPY pom.xml /usr/src/gentar/
 COPY dto/pom.xml /usr/src/gentar/dto/
@@ -13,7 +13,7 @@ RUN  MAVEN_OPTS=" --add-opens java.base/sun.nio.ch=ALL-UNNAMED --add-opens java.
 
 
 # The final image should have a minimal number of layers
-FROM amazoncorretto:17-alpine
+FROM amazoncorretto:21-alpine
 
 VOLUME /tmp
 

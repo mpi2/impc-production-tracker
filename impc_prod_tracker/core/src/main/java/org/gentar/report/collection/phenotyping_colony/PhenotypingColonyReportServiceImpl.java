@@ -51,11 +51,11 @@ public class PhenotypingColonyReportServiceImpl implements PhenotypingColonyRepo
                 .sorted(Comparator.comparing(x -> filteredMutationGeneMap.get(
                         filteredOutcomeMutationMap.get(x.getOutcomeId()).getMutationId()).getSymbol()
                         )
-                ).collect(Collectors.toList());
+                ).toList();
 
         return sortedEntries
                 .stream()
-                .map(x -> constructRow(x))
+                .map(this::constructRow)
                 .collect(Collectors.toList());
     }
 
@@ -86,11 +86,9 @@ public class PhenotypingColonyReportServiceImpl implements PhenotypingColonyRepo
     private String assembleReport() {
 
         String header = generateReportHeaders();
-        String report = reportRows
-                .stream()
-                .collect(Collectors.joining("\n"));
+        String report = String.join("\n", reportRows);
 
-        return Arrays.asList(header,report).stream().collect(Collectors.joining("\n"));
+        return String.join("\n", header, report);
 
     }
 
@@ -110,11 +108,7 @@ public class PhenotypingColonyReportServiceImpl implements PhenotypingColonyRepo
                 "Mutation Symbol"
         );
 
-        String headerString =   headers
-                .stream()
-                .collect(Collectors.joining("\t"));
-
-        return headerString;
+        return String.join("\t", headers);
 
     }
 

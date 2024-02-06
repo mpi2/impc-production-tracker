@@ -1,11 +1,13 @@
 package org.gentar.biology.plan.engine.es_cell_allele_modification;
 
+import lombok.Getter;
 import org.gentar.statemachine.EnumStateHelper;
 import org.gentar.statemachine.ProcessState;
 
 import java.util.Arrays;
 import java.util.List;
 
+@Getter
 public enum EsCellAlleleModificationPlanState implements ProcessState {
     PlanCreated("Plan Created"),
     PlanAbandoned("Plan Abandoned"),
@@ -17,14 +19,10 @@ public enum EsCellAlleleModificationPlanState implements ProcessState {
     MouseAlleleModificationGenotypeConfirmed("Mouse Allele Modification Genotype Confirmed"),
     MouseAlleleModificationAborted("Mouse Allele Modification Aborted");
 
-    private String internalName;
+    private final String internalName;
 
     EsCellAlleleModificationPlanState(String internalName) {
         this.internalName = internalName;
-    }
-
-    public String getInternalName() {
-        return internalName;
     }
 
     public static List<ProcessState> getAllStates() {

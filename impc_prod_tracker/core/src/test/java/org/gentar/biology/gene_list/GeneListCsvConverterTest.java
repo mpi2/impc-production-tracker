@@ -1,13 +1,5 @@
 package org.gentar.biology.gene_list;
 
-import static org.gentar.mockdata.MockData.PIN_000000001;
-import static org.gentar.mockdata.MockData.planMockData;
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.lenient;
-
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 import org.gentar.biology.gene.external_ref.GeneExternalService;
 import org.gentar.biology.gene_list.record.ListRecord;
 import org.gentar.biology.gene_list.record.ListRecordTypeService;
@@ -18,6 +10,13 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.lenient;
 
 
 @ExtendWith(MockitoExtension.class)
@@ -55,10 +54,8 @@ class GeneListCsvConverterTest {
     @Test
     void processCsvContentGeneHeaderEmpty() {
 
-        Exception exception = assertThrows(UserOperationFailedException.class, () -> {
-            testInstance.processCsvContent(
-                List.of(List.of(CSV_NOTE_HEADER, CSV_TYPE_HEADER, CSV_VISIBLE_HEADER)));
-        });
+        Exception exception = assertThrows(UserOperationFailedException.class, () -> testInstance.processCsvContent(
+            List.of(List.of(CSV_NOTE_HEADER, CSV_TYPE_HEADER, CSV_VISIBLE_HEADER))));
 
         String expectedMessage =
             String.format(HEADER_NOT_FOUND_ERROR, CSV_GENE_HEADER);
@@ -71,10 +68,8 @@ class GeneListCsvConverterTest {
     @Test
     void processCsvContentNoteHeaderEmpty() {
 
-        Exception exception = assertThrows(UserOperationFailedException.class, () -> {
-            testInstance.processCsvContent(
-                List.of(List.of(CSV_GENE_HEADER, CSV_TYPE_HEADER, CSV_VISIBLE_HEADER)));
-        });
+        Exception exception = assertThrows(UserOperationFailedException.class, () -> testInstance.processCsvContent(
+            List.of(List.of(CSV_GENE_HEADER, CSV_TYPE_HEADER, CSV_VISIBLE_HEADER))));
 
         String expectedMessage =
             String.format(HEADER_NOT_FOUND_ERROR, CSV_NOTE_HEADER);
@@ -87,10 +82,8 @@ class GeneListCsvConverterTest {
     @Test
     void processCsvContentTypeHeaderEmpty() {
 
-        Exception exception = assertThrows(UserOperationFailedException.class, () -> {
-            testInstance.processCsvContent(
-                List.of(List.of(CSV_GENE_HEADER, CSV_NOTE_HEADER, CSV_VISIBLE_HEADER)));
-        });
+        Exception exception = assertThrows(UserOperationFailedException.class, () -> testInstance.processCsvContent(
+            List.of(List.of(CSV_GENE_HEADER, CSV_NOTE_HEADER, CSV_VISIBLE_HEADER))));
 
         String expectedMessage =
             String.format(HEADER_NOT_FOUND_ERROR, CSV_TYPE_HEADER);

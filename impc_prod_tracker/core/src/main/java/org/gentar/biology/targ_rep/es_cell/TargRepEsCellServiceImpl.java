@@ -1,12 +1,12 @@
 package org.gentar.biology.targ_rep.es_cell;
 
-import java.util.List;
 import org.gentar.biology.targ_rep.allele.TargRepAllele;
-import org.gentar.exceptions.NotFoundException;
 import org.gentar.exceptions.UserOperationFailedException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
+
+import java.util.List;
 
 
 
@@ -46,8 +46,7 @@ public class TargRepEsCellServiceImpl implements TargRepEsCellService {
     @Override
     public List<TargRepEsCell> getTargRepEscellByAlleleFailsIfNull(TargRepAllele allele)
         throws UserOperationFailedException {
-        List<TargRepEsCell> esCells = targRepEsCellRepository.findTargRepEsCellByAllele(allele);
-        return esCells;
+        return targRepEsCellRepository.findTargRepEsCellByAllele(allele);
     }
 
     @Override

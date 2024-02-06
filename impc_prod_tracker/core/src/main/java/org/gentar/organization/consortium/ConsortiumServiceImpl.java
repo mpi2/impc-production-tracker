@@ -57,11 +57,6 @@ public class ConsortiumServiceImpl implements ConsortiumService
     }
 
     @Override
-    /**
-     * In the future this list should be created from a query in the database. Currently it's
-     * fixed and only have IMPC as consortium whom abbreviation can be used to construct the
-     * symbol of an allele.
-     */
     public List<String> getConsortiaNamesUsableToConstructSymbols()
     {
         List<String> consortiaToConstructSymbols = new ArrayList<>();

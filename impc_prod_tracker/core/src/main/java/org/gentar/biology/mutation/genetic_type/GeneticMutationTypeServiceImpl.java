@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class GeneticMutationTypeServiceImpl implements GeneticMutationTypeService
 {
-    private GeneticMutationTypeRepository geneticMutationTypeRepository;
+    private final GeneticMutationTypeRepository geneticMutationTypeRepository;
 
     public GeneticMutationTypeServiceImpl(
         GeneticMutationTypeRepository geneticMutationTypeRepository)

@@ -1,11 +1,11 @@
 /*******************************************************************************
  * Copyright 2019 EMBL - European Bioinformatics Institute
- *
+ * <p>
  * Licensed under the Apache License, Version 2.0 (the
  * "License"); you may not use this file except in compliance
  * with the License. You may obtain a copy of the License at
  * http://www.apache.org/licenses/LICENSE-2.0
- *
+ * <p>
  * Unless required by applicable law or agreed to in writing,
  * software distributed under the License is distributed on an
  * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
@@ -142,29 +142,14 @@ public class PermissionServiceImpl implements PermissionService {
 
     @Override
     public boolean getPermissionByActionOnResource(String action, String resourceId) {
-        boolean hasPermission;
-        switch (action) {
-            case UPDATE_PLAN:
-                hasPermission = canUpdatePlan(resourceId);
-                break;
 
-            case UPDATE_PROJECT:
-                hasPermission = canUpdateProject(resourceId);
-                break;
-
-            case CREATE_PRODUCTION_PLAN:
-                hasPermission = canCreateProductionPlan(resourceId);
-                break;
-
-            case CREATE_PHENOTYPING_PLAN:
-                hasPermission = canCreatePhenotypingPlan(resourceId);
-                break;
-
-            default:
-                hasPermission = false;
-        }
-
-        return hasPermission;
+        return switch (action) {
+            case UPDATE_PLAN -> canUpdatePlan(resourceId);
+            case UPDATE_PROJECT -> canUpdateProject(resourceId);
+            case CREATE_PRODUCTION_PLAN -> canCreateProductionPlan(resourceId);
+            case CREATE_PHENOTYPING_PLAN -> canCreatePhenotypingPlan(resourceId);
+            default -> false;
+        };
     }
 
     private boolean canUpdatePlan(String pin) {

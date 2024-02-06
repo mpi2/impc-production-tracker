@@ -1,7 +1,6 @@
 package org.gentar.report.collection.mgi_crispr_allele.mutagenesis_donor;
 
 import org.gentar.biology.plan.attempt.crispr.mutagenesis_donor.MutagenesisDonor;
-import org.gentar.report.collection.mgi_crispr_allele.guide.MgiCrisprAlleleReportGuideProjection;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;

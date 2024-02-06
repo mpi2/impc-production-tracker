@@ -18,11 +18,10 @@ package org.gentar.biology.project.search.filter;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Filter;
 
 public class ProjectFilterBuilder
 {
-    private Map<FilterTypes, List<String>> filters;
+    private final Map<FilterTypes, List<String>> filters;
 
     // Prevents instantiation.
     private ProjectFilterBuilder()

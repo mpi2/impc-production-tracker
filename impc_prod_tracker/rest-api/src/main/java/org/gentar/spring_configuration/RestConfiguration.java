@@ -31,7 +31,6 @@ public class RestConfiguration
      * that.
      * Lastly we have specific relations that we need to set as single links, like "project" because
      * it refers to a single element.
-     * @return
      */
     @Bean
     public HalConfiguration linkRelationBasedPolicy() {

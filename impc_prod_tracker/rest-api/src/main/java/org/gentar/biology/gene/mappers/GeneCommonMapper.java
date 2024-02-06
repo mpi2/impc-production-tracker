@@ -41,7 +41,7 @@ public class GeneCommonMapper implements Mapper<Gene, GeneCommonDTO>
         String speciesName = geneCommonDTO.getSpeciesName();
         SpeciesNames speciesNameEnum = SpeciesNames.valueOfLabel(speciesName);
         Gene gene = null;
-        String searchTerm = null;
+        String searchTerm;
         if (geneCommonDTO.getAccId() != null)
         {
             searchTerm = geneCommonDTO.getAccId();

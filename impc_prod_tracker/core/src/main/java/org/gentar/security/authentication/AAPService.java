@@ -19,23 +19,19 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import org.apache.tomcat.util.codec.binary.Base64;
 import org.gentar.exceptions.UserOperationFailedException;
+import org.gentar.organization.person.Person;
 import org.gentar.organization.person.associations.PersonRoleConsortium;
 import org.gentar.organization.person.associations.PersonRoleWorkUnit;
 import org.gentar.util.JsonHelper;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
-import org.gentar.organization.person.Person;
-import java.nio.charset.Charset;
+
+import java.nio.charset.StandardCharsets;
 
 @Component
 public class AAPService
@@ -238,7 +234,6 @@ public class AAPService
      * @param email Email of the user.
      * @param oldPassword Old password.
      * @param newPassword New password.
-     * @throws JsonProcessingException
      */
     public void changePassword(String email, String oldPassword, String newPassword) throws JsonProcessingException
     {
@@ -289,7 +284,7 @@ public class AAPService
     private HttpHeaders createBasicAuthorizationHeaders(String username, String password){
         return new HttpHeaders() {{
             String auth = username + ":" + password;
-            byte[] encodedAuth = Base64.encodeBase64(auth.getBytes(Charset.forName("US-ASCII")),true);
+            byte[] encodedAuth = Base64.encodeBase64(auth.getBytes(StandardCharsets.US_ASCII),true);
             String authHeader = "Basic " + new String( encodedAuth );
             set( "Authorization", authHeader );
         }};

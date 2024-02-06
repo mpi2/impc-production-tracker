@@ -1,17 +1,16 @@
 package org.gentar.organization.work_unit;
 
-import org.gentar.exceptions.UserOperationFailedException;
-import org.gentar.organization.work_group.WorkGroup;
-import org.springframework.cache.annotation.Cacheable;
-import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
-
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.NoResultException;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Root;
+import org.gentar.exceptions.UserOperationFailedException;
+import org.gentar.organization.work_group.WorkGroup;
+import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
+
 import java.util.List;
 import java.util.Set;
 
@@ -20,7 +19,7 @@ public class WorkUnitServiceImpl implements WorkUnitService
 {
     private static final String WORK_UNIT_NOT_EXISTS_ERROR = "Work unit %s does not exist.";
 
-    private WorkUnitRepository workUnitRepository;
+    private final WorkUnitRepository workUnitRepository;
     @PersistenceContext
     private EntityManager entityManager;
 

@@ -1,17 +1,14 @@
 package org.gentar.biology.plan.engine;
 
-import static org.gentar.mockdata.MockData.TEST_NAME;
-import static org.gentar.mockdata.MockData.planMockData;
-import static org.gentar.mockdata.MockData.statusMockData;
-import static org.junit.jupiter.api.Assertions.*;
-
-import org.gentar.biology.plan.Plan;
 import org.gentar.biology.status.StatusService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+
+import static org.gentar.mockdata.MockData.*;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 
 
 @ExtendWith(MockitoExtension.class)

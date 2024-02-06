@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonUnwrapped;
 import lombok.Data;
-import org.gentar.biology.mutation.MutationResponseDTO;
 import org.gentar.biology.status_stamps.StatusStampsDTO;
 import org.gentar.common.state_machine.StatusTransitionDTO;
 import org.springframework.hateoas.RepresentationModel;

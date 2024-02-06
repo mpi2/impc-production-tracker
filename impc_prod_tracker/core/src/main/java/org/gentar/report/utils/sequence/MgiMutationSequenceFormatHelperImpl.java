@@ -19,7 +19,7 @@ public class MgiMutationSequenceFormatHelperImpl implements MgiMutationSequenceF
             result = mutationSequenceProjections
                     .stream()
                     .sorted(Comparator.comparing(MgiCrisprAlleleReportMutationSequenceProjection::getIndex))
-                    .map(p -> formatSeqeunce(p))
+                    .map(this::formatSeqeunce)
                     .collect(Collectors.joining("**"));
         }
 

@@ -2,7 +2,6 @@ package org.gentar.biology.colony;
 
 import org.apache.logging.log4j.util.Strings;
 import org.gentar.biology.plan.attempt.phenotyping.PhenotypingAttempt;
-import org.gentar.biology.plan.attempt.phenotyping.stage.PhenotypingStage;
 import org.gentar.biology.plan.starting_point.PlanStartingPoint;
 import org.gentar.biology.plan.starting_point.PlanStartingPointRepository;
 import org.gentar.biology.status.StatusNames;
@@ -10,7 +9,6 @@ import org.gentar.exceptions.UserOperationFailedException;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
-import java.util.Set;
 
 @Component
 public class ColonyValidator

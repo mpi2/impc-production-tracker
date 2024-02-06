@@ -16,7 +16,7 @@ import java.util.Set;
 @Component
 public class CrisprAttemptValidator
 {
-    private CrisprAttemptService crisprAttemptService;
+    private final CrisprAttemptService crisprAttemptService;
     private final NucleaseValidator nucleaseValidator;
     private final GuideValidator guideValidator;
 
@@ -46,9 +46,9 @@ public class CrisprAttemptValidator
     private void validateGuides(CrisprAttempt crisprAttempt)
     {
         Set<Guide> guides = crisprAttempt.getGuides();
-        if (guides != null && guides.size() > 0)
+        if (guides != null && !guides.isEmpty())
         {
-            guides.forEach(x -> guideValidator.validateGuideData(x));
+            guides.forEach(guideValidator::validateGuideData);
         }
         else
         {
@@ -60,9 +60,9 @@ public class CrisprAttemptValidator
     private void validateNuclease(CrisprAttempt crisprAttempt)
     {
         Set<Nuclease> nucleases = crisprAttempt.getNucleases();
-        if (nucleases != null && nucleases.size() > 0)
+        if (nucleases != null && !nucleases.isEmpty())
         {
-            nucleases.forEach(x -> nucleaseValidator.validateNucleaseData(x));
+            nucleases.forEach(nucleaseValidator::validateNucleaseData);
         }
         else
         {

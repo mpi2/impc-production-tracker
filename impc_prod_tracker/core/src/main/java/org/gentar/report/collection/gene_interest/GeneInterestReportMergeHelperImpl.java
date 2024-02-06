@@ -27,15 +27,13 @@ public class GeneInterestReportMergeHelperImpl implements GeneInterestReportMerg
                         .getAssignmentStatusOrderingMap()
                         .get(summary));
 
-        Map<String, String> summaryAssignmentMap = Stream.concat(
+        return Stream.concat(
                 summaryA.entrySet().stream(),summaryB.entrySet().stream() )
                 .collect(Collectors.toMap(
-                        x -> x.getKey(),
-                        x -> x.getValue(),
-                        (v1, v2) -> Arrays.asList(v1,v2).stream().min(byRanking).get()
+                        Map.Entry::getKey,
+                        Map.Entry::getValue,
+                        (v1, v2) -> Stream.of(v1,v2).min(byRanking).get()
                 ));
-
-        return summaryAssignmentMap;
 
     }
 
@@ -46,8 +44,8 @@ public class GeneInterestReportMergeHelperImpl implements GeneInterestReportMerg
         return Stream.concat(
                 geneMapA.entrySet().stream(),geneMapB.entrySet().stream() )
                 .collect(Collectors.toMap(
-                        x -> x.getKey(),
-                        x -> x.getValue(),
+                        Map.Entry::getKey,
+                        Map.Entry::getValue,
                         (v1, v2) -> v1
                 ));
     }

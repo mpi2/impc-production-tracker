@@ -23,7 +23,7 @@ public class TargetingVectorFieldsDescriptors {
         addPipelineFields(prefix, targetingVectorFieldsDescriptions);
         addAlleleFields(prefix, targetingVectorFieldsDescriptions);
         addIkmcProjectFields(prefix, targetingVectorFieldsDescriptions);
-        if (!prefix.equals("")) {
+        if (!prefix.isEmpty()) {
             addField(targetingVectorFieldsDescriptions, "_links.self.href",
                 "Targeting Vector Link");
             addField(targetingVectorFieldsDescriptions, "page.size", "Page Size");

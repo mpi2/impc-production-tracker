@@ -1,5 +1,7 @@
 package org.gentar.audit.diff;
 
+import lombok.Getter;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -12,6 +14,7 @@ import java.util.Map;
 class ObjectInspector
 {
     // Map for a field (property) and the value and meta info for it.
+    @Getter
     private final Map<String, PropertyDescription> map;
     // Object being evaluated.
     private final Object object;
@@ -74,7 +77,7 @@ class ObjectInspector
 
     private Class<?> getParentTypeToRegister(PropertyDefinition parentData)
     {
-        Class<?> parentTypeToRegister = null;
+        Class<?> parentTypeToRegister;
         if (parentData == null)
         {
             parentTypeToRegister = object.getClass();
@@ -93,11 +96,6 @@ class ObjectInspector
             }
         }
         return parentTypeToRegister;
-    }
-
-    public Map<String, PropertyDescription> getMap()
-    {
-        return map;
     }
 
     private boolean mustIgnoreProperty(String property)

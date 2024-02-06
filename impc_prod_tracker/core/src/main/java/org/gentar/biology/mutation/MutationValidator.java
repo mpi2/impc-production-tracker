@@ -61,7 +61,7 @@ public class MutationValidator {
                 } else if (mutation.getMolecularMutationType() == null) {
                     throw new UserOperationFailedException(
                         String.format(NULL_FIELD_ERROR, MUTATION_MOLECULAR_MUTATION_TYPE_S));
-                } else if (mutation.getSymbol() == null || mutation.getSymbol().equals("")) {
+                } else if (mutation.getSymbol() == null || mutation.getSymbol().isEmpty()) {
                     throw new UserOperationFailedException(
                         String.format(NULL_FIELD_ERROR, MUTATION_MUTATION_SYMBOL_S));
                 } else if (!mutation.getMolecularMutationType().getName()
@@ -108,18 +108,18 @@ public class MutationValidator {
             return false;
         }
 
-        if (isEsCellAttempt(mutation) && !symbol.split("<")[1].substring(0, 2).equals("tm")) {
+        if (isEsCellAttempt(mutation) && !symbol.split("<")[1].startsWith("tm")) {
             return false;
         }
 
-        if (!isEsCellAttempt(mutation) && !symbol.split("<")[1].substring(0, 2).equals("em")) {
+        if (!isEsCellAttempt(mutation) && !symbol.split("<")[1].startsWith("em")) {
             return false;
         }
         if (!naturalNumbers().contains(symbol.split("<")[1].substring(2, 3))) {
             return false;
         }
         if (symbol.contains("(") && symbol.contains(")") &&
-            symbol.substring(symbol.indexOf("(") + 1, symbol.indexOf(")")).equals("")) {
+                symbol.substring(symbol.indexOf("(") + 1, symbol.indexOf(")")).isEmpty()) {
             return false;
         }
         if (getEscAlleleClassName(mutation).equals("''") &&
@@ -128,13 +128,9 @@ public class MutationValidator {
             return false;
         }
 
-        if (!getEscAlleleClassName(mutation).equals("") &&
-            !getEscAlleleClassName(mutation).equals("''") && !getEscAlleleClassName(mutation)
-            .contains(getSubStringMutationCategorization(symbol))) {
-            return false;
-        }
-
-        return true;
+        return getEscAlleleClassName(mutation).isEmpty() ||
+                getEscAlleleClassName(mutation).equals("''") || getEscAlleleClassName(mutation)
+                .contains(getSubStringMutationCategorization(symbol));
     }
 
     private String getSubStringMutationCategorization(String symbol) {
@@ -161,17 +157,15 @@ public class MutationValidator {
     }
 
     private String getEscAlleleClassName(Mutation mutation) {
-        return getEscAlleleClass(mutation).size() != 0 ? getEscAlleleClass(mutation).get(0) :
+        return !getEscAlleleClass(mutation).isEmpty() ? getEscAlleleClass(mutation).getFirst() :
             "";
     }
 
     private boolean isEsCellAttempt(Mutation mutation) {
         return mutation.getOutcomes().stream().map(m -> m.getPlan().getAttemptType().getName())
-            .collect(
-                Collectors.toList()).get(0).equals(AttemptTypesName.ES_CELL.getLabel()) ||
+            .toList().getFirst().equals(AttemptTypesName.ES_CELL.getLabel()) ||
             mutation.getOutcomes().stream().map(m -> m.getPlan().getAttemptType().getName())
-                .collect(
-                    Collectors.toList()).get(0)
+                .toList().getFirst()
                 .equals(AttemptTypesName.ES_CELL_ALLELE_MODIFICATION.getLabel());
     }
 
@@ -194,13 +188,12 @@ public class MutationValidator {
     }
 
     private Boolean isMutationSymbolUnique(Mutation mutation) {
-        return mutationRepository.findAllBySymbolLike(mutation.getSymbol()).size() == 0;
+        return mutationRepository.findAllBySymbolLike(mutation.getSymbol()).isEmpty();
     }
 
     private String getAttemptTypeName(Mutation mutation) {
         return mutation.getOutcomes().stream().map(Outcome::getPlan).map(Plan::getAttemptType)
-            .map(AttemptType::getName).collect(
-                Collectors.toList()).get(0);
+            .map(AttemptType::getName).toList().getFirst();
     }
 
     private boolean isWorkUnitIlarCodeValid(Mutation mutation) {
@@ -217,9 +210,9 @@ public class MutationValidator {
         List<WorkUnit> workUnits = workUnitService.getAllWorkUnits();
 
         List<String> ilarCodes =
-            workUnits.stream().map(WorkUnit::getIlarCode).collect(Collectors.toList());
+            workUnits.stream().map(WorkUnit::getIlarCode).toList();
 
-        List<String> names = workUnits.stream().map(WorkUnit::getName).collect(Collectors.toList());
+        List<String> names = workUnits.stream().map(WorkUnit::getName).toList();
 
         ilarCodesAndNames.addAll(ilarCodes);
         ilarCodesAndNames.addAll(names);
@@ -261,7 +254,7 @@ public class MutationValidator {
         }
 
         List<String> sequenceString = sequences.stream().map(Sequence::getSequence)
-            .collect(Collectors.toList());
+            .toList();
 
         return sequenceString.stream().noneMatch(s ->
             !isStartWithBiggerSymbol(s) || !isSequenceHeaderSingleLine(s) ||
@@ -280,7 +273,7 @@ public class MutationValidator {
 
     private Boolean isSequenceHeaderSingleLine(String sequence) {
         return sequence.split("\n").length == 2 &&
-            (sequence.split("\n")[0].length() > 0 && sequence.split("\n")[0].length() < 256);
+            (!sequence.split("\n")[0].isEmpty() && sequence.split("\n")[0].length() < 256);
 
     }
 

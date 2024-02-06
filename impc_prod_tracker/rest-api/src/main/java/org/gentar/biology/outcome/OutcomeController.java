@@ -1,14 +1,5 @@
 package org.gentar.biology.outcome;
 
-import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
-import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
-
-import java.io.UnsupportedEncodingException;
-import java.net.URLDecoder;
-import java.nio.charset.StandardCharsets;
-import java.util.Collection;
-import java.util.List;
-import java.util.Set;
 import org.gentar.audit.history.History;
 import org.gentar.audit.history.HistoryMapper;
 import org.gentar.biology.ChangeResponse;
@@ -20,16 +11,16 @@ import org.gentar.helpers.ChangeResponseCreator;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.Link;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
+import java.util.Collection;
+import java.util.List;
+import java.util.Set;
+
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 @RestController
 @RequestMapping("/api")
@@ -90,9 +81,7 @@ public class OutcomeController
         @PathVariable String pin, @PathVariable String tpo)
     {
         Outcome outcome = outcomeService.getOutcomeByPinAndTpo(pin, tpo);
-        List<HistoryDTO> historyDTOS =
-            historyMapper.toDtos(outcomeService.getOutcomeHistory(outcome));
-        return historyDTOS;
+        return historyMapper.toDtos(outcomeService.getOutcomeHistory(outcome));
     }
 
     /**
@@ -196,11 +185,6 @@ public class OutcomeController
     }
 
     private String decode(String value) {
-        try {
-            return URLDecoder.decode(value, StandardCharsets.UTF_8.toString());
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        }
-        return value;
+        return URLDecoder.decode(value, StandardCharsets.UTF_8);
     }
 }

@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class SpecimenPropertyMapper implements Mapper<SpecimenProperty, SpecimenPropertyDTO>
 {
-    private EntityMapper entityMapper;
+    private final EntityMapper entityMapper;
 
     public SpecimenPropertyMapper(EntityMapper entityMapper)
     {

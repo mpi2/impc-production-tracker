@@ -7,12 +7,12 @@ import org.gentar.biology.status.Status;
 import org.gentar.biology.status.StatusNames;
 import org.gentar.biology.status.StatusService;
 import org.springframework.stereotype.Component;
+
 import java.time.LocalDateTime;
 import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 /**
  * This class has the logic to update the summary status in a project.
@@ -20,7 +20,7 @@ import java.util.stream.Collectors;
 @Component
 public class ProjectSummaryStatusUpdater
 {
-    private StatusService statusService;
+    private final StatusService statusService;
 
     public ProjectSummaryStatusUpdater(StatusService statusService)
     {
@@ -59,7 +59,7 @@ public class ProjectSummaryStatusUpdater
                 plans.stream()
                     .filter(x -> !x.getProcessDataStatus().getIsAbortionStatus())
                     .map(Plan::getSummaryStatus)
-                    .collect(Collectors.toList());
+                    .toList();
             mostAdvancedSummaryStatus = summaryStatusesNotAbortedPlans
                 .stream()
                 .max(Comparator.comparing(Status::getOrdering))

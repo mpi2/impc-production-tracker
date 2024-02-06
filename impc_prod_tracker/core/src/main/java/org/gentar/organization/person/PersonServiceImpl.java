@@ -34,10 +34,10 @@ import java.util.List;
 @Component
 public class PersonServiceImpl implements PersonService
 {
-    private PersonRepository personRepository;
-    private AAPService aapService;
-    private SubjectRetriever subjectRetriever;
-    private ManagementService managementService;
+    private final PersonRepository personRepository;
+    private final AAPService aapService;
+    private final SubjectRetriever subjectRetriever;
+    private final ManagementService managementService;
     private final ContextAwarePolicyEnforcement policyEnforcement;
 
     public static final String PERSON_ALREADY_EXISTS_ERROR =

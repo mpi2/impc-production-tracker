@@ -60,7 +60,7 @@ public class ReportServiceImpl implements ReportService {
                 .sorted(Comparator.comparing(BaseEntity::getCreatedAt).reversed())
                 .skip(2)
                 .collect(Collectors.toList());
-            if (reportsToRemove.size() > 0) {
+            if (!reportsToRemove.isEmpty()) {
                 reportRepository.deleteAll(reportsToRemove);
             }
         }

@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class MaterialDepositedTypeMapper implements Mapper<MaterialDepositedType, String>
 {
-    private MaterialDepositedTypeService materialDepositedTypeService;
+    private final MaterialDepositedTypeService materialDepositedTypeService;
 
     private static final String MATERIAL_DEPOSITED_TYPE_NOT_FOUND_ERROR = "Material deposited type '%s' does not exist.";
 
@@ -34,7 +34,7 @@ public class MaterialDepositedTypeMapper implements Mapper<MaterialDepositedType
 
         if (materialDepositedType == null)
         {
-            throw new UserOperationFailedException(String.format(MATERIAL_DEPOSITED_TYPE_NOT_FOUND_ERROR, materialDepositedType));
+            throw new UserOperationFailedException(MATERIAL_DEPOSITED_TYPE_NOT_FOUND_ERROR);
         }
 
         return materialDepositedType;

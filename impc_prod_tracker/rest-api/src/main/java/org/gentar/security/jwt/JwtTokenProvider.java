@@ -1,11 +1,11 @@
 /*******************************************************************************
  * Copyright 2019 EMBL - European Bioinformatics Institute
- *
+ * <p>
  * Licensed under the Apache License, Version 2.0 (the
  * "License"); you may not use this file except in compliance
  * with the License. You may obtain a copy of the License at
  * http://www.apache.org/licenses/LICENSE-2.0
- *
+ * <p>
  * Unless required by applicable law or agreed to in writing,
  * software distributed under the License is distributed on an
  * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
@@ -22,6 +22,7 @@ import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SigningKeyResolver;
 import io.jsonwebtoken.SigningKeyResolverAdapter;
+import lombok.Getter;
 import org.gentar.exceptions.UserOperationFailedException;
 import org.gentar.organization.person.Person;
 import org.gentar.security.AuthorizationHeaderReader;
@@ -116,12 +117,7 @@ public class JwtTokenProvider
                 .setSigningKeyResolver(getSigningKeyResolver())
                 .parseClaimsJws(token);
 
-            if (claims.getBody().getExpiration().before(Date.from(Instant.now())))
-            {
-                return false;
-            }
-
-            return true;
+            return !claims.getBody().getExpiration().before(Date.from(Instant.now()));
         }
         catch (JwtException | IllegalArgumentException e)
         {
@@ -130,7 +126,8 @@ public class JwtTokenProvider
         }
     }
 
-    private SigningKeyResolver signingKeyResolver = new SigningKeyResolverAdapter()
+    @Getter
+    private final SigningKeyResolver signingKeyResolver = new SigningKeyResolverAdapter()
     {
         @Override
         public Key resolveSigningKey(JwsHeader header, Claims claims)
@@ -140,8 +137,4 @@ public class JwtTokenProvider
         }
     };
 
-    public SigningKeyResolver getSigningKeyResolver()
-    {
-        return signingKeyResolver;
-    }
 }

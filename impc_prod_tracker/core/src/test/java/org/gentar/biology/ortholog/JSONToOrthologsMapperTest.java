@@ -1,20 +1,14 @@
 package org.gentar.biology.ortholog;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.lenient;
-
-import java.util.List;
-import java.util.Map;
-import org.gentar.report.ReportServiceImpl;
-import org.gentar.report.collection.gene_interest.GeneInterestReportMergeHelperImpl;
-import org.gentar.report.collection.gene_interest.phenotyping.GeneInterestReportPhenotyping;
-import org.gentar.report.collection.gene_interest.production_type.GeneInterestReportCrisprProduction;
-import org.gentar.report.collection.gene_interest.production_type.GeneInterestReportEsCellProduction;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+
+import java.util.List;
+import java.util.Map;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @ExtendWith(MockitoExtension.class)
 class JSONToOrthologsMapperTest {

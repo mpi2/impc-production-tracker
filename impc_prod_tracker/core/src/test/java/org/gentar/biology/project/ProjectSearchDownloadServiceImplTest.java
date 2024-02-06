@@ -1,15 +1,5 @@
 package org.gentar.biology.project;
 
-import static org.gentar.mockdata.MockData.TEST_COMMENT;
-import static org.gentar.mockdata.MockData.TEST_INPUT;
-import static org.gentar.mockdata.MockData.TPN_000000001;
-import static org.gentar.mockdata.MockData.projectSearchDownloadProjectionListMockData;
-import static org.gentar.mockdata.MockData.searchResultMockData;
-import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.lenient;
-
-import java.util.List;
 import org.gentar.biology.ortholog.OrthologService;
 import org.gentar.biology.project.engine.ProjectValidator;
 import org.gentar.biology.project.projection.dto.ProjectSearchDownloadProjectionListDto;
@@ -21,11 +11,17 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.core.env.Environment;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
+
+import java.util.List;
+
+import static org.gentar.mockdata.MockData.*;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.lenient;
 
 @ExtendWith(MockitoExtension.class)
 class ProjectSearchDownloadServiceImplTest {

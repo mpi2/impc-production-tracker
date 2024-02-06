@@ -11,7 +11,7 @@ public enum PhenotypingStageState implements ProcessState
     PhenotypingFinished("Phenotyping Finished"),
     PhenotypeProductionAborted("Phenotype Production Aborted");
 
-    private String internalName;
+    private final String internalName;
 
     PhenotypingStageState(String internalName)
     {

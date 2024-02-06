@@ -1,11 +1,11 @@
 /*******************************************************************************
  * Copyright 2019 EMBL - European Bioinformatics Institute
- *
+ * <p>
  * Licensed under the Apache License, Version 2.0 (the
  * "License"); you may not use this file except in compliance
  * with the License. You may obtain a copy of the License at
  * http://www.apache.org/licenses/LICENSE-2.0
- *
+ * <p>
  * Unless required by applicable law or agreed to in writing,
  * software distributed under the License is distributed on an
  * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
@@ -16,23 +16,16 @@
 package org.gentar.organization.consortium;
 
 
-import lombok.*;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.persistence.*;
 import lombok.AccessLevel;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.gentar.audit.diff.IgnoreForAuditingChanges;
-import org.springframework.data.rest.core.annotation.RestResource;
+import lombok.ToString;
 import org.gentar.BaseEntity;
+import org.gentar.audit.diff.IgnoreForAuditingChanges;
 import org.gentar.organization.work_unit.WorkUnit;
+import org.springframework.data.rest.core.annotation.RestResource;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.JoinTable;
-import jakarta.persistence.ManyToMany;
-import jakarta.persistence.SequenceGenerator;
 import java.util.Set;
 
 @NoArgsConstructor(access= AccessLevel.PUBLIC, force=true)

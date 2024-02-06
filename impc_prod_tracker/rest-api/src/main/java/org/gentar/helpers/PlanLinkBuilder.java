@@ -1,18 +1,16 @@
 package org.gentar.helpers;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URLDecoder;
-import java.nio.charset.StandardCharsets;
+import org.gentar.biology.plan.Plan;
 import org.gentar.biology.plan.PlanController;
 import org.gentar.biology.plan.type.PlanTypeName;
-import org.springframework.hateoas.Link;
-import org.gentar.biology.plan.Plan;
 import org.gentar.biology.project.Project;
+import org.springframework.hateoas.Link;
 
+import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 
@@ -31,7 +29,7 @@ public class PlanLinkBuilder
             List<Plan> plansByType =
                 plans.stream().filter(
                     x -> planType.getLabel().equalsIgnoreCase(x.getPlanType().getName()))
-                    .collect(Collectors.toList());
+                    .toList();
             plansByType.forEach(
                 x -> {
                     Link link =
@@ -45,11 +43,6 @@ public class PlanLinkBuilder
     }
 
     private static String decode(String value) {
-        try {
-            return URLDecoder.decode(value, StandardCharsets.UTF_8.toString());
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        }
-        return value;
+        return URLDecoder.decode(value, StandardCharsets.UTF_8);
     }
 }

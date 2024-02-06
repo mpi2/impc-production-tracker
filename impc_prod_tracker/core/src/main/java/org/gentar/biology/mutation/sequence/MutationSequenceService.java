@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class MutationSequenceService
 {
-    private MutationSequenceRepository mutationSequenceRepository;
+    private final MutationSequenceRepository mutationSequenceRepository;
 
     private static final String NOT_FOUND_ERROR = "Mutation sequence with id [%s] does not exist.";
 

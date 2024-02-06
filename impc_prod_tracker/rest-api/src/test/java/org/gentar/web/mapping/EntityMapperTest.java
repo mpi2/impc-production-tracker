@@ -4,14 +4,13 @@ import org.gentar.EntityMapper;
 import org.gentar.biology.gene.Gene;
 import org.gentar.biology.gene.GeneCommonDTO;
 import org.gentar.biology.species.Species;
-
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.junit4.SpringRunner;
+
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -52,9 +51,8 @@ public class EntityMapperTest
     public void testToDtoNull()
     {
         EntityMapper entityMapper = new EntityMapper(modelMapper);
-        Gene gene = null;
 
-        GeneCommonDTO geneDTO = entityMapper.toTarget(gene, GeneCommonDTO.class);
+        GeneCommonDTO geneDTO = entityMapper.toTarget(null, GeneCommonDTO.class);
 
         assertThat("geneDTO", geneDTO, is(nullValue()));
     }

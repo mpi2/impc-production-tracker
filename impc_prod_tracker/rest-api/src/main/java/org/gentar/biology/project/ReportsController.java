@@ -34,9 +34,7 @@ public class ReportsController {
                 printWriter.flush();
                 printWriter.close();
             }
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (SQLException e) {
+        } catch (IOException | SQLException e) {
             e.printStackTrace();
         }
     }

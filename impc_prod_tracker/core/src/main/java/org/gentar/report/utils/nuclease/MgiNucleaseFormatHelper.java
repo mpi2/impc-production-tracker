@@ -7,7 +7,6 @@ import java.util.Set;
 public interface MgiNucleaseFormatHelper {
     /**
      *
-     * @param nucleaseProjections
      * @return a String containing data on a set of nucleases used in a Crispr Attempt.
      */
     String formatNucleaseData (Set<MgiCrisprAlleleReportNucleaseProjection> nucleaseProjections);

@@ -56,9 +56,7 @@ class MutationValidatorTest {
         Mutation mutation = new Mutation();
         Set<Gene> genes = new HashSet<>();
         mutation.setGenes(genes);
-        Exception exception = assertThrows(UserOperationFailedException.class, () -> {
-            testInstance.validateData(mutation);
-        });
+        Exception exception = assertThrows(UserOperationFailedException.class, () -> testInstance.validateData(mutation));
 
         String expectedMessage = "Mutation: Gene(s) cannot be null.";
         String actualMessage = exception.getMessage();
@@ -70,9 +68,7 @@ class MutationValidatorTest {
     void validateDataMolecularMutationTypeEmpty() {
         Mutation mutation = new Mutation();
         mutation.setGenes(geneSetMockData("Rsph3b"));
-        Exception exception = assertThrows(UserOperationFailedException.class, () -> {
-            testInstance.validateData(mutation);
-        });
+        Exception exception = assertThrows(UserOperationFailedException.class, () -> testInstance.validateData(mutation));
 
         String expectedMessage = "Mutation: Molecular Mutation Type(s) cannot be null.";
         String actualMessage = exception.getMessage();
@@ -85,9 +81,7 @@ class MutationValidatorTest {
         Mutation mutation = new Mutation();
         mutation.setGenes(geneSetMockData("Wtsi"));
         mutation.setMolecularMutationType(molecularMutationTypeMockData());
-        Exception exception = assertThrows(UserOperationFailedException.class, () -> {
-            testInstance.validateData(mutation);
-        });
+        Exception exception = assertThrows(UserOperationFailedException.class, () -> testInstance.validateData(mutation));
 
         String expectedMessage = "Mutation: Mutation symbol(s) cannot be null.";
         String actualMessage = exception.getMessage();
@@ -105,9 +99,7 @@ class MutationValidatorTest {
         mutation.setMolecularMutationType(molecularMutationTypeMockData());
         mutation.setSymbol("Rsph3b<tm1a(IMPC)Wtsi>");
 
-        Exception exception = assertThrows(UserOperationFailedException.class, () -> {
-            testInstance.validateData(mutation);
-        });
+        Exception exception = assertThrows(UserOperationFailedException.class, () -> testInstance.validateData(mutation));
 
         String expectedMessage =
             "Mutation:(Rsph3b<tm1a(IMPC)Wtsi>) Mutation symbol(s) are not in the correct format";
@@ -125,9 +117,7 @@ class MutationValidatorTest {
         mutation.setMolecularMutationType(molecularMutationTypeMockData());
         mutation.setSymbol("Rsph3btm1a(IMPC)Wtsi>");
 
-        Exception exception = assertThrows(UserOperationFailedException.class, () -> {
-            testInstance.validateData(mutation);
-        });
+        Exception exception = assertThrows(UserOperationFailedException.class, () -> testInstance.validateData(mutation));
 
         String expectedMessage =
             "Mutation:(Rsph3btm1a(IMPC)Wtsi>) Mutation symbol(s) are not in the correct format";
@@ -147,9 +137,7 @@ class MutationValidatorTest {
         mutation.setOutcomes(outcomesSetMockData(AttemptTypesName.ES_CELL.getLabel(), "Wtsi"));
         lenient().when(workUnitService.getAllWorkUnits())
             .thenReturn(List.of(workUnitMockData("KMPC")));
-        Exception exception = assertThrows(UserOperationFailedException.class, () -> {
-            testInstance.validateData(mutation);
-        });
+        Exception exception = assertThrows(UserOperationFailedException.class, () -> testInstance.validateData(mutation));
 
         String expectedMessage =
             "Mutation:(Rsph3b<tm1a(IMPC)Wtsi>) Mutation symbol(s) are not in the correct format";
@@ -171,9 +159,7 @@ class MutationValidatorTest {
         lenient().when(workUnitService.getAllWorkUnits())
             .thenReturn(List.of(workUnitMockData("Wtsi")));
 
-        Exception exception = assertThrows(UserOperationFailedException.class, () -> {
-            testInstance.validateData(mutation);
-        });
+        Exception exception = assertThrows(UserOperationFailedException.class, () -> testInstance.validateData(mutation));
 
         String expectedMessage =
             "Mutation:(Rsph3b<tm1a(IMPC)Wtsi>) Mutation symbol(s) are not in the correct format";
@@ -196,9 +182,7 @@ class MutationValidatorTest {
         lenient().when(workUnitService.getAllWorkUnits())
             .thenReturn(List.of(workUnitMockData("Wtsi")));
 
-        Exception exception = assertThrows(UserOperationFailedException.class, () -> {
-            testInstance.validateData(mutation);
-        });
+        Exception exception = assertThrows(UserOperationFailedException.class, () -> testInstance.validateData(mutation));
 
         String expectedMessage =
             "Mutation:(Rsph3b<em1a(IMPC)Wtsi>) Mutation symbol(s) are not in the correct format";
@@ -221,9 +205,7 @@ class MutationValidatorTest {
         lenient().when(workUnitService.getAllWorkUnits())
             .thenReturn(List.of(workUnitMockData("Wtsi")));
 
-        Exception exception = assertThrows(UserOperationFailedException.class, () -> {
-            testInstance.validateData(mutation);
-        });
+        Exception exception = assertThrows(UserOperationFailedException.class, () -> testInstance.validateData(mutation));
 
         String expectedMessage =
             "Mutation:(Rsph3b<tm1a(IMPC)Wtsi>) Mutation symbol(s) are not in the correct format";
@@ -245,9 +227,7 @@ class MutationValidatorTest {
         lenient().when(workUnitService.getAllWorkUnits())
             .thenReturn(List.of(workUnitMockData("Wtsi")));
 
-        Exception exception = assertThrows(UserOperationFailedException.class, () -> {
-            testInstance.validateData(mutation);
-        });
+        Exception exception = assertThrows(UserOperationFailedException.class, () -> testInstance.validateData(mutation));
 
         String expectedMessage =
             "Mutation:(Rsph3b<tma(IMPC)Wtsi>) Mutation symbol(s) are not in the correct format";
@@ -269,9 +249,7 @@ class MutationValidatorTest {
         lenient().when(workUnitService.getAllWorkUnits())
             .thenReturn(List.of(workUnitMockData("Wtsi")));
 
-        Exception exception = assertThrows(UserOperationFailedException.class, () -> {
-            testInstance.validateData(mutation);
-        });
+        Exception exception = assertThrows(UserOperationFailedException.class, () -> testInstance.validateData(mutation));
 
         String expectedMessage =
             "Mutation:(Rsph3b<tm1a()Wtsi>) Mutation symbol(s) are not in the correct format";
@@ -293,9 +271,7 @@ class MutationValidatorTest {
         lenient().when(workUnitService.getAllWorkUnits())
             .thenReturn(List.of(workUnitMockData("Wtsi")));
 
-        Exception exception = assertThrows(UserOperationFailedException.class, () -> {
-            testInstance.validateData(mutation);
-        });
+        Exception exception = assertThrows(UserOperationFailedException.class, () -> testInstance.validateData(mutation));
 
         String expectedMessage =
             "Mutation:(Rsph3b<tm1(IMPC)Wtsi>) Mutation symbol(s) are not in the correct format";
@@ -320,9 +296,7 @@ class MutationValidatorTest {
         lenient().when(mutationRepository.findAllBySymbolLike(Mockito.anyString()))
             .thenReturn(List.of(mutation, mutation));
 
-        Exception exception = assertThrows(UserOperationFailedException.class, () -> {
-            testInstance.validateData(mutation);
-        });
+        Exception exception = assertThrows(UserOperationFailedException.class, () -> testInstance.validateData(mutation));
 
         String expectedMessage =
             "Mutation:(Rsph3b<tm1a(IMPC)Wtsi>) Entered mutation symbol(s) are not unique";
@@ -345,9 +319,7 @@ class MutationValidatorTest {
         lenient().when(workUnitService.getAllWorkUnits())
             .thenReturn(List.of(workUnitMockData("Wtsi")));
 
-        Exception exception = assertThrows(UserOperationFailedException.class, () -> {
-            testInstance.validateData(mutation);
-        });
+        Exception exception = assertThrows(UserOperationFailedException.class, () -> testInstance.validateData(mutation));
 
         String expectedMessage =
             "Error: Please Select one of these mutation types for the initial es cell production attempt (a, e, '')";
@@ -369,9 +341,7 @@ class MutationValidatorTest {
         mutation.setMutationCategorizations(MutationCategorizationSetMockData("a"));
         lenient().when(workUnitService.getAllWorkUnits())
             .thenReturn(List.of(workUnitMockData("Wtsi")));
-        Exception exception = assertThrows(UserOperationFailedException.class, () -> {
-            testInstance.validateData(mutation);
-        });
+        Exception exception = assertThrows(UserOperationFailedException.class, () -> testInstance.validateData(mutation));
 
         String expectedMessage =
             "Please Select one of these mutation types for es cell modification attempt (b, c, d, e.1, .1, .2)";
@@ -394,9 +364,7 @@ class MutationValidatorTest {
         lenient().when(workUnitService.getAllWorkUnits())
             .thenReturn(List.of(workUnitMockData("Wtsi")));
 
-        Exception exception = assertThrows(UserOperationFailedException.class, () -> {
-            testInstance.validateData(mutation);
-        });
+        Exception exception = assertThrows(UserOperationFailedException.class, () -> testInstance.validateData(mutation));
 
         String expectedMessage =
             "Error: Sequence Is Not In FASTA Format";

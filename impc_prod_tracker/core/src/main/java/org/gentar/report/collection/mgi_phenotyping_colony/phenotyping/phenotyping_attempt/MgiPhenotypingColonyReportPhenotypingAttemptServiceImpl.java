@@ -2,6 +2,7 @@ package org.gentar.report.collection.mgi_phenotyping_colony.phenotyping.phenotyp
 
 import org.springframework.stereotype.Component;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -27,7 +28,7 @@ public class MgiPhenotypingColonyReportPhenotypingAttemptServiceImpl {
         return Stream.of(crisprProjections,
                         esCellProjections,
                         esCellModificationProjections)
-                .flatMap(x -> x.stream())
+                .flatMap(Collection::stream)
                 .collect(Collectors.toList());
 
     }

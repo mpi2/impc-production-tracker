@@ -214,8 +214,7 @@ public class MockData {
     }
 
     public static Set<Species> speciesSetMockData() {
-        Set<Species> Species = new HashSet<>();
-        return Species;
+        return new HashSet<>();
     }
 
     public static Set<ProjectConsortium> projectConsortiumSetMockData() {
@@ -232,23 +231,19 @@ public class MockData {
     }
 
     public static ProjectEsCellQc projectEsCellQcMockData() {
-        ProjectEsCellQc projectEsCellQc = new ProjectEsCellQc();
-        return projectEsCellQc;
+        return new ProjectEsCellQc();
     }
 
     public static ProjectType projectTypeMockData() {
-        ProjectType projectType = new ProjectType();
-        return projectType;
+        return new ProjectType();
     }
 
     public static ProjectCompletionNote ProjectCompletionNoteMockData() {
-        ProjectCompletionNote projectCompletionNote = new ProjectCompletionNote();
-        return projectCompletionNote;
+        return new ProjectCompletionNote();
     }
 
     public static AssignmentStatus assignmentStatusMockData() {
-        AssignmentStatus AssignmentStatus = new AssignmentStatus();
-        return AssignmentStatus;
+        return new AssignmentStatus();
     }
 
 
@@ -318,7 +313,7 @@ public class MockData {
     }
 
     public static List<WorkUnit> workUnitListMockData() {
-        List<WorkUnit> workUnitList = new ArrayList();
+        List<WorkUnit> workUnitList = new ArrayList<>();
         workUnitList.add(workUnitMockData());
         return workUnitList;
     }
@@ -331,7 +326,7 @@ public class MockData {
     }
 
     public static List<WorkGroup> workGroupListMockData() {
-        List<WorkGroup> workGroupList = new ArrayList();
+        List<WorkGroup> workGroupList = new ArrayList<>();
         workGroupList.add(workGroupMockData());
         return workGroupList;
     }
@@ -367,8 +362,8 @@ public class MockData {
     }
 
     public static ProjectSearchDownloadProjection projectSearchDownloadProjectionMockData() {
-        ProjectSearchDownloadProjection projectSearchDownloadProjection =
-            new ProjectSearchDownloadProjection() {
+
+            return new ProjectSearchDownloadProjection() {
                 @Override
                 public String getTpn() {
                     return TPN_000000001;
@@ -430,7 +425,6 @@ public class MockData {
                 }
             };
 
-        return projectSearchDownloadProjection;
     }
 
 
@@ -542,7 +536,8 @@ public class MockData {
     }
 
     public static ProcessEvent processEventMockData() {
-        ProcessEvent processEvent = new ProcessEvent() {
+
+        return new ProcessEvent() {
             @Override
             public Class<? extends Processor> getNextStepProcessor() {
                 return null;
@@ -578,8 +573,6 @@ public class MockData {
                 return null;
             }
         };
-
-        return processEvent;
     }
 
     public static TransitionEvaluation transitionEvaluationMockData() {
@@ -589,7 +582,7 @@ public class MockData {
     }
 
     public static Root<Plan> rootMockData() {
-        Root<Plan> root = new Root<Plan>() {
+        return new Root<Plan>() {
             @Override
             public EntityType<Plan> getModel() {
                 return null;
@@ -845,7 +838,6 @@ public class MockData {
                 return null;
             }
         };
-        return root;
     }
 
     public static GeneInterestReportProjectProjection geneInterestReportProjectProjectionMockData() {
@@ -1179,7 +1171,7 @@ public class MockData {
 
             @Override
             public Long getOutcomeId() {
-                return 1l;
+                return 1L;
             }
         };
     }

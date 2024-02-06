@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class StatusMapper implements Mapper<Status, String>
 {
-    private StatusService statusService;
+    private final StatusService statusService;
 
     private static final String STATUS_NOT_FOUND_ERROR = "Status '%s' does not exist.";
 
@@ -33,7 +33,7 @@ public class StatusMapper implements Mapper<Status, String>
         Status status = statusService.getStatusByName(name);
         if (status == null)
         {
-            throw new UserOperationFailedException(String.format(STATUS_NOT_FOUND_ERROR, status));
+            throw new UserOperationFailedException(STATUS_NOT_FOUND_ERROR);
         }
         return status;
     }

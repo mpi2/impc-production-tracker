@@ -9,7 +9,6 @@ import org.gentar.biology.outcome.type.OutcomeType;
 import org.gentar.biology.outcome.type.OutcomeTypeRepository;
 import org.gentar.biology.plan.Plan;
 import org.gentar.biology.plan.PlanService;
-import org.gentar.biology.plan.attempt.AttemptTypesName;
 import org.gentar.exceptions.NotFoundException;
 import org.gentar.exceptions.UserOperationFailedException;
 import org.gentar.security.abac.ResourceAccessChecker;

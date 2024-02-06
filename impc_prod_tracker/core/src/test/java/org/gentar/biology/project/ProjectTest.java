@@ -1,28 +1,21 @@
 package org.gentar.biology.project;
 
-import static org.gentar.mockdata.MockData.TPN_000000001;
-import static org.gentar.mockdata.MockData.colonyMockData;
-import static org.gentar.mockdata.MockData.consortiumMockData;
-import static org.gentar.mockdata.MockData.planMockData;
-import static org.gentar.mockdata.MockData.projectConsortiumSetMockData;
-import static org.gentar.mockdata.MockData.projectMockData;
-import static org.gentar.mockdata.MockData.workGroupListMockData;
-import static org.gentar.mockdata.MockData.workUnitListMockData;
-import static org.junit.jupiter.api.Assertions.*;
-
-import java.util.List;
 import org.gentar.biology.colony.Colony;
 import org.gentar.biology.plan.type.PlanType;
 import org.gentar.biology.plan.type.PlanTypeName;
 import org.gentar.biology.project.privacy.Privacy;
 import org.gentar.exceptions.SystemOperationFailedException;
-import org.gentar.exceptions.UserOperationFailedException;
 import org.gentar.organization.consortium.Consortium;
 import org.gentar.organization.work_group.WorkGroup;
 import org.gentar.organization.work_unit.WorkUnit;
 import org.gentar.security.abac.ResourcePrivacy;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import java.util.List;
+
+import static org.gentar.mockdata.MockData.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 class ProjectTest {
 
@@ -90,9 +83,7 @@ class ProjectTest {
     void getRelatedProductionPlanWorkUnitsPlanTypeProduction() {
         PlanType planType=new PlanType();
         planType.setName(PlanTypeName.PRODUCTION.getLabel());
-        testInstance.getPlans().forEach(p->{
-            p.setPlanType(planType);
-        });
+        testInstance.getPlans().forEach(p-> p.setPlanType(planType));
         List<WorkUnit> workUnitList=testInstance.getRelatedProductionPlanWorkUnits();
         assertEquals(workUnitList,workUnitListMockData());
 

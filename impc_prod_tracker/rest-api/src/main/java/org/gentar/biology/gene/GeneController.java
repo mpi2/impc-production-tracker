@@ -1,10 +1,10 @@
 /*******************************************************************************
  * Copyright 2019 EMBL - European Bioinformatics Institute
- *
+ * <p>
  * "License"); you may not use this file except in compliance
  * with the License. You may obtain a copy of the License at
  * http://www.apache.org/licenses/LICENSE-2.0
- *
+ * <p>
  * Unless required by applicable law or agreed to in writing,
  * software distributed under the License is distributed on an
  * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
@@ -28,9 +28,9 @@ import java.util.stream.Collectors;
 @RequestMapping("/api")
 public class GeneController {
 
-    private GeneService geneService;
-    private GeneExternalService geneExternalService;
-    private GeneIdentifierValidator geneIdentifierValidator;
+    private final GeneService geneService;
+    private final GeneExternalService geneExternalService;
+    private final GeneIdentifierValidator geneIdentifierValidator;
 
     public GeneController(
         GeneService geneService,
@@ -66,8 +66,7 @@ public class GeneController {
     @GetMapping(value = {"/test"})
     public Map<String, String> test (@RequestParam List<String> values)
     {
-        Map<String, String> data = geneExternalService.getSymbolsByAccessionIdsBulk(values);
-        return data;
+        return geneExternalService.getSymbolsByAccessionIdsBulk(values);
     }
 
     private void validateInput(String input)

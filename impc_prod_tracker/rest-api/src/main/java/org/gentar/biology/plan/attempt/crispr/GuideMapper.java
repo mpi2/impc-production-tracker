@@ -13,10 +13,10 @@ import java.util.Set;
 
 @Component
 public class GuideMapper implements Mapper<Guide, GuideDTO> {
-    private EntityMapper entityMapper;
-    private GuideFormatRepository guideFormatRepository;
-    private GuideSourceRepository guideSourceRepository;
-    private AssemblyMapMapper assemblyMapMapper;
+    private final EntityMapper entityMapper;
+    private final GuideFormatRepository guideFormatRepository;
+    private final GuideSourceRepository guideSourceRepository;
+    private final AssemblyMapMapper assemblyMapMapper;
 
     public GuideMapper(EntityMapper entityMapper,
                        GuideFormatRepository guideFormatRepository,
@@ -29,8 +29,7 @@ public class GuideMapper implements Mapper<Guide, GuideDTO> {
     }
 
     public GuideDTO toDto(Guide guide) {
-        GuideDTO guideDTO = entityMapper.toTarget(guide, GuideDTO.class);
-        return guideDTO;
+        return entityMapper.toTarget(guide, GuideDTO.class);
     }
 
     public List<GuideDTO> toDtos(Collection<Guide> guides) {
