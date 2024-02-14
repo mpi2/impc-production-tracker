@@ -14,25 +14,19 @@ import org.gentar.statemachine.ProcessData;
 import org.gentar.statemachine.ProcessEvent;
 import org.gentar.statemachine.TransitionEvaluation;
 import org.springframework.stereotype.Component;
+
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
 @Component
-/**
- * This processor is to use with transitions which final status is "Phenotyping Started" where a
- * tissue distribution record must be created given that the work unit is registered to have this
- * behaviour. As other processors that move to "Phenotyping Started", this processor needs to
- * validate that the user has the permissions to do so (currently DCC).
- */
 public class PhenotypingStartedProcessorWithTissueCreation extends AbstractProcessor
 {
     private final ContextAwarePolicyEnforcement policyEnforcement;
     private final MaterialDepositedTypeService materialDepositedTypeService;
-    private final static List<String> WORK_UNIT_NAMES_AUTOMATIC_TISSUE_DISTRIBUTION = Arrays.asList("UCD");
+    private final static List<String> WORK_UNIT_NAMES_AUTOMATIC_TISSUE_DISTRIBUTION = List.of("UCD");
 
     public PhenotypingStartedProcessorWithTissueCreation(
         PhenotypingStageStateSetter phenotypingStageStateSetter,

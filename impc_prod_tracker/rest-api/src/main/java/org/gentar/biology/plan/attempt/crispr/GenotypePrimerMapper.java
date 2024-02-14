@@ -12,7 +12,7 @@ import java.util.Set;
 @Component
 public class GenotypePrimerMapper implements Mapper<GenotypePrimer, GenotypePrimerDTO>
 {
-    private EntityMapper entityMapper;
+    private final EntityMapper entityMapper;
 
     public GenotypePrimerMapper(EntityMapper entityMapper)
     {
@@ -31,13 +31,11 @@ public class GenotypePrimerMapper implements Mapper<GenotypePrimer, GenotypePrim
 
     public GenotypePrimer toEntity(GenotypePrimerDTO genotypePrimerDTO)
     {
-        GenotypePrimer genotypePrimer = entityMapper.toTarget(genotypePrimerDTO, GenotypePrimer.class);
-        return genotypePrimer;
+        return entityMapper.toTarget(genotypePrimerDTO, GenotypePrimer.class);
     }
 
     public Set<GenotypePrimer> toEntities(Collection<GenotypePrimerDTO> genotypePrimerDTOS)
     {
-        Set<GenotypePrimer> genotypePrimers = new HashSet<>(entityMapper.toTargets(genotypePrimerDTOS, GenotypePrimer.class));
-        return genotypePrimers;
+        return new HashSet<>(entityMapper.toTargets(genotypePrimerDTOS, GenotypePrimer.class));
     }
 }

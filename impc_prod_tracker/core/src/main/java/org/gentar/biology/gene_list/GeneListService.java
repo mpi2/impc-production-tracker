@@ -175,15 +175,12 @@ public class GeneListService
         Map<String, Long> sortedAccIdsInCurrentList = getAccIdHashesForGeneList(geneList);
 
         int size = listData.size();
-        for (int i = 0; i < size; i++)
-        {
-            ListRecord listRecord = listData.get(i);
-            if (listRecord.getId() == null)
-            {
+        for (ListRecord listRecord : listData) {
+            if (listRecord.getId() == null) {
                 List<String> symbols = new ArrayList<>();
                 listRecord.getGenesByRecord().forEach(x -> symbols.add(x.getInputSymbolValue()));
                 geneListRecordService.validateNewRecord(
-                    listRecord, sortedAccIdsInCurrentList, symbols.toString());
+                        listRecord, sortedAccIdsInCurrentList, symbols.toString());
             }
         }
     }
@@ -277,9 +274,7 @@ public class GeneListService
         StringBuilder result = new StringBuilder();
         if (genes != null)
         {
-            genes.forEach(x -> {
-                result.append(x.getAccId()).append("-");
-            } );
+            genes.forEach(x -> result.append(x.getAccId()).append("-"));
         }
         return result.toString();
     }

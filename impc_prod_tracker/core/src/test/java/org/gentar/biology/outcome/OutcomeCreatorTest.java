@@ -1,10 +1,6 @@
 package org.gentar.biology.outcome;
 
-import static org.gentar.mockdata.MockData.outcomeMockData;
-import static org.junit.jupiter.api.Assertions.*;
-
 import jakarta.persistence.EntityManager;
-import jakarta.persistence.PersistenceContext;
 import org.gentar.audit.history.HistoryService;
 import org.gentar.biology.colony.engine.ColonyStateSetter;
 import org.gentar.biology.mutation.MutationService;
@@ -15,6 +11,9 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+
+import static org.gentar.mockdata.MockData.outcomeMockData;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @ExtendWith(MockitoExtension.class)
 class OutcomeCreatorTest {

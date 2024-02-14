@@ -10,9 +10,9 @@ import org.springframework.stereotype.Component;
 @Component
 public class PlanCreationMapper implements Mapper<Plan, PlanCreationDTO>
 {
-    private PlanBasicDataMapper planBasicDataMapper;
-    private PlanTypeMapper planTypeMapper;
-    private AttemptTypeMapper attemptTypeMapper;
+    private final PlanBasicDataMapper planBasicDataMapper;
+    private final PlanTypeMapper planTypeMapper;
+    private final AttemptTypeMapper attemptTypeMapper;
 
     public PlanCreationMapper(
         PlanBasicDataMapper planBasicDataMapper,

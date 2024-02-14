@@ -9,13 +9,9 @@ import org.gentar.report.collection.gene_interest.phenotyping_attempt.GeneIntere
 import org.gentar.report.collection.gene_interest.phenotyping_attempt.GeneInterestReportPhenotypingAttemptServiceImpl;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
-import java.util.stream.LongStream;
 
 @Component
 public class GeneInterestReportPhenotypingServiceImpl implements GeneInterestReportPhenotypingService{
@@ -56,7 +52,7 @@ public class GeneInterestReportPhenotypingServiceImpl implements GeneInterestRep
 
 
         List<GeneInterestReportOutcomeMutationProjection> omp = new ArrayList<>();
-        groups.forEach(groupIds -> outcomeReportService.getSelectedOutcomeMutationProjections(groupIds).stream().forEach(omp::add));
+        groups.forEach(groupIds -> omp.addAll(outcomeReportService.getSelectedOutcomeMutationProjections(groupIds)));
 
 //        System.out.println("omp");
 //        omp.stream()
@@ -79,7 +75,7 @@ public class GeneInterestReportPhenotypingServiceImpl implements GeneInterestRep
  //Use to debug:
 //                .peek(e -> System.out.println(e.getKey() + ": " + e.getValue().size() + ": " + List.copyOf(e.getValue()).get(0).getMutationId()))
                 .filter(e -> e.getValue().size() == 1)
-                .collect(Collectors.toMap(Map.Entry::getKey, e -> List.copyOf(e.getValue()).get(0)));
+                .collect(Collectors.toMap(Map.Entry::getKey, e -> List.copyOf(e.getValue()).getFirst()));
 
     }
 
@@ -90,7 +86,7 @@ public class GeneInterestReportPhenotypingServiceImpl implements GeneInterestRep
         List<Long> mutationIds = getAllMutationIds();
         List<List<Long>> groups = getBatches(mutationIds, 1000);
         List<GeneInterestReportMutationGeneProjection> mgp = new ArrayList<>();
-        groups.forEach(groupIds -> mutationReportService.getSelectedMutationGeneProjections(groupIds).stream().forEach(mgp::add));
+        groups.forEach(groupIds -> mgp.addAll(mutationReportService.getSelectedMutationGeneProjections(groupIds)));
 
 //        System.out.println("mutationGeneMap");
         return mgp
@@ -111,7 +107,7 @@ public class GeneInterestReportPhenotypingServiceImpl implements GeneInterestRep
                 .filter(e -> e.getValue().size() == 1)
 // Use to debug:
 //                .peek(map -> System.out.println(map.getKey() + ": " + List.copyOf(map.getValue()).get(0).getId()))
-                .collect(Collectors.toMap(map -> map.getKey(), map -> List.copyOf(map.getValue()).get(0)));
+                .collect(Collectors.toMap(Map.Entry::getKey, map -> List.copyOf(map.getValue()).getFirst()));
     }
 
     @Override
@@ -122,28 +118,26 @@ public class GeneInterestReportPhenotypingServiceImpl implements GeneInterestRep
 
     private List<Long> getAllMutationIds() {
         return completeOutcomeMutationMap
-                .entrySet()
+                .values()
                 .stream()
-                .map(e -> e.getValue())
-                .flatMap(x -> x.stream())
-                .map(i -> i.getMutationId())
+                .flatMap(Collection::stream)
+                .map(GeneInterestReportOutcomeMutationProjection::getMutationId)
                 .distinct()
                 .collect(Collectors.toList());
     }
 
     private List<Long> getFilteredMutationIds() {
         return filteredOutcomeMutationMap
-                .entrySet()
+                .values()
                 .stream()
-                .map(e -> e.getValue().getMutationId())
+                .map(GeneInterestReportOutcomeMutationProjection::getMutationId)
                 .distinct()
                 .collect(Collectors.toList());
     }
 
 
     private List<Long> getOutcomeIds() {
-        List<Long> outcomeIds = pap.stream().map(x -> x.getOutcomeId()).distinct().collect(Collectors.toList());
-        return outcomeIds;
+        return pap.stream().map(GeneInterestReportPhenotypingAttemptProjection::getOutcomeId).distinct().collect(Collectors.toList());
     }
 }
 

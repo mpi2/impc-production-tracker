@@ -1,11 +1,8 @@
 package org.gentar.biology.plan.engine.es_cell_allele_modification.processors;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 import org.gentar.biology.plan.Plan;
 import org.gentar.biology.plan.attempt.es_cell_allele_modification.EsCellAlleleModificationAttempt;
 import org.gentar.biology.plan.engine.PlanStateSetter;
-import org.gentar.biology.plan.engine.crispr.processors.AbortFounderObtainedProcessor;
 import org.gentar.mockdata.MockData;
 import org.gentar.statemachine.ProcessEvent;
 import org.gentar.statemachine.ProcessState;
@@ -14,6 +11,8 @@ import org.gentar.statemachine.TransitionEvaluation;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class EsCellAlleleModificationPlanCreExcisionCompleteProcessorTest {
 
@@ -48,7 +47,8 @@ class EsCellAlleleModificationPlanCreExcisionCompleteProcessorTest {
 
 
     private ProcessEvent processEventMockData() {
-        ProcessEvent processEvent = new ProcessEvent() {
+
+        return new ProcessEvent() {
             @Override
             public Class<? extends Processor> getNextStepProcessor() {
                 return null;
@@ -104,8 +104,6 @@ class EsCellAlleleModificationPlanCreExcisionCompleteProcessorTest {
                 return null;
             }
         };
-
-        return processEvent;
     }
 
 

@@ -4,7 +4,6 @@ import org.gentar.biology.plan.Plan;
 import org.gentar.biology.plan.PlanStatusManager;
 import org.gentar.biology.plan.attempt.es_cell_allele_modification.EsCellAlleleModificationAttempt;
 import org.gentar.biology.plan.engine.PlanStateSetter;
-import org.gentar.exceptions.UserOperationFailedException;
 import org.gentar.statemachine.AbstractProcessor;
 import org.gentar.statemachine.ProcessData;
 import org.gentar.statemachine.ProcessEvent;

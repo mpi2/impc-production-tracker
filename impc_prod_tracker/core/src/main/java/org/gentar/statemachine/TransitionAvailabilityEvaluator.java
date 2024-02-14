@@ -8,7 +8,7 @@ import java.util.List;
 @Component
 public class TransitionAvailabilityEvaluator
 {
-    private StateTransitionsManager stateTransitionsManager;
+    private final StateTransitionsManager stateTransitionsManager;
 
     public TransitionAvailabilityEvaluator(StateTransitionsManager stateTransitionsManager)
     {

@@ -17,7 +17,7 @@ public class AlleleSymbolConstructorImpl implements AlleleSymbolConstructor {
     private static final String ID_SECTION = "[ID]";
     private static final String CONSORTIUM_ABBREVIATION_SECTION = "[CONSORTIUM_ABBREVIATION]";
     private static final String ILAR_CODE_SECTION = "[ILARCODE]";
-    private AttemptTypesName attemptTypesName;
+    private final AttemptTypesName attemptTypesName;
 
     public AlleleSymbolConstructorImpl(MutationRepository mutationRepository,
                                        AttemptTypesName attemptTypesName) {
@@ -35,7 +35,7 @@ public class AlleleSymbolConstructorImpl implements AlleleSymbolConstructor {
         }
         if ((attemptTypesName.equals(AttemptTypesName.ES_CELL)
             || attemptTypesName.equals(AttemptTypesName.ES_CELL_ALLELE_MODIFICATION))
-            && getEscAlleleClass(mutation).size() == 0) {
+            && getEscAlleleClass(mutation).isEmpty()) {
             return ERROR_PLEASE_SELECT_MUTATION_TYPE;
         }
         if (isEsCellAttemptTypeWrong(mutation)) {
@@ -47,7 +47,7 @@ public class AlleleSymbolConstructorImpl implements AlleleSymbolConstructor {
         int nextId = getNextId(geneSymbol, symbolSuggestionRequest.getIlarCode());
         result = generateTemplate(getMutationType()).replace(GENE_SYMBOL_SECTION, geneSymbol);
         result = result.replace(ID_SECTION,
-            nextId + getEscAlleleClassName(mutation) + "");
+            nextId + getEscAlleleClassName(mutation));
         if (Strings.isBlank(symbolSuggestionRequest.getConsortiumAbbreviation())) {
             result = result.replace(CONSORTIUM_ABBREVIATION_SECTION, "");
         } else {
@@ -71,7 +71,7 @@ public class AlleleSymbolConstructorImpl implements AlleleSymbolConstructor {
     }
 
     private String getEscAlleleClassName(Mutation mutation) {
-        return getEscAlleleClass(mutation).size() != 0 ? getEscAlleleClass(mutation).get(0) :
+        return !getEscAlleleClass(mutation).isEmpty() ? getEscAlleleClass(mutation).getFirst() :
             "";
     }
 
@@ -81,7 +81,7 @@ public class AlleleSymbolConstructorImpl implements AlleleSymbolConstructor {
         String searchTerm = geneSymbol + "<" + getMutationType() + "%" + ilarCode + ">";
         List<Mutation> mutations = mutationRepository.findAllBySymbolLike(searchTerm);
 
-        Integer nextId = mutations.size() + 1;
+        int nextId = mutations.size() + 1;
 
         for (Mutation mutation : mutations) {
             if (nextId <= findSymbolNextId(mutation.getSymbol())) {

@@ -1,21 +1,5 @@
 package org.gentar.biology.project;
 
-import static org.gentar.mockdata.MockData.TEST_COMMENT;
-import static org.gentar.mockdata.MockData.TPN_000000001;
-import static org.gentar.mockdata.MockData.historyMockData;
-import static org.gentar.mockdata.MockData.planMockData;
-import static org.gentar.mockdata.MockData.projectIntentionGeneListMockData;
-import static org.gentar.mockdata.MockData.projectMockData;
-import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.lenient;
-
-import java.util.Collections;
-import java.util.List;
 import org.gentar.audit.history.History;
 import org.gentar.audit.history.HistoryService;
 import org.gentar.biology.ortholog.OrthologService;
@@ -45,6 +29,14 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
+
+import java.util.Collections;
+import java.util.List;
+
+import static org.gentar.mockdata.MockData.*;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.lenient;
 
 @ExtendWith(MockitoExtension.class)
 class ProjectServiceImplTest {
@@ -136,7 +128,7 @@ class ProjectServiceImplTest {
             .thenReturn(projectMockData());
 
         List<Project> project = testInstance.getProjects(projectFilter);
-        assertEquals(project.get(0).getTpn(), TPN_000000001);
+        assertEquals(project.getFirst().getTpn(), TPN_000000001);
     }
 
     @Test
@@ -153,7 +145,7 @@ class ProjectServiceImplTest {
             .thenReturn(projectMockData());
 
         List<Project> project = testInstance.getProjectsWithoutOrthologs(projectFilter);
-        assertEquals(project.get(0).getTpn(), TPN_000000001);
+        assertEquals(project.getFirst().getTpn(), TPN_000000001);
     }
 
     @Test
@@ -196,7 +188,7 @@ class ProjectServiceImplTest {
         lenient().when(historyService.getHistoryByEntityNameAndEntityId("Project", 1L))
             .thenReturn(List.of(historyMockData()));
         List<History> history = testInstance.getProjectHistory(projectMockData());
-        assertEquals(history.get(0).getComment(), TEST_COMMENT);
+        assertEquals(history.getFirst().getComment(), TEST_COMMENT);
     }
 
     @Test
@@ -217,9 +209,7 @@ class ProjectServiceImplTest {
 
     @Test
     void associatePlanToProjectProjectNull() {
-        Exception exception = assertThrows(UserOperationFailedException.class, () -> {
-            testInstance.associatePlanToProject(planMockData(), null);
-        });
+        Exception exception = assertThrows(UserOperationFailedException.class, () -> testInstance.associatePlanToProject(planMockData(), null));
         String expectedMessage =  "The plan cannot be associated with the project because the project is null";
         String actualMessage = exception.getMessage();
 
@@ -228,9 +218,7 @@ class ProjectServiceImplTest {
 
     @Test
     void associatePlanToProjectWhenPlanNull() {
-        Exception exception = assertThrows(UserOperationFailedException.class, () -> {
-            testInstance.associatePlanToProject(null, projectMockData());
-        });
+        Exception exception = assertThrows(UserOperationFailedException.class, () -> testInstance.associatePlanToProject(null, projectMockData()));
         String expectedMessage = "The plan cannot be associated with the project because the plan is null";
         String actualMessage = exception.getMessage();
 
@@ -244,7 +232,7 @@ class ProjectServiceImplTest {
             .getPlansByType(Mockito.any(Project.class), eq(PlanTypeName.PRODUCTION)))
             .thenReturn(List.of(planMockData()));
         List<Outcome> outcomes = testInstance.getProductionOutcomesByProject(projectMockData());
-        assertEquals(outcomes.get(0).getId(), 1L);
+        assertEquals(outcomes.getFirst().getId(), 1L);
     }
 
     @Test

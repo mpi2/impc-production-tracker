@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class OrthologMapper implements Mapper<Ortholog, OrthologDTO>
 {
-    private EntityMapper entityMapper;
+    private final EntityMapper entityMapper;
 
     public OrthologMapper(EntityMapper entityMapper)
     {

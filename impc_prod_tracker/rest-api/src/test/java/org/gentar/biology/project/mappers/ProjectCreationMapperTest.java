@@ -6,7 +6,6 @@ import org.gentar.biology.project.ProjectCreationDTO;
 import org.gentar.biology.project.consortium.ProjectConsortium;
 import org.gentar.biology.project.consortium.ProjectConsortiumMapper;
 import org.gentar.biology.project.privacy.Privacy;
-import org.gentar.biology.species.SpeciesMapper;
 import org.gentar.organization.consortium.Consortium;
 import org.gentar.organization.institute.Institute;
 import org.junit.jupiter.api.BeforeEach;
@@ -14,6 +13,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
@@ -21,9 +21,7 @@ import java.util.Set;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.notNullValue;
 import static org.hamcrest.core.Is.is;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class ProjectCreationMapperTest

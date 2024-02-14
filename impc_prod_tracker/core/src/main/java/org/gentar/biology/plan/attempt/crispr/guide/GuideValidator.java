@@ -30,7 +30,7 @@ public class GuideValidator
     private void checkCoordinates(Guide guide)
     {
         if (guide.getStop() != null && guide.getStart() != null) {
-            Integer diff = guide.getStop() - guide.getStart();
+            int diff = guide.getStop() - guide.getStart();
             if (diff < 0) {
                 throw new UserOperationFailedException(START_STOP_POSITIVE_DIFFERENCE);
             }
@@ -47,9 +47,9 @@ public class GuideValidator
             }
 
             Integer diff2 = diff + 1;
-            if (diff2 != totalLength && totalLength != null) {
+            if (!diff2.equals(totalLength) && totalLength != null) {
                 throw new UserOperationFailedException(String.format(SAME_TOTAL_LENGTH,
-                        totalLength.toString(), diff2.toString()));
+                        totalLength, diff2));
             }
         } else {
             throw new UserOperationFailedException(String.format(NULL_FIELD_ERROR, "Guide(s) start and stop fields"));

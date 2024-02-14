@@ -15,7 +15,7 @@ import java.util.List;
 @Component
 public class HistoryBuilder<T>
 {
-    private SubjectRetriever subjectRetriever;
+    private final SubjectRetriever subjectRetriever;
     private static final String RESOURCE_PRIVACY_PROPERTY_NAME = "resourcePrivacy";
     private static final String RESTRICTED_OBJECT_PROPERTY_NAME = "restrictedObject";
 

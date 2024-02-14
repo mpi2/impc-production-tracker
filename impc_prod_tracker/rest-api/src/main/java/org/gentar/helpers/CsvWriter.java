@@ -13,9 +13,7 @@ public class CsvWriter<T>
     {
         List<String[]> entries = new ArrayList<>();
         entries.add(headers);
-        data.forEach(x -> {
-            entries.add(x.getRowAsArray());
-        });
+        data.forEach(x -> entries.add(x.getRowAsArray()));
         CSVWriter csvWriter = new CSVWriter(writer);
         csvWriter.writeAll(entries);
     }

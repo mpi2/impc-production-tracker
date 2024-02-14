@@ -87,9 +87,7 @@ public class PlanSummaryStatusUpdater
             phenotypingAttempt == null ? null : phenotypingAttempt.getPhenotypingStages();
         if (phenotypingStages != null )
         {
-            phenotypingStages.forEach(x -> {
-                phenotypingStagesStatuses.add(x.getProcessDataStatus());
-            });
+            phenotypingStages.forEach(x -> phenotypingStagesStatuses.add(x.getProcessDataStatus()));
         }
         return phenotypingStagesStatuses;
     }

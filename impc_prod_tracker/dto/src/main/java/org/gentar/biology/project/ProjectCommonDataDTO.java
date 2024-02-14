@@ -10,10 +10,6 @@ import java.time.LocalDateTime;
 
 @Data
 @NoArgsConstructor
-/**
- * This class has the information that is common to every Project*DTO.
- * Class is package protected because it should be used only internally.
- */
 public class ProjectCommonDataDTO
 {
     @JsonProperty("privacyName")

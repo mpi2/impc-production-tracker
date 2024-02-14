@@ -1,8 +1,5 @@
 package org.gentar.biology.outcome;
 
-import static org.gentar.mockdata.MockData.outcomeMockData;
-import static org.junit.jupiter.api.Assertions.*;
-
 import org.gentar.audit.history.History;
 import org.gentar.audit.history.HistoryService;
 import org.gentar.biology.plan.engine.PlanUpdater;
@@ -12,7 +9,10 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.stereotype.Component;
+
+import static org.gentar.mockdata.MockData.outcomeMockData;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 @ExtendWith(MockitoExtension.class)
 class OutcomeUpdaterTest {

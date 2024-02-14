@@ -106,7 +106,6 @@ public class Outcome extends BaseEntity implements Resource<Outcome>
     /**
      * Utility method to keep synchronised both parts of the relation outcome-mutation when
      * adding a mutation.
-     * @param mutation
      */
     public void addMutation(Mutation mutation)
     {
@@ -125,7 +124,6 @@ public class Outcome extends BaseEntity implements Resource<Outcome>
     /**
      * Utility method to keep synchronised both parts of the relation outcome-mutation when
      * adding a mutation.
-     * @param mutation
      */
     public void deleteMutation(Mutation mutation)
     {

@@ -17,12 +17,12 @@ import java.util.List;
 @Component
 public class SpecimenMapper implements Mapper<Specimen, SpecimenDTO>
 {
-    private EntityMapper entityMapper;
-    private SpecimenService specimenService;
-    private StrainMapper strainMapper;
-    private StatusStampMapper statusStampMapper;
-    private TransitionMapper transitionMapper;
-    private SpecimenPropertyMapper specimenPropertyMapper;
+    private final EntityMapper entityMapper;
+    private final SpecimenService specimenService;
+    private final StrainMapper strainMapper;
+    private final StatusStampMapper statusStampMapper;
+    private final TransitionMapper transitionMapper;
+    private final SpecimenPropertyMapper specimenPropertyMapper;
 
     public SpecimenMapper(
         EntityMapper entityMapper,

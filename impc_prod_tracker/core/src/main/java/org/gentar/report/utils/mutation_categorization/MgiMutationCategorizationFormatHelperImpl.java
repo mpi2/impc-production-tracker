@@ -21,13 +21,9 @@ public class MgiMutationCategorizationFormatHelperImpl implements MgiMutationCat
         if (projections != null) {
             result = projections
                     .stream()
-                    .map(p -> formatRepairMechanismString(p))
+                    .map(this::formatRepairMechanismString)
                     .filter(notEmpty)
                     .collect(Collectors.joining("**"));
-
-            if (result == null){
-                result = "";
-            }
 
         }
 
@@ -45,13 +41,9 @@ public class MgiMutationCategorizationFormatHelperImpl implements MgiMutationCat
         if (projections != null) {
             result = projections
                     .stream()
-                    .map(p -> formatAlleleCategoryString(p))
+                    .map(this::formatAlleleCategoryString)
                     .filter(notEmpty)
                     .collect(Collectors.joining("**"));
-
-            if (result == null){
-                result = "";
-            }
 
         }
 

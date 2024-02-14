@@ -21,7 +21,7 @@ public class ProjectStatusSummaryHelperImpl implements ProjectStatusSummaryHelpe
         List<String> plans = plansForProjects.get(projectTpn);
         List<String> planStatuses = plans.stream().map(statusForPlans::get).collect(Collectors.toList());
         if (planStatuses.size() == 1){
-            summaryStatusForProject = planStatuses.get(0);
+            summaryStatusForProject = planStatuses.getFirst();
         }
         else if (plans.size() > 1){
             summaryStatusForProject = planStatusSummaryHelper.summariseListOfPlanStatuses(planStatuses);

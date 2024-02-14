@@ -154,7 +154,7 @@ class PhenotypingStageControllerTest extends ControllerTestTemplate
         List<HistoryDTO> historyDTOS = changeResponse.getHistoryDTOs();
         assertThat(historyDTOS.size(), is(1));
 
-        HistoryDTO historyDTO = historyDTOS.get(0);
+        HistoryDTO historyDTO = historyDTOS.getFirst();
         assertThat(historyDTO.getComment(), is("PhenotypingStage updated"));
 
         List<HistoryDetailDTO> historyDetailDTOS = historyDTO.getDetails();

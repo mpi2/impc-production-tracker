@@ -80,25 +80,6 @@ public class ControllerTestTemplate extends IntegrationTestTemplate
         }
     }
 
-//    @AfterEach
-//    public void reset() {
-//        sequenceResetter.resetSequences(
-//            "seq_proj_id",
-//            "seq_comm_id",
-//            "seq_acon_id",
-//            "seq_acof_id",
-//            "seq_ajob_id",
-//            "seq_fiid_id",
-//            "seq_file_id",
-//            "seq_fpat_id",
-//            "seq_modu_id",
-//            "seq_glen_id",
-//            "seq_job_id",
-//            "seq_qpme_id",
-//            "seq_user_id",
-//            "seq_reto_id");
-//    }
-
     @SuppressWarnings("unchecked")
     protected <T> ConstrainedFields<T> fields(Class<T> clazz) {
         return new ConstrainedFields(clazz);
@@ -154,15 +135,6 @@ public class ControllerTestTemplate extends IntegrationTestTemplate
     protected MockMvc mvc() {
         return mvc;
     }
-
-    /*protected JsonPathResponseFieldsSnippet responseFieldsInPath(
-        String jsonPath, FieldDescriptor... fieldDescriptors) {
-        return new JsonPathResponseFieldsSnippet(jsonPath, fieldDescriptors);
-    }
-
-    protected LinksSnippet linksInPath(String jsonPath, LinkDescriptor... linkDescriptors) {
-        return new JsonPathLinksSnippet(jsonPath, linkDescriptors);
-    }*/
 
     protected String getAccessTokenForTestsUser() throws Exception
     {

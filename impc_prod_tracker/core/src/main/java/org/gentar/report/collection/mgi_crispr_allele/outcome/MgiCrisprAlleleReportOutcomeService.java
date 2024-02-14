@@ -6,7 +6,6 @@ public interface MgiCrisprAlleleReportOutcomeService {
 
     /**
      *
-     * @param outcomeIds
      * @return a list of MgiCrisprAlleleReportOutcomeMutationProjection Spring database projections
      *         that correspond to the list of outcomeIds provided.
      */

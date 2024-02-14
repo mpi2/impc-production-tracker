@@ -1,8 +1,5 @@
 package org.gentar.biology.targ_rep.pipeline;
 
-import static org.junit.jupiter.api.Assertions.*;
-
-import java.util.Arrays;
 import org.gentar.exceptions.NotFoundException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -15,6 +12,10 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+
+import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(MockitoExtension.class)
 class TargRepPipelineServiceImplTest {
@@ -56,7 +57,7 @@ class TargRepPipelineServiceImplTest {
     @DisplayName("getPageableTargRepPipeline Should Find Pageable")
     void getPageableTargRepPipeline() {
         Pageable pageable = PageRequest.of(0, 1);
-        final Page<TargRepPipeline> page = new PageImpl<>(Arrays.asList(getTargRepPipeline()));
+        final Page<TargRepPipeline> page = new PageImpl<>(List.of(getTargRepPipeline()));
         Mockito.when(pipelineRepository.findAll(pageable))
             .thenReturn(page);
 

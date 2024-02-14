@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class WorkGroupMapper implements Mapper<WorkGroup, String>
 {
-    private WorkGroupService workGroupService;
+    private final WorkGroupService workGroupService;
 
     private static final String WORK_GROUP_NOT_FOUND_ERROR = "Work group name '%s' does not exist.";
 
@@ -33,7 +33,7 @@ public class WorkGroupMapper implements Mapper<WorkGroup, String>
         WorkGroup workGroup = workGroupService.getWorkGroupByName(name);
         if (workGroup == null)
         {
-            throw new UserOperationFailedException(String.format(WORK_GROUP_NOT_FOUND_ERROR, workGroup));
+            throw new UserOperationFailedException(WORK_GROUP_NOT_FOUND_ERROR);
         }
         return workGroup;
     }

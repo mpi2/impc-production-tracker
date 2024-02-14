@@ -41,7 +41,7 @@ public class FluentPersonRoleWorkUnitListTest
             fluentPersonRoleWorkUnitList.getPersonRoleWorkUnitsFiltered().size(),
             is(1));
         PersonRoleWorkUnit personRoleWorkUnit1 =
-            fluentPersonRoleWorkUnitList.getPersonRoleWorkUnitsFiltered().get(0);
+            fluentPersonRoleWorkUnitList.getPersonRoleWorkUnitsFiltered().getFirst();
         assertThat(
             "",
             personRoleWorkUnit1.getPerson().getId(),
@@ -70,7 +70,7 @@ public class FluentPersonRoleWorkUnitListTest
             fluentPersonRoleWorkUnitList.getPersonRoleWorkUnitsFiltered().size(),
             is(1));
         PersonRoleWorkUnit personRoleWorkUnit1 =
-            fluentPersonRoleWorkUnitList.getPersonRoleWorkUnitsFiltered().get(0);
+            fluentPersonRoleWorkUnitList.getPersonRoleWorkUnitsFiltered().getFirst();
         assertThat(
             "",
             personRoleWorkUnit1.getPerson().getId(),

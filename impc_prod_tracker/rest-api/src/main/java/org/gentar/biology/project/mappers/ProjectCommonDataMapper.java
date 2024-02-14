@@ -1,6 +1,5 @@
 package org.gentar.biology.project.mappers;
 
-import org.apache.logging.log4j.util.Strings;
 import org.gentar.Mapper;
 import org.gentar.biology.project.Project;
 import org.gentar.biology.project.ProjectCommonDataDTO;

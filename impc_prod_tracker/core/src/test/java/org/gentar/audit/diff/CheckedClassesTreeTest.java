@@ -7,7 +7,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
-import java.util.Set;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
@@ -144,19 +143,19 @@ public class CheckedClassesTreeTest
         assertTrue(thrown.getMessage().contains("parentClass was null"));
     }
 
-    class ClassA
+    static class ClassA
     {
     }
 
-    class ClassB
+    static class ClassB
     {
     }
 
-    class ClassC
+    static class ClassC
     {
     }
 
-    class ClassD
+    static class ClassD
     {
     }
 
@@ -183,7 +182,7 @@ public class CheckedClassesTreeTest
     }
 
     @Data
-    public class SimpleClass
+    public static class SimpleClass
     {
         private Long id;
         private String field1;

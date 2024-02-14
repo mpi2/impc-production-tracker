@@ -2,7 +2,6 @@ package org.gentar.biology.gene_list.filter;
 
 import org.gentar.biology.project.search.filter.FilterTypes;
 
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -10,7 +9,7 @@ import java.util.Map;
 
 public class GeneListFilterBuilder
 {
-    private Map<FilterTypes, List<String>> filters;
+    private final Map<FilterTypes, List<String>> filters;
     private String consortiumName;
 
     // Prevents instantiation.

@@ -9,8 +9,8 @@ import org.gentar.security.abac.spring.ContextAwarePolicyEnforcement;
 import org.gentar.security.permissions.Actions;
 import org.gentar.security.permissions.Operations;
 import org.springframework.stereotype.Component;
+
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Component
 public class PhenotypingStageValidator
@@ -59,7 +59,7 @@ public class PhenotypingStageValidator
         {
             existingByType = existingByType.stream()
                 .filter(x -> !x.getId().equals(phenotypingStage.getId()))
-                .collect(Collectors.toList());
+                .toList();
         }
         if (existingByType != null && !existingByType.isEmpty())
         {

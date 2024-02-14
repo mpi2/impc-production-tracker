@@ -9,7 +9,7 @@ import java.text.SimpleDateFormat;
 
 public class JsonConverter
 {
-    private static ObjectMapper objectMapper;
+    private static final ObjectMapper objectMapper;
 
     static
     {

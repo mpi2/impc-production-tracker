@@ -46,7 +46,7 @@ public class ChangesDetectorTest
 
         assertThat("Unexpected number of changes:", changeEntryList.size(), is(1));
 
-        ChangeEntry obtainedChangeEntry = changeEntryList.get(0);
+        ChangeEntry obtainedChangeEntry = changeEntryList.getFirst();
 
         validateObtainedChangeEntryIsExpected(expectedChangeEntry, obtainedChangeEntry);
     }
@@ -56,7 +56,7 @@ public class ChangesDetectorTest
     {
         ChangesDetector<ClassTest> changesDetector =
             new ChangesDetector<>(
-                Arrays.asList("property2"),
+                    List.of("property2"),
                 class1NoNestedData,
                 class3NoNestedDataDifferent);
 
@@ -388,7 +388,7 @@ public class ChangesDetectorTest
 
     @Data
     @AllArgsConstructor
-    public class WorkUnitMock
+    public static class WorkUnitMock
     {
         Long id;
         String workUnitName;
@@ -402,7 +402,7 @@ public class ChangesDetectorTest
 
     @Data
     @AllArgsConstructor
-    public class PrivacyMock
+    public static class PrivacyMock
     {
         Long id;
         String privacyName;
@@ -419,7 +419,7 @@ public class ChangesDetectorTest
 
     @Data
     @AllArgsConstructor
-    public class SubStatusMock
+    public static class SubStatusMock
     {
         Long id;
         String subStatusName;
@@ -427,7 +427,7 @@ public class ChangesDetectorTest
 
     @Data
     @AllArgsConstructor
-    public class ClassTest
+    public static class ClassTest
     {
         private String property1;
         private String property2;
@@ -459,7 +459,7 @@ public class ChangesDetectorTest
         }
 
         @Data
-        public class InnerClassTest
+        public static class InnerClassTest
         {
             private Integer innerProperty1;
             private Integer innerProperty2;
@@ -480,7 +480,7 @@ public class ChangesDetectorTest
             }
 
             @Data
-            public class InnerInnerClassTest
+            public static class InnerInnerClassTest
             {
                 private Integer innerInnerProperty1;
 

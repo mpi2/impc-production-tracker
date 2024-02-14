@@ -17,7 +17,7 @@ public class ProjectFilter
         filters = new HashMap<>();
     }
 
-    public static final ProjectFilter getInstance()
+    public static ProjectFilter getInstance()
     {
         return new ProjectFilter();
     }
@@ -26,7 +26,7 @@ public class ProjectFilter
     {
         return filters.entrySet().stream()
             .filter(x -> x.getValue() != null)
-            .collect(Collectors.toMap(x -> x.getKey().getName(), x -> x.getValue()));
+            .collect(Collectors.toMap(x -> x.getKey().getName(), Map.Entry::getValue));
     }
 
     public List<String> getTpns()

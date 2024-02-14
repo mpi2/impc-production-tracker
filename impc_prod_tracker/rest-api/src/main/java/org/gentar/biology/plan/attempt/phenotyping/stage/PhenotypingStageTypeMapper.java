@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class PhenotypingStageTypeMapper implements Mapper<PhenotypingStageType, String>
 {
-    private PhenotypingStageTypeService phenotypingStageTypeService;
+    private final PhenotypingStageTypeService phenotypingStageTypeService;
 
     private static final String PHENOTYPING_STAGE_TYPE_NOT_FOUND_ERROR = "Phenotyping stage type '%s' does not exist.";
 
@@ -36,7 +36,7 @@ public class PhenotypingStageTypeMapper implements Mapper<PhenotypingStageType, 
 
         if (phenotypingStageType == null)
         {
-            throw new UserOperationFailedException(String.format(PHENOTYPING_STAGE_TYPE_NOT_FOUND_ERROR, phenotypingStageType));
+            throw new UserOperationFailedException(PHENOTYPING_STAGE_TYPE_NOT_FOUND_ERROR);
         }
 
         return phenotypingStageType;

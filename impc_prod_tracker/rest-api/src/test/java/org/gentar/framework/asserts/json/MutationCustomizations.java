@@ -9,8 +9,7 @@ public class MutationCustomizations
 {
     public static Customization[] ignoreIdsAndMin()
     {
-        List<Customization> customizationList = new ArrayList<>();
-        customizationList.addAll(buildCustomizationForMutationSequencesIds());
+        List<Customization> customizationList = new ArrayList<>(buildCustomizationForMutationSequencesIds());
         customizationList.add(buildCustomizationForMinLink());
         customizationList.add(buildCustomizationForMin());
         return customizationList.toArray(new Customization[0]);

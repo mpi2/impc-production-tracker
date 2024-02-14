@@ -5,7 +5,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class SequenceTypeServiceImpl implements SequenceTypeService
 {
-    private SequenceTypeRepository sequenceTypeRepository;
+    private final SequenceTypeRepository sequenceTypeRepository;
 
     public SequenceTypeServiceImpl(SequenceTypeRepository sequenceTypeRepository) { this.sequenceTypeRepository = sequenceTypeRepository; }
 

@@ -115,7 +115,7 @@ class OutcomeServiceImplTest {
             resourceAccessChecker.checkAccess(Mockito.any(Outcome.class), eq(READ_OUTCOME_ACTION)))
             .thenReturn(outcomeMockData());
         List<Outcome> outcomeList = testInstance.getOutcomes();
-        assertEquals(outcomeList.get(0).getId(), 1l);
+        assertEquals(outcomeList.getFirst().getId(), 1L);
     }
 
     @Test

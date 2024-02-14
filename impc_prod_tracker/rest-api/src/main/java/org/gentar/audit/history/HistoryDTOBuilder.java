@@ -9,8 +9,8 @@ import java.util.List;
 @Component
 public class HistoryDTOBuilder
 {
-    private HistoryService<Plan> historyService;
-    private HistoryMapper historyMapper;
+    private final HistoryService<Plan> historyService;
+    private final HistoryMapper historyMapper;
 
     public HistoryDTOBuilder(HistoryService<Plan> historyService, HistoryMapper historyMapper)
     {

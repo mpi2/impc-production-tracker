@@ -20,7 +20,7 @@ public class MutationFormatterServiceImpl implements MutationFormatterService {
     private final MutationServiceImpl mutationService;
     private static final Logger LOGGER =
         LoggerFactory.getLogger(MutationFormatterServiceImpl.class);
-    ;
+
 
     public MutationFormatterServiceImpl(
         MutationRepository mutationRepository,
@@ -52,8 +52,8 @@ public class MutationFormatterServiceImpl implements MutationFormatterService {
     private Mutation getValidatedMutation(Mutation mutation) {
         Mutation validatedMutation = new Mutation(mutation);
         validatedMutation.getMutationSequences().forEach(ms ->
-            ms.setSequence(sequenceFormatter(getColonyNames(mutation).get(0),
-                getSequences(mutation).get(0)))
+            ms.setSequence(sequenceFormatter(getColonyNames(mutation).getFirst(),
+                getSequences(mutation).getFirst()))
         );
         return validatedMutation;
     }
@@ -106,7 +106,7 @@ public class MutationFormatterServiceImpl implements MutationFormatterService {
         List<String> sequenceString = sequences
             .stream()
             .map(Sequence::getSequence)
-            .collect(Collectors.toList());
+            .toList();
 
         return sequenceString
             .stream()
@@ -121,7 +121,7 @@ public class MutationFormatterServiceImpl implements MutationFormatterService {
 
     private Boolean isSequenceHeaderSingleLine(String sequence) {
         return sequence.split("\n").length == 2
-            && (sequence.split("\n")[0].length() > 0
+            && (!sequence.split("\n")[0].isEmpty()
             && sequence.split("\n")[0].length() < 256);
 
     }

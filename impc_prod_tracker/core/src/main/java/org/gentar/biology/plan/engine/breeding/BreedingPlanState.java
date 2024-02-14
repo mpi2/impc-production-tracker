@@ -1,11 +1,13 @@
 package org.gentar.biology.plan.engine.breeding;
 
+import lombok.Getter;
 import org.gentar.statemachine.EnumStateHelper;
 import org.gentar.statemachine.ProcessState;
 
 import java.util.Arrays;
 import java.util.List;
 
+@Getter
 public enum BreedingPlanState implements ProcessState {
     PlanCreated("Plan Created"),
     PlanAbandoned("Plan Abandoned"),
@@ -13,14 +15,10 @@ public enum BreedingPlanState implements ProcessState {
     BreedingComplete("Breeding Complete"),
     BreedingAborted("Breeding Aborted");
 
-    private String internalName;
+    private final String internalName;
 
     BreedingPlanState(String internalName) {
         this.internalName = internalName;
-    }
-
-    public String getInternalName() {
-        return internalName;
     }
 
     public static List<ProcessState> getAllStates() {

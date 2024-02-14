@@ -12,6 +12,7 @@ import org.gentar.biology.targ_rep.es_cell.TargRepEsCellService;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 @Component
 public class EsCellAttemptMapper implements Mapper<EsCellAttempt, EsCellAttemptDTO>
@@ -109,7 +110,7 @@ public class EsCellAttemptMapper implements Mapper<EsCellAttempt, EsCellAttemptD
             Integer femaleChimeras = esCellAttemptDTO.getTotalFemaleChimeras();
             Integer maleChimeras = esCellAttemptDTO.getTotalMaleChimeras();
             Integer total = femaleChimeras + maleChimeras;
-            if (esCellAttempt.getTotalChimeras() != total) {
+            if (!Objects.equals(esCellAttempt.getTotalChimeras(), total)) {
                 esCellAttempt.setTotalChimeras(total);
             }
         }
@@ -124,7 +125,7 @@ public class EsCellAttemptMapper implements Mapper<EsCellAttempt, EsCellAttemptD
 
         if (esCellAttemptDTO.getCassetteTransmissionVerified() == null)
         {
-            LocalDateTime date = null;
+            LocalDateTime date;
 
             if (esCellAttempt.getPlan().getOutcomes() != null)
             {
@@ -132,6 +133,7 @@ public class EsCellAttemptMapper implements Mapper<EsCellAttempt, EsCellAttemptD
                         .filter(outcome1 -> "Genotype Confirmed".equals(outcome1.getColony().getProcessDataStatus().getName()))
                         .findFirst()
                         .orElse(null);
+                assert outcome != null;
                 ColonyStatusStamp statusStamp = outcome.getColony().getColonyStatusStamps().stream()
                         .filter(colonyStatusStamp -> "Genotype Confirmed".equals(colonyStatusStamp.getStatusName()))
                         .findFirst()

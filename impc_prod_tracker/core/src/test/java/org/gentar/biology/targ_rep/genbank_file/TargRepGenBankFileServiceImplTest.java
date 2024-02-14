@@ -1,8 +1,5 @@
 package org.gentar.biology.targ_rep.genbank_file;
 
-import static org.junit.jupiter.api.Assertions.*;
-
-import java.util.Arrays;
 import org.gentar.exceptions.NotFoundException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -15,6 +12,10 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+
+import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(MockitoExtension.class)
 class TargRepGenBankFileServiceImplTest {
@@ -60,7 +61,7 @@ class TargRepGenBankFileServiceImplTest {
     void getPageableTargRepGenBankFile() {
         Pageable pageable = PageRequest.of(0, 1);
         final Page<TargRepGenbankFile> page =
-            new PageImpl<>(Arrays.asList(getTargRepGenbankFile()));
+            new PageImpl<>(List.of(getTargRepGenbankFile()));
         Mockito.when(targRepGenBankFileRepository.findAll(pageable))
             .thenReturn(page);
 

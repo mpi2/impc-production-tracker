@@ -1,20 +1,9 @@
 package org.gentar.biology.plan.engine.es_cell_allele_modification.processors;
 
-import static org.junit.jupiter.api.Assertions.*;
-
-import java.util.Set;
-import org.gentar.biology.colony.Colony;
-import org.gentar.biology.colony.engine.ColonyState;
-import org.gentar.biology.outcome.Outcome;
 import org.gentar.biology.plan.Plan;
 import org.gentar.biology.plan.PlanStatusManager;
 import org.gentar.biology.plan.attempt.es_cell_allele_modification.EsCellAlleleModificationAttempt;
 import org.gentar.biology.plan.engine.PlanStateSetter;
-import org.gentar.biology.plan.engine.crispr.processors.AbortFounderObtainedProcessor;
-import org.gentar.biology.status.Status;
-import org.gentar.biology.targ_rep.ikmc_project.TargRepIkmcProject;
-import org.gentar.exceptions.NotFoundException;
-import org.gentar.exceptions.UserOperationFailedException;
 import org.gentar.mockdata.MockData;
 import org.gentar.statemachine.ProcessEvent;
 import org.gentar.statemachine.ProcessState;
@@ -23,6 +12,8 @@ import org.gentar.statemachine.TransitionEvaluation;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class EsCellAlleleModificationPlanRegisteredProcessorTest {
 
@@ -67,7 +58,8 @@ class EsCellAlleleModificationPlanRegisteredProcessorTest {
     }
 
     private static ProcessEvent processEventMockData() {
-        ProcessEvent processEvent = new ProcessEvent() {
+
+        return new ProcessEvent() {
             @Override
             public Class<? extends Processor> getNextStepProcessor() {
                 return null;
@@ -123,8 +115,6 @@ class EsCellAlleleModificationPlanRegisteredProcessorTest {
                 return null;
             }
         };
-
-        return processEvent;
     }
 
     private static TransitionEvaluation transitionEvaluationMockData() {

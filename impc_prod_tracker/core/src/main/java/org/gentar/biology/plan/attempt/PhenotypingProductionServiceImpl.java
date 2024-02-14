@@ -13,8 +13,8 @@ import java.util.Optional;
 @Component
 public class PhenotypingProductionServiceImpl implements PhenotypingProductionService
 {
-    private PhenotypingAttemptRepository phenotypingProductionRepository;
-    private TissueDistributionRepository tissueDistributionRepository;
+    private final PhenotypingAttemptRepository phenotypingProductionRepository;
+    private final TissueDistributionRepository tissueDistributionRepository;
 
     public PhenotypingProductionServiceImpl(
         PhenotypingAttemptRepository phenotypingProductionRepository,
@@ -26,9 +26,7 @@ public class PhenotypingProductionServiceImpl implements PhenotypingProductionSe
 
     public Optional<PhenotypingAttempt> getPhenotypingProductionByPlan(Plan plan)
     {
-        Optional<PhenotypingAttempt> phenotypingProductionOpt =
-            phenotypingProductionRepository.findById(plan.getId());
-        return phenotypingProductionOpt;
+        return phenotypingProductionRepository.findById(plan.getId());
     }
 
     public List<TissueDistribution> getTissueDistributionCentresByPhenotypingProduction(

@@ -1,21 +1,15 @@
 package org.gentar.biology.gene_list;
 
 import org.apache.logging.log4j.util.Strings;
+import org.gentar.biology.gene.external_ref.GeneExternalService;
+import org.gentar.biology.gene_list.record.GeneByListRecord;
 import org.gentar.biology.gene_list.record.ListRecord;
 import org.gentar.biology.gene_list.record.ListRecordType;
 import org.gentar.biology.gene_list.record.ListRecordTypeService;
 import org.gentar.exceptions.UserOperationFailedException;
 import org.springframework.stereotype.Component;
-import org.gentar.biology.gene.Gene;
-import org.gentar.biology.gene_list.record.GeneByListRecord;
-import org.gentar.biology.gene.external_ref.GeneExternalService;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+
+import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 
 @Component
@@ -62,10 +56,8 @@ public class GeneListCsvConverter
     private void validateSameRowCountForAllColumns(Map<String, List<String>> recordsByColumns)
     {
         List<Integer> sizes = new ArrayList<>();
-        recordsByColumns.forEach((k, v) -> {
-            sizes.add(v.size());
-        });
-        int firstElementSize = sizes.get(0);
+        recordsByColumns.forEach((k, v) -> sizes.add(v.size()));
+        int firstElementSize = sizes.getFirst();
         boolean sameSizeForAll = sizes.stream().allMatch(x -> x.equals(firstElementSize));
         if (!sameSizeForAll)
         {
@@ -96,7 +88,7 @@ public class GeneListCsvConverter
 
     private List<String> getHeaders(List<List<String>> csvContent)
     {
-        List<String> headers = csvContent.get(0);
+        List<String> headers = csvContent.getFirst();
         List<String> cleanedHeaders = new ArrayList<>();
         for (String header : headers)
         {
@@ -116,9 +108,7 @@ public class GeneListCsvConverter
         List<String> headers = getHeaders(csvContent);
         int headerPosition = headers.indexOf(csvGeneHeader);
         List<String> elements = new ArrayList<>();
-        data.forEach(line -> {
-            elements.add(line.get(headerPosition));
-        });
+        data.forEach(line -> elements.add(line.get(headerPosition)));
         return elements;
     }
 

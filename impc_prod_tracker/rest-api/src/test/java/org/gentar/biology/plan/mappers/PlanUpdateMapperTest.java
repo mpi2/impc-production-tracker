@@ -3,7 +3,6 @@ package org.gentar.biology.plan.mappers;
 import org.gentar.biology.plan.Plan;
 import org.gentar.biology.plan.PlanBasicDataDTO;
 import org.gentar.biology.plan.PlanUpdateDTO;
-import org.gentar.organization.funder.FunderService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -12,9 +11,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class PlanUpdateMapperTest

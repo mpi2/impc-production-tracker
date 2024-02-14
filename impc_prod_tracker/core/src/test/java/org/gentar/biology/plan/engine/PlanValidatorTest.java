@@ -1,15 +1,5 @@
 package org.gentar.biology.plan.engine;
 
-import static org.gentar.mockdata.MockData.planMockData;
-import static org.gentar.mockdata.MockData.planTypeMockData;
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.doThrow;
-import static org.mockito.Mockito.lenient;
-
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.List;
 import org.gentar.biology.colony.Colony;
 import org.gentar.biology.colony.ColonyValidator;
 import org.gentar.biology.plan.Plan;
@@ -38,7 +28,17 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.access.AccessDeniedException;
-import org.springframework.security.core.parameters.P;
+
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.List;
+
+import static org.gentar.mockdata.MockData.planMockData;
+import static org.gentar.mockdata.MockData.planTypeMockData;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.lenient;
 
 
 @ExtendWith(MockitoExtension.class)
@@ -90,9 +90,7 @@ class PlanValidatorTest {
         Plan plan = planMockData();
         plan.setPlanType(null);
 
-        Exception exception = assertThrows(UserOperationFailedException.class, () -> {
-            testInstance.validate(plan);
-        });
+        Exception exception = assertThrows(UserOperationFailedException.class, () -> testInstance.validate(plan));
 
         String expectedMessage =
             String.format(CommonErrorMessages.NULL_FIELD_ERROR, "typeName");
@@ -107,9 +105,7 @@ class PlanValidatorTest {
         Plan plan = planMockData();
         plan.setAttemptType(null);
 
-        Exception exception = assertThrows(UserOperationFailedException.class, () -> {
-            testInstance.validate(plan);
-        });
+        Exception exception = assertThrows(UserOperationFailedException.class, () -> testInstance.validate(plan));
 
         String expectedMessage =
             String.format(CommonErrorMessages.NULL_FIELD_ERROR, "attemptTypeName");
@@ -121,9 +117,7 @@ class PlanValidatorTest {
     @Test
     void validateWrongAttemptTypesName() {
 
-        Exception exception = assertThrows(UserOperationFailedException.class, () -> {
-            testInstance.validate(planMockData());
-        });
+        Exception exception = assertThrows(UserOperationFailedException.class, () -> testInstance.validate(planMockData()));
 
         String expectedMessage =
             String.format(
@@ -183,9 +177,7 @@ class PlanValidatorTest {
         plan.setPlanStartingPoints(null);
 
 
-        Exception exception = assertThrows(UserOperationFailedException.class, () -> {
-            testInstance.validateDataCreation(plan);
-        });
+        Exception exception = assertThrows(UserOperationFailedException.class, () -> testInstance.validateDataCreation(plan));
 
         String expectedMessage =
             String.format(NULL_OBJECT_ERROR, "Starting Point (outcome)");
@@ -221,9 +213,7 @@ class PlanValidatorTest {
         plan.setPlanStartingPoints(null);
 
 
-        Exception exception = assertThrows(UserOperationFailedException.class, () -> {
-            testInstance.validateDataCreation(plan);
-        });
+        Exception exception = assertThrows(UserOperationFailedException.class, () -> testInstance.validateDataCreation(plan));
 
         String expectedMessage =
             String.format(NULL_OBJECT_ERROR, "Starting Point (outcome)");
@@ -345,9 +335,7 @@ class PlanValidatorTest {
     @Test
     void validatePermissionToUpdatePlan() {
 
-        Exception exception = assertThrows(ForbiddenAccessException.class, () -> {
-            testInstance.validatePermissionToUpdatePlan(planMockData());
-        });
+        Exception exception = assertThrows(ForbiddenAccessException.class, () -> testInstance.validatePermissionToUpdatePlan(planMockData()));
 
         String expectedMessage =
             ("You do not have permission to update the plan PIN:000000001.");
@@ -390,9 +378,7 @@ class PlanValidatorTest {
             .checkPermission(planMockData(), Actions.READ_PLAN_ACTION);
 
 
-        Exception exception = assertThrows(ForbiddenAccessException.class, () -> {
-            testInstance.validateReadPermissions(planMockData());
-        });
+        Exception exception = assertThrows(ForbiddenAccessException.class, () -> testInstance.validateReadPermissions(planMockData()));
 
         String expectedMessage =
             ("You do not have permission to read the plan PIN:000000001.");

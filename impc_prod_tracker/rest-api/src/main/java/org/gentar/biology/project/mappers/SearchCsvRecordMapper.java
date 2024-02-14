@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class SearchCsvRecordMapper implements Mapper<SearchResult, SearchCsvRecord>
 {
-    private ProjectQueryHelper projectQueryHelper;
+    private final ProjectQueryHelper projectQueryHelper;
     private static final String SEPARATOR = ",";
 
     public SearchCsvRecordMapper(ProjectQueryHelper projectQueryHelper)

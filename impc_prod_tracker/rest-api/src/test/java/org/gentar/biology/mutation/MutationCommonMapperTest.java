@@ -1,6 +1,5 @@
 package org.gentar.biology.mutation;
 
-import org.gentar.EntityMapper;
 import org.gentar.biology.gene.Gene;
 import org.gentar.biology.mutation.categorizarion.MutationCategorization;
 import org.gentar.biology.mutation.genbank_file.GenbankFile;
@@ -10,11 +9,8 @@ import org.gentar.biology.outcome.Outcome;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.mock.mockito.MockBean;
 
 import java.util.ArrayList;
 import java.util.Collections;

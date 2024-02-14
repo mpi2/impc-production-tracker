@@ -15,7 +15,7 @@ import java.text.SimpleDateFormat;
  */
 public class TestResourceLoader
 {
-    private static ObjectMapper objectMapper;
+    private static final ObjectMapper objectMapper;
 
     static {
         objectMapper = new ObjectMapper();
@@ -34,7 +34,7 @@ public class TestResourceLoader
 
     public static String loadJsonFromResource(String resourcePath) throws IOException
     {
-        String result = null;
+        String result;
         try(InputStream in = TestResourceLoader.class.getResourceAsStream(resourcePath))
         {
             JsonNode jsonNode = objectMapper.readValue(in, JsonNode.class);

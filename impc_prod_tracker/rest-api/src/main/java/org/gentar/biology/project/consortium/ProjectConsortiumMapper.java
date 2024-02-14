@@ -1,21 +1,21 @@
 package org.gentar.biology.project.consortium;
 
-import org.gentar.Mapper;
-import org.gentar.biology.plan.attempt.crispr.CrisprAttemptReagentDTO;
-import org.gentar.biology.plan.attempt.crispr.reagent.CrisprAttemptReagent;
-import org.gentar.organization.consortium.ConsortiumService;
-import org.gentar.biology.project.ProjectConsortiumDTO;
 import org.gentar.EntityMapper;
-import org.gentar.organization.institute.Institute;
-import org.springframework.stereotype.Component;
+import org.gentar.Mapper;
+import org.gentar.biology.project.ProjectConsortiumDTO;
 import org.gentar.biology.project.consortium.institute.ProjectConsortiumInstituteMapper;
-import java.util.*;
+import org.gentar.organization.consortium.ConsortiumService;
+import org.springframework.stereotype.Component;
+
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
 
 @Component
 public class ProjectConsortiumMapper implements Mapper<ProjectConsortium, ProjectConsortiumDTO>
 {
-    private EntityMapper entityMapper;
-    private ConsortiumService consortiumService;
+    private final EntityMapper entityMapper;
+    private final ConsortiumService consortiumService;
     private ProjectConsortiumInstituteMapper projectConsortiumInstituteMapper;
 
     public ProjectConsortiumMapper(
@@ -51,24 +51,8 @@ public class ProjectConsortiumMapper implements Mapper<ProjectConsortium, Projec
 
     public ProjectConsortiumDTO toDto(ProjectConsortium projectConsortium)
     {
-        ProjectConsortiumDTO projectConsortiumDTO =
-            entityMapper.toTarget(projectConsortium, ProjectConsortiumDTO.class);
-//        addProjectConsortiumInstituteFromDto(projectConsortium, projectConsortiumDTO);
-        return projectConsortiumDTO;
+        //        addProjectConsortiumInstituteFromDto(projectConsortium, projectConsortiumDTO);
+        return entityMapper.toTarget(projectConsortium, ProjectConsortiumDTO.class);
     }
 
-//    private void addProjectConsortiumInstituteFromDto(
-//        ProjectConsortium projectConsortium, ProjectConsortiumDTO projectConsortiumDTO)
-//    {
-//        List<String> projectConsortiumInstituteNames =
-//                projectConsortiumInstituteMapper.toDtos(projectConsortium.getInstitutes());
-//        projectConsortiumDTO.setInstituteNames(projectConsortiumInstituteNames);
-//    }
-
-//    private Set<Institute> addProjectConsortiumInstituteFromEntity(
-//        ProjectConsortiumDTO projectConsortiumDTO)
-//    {
-//        return new HashSet<>(projectConsortiumInstituteMapper.toEntities(
-//            projectConsortiumDTO.getInstituteNames()));
-//    }
 }

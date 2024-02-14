@@ -15,8 +15,8 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -37,13 +37,13 @@ class ConflictsCheckerTest
 
     private ConflictsChecker testInstance;
 
-    private static AssignmentStatus assigned =
+    private static final AssignmentStatus assigned =
         new AssignmentStatus(1L, AssignmentStatusNames.ASSIGNED_STATUS_NAME, "", 1);
-    private static AssignmentStatus inspect_gtl_mouse =
+    private static final AssignmentStatus inspect_gtl_mouse =
         new AssignmentStatus(1L, AssignmentStatusNames.INSPECT_GLT_MOUSE_STATUS_NAME, "", 2);
-    private static AssignmentStatus inspect_attempt =
+    private static final AssignmentStatus inspect_attempt =
         new AssignmentStatus(1L, AssignmentStatusNames.INSPECT_ATTEMPT_STATUS_NAME, "", 3);
-    private static AssignmentStatus inspect_conflict =
+    private static final AssignmentStatus inspect_conflict =
         new AssignmentStatus(1L, AssignmentStatusNames.INSPECT_CONFLICT_STATUS_NAME, "", 4);
 
     @BeforeEach
@@ -265,7 +265,7 @@ class ConflictsCheckerTest
         project.setId(projectId);
         ProjectIntention projectIntention = buildProjectIntention(intentionId, molecularMutationTypeName);
         projectIntention.setProject(project);
-        project.setProjectIntentions(Arrays.asList(projectIntention));
+        project.setProjectIntentions(List.of(projectIntention));
 
         ProjectIntentionGene projectIntentionGene = buildProjectIntentionGene(geneId);
         projectIntentionGene.setProjectIntention(projectIntention);

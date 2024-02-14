@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class RollbackToAllDataProcessedProcessor extends AbstractProcessor
 {
-    private ContextAwarePolicyEnforcement policyEnforcement;
+    private final ContextAwarePolicyEnforcement policyEnforcement;
 
     public RollbackToAllDataProcessedProcessor(
         PhenotypingStageStateSetter phenotypingStageStateSetter,

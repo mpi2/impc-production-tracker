@@ -17,7 +17,7 @@ public class QueryBuilder
         "}";
     private String query;
     private String root;
-    private List<String> conditions = new ArrayList<>();
+    private final List<String> conditions = new ArrayList<>();
     private List<String> fields = new ArrayList<>();
 
     public static QueryBuilder getInstance()

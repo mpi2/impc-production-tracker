@@ -16,8 +16,8 @@ import java.util.Set;
 @Component
 public class MutagenesisDonorMapper implements Mapper<MutagenesisDonor, MutagenesisDonorDTO>
 {
-    private EntityMapper entityMapper;
-    private PreparationTypeRepository preparationTypeRepository;
+    private final EntityMapper entityMapper;
+    private final PreparationTypeRepository preparationTypeRepository;
 
     private static final String PREPARATION_TYPE_NOT_FOUND = "Preparation Type [%s]" +
         " does not exist. Please correct the name or create first the preparation type.";

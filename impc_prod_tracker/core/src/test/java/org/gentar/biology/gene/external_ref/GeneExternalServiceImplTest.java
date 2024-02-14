@@ -42,9 +42,7 @@ class GeneExternalServiceImplTest {
 
         lenient().when(graphQLConsumer.executeQuery(Mockito.anyString())).thenReturn("");
 
-        Exception exception = assertThrows(SystemOperationFailedException.class, () -> {
-            testInstance.getGeneFromExternalDataBySymbolOrAccId(MGI_00000001);
-        });
+        Exception exception = assertThrows(SystemOperationFailedException.class, () -> testInstance.getGeneFromExternalDataBySymbolOrAccId(MGI_00000001));
 
         String expectedMessage =
             "An unexpected error has occurred in the system. Please contact the administrator to check the details in the logs.";
@@ -107,7 +105,7 @@ class GeneExternalServiceImplTest {
 
         List<Gene> genes = testInstance.getGenesFromExternalDataBySymbolOrAccId(MGI_2446166);
 
-        assertEquals(genes.get(0).getSymbol(), "Marveld2");
+        assertEquals(genes.getFirst().getSymbol(), "Marveld2");
     }
 
     @Test

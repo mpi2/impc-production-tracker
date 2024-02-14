@@ -15,7 +15,7 @@ public class MgiGuideFormatHelperImpl implements MgiGuideFormatHelper{
         if (guideProjections != null) {
             result = guideProjections
                     .stream()
-                    .map(p -> formatGuide(p))
+                    .map(this::formatGuide)
                     .collect(Collectors.joining("**"));
         }
 
@@ -34,7 +34,7 @@ public class MgiGuideFormatHelperImpl implements MgiGuideFormatHelper{
         String genomeBuild = projection.getGenomeBuild() == null ? "" : projection.getGenomeBuild();
 
 
-        String guide = "sequence::" + sequence + "||" +
+        return "sequence::" + sequence + "||" +
                         "guideSeqeunce::" + guideSeqeunce + "||" +
                         "PAM::" + pam  + "||" +
                         "chr::" + chr + "||" +
@@ -42,6 +42,5 @@ public class MgiGuideFormatHelperImpl implements MgiGuideFormatHelper{
                         "stop::" + stop + "||" +
                         "strand::" + strand + "||" +
                         "genomeBuild::" + genomeBuild;
-        return guide;
     }
 }

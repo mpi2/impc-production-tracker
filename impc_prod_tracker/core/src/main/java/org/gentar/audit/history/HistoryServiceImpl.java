@@ -1,11 +1,10 @@
 package org.gentar.audit.history;
 
-import org.springframework.stereotype.Component;
 import org.gentar.audit.history.detail.HistoryDetail;
-import java.time.LocalDate;
+import org.springframework.stereotype.Component;
+
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -45,7 +44,9 @@ public class HistoryServiceImpl<T> implements HistoryService<T>
             historyRepository.findAllByEntityNameAndEntityIdOrderByDate(entityName, entityId);
         List<History> additionalHistories = getAdditionalRecordsForExternalReferences(histories);
         additionalHistories = removeDuplicates(additionalHistories);
-        histories.addAll(additionalHistories);
+        if(!additionalHistories.isEmpty()) {
+            histories.addAll(additionalHistories);
+        }
         return histories;
     }
 
@@ -53,30 +54,28 @@ public class HistoryServiceImpl<T> implements HistoryService<T>
     {
         List<History> additionalHistories = new ArrayList<>();
         histories.forEach(history ->
-        {
-            history.getHistoryDetailSet().forEach(detail ->
-            {
-                if (detail.getReferenceEntity() != null)
+                history.getHistoryDetailSet().forEach(detail ->
                 {
-                    List<History> refHistoryForOldValues =
-                        getOlderChangesForReferenceEntity(
-                            detail.getField(),
-                            history.getDate(),
-                            detail.getReferenceEntity(),
-                            detail.getOldValueEntityId());
-                    additionalHistories.addAll(refHistoryForOldValues);
+                    if (detail.getReferenceEntity() != null)
+                    {
+                        List<History> refHistoryForOldValues =
+                            getOlderChangesForReferenceEntity(
+                                detail.getField(),
+                                history.getDate(),
+                                detail.getReferenceEntity(),
+                                detail.getOldValueEntityId());
+                        additionalHistories.addAll(refHistoryForOldValues);
 
-                    List<History> refHistoryForNewValues =
-                        getOlderChangesForReferenceEntity(
-                            detail.getField(),
-                            history.getDate(),
-                            detail.getReferenceEntity(),
-                            detail.getNewValueEntityId());
-                    additionalHistories.addAll(refHistoryForNewValues);
+                        List<History> refHistoryForNewValues =
+                            getOlderChangesForReferenceEntity(
+                                detail.getField(),
+                                history.getDate(),
+                                detail.getReferenceEntity(),
+                                detail.getNewValueEntityId());
+                        additionalHistories.addAll(refHistoryForNewValues);
 
-                }
-            });
-        });
+                    }
+                }));
         return additionalHistories;
     }
 
@@ -105,7 +104,7 @@ public class HistoryServiceImpl<T> implements HistoryService<T>
                     History newHistory = new History();
                     newHistory.setUser(h.getUser());
                     newHistory.setComment(h.getComment());
-                    newHistory.setHistoryDetailSet(Arrays.asList(hd));
+                    newHistory.setHistoryDetailSet(List.of(hd));
                     newHistory.setDate(h.getDate());
                     result.add(newHistory);
                 }

@@ -28,9 +28,7 @@ public class GeneStatusSummaryHelperImpl implements GeneStatusSummaryHelper{
         return  projectsForGenes
                 .entrySet()
                 .stream()
-                .collect(Collectors.toMap(Map.Entry::getKey, e -> {
-                    return summariseGenePlanStatuses(e.getValue(), plansForProjects, statusForPlans);
-                }));
+                .collect(Collectors.toMap(Map.Entry::getKey, e -> summariseGenePlanStatuses(e.getValue(), plansForProjects, statusForPlans)));
 
     }
 
@@ -45,9 +43,7 @@ public class GeneStatusSummaryHelperImpl implements GeneStatusSummaryHelper{
                 .map(x -> projectStatusSummaryHelper.summarisePlanStatusesForProject(x, plansForProjects, statusForPlans))
                 .collect(Collectors.toList());
 
-        String summaryPlanStatusForGene = planStatusSummaryHelper.summariseListOfPlanStatuses(summaryPlanStatusForAllProjects);
-
-        return summaryPlanStatusForGene;
+        return planStatusSummaryHelper.summariseListOfPlanStatuses(summaryPlanStatusForAllProjects);
 
     }
 }

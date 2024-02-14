@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class SpeciesMapper implements Mapper<Species, String>
 {
-    private SpeciesService speciesService;
+    private final SpeciesService speciesService;
 
     private static final String SPECIES_NOT_FOUND_ERROR = "Species '%s' does not exist.";
 

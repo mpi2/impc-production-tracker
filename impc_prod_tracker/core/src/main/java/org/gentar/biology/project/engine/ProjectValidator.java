@@ -67,7 +67,7 @@ public class ProjectValidator {
                     (ps.getPhenotypingStageType().getName().equals("late adult") &&
                         ps.getProcessDataStatus().getOrdering() >= 301000));
 
-            if (matchPhenotypingStage == true) {
+            if (matchPhenotypingStage) {
                 throw new UserOperationFailedException(PHENOTYPING_STAGE_STARTED);
             }
         }
@@ -186,13 +186,11 @@ public class ProjectValidator {
      * Validate that the type of production attempt is valid for a project and
      * that the production work unit is correct.
      *
-     * @param project
-     * @param plan
      */
     public void validateProductionAttempt(Project project, Plan plan) {
         if (project.getPlans() != null && plan.getPlanType().getName().equals("production")) {
             Plan firstPlan =
-                project.getPlans().stream().sorted(Comparator.comparing(Plan::getId)).findFirst()
+                project.getPlans().stream().min(Comparator.comparing(Plan::getId))
                     .get();
 
             // Check that the type of attempt matches the first plan

@@ -22,7 +22,7 @@ public enum ColonyState implements ProcessState
         }
     }
 
-    private String internalName;
+    private final String internalName;
 
     ColonyState(String internalName)
     {

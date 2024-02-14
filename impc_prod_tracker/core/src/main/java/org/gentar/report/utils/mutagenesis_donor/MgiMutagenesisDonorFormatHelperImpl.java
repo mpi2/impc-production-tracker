@@ -17,7 +17,7 @@ class MgiMutagenesisDonorFormatHelperImpl implements MgiMutagenesisDonorFormatHe
         if (projections != null) {
             result = projections
                     .stream()
-                    .map(p -> formatMutagenesisDonor(p))
+                    .map(this::formatMutagenesisDonor)
                     .collect(Collectors.joining("**"));
         }
         //result = '"' + result + '"';

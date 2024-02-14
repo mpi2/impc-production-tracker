@@ -10,6 +10,7 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
+import java.util.Objects;
 
 @Component
 public class GeneServiceImpl implements GeneService
@@ -101,14 +102,7 @@ public class GeneServiceImpl implements GeneService
     private Species getByNameOrDefaultIfNull(SpeciesNames speciesName)
     {
         Species species;
-        if (speciesName == null)
-        {
-            species = speciesService.getSpeciesByName(SpeciesNames.MOUSE.getLabel());
-        }
-        else
-        {
-            species = speciesService.getSpeciesByName(speciesName.getLabel());
-        }
+        species = speciesService.getSpeciesByName(Objects.requireNonNullElse(speciesName, SpeciesNames.MOUSE).getLabel());
         return species;
     }
 

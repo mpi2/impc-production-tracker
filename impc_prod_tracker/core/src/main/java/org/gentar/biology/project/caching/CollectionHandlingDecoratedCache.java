@@ -1,23 +1,17 @@
 package org.gentar.biology.project.caching;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.Set;
-import java.util.concurrent.Callable;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
-import java.util.stream.StreamSupport;
 import org.gentar.biology.project.projection.dto.ProjectSearchDownloadOrthologDto;
 import org.springframework.cache.Cache;
 import org.springframework.data.util.Pair;
 import org.springframework.lang.NonNull;
 import org.springframework.util.Assert;
 import org.springframework.util.ObjectUtils;
+
+import java.util.*;
+import java.util.concurrent.Callable;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
+import java.util.stream.StreamSupport;
 
 
 public abstract class CollectionHandlingDecoratedCache implements Cache {
@@ -108,7 +102,7 @@ public abstract class CollectionHandlingDecoratedCache implements Cache {
 
         if (key instanceof Iterable) {
 
-            if (value instanceof Iterable && ((ArrayList) value).size() != 0) {
+            if (value instanceof Iterable && !((ArrayList<?>) value).isEmpty()) {
                 pairsFromKeysAndValues(toList((Iterable<?>) key), toList((Iterable<?>) value))
                     .forEach(pair -> getCache().put(pair.getFirst(), pair.getSecond()));
             }
@@ -155,7 +149,7 @@ public abstract class CollectionHandlingDecoratedCache implements Cache {
     private <K, V> List<Pair<K, V>> pairsFromKeysAndValues(List<K> keys, List<V> values) {
 
 
-        if (values.size() > 0 && values.get(0) instanceof ProjectSearchDownloadOrthologDto) {
+        if (!values.isEmpty() && values.getFirst() instanceof ProjectSearchDownloadOrthologDto) {
             List<ProjectSearchDownloadOrthologDto> orthologs = new ArrayList<>();
             for (V value : values) {
                 orthologs.add((ProjectSearchDownloadOrthologDto) value);

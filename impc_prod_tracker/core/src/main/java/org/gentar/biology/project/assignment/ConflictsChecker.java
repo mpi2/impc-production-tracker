@@ -21,7 +21,7 @@ import java.util.stream.Collectors;
  *     * Inspect - GLT Mouse (2).
  *     * Inspect - Attempt (3).
  *     * Inspect - Conflict (4).
- *
+ * <p>
  *     The numbers are the evaluation order of the statuses. Once the conditions are met to assign
  *     a status, the process stops. Each method assumes the previous methods where already evaluated
  *     so no logic is repeated.
@@ -29,9 +29,9 @@ import java.util.stream.Collectors;
 @Component
 public class ConflictsChecker
 {
-    private AssignmentStatusService assignmentStatusService;
-    private ProjectIntentionService projectIntentionService;
-    private ProjectQueryHelper projectQueryHelper;
+    private final AssignmentStatusService assignmentStatusService;
+    private final ProjectIntentionService projectIntentionService;
+    private final ProjectQueryHelper projectQueryHelper;
 
     private static final String DELETION_MUTATION_TYPE_NAME = "Deletion";
 
@@ -122,7 +122,7 @@ public class ConflictsChecker
             projectConflicts.stream()
                 .filter(x -> AssignmentStatusNames.ASSIGNED_STATUS_NAME.equals(
                     x.getAssignmentStatus().getName()))
-                .collect(Collectors.toList());
+                .toList();
         return assignedProjectsWithDeletionIntention.isEmpty();
     }
 
@@ -205,7 +205,7 @@ public class ConflictsChecker
         projectsWithSameGeneIntentions.forEach(
             x -> projectIntentions.addAll(x.getProjectIntentions().stream()
                 .filter(i -> i.getMolecularMutationType().getName().equals(DELETION_MUTATION_TYPE_NAME))
-                .collect(Collectors.toList())));
+                .toList()));
         return projectIntentions.stream()
             .map(ProjectIntention::getProject).collect(Collectors.toList());
     }

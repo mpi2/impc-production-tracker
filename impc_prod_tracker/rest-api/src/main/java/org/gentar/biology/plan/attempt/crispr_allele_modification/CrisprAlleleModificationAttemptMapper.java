@@ -10,8 +10,8 @@ import org.springframework.stereotype.Component;
 public class CrisprAlleleModificationAttemptMapper implements Mapper<CrisprAlleleModificationAttempt,
     CrisprAlleleModificationAttemptDTO>
 {
-    private EntityMapper entityMapper;
-    private StrainService strainService;
+    private final EntityMapper entityMapper;
+    private final StrainService strainService;
 
     public CrisprAlleleModificationAttemptMapper(EntityMapper entityMapper, StrainService strainService)
     {

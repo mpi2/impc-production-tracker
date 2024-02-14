@@ -12,7 +12,7 @@ import java.util.Set;
 @RequestMapping("/api")
 public class FunderController {
 
-    private WorkGroupService workGroupService;
+    private final WorkGroupService workGroupService;
 
     public FunderController (WorkGroupService workGroupService) { this.workGroupService = workGroupService; }
 

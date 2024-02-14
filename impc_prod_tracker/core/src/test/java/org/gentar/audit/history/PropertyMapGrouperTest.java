@@ -2,13 +2,11 @@ package org.gentar.audit.history;
 
 import org.gentar.audit.diff.ChangeEntry;
 import org.gentar.audit.diff.ChangesDetector;
-import org.gentar.audit.history.PropertyMapGrouper;
 import org.gentar.biology.plan.Plan;
 import org.gentar.organization.work_unit.WorkUnit;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -18,7 +16,7 @@ import static org.hamcrest.Matchers.notNullValue;
 
 public class PropertyMapGrouperTest
 {
-    private PropertyMapGrouper testInstance = new PropertyMapGrouper();
+    private final PropertyMapGrouper testInstance = new PropertyMapGrouper();
 
     @Test
     public void test()
@@ -61,7 +59,7 @@ public class PropertyMapGrouperTest
         WorkUnit workUnit2 = new WorkUnit("name2");
         workUnit2.setId(1L);
         plan2.setWorkUnit(workUnit2);
-        ChangesDetector<Plan> changesDetector = new ChangesDetector<>(Arrays.asList(), plan1, plan2);
+        ChangesDetector<Plan> changesDetector = new ChangesDetector<>(List.of(), plan1, plan2);
         List<ChangeEntry> changeEntries = changesDetector.getChanges();
         Map<String, Map<String, ChangeEntry>> groupedProps =
             testInstance.getGroupedChanges(changeEntries);
@@ -131,7 +129,7 @@ public class PropertyMapGrouperTest
         private SubType subtype;
     }
 
-    private class SubType
+    private static class SubType
     {
         private Long id;
         private String name;

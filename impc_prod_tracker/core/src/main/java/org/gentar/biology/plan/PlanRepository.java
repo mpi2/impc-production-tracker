@@ -15,12 +15,11 @@
  */
 package org.gentar.biology.plan;
 
-import org.gentar.biology.mutation.Mutation;
+import org.gentar.biology.project.Project;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.PagingAndSortingRepository;
-import org.gentar.biology.project.Project;
 
 import java.util.List;
 

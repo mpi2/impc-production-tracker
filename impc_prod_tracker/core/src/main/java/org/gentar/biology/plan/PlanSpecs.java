@@ -55,14 +55,14 @@ public class PlanSpecs
         }
         else
         {
-            specification = (Specification<Plan>) (root, query, criteriaBuilder) ->
+            specification = (root, query, criteriaBuilder) ->
             {
                 List<Predicate> predicates = new ArrayList<>();
                 Path<WorkUnit> workUnitPath = root.get(Plan_.workUnit);
                 Path<String> workUnitName = workUnitPath.get(WorkUnit_.name);
                 predicates.add(workUnitName.in(workUnitNames));
                 query.distinct(true);
-                return criteriaBuilder.and(predicates.toArray(new Predicate[predicates.size()]));
+                return criteriaBuilder.and(predicates.toArray(new Predicate[0]));
             };
 
         }
@@ -83,14 +83,14 @@ public class PlanSpecs
         }
         else
         {
-            specification = (Specification<Plan>) (root, query, criteriaBuilder) ->
+            specification = (root, query, criteriaBuilder) ->
             {
                 List<Predicate> predicates = new ArrayList<>();
                 Path<Project> projectPath = root.get(Plan_.project);
                 Path<String> tpnPath = projectPath.get(Project_.tpn);
                 predicates.add(tpnPath.in(ProjectTpns));
                 query.distinct(true);
-                return criteriaBuilder.and(predicates.toArray(new Predicate[predicates.size()]));
+                return criteriaBuilder.and(predicates.toArray(new Predicate[0]));
             };
 
         }
@@ -111,14 +111,14 @@ public class PlanSpecs
         }
         else
         {
-            specification = (Specification<Plan>) (root, query, criteriaBuilder) ->
+            specification = (root, query, criteriaBuilder) ->
             {
                 List<Predicate> predicates = new ArrayList<>();
                 Path<WorkGroup> workGroupPath = root.get(Plan_.workGroup);
                 Path<String> workGroupName = workGroupPath.get(WorkGroup_.name);
                 predicates.add(workGroupName.in(workGroupNames));
                 query.distinct(true);
-                return criteriaBuilder.and(predicates.toArray(new Predicate[predicates.size()]));
+                return criteriaBuilder.and(predicates.toArray(new Predicate[0]));
             };
 
         }
@@ -139,14 +139,14 @@ public class PlanSpecs
         }
         else
         {
-            specification = (Specification<Plan>) (root, query, criteriaBuilder) ->
+            specification = (root, query, criteriaBuilder) ->
             {
                 List<Predicate> predicates = new ArrayList<>();
                 Path<Status> summaryStatus = root.get(Plan_.status);
                 Path<String> statusSummaryNamePath = summaryStatus.get(Status_.name);
                 predicates.add(statusSummaryNamePath.in(statusNames));
                 query.distinct(true);
-                return criteriaBuilder.and(predicates.toArray(new Predicate[predicates.size()]));
+                return criteriaBuilder.and(predicates.toArray(new Predicate[0]));
             };
         }
         return specification;
@@ -166,14 +166,14 @@ public class PlanSpecs
         }
         else
         {
-            specification = (Specification<Plan>) (root, query, criteriaBuilder) ->
+            specification = (root, query, criteriaBuilder) ->
             {
                 List<Predicate> predicates = new ArrayList<>();
                 Path<Status> summaryStatus = root.get(Plan_.summaryStatus);
                 Path<String> statusSummaryNamePath = summaryStatus.get(Status_.name);
                 predicates.add(statusSummaryNamePath.in(summaryStatusNames));
                 query.distinct(true);
-                return criteriaBuilder.and(predicates.toArray(new Predicate[predicates.size()]));
+                return criteriaBuilder.and(predicates.toArray(new Predicate[0]));
             };
         }
         return specification;
@@ -193,13 +193,13 @@ public class PlanSpecs
         }
         else
         {
-            specification = (Specification<Plan>) (root, query, criteriaBuilder) ->
+            specification = (root, query, criteriaBuilder) ->
             {
                 List<Predicate> predicates = new ArrayList<>();
                 Path<String> pinPath = root.get(Plan_.pin);
                 predicates.add(pinPath.in(pins));
                 query.distinct(true);
-                return criteriaBuilder.and(predicates.toArray(new Predicate[predicates.size()]));
+                return criteriaBuilder.and(predicates.toArray(new Predicate[0]));
             };
         }
         return specification;
@@ -219,14 +219,14 @@ public class PlanSpecs
         }
         else
         {
-            specification = (Specification<Plan>) (root, query, criteriaBuilder) ->
+            specification = (root, query, criteriaBuilder) ->
             {
                 List<Predicate> predicates = new ArrayList<>();
                 Path<PlanType> planTypePath = root.get(Plan_.planType);
                 Path<String> planTypeNamePath = planTypePath.get(PlanType_.name);
                 predicates.add(planTypeNamePath.in(typeNames));
                 query.distinct(true);
-                return criteriaBuilder.and(predicates.toArray(new Predicate[predicates.size()]));
+                return criteriaBuilder.and(predicates.toArray(new Predicate[0]));
             };
         }
         return specification;
@@ -246,14 +246,14 @@ public class PlanSpecs
         }
         else
         {
-            specification = (Specification<Plan>) (root, query, criteriaBuilder) ->
+            specification = (root, query, criteriaBuilder) ->
             {
                 List<Predicate> predicates = new ArrayList<>();
                 Path<AttemptType> attemptTypePath = root.get(Plan_.attemptType);
                 Path<String> attemptTypeNamePath = attemptTypePath.get(AttemptType_.name);
                 predicates.add(attemptTypeNamePath.in(attemptTypeNames));
                 query.distinct(true);
-                return criteriaBuilder.and(predicates.toArray(new Predicate[predicates.size()]));
+                return criteriaBuilder.and(predicates.toArray(new Predicate[0]));
             };
         }
         return specification;
@@ -273,14 +273,14 @@ public class PlanSpecs
         }
         else
         {
-            specification = (Specification<Plan>) (root, query, criteriaBuilder) ->
+            specification = (root, query, criteriaBuilder) ->
             {
                 List<Predicate> predicates = new ArrayList<>();
                 Path<CrisprAttempt> crisprAttemptPath = root.get(Plan_.crisprAttempt);
                 Path<Long> imitsMiAttemptPath = crisprAttemptPath.get(CrisprAttempt_.imitsMiAttempt);
                 predicates.add(imitsMiAttemptPath.in(imitsMiAttempts));
                 query.distinct(true);
-                return criteriaBuilder.and(predicates.toArray(new Predicate[predicates.size()]));
+                return criteriaBuilder.and(predicates.toArray(new Predicate[0]));
             };
         }
         return specification;
@@ -300,14 +300,14 @@ public class PlanSpecs
         }
         else
         {
-            specification = (Specification<Plan>) (root, query, criteriaBuilder) ->
+            specification = (root, query, criteriaBuilder) ->
             {
                 List<Predicate> predicates = new ArrayList<>();
                 Path<PhenotypingAttempt> phenotypingAttemptPath = root.get(Plan_.phenotypingAttempt);
                 Path<Long> imitsPhenotypingAttemptPath = phenotypingAttemptPath.get(PhenotypingAttempt_.imitsPhenotypeAttempt);
                 predicates.add(imitsPhenotypingAttemptPath.in(imitsPhenotypeAttempts));
                 query.distinct(true);
-                return criteriaBuilder.and(predicates.toArray(new Predicate[predicates.size()]));
+                return criteriaBuilder.and(predicates.toArray(new Predicate[0]));
             };
         }
         return specification;
@@ -327,14 +327,14 @@ public class PlanSpecs
         }
         else
         {
-            specification = (Specification<Plan>) (root, query, criteriaBuilder) ->
+            specification = (root, query, criteriaBuilder) ->
             {
                 List<Predicate> predicates = new ArrayList<>();
                 Path<PhenotypingAttempt> phenotypingAttemptPath = root.get(Plan_.phenotypingAttempt);
                 Path<String> phenotypingExternalRefPath = phenotypingAttemptPath.get(PhenotypingAttempt_.phenotypingExternalRef);
                 predicates.add(phenotypingExternalRefPath.in(phenotypingExternalRefs));
                 query.distinct(true);
-                return criteriaBuilder.and(predicates.toArray(new Predicate[predicates.size()]));
+                return criteriaBuilder.and(predicates.toArray(new Predicate[0]));
             };
         }
         return specification;
@@ -349,17 +349,17 @@ public class PlanSpecs
         }
         else
         {
-            specification = (Specification<Plan>) (root, query, criteriaBuilder) ->
+            specification = (root, query, criteriaBuilder) ->
             {
                 List<Predicate> predicates = new ArrayList<>();
                 Path<PhenotypingAttempt> phenotypingAttemptPath = root.get(Plan_.phenotypingAttempt);
                 Path<Boolean> doNotCountTowardsCompletenessPath = phenotypingAttemptPath.get(
                         PhenotypingAttempt_.doNotCountTowardsCompleteness);
-                Boolean value = "true".equalsIgnoreCase(doNotCountTowardsCompleteness.get(0)) ? Boolean.TRUE :
-                        "false".equalsIgnoreCase(doNotCountTowardsCompleteness.get(0)) ? Boolean.FALSE : null;
+                Boolean value = "true".equalsIgnoreCase(doNotCountTowardsCompleteness.getFirst()) ? Boolean.TRUE :
+                        "false".equalsIgnoreCase(doNotCountTowardsCompleteness.getFirst()) ? Boolean.FALSE : null;
                 predicates.add(doNotCountTowardsCompletenessPath.in(value));
                 query.distinct(true);
-                return criteriaBuilder.and(predicates.toArray(new Predicate[predicates.size()]));
+                return criteriaBuilder.and(predicates.toArray(new Predicate[0]));
             };
         }
         return specification;
@@ -367,7 +367,7 @@ public class PlanSpecs
 
     private static Specification<Plan> buildTrueCondition()
     {
-        return (Specification<Plan>) (root, query, criteriaBuilder) ->
+        return (root, query, criteriaBuilder) ->
             criteriaBuilder.isTrue(criteriaBuilder.literal(true));
     }
 }

@@ -1,9 +1,11 @@
 package org.gentar.biology.plan.engine.crispr;
 
+import lombok.Getter;
 import org.gentar.statemachine.EnumStateHelper;
 import org.gentar.statemachine.ProcessState;
 import java.util.Arrays;
 
+@Getter
 public enum CrisprProductionPlanState implements ProcessState
 {
     PlanCreated("Plan Created"),
@@ -13,16 +15,11 @@ public enum CrisprProductionPlanState implements ProcessState
     FounderObtained("Founder Obtained"),
     AttemptAborted("Attempt Aborted");
 
-    private String internalName;
+    private final String internalName;
 
     CrisprProductionPlanState(String internalName)
     {
         this.internalName = internalName;
-    }
-
-    public String getInternalName()
-    {
-        return internalName;
     }
 
     public static ProcessState getStateByInternalName(String internalName)

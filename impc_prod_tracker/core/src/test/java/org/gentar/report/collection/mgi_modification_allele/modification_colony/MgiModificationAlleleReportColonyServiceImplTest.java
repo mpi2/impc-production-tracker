@@ -1,20 +1,6 @@
 package org.gentar.report.collection.mgi_modification_allele.modification_colony;
 
-import static org.gentar.mockdata.MockData.mgiCrisprAlleleReportOutcomeMutationProjectionMockData;
-import static org.gentar.mockdata.MockData.mgiModificationAlleleReportColonyProjectionMockData;
-import static org.gentar.mockdata.MockData.mgiModificationAlleleReportEsCellMutationTypeProjection;
-import static org.gentar.mockdata.MockData.mgiModificationAlleleReportMutationGeneProjectionMockData;
-import static org.gentar.mockdata.MockData.mgiModificationAlleleReportOutcomeMutationProjectionMockData;
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.lenient;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 import org.gentar.biology.gene.Gene;
-import org.gentar.report.collection.mgi_crispr_allele.outcome.MgiCrisprAlleleReportOutcomeMutationProjection;
 import org.gentar.report.collection.mgi_modification_allele.mutation.MgiModificationAlleleReportMutationServiceImpl;
 import org.gentar.report.collection.mgi_modification_allele.outcome.MgiModificationAlleleReportOutcomeMutationProjection;
 import org.gentar.report.collection.mgi_modification_allele.outcome.MgiModificationAlleleReportOutcomeService;
@@ -23,6 +9,15 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import static org.gentar.mockdata.MockData.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.lenient;
 
 @ExtendWith(MockitoExtension.class)
 class MgiModificationAlleleReportColonyServiceImplTest {
@@ -57,7 +52,7 @@ class MgiModificationAlleleReportColonyServiceImplTest {
             mgiModificationAlleleReportColonyProjections =
             testInstance.getAllMgiModificationAlleleReportColonyProjections();
 
-        assertEquals(mgiModificationAlleleReportColonyProjections.get(0).getModificationOutcomeId(),
+        assertEquals(mgiModificationAlleleReportColonyProjections.getFirst().getModificationOutcomeId(),
             1L);
     }
 

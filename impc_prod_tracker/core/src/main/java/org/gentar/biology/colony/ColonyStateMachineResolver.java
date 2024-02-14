@@ -30,8 +30,7 @@ public class ColonyStateMachineResolver implements StateMachineResolver
     @Override
     public List<ProcessEvent> getAvailableTransitionsByEntityStatus(ProcessData processData)
     {
-        List<ProcessEvent> allTransitionsByPlanType = getAvailableEventsByStateName(
+        return getAvailableEventsByStateName(
             getProcessEventsByColony(), processData.getProcessDataStatus().getName());
-        return allTransitionsByPlanType;
     }
 }

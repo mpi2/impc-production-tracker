@@ -80,9 +80,7 @@ class ProjectValidatorTest {
         Project project = projectMockData();
         project.setPlans(null);
 
-        Exception exception = assertThrows(UserOperationFailedException.class, () -> {
-            testInstance.validateData(project);
-        });
+        Exception exception = assertThrows(UserOperationFailedException.class, () -> testInstance.validateData(project));
 
         String expectedMessage = "There are not plans associated with the project.";
         String actualMessage = exception.getMessage();
@@ -148,15 +146,11 @@ class ProjectValidatorTest {
         newProject.setPlans(Set.of(plan));
 
 
-        Exception exception = assertThrows(UserOperationFailedException.class, () -> {
-            testInstance.validatePrivacyData(oldProject, newProject);
-        });
+        Exception exception = assertThrows(UserOperationFailedException.class, () -> testInstance.validatePrivacyData(oldProject, newProject));
 
-        String expectedMessage =
-            PHENOTYPING_STAGE_STARTED;
         String actualMessage = exception.getMessage();
 
-        assertTrue(actualMessage.contains(expectedMessage));
+        assertTrue(actualMessage.contains(PHENOTYPING_STAGE_STARTED));
     }
 
     @Test
@@ -174,9 +168,7 @@ class ProjectValidatorTest {
     void validatePermissionToCreateProject() {
 
 
-        Exception exception = assertThrows(ForbiddenAccessException.class, () -> {
-            testInstance.validatePermissionToCreateProject(projectMockData());
-        });
+        Exception exception = assertThrows(ForbiddenAccessException.class, () -> testInstance.validatePermissionToCreateProject(projectMockData()));
 
         String expectedMessage = "You do not have permission to create the project.";
         String actualMessage = exception.getMessage();
@@ -200,9 +192,7 @@ class ProjectValidatorTest {
     @Test
     void validatePermissionToUpdateProject() {
 
-        Exception exception = assertThrows(ForbiddenAccessException.class, () -> {
-            testInstance.validatePermissionToUpdateProject(projectMockData());
-        });
+        Exception exception = assertThrows(ForbiddenAccessException.class, () -> testInstance.validatePermissionToUpdateProject(projectMockData()));
 
         String expectedMessage = "You do not have permission to update the project TPN:000000001.";
         String actualMessage = exception.getMessage();
@@ -212,9 +202,7 @@ class ProjectValidatorTest {
 
     @Test
     void validatePermissionToAddProductionPlan() {
-        Exception exception = assertThrows(ForbiddenAccessException.class, () -> {
-            testInstance.validatePermissionToAddProductionPlan(projectMockData());
-        });
+        Exception exception = assertThrows(ForbiddenAccessException.class, () -> testInstance.validatePermissionToAddProductionPlan(projectMockData()));
 
         String expectedMessage =
             "You do not have permission to create the plan. You do not have permission to update the project TPN:000000001.";
@@ -234,9 +222,7 @@ class ProjectValidatorTest {
 
     @Test
     void validatePermissionToAddPhenotypingPlanNoPermition() {
-        Exception exception = assertThrows(ForbiddenAccessException.class, () -> {
-            testInstance.validatePermissionToAddPhenotypingPlan(projectMockData());
-        });
+        Exception exception = assertThrows(ForbiddenAccessException.class, () -> testInstance.validatePermissionToAddPhenotypingPlan(projectMockData()));
 
         String expectedMessage =
             "You do not have permission to create the plan. You do not have permission to edit the project [tpn=TPN:000000001,assignmentStatus=null].";
@@ -250,9 +236,7 @@ class ProjectValidatorTest {
     void validatePermissionToAddPhenotypingPlanWithReadProjectActionPermition() {
 
         lenient().when(policyEnforcement.hasPermission(any(), anyString())).thenReturn(true);
-        Exception exception = assertThrows(ForbiddenAccessException.class, () -> {
-            testInstance.validatePermissionToAddPhenotypingPlan(projectMockData());
-        });
+        Exception exception = assertThrows(ForbiddenAccessException.class, () -> testInstance.validatePermissionToAddPhenotypingPlan(projectMockData()));
 
         String expectedMessage =
             "You do not have permission to create the plan. At least one production plan is required.";
@@ -283,9 +267,7 @@ class ProjectValidatorTest {
             .checkPermission(Mockito.any(Project.class), eq(Actions.READ_PROJECT_ACTION));
 
 
-        Exception exception = assertThrows(ForbiddenAccessException.class, () -> {
-            testInstance.validateReadPermissions(projectMockData());
-        });
+        Exception exception = assertThrows(ForbiddenAccessException.class, () -> testInstance.validateReadPermissions(projectMockData()));
 
         String expectedMessage =
             ("You do not have permission to read the project TPN:000000001.");
@@ -333,7 +315,7 @@ class ProjectValidatorTest {
 
         List<Project> projects = testInstance.getCheckedCollection(projectCollection);
 
-        assertEquals(projects.get(0).getTpn(), projectMockData().getTpn());
+        assertEquals(projects.getFirst().getTpn(), projectMockData().getTpn());
     }
 
     @Test
@@ -369,9 +351,7 @@ class ProjectValidatorTest {
         Plan plan = planMockData();
         plan.setAttemptType(attemptType);
 
-        Exception exception = assertThrows(UserOperationFailedException.class, () -> {
-            testInstance.validateProductionAttempt(project, plan);
-        });
+        Exception exception = assertThrows(UserOperationFailedException.class, () -> testInstance.validateProductionAttempt(project, plan));
 
         String expectedMessage =
             ("[es cell allele modification] attempts are not allowed in this project.");
@@ -399,9 +379,7 @@ class ProjectValidatorTest {
         Plan plan = planMockData();
         plan.setAttemptType(attemptType);
 
-        Exception exception = assertThrows(UserOperationFailedException.class, () -> {
-            testInstance.validateProductionAttempt(project, plan);
-        });
+        Exception exception = assertThrows(UserOperationFailedException.class, () -> testInstance.validateProductionAttempt(project, plan));
 
         String expectedMessage =
             ("[haplo-essential crispr] attempts are not allowed in this project.");
@@ -435,9 +413,7 @@ class ProjectValidatorTest {
         plan.setWorkUnit(workUnitMockData());
         plan.setWorkUnit(workunit);
 
-        Exception exception = assertThrows(UserOperationFailedException.class, () -> {
-            testInstance.validateProductionAttempt(project, plan);
-        });
+        Exception exception = assertThrows(UserOperationFailedException.class, () -> testInstance.validateProductionAttempt(project, plan));
 
         String expectedMessage =
             ("Your work unit [work unit name] cannot create production plans in this project.");

@@ -9,11 +9,8 @@ import org.gentar.biology.gene_list.record.ListRecordType;
 import org.gentar.biology.project.Project;
 import org.gentar.helpers.GeneListCsvRecord;
 import org.springframework.stereotype.Component;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+
+import java.util.*;
 
 @Component
 public class GeneListCsvRecordMapper implements Mapper<ListRecord, GeneListCsvRecord>
@@ -118,13 +115,7 @@ public class GeneListCsvRecordMapper implements Mapper<ListRecord, GeneListCsvRe
         {
             genes.forEach(x -> {
                 String symbol = symbolsByAccIds.get(x.getAccId());
-                if (symbol == null)
-                {
-                    genesSymbols.add("gene not found (" + x.getAccId() + ")");
-                } else
-                {
-                    genesSymbols.add(symbol);
-                }
+                genesSymbols.add(Objects.requireNonNullElseGet(symbol, () -> "gene not found (" + x.getAccId() + ")"));
             });
         }
         return genesSymbols;

@@ -37,8 +37,6 @@ public class SystemEventsExecutor
      * by the user at the same time. If that's the case a
      * {@link UserOperationFailedException} is thrown.
      * @param entity Entity to be processed.
-     * @throws {@link UserOperationFailedException} if at a system triggered transition is going
-     * to be executed when at the same time there is a user triggered transition for the entity.
      */
 
     public void execute(ProcessData entity)

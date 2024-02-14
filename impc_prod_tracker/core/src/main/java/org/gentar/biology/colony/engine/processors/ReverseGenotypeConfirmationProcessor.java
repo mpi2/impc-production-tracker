@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class ReverseGenotypeConfirmationProcessor extends AbstractProcessor
 {
-    private ContextAwarePolicyEnforcement policyEnforcement;
+    private final ContextAwarePolicyEnforcement policyEnforcement;
 
     public ReverseGenotypeConfirmationProcessor(
         ColonyStateSetter colonyStateSetter, ContextAwarePolicyEnforcement policyEnforcement)

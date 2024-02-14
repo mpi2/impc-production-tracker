@@ -9,24 +9,24 @@ import static org.hamcrest.core.IsNull.notNullValue;
 
 public class NodeTest
 {
-    private Node<String> root;
+    private final Node<String> root;
 
     public NodeTest()
     {
         root = new Node<>("root");
 
-        Node<String> node1 = root.addChild(new Node<String>("node 1"));
+        Node<String> node1 = root.addChild(new Node<>("node 1"));
 
-        Node<String> node11 = node1.addChild(new Node<String>("node 11"));
-        Node<String> node111 = node11.addChild(new Node<String>("node 111"));
-        Node<String> node112 = node11.addChild(new Node<String>("node 112"));
+        Node<String> node11 = node1.addChild(new Node<>("node 11"));
+        Node<String> node111 = node11.addChild(new Node<>("node 111"));
+        Node<String> node112 = node11.addChild(new Node<>("node 112"));
 
-        Node<String> node12 = node1.addChild(new Node<String>("node 12"));
+        Node<String> node12 = node1.addChild(new Node<>("node 12"));
 
-        Node<String> node2 = root.addChild(new Node<String>("node 2"));
+        Node<String> node2 = root.addChild(new Node<>("node 2"));
 
-        Node<String> node21 = node2.addChild(new Node<String>("node 21"));
-        Node<String> node211 = node2.addChild(new Node<String>("node 22"));
+        Node<String> node21 = node2.addChild(new Node<>("node 21"));
+        Node<String> node211 = node2.addChild(new Node<>("node 22"));
     }
 
     @Test

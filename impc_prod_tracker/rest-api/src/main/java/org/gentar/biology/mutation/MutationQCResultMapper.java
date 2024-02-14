@@ -9,8 +9,8 @@ import org.springframework.stereotype.Component;
 @Component
 public class MutationQCResultMapper implements Mapper<MutationQcResult, MutationQCResultDTO>
 {
-    private QcTypeService qcTypeService;
-    private QcStatusService qcStatusService;
+    private final QcTypeService qcTypeService;
+    private final QcStatusService qcStatusService;
 
     public MutationQCResultMapper(QcTypeService qcTypeService, QcStatusService qcStatusService)
     {

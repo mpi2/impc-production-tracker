@@ -1,11 +1,11 @@
 /*******************************************************************************
  * Copyright 2019 EMBL - European Bioinformatics Institute
- *
+ * <p>
  * Licensed under the Apache License, Version 2.0 (the
  * "License"); you may not use this file except in compliance
  * with the License. You may obtain a copy of the License at
  * http://www.apache.org/licenses/LICENSE-2.0
- *
+ * <p>
  * Unless required by applicable law or agreed to in writing,
  * software distributed under the License is distributed on an
  * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
@@ -15,23 +15,23 @@
  *******************************************************************************/
 package org.gentar.biology.project.search;
 
+import org.gentar.biology.gene.Gene;
+import org.gentar.biology.gene.external_ref.GeneExternalService;
+import org.gentar.biology.project.Project;
+import org.gentar.biology.project.ProjectService;
 import org.gentar.biology.project.search.filter.ProjectFilter;
 import org.gentar.biology.project.search.filter.ProjectFilterBuilder;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Component;
-import org.gentar.biology.gene.Gene;
-import org.gentar.biology.project.Project;
-import org.gentar.biology.gene.external_ref.GeneExternalService;
-import org.gentar.biology.project.ProjectService;
+
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 @Component
 class SearchExecutorByGene implements SearchExecutor
 {
-    private ProjectService projectService;
-    private GeneExternalService geneExternalService;
+    private final ProjectService projectService;
+    private final GeneExternalService geneExternalService;
 
     SearchExecutorByGene(ProjectService projectService, GeneExternalService geneExternalService)
     {
@@ -55,7 +55,7 @@ class SearchExecutorByGene implements SearchExecutor
     {
         List<SearchResult> searchResults = new ArrayList<>();
         ProjectFilter projectFilter =
-            ProjectFilterBuilder.getInstance().withGenes(Arrays.asList(searchTerm)).build();
+            ProjectFilterBuilder.getInstance().withGenes(Collections.singletonList(searchTerm)).build();
         List<Project> projects = projectService.getProjects(projectFilter);
         projects.forEach(p -> searchResults.add(new SearchResult(searchTerm, p, null)));
         return searchResults;

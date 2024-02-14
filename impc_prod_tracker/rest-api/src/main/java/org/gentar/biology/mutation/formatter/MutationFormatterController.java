@@ -1,10 +1,6 @@
 package org.gentar.biology.mutation.formatter;
 
 import jakarta.servlet.http.HttpServletResponse;
-import org.gentar.audit.AuditListener;
-import org.gentar.audit.diff.PropertyChecker;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;

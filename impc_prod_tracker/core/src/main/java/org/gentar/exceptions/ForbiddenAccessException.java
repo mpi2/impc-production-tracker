@@ -26,22 +26,12 @@ public class ForbiddenAccessException extends RuntimeException
     {
         String finalResourceType = resourceType.toLowerCase();
         String finalResourceId = " " + resourceId;
-        String description = "";
-        switch (action)
-        {
-            case CREATE:
-                description = String.format(ERROR_TEMPLATE, "create", finalResourceType, "");
-                break;
-            case READ:
-                description = String.format(ERROR_TEMPLATE, "read", finalResourceType, finalResourceId);
-                break;
-            case UPDATE:
-                description = String.format(ERROR_TEMPLATE, "update", finalResourceType, finalResourceId);
-                break;
-            case DELETE:
-                description = String.format(ERROR_TEMPLATE, "delete", finalResourceType, finalResourceId);
-                break;
-        }
+        String description = switch (action) {
+            case CREATE -> String.format(ERROR_TEMPLATE, "create", finalResourceType, "");
+            case READ -> String.format(ERROR_TEMPLATE, "read", finalResourceType, finalResourceId);
+            case UPDATE -> String.format(ERROR_TEMPLATE, "update", finalResourceType, finalResourceId);
+            case DELETE -> String.format(ERROR_TEMPLATE, "delete", finalResourceType, finalResourceId);
+        };
         if (!Strings.isBlank(details))
         {
             description += " " +details;
