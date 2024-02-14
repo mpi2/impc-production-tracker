@@ -1,7 +1,6 @@
 package org.gentar.biology.targ_rep.ikmc_project;
 
 import org.gentar.Mapper;
-import org.gentar.biology.targ_rep.TargRepIkmcProjectStatusDTO;
 import org.gentar.biology.targ_rep.ikmc_project.status.TargRepIkmcProjectStatus;
 import org.gentar.biology.targ_rep.ikmc_project.status.TargRepIkmcProjectStatusService;
 import org.gentar.exceptions.UserOperationFailedException;

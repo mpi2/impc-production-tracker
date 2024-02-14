@@ -1,15 +1,21 @@
 package org.gentar.biology.targ_rep.targeting_vector;
 
 import org.gentar.Mapper;
-import org.gentar.biology.targ_rep.*;
 import org.gentar.biology.targ_rep.allele.TargRepAllele;
 import org.gentar.biology.targ_rep.allele.TargRepAlleleController;
+import org.gentar.biology.targ_rep.allele.TargRepAlleleResponseDTO;
 import org.gentar.biology.targ_rep.allele.mutation_subtype.TargRepMutationSubtype;
 import org.gentar.biology.targ_rep.allele.mutation_type.TargRepMutationType;
 import org.gentar.biology.targ_rep.ikmc_project.TargRepIkmcProject;
+import org.gentar.biology.targ_rep.ikmc_project.TargRepIkmcProjectDTO;
+import org.gentar.biology.targ_rep.ikmc_project.TargRepIkmcProjectStatusDTO;
 import org.gentar.biology.targ_rep.ikmc_project.status.TargRepIkmcProjectStatus;
+import org.gentar.biology.targ_rep.mutation.TargRepMutationSubtypeDTO;
+import org.gentar.biology.targ_rep.mutation.TargRepMutationTypeDTO;
 import org.gentar.biology.targ_rep.pipeline.TargRepPipeline;
 import org.gentar.biology.targ_rep.pipeline.TargRepPipelineController;
+import org.gentar.biology.targ_rep.pipeline.TargRepPipelineResponseDTO;
+import org.gentar.biology.targ_rep.targeting_vector.es_cell_distribution_product.TargRepTargetingVectorDistributionProductMapper;
 import org.springframework.hateoas.Link;
 import org.springframework.stereotype.Component;
 
@@ -24,13 +30,13 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
  */
 @Component
 public class TargRepTargetingVectorResponseMapper
-    implements Mapper<TargRepTargetingVector, TargRepTargetingVectorResponseDTO> {
+        implements Mapper<TargRepTargetingVector, TargRepTargetingVectorResponseDTO> {
 
 
     @Override
     public TargRepTargetingVectorResponseDTO toDto(TargRepTargetingVector entity) {
         TargRepTargetingVectorResponseDTO targetingVectorDTO =
-            new TargRepTargetingVectorResponseDTO();
+                new TargRepTargetingVectorResponseDTO();
         if (entity != null) {
             targetingVectorDTO.setId(entity.getId());
             targetingVectorDTO.setName(entity.getName());
@@ -42,6 +48,7 @@ public class TargRepTargetingVectorResponseMapper
             targetingVectorDTO.setPipeline(getTargRepPipelineResponseDTO(entity.getPipeline()));
             targetingVectorDTO.setIkmcProject(getTargRepIkmcProjectDTO(entity.getIkmcProject()));
             targetingVectorDTO.setAllele(getTargRepAlleleResponseDTO(entity.getAllele()));
+            targetingVectorDTO.setTargRepTargetingVectorDistributionProductList(TargRepTargetingVectorDistributionProductMapper.mapToDto(entity.getTargRepTargetingVectorDistributionProducts()));
             addSelfLink(targetingVectorDTO, entity);
         }
 
@@ -55,9 +62,9 @@ public class TargRepTargetingVectorResponseMapper
     }
 
     private TargRepPipelineResponseDTO getTargRepPipelineResponseDTO(
-        TargRepPipeline targRepPipeline) {
+            TargRepPipeline targRepPipeline) {
         TargRepPipelineResponseDTO targRepPipelineResponseDTO =
-            new TargRepPipelineResponseDTO();
+                new TargRepPipelineResponseDTO();
         if (targRepPipeline != null) {
 
             targRepPipelineResponseDTO.setId(targRepPipeline.getId());
@@ -71,7 +78,7 @@ public class TargRepTargetingVectorResponseMapper
     }
 
     private TargRepAlleleResponseDTO getTargRepAlleleResponseDTO(
-        TargRepAllele targRepAllele) {
+            TargRepAllele targRepAllele) {
         TargRepAlleleResponseDTO targRepAlleleResponseDTO = new TargRepAlleleResponseDTO();
         if (targRepAllele != null) {
 
@@ -91,11 +98,11 @@ public class TargRepTargetingVectorResponseMapper
             targRepAlleleResponseDTO.setLoxpStart(targRepAllele.getLoxpStart());
             if (targRepAllele.getMutationSubtype() != null) {
                 targRepAlleleResponseDTO
-                    .setMutationSubtype(
-                        getTargRepMutationSubtypeDTO(targRepAllele.getMutationSubtype()));
+                        .setMutationSubtype(
+                                getTargRepMutationSubtypeDTO(targRepAllele.getMutationSubtype()));
             }
             targRepAlleleResponseDTO
-                .setMutationType(getTargRepMutationTypeDTO(targRepAllele.getMutationType()));
+                    .setMutationType(getTargRepMutationTypeDTO(targRepAllele.getMutationType()));
             targRepAlleleResponseDTO.setProjectDesignId(targRepAllele.getProjectDesignId());
             targRepAlleleResponseDTO.setStrand(targRepAllele.getStrand());
             targRepAlleleResponseDTO.setSubtypeDescription(targRepAllele.getSubtypeDescription());
@@ -106,21 +113,21 @@ public class TargRepTargetingVectorResponseMapper
     }
 
     private TargRepIkmcProjectDTO getTargRepIkmcProjectDTO(
-        TargRepIkmcProject targRepIkmcProject) {
+            TargRepIkmcProject targRepIkmcProject) {
         TargRepIkmcProjectDTO targRepIkmcProjectDTO = new TargRepIkmcProjectDTO();
         if (targRepIkmcProject != null) {
             targRepIkmcProjectDTO.setId(targRepIkmcProject.getId());
             targRepIkmcProjectDTO.setName(targRepIkmcProject.getName());
             targRepIkmcProjectDTO.setPipelineId(targRepIkmcProject.getPipeline().getId());
             targRepIkmcProjectDTO
-                .setStatus(getTargRepIkmcProjectStatusDTO(targRepIkmcProject.getStatus()));
+                    .setStatus(getTargRepIkmcProjectStatusDTO(targRepIkmcProject.getStatus()));
         }
         return targRepIkmcProjectDTO;
     }
 
 
     private TargRepIkmcProjectStatusDTO getTargRepIkmcProjectStatusDTO(
-        TargRepIkmcProjectStatus targRepIkmcProjectStatus) {
+            TargRepIkmcProjectStatus targRepIkmcProjectStatus) {
         TargRepIkmcProjectStatusDTO targRepIkmcProjectStatusDTO = new TargRepIkmcProjectStatusDTO();
         if (targRepIkmcProjectStatus != null) {
             targRepIkmcProjectStatusDTO.setName(targRepIkmcProjectStatus.getName());
@@ -130,7 +137,7 @@ public class TargRepTargetingVectorResponseMapper
 
 
     private TargRepMutationTypeDTO getTargRepMutationTypeDTO(
-        TargRepMutationType targRepMutationType) {
+            TargRepMutationType targRepMutationType) {
         TargRepMutationTypeDTO targRepMutationTypeDTO = new TargRepMutationTypeDTO();
         if (targRepMutationType != null) {
             targRepMutationTypeDTO.setName(targRepMutationType.getName());
@@ -140,7 +147,7 @@ public class TargRepTargetingVectorResponseMapper
 
 
     private TargRepMutationSubtypeDTO getTargRepMutationSubtypeDTO(
-        TargRepMutationSubtype targRepMutationSubtype) {
+            TargRepMutationSubtype targRepMutationSubtype) {
         TargRepMutationSubtypeDTO targRepMutationSubtypeDTO = new TargRepMutationSubtypeDTO();
         if (targRepMutationSubtype != null) {
             targRepMutationSubtypeDTO.setName(targRepMutationSubtype.getName());
@@ -152,7 +159,7 @@ public class TargRepTargetingVectorResponseMapper
     private void addSelfLink(TargRepTargetingVectorResponseDTO targetingVectorResponseDTO,
                              TargRepTargetingVector targRepTargetingVector) {
         Link link = linkTo(methodOn(TargRepTargetingVectorController.class)
-            .findTargRepTargetingVectorById(targRepTargetingVector.getId())).withSelfRel();
+                .findTargRepTargetingVectorById(targRepTargetingVector.getId())).withSelfRel();
         link = link.withHref(decode(link.getHref()));
         targetingVectorResponseDTO.add(link);
     }
@@ -160,7 +167,7 @@ public class TargRepTargetingVectorResponseMapper
     private void addPipelineLink(TargRepPipelineResponseDTO targRepPipelineDTO,
                                  TargRepPipeline targRepPipeline) {
         Link link = linkTo(methodOn(TargRepPipelineController.class)
-            .findTargRepPipelineById(targRepPipeline.getId())).withRel("pipeline");
+                .findTargRepPipelineById(targRepPipeline.getId())).withRel("pipeline");
         link = link.withHref(decode(link.getHref()));
         targRepPipelineDTO.add(link);
     }
@@ -169,8 +176,8 @@ public class TargRepTargetingVectorResponseMapper
     private void addAlleleLink(TargRepAlleleResponseDTO targRepAlleleResponseDto,
                                TargRepAllele targRepAllele) {
         Link link = linkTo(
-            methodOn(TargRepAlleleController.class).findTargRepAlleleById(targRepAllele.getId()))
-            .withRel("allele");
+                methodOn(TargRepAlleleController.class).findTargRepAlleleById(targRepAllele.getId()))
+                .withRel("allele");
         link = link.withHref(decode(link.getHref()));
         targRepAlleleResponseDto.add(link);
     }

@@ -1,10 +1,10 @@
 package org.gentar.biology.targ_rep.es_cell;
 
 import org.gentar.Mapper;
-import org.gentar.biology.targ_rep.TargRepEsCellResponseDTO;
 import org.gentar.biology.targ_rep.allele.TargRepAllele;
 import org.gentar.biology.targ_rep.allele.TargRepAlleleController;
 import org.gentar.biology.targ_rep.es_cell.distribution_qc.DistributionQcMapper;
+import org.gentar.biology.targ_rep.es_cell.es_cell_distribution_product.TargRepEsCellDistributionProductMapper;
 import org.gentar.biology.targ_rep.mutation.TargRepEsCellMutation;
 import org.gentar.biology.targ_rep.mutation.TargRepEsCellMutationService;
 import org.gentar.biology.targ_rep.pipeline.TargRepPipeline;
@@ -63,7 +63,7 @@ public class TargRepEsCellMapper implements Mapper<TargRepEsCell, TargRepEsCellR
             esCellDto.setReportToPublic(entity.getReportToPublic());
             esCellDto.setUserQcComment(entity.getUserQcComment());
             esCellDto
-                .setUserQcFivePrimeCassetteIntegrity(entity.getUserQcFivePrimeCassetteIntegrity());
+                    .setUserQcFivePrimeCassetteIntegrity(entity.getUserQcFivePrimeCassetteIntegrity());
             esCellDto.setUserQcFivePrimeLrPcr(entity.getUserQcFivePrimeLrPcr());
             esCellDto.setUserQcKaryotype(entity.getUserQcKaryotype());
             esCellDto.setUserQcLaczSrPcr(entity.getUserQcLaczSrPcr());
@@ -76,8 +76,11 @@ public class TargRepEsCellMapper implements Mapper<TargRepEsCell, TargRepEsCellR
             esCellDto.setUserQcSouthernBlot(entity.getUserQcSouthernBlot());
             esCellDto.setUserQcThreePrimeLrPcr(entity.getUserQcThreePrimeLrPcr());
             esCellDto.setUserQcTvBackboneAssay(entity.getUserQcTvBackboneAssay());
+            esCellDto.setTargRepEsCellDistributionProductList(TargRepEsCellDistributionProductMapper
+                    .mapToDto(entity.getTargRepEsCellDistributionProducts()));
             esCellDto = distributionQcMapper.toDistributionQcDto(esCellDto);
             esCellDto = toProductionQcServiceDto(esCellDto);
+
             addSelfLink(esCellDto, entity);
 
         }
@@ -93,8 +96,8 @@ public class TargRepEsCellMapper implements Mapper<TargRepEsCell, TargRepEsCellR
     private void addSelfLink(TargRepEsCellResponseDTO targRepEsCellResponseDTO,
                              TargRepEsCell targRepEsCell) {
         Link link = linkTo(
-            methodOn(TargRepEsCellController.class).findTargRepEsCellById(targRepEsCell.getId()))
-            .withSelfRel();
+                methodOn(TargRepEsCellController.class).findTargRepEsCellById(targRepEsCell.getId()))
+                .withSelfRel();
         targRepEsCellResponseDTO.add(link);
     }
 
@@ -102,7 +105,7 @@ public class TargRepEsCellMapper implements Mapper<TargRepEsCell, TargRepEsCellR
     private void addPipelineLink(TargRepEsCellResponseDTO targRepEsCellResponseDTO,
                                  TargRepPipeline targRepPipeline) {
         Link link = linkTo(methodOn(TargRepPipelineController.class)
-            .findTargRepPipelineById(targRepPipeline.getId())).withRel("pipeline");
+                .findTargRepPipelineById(targRepPipeline.getId())).withRel("pipeline");
         link = link.withHref(decode(link.getHref()));
         targRepEsCellResponseDTO.add(link);
     }
@@ -110,8 +113,8 @@ public class TargRepEsCellMapper implements Mapper<TargRepEsCell, TargRepEsCellR
     private void addAlleleLink(TargRepEsCellResponseDTO targRepEsCellResponseDTO,
                                TargRepAllele targRepAllele) {
         Link link = linkTo(
-            methodOn(TargRepAlleleController.class).findTargRepAlleleById(targRepAllele.getId()))
-            .withRel("allele");
+                methodOn(TargRepAlleleController.class).findTargRepAlleleById(targRepAllele.getId()))
+                .withRel("allele");
         link = link.withHref(decode(link.getHref()));
         targRepEsCellResponseDTO.add(link);
     }
@@ -119,9 +122,9 @@ public class TargRepEsCellMapper implements Mapper<TargRepEsCell, TargRepEsCellR
     private void addTargetingVectorLink(TargRepEsCellResponseDTO targRepEsCellResponseDTO,
                                         TargRepTargetingVector targRepTargetingVector) {
         Link link = linkTo(
-            methodOn(TargRepTargetingVectorController.class)
-                .findTargRepTargetingVectorById(targRepTargetingVector.getId()))
-            .withRel("targeting_vector");
+                methodOn(TargRepTargetingVectorController.class)
+                        .findTargRepTargetingVectorById(targRepTargetingVector.getId()))
+                .withRel("targeting_vector");
         link = link.withHref(decode(link.getHref()));
         targRepEsCellResponseDTO.add(link);
     }
@@ -133,7 +136,7 @@ public class TargRepEsCellMapper implements Mapper<TargRepEsCell, TargRepEsCellR
 
     public TargRepEsCellResponseDTO toProductionQcServiceDto(TargRepEsCellResponseDTO esCellDto) {
         TargRepEsCellMutation targRepEsCellMutation =
-            getTargRepEsCellMutationByEcCellId(esCellDto.getId());
+                getTargRepEsCellMutationByEcCellId(esCellDto.getId());
         if (targRepEsCellMutation != null) {
             esCellDto.setProductionQcFivePrimeScreen(targRepEsCellMutation.getFivePrimeScreen());
             esCellDto.setProductionQcLossOfAllele(targRepEsCellMutation.getLossOfAllele());

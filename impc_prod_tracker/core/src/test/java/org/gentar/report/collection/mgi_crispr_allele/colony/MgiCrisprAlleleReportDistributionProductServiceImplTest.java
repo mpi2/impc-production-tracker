@@ -39,7 +39,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
-class MgiCrisprAlleleReportColonyServiceImplTest {
+class MgiCrisprAlleleReportDistributionProductServiceImplTest {
 
     @Mock
     private MgiCrisprAlleleReportColonyRepository mgiCrisprAlleleReportColonyRepository;

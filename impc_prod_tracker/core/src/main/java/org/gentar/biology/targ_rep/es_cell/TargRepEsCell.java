@@ -1,13 +1,8 @@
 package org.gentar.biology.targ_rep.es_cell;
 
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.SequenceGenerator;
+import jakarta.persistence.*;
+
 import javax.validation.constraints.NotNull;
 import lombok.AccessLevel;
 import lombok.Data;
@@ -17,11 +12,14 @@ import lombok.ToString;
 import org.gentar.BaseEntity;
 import org.gentar.biology.targ_rep.allele.TargRepAllele;
 import org.gentar.biology.targ_rep.centre.TargRepCentre;
+import org.gentar.biology.targ_rep.distribution.es_cell_distribution_product.TargRepEsCellDistributionProduct;
 import org.gentar.biology.targ_rep.es_cell.mutation_subtype.TargRepEsCellMutationSubtype;
 import org.gentar.biology.targ_rep.ikmc_project.TargRepIkmcProject;
 import org.gentar.biology.targ_rep.pipeline.TargRepPipeline;
 import org.gentar.biology.targ_rep.strain.TargRepStrain;
 import org.gentar.biology.targ_rep.targeting_vector.TargRepTargetingVector;
+
+import java.util.List;
 
 
 /**
@@ -124,5 +122,12 @@ public class TargRepEsCell extends BaseEntity {
 
     @ManyToOne(targetEntity = TargRepIkmcProject.class)
     private TargRepIkmcProject ikmcProject;
+
+
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
+    @OneToMany(cascade= CascadeType.ALL, mappedBy = "targRepEsCell", orphanRemoval=true)
+    private List<TargRepEsCellDistributionProduct> targRepEsCellDistributionProducts;
+
 }
 

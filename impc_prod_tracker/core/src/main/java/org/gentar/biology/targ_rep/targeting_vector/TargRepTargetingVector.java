@@ -1,21 +1,17 @@
 package org.gentar.biology.targ_rep.targeting_vector;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.SequenceGenerator;
+import jakarta.persistence.*;
+
 import javax.validation.constraints.NotNull;
-import lombok.AccessLevel;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+
+import lombok.*;
 import org.gentar.BaseEntity;
 import org.gentar.biology.targ_rep.allele.TargRepAllele;
+import org.gentar.biology.targ_rep.distribution.targeting_vector_distribution_product.TargRepTargetingVectorDistributionProduct;
 import org.gentar.biology.targ_rep.ikmc_project.TargRepIkmcProject;
 import org.gentar.biology.targ_rep.pipeline.TargRepPipeline;
+
+import java.util.List;
 
 /**
  * TargRepTargetingVector.
@@ -62,4 +58,9 @@ public class TargRepTargetingVector extends BaseEntity {
     @NotNull
     @Column(columnDefinition = "boolean default true")
     private Boolean productionCentreAutoUpdate;
+
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
+    @OneToMany(cascade= CascadeType.ALL, mappedBy = "targRepTargetingVector", orphanRemoval=true)
+    private List<TargRepTargetingVectorDistributionProduct> targRepTargetingVectorDistributionProducts;
 }

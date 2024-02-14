@@ -1,6 +1,6 @@
 package org.gentar.biology.targ_rep.genbank_file;
 
-import org.gentar.biology.targ_rep.TargRepGenBankFileResponseDTO;
+import org.gentar.biology.targ_rep.gene_bank_file.TargRepGenBankFileResponseDTO;
 import org.gentar.helpers.LinkUtil;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

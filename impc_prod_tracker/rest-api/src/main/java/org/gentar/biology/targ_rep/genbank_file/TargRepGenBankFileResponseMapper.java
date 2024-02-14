@@ -1,7 +1,7 @@
 package org.gentar.biology.targ_rep.genbank_file;
 
 import org.gentar.Mapper;
-import org.gentar.biology.targ_rep.TargRepGenBankFileResponseDTO;
+import org.gentar.biology.targ_rep.gene_bank_file.TargRepGenBankFileResponseDTO;
 import org.springframework.hateoas.Link;
 import org.springframework.stereotype.Component;
 
