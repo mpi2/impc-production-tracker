@@ -1,8 +1,9 @@
-package org.gentar.biology.targ_rep;
+package org.gentar.biology.targ_rep.es_cell;
 
 import java.util.List;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
+import org.gentar.biology.targ_rep.distribution_qc.TargRepDistributionQcDTO;
 import org.springframework.hateoas.RepresentationModel;
 import org.springframework.hateoas.server.core.Relation;
 
@@ -43,4 +44,5 @@ public class TargRepEsCellResponseDTO extends RepresentationModel<TargRepEsCellR
     private String userQcThreePrimeLrPcr;
     private String userQcTvBackboneAssay;
     List<TargRepDistributionQcDTO> targRepDistributionQcList;
+    List<TargRepEsCellDistributionProductDTO> targRepEsCellDistributionProductList;
 }

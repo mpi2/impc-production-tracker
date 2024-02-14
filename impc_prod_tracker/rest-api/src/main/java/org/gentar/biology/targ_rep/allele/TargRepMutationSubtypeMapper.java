@@ -1,7 +1,7 @@
 package org.gentar.biology.targ_rep.allele;
 
 import org.gentar.Mapper;
-import org.gentar.biology.targ_rep.TargRepMutationSubtypeDTO;
+import org.gentar.biology.targ_rep.mutation.TargRepMutationSubtypeDTO;
 import org.gentar.biology.targ_rep.allele.mutation_subtype.TargRepMutationSubtype;
 import org.gentar.biology.targ_rep.allele.mutation_subtype.TargRepMutationSubtypeService;
 import org.gentar.exceptions.UserOperationFailedException;

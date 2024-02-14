@@ -1,7 +1,6 @@
 package org.gentar.biology.targ_rep.pipeline;
 
 import org.gentar.Mapper;
-import org.gentar.biology.targ_rep.TargRepPipelineResponseDTO;
 import org.springframework.hateoas.Link;
 import org.springframework.stereotype.Component;
 

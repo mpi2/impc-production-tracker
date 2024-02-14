@@ -17,4 +17,6 @@ public interface TargRepEsCellService {
     Page<TargRepEsCell> getPageableTargRepEsCell(Pageable page);
 
     List<TargRepEsCell> getTargRepEscellByAlleleFailsIfNull(TargRepAllele allele);
+
+    TargRepEsCell save(TargRepEsCell targRepEsCell);
 }

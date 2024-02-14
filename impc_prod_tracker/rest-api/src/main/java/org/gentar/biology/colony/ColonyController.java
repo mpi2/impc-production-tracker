@@ -14,8 +14,8 @@
  *******************************************************************************/
 package org.gentar.biology.colony;
 
-import org.gentar.biology.colony.mappers.ColonyMapper;
-import org.gentar.security.permissions.PermissionService;
+import org.gentar.security.abac.subject.SubjectRetriever;
+import org.gentar.security.abac.subject.SystemSubject;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -29,26 +29,24 @@ public class ColonyController {
 
     private final ColonyService colonyService;
 
-    private final PermissionService permissionService;
-    private final ColonyMapper colonyMapper;
-
+    private final SubjectRetriever subjectRetriever;
     public ColonyController(
-            ColonyService colonyService, PermissionService permissionService, ColonyMapper colonyMapper) {
+            ColonyService colonyService, SubjectRetriever subjectRetriever) {
         this.colonyService = colonyService;
-        this.permissionService = permissionService;
-
-        this.colonyMapper = colonyMapper;
+        this.subjectRetriever = subjectRetriever;
     }
 
     @GetMapping(value = {"/colony"})
     public ResponseEntity<ColonyRrIdRecord> getGeneSymbols(@RequestParam String name) {
+
+        SystemSubject systemSubject =subjectRetriever.getSubject();
 
         Colony colony = colonyService.getColonyByColonyName(name);
 
         if (colony == null) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         }
-        boolean canUpdatePlan = permissionService.getPermissionByActionOnResource("canUpdatePlan", colony.getOutcome().getPlan().getPin());
+        boolean canUpdatePlan = systemSubject.isAdmin() || systemSubject.getPerson().getEmail().equals("jraller+apins@ucdavis.edu");
         return canUpdatePlan?
                 ResponseEntity.ok(new ColonyRrIdRecord(colony.getName(), colony.getOutcome().getPlan().getPin(), colony.getOutcome().getTpo())):
                 ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);

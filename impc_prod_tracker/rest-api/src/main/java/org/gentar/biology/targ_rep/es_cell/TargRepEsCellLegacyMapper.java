@@ -1,6 +1,5 @@
 package org.gentar.biology.targ_rep.es_cell;
 
-import org.gentar.biology.targ_rep.TargRepEsCellLegacyResponseDTO;
 import org.springframework.stereotype.Component;
 
 /**
