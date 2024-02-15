@@ -63,6 +63,16 @@ public class EsCellFieldsDescriptors {
         addField(esCellFieldsDescriptions, prefix + "userQcTvBackboneAssay",
             "user Qc Tv Backbone Assay");
         setDistributionQcList(prefix, esCellFieldsDescriptions);
+        addField(esCellFieldsDescriptions, prefix + "targRepEsCellDistributionProductList[]",
+                "targRepEsCellDistributionProductList");
+        addField(esCellFieldsDescriptions, prefix + "targRepEsCellDistributionProductList[].distributionNetworkName",
+                "targRepEsCellDistributionProductList");
+        addField(esCellFieldsDescriptions, prefix + "targRepEsCellDistributionProductList[].startDate",
+                "Distribution startDate");
+        addField(esCellFieldsDescriptions, prefix + "targRepEsCellDistributionProductList[].endDate",
+                "Distribution endDate");
+        addField(esCellFieldsDescriptions, prefix + "targRepEsCellDistributionProductList[].distributionIdentifier",
+                "Distribution Identifier");
         addField(esCellFieldsDescriptions, prefix + "_links.pipeline[].href",
             "Pipeline Self Link");
         addField(esCellFieldsDescriptions, prefix + "_links.targeting_vector[].href",
@@ -77,6 +87,7 @@ public class EsCellFieldsDescriptors {
             addField(esCellFieldsDescriptions, "page.totalPages", "ToTal Page");
             addField(esCellFieldsDescriptions, "page.number", "Page number");
         }
+
         return esCellFieldsDescriptions;
     }
 
@@ -136,6 +147,7 @@ public class EsCellFieldsDescriptors {
             prefix + "targRepDistributionQcList[].esCellDistributionCentre.name",
             "es Cell distribution name");
     }
+
 
     private static void addField(List<FieldDescriptor> list, String name, String description) {
         list.add(fieldWithPath(name).description(description).optional());

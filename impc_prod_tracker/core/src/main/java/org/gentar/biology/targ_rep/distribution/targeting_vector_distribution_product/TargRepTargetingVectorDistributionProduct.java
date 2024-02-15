@@ -22,7 +22,7 @@ public class TargRepTargetingVectorDistributionProduct extends BaseEntity
 
 
     @ManyToOne
-    @JoinColumn(name = "targeting_vector_id")
+    @JoinColumn(name = "targ_rep_targeting_vector_id")
     private TargRepTargetingVector targRepTargetingVector;
 
     @ManyToOne

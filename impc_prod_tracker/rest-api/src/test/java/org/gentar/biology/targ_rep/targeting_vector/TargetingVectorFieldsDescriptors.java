@@ -23,6 +23,16 @@ public class TargetingVectorFieldsDescriptors {
         addPipelineFields(prefix, targetingVectorFieldsDescriptions);
         addAlleleFields(prefix, targetingVectorFieldsDescriptions);
         addIkmcProjectFields(prefix, targetingVectorFieldsDescriptions);
+        addField(targetingVectorFieldsDescriptions, prefix + "targRepTargetingVectorDistributionProductList[]",
+                "targRepEsCellDistributionProductList");
+        addField(targetingVectorFieldsDescriptions, prefix + "targRepTargetingVectorDistributionProductList[].distributionNetworkName",
+                "targRepEsCellDistributionProductList");
+        addField(targetingVectorFieldsDescriptions, prefix + "targRepTargetingVectorDistributionProductList[].startDate",
+                "Distribution startDate");
+        addField(targetingVectorFieldsDescriptions, prefix + "targRepTargetingVectorDistributionProductList[].endDate",
+                "Distribution endDate");
+        addField(targetingVectorFieldsDescriptions, prefix + "targRepTargetingVectorDistributionProductList[].distributionIdentifier",
+                "Distribution Identifier");
         if (!prefix.isEmpty()) {
             addField(targetingVectorFieldsDescriptions, "_links.self.href",
                 "Targeting Vector Link");
