@@ -15,6 +15,9 @@
  */
 package org.gentar.biology.project.search.filter;
 
+import lombok.Getter;
+
+@Getter
 public enum FilterTypes
 {
     TPN("tpn"),
@@ -33,14 +36,11 @@ public enum FilterTypes
     PRODUCTION_COLONY_NAME("productionColonyNames"),
     PHENOTYPING_EXTERNAL_REF("phenotypingExternalRefs");
 
-    private String name;
+    private final String name;
 
     FilterTypes(String name)
     {
         this.name = name;
     }
 
-    public String getName() {
-        return name;
-    }
 }

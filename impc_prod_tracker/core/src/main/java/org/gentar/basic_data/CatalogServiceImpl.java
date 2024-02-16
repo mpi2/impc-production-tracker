@@ -1,11 +1,11 @@
 /*******************************************************************************
  * Copyright 2019 EMBL - European Bioinformatics Institute
- *
+ * <p>
  * Licensed under the Apache License, Version 2.0 (the
  * "License"); you may not use this file except in compliance
  * with the License. You may obtain a copy of the License at
  * http://www.apache.org/licenses/LICENSE-2.0
- *
+ * <p>
  * Unless required by applicable law or agreed to in writing,
  * software distributed under the License is distributed on an
  * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
@@ -421,9 +421,8 @@ public class CatalogServiceImpl implements CatalogService
 
     private void addSearchTypes()
     {
-        List<Object> searchTypes = new ArrayList<>();
         var res = SearchType.getValidValuesNames();
-        searchTypes.addAll(res);
+        List<Object> searchTypes = new ArrayList<>(res);
         conf.put("searchTypes", searchTypes);
     }
 
@@ -507,7 +506,7 @@ public class CatalogServiceImpl implements CatalogService
     private void addConsortiaToConstructSymbols()
     {
         var consortiaNames = consortiumService.getConsortiaNamesUsableToConstructSymbols();
-        List<Object> consortiaToConstructSymbols = new ArrayList<Object>(consortiaNames);
+        List<Object> consortiaToConstructSymbols = new ArrayList<>(consortiaNames);
         conf.put("consortiaToConstructSymbols", consortiaToConstructSymbols);
     }
 

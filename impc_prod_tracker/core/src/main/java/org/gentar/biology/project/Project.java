@@ -110,7 +110,7 @@ public class Project extends BaseEntity implements Resource<Project>
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
     @OneToMany(cascade= CascadeType.ALL, mappedBy = "project", orphanRemoval=true, fetch=FetchType.EAGER)
-    private Set<ProjectSummaryStatusStamp> summaryStatusStamps = new HashSet<>();;
+    private Set<ProjectSummaryStatusStamp> summaryStatusStamps = new HashSet<>();
 
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
@@ -170,23 +170,15 @@ public class Project extends BaseEntity implements Resource<Project>
     @JsonIgnore
     public ResourcePrivacy getResourcePrivacy()
     {
-        ResourcePrivacy resourcePrivacy;
-        switch (privacy.getName().toLowerCase())
-        {
-            case "public":
-                resourcePrivacy = ResourcePrivacy.PUBLIC;
-                break;
-            case "protected":
-                resourcePrivacy = ResourcePrivacy.PROTECTED;
-                break;
-            case "restricted":
-                resourcePrivacy = ResourcePrivacy.RESTRICTED;
-                break;
-            default:
-                String detailedError = "Privacy: " + privacy.getName() + " in project " + toString();
+        return switch (privacy.getName().toLowerCase()) {
+            case "public" -> ResourcePrivacy.PUBLIC;
+            case "protected" -> ResourcePrivacy.PROTECTED;
+            case "restricted" -> ResourcePrivacy.RESTRICTED;
+            default -> {
+                String detailedError = "Privacy: " + privacy.getName() + " in project " + this;
                 throw new SystemOperationFailedException("Invalid privacy", detailedError);
-        }
-        return resourcePrivacy;
+            }
+        };
     }
 
     @Override

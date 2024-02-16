@@ -1,14 +1,14 @@
 package org.gentar.biology.mutation;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URLDecoder;
-import java.nio.charset.StandardCharsets;
 import org.gentar.Mapper;
 import org.gentar.biology.gene.mappers.GeneResponseMapper;
 import org.gentar.biology.outcome.Outcome;
 import org.gentar.biology.outcome.OutcomeController;
 import org.springframework.hateoas.Link;
 import org.springframework.stereotype.Component;
+
+import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -89,11 +89,6 @@ public class MutationResponseMapper implements Mapper<Mutation, MutationResponse
     }
 
     private String decode(String value) {
-        try {
-            return URLDecoder.decode(value, StandardCharsets.UTF_8.toString());
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        }
-        return value;
+        return URLDecoder.decode(value, StandardCharsets.UTF_8);
     }
 }

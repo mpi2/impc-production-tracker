@@ -1,11 +1,11 @@
 /*******************************************************************************
  * Copyright 2019 EMBL - European Bioinformatics Institute
- *
+ * <p>
  * Licensed under the Apache License, Version 2.0 (the
  * "License"); you may not use this file except in compliance
  * with the License. You may obtain a copy of the License at
  * http://www.apache.org/licenses/LICENSE-2.0
- *
+ * <p>
  * Unless required by applicable law or agreed to in writing,
  * software distributed under the License is distributed on an
  * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
@@ -35,7 +35,7 @@ import java.util.Base64;
 @Component
 public class PublicKeyProvider
 {
-    private RestTemplate restTemplate;
+    private final RestTemplate restTemplate;
     private PublicKey publicKey;
     private static final String BEGIN_CERT = "-----BEGIN CERTIFICATE-----";
     private static final String END_CERT = "-----END CERTIFICATE-----";
@@ -62,7 +62,7 @@ public class PublicKeyProvider
 
     private String requestPublicKeyText(String authenticationServiceUrl)
     {
-        String text = "";
+        String text;
         try
         {
             ResponseEntity<String> response =

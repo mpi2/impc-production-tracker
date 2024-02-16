@@ -1,16 +1,16 @@
 package org.gentar.audit.history;
 
-import org.gentar.biology.plan.type.PlanType;
-import org.gentar.util.CollectionPrinter;
-import org.hamcrest.Matchers;
+import org.gentar.biology.plan.Plan;
 import org.gentar.biology.plan.attempt.crispr.CrisprAttempt;
 import org.gentar.biology.plan.attempt.crispr.genotype_primer.GenotypePrimer;
 import org.gentar.biology.plan.attempt.crispr.guide.Guide;
-import org.gentar.biology.plan.Plan;
-import org.gentar.biology.project.privacy.Privacy;
+import org.gentar.biology.plan.type.PlanType;
 import org.gentar.biology.project.Project;
+import org.gentar.biology.project.privacy.Privacy;
 import org.gentar.organization.work_unit.WorkUnit;
+import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Test;
+
 import java.util.*;
 
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -46,7 +46,7 @@ public class HistoryChangesAdaptorUsingPlanObjectTest
         List<ChangeDescription> changeDescriptionList =  historyChangesAdaptor.getChanges();
 
         assertThat("Only one change is expected:", changeDescriptionList.size(), is(1));
-        ChangeDescription change = changeDescriptionList.get(0);
+        ChangeDescription change = changeDescriptionList.getFirst();
         assertThat("No expected property", change.getProperty(), is("comment"));
         assertThat("No expected old value", change.getOldValue(), is(nullValue()));
         assertThat("No expected new value", change.getNewValue(), is("a new comment"));
@@ -124,7 +124,7 @@ public class HistoryChangesAdaptorUsingPlanObjectTest
         Plan originalPlan = buildBasicPlan();
         Plan newPlan = buildBasicPlan();
         HistoryChangesAdaptor<Plan> historyChangesAdaptor =
-            new HistoryChangesAdaptor<>(Arrays.asList(), originalPlan, newPlan);
+            new HistoryChangesAdaptor<>(List.of(), originalPlan, newPlan);
 
         CrisprAttempt crisprAttempt = new CrisprAttempt();
         crisprAttempt.setId(1L);

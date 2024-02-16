@@ -65,7 +65,7 @@ public class PhenotypeAttemptValidator
                     (ps.getPhenotypingStageType().getName().equals("late adult") &&
                             ps.getProcessDataStatus().getOrdering() >= 301000 && ps.getProcessDataStatus().getOrdering() <= 305000));
 
-            if (matchPhenotypingStage == true)
+            if (matchPhenotypingStage)
             {
                 throw new UserOperationFailedException(PHENOTYPING_STAGE_STARTED);
             }

@@ -17,6 +17,7 @@
 package org.gentar.security.abac.subject;
 
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.gentar.exceptions.UserOperationFailedException;
 import org.gentar.organization.person.associations.FluentPersonRoleConsortiumList;
 import org.gentar.organization.person.associations.FluentPersonRoleWorkUnitList;
@@ -47,6 +48,7 @@ import java.util.Set;
 public class AapSystemSubject implements SystemSubject {
     private String login;
     private String name;
+    @Setter
     private String userRefId;
     private String email;
     private WorkUnit workUnit;
@@ -94,7 +96,6 @@ public class AapSystemSubject implements SystemSubject {
     /**
      * Simple constructor that sets the minimal information for a user.
      *
-     * @param login
      */
     public AapSystemSubject(String login) {
         this.login = login;
@@ -115,7 +116,7 @@ public class AapSystemSubject implements SystemSubject {
     }
 
     private void setPersonData(Person person) {
-        isEbiAdmin = person.getEbiAdmin() == null ? false : person.getEbiAdmin();
+        isEbiAdmin = person.getEbiAdmin() != null && person.getEbiAdmin();
         roleWorkUnits = new ArrayList<>(person.getPersonRolesWorkUnits());
         roleConsortia = new ArrayList<>(person.getPersonRolesConsortia());
     }
@@ -216,8 +217,6 @@ public class AapSystemSubject implements SystemSubject {
     /**
      *  After Sanger closed Harwel took over the sanger projects
      *  this methode will allow Harwell to update WTSI projects
-     * @param workUnits
-     * @return
      */
     @Override
     public boolean belongsToWTSIWorkUnit(Collection<WorkUnit> workUnits) {
@@ -306,7 +305,4 @@ public class AapSystemSubject implements SystemSubject {
         return this;
     }
 
-    public void setUserRefId(String subject) {
-        this.userRefId = subject;
-    }
 }

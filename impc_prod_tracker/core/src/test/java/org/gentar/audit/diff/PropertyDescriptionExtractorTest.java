@@ -2,17 +2,14 @@ package org.gentar.audit.diff;
 
 import lombok.Data;
 import lombok.ToString;
-import org.gentar.util.CollectionPrinter;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
-import static org.junit.jupiter.api.Assertions.*;
 
 class PropertyDescriptionExtractorTest
 {
@@ -167,10 +164,10 @@ class PropertyDescriptionExtractorTest
             testInstance.buildByCollection(listOfSimpleClass, null);
 
         assertThat("Expected 2 descriptions", propertyDescriptions.size(), is(2));
-        PropertyDescription description1 = findByName("["+simpleClass1.toString()+"]", propertyDescriptions);
+        PropertyDescription description1 = findByName("["+ simpleClass1 +"]", propertyDescriptions);
         assertThat("Incorrect type", description1.getType(), is(SimpleClass.class));
         assertThat("Incorrect value", description1.getValue(), is(simpleClass1));
-        PropertyDescription description2 = findByName("["+simpleClass2.toString()+"]", propertyDescriptions);
+        PropertyDescription description2 = findByName("["+ simpleClass2 +"]", propertyDescriptions);
         assertThat("Incorrect type", description2.getType(), is(SimpleClass.class));
         assertThat("Incorrect value", description2.getValue(), is(simpleClass2));
     }
@@ -197,7 +194,7 @@ class PropertyDescriptionExtractorTest
     }
 
     @Data
-    public class SimpleClass
+    public static class SimpleClass
     {
         private Long id;
         private String field1;

@@ -1,6 +1,5 @@
 package org.gentar.biology.project.mappers;
 
-import org.apache.logging.log4j.util.Strings;
 import org.gentar.Mapper;
 import org.gentar.biology.project.Project;
 import org.gentar.biology.project.ProjectUpdateDTO;
@@ -10,8 +9,8 @@ import org.springframework.stereotype.Component;
 @Component
 public class ProjectUpdateMapper implements Mapper<Project, ProjectUpdateDTO>
 {
-    private ProjectCommonDataMapper projectCommonDataMapper;
-    private ProjectCompletionNoteMapper projectCompletionNoteMapper;
+    private final ProjectCommonDataMapper projectCommonDataMapper;
+    private final ProjectCompletionNoteMapper projectCompletionNoteMapper;
 
     public ProjectUpdateMapper(ProjectCommonDataMapper projectCommonDataMapper,
                                ProjectCompletionNoteMapper projectCompletionNoteMapper)

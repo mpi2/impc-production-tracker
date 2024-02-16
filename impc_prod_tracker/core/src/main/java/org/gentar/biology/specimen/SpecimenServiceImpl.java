@@ -12,9 +12,9 @@ import java.util.List;
 @Component
 public class SpecimenServiceImpl implements SpecimenService
 {
-    private SpecimenTypeRepository specimenTypeRepository;
-    private SpecimenStateMachineResolver specimenStateMachineResolver;
-    private TransitionAvailabilityEvaluator transitionAvailabilityEvaluator;
+    private final SpecimenTypeRepository specimenTypeRepository;
+    private final SpecimenStateMachineResolver specimenStateMachineResolver;
+    private final TransitionAvailabilityEvaluator transitionAvailabilityEvaluator;
 
     public SpecimenServiceImpl(
         SpecimenTypeRepository specimenTypeRepository,

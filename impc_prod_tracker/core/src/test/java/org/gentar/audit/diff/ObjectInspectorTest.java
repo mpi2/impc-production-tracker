@@ -31,7 +31,7 @@ public class ObjectInspectorTest
     {
         SimpleClass simpleClass = new SimpleClass();
 
-        ObjectInspector objectInspector = new ObjectInspector(simpleClass, Arrays.asList(""));
+        ObjectInspector objectInspector = new ObjectInspector(simpleClass, List.of(""));
 
         var map = objectInspector.getMap();
 
@@ -67,8 +67,8 @@ public class ObjectInspectorTest
         classB.b1 = 2.0;
         classB.b2 = null;
         classA.a4 = classB;
-        classA.a5 = Arrays.asList(classB);
-        ObjectInspector objectInspector = new ObjectInspector(classA, Arrays.asList("id"));
+        classA.a5 = List.of(classB);
+        ObjectInspector objectInspector = new ObjectInspector(classA, List.of("id"));
 
         Map<String, Object> propertyValueMap = objectInspector.getValuesForSimpleProperties();
 
@@ -90,7 +90,7 @@ public class ObjectInspectorTest
         ClassB classB = new ClassB();
         classB.b1 = 2.0;
         classA.a4 = classB;
-        objectInspector = new ObjectInspector(classA, Arrays.asList("id"));
+        objectInspector = new ObjectInspector(classA, List.of("id"));
         Map<String, PropertyDescription> propertyValueMap = objectInspector.getMap();
 
         PropertyDescription expectedResult1 =
@@ -341,7 +341,7 @@ public class ObjectInspectorTest
         crisprAttempt.setId(20L);
         Guide guide = new Guide();
         guide.setId(1L);
-        crisprAttempt.setGuides(new HashSet<>(Arrays.asList(guide)));
+        crisprAttempt.setGuides(new HashSet<>(List.of(guide)));
 
         Plan plan = new Plan();
         plan.setCrisprAttempt(crisprAttempt);
@@ -382,7 +382,7 @@ public class ObjectInspectorTest
     }
 
     @Data
-    public class ClassE
+    public static class ClassE
     {
         private String e1;
     }
@@ -410,7 +410,7 @@ public class ObjectInspectorTest
     }
 
     @Data
-    public class SimpleClass
+    public static class SimpleClass
     {
         private Long id;
         private String field1;
@@ -418,7 +418,7 @@ public class ObjectInspectorTest
     }
 
     @Data
-    public class RootCycle
+    public static class RootCycle
     {
         private CrisprAttempt crisprAttempt;
     }

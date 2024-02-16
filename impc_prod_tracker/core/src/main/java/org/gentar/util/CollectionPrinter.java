@@ -1,7 +1,5 @@
 package org.gentar.util;
 
-import org.gentar.audit.diff.ChangeEntry;
-
 import java.util.List;
 import java.util.Map;
 
@@ -17,9 +15,7 @@ public class CollectionPrinter
         if (map != null)
         {
             map.forEach((k, v) ->
-            {
-                System.out.println("\t" + "key:[" + k + "] :: value:[" + v + "]");
-            });
+                    System.out.println("\t" + "key:[" + k + "] :: value:[" + v + "]"));
         }
         System.out.println("}");
     }

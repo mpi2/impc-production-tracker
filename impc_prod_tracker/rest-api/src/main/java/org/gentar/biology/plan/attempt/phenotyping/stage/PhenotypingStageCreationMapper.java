@@ -11,8 +11,8 @@ import java.util.Set;
 @Component
 public class PhenotypingStageCreationMapper implements Mapper<PhenotypingStage, PhenotypingStageCreationDTO>
 {
-    private PhenotypingStageCommonMapper phenotypingStageCommonMapper;
-    private PhenotypingStageService phenotypingStageService;
+    private final PhenotypingStageCommonMapper phenotypingStageCommonMapper;
+    private final PhenotypingStageService phenotypingStageService;
 
     public PhenotypingStageCreationMapper(PhenotypingStageCommonMapper phenotypingStageCommonMapper,
                                           PhenotypingStageService phenotypingStageService) {

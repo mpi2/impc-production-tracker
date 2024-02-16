@@ -16,42 +16,36 @@
 package org.gentar.biology.plan;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.AccessLevel;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import jakarta.persistence.*;
+import lombok.*;
+import org.gentar.BaseEntity;
 import org.gentar.audit.diff.IgnoreForAuditingChanges;
 import org.gentar.biology.outcome.Outcome;
+import org.gentar.biology.plan.attempt.AttemptType;
+import org.gentar.biology.plan.attempt.breeding.BreedingAttempt;
+import org.gentar.biology.plan.attempt.crispr.CrisprAttempt;
 import org.gentar.biology.plan.attempt.crispr_allele_modification.CrisprAlleleModificationAttempt;
-import org.gentar.biology.plan.attempt.es_cell_allele_modification.EsCellAlleleModificationAttempt;
 import org.gentar.biology.plan.attempt.es_cell.EsCellAttempt;
+import org.gentar.biology.plan.attempt.es_cell_allele_modification.EsCellAlleleModificationAttempt;
+import org.gentar.biology.plan.attempt.phenotyping.PhenotypingAttempt;
+import org.gentar.biology.plan.flag.PlanFlag;
+import org.gentar.biology.plan.protocol.Protocol;
 import org.gentar.biology.plan.starting_point.PlanStartingPoint;
 import org.gentar.biology.plan.status.PlanStatusStamp;
 import org.gentar.biology.plan.status.PlanSummaryStatusStamp;
 import org.gentar.biology.plan.type.PlanType;
-import org.gentar.organization.work_group.WorkGroup;
-import org.gentar.security.abac.Resource;
-import org.gentar.security.abac.ResourcePrivacy;
-import org.gentar.BaseEntity;
-import org.gentar.biology.plan.attempt.AttemptType;
-import org.gentar.biology.plan.attempt.breeding.BreedingAttempt;
-import org.gentar.biology.plan.attempt.crispr.CrisprAttempt;
-import org.gentar.biology.plan.attempt.phenotyping.PhenotypingAttempt;
-import org.gentar.biology.plan.flag.PlanFlag;
-import org.gentar.biology.plan.protocol.Protocol;
 import org.gentar.biology.project.Project;
 import org.gentar.biology.status.Status;
 import org.gentar.organization.consortium.Consortium;
 import org.gentar.organization.funder.Funder;
+import org.gentar.organization.work_group.WorkGroup;
 import org.gentar.organization.work_unit.WorkUnit;
+import org.gentar.security.abac.Resource;
+import org.gentar.security.abac.ResourcePrivacy;
 import org.gentar.statemachine.ProcessData;
 import org.gentar.statemachine.ProcessEvent;
-import jakarta.persistence.*;
+
 import javax.validation.constraints.NotNull;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
@@ -229,7 +223,7 @@ public class Plan extends BaseEntity implements Resource<Plan>, ProcessData
     @Override
     public List<WorkUnit> getRelatedWorkUnits()
     {
-        return Arrays.asList(workUnit);
+        return Collections.singletonList(workUnit);
     }
 
     @Override

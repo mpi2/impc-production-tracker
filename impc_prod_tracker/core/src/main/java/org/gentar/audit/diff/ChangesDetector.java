@@ -189,7 +189,7 @@ public class ChangesDetector<T>
         String property, PropertyDescription oldPropertyData, PropertyDescription newPropertyData)
     {
         return evaluateChange(property, oldPropertyData, newPropertyData, ChangeType.CHANGED_FIELD);
-    };
+    }
 
     private ChangeEntry evaluateChange(
         String property,

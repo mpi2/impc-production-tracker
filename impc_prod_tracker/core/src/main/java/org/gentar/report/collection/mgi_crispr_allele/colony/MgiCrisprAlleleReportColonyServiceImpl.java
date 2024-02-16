@@ -89,7 +89,7 @@ public class MgiCrisprAlleleReportColonyServiceImpl implements MgiCrisprAlleleRe
                 .entrySet()
                 .stream()
                 .filter(e -> e.getValue().size() == 1)
-                .collect(Collectors.toMap(Map.Entry::getKey, e -> List.copyOf(e.getValue()).get(0)));
+                .collect(Collectors.toMap(Map.Entry::getKey, e -> List.copyOf(e.getValue()).getFirst()));
 
         return filteredOutcomeMutationMap;
     }
@@ -99,13 +99,12 @@ public class MgiCrisprAlleleReportColonyServiceImpl implements MgiCrisprAlleleRe
         List<Long> planIds = getPlanIds();
 
         List<MgiCrisprAlleleReportGuideProjection> guideProjections = guideReportService.getSelectedGuideProjections(planIds);
-        Map<Long, Set<MgiCrisprAlleleReportGuideProjection>> guideProjectionsMap = guideProjections
+
+        return guideProjections
                 .stream()
                 .collect(Collectors.groupingBy(
                         MgiCrisprAlleleReportGuideProjection::getPlanId,
                         Collectors.mapping(entry -> entry, Collectors.toSet())));
-
-        return guideProjectionsMap;
     }
 
     @Override
@@ -114,13 +113,11 @@ public class MgiCrisprAlleleReportColonyServiceImpl implements MgiCrisprAlleleRe
 
         List<MgiCrisprAlleleReportNucleaseProjection> nucleaseProjections = nucleaseReportService.getSelectedNucleaseProjections(planIds);
 
-        Map<Long, Set<MgiCrisprAlleleReportNucleaseProjection>> nucleaseProjectionsMap = nucleaseProjections
+        return nucleaseProjections
                 .stream()
                 .collect(Collectors.groupingBy(
                         MgiCrisprAlleleReportNucleaseProjection::getPlanId,
                         Collectors.mapping(entry -> entry, Collectors.toSet())));
-
-        return nucleaseProjectionsMap;
     }
 
     @Override
@@ -130,14 +127,12 @@ public class MgiCrisprAlleleReportColonyServiceImpl implements MgiCrisprAlleleRe
         List<MgiCrisprAlleleReportMutagenesisDonorProjection> mutagenesisDonorProjections =
                 mutagenesisDonorReportService.getSelectedMutagenesisDonorProjections(planIds);
 
-        Map<Long, Set<MgiCrisprAlleleReportMutagenesisDonorProjection>> mutagenesisDonorProjectionsMap =
-                mutagenesisDonorProjections
+       return mutagenesisDonorProjections
                 .stream()
                 .collect(Collectors.groupingBy(
                         MgiCrisprAlleleReportMutagenesisDonorProjection::getPlanId,
                         Collectors.mapping(entry -> entry, Collectors.toSet())));
 
-        return mutagenesisDonorProjectionsMap;
     }
 
     @Override
@@ -147,14 +142,13 @@ public class MgiCrisprAlleleReportColonyServiceImpl implements MgiCrisprAlleleRe
         List<MgiCrisprAlleleReportGenotypePrimerProjection> genotypePrimerProjections =
                 genotypePrimerReportService.getSelectedGenotypePrimerProjections(planIds);
 
-        Map<Long, Set<MgiCrisprAlleleReportGenotypePrimerProjection>> getGenotypePrimerProjectionsMap =
-                genotypePrimerProjections
+
+              return  genotypePrimerProjections
                         .stream()
                         .collect(Collectors.groupingBy(
                                 MgiCrisprAlleleReportGenotypePrimerProjection::getPlanId,
                                 Collectors.mapping(entry -> entry, Collectors.toSet())));
 
-        return getGenotypePrimerProjectionsMap;
     }
 
     @Override
@@ -165,13 +159,12 @@ public class MgiCrisprAlleleReportColonyServiceImpl implements MgiCrisprAlleleRe
         List<MgiCrisprAlleleReportMutationSequenceProjection> mutationSequenceProjections =
                 mutationSequenceReportService.getSelectedMutationSequenceProjections(filteredMutationIds);
 
-        Map<Long, Set<MgiCrisprAlleleReportMutationSequenceProjection>> mutationSequenceMap = mutationSequenceProjections
+        return mutationSequenceProjections
                 .stream()
                 .collect(Collectors.groupingBy(
                         MgiCrisprAlleleReportMutationSequenceProjection::getMutationId,
                         Collectors.mapping(entry -> entry, Collectors.toSet())));
 
-        return mutationSequenceMap;
     }
 
     @Override
@@ -183,14 +176,12 @@ public class MgiCrisprAlleleReportColonyServiceImpl implements MgiCrisprAlleleRe
                 mutationCategorizationReportService
                         .getSelectedMutationCategorizationProjections(filteredMutationIds);
 
-        Map<Long, Set<MgiCrisprAlleleReportMutationCategorizationProjection>> mutationCategorizationMap =
-                mutationCategorizationProjections
+              return  mutationCategorizationProjections
                 .stream()
                 .collect(Collectors.groupingBy(
                         MgiCrisprAlleleReportMutationCategorizationProjection::getMutationId,
                         Collectors.mapping(entry -> entry, Collectors.toSet())));
 
-        return mutationCategorizationMap;
     }
 
     @Override
@@ -211,7 +202,7 @@ public class MgiCrisprAlleleReportColonyServiceImpl implements MgiCrisprAlleleRe
                 .entrySet()
                 .stream()
                 .filter(e -> e.getValue().size() == 1)
-                .collect(Collectors.toMap(map -> map.getKey(), map -> List.copyOf(map.getValue()).get(0)));
+                .collect(Collectors.toMap(Map.Entry::getKey, map -> List.copyOf(map.getValue()).getFirst()));
     }
 
     private List<Long> getOutcomeIds() {
@@ -228,9 +219,9 @@ public class MgiCrisprAlleleReportColonyServiceImpl implements MgiCrisprAlleleRe
 
     private List<Long> getFilteredMutationIds() {
         return filteredOutcomeMutationMap
-                .entrySet()
+                .values()
                 .stream()
-                .map(e -> e.getValue().getMutationId())
+                .map(MgiCrisprAlleleReportOutcomeMutationProjection::getMutationId)
                 .collect(Collectors.toList());
     }
 

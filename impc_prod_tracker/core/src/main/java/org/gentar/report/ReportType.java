@@ -1,14 +1,10 @@
 package org.gentar.report;
 
+import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.gentar.BaseEntity;
-
-import jakarta.persistence.*;
-import javax.validation.constraints.NotNull;
-import java.util.ArrayList;
-import java.util.List;
 
 @NoArgsConstructor(access= AccessLevel.PUBLIC, force=true)
 @Data

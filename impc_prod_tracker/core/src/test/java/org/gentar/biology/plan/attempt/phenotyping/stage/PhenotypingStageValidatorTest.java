@@ -1,13 +1,5 @@
 package org.gentar.biology.plan.attempt.phenotyping.stage;
 
-import static org.gentar.mockdata.MockData.phenotypingAttemptMockData;
-import static org.gentar.mockdata.MockData.phenotypingStageMockData;
-import static org.gentar.mockdata.MockData.phenotypingStageTypeMockData;
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.lenient;
-
-import java.util.List;
-import org.gentar.exceptions.CommonErrorMessages;
 import org.gentar.exceptions.ForbiddenAccessException;
 import org.gentar.exceptions.UserOperationFailedException;
 import org.gentar.security.abac.spring.ContextAwarePolicyEnforcement;
@@ -16,6 +8,12 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+
+import java.util.List;
+
+import static org.gentar.mockdata.MockData.*;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.lenient;
 
 
 @ExtendWith(MockitoExtension.class)
@@ -37,10 +35,7 @@ class PhenotypingStageValidatorTest {
     void validateDataPhenotypingAttemptNull() {
         PhenotypingStage phenotypingStage = phenotypingStageMockData();
         phenotypingStage.setPhenotypingAttempt(null);
-        Exception exception = assertThrows(UserOperationFailedException.class, () -> {
-            testInstance.validateData(phenotypingStage);
-
-        });
+        Exception exception = assertThrows(UserOperationFailedException.class, () -> testInstance.validateData(phenotypingStage));
 
         String expectedMessage =
             "The phenotyping stage requires a phenotyping attempt.";
@@ -56,10 +51,7 @@ class PhenotypingStageValidatorTest {
 
         PhenotypingStage phenotypingStage = phenotypingStageMockData();
         phenotypingStage.setPhenotypingStageType(null);
-        Exception exception = assertThrows(UserOperationFailedException.class, () -> {
-            testInstance.validateData(phenotypingStage);
-
-        });
+        Exception exception = assertThrows(UserOperationFailedException.class, () -> testInstance.validateData(phenotypingStage));
 
         String expectedMessage =
             "The phenotyping stage requires a phenotyping stage type.";
@@ -94,10 +86,7 @@ class PhenotypingStageValidatorTest {
                 phenotypingAttemptMockData(), phenotypingStageTypeMockData()))
             .thenReturn(List.of(phenotypingStage));
 
-        Exception exception = assertThrows(UserOperationFailedException.class, () -> {
-            testInstance.validateData(phenotypingStageMockData());
-
-        });
+        Exception exception = assertThrows(UserOperationFailedException.class, () -> testInstance.validateData(phenotypingStageMockData()));
 
         String expectedMessage =
             "A phenotyping stage of type [early adult and embryo] already exists for the plan PIN:000000001.";
@@ -111,10 +100,7 @@ class PhenotypingStageValidatorTest {
     @Test
     void validateCreationPermission() {
 
-        Exception exception = assertThrows(ForbiddenAccessException.class, () -> {
-            testInstance.validateCreationPermission(phenotypingStageMockData());
-
-        });
+        Exception exception = assertThrows(ForbiddenAccessException.class, () -> testInstance.validateCreationPermission(phenotypingStageMockData()));
 
         String expectedMessage =
             "You do not have permission to create the phenotyping stage. To execute this action you need permission to edit the plan PIN:000000001.";
@@ -126,10 +112,7 @@ class PhenotypingStageValidatorTest {
     @Test
     void validateUpdatePermission() {
 
-        Exception exception = assertThrows(ForbiddenAccessException.class, () -> {
-            testInstance.validateUpdatePermission(phenotypingStageMockData());
-
-        });
+        Exception exception = assertThrows(ForbiddenAccessException.class, () -> testInstance.validateUpdatePermission(phenotypingStageMockData()));
 
         String expectedMessage =
             "You do not have permission to update the phenotyping stage PSN:000000000001. To execute this action you need permission to edit the plan PIN:000000001.";

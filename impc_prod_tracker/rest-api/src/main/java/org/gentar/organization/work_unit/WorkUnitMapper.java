@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class WorkUnitMapper implements Mapper<WorkUnit, String>
 {
-    private WorkUnitService workUnitService;
+    private final WorkUnitService workUnitService;
 
     private static final String WORK_UNIT_NOT_FOUND_ERROR = "Work unit name '%s' does not exist.";
 
@@ -33,7 +33,7 @@ public class WorkUnitMapper implements Mapper<WorkUnit, String>
         WorkUnit workUnit = workUnitService.getWorkUnitByName(name);
         if (workUnit == null)
         {
-            throw new UserOperationFailedException(String.format(WORK_UNIT_NOT_FOUND_ERROR, workUnit));
+            throw new UserOperationFailedException(WORK_UNIT_NOT_FOUND_ERROR);
         }
 
         return workUnit;

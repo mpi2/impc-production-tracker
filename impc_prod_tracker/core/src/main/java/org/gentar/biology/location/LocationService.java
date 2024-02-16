@@ -8,7 +8,7 @@ public class LocationService
 {
     private static final String ERROR = "Location with id [%s] does not exist.";
 
-    private LocationRepository locationRepository;
+    private final LocationRepository locationRepository;
 
     public LocationService(LocationRepository locationRepository)
     {

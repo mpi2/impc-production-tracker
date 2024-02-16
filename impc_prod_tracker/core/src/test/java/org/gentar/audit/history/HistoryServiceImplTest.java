@@ -2,24 +2,20 @@ package org.gentar.audit.history;
 
 import org.gentar.audit.diff.ChangeType;
 import org.gentar.audit.history.detail.HistoryDetail;
-import org.gentar.util.CollectionPrinter;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
 
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.notNullValue;
-import static org.hamcrest.Matchers.nullValue;
+import static org.hamcrest.Matchers.*;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class HistoryServiceImplTest
@@ -71,11 +67,12 @@ class HistoryServiceImplTest
     {
         History history1 = buildHistory(1L, 100L, "entityName1");
         HistoryDetail historyDetail1 = buildHistoryDetail(1L, "field1", "oldValue", "newValue");
-        history1.setHistoryDetailSet(Arrays.asList(historyDetail1));
-        List<History> mockHistories = Arrays.asList(history1);
+        history1.setHistoryDetailSet(List.of(historyDetail1));
+        List<History> mockHistories = List.of(history1);
 
-        when(historyRepository.findAllByEntityNameAndEntityIdOrderByDate("entityName1", 100L))
-            .thenReturn(mockHistories);
+
+        doReturn(mockHistories).when(historyRepository).findAllByEntityNameAndEntityIdOrderByDate("entityName1", 100L);
+
 
         List<History> histories = testInstance.getHistoryByEntityNameAndEntityId("entityName1", 100L);
 
@@ -100,7 +97,7 @@ class HistoryServiceImplTest
     {
         History history1 = buildHistory(1L, 100L, "entityName1");
         HistoryDetail historyDetail1 = buildHistoryDetail(1L, "field1", "oldValue", "newValue");
-        history1.setHistoryDetailSet(Arrays.asList(historyDetail1));
+        history1.setHistoryDetailSet(List.of(historyDetail1));
 
         History filtered = testInstance.filterDetailsInNestedEntity(history1, "noexisting", "noexisting");
         assertThat(filtered.getHistoryDetailSet(), is(history1.getHistoryDetailSet()));

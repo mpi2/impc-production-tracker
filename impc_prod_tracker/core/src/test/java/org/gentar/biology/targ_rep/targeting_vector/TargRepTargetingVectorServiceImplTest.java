@@ -1,8 +1,5 @@
 package org.gentar.biology.targ_rep.targeting_vector;
 
-import static org.junit.jupiter.api.Assertions.*;
-
-import java.util.Arrays;
 import org.gentar.exceptions.NotFoundException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -15,6 +12,10 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+
+import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(MockitoExtension.class)
 class TargRepTargetingVectorServiceImplTest {
@@ -59,7 +60,7 @@ class TargRepTargetingVectorServiceImplTest {
     void getPageableTargRepTargetingVector() {
         Pageable pageable = PageRequest.of(0, 1);
         final Page<TargRepTargetingVector> page =
-            new PageImpl<>(Arrays.asList(targRepTargetingVector()));
+            new PageImpl<>(List.of(targRepTargetingVector()));
         Mockito.when(targetingVectorRepository.findAll(pageable))
             .thenReturn(page);
 

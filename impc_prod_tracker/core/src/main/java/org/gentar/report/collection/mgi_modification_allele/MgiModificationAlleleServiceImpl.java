@@ -8,7 +8,10 @@ import org.gentar.report.collection.mgi_modification_allele.modification_colony.
 import org.gentar.report.collection.mgi_modification_allele.outcome.MgiModificationAlleleReportOutcomeMutationProjection;
 import org.springframework.stereotype.Component;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Component
@@ -52,11 +55,11 @@ public class MgiModificationAlleleServiceImpl implements MgiModificationAlleleSe
                         .sorted(Comparator.comparing(x -> filteredMutationGeneMap.get(
                                         filteredOutcomeMutationMap.get(x.getModificationOutcomeId()).getMutationId()).getSymbol()
                                 )
-                        ).collect(Collectors.toList());
+                        ).toList();
 
         return sortedEntries
                 .stream()
-                .map(x -> constructRow(x))
+                .map(this::constructRow)
                 .collect(Collectors.toList());
     }
 
@@ -88,9 +91,7 @@ public class MgiModificationAlleleServiceImpl implements MgiModificationAlleleSe
         Gene g = filteredMutationGeneMap.get(modificationMutationProjection.getMutationId());
 
         // The symbols should now be correct in the GenTaR database - or updated by the symbol updater service
-        String modificationFormattedMutationSymbol = modificationMutationSymbol;
         String productionFormattedMutationSymbol = productionMutationSymbol;
-        String esCellAlleleFormattedSymbol = esCellAlleleSymbol;
 
         // String esCellAlleleFormattedSymbol = checkMutationSymbol(esCellAlleleSymbol, g.getSymbol());
         // String modificationFormattedMutationSymbol = checkMutationSymbol(modificationMutationSymbol, g.getSymbol());
@@ -109,7 +110,7 @@ public class MgiModificationAlleleServiceImpl implements MgiModificationAlleleSe
                 x.getProductionStrainName() + "\t" +
                 x.getProductionWorkUnit() + "\t" +
                 productionFormattedMutationSymbol + "\t" +
-                esCellAlleleFormattedSymbol + "\t" +
+                esCellAlleleSymbol + "\t" +
                 esCellName + "\t" +
                 esMgiAlleleAccId + "\t" +
                 esParentCellName + "\t" +
@@ -120,7 +121,7 @@ public class MgiModificationAlleleServiceImpl implements MgiModificationAlleleSe
                 x.getModificationStrainName() + "\t" +
                 x.getModificationWorkUnit() + "\t" +
                 modificationMgiAlleleAccId + "\t" +
-                modificationFormattedMutationSymbol + "\t" +
+                modificationMutationSymbol + "\t" +
                 productionMutationMin;
     }
 
@@ -146,11 +147,9 @@ public class MgiModificationAlleleServiceImpl implements MgiModificationAlleleSe
 
     private String assembleReport() {
         String header = generateReportHeaders();
-        String report = reportRows
-                .stream()
-                .collect(Collectors.joining("\n"));
+        String report = String.join("\n", reportRows);
 
-        return Arrays.asList(header,report).stream().collect(Collectors.joining("\n"));
+        return String.join("\n", header, report);
     }
 
     private String generateReportHeaders() {
@@ -176,11 +175,7 @@ public class MgiModificationAlleleServiceImpl implements MgiModificationAlleleSe
                 "GenTaR Mutation Identifier"
         );
 
-        String headerString =   headers
-                .stream()
-                .collect(Collectors.joining("\t"));
-
-        return headerString;
+        return String.join("\t", headers);
     }
 
 }

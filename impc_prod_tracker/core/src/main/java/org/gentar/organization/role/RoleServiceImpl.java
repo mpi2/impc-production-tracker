@@ -14,7 +14,7 @@ public class RoleServiceImpl implements RoleService
 
     private static final String ROLE_NOT_EXISTS_ERROR = "Role %s does not exist.";
 
-    private RoleRepository roleRepository;
+    private final RoleRepository roleRepository;
 
     public RoleServiceImpl(RoleRepository roleRepository)
     {

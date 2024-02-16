@@ -137,9 +137,7 @@ class PlanServiceImplTest {
 
     @Test
     void getNotNullPlanByPinPlanNull() {
-        Exception exception = assertThrows(NotFoundException.class, () -> {
-            testInstance.getNotNullPlanByPin(PIN_000000001);
-        });
+        Exception exception = assertThrows(NotFoundException.class, () -> testInstance.getNotNullPlanByPin(PIN_000000001));
         String expectedMessage = String.format(PLAN_NOT_EXISTS_ERROR, PIN_000000001);
         String actualMessage = exception.getMessage();
 
@@ -159,7 +157,7 @@ class PlanServiceImplTest {
             .thenReturn(planMockData());
 
         List<Plan> plans = testInstance.getPlans(planFilter);
-        assertEquals(plans.get(0).getPin(), PIN_000000001);
+        assertEquals(plans.getFirst().getPin(), PIN_000000001);
 
     }
 
@@ -206,7 +204,7 @@ class PlanServiceImplTest {
             .when(historyService.getHistoryByEntityNameAndEntityId(Plan.class.getSimpleName(), 1L))
             .thenReturn(List.of(historyMockData()));
         List<History> history = testInstance.getPlanHistory(planMockData());
-        assertEquals(history.get(0).getComment(), TEST_COMMENT);
+        assertEquals(history.getFirst().getComment(), TEST_COMMENT);
 
     }
 

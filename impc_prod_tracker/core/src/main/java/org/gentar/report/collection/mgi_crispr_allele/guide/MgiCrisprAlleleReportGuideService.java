@@ -6,7 +6,6 @@ public interface MgiCrisprAlleleReportGuideService {
 
     /**
      *
-     * @param planIds
      * @return a list of MgiCrisprAlleleReportGuideProjection Spring database projections
      * (this includes a production plan Id)
      */

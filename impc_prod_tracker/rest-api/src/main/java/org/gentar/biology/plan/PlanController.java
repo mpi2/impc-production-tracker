@@ -15,9 +15,6 @@
  */
 package org.gentar.biology.plan;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URLDecoder;
-import java.nio.charset.StandardCharsets;
 import org.gentar.audit.history.History;
 import org.gentar.audit.history.HistoryMapper;
 import org.gentar.biology.ChangeResponse;
@@ -39,15 +36,10 @@ import org.springframework.hateoas.PagedModel;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 import java.util.Collections;
 import java.util.List;
 
@@ -177,7 +169,7 @@ public class PlanController
     @GetMapping(value = {"/{pin}"})
     public EntityModel<?> findOne(@PathVariable String pin)
     {
-        EntityModel<PlanResponseDTO> entityModel = null;
+        EntityModel<PlanResponseDTO> entityModel;
         Plan plan = planService.getNotNullPlanByPin(pin);
         PlanResponseDTO planResponseDTO = getDTO(plan);
         entityModel = EntityModel.of(planResponseDTO);
@@ -204,8 +196,7 @@ public class PlanController
 
     private Plan getNotNullPlanByPin(String pin)
     {
-        Plan plan = planService.getNotNullPlanByPin(pin);
-        return plan;
+        return planService.getNotNullPlanByPin(pin);
     }
 
     @PutMapping(value = {"/{pin}"})
@@ -250,12 +241,7 @@ public class PlanController
     }
 
     private String decode(String value) {
-        try {
-            return URLDecoder.decode(value, StandardCharsets.UTF_8.toString());
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        }
-        return value;
+        return URLDecoder.decode(value, StandardCharsets.UTF_8);
     }
 
 }

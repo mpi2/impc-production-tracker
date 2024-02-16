@@ -1,11 +1,11 @@
 /*******************************************************************************
  * Copyright 2019 EMBL - European Bioinformatics Institute
- *
+ * <p>
  * Licensed under the Apache License, Version 2.0 (the
  * "License"); you may not use this file except in compliance
  * with the License. You may obtain a copy of the License at
  * http://www.apache.org/licenses/LICENSE-2.0
- *
+ * <p>
  * Unless required by applicable law or agreed to in writing,
  * software distributed under the License is distributed on an
  * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
@@ -52,7 +52,7 @@ import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
 import static org.springframework.http.HttpStatus.UNAUTHORIZED;
 
 /**
- * Central Exception handling. Taken from https://github.com/brunocleite/spring-boot-exception-handling.
+ * Central Exception handling. Taken from <a href="https://github.com/brunocleite/spring-boot-exception-handling">...</a>.
  */
 @Order(Ordered.HIGHEST_PRECEDENCE)
 @ControllerAdvice
@@ -192,10 +192,8 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler
         if (originalException != null)
         {
             Throwable cause = originalException.getCause();
-            if (cause instanceof ConstraintViolationException)
+            if (cause instanceof ConstraintViolationException constraintViolationException)
             {
-                ConstraintViolationException constraintViolationException =
-                    (ConstraintViolationException)cause;
                 apiError.addValidationErrors(
                     constraintViolationException.getConstraintViolations());
             }
@@ -239,7 +237,7 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler
     {
         ServletWebRequest servletWebRequest = (ServletWebRequest) request;
         log.info("{} to {}", servletWebRequest.getHttpMethod(), servletWebRequest.getRequest().getServletPath());
-        ApiError apiError = null;
+        ApiError apiError;
         String error = "Malformed JSON request";
         if (ex.getCause() instanceof JsonParseException
             || ex.getCause() instanceof JsonMappingException)

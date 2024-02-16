@@ -4,9 +4,7 @@ import org.gentar.audit.history.History;
 import org.gentar.audit.history.HistoryService;
 import org.gentar.biology.plan.engine.PlanUpdater;
 import org.gentar.biology.status.Status_;
-import org.gentar.exceptions.UserOperationFailedException;
 import org.gentar.security.abac.spring.ContextAwarePolicyEnforcement;
-import org.gentar.security.permissions.PermissionService;
 import org.gentar.statemachine.StateTransitionsManager;
 import org.springframework.stereotype.Component;
 

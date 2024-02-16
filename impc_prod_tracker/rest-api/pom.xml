@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>3.1.0</version>
+		<version>3.2.0</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>org.gentar</groupId>
@@ -15,10 +15,10 @@
 	<description>GenTaR REST API</description>
 
 	<properties>
-		<java.version>17</java.version>
+		<java.version>21</java.version>
 		<equalsverifier.version>3.10</equalsverifier.version>
 
-		<jacoco.plugin.version>0.8.8</jacoco.plugin.version>
+		<jacoco.plugin.version>0.8.11</jacoco.plugin.version>
 		<skip.coverage>false</skip.coverage>
 
 		<coverage.ratio.instruction>0.5800</coverage.ratio.instruction>

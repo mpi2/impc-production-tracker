@@ -8,7 +8,6 @@ public interface GeneInterestReportMutationService {
 
     /**
      *
-     * @param mutationIds
      * @return a list of GeneInterestReportMutationGeneProjection Spring database projections containing
      *         an Mutation Id and the associated Gene Id and Gene Symbol
      */
@@ -16,7 +15,6 @@ public interface GeneInterestReportMutationService {
 
     /**
      *
-     * @param geneProjections
      * @return a list of GeneInterestReportEsCellMutationTypeProjection Spring database projections containing
      *         an Mutation Id, Mutation Identification Number and the Mutation Categorization Name for the ES Cell allele type
      */

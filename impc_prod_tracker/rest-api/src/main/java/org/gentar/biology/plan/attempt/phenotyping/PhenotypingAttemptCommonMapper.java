@@ -11,9 +11,9 @@ import org.springframework.stereotype.Component;
 @Component
 public class PhenotypingAttemptCommonMapper implements Mapper<PhenotypingAttempt, PhenotypingAttemptCommonDTO>
 {
-    private EntityMapper entityMapper;
-    private StrainMapper strainMapper;
-    private WorkUnitMapper workUnitMapper;
+    private final EntityMapper entityMapper;
+    private final StrainMapper strainMapper;
+    private final WorkUnitMapper workUnitMapper;
 
     public PhenotypingAttemptCommonMapper(EntityMapper entityMapper,
                                           StrainMapper strainMapper,

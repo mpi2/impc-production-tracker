@@ -7,7 +7,6 @@ import java.util.Set;
 public interface MgiMutagenesisDonorFormatHelper {
     /**
      *
-     * @param mutagenesisDonorProjections
      * @return a String containing data on a set of mutagenesis donors used in a Crispr Attempt.
      */
     String formatMutagenesisDonorData (Set<MgiCrisprAlleleReportMutagenesisDonorProjection> mutagenesisDonorProjections);

@@ -1,20 +1,22 @@
 package org.gentar.audit.diff.tree;
 
-import lombok.Data;
 import lombok.EqualsAndHashCode;
-import lombok.ToString;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+@Getter
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class Node<T>
 {
+    @Setter
     @EqualsAndHashCode.Include
     private T data = null;
 
-    private Set<Node<T>> children = new HashSet<>();
+    private final Set<Node<T>> children = new HashSet<>();
 
     @EqualsAndHashCode.Include
     private Node<T> parent = null;
@@ -36,10 +38,6 @@ public class Node<T>
     public void addChildren(List<Node<T>> children) {
         children.forEach(each -> each.setParent(this));
         this.children.addAll(children);
-    }
-
-    public Set<Node<T>> getChildren() {
-        return children;
     }
 
     public Node<T> find(T element)
@@ -84,20 +82,8 @@ public class Node<T>
 
     }
 
-    public T getData() {
-        return data;
-    }
-
-    public void setData(T data) {
-        this.data = data;
-    }
-
     private void setParent(Node<T> parent) {
         this.parent = parent;
-    }
-
-    public Node<T> getParent() {
-        return parent;
     }
 
     public void print()

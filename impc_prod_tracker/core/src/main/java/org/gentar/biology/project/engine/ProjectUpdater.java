@@ -52,8 +52,7 @@ public class ProjectUpdater
      */
     private History detectTrackOfChanges(Project originalProject, Project newProject)
     {
-        History history = historyService.detectTrackOfChanges(originalProject, newProject, originalProject.getId());
-        return history;
+        return historyService.detectTrackOfChanges(originalProject, newProject, originalProject.getId());
     }
 
     private void validatePermissions(Project newProject)
@@ -89,7 +88,6 @@ public class ProjectUpdater
 
     /**
      * Stores the track of the changes.
-     * @param history
      */
     private void saveTrackOfChanges(History history)
     {

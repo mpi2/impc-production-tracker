@@ -6,18 +6,15 @@ import org.gentar.biology.plan.type.PlanType;
 import org.gentar.biology.plan.type.PlanTypeName;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
-import java.util.List;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import static org.gentar.mockdata.MockData.MGI_00000001;
-import static org.gentar.mockdata.MockData.projectIntentionGeneListMockData;
-import static org.gentar.mockdata.MockData.projectIntentionGeneMockData;
-import static org.gentar.mockdata.MockData.projectMockData;
+import java.util.List;
+
+import static org.gentar.mockdata.MockData.*;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @ExtendWith(MockitoExtension.class)
 class ProjectQueryHelperTest {

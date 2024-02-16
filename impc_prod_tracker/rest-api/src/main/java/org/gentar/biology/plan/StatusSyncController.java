@@ -82,7 +82,7 @@ public class StatusSyncController
 
     private List<Plan> getPlansToProcess()
     {
-        List<Plan> plans = new ArrayList<>();
+        List<Plan> plans;
 
         List<String> filterStatuses =
             Arrays.asList("Attempt In Progress", "Embryos Obtained");

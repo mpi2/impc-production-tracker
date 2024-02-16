@@ -15,6 +15,8 @@
  */
 package org.gentar.biology.project.search;
 
+import org.gentar.biology.project.Project;
+import org.gentar.biology.project.ProjectService;
 import org.gentar.biology.project.search.filter.FluentSearchResultFilter;
 import org.gentar.biology.project.search.filter.ProjectFilter;
 import org.gentar.util.PaginationHelper;
@@ -22,19 +24,17 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.hateoas.PagedModel;
 import org.springframework.stereotype.Component;
-import org.gentar.biology.project.Project;
-import org.gentar.biology.project.ProjectService;
+
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.Objects;
 
 @Component
 public class ProjectSearcherServiceImpl implements ProjectSearcherService
 {
-    private Searcher searcher;
-    private ProjectService projectService;
+    private final Searcher searcher;
+    private final ProjectService projectService;
 
     public ProjectSearcherServiceImpl(
         Searcher searcher,

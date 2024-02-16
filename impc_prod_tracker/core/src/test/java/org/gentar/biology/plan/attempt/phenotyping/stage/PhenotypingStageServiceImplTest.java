@@ -1,22 +1,5 @@
 package org.gentar.biology.plan.attempt.phenotyping.stage;
 
-import static org.gentar.mockdata.MockData.PIN_000000001;
-import static org.gentar.mockdata.MockData.PSN_000000001;
-import static org.gentar.mockdata.MockData.TEST_COMMENT;
-import static org.gentar.mockdata.MockData.TEST_NAME;
-import static org.gentar.mockdata.MockData.historyMockData;
-import static org.gentar.mockdata.MockData.phenotypingAttemptMockData;
-import static org.gentar.mockdata.MockData.phenotypingStageMockData;
-import static org.gentar.mockdata.MockData.phenotypingStageTypeMockData;
-import static org.gentar.mockdata.MockData.planMockData;
-import static org.gentar.mockdata.MockData.processEventMockData;
-import static org.gentar.mockdata.MockData.transitionEvaluationMockData;
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.lenient;
-
-import java.util.Collection;
-import java.util.List;
 import org.gentar.audit.history.History;
 import org.gentar.audit.history.HistoryService;
 import org.gentar.biology.plan.Plan;
@@ -24,12 +7,9 @@ import org.gentar.biology.plan.PlanService;
 import org.gentar.biology.plan.attempt.phenotyping.PhenotypingAttempt;
 import org.gentar.biology.plan.attempt.phenotyping.stage.type.PhenotypingStageType;
 import org.gentar.biology.plan.attempt.phenotyping.stage.type.PhenotypingStageTypeRepository;
-import org.gentar.biology.project.ProjectRepository;
 import org.gentar.exceptions.NotFoundException;
 import org.gentar.exceptions.UserOperationFailedException;
-import org.gentar.security.abac.Resource;
 import org.gentar.security.abac.ResourceAccessChecker;
-import org.gentar.security.permissions.Actions;
 import org.gentar.statemachine.ProcessEvent;
 import org.gentar.statemachine.TransitionAvailabilityEvaluator;
 import org.gentar.statemachine.TransitionEvaluation;
@@ -39,6 +19,13 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
+
+import java.util.List;
+
+import static org.gentar.mockdata.MockData.*;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.lenient;
 
 @ExtendWith(MockitoExtension.class)
 class PhenotypingStageServiceImplTest {
@@ -222,7 +209,7 @@ class PhenotypingStageServiceImplTest {
             .when(historyService.getHistoryByEntityNameAndEntityId(PhenotypingStage.class.getSimpleName(), 1L))
             .thenReturn(List.of(historyMockData()));
         List<History> history = testInstance.getPhenotypingStageHistory(phenotypingStageMockData() );
-        assertEquals(history.get(0).getComment(), TEST_COMMENT);
+        assertEquals(history.getFirst().getComment(), TEST_COMMENT);
     }
 
     @Test

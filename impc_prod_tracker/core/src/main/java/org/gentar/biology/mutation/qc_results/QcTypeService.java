@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class QcTypeService
 {
-    private QcTypeRepository qcTypeRepository;
+    private final QcTypeRepository qcTypeRepository;
 
     public QcTypeService(QcTypeRepository qcTypeRepository)
     {

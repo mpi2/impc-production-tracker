@@ -1,7 +1,6 @@
 package org.gentar.report.collection.mgi_modification_allele.mutation;
 
 import org.gentar.report.utils.mutation.EsCellModificationAlleleReportMutationType;
-import org.gentar.report.utils.mutation.EsCellMutationType;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -28,7 +27,7 @@ public class MgiModificationAlleleReportMutationServiceImpl implements MgiModifi
         List<String> mutationMins =
                 mutationGeneProjections
                         .stream()
-                        .map(i -> i.getMutationIdentificationNumber())
+                        .map(MgiModificationAlleleReportMutationGeneProjection::getMutationIdentificationNumber)
                         .collect(Collectors.toList());
 
         return modificationAlleleReportMutationRepository.findSelectedEsCellMutationTypeProjections(mutationMins);
@@ -40,7 +39,7 @@ public class MgiModificationAlleleReportMutationServiceImpl implements MgiModifi
                 .stream()
                 .collect(Collectors.toMap(
                         MgiModificationAlleleReportEsCellMutationTypeProjection::getMutationId,
-                        ( i -> { return classifyMutationType(i.getMutationCategorizationName());}),
+                        ( i -> classifyMutationType(i.getMutationCategorizationName())),
                         (value1, value2) -> value1 ));
     }
 

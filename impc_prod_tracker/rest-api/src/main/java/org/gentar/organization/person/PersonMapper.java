@@ -31,10 +31,10 @@ import java.util.Set;
 @Component
 public class PersonMapper implements Mapper<Person, PersonDTO>
 {
-    private EntityMapper entityMapper;
-    private PermissionService permissionService;
-    private PersonRoleWorkUnitMapper personRoleWorkUnitMapper;
-    private PersonRoleConsortiumMapper personRoleConsortiumMapper;
+    private final EntityMapper entityMapper;
+    private final PermissionService permissionService;
+    private final PersonRoleWorkUnitMapper personRoleWorkUnitMapper;
+    private final PersonRoleConsortiumMapper personRoleConsortiumMapper;
 
     public PersonMapper(
         EntityMapper entityMapper,
@@ -69,6 +69,7 @@ public class PersonMapper implements Mapper<Person, PersonDTO>
             }
             personDTO.setActionPermissions(actionPermissionDTOS);
         }
+        assert personDTO != null;
         personDTO.setPassword(null);
         return personDTO;
     }

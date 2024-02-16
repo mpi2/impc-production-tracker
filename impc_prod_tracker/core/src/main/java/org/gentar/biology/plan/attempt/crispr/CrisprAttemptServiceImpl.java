@@ -39,15 +39,15 @@ import java.util.Optional;
 @Component
 public class CrisprAttemptServiceImpl implements CrisprAttemptService
 {
-    private CrisprAttemptRepository crisprAttemptRepository;
-    private GenotypePrimerRepository genotypePrimerRepository;
-    private NucleaseRepository nucleaseRepository;
-    private NucleaseTypeRepository nucleaseTypeRepository;
-    private NucleaseClassRepository nucleaseClassRepository;
-    private MutagenesisDonorRepository mutagenesisDonorRepository;
-    private AssayTypeRepository assayTypeRepository;
-    private GuideFormatRepository guideFormatRepository;
-    private GuideSourceRepository guideSourceRepository;
+    private final CrisprAttemptRepository crisprAttemptRepository;
+    private final GenotypePrimerRepository genotypePrimerRepository;
+    private final NucleaseRepository nucleaseRepository;
+    private final NucleaseTypeRepository nucleaseTypeRepository;
+    private final NucleaseClassRepository nucleaseClassRepository;
+    private final MutagenesisDonorRepository mutagenesisDonorRepository;
+    private final AssayTypeRepository assayTypeRepository;
+    private final GuideFormatRepository guideFormatRepository;
+    private final GuideSourceRepository guideSourceRepository;
 
     public CrisprAttemptServiceImpl(
             CrisprAttemptRepository crisprAttemptRepository,

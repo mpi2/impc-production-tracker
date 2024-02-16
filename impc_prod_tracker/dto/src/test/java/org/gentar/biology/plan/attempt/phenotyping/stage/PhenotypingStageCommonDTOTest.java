@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Test;
 import org.util.JsonConverter;
 
 import java.time.LocalDate;
-import java.util.Arrays;
+import java.util.List;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.notNullValue;
@@ -21,7 +21,7 @@ class PhenotypingStageCommonDTOTest
         phenotypingStageCommonDTO.setInitialDataReleaseDate(LocalDate.parse("2020-06-17"));
 
         TissueDistributionDTO tissueDistributionDTO = new TissueDistributionDTO();
-        phenotypingStageCommonDTO.setTissueDistributionCentreDTOs(Arrays.asList(tissueDistributionDTO));
+        phenotypingStageCommonDTO.setTissueDistributionCentreDTOs(List.of(tissueDistributionDTO));
 
         String json = JsonConverter.toJson(phenotypingStageCommonDTO);
         assertThat(json, is(notNullValue()));

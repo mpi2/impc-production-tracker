@@ -6,7 +6,6 @@ public interface MgiPhenotypingColonyReportOutcomeService {
 
     /**
      *
-     * @param outcomeIds
      * @return a list of MgiPhenotypingColonyReportOutcomeMutationProjection Spring database projections containing
      *         an Outcome Id and the associated Mutation Id and Mutation Symbol
      */

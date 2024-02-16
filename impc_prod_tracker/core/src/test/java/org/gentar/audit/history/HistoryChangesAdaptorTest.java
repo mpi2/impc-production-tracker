@@ -28,18 +28,18 @@ public class HistoryChangesAdaptorTest
         species1.setId(1L);
         Project project1 = new Project();
         project1.setId(1L);
-        project1.setSpecies(new HashSet<>(Arrays.asList(species1)));
-        species1.setProjects(new HashSet<>(Arrays.asList(project1)));
+        project1.setSpecies(new HashSet<>(List.of(species1)));
+        species1.setProjects(new HashSet<>(List.of(project1)));
 
         Species species2 = new Species();
         species2.setId(2L);
         Project project2 = new Project();
         project2.setId(2L);
-        project2.setSpecies(new HashSet<>(Arrays.asList(species2)));
-        species2.setProjects(new HashSet<>(Arrays.asList(project2)));
+        project2.setSpecies(new HashSet<>(List.of(species2)));
+        species2.setProjects(new HashSet<>(List.of(project2)));
 
         HistoryChangesAdaptor<Project> historyChangesAdaptor =
-            new HistoryChangesAdaptor<>(Arrays.asList("id"), project1, project2);
+            new HistoryChangesAdaptor<>(List.of("id"), project1, project2);
 
         List<ChangeDescription> changeDescriptionList = historyChangesAdaptor.getChanges();
     }
@@ -61,11 +61,11 @@ public class HistoryChangesAdaptorTest
 
         AssignmentStatus assignmentStatus1 = new AssignmentStatus();
         assignmentStatus1.setName("S1");
-        assignmentStatus1.setId(1l);
+        assignmentStatus1.setId(1L);
 
         AssignmentStatus assignmentStatus2 = new AssignmentStatus();
         assignmentStatus2.setName("S2");
-        assignmentStatus2.setId(2l);
+        assignmentStatus2.setId(2L);
 
         Project p1 = new Project();
         p1.setId(1L);
@@ -78,7 +78,7 @@ public class HistoryChangesAdaptorTest
 
         p1.setAssignmentStatus(assignmentStatus1);
         p2.setAssignmentStatus(assignmentStatus2);
-        testInstance = new HistoryChangesAdaptor<>(Arrays.asList("id"), p1, p2);
+        testInstance = new HistoryChangesAdaptor<>(List.of("id"), p1, p2);
 
         List<ChangeDescription> changeDescriptionList = testInstance.getChanges();
 

@@ -16,7 +16,7 @@ public class MgiNucleaseFormatHelperImpl implements MgiNucleaseFormatHelper{
         if (nucleaseProjections != null) {
             result = nucleaseProjections
                     .stream()
-                    .map(p -> formatNuclease(p))
+                    .map(this::formatNuclease)
                     .collect(Collectors.joining("**"));
         }
 

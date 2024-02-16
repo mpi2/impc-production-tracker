@@ -121,7 +121,6 @@ public class PlanUpdaterImpl implements PlanUpdater
 
     /**
      * Stores the track of the changes.
-     * @param history
      */
     private void saveTrackOfChanges(History history)
     {

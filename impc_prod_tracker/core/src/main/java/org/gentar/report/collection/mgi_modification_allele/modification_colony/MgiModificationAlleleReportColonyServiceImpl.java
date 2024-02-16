@@ -63,7 +63,7 @@ public class MgiModificationAlleleReportColonyServiceImpl implements MgiModifica
                 .entrySet()
                 .stream()
                 .filter(e -> e.getValue().size() == 1)
-                .collect(Collectors.toMap(Map.Entry::getKey, e -> List.copyOf(e.getValue()).get(0)));
+                .collect(Collectors.toMap(Map.Entry::getKey, e -> List.copyOf(e.getValue()).getFirst()));
 
         return filteredOutcomeMutationMap;
     }
@@ -91,7 +91,7 @@ public class MgiModificationAlleleReportColonyServiceImpl implements MgiModifica
                 .entrySet()
                 .stream()
                 .filter(e -> e.getValue().size() == 1)
-                .collect(Collectors.toMap(Map.Entry::getKey, e -> List.copyOf(e.getValue()).get(0)));
+                .collect(Collectors.toMap(Map.Entry::getKey, e -> List.copyOf(e.getValue()).getFirst()));
 
         return filteredProductionOutcomeMutationMap;
     }
@@ -114,7 +114,7 @@ public class MgiModificationAlleleReportColonyServiceImpl implements MgiModifica
                 .entrySet()
                 .stream()
                 .filter(e -> e.getValue().size() == 1)
-                .collect(Collectors.toMap(map -> map.getKey(), map -> List.copyOf(map.getValue()).get(0)));
+                .collect(Collectors.toMap(Map.Entry::getKey, map -> List.copyOf(map.getValue()).getFirst()));
     }
 
     @Override
@@ -145,17 +145,17 @@ public class MgiModificationAlleleReportColonyServiceImpl implements MgiModifica
 
     private List<Long> getFilteredMutationIds() {
         return filteredOutcomeMutationMap
-                .entrySet()
+                .values()
                 .stream()
-                .map(e -> e.getValue().getMutationId())
+                .map(MgiModificationAlleleReportOutcomeMutationProjection::getMutationId)
                 .collect(Collectors.toList());
     }
 
     private List<Long> getFilteredProductionMutationIds() {
         return filteredProductionOutcomeMutationMap
-                .entrySet()
+                .values()
                 .stream()
-                .map(e -> e.getValue().getMutationId())
+                .map(MgiModificationAlleleReportOutcomeMutationProjection::getMutationId)
                 .collect(Collectors.toList());
     }
 

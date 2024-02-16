@@ -1,13 +1,13 @@
 package org.gentar.report;
 
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Component
 public class ReportTypeServiceImpl implements ReportTypeService {
@@ -23,7 +23,7 @@ public class ReportTypeServiceImpl implements ReportTypeService {
         ReportTypeName
                 .stream()
                 .filter(rt -> !reportTypeExistsInDatabase(rt.getLabel()))
-                .forEach(rt -> saveDataBaseReportType(rt));
+                .forEach(this::saveDataBaseReportType);
     }
 
     public void createSpecificReportType(HttpServletResponse response, String name) throws IOException {
@@ -38,7 +38,7 @@ public class ReportTypeServiceImpl implements ReportTypeService {
         ReportTypeName
                 .stream()
                 .filter(rt -> reportTypeExistsInDatabase(rt.getLabel()))
-                .forEach(rt -> updateDataBaseReportTypeDescription(rt));
+                .forEach(this::updateDataBaseReportTypeDescription);
     }
 
     public void updateReportTypeDescription(HttpServletResponse response, String name) {
@@ -53,19 +53,13 @@ public class ReportTypeServiceImpl implements ReportTypeService {
         ReportTypeName
                 .stream()
                 .filter(rt -> reportTypeExistsInDatabase(rt.getLabel()))
-                .forEach(rt -> updateDataBaseReportTypePublicSetting(rt));
+                .forEach(this::updateDataBaseReportTypePublicSetting);
     }
 
     public List<ReportType> listPublicReportTypes() {
 
         List<ReportType> publicReportTypes = reportTypeRepository.findAllByIsPublicIsTrue();
-        List<ReportType> reportList =
-                publicReportTypes
-                .stream()
-                .collect(Collectors.toList());
-
-        return reportList;
-
+        return new ArrayList<>(publicReportTypes);
     }
 
     @Transactional

@@ -11,7 +11,7 @@ public enum SpecimenState implements ProcessState
     SpecimenGroupInProgress("Specimen Group In Progress"),
     SpecimenGroupAborted("Specimen Group Aborted");
 
-    private String internalName;
+    private final String internalName;
 
     SpecimenState(String internalName)
     {

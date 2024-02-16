@@ -39,7 +39,7 @@ class FluentProjectFilterTest
             is(1));
         assertThat(
             "Filtered value is incorrect",
-            filteredData.get(0).getTpn(),
+            filteredData.getFirst().getTpn(),
             is("tpn1"));
     }
 
@@ -50,7 +50,7 @@ class FluentProjectFilterTest
         WorkUnit workUnit = new WorkUnit("wu1");
         Plan plan = new Plan();
         plan.setWorkUnit(workUnit);
-        data.get(0).setPlans(Collections.singleton(plan));
+        data.getFirst().setPlans(Collections.singleton(plan));
         var test =  new FluentProjectFilter(data).withWorkUnitNames(Collections.singletonList("wu1"));
         List<Project> filteredData = test.getFilteredData();
         assertThat(
@@ -60,7 +60,7 @@ class FluentProjectFilterTest
 
         assertThat(
             "Filtered value is incorrect",
-            filteredData.get(0).getTpn(),
+            filteredData.getFirst().getTpn(),
             is("tpn0"));
     }
 

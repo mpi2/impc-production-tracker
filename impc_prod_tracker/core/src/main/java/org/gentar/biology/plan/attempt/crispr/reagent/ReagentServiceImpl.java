@@ -5,7 +5,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class ReagentServiceImpl implements ReagentService
 {
-    private ReagentRepository reagentRepository;
+    private final ReagentRepository reagentRepository;
 
     public ReagentServiceImpl (ReagentRepository reagentRepository) { this.reagentRepository = reagentRepository; }
 

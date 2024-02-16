@@ -125,10 +125,10 @@ public class GeneInterestReportServiceImpl implements GeneInterestReportService
                 .entrySet()
                 .stream()
                 .sorted(Map.Entry.comparingByValue())
-                .map(e -> construcReportRow(e))
+                .map(this::construcReportRow)
                 .collect(Collectors.joining("\n"));
 
-        return Arrays.asList(header,report).stream().collect(Collectors.joining("\n"));
+        return String.join("\n", header, report);
 
     }
 
@@ -143,9 +143,7 @@ public class GeneInterestReportServiceImpl implements GeneInterestReportService
                 summaryEarlyAdultPhenotypingStageStatusForPhenotypingGenes.getOrDefault(e.getKey(), "")
         );
 
-        return content
-                .stream()
-                .collect(Collectors.joining("\t"));
+        return String.join("\t", content);
     }
 
     private String generateReportHeaders() {
@@ -159,11 +157,7 @@ public class GeneInterestReportServiceImpl implements GeneInterestReportService
                 "Early Adult Phenotyping Status"
         );
 
-        String headerString =   headers
-                .stream()
-                .collect(Collectors.joining("\t"));
-
-        return headerString;
+        return String.join("\t", headers);
 
     }
 }

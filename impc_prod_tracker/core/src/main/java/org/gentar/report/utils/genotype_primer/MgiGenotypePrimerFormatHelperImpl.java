@@ -16,7 +16,7 @@ public class MgiGenotypePrimerFormatHelperImpl implements MgiGenotypePrimerForma
         if (projections != null) {
             result = projections
                     .stream()
-                    .map(p -> formatGenotypePrimer(p))
+                    .map(this::formatGenotypePrimer)
                     .collect(Collectors.joining("**"));
         }
         //result = '"' + result + '"';

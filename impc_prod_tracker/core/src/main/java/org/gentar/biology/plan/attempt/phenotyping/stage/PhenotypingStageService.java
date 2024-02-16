@@ -61,7 +61,6 @@ public interface PhenotypingStageService
     /**
      * Updates an existing phenotyping stage.
      * @param phenotypingStage New data for the phenotyping stage.
-     * @return
      */
     History update(PhenotypingStage phenotypingStage);
 

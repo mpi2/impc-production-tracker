@@ -25,7 +25,7 @@ import org.gentar.biology.project.assignment.AssignmentStatus;
 @Component
 public class AssignmentStatusMapper implements Mapper<AssignmentStatus, String>
 {
-    private AssignmentStatusService assignmentStatusService;
+    private final AssignmentStatusService assignmentStatusService;
 
     private static final String ASSIGNMENT_STATUS_NOT_FOUND_ERROR = "Assignment status '%s' does not exist.";
 
@@ -50,7 +50,7 @@ public class AssignmentStatusMapper implements Mapper<AssignmentStatus, String>
 
         if (assignmentStatus == null)
         {
-            throw new UserOperationFailedException(String.format(ASSIGNMENT_STATUS_NOT_FOUND_ERROR, assignmentStatus));
+            throw new UserOperationFailedException(ASSIGNMENT_STATUS_NOT_FOUND_ERROR);
         }
 
         return assignmentStatus;

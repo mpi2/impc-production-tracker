@@ -26,7 +26,7 @@ public class PlanStatusSummaryHelperImpl implements PlanStatusSummaryHelper {
                 .filter(i -> !(statusService.getAbortedPlanStatuses().contains(i)))
                 .collect(Collectors.toList());
 
-        if (activePlanStatuses.size() > 0){
+        if (!activePlanStatuses.isEmpty()){
             status = comparePlanStatusToCalculateSummary(activePlanStatuses);
         } else {
             status = comparePlanStatusToCalculateSummary(planStatuses);

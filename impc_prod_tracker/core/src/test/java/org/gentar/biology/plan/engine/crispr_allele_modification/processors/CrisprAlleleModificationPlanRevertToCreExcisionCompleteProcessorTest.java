@@ -55,7 +55,8 @@ class CrisprAlleleModificationPlanRevertToCreExcisionCompleteProcessorTest {
     }
 
     private static ProcessEvent processEventMockData() {
-        ProcessEvent processEvent = new ProcessEvent() {
+
+        return new ProcessEvent() {
             @Override
             public Class<? extends Processor> getNextStepProcessor() {
                 return null;
@@ -111,8 +112,6 @@ class CrisprAlleleModificationPlanRevertToCreExcisionCompleteProcessorTest {
                 return null;
             }
         };
-
-        return processEvent;
     }
 
     private static TransitionEvaluation transitionEvaluationMockData() {

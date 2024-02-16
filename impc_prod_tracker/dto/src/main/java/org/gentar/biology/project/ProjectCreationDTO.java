@@ -10,7 +10,7 @@ import java.util.List;
 /**
  * Class used to receive a request from the user in order to create a project in the system.
  * The only additional information for now is the minimum information needed to create a plan
- * linked to the project and the intentions information.
+ * linked to the project and the intentions' information.
  */
 @Data
 public class ProjectCreationDTO

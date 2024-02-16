@@ -10,8 +10,8 @@ import java.util.Set;
 @Component
 public class PhenotypingAttemptCreationMapper implements Mapper<PhenotypingAttempt, PhenotypingAttemptCreationDTO>
 {
-    private PhenotypingStageCreationMapper phenotypingStageCreationMapper;
-    private PhenotypingAttemptCommonMapper phenotypingAttemptCommonMapper;
+    private final PhenotypingStageCreationMapper phenotypingStageCreationMapper;
+    private final PhenotypingAttemptCommonMapper phenotypingAttemptCommonMapper;
 
     public PhenotypingAttemptCreationMapper(PhenotypingStageCreationMapper phenotypingStageCreationMapper,
                                             PhenotypingAttemptCommonMapper phenotypingAttemptCommonMapper)

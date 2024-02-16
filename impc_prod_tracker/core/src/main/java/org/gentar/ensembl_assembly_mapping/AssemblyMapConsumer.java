@@ -16,7 +16,7 @@ public class AssemblyMapConsumer
     private static final String MORE_THAN_ONE_MAPPING = "There are more than one mappings for this guide.";
     private static final String ANY_MAPPING_FOUND = "There are no mappings for this guide.";
 
-    private RestTemplate restTemplate;
+    private final RestTemplate restTemplate;
 
     public AssemblyMapConsumer(RestTemplate restTemplate)
     {
@@ -42,8 +42,7 @@ public class AssemblyMapConsumer
 
     private String processResponseBody(ResponseEntity<String> response)
     {
-        String result = response.getBody();
-        return result;
+        return response.getBody();
     }
 
     public JSONObject validMapping(JSONObject json)
@@ -53,9 +52,7 @@ public class AssemblyMapConsumer
         {
             if (json.getJSONArray("mappings").length() == 1)
             {
-                json.getJSONArray("mappings").forEach(item -> {
-                    mapped[0] = (JSONObject) item;
-                });
+                json.getJSONArray("mappings").forEach(item -> mapped[0] = (JSONObject) item);
                 return mapped[0];
             } else {
                 throw new UserOperationFailedException(MORE_THAN_ONE_MAPPING);

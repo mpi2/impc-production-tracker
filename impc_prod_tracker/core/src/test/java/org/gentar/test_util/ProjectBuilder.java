@@ -2,7 +2,6 @@ package org.gentar.test_util;
 
 import org.gentar.biology.project.Project;
 import org.gentar.biology.project.assignment.AssignmentStatus;
-import org.gentar.biology.project.search.filter.ProjectFilter;
 
 public class ProjectBuilder
 {

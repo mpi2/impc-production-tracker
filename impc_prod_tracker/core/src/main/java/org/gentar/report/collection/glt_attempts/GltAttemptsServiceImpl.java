@@ -1,25 +1,19 @@
 package org.gentar.report.collection.glt_attempts;
 
 import jakarta.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.sql.Timestamp;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.stream.Collectors;
 import org.gentar.report.Report;
 import org.gentar.report.ReportService;
 import org.gentar.report.collection.glt_attempts.projection.GltAttemptsProjection;
 import org.gentar.report.collection.glt_attempts.repository.GltAttemptsRepository;
 import org.springframework.stereotype.Component;
+
+import java.io.IOException;
+import java.sql.Timestamp;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Component
 public class GltAttemptsServiceImpl implements GltAttemptsService {
@@ -665,10 +659,10 @@ public class GltAttemptsServiceImpl implements GltAttemptsService {
                                  String endMonth)
         throws ParseException {
         String endDateString = "";
-        if (endYear == null || endYear.equals("")) {
+        if (endYear == null || endYear.isEmpty()) {
             endDateString = "3000-12-31";
         } else {
-            if (endMonth == null || endMonth.equals("")) {
+            if (endMonth == null || endMonth.isEmpty()) {
                 endDateString = endYear + "-12-31";
             } else {
                 endDateString = endYear + "-" + endMonth + "-31";
@@ -684,11 +678,11 @@ public class GltAttemptsServiceImpl implements GltAttemptsService {
                                    String startMonth)
         throws ParseException {
         String startDateString = "";
-        if (startYear == null || startYear.equals("")) {
+        if (startYear == null || startYear.isEmpty()) {
             startDateString = "1000-01-01";
         } else {
 
-            if (startMonth == null || startMonth.equals("")) {
+            if (startMonth == null || startMonth.isEmpty()) {
                 startDateString = startYear + "-01-01";
             } else {
                 startDateString = startYear + "-" + startMonth + "-01";

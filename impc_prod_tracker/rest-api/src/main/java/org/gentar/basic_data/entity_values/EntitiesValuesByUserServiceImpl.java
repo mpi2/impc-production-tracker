@@ -33,11 +33,11 @@ import java.util.stream.Collectors;
 @Component
 public class EntitiesValuesByUserServiceImpl implements EntitiesValuesByUserService
 {
-    private SubjectRetriever subjectRetriever;
-    private WorkUnitService workUnitService;
-    private ConsortiumService consortiumService;
-    private RoleService roleService;
-    private ManagementService managementService;
+    private final SubjectRetriever subjectRetriever;
+    private final WorkUnitService workUnitService;
+    private final ConsortiumService consortiumService;
+    private final RoleService roleService;
+    private final ManagementService managementService;
 
     public EntitiesValuesByUserServiceImpl(
         SubjectRetriever subjectRetriever,

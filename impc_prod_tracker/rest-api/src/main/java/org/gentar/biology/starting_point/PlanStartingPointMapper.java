@@ -1,8 +1,5 @@
 package org.gentar.biology.starting_point;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URLDecoder;
-import java.nio.charset.StandardCharsets;
 import org.gentar.Mapper;
 import org.gentar.biology.outcome.Outcome;
 import org.gentar.biology.outcome.OutcomeController;
@@ -12,6 +9,9 @@ import org.gentar.biology.plan.plan_starting_point.PlanStartingPointDTO;
 import org.gentar.biology.plan.starting_point.PlanStartingPoint;
 import org.springframework.hateoas.Link;
 import org.springframework.stereotype.Component;
+
+import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -53,16 +53,13 @@ public class PlanStartingPointMapper implements Mapper<PlanStartingPoint, PlanSt
         List<Outcome> outcomes = new ArrayList<>();
         Outcome outcome = planStartingPoint.getOutcome();
         outcomes.add(outcome);
-        if (outcomes != null)
-        {
-            outcomes.forEach(x -> {
-                Link link = linkTo(methodOn(PlanController.class)
-                    .findOne(outcome.getPlan().getPin()))
-                    .withRel("productionPlan");
-                link = link.withHref(decode(link.getHref()));
-                links.add(link);
-            });
-        }
+        outcomes.forEach(x -> {
+            Link link = linkTo(methodOn(PlanController.class)
+                .findOne(outcome.getPlan().getPin()))
+                .withRel("productionPlan");
+            link = link.withHref(decode(link.getHref()));
+            links.add(link);
+        });
         planStartingPointDTO.add(links);
     }
 
@@ -73,16 +70,13 @@ public class PlanStartingPointMapper implements Mapper<PlanStartingPoint, PlanSt
         List<Outcome> outcomes = new ArrayList<>();
         Outcome outcome = planStartingPoint.getOutcome();
         outcomes.add(outcome);
-        if (outcomes != null)
-        {
-            outcomes.forEach(x ->{
-                Link link = linkTo(methodOn(OutcomeController.class)
-                    .findOneByPlanAndTpo(outcome.getPlan().getPin(), planStartingPointDTO.getTpo()))
-                    .withRel("outcome");
-                link = link.withHref(decode(link.getHref()));
-                links.add(link);
-            });
-        }
+        outcomes.forEach(x -> {
+            Link link = linkTo(methodOn(OutcomeController.class)
+                .findOneByPlanAndTpo(outcome.getPlan().getPin(), planStartingPointDTO.getTpo()))
+                .withRel("outcome");
+            link = link.withHref(decode(link.getHref()));
+            links.add(link);
+        });
         planStartingPointDTO.add(links);
     }
 
@@ -97,11 +91,6 @@ public class PlanStartingPointMapper implements Mapper<PlanStartingPoint, PlanSt
     }
 
     private String decode(String value) {
-        try {
-            return URLDecoder.decode(value, StandardCharsets.UTF_8.toString());
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        }
-        return value;
+        return URLDecoder.decode(value, StandardCharsets.UTF_8);
     }
 }

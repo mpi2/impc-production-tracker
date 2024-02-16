@@ -15,7 +15,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 
 @Component
 public class GeneInterestReportEsCellProduction implements GeneInterestReportProductionType{
@@ -77,7 +76,7 @@ public class GeneInterestReportEsCellProduction implements GeneInterestReportPro
     public Set<Long> getESCellOutcomeSet() {
         return esCellGeneProjections
                 .stream()
-                .map(gp -> gp.getOutcomeId())
+                .map(GeneInterestReportGeneProjection::getOutcomeId)
                 .collect(Collectors.toSet());
     }
 

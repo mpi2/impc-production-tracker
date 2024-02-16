@@ -1,14 +1,14 @@
 package org.gentar.biology.sequence;
 
+import jakarta.persistence.*;
 import lombok.*;
 import org.gentar.BaseEntity;
 import org.gentar.audit.diff.IgnoreForAuditingChanges;
 import org.gentar.biology.intention.project_intention_sequence.ProjectIntentionSequence;
-import org.gentar.biology.mutation.sequence.MutationSequence;
 import org.gentar.biology.sequence.category.SequenceCategory;
 import org.gentar.biology.sequence.type.SequenceType;
 import org.gentar.biology.sequence_location.SequenceLocation;
-import jakarta.persistence.*;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;

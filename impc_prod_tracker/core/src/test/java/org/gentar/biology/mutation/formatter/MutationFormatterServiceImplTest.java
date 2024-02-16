@@ -1,16 +1,5 @@
 package org.gentar.biology.mutation.formatter;
 
-import static org.gentar.mockdata.MockData.mutationMockData;
-import static org.gentar.mockdata.MockData.mutationSequenceMockData;
-import static org.gentar.mockdata.MockData.outcomeMockData;
-import static org.gentar.mockdata.MockData.planMockData;
-import static org.gentar.mockdata.MockData.sequenceMockData;
-import static org.gentar.mockdata.MockData.workUnitMockData;
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.lenient;
-
-import java.util.List;
-import java.util.Set;
 import org.gentar.biology.mutation.Mutation;
 import org.gentar.biology.mutation.MutationRepository;
 import org.gentar.biology.mutation.MutationServiceImpl;
@@ -18,15 +7,19 @@ import org.gentar.biology.mutation.sequence.MutationSequence;
 import org.gentar.biology.outcome.Outcome;
 import org.gentar.biology.plan.Plan;
 import org.gentar.biology.sequence.Sequence;
-import org.gentar.exceptions.NotFoundException;
-import org.gentar.exceptions.SystemOperationFailedException;
 import org.gentar.organization.work_unit.WorkUnit;
-import org.gentar.security.abac.ResourcePrivacy;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+
+import java.util.List;
+import java.util.Set;
+
+import static org.gentar.mockdata.MockData.*;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.mockito.Mockito.lenient;
 
 @ExtendWith(MockitoExtension.class)
 class MutationFormatterServiceImplTest {

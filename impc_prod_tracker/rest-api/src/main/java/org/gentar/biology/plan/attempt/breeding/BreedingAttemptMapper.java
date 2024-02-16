@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class BreedingAttemptMapper implements Mapper<BreedingAttempt, BreedingAttemptDTO>
 {
-    private EntityMapper entityMapper;
+    private final EntityMapper entityMapper;
 
     public BreedingAttemptMapper(EntityMapper entityMapper)
     {

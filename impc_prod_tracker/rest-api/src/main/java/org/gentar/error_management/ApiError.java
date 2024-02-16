@@ -1,11 +1,11 @@
 /*******************************************************************************
  * Copyright 2019 EMBL - European Bioinformatics Institute
- *
+ * <p>
  * Licensed under the Apache License, Version 2.0 (the
  * "License"); you may not use this file except in compliance
  * with the License. You may obtain a copy of the License at
  * http://www.apache.org/licenses/LICENSE-2.0
- *
+ * <p>
  * Unless required by applicable law or agreed to in writing,
  * software distributed under the License is distributed on an
  * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
@@ -39,7 +39,7 @@ import org.springframework.validation.ObjectError;
 
 /**
  * Class to keep detailed information of exceptions raised in the application.
- * Taken from https://github.com/brunocleite/spring-boot-exception-handling.
+ * Taken from <a href="https://github.com/brunocleite/spring-boot-exception-handling">...</a>.
  */
 @Data
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -73,14 +73,12 @@ public class ApiError
     public static ApiError of(OperationFailedException exception)
     {
         ApiError apiError = new ApiError();
-        if (exception instanceof UserOperationFailedException)
+        if (exception instanceof UserOperationFailedException uofe)
         {
-            UserOperationFailedException uofe = (UserOperationFailedException) exception;
             apiError = buildFromUserOperationFailedException(uofe);
         }
-        else if (exception instanceof SystemOperationFailedException)
+        else if (exception instanceof SystemOperationFailedException sofe)
         {
-            SystemOperationFailedException sofe = (SystemOperationFailedException) exception;
             apiError = buildFromSystemOperationFailedException(sofe);
         }
         return apiError;
@@ -121,7 +119,7 @@ public class ApiError
         else
         {
             stackTraceElements = cause.getStackTrace();
-            causeError = "[" + cause.toString() + "]";
+            causeError = "[" + cause + "]";
         }
 
         List<String> stackMessages = new ArrayList<>();
@@ -132,7 +130,7 @@ public class ApiError
 
         return
             causeError + exception.getExceptionDetail()
-                + ". Truncated Stack: " + stackMessages.toString();
+                + ". Truncated Stack: " + stackMessages;
     }
 
     private static String getExceptionMessage(Throwable exception)
@@ -145,7 +143,7 @@ public class ApiError
             {
                 cause = exception;
             }
-            message = String.format(ERROR_MESSAGE, cause.toString());
+            message = String.format(ERROR_MESSAGE, cause);
         }
         return message;
     }
@@ -252,7 +250,7 @@ public class ApiError
         Throwable cause = exception.getCause();
         if (cause != null)
         {
-            extendedDebugMessage += "["+ cause.toString() + "]";
+            extendedDebugMessage += "["+ cause + "]";
             StackTraceElement[] stackTraceElements = cause.getStackTrace();
             if (stackTraceElements != null && stackTraceElements.length > 0)
             {

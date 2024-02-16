@@ -76,10 +76,8 @@ public class OutcomeFieldsDescriptors
             "colony.distributionProducts[].endDate",
             "End date of the distribution product.");
         List<FieldDescriptor> statusTransitionFieldsDescriptors =
-            StatusTransitionFieldsDescriptors.getStatusTransitionFieldsDescriptors();;
-        statusTransitionFieldsDescriptors.forEach(x -> {
-            addField(outcomeFieldDescriptions, "colony." + x.getPath(), x.getDescription().toString());
-        });
+            StatusTransitionFieldsDescriptors.getStatusTransitionFieldsDescriptors();
+        statusTransitionFieldsDescriptors.forEach(x -> addField(outcomeFieldDescriptions, "colony." + x.getPath(), x.getDescription().toString()));
         addField(
                 outcomeFieldDescriptions,
                 "colony.distributionProducts[].distributionIdentifier",
@@ -139,7 +137,7 @@ public class OutcomeFieldsDescriptors
             "Value of the property.");
 
         List<FieldDescriptor> statusTransitionFieldsDescriptors =
-            StatusTransitionFieldsDescriptors.getStatusTransitionFieldsDescriptors();;
+            StatusTransitionFieldsDescriptors.getStatusTransitionFieldsDescriptors();
         statusTransitionFieldsDescriptors.forEach(x ->
             addField(
                 outcomeFieldDescriptions,

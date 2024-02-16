@@ -9,7 +9,6 @@ import org.gentar.report.utils.assignment.GeneAssignmentStatusHelperImpl;
 import org.gentar.report.utils.status.GeneStatusSummaryHelperImpl;
 import org.springframework.stereotype.Component;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -59,7 +58,7 @@ public class GeneInterestReportCrisprProduction implements GeneInterestReportPro
     public Set<Long> getCrisprOutcomeSet() {
         return crisprGeneProjections
                 .stream()
-                .map(gp -> gp.getOutcomeId())
+                .map(GeneInterestReportGeneProjection::getOutcomeId)
                 .collect(Collectors.toSet());
     }
 

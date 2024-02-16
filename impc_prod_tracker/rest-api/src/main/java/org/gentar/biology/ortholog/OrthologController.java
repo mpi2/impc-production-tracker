@@ -14,7 +14,7 @@ import java.util.Map;
 @CrossOrigin(origins = "*")
 public class OrthologController
 {
-    private OrthologService orthologService;
+    private final OrthologService orthologService;
 
     public OrthologController(OrthologService orthologService)
     {

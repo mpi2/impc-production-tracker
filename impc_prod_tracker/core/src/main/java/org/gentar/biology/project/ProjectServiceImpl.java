@@ -16,12 +16,6 @@
 
 package org.gentar.biology.project;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
 import org.gentar.audit.history.History;
 import org.gentar.audit.history.HistoryService;
 import org.gentar.biology.intention.project_intention_gene.ProjectIntentionGene;
@@ -43,6 +37,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Component;
+
+import java.util.*;
 
 @Component
 public class ProjectServiceImpl implements ProjectService {
@@ -81,7 +77,7 @@ public class ProjectServiceImpl implements ProjectService {
             throw new NotFoundException("Project " + tpn + " does not exist.");
         }
         projectValidator.validateReadPermissions(project);
-        addOrthologs(Arrays.asList(project));
+        addOrthologs(List.of(project));
         return projectValidator.getAccessChecked(project);
     }
 
@@ -132,14 +128,12 @@ public class ProjectServiceImpl implements ProjectService {
 
     private List<ProjectIntentionGene> getIntentionGenesByProjects(List<Project> projects) {
         List<ProjectIntentionGene> projectIntentionGenes = new ArrayList<>();
-        projects.forEach(x -> {
-            projectIntentionGenes.addAll(projectQueryHelper.getIntentionGenesByProject(x));
-        });
+        projects.forEach(x -> projectIntentionGenes.addAll(projectQueryHelper.getIntentionGenesByProject(x)));
         return projectIntentionGenes;
     }
 
     private Specification<Project> buildSpecificationsWithCriteria(ProjectFilter projectFilter) {
-        Specification<Project> specifications =
+        return
             Specification.where(
                 ProjectSpecs.withTpns(projectFilter.getTpns())
                     .and(ProjectSpecs.withMarkerSymbols(projectFilter.getMarkerSymbols()))
@@ -158,7 +152,6 @@ public class ProjectServiceImpl implements ProjectService {
                     .withPhenotypingExternalRefNames(projectFilter.getPhenotypingExternalRefs())
                     .and(ProjectSpecs.withoutNullGenesSymbols()));
 
-        return specifications;
     }
 
     @Override
@@ -218,7 +211,7 @@ public class ProjectServiceImpl implements ProjectService {
 
     @Override
     public Plan getFirstProductionPlan(Project project) {
-        return project.getPlans().stream().sorted(Comparator.comparing(Plan::getId)).findFirst()
+        return project.getPlans().stream().min(Comparator.comparing(Plan::getId))
             .get();
     }
 

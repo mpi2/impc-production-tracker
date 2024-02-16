@@ -4,7 +4,6 @@ import org.gentar.biology.project.specs.ProjectSpecs;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
-import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,8 +15,8 @@ import java.util.stream.Collectors;
 @Component
 public class ProjectIntentionService
 {
-    private ProjectQueryHelper projectQueryHelper;
-    private ProjectRepository projectRepository;
+    private final ProjectQueryHelper projectQueryHelper;
+    private final ProjectRepository projectRepository;
 
     public ProjectIntentionService(
         ProjectQueryHelper projectQueryHelper, ProjectRepository projectRepository)

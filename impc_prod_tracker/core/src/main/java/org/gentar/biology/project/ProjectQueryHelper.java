@@ -64,7 +64,7 @@ public class ProjectQueryHelper
         List<ProjectIntentionGene> intentionGenes = getIntentionGenesByProject(project);
         if (!CollectionUtils.isEmpty(intentionGenes))
         {
-            ProjectIntentionGene projectIntentionGene = intentionGenes.get(0);
+            ProjectIntentionGene projectIntentionGene = intentionGenes.getFirst();
             List<Ortholog> bestOrthologs = projectIntentionGene.getBestOrthologs();
             if (!CollectionUtils.isEmpty(bestOrthologs))
             {

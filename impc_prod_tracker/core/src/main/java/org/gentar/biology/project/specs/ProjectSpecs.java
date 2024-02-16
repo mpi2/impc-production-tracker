@@ -41,7 +41,7 @@ public class ProjectSpecs
         Specification<Project> specification = Specification.where(null);
         if (markerSymbols != null)
         {
-            specification = (Specification<Project>) (root, query, criteriaBuilder) -> {
+            specification = (root, query, criteriaBuilder) -> {
                 Path<String> symbolNamePath = ProjectPaths.getMarkerSymbolPath(root);
                 query.distinct(true);
                 return PredicateBuilder.addInPredicates(
@@ -56,7 +56,7 @@ public class ProjectSpecs
         Specification<Project> specification = Specification.where(null);
         if (genesNameOrIds != null)
         {
-            specification = (Specification<Project>) (root, query, criteriaBuilder) -> {
+            specification = (root, query, criteriaBuilder) -> {
                 List<String> lowerCaseMarkerSymbolsOrIds =
                     genesNameOrIds.stream().map(String::toLowerCase).collect(Collectors.toList());
                 Path<String> symbolNamePath = ProjectPaths.getMarkerSymbolPath(root);
@@ -77,7 +77,7 @@ public class ProjectSpecs
         Specification<Project> specification = Specification.where(null);
         if (intentionNames != null)
         {
-            specification = (Specification<Project>) (root, query, criteriaBuilder) -> {
+            specification = (root, query, criteriaBuilder) -> {
                 Path<String> geneticMutationTypeNamePath = ProjectPaths.getMolecularMutationTypeNamePath(root);
 
                 query.distinct(true);
@@ -99,7 +99,7 @@ public class ProjectSpecs
         Specification<Project> specification = Specification.where(null);
         if (workUnitNames != null)
         {
-            specification = (Specification<Project>) (root, query, criteriaBuilder) -> {
+            specification = (root, query, criteriaBuilder) -> {
                 Path<String> workUnitNamePath = ProjectPaths.getWorkUnitNamePath(root);
                 query.distinct(true);
                 return PredicateBuilder.addInPredicates(
@@ -120,7 +120,7 @@ public class ProjectSpecs
         Specification<Project> specification = Specification.where(null);
         if (workGroupNames != null)
         {
-            specification = (Specification<Project>) (root, query, criteriaBuilder) -> {
+            specification = (root, query, criteriaBuilder) -> {
                 Path<String> workGroupNamePath = ProjectPaths.getWorkGroupNamePath(root);
                 query.distinct(true);
                 return PredicateBuilder.addInPredicates(
@@ -141,7 +141,7 @@ public class ProjectSpecs
         Specification<Project> specification = Specification.where(null);
         if (statuses != null)
         {
-            specification = (Specification<Project>) (root, query, criteriaBuilder) -> {
+            specification = (root, query, criteriaBuilder) -> {
                 Path<String> statusNamePath = ProjectPaths.getAssignmentNamePath(root);
                 query.distinct(true);
                 return PredicateBuilder.addInPredicates(criteriaBuilder, statusNamePath, statuses);
@@ -161,7 +161,7 @@ public class ProjectSpecs
         Specification<Project> specification = Specification.where(null);
         if (summaryStatuses != null)
         {
-            specification = (Specification<Project>) (root, query, criteriaBuilder) -> {
+            specification = (root, query, criteriaBuilder) -> {
                 Path<String> statusNamePath = ProjectPaths.getSummaryStatusNamePath(root);
                 query.distinct(true);
                 return PredicateBuilder.addInPredicates(criteriaBuilder, statusNamePath, summaryStatuses);
@@ -181,7 +181,7 @@ public class ProjectSpecs
         Specification<Project> specification = Specification.where(null);
         if (privacies != null)
         {
-            specification = (Specification<Project>) (root, query, criteriaBuilder) -> {
+            specification = (root, query, criteriaBuilder) -> {
                 Path<String> privacyNamePath = ProjectPaths.getPrivacyNamePath(root);
                 query.distinct(true);
                 return PredicateBuilder.addInPredicates(criteriaBuilder, privacyNamePath, privacies);
@@ -201,7 +201,7 @@ public class ProjectSpecs
         Specification<Project> specification = Specification.where(null);
         if (consortia != null)
         {
-            specification = (Specification<Project>) (root, query, criteriaBuilder) -> {
+            specification = (root, query, criteriaBuilder) -> {
                 query.distinct(true);
                 Path<String> consortiumNamePath = ProjectPaths.getConsortiaNamePath(root);
                 return PredicateBuilder.addInPredicates(
@@ -222,7 +222,7 @@ public class ProjectSpecs
         Specification<Project> specification = Specification.where(null);
         if (tpns != null)
         {
-            specification = (Specification<Project>) (root, query, criteriaBuilder) -> {
+            specification = (root, query, criteriaBuilder) -> {
                 Path<String> tpnPath = ProjectPaths.getTpnPath(root);
                 query.distinct(true);
                 return PredicateBuilder.addLowerLikeOrPredicates(criteriaBuilder, tpnPath, tpns);
@@ -242,7 +242,7 @@ public class ProjectSpecs
         Specification<Project> specification = Specification.where(null);
         if (imitsMiPlans != null)
         {
-            specification = (Specification<Project>) (root, query, criteriaBuilder) -> {
+            specification = (root, query, criteriaBuilder) -> {
                 Path<Long> imitsMiPlanPath = ProjectPaths.getImitsMiPlanPath(root);
                 query.distinct(true);
                 return PredicateBuilder.addLowerLikeOrPredicatesId(criteriaBuilder, imitsMiPlanPath, imitsMiPlans);
@@ -262,7 +262,7 @@ public class ProjectSpecs
         Specification<Project> specification = Specification.where(null);
         if (productionOutcomeNames != null)
         {
-            specification = (Specification<Project>) (root, query, criteriaBuilder) -> {
+            specification = (root, query, criteriaBuilder) -> {
                 Path<String> outcomePath = ProjectPaths.getColonyNamePath(root);
                 query.distinct(true);
                 return PredicateBuilder.addInPredicates(
@@ -277,7 +277,7 @@ public class ProjectSpecs
         Specification<Project> specification = Specification.where(null);
         if (phenotypingExternalRefNames != null)
         {
-            specification = (Specification<Project>) (root, query, criteriaBuilder) -> {
+            specification = (root, query, criteriaBuilder) -> {
                 Path<String> phenotypingAttemptPath = ProjectPaths.getPhenotypingExternalRefName(root);
                 query.distinct(true);
                 return PredicateBuilder.addInPredicates(
@@ -290,7 +290,7 @@ public class ProjectSpecs
     public static Specification<Project> withoutNullGenesSymbols() {
         Specification<Project> specification = Specification.where(null);
 
-            specification = (Specification<Project>) (root, query, criteriaBuilder) -> {
+            specification = (root, query, criteriaBuilder) -> {
                 Path<String> symbolNamePath = ProjectPaths.getMarkerSymbolPath(root);
                 query.distinct(true);
                 return PredicateBuilder.notInPredicates(

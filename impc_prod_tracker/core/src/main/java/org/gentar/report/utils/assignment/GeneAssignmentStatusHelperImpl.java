@@ -24,16 +24,14 @@ public class GeneAssignmentStatusHelperImpl implements GeneAssignmentStatusHelpe
         return projectsForGenes
                 .entrySet()
                 .stream()
-                .collect(Collectors.toMap(Map.Entry::getKey, e -> {
-                    return summariseGeneAssignment(e.getValue(), assignmentForProjects);
-                }));
+                .collect(Collectors.toMap(Map.Entry::getKey, e -> summariseGeneAssignment(e.getValue(), assignmentForProjects)));
     }
 
     public String summariseGeneAssignment(List<String> projectListForGene, Map<String, String> assignmentForProjects)
     {
         String assignment = "";
         if (projectListForGene.size() == 1){
-            assignment = assignmentForProjects.get(projectListForGene.get(0));
+            assignment = assignmentForProjects.get(projectListForGene.getFirst());
         }
         else if (projectListForGene.size() > 1) {
             assignment =
@@ -55,10 +53,8 @@ public class GeneAssignmentStatusHelperImpl implements GeneAssignmentStatusHelpe
     }
 
     private Comparator<String> compareProjectAssignementByOrdering(Map<String, String> assignmentForProjects) {
-        return Comparator.comparing(i -> {
-            return assignmentStatusService
-                    .getAssignmentStatusOrderingMap()
-                    .get(assignmentForProjects.get(i));
-        });
+        return Comparator.comparing(i -> assignmentStatusService
+                .getAssignmentStatusOrderingMap()
+                .get(assignmentForProjects.get(i)));
     }
 }

@@ -1,8 +1,5 @@
 package org.gentar.biology.plan.attempt.phenotyping.stage;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URLDecoder;
-import java.nio.charset.StandardCharsets;
 import org.gentar.Mapper;
 import org.gentar.biology.plan.PlanController;
 import org.gentar.biology.plan.attempt.phenotyping.stage.status_stamp.PhenotypingStageStatusStamp;
@@ -13,6 +10,9 @@ import org.gentar.statemachine.TransitionEvaluation;
 import org.gentar.statemachine.TransitionMapper;
 import org.springframework.hateoas.Link;
 import org.springframework.stereotype.Component;
+
+import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -133,12 +133,7 @@ public class PhenotypingStageResponseMapper implements Mapper<PhenotypingStage, 
     }
 
     private String decode(String value) {
-        try {
-            return URLDecoder.decode(value, StandardCharsets.UTF_8.toString());
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        }
-        return value;
+        return URLDecoder.decode(value, StandardCharsets.UTF_8);
     }
 
 }

@@ -13,7 +13,7 @@ import static org.gentar.util.JsonHelper.fromJson;
 public class ResultMatchers
 {
 
-  private static Logger logger = LoggerFactory.getLogger(ResultMatchers.class);
+  private static final Logger logger = LoggerFactory.getLogger(ResultMatchers.class);
 
   private ResultMatchers() {}
 
@@ -60,34 +60,4 @@ public class ResultMatchers
     };
   }
 
-  /**
-   * Tests if the response contains an error object with a validation error message for the given
-   * field.
-   *
-   * @param fieldName the name of the field for which a validation error message is expected.
-   * @return ResultMatcher that performs the test described above.
-   */
-//  public static ResultMatcher validationErrorForField(String fieldName) {
-//    return result -> {
-//      String json = result.getResponse().getContentAsString();
-//      try {
-//        ErrorDTO errors = fromJson(json, ErrorDTO.class);
-//        assertThat(errors.getErrorsForField(fieldName).size())
-//            .isGreaterThan(0)
-//            .as(String.format("expected at least one validation error for field %s", fieldName));
-//      } catch (Exception e) {
-//        logger.error(
-//            String.format(
-//                "expected JSON representation of ValidationErrorsDTO but found '%s'", json),
-//            e);
-//        fail(
-//            String.format(
-//                "expected JSON representation of ValidationErrorsDTO but found '%s'", json));
-//      }
-//    };
-//  }
-
-//  public static StatusResultMatchers status() {
-//    return new StatusResultMatchers();
-//  }
 }

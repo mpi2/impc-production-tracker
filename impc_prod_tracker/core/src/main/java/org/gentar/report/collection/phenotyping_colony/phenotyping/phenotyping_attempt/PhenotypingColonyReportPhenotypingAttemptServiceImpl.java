@@ -2,6 +2,7 @@ package org.gentar.report.collection.phenotyping_colony.phenotyping.phenotyping_
 
 import org.springframework.stereotype.Component;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -31,7 +32,7 @@ public class PhenotypingColonyReportPhenotypingAttemptServiceImpl implements Phe
         return Stream.of(crisprProjections,
                 esCellProjections,
                 esCellModificationProjections)
-                .flatMap(x -> x.stream())
+                .flatMap(Collection::stream)
                 .collect(Collectors.toList());
 
     }

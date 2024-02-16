@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class StrainServiceImpl implements StrainService
 {
-    private StrainRepository strainRepository;
+    private final StrainRepository strainRepository;
     private static final String STRAIN_NOT_FOUND_ERROR = "Strain '%s' does not exist.";
 
     public StrainServiceImpl (StrainRepository strainRepository)

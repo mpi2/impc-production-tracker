@@ -15,9 +15,9 @@ import java.util.Set;
 @Component
 public class PlanCommonDataMapper implements Mapper<Plan, PlanCommonDataDTO>
 {
-    private FunderMapper funderMapper;
-    private WorkUnitMapper workUnitMapper;
-    private WorkGroupMapper workGroupMapper;
+    private final FunderMapper funderMapper;
+    private final WorkUnitMapper workUnitMapper;
+    private final WorkGroupMapper workGroupMapper;
 
     public PlanCommonDataMapper(
         FunderMapper funderMapper,

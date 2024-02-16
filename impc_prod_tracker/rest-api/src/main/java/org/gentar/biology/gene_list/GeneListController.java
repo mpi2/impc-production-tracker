@@ -15,20 +15,15 @@
  */
 package org.gentar.biology.gene_list;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URLDecoder;
-import java.nio.charset.StandardCharsets;
+import jakarta.persistence.EntityManager;
+import jakarta.servlet.http.HttpServletResponse;
 import org.gentar.biology.gene.external_ref.GeneExternalService;
 import org.gentar.biology.gene_list.filter.GeneListFilter;
 import org.gentar.biology.gene_list.filter.GeneListFilterBuilder;
 import org.gentar.biology.gene_list.record.GeneListProjection;
 import org.gentar.biology.gene_list.record.ListRecord;
 import org.gentar.biology.gene_list.record.ListRecordTypeService;
-import org.gentar.helpers.CsvReader;
-import org.gentar.helpers.CsvWriter;
-import org.gentar.helpers.GeneListCsvRecord;
-import org.gentar.helpers.LinkUtil;
-import org.gentar.helpers.SearchCsvRecord;
+import org.gentar.helpers.*;
 import org.gentar.organization.consortium.Consortium;
 import org.gentar.organization.consortium.ConsortiumService;
 import org.springframework.data.domain.Page;
@@ -40,21 +35,13 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import jakarta.persistence.EntityManager;
-import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -324,7 +311,7 @@ public class GeneListController
         List<GeneListProjection> glp = geneListService.getGeneListProjectionsByConsortiumName(consortiumName);
         Map<Long, List<GeneListProjection>> listRecordGenes = glp.stream().collect(Collectors.groupingBy(GeneListProjection::getId));
         //System.out.println(listRecordGenes.containsKey(1L));
-        System.out.println(listRecordGenes.get(1L).get(0));
+        System.out.println(listRecordGenes.get(1L).getFirst());
 
         Map<String, Set<String>> geneProjectsSet = glp.stream().collect(Collectors.groupingBy(GeneListProjection::getSymbol, Collectors.mapping(GeneListProjection::getTpn, Collectors.toSet())));
         Map<String, Set<String>> projectSummaryStatus = glp.stream().collect(Collectors.groupingBy(GeneListProjection::getTpn, Collectors.mapping(GeneListProjection::getSummaryStatus, Collectors.toSet())));
@@ -339,11 +326,11 @@ public class GeneListController
                 List<String> projectList = getProjectsForListRecord(k,geneSymbols, geneProjectsSet);
                 projectList.forEach(tpn ->
                     System.out.println(String.join(",", geneSymbols) +
-                            "\t" + listRecordGenes.get(k).get(0).getNote() +
+                            "\t" + listRecordGenes.get(k).getFirst().getNote() +
                             "\t" + listRecordTypeByListRecord.get(k).stream().distinct().collect(Collectors.joining(",")) +
-                            "\t" + listRecordGenes.get(k).get(0).getVisible() +
+                            "\t" + listRecordGenes.get(k).getFirst().getVisible() +
                             "\t" + tpn +
-                            "\t" + List.copyOf(projectSummaryStatus.get(tpn)).get(0)
+                            "\t" + List.copyOf(projectSummaryStatus.get(tpn)).getFirst()
                     )
 
                 );
@@ -357,14 +344,14 @@ public class GeneListController
         List<String> projectList = new ArrayList<>();
 
         if (geneSymbols.size() == 1) {
-            projectList = List.copyOf(geneProjectsSet.get(geneSymbols.get(0)));
+            projectList = List.copyOf(geneProjectsSet.get(geneSymbols.getFirst()));
         } else if (geneSymbols.size() > 1) {
             List<Set<String>> listOfProjectSets  = new ArrayList<>();
             geneSymbols.forEach(s -> listOfProjectSets.add(geneProjectsSet.get(s)));
             for (int i = 1; i < listOfProjectSets.size(); i++) {
-                listOfProjectSets.get(0).retainAll(listOfProjectSets.get(i));
+                listOfProjectSets.getFirst().retainAll(listOfProjectSets.get(i));
             }
-            projectList = List.copyOf(geneProjectsSet.get(geneSymbols.get(0)));
+            projectList = List.copyOf(geneProjectsSet.get(geneSymbols.getFirst()));
         }
         return projectList;
     }
@@ -432,11 +419,6 @@ public class GeneListController
     }
 
     private static String decode(String value) {
-        try {
-            return URLDecoder.decode(value, StandardCharsets.UTF_8.toString());
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        }
-        return value;
+        return URLDecoder.decode(value, StandardCharsets.UTF_8);
     }
 }

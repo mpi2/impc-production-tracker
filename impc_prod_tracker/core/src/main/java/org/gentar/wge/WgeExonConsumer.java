@@ -13,7 +13,7 @@ public class WgeExonConsumer
     @Value("https://wge.stemcell.sanger.ac.uk/api/exon_search?species=Mouse&marker_symbol=")
     private String EXONS_URL;
 
-    private RestTemplate restTemplate;
+    private final RestTemplate restTemplate;
 
     public WgeExonConsumer(RestTemplate restTemplate)
     {
@@ -38,7 +38,6 @@ public class WgeExonConsumer
 
     private String processResponseBody(ResponseEntity<String> response)
     {
-        String result = response.getBody();
-        return result;
+        return response.getBody();
     }
 }
