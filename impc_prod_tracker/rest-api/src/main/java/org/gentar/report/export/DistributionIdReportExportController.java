@@ -35,8 +35,6 @@ public class DistributionIdReportExportController {
         this.targRepTargetingVectorDistributionProductService = targRepTargetingVectorDistributionProductService;
     }
 
-
-    //http://localhost:8080/api/reports/glt_production_numbers?attempt=crispr&workunit=IMPC&startingyear=2016&endingyear=2023
     @GetMapping("/distribution")
     @Transactional(readOnly = true)
     public void export(HttpServletResponse response,
@@ -46,7 +44,7 @@ public class DistributionIdReportExportController {
                        String reporttype) throws Exception {
 
         DistributionNetwork distributionNetwork = distributionNetworkService.getDistributionNetworkByName(networkName);
-        if(distributionNetwork==null){
+        if (distributionNetwork == null) {
             throw new Exception("distributionNetwork can not be found");
         }
         switch (reporttype) {
@@ -54,11 +52,11 @@ public class DistributionIdReportExportController {
                 List<DistributionProduct> distributionProducts = distributionProductService.getDisributionProductByDistributionNetworkId(distributionNetwork);
                 distributionProductService.generateDistributionProductReport(response, distributionProducts);
             }
-            case "targetingVector" -> {
+            case "targetingVector", "targetingvector" -> {
                 List<TargRepTargetingVectorDistributionProduct> targRepTargetingVectorDistributionProducts = targRepTargetingVectorDistributionProductService.getByDistributionNetwork(distributionNetwork);
                 targRepTargetingVectorDistributionProductService.generateDistributionProductReport(response, targRepTargetingVectorDistributionProducts);
             }
-            case "esCell" -> {
+            case "esCell", "escell" -> {
                 List<TargRepEsCellDistributionProduct> targRepEsCellDistributionProducts = targRepEsCellDistributionProductService.getByDistributionNetwork(distributionNetwork);
                 targRepEsCellDistributionProductService.generateDistributionProductReport(response, targRepEsCellDistributionProducts);
             }
