@@ -17,4 +17,6 @@ public interface TargRepEsCellRepository extends PagingAndSortingRepository<Targ
     TargRepEsCell findTargRepEsCellByName(String name);
 
     List<TargRepEsCell> findTargRepEsCellByAllele(TargRepAllele allele);
+
+    TargRepEsCell save(TargRepEsCell esCell);
 }

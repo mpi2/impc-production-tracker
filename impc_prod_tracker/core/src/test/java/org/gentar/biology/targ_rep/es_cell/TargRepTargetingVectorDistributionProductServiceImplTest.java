@@ -18,7 +18,7 @@ import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
-class TargRepEsCellServiceImplTest {
+class TargRepTargetingVectorDistributionProductServiceImplTest {
 
     @Mock
     private TargRepEsCellRepository esCellRepository;

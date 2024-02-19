@@ -1,8 +1,6 @@
 package org.gentar.biology.targ_rep.ikmc_project;
 
 import org.gentar.Mapper;
-import org.gentar.biology.targ_rep.TargRepIkmcProjectDTO;
-import org.gentar.biology.targ_rep.TargRepIkmcProjectStatusDTO;
 import org.gentar.biology.targ_rep.pipeline.TargRepPipeline;
 import org.gentar.biology.targ_rep.pipeline.TargRepPipelineService;
 import org.springframework.stereotype.Component;

@@ -56,6 +56,14 @@
       }
     }
   ],
+  "targRepEsCellDistributionProductList": [
+    {
+      "distributionNetworkName":"MMRRC",
+      "startDate":"2018-04-19",
+      "endDate":"2018-04-19",
+      "distributionIdentifier":"RRID:MMRRC_048962-UCDT"
+    }
+  ],
   "_links": {
     "pipeline": [
       {

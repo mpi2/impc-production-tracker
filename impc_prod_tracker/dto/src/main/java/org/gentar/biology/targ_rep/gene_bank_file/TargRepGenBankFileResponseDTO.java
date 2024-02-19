@@ -1,4 +1,4 @@
-package org.gentar.biology.targ_rep;
+package org.gentar.biology.targ_rep.gene_bank_file;
 
 import lombok.Data;
 import lombok.RequiredArgsConstructor;

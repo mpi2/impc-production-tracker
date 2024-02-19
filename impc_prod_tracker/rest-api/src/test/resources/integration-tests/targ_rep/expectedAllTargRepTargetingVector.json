@@ -57,6 +57,14 @@
         "mgiAlleleNamePrediction": "tm1a(EUCOMM)Wtsi",
         "productionCentreAutoUpdate": null,
         "alleleTypePrediction": "a",
+        "targRepTargetingVectorDistributionProductList": [
+          {
+            "distributionNetworkName":"MMRRC",
+            "startDate":"2018-04-19",
+            "endDate":"2018-04-19",
+            "distributionIdentifier":"RRID:MMRRC_048962-UCDT"
+          }
+        ],
         "_links": {
           "self": {
             "href": "http://localhost:8080/api/targ_rep/targeting_vectors/158"

@@ -1,8 +1,8 @@
 package org.gentar.biology.targ_rep.es_cell.distribution_qc;
 
-import org.gentar.biology.targ_rep.TargRepDistributionQcDTO;
-import org.gentar.biology.targ_rep.TargRepEsCellDistributionCentreDTO;
-import org.gentar.biology.targ_rep.TargRepEsCellResponseDTO;
+import org.gentar.biology.targ_rep.distribution_qc.TargRepDistributionQcDTO;
+import org.gentar.biology.targ_rep.es_cell.TargRepEsCellDistributionCentreDTO;
+import org.gentar.biology.targ_rep.es_cell.TargRepEsCellResponseDTO;
 import org.gentar.biology.targ_rep.distribution_qc.TargRepDistributionQc;
 import org.gentar.biology.targ_rep.distribution_qc.TargRepDistributionQcService;
 import org.springframework.stereotype.Component;
@@ -28,15 +28,14 @@ public class DistributionQcMapper {
             getTargRepDistributionQc(esCellDto);
         targRepDistributionQcDTOS.clear();
         targRepDistributionQcs
-            .forEach(repDistributionQc -> setRepDistributionQc(esCellDto, repDistributionQc));
+            .forEach(this::setRepDistributionQc);
 
         esCellDto.setTargRepDistributionQcList(targRepDistributionQcDTOS);
 
         return esCellDto;
     }
 
-    private void setRepDistributionQc(TargRepEsCellResponseDTO esCellDto,
-                                      TargRepDistributionQc repDistributionQc) {
+    private void setRepDistributionQc(TargRepDistributionQc repDistributionQc) {
         TargRepEsCellDistributionCentreDTO targRepEsCellDistributionCentre =
             new TargRepEsCellDistributionCentreDTO();
         TargRepDistributionQcDTO targRepDistributionQc = new TargRepDistributionQcDTO();

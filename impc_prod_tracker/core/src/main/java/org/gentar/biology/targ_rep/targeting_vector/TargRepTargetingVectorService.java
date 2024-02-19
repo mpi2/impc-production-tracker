@@ -12,4 +12,8 @@ public interface TargRepTargetingVectorService {
     TargRepTargetingVector getNotNullTargRepTargetingVectorById(Long id);
 
     Page<TargRepTargetingVector> getPageableTargRepTargetingVector(Pageable page);
+
+    TargRepTargetingVector getTargRepTargetingVectorByNameFailsIfNull(String name);
+
+    TargRepTargetingVector save(TargRepTargetingVector targetingVector);
 }

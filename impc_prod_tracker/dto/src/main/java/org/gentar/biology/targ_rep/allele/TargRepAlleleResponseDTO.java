@@ -1,9 +1,11 @@
-package org.gentar.biology.targ_rep;
+package org.gentar.biology.targ_rep.allele;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
+import org.gentar.biology.targ_rep.mutation.TargRepMutationSubtypeDTO;
+import org.gentar.biology.targ_rep.mutation.TargRepMutationTypeDTO;
 import org.springframework.hateoas.RepresentationModel;
 import org.springframework.hateoas.server.core.Relation;
 

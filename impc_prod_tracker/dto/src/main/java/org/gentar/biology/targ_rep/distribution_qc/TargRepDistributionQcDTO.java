@@ -1,7 +1,8 @@
-package org.gentar.biology.targ_rep;
+package org.gentar.biology.targ_rep.distribution_qc;
 
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
+import org.gentar.biology.targ_rep.es_cell.TargRepEsCellDistributionCentreDTO;
 import org.springframework.hateoas.server.core.Relation;
 
 

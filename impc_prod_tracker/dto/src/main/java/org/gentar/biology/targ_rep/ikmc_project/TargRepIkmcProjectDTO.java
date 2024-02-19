@@ -1,4 +1,4 @@
-package org.gentar.biology.targ_rep;
+package org.gentar.biology.targ_rep.ikmc_project;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;

@@ -1,6 +1,5 @@
 package org.gentar.biology.targ_rep.allele;
 
-import org.gentar.biology.targ_rep.TargRepAlleleResponseDTO;
 import org.gentar.helpers.LinkUtil;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

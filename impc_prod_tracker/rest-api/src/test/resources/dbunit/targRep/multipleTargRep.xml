@@ -100,6 +100,34 @@
             NAME="KOMP"
 
     />
+
+
+    <DISTRIBUTION_NETWORK   ID="1"
+                            NAME="MMRRC"/>
+    <DISTRIBUTION_NETWORK   ID="2"
+                            NAME="CMMR"/>
+    <DISTRIBUTION_NETWORK   ID="3"
+                            NAME="EMMA"/>
+
+    <TARG_REP_ES_CELL_DISTRIBUTION_PRODUCT
+            ID="1"
+            DISTRIBUTION_NETWORK_ID="1"
+            START_DATE="2018-04-19 00:00:00"
+            END_DATE="2018-04-19 00:00:00"
+            DISTRIBUTION_IDENTIFIER="RRID:MMRRC_048962-UCDT"
+            TARG_REP_ES_CELL_ID="14210"
+    />
+
+    <TARG_REP_TARGETING_VECTOR_DISTRIBUTION_PRODUCT
+            ID="1"
+            DISTRIBUTION_NETWORK_ID="1"
+            START_DATE="2018-04-19 00:00:00"
+            END_DATE="2018-04-19 00:00:00"
+            DISTRIBUTION_IDENTIFIER="RRID:MMRRC_048962-UCDT"
+            TARG_REP_TARGETING_VECTOR_ID="158"
+    />
+
+
     <TARG_REP_DISTRIBUTION_QC ID="2967"
                               ES_CELL_ID="14210"
                               ES_CELL_DISTRIBUTION_CENTRE_ID="2"
