@@ -23,7 +23,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/distributionNetwork")
 public class DistributionNetworkController {
 
     private final DistributionNetworkService distributionNetworkService;
@@ -32,7 +32,7 @@ public class DistributionNetworkController {
         this.distributionNetworkService = distributionNetworkService;
     }
 
-    @GetMapping(value = {"/distributionNetwork/findAllNames"})
+    @GetMapping(value = {"/findAllNames"})
     public List<String> getAlldistributionNetworkNames() {
         return distributionNetworkService.getAllDistributionNetworks().stream().map(DistributionNetwork::getName).toList();
     }
