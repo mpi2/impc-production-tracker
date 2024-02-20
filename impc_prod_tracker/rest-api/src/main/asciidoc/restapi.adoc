@@ -1184,4 +1184,8 @@ include::{snippets}/targrep/targetingVector/targetingVectorById/http-response.ad
 * 2021-10-04: The *legacy* field 'imitsAllele' in mutation object has been renamed to 'imitsAlleleId' for consistency.
               It will be read_only and only be there is the data was migrated from iMits.
 * 2023-08-01: QcNote filed added to mutation table
+* 2023-10-14: GLT Production Numbers Reports added
+* 2024-01-20: Development of a new attempt type within GenTar, termed "CRISPR Allele Modification."
+* 2024-02-05: Adding GID (Guide ID) to the guide system
+* 2024-02-20: Adition of RRIDs to the API endpoints for the Targ Rep targeting vector and ES cell data.
 
