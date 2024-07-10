@@ -72,8 +72,8 @@ public class AapSystemSubject implements SystemSubject {
     private final static String NOT_USER_INFORMATION_MESSAGE =
         "There is not associated information in the system for " +
             "the user [%s].";
-    private final static String NULL_AUTH_ID_MESSAGE =
-        "AuthId cannot be null. The jwt token may not have" +
+    private final static String NULL_EMAIL_ID_MESSAGE =
+        "email cannot be null. The jwt token may not have" +
             "all the needed information.";
     private final static String NOT_USER_INFORMATION_DEBUG_MESSAGE =
         "The user [%s] with reference id [%s] was successfully logged in but there is no related information for them " +
@@ -101,15 +101,15 @@ public class AapSystemSubject implements SystemSubject {
         this.login = login;
     }
 
-    private void loadPersonInformation(String authId) {
-        if (authId == null) {
-            throw new UserOperationFailedException(NULL_AUTH_ID_MESSAGE);
+    private void loadPersonInformation(String email) {
+        if (email == null) {
+            throw new UserOperationFailedException(NULL_EMAIL_ID_MESSAGE);
         }
-        this.person = personRepository.findPersonByAuthIdEquals(authId);
+        this.person = personRepository.findPersonByEmail(email);
         if (person == null) {
             throw new UserOperationFailedException(
                 String.format(NOT_USER_INFORMATION_MESSAGE, login),
-                String.format(NOT_USER_INFORMATION_DEBUG_MESSAGE, login, authId));
+                String.format(NOT_USER_INFORMATION_DEBUG_MESSAGE, login, email));
         } else {
             setPersonData(person);
         }
@@ -301,7 +301,7 @@ public class AapSystemSubject implements SystemSubject {
     }
 
     public SystemSubject buildSystemSubjectByPerson(Person person) {
-        loadPersonInformation(person.getAuthId());
+        loadPersonInformation(person.getEmail());
         return this;
     }
 

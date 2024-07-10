@@ -585,3 +585,28 @@ hx-test:
       kubectl rollout status -f kube/wp/test/api-service/api-service-deployment.yaml
       kubectl get pod,deployment,rs,svc,ing
     fi
+
+
+keycloak-deploy:
+  stage: keycloak-deploy
+  image: $CI_REGISTRY/mouse-informatics/helm-kubectl-alpine:latest
+  rules:
+    - if: '$PRODUCTION_DEPLOYMENT == "true" && $CI_PIPELINE_SOURCE == "schedule"'
+  script:
+  - |
+    if [ ! -z ${HH_KUBERNETES_ENDPOINT+set} ]; then
+      kubectl config set-cluster local --server="${HH_KUBERNETES_ENDPOINT}"
+      kubectl config set clusters.local.certificate-authority-data "${HH_KUBERNETES_CERTIFICATE_AUTHORITY_DATA}"
+      kubectl config set-credentials ${HH_KUBERNETES_USER} --token="${HH_KUBERNETES_USER_TOKEN}"
+      kubectl config set-context "${HH_KUBERNETES_NAMESPACE}" --cluster=local --user=${HH_KUBERNETES_USER} --namespace="${HH_KUBERNETES_NAMESPACE}"
+      kubectl config use-context "${HH_KUBERNETES_NAMESPACE}"
+      kubectl version
+      cd kube/wp/production/keycloak-service
+      # Substitute GitLab variables into Kubernetes YAML
+      sed -i "s|<KC_DB_URL_HOST>|${KC_DB_URL_HOST}|g" keycloak-deployment.yaml
+      sed -i "s|<KEYCLOAK_ADMIN_PASSWORD>|${KEYCLOAK_ADMIN_PASSWORD}|g" keycloak-deployment.yaml
+      sed -i "s|<KC_DB_PASSWORD>|${KC_DB_PASSWORD}|g" keycloak-deployment.yaml
+      kubectl apply -f keycloak-deployment.yaml -f keycloak-ingress.yaml -f keycloak-service.yaml --record
+      kubectl rollout status -f keycloak-deployment.yaml
+      kubectl get pod,deployment,rs,svc,ing
+    fi

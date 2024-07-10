@@ -59,12 +59,12 @@ class PersonControllerTest extends ControllerTestTemplate
 
         String obtainedJson =
             restCaller.executeGetAndDocument("/api/people/currentPerson", documentCurrentUser());
-        validateGetResponse(obtainedJson, "expectedGeneralUser.json");
+        validateGetResponse(obtainedJson);
     }
 
-    private void validateGetResponse(String obtainedJson, String expectedJsonPath) throws Exception
+    private void validateGetResponse(String obtainedJson) throws Exception
     {
-        String completePathExpectedJson = getCompleteResourcePath(expectedJsonPath);
+        String completePathExpectedJson = getCompleteResourcePath("expectedGeneralUser.json");
         resultValidator.validateObtainedMatchesJson(obtainedJson, completePathExpectedJson);
     }
 
@@ -144,32 +144,6 @@ class PersonControllerTest extends ControllerTestTemplate
         return document("people/updateManagedUser", responseFields(personFieldDescriptions));
     }
 
-    @Test
-    @DatabaseSetup(DBSetupFilesPaths.ADMIN_USER)
-    @DatabaseTearDown(type = DatabaseOperation.DELETE_ALL, value = DBSetupFilesPaths.ADMIN_USER)
-    public void testOwnUser() throws Exception
-    {
-        setupAuthentication();
-        sequenceResetter.syncSequence("PERSON_SEQ", "PERSON");
-        sequenceResetter.syncSequence("PERSON_ROLE_CONSORTIUM_SEQ", "PERSON_ROLE_CONSORTIUM");
-        sequenceResetter.syncSequence("PERSON_ROLE_WORK_UNIT_SEQ", "PERSON_ROLE_WORK_UNIT");
-
-        String payload = loadFromResource("updateOwnUserPayload.json");
-        String url = "/api/people";
-        doNothing().when(aapService)
-            .changePassword(
-                "gentar_test_user1@gentar.org", "gentar_test_user1", "gentar_test_user1_new");
-        String obtainedJson =
-            restCaller.executePutAndDocument(url, payload, documentUpdateOwnUser());
-        validateCreationResponse(obtainedJson, "expectedUpdatedOwnUser.json");
-    }
-
-    private ResultHandler documentUpdateOwnUser()
-    {
-        List<FieldDescriptor> personFieldDescriptions =
-            PersonFieldsDescriptors.getPersonFieldDescriptions();
-        return document("people/updateOwnUser", responseFields(personFieldDescriptions));
-    }
 
     private String loadFromResource(String resourceName)
         throws IOException

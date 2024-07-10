@@ -15,6 +15,7 @@
  *******************************************************************************/
 package org.gentar.security.authentication;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import org.gentar.exceptions.CommonErrorMessages;
 import org.gentar.exceptions.InvalidRequestException;
 import org.springframework.stereotype.Service;
@@ -40,8 +41,7 @@ public class AuthService
      * @param password: Password.
      * @return Token (jwt) if authenticated.
      */
-    public String getAuthenticationToken(String userName, String password)
-    {
+    public String getAuthenticationToken(String userName, String password) throws JsonProcessingException {
         validateNotNullCredentials(userName, password);
         return aapService.getToken(userName, password);
     }

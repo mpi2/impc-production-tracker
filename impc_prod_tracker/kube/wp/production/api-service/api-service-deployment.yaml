@@ -54,6 +54,15 @@ spec:
               value: /tracker-api
             - name: REDEPLOY_KEY
               value: "STRING_REPLACED_DURING_REDEPLOY"
+            - name: KEYCLOAK_AUTH_URL
+              value: "http://keycloak.mi-production-tracker-test:9090/auth"
+            - name: KEYCLOAK_REALM
+              value: "gentar-api"
+            - name: KEYCLOAK_CLIENT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: keycloak-secret
+                  key: client-secret
           securityContext:
             readOnlyRootFilesystem: true
             privileged: false
