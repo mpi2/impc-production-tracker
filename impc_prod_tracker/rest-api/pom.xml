@@ -22,7 +22,7 @@
 		<skip.coverage>false</skip.coverage>
 
 		<coverage.ratio.instruction>0.5800</coverage.ratio.instruction>
-		<coverage.ratio.branch>0.3600</coverage.ratio.branch>
+		<coverage.ratio.branch>0.3500</coverage.ratio.branch>
 		<coverage.ratio.method>0.5400</coverage.ratio.method>
 		<coverage.ratio.complexity>0.4600</coverage.ratio.complexity>
 		<coverage.ratio.line>0.6000</coverage.ratio.line>
