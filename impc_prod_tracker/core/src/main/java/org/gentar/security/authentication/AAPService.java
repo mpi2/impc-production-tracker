@@ -226,7 +226,7 @@ public class AAPService {
 
         String body = "[\"UPDATE_PASSWORD\"]";
 
-        String token = getToken("", "");
+        String token = getToken("testuser@test.com", "testPassword");
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
