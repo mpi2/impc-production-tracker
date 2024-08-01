@@ -598,6 +598,7 @@ keycloak-deploy:
     if [ ! -z ${KEYCLOAK_KUBERNETES_ENDPOINT+set} ]; then
       kubectl config set-cluster local --server="${KEYCLOAK_KUBERNETES_ENDPOINT}"
       kubectl config set clusters.local.certificate-authority-data "${KEYCLOAK_KUBERNETES_CERTIFICATE_AUTHORITY_DATA}"
+      echo "find keycloac1"
       kubectl config set-credentials ${HH_KUBERNETES_USER} --token="${KEYCLOAK_KUBERNETES_USER_TOKEN}"
       kubectl config set-context "${KEYCLOAK_KUBERNETES_NAMESPACE}" --cluster=local --user=${HH_KUBERNETES_USER} --namespace="${KEYCLOAK_KUBERNETES_NAMESPACE}"
       kubectl config use-context "${KEYCLOAK_KUBERNETES_NAMESPACE}"
