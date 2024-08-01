@@ -602,12 +602,13 @@ keycloak-deploy:
       kubectl config set-context "${HH_KUBERNETES_NAMESPACE}" --cluster=local --user=${HH_KUBERNETES_USER} --namespace="${HH_KUBERNETES_NAMESPACE}"
       kubectl config use-context "${HH_KUBERNETES_NAMESPACE}"
       kubectl version
-      cd impc_prod_tracker/kube/wp/production/keycloak-service
+    
+      cd impc_prod_tracker
       # Substitute GitLab variables into Kubernetes YAML
-      sed -i "s|<KC_DB_URL_HOST>|${KC_DB_URL_HOST}|g" keycloak-deployment.yaml
-      sed -i "s|<KEYCLOAK_ADMIN_PASSWORD>|${KEYCLOAK_ADMIN_PASSWORD}|g" keycloak-deployment.yaml
-      sed -i "s|<KC_DB_PASSWORD>|${KC_DB_PASSWORD}|g" keycloak-deployment.yaml
-      kubectl apply -f keycloak-deployment.yaml -f keycloak-ingress.yaml -f keycloak-service.yaml --record
-      kubectl rollout status -f keycloak-deployment.yaml
+      sed -i "s|<KC_DB_URL_HOST>|${KC_DB_URL_HOST}|g" kube/wp/production/keycloack-service/keycloak-deployment.yaml
+      sed -i "s|<KEYCLOAK_ADMIN_PASSWORD>|${KEYCLOAK_ADMIN_PASSWORD}|g" kube/wp/production/keycloack-service/keycloak-deployment.yaml
+      sed -i "s|<KC_DB_PASSWORD>|${KC_DB_PASSWORD}|g" kube/wp/production/keycloack-service/keycloak-deployment.yaml
+      kubectl apply -f kube/wp/production/keycloack-service/keycloak-deployment.yaml -f kube/wp/production/keycloack-service/keycloak-ingress.yaml -f keycloak-service.yaml --record
+      kubectl rollout status -f kube/wp/production/keycloack-service/keycloak-deployment.yaml
       kubectl get pod,deployment,rs,svc,ing
     fi
