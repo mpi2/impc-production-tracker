@@ -603,7 +603,7 @@ keycloak-deploy:
       kubectl config use-context "${HH_KUBERNETES_NAMESPACE}"
       kubectl version
     
-      cd impc_prod_tracker/kube/wp/production
+      cd impc_prod_tracker/kube/wp/production/keycloack-service
       echo "find keycloack"
       ls
       # Substitute GitLab variables into Kubernetes YAML
