@@ -604,12 +604,20 @@ keycloak-deploy:
       kubectl version
     
       cd impc_prod_tracker/kube/wp/production/keycloack-service
-      echo "find keycloack"
-      ls
+      echo "find keycloack2"
       # Substitute GitLab variables into Kubernetes YAML
       sed -i "s|<KC_DB_URL_HOST>|${KC_DB_URL_HOST}|g" kube/wp/production/keycloack-service/keycloak-deployment.yaml
+      echo "find keycloack3"
+      sed -i "s|<KEYCLOAK_ADMIN>|${KEYCLOAK_ADMIN}|g" kube/wp/production/keycloack-service/keycloak-deployment.yaml
+      echo "find keycloack3"
       sed -i "s|<KEYCLOAK_ADMIN_PASSWORD>|${KEYCLOAK_ADMIN_PASSWORD}|g" kube/wp/production/keycloack-service/keycloak-deployment.yaml
+      echo "find keycloack4"
+      sed -i "s|<KC_DB_NAME>|${KC_DB_NAME}|g" kube/wp/production/keycloack-service/keycloak-deployment.yaml
+      echo "find keycloack5"
+      sed -i "s|<KC_DB_USERNAME>|${KC_DB_USERNAME}|g" kube/wp/production/keycloack-service/keycloak-deployment.yaml
+      echo "find keycloack6"
       sed -i "s|<KC_DB_PASSWORD>|${KC_DB_PASSWORD}|g" kube/wp/production/keycloack-service/keycloak-deployment.yaml
+      echo "find keycloack7"
       kubectl apply -f kube/wp/production/keycloack-service/keycloak-deployment.yaml -f kube/wp/production/keycloack-service/keycloak-ingress.yaml -f keycloak-service.yaml --record
       kubectl rollout status -f kube/wp/production/keycloack-service/keycloak-deployment.yaml
       kubectl get pod,deployment,rs,svc,ing
