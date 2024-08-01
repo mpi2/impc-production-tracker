@@ -87,22 +87,15 @@ public class AAPService {
      * @param password Password.
      * @return String with the JWT.
      */
-    public String getToken(String userName, String password) throws JsonProcessingException {
-
-
+    public String getToken(String userName, String password)
+    {
         ResponseEntity<String> response;
         HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+        headers.setBasicAuth(userName.toLowerCase(), password);
 
-        MultiValueMap<String, String> form = new LinkedMultiValueMap<>();
-        form.add("username", userName);
-        form.add("password", password);
-        form.add("grant_type", "password");
-        form.add("client_id", "gentar-api");
-
-
-        HttpEntity<MultiValueMap<String, String>> entity = new HttpEntity<>(form, headers);
-        try {
+        HttpEntity<String> entity = new HttpEntity<>("parameters", headers);
+        try
+        {
             // For some reason, using the injected restTemplate causes an odd behaviour. After
             // a successful login, if the user tries again the login process with an invalid
             // password, the call to the AAP keeps generating a valid token, when the expected
@@ -111,21 +104,16 @@ public class AAPService {
             RestTemplate restTemplate = new RestTemplate();
 
             response = restTemplate.exchange(
-                    EXTERNAL_SERVICE_URL + "realms/gentar/protocol/openid-connect/token",
-                    HttpMethod.POST,
+                    EXTERNAL_SERVICE_URL + AUTHENTICATION_ENDPOINT + '?' + TTL_ATTRIBUTE,
+                    HttpMethod.GET,
                     entity,
                     String.class);
-        } catch (HttpClientErrorException e) {
+        }
+        catch (HttpClientErrorException e)
+        {
             throw new BadCredentialsException(AUTHENTICATION_ERROR);
         }
-
-        ObjectMapper objectMapper = new ObjectMapper();
-
-        JsonNode jsonNode = objectMapper.readTree(response.getBody());
-
-        // Extract the public_key
-
-        return jsonNode.get("access_token").asText();
+        return response.getBody();
     }
 
     /**
