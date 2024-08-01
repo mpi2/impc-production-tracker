@@ -592,7 +592,7 @@ keycloak-deploy:
   stage: keycloak-deploy
   image: $CI_REGISTRY/mouse-informatics/helm-kubectl-alpine:latest
   rules:
-    - if: '$PRODUCTION_DEPLOYMENT == "true" && $CI_PIPELINE_SOURCE == "schedule"'
+    - if: '$PRODUCTION_DEPLOYMENT != "true" && $CI_PROJECT_NAMESPACE == "mouse-informatics"'
   script:
   - |
     if [ ! -z ${HH_KUBERNETES_ENDPOINT+set} ]; then
