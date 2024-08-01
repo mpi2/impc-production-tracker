@@ -604,7 +604,7 @@ keycloak-deploy:
       kubectl version
     
       cd impc_prod_tracker
-      - echo "find keycloack"
+      echo "find keycloack"
       ls
       # Substitute GitLab variables into Kubernetes YAML
       sed -i "s|<KC_DB_URL_HOST>|${KC_DB_URL_HOST}|g" kube/wp/production/keycloack-service/keycloak-deployment.yaml
