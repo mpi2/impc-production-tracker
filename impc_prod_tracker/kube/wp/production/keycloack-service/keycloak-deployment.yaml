@@ -25,12 +25,12 @@ spec:
               value: "${KEYCLOAK_ADMIN}"  # GitLab CI/CD variable for admin username
             - name: KEYCLOAK_ADMIN_PASSWORD
               value: "${KEYCLOAK_ADMIN_PASSWORD}"  # GitLab CI/CD variable for admin password
-            - name: KC_DB
-              value: "${KC_DB}"  # GitLab CI/CD variable for database type (e.g., postgres)
             - name: KC_DB_URL_HOST
               value: "${KC_DB_URL_HOST}"  # GitLab CI/CD variable for database host
-            - name: KC_DB_URL_DATABASE
-              value: "${KC_DB_URL_DATABASE}"  # GitLab CI/CD variable for database name
+            - name: KC_DB
+              value: "postgres"
+            - name: KC_DB_NAME
+              value: "${KC_DB_NAME}" # GitLab CI/CD variable for database name
             - name: KC_DB_USERNAME
               value: "${KC_DB_USERNAME}"  # GitLab CI/CD variable for database username
             - name: KC_DB_PASSWORD
