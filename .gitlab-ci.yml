@@ -595,8 +595,8 @@ keycloak-deploy:
     - if: '$PRODUCTION_DEPLOYMENT != "true" && $CI_PROJECT_NAMESPACE == "mouse-informatics"'
   script:
   - |
-    if [ ! -z ${KEYCLOAK_KUBERNETES_ENDPOINT+set} ]; then
-      kubectl config set-cluster local --server="${KEYCLOAK_KUBERNETES_ENDPOINT}"
+    if [ ! -z ${HH_KUBERNETES_ENDPOINT+set} ]; then
+      kubectl config set-cluster local --server="${HH_KUBERNETES_ENDPOINT}"
       kubectl config set clusters.local.certificate-authority-data "${KEYCLOAK_KUBERNETES_CERTIFICATE_AUTHORITY_DATA}"
       echo "find keycloac1"
       kubectl config set-credentials ${HH_KUBERNETES_USER} --token="${KEYCLOAK_KUBERNETES_USER_TOKEN}"
