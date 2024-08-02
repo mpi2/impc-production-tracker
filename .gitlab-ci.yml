@@ -600,8 +600,9 @@ keycloak-deploy:
     - if: '$PRODUCTION_DEPLOYMENT != "true" && $CI_PROJECT_NAMESPACE == "mouse-informatics"'
   script:
     - |
+      echo "find keycloac0"
       if [ ! -z ${HH_KUBERNETES_ENDPOINT+set} ]; then
-      
+      echo "find keycloaceds"
         apk --no-cache --update add jq curl
       
         kubectl config set-cluster local --server="${HH_KUBERNETES_ENDPOINT}"
