@@ -611,13 +611,11 @@ keycloak-deploy:
         kubectl config set-credentials ${HH_KUBERNETES_USER} --token="${HH_KUBERNETES_USER_TOKEN}"
         kubectl config set-context "${KEYCLOAK_KUBERNETES_NAMESPACE}" --cluster=local --user=${HH_KUBERNETES_USER} --namespace="${KEYCLOAK_KUBERNETES_NAMESPACE}"
         kubectl config use-context "${KEYCLOAK_KUBERNETES_NAMESPACE}"
-        echo "find keycloac0"
         kubectl version
-        echo "find keycloac1"
         cd impc_prod_tracker
-        echo "find keycloac2"
+        echo "find keycloac1"
         # Substitute GitLab variables into Kubernetes YAML
-        sed -i "s|${KC_DB_URL_HOST}|g" kube/wp/production/keycloak-service/keycloak-deployment.yaml
+        sed -i "s|<KC_DB_URL_HOST>|${KC_DB_URL_HOST}|g" kube/wp/production/keycloak-service/keycloak-deployment.yaml
         echo "find keycloak3"
         sed -i "s|<${KEYCLOAK_ADMIN}|g" kube/wp/production/keycloak-service/keycloak-deployment.yaml
         echo "find keycloak3"
