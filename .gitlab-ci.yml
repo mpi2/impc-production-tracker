@@ -621,9 +621,10 @@ keycloak-deploy:
         sed -i "s|<KC_DB_NAME>|${KC_DB_NAME}|g" kube/wp/production/keycloak-service/keycloak-deployment.yaml
         sed -i "s|<KC_DB_USERNAME>|${KC_DB_USERNAME}|g" kube/wp/production/keycloak-service/keycloak-deployment.yaml
         sed -i "s|<KC_DB_PASSWORD>|${KC_DB_PASSWORD}|g" kube/wp/production/keycloak-service/keycloak-deployment.yaml
-        echo "find keycloak7"
-      
+
+        echo "find keycloak0"
         kubectl apply -f kube/wp/production/keycloak-service/keycloak-deployment.yaml -f kube/wp/production/keycloak-service/keycloak-ingress.yaml -f kube/wp/production/keycloak-service/keycloak-service.yaml --record
+        echo "find keycloak1"
         kubectl rollout status -f kube/wp/production/keycloak-service/keycloak-deployment.yaml
         kubectl get pod,deployment,rs,svc,ing
       fi
