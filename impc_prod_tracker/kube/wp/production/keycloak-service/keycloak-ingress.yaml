@@ -20,5 +20,5 @@ spec:
                   number: 9090
   tls:
     - hosts:
-        - keycloak.yourdomain.com
+        - keycloak.gentar.org
       secretName: keycloak-tls
