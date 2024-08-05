@@ -8,10 +8,10 @@ metadata:
     nginx.ingress.kubernetes.io/rewrite-target: /
 spec:
   rules:
-    - host: keycloak.gentar.org
+    - host: www.gentar.org
       http:
         paths:
-          - path: /
+          - path: /keycloak(/|$)(.*)
             pathType: Prefix
             backend:
               service:
@@ -20,5 +20,6 @@ spec:
                   number: 9090
   tls:
     - hosts:
-        - keycloak.gentar.org
-      secretName: keycloak-tls
+        - gentar.org
+        - www.gentar.org
+      secretName: gentar-tls
