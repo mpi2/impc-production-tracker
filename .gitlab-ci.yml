@@ -604,14 +604,17 @@ keycloak-deploy:
       if [ ! -z ${HH_KUBERNETES_ENDPOINT+set} ]; then
         
         apk --no-cache --update add jq curl
-        echo "find keycloac0"
+
         kubectl config set-cluster local --server="${HH_KUBERNETES_ENDPOINT}"
-      echo "find keycloac0dsds"
+
         kubectl config set clusters.local.certificate-authority-data "${HH_KUBERNETES_CERTIFICATE_AUTHORITY_DATA}"
-        echo "find keycloac1"
+        echo "find keycloac00"
         kubectl config set-credentials ${KEYCLOAK_KUBERNETES_USER} --token="${HH_KUBERNETES_USER_TOKEN}"
+        echo "find keycloac0"
         kubectl config set-context "${KEYCLOAK_KUBERNETES_NAMESPACE}" --cluster=local --user=${KEYCLOAK_KUBERNETES_USER} --namespace="${KEYCLOAK_KUBERNETES_NAMESPACE}"
+        echo "find keycloac1"
         kubectl config use-context "${KEYCLOAK_KUBERNETES_NAMESPACE}"
+        echo "find keycloac111"
         kubectl version
       
         cd impc_prod_tracker
