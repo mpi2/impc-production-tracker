@@ -615,16 +615,16 @@ keycloak-deploy:
         cd impc_prod_tracker
         # Substitute GitLab variables into Kubernetes YAML
 
-        sed -i "s|<KC_DB_URL_HOST>|${KC_DB_URL_HOST}|g" kube/keycloak-service/keycloak-deployment.yaml
-        sed -i "s|<KEYCLOAK_ADMIN>|${KEYCLOAK_ADMIN}|g" kube/keycloak-service/keycloak-deployment.yaml
-        sed -i "s|<KEYCLOAK_ADMIN_PASSWORD>|${KEYCLOAK_ADMIN_PASSWORD}|g" kube/keycloak-service/keycloak-deployment.yaml
-        sed -i "s|<KC_DB_NAME>|${KC_DB_NAME}|g" kube/keycloak-service/keycloak-deployment.yaml
-        sed -i "s|<KC_DB_USERNAME>|${KC_DB_USERNAME}|g" kube/keycloak-service/keycloak-deployment.yaml
-        sed -i "s|<KC_DB_PASSWORD>|${KC_DB_PASSWORD}|g" kube/keycloak-service/keycloak-deployment.yaml
+        sed -i "s|<KC_DB_URL_HOST>|${KC_DB_URL_HOST}|g" kube/keycloak/keycloak-deployment.yaml
+        sed -i "s|<KEYCLOAK_ADMIN>|${KEYCLOAK_ADMIN}|g" kube/keycloak/keycloak-deployment.yaml
+        sed -i "s|<KEYCLOAK_ADMIN_PASSWORD>|${KEYCLOAK_ADMIN_PASSWORD}|g" kube/keycloak/keycloak-deployment.yaml
+        sed -i "s|<KC_DB_NAME>|${KC_DB_NAME}|g" kube/keycloak/keycloak-deployment.yaml
+        sed -i "s|<KC_DB_USERNAME>|${KC_DB_USERNAME}|g" kube/keycloak/keycloak-deployment.yaml
+        sed -i "s|<KC_DB_PASSWORD>|${KC_DB_PASSWORD}|g" kube/keycloak/keycloak-deployment.yaml
 
         echo "find keycloak0"
-        kubectl apply -f kube/keycloak-service/keycloak-deployment.yaml -f kube/keycloak-service/keycloak-ingress.yaml -f kube/keycloak-service/keycloak-service.yaml --record
+        kubectl apply -f kube/keycloak/keycloak-deployment.yaml -f kube/keycloak/keycloak-ingress.yaml -f kube/keycloak/keycloak-service.yaml --record
         echo "find keycloak1"
-        kubectl rollout status -f kube/keycloak-service/keycloak-deployment.yaml
+        kubectl rollout status -f kube/keycloak/keycloak-deployment.yaml
         kubectl get pod,deployment,rs,svc,ing
       fi
