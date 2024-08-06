@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: ServiceAccount
 metadata:
-  name: mi-production-tracker-test-admin
+  name: mi-production-tracker-keycloak-admin
   namespace: mi-production-tracker-keycloak
 ---
 kind: Role
@@ -335,5 +335,5 @@ roleRef:
   name: mi-production-tracker-keycloak-full-access
 subjects:
 - kind: ServiceAccount
-  name: mi-production-tracker-test-admin
+  name: mi-production-tracker-keycloak-admin
   namespace: mi-production-tracker-keycloak
