@@ -5,7 +5,7 @@ metadata:
   namespace: mi-production-tracker-keycloak
 ---
 kind: Role
-apiVersion: rbac.authorization.k8s.io/v1beta1
+apiVersion: rbac.authorization.k8s.io/v1
 metadata:
   name: mi-production-tracker-keycloak-full-access
   namespace: mi-production-tracker-keycloak
@@ -324,7 +324,7 @@ rules:
   - update
   - watch
 ---
-apiVersion: rbac.authorization.k8s.io/v1beta1
+apiVersion: rbac.authorization.k8s.io/v1
 kind: RoleBinding
 metadata:
   name: mi-production-tracker-keycloak-full-access-binding
