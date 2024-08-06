@@ -1,20 +1,28 @@
 apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
-  name: keycloak-ingress
+  name: production-tracker-api-ingress
   namespace: mi-production-tracker-keycloak
   annotations:
+
+
     kubernetes.io/ingress.class: nginx
-    nginx.ingress.kubernetes.io/rewrite-target: /
+    nginx.ingress.kubernetes.io/rewrite-target: /keycloak/$2
+    nginx.ingress.kubernetes.io/from-to-www-redirect: "true"
+    # adds 301 redirect with trailing slash
+    # see: https://github.com/kubernetes/ingress-nginx/issues/646
+    nginx.ingress.kubernetes.io/configuration-snippet: |
+      rewrite ^(/keycloak)$ $1/ permanent;
+    nginx.ingress.kubernetes.io/ssl-redirect: "true"
+
 spec:
   rules:
     - host: www.gentar.org
       http:
         paths:
           - path: /keycloak(/|$)(.*)
-            pathType: Prefix
             backend:
-              serviceName: keycloak
+              serviceName: api-service-keycloak
               servicePort: 9090
   tls:
     - hosts:
