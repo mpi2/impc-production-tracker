@@ -1,45 +1,36 @@
 apiVersion: v1
 kind: ServiceAccount
 metadata:
-  name: mi-production-tracker-keycloak-deployment
+  name: ci-cd-service-account
   namespace: mi-production-tracker-keycloak
+
 ---
+
+apiVersion: rbac.authorization.k8s.io/v1
 kind: Role
-apiVersion: rbac.authorization.k8s.io/v1beta1
 metadata:
-  name: mi-production-tracker-keycloak-deployment-access
+  name: ci-cd-role
   namespace: mi-production-tracker-keycloak
 rules:
-- apiGroups:
-  - ""
-  resources:
-  - pods
-  - services
-  verbs: [ "get", "list", "watch", "create", "update", "patch", "delete" ]
-- apiGroups:
-  - "apps"
-  resources:
-  - deployments
-  - replicasets
-  verbs: [ "get", "list", "watch", "create", "update", "patch", "delete" ]
-- apiGroups:
-  - "extensions"
-  resources:
-  - deployments
-  - replicasets
-  - ingresses
-  verbs: [ "get", "list", "watch", "create", "update", "patch", "delete" ]
+  - apiGroups: [""]
+    resources: ["services", "pods", "pods/exec", "pods/log"]
+    verbs: ["get", "list", "watch", "create", "update", "delete"]
+  - apiGroups: ["apps"]
+    resources: ["deployments", "replicasets"]
+    verbs: ["get", "list", "watch", "create", "update", "delete"]
+
 ---
-apiVersion: rbac.authorization.k8s.io/v1beta1
+
+apiVersion: rbac.authorization.k8s.io/v1
 kind: RoleBinding
 metadata:
-  name: mi-production-tracker-keycloak-deployment-access-binding
+  name: ci-cd-role-binding
   namespace: mi-production-tracker-keycloak
 roleRef:
-  apiGroup: rbac.authorization.k8s.io
   kind: Role
-  name: mi-production-tracker-keycloak-deployment-access
+  name: ci-cd-role
+  apiGroup: rbac.authorization.k8s.io
 subjects:
-- kind: ServiceAccount
-  name: mi-production-tracker-keycloak-deployment
-  namespace: mi-production-tracker-keycloak
+  - kind: ServiceAccount
+    name: ci-cd-service-account
+    namespace: mi-production-tracker-keycloak
