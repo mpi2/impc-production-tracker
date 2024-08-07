@@ -24,9 +24,7 @@ spec:
             - name: KEYCLOAK_ADMIN
               value: "${KEYCLOAK_ADMIN}"  # GitLab CI/CD variable for admin username
             - name: KEYCLOAK_ADMIN_PASSWORD
-              value: "${KEYCLOAK_ADMIN_PASSWORD}"
-            - name: KUBERNETES_KEYCLOAK_USER
-              value: "${KUBERNETES_KEYCLOAK_USER}"  # GitLab CI/CD variable for admin password
+              value: "${KEYCLOAK_ADMIN_PASSWORD}"  # GitLab CI/CD variable for admin password
             - name: KC_DB_URL_HOST
               value: "${KC_DB_URL_HOST}"  # GitLab CI/CD variable for database host
             - name: KC_DB

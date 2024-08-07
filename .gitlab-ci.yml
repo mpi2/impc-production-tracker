@@ -604,14 +604,19 @@ keycloak-deploy:
       if [ ! -z ${HH_KUBERNETES_ENDPOINT+set} ]; then
         
         apk --no-cache --update add jq curl
-
+        echo "find keycloak0"
         kubectl config set-cluster local --server="${HH_KUBERNETES_ENDPOINT}"
-
-        kubectl config set clusters.local.certificate-authority-data "${HH_KUBERNETES_CERTIFICATE_AUTHORITY_DATA}"
+        echo "find keycloak1"
+        kubectl config set clusters.local.certificate-authority-data "${KEYCLOAK_KUBERNETES_CERTIFICATE_AUTHORITY_DATA}"
+        echo "find keycloak2"
         kubectl config set-credentials ${KEYCLOAK_KUBERNETES_USER} --token="${KUBERNETES_KEYCLOAK_USER_TOKEN}"
+        echo "find keycloak3"
         kubectl config set-context "${KEYCLOAK_KUBERNETES_NAMESPACE}" --cluster=local --user=${KEYCLOAK_KUBERNETES_USER} --namespace="${KEYCLOAK_KUBERNETES_NAMESPACE}"
+        echo "find keycloak4"
         kubectl config use-context "${KEYCLOAK_KUBERNETES_NAMESPACE}"
+        echo "find keycloak5"
         kubectl version
+        echo "find keycloak6"
         cd impc_prod_tracker
         # Substitute GitLab variables into Kubernetes YAML
 
