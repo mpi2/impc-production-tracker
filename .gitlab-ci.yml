@@ -607,7 +607,7 @@ keycloak-deploy:
         echo "find keycloak0"
         kubectl config set-cluster local --server="${HH_KUBERNETES_ENDPOINT}"
         echo "find keycloak1"
-        kubectl config set clusters.local.certificate-authority-data "${KEYCLOAK_KUBERNETES_CERTIFICATE_AUTHORITY_DATA}"
+        kubectl config set clusters.local.certificate-authority-data "${HH_KUBERNETES_CERTIFICATE_AUTHORITY_DATA}"
         echo "find keycloak2"
         kubectl config set-credentials ${KEYCLOAK_KUBERNETES_USER} --token="${KUBERNETES_KEYCLOAK_USER_TOKEN}"
         echo "find keycloak3"
