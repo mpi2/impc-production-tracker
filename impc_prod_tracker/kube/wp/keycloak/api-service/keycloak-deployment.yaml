@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: api-service-test
+  name: keycloak
   namespace: mi-production-tracker-keycloak
   labels:
     app: keycloak
@@ -16,7 +16,7 @@ spec:
         app: keycloak
     spec:
       containers:
-        - name: api-service-test
+        - name: keycloak
           image: quay.io/keycloak/keycloak:25.0.0  # Using GitLab CI/CD variable for image version
           ports:
             - containerPort: 8080
