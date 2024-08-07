@@ -49,7 +49,6 @@ stages:
   - sandbox-deploy
   - dev-deploy
   - test-deploy
-  - keycloak-deploy
 
 # env:
 #   stage: env
@@ -584,52 +583,5 @@ hx-test:
         # Log the status of the application deployment
         #
         kubectl rollout status -f kube/wp/test/api-service/api-service-deployment.yaml
-        kubectl get pod,deployment,rs,svc,ing
-      fi
-
-
-keycloak-deploy:
-  stage: keycloak-deploy
-  services:
-    - name: $CI_REGISTRY/mouse-informatics/dind:latest
-      alias: docker
-  image: $CI_REGISTRY/mouse-informatics/helm-kubectl-alpine:latest
-  rules:
-    - if: '$CI_COMMIT_REF_NAME == "master"'
-      when: never
-    - if: '$PRODUCTION_DEPLOYMENT != "true" && $CI_PROJECT_NAMESPACE == "mouse-informatics"'
-  script:
-    - |
-      
-      if [ ! -z ${HH_KUBERNETES_ENDPOINT+set} ]; then
-        
-        apk --no-cache --update add jq curl
-        echo "find keycloak0"
-        kubectl config set-cluster local --server="${HH_KUBERNETES_ENDPOINT}"
-        echo "find keycloak1"
-        kubectl config set clusters.local.certificate-authority-data "${HH_KUBERNETES_CERTIFICATE_AUTHORITY_DATA}"
-        echo "find keycloak2"
-        kubectl config set-credentials ${KEYCLOAK_KUBERNETES_USER} --token="${KUBERNETES_KEYCLOAK_USER_TOKEN}"
-        echo "find keycloak3"
-        kubectl config set-context "${KEYCLOAK_KUBERNETES_NAMESPACE}" --cluster=local --user=${KEYCLOAK_KUBERNETES_USER} --namespace="${KEYCLOAK_KUBERNETES_NAMESPACE}"
-        echo "find keycloak4"
-        kubectl config use-context "${KEYCLOAK_KUBERNETES_NAMESPACE}"
-        echo "find keycloak5"
-        kubectl version
-        echo "find keycloak6"
-        cd impc_prod_tracker
-        # Substitute GitLab variables into Kubernetes YAML
-
-        sed -i "s|<KC_DB_URL_HOST>|${KC_DB_URL_HOST}|g" kube/wp/keycloak/api-service/keycloak-deployment.yaml
-        sed -i "s|<KEYCLOAK_ADMIN>|${KEYCLOAK_ADMIN}|g" kube/wp/keycloak/api-service/keycloak-deployment.yaml
-        sed -i "s|<KEYCLOAK_ADMIN_PASSWORD>|${KEYCLOAK_ADMIN_PASSWORD}|g" kube/wp/keycloak/api-service/keycloak-deployment.yaml
-        sed -i "s|<KC_DB_NAME>|${KC_DB_NAME}|g" kube/wp/keycloak/api-service/keycloak-deployment.yaml
-        sed -i "s|<KC_DB_USERNAME>|${KC_DB_USERNAME}|g" kube/wp/keycloak/api-service/keycloak-deployment.yaml
-        sed -i "s|<KC_DB_PASSWORD>|${KC_DB_PASSWORD}|g" kube/wp/keycloak/api-service/keycloak-deployment.yaml
-
-        echo "find keycloak0"
-        kubectl apply -f kube/wp/keycloak/api-service/keycloak-deployment.yaml -f kube/wp/keycloak/api-service/keycloak-ingress.yaml -f kube/wp/keycloak/api-service/keycloak-service.yaml --record
-        echo "find keycloak1"
-        kubectl rollout status -f kube/wp/keycloak/api-service/keycloak-deployment.yaml
         kubectl get pod,deployment,rs,svc,ing
       fi
