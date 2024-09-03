@@ -53,4 +53,10 @@ public class TargRepEsCellServiceImpl implements TargRepEsCellService {
     public Page<TargRepEsCell> getPageableTargRepEsCell(Pageable page) {
         return targRepEsCellRepository.findAll(page);
     }
+
+    @Override
+    public TargRepEsCell save(TargRepEsCell targRepEsCell)
+            throws UserOperationFailedException {
+        return targRepEsCellRepository.save(targRepEsCell);
+    }
 }

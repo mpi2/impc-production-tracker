@@ -1,9 +1,8 @@
 package org.gentar.biology.targ_rep.allele;
 
 import org.gentar.Mapper;
-import org.gentar.biology.targ_rep.TargRepAlleleResponseDTO;
-import org.gentar.biology.targ_rep.TargRepMutationSubtypeDTO;
-import org.gentar.biology.targ_rep.TargRepMutationTypeDTO;
+import org.gentar.biology.targ_rep.mutation.TargRepMutationSubtypeDTO;
+import org.gentar.biology.targ_rep.mutation.TargRepMutationTypeDTO;
 import org.gentar.biology.targ_rep.allele.DistributionQc.MgiAlleleAccessionMapper;
 import org.springframework.hateoas.Link;
 import org.springframework.stereotype.Component;

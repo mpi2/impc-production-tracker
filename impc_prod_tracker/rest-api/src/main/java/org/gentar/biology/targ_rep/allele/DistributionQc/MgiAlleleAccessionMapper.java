@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
-import org.gentar.biology.targ_rep.TargRepAlleleResponseDTO;
+import org.gentar.biology.targ_rep.allele.TargRepAlleleResponseDTO;
 import org.gentar.biology.targ_rep.allele.TargRepAllele;
 import org.gentar.biology.targ_rep.es_cell.TargRepEsCell;
 import org.gentar.biology.targ_rep.es_cell.TargRepEsCellService;
