@@ -122,7 +122,7 @@ public class CrisprAttemptMapper implements Mapper<CrisprAttempt, CrisprAttemptD
 
     private void setGuidesToEntity(CrisprAttempt crisprAttempt, CrisprAttemptDTO crisprAttemptDTO)
     {
-        Set<Guide> guides = guideMapper.toEntities(crisprAttemptDTO.getGuideDTOS());
+        Set<Guide> guides = guideMapper.toEntities(crisprAttemptDTO);
         guides.forEach(x -> x.setCrisprAttempt(crisprAttempt));
         crisprAttempt.setGuides(guides);
     }
