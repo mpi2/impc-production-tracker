@@ -76,7 +76,7 @@ public class GuideValidator {
 
         guides.forEach(guide -> {
 
-            if (isValidSequence(guide.getGuideSequence()) && isValidSequence(guide.getPam()) ) {
+            if (!isValidSequence(guide.getGuideSequence()) || !isValidSequence(guide.getPam()) ) {
                 throw new UserOperationFailedException(SEQUENCE_ERROR);
             }
         });
