@@ -58,24 +58,25 @@ public class ReportExportController {
     }
 
 
-    public static JSONArray convertStringToJsonArray(String input) {
-        // Initialize an empty JSON array to store the results
-        JSONArray jsonArray = new JSONArray();
-
-        // Split the input string by line breaks to separate individual JSON objects
-        String[] jsonObjects = input.split("\n");
-
+    @GetMapping(value = {"/json/gene_interest_json"})
+    public ResponseEntity<?> exportAsJson() {
         try {
-            // Iterate through each JSON object string and add it to the JSON array
-            for (String jsonObjectString : jsonObjects) {
-                // Parse each JSON object string into a JSONObject
-                JSONObject jsonObject = new JSONObject(jsonObjectString.trim());
-                jsonArray.put(jsonObject);
-            }
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+            String response = reportService.getReportAsJson("gene_interest_json");
 
-        return jsonArray;
+            if (response != null) {
+                return ResponseEntity.ok()
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .body(response);
+            } else {
+                // Report not found
+                return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                        .body("Report not found");
+            }
+        } catch (Exception e) {
+            // Handle exceptions gracefully
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("An error occurred while processing the request.");
+        }
     }
 }
