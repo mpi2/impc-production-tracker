@@ -19,6 +19,7 @@ public class ColonyValidator
             "change because the colony has active phenotyping data associated with it.";
     private static final String COLONY_IS_NOT_GENOTYPE_CONFIRMED = "The colony needs to be genotype confirmed in order " +
             "to create a phenotyping plan.";
+    private static final String LEADING_AND_TRAILING_SPACE_ERROR = "The colony name contains leading or trailing spaces.";
 
     private final ColonyRepository colonyRepository;
     private final PlanStartingPointRepository planStartingPointRepository;
@@ -40,6 +41,13 @@ public class ColonyValidator
         {
             throw new UserOperationFailedException(String.format(NULL_FIELD_ERROR, "Background Strain"));
         }
+
+        if ((!colony.getName().equals(colony.getName().trim())))
+        {
+            throw new UserOperationFailedException(LEADING_AND_TRAILING_SPACE_ERROR);
+        }
+
+
         validateNewColonyNameDoesNotExist(colony);
     }
 
@@ -59,6 +67,7 @@ public class ColonyValidator
 
     private void validateNewColonyDoesIsNotAStartingPoint(Colony originalColony, Colony colony)
     {
+
         if (!originalColony.getName().equals(colony.getName()) ||
                 !originalColony.getStrain().equals(colony.getStrain()))
         {
