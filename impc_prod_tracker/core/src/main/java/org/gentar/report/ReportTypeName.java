@@ -82,7 +82,10 @@ public enum ReportTypeName implements LabeledType {
 
     PRODUCTS_ALLELE("products_allele",
                            "This report is used by IMPC to support the data release.",
-                   FALSE);
+                   FALSE),
+    GENE_INTEREST_JSON("gene_interest_json",
+            "This report is used by IMPC for register interest and feeds into the Solr gene core.",
+            FALSE);
 
     private static final Map<String, ReportTypeName> BY_LABEL = new HashMap<>();
     static
