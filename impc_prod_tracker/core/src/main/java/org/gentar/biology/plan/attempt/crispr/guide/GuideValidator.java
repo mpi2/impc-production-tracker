@@ -102,9 +102,9 @@ public class GuideValidator {
 
     private Boolean isValidSequence(String sequence) {
 
-        String dna = sequence.split("\n")[1];
-        for (int i = 0; i < dna.length(); i++) {
-            if (!dnaCharacters().contains(dna.charAt(i))) {
+
+        for (int i = 0; i < sequence.length(); i++) {
+            if (!dnaCharacters().contains(sequence.charAt(i))) {
                 return false;
             }
         }
