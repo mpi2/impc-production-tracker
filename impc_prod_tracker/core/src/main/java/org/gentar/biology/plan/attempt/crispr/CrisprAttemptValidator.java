@@ -48,7 +48,8 @@ public class CrisprAttemptValidator
         Set<Guide> guides = crisprAttempt.getGuides();
         if (guides != null && !guides.isEmpty())
         {
-            guides.forEach(guideValidator::validateGuideData);
+            guideValidator.validateGuideData(guides);
+
         }
         else
         {
