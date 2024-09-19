@@ -217,7 +217,7 @@ public class MutationController
         return result;
     }
 
-    @GetMapping(value = {"/mutation/get_mutation_with_ensembl"})
+    @PostMapping(value = {"/mutation/get_mutation_with_ensembl"})
     public List<CombinedMutationEnsemblDto> getSuggestedSymbol(@RequestBody List<String> mins) throws IOException {
         return mutationService.getCombinedMutationEnsembl(mins);
     }
