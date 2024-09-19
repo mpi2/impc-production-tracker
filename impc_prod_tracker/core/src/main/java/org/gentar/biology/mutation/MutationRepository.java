@@ -15,9 +15,11 @@
  *******************************************************************************/
 package org.gentar.biology.mutation;
 
+import org.gentar.biology.mutation.mutation_ensembl.mutationEnsemblMutationPartProjection;
 import org.springframework.context.annotation.Primary;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
@@ -37,5 +39,8 @@ public interface MutationRepository extends CrudRepository<Mutation, Long>
 
     List<Mutation> findBySymbolContaining(String symbolSearchTerm);
 
+    @Query(value = "select min, g.symbol, g.acc_id from mutation m, mutation_gene mg , gene g where m.id = mg.mutation_id and mg.gene_id = g.id and m.min IN (:mins)",
+            nativeQuery = true)
+    List<mutationEnsemblMutationPartProjection> findMutationEnsembleMutationPartByMins(@Param("mins") List<String> mins);
 
 }

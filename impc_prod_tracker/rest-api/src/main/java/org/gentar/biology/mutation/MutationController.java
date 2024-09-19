@@ -3,6 +3,7 @@ package org.gentar.biology.mutation;
 import org.gentar.audit.history.History;
 import org.gentar.audit.history.HistoryMapper;
 import org.gentar.biology.ChangeResponse;
+import org.gentar.biology.mutation.mutation_ensembl.CombinedMutationEnsemblDto;
 import org.gentar.biology.mutation.symbolConstructor.AlleleSymbolConstructor;
 import org.gentar.biology.mutation.symbolConstructor.SymbolSuggestionRequest;
 import org.gentar.biology.outcome.Outcome;
@@ -14,6 +15,7 @@ import org.springframework.hateoas.Link;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
@@ -213,6 +215,11 @@ public class MutationController
             }
         }
         return result;
+    }
+
+    @PostMapping(value = {"/mutation/get_mutation_with_ensembl"})
+    public List<CombinedMutationEnsemblDto> getSuggestedSymbol(@RequestBody List<String> mins) throws IOException {
+        return mutationService.getCombinedMutationEnsembl(mins);
     }
 
     private static String decode(String value) {
