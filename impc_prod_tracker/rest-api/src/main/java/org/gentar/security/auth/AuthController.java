@@ -15,7 +15,6 @@
  */
 package org.gentar.security.auth;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import org.gentar.security.authentication.AuthService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -35,6 +34,7 @@ import static org.springframework.http.ResponseEntity.ok;
 public class AuthController
 {
 
+    private static final String USERNAME_NULL_ERROR = "Invalid userName or null provided.";
     private final AuthService authService;
 
     public AuthController(AuthService authService)
@@ -49,12 +49,13 @@ public class AuthController
      * @return Token if authenticated, as well as basic information like role and workUnitName.
      */
     @PostMapping(value = {"/signin"})
-    public ResponseEntity signIn(@RequestBody AuthenticationRequest authenticationRequest) throws JsonProcessingException {
+    public ResponseEntity signIn(@RequestBody AuthenticationRequest authenticationRequest)
+    {
         String username = authenticationRequest.getUserName();
         String token = authService.getAuthenticationToken(
-            authenticationRequest.getUserName(), authenticationRequest.getPassword());
+                authenticationRequest.getUserName(), authenticationRequest.getPassword());
         AuthenticationResponseDTO authenticationResponseDTO = buildAuthenticationResponseDTO(
-            username, token);
+                username, token);
         return ok(authenticationResponseDTO);
     }
 

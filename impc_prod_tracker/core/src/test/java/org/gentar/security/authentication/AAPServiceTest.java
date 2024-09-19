@@ -8,7 +8,6 @@ import static org.mockito.Mockito.lenient;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import org.gentar.exceptions.UserOperationFailedException;
-import org.gentar.organization.person.PersonRepository;
 import org.gentar.util.JsonHelper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -29,21 +28,19 @@ class AAPServiceTest {
     @Mock
     private RestTemplate restTemplate;
 
-    @Mock
-    private PersonRepository personRepository;
+    private final String AUTHENTICATION_ENDPOINT = "/auth";
 
 
     AAPService testInstance;
 
     @BeforeEach
     void setUp() {
-        testInstance = new AAPService(restTemplate, personRepository);
+        testInstance = new AAPService(restTemplate);
 
-        ReflectionTestUtils.setField(testInstance, "EXTERNAL_SERVICE_URL", "");
+        ReflectionTestUtils.setField(testInstance, "EXTERNAL_SERVICE_URL", "https://api.aai.ebi.ac.uk/");
         ReflectionTestUtils.setField(testInstance, "GENTAR_DOMAIN_REFERENCE", "value");
 
     }
-
     @Test
     void getToken() {
 
@@ -72,10 +69,9 @@ class AAPServiceTest {
         );
 
 
-        String AUTHENTICATION_ENDPOINT = "/auth";
         lenient().when(
                         restTemplate.postForEntity(
-                                eq(AUTHENTICATION_ENDPOINT),
+                                "https://api.aai.ebi.ac.uk/" + eq(AUTHENTICATION_ENDPOINT),
                                 eq(requestEntity),
                                 eq(String.class)))
                 .thenReturn(responseEntity);
@@ -89,7 +85,7 @@ class AAPServiceTest {
         ReflectionTestUtils.setField(testInstance, "serverServletContextPath", "localhost:8080/api");
 
         Exception exception = assertThrows(UserOperationFailedException.class, () -> {
-            String authId = testInstance.createUser(personMockData(), "testadmin");
+            String authId=  testInstance.createUser(personMockData(),"testadmin");
         });
 
         String expectedMessage =
