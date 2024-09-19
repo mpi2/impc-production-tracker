@@ -3,52 +3,52 @@
 image: $CI_REGISTRY/mouse-informatics/docker:latest
 
 variables:
-  # When using dind service we need to instruct docker, to talk with the
-  # daemon started inside of the service. The daemon is available with
-  # a network connection instead of the default /var/run/docker.sock socket.
-  #
-  # The 'docker' hostname is the alias of the service container as described at
-  # https://docs.gitlab.com/ee/ci/docker/using_docker_images.html#accessing-the-services
-  #
-  # Note that if you're using the Kubernetes executor, the variable should be set to
-  # tcp://localhost:2375/ because of how the Kubernetes executor connects services
-  # to the job container
-  # DOCKER_HOST: tcp://localhost:2375/
-  #
-  # For non-Kubernetes executors, we use tcp://docker:2375/
-  DOCKER_HOST: tcp://docker:2375/
-  # When using dind, it's wise to use the overlayfs driver for
-  # improved performance.
-  DOCKER_DRIVER: overlay2
+   # When using dind service we need to instruct docker, to talk with the
+   # daemon started inside of the service. The daemon is available with
+   # a network connection instead of the default /var/run/docker.sock socket.
+   #
+   # The 'docker' hostname is the alias of the service container as described at
+   # https://docs.gitlab.com/ee/ci/docker/using_docker_images.html#accessing-the-services
+   #
+   # Note that if you're using the Kubernetes executor, the variable should be set to
+   # tcp://localhost:2375/ because of how the Kubernetes executor connects services
+   # to the job container
+   # DOCKER_HOST: tcp://localhost:2375/
+   #
+   # For non-Kubernetes executors, we use tcp://docker:2375/
+   DOCKER_HOST: tcp://docker:2375/
+   # When using dind, it's wise to use the overlayfs driver for
+   # improved performance.
+   DOCKER_DRIVER: overlay2
 
-  # Since the docker:dind container and the runner container don’t share their root
-  # filesystem, the job’s working directory can be used as a mount point for children
-  # containers. For example, if you have files you want to share with a child container,
-  # you may create a subdirectory under /builds/$CI_PROJECT_PATH and use it as your
-  # mount point.
-  MOUNT_POINT: /builds/$CI_PROJECT_PATH/mnt
+   # Since the docker:dind container and the runner container don’t share their root
+   # filesystem, the job’s working directory can be used as a mount point for children
+   # containers. For example, if you have files you want to share with a child container,
+   # you may create a subdirectory under /builds/$CI_PROJECT_PATH and use it as your
+   # mount point.
+   MOUNT_POINT: /builds/$CI_PROJECT_PATH/mnt
 
-  # For EBI you need to override the definition of CI_REGISTRY to remove the port number
-  CI_REGISTRY: dockerhub.ebi.ac.uk
-  CI_REGISTRY_IMAGE: $CI_REGISTRY/$CI_PROJECT_PATH
+   # For EBI you need to override the definition of CI_REGISTRY to remove the port number
+   CI_REGISTRY: dockerhub.ebi.ac.uk
+   CI_REGISTRY_IMAGE: $CI_REGISTRY/$CI_PROJECT_PATH
 
-  #NOW: $(date '+%Y-%m-%d-%H-%M-%S')
-  #NOW: $(date '+%Y-%m-%d')
+   #NOW: $(date '+%Y-%m-%d-%H-%M-%S')
+   #NOW: $(date '+%Y-%m-%d')
 
-  # To solve the issue with the Docker in Docker 19.03 service.
-  # Logged as: GitLab.com CI jobs failing if using docker:stable-dind image
-  # see: https://gitlab.com/gitlab-com/gl-infra/production/issues/982
-  DOCKER_TLS_CERTDIR: ""
+   # To solve the issue with the Docker in Docker 19.03 service.
+   # Logged as: GitLab.com CI jobs failing if using docker:stable-dind image
+   # see: https://gitlab.com/gitlab-com/gl-infra/production/issues/982
+   DOCKER_TLS_CERTDIR: ""
 
 
 
 stages:
-  #   - env
-  - build
-  - production-deploy
-  - sandbox-deploy
-  - dev-deploy
-  - test-deploy
+#   - env
+   - build
+   - production-deploy
+   - sandbox-deploy
+   - dev-deploy
+   - test-deploy
 
 # env:
 #   stage: env
@@ -57,56 +57,56 @@ stages:
 
 
 build_image:
-  stage: build
-  services:
-    - name: $CI_REGISTRY/mouse-informatics/dind:latest
-      alias: docker
-  except:
-    - schedules
-    - triggers
-    - pipelines
-  script:
-    # - docker info
-    - mkdir -p "$MOUNT_POINT"
-    - echo "${CI_REGISTRY_PASSWORD}" | docker login -u "${CI_REGISTRY_USER}" --password-stdin  ${CI_REGISTRY}
+    stage: build
+    services:
+      - name: $CI_REGISTRY/mouse-informatics/dind:latest
+        alias: docker
+    except:
+        - schedules
+        - triggers
+        - pipelines
+    script:
+        # - docker info
+        - mkdir -p "$MOUNT_POINT"
+        - echo "${CI_REGISTRY_PASSWORD}" | docker login -u "${CI_REGISTRY_USER}" --password-stdin  ${CI_REGISTRY}
 
-    - cd impc_prod_tracker
-    - sed -i "s|maven|${LOCAL_GITLAB_MAVEN_IMAGE}|g" Dockerfile
-    - sed -i "s|FROM amazoncorretto|FROM ${LOCAL_GITLAB_CORRETTO_IMAGE}|g" Dockerfile
+        - cd impc_prod_tracker
+        - sed -i "s|maven|${LOCAL_GITLAB_MAVEN_IMAGE}|g" Dockerfile
+        - sed -i "s|FROM amazoncorretto|FROM ${LOCAL_GITLAB_CORRETTO_IMAGE}|g" Dockerfile
 
-    - docker build -t "${CI_REGISTRY_IMAGE}":"${CI_COMMIT_SHA:0:12}" -t "${CI_REGISTRY_IMAGE}":latest .  | tee ${MOUNT_POINT}/build.log
+        - docker build -t "${CI_REGISTRY_IMAGE}":"${CI_COMMIT_SHA:0:12}" -t "${CI_REGISTRY_IMAGE}":latest .  | tee ${MOUNT_POINT}/build.log
 
-    - docker push "${CI_REGISTRY_IMAGE}":"${CI_COMMIT_SHA:0:12}"  | tee ${MOUNT_POINT}/push.log
-    - docker push "${CI_REGISTRY_IMAGE}":latest  | tee ${MOUNT_POINT}/push.log
+        - docker push "${CI_REGISTRY_IMAGE}":"${CI_COMMIT_SHA:0:12}"  | tee ${MOUNT_POINT}/push.log
+        - docker push "${CI_REGISTRY_IMAGE}":latest  | tee ${MOUNT_POINT}/push.log
 
-    - docker logout ${CI_REGISTRY}
+        - docker logout ${CI_REGISTRY}
 
-    - |
-      if [[ "${DOCKER_HUB_PUSH}" == "true" ]]; then
-      
-          echo "${DOCKER_HUB_PSWD}" | docker login -u "${DOCKER_HUB_USER}" --password-stdin
-          docker tag "${CI_REGISTRY_IMAGE}":"${CI_COMMIT_SHA:0:12}" "${DOCKER_HUB_USER}"/"${DOCKER_HUB_REPO}":"${CI_COMMIT_SHA:0:12}"
-          docker tag "${CI_REGISTRY_IMAGE}":"${CI_COMMIT_SHA:0:12}" "${DOCKER_HUB_USER}"/"${DOCKER_HUB_REPO}":latest
-          docker push "${DOCKER_HUB_USER}"/"${DOCKER_HUB_REPO}":"${CI_COMMIT_SHA:0:12}"  | tee ${MOUNT_POINT}/dockerhub-push-latest.log
-          docker push "${DOCKER_HUB_USER}"/"${DOCKER_HUB_REPO}":latest  | tee ${MOUNT_POINT}/dockerhub-push-latest.log
-          docker logout
-      fi
-  artifacts:
-    paths:
-      - "$MOUNT_POINT/"
+        - |
+          if [[ "${DOCKER_HUB_PUSH}" == "true" ]]; then
+              
+              echo "${DOCKER_HUB_PSWD}" | docker login -u "${DOCKER_HUB_USER}" --password-stdin
+              docker tag "${CI_REGISTRY_IMAGE}":"${CI_COMMIT_SHA:0:12}" "${DOCKER_HUB_USER}"/"${DOCKER_HUB_REPO}":"${CI_COMMIT_SHA:0:12}"
+              docker tag "${CI_REGISTRY_IMAGE}":"${CI_COMMIT_SHA:0:12}" "${DOCKER_HUB_USER}"/"${DOCKER_HUB_REPO}":latest
+              docker push "${DOCKER_HUB_USER}"/"${DOCKER_HUB_REPO}":"${CI_COMMIT_SHA:0:12}"  | tee ${MOUNT_POINT}/dockerhub-push-latest.log
+              docker push "${DOCKER_HUB_USER}"/"${DOCKER_HUB_REPO}":latest  | tee ${MOUNT_POINT}/dockerhub-push-latest.log
+              docker logout
+          fi
+    artifacts:
+        paths:
+            - "$MOUNT_POINT/"
 
 
-  # build_jars:
-  #   stage: build
-  #   image: maven:3.6.3-jdk-11
-  #   script:
-  #     - 'mvn -f impc_prod_tracker/pom.xml -s .gitlab-ci_settings.xml clean deploy'
-  #   only:
-  #     - master
-  #   except:
-  #     - schedules
-  #     - triggers
-  #     - pipelines
+# build_jars:
+#   stage: build
+#   image: maven:3.6.3-jdk-11
+#   script:
+#     - 'mvn -f impc_prod_tracker/pom.xml -s .gitlab-ci_settings.xml clean deploy'
+#   only:
+#     - master
+#   except:
+#     - schedules
+#     - triggers
+#     - pipelines
 
 
 
@@ -119,40 +119,40 @@ hh-production:
   rules:
     - if: '$PRODUCTION_DEPLOYMENT == "true" && $CI_PIPELINE_SOURCE == "schedule"'
   script:
-    # Only deploy from the MPI2 impc-production-tracker repository rather than repository forks
-    - |
-      if [ ! -z ${HH_KUBERNETES_ENDPOINT+set} ]; then
-      
-        kubectl config set-cluster local --server="${HH_KUBERNETES_ENDPOINT}"
-        kubectl config set clusters.local.certificate-authority-data "${HH_KUBERNETES_CERTIFICATE_AUTHORITY_DATA}"
-        kubectl config set-credentials ${HH_KUBERNETES_USER} --token="${HH_KUBERNETES_USER_TOKEN}"
-        kubectl config set-context "${HH_KUBERNETES_NAMESPACE}" --cluster=local --user=${HH_KUBERNETES_USER} --namespace="${HH_KUBERNETES_NAMESPACE}"
-        kubectl config use-context "${HH_KUBERNETES_NAMESPACE}"
-        kubectl version
-      
-        cd impc_prod_tracker
-      
-        #
-        #
-        # Substitute the "latest" image tag in your deployment template with a more specific tag
-        # and record the deployment so you can rollback to this particular version.
-        #
-        sed -i "s/impc-production-tracker-mirror:latest/impc-production-tracker-mirror:${PRODUCTION_API_TAG}/g" kube/wp/production/api-service/api-service-deployment.yaml
-        sed -i "s/STRING_REPLACED_DURING_REDEPLOY/$(date)/g" kube/wp/production/api-service/api-service-deployment.yaml
-      
-        if kubectl apply -f kube/wp/production/api-service/api-service-deployment.yaml --record | grep -q unchanged; then
-            echo "=> Patching deployment to force image update."
-            kubectl patch -f kube/wp/production/api-service/api-service-deployment.yaml --record -p "{\"spec\":{\"template\":{\"metadata\":{\"annotations\":{\"ci-last-updated\":\"$(date +'%s')\"}}}}}"
-        else
-            echo "=> Deployment apply has changed the object, no need to force image update."
-        fi
-        #
-        #
-        # Log the status of the application deployment
-        #
-        kubectl rollout status -f kube/wp/production/api-service/api-service-deployment.yaml
-        kubectl get pod,deployment,rs,svc,ing
+  # Only deploy from the MPI2 impc-production-tracker repository rather than repository forks
+  - |
+    if [ ! -z ${HH_KUBERNETES_ENDPOINT+set} ]; then
+
+      kubectl config set-cluster local --server="${HH_KUBERNETES_ENDPOINT}"
+      kubectl config set clusters.local.certificate-authority-data "${HH_KUBERNETES_CERTIFICATE_AUTHORITY_DATA}"
+      kubectl config set-credentials ${HH_KUBERNETES_USER} --token="${HH_KUBERNETES_USER_TOKEN}"
+      kubectl config set-context "${HH_KUBERNETES_NAMESPACE}" --cluster=local --user=${HH_KUBERNETES_USER} --namespace="${HH_KUBERNETES_NAMESPACE}"
+      kubectl config use-context "${HH_KUBERNETES_NAMESPACE}"
+      kubectl version
+     
+      cd impc_prod_tracker
+     
+      #
+      #
+      # Substitute the "latest" image tag in your deployment template with a more specific tag
+      # and record the deployment so you can rollback to this particular version.
+      #
+      sed -i "s/impc-production-tracker-mirror:latest/impc-production-tracker-mirror:${PRODUCTION_API_TAG}/g" kube/wp/production/api-service/api-service-deployment.yaml
+      sed -i "s/STRING_REPLACED_DURING_REDEPLOY/$(date)/g" kube/wp/production/api-service/api-service-deployment.yaml
+
+      if kubectl apply -f kube/wp/production/api-service/api-service-deployment.yaml --record | grep -q unchanged; then
+          echo "=> Patching deployment to force image update."
+          kubectl patch -f kube/wp/production/api-service/api-service-deployment.yaml --record -p "{\"spec\":{\"template\":{\"metadata\":{\"annotations\":{\"ci-last-updated\":\"$(date +'%s')\"}}}}}"
+      else
+          echo "=> Deployment apply has changed the object, no need to force image update."
       fi
+      #
+      #
+      # Log the status of the application deployment
+      #
+      kubectl rollout status -f kube/wp/production/api-service/api-service-deployment.yaml
+      kubectl get pod,deployment,rs,svc,ing
+    fi
 
 
 
@@ -163,41 +163,41 @@ hx-production:
   rules:
     - if: '$PRODUCTION_DEPLOYMENT == "true" && $CI_PIPELINE_SOURCE == "schedule"'
   script:
-    # Only deploy from the MPI2 impc-production-tracker repository rather than repository forks
-    - |
-      if [ ! -z ${HX_KUBERNETES_ENDPOINT+set} ]; then
-      
-        kubectl config set-cluster local --server="${HX_KUBERNETES_ENDPOINT}"
-        kubectl config set clusters.local.certificate-authority-data "${HX_KUBERNETES_CERTIFICATE_AUTHORITY_DATA}"
-        kubectl config set-credentials ${HX_KUBERNETES_USER} --token="${HX_KUBERNETES_USER_TOKEN}"
-        kubectl config set-context "${HX_KUBERNETES_NAMESPACE}" --cluster=local --user=${HX_KUBERNETES_USER} --namespace="${HX_KUBERNETES_NAMESPACE}"
-        kubectl config use-context "${HX_KUBERNETES_NAMESPACE}"
-        kubectl version
-      
-        cd impc_prod_tracker
-      
-        #
-        #
-        # Substitute the "latest" image tag in your deployment template with a more specific tag
-        # and record the deployment so you can rollback to this particular version.
-        #
-        sed -i "s/impc-production-tracker-mirror:latest/impc-production-tracker-mirror:${PRODUCTION_API_TAG}/g" kube/wp/production/api-service/api-service-deployment.yaml
-        sed -i "s/STRING_REPLACED_DURING_REDEPLOY/$(date)/g" kube/wp/production/api-service/api-service-deployment.yaml
-        sed -i "s/HL_PROXY/HX_PROXY/g" kube/wp/production/api-service/api-service-deployment.yaml
-      
-        if kubectl apply -f kube/wp/production/api-service/api-service-deployment.yaml --record | grep -q unchanged; then
-            echo "=> Patching deployment to force image update."
-            kubectl patch -f kube/wp/production/api-service/api-service-deployment.yaml --record -p "{\"spec\":{\"template\":{\"metadata\":{\"annotations\":{\"ci-last-updated\":\"$(date +'%s')\"}}}}}"
-        else
-            echo "=> Deployment apply has changed the object, no need to force image update."
-        fi
-        #
-        #
-        # Log the status of the application deployment
-        #
-        kubectl rollout status -f kube/wp/production/api-service/api-service-deployment.yaml
-        kubectl get pod,deployment,rs,svc,ing
+  # Only deploy from the MPI2 impc-production-tracker repository rather than repository forks
+  - |
+    if [ ! -z ${HX_KUBERNETES_ENDPOINT+set} ]; then
+
+      kubectl config set-cluster local --server="${HX_KUBERNETES_ENDPOINT}"
+      kubectl config set clusters.local.certificate-authority-data "${HX_KUBERNETES_CERTIFICATE_AUTHORITY_DATA}"
+      kubectl config set-credentials ${HX_KUBERNETES_USER} --token="${HX_KUBERNETES_USER_TOKEN}"
+      kubectl config set-context "${HX_KUBERNETES_NAMESPACE}" --cluster=local --user=${HX_KUBERNETES_USER} --namespace="${HX_KUBERNETES_NAMESPACE}"
+      kubectl config use-context "${HX_KUBERNETES_NAMESPACE}"
+      kubectl version
+     
+      cd impc_prod_tracker
+     
+      #
+      #
+      # Substitute the "latest" image tag in your deployment template with a more specific tag
+      # and record the deployment so you can rollback to this particular version.
+      #
+      sed -i "s/impc-production-tracker-mirror:latest/impc-production-tracker-mirror:${PRODUCTION_API_TAG}/g" kube/wp/production/api-service/api-service-deployment.yaml
+      sed -i "s/STRING_REPLACED_DURING_REDEPLOY/$(date)/g" kube/wp/production/api-service/api-service-deployment.yaml
+      sed -i "s/HL_PROXY/HX_PROXY/g" kube/wp/production/api-service/api-service-deployment.yaml
+
+      if kubectl apply -f kube/wp/production/api-service/api-service-deployment.yaml --record | grep -q unchanged; then
+          echo "=> Patching deployment to force image update."
+          kubectl patch -f kube/wp/production/api-service/api-service-deployment.yaml --record -p "{\"spec\":{\"template\":{\"metadata\":{\"annotations\":{\"ci-last-updated\":\"$(date +'%s')\"}}}}}"
+      else
+          echo "=> Deployment apply has changed the object, no need to force image update."
       fi
+      #
+      #
+      # Log the status of the application deployment
+      #
+      kubectl rollout status -f kube/wp/production/api-service/api-service-deployment.yaml
+      kubectl get pod,deployment,rs,svc,ing
+    fi
 
 
 
@@ -213,41 +213,41 @@ hh-sandbox:
     - if: '$PRODUCTION_DEPLOYMENT != "true" && $CI_PROJECT_NAMESPACE == "mouse-informatics" && $CI_COMMIT_REF_NAME == "master" && $CI_PIPELINE_SOURCE == "pipeline"'
       when: on_success
   script:
-    # Only deploy from the MPI2 impc-production-tracker repository rather than repository forks
-    - |
-      if [ ! -z ${HH_KUBERNETES_ENDPOINT+set} ]; then
-      
-        kubectl config set-cluster local --server="${HH_KUBERNETES_ENDPOINT}"
-        kubectl config set clusters.local.certificate-authority-data "${HH_KUBERNETES_CERTIFICATE_AUTHORITY_DATA}"
-        kubectl config set-credentials ${HH_KUBERNETES_SANDBOX_USER} --token="${HH_KUBERNETES_SANDBOX_USER_TOKEN}"
-        kubectl config set-context "${HH_KUBERNETES_SANDBOX_NAMESPACE}" --cluster=local --user=${HH_KUBERNETES_SANDBOX_USER} --namespace="${HH_KUBERNETES_SANDBOX_NAMESPACE}"
-        kubectl config use-context "${HH_KUBERNETES_SANDBOX_NAMESPACE}"
-        kubectl version
-      
-        cd impc_prod_tracker
-      
-        #
-        #
-        # Substitute the "latest" image tag in your deployment template with a more specific tag
-        # and record the deployment so you can rollback to this particular version.
-        #
-        sed -i "s/impc-production-tracker-mirror:latest/impc-production-tracker-mirror:${SANDBOX_API_TAG}/g" kube/wp/sandbox/api-service/api-service-deployment.yaml
-        sed -i "s/STRING_REPLACED_DURING_REDEPLOY/$(date)/g" kube/wp/sandbox/api-service/api-service-deployment.yaml
-      
-        if kubectl apply -f kube/wp/sandbox/api-service/api-service-deployment.yaml --record | grep -q unchanged; then
-            echo "=> Patching deployment to force image update."
-            kubectl patch -f kube/wp/sandbox/api-service/api-service-deployment.yaml --record -p "{\"spec\":{\"template\":{\"metadata\":{\"annotations\":{\"ci-last-updated\":\"$(date +'%s')\"}}}}}"
-        else
-            echo "=> Deployment apply has changed the object, no need to force image update."
-        fi
-        #
-        #
-        # Log the status of the application deployment
-        #
-        kubectl rollout status -f kube/wp/sandbox/api-service/api-service-deployment.yaml
-        kubectl get pod,deployment,rs,svc,ing
-      fi
+  # Only deploy from the MPI2 impc-production-tracker repository rather than repository forks
+  - |
+    if [ ! -z ${HH_KUBERNETES_ENDPOINT+set} ]; then
 
+      kubectl config set-cluster local --server="${HH_KUBERNETES_ENDPOINT}"
+      kubectl config set clusters.local.certificate-authority-data "${HH_KUBERNETES_CERTIFICATE_AUTHORITY_DATA}"
+      kubectl config set-credentials ${HH_KUBERNETES_SANDBOX_USER} --token="${HH_KUBERNETES_SANDBOX_USER_TOKEN}"
+      kubectl config set-context "${HH_KUBERNETES_SANDBOX_NAMESPACE}" --cluster=local --user=${HH_KUBERNETES_SANDBOX_USER} --namespace="${HH_KUBERNETES_SANDBOX_NAMESPACE}"
+      kubectl config use-context "${HH_KUBERNETES_SANDBOX_NAMESPACE}"
+      kubectl version
+     
+      cd impc_prod_tracker
+     
+      #
+      #
+      # Substitute the "latest" image tag in your deployment template with a more specific tag
+      # and record the deployment so you can rollback to this particular version.
+      #
+      sed -i "s/impc-production-tracker-mirror:latest/impc-production-tracker-mirror:${SANDBOX_API_TAG}/g" kube/wp/sandbox/api-service/api-service-deployment.yaml
+      sed -i "s/STRING_REPLACED_DURING_REDEPLOY/$(date)/g" kube/wp/sandbox/api-service/api-service-deployment.yaml
+
+      if kubectl apply -f kube/wp/sandbox/api-service/api-service-deployment.yaml --record | grep -q unchanged; then
+          echo "=> Patching deployment to force image update."
+          kubectl patch -f kube/wp/sandbox/api-service/api-service-deployment.yaml --record -p "{\"spec\":{\"template\":{\"metadata\":{\"annotations\":{\"ci-last-updated\":\"$(date +'%s')\"}}}}}"
+      else
+          echo "=> Deployment apply has changed the object, no need to force image update."
+      fi
+      #
+      #
+      # Log the status of the application deployment
+      #
+      kubectl rollout status -f kube/wp/sandbox/api-service/api-service-deployment.yaml
+      kubectl get pod,deployment,rs,svc,ing
+    fi
+  
 
 
 hx-sandbox:
@@ -259,41 +259,41 @@ hx-sandbox:
     - if: '$PRODUCTION_DEPLOYMENT != "true" && $CI_PROJECT_NAMESPACE == "mouse-informatics" && $CI_COMMIT_REF_NAME == "master" && $CI_PIPELINE_SOURCE == "pipeline"'
       when: on_success
   script:
-    # Only deploy from the MPI2 impc-production-tracker repository rather than repository forks
-    - |
-      if [ ! -z ${HX_KUBERNETES_ENDPOINT+set} ]; then
-      
-        kubectl config set-cluster local --server="${HX_KUBERNETES_ENDPOINT}"
-        kubectl config set clusters.local.certificate-authority-data "${HX_KUBERNETES_CERTIFICATE_AUTHORITY_DATA}"
-        kubectl config set-credentials ${HX_KUBERNETES_SANDBOX_USER} --token="${HX_KUBERNETES_SANDBOX_USER_TOKEN}"
-        kubectl config set-context "${HX_KUBERNETES_SANDBOX_NAMESPACE}" --cluster=local --user=${HX_KUBERNETES_SANDBOX_USER} --namespace="${HX_KUBERNETES_SANDBOX_NAMESPACE}"
-        kubectl config use-context "${HX_KUBERNETES_SANDBOX_NAMESPACE}"
-        kubectl version
-      
-        cd impc_prod_tracker
-      
-        #
-        #
-        # Substitute the "latest" image tag in your deployment template with a more specific tag
-        # and record the deployment so you can rollback to this particular version.
-        #
-        sed -i "s/impc-production-tracker-mirror:latest/impc-production-tracker-mirror:${SANDBOX_API_TAG}/g" kube/wp/sandbox/api-service/api-service-deployment.yaml
-        sed -i "s/STRING_REPLACED_DURING_REDEPLOY/$(date)/g" kube/wp/sandbox/api-service/api-service-deployment.yaml
-        sed -i "s/HL_PROXY/HX_PROXY/g" kube/wp/sandbox/api-service/api-service-deployment.yaml
-      
-        if kubectl apply -f kube/wp/sandbox/api-service/api-service-deployment.yaml --record | grep -q unchanged; then
-            echo "=> Patching deployment to force image update."
-            kubectl patch -f kube/wp/sandbox/api-service/api-service-deployment.yaml --record -p "{\"spec\":{\"template\":{\"metadata\":{\"annotations\":{\"ci-last-updated\":\"$(date +'%s')\"}}}}}"
-        else
-            echo "=> Deployment apply has changed the object, no need to force image update."
-        fi
-        #
-        #
-        # Log the status of the application deployment
-        #
-        kubectl rollout status -f kube/wp/sandbox/api-service/api-service-deployment.yaml
-        kubectl get pod,deployment,rs,svc,ing
+  # Only deploy from the MPI2 impc-production-tracker repository rather than repository forks
+  - |
+    if [ ! -z ${HX_KUBERNETES_ENDPOINT+set} ]; then
+
+      kubectl config set-cluster local --server="${HX_KUBERNETES_ENDPOINT}"
+      kubectl config set clusters.local.certificate-authority-data "${HX_KUBERNETES_CERTIFICATE_AUTHORITY_DATA}"
+      kubectl config set-credentials ${HX_KUBERNETES_SANDBOX_USER} --token="${HX_KUBERNETES_SANDBOX_USER_TOKEN}"
+      kubectl config set-context "${HX_KUBERNETES_SANDBOX_NAMESPACE}" --cluster=local --user=${HX_KUBERNETES_SANDBOX_USER} --namespace="${HX_KUBERNETES_SANDBOX_NAMESPACE}"
+      kubectl config use-context "${HX_KUBERNETES_SANDBOX_NAMESPACE}"
+      kubectl version
+     
+      cd impc_prod_tracker
+     
+      #
+      #
+      # Substitute the "latest" image tag in your deployment template with a more specific tag
+      # and record the deployment so you can rollback to this particular version.
+      #
+      sed -i "s/impc-production-tracker-mirror:latest/impc-production-tracker-mirror:${SANDBOX_API_TAG}/g" kube/wp/sandbox/api-service/api-service-deployment.yaml
+      sed -i "s/STRING_REPLACED_DURING_REDEPLOY/$(date)/g" kube/wp/sandbox/api-service/api-service-deployment.yaml
+      sed -i "s/HL_PROXY/HX_PROXY/g" kube/wp/sandbox/api-service/api-service-deployment.yaml
+
+      if kubectl apply -f kube/wp/sandbox/api-service/api-service-deployment.yaml --record | grep -q unchanged; then
+          echo "=> Patching deployment to force image update."
+          kubectl patch -f kube/wp/sandbox/api-service/api-service-deployment.yaml --record -p "{\"spec\":{\"template\":{\"metadata\":{\"annotations\":{\"ci-last-updated\":\"$(date +'%s')\"}}}}}"
+      else
+          echo "=> Deployment apply has changed the object, no need to force image update."
       fi
+      #
+      #
+      # Log the status of the application deployment
+      #
+      kubectl rollout status -f kube/wp/sandbox/api-service/api-service-deployment.yaml
+      kubectl get pod,deployment,rs,svc,ing
+    fi
 
 
 
@@ -308,64 +308,64 @@ hh-dev:
   rules:
     - if: '$PRODUCTION_DEPLOYMENT != "true" && $CI_PROJECT_NAMESPACE == "mouse-informatics" && $CI_COMMIT_REF_NAME == "master"'
   script:
-    # Only deploy from the MPI2 impc-production-tracker repository rather than repository forks
-    - |
-      if [ ! -z ${HH_KUBERNETES_ENDPOINT+set} ]; then
+  # Only deploy from the MPI2 impc-production-tracker repository rather than repository forks
+  - |
+    if [ ! -z ${HH_KUBERNETES_ENDPOINT+set} ]; then
+    
+      apk --no-cache --update add jq curl
+
+      kubectl config set-cluster local --server="${HH_KUBERNETES_ENDPOINT}"
+      kubectl config set clusters.local.certificate-authority-data "${HH_KUBERNETES_CERTIFICATE_AUTHORITY_DATA}"
+      kubectl config set-credentials ${HH_KUBERNETES_DEV_USER} --token="${HH_KUBERNETES_DEV_USER_TOKEN}"
+      kubectl config set-context "${HH_KUBERNETES_DEV_NAMESPACE}" --cluster=local --user=${HH_KUBERNETES_DEV_USER} --namespace="${HH_KUBERNETES_DEV_NAMESPACE}"
+      kubectl config use-context "${HH_KUBERNETES_DEV_NAMESPACE}"
+      kubectl version
+     
+      cd impc_prod_tracker
+     
+      #
+      #
+      # Substitute the "latest" image tag in your deployment template with a more specific tag
+      # and record the deployment so you can rollback to this particular version.
+      #
       
-        apk --no-cache --update add jq curl
+      # Need to check that the docker image corresponding to this CI_COMMIT_SHA exists in Docker Hub.
+      # Scheduled turnover of the container can still run for a CI_COMMIT_SHA where the build fail to complete.
       
-        kubectl config set-cluster local --server="${HH_KUBERNETES_ENDPOINT}"
-        kubectl config set clusters.local.certificate-authority-data "${HH_KUBERNETES_CERTIFICATE_AUTHORITY_DATA}"
-        kubectl config set-credentials ${HH_KUBERNETES_DEV_USER} --token="${HH_KUBERNETES_DEV_USER_TOKEN}"
-        kubectl config set-context "${HH_KUBERNETES_DEV_NAMESPACE}" --cluster=local --user=${HH_KUBERNETES_DEV_USER} --namespace="${HH_KUBERNETES_DEV_NAMESPACE}"
-        kubectl config use-context "${HH_KUBERNETES_DEV_NAMESPACE}"
-        kubectl version
-      
-        cd impc_prod_tracker
-      
-        #
-        #
-        # Substitute the "latest" image tag in your deployment template with a more specific tag
-        # and record the deployment so you can rollback to this particular version.
-        #
-      
-        # Need to check that the docker image corresponding to this CI_COMMIT_SHA exists in Docker Hub.
-        # Scheduled turnover of the container can still run for a CI_COMMIT_SHA where the build fail to complete.
-      
-        # TOKEN=$( curl -sSLd "username=${DOCKER_HUB_USER}&password=${DOCKER_HUB_PSWD}" https://hub.docker.com/v2/users/login | jq -r ".token" )
-        # JSON=$( curl -sH "Authorization: JWT $TOKEN" "https://hub.docker.com/v2/repositories/${DOCKER_HUB_USER}/${DOCKER_HUB_REPO}/tags/${CI_COMMIT_SHA:0:12}/")
-        # IMAGE_TAG_NAME=$(echo $JSON | jq  -r '.name')
-      
-        REGISTRY_JSON=$( curl --header "PRIVATE-TOKEN: ${GITLAB_API_ACCESS_TOKEN}" "${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/registry/repositories/")
-        REGISTRY_REPOSITORY_ID=$(echo $REGISTRY_JSON | jq '.[0].id')
-      
-        JSON=$( curl --header "PRIVATE-TOKEN: ${GITLAB_API_ACCESS_TOKEN}" "${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/registry/repositories/${REGISTRY_REPOSITORY_ID}/tags/${CI_COMMIT_SHA:0:12}/")
-        IMAGE_TAG_NAME=$(echo $JSON | jq  -r '.name')
-      
-        if [ "$IMAGE_TAG_NAME" = "${CI_COMMIT_SHA:0:12}" ]; then
-            # Substitute the "latest" image tag in your deployment template
-            sed -i "s/impc-production-tracker-mirror:latest/impc-production-tracker-mirror:${CI_COMMIT_SHA:0:12}/g" kube/wp/dev/api-service/api-service-deployment.yaml
-        else
-            # DO NOT push out the latest tag to ensure rollback is possible.
-            exit 1
-        fi
-      
-      
-        sed -i "s/STRING_REPLACED_DURING_REDEPLOY/$(date)/g" kube/wp/dev/api-service/api-service-deployment.yaml
-      
-        if kubectl apply -f kube/wp/dev/api-service/api-service-deployment.yaml --record | grep -q unchanged; then
-            echo "=> Patching deployment to force image update."
-            kubectl patch -f kube/wp/dev/api-service/api-service-deployment.yaml --record -p "{\"spec\":{\"template\":{\"metadata\":{\"annotations\":{\"ci-last-updated\":\"$(date +'%s')\"}}}}}"
-        else
-            echo "=> Deployment apply has changed the object, no need to force image update."
-        fi
-        #
-        #
-        # Log the status of the application deployment
-        #
-        kubectl rollout status -f kube/wp/dev/api-service/api-service-deployment.yaml
-        kubectl get pod,deployment,rs,svc,ing
+      # TOKEN=$( curl -sSLd "username=${DOCKER_HUB_USER}&password=${DOCKER_HUB_PSWD}" https://hub.docker.com/v2/users/login | jq -r ".token" )
+      # JSON=$( curl -sH "Authorization: JWT $TOKEN" "https://hub.docker.com/v2/repositories/${DOCKER_HUB_USER}/${DOCKER_HUB_REPO}/tags/${CI_COMMIT_SHA:0:12}/")
+      # IMAGE_TAG_NAME=$(echo $JSON | jq  -r '.name')
+
+      REGISTRY_JSON=$( curl --header "PRIVATE-TOKEN: ${GITLAB_API_ACCESS_TOKEN}" "${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/registry/repositories/")
+      REGISTRY_REPOSITORY_ID=$(echo $REGISTRY_JSON | jq '.[0].id')
+        
+      JSON=$( curl --header "PRIVATE-TOKEN: ${GITLAB_API_ACCESS_TOKEN}" "${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/registry/repositories/${REGISTRY_REPOSITORY_ID}/tags/${CI_COMMIT_SHA:0:12}/")
+      IMAGE_TAG_NAME=$(echo $JSON | jq  -r '.name')
+
+      if [ "$IMAGE_TAG_NAME" = "${CI_COMMIT_SHA:0:12}" ]; then
+          # Substitute the "latest" image tag in your deployment template
+          sed -i "s/impc-production-tracker-mirror:latest/impc-production-tracker-mirror:${CI_COMMIT_SHA:0:12}/g" kube/wp/dev/api-service/api-service-deployment.yaml
+      else
+          # DO NOT push out the latest tag to ensure rollback is possible.
+          exit 1
       fi
+      
+      
+      sed -i "s/STRING_REPLACED_DURING_REDEPLOY/$(date)/g" kube/wp/dev/api-service/api-service-deployment.yaml
+
+      if kubectl apply -f kube/wp/dev/api-service/api-service-deployment.yaml --record | grep -q unchanged; then
+          echo "=> Patching deployment to force image update."
+          kubectl patch -f kube/wp/dev/api-service/api-service-deployment.yaml --record -p "{\"spec\":{\"template\":{\"metadata\":{\"annotations\":{\"ci-last-updated\":\"$(date +'%s')\"}}}}}"
+      else
+          echo "=> Deployment apply has changed the object, no need to force image update."
+      fi
+      #
+      #
+      # Log the status of the application deployment
+      #
+      kubectl rollout status -f kube/wp/dev/api-service/api-service-deployment.yaml
+      kubectl get pod,deployment,rs,svc,ing
+    fi
 
 
 
@@ -379,65 +379,65 @@ hx-dev:
   rules:
     - if: '$PRODUCTION_DEPLOYMENT != "true" && $CI_PROJECT_NAMESPACE == "mouse-informatics" && $CI_COMMIT_REF_NAME == "master"'
   script:
-    # Only deploy from the MPI2 impc-production-tracker repository rather than repository forks
-    - |
-      if [ ! -z ${HX_KUBERNETES_ENDPOINT+set} ]; then
+  # Only deploy from the MPI2 impc-production-tracker repository rather than repository forks
+  - |
+    if [ ! -z ${HX_KUBERNETES_ENDPOINT+set} ]; then
+    
+      apk --no-cache --update add jq curl
+
+      kubectl config set-cluster local --server="${HX_KUBERNETES_ENDPOINT}"
+      kubectl config set clusters.local.certificate-authority-data "${HX_KUBERNETES_CERTIFICATE_AUTHORITY_DATA}"
+      kubectl config set-credentials ${HX_KUBERNETES_DEV_USER} --token="${HX_KUBERNETES_DEV_USER_TOKEN}"
+      kubectl config set-context "${HX_KUBERNETES_DEV_NAMESPACE}" --cluster=local --user=${HX_KUBERNETES_DEV_USER} --namespace="${HX_KUBERNETES_DEV_NAMESPACE}"
+      kubectl config use-context "${HX_KUBERNETES_DEV_NAMESPACE}"
+      kubectl version
+     
+      cd impc_prod_tracker
+     
+      #
+      #
+      # Substitute the "latest" image tag in your deployment template with a more specific tag
+      # and record the deployment so you can rollback to this particular version.
+      #
       
-        apk --no-cache --update add jq curl
+      # Need to check that the docker image corresponding to this CI_COMMIT_SHA exists in Docker Hub.
+      # Scheduled turnover of the container can still run for a CI_COMMIT_SHA where the build fail to complete.
       
-        kubectl config set-cluster local --server="${HX_KUBERNETES_ENDPOINT}"
-        kubectl config set clusters.local.certificate-authority-data "${HX_KUBERNETES_CERTIFICATE_AUTHORITY_DATA}"
-        kubectl config set-credentials ${HX_KUBERNETES_DEV_USER} --token="${HX_KUBERNETES_DEV_USER_TOKEN}"
-        kubectl config set-context "${HX_KUBERNETES_DEV_NAMESPACE}" --cluster=local --user=${HX_KUBERNETES_DEV_USER} --namespace="${HX_KUBERNETES_DEV_NAMESPACE}"
-        kubectl config use-context "${HX_KUBERNETES_DEV_NAMESPACE}"
-        kubectl version
-      
-        cd impc_prod_tracker
-      
-        #
-        #
-        # Substitute the "latest" image tag in your deployment template with a more specific tag
-        # and record the deployment so you can rollback to this particular version.
-        #
-      
-        # Need to check that the docker image corresponding to this CI_COMMIT_SHA exists in Docker Hub.
-        # Scheduled turnover of the container can still run for a CI_COMMIT_SHA where the build fail to complete.
-      
-        # TOKEN=$( curl -sSLd "username=${DOCKER_HUB_USER}&password=${DOCKER_HUB_PSWD}" https://hub.docker.com/v2/users/login | jq -r ".token" )
-        # JSON=$( curl -sH "Authorization: JWT $TOKEN" "https://hub.docker.com/v2/repositories/${DOCKER_HUB_USER}/${DOCKER_HUB_REPO}/tags/${CI_COMMIT_SHA:0:12}/")
-        # IMAGE_TAG_NAME=$(echo $JSON | jq  -r '.name')
-      
-        REGISTRY_JSON=$( curl --header "PRIVATE-TOKEN: ${GITLAB_API_ACCESS_TOKEN}" "${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/registry/repositories/")
-        REGISTRY_REPOSITORY_ID=$(echo $REGISTRY_JSON | jq '.[0].id')
-      
-        JSON=$( curl --header "PRIVATE-TOKEN: ${GITLAB_API_ACCESS_TOKEN}" "${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/registry/repositories/${REGISTRY_REPOSITORY_ID}/tags/${CI_COMMIT_SHA:0:12}/")
-        IMAGE_TAG_NAME=$(echo $JSON | jq  -r '.name')
-      
-        if [ "$IMAGE_TAG_NAME" = "${CI_COMMIT_SHA:0:12}" ]; then
-            # Substitute the "latest" image tag in your deployment template
-            sed -i "s/impc-production-tracker-mirror:latest/impc-production-tracker-mirror:${CI_COMMIT_SHA:0:12}/g" kube/wp/dev/api-service/api-service-deployment.yaml
-        else
-            # DO NOT push out the latest tag to ensure rollback is possible.
-            exit 1
-        fi
-      
-      
-        sed -i "s/STRING_REPLACED_DURING_REDEPLOY/$(date)/g" kube/wp/dev/api-service/api-service-deployment.yaml
-        sed -i "s/HL_PROXY/HX_PROXY/g" kube/wp/dev/api-service/api-service-deployment.yaml
-      
-        if kubectl apply -f kube/wp/dev/api-service/api-service-deployment.yaml --record | grep -q unchanged; then
-            echo "=> Patching deployment to force image update."
-            kubectl patch -f kube/wp/dev/api-service/api-service-deployment.yaml --record -p "{\"spec\":{\"template\":{\"metadata\":{\"annotations\":{\"ci-last-updated\":\"$(date +'%s')\"}}}}}"
-        else
-            echo "=> Deployment apply has changed the object, no need to force image update."
-        fi
-        #
-        #
-        # Log the status of the application deployment
-        #
-        kubectl rollout status -f kube/wp/dev/api-service/api-service-deployment.yaml
-        kubectl get pod,deployment,rs,svc,ing
+      # TOKEN=$( curl -sSLd "username=${DOCKER_HUB_USER}&password=${DOCKER_HUB_PSWD}" https://hub.docker.com/v2/users/login | jq -r ".token" )
+      # JSON=$( curl -sH "Authorization: JWT $TOKEN" "https://hub.docker.com/v2/repositories/${DOCKER_HUB_USER}/${DOCKER_HUB_REPO}/tags/${CI_COMMIT_SHA:0:12}/")
+      # IMAGE_TAG_NAME=$(echo $JSON | jq  -r '.name')
+
+      REGISTRY_JSON=$( curl --header "PRIVATE-TOKEN: ${GITLAB_API_ACCESS_TOKEN}" "${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/registry/repositories/")
+      REGISTRY_REPOSITORY_ID=$(echo $REGISTRY_JSON | jq '.[0].id')
+        
+      JSON=$( curl --header "PRIVATE-TOKEN: ${GITLAB_API_ACCESS_TOKEN}" "${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/registry/repositories/${REGISTRY_REPOSITORY_ID}/tags/${CI_COMMIT_SHA:0:12}/")
+      IMAGE_TAG_NAME=$(echo $JSON | jq  -r '.name')
+
+      if [ "$IMAGE_TAG_NAME" = "${CI_COMMIT_SHA:0:12}" ]; then
+          # Substitute the "latest" image tag in your deployment template
+          sed -i "s/impc-production-tracker-mirror:latest/impc-production-tracker-mirror:${CI_COMMIT_SHA:0:12}/g" kube/wp/dev/api-service/api-service-deployment.yaml
+      else
+          # DO NOT push out the latest tag to ensure rollback is possible.
+          exit 1
       fi
+      
+      
+      sed -i "s/STRING_REPLACED_DURING_REDEPLOY/$(date)/g" kube/wp/dev/api-service/api-service-deployment.yaml
+      sed -i "s/HL_PROXY/HX_PROXY/g" kube/wp/dev/api-service/api-service-deployment.yaml
+
+      if kubectl apply -f kube/wp/dev/api-service/api-service-deployment.yaml --record | grep -q unchanged; then
+          echo "=> Patching deployment to force image update."
+          kubectl patch -f kube/wp/dev/api-service/api-service-deployment.yaml --record -p "{\"spec\":{\"template\":{\"metadata\":{\"annotations\":{\"ci-last-updated\":\"$(date +'%s')\"}}}}}"
+      else
+          echo "=> Deployment apply has changed the object, no need to force image update."
+      fi
+      #
+      #
+      # Log the status of the application deployment
+      #
+      kubectl rollout status -f kube/wp/dev/api-service/api-service-deployment.yaml
+      kubectl get pod,deployment,rs,svc,ing
+    fi
 
 
 
@@ -453,64 +453,64 @@ hh-test:
       when: never
     - if: '$PRODUCTION_DEPLOYMENT != "true" && $CI_PROJECT_NAMESPACE == "mouse-informatics"'
   script:
-    # Only deploy from the MPI2 impc-production-tracker repository rather than repository forks
-    - |
-      if [ ! -z ${HH_KUBERNETES_ENDPOINT+set} ]; then
+  # Only deploy from the MPI2 impc-production-tracker repository rather than repository forks
+  - |
+    if [ ! -z ${HH_KUBERNETES_ENDPOINT+set} ]; then
+    
+      apk --no-cache --update add jq curl
+
+      kubectl config set-cluster local --server="${HH_KUBERNETES_ENDPOINT}"
+      kubectl config set clusters.local.certificate-authority-data "${HH_KUBERNETES_CERTIFICATE_AUTHORITY_DATA}"
+      kubectl config set-credentials ${HH_KUBERNETES_TEST_USER} --token="${HH_KUBERNETES_TEST_USER_TOKEN}"
+      kubectl config set-context "${HH_KUBERNETES_TEST_NAMESPACE}" --cluster=local --user=${HH_KUBERNETES_TEST_USER} --namespace="${HH_KUBERNETES_TEST_NAMESPACE}"
+      kubectl config use-context "${HH_KUBERNETES_TEST_NAMESPACE}"
+      kubectl version
+     
+      cd impc_prod_tracker
+     
+      #
+      #
+      # Substitute the "latest" image tag in your deployment template with a more specific tag
+      # and record the deployment so you can rollback to this particular version.
+      #
       
-        apk --no-cache --update add jq curl
+      # Need to check that the docker image corresponding to this CI_COMMIT_SHA exists in Docker Hub.
+      # Scheduled turnover of the container can still run for a CI_COMMIT_SHA where the build fail to complete.
       
-        kubectl config set-cluster local --server="${HH_KUBERNETES_ENDPOINT}"
-        kubectl config set clusters.local.certificate-authority-data "${HH_KUBERNETES_CERTIFICATE_AUTHORITY_DATA}"
-        kubectl config set-credentials ${HH_KUBERNETES_TEST_USER} --token="${HH_KUBERNETES_TEST_USER_TOKEN}"
-        kubectl config set-context "${HH_KUBERNETES_TEST_NAMESPACE}" --cluster=local --user=${HH_KUBERNETES_TEST_USER} --namespace="${HH_KUBERNETES_TEST_NAMESPACE}"
-        kubectl config use-context "${HH_KUBERNETES_TEST_NAMESPACE}"
-        kubectl version
-      
-        cd impc_prod_tracker
-      
-        #
-        #
-        # Substitute the "latest" image tag in your deployment template with a more specific tag
-        # and record the deployment so you can rollback to this particular version.
-        #
-      
-        # Need to check that the docker image corresponding to this CI_COMMIT_SHA exists in Docker Hub.
-        # Scheduled turnover of the container can still run for a CI_COMMIT_SHA where the build fail to complete.
-      
-        # TOKEN=$( curl -sSLd "username=${DOCKER_HUB_USER}&password=${DOCKER_HUB_PSWD}" https://hub.docker.com/v2/users/login | jq -r ".token" )
-        # JSON=$( curl -sH "Authorization: JWT $TOKEN" "https://hub.docker.com/v2/repositories/${DOCKER_HUB_USER}/${DOCKER_HUB_REPO}/tags/${CI_COMMIT_SHA:0:12}/")
-        # IMAGE_TAG_NAME=$(echo $JSON | jq  -r '.name')
-      
-        REGISTRY_JSON=$( curl --header "PRIVATE-TOKEN: ${GITLAB_API_ACCESS_TOKEN}" "${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/registry/repositories/")
-        REGISTRY_REPOSITORY_ID=$(echo $REGISTRY_JSON | jq '.[0].id')
-      
-        JSON=$( curl --header "PRIVATE-TOKEN: ${GITLAB_API_ACCESS_TOKEN}" "${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/registry/repositories/${REGISTRY_REPOSITORY_ID}/tags/${CI_COMMIT_SHA:0:12}/")
-        IMAGE_TAG_NAME=$(echo $JSON | jq  -r '.name')
-      
-        if [ "$IMAGE_TAG_NAME" = "${CI_COMMIT_SHA:0:12}" ]; then
-            # Substitute the "latest" image tag in your deployment template
-            sed -i "s/impc-production-tracker-mirror:latest/impc-production-tracker-mirror:${CI_COMMIT_SHA:0:12}/g" kube/wp/test/api-service/api-service-deployment.yaml
-        else
-            # DO NOT push out the latest tag to ensure rollback is possible.
-            exit 1
-        fi
-      
-      
-        sed -i "s/STRING_REPLACED_DURING_REDEPLOY/$(date)/g" kube/wp/test/api-service/api-service-deployment.yaml
-      
-        if kubectl apply -f kube/wp/test/api-service/api-service-deployment.yaml --record | grep -q unchanged; then
-            echo "=> Patching deployment to force image update."
-            kubectl patch -f kube/wp/test/api-service/api-service-deployment.yaml --record -p "{\"spec\":{\"template\":{\"metadata\":{\"annotations\":{\"ci-last-updated\":\"$(date +'%s')\"}}}}}"
-        else
-            echo "=> Deployment apply has changed the object, no need to force image update."
-        fi
-        #
-        #
-        # Log the status of the application deployment
-        #
-        kubectl rollout status -f kube/wp/test/api-service/api-service-deployment.yaml
-        kubectl get pod,deployment,rs,svc,ing
+      # TOKEN=$( curl -sSLd "username=${DOCKER_HUB_USER}&password=${DOCKER_HUB_PSWD}" https://hub.docker.com/v2/users/login | jq -r ".token" )
+      # JSON=$( curl -sH "Authorization: JWT $TOKEN" "https://hub.docker.com/v2/repositories/${DOCKER_HUB_USER}/${DOCKER_HUB_REPO}/tags/${CI_COMMIT_SHA:0:12}/")
+      # IMAGE_TAG_NAME=$(echo $JSON | jq  -r '.name')
+
+      REGISTRY_JSON=$( curl --header "PRIVATE-TOKEN: ${GITLAB_API_ACCESS_TOKEN}" "${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/registry/repositories/")
+      REGISTRY_REPOSITORY_ID=$(echo $REGISTRY_JSON | jq '.[0].id')
+        
+      JSON=$( curl --header "PRIVATE-TOKEN: ${GITLAB_API_ACCESS_TOKEN}" "${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/registry/repositories/${REGISTRY_REPOSITORY_ID}/tags/${CI_COMMIT_SHA:0:12}/")
+      IMAGE_TAG_NAME=$(echo $JSON | jq  -r '.name')
+ 
+      if [ "$IMAGE_TAG_NAME" = "${CI_COMMIT_SHA:0:12}" ]; then
+          # Substitute the "latest" image tag in your deployment template
+          sed -i "s/impc-production-tracker-mirror:latest/impc-production-tracker-mirror:${CI_COMMIT_SHA:0:12}/g" kube/wp/test/api-service/api-service-deployment.yaml
+      else
+          # DO NOT push out the latest tag to ensure rollback is possible.
+          exit 1
       fi
+      
+      
+      sed -i "s/STRING_REPLACED_DURING_REDEPLOY/$(date)/g" kube/wp/test/api-service/api-service-deployment.yaml
+
+      if kubectl apply -f kube/wp/test/api-service/api-service-deployment.yaml --record | grep -q unchanged; then
+          echo "=> Patching deployment to force image update."
+          kubectl patch -f kube/wp/test/api-service/api-service-deployment.yaml --record -p "{\"spec\":{\"template\":{\"metadata\":{\"annotations\":{\"ci-last-updated\":\"$(date +'%s')\"}}}}}"
+      else
+          echo "=> Deployment apply has changed the object, no need to force image update."
+      fi
+      #
+      #
+      # Log the status of the application deployment
+      #
+      kubectl rollout status -f kube/wp/test/api-service/api-service-deployment.yaml
+      kubectl get pod,deployment,rs,svc,ing
+    fi
 
 
 
@@ -526,62 +526,62 @@ hx-test:
       when: never
     - if: '$PRODUCTION_DEPLOYMENT != "true" && $CI_PROJECT_NAMESPACE == "mouse-informatics"'
   script:
-    # Only deploy from the MPI2 impc-production-tracker repository rather than repository forks
-    - |
-      if [ ! -z ${HX_KUBERNETES_ENDPOINT+set} ]; then
+  # Only deploy from the MPI2 impc-production-tracker repository rather than repository forks
+  - |
+    if [ ! -z ${HX_KUBERNETES_ENDPOINT+set} ]; then
+
+      apk --no-cache --update add jq curl
+
+      kubectl config set-cluster local --server="${HX_KUBERNETES_ENDPOINT}"
+      kubectl config set clusters.local.certificate-authority-data "${HX_KUBERNETES_CERTIFICATE_AUTHORITY_DATA}"
+      kubectl config set-credentials ${HX_KUBERNETES_TEST_USER} --token="${HX_KUBERNETES_TEST_USER_TOKEN}"
+      kubectl config set-context "${HX_KUBERNETES_TEST_NAMESPACE}" --cluster=local --user=${HX_KUBERNETES_TEST_USER} --namespace="${HX_KUBERNETES_TEST_NAMESPACE}"
+      kubectl config use-context "${HX_KUBERNETES_TEST_NAMESPACE}"
+      kubectl version
+     
+      cd impc_prod_tracker
+     
+      #
+      #
+      # Substitute the "latest" image tag in your deployment template with a more specific tag
+      # and record the deployment so you can rollback to this particular version.
+      #
       
-        apk --no-cache --update add jq curl
+      # Need to check that the docker image corresponding to this CI_COMMIT_SHA exists in Docker Hub.
+      # Scheduled turnover of the container can still run for a CI_COMMIT_SHA where the build fail to complete.
       
-        kubectl config set-cluster local --server="${HX_KUBERNETES_ENDPOINT}"
-        kubectl config set clusters.local.certificate-authority-data "${HX_KUBERNETES_CERTIFICATE_AUTHORITY_DATA}"
-        kubectl config set-credentials ${HX_KUBERNETES_TEST_USER} --token="${HX_KUBERNETES_TEST_USER_TOKEN}"
-        kubectl config set-context "${HX_KUBERNETES_TEST_NAMESPACE}" --cluster=local --user=${HX_KUBERNETES_TEST_USER} --namespace="${HX_KUBERNETES_TEST_NAMESPACE}"
-        kubectl config use-context "${HX_KUBERNETES_TEST_NAMESPACE}"
-        kubectl version
-      
-        cd impc_prod_tracker
-      
-        #
-        #
-        # Substitute the "latest" image tag in your deployment template with a more specific tag
-        # and record the deployment so you can rollback to this particular version.
-        #
-      
-        # Need to check that the docker image corresponding to this CI_COMMIT_SHA exists in Docker Hub.
-        # Scheduled turnover of the container can still run for a CI_COMMIT_SHA where the build fail to complete.
-      
-        # TOKEN=$( curl -sSLd "username=${DOCKER_HUB_USER}&password=${DOCKER_HUB_PSWD}" https://hub.docker.com/v2/users/login | jq -r ".token" )
-        # JSON=$( curl -sH "Authorization: JWT $TOKEN" "https://hub.docker.com/v2/repositories/${DOCKER_HUB_USER}/${DOCKER_HUB_REPO}/tags/${CI_COMMIT_SHA:0:12}/")
-        # IMAGE_TAG_NAME=$(echo $JSON | jq  -r '.name')
-      
-        REGISTRY_JSON=$( curl --header "PRIVATE-TOKEN: ${GITLAB_API_ACCESS_TOKEN}" "${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/registry/repositories/")
-        REGISTRY_REPOSITORY_ID=$(echo $REGISTRY_JSON | jq '.[0].id')
-      
-        JSON=$( curl --header "PRIVATE-TOKEN: ${GITLAB_API_ACCESS_TOKEN}" "${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/registry/repositories/${REGISTRY_REPOSITORY_ID}/tags/${CI_COMMIT_SHA:0:12}/")
-        IMAGE_TAG_NAME=$(echo $JSON | jq  -r '.name')
-      
-        if [ "$IMAGE_TAG_NAME" = "${CI_COMMIT_SHA:0:12}" ]; then
-            # Substitute the "latest" image tag in your deployment template
-            sed -i "s/impc-production-tracker-mirror:latest/impc-production-tracker-mirror:${CI_COMMIT_SHA:0:12}/g" kube/wp/test/api-service/api-service-deployment.yaml
-        else
-            # DO NOT push out the latest tag to ensure rollback is possible.
-            exit 1
-        fi
-      
-      
-        sed -i "s/STRING_REPLACED_DURING_REDEPLOY/$(date)/g" kube/wp/test/api-service/api-service-deployment.yaml
-        sed -i "s/HL_PROXY/HX_PROXY/g" kube/wp/test/api-service/api-service-deployment.yaml
-      
-        if kubectl apply -f kube/wp/test/api-service/api-service-deployment.yaml --record | grep -q unchanged; then
-            echo "=> Patching deployment to force image update."
-            kubectl patch -f kube/wp/test/api-service/api-service-deployment.yaml --record -p "{\"spec\":{\"template\":{\"metadata\":{\"annotations\":{\"ci-last-updated\":\"$(date +'%s')\"}}}}}"
-        else
-            echo "=> Deployment apply has changed the object, no need to force image update."
-        fi
-        #
-        #
-        # Log the status of the application deployment
-        #
-        kubectl rollout status -f kube/wp/test/api-service/api-service-deployment.yaml
-        kubectl get pod,deployment,rs,svc,ing
+      # TOKEN=$( curl -sSLd "username=${DOCKER_HUB_USER}&password=${DOCKER_HUB_PSWD}" https://hub.docker.com/v2/users/login | jq -r ".token" )
+      # JSON=$( curl -sH "Authorization: JWT $TOKEN" "https://hub.docker.com/v2/repositories/${DOCKER_HUB_USER}/${DOCKER_HUB_REPO}/tags/${CI_COMMIT_SHA:0:12}/")
+      # IMAGE_TAG_NAME=$(echo $JSON | jq  -r '.name')
+
+      REGISTRY_JSON=$( curl --header "PRIVATE-TOKEN: ${GITLAB_API_ACCESS_TOKEN}" "${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/registry/repositories/")
+      REGISTRY_REPOSITORY_ID=$(echo $REGISTRY_JSON | jq '.[0].id')
+        
+      JSON=$( curl --header "PRIVATE-TOKEN: ${GITLAB_API_ACCESS_TOKEN}" "${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/registry/repositories/${REGISTRY_REPOSITORY_ID}/tags/${CI_COMMIT_SHA:0:12}/")
+      IMAGE_TAG_NAME=$(echo $JSON | jq  -r '.name')
+
+      if [ "$IMAGE_TAG_NAME" = "${CI_COMMIT_SHA:0:12}" ]; then
+          # Substitute the "latest" image tag in your deployment template
+          sed -i "s/impc-production-tracker-mirror:latest/impc-production-tracker-mirror:${CI_COMMIT_SHA:0:12}/g" kube/wp/test/api-service/api-service-deployment.yaml
+      else
+          # DO NOT push out the latest tag to ensure rollback is possible.
+          exit 1
       fi
+      
+      
+      sed -i "s/STRING_REPLACED_DURING_REDEPLOY/$(date)/g" kube/wp/test/api-service/api-service-deployment.yaml
+      sed -i "s/HL_PROXY/HX_PROXY/g" kube/wp/test/api-service/api-service-deployment.yaml
+
+      if kubectl apply -f kube/wp/test/api-service/api-service-deployment.yaml --record | grep -q unchanged; then
+          echo "=> Patching deployment to force image update."
+          kubectl patch -f kube/wp/test/api-service/api-service-deployment.yaml --record -p "{\"spec\":{\"template\":{\"metadata\":{\"annotations\":{\"ci-last-updated\":\"$(date +'%s')\"}}}}}"
+      else
+          echo "=> Deployment apply has changed the object, no need to force image update."
+      fi
+      #
+      #
+      # Log the status of the application deployment
+      #
+      kubectl rollout status -f kube/wp/test/api-service/api-service-deployment.yaml
+      kubectl get pod,deployment,rs,svc,ing
+    fi

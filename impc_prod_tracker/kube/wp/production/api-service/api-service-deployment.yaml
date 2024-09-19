@@ -31,8 +31,8 @@ spec:
           imagePullPolicy: Always
           name: api-service
           envFrom:
-            - configMapRef:
-                name: database-conn
+          - configMapRef:
+              name: database-conn
           env:
             - name: DOCKER_PRODUCTION
               value: "TRUE"

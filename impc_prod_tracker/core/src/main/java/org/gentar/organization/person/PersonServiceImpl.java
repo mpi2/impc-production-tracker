@@ -41,14 +41,14 @@ public class PersonServiceImpl implements PersonService
     private final ContextAwarePolicyEnforcement policyEnforcement;
 
     public static final String PERSON_ALREADY_EXISTS_ERROR =
-            "The user with email [%s] already exists in the system.";
+        "The user with email [%s] already exists in the system.";
 
     public PersonServiceImpl(
-            PersonRepository personRepository,
-            AAPService aapService,
-            SubjectRetriever subjectRetriever,
-            ManagementService managementService,
-            ContextAwarePolicyEnforcement policyEnforcement)
+        PersonRepository personRepository,
+        AAPService aapService,
+        SubjectRetriever subjectRetriever,
+        ManagementService managementService,
+        ContextAwarePolicyEnforcement policyEnforcement)
     {
         this.personRepository = personRepository;
         this.aapService = aapService;
@@ -115,7 +115,7 @@ public class PersonServiceImpl implements PersonService
 
     @Override
     public Person updateOwnPerson(Person person, String oldPassword, String newPassword)
-            throws JsonProcessingException
+    throws JsonProcessingException
     {
         if (newPassword != null)
         {
@@ -130,7 +130,7 @@ public class PersonServiceImpl implements PersonService
         if (!policyEnforcement.hasPermission(person, updateUser))
         {
             throw new UserOperationFailedException(
-                    "You don't have permissions to execute the action on this user.");
+                "You don't have permissions to execute the action on this user.");
         }
     }
 

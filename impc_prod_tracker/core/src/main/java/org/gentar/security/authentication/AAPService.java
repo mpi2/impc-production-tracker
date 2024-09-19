@@ -64,7 +64,7 @@ public class AAPService
     private final String RESET_PASSWORD = "/reset";
 
     public static final String PERSON_ALREADY_IN_AAP_ERROR = "The user [%s] already exists in the "
-            + "Authentication System.";
+        + "Authentication System.";
 
     private static final String AUTHENTICATION_ERROR = "Invalid userName/password provided.";
 
@@ -99,10 +99,10 @@ public class AAPService
             RestTemplate restTemplate = new RestTemplate();
 
             response = restTemplate.exchange(
-                    EXTERNAL_SERVICE_URL + AUTHENTICATION_ENDPOINT + '?' + TTL_ATTRIBUTE,
-                    HttpMethod.GET,
-                    entity,
-                    String.class);
+                EXTERNAL_SERVICE_URL + AUTHENTICATION_ENDPOINT + '?' + TTL_ATTRIBUTE,
+                HttpMethod.GET,
+                entity,
+                String.class);
         }
         catch (HttpClientErrorException e)
         {
@@ -155,7 +155,7 @@ public class AAPService
     private String createLocalAccount(Person person) throws JsonProcessingException
     {
         LocalAccountInfo localAccountInfo =
-                new LocalAccountInfo(person.getName(), person.getPassword(), person.getEmail());
+            new LocalAccountInfo(person.getName(), person.getPassword(), person.getEmail());
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
@@ -165,10 +165,10 @@ public class AAPService
         try
         {
             response =
-                    restTemplate.postForEntity(
-                            EXTERNAL_SERVICE_URL + AUTHENTICATION_ENDPOINT,
-                            requestEntity,
-                            String.class);
+                restTemplate.postForEntity(
+                    EXTERNAL_SERVICE_URL + AUTHENTICATION_ENDPOINT,
+                    requestEntity,
+                    String.class);
         }
         catch (HttpClientErrorException e)
         {
@@ -190,7 +190,7 @@ public class AAPService
 
         HttpEntity<LocalAccountInfo> requestEntity = new HttpEntity<>(headers);
         String domainAssociationUrl =
-                EXTERNAL_SERVICE_URL + String.format(DOMAIN_ENDPOINT, GENTAR_DOMAIN_REFERENCE, authId);
+            EXTERNAL_SERVICE_URL + String.format(DOMAIN_ENDPOINT, GENTAR_DOMAIN_REFERENCE, authId);
         restTemplate.exchange(domainAssociationUrl, HttpMethod.PUT, requestEntity, Void.class);
     }
 
@@ -202,7 +202,7 @@ public class AAPService
 
         HttpEntity<LocalAccountInfo> requestEntity = new HttpEntity<>(headers);
         String domainAssociationUrl =
-                EXTERNAL_SERVICE_URL + String.format(DOMAIN_MANAGER_ENDPOINT, GENTAR_DOMAIN_REFERENCE, authId);
+            EXTERNAL_SERVICE_URL + String.format(DOMAIN_MANAGER_ENDPOINT, GENTAR_DOMAIN_REFERENCE, authId);
         restTemplate.exchange(domainAssociationUrl, HttpMethod.PUT, requestEntity, Void.class);
     }
 
@@ -266,7 +266,7 @@ public class AAPService
             if (hcee.getStatusCode().equals(HttpStatus.UNAUTHORIZED))
             {
                 throw new UserOperationFailedException(
-                        "Unauthorized access.", "Check that your current credentials are correct.");
+                    "Unauthorized access.", "Check that your current credentials are correct.");
             }
         }
     }

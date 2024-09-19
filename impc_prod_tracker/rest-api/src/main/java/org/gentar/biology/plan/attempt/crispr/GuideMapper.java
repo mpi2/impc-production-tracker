@@ -55,17 +55,17 @@ public class GuideMapper implements Mapper<Guide, GuideDTO> {
 
         if (guideDTO.getFormatName() != null) {
             GuideFormat guideFormat =
-                    guideFormatRepository.findByNameIgnoreCase(guideDTO.getFormatName());
+                guideFormatRepository.findByNameIgnoreCase(guideDTO.getFormatName());
             guide.setGuideFormat(guideFormat);
         }
         if (guideDTO.getSourceName() != null) {
             GuideSource guideSource =
-                    guideSourceRepository.findByNameIgnoreCase(guideDTO.getSourceName());
+                guideSourceRepository.findByNameIgnoreCase(guideDTO.getSourceName());
             guide.setGuideSource(guideSource);
         }
 
         if (guide.getGenomeBuild() != null && guide.getStart() != null &&
-                guide.getStop() != null && guide.getStrand() != null && guide.getChr() != null) {
+            guide.getStop() != null && guide.getStrand() != null && guide.getChr() != null) {
             if (guide.getGenomeBuild().equals("GRCm38")) {
                 changeAssemblyIfNecessary(guide);
             }

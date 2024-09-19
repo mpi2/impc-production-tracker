@@ -48,9 +48,9 @@ public class JwtTokenProvider
 {
     static final String INVALID_TOKEN_MESSAGE = "Expired or invalid JWT token.";
     private static final String INVALID_TOKEN_DEBUG_MESSAGE =
-            "Tokens expire after 3 hours, please create a new one. Also check that you"
-                    + " are using the whole token in the authentication header. Contact your administrator"
-                    + "if after checking this you keep receiving the same error.";
+        "Tokens expire after 3 hours, please create a new one. Also check that you"
+            + " are using the whole token in the authentication header. Contact your administrator"
+            + "if after checking this you keep receiving the same error.";
     static final String NULL_EMPTY_TOKEN_MESSAGE = "The token cannot be null or empty.";
     private static final Logger LOGGER = LoggerFactory.getLogger(JwtTokenProvider.class);
 
@@ -60,7 +60,7 @@ public class JwtTokenProvider
     private final AuthorizationHeaderReader authorizationHeaderReader = new AuthorizationHeaderReader();
 
     public JwtTokenProvider(
-            PublicKeyProvider publicKeyProvider, AapSystemSubject aapSystemSubject)
+        PublicKeyProvider publicKeyProvider, AapSystemSubject aapSystemSubject)
     {
         this.publicKeyProvider = publicKeyProvider;
         this.aapSystemSubject = aapSystemSubject;
@@ -89,9 +89,9 @@ public class JwtTokenProvider
     Claims getClaims(String token)
     {
         return Jwts.parser()
-                .setSigningKeyResolver(getSigningKeyResolver())
-                .parseClaimsJws(token)
-                .getBody();
+            .setSigningKeyResolver(getSigningKeyResolver())
+            .parseClaimsJws(token)
+            .getBody();
     }
 
     /**
@@ -114,8 +114,8 @@ public class JwtTokenProvider
         try
         {
             Jws<Claims> claims = Jwts.parser()
-                    .setSigningKeyResolver(getSigningKeyResolver())
-                    .parseClaimsJws(token);
+                .setSigningKeyResolver(getSigningKeyResolver())
+                .parseClaimsJws(token);
 
             return !claims.getBody().getExpiration().before(Date.from(Instant.now()));
         }

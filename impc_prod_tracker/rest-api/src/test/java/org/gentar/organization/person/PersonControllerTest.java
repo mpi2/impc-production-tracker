@@ -40,8 +40,8 @@ class PersonControllerTest extends ControllerTestTemplate
     @BeforeEach
     void setUp()
     {
-        resultValidator = new ResultValidator();
-        restCaller = new RestCaller(mvc(), accessToken);
+          resultValidator = new ResultValidator();
+          restCaller = new RestCaller(mvc(), accessToken);
     }
 
     private void setupAuthentication() throws Exception
@@ -58,7 +58,7 @@ class PersonControllerTest extends ControllerTestTemplate
         setupAuthentication();
 
         String obtainedJson =
-                restCaller.executeGetAndDocument("/api/people/currentPerson", documentCurrentUser());
+            restCaller.executeGetAndDocument("/api/people/currentPerson", documentCurrentUser());
         validateGetResponse(obtainedJson, "expectedGeneralUser.json");
     }
 
@@ -71,7 +71,7 @@ class PersonControllerTest extends ControllerTestTemplate
     private ResultHandler documentCurrentUser()
     {
         List<FieldDescriptor> personFieldDescriptions =
-                PersonFieldsDescriptors.getPersonFieldDescriptions();
+            PersonFieldsDescriptors.getPersonFieldDescriptions();
         return document("people/getPerson", responseFields(personFieldDescriptions));
     }
 
@@ -95,7 +95,7 @@ class PersonControllerTest extends ControllerTestTemplate
     private ResultHandler documentPersonCreation()
     {
         List<FieldDescriptor> personFieldDescriptions =
-                PersonFieldsDescriptors.getPersonFieldDescriptions();
+            PersonFieldsDescriptors.getPersonFieldDescriptions();
         return document("people/postPerson", responseFields(personFieldDescriptions));
     }
 
@@ -103,7 +103,7 @@ class PersonControllerTest extends ControllerTestTemplate
     {
         String completePathExpectedJson = getCompleteResourcePath(expectedJsonPath);
         resultValidator.validateObtainedMatchesJson(
-                obtainedJson, completePathExpectedJson, PersonCustomizations.ignoreIds());
+            obtainedJson, completePathExpectedJson, PersonCustomizations.ignoreIds());
     }
 
     @Test
@@ -133,14 +133,14 @@ class PersonControllerTest extends ControllerTestTemplate
         String payload = loadFromResource("updateUserPayload.json");
         String url = "/api/people/gentar_test_user2@gentar.org";
         String obtainedJson =
-                restCaller.executePutAndDocument(url, payload, documentUpdateManagedUser());
+            restCaller.executePutAndDocument(url, payload, documentUpdateManagedUser());
         validateCreationResponse(obtainedJson, "expectedUpdatedManagedUser.json");
     }
 
     private ResultHandler documentUpdateManagedUser()
     {
         List<FieldDescriptor> personFieldDescriptions =
-                PersonFieldsDescriptors.getPersonFieldDescriptions();
+            PersonFieldsDescriptors.getPersonFieldDescriptions();
         return document("people/updateManagedUser", responseFields(personFieldDescriptions));
     }
 
@@ -157,22 +157,22 @@ class PersonControllerTest extends ControllerTestTemplate
         String payload = loadFromResource("updateOwnUserPayload.json");
         String url = "/api/people";
         doNothing().when(aapService)
-                .changePassword(
-                        "gentar_test_user1@gentar.org", "gentar_test_user1", "gentar_test_user1_new");
+            .changePassword(
+                "gentar_test_user1@gentar.org", "gentar_test_user1", "gentar_test_user1_new");
         String obtainedJson =
-                restCaller.executePutAndDocument(url, payload, documentUpdateOwnUser());
+            restCaller.executePutAndDocument(url, payload, documentUpdateOwnUser());
         validateCreationResponse(obtainedJson, "expectedUpdatedOwnUser.json");
     }
 
     private ResultHandler documentUpdateOwnUser()
     {
         List<FieldDescriptor> personFieldDescriptions =
-                PersonFieldsDescriptors.getPersonFieldDescriptions();
+            PersonFieldsDescriptors.getPersonFieldDescriptions();
         return document("people/updateOwnUser", responseFields(personFieldDescriptions));
     }
 
     private String loadFromResource(String resourceName)
-            throws IOException
+        throws IOException
     {
         String completeResourcePath = getCompleteResourcePath(resourceName);
         return TestResourceLoader.loadJsonFromResource(completeResourcePath);
