@@ -1,9 +1,12 @@
 package org.gentar.biology.mutation;
 
 import org.gentar.audit.history.History;
+
+import java.io.IOException;
 import java.util.List;
 import org.gentar.biology.mutation.mgi.MgiAlleleDto;
 import org.gentar.biology.mutation.mgi.MgiAlleleResponseDto;
+import org.gentar.biology.mutation.mutation_ensembl.CombinedMutationEnsemblDto;
 
 public interface MutationService
 {
@@ -19,4 +22,6 @@ public interface MutationService
     List<History> getHistory(Mutation mutation);
 
     MgiAlleleResponseDto updateMutationMgiAlleleId(List<MgiAlleleDto> mgiAlleleDtos);
+
+    List<CombinedMutationEnsemblDto> getCombinedMutationEnsembl(List<String> mins) throws IOException;
 }
