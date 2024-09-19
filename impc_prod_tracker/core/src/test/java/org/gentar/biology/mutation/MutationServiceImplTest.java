@@ -4,6 +4,7 @@ import org.gentar.audit.history.HistoryService;
 import org.gentar.biology.mutation.sequence.MutationSequenceService;
 import org.gentar.biology.sequence.SequenceService;
 import org.gentar.exceptions.NotFoundException;
+import org.gentar.graphql.GraphQLConsumer;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -30,18 +31,23 @@ class MutationServiceImplTest {
     private HistoryService<Mutation> historyService;
     @Mock
     private MutationValidator mutationValidator;
+    @Mock
+    private GraphQLConsumer graphQLConsumer;
+
 
     MutationServiceImpl testInstance;
 
     @BeforeEach
     void setUp() {
         testInstance = new MutationServiceImpl(
-            mutationRepository,
-            sequenceService,
-            mutationSequenceService,
-            mutationUpdater,
-            historyService,
-            mutationValidator);
+                mutationRepository,
+                sequenceService,
+                mutationSequenceService,
+                mutationUpdater,
+                historyService,
+                mutationValidator,
+                graphQLConsumer
+        );
     }
 
     @Test
