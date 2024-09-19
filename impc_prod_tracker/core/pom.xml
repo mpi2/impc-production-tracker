@@ -119,11 +119,11 @@
 		</dependency>
 
 		<!-- A dependency to to asserts in jsons -->
-		<!--		<dependency>-->
-		<!--			<groupId>org.skyscreamer</groupId>-->
-		<!--			<artifactId>jsonassert</artifactId>-->
-		<!--			<version>1.5.0</version>-->
-		<!--		</dependency>-->
+<!--		<dependency>-->
+<!--			<groupId>org.skyscreamer</groupId>-->
+<!--			<artifactId>jsonassert</artifactId>-->
+<!--			<version>1.5.0</version>-->
+<!--		</dependency>-->
 
 
 		<!-- Auditing -->
@@ -203,12 +203,12 @@
 			<version>0.0.3-SNAPSHOT</version>
 			<scope>compile</scope>
 		</dependency>
-		<dependency>
-			<groupId>org.biojava</groupId>
-			<artifactId>core</artifactId>
-			<version>1.9.4</version>
-			<scope>compile</scope>
-		</dependency>
+        <dependency>
+            <groupId>org.biojava</groupId>
+            <artifactId>core</artifactId>
+            <version>1.9.4</version>
+            <scope>compile</scope>
+        </dependency>
 
 	</dependencies>
 
