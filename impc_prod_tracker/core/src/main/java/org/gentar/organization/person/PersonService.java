@@ -64,11 +64,8 @@ public interface PersonService
     /**
      * Updates information for the current logged user in the system.
      * @param person Person object representing
+     * @param oldPassword JWT token to communicate with AAP in case of need.
      * @return Updated person.
      */
-    Person updateOwnPerson(Person person) throws JsonProcessingException;
-
-
-    void resetPassword(String email) throws JsonProcessingException;
-
+    Person updateOwnPerson(Person person, String oldPassword, String newPassword) throws JsonProcessingException;
 }
