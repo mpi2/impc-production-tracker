@@ -52,7 +52,7 @@ class AAPServiceTest {
         ReflectionTestUtils.setField(testInstance, "EXPECTED_PRODUCTION_SERVICE_CONTEXT_PATH", "localhost:8080/tracker-api");
         ReflectionTestUtils.setField(testInstance, "serverServletContextPath", "localhost:8080/tracker-api");
         AAPService.LocalAccountInfo localAccountInfo =
-                new AAPService.LocalAccountInfo(personMockData().getName(), personMockData().getPassword(), personMockData().getEmail());
+            new AAPService.LocalAccountInfo(personMockData().getName(), personMockData().getPassword(), personMockData().getEmail());
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
@@ -63,18 +63,18 @@ class AAPServiceTest {
         header.setContentType(MediaType.APPLICATION_JSON);
 
         ResponseEntity<String> responseEntity = new ResponseEntity<>(
-                "some response body",
-                header,
-                HttpStatus.OK
+            "some response body",
+            header,
+            HttpStatus.OK
         );
 
 
         lenient().when(
-                        restTemplate.postForEntity(
-                                "https://api.aai.ebi.ac.uk/" + eq(AUTHENTICATION_ENDPOINT),
-                                eq(requestEntity),
-                                eq(String.class)))
-                .thenReturn(responseEntity);
+            restTemplate.postForEntity(
+                "https://api.aai.ebi.ac.uk/" + eq(AUTHENTICATION_ENDPOINT),
+                eq(requestEntity),
+                eq(String.class)))
+            .thenReturn(responseEntity);
     }
 
     @Test
@@ -85,11 +85,11 @@ class AAPServiceTest {
         ReflectionTestUtils.setField(testInstance, "serverServletContextPath", "localhost:8080/api");
 
         Exception exception = assertThrows(UserOperationFailedException.class, () -> {
-            String authId=  testInstance.createUser(personMockData(),"testadmin");
+                String authId=  testInstance.createUser(personMockData(),"testadmin");
         });
 
         String expectedMessage =
-                "This operation must be performed on the production service.";
+            "This operation must be performed on the production service.";
         String actualMessage = exception.getMessage();
 
         assertTrue(actualMessage.contains(expectedMessage));

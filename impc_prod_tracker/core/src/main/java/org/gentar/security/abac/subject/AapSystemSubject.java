@@ -70,14 +70,14 @@ public class AapSystemSubject implements SystemSubject {
     private final static String DCC_USER_KEY = "dcc_user_key";
 
     private final static String NOT_USER_INFORMATION_MESSAGE =
-            "There is not associated information in the system for " +
-                    "the user [%s].";
+        "There is not associated information in the system for " +
+            "the user [%s].";
     private final static String NULL_AUTH_ID_MESSAGE =
-            "AuthId cannot be null. The jwt token may not have" +
-                    "all the needed information.";
+        "AuthId cannot be null. The jwt token may not have" +
+            "all the needed information.";
     private final static String NOT_USER_INFORMATION_DEBUG_MESSAGE =
-            "The user [%s] with reference id [%s] was successfully logged in but there is no related information for them " +
-                    "in the system. Please contact an administrator.";
+        "The user [%s] with reference id [%s] was successfully logged in but there is no related information for them " +
+            "in the system. Please contact an administrator.";
 
     @Autowired
     public AapSystemSubject(PersonRepository personRepository, WorkUnitService workUnitService) {
@@ -86,7 +86,7 @@ public class AapSystemSubject implements SystemSubject {
     }
 
     public AapSystemSubject(
-            PersonRepository personRepository, WorkUnitService workUnitService, Person person) {
+        PersonRepository personRepository, WorkUnitService workUnitService, Person person) {
         this.personRepository = personRepository;
         this.workUnitService = workUnitService;
         this.person = person;
@@ -108,8 +108,8 @@ public class AapSystemSubject implements SystemSubject {
         this.person = personRepository.findPersonByAuthIdEquals(authId);
         if (person == null) {
             throw new UserOperationFailedException(
-                    String.format(NOT_USER_INFORMATION_MESSAGE, login),
-                    String.format(NOT_USER_INFORMATION_DEBUG_MESSAGE, login, authId));
+                String.format(NOT_USER_INFORMATION_MESSAGE, login),
+                String.format(NOT_USER_INFORMATION_DEBUG_MESSAGE, login, authId));
         } else {
             setPersonData(person);
         }
@@ -180,7 +180,7 @@ public class AapSystemSubject implements SystemSubject {
         if (roleWorkUnits != null) {
             List<Consortium> consortiaByWorkUnits = new ArrayList<>();
             roleWorkUnits
-                    .forEach(x -> consortiaByWorkUnits.addAll(getConsortiaByWorkUnit(x.getWorkUnit())));
+                .forEach(x -> consortiaByWorkUnits.addAll(getConsortiaByWorkUnit(x.getWorkUnit())));
             result = consortiaByWorkUnits.stream().anyMatch(consortia::contains);
         }
         return result;
@@ -189,7 +189,7 @@ public class AapSystemSubject implements SystemSubject {
     private Set<Consortium> getConsortiaByWorkUnit(WorkUnit workUnit) {
         Set<Consortium> result = Collections.emptySet();
         WorkUnit workUnitWithConsortia =
-                workUnitService.getWorkUnitWithConsortia(workUnit.getId());
+            workUnitService.getWorkUnitWithConsortia(workUnit.getId());
         if (workUnitWithConsortia != null) {
             result = workUnitWithConsortia.getConsortia();
         }
@@ -224,7 +224,7 @@ public class AapSystemSubject implements SystemSubject {
         boolean result = false;
         if (workUnits != null) {
             result = workUnits.stream().anyMatch(x -> x.getName().equals("WTSI")) &&
-                    getRelatedWorkUnits().stream().anyMatch(x -> x.getName().equals("Harwell"));
+                getRelatedWorkUnits().stream().anyMatch(x -> x.getName().equals("Harwell"));
         }
         return result;
 
@@ -253,17 +253,17 @@ public class AapSystemSubject implements SystemSubject {
     @Override
     public boolean managesAnyWorkUnit(Collection<WorkUnit> workUnits) {
         return new FluentPersonRoleWorkUnitList(roleWorkUnits)
-                .whereUserHasRole("manager")
-                .getWorkUnits().stream()
-                .anyMatch(workUnits::contains);
+            .whereUserHasRole("manager")
+            .getWorkUnits().stream()
+            .anyMatch(workUnits::contains);
     }
 
     @Override
     public boolean managesAnyConsortia(Collection<Consortium> consortia) {
         return getFluentRoleConsortia()
-                .whereUserHasRole("manager")
-                .getConsortia().stream()
-                .anyMatch(consortia::contains);
+            .whereUserHasRole("manager")
+            .getConsortia().stream()
+            .anyMatch(consortia::contains);
     }
 
     @Override

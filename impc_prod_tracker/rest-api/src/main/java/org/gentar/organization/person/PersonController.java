@@ -41,11 +41,11 @@ public class PersonController
     private final AAPService aapService;
 
     public PersonController(
-            PersonService personService,
-            PersonMapper personMapper,
-            PersonRequestProcessor personRequestProcessor,
-            AuthorizationHeaderReader authorizationHeaderReader,
-            AAPService aapService)
+        PersonService personService,
+        PersonMapper personMapper,
+        PersonRequestProcessor personRequestProcessor,
+        AuthorizationHeaderReader authorizationHeaderReader,
+        AAPService aapService)
     {
         this.personService = personService;
         this.personMapper = personMapper;
@@ -74,7 +74,7 @@ public class PersonController
         if (person == null)
         {
             throw new UserOperationFailedException(
-                    "User with email " + email + " not found.");
+                "User with email " + email + " not found.");
         }
         return personMapper.toDto(person);
     }
@@ -93,7 +93,7 @@ public class PersonController
     @PostMapping
     @PreAuthorize("hasPermission(null, 'MANAGE_USERS')")
     public PersonDTO createPerson(
-            @RequestBody PersonCreationDTO personCreationDTO, HttpServletRequest request) throws JsonProcessingException
+        @RequestBody PersonCreationDTO personCreationDTO, HttpServletRequest request) throws JsonProcessingException
     {
         String token = authorizationHeaderReader.getAuthorizationToken(request);
         Person personToBeCreated = personMapper.personCreationDTOtoEntity(personCreationDTO);
@@ -107,11 +107,11 @@ public class PersonController
      */
     @PutMapping
     public PersonDTO updateOwnPerson(@RequestBody PersonUpdateDTO personUpdateDTO)
-            throws JsonProcessingException
+    throws JsonProcessingException
     {
         Person personToBeUpdated =
-                personRequestProcessor.getOwnPersonToUpdate(
-                        personService.getLoggedPerson(), personUpdateDTO);
+            personRequestProcessor.getOwnPersonToUpdate(
+                personService.getLoggedPerson(), personUpdateDTO);
         String oldPassword = personUpdateDTO.getCurrentPassword();
         String newPassword = personUpdateDTO.getNewPassword();
         Person person = personService.updateOwnPerson(personToBeUpdated, oldPassword, newPassword);
@@ -120,9 +120,9 @@ public class PersonController
 
     @PutMapping(value = {"/{email}"})
     public PersonDTO updateManagedPerson(
-            @PathVariable("email") String email,
-            @RequestBody PersonUpdateDTO personUpdateDTO,
-            HttpServletRequest request)
+        @PathVariable("email") String email,
+        @RequestBody PersonUpdateDTO personUpdateDTO,
+        HttpServletRequest request)
     {
         String token = authorizationHeaderReader.getAuthorizationToken(request);
         Person personToBeUpdated = personRequestProcessor.getPersonManagedToUpdate(email, personUpdateDTO);

@@ -66,20 +66,20 @@ public class PublicKeyProvider
         try
         {
             ResponseEntity<String> response =
-                    restTemplate.getForEntity(authenticationServiceUrl, String.class);
+                restTemplate.getForEntity(authenticationServiceUrl, String.class);
             text = response.getBody();
             if (text != null)
             {
                 text = text
-                        .replaceAll(BEGIN_CERT, "")
-                        .replaceAll(END_CERT, "")
-                        .replaceAll(System.lineSeparator(), "");
+                    .replaceAll(BEGIN_CERT, "")
+                    .replaceAll(END_CERT, "")
+                    .replaceAll(System.lineSeparator(), "");
             }
         }
         catch (Exception e)
         {
             throw new SystemOperationFailedException(
-                    "Error while getting public key in authentication", e.getMessage());
+                "Error while getting public key in authentication", e.getMessage());
         }
         return text;
     }

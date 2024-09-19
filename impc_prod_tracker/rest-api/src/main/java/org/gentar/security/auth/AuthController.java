@@ -53,9 +53,9 @@ public class AuthController
     {
         String username = authenticationRequest.getUserName();
         String token = authService.getAuthenticationToken(
-                authenticationRequest.getUserName(), authenticationRequest.getPassword());
+            authenticationRequest.getUserName(), authenticationRequest.getPassword());
         AuthenticationResponseDTO authenticationResponseDTO = buildAuthenticationResponseDTO(
-                username, token);
+            username, token);
         return ok(authenticationResponseDTO);
     }
 
