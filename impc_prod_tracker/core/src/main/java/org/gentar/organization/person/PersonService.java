@@ -46,14 +46,6 @@ public interface PersonService
     Person getPersonByEmail(String email);
 
     /**
-     * Saves a person object in the system.
-     * @param person {@link Person} object with the person basic information and their associations
-     *                             with work units and consortia.
-     * @return Created {@link Person} with an id provided by the system.
-     */
-    Person createPerson(Person person, String token) throws JsonProcessingException;
-
-    /**
      * Updates the information for a person, as long as the current user has permission to do it.
      * @param person New information. Only some fields will be taken into account to the update.
      * @param token JWT token to communicate with AAP in case of need.
@@ -64,8 +56,11 @@ public interface PersonService
     /**
      * Updates information for the current logged user in the system.
      * @param person Person object representing
-     * @param oldPassword JWT token to communicate with AAP in case of need.
      * @return Updated person.
      */
-    Person updateOwnPerson(Person person, String oldPassword, String newPassword) throws JsonProcessingException;
+    Person updateOwnPerson(Person person) throws JsonProcessingException;
+
+
+    void resetPassword(String email) throws JsonProcessingException;
+
 }
