@@ -24,7 +24,6 @@ import org.gentar.framework.db.DBSetupFilesPaths;
 import org.gentar.helpers.LinkUtil;
 import org.gentar.util.JsonHelper;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.skyscreamer.jsonassert.JSONAssert;
 import org.skyscreamer.jsonassert.JSONCompareMode;
@@ -108,7 +107,6 @@ class PlanControllerTest extends ControllerTestTemplate
     // This test works locally but fails when run by GitHub Actions (It also fails when run locally in debug mode)
     // TODO: Investigate reasons for failing test
     @Test
-    @Disabled
     @DatabaseSetup(DBSetupFilesPaths.MULTIPLE_PLANS)
     @DatabaseTearDown(type = DatabaseOperation.DELETE_ALL, value = DBSetupFilesPaths.MULTIPLE_PLANS)
     void testUpdateStateMachineCrisprPlan() throws Exception
@@ -234,7 +232,6 @@ class PlanControllerTest extends ControllerTestTemplate
     }
 
     @Test
-    @Disabled
     @DatabaseSetup(DBSetupFilesPaths.MULTIPLE_PLANS)
     @DatabaseTearDown(type = DatabaseOperation.DELETE_ALL, value = DBSetupFilesPaths.MULTIPLE_PLANS)
     void testCreateCrisprPlan() throws Exception
@@ -259,7 +256,6 @@ class PlanControllerTest extends ControllerTestTemplate
     }
 
     @Test
-    @Disabled
     @DatabaseSetup(DBSetupFilesPaths.MULTIPLE_PLANS)
     @DatabaseTearDown(type = DatabaseOperation.DELETE_ALL, value = DBSetupFilesPaths.MULTIPLE_PLANS)
     void testCreateEsCellPlan() throws Exception
@@ -371,7 +367,6 @@ class PlanControllerTest extends ControllerTestTemplate
     }
 
     @Test
-    @Disabled
     @DatabaseSetup(DBSetupFilesPaths.MULTIPLE_PLANS)
     @DatabaseTearDown(type = DatabaseOperation.DELETE_ALL, value = DBSetupFilesPaths.MULTIPLE_PLANS)
     void testCreatePhenotypingPlan() throws Exception
