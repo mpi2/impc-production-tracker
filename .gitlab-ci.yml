@@ -466,8 +466,12 @@ hh-test:
       kubectl config use-context "${HH_KUBERNETES_TEST_NAMESPACE}"
       kubectl version
      
+
       cd impc_prod_tracker
      
+      sed -i "s/\${RESET_PASSWORD_TOKEN_USER}/RESET_PASSWORD_TOKEN_USER/g" kube/wp/test/api-service/api-service-deployment.yam
+      sed -i "s/\${RESET_PASSWORD_TOKEN_PASSWORD}/RESET_PASSWORD_TOKEN_PASSWORD/g" kube/wp/test/api-service/api-service-deployment.yam
+
       #
       #
       # Substitute the "latest" image tag in your deployment template with a more specific tag
@@ -540,7 +544,10 @@ hx-test:
       kubectl version
      
       cd impc_prod_tracker
-     
+      
+      sed -i "s/\${RESET_PASSWORD_TOKEN_USER}/RESET_PASSWORD_TOKEN_USER/g" kube/wp/test/api-service/api-service-deployment.yam
+      sed -i "s/\${RESET_PASSWORD_TOKEN_PASSWORD}/RESET_PASSWORD_TOKEN_PASSWORD/g" kube/wp/test/api-service/api-service-deployment.yam
+
       #
       #
       # Substitute the "latest" image tag in your deployment template with a more specific tag
