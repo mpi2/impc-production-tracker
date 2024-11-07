@@ -94,6 +94,17 @@ public class PersonServiceImpl implements PersonService {
     }
 
     @Override
+    public Person createPerson(Person person, String token) throws JsonProcessingException
+    {
+        validatePersonNotExists(person);
+        String authId = aapService.createUser(person, token);
+        person.setAuthId(authId);
+        personRepository.save(person);
+        return person;
+    }
+
+
+    @Override
     public Person updateOwnPerson(Person person){
 
         personRepository.save(person);
@@ -110,5 +121,15 @@ public class PersonServiceImpl implements PersonService {
                     "You don't have permissions to execute the action on this user.");
         }
     }
+
+    private void validatePersonNotExists(Person person)
+    {
+        String email = person.getEmail();
+        if (personRepository.findPersonByEmail(email) != null)
+        {
+            throw new UserOperationFailedException(String.format(PERSON_ALREADY_EXISTS_ERROR, email));
+        }
+    }
+
 
 }

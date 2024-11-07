@@ -19,6 +19,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import org.gentar.exceptions.UserOperationFailedException;
 import org.gentar.security.AuthorizationHeaderReader;
 import org.gentar.security.authentication.AAPService;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -79,6 +80,23 @@ public class PersonController {
     public PersonDTO getCurrentPerson() {
         return personMapper.toDto(personService.getLoggedPerson());
     }
+
+
+    /**
+     * Creates a person in the system.
+     * @param personCreationDTO Request with data of the user to be created.
+     * @return {@link Person} entity created
+     */
+    @PostMapping
+    @PreAuthorize("hasPermission(null, 'MANAGE_USERS')")
+    public PersonDTO createPerson(
+            @RequestBody PersonCreationDTO personCreationDTO, HttpServletRequest request) throws JsonProcessingException
+    {
+        String token = authorizationHeaderReader.getAuthorizationToken(request);
+        Person personToBeCreated = personMapper.personCreationDTOtoEntity(personCreationDTO);
+        return personMapper.toDto(personService.createPerson(personToBeCreated, token));
+    }
+
 
     /**
      * Allows to change information for the current user logged into the system.

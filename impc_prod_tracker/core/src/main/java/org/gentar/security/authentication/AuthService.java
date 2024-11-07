@@ -18,6 +18,8 @@ package org.gentar.security.authentication;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import org.gentar.exceptions.CommonErrorMessages;
 import org.gentar.exceptions.InvalidRequestException;
+import org.gentar.organization.person.keycloakUserCheck.KeycloakUserCheck;
+import org.gentar.organization.person.keycloakUserCheck.KeycloakUserCheckRepository;
 import org.springframework.stereotype.Service;
 
 /**
@@ -26,36 +28,44 @@ import org.springframework.stereotype.Service;
  * @author Mauricio Martinez
  */
 @Service
-public class AuthService
-{
+public class AuthService {
     private final AAPService aapService;
 
-    public AuthService(AAPService aapService)
-    {
+    private final KeycloakUserCheckRepository keycloakUserCheckRepository;
+
+    public AuthService(AAPService aapService, KeycloakUserCheckRepository keycloakUserCheckRepository) {
         this.aapService = aapService;
+        this.keycloakUserCheckRepository = keycloakUserCheckRepository;
     }
 
     /**
      * Return an authentication token if the user can be successfully logged into the local account at EBI AAP.
+     *
      * @param userName: User name.
      * @param password: Password.
      * @return Token (jwt) if authenticated.
      */
     public String getAuthenticationToken(String userName, String password) throws JsonProcessingException {
         validateNotNullCredentials(userName, password);
-        return aapService.getToken(userName, password);
+        String token = aapService.getToken(userName, password);
+
+
+        KeycloakUserCheck insertedKeycloakUserCheck = keycloakUserCheckRepository.findByUserName(userName);
+        if (insertedKeycloakUserCheck != null && !insertedKeycloakUserCheck.getSavedPassword()) {
+            keycloakUserCheckRepository.delete(insertedKeycloakUserCheck);
+        }
+
+
+        return token;
     }
 
-    private void validateNotNullCredentials(String userName, String password)
-    {
-        if (userName == null)
-        {
+    private void validateNotNullCredentials(String userName, String password) {
+        if (userName == null) {
             String errorMessage = String.format(CommonErrorMessages.NULL_FIELD_ERROR, "userName");
             errorMessage += " Make sure the sent parameter is called 'userName' (case sensitive).";
             throw new InvalidRequestException(errorMessage);
         }
-        if (password == null)
-        {
+        if (password == null) {
             String errorMessage = String.format(CommonErrorMessages.NULL_FIELD_ERROR, "password");
             throw new InvalidRequestException(errorMessage);
         }
