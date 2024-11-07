@@ -18,9 +18,14 @@ package org.gentar.security.authentication;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.gentar.biology.mutation.formatter.MutationFormatterServiceImpl;
 import org.gentar.exceptions.UserOperationFailedException;
 import org.gentar.organization.person.Person;
 import org.gentar.organization.person.PersonRepository;
+import org.gentar.organization.person.associations.PersonRoleConsortium;
+import org.gentar.organization.person.associations.PersonRoleWorkUnit;
+import org.gentar.organization.person.keycloakUserCheck.KeycloakUserCheck;
+import org.gentar.organization.person.keycloakUserCheck.KeycloakUserCheckRepository;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -30,12 +35,24 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.util.UriComponentsBuilder;
+import org.keycloak.representations.idm.UserRepresentation;
+
+import java.util.List;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @Component
 public class AAPService {
+
+    private static final Logger LOGGER =
+            LoggerFactory.getLogger(MutationFormatterServiceImpl.class);
+
     private final RestTemplate restTemplate;
 
     private final PersonRepository personRepository;
+
+    private final KeycloakUserCheckRepository keycloakUserCheckRepository;
 
     @Value("${local_authentication_base_url}")
     private String EXTERNAL_SERVICE_URL;
@@ -52,28 +69,30 @@ public class AAPService {
 
     private static final String NON_PRODUCTION_OPERATION_ERROR = "This operation must be performed on the production service.";
 
-    public AAPService(RestTemplate restTemplate, PersonRepository personRepository) {
+    public AAPService(RestTemplate restTemplate, PersonRepository personRepository, KeycloakUserCheckRepository keycloakUserCheckRepository) {
         this.restTemplate = restTemplate;
         this.personRepository = personRepository;
+        this.keycloakUserCheckRepository = keycloakUserCheckRepository;
     }
 
     /**
      * Returns a JWT given a userName and password. To do so, this calls the AAP system with the
      * provided data.
      *
-     * @param userName User name.
+     * @param email    User name.
      * @param password Password.
      * @return String with the JWT.
      */
-    public String getToken(String userName, String password) throws JsonProcessingException {
+    public String getToken(String email, String password) throws JsonProcessingException {
 
-
+        Person person = personRepository.findPersonByEmail(email);
+        KeycloakUserCheck keycloakUserCheck = keycloakUserCheckRepository.findByUserName(person.getEmail());
         ResponseEntity<String> response;
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
 
         MultiValueMap<String, String> form = new LinkedMultiValueMap<>();
-        form.add("username", userName);
+        form.add("username", email);
         form.add("password", password);
         form.add("grant_type", "password");
         form.add("client_id", "gentar-api");
@@ -94,20 +113,84 @@ public class AAPService {
                     entity,
                     String.class);
         } catch (HttpClientErrorException e) {
-            if (e.getMessage().contains("Account is not fully set up")) {
+
+            if (keycloakUserCheck != null) {
                 throw new BadCredentialsException(EXPIRED_PASSWORD_ERROR);
             } else {
                 throw new BadCredentialsException(AUTHENTICATION_ERROR);
             }
         }
 
+
         ObjectMapper objectMapper = new ObjectMapper();
 
         JsonNode jsonNode = objectMapper.readTree(response.getBody());
 
-        // Extract the public_key
+
 
         return jsonNode.get("access_token").asText();
+    }
+
+    /**
+     * Creates an account in the AAP system for a person in the system.
+     *
+     * @param person Person information which will be used to build the payload to call the
+     *               AAP endpoint that creates the user in that system.
+     * @param token  Token to be able to authenticate in AAP before executing the creation task.
+     * @return A string with the id in the AAP system for the user.
+     */
+    public String createUser(Person person, String token) throws JsonProcessingException {
+        person.setEmail(person.getEmail().toLowerCase());
+        return addUserToKeycloak(person, token);
+    }
+
+    private boolean isPersonAManager(Person person) {
+        for (PersonRoleWorkUnit personRoleWorkUnit : person.getPersonRolesWorkUnits()) {
+            if ("manager".equals(personRoleWorkUnit.getRole().getName())) {
+                return true;
+            }
+        }
+        for (PersonRoleConsortium personRoleConsortium : person.getPersonRolesConsortia()) {
+            if ("manager".equals(personRoleConsortium.getRole().getName())) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+
+    public String addUserToKeycloak(Person user, String token) throws JsonProcessingException {
+        String authId = "";
+        UserRepresentation keycloakUser = mapToKeycloakUser(user);
+        String url = EXTERNAL_SERVICE_URL + "admin/realms/gentar/users";
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("Authorization", "Bearer " + token);
+        headers.set("Content-Type", MediaType.APPLICATION_JSON_VALUE);
+
+        HttpEntity<UserRepresentation> request = new HttpEntity<>(keycloakUser, headers);
+
+        try {
+            LOGGER.info("Creating user: {}", keycloakUser.getEmail());
+            ResponseEntity<String> response = restTemplate.postForEntity(url, request, String.class);
+
+            if (response.getStatusCode() == HttpStatus.CREATED) {
+                LOGGER.info("User created successfully: {}", user.getEmail());
+
+                // Extract authId from Location header
+                String locationHeader = response.getHeaders().getLocation().toString();
+                if (locationHeader != null) {
+                    authId = locationHeader.substring(locationHeader.lastIndexOf('/') + 1);
+                }
+            } else {
+                LOGGER.info("Failed to create user: {}. Status: {}", user.getEmail(), response.getStatusCode());
+                LOGGER.info("Response body: {}", response.getBody());
+            }
+        } catch (Exception e) {
+            LOGGER.info("Exception while creating user: {}", keycloakUser.getEmail(), e);
+        }
+
+        return authId;
     }
 
     /**
@@ -160,5 +243,20 @@ public class AAPService {
         }
     }
 
+    private UserRepresentation mapToKeycloakUser(Person user) {
+        UserRepresentation userRepresentation = new UserRepresentation();
+        userRepresentation.setUsername(user.getEmail());
+        userRepresentation.setEmail(user.getEmail());
+        userRepresentation.setFirstName(user.getName());
+        userRepresentation.setLastName(user.getName());
+        userRepresentation.setEnabled(user.getIsActive());
+        userRepresentation.setEmailVerified(true);
+        userRepresentation.setEnabled(true);
+        userRepresentation.setRealmRoles(List.of("user"));
+
+        return userRepresentation;
+    }
+
 }
+
 
