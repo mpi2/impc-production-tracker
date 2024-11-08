@@ -87,6 +87,9 @@ public class AAPService {
     public String getToken(String email, String password) throws JsonProcessingException {
 
         Person person = personRepository.findPersonByEmail(email);
+        if (person == null) {
+            throw new BadCredentialsException(AUTHENTICATION_ERROR);
+        }
         KeycloakUserCheck keycloakUserCheck = keycloakUserCheckRepository.findByUserName(person.getEmail());
         ResponseEntity<String> response;
         HttpHeaders headers = new HttpHeaders();
@@ -126,7 +129,6 @@ public class AAPService {
         ObjectMapper objectMapper = new ObjectMapper();
 
         JsonNode jsonNode = objectMapper.readTree(response.getBody());
-
 
 
         return jsonNode.get("access_token").asText();
@@ -255,7 +257,7 @@ public class AAPService {
         userRepresentation.setEnabled(true);
 
         CredentialRepresentation passwordCred = new CredentialRepresentation();
-        passwordCred.setTemporary(true);
+        passwordCred.setTemporary(false);
         passwordCred.setType(CredentialRepresentation.PASSWORD);
         passwordCred.setValue(user.getPassword());
         userRepresentation.setCredentials(List.of(passwordCred));
