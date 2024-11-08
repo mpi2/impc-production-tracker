@@ -26,6 +26,7 @@ import org.gentar.organization.person.associations.PersonRoleConsortium;
 import org.gentar.organization.person.associations.PersonRoleWorkUnit;
 import org.gentar.organization.person.keycloakUserCheck.KeycloakUserCheck;
 import org.gentar.organization.person.keycloakUserCheck.KeycloakUserCheckRepository;
+import org.keycloak.representations.idm.CredentialRepresentation;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -252,6 +253,13 @@ public class AAPService {
         userRepresentation.setEnabled(user.getIsActive());
         userRepresentation.setEmailVerified(true);
         userRepresentation.setEnabled(true);
+
+        CredentialRepresentation passwordCred = new CredentialRepresentation();
+        passwordCred.setTemporary(true);
+        passwordCred.setType(CredentialRepresentation.PASSWORD);
+        passwordCred.setValue(user.getPassword());
+        userRepresentation.setCredentials(List.of(passwordCred));
+
         userRepresentation.setRealmRoles(List.of("user"));
 
         return userRepresentation;
