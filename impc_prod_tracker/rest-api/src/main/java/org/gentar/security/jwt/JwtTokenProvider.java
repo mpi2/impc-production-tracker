@@ -90,8 +90,7 @@ public class JwtTokenProvider {
         @Override
         public Key resolveSigningKey(JwsHeader header, Claims claims) {
             String kid = header.getKeyId();
-            String issuer = claims.getIssuer();
-            String authenticationServiceUrl = issuer + "/protocol/openid-connect/certs";
+            String authenticationServiceUrl = "https://www.ebi.ac.uk/mi/keycloak/realms/gentar/protocol/openid-connect/certs";
             return publicKeyProvider.getPublicKey(kid, authenticationServiceUrl);
         }
     };
