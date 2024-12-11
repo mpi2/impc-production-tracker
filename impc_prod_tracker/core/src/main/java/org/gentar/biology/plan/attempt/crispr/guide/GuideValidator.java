@@ -4,6 +4,7 @@ import org.gentar.exceptions.UserOperationFailedException;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Set;
 
@@ -31,22 +32,26 @@ public class GuideValidator {
     private void checkNullFields(Set<Guide> guides) {
         String commonChr = null;
 
-        for (Guide guide : guides) {
+        List<Guide> sortedGuides = guides.stream()
+                .sorted(Comparator.comparing(Guide::getId))
+                .toList();
+
+        for (Guide guide : sortedGuides) {
+            if (commonChr == null) {
+                commonChr = guide.getChr();
+            }
+
             if (!isOldGuide(guide.getId())) {
-                    validateNotNullField(guide.getGuideSequence(), "Guide Sequence in the guide");
+                validateNotNullField(guide.getGuideSequence(), "Guide Sequence in the guide");
                 validateNotNullField(guide.getPam(), "Pam in the guide");
                 validateNotNullField(guide.getChr(), "Chromosome in the guide");
                 validateNotNullField(guide.getStart(), "Guide start field");
                 validateNotNullField(guide.getStop(), "Guide stop field");
                 validateNotNullField(guide.getStrand(), "Strand in the guide");
                 validateNotNullField(guide.getGenomeBuild(), "Genome Build in the guide");
-
-                if (commonChr == null) {
-                    commonChr = guide.getChr();
-                } else if (!commonChr.equals(guide.getChr())) {
+                if (!commonChr.equals(guide.getChr())) {
                     throw new UserOperationFailedException("All guides must have the same chromosome.");
                 }
-
             }
         }
     }
