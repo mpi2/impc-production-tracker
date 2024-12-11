@@ -3,7 +3,6 @@ package org.gentar.biology.plan.attempt.crispr.guide;
 import org.gentar.exceptions.UserOperationFailedException;
 import org.springframework.stereotype.Component;
 
-import java.time.LocalDateTime;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Set;
@@ -16,7 +15,6 @@ public class GuideValidator {
     private static final String SAME_TOTAL_LENGTH = "Error guides information. Sequence has a total length of %sbps and the difference between start and stop plus one is %s. Please add the correct coordinates.";
     private static final String SEQUENCE_ERROR = "Error guides information. Please enter the valid guide sequence.";
     private static final String PAM_ERROR = "Error guides information. Please enter the valid Pam.";
-    private static final LocalDateTime VALIDATION_DATE = LocalDateTime.of(2024, 9, 1, 0, 0);
 
     public GuideValidator() {
     }
@@ -33,7 +31,7 @@ public class GuideValidator {
         String commonChr = null;
 
         List<Guide> sortedGuides = guides.stream()
-                .sorted(Comparator.comparing(Guide::getId))
+                .sorted(Comparator.comparing(Guide::getId, Comparator.nullsLast(Comparator.naturalOrder())))
                 .toList();
 
         for (Guide guide : sortedGuides) {
