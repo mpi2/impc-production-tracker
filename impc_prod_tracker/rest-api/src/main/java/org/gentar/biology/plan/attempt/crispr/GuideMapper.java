@@ -40,7 +40,7 @@ public class GuideMapper implements Mapper<Guide, GuideDTO> {
         return guideDTOS;
     }
 
-    public Guide toEntity(GuideDTO guideDTO) {
+    public Guide toEntity(GuideDTO guideDTO, String nucleaseType) {
         Guide guide = entityMapper.toTarget(guideDTO, Guide.class);
         if (guide.getGuideSequence() != null) {
             guide.setGuideSequence(guide.getGuideSequence().replace(" ", ""));
@@ -50,23 +50,27 @@ public class GuideMapper implements Mapper<Guide, GuideDTO> {
         }
 
         if (guide.getSequence() == null || guide.getSequence().isEmpty()) {
-            guide.setSequence(guideDTO.getGuideSequence() + guideDTO.getPam());
+            if ("Cpf1".equalsIgnoreCase(nucleaseType)) {
+                guide.setSequence(guideDTO.getPam() + guideDTO.getGuideSequence());
+            } else {
+                guide.setSequence(guideDTO.getGuideSequence() + guideDTO.getPam());
+            }
         }
 
         if (guideDTO.getFormatName() != null) {
             GuideFormat guideFormat =
-                guideFormatRepository.findByNameIgnoreCase(guideDTO.getFormatName());
+                    guideFormatRepository.findByNameIgnoreCase(guideDTO.getFormatName());
             guide.setGuideFormat(guideFormat);
         }
         if (guideDTO.getSourceName() != null) {
             GuideSource guideSource =
-                guideSourceRepository.findByNameIgnoreCase(guideDTO.getSourceName());
+                    guideSourceRepository.findByNameIgnoreCase(guideDTO.getSourceName());
             guide.setGuideSource(guideSource);
         }
 
         if (guide.getGenomeBuild() != null && guide.getStart() != null &&
-            guide.getStop() != null && guide.getStrand() != null && guide.getChr() != null) {
-            if (guide.getGenomeBuild().equals("GRCm38")) {
+                guide.getStop() != null && guide.getStrand() != null && guide.getChr() != null) {
+            if ("GRCm38".equals(guide.getGenomeBuild())) {
                 changeAssemblyIfNecessary(guide);
             }
         }
@@ -78,10 +82,12 @@ public class GuideMapper implements Mapper<Guide, GuideDTO> {
         assemblyMapMapper.assemblyConvertion(guide);
     }
 
-    public Set<Guide> toEntities(Collection<GuideDTO> guideDTOs) {
+    public Set<Guide> toEntities(CrisprAttemptDTO crisprAttemptDTO) {
+        String nucleaseType = crisprAttemptDTO.getNucleaseDTOS() != null ? crisprAttemptDTO.getNucleaseDTOS().getFirst().getTypeName() : null;
+        Collection<GuideDTO> guideDTOs = crisprAttemptDTO.getGuideDTOS();
         Set<Guide> guides = new HashSet<>();
         if (guideDTOs != null) {
-            guideDTOs.forEach(guideDTO -> guides.add(toEntity(guideDTO)));
+            guideDTOs.forEach(guideDTO -> guides.add(toEntity(guideDTO, nucleaseType)));
         }
         return guides;
     }
