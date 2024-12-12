@@ -54,6 +54,10 @@ spec:
               value: /tracker-api
             - name: REDEPLOY_KEY
               value: "STRING_REPLACED_DURING_REDEPLOY"
+            - name: RESET_PASSWORD_TOKEN_USER
+              value: ${RESET_PASSWORD_TOKEN_USER}
+            - name: RESET_PASSWORD_TOKEN_PASSWORD
+              value: ${RESET_PASSWORD_TOKEN_PASSWORD}
           securityContext:
             readOnlyRootFilesystem: true
             privileged: false
