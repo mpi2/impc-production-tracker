@@ -466,6 +466,7 @@ hh-test:
       kubectl config use-context "${HH_KUBERNETES_TEST_NAMESPACE}"
       kubectl version
      
+
       cd impc_prod_tracker
      
       #
@@ -497,6 +498,9 @@ hh-test:
       
       
       sed -i "s/STRING_REPLACED_DURING_REDEPLOY/$(date)/g" kube/wp/test/api-service/api-service-deployment.yaml
+
+      sed -i "s/\${RESET_PASSWORD_TOKEN_USER}/$RESET_PASSWORD_TOKEN_USER/g" kube/wp/test/api-service/api-service-deployment.yaml
+      sed -i "s/\${RESET_PASSWORD_TOKEN_PASSWORD}/$RESET_PASSWORD_TOKEN_PASSWORD/g" kube/wp/test/api-service/api-service-deployment.yaml
 
       if kubectl apply -f kube/wp/test/api-service/api-service-deployment.yaml --record | grep -q unchanged; then
           echo "=> Patching deployment to force image update."
@@ -540,7 +544,7 @@ hx-test:
       kubectl version
      
       cd impc_prod_tracker
-     
+
       #
       #
       # Substitute the "latest" image tag in your deployment template with a more specific tag
@@ -571,6 +575,9 @@ hx-test:
       
       sed -i "s/STRING_REPLACED_DURING_REDEPLOY/$(date)/g" kube/wp/test/api-service/api-service-deployment.yaml
       sed -i "s/HL_PROXY/HX_PROXY/g" kube/wp/test/api-service/api-service-deployment.yaml
+     
+      sed -i "s/\${RESET_PASSWORD_TOKEN_USER}/$RESET_PASSWORD_TOKEN_USER/g" kube/wp/test/api-service/api-service-deployment.yaml
+      sed -i "s/\${RESET_PASSWORD_TOKEN_PASSWORD}/$RESET_PASSWORD_TOKEN_PASSWORD/g" kube/wp/test/api-service/api-service-deployment.yaml
 
       if kubectl apply -f kube/wp/test/api-service/api-service-deployment.yaml --record | grep -q unchanged; then
           echo "=> Patching deployment to force image update."

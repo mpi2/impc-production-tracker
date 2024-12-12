@@ -1,18 +1,3 @@
-/*******************************************************************************
- * Copyright 2019 EMBL - European Bioinformatics Institute
- * <p>
- * Licensed under the Apache License, Version 2.0 (the
- * "License"); you may not use this file except in compliance
- * with the License. You may obtain a copy of the License at
- * http://www.apache.org/licenses/LICENSE-2.0
- * <p>
- * Unless required by applicable law or agreed to in writing,
- * software distributed under the License is distributed on an
- * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
- * either express or implied. See the License for the specific
- * language governing permissions and limitations under the
- * License.
- *******************************************************************************/
 package org.gentar.security.jwt;
 
 import io.jsonwebtoken.Claims;
@@ -39,18 +24,13 @@ import java.security.Key;
 import java.time.Instant;
 import java.util.Date;
 
-/**
- * This class manages the creation and validation of JWT.
- * @author Mauricio Martinez
- */
 @Component
-public class JwtTokenProvider
-{
+public class JwtTokenProvider {
     static final String INVALID_TOKEN_MESSAGE = "Expired or invalid JWT token.";
     private static final String INVALID_TOKEN_DEBUG_MESSAGE =
-        "Tokens expire after 3 hours, please create a new one. Also check that you"
-            + " are using the whole token in the authentication header. Contact your administrator"
-            + "if after checking this you keep receiving the same error.";
+            "Tokens expire after 3 hours, please create a new one. Also check that you"
+                    + " are using the whole token in the authentication header. Contact your administrator"
+                    + "if after checking this you keep receiving the same error.";
     static final String NULL_EMPTY_TOKEN_MESSAGE = "The token cannot be null or empty.";
     private static final Logger LOGGER = LoggerFactory.getLogger(JwtTokenProvider.class);
 
@@ -59,25 +39,20 @@ public class JwtTokenProvider
 
     private final AuthorizationHeaderReader authorizationHeaderReader = new AuthorizationHeaderReader();
 
-    public JwtTokenProvider(
-        PublicKeyProvider publicKeyProvider, AapSystemSubject aapSystemSubject)
-    {
+    public JwtTokenProvider(PublicKeyProvider publicKeyProvider, AapSystemSubject aapSystemSubject) {
         this.publicKeyProvider = publicKeyProvider;
         this.aapSystemSubject = aapSystemSubject;
     }
 
-    Authentication getAuthentication(String token)
-    {
-        if (token == null || token.isEmpty())
-        {
+    Authentication getAuthentication(String token) {
+        if (token == null || token.isEmpty()) {
             throw new UserOperationFailedException(NULL_EMPTY_TOKEN_MESSAGE);
         }
         SystemSubject systemSubject = getSystemSubject(token);
         return new UsernamePasswordAuthenticationToken(systemSubject, "", null);
     }
 
-    public SystemSubject getSystemSubject(String token)
-    {
+    public SystemSubject getSystemSubject(String token) {
         Claims claims = getClaims(token);
         Person person = new Person();
         person.setName(claims.get("name", String.class));
@@ -86,55 +61,37 @@ public class JwtTokenProvider
         return aapSystemSubject.buildSystemSubjectByPerson(person);
     }
 
-    Claims getClaims(String token)
-    {
+    Claims getClaims(String token) {
         return Jwts.parser()
-            .setSigningKeyResolver(getSigningKeyResolver())
-            .parseClaimsJws(token)
-            .getBody();
+                .setSigningKeyResolver(getSigningKeyResolver())
+                .parseClaimsJws(token)
+                .getBody();
     }
 
-    /**
-     * Obtain the token from the Authorization header.
-     * @param req Request.
-     * @return String with the token.
-     */
-    String resolveToken(HttpServletRequest req)
-    {
+    String resolveToken(HttpServletRequest req) {
         return authorizationHeaderReader.getAuthorizationToken(req);
     }
 
-    /**
-     * Validates that the JWT is valid
-     * @param token The token.
-     * @return True if token is valid. False otherwise.
-     */
-    boolean validateToken(String token)
-    {
-        try
-        {
+    boolean validateToken(String token) {
+        try {
             Jws<Claims> claims = Jwts.parser()
-                .setSigningKeyResolver(getSigningKeyResolver())
-                .parseClaimsJws(token);
+                    .setSigningKeyResolver(getSigningKeyResolver())
+                    .parseClaimsJws(token);
 
             return !claims.getBody().getExpiration().before(Date.from(Instant.now()));
-        }
-        catch (JwtException | IllegalArgumentException e)
-        {
+        } catch (JwtException | IllegalArgumentException e) {
             LOGGER.error(e.getMessage());
             throw new UserOperationFailedException(INVALID_TOKEN_MESSAGE, INVALID_TOKEN_DEBUG_MESSAGE);
         }
     }
 
     @Getter
-    private final SigningKeyResolver signingKeyResolver = new SigningKeyResolverAdapter()
-    {
+    private final SigningKeyResolver signingKeyResolver = new SigningKeyResolverAdapter() {
         @Override
-        public Key resolveSigningKey(JwsHeader header, Claims claims)
-        {
-            String issuer = claims.getIssuer();
-            return publicKeyProvider.getPublicKey(issuer);
+        public Key resolveSigningKey(JwsHeader header, Claims claims) {
+            String kid = header.getKeyId();
+            String authenticationServiceUrl = "https://www.ebi.ac.uk/mi/keycloak/realms/gentar/protocol/openid-connect/certs";
+            return publicKeyProvider.getPublicKey(kid, authenticationServiceUrl);
         }
     };
-
 }

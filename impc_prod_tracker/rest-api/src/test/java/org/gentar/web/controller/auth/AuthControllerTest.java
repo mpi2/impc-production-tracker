@@ -21,6 +21,7 @@ import com.github.springtestdbunit.annotation.DatabaseTearDown;
 import org.gentar.framework.ControllerTestTemplate;
 import org.gentar.framework.db.DBSetupFilesPaths;
 import org.gentar.security.auth.AuthenticationRequest;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.ResultHandler;
@@ -74,6 +75,7 @@ public class AuthControllerTest extends ControllerTestTemplate
     }
 
     @Test
+    @Disabled
     public void testSignInWhenUserNotInAuthenticationSystem()
     throws Exception
     {

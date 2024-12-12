@@ -32,8 +32,7 @@ import java.util.List;
  */
 
 @Component
-public class PersonServiceImpl implements PersonService
-{
+public class PersonServiceImpl implements PersonService {
     private final PersonRepository personRepository;
     private final AAPService aapService;
     private final SubjectRetriever subjectRetriever;
@@ -41,15 +40,14 @@ public class PersonServiceImpl implements PersonService
     private final ContextAwarePolicyEnforcement policyEnforcement;
 
     public static final String PERSON_ALREADY_EXISTS_ERROR =
-        "The user with email [%s] already exists in the system.";
+            "The user with email [%s] already exists in the system.";
 
     public PersonServiceImpl(
-        PersonRepository personRepository,
-        AAPService aapService,
-        SubjectRetriever subjectRetriever,
-        ManagementService managementService,
-        ContextAwarePolicyEnforcement policyEnforcement)
-    {
+            PersonRepository personRepository,
+            AAPService aapService,
+            SubjectRetriever subjectRetriever,
+            ManagementService managementService,
+            ContextAwarePolicyEnforcement policyEnforcement) {
         this.personRepository = personRepository;
         this.aapService = aapService;
         this.subjectRetriever = subjectRetriever;
@@ -57,18 +55,13 @@ public class PersonServiceImpl implements PersonService
         this.policyEnforcement = policyEnforcement;
     }
 
-    public List<Person> getAllPeople()
-    {
+    public List<Person> getAllPeople() {
         List<Person> people = null;
         SystemSubject systemSubject = subjectRetriever.getSubject();
-        if (systemSubject != null)
-        {
-            if (systemSubject.isAdmin())
-            {
+        if (systemSubject != null) {
+            if (systemSubject.isAdmin()) {
                 people = personRepository.findAll();
-            }
-            else
-            {
+            } else {
                 people = managementService.getManagedPeople(systemSubject);
             }
         }
@@ -77,12 +70,10 @@ public class PersonServiceImpl implements PersonService
     }
 
     @Override
-    public Person getLoggedPerson()
-    {
+    public Person getLoggedPerson() {
         Person person = null;
         SystemSubject systemSubject = subjectRetriever.getSubject();
-        if (systemSubject != null)
-        {
+        if (systemSubject != null) {
             person = systemSubject.getPerson();
         }
 
@@ -90,9 +81,16 @@ public class PersonServiceImpl implements PersonService
     }
 
     @Override
-    public Person getPersonByEmail(String email)
-    {
+    public Person getPersonByEmail(String email) {
         return personRepository.findPersonByEmail(email);
+    }
+
+
+    @Override
+    public Person updateManagedPerson(Person person, String token) {
+        validatePermissions(person);
+        personRepository.save(person);
+        return person;
     }
 
     @Override
@@ -105,32 +103,22 @@ public class PersonServiceImpl implements PersonService
         return person;
     }
 
+
     @Override
-    public Person updateManagedPerson(Person person, String token)
-    {
-        validatePermissions(Actions.UPDATE_USER, person);
+    public Person updateOwnPerson(Person person){
+
         personRepository.save(person);
         return person;
     }
 
-    @Override
-    public Person updateOwnPerson(Person person, String oldPassword, String newPassword)
-    throws JsonProcessingException
-    {
-        if (newPassword != null)
-        {
-            aapService.changePassword(person.getEmail(), oldPassword, newPassword);
-        }
-        personRepository.save(person);
-        return person;
+    public void resetPassword(String email) throws JsonProcessingException {
+        aapService.changePassword(email);
     }
 
-    private void validatePermissions(String updateUser, Person person)
-    {
-        if (!policyEnforcement.hasPermission(person, updateUser))
-        {
+    private void validatePermissions(Person person) {
+        if (!policyEnforcement.hasPermission(person, Actions.UPDATE_USER)) {
             throw new UserOperationFailedException(
-                "You don't have permissions to execute the action on this user.");
+                    "You don't have permissions to execute the action on this user.");
         }
     }
 
@@ -142,5 +130,6 @@ public class PersonServiceImpl implements PersonService
             throw new UserOperationFailedException(String.format(PERSON_ALREADY_EXISTS_ERROR, email));
         }
     }
+
 
 }
