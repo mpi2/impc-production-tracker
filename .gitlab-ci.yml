@@ -140,6 +140,9 @@ hh-production:
       sed -i "s/impc-production-tracker-mirror:latest/impc-production-tracker-mirror:${PRODUCTION_API_TAG}/g" kube/wp/production/api-service/api-service-deployment.yaml
       sed -i "s/STRING_REPLACED_DURING_REDEPLOY/$(date)/g" kube/wp/production/api-service/api-service-deployment.yaml
 
+      sed -i "s/\${RESET_PASSWORD_TOKEN_USER}/$RESET_PASSWORD_TOKEN_USER/g" kube/wp/production/api-service/api-service-deployment.yaml
+      sed -i "s/\${RESET_PASSWORD_TOKEN_PASSWORD}/$RESET_PASSWORD_TOKEN_PASSWORD/g" kube/wp/production/api-service/api-service-deployment.yaml
+
       if kubectl apply -f kube/wp/production/api-service/api-service-deployment.yaml --record | grep -q unchanged; then
           echo "=> Patching deployment to force image update."
           kubectl patch -f kube/wp/production/api-service/api-service-deployment.yaml --record -p "{\"spec\":{\"template\":{\"metadata\":{\"annotations\":{\"ci-last-updated\":\"$(date +'%s')\"}}}}}"
@@ -184,6 +187,9 @@ hx-production:
       sed -i "s/impc-production-tracker-mirror:latest/impc-production-tracker-mirror:${PRODUCTION_API_TAG}/g" kube/wp/production/api-service/api-service-deployment.yaml
       sed -i "s/STRING_REPLACED_DURING_REDEPLOY/$(date)/g" kube/wp/production/api-service/api-service-deployment.yaml
       sed -i "s/HL_PROXY/HX_PROXY/g" kube/wp/production/api-service/api-service-deployment.yaml
+
+      sed -i "s/\${RESET_PASSWORD_TOKEN_USER}/$RESET_PASSWORD_TOKEN_USER/g" kube/wp/production/api-service/api-service-deployment.yaml
+      sed -i "s/\${RESET_PASSWORD_TOKEN_PASSWORD}/$RESET_PASSWORD_TOKEN_PASSWORD/g" kube/wp/production/api-service/api-service-deployment.yaml
 
       if kubectl apply -f kube/wp/production/api-service/api-service-deployment.yaml --record | grep -q unchanged; then
           echo "=> Patching deployment to force image update."
@@ -234,6 +240,9 @@ hh-sandbox:
       sed -i "s/impc-production-tracker-mirror:latest/impc-production-tracker-mirror:${SANDBOX_API_TAG}/g" kube/wp/sandbox/api-service/api-service-deployment.yaml
       sed -i "s/STRING_REPLACED_DURING_REDEPLOY/$(date)/g" kube/wp/sandbox/api-service/api-service-deployment.yaml
 
+      sed -i "s/\${RESET_PASSWORD_TOKEN_USER}/$RESET_PASSWORD_TOKEN_USER/g" kube/wp/sandbox/api-service/api-service-deployment.yaml
+      sed -i "s/\${RESET_PASSWORD_TOKEN_PASSWORD}/$RESET_PASSWORD_TOKEN_PASSWORD/g" kube/wp/sandbox/api-service/api-service-deployment.yaml
+
       if kubectl apply -f kube/wp/sandbox/api-service/api-service-deployment.yaml --record | grep -q unchanged; then
           echo "=> Patching deployment to force image update."
           kubectl patch -f kube/wp/sandbox/api-service/api-service-deployment.yaml --record -p "{\"spec\":{\"template\":{\"metadata\":{\"annotations\":{\"ci-last-updated\":\"$(date +'%s')\"}}}}}"
@@ -280,6 +289,9 @@ hx-sandbox:
       sed -i "s/impc-production-tracker-mirror:latest/impc-production-tracker-mirror:${SANDBOX_API_TAG}/g" kube/wp/sandbox/api-service/api-service-deployment.yaml
       sed -i "s/STRING_REPLACED_DURING_REDEPLOY/$(date)/g" kube/wp/sandbox/api-service/api-service-deployment.yaml
       sed -i "s/HL_PROXY/HX_PROXY/g" kube/wp/sandbox/api-service/api-service-deployment.yaml
+
+      sed -i "s/\${RESET_PASSWORD_TOKEN_USER}/$RESET_PASSWORD_TOKEN_USER/g" kube/wp/sandbox/api-service/api-service-deployment.yaml
+      sed -i "s/\${RESET_PASSWORD_TOKEN_PASSWORD}/$RESET_PASSWORD_TOKEN_PASSWORD/g" kube/wp/sandbox/api-service/api-service-deployment.yaml
 
       if kubectl apply -f kube/wp/sandbox/api-service/api-service-deployment.yaml --record | grep -q unchanged; then
           echo "=> Patching deployment to force image update."
@@ -353,6 +365,9 @@ hh-dev:
       
       sed -i "s/STRING_REPLACED_DURING_REDEPLOY/$(date)/g" kube/wp/dev/api-service/api-service-deployment.yaml
 
+      sed -i "s/\${RESET_PASSWORD_TOKEN_USER}/$RESET_PASSWORD_TOKEN_USER/g" kube/wp/dev/api-service/api-service-deployment.yaml
+      sed -i "s/\${RESET_PASSWORD_TOKEN_PASSWORD}/$RESET_PASSWORD_TOKEN_PASSWORD/g" kube/wp/dev/api-service/api-service-deployment.yaml
+
       if kubectl apply -f kube/wp/dev/api-service/api-service-deployment.yaml --record | grep -q unchanged; then
           echo "=> Patching deployment to force image update."
           kubectl patch -f kube/wp/dev/api-service/api-service-deployment.yaml --record -p "{\"spec\":{\"template\":{\"metadata\":{\"annotations\":{\"ci-last-updated\":\"$(date +'%s')\"}}}}}"
@@ -424,6 +439,9 @@ hx-dev:
       
       sed -i "s/STRING_REPLACED_DURING_REDEPLOY/$(date)/g" kube/wp/dev/api-service/api-service-deployment.yaml
       sed -i "s/HL_PROXY/HX_PROXY/g" kube/wp/dev/api-service/api-service-deployment.yaml
+
+      sed -i "s/\${RESET_PASSWORD_TOKEN_USER}/$RESET_PASSWORD_TOKEN_USER/g" kube/wp/dev/api-service/api-service-deployment.yaml
+      sed -i "s/\${RESET_PASSWORD_TOKEN_PASSWORD}/$RESET_PASSWORD_TOKEN_PASSWORD/g" kube/wp/dev/api-service/api-service-deployment.yaml
 
       if kubectl apply -f kube/wp/dev/api-service/api-service-deployment.yaml --record | grep -q unchanged; then
           echo "=> Patching deployment to force image update."
