@@ -2,12 +2,13 @@ package org.gentar.biology.plan.attempt.crispr.guide;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.gentar.BaseEntity;
 import org.gentar.biology.plan.attempt.crispr.CrisprAttempt;
 
 @NoArgsConstructor(access= AccessLevel.PUBLIC, force=true)
 @Data
 @Entity
-public class MergedGuide {
+public class MergedGuide extends BaseEntity {
 
     @Id
     @SequenceGenerator(name = "mergedGuideSeq", sequenceName = "MERGED_GUIDE_SEQ")
