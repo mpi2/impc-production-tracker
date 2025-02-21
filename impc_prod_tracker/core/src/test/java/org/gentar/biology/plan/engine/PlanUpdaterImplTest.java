@@ -39,10 +39,10 @@ class PlanUpdaterImplTest {
     @BeforeEach
     void setUp() {
         testInstance = new PlanUpdaterImpl(historyService,
-            planRepository,
-            guideRepository, planValidator,
-            projectService,
-            planStatusManager);
+                planRepository,
+                guideRepository, planValidator,
+                projectService,
+                planStatusManager);
     }
 
     @Test
@@ -50,7 +50,7 @@ class PlanUpdaterImplTest {
 
         lenient().when(planRepository.findPlanByPin(PIN_000000001)).thenReturn(planMockData());
         History exception = assertDoesNotThrow(() ->
-            testInstance.updatePlan(planMockData(), planMockData())
+                testInstance.updatePlan(planMockData(), planMockData())
         );
 
         assertNull(exception);
