@@ -2,7 +2,7 @@ package org.gentar.biology.plan.engine;
 
 import org.gentar.biology.plan.PlanStatusManager;
 import org.gentar.biology.plan.Plan_;
-import org.gentar.biology.plan.attempt.crispr.guide.GuideRepository;
+import org.gentar.biology.plan.attempt.crispr.guide.*;
 import org.gentar.biology.project.ProjectService;
 import org.gentar.biology.status.Status_;
 import org.gentar.audit.history.HistoryService;
@@ -12,36 +12,39 @@ import org.gentar.biology.plan.PlanRepository;
 import org.gentar.audit.history.History;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Component
-public class PlanUpdaterImpl implements PlanUpdater
-{
+public class PlanUpdaterImpl implements PlanUpdater {
     private final HistoryService<Plan> historyService;
     private final PlanRepository planRepository;
+
 
     private final GuideRepository guideRepository;
     private final PlanValidator planValidator;
     private final ProjectService projectService;
     private final PlanStatusManager planStatusManager;
+    private final MergedGuideService mergedGuideService;
 
     public PlanUpdaterImpl(
-        HistoryService<Plan> historyService,
-        PlanRepository planRepository,
-        GuideRepository guideRepository, PlanValidator planValidator,
-        ProjectService projectService,
-        PlanStatusManager planStatusManager)
-    {
+            HistoryService<Plan> historyService,
+            PlanRepository planRepository,
+            GuideRepository guideRepository, PlanValidator planValidator,
+            ProjectService projectService,
+            PlanStatusManager planStatusManager,
+            MergedGuideService mergedGuideService) {
         this.historyService = historyService;
         this.planRepository = planRepository;
         this.guideRepository = guideRepository;
         this.planValidator = planValidator;
         this.projectService = projectService;
         this.planStatusManager = planStatusManager;
+        this.mergedGuideService = mergedGuideService;
     }
 
     @Override
     @Transactional
-    public History updatePlan(Plan originalPlan, Plan newPlan)
-    {
+    public History updatePlan(Plan originalPlan, Plan newPlan) {
         validatePermissionToUpdatePlan(newPlan);
         History history = new History();
         if (newPlan.getProcessDataEvent() != null && newPlan.getProcessDataEvent().getName().equals("abandonWhenCreated")) {
@@ -61,36 +64,36 @@ public class PlanUpdaterImpl implements PlanUpdater
             updateProjectDueToChangesInChild(newPlan);
         }
         guideRepository.updateGidForNull();
+
+        List<Guide> selectNonExistingGuides = guideRepository.findNonExistingGuides();
+        mergedGuideService.saveNonExistingGuides(selectNonExistingGuides);
         return history;
     }
 
     @Override
-    public void notifyChangeInChild(Plan plan)
-    {
+    public void notifyChangeInChild(Plan plan) {
         Plan planAfterUpdate = new Plan(plan);
         planStatusManager.setSummaryStatus(planAfterUpdate);
         updatePlan(plan, planAfterUpdate);
     }
 
-    private void validatePermissionToUpdatePlan(Plan newPlan)
-    {
+    private void validatePermissionToUpdatePlan(Plan newPlan) {
         planValidator.validatePermissionToUpdatePlan(newPlan);
     }
 
     /**
      * Check if the changes in the plan require a change on the status.
+     *
      * @param plan Plan being updated.
      */
-    private void changeStatusIfNeeded(Plan plan)
-    {
+    private void changeStatusIfNeeded(Plan plan) {
         planStatusManager.updateStatusIfNeeded(plan);
     }
 
     /**
      * Validates that the changes are valid.
      */
-    private void validateUpdateData(Plan originalPlan, Plan newPlan)
-    {
+    private void validateUpdateData(Plan originalPlan, Plan newPlan) {
         planValidator.validate(newPlan);
 
         planValidator.validateUpdate(originalPlan, newPlan);
@@ -98,22 +101,22 @@ public class PlanUpdaterImpl implements PlanUpdater
 
     /**
      * Save the changes into the database for the specific plan.
+     *
      * @param plan Plan being updated.
      */
-    private void saveChanges(Plan plan)
-    {
-       planRepository.save(plan);
+    private void saveChanges(Plan plan) {
+        planRepository.save(plan);
     }
 
     /**
      * Detects the track of the changes between originalPlan and newPlan.
+     *
      * @param originalPlan The plan before the update.
-     * @param newPlan The updated plan.
+     * @param newPlan      The updated plan.
      */
-    private History detectTrackOfChanges(Plan originalPlan, Plan newPlan)
-    {
+    private History detectTrackOfChanges(Plan originalPlan, Plan newPlan) {
         History history =
-            historyService.detectTrackOfChanges(originalPlan, newPlan, originalPlan.getId());
+                historyService.detectTrackOfChanges(originalPlan, newPlan, originalPlan.getId());
         history = historyService.filterDetailsInNestedEntity(history, Plan_.STATUS, Status_.NAME);
         history = historyService.filterDetailsInNestedEntity(history, Plan_.SUMMARY_STATUS, Status_.NAME);
         return history;
@@ -122,18 +125,17 @@ public class PlanUpdaterImpl implements PlanUpdater
     /**
      * Stores the track of the changes.
      */
-    private void saveTrackOfChanges(History history)
-    {
+    private void saveTrackOfChanges(History history) {
         historyService.saveTrackOfChanges(history);
     }
 
     /**
      * The modification in the plan can lead to changes in the project (summary status or
      * assignment status, for instance). So we need to notify the project about this.
+     *
      * @param plan Plan that was updated.
      */
-    private void updateProjectDueToChangesInChild(Plan plan)
-    {
+    private void updateProjectDueToChangesInChild(Plan plan) {
         projectService.checkForUpdates(plan.getProject());
     }
 }
