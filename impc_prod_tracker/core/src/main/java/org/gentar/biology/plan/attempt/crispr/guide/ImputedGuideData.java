@@ -32,6 +32,7 @@ public class ImputedGuideData extends BaseEntity {
     private String guideSequence;
     private String colonyName;
     private String alleleSymbol;
+    @Column(columnDefinition = "TEXT")
     private String fasta;
     private String conclusion;
 
