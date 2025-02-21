@@ -4,11 +4,12 @@ import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.gentar.BaseEntity;
 
 @NoArgsConstructor(access= AccessLevel.PUBLIC, force=true)
 @Data
 @Entity
-public class ImputedGuideData {
+public class ImputedGuideData extends BaseEntity {
 
     @Id
     @SequenceGenerator(name = "imputedGuideDataSeq", sequenceName = "IMPUTED_GUIDE_DATA_SEQ")
