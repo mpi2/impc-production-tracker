@@ -24,22 +24,19 @@ public class PlanUpdaterImpl implements PlanUpdater {
     private final PlanValidator planValidator;
     private final ProjectService projectService;
     private final PlanStatusManager planStatusManager;
-    private final MergedGuideService mergedGuideService;
 
     public PlanUpdaterImpl(
             HistoryService<Plan> historyService,
             PlanRepository planRepository,
             GuideRepository guideRepository, PlanValidator planValidator,
             ProjectService projectService,
-            PlanStatusManager planStatusManager,
-            MergedGuideService mergedGuideService) {
+            PlanStatusManager planStatusManager) {
         this.historyService = historyService;
         this.planRepository = planRepository;
         this.guideRepository = guideRepository;
         this.planValidator = planValidator;
         this.projectService = projectService;
         this.planStatusManager = planStatusManager;
-        this.mergedGuideService = mergedGuideService;
     }
 
     @Override
@@ -65,8 +62,6 @@ public class PlanUpdaterImpl implements PlanUpdater {
         }
         guideRepository.updateGidForNull();
 
-        List<Guide> selectNonExistingGuides = guideRepository.findNonExistingGuides();
-        mergedGuideService.saveNonExistingGuides(selectNonExistingGuides);
         return history;
     }
 
