@@ -11,6 +11,7 @@ import org.gentar.biology.plan.Plan;
 import org.gentar.biology.plan.PlanRepository;
 import org.gentar.biology.plan.PlanStatusManager;
 import org.gentar.biology.plan.attempt.crispr.guide.GuideRepository;
+import org.gentar.biology.plan.attempt.crispr.guide.MergedGuideService;
 import org.gentar.biology.project.ProjectService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -36,13 +37,16 @@ class PlanUpdaterImplTest {
 
     PlanUpdaterImpl testInstance;
 
+    @Mock
+    private MergedGuideService mergedGuideService;
+
     @BeforeEach
     void setUp() {
         testInstance = new PlanUpdaterImpl(historyService,
-            planRepository,
-            guideRepository, planValidator,
-            projectService,
-            planStatusManager);
+                planRepository,
+                guideRepository, planValidator,
+                projectService,
+                planStatusManager, mergedGuideService);
     }
 
     @Test
@@ -50,7 +54,7 @@ class PlanUpdaterImplTest {
 
         lenient().when(planRepository.findPlanByPin(PIN_000000001)).thenReturn(planMockData());
         History exception = assertDoesNotThrow(() ->
-            testInstance.updatePlan(planMockData(), planMockData())
+                testInstance.updatePlan(planMockData(), planMockData())
         );
 
         assertNull(exception);
