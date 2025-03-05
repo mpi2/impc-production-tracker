@@ -3,8 +3,11 @@ package org.gentar.biology.mutation;
 import org.gentar.Mapper;
 import org.gentar.biology.mutation.genetic_type.GeneticMutationType;
 import org.gentar.biology.mutation.molecular_type.MolecularMutationType;
+import org.gentar.biology.mutation.mutation_deletion.MolecularMutationDeletion;
 import org.gentar.biology.mutation.qc_results.MutationQcResult;
 import org.gentar.biology.mutation.sequence.MutationSequence;
+import org.gentar.biology.plan.attempt.crispr.TargetedExonDTO;
+import org.gentar.biology.plan.attempt.crispr.targeted_exon.TargetedExon;
 import org.springframework.stereotype.Component;
 
 import java.util.HashSet;
@@ -20,18 +23,24 @@ public class MutationCommonMapper implements Mapper<Mutation, MutationCommonDTO>
     private final GeneticMutationTypeMapper geneticMutationTypeMapper;
     private final MolecularMutationTypeMapper molecularMutationTypeMapper;
 
+    private final MolecularMutationDeletionMapper molecularMutationDeletionMapper;
+
+    private final TargetedExonMapper targetedExonMapper;
+
     public MutationCommonMapper(
-        MutationQCResultMapper mutationQCResultMapper,
-        MutationCategorizationMapper mutationCategorizationMapper,
-        MutationSequenceMapper mutationSequenceMapper,
-        GeneticMutationTypeMapper geneticMutationTypeMapper,
-        MolecularMutationTypeMapper molecularMutationTypeMapper)
+            MutationQCResultMapper mutationQCResultMapper,
+            MutationCategorizationMapper mutationCategorizationMapper,
+            MutationSequenceMapper mutationSequenceMapper,
+            GeneticMutationTypeMapper geneticMutationTypeMapper,
+            MolecularMutationTypeMapper molecularMutationTypeMapper, MolecularMutationDeletionMapper molecularMutationDeletionMapper, TargetedExonMapper targetedExonMapper)
     {
         this.mutationQCResultMapper = mutationQCResultMapper;
         this.mutationCategorizationMapper = mutationCategorizationMapper;
         this.mutationSequenceMapper = mutationSequenceMapper;
         this.geneticMutationTypeMapper = geneticMutationTypeMapper;
         this.molecularMutationTypeMapper = molecularMutationTypeMapper;
+        this.molecularMutationDeletionMapper = molecularMutationDeletionMapper;
+        this.targetedExonMapper = targetedExonMapper;
     }
 
     @Override
@@ -55,6 +64,11 @@ public class MutationCommonMapper implements Mapper<Mutation, MutationCommonDTO>
             mutationSequenceMapper.toDtos(mutation.getMutationSequences()));
         mutationCommonDTO.setMutationCategorizationDTOS(
             mutationCategorizationMapper.toDtos(mutation.getMutationCategorizations()));
+        mutationCommonDTO.setMolecularMutationDeletionDTOs(molecularMutationDeletionMapper.toDtos(mutation.getMolecularMutationDeletion()));
+        mutationCommonDTO.setTargetedExonDTOS(targetedExonMapper.toDtos(mutation.getTargetedExons()));
+        mutationCommonDTO.setIsManualMutationDeletion(mutation.getIsManualMutationDeletion());
+        mutationCommonDTO.setIsMutationDeletionChecked(mutation.getIsMutationDeletionChecked());
+
         return mutationCommonDTO;
     }
 
@@ -77,7 +91,14 @@ public class MutationCommonMapper implements Mapper<Mutation, MutationCommonDTO>
             mutation.setMutationCategorizations(
                 new HashSet<>(mutationCategorizationMapper.toEntities(
                     mutationCommonDTO.getMutationCategorizationDTOS())));
+
+            setMolecularMutationDeletion(mutation, mutationCommonDTO);
+            setTargetedExons(mutation, mutationCommonDTO);
+            mutation.setIsManualMutationDeletion(mutationCommonDTO.getIsManualMutationDeletion());
+            mutation.setIsMutationDeletionChecked(mutationCommonDTO.getIsMutationDeletionChecked());
+
         }
+
         return mutation;
     }
 
@@ -125,6 +146,32 @@ public class MutationCommonMapper implements Mapper<Mutation, MutationCommonDTO>
                     mutationSequenceMapper.toEntities(mutationCommonDTO.getMutationSequenceDTOS()));
             mutationSequences.forEach(x -> x.setMutation(mutation));
             mutation.setMutationSequences(mutationSequences);
+        }
+    }
+
+    private void setMolecularMutationDeletion(Mutation mutation, MutationCommonDTO mutationCommonDTO)
+    {
+        List<MolecularMutationDeletionDTO> molecularMutationDeletionDTOS = mutationCommonDTO.getMolecularMutationDeletionDTOs();
+        if (molecularMutationDeletionDTOS != null)
+        {
+            Set<MolecularMutationDeletion> molecularMutationDeletions =
+                    new HashSet<>(
+                            molecularMutationDeletionMapper.toEntities(mutationCommonDTO.getMolecularMutationDeletionDTOs()));
+            molecularMutationDeletions.forEach(x -> x.setMutation(mutation));
+            mutation.setMolecularMutationDeletion(molecularMutationDeletions);
+        }
+    }
+
+    private void setTargetedExons(Mutation mutation, MutationCommonDTO mutationCommonDTO)
+    {
+        List<TargetedExonDTO> targetedExonDTOS = mutationCommonDTO.getTargetedExonDTOS();
+        if (targetedExonDTOS != null)
+        {
+            Set<TargetedExon> targetedExons =
+                    new HashSet<>(
+                            targetedExonMapper.toEntities(mutationCommonDTO.getTargetedExonDTOS()));
+            targetedExons.forEach(x -> x.setMutation(mutation));
+            mutation.setTargetedExons(targetedExons);
         }
     }
 }
