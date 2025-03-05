@@ -103,6 +103,15 @@ public class MutationFieldsDescriptors
         addField(mutationFieldsDescriptions, "_links.self.href", "Link to the mutation.");
         addField(
             mutationFieldsDescriptions, "_links.outcomes[].href", "Outcomes associated with the mutation.");
+        addField(
+                mutationFieldsDescriptions, "isManualMutationDeletion", "Manual Mutation Deletion field.");
+        addField(
+                mutationFieldsDescriptions, "isMutationDeletionChecked", "Mutation Deletion Checked field.");
+        addField(
+                mutationFieldsDescriptions, "molecularMutationDeletions[].", "Molecular Mutation Deletion.");
+        addField(
+                mutationFieldsDescriptions, "targetedExons[]", "Targeted Exons.");
+
         return mutationFieldsDescriptions;
     }
 

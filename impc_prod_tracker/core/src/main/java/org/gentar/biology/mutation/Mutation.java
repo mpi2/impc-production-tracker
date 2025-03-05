@@ -16,23 +16,26 @@
 package org.gentar.biology.mutation;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import java.sql.Types;
+import jakarta.persistence.*;
 import lombok.*;
+import org.gentar.BaseEntity;
 import org.gentar.audit.diff.IgnoreForAuditingChanges;
+import org.gentar.biology.gene.Gene;
 import org.gentar.biology.mutation.categorizarion.MutationCategorization;
+import org.gentar.biology.mutation.genbank_file.GenbankFile;
 import org.gentar.biology.mutation.genetic_type.GeneticMutationType;
+import org.gentar.biology.mutation.molecular_type.MolecularMutationType;
+import org.gentar.biology.mutation.mutation_deletion.MolecularMutationDeletion;
 import org.gentar.biology.mutation.qc_results.MutationQcResult;
 import org.gentar.biology.mutation.sequence.MutationSequence;
-import org.gentar.BaseEntity;
-import org.gentar.biology.mutation.genbank_file.GenbankFile;
-import org.gentar.biology.gene.Gene;
-import org.gentar.biology.mutation.molecular_type.MolecularMutationType;
 import org.gentar.biology.outcome.Outcome;
-import jakarta.persistence.*;
+import org.gentar.biology.plan.attempt.crispr.targeted_exon.TargetedExon;
+import org.hibernate.annotations.JdbcTypeCode;
+
+import java.sql.Types;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
-import org.hibernate.annotations.JdbcTypeCode;
 
 @NoArgsConstructor(access= AccessLevel.PUBLIC, force=true)
 @Data
@@ -81,6 +84,18 @@ public class Mutation extends BaseEntity
 
     @ManyToOne(targetEntity= MolecularMutationType.class)
     private MolecularMutationType molecularMutationType;
+
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
+    @OneToMany(mappedBy = "mutation", cascade= CascadeType.ALL, orphanRemoval=true)
+    private Set<MolecularMutationDeletion> molecularMutationDeletion;
+
+
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
+    @OneToMany(mappedBy = "mutation", cascade= CascadeType.ALL, orphanRemoval=true)
+    private Set<TargetedExon> targetedExons;
+
 
     @ManyToOne(targetEntity = GenbankFile.class)
     private GenbankFile genbankFile;
@@ -144,6 +159,11 @@ public class Mutation extends BaseEntity
     @ToString.Exclude
     private String qcNote;
 
+
+    private Boolean isManualMutationDeletion;
+
+    private Boolean isMutationDeletionChecked;
+    
     // Copy Constructor
     public Mutation(Mutation mutation)
     {
@@ -161,6 +181,8 @@ public class Mutation extends BaseEntity
         this.imitsAllele = mutation.imitsAllele;
         this.geneticMutationType = mutation.geneticMutationType;
         this.molecularMutationType = mutation.molecularMutationType;
+        this.molecularMutationDeletion = mutation.molecularMutationDeletion;
+        this.targetedExons = mutation.targetedExons;
         this.genbankFile = mutation.genbankFile;
         this.bamFile = mutation.bamFile;
         this.bamFileIndex =mutation.getBamFileIndex();
@@ -187,5 +209,7 @@ public class Mutation extends BaseEntity
         }
         this.setCreatedBy(mutation.getCreatedBy());
         this.qcNote = mutation.qcNote;
+        this.isManualMutationDeletion = mutation.getIsManualMutationDeletion();
+        this.isMutationDeletionChecked = mutation.getIsMutationDeletionChecked();
     }
 }

@@ -22,8 +22,7 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
 @ExtendWith(MockitoExtension.class)
-class MutationCommonMapperTest
-{
+class MutationCommonMapperTest {
     public static final long ID = 1L;
     public static final String MGI_ALLELE_ID = "mgiAlleleId";
     public static final boolean MGI_ALLELE_SYMBOL_REQUIRES_CONSTRUCTION = true;
@@ -54,25 +53,29 @@ class MutationCommonMapperTest
     @Mock
     private MolecularMutationTypeMapper molecularMutationTypeMapper;
 
+    @Mock
+    private MolecularMutationDeletionMapper molecularMutationDeletionMapper;
+
+    @Mock
+    private TargetedExonMapper targetedExonMapper;
+
     @BeforeEach
-    void setUp()
-    {
+    void setUp() {
         testInstance =
-            new MutationCommonMapper(
-                mutationQCResultMapper,
-                mutationCategorizationMapper,
-                mutationSequenceMapper, geneticMutationTypeMapper, molecularMutationTypeMapper);
+                new MutationCommonMapper(
+                        mutationQCResultMapper,
+                        mutationCategorizationMapper,
+                        mutationSequenceMapper, geneticMutationTypeMapper, molecularMutationTypeMapper, molecularMutationDeletionMapper,targetedExonMapper);
     }
 
     @Test
-    void toDto()
-    {
+    void toDto() {
         Mutation mutation = buildMutation();
         MutationCommonDTO mutationCommonDTO = testInstance.toDto(mutation);
 
         assertThat(
-            mutationCommonDTO.getMgiAlleleSymbolRequiresConstruction(),
-            is(MGI_ALLELE_SYMBOL_REQUIRES_CONSTRUCTION));
+                mutationCommonDTO.getMgiAlleleSymbolRequiresConstruction(),
+                is(MGI_ALLELE_SYMBOL_REQUIRES_CONSTRUCTION));
         assertThat(mutationCommonDTO.getAlleleConfirmed(), is(ALLELE_CONFIRMED));
         assertThat(mutationCommonDTO.getGeneticMutationTypeName(), is(GENETIC_MUTATION_TYPE));
         assertThat(mutationCommonDTO.getMolecularMutationTypeName(), is(MOLECULAR_MUTATION_TYPE));
@@ -82,8 +85,7 @@ class MutationCommonMapperTest
         verify(mutationCategorizationMapper, times(1)).toDtos(mutation.getMutationCategorizations());
     }
 
-    private Mutation buildMutation()
-    {
+    private Mutation buildMutation() {
         Mutation mutation = new Mutation();
         mutation.setId(ID);
         mutation.setMgiAlleleId(MGI_ALLELE_ID);
@@ -115,38 +117,36 @@ class MutationCommonMapperTest
         MutationCategorization mutationCategorization = new MutationCategorization();
         mutationCategorization.setName(MUTATION_CATEGORIZATION);
         mutation.setMutationCategorizations(
-            new HashSet<>(Collections.singletonList(mutationCategorization)));
+                new HashSet<>(Collections.singletonList(mutationCategorization)));
         return mutation;
     }
 
     @Test
-    void toEntity()
-    {
+    void toEntity() {
         MutationCommonDTO mutationCommonDTO = buildMutationDto();
 
         Mutation mutation = testInstance.toEntity(mutationCommonDTO);
 
         assertThat(
-            mutation.getMgiAlleleSymbolRequiresConstruction(),
-            is(MGI_ALLELE_SYMBOL_REQUIRES_CONSTRUCTION));
+                mutation.getMgiAlleleSymbolRequiresConstruction(),
+                is(MGI_ALLELE_SYMBOL_REQUIRES_CONSTRUCTION));
         assertThat(mutation.getAlleleConfirmed(), is(ALLELE_CONFIRMED));
         verify(
-            mutationQCResultMapper, times(1)).toEntities(mutationCommonDTO.getMutationQCResultDTOs());
+                mutationQCResultMapper, times(1)).toEntities(mutationCommonDTO.getMutationQCResultDTOs());
         verify(
-            mutationSequenceMapper, times(1)).toEntities(mutationCommonDTO.getMutationSequenceDTOS());
+                mutationSequenceMapper, times(1)).toEntities(mutationCommonDTO.getMutationSequenceDTOS());
         verify(
-            mutationCategorizationMapper,
-            times(1)).toEntities(mutationCommonDTO.getMutationCategorizationDTOS());
+                mutationCategorizationMapper,
+                times(1)).toEntities(mutationCommonDTO.getMutationCategorizationDTOS());
         verify(
-            geneticMutationTypeMapper,
-            times(1)).toEntity(mutationCommonDTO.getGeneticMutationTypeName());
+                geneticMutationTypeMapper,
+                times(1)).toEntity(mutationCommonDTO.getGeneticMutationTypeName());
         verify(
-            molecularMutationTypeMapper,
-            times(1)).toEntity(mutationCommonDTO.getMolecularMutationTypeName());
+                molecularMutationTypeMapper,
+                times(1)).toEntity(mutationCommonDTO.getMolecularMutationTypeName());
     }
 
-    private MutationCommonDTO buildMutationDto()
-    {
+    private MutationCommonDTO buildMutationDto() {
         MutationCommonDTO mutationCommonDTO = new MutationCommonDTO();
         mutationCommonDTO.setMgiAlleleSymbolRequiresConstruction(MGI_ALLELE_SYMBOL_REQUIRES_CONSTRUCTION);
         mutationCommonDTO.setAlleleConfirmed(ALLELE_CONFIRMED);
