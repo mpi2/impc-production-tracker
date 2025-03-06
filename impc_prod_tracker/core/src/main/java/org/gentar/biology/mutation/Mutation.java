@@ -21,6 +21,7 @@ import lombok.*;
 import org.gentar.BaseEntity;
 import org.gentar.audit.diff.IgnoreForAuditingChanges;
 import org.gentar.biology.gene.Gene;
+import org.gentar.biology.mutation.aligned_fasta.AlignedFasta;
 import org.gentar.biology.mutation.categorizarion.MutationCategorization;
 import org.gentar.biology.mutation.genbank_file.GenbankFile;
 import org.gentar.biology.mutation.genetic_type.GeneticMutationType;
@@ -95,6 +96,12 @@ public class Mutation extends BaseEntity
     @EqualsAndHashCode.Exclude
     @OneToMany(mappedBy = "mutation", cascade= CascadeType.ALL, orphanRemoval=true)
     private Set<TargetedExon> targetedExons;
+
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
+    @OneToMany(mappedBy = "mutation", cascade= CascadeType.ALL, orphanRemoval=true)
+    private Set<AlignedFasta> alignedFastas;
+
 
 
     @ManyToOne(targetEntity = GenbankFile.class)
@@ -183,6 +190,7 @@ public class Mutation extends BaseEntity
         this.molecularMutationType = mutation.molecularMutationType;
         this.molecularMutationDeletion = mutation.molecularMutationDeletion;
         this.targetedExons = mutation.targetedExons;
+        this.alignedFastas = mutation.alignedFastas;
         this.genbankFile = mutation.genbankFile;
         this.bamFile = mutation.bamFile;
         this.bamFileIndex =mutation.getBamFileIndex();

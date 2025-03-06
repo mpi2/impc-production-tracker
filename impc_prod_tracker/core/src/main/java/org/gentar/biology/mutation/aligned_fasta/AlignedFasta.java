@@ -4,7 +4,11 @@ import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 import org.gentar.BaseEntity;
+import org.gentar.biology.mutation.Mutation;
+
+import javax.validation.constraints.NotNull;
 
 @NoArgsConstructor(access = AccessLevel.PUBLIC, force = true)
 @Data
@@ -26,5 +30,10 @@ public class AlignedFasta extends BaseEntity {
     private Integer blockCount;
     private String blockSizes;
     private String blockStarts;
+    
+    @NotNull
+    @ToString.Exclude
+    @ManyToOne(targetEntity= Mutation.class)
+    private Mutation mutation;
 }
 
