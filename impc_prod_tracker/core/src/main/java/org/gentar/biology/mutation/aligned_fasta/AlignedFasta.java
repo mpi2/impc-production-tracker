@@ -31,7 +31,6 @@ public class AlignedFasta extends BaseEntity {
     private String blockSizes;
     private String blockStarts;
 
-
     @NotNull
     @ToString.Exclude
     @ManyToOne(targetEntity= Mutation.class)
