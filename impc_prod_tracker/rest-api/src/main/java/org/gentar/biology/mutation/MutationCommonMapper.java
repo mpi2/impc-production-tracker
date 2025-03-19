@@ -67,6 +67,7 @@ public class MutationCommonMapper implements Mapper<Mutation, MutationCommonDTO>
         mutationCommonDTO.setMolecularMutationDeletionDTOs(molecularMutationDeletionMapper.toDtos(mutation.getMolecularMutationDeletion()));
         mutationCommonDTO.setTargetedExonDTOS(targetedExonMapper.toDtos(mutation.getTargetedExons()));
         mutationCommonDTO.setIsManualMutationDeletion(mutation.getIsManualMutationDeletion());
+        mutationCommonDTO.setIsDeletionCoordinatesUpdatedManually(mutation.getIsDeletionCoordinatesUpdatedManually());
         mutationCommonDTO.setIsMutationDeletionChecked(mutation.getIsMutationDeletionChecked());
 
         return mutationCommonDTO;

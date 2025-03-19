@@ -60,6 +60,7 @@
         ],
         "isManualMutationDeletion" : null,
         "isMutationDeletionChecked" : null,
+        "isDeletionCoordinatesUpdatedManually" : null,
         "molecularMutationDeletions" : [],
         "targetedExons" : []
       }
