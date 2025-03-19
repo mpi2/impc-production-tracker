@@ -167,7 +167,12 @@ public class Mutation extends BaseEntity
     private String qcNote;
 
 
+    @Column(columnDefinition = "boolean default false")
     private Boolean isManualMutationDeletion;
+
+
+    @Column(columnDefinition = "boolean default false")
+    private Boolean isDeletionCoordinatesUpdatedManually;
 
     private Boolean isMutationDeletionChecked;
     
@@ -219,5 +224,7 @@ public class Mutation extends BaseEntity
         this.qcNote = mutation.qcNote;
         this.isManualMutationDeletion = mutation.getIsManualMutationDeletion();
         this.isMutationDeletionChecked = mutation.getIsMutationDeletionChecked();
+        this.isDeletionCoordinatesUpdatedManually =mutation.getIsDeletionCoordinatesUpdatedManually();
+
     }
 }

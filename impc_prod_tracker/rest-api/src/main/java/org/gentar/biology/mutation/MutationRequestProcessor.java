@@ -93,6 +93,7 @@ public class MutationRequestProcessor {
         setOutcomeCategoryType(newMutation);
         setTargetedExons(originalMutation, newMutation, mappedMutation);
         newMutation.setIsMutationDeletionChecked(mappedMutation.getIsMutationDeletionChecked());
+        newMutation.setIsDeletionCoordinatesUpdatedManually(mappedMutation.getIsDeletionCoordinatesUpdatedManually());
         newMutation.setIsManualMutationDeletion(mappedMutation.getIsManualMutationDeletion());
 
         return newMutation;

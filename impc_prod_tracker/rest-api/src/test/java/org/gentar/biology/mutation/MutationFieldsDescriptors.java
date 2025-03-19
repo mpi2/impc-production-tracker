@@ -108,6 +108,8 @@ public class MutationFieldsDescriptors
         addField(
                 mutationFieldsDescriptions, "isMutationDeletionChecked", "Mutation Deletion Checked field.");
         addField(
+                mutationFieldsDescriptions, "isDeletionCoordinatesUpdatedManually", "Deletion Coordinates Updated Manually field.");
+        addField(
                 mutationFieldsDescriptions, "molecularMutationDeletions[].", "Molecular Mutation Deletion.");
         addField(
                 mutationFieldsDescriptions, "targetedExons[]", "Targeted Exons.");

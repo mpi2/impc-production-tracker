@@ -37,6 +37,9 @@ public class MutationCommonDTO
 
     private Boolean isManualMutationDeletion;
 
+    private Boolean isDeletionCoordinatesUpdatedManually;
+
     private Boolean isMutationDeletionChecked;
+
 
 }
