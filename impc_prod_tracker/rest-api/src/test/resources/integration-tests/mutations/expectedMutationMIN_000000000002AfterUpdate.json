@@ -65,8 +65,8 @@
       "externalLink":"http://www.mousephenotype.org/data/genes/MGI:1202064"
     }
   ],
-  "isManualMutationDeletion" : false,
-  "isDeletionCoordinatesUpdatedManually" : false,
+  "isManualMutationDeletion" : null,
+  "isDeletionCoordinatesUpdatedManually" : null,
   "isMutationDeletionChecked" : null,
   "molecularMutationDeletions" : [],
   "targetedExons" : []
