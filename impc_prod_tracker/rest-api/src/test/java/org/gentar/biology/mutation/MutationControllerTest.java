@@ -106,6 +106,7 @@ class MutationControllerTest extends ControllerTestTemplate
         verifyUpdatedMutation(mutationUrl, "expectedMutationMIN_000000000002AfterUpdate.json");
     }
 
+
     private void verifyUpdateResponse(String obtainedJson, String expectedJsonPath) throws Exception
     {
         String expectedJsonCompletePath = getCompleteResourcePath(expectedJsonPath);
