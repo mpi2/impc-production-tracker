@@ -407,27 +407,6 @@ hh-dev:
       # IMAGE_TAG_NAME=$(echo $JSON | jq  -r '.name')
 
       REGISTRY_JSON=$( curl --header "PRIVATE-TOKEN: ${GITLAB_API_ACCESS_TOKEN}" "${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/registry/repositories/")
-      REGISTRY_REPOSITORY_ID=$(echo $REGISTRY_JSON | jq '.[0].id')
-        
-      JSON=$( curl --header "PRIVATE-TOKEN: ${GITLAB_API_ACCESS_TOKEN}" "${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/registry/repositories/${REGISTRY_REPOSITORY_ID}/tags/${CI_COMMIT_SHA:0:12}/")
-      
-      echo "REGISTRY_JSON: $REGISTRY_JSON"
-      
-      if echo "$REGISTRY_JSON" | jq empty; then
-      REGISTRY_REPOSITORY_ID=$(echo "$REGISTRY_JSON" | jq 'if type=="array" and length>0 then .[0].id else empty end')
-    
-        if [ -z "$REGISTRY_REPOSITORY_ID" ]; then
-          echo "Error: Could not extract registry repository ID."
-          exit 1
-        fi
-      else
-        echo "Error: API response is not valid JSON."
-        exit 1
-      fi
-      
-      
-      
-      
       IMAGE_TAG_NAME=$(echo $JSON | jq  -r '.name')
 
       if [ "$IMAGE_TAG_NAME" = "${CI_COMMIT_SHA:0:12}" ]; then
@@ -656,6 +635,25 @@ hx-test:
       REGISTRY_REPOSITORY_ID=$(echo $REGISTRY_JSON | jq '.[0].id')
         
       JSON=$( curl --header "PRIVATE-TOKEN: ${GITLAB_API_ACCESS_TOKEN}" "${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/registry/repositories/${REGISTRY_REPOSITORY_ID}/tags/${CI_COMMIT_SHA:0:12}/")
+      
+            REGISTRY_REPOSITORY_ID=$(echo $REGISTRY_JSON | jq '.[0].id')
+    
+      JSON=$( curl --header "PRIVATE-TOKEN: ${GITLAB_API_ACCESS_TOKEN}" "${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/registry/repositories/${REGISTRY_REPOSITORY_ID}/tags/${CI_COMMIT_SHA:0:12}/")
+    
+      echo "REGISTRY_JSON: $REGISTRY_JSON"
+    
+      if echo "$REGISTRY_JSON" | jq empty; then
+      REGISTRY_REPOSITORY_ID=$(echo "$REGISTRY_JSON" | jq 'if type=="array" and length>0 then .[0].id else empty end')
+    
+        if [ -z "$REGISTRY_REPOSITORY_ID" ]; then
+          echo "Error: Could not extract registry repository ID."
+          exit 1
+        fi
+      else
+        echo "Error: API response is not valid JSON."
+        exit 1
+      fi
+    
       IMAGE_TAG_NAME=$(echo $JSON | jq  -r '.name')
 
       if [ "$IMAGE_TAG_NAME" = "${CI_COMMIT_SHA:0:12}" ]; then
