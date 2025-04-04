@@ -21,6 +21,7 @@ import lombok.*;
 import org.gentar.BaseEntity;
 import org.gentar.audit.diff.IgnoreForAuditingChanges;
 import org.gentar.biology.gene.Gene;
+import org.gentar.biology.insertion_sequence.InsertionSequence;
 import org.gentar.biology.mutation.aligned_fasta.AlignedFasta;
 import org.gentar.biology.mutation.categorizarion.MutationCategorization;
 import org.gentar.biology.mutation.genbank_file.GenbankFile;
@@ -162,6 +163,12 @@ public class Mutation extends BaseEntity
     private Set<MutationSequence> mutationSequences;
 
 
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
+    @OneToMany(mappedBy = "mutation", cascade= CascadeType.ALL, orphanRemoval=true)
+    private Set<InsertionSequence> insertionSequences;
+
+
     @Column(columnDefinition = "TEXT")
     @ToString.Exclude
     private String qcNote;
@@ -219,6 +226,11 @@ public class Mutation extends BaseEntity
             // Create copy by each element in collection.
             this.mutationSequences = mutation.getMutationSequences().stream()
                 .map(MutationSequence::new).collect(Collectors.toSet());
+        }
+        if (mutation.getInsertionSequences() != null)
+        {
+            this.insertionSequences = mutation.getInsertionSequences().stream()
+                    .map(InsertionSequence::new).collect(Collectors.toSet());
         }
         this.setCreatedBy(mutation.getCreatedBy());
         this.qcNote = mutation.qcNote;

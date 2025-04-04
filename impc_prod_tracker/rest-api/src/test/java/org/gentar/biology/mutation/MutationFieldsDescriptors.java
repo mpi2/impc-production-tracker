@@ -69,6 +69,8 @@ public class MutationFieldsDescriptors
                         - outcome sequence
 
                         A mutation should always be specified as 'outcome sequence'.""");
+        addField(
+                mutationFieldsDescriptions, "insertionSequences", "Array containing a collection of insertion sequences that characterise the mutation.");
         addField(mutationFieldsDescriptions, "description", "Mutation description note.");
         addField(mutationFieldsDescriptions, "qcNote", "Mutation Qc note.");
         addField(

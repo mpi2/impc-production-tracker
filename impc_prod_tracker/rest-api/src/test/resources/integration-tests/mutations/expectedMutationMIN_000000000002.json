@@ -28,6 +28,7 @@
       }
     }
   ],
+  "insertionSequences":[],
   "mutationCategorizations":[
     {
       "name":"NHEJ",

@@ -1,5 +1,6 @@
 package org.gentar.biology.mutation;
 
+import org.gentar.biology.insertion_sequence.InsertionSequence;
 import org.gentar.biology.mutation.mutation_deletion.MolecularMutationDeletion;
 import org.gentar.biology.mutation.qc_results.MutationQcResult;
 import org.gentar.biology.mutation.sequence.MutationSequence;
@@ -89,6 +90,7 @@ public class MutationRequestProcessor {
         newMutation.setMutationCategorizations(mappedMutation.getMutationCategorizations());
         setMutationQcResults(newMutation, mappedMutation);
         setMutationSequences(originalMutation, newMutation, mappedMutation);
+        setInsertionSequences(originalMutation, newMutation, mappedMutation);
         setMolecularMutationDeletions(originalMutation, newMutation, mappedMutation);
         setOutcomeCategoryType(newMutation);
         setTargetedExons(originalMutation, newMutation, mappedMutation);
@@ -122,6 +124,17 @@ public class MutationRequestProcessor {
                 }
             }
             newMutation.setMutationSequences(mappedMutationSequences);
+        }
+    }
+
+    private void setInsertionSequences(Mutation originalMutation, Mutation newMutation, Mutation mappedMutation) {
+        Set<InsertionSequence>  mappedInsertionSequence= mappedMutation.getInsertionSequences();
+
+        if (mappedInsertionSequence != null) {
+            for (InsertionSequence insertionSequence : mappedInsertionSequence) {
+                insertionSequence.setMutation(originalMutation);
+            }
+            newMutation.setInsertionSequences(mappedInsertionSequence);
         }
     }
 

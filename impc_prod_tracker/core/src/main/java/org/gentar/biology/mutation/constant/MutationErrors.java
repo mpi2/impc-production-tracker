@@ -21,4 +21,7 @@ public class MutationErrors {
 
     public static final String ERROR_FASTA_FORMAT =
         "Error: Sequence Is Not In FASTA Format";
+
+    public static final String ERROR_INSERTION_FASTA_FORMAT =
+            "Error: Insertion sequence Is Not In FASTA Format";
 }

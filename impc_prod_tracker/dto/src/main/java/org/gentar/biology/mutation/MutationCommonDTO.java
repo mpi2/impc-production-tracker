@@ -26,6 +26,9 @@ public class MutationCommonDTO
     @JsonProperty("mutationSequences")
     private List<MutationSequenceDTO> mutationSequenceDTOS;
 
+    @JsonProperty("insertionSequences")
+    private List<InsertionSequenceDTO> insertionSequenceDTOS;
+
     @JsonProperty("mutationCategorizations")
     private List<MutationCategorizationDTO> mutationCategorizationDTOS;
 
