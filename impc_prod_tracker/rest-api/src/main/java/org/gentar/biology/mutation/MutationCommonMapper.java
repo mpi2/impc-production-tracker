@@ -1,6 +1,7 @@
 package org.gentar.biology.mutation;
 
 import org.gentar.Mapper;
+import org.gentar.biology.insertion_sequence.InsertionSequence;
 import org.gentar.biology.mutation.genetic_type.GeneticMutationType;
 import org.gentar.biology.mutation.molecular_type.MolecularMutationType;
 import org.gentar.biology.mutation.mutation_deletion.MolecularMutationDeletion;
@@ -20,6 +21,7 @@ public class MutationCommonMapper implements Mapper<Mutation, MutationCommonDTO>
     private final MutationQCResultMapper mutationQCResultMapper;
     private final MutationCategorizationMapper mutationCategorizationMapper;
     private final MutationSequenceMapper mutationSequenceMapper;
+    private final InsertionSequenceMapper insertionSequenceMapper;
     private final GeneticMutationTypeMapper geneticMutationTypeMapper;
     private final MolecularMutationTypeMapper molecularMutationTypeMapper;
 
@@ -30,13 +32,14 @@ public class MutationCommonMapper implements Mapper<Mutation, MutationCommonDTO>
     public MutationCommonMapper(
             MutationQCResultMapper mutationQCResultMapper,
             MutationCategorizationMapper mutationCategorizationMapper,
-            MutationSequenceMapper mutationSequenceMapper,
+            MutationSequenceMapper mutationSequenceMapper, InsertionSequenceMapper insertionSequenceMapper,
             GeneticMutationTypeMapper geneticMutationTypeMapper,
             MolecularMutationTypeMapper molecularMutationTypeMapper, MolecularMutationDeletionMapper molecularMutationDeletionMapper, TargetedExonMapper targetedExonMapper)
     {
         this.mutationQCResultMapper = mutationQCResultMapper;
         this.mutationCategorizationMapper = mutationCategorizationMapper;
         this.mutationSequenceMapper = mutationSequenceMapper;
+        this.insertionSequenceMapper = insertionSequenceMapper;
         this.geneticMutationTypeMapper = geneticMutationTypeMapper;
         this.molecularMutationTypeMapper = molecularMutationTypeMapper;
         this.molecularMutationDeletionMapper = molecularMutationDeletionMapper;
@@ -62,6 +65,8 @@ public class MutationCommonMapper implements Mapper<Mutation, MutationCommonDTO>
             mutationQCResultMapper.toDtos(mutation.getMutationQcResults()));
         mutationCommonDTO.setMutationSequenceDTOS(
             mutationSequenceMapper.toDtos(mutation.getMutationSequences()));
+        mutationCommonDTO.setInsertionSequenceDTOS(
+                insertionSequenceMapper.toDtos(mutation.getInsertionSequences()));
         mutationCommonDTO.setMutationCategorizationDTOS(
             mutationCategorizationMapper.toDtos(mutation.getMutationCategorizations()));
         mutationCommonDTO.setMolecularMutationDeletionDTOs(molecularMutationDeletionMapper.toDtos(mutation.getMolecularMutationDeletion()));
@@ -89,6 +94,7 @@ public class MutationCommonMapper implements Mapper<Mutation, MutationCommonDTO>
             setMolecularMutationType(mutation, mutationCommonDTO);
             setMutationQcResults(mutation, mutationCommonDTO);
             setMutationSequences(mutation, mutationCommonDTO);
+            setInsertionSequences(mutation, mutationCommonDTO);
             mutation.setMutationCategorizations(
                 new HashSet<>(mutationCategorizationMapper.toEntities(
                     mutationCommonDTO.getMutationCategorizationDTOS())));
@@ -147,6 +153,19 @@ public class MutationCommonMapper implements Mapper<Mutation, MutationCommonDTO>
                     mutationSequenceMapper.toEntities(mutationCommonDTO.getMutationSequenceDTOS()));
             mutationSequences.forEach(x -> x.setMutation(mutation));
             mutation.setMutationSequences(mutationSequences);
+        }
+    }
+
+    private void setInsertionSequences(Mutation mutation, MutationCommonDTO mutationCommonDTO)
+    {
+        List<InsertionSequenceDTO> insertionSequenceDTOS = mutationCommonDTO.getInsertionSequenceDTOS();
+        if (insertionSequenceDTOS != null)
+        {
+            Set<InsertionSequence> insertionSequences =
+                    new HashSet<>(
+                            insertionSequenceMapper.toEntities(mutationCommonDTO.getInsertionSequenceDTOS()));
+            insertionSequences.forEach(x -> x.setMutation(mutation));
+            mutation.setInsertionSequences(insertionSequences);
         }
     }
 

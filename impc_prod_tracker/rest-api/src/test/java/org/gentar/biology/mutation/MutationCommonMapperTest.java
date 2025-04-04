@@ -49,6 +49,8 @@ class MutationCommonMapperTest {
     @Mock
     private MutationSequenceMapper mutationSequenceMapper;
     @Mock
+    private InsertionSequenceMapper insertionSequenceMapper;
+    @Mock
     private GeneticMutationTypeMapper geneticMutationTypeMapper;
     @Mock
     private MolecularMutationTypeMapper molecularMutationTypeMapper;
@@ -65,7 +67,7 @@ class MutationCommonMapperTest {
                 new MutationCommonMapper(
                         mutationQCResultMapper,
                         mutationCategorizationMapper,
-                        mutationSequenceMapper, geneticMutationTypeMapper, molecularMutationTypeMapper, molecularMutationDeletionMapper,targetedExonMapper);
+                        mutationSequenceMapper, insertionSequenceMapper, geneticMutationTypeMapper, molecularMutationTypeMapper, molecularMutationDeletionMapper,targetedExonMapper);
     }
 
     @Test

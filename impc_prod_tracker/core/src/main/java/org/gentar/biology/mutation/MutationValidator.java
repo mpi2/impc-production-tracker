@@ -8,7 +8,9 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
+
 import org.gentar.biology.gene.Gene;
+import org.gentar.biology.insertion_sequence.InsertionSequence;
 import org.gentar.biology.mutation.categorizarion.MutationCategorization;
 import org.gentar.biology.mutation.categorizarion.MutationCategorizationService;
 import org.gentar.biology.mutation.sequence.MutationSequence;
@@ -34,8 +36,8 @@ public class MutationValidator {
     private final MutationRepository mutationRepository;
     private final WorkUnitService workUnitService;
     private static final String CANNOT_READ_PLAN =
-        "The mutation is linked to the plan %s and you " +
-            "do not have permission to read it.";
+            "The mutation is linked to the plan %s and you " +
+                    "do not have permission to read it.";
     private static final String NULL_FIELD_ERROR = "%s cannot be null.";
 
     public MutationValidator(ContextAwarePolicyEnforcement policyEnforcement,
@@ -50,41 +52,45 @@ public class MutationValidator {
     public void validateData(Mutation mutation) {
         Set<Gene> genes = mutation.getGenes();
         if (mutation.getMin() == null || mutation.getCreatedAt() == null ||
-            mutation.getCreatedAt().isAfter(
-                LocalDateTime.of(2022, 10, 1, 0, 0))) {
+                mutation.getCreatedAt().isAfter(
+                        LocalDateTime.of(2022, 10, 1, 0, 0))) {
             if (!(mutation.getSymbol() != null && (mutation.getSymbol().contains("EUCOMM") ||
-                mutation.getSymbol().contains("KOMP")) &&
-                isWorkUnitIlarCodeValid(mutation))) {
+                    mutation.getSymbol().contains("KOMP")) &&
+                    isWorkUnitIlarCodeValid(mutation))) {
                 if (genes.isEmpty()) {
                     throw new UserOperationFailedException(
-                        String.format(NULL_FIELD_ERROR, MUTATION_GENE_S));
+                            String.format(NULL_FIELD_ERROR, MUTATION_GENE_S));
                 } else if (mutation.getMolecularMutationType() == null) {
                     throw new UserOperationFailedException(
-                        String.format(NULL_FIELD_ERROR, MUTATION_MOLECULAR_MUTATION_TYPE_S));
+                            String.format(NULL_FIELD_ERROR, MUTATION_MOLECULAR_MUTATION_TYPE_S));
                 } else if (mutation.getSymbol() == null || mutation.getSymbol().isEmpty()) {
                     throw new UserOperationFailedException(
-                        String.format(NULL_FIELD_ERROR, MUTATION_MUTATION_SYMBOL_S));
+                            String.format(NULL_FIELD_ERROR, MUTATION_MUTATION_SYMBOL_S));
                 } else if (!mutation.getMolecularMutationType().getName()
-                    .equals("Complex rearrangement") &&
-                    !isSymbolInCorrectFormat(mutation)) {
+                        .equals("Complex rearrangement") &&
+                        !isSymbolInCorrectFormat(mutation)) {
                     throw new UserOperationFailedException(
-                        MUTATION + mutation.getSymbol() +
-                            SYMBOL_S_ARE_NOT_IN_THE_CORRECT_FORMAT);
+                            MUTATION + mutation.getSymbol() +
+                                    SYMBOL_S_ARE_NOT_IN_THE_CORRECT_FORMAT);
                 } else if (!isMutationSymbolUnique(mutation) && mutation.getMin() == null) {
                     throw new UserOperationFailedException(
-                        MUTATION + mutation.getSymbol() +
-                            SYMBOL_S_ARE_NOT_UNIQUE);
+                            MUTATION + mutation.getSymbol() +
+                                    SYMBOL_S_ARE_NOT_UNIQUE);
                 } else if (isEsCellAttemptTypeWrong(mutation)) {
                     throw new UserOperationFailedException(
-                        THE_INITIAL_ES_CELL_PRODUCTION_ATTEMPT_A_E);
+                            THE_INITIAL_ES_CELL_PRODUCTION_ATTEMPT_A_E);
 
                 } else if (isEsCellModificationAttemptTypeWrong(mutation)) {
                     throw new UserOperationFailedException(
-                        TYPES_FOR_ES_CELL_MODIFICATION_ATTEMPT_B_C_D_E_1_1_2);
+                            TYPES_FOR_ES_CELL_MODIFICATION_ATTEMPT_B_C_D_E_1_1_2);
                 } else if (!isSequenceInFastaFormat(mutation)) {
                     throw new UserOperationFailedException(
-                        ERROR_FASTA_FORMAT);
+                            ERROR_FASTA_FORMAT);
+                } else if (!isInsertionSequenceInFastaFormat(mutation)) {
+                    throw new UserOperationFailedException(
+                            ERROR_INSERTION_FASTA_FORMAT);
                 }
+
             }
         }
     }
@@ -104,7 +110,7 @@ public class MutationValidator {
         }
 
         if (mutation.getGenes().stream()
-            .noneMatch(g -> g.getSymbol().equals(symbol.split("<")[0]))) {
+                .noneMatch(g -> g.getSymbol().equals(symbol.split("<")[0]))) {
             return false;
         }
 
@@ -123,8 +129,8 @@ public class MutationValidator {
             return false;
         }
         if (getEscAlleleClassName(mutation).equals("''") &&
-            !getSubStringMutationCategorization(symbol).equals("(") &&
-            !Character.isUpperCase(getSubStringMutationCategorization(symbol).charAt(0))) {
+                !getSubStringMutationCategorization(symbol).equals("(") &&
+                !Character.isUpperCase(getSubStringMutationCategorization(symbol).charAt(0))) {
             return false;
         }
 
@@ -145,28 +151,28 @@ public class MutationValidator {
         }
 
         return naturalNumbers().contains(symbol.split("<")[1].substring(3, 4)) ?
-            symbol.split("<")[1].substring(4, 5) : symbol.split("<")[1].substring(3, 4);
+                symbol.split("<")[1].substring(4, 5) : symbol.split("<")[1].substring(3, 4);
 
     }
 
     private List<String> getEscAlleleClass(Mutation mutation) {
         return mutation.getMutationCategorizations().stream()
-            .filter(m -> m.getMutationCategorizationType().getName().equals("esc_allele_class"))
-            .map(MutationCategorization::getName).collect(
-                Collectors.toList());
+                .filter(m -> m.getMutationCategorizationType().getName().equals("esc_allele_class"))
+                .map(MutationCategorization::getName).collect(
+                        Collectors.toList());
     }
 
     private String getEscAlleleClassName(Mutation mutation) {
         return !getEscAlleleClass(mutation).isEmpty() ? getEscAlleleClass(mutation).getFirst() :
-            "";
+                "";
     }
 
     private boolean isEsCellAttempt(Mutation mutation) {
         return mutation.getOutcomes().stream().map(m -> m.getPlan().getAttemptType().getName())
-            .toList().getFirst().equals(AttemptTypesName.ES_CELL.getLabel()) ||
-            mutation.getOutcomes().stream().map(m -> m.getPlan().getAttemptType().getName())
-                .toList().getFirst()
-                .equals(AttemptTypesName.ES_CELL_ALLELE_MODIFICATION.getLabel());
+                .toList().getFirst().equals(AttemptTypesName.ES_CELL.getLabel()) ||
+                mutation.getOutcomes().stream().map(m -> m.getPlan().getAttemptType().getName())
+                        .toList().getFirst()
+                        .equals(AttemptTypesName.ES_CELL_ALLELE_MODIFICATION.getLabel());
     }
 
     public void validateReadPermissions(Mutation mutation) {
@@ -193,14 +199,14 @@ public class MutationValidator {
 
     private String getAttemptTypeName(Mutation mutation) {
         return mutation.getOutcomes().stream().map(Outcome::getPlan).map(Plan::getAttemptType)
-            .map(AttemptType::getName).toList().getFirst();
+                .map(AttemptType::getName).toList().getFirst();
     }
 
     private boolean isWorkUnitIlarCodeValid(Mutation mutation) {
 
         Optional<WorkUnit> workUnitIlarCode =
-            mutation.getOutcomes().stream().map(Outcome::getPlan).map(Plan::getWorkUnit)
-                .filter(w -> w.getIlarCode() != null).findFirst();
+                mutation.getOutcomes().stream().map(Outcome::getPlan).map(Plan::getWorkUnit)
+                        .filter(w -> w.getIlarCode() != null).findFirst();
 
         if (workUnitIlarCode.isEmpty()) {
             return true;
@@ -210,7 +216,7 @@ public class MutationValidator {
         List<WorkUnit> workUnits = workUnitService.getAllWorkUnits();
 
         List<String> ilarCodes =
-            workUnits.stream().map(WorkUnit::getIlarCode).toList();
+                workUnits.stream().map(WorkUnit::getIlarCode).toList();
 
         List<String> names = workUnits.stream().map(WorkUnit::getName).toList();
 
@@ -220,7 +226,7 @@ public class MutationValidator {
 
         for (String workUnit : ilarCodesAndNames) {
             if (workUnit != null &&
-                mutation.getSymbol().toLowerCase().contains(workUnit.toLowerCase())) {
+                    mutation.getSymbol().toLowerCase().contains(workUnit.toLowerCase())) {
                 return true;
             }
         }
@@ -230,21 +236,22 @@ public class MutationValidator {
 
     private boolean isEsCellModificationAttemptTypeWrong(Mutation mutation) {
         return getAttemptTypeName(mutation)
-            .equals(AttemptTypesName.ES_CELL_ALLELE_MODIFICATION.getLabel()) &&
-            (!getEscAlleleClassName(mutation).equals("b") &&
-                !getEscAlleleClassName(mutation).equals("c") &&
-                !getEscAlleleClassName(mutation).equals("d") &&
-                !getEscAlleleClassName(mutation).equals("e.1") &&
-                !getEscAlleleClassName(mutation).equals(".1") &&
-                !getEscAlleleClassName(mutation).equals(".2"));
+                .equals(AttemptTypesName.ES_CELL_ALLELE_MODIFICATION.getLabel()) &&
+                (!getEscAlleleClassName(mutation).equals("b") &&
+                        !getEscAlleleClassName(mutation).equals("c") &&
+                        !getEscAlleleClassName(mutation).equals("d") &&
+                        !getEscAlleleClassName(mutation).equals("e.1") &&
+                        !getEscAlleleClassName(mutation).equals(".1") &&
+                        !getEscAlleleClassName(mutation).equals(".2"));
     }
 
     private boolean isEsCellAttemptTypeWrong(Mutation mutation) {
         return getAttemptTypeName(mutation).equals(AttemptTypesName.ES_CELL.getLabel()) &&
-            (!getEscAlleleClassName(mutation).equals("a") &&
-                !getEscAlleleClassName(mutation).equals("e") &&
-                !getEscAlleleClassName(mutation).equals("''"));
+                (!getEscAlleleClassName(mutation).equals("a") &&
+                        !getEscAlleleClassName(mutation).equals("e") &&
+                        !getEscAlleleClassName(mutation).equals("''"));
     }
+
 
     private boolean isSequenceInFastaFormat(Mutation mutation) {
         List<Sequence> sequences = getSequences(mutation);
@@ -254,18 +261,31 @@ public class MutationValidator {
         }
 
         List<String> sequenceString = sequences.stream().map(Sequence::getSequence)
-            .toList();
+                .toList();
 
         return sequenceString.stream().noneMatch(s ->
-            !isStartWithBiggerSymbol(s) || !isSequenceHeaderSingleLine(s) ||
-                !isDnaFormatCorrect(s));
+                !isStartWithBiggerSymbol(s) || !isSequenceHeaderSingleLine(s) ||
+                        !isDnaFormatCorrect(s));
+    }
+
+    private boolean isInsertionSequenceInFastaFormat(Mutation mutation) {
+
+        if (mutation.getInsertionSequences() == null || mutation.getInsertionSequences().isEmpty()) {
+            return true;
+        }
+        List<String> sequences = mutation.getInsertionSequences().stream().map(InsertionSequence::getSequence).toList();
+
+        return sequences.stream().noneMatch(s ->
+                !isStartWithBiggerSymbol(s) || !isSequenceHeaderSingleLine(s) ||
+                        !isDnaFormatCorrect(s));
     }
 
     private List<Sequence> getSequences(Mutation mutation) {
         return mutation.getMutationSequences().stream().map(
-            MutationSequence::getSequence)
-            .collect(Collectors.toList());
+                        MutationSequence::getSequence)
+                .collect(Collectors.toList());
     }
+
 
     private Boolean isStartWithBiggerSymbol(String sequence) {
         return sequence.charAt(0) == '>';
@@ -273,7 +293,7 @@ public class MutationValidator {
 
     private Boolean isSequenceHeaderSingleLine(String sequence) {
         return sequence.split("\n").length == 2 &&
-            (!sequence.split("\n")[0].isEmpty() && sequence.split("\n")[0].length() < 256);
+                (!sequence.split("\n")[0].isEmpty() && sequence.split("\n")[0].length() < 256);
 
     }
 
@@ -294,9 +314,9 @@ public class MutationValidator {
 
     private List<Character> dnaCharacters() {
         return List
-            .of('A', 'C', 'G', 'T', 'U', 'I', 'R', 'Y', 'K', 'M', 'S', 'W', 'B', 'D', 'H', 'V',
-                'N', 'a', 'c', 'g', 't', 'u', 'i', 'r', 'y', 'k', 'm', 's', 'w', 'b', 'd', 'h', 'v',
-                'n','-');
+                .of('A', 'C', 'G', 'T', 'U', 'I', 'R', 'Y', 'K', 'M', 'S', 'W', 'B', 'D', 'H', 'V',
+                        'N', 'a', 'c', 'g', 't', 'u', 'i', 'r', 'y', 'k', 'm', 's', 'w', 'b', 'd', 'h', 'v',
+                        'n', '-');
     }
 
 }
