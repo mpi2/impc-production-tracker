@@ -69,8 +69,6 @@ public class MutationFieldsDescriptors
                         - outcome sequence
 
                         A mutation should always be specified as 'outcome sequence'.""");
-        addField(
-                mutationFieldsDescriptions, "insertionSequences", "Array containing a collection of insertion sequences that characterise the mutation.");
         addField(mutationFieldsDescriptions, "description", "Mutation description note.");
         addField(mutationFieldsDescriptions, "qcNote", "Mutation Qc note.");
         addField(
@@ -105,17 +103,6 @@ public class MutationFieldsDescriptors
         addField(mutationFieldsDescriptions, "_links.self.href", "Link to the mutation.");
         addField(
             mutationFieldsDescriptions, "_links.outcomes[].href", "Outcomes associated with the mutation.");
-        addField(
-                mutationFieldsDescriptions, "isManualMutationDeletion", "Manual Mutation Deletion field.");
-        addField(
-                mutationFieldsDescriptions, "isMutationDeletionChecked", "Mutation Deletion Checked field.");
-        addField(
-                mutationFieldsDescriptions, "isDeletionCoordinatesUpdatedManually", "Deletion Coordinates Updated Manually field.");
-        addField(
-                mutationFieldsDescriptions, "molecularMutationDeletions[].", "Molecular Mutation Deletion.");
-        addField(
-                mutationFieldsDescriptions, "targetedExons[]", "Targeted Exons.");
-
         return mutationFieldsDescriptions;
     }
 
