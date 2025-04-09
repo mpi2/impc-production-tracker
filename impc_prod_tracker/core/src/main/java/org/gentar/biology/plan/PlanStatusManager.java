@@ -63,7 +63,7 @@ public class PlanStatusManager
      * requested them in the state machine or because of the data that causes a system triggered
      * transition.
      * This method will:
-     * - Execute the system triggered transitions that are needed.
+     * - Execute the system triggered statusTransitions that are needed.
      * - Execute the user triggered transition that the user specified in the event.
      * - Update (if needed) the summary status of the plan.
      * @param plan Plan that is being evaluated.

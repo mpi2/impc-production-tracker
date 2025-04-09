@@ -21,9 +21,9 @@ public interface PhenotypingStageService
     List<TransitionEvaluation> evaluateNextTransitions(PhenotypingStage phenotypingStage);
 
     /**
-     * Gets the Process event that corresponds to the name of the transition 'name'.
+     * Gets the Process event that corresponds to the Name of the statusTransition 'name'.
      * @param phenotypingStage phenotypingStage to evaluate.
-     * @param name The name of the transition that is going to be evaluated on the phenotypingStage.
+     * @param name The Name of the statusTransition that is going to be evaluated on the phenotypingStage.
      * @return A {@link ProcessEvent} corresponding to the given 'name'.
      */
     ProcessEvent getProcessEventByName(PhenotypingStage phenotypingStage, String name);
