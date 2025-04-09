@@ -16,23 +16,28 @@
 package org.gentar.biology.mutation;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import java.sql.Types;
+import jakarta.persistence.*;
 import lombok.*;
+import org.gentar.BaseEntity;
 import org.gentar.audit.diff.IgnoreForAuditingChanges;
+import org.gentar.biology.gene.Gene;
+import org.gentar.biology.insertion_sequence.InsertionSequence;
+import org.gentar.biology.mutation.aligned_fasta.AlignedFasta;
 import org.gentar.biology.mutation.categorizarion.MutationCategorization;
+import org.gentar.biology.mutation.genbank_file.GenbankFile;
 import org.gentar.biology.mutation.genetic_type.GeneticMutationType;
+import org.gentar.biology.mutation.molecular_type.MolecularMutationType;
+import org.gentar.biology.mutation.mutation_deletion.MolecularMutationDeletion;
 import org.gentar.biology.mutation.qc_results.MutationQcResult;
 import org.gentar.biology.mutation.sequence.MutationSequence;
-import org.gentar.BaseEntity;
-import org.gentar.biology.mutation.genbank_file.GenbankFile;
-import org.gentar.biology.gene.Gene;
-import org.gentar.biology.mutation.molecular_type.MolecularMutationType;
 import org.gentar.biology.outcome.Outcome;
-import jakarta.persistence.*;
+import org.gentar.biology.plan.attempt.crispr.targeted_exon.TargetedExon;
+import org.hibernate.annotations.JdbcTypeCode;
+
+import java.sql.Types;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
-import org.hibernate.annotations.JdbcTypeCode;
 
 @NoArgsConstructor(access= AccessLevel.PUBLIC, force=true)
 @Data
@@ -81,6 +86,24 @@ public class Mutation extends BaseEntity
 
     @ManyToOne(targetEntity= MolecularMutationType.class)
     private MolecularMutationType molecularMutationType;
+
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
+    @OneToMany(mappedBy = "mutation", cascade= CascadeType.ALL, orphanRemoval=true)
+    private Set<MolecularMutationDeletion> molecularMutationDeletion;
+
+
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
+    @OneToMany(mappedBy = "mutation", cascade= CascadeType.ALL, orphanRemoval=true)
+    private Set<TargetedExon> targetedExons;
+
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
+    @OneToMany(mappedBy = "mutation", cascade= CascadeType.ALL, orphanRemoval=true)
+    private Set<AlignedFasta> alignedFastas;
+
+
 
     @ManyToOne(targetEntity = GenbankFile.class)
     private GenbankFile genbankFile;
@@ -140,10 +163,26 @@ public class Mutation extends BaseEntity
     private Set<MutationSequence> mutationSequences;
 
 
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
+    @OneToMany(mappedBy = "mutation", cascade= CascadeType.ALL, orphanRemoval=true)
+    private Set<InsertionSequence> insertionSequences;
+
+
     @Column(columnDefinition = "TEXT")
     @ToString.Exclude
     private String qcNote;
 
+
+    @Column(columnDefinition = "boolean default false")
+    private Boolean isManualMutationDeletion;
+
+
+    @Column(columnDefinition = "boolean default false")
+    private Boolean isDeletionCoordinatesUpdatedManually;
+
+    private Boolean isMutationDeletionChecked;
+    
     // Copy Constructor
     public Mutation(Mutation mutation)
     {
@@ -161,6 +200,9 @@ public class Mutation extends BaseEntity
         this.imitsAllele = mutation.imitsAllele;
         this.geneticMutationType = mutation.geneticMutationType;
         this.molecularMutationType = mutation.molecularMutationType;
+        this.molecularMutationDeletion = mutation.molecularMutationDeletion;
+        this.targetedExons = mutation.targetedExons;
+        this.alignedFastas = mutation.alignedFastas;
         this.genbankFile = mutation.genbankFile;
         this.bamFile = mutation.bamFile;
         this.bamFileIndex =mutation.getBamFileIndex();
@@ -185,7 +227,16 @@ public class Mutation extends BaseEntity
             this.mutationSequences = mutation.getMutationSequences().stream()
                 .map(MutationSequence::new).collect(Collectors.toSet());
         }
+        if (mutation.getInsertionSequences() != null)
+        {
+            this.insertionSequences = mutation.getInsertionSequences().stream()
+                    .map(InsertionSequence::new).collect(Collectors.toSet());
+        }
         this.setCreatedBy(mutation.getCreatedBy());
         this.qcNote = mutation.qcNote;
+        this.isManualMutationDeletion = mutation.getIsManualMutationDeletion();
+        this.isMutationDeletionChecked = mutation.getIsMutationDeletionChecked();
+        this.isDeletionCoordinatesUpdatedManually =mutation.getIsDeletionCoordinatesUpdatedManually();
+
     }
 }
