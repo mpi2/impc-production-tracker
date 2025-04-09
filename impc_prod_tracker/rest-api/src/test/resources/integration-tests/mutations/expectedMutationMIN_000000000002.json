@@ -28,7 +28,6 @@
       }
     }
   ],
-  "insertionSequences":[],
   "mutationCategorizations":[
     {
       "name":"NHEJ",
@@ -55,10 +54,5 @@
       "name":"otogelin",
       "externalLink":"http://www.mousephenotype.org/data/genes/MGI:1202064"
     }
-  ],
-  "isManualMutationDeletion" : false,
-  "isDeletionCoordinatesUpdatedManually" : false,
-  "isMutationDeletionChecked" : null,
-  "molecularMutationDeletions" : [],
-  "targetedExons" : []
+  ]
 }
