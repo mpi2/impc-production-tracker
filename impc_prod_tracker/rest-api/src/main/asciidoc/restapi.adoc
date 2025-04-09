@@ -930,35 +930,35 @@ to change that status.
 
 |`+statusTransition.transitions[]+`
 |`+Array+`
-|Transitions in the state machine given the current state.
+|StatusTransitions in the state machine given the current state.
 
 |`+statusTransition.transitions[].action+`
 |`+String+`
-|Action or transition's name.
+|Action or statusTransition's name.
 
 |`+statusTransition.transitions[].description+`
 |`+String+`
-|Transition's description.
+|StatusTransition's description.
 
 |`+statusTransition.transitions[].triggeredByUser+`
 |`+Boolean+`
-|Indicates whether the transition is executed by the user or by the system.
+|Indicates whether the statusTransition is executed by the user or by the system.
 
 |`+statusTransition.transitions[].available+`
 |`+Boolean+`
-|Indicates if the transition can be executed at the moment.
+|Indicates if the StatusTransition can be executed at the moment.
 
 |`+statusTransition.transitions[].note+`
 |`+Null+`
-|Additional explanation about the availability to execute the transition.
+|Additional explanation about the availability to execute the statusTransition.
 
 |`+statusTransition.transitions[].nextStatus+`
 |`+String+`
-|Next status that the plan will have if the transition is executed.
+|Next status that the plan will have if the statusTransition is executed.
 
 |`+statusTransition.actionToExecute+`
 |`+Null+`
-|Name of the transition (action) to execute.
+|Name of the statusTransition (action) to execute.
 
 
 |===
@@ -974,7 +974,7 @@ as the value _actionToExecute_ in the statusTransition section of the payload.
 
 Let's suppose you want to abort a crispr plan that has the status _Founder Obtained_. If we do a _GET_
 to the plan we want to abort, you will see the _statusTransition_ section with a single available
-transition executable by the user: *abortWhenFounderObtained*.
+state change executable by the user: *abortWhenFounderObtained*.
 
 Use the name of the action (abortWhenFounderObtained) as the value in the field *actionToExecute*.
 

@@ -18,9 +18,9 @@ public interface ColonyService
     List<TransitionEvaluation> evaluateNextTransitions(Colony colony);
 
     /**
-     * Gets the Process event that corresponds to the name of the transition 'name'.
+     * Gets the Process event that corresponds to the Name of the statusTransition 'name'.
      * @param colony colony to evaluate.
-     * @param name The name of the transition that is going to be evaluated on the colony.
+     * @param name The Name of the statusTransition that is going to be evaluated on the colony.
      * @return A {@link ProcessEvent} corresponding to the given 'name'.
      */
     ProcessEvent getProcessEventByName(Colony colony, String name);

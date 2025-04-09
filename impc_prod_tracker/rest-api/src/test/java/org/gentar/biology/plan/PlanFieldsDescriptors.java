@@ -52,34 +52,34 @@ public class PlanFieldsDescriptors
         addField(
             sharedFieldDescriptions,
             "statusTransition.transitions[]",
-            "Transitions in the state machine given the current state.");
+            "StatusTransitions in the state machine given the current state.");
         addField(
             sharedFieldDescriptions,
             "statusTransition.transitions[].action",
-            "Action or transition's name.");
+            "Action or statusTransition's name.");
         addField(
             sharedFieldDescriptions,
             "statusTransition.transitions[].description",
-            "Transition's description.");
+            "StatusTransition's description.");
         addField(sharedFieldDescriptions,
             "statusTransition.transitions[].triggeredByUser",
-            "Indicates whether the transition is executed by the user or by the system.");
+            "Indicates whether the statusTransition is executed by the user or by the system.");
         addField(
             sharedFieldDescriptions,
             "statusTransition.transitions[].available",
-            "Indicates if the transition can be executed at the moment.");
+            "Indicates if the StatusTransition can be executed at the moment.");
         addField(
             sharedFieldDescriptions,
             "statusTransition.transitions[].note",
-            "Additional explanation about the availability to execute the transition.");
+            "Additional explanation about the availability to execute the statusTransition.");
         addField(
             sharedFieldDescriptions,
             "statusTransition.transitions[].nextStatus",
-            "Next status that the plan will have if the transition is executed.");
+            "Next status that the plan will have if the statusTransition is executed.");
         addField(
             sharedFieldDescriptions,
             "statusTransition.actionToExecute",
-            "Name of the transition (action) to execute.");
+            "Name of the statusTransition (action) to execute.");
         return sharedFieldDescriptions;
     }
 
