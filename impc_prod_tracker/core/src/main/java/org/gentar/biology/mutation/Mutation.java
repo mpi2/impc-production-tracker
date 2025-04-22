@@ -177,8 +177,7 @@ public class Mutation extends BaseEntity
     @Column(columnDefinition = "boolean default false")
     private Boolean isManualMutationDeletion;
 
-
-    @Column(columnDefinition = "boolean default false")
+    @Column(columnDefinition = "boolean default true")
     private Boolean isDeletionCoordinatesUpdatedManually;
 
     private Boolean isMutationDeletionChecked;
