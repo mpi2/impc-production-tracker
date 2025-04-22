@@ -21,7 +21,7 @@
       "note" : "Field changed"
     }, {
       "field" : "isDeletionCoordinatesUpdatedManually",
-      "oldValue" : "false",
+      "oldValue" : "true",
       "newValue" : null,
       "note" : "Field changed"
     }, {
