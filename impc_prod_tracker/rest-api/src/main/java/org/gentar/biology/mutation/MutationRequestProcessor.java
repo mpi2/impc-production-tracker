@@ -10,6 +10,7 @@ import org.gentar.biology.mutation.symbolConstructor.SymbolSuggestionRequest;
 import org.gentar.biology.outcome.Outcome;
 import org.gentar.biology.plan.Plan;
 import org.gentar.biology.plan.PlanService;
+import org.gentar.biology.plan.attempt.crispr.canonical_targeted_exon.targeted_exon.CanonicalTargetedExon;
 import org.gentar.biology.plan.attempt.crispr.targeted_exon.TargetedExon;
 import org.gentar.biology.sequence.Sequence;
 import org.gentar.biology.sequence.category.SequenceCategoryService;
@@ -94,6 +95,7 @@ public class MutationRequestProcessor {
         setMolecularMutationDeletions(originalMutation, newMutation, mappedMutation);
         setOutcomeCategoryType(newMutation);
         setTargetedExons(originalMutation, newMutation, mappedMutation);
+        setCanonicalTargetedExons(originalMutation, newMutation, mappedMutation);
         newMutation.setIsMutationDeletionChecked(mappedMutation.getIsMutationDeletionChecked());
         newMutation.setIsDeletionCoordinatesUpdatedManually(mappedMutation.getIsDeletionCoordinatesUpdatedManually());
         newMutation.setIsManualMutationDeletion(mappedMutation.getIsManualMutationDeletion());
@@ -159,6 +161,18 @@ public class MutationRequestProcessor {
 
             }
             newMutation.setTargetedExons(mappedTargetedExons);
+        }
+    }
+
+    private void setCanonicalTargetedExons(Mutation originalMutation, Mutation newMutation, Mutation mappedMutation) {
+        Set<CanonicalTargetedExon> mappedCanonicalTargetedExons = mappedMutation.getCanonicalTargetedExons();
+
+        if (mappedCanonicalTargetedExons != null) {
+            for (CanonicalTargetedExon canonicalTargetedExon : mappedCanonicalTargetedExons) {
+                canonicalTargetedExon.setMutation(originalMutation);
+
+            }
+            newMutation.setCanonicalTargetedExons(mappedCanonicalTargetedExons);
         }
     }
 

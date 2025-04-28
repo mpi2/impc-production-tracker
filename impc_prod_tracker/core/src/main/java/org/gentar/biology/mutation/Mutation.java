@@ -31,6 +31,7 @@ import org.gentar.biology.mutation.mutation_deletion.MolecularMutationDeletion;
 import org.gentar.biology.mutation.qc_results.MutationQcResult;
 import org.gentar.biology.mutation.sequence.MutationSequence;
 import org.gentar.biology.outcome.Outcome;
+import org.gentar.biology.plan.attempt.crispr.canonical_targeted_exon.targeted_exon.CanonicalTargetedExon;
 import org.gentar.biology.plan.attempt.crispr.targeted_exon.TargetedExon;
 import org.hibernate.annotations.JdbcTypeCode;
 
@@ -97,6 +98,11 @@ public class Mutation extends BaseEntity
     @EqualsAndHashCode.Exclude
     @OneToMany(mappedBy = "mutation", cascade= CascadeType.ALL, orphanRemoval=true)
     private Set<TargetedExon> targetedExons;
+
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
+    @OneToMany(mappedBy = "mutation", cascade= CascadeType.ALL, orphanRemoval=true)
+    private Set<CanonicalTargetedExon> canonicalTargetedExons;
 
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
@@ -201,6 +207,7 @@ public class Mutation extends BaseEntity
         this.molecularMutationType = mutation.molecularMutationType;
         this.molecularMutationDeletion = mutation.molecularMutationDeletion;
         this.targetedExons = mutation.targetedExons;
+        this.canonicalTargetedExons = mutation.canonicalTargetedExons;
         this.alignedFastas = mutation.alignedFastas;
         this.genbankFile = mutation.genbankFile;
         this.bamFile = mutation.bamFile;
