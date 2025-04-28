@@ -3,6 +3,7 @@ package org.gentar.biology.mutation;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
+import org.gentar.biology.plan.attempt.crispr.CanonicalTargetedExonDTO;
 import org.gentar.biology.plan.attempt.crispr.TargetedExonDTO;
 
 import java.util.List;
@@ -40,6 +41,10 @@ public class MutationCommonDTO
     @JsonProperty("targetedExons")
     @JsonIgnore
     private List<TargetedExonDTO> targetedExonDTOS;
+
+    @JsonProperty("canonicalTargetedExons")
+    @JsonIgnore
+    private List<CanonicalTargetedExonDTO> canonicalTargetedExonsDTOS;
 
     @JsonIgnore
     private Boolean isManualMutationDeletion;

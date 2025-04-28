@@ -61,13 +61,16 @@ class MutationCommonMapperTest {
     @Mock
     private TargetedExonMapper targetedExonMapper;
 
+    @Mock
+    private CanonicalTargetedExonMapper canonicalTargetedExonMapper;
+
     @BeforeEach
     void setUp() {
         testInstance =
                 new MutationCommonMapper(
                         mutationQCResultMapper,
                         mutationCategorizationMapper,
-                        mutationSequenceMapper, insertionSequenceMapper, geneticMutationTypeMapper, molecularMutationTypeMapper, molecularMutationDeletionMapper,targetedExonMapper);
+                        mutationSequenceMapper, insertionSequenceMapper, geneticMutationTypeMapper, molecularMutationTypeMapper, molecularMutationDeletionMapper, targetedExonMapper, canonicalTargetedExonMapper);
     }
 
     @Test
