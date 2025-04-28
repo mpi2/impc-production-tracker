@@ -7,7 +7,9 @@ import org.gentar.biology.mutation.molecular_type.MolecularMutationType;
 import org.gentar.biology.mutation.mutation_deletion.MolecularMutationDeletion;
 import org.gentar.biology.mutation.qc_results.MutationQcResult;
 import org.gentar.biology.mutation.sequence.MutationSequence;
+import org.gentar.biology.plan.attempt.crispr.CanonicalTargetedExonDTO;
 import org.gentar.biology.plan.attempt.crispr.TargetedExonDTO;
+import org.gentar.biology.plan.attempt.crispr.canonical_targeted_exon.targeted_exon.CanonicalTargetedExon;
 import org.gentar.biology.plan.attempt.crispr.targeted_exon.TargetedExon;
 import org.springframework.stereotype.Component;
 
@@ -29,12 +31,14 @@ public class MutationCommonMapper implements Mapper<Mutation, MutationCommonDTO>
 
     private final TargetedExonMapper targetedExonMapper;
 
+    private final CanonicalTargetedExonMapper canonicalTargetedExonMapper;
+
     public MutationCommonMapper(
             MutationQCResultMapper mutationQCResultMapper,
             MutationCategorizationMapper mutationCategorizationMapper,
             MutationSequenceMapper mutationSequenceMapper, InsertionSequenceMapper insertionSequenceMapper,
             GeneticMutationTypeMapper geneticMutationTypeMapper,
-            MolecularMutationTypeMapper molecularMutationTypeMapper, MolecularMutationDeletionMapper molecularMutationDeletionMapper, TargetedExonMapper targetedExonMapper)
+            MolecularMutationTypeMapper molecularMutationTypeMapper, MolecularMutationDeletionMapper molecularMutationDeletionMapper, TargetedExonMapper targetedExonMapper, CanonicalTargetedExonMapper canonicalTargetedExonMapper)
     {
         this.mutationQCResultMapper = mutationQCResultMapper;
         this.mutationCategorizationMapper = mutationCategorizationMapper;
@@ -44,6 +48,7 @@ public class MutationCommonMapper implements Mapper<Mutation, MutationCommonDTO>
         this.molecularMutationTypeMapper = molecularMutationTypeMapper;
         this.molecularMutationDeletionMapper = molecularMutationDeletionMapper;
         this.targetedExonMapper = targetedExonMapper;
+        this.canonicalTargetedExonMapper = canonicalTargetedExonMapper;
     }
 
     @Override
@@ -71,6 +76,7 @@ public class MutationCommonMapper implements Mapper<Mutation, MutationCommonDTO>
             mutationCategorizationMapper.toDtos(mutation.getMutationCategorizations()));
         mutationCommonDTO.setMolecularMutationDeletionDTOs(molecularMutationDeletionMapper.toDtos(mutation.getMolecularMutationDeletion()));
         mutationCommonDTO.setTargetedExonDTOS(targetedExonMapper.toDtos(mutation.getTargetedExons()));
+        mutationCommonDTO.setCanonicalTargetedExonsDTOS(canonicalTargetedExonMapper.toDtos(mutation.getCanonicalTargetedExons()));
         mutationCommonDTO.setIsManualMutationDeletion(mutation.getIsManualMutationDeletion());
         mutationCommonDTO.setIsDeletionCoordinatesUpdatedManually(mutation.getIsDeletionCoordinatesUpdatedManually());
         mutationCommonDTO.setIsMutationDeletionChecked(mutation.getIsMutationDeletionChecked());
@@ -101,6 +107,7 @@ public class MutationCommonMapper implements Mapper<Mutation, MutationCommonDTO>
 
             setMolecularMutationDeletion(mutation, mutationCommonDTO);
             setTargetedExons(mutation, mutationCommonDTO);
+            setCanonicalTargetedExons(mutation, mutationCommonDTO);
             mutation.setIsManualMutationDeletion(mutationCommonDTO.getIsManualMutationDeletion());
             mutation.setIsMutationDeletionChecked(mutationCommonDTO.getIsMutationDeletionChecked());
 
@@ -192,6 +199,19 @@ public class MutationCommonMapper implements Mapper<Mutation, MutationCommonDTO>
                             targetedExonMapper.toEntities(mutationCommonDTO.getTargetedExonDTOS()));
             targetedExons.forEach(x -> x.setMutation(mutation));
             mutation.setTargetedExons(targetedExons);
+        }
+    }
+
+    private void setCanonicalTargetedExons(Mutation mutation, MutationCommonDTO mutationCommonDTO)
+    {
+        List<CanonicalTargetedExonDTO> canonicalTargetedExonDTOS = mutationCommonDTO.getCanonicalTargetedExonsDTOS();
+        if (canonicalTargetedExonDTOS != null)
+        {
+            Set<CanonicalTargetedExon> canonicalTargetedExons =
+                    new HashSet<>(
+                            canonicalTargetedExonMapper.toEntities(mutationCommonDTO.getCanonicalTargetedExonsDTOS()));
+            canonicalTargetedExons.forEach(x -> x.setMutation(mutation));
+            mutation.setCanonicalTargetedExons(canonicalTargetedExons);
         }
     }
 }
