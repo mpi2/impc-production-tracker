@@ -25,19 +25,19 @@ public class MutationReportServiceImpl implements MutationReportService {
     @Override
     public void getDeletionCoordinates(HttpServletResponse response) throws IOException {
         List<GenomeBrowserProjection> deletionCoordinates = mutationRepository.findAllDeletionCoordinates();
-        formatGenomeBrowserProjectionReportText(response, deletionCoordinates, "Deletion Coordinates");
+        formatGenomeBrowserProjectionReportText(response, deletionCoordinates, "Deletion_Coordinates");
     }
 
     @Override
     public void getTargetedExons(HttpServletResponse response) throws IOException {
         List<GenomeBrowserProjection> allTargetedExons = mutationRepository.findAllTargetedExons();
-        formatGenomeBrowserProjectionReportText(response, allTargetedExons, "Targeted Exons");
+        formatGenomeBrowserProjectionReportText(response, allTargetedExons, "Targeted_Exons");
     }
 
     @Override
     public void getCanonicalTargetedExons(HttpServletResponse response) throws IOException {
         List<GenomeBrowserProjection> allCanonicalTargetedExons = mutationRepository.findAllCanonicalTargetedExons();
-        formatGenomeBrowserProjectionReportText(response, allCanonicalTargetedExons, "Canonical Targeted Exons");
+        formatGenomeBrowserProjectionReportText(response, allCanonicalTargetedExons, "Canonical_Targeted_Exons");
     }
 
 
