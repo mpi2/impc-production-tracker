@@ -15,6 +15,7 @@
  *******************************************************************************/
 package org.gentar.biology.mutation;
 
+import org.gentar.biology.mutation.genome_browser.GenomeBrowserProjection;
 import org.gentar.biology.mutation.mutation_ensembl.mutationEnsemblMutationPartProjection;
 import org.springframework.context.annotation.Primary;
 import org.springframework.data.jpa.repository.Query;
@@ -42,5 +43,83 @@ public interface MutationRepository extends CrudRepository<Mutation, Long>
     @Query(value = "select min, g.symbol, g.acc_id from mutation m, mutation_gene mg , gene g where m.id = mg.mutation_id and mg.gene_id = g.id and m.min IN (:mins)",
             nativeQuery = true)
     List<mutationEnsemblMutationPartProjection> findMutationEnsembleMutationPartByMins(@Param("mins") List<String> mins);
+
+    @Query(value = "WITH cte AS (SELECT wu.name                                                                 AS centre,\n" +
+            "                    m.min                                                                   AS min,\n" +
+            "                    m.symbol                                                                AS allele_symbol,\n" +
+            "                    g.symbol                                                                AS gene_symbol,\n" +
+            "                    s.sequence                                                              AS fasta,\n" +
+            "                    'https://www.gentar.org/#/projects/' || p.tpn || '/plans/' || plan.pin ||\n" +
+            "                    '/outcomes/' ||   o.tpo                                                   AS url,\n" +
+            "                    ROW_NUMBER() OVER (PARTITION BY mmd.mutation_id ORDER BY mmd.mutation_id) as rn\n" +
+            "             FROM Gene g\n" +
+            "                      INNER JOIN mutation_gene mg on g.id = mg.gene_id\n" +
+            "                      INNER JOIN mutation_outcome mo on mg.mutation_id = mo.mutation_id\n" +
+            "                      INNER JOIN mutation m ON mg.mutation_id = m.id\n" +
+            "                      INNER JOIN outcome o ON mo.outcome_id = o.id\n" +
+            "                      INNER JOIN outcome_type ot ON o.outcome_type_id = ot.id\n" +
+            "                      INNER JOIN Plan plan ON o.plan_id = plan.id\n" +
+            "                      INNER JOIN gentar.work_unit wu on wu.id = plan.work_unit_id\n" +
+            "                      INNER JOIN Project p ON plan.project_id = p.id\n" +
+            "                      INNER JOIN gentar.mutation_sequence ms on m.id = ms.mutation_id\n" +
+            "                      INNER JOIN gentar.sequence s on s.id = ms.sequence_id\n" +
+            "                      INNER JOIN gentar.molecular_mutation_deletion mmd on m.id = mmd.mutation_id)\n" +
+            "SELECT centre, min, allele_symbol, gene_symbol, url, fasta\n" +
+            "FROM cte\n" +
+            "WHERE rn = 1", nativeQuery = true)
+    List<GenomeBrowserProjection> findAllDeletionCoordinates();
+
+    //@Query("select lr.id, lr.note, g.symbol, g.accId, p.tpn, a.name as assignmentStatus, privacy.name as privacy, s.name as summaryStatus from Consortium c left join GeneList gl on c = gl.consortium left join ListRecord lr on gl = lr.geneList left join GeneByListRecord gblr on lr = gblr.listRecord left join Gene g on gblr.accId = g.accId left join ProjectIntentionGene pig on g = pig.gene  left join ProjectIntention pi on pig.projectIntention = pi.project left join Project p on pi.project = p left join Status s on p.summaryStatus = s left join Privacy privacy on p.privacy = privacy left join AssignmentStatus a on p.assignmentStatus = a  where c.name = :name" )
+    @Query(value = "WITH cte AS (SELECT wu.name                                                                 AS centre,\n" +
+            "                    m.min                                                                   AS min,\n" +
+            "                    m.symbol                                                                AS allele_symbol,\n" +
+            "                    g.symbol                                                                AS gene_symbol,\n" +
+            "                    s.sequence                                                              AS fasta,\n" +
+            "                    'https://www.gentar.org/#/projects/' || p.tpn || '/plans/' || plan.pin ||\n" +
+            "                    '/outcomes/' ||   o.tpo                                                   AS url,\n" +
+            "                    ROW_NUMBER() OVER (PARTITION BY te.mutation_id ORDER BY te.mutation_id) as rn\n" +
+            "             FROM Gene g\n" +
+            "                      INNER JOIN mutation_gene mg on g.id = mg.gene_id\n" +
+            "                      INNER JOIN mutation_outcome mo on mg.mutation_id = mo.mutation_id\n" +
+            "                      INNER JOIN mutation m ON mg.mutation_id = m.id\n" +
+            "                      INNER JOIN outcome o ON mo.outcome_id = o.id\n" +
+            "                      INNER JOIN outcome_type ot ON o.outcome_type_id = ot.id\n" +
+            "                      INNER JOIN Plan plan ON o.plan_id = plan.id\n" +
+            "                      INNER JOIN gentar.work_unit wu on wu.id = plan.work_unit_id\n" +
+            "                      INNER JOIN Project p ON plan.project_id = p.id\n" +
+            "                      INNER JOIN gentar.mutation_sequence ms on m.id = ms.mutation_id\n" +
+            "                      INNER JOIN gentar.sequence s on s.id = ms.sequence_id\n" +
+            "                      INNER JOIN gentar.targeted_exon te on m.id = te.mutation_id)\n" +
+            "SELECT centre, min, allele_symbol, gene_symbol, url, fasta\n" +
+            "FROM cte\n" +
+            "WHERE rn = 1", nativeQuery = true)
+    List<GenomeBrowserProjection> findAllTargetedExons();
+
+
+    //@Query("select lr.id, lr.note, g.symbol, g.accId, p.tpn, a.name as assignmentStatus, privacy.name as privacy, s.name as summaryStatus from Consortium c left join GeneList gl on c = gl.consortium left join ListRecord lr on gl = lr.geneList left join GeneByListRecord gblr on lr = gblr.listRecord left join Gene g on gblr.accId = g.accId left join ProjectIntentionGene pig on g = pig.gene  left join ProjectIntention pi on pig.projectIntention = pi.project left join Project p on pi.project = p left join Status s on p.summaryStatus = s left join Privacy privacy on p.privacy = privacy left join AssignmentStatus a on p.assignmentStatus = a  where c.name = :name" )
+    @Query(value = "WITH cte AS (SELECT wu.name                                                                 AS centre,\n" +
+            "                    m.min                                                                   AS min,\n" +
+            "                    m.symbol                                                                AS allele_symbol,\n" +
+            "                    g.symbol                                                                AS gene_symbol,\n" +
+            "                    s.sequence                                                                 AS fasta,\n" +
+            "                    'https://www.gentar.org/#/projects/' || p.tpn || '/plans/' || plan.pin ||\n" +
+            "                    '/outcomes/' ||   o.tpo                                                   AS url,\n" +
+            "                    ROW_NUMBER() OVER (PARTITION BY ctex.mutation_id ORDER BY ctex.mutation_id) as rn\n" +
+            "             FROM Gene g\n" +
+            "                      INNER JOIN mutation_gene mg on g.id = mg.gene_id\n" +
+            "                      INNER JOIN mutation_outcome mo on mg.mutation_id = mo.mutation_id\n" +
+            "                      INNER JOIN mutation m ON mg.mutation_id = m.id\n" +
+            "                      INNER JOIN outcome o ON mo.outcome_id = o.id\n" +
+            "                      INNER JOIN outcome_type ot ON o.outcome_type_id = ot.id\n" +
+            "                      INNER JOIN Plan plan ON o.plan_id = plan.id\n" +
+            "                      INNER JOIN gentar.work_unit wu on wu.id = plan.work_unit_id\n" +
+            "                      INNER JOIN Project p ON plan.project_id = p.id\n" +
+            "                      INNER JOIN gentar.mutation_sequence ms on m.id = ms.mutation_id\n" +
+            "                      INNER JOIN gentar.sequence s on s.id = ms.sequence_id\n" +
+            "                      INNER JOIN gentar.canonical_targeted_exon ctex on m.id = ctex.mutation_id)\n" +
+            "SELECT centre, min, allele_symbol, gene_symbol, url, fasta\n" +
+            "FROM cte\n" +
+            "WHERE rn = 1", nativeQuery = true)
+    List<GenomeBrowserProjection> findAllCanonicalTargetedExons();
 
 }
