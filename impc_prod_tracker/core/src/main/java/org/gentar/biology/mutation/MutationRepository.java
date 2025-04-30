@@ -69,7 +69,6 @@ public interface MutationRepository extends CrudRepository<Mutation, Long>
             "WHERE rn = 1", nativeQuery = true)
     List<GenomeBrowserProjection> findAllDeletionCoordinates();
 
-    //@Query("select lr.id, lr.note, g.symbol, g.accId, p.tpn, a.name as assignmentStatus, privacy.name as privacy, s.name as summaryStatus from Consortium c left join GeneList gl on c = gl.consortium left join ListRecord lr on gl = lr.geneList left join GeneByListRecord gblr on lr = gblr.listRecord left join Gene g on gblr.accId = g.accId left join ProjectIntentionGene pig on g = pig.gene  left join ProjectIntention pi on pig.projectIntention = pi.project left join Project p on pi.project = p left join Status s on p.summaryStatus = s left join Privacy privacy on p.privacy = privacy left join AssignmentStatus a on p.assignmentStatus = a  where c.name = :name" )
     @Query(value = "WITH cte AS (SELECT wu.name                                                                 AS centre,\n" +
             "                    m.min                                                                   AS min,\n" +
             "                    m.symbol                                                                AS allele_symbol,\n" +
@@ -96,7 +95,6 @@ public interface MutationRepository extends CrudRepository<Mutation, Long>
     List<GenomeBrowserProjection> findAllTargetedExons();
 
 
-    //@Query("select lr.id, lr.note, g.symbol, g.accId, p.tpn, a.name as assignmentStatus, privacy.name as privacy, s.name as summaryStatus from Consortium c left join GeneList gl on c = gl.consortium left join ListRecord lr on gl = lr.geneList left join GeneByListRecord gblr on lr = gblr.listRecord left join Gene g on gblr.accId = g.accId left join ProjectIntentionGene pig on g = pig.gene  left join ProjectIntention pi on pig.projectIntention = pi.project left join Project p on pi.project = p left join Status s on p.summaryStatus = s left join Privacy privacy on p.privacy = privacy left join AssignmentStatus a on p.assignmentStatus = a  where c.name = :name" )
     @Query(value = "WITH cte AS (SELECT wu.name                                                                 AS centre,\n" +
             "                    m.min                                                                   AS min,\n" +
             "                    m.symbol                                                                AS allele_symbol,\n" +
