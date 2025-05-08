@@ -30,6 +30,11 @@ public class MutationReportController {
     public void getCanonicalTargetedExons(HttpServletResponse response) throws IOException {
         mutationReportService.getCanonicalTargetedExons(response);
     }
+
+    @GetMapping(value = {"/genome_browser_combined"})
+    public void getGenomeBrowserCombined(HttpServletResponse response) throws IOException {
+        mutationReportService.getGenomeBrowserCombine(response);
+    }
 }
 
 
