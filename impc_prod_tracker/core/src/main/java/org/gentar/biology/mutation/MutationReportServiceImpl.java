@@ -81,17 +81,27 @@ public class MutationReportServiceImpl implements MutationReportService {
 
 
         for (GenomeBrowserCombinedProjection genomeBrowserCombinedProjection : genomeBrowserCombinedProjections) {
-            String cleanedFasta = genomeBrowserCombinedProjection.getFasta().replace("\n", " ");
-            reportText.append(genomeBrowserCombinedProjection.getCentre()).append("\t")
-                    .append(genomeBrowserCombinedProjection.getMin()).append("\t")
-                    .append(genomeBrowserCombinedProjection.getAlleleSymbol()).append("\t")
-                    .append(genomeBrowserCombinedProjection.getGeneSymbol()).append("\t")
-                    .append(genomeBrowserCombinedProjection.getDeletionCoordinates() == null ? "" : genomeBrowserCombinedProjection.getDeletionCoordinates()).append("\t")
-                    .append(genomeBrowserCombinedProjection.getTargetedExons() == null ? "" : genomeBrowserCombinedProjection.getTargetedExons()).append("\t")
-                    .append(genomeBrowserCombinedProjection.getCanonicalTargetedExons() == null ? "" : genomeBrowserCombinedProjection.getCanonicalTargetedExons()).append("\t")
-                    .append(cleanedFasta).append("\t")
-                    .append(genomeBrowserCombinedProjection.getUrl()).append("\n");
 
+            String deletionCoords = genomeBrowserCombinedProjection.getDeletionCoordinates();
+            String targetedExons = genomeBrowserCombinedProjection.getTargetedExons();
+            String canonicalExons = genomeBrowserCombinedProjection.getCanonicalTargetedExons();
+
+            if (!(
+                    (deletionCoords == null || deletionCoords.isEmpty()) &&
+                            (targetedExons == null || targetedExons.isEmpty()) &&
+                            (canonicalExons == null || canonicalExons.isEmpty())
+            )) {
+                String cleanedFasta = genomeBrowserCombinedProjection.getFasta().replace("\n", " ");
+                reportText.append(genomeBrowserCombinedProjection.getCentre()).append("\t")
+                        .append(genomeBrowserCombinedProjection.getMin()).append("\t")
+                        .append(genomeBrowserCombinedProjection.getAlleleSymbol()).append("\t")
+                        .append(genomeBrowserCombinedProjection.getGeneSymbol()).append("\t")
+                        .append(deletionCoords == null ? "" : deletionCoords).append("\t")
+                        .append(targetedExons == null ? "" : targetedExons).append("\t")
+                        .append(canonicalExons == null ? "" : canonicalExons).append("\t")
+                        .append(cleanedFasta).append("\t")
+                        .append(genomeBrowserCombinedProjection.getUrl()).append("\n");
+            }
         }
         Report report = new Report();
         report.setReport(reportText.toString());
