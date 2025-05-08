@@ -1,6 +1,7 @@
 package org.gentar.biology.mutation;
 
 import jakarta.servlet.http.HttpServletResponse;
+import org.gentar.biology.mutation.genome_browser.GenomeBrowserCombinedProjection;
 import org.gentar.biology.mutation.genome_browser.GenomeBrowserProjection;
 import org.gentar.report.Report;
 import org.gentar.report.ReportService;
@@ -41,6 +42,13 @@ public class MutationReportServiceImpl implements MutationReportService {
     }
 
 
+    @Override
+    public void getGenomeBrowserCombine(HttpServletResponse response) throws IOException {
+        List<GenomeBrowserCombinedProjection> allGenomeBrowserCombinedProjections = mutationRepository.findAllGenomeBrowserProjections();
+        formatGenomeBrowserCombinedProjectionReportText(response, allGenomeBrowserCombinedProjections, "Genome_Browser_All_Report");
+    }
+
+
     private void formatGenomeBrowserProjectionReportText(HttpServletResponse response,
                                                          List<GenomeBrowserProjection> genomeBrowserProjections, String reportTitle)
 
@@ -51,7 +59,7 @@ public class MutationReportServiceImpl implements MutationReportService {
 
 
         for (GenomeBrowserProjection genomeBrowserProjection : genomeBrowserProjections) {
-            String cleanedFasta = genomeBrowserProjection.getFasta().replace("\n"," ");
+            String cleanedFasta = genomeBrowserProjection.getFasta().replace("\n", " ");
             reportText.append(genomeBrowserProjection.getCentre()).append("\t").append(genomeBrowserProjection.getMin()).append("\t").append(genomeBrowserProjection.getAlleleSymbol()).append("\t").append(genomeBrowserProjection.getGeneSymbol()).append("\t").append(cleanedFasta).append("\t").append(genomeBrowserProjection.getUrl()).append("\n");
 
         }
@@ -62,6 +70,47 @@ public class MutationReportServiceImpl implements MutationReportService {
                 .writeReport(response, reportTitle,
                         report);
     }
+
+    private void formatGenomeBrowserCombinedProjectionReportText(HttpServletResponse response,
+                                                                 List<GenomeBrowserCombinedProjection> genomeBrowserCombinedProjections, String reportTitle)
+
+            throws IOException {
+        StringBuilder reportText = new StringBuilder();
+
+        reportText.append("Centre\tMin\tAllele Symbol\tGene Symbol\tDeletion Coordinates\tTargeted Exons\tCanonical Targeted Exons\tFASTA\tUrl\n");
+
+
+        for (GenomeBrowserCombinedProjection genomeBrowserCombinedProjection : genomeBrowserCombinedProjections) {
+
+            String deletionCoords = genomeBrowserCombinedProjection.getDeletionCoordinates();
+            String targetedExons = genomeBrowserCombinedProjection.getTargetedExons();
+            String canonicalExons = genomeBrowserCombinedProjection.getCanonicalTargetedExons();
+
+            if (!(
+                    (deletionCoords == null || deletionCoords.isEmpty()) &&
+                            (targetedExons == null || targetedExons.isEmpty()) &&
+                            (canonicalExons == null || canonicalExons.isEmpty())
+            )) {
+                String cleanedFasta = genomeBrowserCombinedProjection.getFasta().replace("\n", " ");
+                reportText.append(genomeBrowserCombinedProjection.getCentre()).append("\t")
+                        .append(genomeBrowserCombinedProjection.getMin()).append("\t")
+                        .append(genomeBrowserCombinedProjection.getAlleleSymbol()).append("\t")
+                        .append(genomeBrowserCombinedProjection.getGeneSymbol()).append("\t")
+                        .append(deletionCoords == null ? "" : deletionCoords).append("\t")
+                        .append(targetedExons == null ? "" : targetedExons).append("\t")
+                        .append(canonicalExons == null ? "" : canonicalExons).append("\t")
+                        .append(cleanedFasta).append("\t")
+                        .append(genomeBrowserCombinedProjection.getUrl()).append("\n");
+            }
+        }
+        Report report = new Report();
+        report.setReport(reportText.toString());
+        report.setCreatedAt(LocalDateTime.now());
+        reportService
+                .writeReport(response, reportTitle,
+                        report);
+    }
+
 
 }
 
