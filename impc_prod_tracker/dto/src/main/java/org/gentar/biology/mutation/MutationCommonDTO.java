@@ -28,31 +28,24 @@ public class MutationCommonDTO
     private List<MutationSequenceDTO> mutationSequenceDTOS;
 
     @JsonProperty("insertionSequences")
-    @JsonIgnore
     private List<InsertionSequenceDTO> insertionSequenceDTOS;
 
     @JsonProperty("mutationCategorizations")
     private List<MutationCategorizationDTO> mutationCategorizationDTOS;
 
     @JsonProperty("molecularMutationDeletions")
-    @JsonIgnore
     private List<MolecularMutationDeletionDTO> molecularMutationDeletionDTOs;
 
     @JsonProperty("targetedExons")
-    @JsonIgnore
     private List<TargetedExonDTO> targetedExonDTOS;
 
     @JsonProperty("canonicalTargetedExons")
-    @JsonIgnore
     private List<CanonicalTargetedExonDTO> canonicalTargetedExonsDTOS;
 
-    @JsonIgnore
     private Boolean isManualMutationDeletion;
 
-    @JsonIgnore
     private Boolean isDeletionCoordinatesUpdatedManually;
 
-    @JsonIgnore
     private Boolean isMutationDeletionChecked;
 
 
