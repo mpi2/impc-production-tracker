@@ -12,6 +12,6 @@ public interface MutationReportService {
 
     void getCanonicalTargetedExons(HttpServletResponse response) throws IOException;
 
-    void getGenomeBrowserCombine(HttpServletResponse response) throws IOException;
+    void getGenomeBrowserCombine(HttpServletResponse response, String workUnit) throws IOException;
 
     }
