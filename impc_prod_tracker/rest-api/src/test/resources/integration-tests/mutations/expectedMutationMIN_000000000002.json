@@ -4,6 +4,7 @@
   "mgiAlleleId":"MGI:6342258",
   "mgiAlleleSymbolWithoutImpcAbbreviation":false,
   "symbol":"em1(IMPC)J",
+  "insertionSequences":[],
   "description":"",
   "qcNote":"",
   "mgiAlleleSymbolRequiresConstruction":true,
@@ -54,5 +55,11 @@
       "name":"otogelin",
       "externalLink":"http://www.mousephenotype.org/data/genes/MGI:1202064"
     }
-  ]
+  ],
+  "isManualMutationDeletion" : false,
+  "isDeletionCoordinatesUpdatedManually" : true,
+  "isMutationDeletionChecked" : null,
+  "molecularMutationDeletions" : [],
+  "targetedExons" : [],
+  "canonicalTargetedExons" : []
 }
