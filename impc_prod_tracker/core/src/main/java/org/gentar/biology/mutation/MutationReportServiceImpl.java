@@ -43,8 +43,13 @@ public class MutationReportServiceImpl implements MutationReportService {
 
 
     @Override
-    public void getGenomeBrowserCombine(HttpServletResponse response) throws IOException {
-        List<GenomeBrowserCombinedProjection> allGenomeBrowserCombinedProjections = mutationRepository.findAllGenomeBrowserProjections();
+    public void getGenomeBrowserCombine(HttpServletResponse response, String workUnit) throws IOException {
+        List<GenomeBrowserCombinedProjection> allGenomeBrowserCombinedProjections;
+        if (workUnit == null || workUnit.isEmpty()) {
+            allGenomeBrowserCombinedProjections = mutationRepository.findAllGenomeBrowserProjections();
+        } else {
+            allGenomeBrowserCombinedProjections = mutationRepository.findAllGenomeBrowserProjectionsByWorkuUnit(workUnit);
+        }
         formatGenomeBrowserCombinedProjectionReportText(response, allGenomeBrowserCombinedProjections, "Genome_Browser_All_Report");
     }
 

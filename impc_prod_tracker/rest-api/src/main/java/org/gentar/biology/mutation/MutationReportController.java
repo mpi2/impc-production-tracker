@@ -32,8 +32,9 @@ public class MutationReportController {
     }
 
     @GetMapping(value = {"/genome_browser_combined"})
-    public void getGenomeBrowserCombined(HttpServletResponse response) throws IOException {
-        mutationReportService.getGenomeBrowserCombine(response);
+    public void getGenomeBrowserCombined(HttpServletResponse response,
+                                         @RequestParam(value = "workUnit", required = false) String workUnit) throws IOException {
+        mutationReportService.getGenomeBrowserCombine(response,workUnit);
     }
 }
 
