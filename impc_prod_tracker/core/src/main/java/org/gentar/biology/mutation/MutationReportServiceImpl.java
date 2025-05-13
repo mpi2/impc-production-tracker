@@ -50,7 +50,7 @@ public class MutationReportServiceImpl implements MutationReportService {
         } else {
             allGenomeBrowserCombinedProjections = mutationRepository.findAllGenomeBrowserProjectionsByWorkuUnit(workUnit);
         }
-        formatGenomeBrowserCombinedProjectionReportText(response, allGenomeBrowserCombinedProjections, "Genome_Browser_All_Report");
+        formatGenomeBrowserCombinedProjectionReportText(response, allGenomeBrowserCombinedProjections, "Crispr_Alleles_Report");
     }
 
 
