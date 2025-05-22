@@ -4,7 +4,6 @@ import org.gentar.EntityMapper;
 import org.gentar.biology.gene.Gene;
 import org.gentar.biology.gene.GeneCommonDTO;
 import org.gentar.biology.species.Species;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,7 +32,6 @@ public class EntityMapperTest
     private static final String SPECIES_NAME = "speciesName";
 
     @Test
-    @Disabled
     public void testToDto()
     {
         EntityMapper entityMapper = new EntityMapper(modelMapper);
@@ -47,7 +45,6 @@ public class EntityMapperTest
     }
 
     @Test
-    @Disabled
     public void testToDtoNull()
     {
         EntityMapper entityMapper = new EntityMapper(modelMapper);
@@ -58,7 +55,6 @@ public class EntityMapperTest
     }
 
     @Test
-    @Disabled
     public void testToDtos()
     {
         Gene gene1 = buildGene(ID1);
