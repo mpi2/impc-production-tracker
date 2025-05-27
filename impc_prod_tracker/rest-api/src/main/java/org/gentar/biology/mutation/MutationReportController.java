@@ -1,9 +1,11 @@
 package org.gentar.biology.mutation;
 
 import jakarta.servlet.http.HttpServletResponse;
+import org.gentar.biology.mutation.genome_browser.SerializedGuideProjection;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/reports/mutation")
@@ -35,6 +37,11 @@ public class MutationReportController {
     public void getGenomeBrowserCombined(HttpServletResponse response,
                                          @RequestParam(value = "workUnit", required = false) String workUnit) throws IOException {
         mutationReportService.getGenomeBrowserCombine(response,workUnit);
+    }
+
+    @GetMapping(value = {"/serialized_guides"})
+    public List<SerializedGuideProjection> getSerializedGuides(HttpServletResponse response) throws IOException {
+      return  mutationReportService.getSerializedGuides(response);
     }
 }
 

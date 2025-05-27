@@ -17,6 +17,7 @@ package org.gentar.biology.mutation;
 
 import org.gentar.biology.mutation.genome_browser.GenomeBrowserCombinedProjection;
 import org.gentar.biology.mutation.genome_browser.GenomeBrowserProjection;
+import org.gentar.biology.mutation.genome_browser.SerializedGuideProjection;
 import org.gentar.biology.mutation.mutation_ensembl.mutationEnsemblMutationPartProjection;
 import org.springframework.context.annotation.Primary;
 import org.springframework.data.jpa.repository.Query;
@@ -240,5 +241,114 @@ public interface MutationRepository extends CrudRepository<Mutation, Long>
             "    url\n" +
             "FROM cte_grouped where centre = :workUnit;", nativeQuery = true)
     List<GenomeBrowserCombinedProjection> findAllGenomeBrowserProjectionsByWorkuUnit(@Param("workUnit") String workUnit);
+
+
+    @Query(value = "select\n" +
+            "    p.pin,\n" +
+            "    CASE\n" +
+            "        WHEN g.chr='x' THEN 'chrX'\n" +
+            "        WHEN g.chr is null THEN 'NOT SPECIFIED'\n" +
+            "        WHEN g.chr='GL456233.2' THEN g.chr\n" +
+            "        ELSE 'chr' || g.chr\n" +
+            "    END AS \"chrom\",\n" +
+            "\n" +
+            "    CASE\n" +
+            "       WHEN nt.name in ('Cas9', 'D10A') THEN\n" +
+            "          CASE\n" +
+            "              WHEN g.strand='+' THEN (g.start - 1)\n" +
+            "              WHEN g.strand='-' THEN ((g.start -1) + length(g.pam))\n" +
+            "          END\n" +
+            "       WHEN  nt.name in ('Cpf1') THEN\n" +
+            "          CASE\n" +
+            "              WHEN g.strand='+' THEN ((g.start - 1) + length(g.pam))\n" +
+            "              WHEN g.strand='-' THEN (g.start -1)\n" +
+            "          END\n" +
+            "    END AS \"chrom_start\",\n" +
+            "\n" +
+            "    CASE\n" +
+            "       WHEN nt.name in ('Cas9', 'D10A') THEN\n" +
+            "          CASE\n" +
+            "              WHEN g.strand='+' THEN (g.stop - length(g.pam))\n" +
+            "              WHEN g.strand='-' THEN g.stop\n" +
+            "          END\n" +
+            "       WHEN  nt.name in ('Cpf1') THEN\n" +
+            "          CASE\n" +
+            "              WHEN g.strand='+' THEN g.stop\n" +
+            "              WHEN g.strand='-' THEN (g.stop - length(g.pam))\n" +
+            "          END\n" +
+            "    END AS \"chrom_end\",\n" +
+            "\n" +
+            "    m.symbol || '_' || g.gid as \"guide_name\",\n" +
+            "    0 AS \"score\",\n" +
+            "\n" +
+            "    CASE\n" +
+            "        WHEN g.strand is null THEN '.'\n" +
+            "        WHEN g.strand='' THEN '.'\n" +
+            "        ELSE g.strand\n" +
+            "    END AS \"strand\",\n" +
+            "\n" +
+            "    CASE\n" +
+            "       WHEN nt.name in ('Cas9', 'D10A') THEN\n" +
+            "          CASE\n" +
+            "              WHEN g.strand='+' THEN (g.start - 1)\n" +
+            "              WHEN g.strand='-' THEN ((g.start -1) + length(g.pam))\n" +
+            "          END\n" +
+            "       WHEN  nt.name in ('Cpf1') THEN\n" +
+            "          CASE\n" +
+            "              WHEN g.strand='+' THEN ((g.start - 1) + length(g.pam))\n" +
+            "              WHEN g.strand='-' THEN (g.start -1)\n" +
+            "          END\n" +
+            "    END AS \"thick_start\",\n" +
+            "\n" +
+            "    CASE\n" +
+            "       WHEN nt.name in ('Cas9', 'D10A') THEN\n" +
+            "          CASE\n" +
+            "              WHEN g.strand='+' THEN (g.stop - length(g.pam))\n" +
+            "              WHEN g.strand='-' THEN g.stop\n" +
+            "          END\n" +
+            "       WHEN  nt.name in ('Cpf1') THEN\n" +
+            "          CASE\n" +
+            "              WHEN g.strand='+' THEN g.stop\n" +
+            "              WHEN g.strand='-' THEN (g.stop - length(g.pam))\n" +
+            "          END\n" +
+            "    END AS \"thick_end\",\n" +
+            "\n" +
+            "    '0,0,255' AS \"item_rgb\"\n" +
+            "FROM\n" +
+            "    merged_guide g\n" +
+            "    INNER JOIN plan p on g.attempt_id = p.id\n" +
+            "    INNER JOIN nuclease n on p.id = n.attempt_id\n" +
+            "    INNER JOIN nuclease_type nt on n.nuclease_type_id = nt.id\n" +
+            "    INNER JOIN status ps on p.status_id = ps.id\n" +
+            "    INNER JOIN outcome o on p.id = o.plan_id\n" +
+            "    INNER JOIN mutation_outcome mo on o.id = mo.outcome_id\n" +
+            "    INNER JOIN mutation m on mo.mutation_id = m.id\n" +
+            "    INNER JOIN mutation_gene mg on m.id = mg.mutation_id\n" +
+            "    INNER JOIN gene on mg.gene_id = gene.id\n" +
+            "    INNER JOIN colony c on o.id = c.outcome_id\n" +
+            "    INNER JOIN status s on c.status_id = s.id\n" +
+            "    LEFT JOIN mutation_sequence ms on m.id = ms.mutation_id\n" +
+            "    LEFT JOIN sequence ss on ms.sequence_id = ss.id\n" +
+            "WHERE\n" +
+            "    g.start is not null and\n" +
+            "    g.stop is not null and\n" +
+            "    g.chr is not null and\n" +
+            "    g.strand is not null and\n" +
+            "    g.pam is not null and\n" +
+            "    g.chr != 'NA' and\n" +
+            "    g.genome_build='GRCm39' and\n" +
+            "    g.chr != 's' and\n" +
+            "    g.chr !='GL456233.2' and\n" +
+            "    ps.name not in ('Attempt Aborted','Breeding Aborted','Mouse Allele Modification Aborted','Plan Abandoned') and\n" +
+            "    nt.name in ('Cas9', 'D10A', 'Cpf1') and\n" +
+            "    m.symbol is not null and\n" +
+            "    m.symbol <> '' and\n" +
+            "    gene.symbol is not null and\n" +
+            "    s.name in ('Genotype Confirmed', 'Genotype Extinct') and\n" +
+            "    ss.sequence is not null and\n" +
+            "    ss. sequence !=''\n" +
+            "group by\n" +
+            "pin, chrom, chrom_start, chrom_end, guide_name, score, strand, thick_start, thick_end, item_rgb;", nativeQuery = true)
+    List<SerializedGuideProjection> findAllSerializedGuides();
 
 }

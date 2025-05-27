@@ -3,6 +3,7 @@ package org.gentar.biology.mutation;
 import jakarta.servlet.http.HttpServletResponse;
 import org.gentar.biology.mutation.genome_browser.GenomeBrowserCombinedProjection;
 import org.gentar.biology.mutation.genome_browser.GenomeBrowserProjection;
+import org.gentar.biology.mutation.genome_browser.SerializedGuideProjection;
 import org.gentar.report.Report;
 import org.gentar.report.ReportService;
 import org.springframework.stereotype.Component;
@@ -51,6 +52,11 @@ public class MutationReportServiceImpl implements MutationReportService {
             allGenomeBrowserCombinedProjections = mutationRepository.findAllGenomeBrowserProjectionsByWorkuUnit(workUnit);
         }
         formatGenomeBrowserCombinedProjectionReportText(response, allGenomeBrowserCombinedProjections, "Crispr_Alleles_Report");
+    }
+
+    @Override
+    public List<SerializedGuideProjection> getSerializedGuides(HttpServletResponse response) throws IOException {
+        return mutationRepository.findAllSerializedGuides();
     }
 
 

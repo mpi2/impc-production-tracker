@@ -24,13 +24,13 @@ public class StatusServiceImpl implements StatusService
 
     @Override
     @Cacheable("statuses")
-    @Transactional(propagation = Propagation.REQUIRES_NEW)
     public Status getStatusByName(String name)
     {
         return statusRepository.findByNameIgnoreCase(name);
     }
 
     @Override
+    @Transactional(readOnly = true, propagation = Propagation.REQUIRES_NEW)
     public Status getStatusByNameFailWhenNotFound(String name)
     {
         Status status = getStatusByName(name);
