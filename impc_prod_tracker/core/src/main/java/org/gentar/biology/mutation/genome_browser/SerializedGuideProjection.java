@@ -34,4 +34,7 @@ public interface SerializedGuideProjection {
 
     @Value("#{target.item_rgb}")
     String getItemRgb();
+
+    @Value("#{target.min}")
+    String getMin();
 }
