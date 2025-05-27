@@ -313,7 +313,8 @@ public interface MutationRepository extends CrudRepository<Mutation, Long>
             "          END\n" +
             "    END AS \"thick_end\",\n" +
             "\n" +
-            "    '0,0,255' AS \"item_rgb\"\n" +
+            "    '0,0,255' AS \"item_rgb\",\n" +
+            "    m.min as min\n" +
             "FROM\n" +
             "    merged_guide g\n" +
             "    INNER JOIN plan p on g.attempt_id = p.id\n" +
@@ -348,7 +349,7 @@ public interface MutationRepository extends CrudRepository<Mutation, Long>
             "    ss.sequence is not null and\n" +
             "    ss. sequence !=''\n" +
             "group by\n" +
-            "pin, chrom, chrom_start, chrom_end, guide_name, score, strand, thick_start, thick_end, item_rgb;", nativeQuery = true)
+            "pin, chrom, chrom_start, chrom_end, guide_name, score, strand, thick_start, thick_end, item_rgb, m.min;\n", nativeQuery = true)
     List<SerializedGuideProjection> findAllSerializedGuides();
 
 }
