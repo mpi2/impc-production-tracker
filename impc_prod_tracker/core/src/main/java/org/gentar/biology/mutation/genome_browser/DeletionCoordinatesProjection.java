@@ -2,7 +2,7 @@ package org.gentar.biology.mutation.genome_browser;
 
 import org.springframework.beans.factory.annotation.Value;
 
-public interface GenomeBrowserProjection {
+public interface DeletionCoordinatesProjection {
 
     @Value("#{target.centre}")
     String getCentre();
@@ -15,6 +15,9 @@ public interface GenomeBrowserProjection {
 
     @Value("#{target.gene_symbol}")
     String getGeneSymbol();
+
+    @Value("#{target.deletion_coordinates}")
+    String getDeletionCoordinates();
 
     @Value("#{target.fasta}")
     String getFasta();
