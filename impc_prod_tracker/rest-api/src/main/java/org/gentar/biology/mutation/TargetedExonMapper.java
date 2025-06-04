@@ -25,6 +25,7 @@ public class TargetedExonMapper implements Mapper<TargetedExon, TargetedExonDTO>
         TargetedExon targetedExon = new TargetedExon();
         targetedExon.setId(targetedExonDTO.getId());
         targetedExon.setExonId(targetedExonDTO.getExonId());
+        targetedExon.setTranscript(targetedExonDTO.getTranscript());
         return targetedExon;
 
     }

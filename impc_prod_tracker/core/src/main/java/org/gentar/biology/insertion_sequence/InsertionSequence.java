@@ -21,6 +21,8 @@ public class InsertionSequence extends BaseEntity
     @Column(columnDefinition = "TEXT")
     private String sequence;
 
+    private String location;
+
     @NotNull
     @ToString.Exclude
     @ManyToOne(targetEntity= Mutation.class)
@@ -33,5 +35,6 @@ public class InsertionSequence extends BaseEntity
         this.id = insertionSequence.getId();
         this.mutation = insertionSequence.getMutation();
         this.sequence = insertionSequence.getSequence();
+        this.location = insertionSequence.getLocation();
     }
 }

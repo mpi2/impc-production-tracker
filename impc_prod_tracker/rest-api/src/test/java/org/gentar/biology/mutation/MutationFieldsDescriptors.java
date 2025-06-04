@@ -103,8 +103,7 @@ public class MutationFieldsDescriptors
         addField(mutationFieldsDescriptions, "_links.self.href", "Link to the mutation.");
         addField(
             mutationFieldsDescriptions, "_links.outcomes[].href", "Outcomes associated with the mutation.");
-        addField(
-            mutationFieldsDescriptions, "isManualMutationDeletion", "Is Manual Mutation Deletion.");
+
         addField(
                 mutationFieldsDescriptions, "isDeletionCoordinatesUpdatedManually", "Is Deletion Coordinates Updated Manually.");
         addField(

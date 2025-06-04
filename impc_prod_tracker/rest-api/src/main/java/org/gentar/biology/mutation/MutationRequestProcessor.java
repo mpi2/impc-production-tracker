@@ -10,7 +10,7 @@ import org.gentar.biology.mutation.symbolConstructor.SymbolSuggestionRequest;
 import org.gentar.biology.outcome.Outcome;
 import org.gentar.biology.plan.Plan;
 import org.gentar.biology.plan.PlanService;
-import org.gentar.biology.plan.attempt.crispr.canonical_targeted_exon.targeted_exon.CanonicalTargetedExon;
+import org.gentar.biology.plan.attempt.crispr.canonical_targeted_exon.CanonicalTargetedExon;
 import org.gentar.biology.plan.attempt.crispr.targeted_exon.TargetedExon;
 import org.gentar.biology.sequence.Sequence;
 import org.gentar.biology.sequence.category.SequenceCategoryService;
@@ -98,8 +98,6 @@ public class MutationRequestProcessor {
         setCanonicalTargetedExons(originalMutation, newMutation, mappedMutation);
         newMutation.setIsMutationDeletionChecked(mappedMutation.getIsMutationDeletionChecked());
         newMutation.setIsDeletionCoordinatesUpdatedManually(mappedMutation.getIsDeletionCoordinatesUpdatedManually());
-        newMutation.setIsManualMutationDeletion(mappedMutation.getIsManualMutationDeletion());
-
         return newMutation;
     }
 

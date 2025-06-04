@@ -31,7 +31,7 @@ import org.gentar.biology.mutation.mutation_deletion.MolecularMutationDeletion;
 import org.gentar.biology.mutation.qc_results.MutationQcResult;
 import org.gentar.biology.mutation.sequence.MutationSequence;
 import org.gentar.biology.outcome.Outcome;
-import org.gentar.biology.plan.attempt.crispr.canonical_targeted_exon.targeted_exon.CanonicalTargetedExon;
+import org.gentar.biology.plan.attempt.crispr.canonical_targeted_exon.CanonicalTargetedExon;
 import org.gentar.biology.plan.attempt.crispr.targeted_exon.TargetedExon;
 import org.hibernate.annotations.JdbcTypeCode;
 
@@ -179,13 +179,10 @@ public class Mutation extends BaseEntity
     @ToString.Exclude
     private String qcNote;
 
-
     @Column(columnDefinition = "boolean default false")
-    private Boolean isManualMutationDeletion;
-
-    @Column(columnDefinition = "boolean default true")
     private Boolean isDeletionCoordinatesUpdatedManually;
 
+    @Column(columnDefinition = "boolean default true")
     private Boolean isMutationDeletionChecked;
     
     // Copy Constructor
@@ -240,7 +237,6 @@ public class Mutation extends BaseEntity
         }
         this.setCreatedBy(mutation.getCreatedBy());
         this.qcNote = mutation.qcNote;
-        this.isManualMutationDeletion = mutation.getIsManualMutationDeletion();
         this.isMutationDeletionChecked = mutation.getIsMutationDeletionChecked();
         this.isDeletionCoordinatesUpdatedManually =mutation.getIsDeletionCoordinatesUpdatedManually();
 

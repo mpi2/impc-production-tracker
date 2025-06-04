@@ -42,8 +42,6 @@ public class MutationCommonDTO
     @JsonProperty("canonicalTargetedExons")
     private List<CanonicalTargetedExonDTO> canonicalTargetedExonsDTOS;
 
-    private Boolean isManualMutationDeletion;
-
     private Boolean isDeletionCoordinatesUpdatedManually;
 
     private Boolean isMutationDeletionChecked;
