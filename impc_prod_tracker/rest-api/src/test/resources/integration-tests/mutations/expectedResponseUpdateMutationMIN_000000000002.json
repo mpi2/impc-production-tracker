@@ -21,12 +21,12 @@
       "note" : "Field changed"
     }, {
       "field" : "isDeletionCoordinatesUpdatedManually",
-      "oldValue" : "true",
+      "oldValue" : "false",
       "newValue" : null,
       "note" : "Field changed"
     }, {
-      "field" : "isManualMutationDeletion",
-      "oldValue" : "false",
+      "field" : "isMutationDeletionChecked",
+      "oldValue" : "true",
       "newValue" : null,
       "note" : "Field changed"
     }, {

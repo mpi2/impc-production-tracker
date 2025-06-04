@@ -24,4 +24,7 @@ public class MutationErrors {
 
     public static final String ERROR_INSERTION_FASTA_FORMAT =
             "Error: Insertion sequence Is Not In FASTA Format";
+
+    public static final String INSERTION_SEQUENCE_DOSENT_EXIST =
+            "Error: Insertion sequence Does Not Exist In Deletion Sequence";
 }

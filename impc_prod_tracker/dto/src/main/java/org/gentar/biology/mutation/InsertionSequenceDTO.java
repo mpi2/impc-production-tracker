@@ -11,4 +11,6 @@ public class InsertionSequenceDTO
     @JsonProperty("sequence")
     private String sequence;
 
+    private String location;
+
 }

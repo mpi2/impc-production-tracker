@@ -86,12 +86,15 @@ public class MutationValidator {
                 } else if (!isSequenceInFastaFormat(mutation)) {
                     throw new UserOperationFailedException(
                             ERROR_FASTA_FORMAT);
-                } else if (!isInsertionSequenceInFastaFormat(mutation)) {
-                    throw new UserOperationFailedException(
-                            ERROR_INSERTION_FASTA_FORMAT);
                 }
-
             }
+        }
+        if (!isInsertionSequenceInFastaFormat(mutation)) {
+            throw new UserOperationFailedException(
+                    ERROR_INSERTION_FASTA_FORMAT);
+        } else if (!isInsertionSequenceInMutationSequence(mutation)) {
+            throw new UserOperationFailedException(
+                    INSERTION_SEQUENCE_DOSENT_EXIST);
         }
     }
 
@@ -280,6 +283,32 @@ public class MutationValidator {
                         !isDnaFormatCorrect(s));
     }
 
+    public boolean isInsertionSequenceInMutationSequence(Mutation mutation) {
+
+        if (mutation.getInsertionSequences() == null || mutation.getInsertionSequences().isEmpty()) {
+            return true;
+        }
+
+        List<String> insertionSequences = mutation.getInsertionSequences().stream()
+                .map(InsertionSequence::getSequence)
+                .map(this::extractSecondLine)
+                .toList();
+
+        List<String> mutationSequences = getSequences(mutation).stream()
+                .map(Sequence::getSequence)
+                .map(this::extractSecondLine)
+                .toList();
+
+        for (String insertion : insertionSequences) {
+            boolean found = mutationSequences.stream().anyMatch(seq -> seq.contains(insertion));
+            if (!found) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+
     private List<Sequence> getSequences(Mutation mutation) {
         return mutation.getMutationSequences().stream().map(
                         MutationSequence::getSequence)
@@ -317,6 +346,11 @@ public class MutationValidator {
                 .of('A', 'C', 'G', 'T', 'U', 'I', 'R', 'Y', 'K', 'M', 'S', 'W', 'B', 'D', 'H', 'V',
                         'N', 'a', 'c', 'g', 't', 'u', 'i', 'r', 'y', 'k', 'm', 's', 'w', 'b', 'd', 'h', 'v',
                         'n', '-');
+    }
+
+    private String extractSecondLine(String fasta) {
+        String[] lines = fasta.split("\\R"); // "\\R" handles all types of line breaks
+        return lines.length >= 2 ? lines[1].trim() : ""; // Return second line or empty if missing
     }
 
 }

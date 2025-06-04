@@ -3,7 +3,7 @@ package org.gentar.biology.mutation;
 import org.gentar.EntityMapper;
 import org.gentar.Mapper;
 import org.gentar.biology.plan.attempt.crispr.CanonicalTargetedExonDTO;
-import org.gentar.biology.plan.attempt.crispr.canonical_targeted_exon.targeted_exon.CanonicalTargetedExon;
+import org.gentar.biology.plan.attempt.crispr.canonical_targeted_exon.CanonicalTargetedExon;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -25,6 +25,8 @@ public class CanonicalTargetedExonMapper implements Mapper<CanonicalTargetedExon
         CanonicalTargetedExon canonicalTargetedExon = new CanonicalTargetedExon();
         canonicalTargetedExon.setId(canonicalTargetedExonDTO.getId());
         canonicalTargetedExon.setExonId(canonicalTargetedExonDTO.getExonId());
+        canonicalTargetedExon.setTranscript(canonicalTargetedExonDTO.getTranscript());
+
         return canonicalTargetedExon;
 
     }

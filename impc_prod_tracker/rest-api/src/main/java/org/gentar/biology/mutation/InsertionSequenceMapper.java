@@ -13,6 +13,7 @@ public class InsertionSequenceMapper implements Mapper<InsertionSequence, Insert
         InsertionSequenceDTO insertionSequenceDTO = new InsertionSequenceDTO();
         insertionSequenceDTO.setId(insertionSequence.getId());
         insertionSequenceDTO.setSequence(insertionSequence.getSequence());
+        insertionSequenceDTO.setLocation(insertionSequence.getLocation());
         return insertionSequenceDTO;
     }
 
@@ -22,6 +23,7 @@ public class InsertionSequenceMapper implements Mapper<InsertionSequence, Insert
         if (insertionSequenceDTO != null) {
             insertionSequence.setId(insertionSequenceDTO.getId());
             insertionSequence.setSequence(insertionSequenceDTO.getSequence());
+            insertionSequence.setLocation(insertionSequenceDTO.getLocation());
         }
 
         return insertionSequence;
