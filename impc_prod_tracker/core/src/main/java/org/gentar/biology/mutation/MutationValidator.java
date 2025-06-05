@@ -95,6 +95,9 @@ public class MutationValidator {
         } else if (!isInsertionSequenceInMutationSequence(mutation)) {
             throw new UserOperationFailedException(
                     INSERTION_SEQUENCE_DOSENT_EXIST);
+        } else if (!isLocationInCorrectFormat(mutation)) {
+            throw new UserOperationFailedException(
+                    LOCATION_IS_NOT_CORRECT_FORMAT);
         }
     }
 
@@ -308,6 +311,24 @@ public class MutationValidator {
         return true;
     }
 
+    public boolean isLocationInCorrectFormat(Mutation mutation) {
+
+        if (mutation.getInsertionSequences() == null || mutation.getInsertionSequences().isEmpty()) {
+            return true;
+        }
+
+        List<String> insertionSequences = mutation.getInsertionSequences().stream()
+                .map(InsertionSequence::getLocation)
+                .toList();
+
+
+        for (String location : insertionSequences) {
+            if (!location.matches("^chr\\w+:\\d+$")) {
+                return false;
+            }
+        }
+        return true;
+    }
 
     private List<Sequence> getSequences(Mutation mutation) {
         return mutation.getMutationSequences().stream().map(
