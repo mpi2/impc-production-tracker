@@ -27,4 +27,7 @@ public class MutationErrors {
 
     public static final String INSERTION_SEQUENCE_DOSENT_EXIST =
             "Error: Insertion sequence Does Not Exist In Deletion Sequence";
+
+    public static final String LOCATION_IS_NOT_CORRECT_FORMAT =
+            "Error: Insertion sequence Location Is Not In Correct Format";
 }
