@@ -20,6 +20,8 @@ public class TargetedExon extends BaseEntity
 
     private String exonId;
 
+    private String transcript;
+
     @NotNull
     @ToString.Exclude
     @ManyToOne(targetEntity= Mutation.class)

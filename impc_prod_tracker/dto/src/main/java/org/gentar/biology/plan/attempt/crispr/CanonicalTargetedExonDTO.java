@@ -6,4 +6,5 @@ import lombok.Data;
 public class CanonicalTargetedExonDTO {
     private Long id;
     private String exonId;
+    private String transcript;
 }

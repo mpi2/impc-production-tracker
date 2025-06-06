@@ -1,4 +1,4 @@
-package org.gentar.biology.plan.attempt.crispr.canonical_targeted_exon.targeted_exon;
+package org.gentar.biology.plan.attempt.crispr.canonical_targeted_exon;
 
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -22,6 +22,8 @@ public class CanonicalTargetedExon extends BaseEntity
     private Long id;
 
     private String exonId;
+
+    private String transcript;
 
     @NotNull
     @ToString.Exclude
