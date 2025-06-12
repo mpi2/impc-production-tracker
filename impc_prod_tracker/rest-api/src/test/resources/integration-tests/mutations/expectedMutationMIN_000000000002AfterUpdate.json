@@ -31,6 +31,7 @@
       }
     }
   ],
+  "insertionSequences":[],
   "description": "Otog<em1(IMPC)Bcm>:\\r\\nThis allele was generated at The Jackson Laboratory by electroporating Cas9 protein and 2 guide sequences CTTCACGTACCAAGGAGGGG and TCTTGCTTCCTACTTCCAGT, which resulted in a 520 bp deletion beginning at Chromosome 7 position 46,245,130 bp and ending after 46,245,649 bp (GRCm38/mm10). This mutation deletes ENSMUSE00000204147 (exon 4) and 444 bp of flanking intronic sequence including the splice acceptor and donor and is predicted to cause a change of amino acid sequence after residue 71 and early truncation 34 amino acids later. \\r\\n\\r\\n\\r\\n",
   "qcNote": "",
   "mutationCategorizations":[
@@ -64,5 +65,10 @@
       "name":"otogelin",
       "externalLink":"http://www.mousephenotype.org/data/genes/MGI:1202064"
     }
-  ]
+  ],
+  "isDeletionCoordinatesUpdatedManually" : null,
+  "isMutationDeletionChecked" : null,
+  "molecularMutationDeletions" : [],
+  "targetedExons" : [],
+  "canonicalTargetedExons" : []
 }
