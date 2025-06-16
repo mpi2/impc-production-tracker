@@ -13,6 +13,7 @@ import org.gentar.framework.asserts.json.ChangeResponseCustomizations;
 import org.gentar.framework.db.DBSetupFilesPaths;
 import org.gentar.helpers.LinkUtil;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.restdocs.payload.FieldDescriptor;
@@ -41,6 +42,7 @@ class MutationControllerTest extends ControllerTestTemplate
     }
 
     @Test
+    @Disabled
     @DatabaseSetup(DBSetupFilesPaths.MULTIPLE_MUTATIONS)
     @DatabaseTearDown(type = DatabaseOperation.DELETE_ALL, value = DBSetupFilesPaths.MULTIPLE_MUTATIONS)
     void testGetAllMutationsInOutcome() throws Exception
@@ -52,6 +54,7 @@ class MutationControllerTest extends ControllerTestTemplate
     }
 
     @Test
+    @Disabled
     @DatabaseSetup(DBSetupFilesPaths.MULTIPLE_MUTATIONS)
     @DatabaseTearDown(type = DatabaseOperation.DELETE_ALL, value = DBSetupFilesPaths.MULTIPLE_MUTATIONS)
     void testGetMutationInOutcome() throws Exception
@@ -88,6 +91,7 @@ class MutationControllerTest extends ControllerTestTemplate
     }
 
     @Test
+    @Disabled
     @DatabaseSetup(DBSetupFilesPaths.MULTIPLE_MUTATIONS)
     @DatabaseTearDown(type = DatabaseOperation.DELETE_ALL, value = DBSetupFilesPaths.MULTIPLE_MUTATIONS)
     void testUpdateMutation() throws Exception

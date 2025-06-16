@@ -20,6 +20,7 @@ public class TargetedExon extends BaseEntity
 
     private String exonId;
 
+    @Column(columnDefinition = "TEXT")
     private String transcript;
 
     @NotNull
