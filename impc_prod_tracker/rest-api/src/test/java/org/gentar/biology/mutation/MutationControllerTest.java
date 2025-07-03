@@ -42,7 +42,6 @@ class MutationControllerTest extends ControllerTestTemplate
     }
 
     @Test
-    @Disabled
     @DatabaseSetup(DBSetupFilesPaths.MULTIPLE_MUTATIONS)
     @DatabaseTearDown(type = DatabaseOperation.DELETE_ALL, value = DBSetupFilesPaths.MULTIPLE_MUTATIONS)
     void testGetAllMutationsInOutcome() throws Exception
@@ -54,7 +53,6 @@ class MutationControllerTest extends ControllerTestTemplate
     }
 
     @Test
-    @Disabled
     @DatabaseSetup(DBSetupFilesPaths.MULTIPLE_MUTATIONS)
     @DatabaseTearDown(type = DatabaseOperation.DELETE_ALL, value = DBSetupFilesPaths.MULTIPLE_MUTATIONS)
     void testGetMutationInOutcome() throws Exception
@@ -91,7 +89,6 @@ class MutationControllerTest extends ControllerTestTemplate
     }
 
     @Test
-    @Disabled
     @DatabaseSetup(DBSetupFilesPaths.MULTIPLE_MUTATIONS)
     @DatabaseTearDown(type = DatabaseOperation.DELETE_ALL, value = DBSetupFilesPaths.MULTIPLE_MUTATIONS)
     void testUpdateMutation() throws Exception

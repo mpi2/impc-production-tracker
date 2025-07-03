@@ -5,7 +5,6 @@
   "mgiAlleleSymbolWithoutImpcAbbreviation":false,
   "symbol":"em1(IMPC)J",
   "description":"",
-  "insertionSequences":[],
   "qcNote":"",
   "mgiAlleleSymbolRequiresConstruction":true,
   "geneticMutationTypeName":"Not Tested",
@@ -55,11 +54,5 @@
       "name":"otogelin",
       "externalLink":"http://www.mousephenotype.org/data/genes/MGI:1202064"
     }
-  ],
-  "isDeletionCoordinatesUpdatedManually" : false,
-  "isMutationDeletionChecked" : true,
-  "molecularMutationDeletions" : [],
-  "targetedExons" : [],
-  "canonicalTargetedExons" : []
-
+  ]
 }

@@ -110,7 +110,7 @@ class PlanControllerTest extends ControllerTestTemplate
     @Test
     @DatabaseSetup(DBSetupFilesPaths.MULTIPLE_PLANS)
     @DatabaseTearDown(type = DatabaseOperation.DELETE_ALL, value = DBSetupFilesPaths.MULTIPLE_PLANS)
-    @Disabled
+
     void testUpdateStateMachineCrisprPlan() throws Exception
     {
         sequenceResetter.syncSequence("PROJECT_SUMMARY_STATUS_STAMP_SEQ", "PROJECT_SUMMARY_STATUS_STAMP");
@@ -236,7 +236,6 @@ class PlanControllerTest extends ControllerTestTemplate
     @Test
     @DatabaseSetup(DBSetupFilesPaths.MULTIPLE_PLANS)
     @DatabaseTearDown(type = DatabaseOperation.DELETE_ALL, value = DBSetupFilesPaths.MULTIPLE_PLANS)
-    @Disabled
     void testCreateCrisprPlan() throws Exception
     {
         sequenceResetter.syncSequence("PLAN_SEQ", "PLAN");
@@ -261,7 +260,6 @@ class PlanControllerTest extends ControllerTestTemplate
     @Test
     @DatabaseSetup(DBSetupFilesPaths.MULTIPLE_PLANS)
     @DatabaseTearDown(type = DatabaseOperation.DELETE_ALL, value = DBSetupFilesPaths.MULTIPLE_PLANS)
-    @Disabled
     void testCreateEsCellPlan() throws Exception
     {
         sequenceResetter.syncSequence("PLAN_SEQ", "PLAN");
@@ -373,7 +371,6 @@ class PlanControllerTest extends ControllerTestTemplate
     @Test
     @DatabaseSetup(DBSetupFilesPaths.MULTIPLE_PLANS)
     @DatabaseTearDown(type = DatabaseOperation.DELETE_ALL, value = DBSetupFilesPaths.MULTIPLE_PLANS)
-    @Disabled
     void testCreatePhenotypingPlan() throws Exception
     {
         sequenceResetter.syncSequence("PLAN_SEQ", "PLAN");
