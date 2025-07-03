@@ -52,10 +52,5 @@
     {
       "symbol": "Otog"
     }
-  ],
-  "isDeletionCoordinatesUpdatedManually" : false,
-  "isMutationDeletionChecked" : true,
-  "molecularMutationDeletions" : [],
-  "targetedExons" : [],
-  "canonicalTargetedExons" : []
+  ]
 }

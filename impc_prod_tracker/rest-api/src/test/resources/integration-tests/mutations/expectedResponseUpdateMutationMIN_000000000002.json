@@ -7,7 +7,7 @@
   "history" : [ {
     "id" : 1,
     "user" : "gentar_test_user1@gentar.org",
-    "date" : "2025-03-27T11:48:08.200154",
+    "date" : "2025-07-03T16:44:23.934429",
     "comment" : "Mutation updated",
     "details" : [ {
       "field" : "description",
@@ -18,6 +18,16 @@
       "field" : "geneticMutationType.name",
       "oldValue" : "Not Tested",
       "newValue" : "Null",
+      "note" : "Field changed"
+    }, {
+      "field" : "isDeletionCoordinatesUpdatedManually",
+      "oldValue" : "false",
+      "newValue" : null,
+      "note" : "Field changed"
+    }, {
+      "field" : "isMutationDeletionChecked",
+      "oldValue" : "true",
+      "newValue" : null,
       "note" : "Field changed"
     }, {
       "field" : "molecularMutationType.name",
