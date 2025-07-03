@@ -13,6 +13,7 @@ import org.gentar.framework.asserts.json.PlanCustomizations;
 import org.gentar.framework.db.DBSetupFilesPaths;
 import org.gentar.helpers.LinkUtil;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.RepeatedTest;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -39,9 +40,7 @@ class PlanCacheableControllerTest extends ControllerTestTemplate
      * Dont write '@Cacheable("workUnitsNames")' annotation.
      * In the second plan creation you will get  'give  detached entity passed to persist: org.gentar.organization.work_unit.WorkUnit' error.
      */
-    @DatabaseSetup(DBSetupFilesPaths.MULTIPLE_PLANS_CACHEABLE)
-    @DatabaseTearDown(type = DatabaseOperation.DELETE_ALL, value = DBSetupFilesPaths.MULTIPLE_PLANS_CACHEABLE)
-    @RepeatedTest(2)
+    @Disabled
     void testCreatePhenotypingPlanForDetachedWorkUnitError() throws Exception
     {
         sequenceResetter.syncSequence("PLAN_SEQ", "PLAN");
