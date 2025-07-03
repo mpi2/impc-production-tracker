@@ -75,7 +75,6 @@ public class AuthControllerTest extends ControllerTestTemplate
     }
 
     @Test
-    @Disabled
     public void testSignInWhenUserNotInAuthenticationSystem()
     throws Exception
     {

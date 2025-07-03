@@ -20,16 +20,6 @@
       "newValue" : "Null",
       "note" : "Field changed"
     }, {
-      "field" : "isDeletionCoordinatesUpdatedManually",
-      "oldValue" : "false",
-      "newValue" : null,
-      "note" : "Field changed"
-    }, {
-      "field" : "isMutationDeletionChecked",
-      "oldValue" : "true",
-      "newValue" : null,
-      "note" : "Field changed"
-    }, {
       "field" : "molecularMutationType.name",
       "oldValue" : "Deletion",
       "newValue" : "Point Mutation",

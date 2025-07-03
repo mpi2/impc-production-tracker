@@ -334,7 +334,6 @@ public class ObjectInspectorTest
     }
 
     @Test
-    @Disabled
     public void testCycle()
     {
         CrisprAttempt crisprAttempt = new CrisprAttempt();
@@ -349,7 +348,7 @@ public class ObjectInspectorTest
         objectInspector = new ObjectInspector(plan, Collections.singletonList(""));
         var map = objectInspector.getMap();
 
-        assertThat(map.size(), is(239));
+        assertThat(map.size(), is(253));
     }
 
     @Data
