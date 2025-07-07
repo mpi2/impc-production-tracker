@@ -64,7 +64,8 @@
         "molecularMutationDeletions" : [],
         "targetedExons" : [],
         "canonicalTargetedExons" : [],
-        "insertionSequences" : []
+        "insertionSequences" : [],
+        "alignedFastas" : []
       }
     ]
   }
