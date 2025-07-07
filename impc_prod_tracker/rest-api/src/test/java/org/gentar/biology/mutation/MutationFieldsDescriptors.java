@@ -115,6 +115,8 @@ public class MutationFieldsDescriptors
                 mutationFieldsDescriptions, "targetedExons", "Targeted Exons.");
         addField(
                 mutationFieldsDescriptions, "canonicalTargetedExons", "Canonical Targeted Exons.");
+        addField(
+                mutationFieldsDescriptions, "alignedFastas", "Aligned Fastas.");
 
         return mutationFieldsDescriptions;
     }
