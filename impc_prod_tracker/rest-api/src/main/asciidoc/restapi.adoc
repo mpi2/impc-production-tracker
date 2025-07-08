@@ -576,15 +576,6 @@ include::{snippets}/plans/postEsCellPlan/http-request.adoc[]
 ===== Example Response
 include::{snippets}/plans/postEsCellPlan/http-response.adoc[]
 
-==== Create an ES Cell Allele Modification plan
-
-===== Example Request
-
-Curl:
-include::{snippets}/plans/postEsCellAlleleModificationPlan/http-request.adoc[]
-
-===== Example Response
-include::{snippets}/plans/postEsCellAlleleModificationPlan/http-response.adoc[]
 
 ==== Create a Phenotyping plan
 
