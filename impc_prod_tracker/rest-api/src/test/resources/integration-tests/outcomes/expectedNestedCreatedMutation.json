@@ -7,6 +7,7 @@
   "mgiAlleleSymbolRequiresConstruction":true,
   "geneticMutationTypeName":"Not Tested",
   "molecularMutationTypeName":"Deletion",
+  "insertionSequences":[],
   "mutationQcResults":[
 
   ],
@@ -50,5 +51,11 @@
       "externalLink":"http://www.mousephenotype.org/data/genes/MGI:2138648",
       "accessionId":"MGI:2138648"
     }
-  ]
+  ],
+  "isDeletionCoordinatesUpdatedManually" : null,
+  "isMutationDeletionChecked" : null,
+  "molecularMutationDeletions" : [],
+  "targetedExons" : [],
+  "canonicalTargetedExons" : [],
+  "alignedFastas" : []
 }
