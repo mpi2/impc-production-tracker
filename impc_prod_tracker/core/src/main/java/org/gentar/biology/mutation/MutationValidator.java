@@ -3,10 +3,7 @@ package org.gentar.biology.mutation;
 import static org.gentar.biology.mutation.constant.MutationErrors.*;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import org.gentar.biology.gene.Gene;
@@ -98,6 +95,9 @@ public class MutationValidator {
         } else if (!isLocationInCorrectFormat(mutation)) {
             throw new UserOperationFailedException(
                     LOCATION_IS_NOT_CORRECT_FORMAT);
+        } else if (!areDeletionCoordinatesWithinChromosomeBounds(mutation)) {
+            throw new UserOperationFailedException(
+                    INVALID_COORDINATES);
         }
     }
 
@@ -330,6 +330,35 @@ public class MutationValidator {
         return true;
     }
 
+    public boolean areDeletionCoordinatesWithinChromosomeBounds(Mutation mutation) {
+        if (mutation == null || mutation.getMolecularMutationDeletion() == null || mutation.getMolecularMutationDeletion().isEmpty()) {
+            return true;
+        }
+
+        List<Map.Entry<String, Long>> sortedChromosomes = CHROMOSOME_SIZES.entrySet()
+                .stream()
+                .sorted(Map.Entry.<String, Long>comparingByValue().reversed())
+                .toList();
+
+
+        return mutation.getMolecularMutationDeletion().stream().allMatch(deletion -> {
+            String chr = deletion.getChr();
+            Integer start = deletion.getStart();
+            Integer stop = deletion.getStop();
+            Long size = deletion.getSize();
+
+            if (!CHROMOSOME_SIZES.containsKey(chr) || start == null || stop == null) {
+                return false;
+            }
+
+            long upperBound = CHROMOSOME_SIZES.get(chr);
+            long lowerBound = 0L;
+
+            return start > lowerBound && stop > lowerBound && start < upperBound && stop < upperBound && stop - start == size;
+        });
+    }
+
+
     private List<Sequence> getSequences(Mutation mutation) {
         return mutation.getMutationSequences().stream().map(
                         MutationSequence::getSequence)
@@ -373,5 +402,71 @@ public class MutationValidator {
         String[] lines = fasta.split("\\R"); // "\\R" handles all types of line breaks
         return lines.length >= 2 ? lines[1].trim() : ""; // Return second line or empty if missing
     }
+
+
+    private static final Map<String, Long> CHROMOSOME_SIZES = Map.ofEntries(
+            Map.entry("chr1", 195154279L),
+            Map.entry("chr2", 181755017L),
+            Map.entry("chrX", 169476592L),
+            Map.entry("chr3", 159745316L),
+            Map.entry("chr4", 156860686L),
+            Map.entry("chr5", 151758149L),
+            Map.entry("chr6", 149588044L),
+            Map.entry("chr7", 144995196L),
+            Map.entry("chr10", 130530862L),
+            Map.entry("chr8", 130127694L),
+            Map.entry("chr14", 125139656L),
+            Map.entry("chr9", 124359700L),
+            Map.entry("chr11", 121973369L),
+            Map.entry("chr13", 120883175L),
+            Map.entry("chr12", 120092757L),
+            Map.entry("chr15", 104073951L),
+            Map.entry("chr16", 98008968L),
+            Map.entry("chr17", 95294699L),
+            Map.entry("chrY", 91455967L),
+            Map.entry("chr18", 90720763L),
+            Map.entry("chr19", 61420004L),
+            Map.entry("chr5_JH584299v1_random", 953012L),
+            Map.entry("chrX_GL456233v2_random", 559103L),
+            Map.entry("chrY_JH584301v1_random", 259875L),
+            Map.entry("chr1_GL456211v1_random", 241735L),
+            Map.entry("chr1_GL456221v1_random", 206961L),
+            Map.entry("chr5_JH584297v1_random", 205776L),
+            Map.entry("chr5_JH584296v1_random", 199368L),
+            Map.entry("chr5_GL456354v1_random", 195993L),
+            Map.entry("chr5_JH584298v1_random", 184189L),
+            Map.entry("chrY_JH584300v1_random", 182347L),
+            Map.entry("chr7_GL456219v1_random", 175968L),
+            Map.entry("chr1_GL456210v1_random", 169725L),
+            Map.entry("chrY_JH584303v1_random", 158099L),
+            Map.entry("chrY_JH584302v1_random", 155838L),
+            Map.entry("chr1_GL456212v1_random", 153618L),
+            Map.entry("chrUn_JH584304v1", 114452L),
+            Map.entry("chrUn_GL456379v1", 72385L),
+            Map.entry("chrUn_GL456366v1", 47073L),
+            Map.entry("chrUn_GL456367v1", 42057L),
+            Map.entry("chr1_GL456239v1_random", 40056L),
+            Map.entry("chrUn_GL456383v1", 38659L),
+            Map.entry("chrUn_GL456385v1", 35240L),
+            Map.entry("chrUn_GL456360v1", 31704L),
+            Map.entry("chrUn_GL456378v1", 31602L),
+            Map.entry("chrUn_MU069435v1", 31129L),
+            Map.entry("chrUn_GL456389v1", 28772L),
+            Map.entry("chrUn_GL456372v1", 28664L),
+            Map.entry("chrUn_GL456370v1", 26764L),
+            Map.entry("chrUn_GL456381v1", 25871L),
+            Map.entry("chrUn_GL456387v1", 24685L),
+            Map.entry("chrUn_GL456390v1", 24668L),
+            Map.entry("chrUn_GL456394v1", 24323L),
+            Map.entry("chrUn_GL456392v1", 23629L),
+            Map.entry("chrUn_GL456382v1", 23158L),
+            Map.entry("chrUn_GL456359v1", 22974L),
+            Map.entry("chrUn_GL456396v1", 21240L),
+            Map.entry("chrUn_GL456368v1", 20208L),
+            Map.entry("chrM", 16299L),
+            Map.entry("chr1_MU069434v1_random", 8412L),
+            Map.entry("chr4_JH584295v1_random", 1976L)
+    );
+
 
 }
