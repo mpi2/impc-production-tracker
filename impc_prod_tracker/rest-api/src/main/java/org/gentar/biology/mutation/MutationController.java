@@ -155,8 +155,17 @@ public class MutationController
         @PathVariable String tpo,
         @RequestBody MutationCreationDTO mutationCreationDTO)
     {
+
         Outcome outcome = outcomeService.getOutcomeByPinAndTpo(pin, tpo);
         Mutation mutation = getMutationToCreate(outcome, mutationCreationDTO);
+        if (mutation.getIsMutationDeletionChecked() == null) {
+            mutation.setIsMutationDeletionChecked(true);
+        }
+        if (mutation.getIsDeletionCoordinatesUpdatedManually() == null) {
+            mutation.setIsDeletionCoordinatesUpdatedManually(false);
+
+        }
+
         Mutation createdMutation = mutationService.create(mutation);
         return buildChangeResponse(pin, tpo, createdMutation);
     }
