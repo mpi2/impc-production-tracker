@@ -1,9 +1,7 @@
 package org.gentar.biology.mutation;
 
 import static org.gentar.mockdata.MockData.molecularMutationTypeMockData;
-import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.lenient;
 
 import java.util.HashSet;
@@ -13,6 +11,7 @@ import org.gentar.biology.gene.Gene;
 import org.gentar.biology.mutation.categorizarion.MutationCategorization;
 import org.gentar.biology.mutation.categorizarion.MutationCategorizationService;
 import org.gentar.biology.mutation.categorizarion.type.MutationCategorizationType;
+import org.gentar.biology.mutation.mutation_deletion.MolecularMutationDeletion;
 import org.gentar.biology.mutation.sequence.MutationSequence;
 import org.gentar.biology.outcome.Outcome;
 import org.gentar.biology.plan.Plan;
@@ -501,4 +500,76 @@ class MutationValidatorTest {
         return sequence;
     }
 
+
+    @Test
+    void testValidDeletionWithinBounds() {
+        Mutation mutation = new Mutation();
+        MolecularMutationDeletion deletion = new MolecularMutationDeletion();
+        deletion.setChr("chr1");
+        deletion.setStart(190000000);
+        deletion.setStop(190000100);
+        deletion.setSize(100L);
+        mutation.setMolecularMutationDeletion(Set.of(deletion));
+
+        boolean result = testInstance.areDeletionCoordinatesWithinChromosomeBounds(mutation);
+        assertTrue(result, "Expected deletion to be within bounds for chr1.");
+    }
+
+    @Test
+    void testDeletionOutOfUpperBound() {
+        Mutation mutation = new Mutation();
+        MolecularMutationDeletion deletion = new MolecularMutationDeletion();
+        deletion.setChr("chr1");
+        deletion.setStart(195154280); // just above max
+        deletion.setStop(195154290);
+        mutation.setMolecularMutationDeletion(Set.of(deletion));
+
+        boolean result = testInstance.areDeletionCoordinatesWithinChromosomeBounds(mutation);
+        assertFalse(result, "Expected deletion to exceed chr1 upper bound.");
+    }
+
+    @Test
+    void testUnknownChromosome() {
+        Mutation mutation = new Mutation();
+        MolecularMutationDeletion deletion = new MolecularMutationDeletion();
+        deletion.setChr("chrUNKNOWN");
+        deletion.setStart(1000);
+        deletion.setStop(2000);
+
+        mutation.setMolecularMutationDeletion(Set.of(deletion));
+
+        boolean result = testInstance.areDeletionCoordinatesWithinChromosomeBounds(mutation);
+        assertFalse(result, "Expected deletion to fail due to unknown chromosome.");
+    }
+
+    @Test
+    void testMultipleDeletionsSomeInvalid() {
+        Mutation mutation = new Mutation();
+
+        MolecularMutationDeletion valid = new MolecularMutationDeletion();
+        valid.setChr("chr2");
+        valid.setStart(180000000);
+        valid.setStop(180000010);
+        valid.setSize(10L);
+        MolecularMutationDeletion invalid = new MolecularMutationDeletion();
+        invalid.setChr("chr2");
+        invalid.setStart(190000000); // above chr2 length
+
+        mutation.setMolecularMutationDeletion(Set.of(valid, invalid));
+
+        boolean result = testInstance.areDeletionCoordinatesWithinChromosomeBounds(mutation);
+        assertFalse(result, "Expected failure because one of the deletions is out of bounds.");
+    }
+
+    @Test
+    void testNullAndEmptyCases() {
+        assertTrue(testInstance.areDeletionCoordinatesWithinChromosomeBounds(null), "Null mutation should be valid.");
+
+        Mutation mutation = new Mutation();
+        mutation.setMolecularMutationDeletion(null);
+        assertTrue(testInstance.areDeletionCoordinatesWithinChromosomeBounds(mutation), "Null list should be valid.");
+
+        mutation.setMolecularMutationDeletion(Set.of());
+        assertTrue(testInstance.areDeletionCoordinatesWithinChromosomeBounds(mutation), "Empty list should be valid.");
+    }
 }
