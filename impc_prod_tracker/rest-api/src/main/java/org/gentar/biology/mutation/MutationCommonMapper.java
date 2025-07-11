@@ -2,11 +2,13 @@ package org.gentar.biology.mutation;
 
 import org.gentar.Mapper;
 import org.gentar.biology.insertion_sequence.InsertionSequence;
+import org.gentar.biology.mutation.aligned_fasta.AlignedFasta;
 import org.gentar.biology.mutation.genetic_type.GeneticMutationType;
 import org.gentar.biology.mutation.molecular_type.MolecularMutationType;
 import org.gentar.biology.mutation.mutation_deletion.MolecularMutationDeletion;
 import org.gentar.biology.mutation.qc_results.MutationQcResult;
 import org.gentar.biology.mutation.sequence.MutationSequence;
+import org.gentar.biology.plan.attempt.crispr.AlignedFastaDTO;
 import org.gentar.biology.plan.attempt.crispr.CanonicalTargetedExonDTO;
 import org.gentar.biology.plan.attempt.crispr.TargetedExonDTO;
 import org.gentar.biology.plan.attempt.crispr.canonical_targeted_exon.CanonicalTargetedExon;
@@ -33,12 +35,15 @@ public class MutationCommonMapper implements Mapper<Mutation, MutationCommonDTO>
 
     private final CanonicalTargetedExonMapper canonicalTargetedExonMapper;
 
+    private final AlignedFastaMapper alignedFastaMapper;
+
+
     public MutationCommonMapper(
             MutationQCResultMapper mutationQCResultMapper,
             MutationCategorizationMapper mutationCategorizationMapper,
             MutationSequenceMapper mutationSequenceMapper, InsertionSequenceMapper insertionSequenceMapper,
             GeneticMutationTypeMapper geneticMutationTypeMapper,
-            MolecularMutationTypeMapper molecularMutationTypeMapper, MolecularMutationDeletionMapper molecularMutationDeletionMapper, TargetedExonMapper targetedExonMapper, CanonicalTargetedExonMapper canonicalTargetedExonMapper)
+            MolecularMutationTypeMapper molecularMutationTypeMapper, MolecularMutationDeletionMapper molecularMutationDeletionMapper, TargetedExonMapper targetedExonMapper, CanonicalTargetedExonMapper canonicalTargetedExonMapper, AlignedFastaMapper alignedFastaMapper)
     {
         this.mutationQCResultMapper = mutationQCResultMapper;
         this.mutationCategorizationMapper = mutationCategorizationMapper;
@@ -49,6 +54,7 @@ public class MutationCommonMapper implements Mapper<Mutation, MutationCommonDTO>
         this.molecularMutationDeletionMapper = molecularMutationDeletionMapper;
         this.targetedExonMapper = targetedExonMapper;
         this.canonicalTargetedExonMapper = canonicalTargetedExonMapper;
+        this.alignedFastaMapper = alignedFastaMapper;
     }
 
     @Override
@@ -77,6 +83,8 @@ public class MutationCommonMapper implements Mapper<Mutation, MutationCommonDTO>
         mutationCommonDTO.setMolecularMutationDeletionDTOs(molecularMutationDeletionMapper.toDtos(mutation.getMolecularMutationDeletion()));
         mutationCommonDTO.setTargetedExonDTOS(targetedExonMapper.toDtos(mutation.getTargetedExons()));
         mutationCommonDTO.setCanonicalTargetedExonsDTOS(canonicalTargetedExonMapper.toDtos(mutation.getCanonicalTargetedExons()));
+        mutationCommonDTO.setAlignedFastaDTO(alignedFastaMapper.toDtos(mutation.getAlignedFastas()));
+
         mutationCommonDTO.setIsDeletionCoordinatesUpdatedManually(mutation.getIsDeletionCoordinatesUpdatedManually());
         mutationCommonDTO.setIsMutationDeletionChecked(mutation.getIsMutationDeletionChecked());
 
@@ -107,6 +115,7 @@ public class MutationCommonMapper implements Mapper<Mutation, MutationCommonDTO>
             setMolecularMutationDeletion(mutation, mutationCommonDTO);
             setTargetedExons(mutation, mutationCommonDTO);
             setCanonicalTargetedExons(mutation, mutationCommonDTO);
+            setAlignedFastas(mutation, mutationCommonDTO);
             mutation.setIsMutationDeletionChecked(mutationCommonDTO.getIsMutationDeletionChecked());
             mutation.setIsDeletionCoordinatesUpdatedManually(mutationCommonDTO.getIsDeletionCoordinatesUpdatedManually());
 
@@ -213,4 +222,18 @@ public class MutationCommonMapper implements Mapper<Mutation, MutationCommonDTO>
             mutation.setCanonicalTargetedExons(canonicalTargetedExons);
         }
     }
+
+    private void setAlignedFastas(Mutation mutation, MutationCommonDTO mutationCommonDTO)
+    {
+        List<AlignedFastaDTO> alignedFastaDTOS = mutationCommonDTO.getAlignedFastaDTO();
+        if (alignedFastaDTOS != null)
+        {
+            Set<AlignedFasta> alignedFastas =
+                    new HashSet<>(
+                            alignedFastaMapper.toEntities(mutationCommonDTO.getAlignedFastaDTO()));
+            alignedFastas.forEach(x -> x.setMutation(mutation));
+            mutation.setAlignedFastas(alignedFastas);
+        }
+    }
+
 }

@@ -30,4 +30,7 @@ public class MutationErrors {
 
     public static final String LOCATION_IS_NOT_CORRECT_FORMAT =
             "Error: Insertion sequence Location Is Not In Correct Format";
+
+    public static final String INVALID_COORDINATES =
+            "Error: Invalid coordinates";
 }

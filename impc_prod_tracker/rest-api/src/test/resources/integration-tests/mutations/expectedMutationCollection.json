@@ -57,7 +57,15 @@
             "name":"otogelin",
             "externalLink":"http://www.mousephenotype.org/data/genes/MGI:1202064"
           }
-        ]
+        ],
+
+        "isDeletionCoordinatesUpdatedManually" : false,
+        "isMutationDeletionChecked" : true,
+        "molecularMutationDeletions" : [],
+        "targetedExons" : [],
+        "canonicalTargetedExons" : [],
+        "insertionSequences" : [],
+        "alignedFastas" : []
       }
     ]
   }
