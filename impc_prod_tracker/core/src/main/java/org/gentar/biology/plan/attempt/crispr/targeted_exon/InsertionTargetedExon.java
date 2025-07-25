@@ -17,8 +17,8 @@ import javax.validation.constraints.NotNull;
 public class InsertionTargetedExon extends BaseEntity
 {
     @Id
-    @SequenceGenerator(name = "insertionExonDeletionSeq", sequenceName = "INSERTION_EXON_DELETION_SEQ")
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "insertionExonDeletionSeq")
+    @SequenceGenerator(name = "insertionExonSeq", sequenceName = "INSERTION_EXON_SEQ")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "insertionExonSeq")
     private Long id;
 
     private String exonId;
