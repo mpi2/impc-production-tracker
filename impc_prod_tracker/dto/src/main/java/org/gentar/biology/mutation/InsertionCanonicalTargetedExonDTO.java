@@ -1,0 +1,13 @@
+package org.gentar.biology.mutation;
+
+
+import lombok.Data;
+
+@Data
+public class InsertionCanonicalTargetedExonDTO {
+
+    private Long id;
+    private String exonId;
+    private String transcript;
+
+}
