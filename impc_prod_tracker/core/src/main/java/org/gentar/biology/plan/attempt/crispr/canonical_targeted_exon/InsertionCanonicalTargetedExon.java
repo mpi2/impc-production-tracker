@@ -1,10 +1,7 @@
 package org.gentar.biology.plan.attempt.crispr.canonical_targeted_exon;
 
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 import org.gentar.BaseEntity;
 import org.gentar.biology.insertion_sequence.InsertionSequence;
 
@@ -12,6 +9,7 @@ import javax.validation.constraints.NotNull;
 
 
 @NoArgsConstructor(access= AccessLevel.PUBLIC, force=true)
+@AllArgsConstructor
 @Data
 @Entity
 public class InsertionCanonicalTargetedExon extends BaseEntity
