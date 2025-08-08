@@ -303,7 +303,7 @@ public class MutationValidator {
                 .toList();
 
         for (String insertion : insertionSequences) {
-            boolean found = mutationSequences.stream().anyMatch(seq -> seq.contains(insertion));
+            boolean found = mutationSequences.stream().anyMatch(seq -> seq.toUpperCase().contains(insertion.toUpperCase()));
             if (!found) {
                 return false;
             }
