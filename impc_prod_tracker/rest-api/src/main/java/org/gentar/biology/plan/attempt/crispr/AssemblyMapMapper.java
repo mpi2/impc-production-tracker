@@ -53,7 +53,7 @@ public class AssemblyMapMapper
         JSONObject map = mapped.getJSONObject("mapped");
 
         assemblyDTO.setStart(map.getInt("start"));
-        assemblyDTO.setChr(map.getString("chrom"));
+        assemblyDTO.setChr(map.getString("chrom").split("chr")[1]);
         assemblyDTO.setStop(map.getInt("end"));
         assemblyDTO.setAssembly(map.getString("assembly"));
         if (Objects.equals(strand, "-1"))

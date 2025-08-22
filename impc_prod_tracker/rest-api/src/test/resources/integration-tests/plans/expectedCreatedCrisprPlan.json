@@ -30,7 +30,7 @@
         "sequence":"CTTCACGTACCAAGGAGGGGTGG",
         "guideSequence":"CTTCACGTACCAAGGAGGGG",
         "pam":"TGG",
-        "chr":"chrX",
+        "chr":"X",
         "start":45334016,
         "stop":45334038,
         "strand":"+",
