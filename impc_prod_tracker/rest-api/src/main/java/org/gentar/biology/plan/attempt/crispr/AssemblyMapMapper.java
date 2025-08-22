@@ -5,6 +5,8 @@ import org.gentar.ensembl_assembly_mapping.AssemblyMapConsumer;
 import org.json.JSONObject;
 import org.springframework.stereotype.Component;
 
+import java.util.Objects;
+
 
 @Component
 public class AssemblyMapMapper
@@ -17,7 +19,6 @@ public class AssemblyMapMapper
 
     public void assemblyConvertion(Guide guide)
     {
-        String coordinates = guide.getChr() + ":" + guide.getStart() + ".." + guide.getStop();
         String strand;
         if (guide.getStrand().equals("+"))
         {
@@ -25,15 +26,13 @@ public class AssemblyMapMapper
         } else {
             strand = "-1";
         }
-        coordinates = coordinates + ":" + strand;
-
-        String result = assemblyMapConsumer.executeQuery(coordinates);
+        String result = assemblyMapConsumer.executeQuery("chr"+guide.getChr(), guide.getStart(), guide.getStop());
         JSONObject json = new JSONObject(result);
 
         AssemblyDTO assemblyDTO = new AssemblyDTO();
         JSONObject mapped = assemblyMapConsumer.validMapping(json);
         if (mapped != null) {
-            assemblyDTO = getAssembly(mapped);
+            assemblyDTO = getAssembly(mapped, strand);
         }
 
         convertGuide(guide, assemblyDTO);
@@ -48,19 +47,19 @@ public class AssemblyMapMapper
         guide.setGenomeBuild(assemblyDTO.getAssembly());
     }
 
-    private AssemblyDTO getAssembly(JSONObject mapped)
+    private AssemblyDTO getAssembly(JSONObject mapped, String strand)
     {
         AssemblyDTO assemblyDTO = new AssemblyDTO();
         JSONObject map = mapped.getJSONObject("mapped");
 
         assemblyDTO.setStart(map.getInt("start"));
-        assemblyDTO.setChr(map.getString("seq_region_name"));
+        assemblyDTO.setChr(map.getString("chrom"));
         assemblyDTO.setStop(map.getInt("end"));
         assemblyDTO.setAssembly(map.getString("assembly"));
-        if (map.getInt("strand") == -1)
+        if (Objects.equals(strand, "-1"))
         {
             assemblyDTO.setStrand("-");
-        } else if (map.getInt("strand") == 1) {
+        } else if (Objects.equals(strand, "1")) {
             assemblyDTO.setStrand("+");
         }
 
