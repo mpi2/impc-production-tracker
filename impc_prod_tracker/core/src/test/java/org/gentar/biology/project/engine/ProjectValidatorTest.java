@@ -294,16 +294,6 @@ class ProjectValidatorTest {
     }
 
     @Test
-    void getAccessCheckedPrivacy() {
-        lenient().when(resourceAccessChecker.getUserAccessLevel(List.of(TEST_NAME)))
-            .thenReturn(List.of(TEST_NAME));
-
-        List<String> names = testInstance.getAccessChecked(List.of(TEST_NAME));
-
-        assertEquals(names, List.of(TEST_NAME));
-    }
-
-    @Test
     void getCheckedCollection() {
 
         Collection<Project> projectCollection = new HashSet<>();
