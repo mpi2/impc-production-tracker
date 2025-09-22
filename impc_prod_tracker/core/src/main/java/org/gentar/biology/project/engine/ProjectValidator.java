@@ -172,10 +172,6 @@ public class ProjectValidator {
         return (Project) resourceAccessChecker.checkAccess(project, Actions.READ_PROJECT_ACTION);
     }
 
-    public List<String> getAccessChecked(List<String> privacyNames) {
-        return resourceAccessChecker.getUserAccessLevel(privacyNames);
-    }
-
 
     public List<Project> getCheckedCollection(Collection<Project> projects) {
         return projects.stream()
