@@ -91,14 +91,17 @@ public class ProjectResponseMapper implements Mapper<Project, ProjectResponseDTO
     {
         List<String> phenotypingExternalReferences = new ArrayList<>();
         Set<Plan> plans = project.getPlans();
-        plans.forEach(plan -> {
-            if (plan.getPhenotypingAttempt() != null)
-            {
-                phenotypingExternalReferences.add(
-                        plan.getPhenotypingAttempt().getPhenotypingExternalRef());
-            }
-        });
-        projectResponseDTO.setPhenotypingExternalReferences(phenotypingExternalReferences);
+        if(plans != null){
+            plans.forEach(plan -> {
+                if (plan.getPhenotypingAttempt() != null)
+                {
+                    phenotypingExternalReferences.add(
+                            plan.getPhenotypingAttempt().getPhenotypingExternalRef());
+                }
+            });
+            projectResponseDTO.setPhenotypingExternalReferences(phenotypingExternalReferences);
+        }
+
     }
 
     private void setStatusStampsDTO(ProjectResponseDTO projectResponseDTO, Project project)
