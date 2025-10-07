@@ -116,15 +116,12 @@ public class MutationReportServiceImpl implements MutationReportService {
 
         for (GenomeBrowserCombinedProjection genomeBrowserCombinedProjection : genomeBrowserCombinedProjections) {
 
-            String deletionCoords = genomeBrowserCombinedProjection.getDeletionCoordinates();
+            String zeroBasedDeletionCoords = convertToOneBased(genomeBrowserCombinedProjection.getDeletionCoordinates());
+
+            String deletionCoords = convertToOneBased(zeroBasedDeletionCoords);
             String targetedExons = genomeBrowserCombinedProjection.getTargetedExons();
             String canonicalExons = genomeBrowserCombinedProjection.getCanonicalTargetedExons();
 
-            if (!(
-                    (deletionCoords == null || deletionCoords.isEmpty()) &&
-                            (targetedExons == null || targetedExons.isEmpty()) &&
-                            (canonicalExons == null || canonicalExons.isEmpty())
-            )) {
                 String cleanedFasta = genomeBrowserCombinedProjection.getFasta().replace("\n", " ");
                 reportText.append(genomeBrowserCombinedProjection.getCentre()).append("\t")
                         .append(genomeBrowserCombinedProjection.getMin()).append("\t")
@@ -135,7 +132,7 @@ public class MutationReportServiceImpl implements MutationReportService {
                         .append(canonicalExons == null ? "" : canonicalExons).append("\t")
                         .append(cleanedFasta).append("\t")
                         .append(genomeBrowserCombinedProjection.getUrl()).append("\n");
-            }
+
         }
         Report report = new Report();
         report.setReport(reportText.toString());
@@ -145,6 +142,29 @@ public class MutationReportServiceImpl implements MutationReportService {
                         report);
     }
 
+
+
+    private String convertToOneBased(String deletionCoords) {
+        if (deletionCoords == null || deletionCoords.trim().isEmpty()) return deletionCoords;
+
+        String[] ranges = deletionCoords.split(",");
+        StringBuilder result = new StringBuilder();
+
+        for (int i = 0; i < ranges.length; i++) {
+            String range = ranges[i].trim();
+            String[] parts = range.split(":");
+            if (parts.length >= 2) {
+                String[] coords = parts[1].split("-");
+                if (coords.length >= 2) {
+                    int start = Integer.parseInt(coords[0]) + 1;
+                    range = parts[0] + ":" + start + "-" + coords[1];
+                }
+            }
+            result.append(range);
+            if (i < ranges.length - 1) result.append(", ");
+        }
+        return result.toString();
+    }
 
 }
 
