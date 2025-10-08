@@ -5,6 +5,7 @@ import org.gentar.common.history.HistoryDTO;
 import org.gentar.common.history.HistoryDetailDTO;
 import org.springframework.stereotype.Component;
 import org.gentar.audit.history.detail.HistoryDetail;
+import org.gentar.security.abac.spring.ContextAwarePolicyEnforcement;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -13,6 +14,12 @@ import java.util.concurrent.atomic.AtomicInteger;
 @Component
 public class HistoryMapper implements Mapper<History, HistoryDTO>
 {
+    private final ContextAwarePolicyEnforcement contextAwarePolicyEnforcement;
+    
+    public HistoryMapper(ContextAwarePolicyEnforcement contextAwarePolicyEnforcement)
+    {
+        this.contextAwarePolicyEnforcement = contextAwarePolicyEnforcement;
+    }
     @Override
     public HistoryDTO toDto(History history)
     {
@@ -22,7 +29,16 @@ public class HistoryMapper implements Mapper<History, HistoryDTO>
         {
             historyDTO.setComment(history.getComment());
             historyDTO.setDate(history.getDate());
-            historyDTO.setUser(history.getUser());
+            
+            // Mask user email if user is not logged in (anonymous)
+            if (contextAwarePolicyEnforcement.isUserAnonymous())
+            {
+                historyDTO.setUser("*******@***.***");
+            }
+            else
+            {
+                historyDTO.setUser(history.getUser());
+            }
 
             historyDTO.setDetails(buildHistoryDetails(history.getHistoryDetailSet()));
         }
