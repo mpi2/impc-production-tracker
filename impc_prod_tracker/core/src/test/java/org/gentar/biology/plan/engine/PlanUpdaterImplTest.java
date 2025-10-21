@@ -7,6 +7,7 @@ import static org.mockito.Mockito.lenient;
 
 import org.gentar.audit.history.History;
 import org.gentar.audit.history.HistoryService;
+import org.gentar.biology.insertion_sequence.InsertionSequenceRepository;
 import org.gentar.biology.plan.Plan;
 import org.gentar.biology.plan.PlanRepository;
 import org.gentar.biology.plan.PlanStatusManager;
@@ -28,6 +29,8 @@ class PlanUpdaterImplTest {
     @Mock
     private GuideRepository guideRepository;
     @Mock
+    private InsertionSequenceRepository insertionSequenceRepository;
+    @Mock
     private PlanValidator planValidator;
     @Mock
     private ProjectService projectService;
@@ -40,7 +43,8 @@ class PlanUpdaterImplTest {
     void setUp() {
         testInstance = new PlanUpdaterImpl(historyService,
                 planRepository,
-                guideRepository, planValidator,
+                guideRepository,insertionSequenceRepository,
+                planValidator,
                 projectService,
                 planStatusManager);
     }

@@ -36,25 +36,18 @@ public class InsertionSequenceMapper implements Mapper<InsertionSequence, Insert
 
     @Override
     public InsertionSequence toEntity(InsertionSequenceDTO insertionSequenceDTO) {
+
         InsertionSequence insertionSequence = new InsertionSequence();
         if (insertionSequenceDTO != null) {
             insertionSequence.setId(insertionSequenceDTO.getId());
             insertionSequence.setSequence(insertionSequenceDTO.getSequence());
             insertionSequence.setLocation(insertionSequenceDTO.getLocation());
-            insertionSequence.setIns(buildIns(insertionSequenceDTO.getId()));
             setInsertionCanonicalTargetedExons(insertionSequence,insertionSequenceDTO);
             setInsertionTargetedExons(insertionSequence,insertionSequenceDTO);
         }
 
         return insertionSequence;
     }
-
-    private String buildIns(Long id) {
-        String identifier = String.format("%0" + 12 + "d", id);
-        identifier = "INS:" + identifier;
-        return identifier;
-    }
-
     private void setInsertionCanonicalTargetedExons(InsertionSequence insertionSequence ,InsertionSequenceDTO insertionSequenceDTO)
     {
         List<InsertionCanonicalTargetedExonDTO> dtoList = insertionSequenceDTO.getInsertionCanonicalTargetedExonsDTO();
