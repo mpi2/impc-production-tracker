@@ -549,8 +549,8 @@ hx-test:
     fi
     
     
-    
-    trivy_container_scanning:
+
+trivy_container_scanning:
       stage: test
 
       services:
