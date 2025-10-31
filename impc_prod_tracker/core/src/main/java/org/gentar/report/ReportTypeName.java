@@ -84,7 +84,12 @@ public enum ReportTypeName implements LabeledType {
                            "This report is used by IMPC to support the data release.",
                    FALSE),
     GENE_INTEREST_JSON("gene_interest_json",
-            "This report is used by IMPC for register interest and feeds into the Solr gene core.",
+            "This report is used by IMPC for register interest and feeds into the Solr gene core.", FALSE),
+    MGI_ALLELE_TEMPLATE("mgi_allele_template",
+                               "This report is generate allele templates for MGI website.",
+                       FALSE),
+    MGI_PHENOTYPING_STATUS("mgi_phenotyping_status",
+            "This report is used by DCC to generate the phenotyping status report.",
             FALSE);
 
     private static final Map<String, ReportTypeName> BY_LABEL = new HashMap<>();
