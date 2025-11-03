@@ -1,6 +1,7 @@
 package org.gentar.biology.mutation;
 
 import org.gentar.biology.insertion_sequence.InsertionSequence;
+import org.gentar.biology.mutation.aligned_fasta.AlignedFasta;
 import org.gentar.biology.mutation.mutation_deletion.MolecularMutationDeletion;
 import org.gentar.biology.mutation.qc_results.MutationQcResult;
 import org.gentar.biology.mutation.sequence.MutationSequence;
@@ -96,6 +97,7 @@ public class MutationRequestProcessor {
         setOutcomeCategoryType(newMutation);
         setTargetedExons(originalMutation, newMutation, mappedMutation);
         setCanonicalTargetedExons(originalMutation, newMutation, mappedMutation);
+        setAlignedFastas(originalMutation, newMutation, mappedMutation);
         newMutation.setIsMutationDeletionChecked(mappedMutation.getIsMutationDeletionChecked());
         newMutation.setIsDeletionCoordinatesUpdatedManually(mappedMutation.getIsDeletionCoordinatesUpdatedManually());
         return newMutation;
@@ -171,6 +173,18 @@ public class MutationRequestProcessor {
 
             }
             newMutation.setCanonicalTargetedExons(mappedCanonicalTargetedExons);
+        }
+    }
+
+    private void setAlignedFastas(Mutation originalMutation, Mutation newMutation, Mutation mappedMutation) {
+        Set<AlignedFasta> mappedAlignedFastas = mappedMutation.getAlignedFastas();
+
+        if (mappedAlignedFastas != null) {
+            for (AlignedFasta alignedFasta : mappedAlignedFastas) {
+                alignedFasta.setMutation(originalMutation);
+
+            }
+            newMutation.setAlignedFastas(mappedAlignedFastas);
         }
     }
 

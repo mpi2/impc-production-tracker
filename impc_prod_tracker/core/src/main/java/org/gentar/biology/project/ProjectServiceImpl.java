@@ -144,7 +144,7 @@ public class ProjectServiceImpl implements ProjectService {
                     .and(ProjectSpecs.withConsortia(projectFilter.getConsortiaNames()))
                     .and(ProjectSpecs.withAssignments(projectFilter.getAssginmentNames()))
                     .and(ProjectSpecs.withSummaryStatuses(projectFilter.getSummaryStatusNames()))
-                    .and(ProjectSpecs.withPrivacies(projectValidator.getAccessChecked(projectFilter.getPrivaciesNames()))))
+                    .and(ProjectSpecs.withPrivacies(projectFilter.getPrivaciesNames())))
                 .and(ProjectSpecs.withImitsMiPlans(projectFilter.getImitsMiPlans()))
                 .and(ProjectSpecs
                     .withProductionColonyNames(projectFilter.getProductionColonyNames()))

@@ -3,6 +3,7 @@ package org.gentar.biology.mutation;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
+import org.gentar.biology.plan.attempt.crispr.AlignedFastaDTO;
 import org.gentar.biology.plan.attempt.crispr.CanonicalTargetedExonDTO;
 import org.gentar.biology.plan.attempt.crispr.TargetedExonDTO;
 
@@ -27,29 +28,26 @@ public class MutationCommonDTO
     @JsonProperty("mutationSequences")
     private List<MutationSequenceDTO> mutationSequenceDTOS;
 
-    @JsonIgnore
     @JsonProperty("insertionSequences")
     private List<InsertionSequenceDTO> insertionSequenceDTOS;
 
     @JsonProperty("mutationCategorizations")
     private List<MutationCategorizationDTO> mutationCategorizationDTOS;
 
-    @JsonIgnore
     @JsonProperty("molecularMutationDeletions")
     private List<MolecularMutationDeletionDTO> molecularMutationDeletionDTOs;
 
-    @JsonIgnore
+    @JsonProperty("alignedFastas")
+    private List<AlignedFastaDTO> alignedFastaDTO;
+
     @JsonProperty("targetedExons")
     private List<TargetedExonDTO> targetedExonDTOS;
 
-    @JsonIgnore
     @JsonProperty("canonicalTargetedExons")
     private List<CanonicalTargetedExonDTO> canonicalTargetedExonsDTOS;
 
-    @JsonIgnore
     private Boolean isDeletionCoordinatesUpdatedManually;
 
-    @JsonIgnore
     private Boolean isMutationDeletionChecked;
 
 

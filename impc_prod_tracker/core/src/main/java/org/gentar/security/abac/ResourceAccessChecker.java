@@ -9,8 +9,6 @@ public interface ResourceAccessChecker<T>
 {
     Resource<T> checkAccess(Resource<T> resource, String action);
 
-    List<String> getUserAccessLevel(List<String> privacyNames);
-
     default List<? extends Resource> checkAccessForCollection(
         Collection<? extends Resource> resources, String action)
     {

@@ -23,28 +23,28 @@ public class MutationFieldsDescriptors
         addField(mutationFieldsDescriptions, "molecularMutationTypeName", "The type of the molecular lesion associated with the mutation.");
 
         addField(
-            mutationFieldsDescriptions, "mutationQcResults[]", "Array containing the results of QC tests carried out on the mutation.");
+                mutationFieldsDescriptions, "mutationQcResults[]", "Array containing the results of QC tests carried out on the mutation.");
         addField(
-            mutationFieldsDescriptions, "mutationQcResults[].id", "Internal identifier. READ ONLY AND SUBJECT TO CHANGE.");
+                mutationFieldsDescriptions, "mutationQcResults[].id", "Internal identifier. READ ONLY AND SUBJECT TO CHANGE.");
         addField(
-            mutationFieldsDescriptions, "mutationQcResults[].qcTypeName", "Type of Mutation QC carried out.");
+                mutationFieldsDescriptions, "mutationQcResults[].qcTypeName", "Type of Mutation QC carried out.");
         addField(
-            mutationFieldsDescriptions, "mutationQcResults[].statusName", "Status of the Mutation QC.");
+                mutationFieldsDescriptions, "mutationQcResults[].statusName", "Status of the Mutation QC.");
 
         addField(
-            mutationFieldsDescriptions, "mutationSequences[]", "Array containing a collection of sequences that characterise the mutation.");
+                mutationFieldsDescriptions, "mutationSequences[]", "Array containing a collection of sequences that characterise the mutation.");
         addField(
-            mutationFieldsDescriptions, "mutationSequences[].id", "Internal identifier. READ ONLY AND SUBJECT TO CHANGE");
+                mutationFieldsDescriptions, "mutationSequences[].id", "Internal identifier. READ ONLY AND SUBJECT TO CHANGE");
         addField(
-            mutationFieldsDescriptions, "mutationSequences[].index", "Index used to order the sequences.");
+                mutationFieldsDescriptions, "mutationSequences[].index", "Index used to order the sequences.");
         addField(
-            mutationFieldsDescriptions, "mutationSequences[].sequence", "An object describing the sequence.");
+                mutationFieldsDescriptions, "mutationSequences[].sequence", "An object describing the sequence.");
         addField(
-            mutationFieldsDescriptions, "mutationSequences[].sequence.id", "Internal identifier. READ ONLY AND SUBJECT TO CHANGE");
+                mutationFieldsDescriptions, "mutationSequences[].sequence.id", "Internal identifier. READ ONLY AND SUBJECT TO CHANGE");
         addField(
-            mutationFieldsDescriptions, "mutationSequences[].sequence.sequence", "A sequence in FASTA format.");
+                mutationFieldsDescriptions, "mutationSequences[].sequence.sequence", "A sequence in FASTA format.");
         addField(
-            mutationFieldsDescriptions, "mutationSequences[].sequence.typeName", """
+                mutationFieldsDescriptions, "mutationSequences[].sequence.typeName", """
                         The type of sequence.
 
                         Possible values:
@@ -57,7 +57,7 @@ public class MutationFieldsDescriptors
 
                         - 3_prime_end""");
         addField(
-            mutationFieldsDescriptions, "mutationSequences[].sequence.categoryName", """
+                mutationFieldsDescriptions, "mutationSequences[].sequence.categoryName", """
                         The category assigned to the sequence.
 
                         Possible values:
@@ -72,13 +72,13 @@ public class MutationFieldsDescriptors
         addField(mutationFieldsDescriptions, "description", "Mutation description note.");
         addField(mutationFieldsDescriptions, "qcNote", "Mutation Qc note.");
         addField(
-            mutationFieldsDescriptions, "mutationCategorizations[]", "A list classifying the mutation.");
+                mutationFieldsDescriptions, "mutationCategorizations[]", "A list classifying the mutation.");
         addField(
-            mutationFieldsDescriptions, "mutationCategorizations[].name", "A label describing the mutation.");
+                mutationFieldsDescriptions, "mutationCategorizations[].name", "A label describing the mutation.");
         addField(
-            mutationFieldsDescriptions, "mutationCategorizations[].description", "A longer description of this category.");
+                mutationFieldsDescriptions, "mutationCategorizations[].description", "A longer description of this category.");
         addField(
-            mutationFieldsDescriptions, "mutationCategorizations[].typeName", """
+                mutationFieldsDescriptions, "mutationCategorizations[].typeName", """
                         A broader classification of the description.
 
                         Possible values are:
@@ -87,22 +87,22 @@ public class MutationFieldsDescriptors
 
                         - repair_mechanism""");
         addField(
-            mutationFieldsDescriptions, "genes[]", "List of genes associated with the mutation.");
+                mutationFieldsDescriptions, "genes[]", "List of genes associated with the mutation.");
         addField(
-            mutationFieldsDescriptions, "genes[].id", "An internal identifier for the gene. READ ONLY AND SUBJECT TO CHANGE");
+                mutationFieldsDescriptions, "genes[].id", "An internal identifier for the gene. READ ONLY AND SUBJECT TO CHANGE");
         addField(
-            mutationFieldsDescriptions, "genes[].name", "The name of the gene.");
+                mutationFieldsDescriptions, "genes[].name", "The name of the gene.");
         addField(
-            mutationFieldsDescriptions, "genes[].symbol", "The valid symbol for the gene.");
+                mutationFieldsDescriptions, "genes[].symbol", "The valid symbol for the gene.");
         addField(
-            mutationFieldsDescriptions, "genes[].speciesName", "The species related to the gene.");
+                mutationFieldsDescriptions, "genes[].speciesName", "The species related to the gene.");
         addField(
-            mutationFieldsDescriptions, "genes[].externalLink", "An external link with more information about the gene.");
+                mutationFieldsDescriptions, "genes[].externalLink", "An external link with more information about the gene.");
         addField(
-            mutationFieldsDescriptions, "genes[].accessionId", "The accession identifier for the gene.");
+                mutationFieldsDescriptions, "genes[].accessionId", "The accession identifier for the gene.");
         addField(mutationFieldsDescriptions, "_links.self.href", "Link to the mutation.");
         addField(
-            mutationFieldsDescriptions, "_links.outcomes[].href", "Outcomes associated with the mutation.");
+                mutationFieldsDescriptions, "_links.outcomes[].href", "Outcomes associated with the mutation.");
         addField(
                 mutationFieldsDescriptions, "isDeletionCoordinatesUpdatedManually", "Is Deletion Coordinates Updated Manually.");
         addField(
@@ -115,6 +115,8 @@ public class MutationFieldsDescriptors
                 mutationFieldsDescriptions, "targetedExons", "Targeted Exons.");
         addField(
                 mutationFieldsDescriptions, "canonicalTargetedExons", "Canonical Targeted Exons.");
+        addField(
+                mutationFieldsDescriptions, "alignedFastas", "Aligned Fastas.");
 
         return mutationFieldsDescriptions;
     }

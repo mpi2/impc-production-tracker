@@ -59,12 +59,12 @@ class PersonControllerTest extends ControllerTestTemplate
 
         String obtainedJson =
                 restCaller.executeGetAndDocument("/api/people/currentPerson", documentCurrentUser());
-        validateGetResponse(obtainedJson);
+        validateGetResponse(obtainedJson, "expectedGeneralUser.json");
     }
 
-    private void validateGetResponse(String obtainedJson) throws Exception
+    private void validateGetResponse(String obtainedJson, String expectedJsonPath) throws Exception
     {
-        String completePathExpectedJson = getCompleteResourcePath("expectedGeneralUser.json");
+        String completePathExpectedJson = getCompleteResourcePath(expectedJsonPath);
         resultValidator.validateObtainedMatchesJson(obtainedJson, completePathExpectedJson);
     }
 
@@ -73,6 +73,23 @@ class PersonControllerTest extends ControllerTestTemplate
         List<FieldDescriptor> personFieldDescriptions =
                 PersonFieldsDescriptors.getPersonFieldDescriptions();
         return document("people/getPerson", responseFields(personFieldDescriptions));
+    }
+
+    @Test
+    @DatabaseSetup(DBSetupFilesPaths.ADMIN_USER)
+    @DatabaseTearDown(type = DatabaseOperation.DELETE_ALL, value = DBSetupFilesPaths.ADMIN_USER)
+    public void testCreatePerson() throws Exception
+    {
+        setupAuthentication();
+        sequenceResetter.syncSequence("PERSON_SEQ", "PERSON");
+        sequenceResetter.syncSequence("PERSON_ROLE_CONSORTIUM_SEQ", "PERSON_ROLE_CONSORTIUM");
+        sequenceResetter.syncSequence("PERSON_ROLE_WORK_UNIT_SEQ", "PERSON_ROLE_WORK_UNIT");
+
+        String payload = loadFromResource("createUserPayload.json");
+        String url = "/api/people";
+        doReturn("usr-3bc9e4f6-652a-4abf-ad92-77397f8bdd3f").when(aapService).createUser(any(), any());
+        String obtainedJson = restCaller.executePostAndDocument(url, payload, documentPersonCreation());
+        validateCreationResponse(obtainedJson, "expectedCreatedUser.json");
     }
 
     private ResultHandler documentPersonCreation()
@@ -127,6 +144,31 @@ class PersonControllerTest extends ControllerTestTemplate
         return document("people/updateManagedUser", responseFields(personFieldDescriptions));
     }
 
+    @Test
+    @DatabaseSetup(DBSetupFilesPaths.ADMIN_USER)
+    @DatabaseTearDown(type = DatabaseOperation.DELETE_ALL, value = DBSetupFilesPaths.ADMIN_USER)
+    public void testOwnUser() throws Exception
+    {
+        setupAuthentication();
+        sequenceResetter.syncSequence("PERSON_SEQ", "PERSON");
+        sequenceResetter.syncSequence("PERSON_ROLE_CONSORTIUM_SEQ", "PERSON_ROLE_CONSORTIUM");
+        sequenceResetter.syncSequence("PERSON_ROLE_WORK_UNIT_SEQ", "PERSON_ROLE_WORK_UNIT");
+
+        String payload = loadFromResource("updateOwnUserPayload.json");
+        String url = "/api/people";
+        doNothing().when(aapService)
+                .changePassword("gentar_test_user1@gentar.org");
+        String obtainedJson =
+                restCaller.executePutAndDocument(url, payload, documentUpdateOwnUser());
+        validateCreationResponse(obtainedJson, "expectedUpdatedOwnUser.json");
+    }
+
+    private ResultHandler documentUpdateOwnUser()
+    {
+        List<FieldDescriptor> personFieldDescriptions =
+                PersonFieldsDescriptors.getPersonFieldDescriptions();
+        return document("people/updateOwnUser", responseFields(personFieldDescriptions));
+    }
 
     private String loadFromResource(String resourceName)
             throws IOException

@@ -1,5 +1,6 @@
 package org.gentar.biology.plan.engine;
 
+import org.gentar.biology.insertion_sequence.InsertionSequenceRepository;
 import org.gentar.biology.plan.PlanStatusManager;
 import org.gentar.biology.plan.Plan_;
 import org.gentar.biology.plan.attempt.crispr.guide.*;
@@ -21,6 +22,7 @@ public class PlanUpdaterImpl implements PlanUpdater {
 
 
     private final GuideRepository guideRepository;
+    private final InsertionSequenceRepository insertionSequenceRepository;
     private final PlanValidator planValidator;
     private final ProjectService projectService;
     private final PlanStatusManager planStatusManager;
@@ -28,12 +30,13 @@ public class PlanUpdaterImpl implements PlanUpdater {
     public PlanUpdaterImpl(
             HistoryService<Plan> historyService,
             PlanRepository planRepository,
-            GuideRepository guideRepository, PlanValidator planValidator,
+            GuideRepository guideRepository, InsertionSequenceRepository insertionSequenceRepository, PlanValidator planValidator,
             ProjectService projectService,
             PlanStatusManager planStatusManager) {
         this.historyService = historyService;
         this.planRepository = planRepository;
         this.guideRepository = guideRepository;
+        this.insertionSequenceRepository = insertionSequenceRepository;
         this.planValidator = planValidator;
         this.projectService = projectService;
         this.planStatusManager = planStatusManager;
@@ -61,6 +64,7 @@ public class PlanUpdaterImpl implements PlanUpdater {
             updateProjectDueToChangesInChild(newPlan);
         }
         guideRepository.updateGidForNull();
+        insertionSequenceRepository.updateInsIdForNull();
 
         return history;
     }

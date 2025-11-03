@@ -64,13 +64,16 @@ class MutationCommonMapperTest {
     @Mock
     private CanonicalTargetedExonMapper canonicalTargetedExonMapper;
 
+    @Mock
+    private AlignedFastaMapper alignedFastaMapper;
+
     @BeforeEach
     void setUp() {
         testInstance =
                 new MutationCommonMapper(
                         mutationQCResultMapper,
                         mutationCategorizationMapper,
-                        mutationSequenceMapper, insertionSequenceMapper, geneticMutationTypeMapper, molecularMutationTypeMapper, molecularMutationDeletionMapper, targetedExonMapper, canonicalTargetedExonMapper);
+                        mutationSequenceMapper, insertionSequenceMapper, geneticMutationTypeMapper, molecularMutationTypeMapper, molecularMutationDeletionMapper, targetedExonMapper, canonicalTargetedExonMapper, alignedFastaMapper);
     }
 
     @Test

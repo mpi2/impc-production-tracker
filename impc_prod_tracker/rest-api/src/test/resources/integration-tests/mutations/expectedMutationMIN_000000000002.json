@@ -60,6 +60,7 @@
   "isMutationDeletionChecked" : true,
   "molecularMutationDeletions" : [],
   "targetedExons" : [],
-  "canonicalTargetedExons" : []
+  "canonicalTargetedExons" : [],
+  "alignedFastas" :[]
 
 }
