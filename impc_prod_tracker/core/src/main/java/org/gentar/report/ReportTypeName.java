@@ -88,7 +88,8 @@ public enum ReportTypeName implements LabeledType {
     MGI_ALLELE_TEMPLATE("mgi_allele_template",
                                "This report is generate allele templates for MGI website.",
                        FALSE),
-    MGI_PHENOTYPING_STATUS("mgi_phenotyping_status",
+
+    DCC_PHENOTYPING_STATUS("dcc_phenotyping_status",
             "This report is used by DCC to generate the phenotyping status report.",
             FALSE);
 
