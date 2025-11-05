@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 import org.gentar.BaseEntity;
 import org.gentar.biology.mutation.Mutation;
+import org.gentar.biology.mutation.mutation_deletion.MolecularMutationDeletion;
 
 import javax.validation.constraints.NotNull;
 
@@ -31,5 +32,9 @@ public class CanonicalTargetedExon extends BaseEntity
     @ManyToOne(targetEntity= Mutation.class)
     private Mutation mutation;
 
+    @NotNull
+    @ToString.Exclude
+    @ManyToOne(targetEntity= MolecularMutationDeletion.class)
+    private MolecularMutationDeletion molecularMutationDeletion;
 
 }
