@@ -5,8 +5,11 @@ import org.gentar.BaseEntity;
 
 import jakarta.persistence.*;
 import org.gentar.biology.mutation.Mutation;
+import org.gentar.biology.plan.attempt.crispr.canonical_targeted_exon.CanonicalTargetedExon;
+import org.gentar.biology.plan.attempt.crispr.targeted_exon.TargetedExon;
 
 import javax.validation.constraints.NotNull;
+import java.util.Set;
 
 
 @NoArgsConstructor(access= AccessLevel.PUBLIC, force=true)
@@ -32,5 +35,14 @@ public class MolecularMutationDeletion extends BaseEntity
     @ManyToOne(targetEntity= Mutation.class)
     private Mutation mutation;
 
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
+    @OneToMany(mappedBy = "molecularMutationDeletion", cascade= CascadeType.ALL, orphanRemoval=true)
+    private Set<CanonicalTargetedExon> canonicalTargetedExons;
+
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
+    @OneToMany(mappedBy = "molecularMutationDeletion", cascade= CascadeType.ALL, orphanRemoval=true)
+    private Set<TargetedExon> targetedExons;
 
 }
