@@ -37,12 +37,12 @@ public class MolecularMutationDeletion extends BaseEntity
 
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
-    @OneToMany(mappedBy = "molecularMutationDeletion", cascade= CascadeType.ALL, orphanRemoval=true)
+    @OneToMany(mappedBy = "molecularMutationDeletion", cascade= CascadeType.ALL)
     private Set<CanonicalTargetedExon> canonicalTargetedExons;
 
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
-    @OneToMany(mappedBy = "molecularMutationDeletion", cascade= CascadeType.ALL, orphanRemoval=true)
+    @OneToMany(mappedBy = "molecularMutationDeletion", cascade= CascadeType.ALL)
     private Set<TargetedExon> targetedExons;
 
 }
