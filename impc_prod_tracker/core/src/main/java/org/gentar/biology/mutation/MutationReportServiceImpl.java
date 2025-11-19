@@ -116,7 +116,7 @@ public class MutationReportServiceImpl implements MutationReportService {
 
         for (GenomeBrowserCombinedProjection genomeBrowserCombinedProjection : genomeBrowserCombinedProjections) {
 
-            String zeroBasedDeletionCoords = convertToOneBased(genomeBrowserCombinedProjection.getDeletionCoordinates());
+            String zeroBasedDeletionCoords = genomeBrowserCombinedProjection.getDeletionCoordinates();
 
             String deletionCoords = convertToOneBased(zeroBasedDeletionCoords);
             String targetedExons = genomeBrowserCombinedProjection.getTargetedExons();
