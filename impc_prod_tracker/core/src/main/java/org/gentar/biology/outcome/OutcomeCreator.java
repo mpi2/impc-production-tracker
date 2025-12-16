@@ -78,11 +78,15 @@ class OutcomeCreator
     {
         String outcomeTypeName =
             outcome.getOutcomeType() == null ? "" : outcome.getOutcomeType().getName();
+        boolean colonyStatusSet = false;
+        boolean specimenStatusSet = false;
+        
         if (OutcomeTypeName.COLONY.getLabel().equals(outcomeTypeName))
         {
             if (outcome.getColony() != null)
             {
                 colonyStateSetter.setInitialStatus(outcome.getColony());
+                colonyStatusSet = true;
             }
         }
         else if (OutcomeTypeName.SPECIMEN.getLabel().equals(outcomeTypeName))
@@ -90,13 +94,15 @@ class OutcomeCreator
             if (outcome.getSpecimen() != null)
             {
                 specimenStateSetter.setInitialStatus(outcome.getSpecimen());
+                specimenStatusSet = true;
             }
         }
-        if (outcome.getColony() != null && outcome.getColony().getStatus() == null)
+        
+        if (!colonyStatusSet && outcome.getColony() != null && outcome.getColony().getStatus() == null)
         {
             colonyStateSetter.setInitialStatus(outcome.getColony());
         }
-        if (outcome.getSpecimen() != null && outcome.getSpecimen().getStatus() == null)
+        if (!specimenStatusSet && outcome.getSpecimen() != null && outcome.getSpecimen().getStatus() == null)
         {
             specimenStateSetter.setInitialStatus(outcome.getSpecimen());
         }
