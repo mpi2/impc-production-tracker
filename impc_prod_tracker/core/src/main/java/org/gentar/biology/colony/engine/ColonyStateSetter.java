@@ -31,7 +31,7 @@ public class ColonyStateSetter implements StateSetter
     @Override
     public void setStatusByName(ProcessData entity, String statusName)
     {
-        Status newPlanStatus = statusService.getStatusByName(statusName);
+        Status newPlanStatus = statusService.getStatusByNameFailWhenNotFound(statusName);
         setStatus(entity, newPlanStatus);
     }
 

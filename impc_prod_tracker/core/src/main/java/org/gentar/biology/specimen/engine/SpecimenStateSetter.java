@@ -31,7 +31,7 @@ public class SpecimenStateSetter implements StateSetter
     @Override
     public void setStatusByName(ProcessData entity, String statusName)
     {
-        Status newStatus = statusService.getStatusByName(statusName);
+        Status newStatus = statusService.getStatusByNameFailWhenNotFound(statusName);
         setStatus(entity, newStatus);
     }
 
