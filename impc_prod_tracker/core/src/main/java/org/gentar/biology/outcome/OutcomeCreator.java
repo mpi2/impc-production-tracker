@@ -80,9 +80,23 @@ class OutcomeCreator
             outcome.getOutcomeType() == null ? "" : outcome.getOutcomeType().getName();
         if (OutcomeTypeName.COLONY.getLabel().equals(outcomeTypeName))
         {
-            colonyStateSetter.setInitialStatus(outcome.getColony());
+            if (outcome.getColony() != null)
+            {
+                colonyStateSetter.setInitialStatus(outcome.getColony());
+            }
         }
         else if (OutcomeTypeName.SPECIMEN.getLabel().equals(outcomeTypeName))
+        {
+            if (outcome.getSpecimen() != null)
+            {
+                specimenStateSetter.setInitialStatus(outcome.getSpecimen());
+            }
+        }
+        if (outcome.getColony() != null && outcome.getColony().getStatus() == null)
+        {
+            colonyStateSetter.setInitialStatus(outcome.getColony());
+        }
+        if (outcome.getSpecimen() != null && outcome.getSpecimen().getStatus() == null)
         {
             specimenStateSetter.setInitialStatus(outcome.getSpecimen());
         }
