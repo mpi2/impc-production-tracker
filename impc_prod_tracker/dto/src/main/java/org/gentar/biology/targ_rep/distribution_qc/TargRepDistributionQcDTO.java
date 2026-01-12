@@ -14,7 +14,7 @@ import org.springframework.hateoas.server.core.Relation;
 @RequiredArgsConstructor
 public class TargRepDistributionQcDTO {
 
-    private Long Id;
+    private Long id;
     private Double karyotypeHigh;
     private Double karyotypeLow;
     private String copyNumber;

@@ -37,7 +37,7 @@ class PlanResponseDTOTest
         planResponseDTO.setStatusTransitionDTO(buildStatusTransitionDTO());
         String json = JsonConverter.toJson(planResponseDTO);
         assertThat(json, is(notNullValue()));
-        assertThat(json, is("{\"pin\":\"pin\",\"tpn\":\"tpn\",\"attemptTypeName\":null," +
+        assertThat(json, is("{\"links\":[],\"pin\":\"pin\",\"tpn\":\"tpn\",\"attemptTypeName\":null," +
             "\"crisprAttempt\":{\"miDate\":null,\"experimental\":true," +
             "\"comment\":\"crispr comment\",\"mutagenesisExternalRef\":null," +
             "\"attemptExternalRef\":null,\"embryoTransferDay\":null,\"totalTransferred\":null," +
@@ -46,7 +46,7 @@ class PlanResponseDTOTest
             "\"totalEmbryosInjected\":null,\"totalEmbryosSurvived\":null,\"embryo2Cell\":null," +
             "\"assay\":null,\"strainInjectedName\":null},\"typeName\":null," +
             "\"statusName\":\"status name\",\"summaryStatusName\":\"summary status name\"," +
-            "\"links\":[],\"statusDates\":[{\"statusName\":null,\"date\":\"2020-01-01T01:01:00\"}]," +
+            "\"statusDates\":[{\"statusName\":null,\"date\":\"2020-01-01T01:01:00\"}]," +
             "\"summaryStatusDates\":null," +
             "\"statusTransition\":{\"currentStatus\":\"current status name\"," +
             "\"transitions\":[{\"action\":null,\"description\":\"transition description\"," +

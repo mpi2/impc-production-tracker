@@ -13,7 +13,6 @@ import org.gentar.framework.asserts.json.ChangeResponseCustomizations;
 import org.gentar.framework.db.DBSetupFilesPaths;
 import org.gentar.helpers.LinkUtil;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.restdocs.payload.FieldDescriptor;
@@ -98,26 +97,26 @@ class MutationControllerTest extends ControllerTestTemplate
         sequenceResetter.syncSequence("HISTORY_DETAIL_SEQ", "HISTORY_DETAIL");
         sequenceResetter.syncSequence("GENE_SEQ", "GENE");
 
-        String payload = loadFromResource("mutationMIN_000000000002UpdatePayload.json");
-        String url = "/api/plans/PIN:0000000001/outcomes/TPO:000000000002/mutations/MIN:000000000002/";
+        String payload = loadFromResource();
+        String url = "/api/plans/PIN:0000000001/outcomes/TPO:000000000002/mutations/MIN:000000000002";
         String obtainedJson =
             restCaller.executePutAndDocument(url, payload, document("mutations/mutation/putMutation"));
-        verifyUpdateResponse(obtainedJson, "expectedResponseUpdateMutationMIN_000000000002.json");
+        verifyUpdateResponse(obtainedJson);
         String mutationUrl = LinkUtil.getSelfHrefLinkStringFromJson(obtainedJson);
-        verifyUpdatedMutation(mutationUrl, "expectedMutationMIN_000000000002AfterUpdate.json");
+        verifyUpdatedMutation(mutationUrl);
     }
 
 
-    private void verifyUpdateResponse(String obtainedJson, String expectedJsonPath) throws Exception
+    private void verifyUpdateResponse(String obtainedJson) throws Exception
     {
-        String expectedJsonCompletePath = getCompleteResourcePath(expectedJsonPath);
+        String expectedJsonCompletePath = getCompleteResourcePath("expectedResponseUpdateMutationMIN_000000000002.json");
         resultValidator.validateObtainedMatchesJson(
             obtainedJson, expectedJsonCompletePath, ChangeResponseCustomizations.ignoreDates());
     }
 
-    void verifyUpdatedMutation(String mutationUrl, String expectedJsonPath) throws Exception
+    void verifyUpdatedMutation(String mutationUrl) throws Exception
     {
-        String expectedJsonCompletePath = getCompleteResourcePath(expectedJsonPath);
+        String expectedJsonCompletePath = getCompleteResourcePath("expectedMutationMIN_000000000002AfterUpdate.json");
         String obtainedMutation = restCaller.executeGet(mutationUrl);
         resultValidator.validateObtainedMatchesJson(obtainedMutation, expectedJsonCompletePath);
     }
@@ -127,10 +126,10 @@ class MutationControllerTest extends ControllerTestTemplate
         return TEST_RESOURCES_FOLDER + resourceJsonName;
     }
 
-    private String loadFromResource(String resourceName)
+    private String loadFromResource()
         throws IOException
     {
-        String completeResourcePath = getCompleteResourcePath(resourceName);
+        String completeResourcePath = getCompleteResourcePath("mutationMIN_000000000002UpdatePayload.json");
         return TestResourceLoader.loadJsonFromResource(completeResourcePath);
     }
 }

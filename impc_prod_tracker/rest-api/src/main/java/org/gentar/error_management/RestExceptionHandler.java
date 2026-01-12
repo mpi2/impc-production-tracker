@@ -43,6 +43,7 @@ import org.springframework.web.context.request.ServletWebRequest;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 import org.springframework.web.servlet.NoHandlerFoundException;
+import org.springframework.web.servlet.resource.NoResourceFoundException;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
@@ -287,6 +288,27 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler
     }
 
     /**
+     * Handle NoResourceFoundException (Spring Boot 4.0).
+     * This exception is thrown when a static resource is not found, but can also occur
+     * when Spring MVC cannot match a request to a controller handler.
+     *
+     * @param ex      NoResourceFoundException
+     * @param headers HttpHeaders
+     * @param status  HttpStatus
+     * @param request WebRequest
+     * @return the ApiError object
+     */
+    protected ResponseEntity<Object> handleNoResourceFoundException(
+        NoResourceFoundException ex, HttpHeaders headers, HttpStatus status, WebRequest request)
+    {
+        ApiError apiError = new ApiError(NOT_FOUND, ex);
+        apiError.setMessage(
+            String.format("Could not find resource for %s %s", ex.getHttpMethod(), ex.getResourcePath()));
+        apiError.setDebugMessage(ex.getMessage());
+        return buildResponseEntity(apiError);
+    }
+
+    /**
      * Handle DataIntegrityViolationException, inspects the cause for different DB causes.
      *
      * @param ex the DataIntegrityViolationException
@@ -340,6 +362,7 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler
 
     private ResponseEntity<Object> buildResponseEntity(ApiError apiError)
     {
-        return new ResponseEntity<>(apiError, apiError.getStatus());
+        ApiErrorResponse response = new ApiErrorResponse(apiError);
+        return new ResponseEntity<>(response, apiError.getStatus());
     }
 }
