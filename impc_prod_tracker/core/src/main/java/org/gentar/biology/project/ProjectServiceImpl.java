@@ -133,25 +133,31 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     private Specification<Project> buildSpecificationsWithCriteria(ProjectFilter projectFilter) {
-        return
-            Specification.where(
-                ProjectSpecs.withTpns(projectFilter.getTpns())
-                    .and(ProjectSpecs.withMarkerSymbols(projectFilter.getMarkerSymbols()))
-                    .and(ProjectSpecs.withMarkerSymbolOrAccId(projectFilter.getGenes()))
-                    .and(ProjectSpecs.withIntentions(projectFilter.getIntentions()))
-                    .and(ProjectSpecs.withPlansInWorkUnitsNames(projectFilter.getWorkUnitNames()))
-                    .and(ProjectSpecs.withPlansInWorkGroupNames(projectFilter.getWorGroupNames()))
-                    .and(ProjectSpecs.withConsortia(projectFilter.getConsortiaNames()))
-                    .and(ProjectSpecs.withAssignments(projectFilter.getAssginmentNames()))
-                    .and(ProjectSpecs.withSummaryStatuses(projectFilter.getSummaryStatusNames()))
-                    .and(ProjectSpecs.withPrivacies(projectFilter.getPrivaciesNames())))
-                .and(ProjectSpecs.withImitsMiPlans(projectFilter.getImitsMiPlans()))
-                .and(ProjectSpecs
-                    .withProductionColonyNames(projectFilter.getProductionColonyNames()))
-                .and(ProjectSpecs
-                    .withPhenotypingExternalRefNames(projectFilter.getPhenotypingExternalRefs())
-                    .and(ProjectSpecs.withoutNullGenesSymbols()));
+        Specification<Project> spec = ProjectSpecs.withTpns(projectFilter.getTpns());
+        spec = combineSpec(spec, ProjectSpecs.withMarkerSymbols(projectFilter.getMarkerSymbols()));
+        spec = combineSpec(spec, ProjectSpecs.withMarkerSymbolOrAccId(projectFilter.getGenes()));
+        spec = combineSpec(spec, ProjectSpecs.withIntentions(projectFilter.getIntentions()));
+        spec = combineSpec(spec, ProjectSpecs.withPlansInWorkUnitsNames(projectFilter.getWorkUnitNames()));
+        spec = combineSpec(spec, ProjectSpecs.withPlansInWorkGroupNames(projectFilter.getWorGroupNames()));
+        spec = combineSpec(spec, ProjectSpecs.withConsortia(projectFilter.getConsortiaNames()));
+        spec = combineSpec(spec, ProjectSpecs.withAssignments(projectFilter.getAssginmentNames()));
+        spec = combineSpec(spec, ProjectSpecs.withSummaryStatuses(projectFilter.getSummaryStatusNames()));
+        spec = combineSpec(spec, ProjectSpecs.withPrivacies(projectFilter.getPrivaciesNames()));
+        spec = combineSpec(spec, ProjectSpecs.withImitsMiPlans(projectFilter.getImitsMiPlans()));
+        spec = combineSpec(spec, ProjectSpecs.withProductionColonyNames(projectFilter.getProductionColonyNames()));
+        spec = combineSpec(spec, ProjectSpecs.withPhenotypingExternalRefNames(projectFilter.getPhenotypingExternalRefs()));
+        spec = combineSpec(spec, ProjectSpecs.withoutNullGenesSymbols());
+        return spec;
+    }
 
+    private Specification<Project> combineSpec(Specification<Project> base, Specification<Project> additional) {
+        if (base == null) {
+            return additional;
+        }
+        if (additional == null) {
+            return base;
+        }
+        return base.and(additional);
     }
 
     @Override

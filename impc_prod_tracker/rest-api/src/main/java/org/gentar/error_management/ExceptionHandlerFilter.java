@@ -20,6 +20,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import lombok.NonNull;
+import org.gentar.exceptions.ForbiddenAccessException;
+import org.gentar.exceptions.InvalidRequestException;
+import org.gentar.exceptions.NotFoundException;
 import org.gentar.exceptions.OperationFailedException;
 import org.gentar.exceptions.SystemOperationFailedException;
 import org.springframework.http.HttpStatus;
@@ -62,6 +65,21 @@ public class ExceptionHandlerFilter extends OncePerRequestFilter
             apiError = ApiError.of(ofe);
             addExceptionInfoToResponse(response, apiError);
         }
+        catch (NotFoundException nfe)
+        {
+            apiError = new ApiError(HttpStatus.NOT_FOUND, nfe.getMessage(), "Please check the resource identifier.");
+            addExceptionInfoToResponse(response, apiError);
+        }
+        catch (ForbiddenAccessException fae)
+        {
+            apiError = new ApiError(HttpStatus.FORBIDDEN, fae.getMessage(), "Please check your permissions with the administrator.");
+            addExceptionInfoToResponse(response, apiError);
+        }
+        catch (InvalidRequestException ire)
+        {
+            apiError = new ApiError(HttpStatus.BAD_REQUEST, ire.getMessage(), "Please fix the request format and try again.");
+            addExceptionInfoToResponse(response, apiError);
+        }
         catch (RuntimeException e)
         {
             apiError = new ApiError(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage(), e);
@@ -72,18 +90,21 @@ public class ExceptionHandlerFilter extends OncePerRequestFilter
             Throwable cause = e.getCause();
             if (cause == null)
             {
+                // Check if the exception itself is one we should handle
                 apiError = ApiError.of(new SystemOperationFailedException(e));
             }
             else
             {
-                if (cause instanceof OperationFailedException ofe)
-                {
-                    apiError = ApiError.of(ofe);
-                }
-                else
-                {
-                    apiError = ApiError.of(new SystemOperationFailedException(cause));
-                }
+                apiError = switch (cause) {
+                    case OperationFailedException ofe -> ApiError.of(ofe);
+                    case NotFoundException nfe ->
+                            new ApiError(HttpStatus.NOT_FOUND, nfe.getMessage(), "Please check the resource identifier.");
+                    case ForbiddenAccessException fae ->
+                            new ApiError(HttpStatus.FORBIDDEN, fae.getMessage(), "Please check your permissions with the administrator.");
+                    case InvalidRequestException ire ->
+                            new ApiError(HttpStatus.BAD_REQUEST, ire.getMessage(), "Please fix the request format and try again.");
+                    default -> ApiError.of(new SystemOperationFailedException(cause));
+                };
             }
             addExceptionInfoToResponse(response, apiError);
         }
@@ -95,8 +116,9 @@ public class ExceptionHandlerFilter extends OncePerRequestFilter
         response.setStatus(apiError.getStatus().value());
         response.setContentType(MediaType.APPLICATION_JSON.toString());
 
+        ApiErrorResponse errorResponse = new ApiErrorResponse(apiError);
         PrintWriter printWriter = response.getWriter();
-        printWriter.write(convertObjectToJson(apiError));
+        printWriter.write(convertObjectToJson(errorResponse));
         printWriter.flush();
         printWriter.close();
     }

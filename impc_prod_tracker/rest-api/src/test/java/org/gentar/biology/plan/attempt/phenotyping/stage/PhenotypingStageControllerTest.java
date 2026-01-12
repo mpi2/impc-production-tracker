@@ -107,7 +107,7 @@ class PhenotypingStageControllerTest extends ControllerTestTemplate
 
         String payload = loadFromResource("phenotypingStageCreationPayload.json");
 
-        String url = "/api/plans/PIN:0000000002/phenotypingStages/";
+        String url = "/api/plans/PIN:0000000002/phenotypingStages";
         String expectedJson = getCompleteResourcePath("expectedCreatedPhenotypingStage.json");
         String obtainedJson =
             restCaller.executePostAndDocument(url, payload, document("phenotypingStages/postPhenotypingStage"));
@@ -137,7 +137,7 @@ class PhenotypingStageControllerTest extends ControllerTestTemplate
         sequenceResetter.syncSequence("HISTORY_DETAIL_SEQ", "HISTORY_DETAIL");
 
         String payload = loadFromResource("phenotypingStageUpdatePayload.json");
-        String url = "/api/plans/PIN:0000000001/phenotypingStages/PSN:000000000001/";
+        String url = "/api/plans/PIN:0000000001/phenotypingStages/PSN:000000000001";
         String expectedJson =
             getCompleteResourcePath("expectedUpdatedPhenotypingStagePSN_000000000001.json");
         String obtainedJson =
