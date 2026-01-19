@@ -195,9 +195,9 @@
   },
   {
     "name": "Update from All Data Processed to Phenotyping Finished",
-    "description": "CDA can update a phenotyping stage from All Data Processed to Phenotyping Finished",
+    "description": "CDA and DCC can update a phenotyping stage from All Data Processed to Phenotyping Finished",
     "target": "action == 'UPDATE_FROM_ALL_DATA_PROCESSED_TO_PHENOTYPING_FINISHED'",
-    "condition": "subject.isUserByKey('cda_user_key')"
+    "condition": "subject.isUserByKey('cda_user_key') OR subject.isUserByKey('dcc_user_key')"
   },
   {
     "name": "Reverse from Phenotyping Finished to All Data Processed",
