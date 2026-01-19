@@ -91,6 +91,10 @@ public enum ReportTypeName implements LabeledType {
 
     DCC_PHENOTYPING_STATUS("dcc_phenotyping_status",
             "This report is used by DCC to generate the phenotyping status report.",
+            FALSE),
+
+    NO_GENOTYPE_CONFIRMED_GENES("no_genotype_confirmed_genes_report",
+            "This report is list all genes that have no genotype confirmed plan.",
             FALSE);
 
     private static final Map<String, ReportTypeName> BY_LABEL = new HashMap<>();

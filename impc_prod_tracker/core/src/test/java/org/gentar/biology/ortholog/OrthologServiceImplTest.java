@@ -26,7 +26,7 @@ class OrthologServiceImplTest {
 
     @BeforeEach
     void setUp() {
-        testInstance = new OrthologServiceImpl(graphQLConsumer, jsonToOrthologsMapper);
+        testInstance = new OrthologServiceImpl();
     }
 
     @Test
@@ -35,7 +35,7 @@ class OrthologServiceImplTest {
         Map<String, List<Ortholog>> orthologs =
             testInstance.formatOrthologs(null);
 
-        assertEquals(orthologs.size(), 0);
+        assertEquals(0, orthologs.size());
 
     }
 

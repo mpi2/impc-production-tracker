@@ -16,7 +16,6 @@ import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import org.apache.commons.collections.CollectionUtils;
 import org.gentar.biology.project.projection.dto.ProjectSearchDownloadOrthologDto;
-import org.gentar.graphql.GraphQLConsumer;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
@@ -25,51 +24,17 @@ import org.springframework.web.client.RestTemplate;
 @Component
 public class OrthologServiceImpl implements OrthologService {
 
-    public static final String LOCALHOST_ORTHOLOG_API_URL =
-        "http://localhost:8090/api/ortholog/find_one_to_many_by_mgi_ids?mgiIds=";
 
     public static final String GENTAR_ORTHOLOG_API_URL =
         "https://www.gentar.org/orthology-api/api/ortholog/find_all_by_mgi_ids?mgiIds=";
-
-    public static final String ORTHOLOG_API_URL =
-        "http://api-ortholog-service-reference-db.mi-reference-data.svc.cluster.local:8080/orthology-api/api/ortholog/find_all_by_mgi_ids?mgiIds=";
 
     private static final String HGNC_URL =
         "https://www.genenames.org/data/gene-symbol-report/#!/hgnc_id/";
 
     public final int CHUNK_SIZE = 200;
-    private final GraphQLConsumer graphQLConsumer;
-    private final JSONToOrthologsMapper jsonToOrthologsMapper;
     private static final Logger LOGGER = Logger.getLogger("InfoLogging");
     private static final int THRESHOLD_SUPPORT_COUNT = 4;
 
-    static final String ORTHOLOGS_BY_ACC_ID_QUERY =
-        "{ \"query\":" +
-            " \"{ " +
-            "%s" +
-            "}\" " +
-            "}";
-    static final String ORTHOLOGS_BODY_QUERY =
-        " %s: mouse_gene(where:" +
-            " { mgi_gene_acc_id: {_eq: \\\"%s\\\"}}) {" +
-            "   orthologs {" +
-            "     human_gene {" +
-            "       symbol" +
-            "       hgnc_acc_id" +
-            "     }" +
-            "     category" +
-            "     support" +
-            "     support_count" +
-            "   }" +
-            "   mgi_gene_acc_id" +
-            "   symbol" +
-            " }";
-
-    public OrthologServiceImpl(GraphQLConsumer graphQLConsumer,
-                               JSONToOrthologsMapper jsonToOrthologsMapper) {
-        this.graphQLConsumer = graphQLConsumer;
-        this.jsonToOrthologsMapper = jsonToOrthologsMapper;
-    }
 
     @Override
     public Map<String, List<Ortholog>> getOrthologsByAccIds(List<String> mgiIds) {

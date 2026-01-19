@@ -1,11 +1,9 @@
 package org.gentar.biology.ortholog;
 
-import org.gentar.graphql.GraphQLConsumer;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,13 +15,9 @@ import static org.hamcrest.Matchers.is;
 @ExtendWith(MockitoExtension.class)
 class OrthologServiceTest
 {
-    @Mock
-    private GraphQLConsumer graphQLConsumer;
-    @Mock
-    private JSONToOrthologsMapper jsonToOrthologsMapper;
 
-    @Autowired
-    private OrthologService testInstance = new OrthologServiceImpl(graphQLConsumer, jsonToOrthologsMapper);
+    @MockitoBean
+    private OrthologService testInstance = new OrthologServiceImpl();
 
     @Test
     public void testCalculateBestOrthologs()
