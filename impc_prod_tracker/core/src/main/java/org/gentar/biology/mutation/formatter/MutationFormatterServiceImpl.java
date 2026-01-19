@@ -3,6 +3,7 @@ package org.gentar.biology.mutation.formatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
+
 import org.gentar.biology.colony.Colony;
 import org.gentar.biology.mutation.Mutation;
 import org.gentar.biology.mutation.MutationRepository;
@@ -19,12 +20,12 @@ public class MutationFormatterServiceImpl implements MutationFormatterService {
     private final MutationRepository mutationRepository;
     private final MutationServiceImpl mutationService;
     private static final Logger LOGGER =
-        LoggerFactory.getLogger(MutationFormatterServiceImpl.class);
+            LoggerFactory.getLogger(MutationFormatterServiceImpl.class);
 
 
     public MutationFormatterServiceImpl(
-        MutationRepository mutationRepository,
-        MutationServiceImpl mutationService) {
+            MutationRepository mutationRepository,
+            MutationServiceImpl mutationService) {
 
         this.mutationRepository = mutationRepository;
         this.mutationService = mutationService;
@@ -36,12 +37,12 @@ public class MutationFormatterServiceImpl implements MutationFormatterService {
             List<Mutation> allMutations = (List<Mutation>) mutationRepository.findAll();
             LOGGER.info("Finding UnValidated Sequences Started");
             List<Mutation> unValidatedMutations =
-                getUnValidatedMutations(workUnit, allMutations);
-            LOGGER.info("UnValidated Mutations size:" + unValidatedMutations.size());
+                    getUnValidatedMutations(workUnit, allMutations);
+            LOGGER.info("UnValidated Mutations size:{}", unValidatedMutations.size());
             unValidatedMutations.forEach(mutation -> {
                 Mutation validatedMutation = getValidatedMutation(mutation);
                 mutationService.update(validatedMutation);
-                LOGGER.info("Mutation Sequence Formatted For "+mutation.getMin() + " || "+  mutation.getSymbol());
+                LOGGER.info("Mutation Sequence Formatted For " + mutation.getMin() + " || " + mutation.getSymbol());
             });
             LOGGER.info("Formatting Finished");
         } catch (Exception e) {
@@ -52,32 +53,32 @@ public class MutationFormatterServiceImpl implements MutationFormatterService {
     private Mutation getValidatedMutation(Mutation mutation) {
         Mutation validatedMutation = new Mutation(mutation);
         validatedMutation.getMutationSequences().forEach(ms ->
-            ms.setSequence(sequenceFormatter(getColonyNames(mutation).getFirst(),
-                getSequences(mutation).getFirst()))
+                ms.setSequence(sequenceFormatter(getColonyNames(mutation).getFirst(),
+                        getSequences(mutation).getFirst()))
         );
         return validatedMutation;
     }
 
     private List<Mutation> getUnValidatedMutations(String workUnit, List<Mutation> allMutations) {
         return getMutationsByWorkUnit(allMutations, workUnit)
-            .stream()
-            .filter(s -> !isSequenceInFastaFormat(s))
-            .collect(Collectors.toList());
+                .stream()
+                .filter(s -> !isSequenceInFastaFormat(s))
+                .collect(Collectors.toList());
     }
 
     private List<String> getColonyNames(Mutation m) {
         return m.getOutcomes()
-            .stream()
-            .map(Outcome::getColony)
-            .map(Colony::getName)
-            .collect(Collectors.toList());
+                .stream()
+                .map(Outcome::getColony)
+                .map(Colony::getName)
+                .collect(Collectors.toList());
     }
 
     private List<Sequence> getSequences(Mutation mutation) {
         return mutation.getMutationSequences()
-            .stream()
-            .map(MutationSequence::getSequence)
-            .collect(Collectors.toList());
+                .stream()
+                .map(MutationSequence::getSequence)
+                .collect(Collectors.toList());
     }
 
     private List<Mutation> getMutationsByWorkUnit(List<Mutation> mutations, String workUnit) {
@@ -104,15 +105,15 @@ public class MutationFormatterServiceImpl implements MutationFormatterService {
         }
 
         List<String> sequenceString = sequences
-            .stream()
-            .map(Sequence::getSequence)
-            .toList();
+                .stream()
+                .map(Sequence::getSequence)
+                .toList();
 
         return sequenceString
-            .stream()
-            .noneMatch(s ->
-                !isStartWithBiggerSymbol(s) || !isSequenceHeaderSingleLine(s)
-                    || !isDnaFormatCorrect(s));
+                .stream()
+                .noneMatch(s ->
+                        !isStartWithBiggerSymbol(s) || !isSequenceHeaderSingleLine(s)
+                                || !isDnaFormatCorrect(s));
     }
 
     private Boolean isStartWithBiggerSymbol(String sequence) {
@@ -121,8 +122,8 @@ public class MutationFormatterServiceImpl implements MutationFormatterService {
 
     private Boolean isSequenceHeaderSingleLine(String sequence) {
         return sequence.split("\n").length == 2
-            && (!sequence.split("\n")[0].isEmpty()
-            && sequence.split("\n")[0].length() < 256);
+                && (!sequence.split("\n")[0].isEmpty()
+                && sequence.split("\n")[0].length() < 256);
 
     }
 
@@ -139,12 +140,16 @@ public class MutationFormatterServiceImpl implements MutationFormatterService {
 
     private List<Character> dnaCharacters() {
         return List
-            .of('A', 'C', 'G', 'T', 'U', 'I', 'R', 'Y', 'K', 'M', 'S', 'W', 'B', 'D', 'H', 'V',
-                'N', 'a', 'c', 'g', 't', 'u', 'i', 'r', 'y', 'k', 'm', 's', 'w', 'b', 'd', 'h', 'v',
-                'n', '-');
+                .of('A', 'C', 'G', 'T', 'U', 'I', 'R', 'Y', 'K', 'M', 'S', 'W', 'B', 'D', 'H', 'V',
+                        'N', 'a', 'c', 'g', 't', 'u', 'i', 'r', 'y', 'k', 'm', 's', 'w', 'b', 'd', 'h', 'v',
+                        'n', '-');
     }
 
     private Sequence sequenceFormatter(String colonyName, Sequence sequence) {
+
+        if (sequence.getSequence() == null) {
+            return sequence;
+        }
         Sequence formattedSequence = new Sequence(sequence);
         String newSequenceString = sequence.getSequence().replaceAll("\t", "");
 
@@ -158,27 +163,27 @@ public class MutationFormatterServiceImpl implements MutationFormatterService {
         newSequenceString = newSequenceString.replaceAll("\\d+", "");
 
         if (!isSequenceHeaderSingleLine(newSequenceString)) {
-            if(!newSequenceString.toLowerCase().equals(newSequenceString) && findFirstUpperLetterIndex(newSequenceString)!=-1){
+            if (!newSequenceString.toLowerCase().equals(newSequenceString) && findFirstUpperLetterIndex(newSequenceString) != -1) {
                 newSequenceString =
-                    newSequenceString.substring(0, findFirstUpperLetterIndex(newSequenceString)) +
-                        "\n" +
-                        newSequenceString.substring(findFirstUpperLetterIndex(newSequenceString));
+                        newSequenceString.substring(0, findFirstUpperLetterIndex(newSequenceString)) +
+                                "\n" +
+                                newSequenceString.substring(findFirstUpperLetterIndex(newSequenceString));
                 formattedSequence
-                    .setSequence(newSequenceString);
+                        .setSequence(newSequenceString);
             }
 
         }
         if (!isStartWithBiggerSymbol(newSequenceString)) {
             if (newSequenceString.contains("\n")) {
                 formattedSequence
-                    .setSequence(">" + newSequenceString);
+                        .setSequence(">" + newSequenceString);
             } else {
                 formattedSequence
-                    .setSequence(">" + colonyName + System.lineSeparator() + newSequenceString);
+                        .setSequence(">" + colonyName + System.lineSeparator() + newSequenceString);
             }
         }
-        LOGGER.info("Old Sequence :"+sequence.getSequence());
-        LOGGER.info("Formatted Sequence :"+formattedSequence.getSequence());
+        LOGGER.info("Old Sequence :{}", sequence.getSequence());
+        LOGGER.info("Formatted Sequence :{}", formattedSequence.getSequence());
         return formattedSequence;
     }
 

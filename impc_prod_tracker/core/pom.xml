@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>3.5.3</version>
+		<version>4.0.0</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>org.gentar</groupId>
@@ -15,10 +15,10 @@
 	<description>Demo project for Spring Boot</description>
 
 	<properties>
-		<java.version>21</java.version>
-		<equalsverifier.version>3.10</equalsverifier.version>
+		<java.version>25</java.version>
+		<equalsverifier.version>3.11.1</equalsverifier.version>
 
-		<jacoco.plugin.version>0.8.11</jacoco.plugin.version>
+		<jacoco.plugin.version>0.8.14</jacoco.plugin.version>
 		<skip.coverage>false</skip.coverage>
 
 		<coverage.ratio.instruction>0.1000</coverage.ratio.instruction>
@@ -64,15 +64,14 @@
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
 			<optional>true</optional>
-			<version>1.18.30</version>
 		</dependency>
 
 		<!-- Managing csv files -->
-		<dependency>
-			<groupId>com.opencsv</groupId>
-			<artifactId>opencsv</artifactId>
-			<version>4.5</version>
-		</dependency>
+        <dependency>
+            <groupId>com.opencsv</groupId>
+            <artifactId>opencsv</artifactId>
+            <version>5.12.0</version>
+        </dependency>
 
 		<!-- Databases -->
 		<dependency>
@@ -117,19 +116,11 @@
 			<version>20200518</version>
 		</dependency>
 
-		<!-- A dependency to to asserts in jsons -->
-<!--		<dependency>-->
-<!--			<groupId>org.skyscreamer</groupId>-->
-<!--			<artifactId>jsonassert</artifactId>-->
-<!--			<version>1.5.0</version>-->
-<!--		</dependency>-->
-
 
 		<!-- Auditing -->
 		<dependency>
 			<groupId>org.hibernate.orm</groupId>
 			<artifactId>hibernate-envers</artifactId>
-			<version>6.1.6.Final</version>
 		</dependency>
 
 		<!-- validation of beans -->
@@ -150,8 +141,7 @@
 		<!-- Generate jpa models-->
 		<dependency>
 			<groupId>org.hibernate.orm</groupId>
-			<artifactId>hibernate-jpamodelgen</artifactId>
-			<version>6.1.6.Final</version>
+			<artifactId>hibernate-processor</artifactId>
 		</dependency>
 
 		<dependency>
@@ -220,10 +210,28 @@
 	<build>
 		<plugins>
 			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<configuration>
+					<source>${java.version}</source>
+					<target>${java.version}</target>
+					<annotationProcessorPaths>
+						<path>
+							<groupId>org.projectlombok</groupId>
+							<artifactId>lombok</artifactId>
+						</path>
+						<path>
+							<groupId>org.hibernate.orm</groupId>
+							<artifactId>hibernate-processor</artifactId>
+						</path>
+					</annotationProcessorPaths>
+				</configuration>
+			</plugin>
+			<plugin>
 				<groupId>org.jacoco</groupId>
 				<artifactId>jacoco-maven-plugin</artifactId>
-				<version>${jacoco.plugin.version}</version>
-				<configuration>
+                <version>0.8.14</version>
+                <configuration>
 					<dataFile>${project.build.directory}/coverage-reports/jacoco.exec</dataFile>
 					<outputDirectory>${project.build.directory}/coverage-reports/</outputDirectory>
 					<skip>true</skip>

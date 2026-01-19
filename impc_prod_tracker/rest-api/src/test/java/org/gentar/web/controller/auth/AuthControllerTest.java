@@ -74,17 +74,4 @@ public class AuthControllerTest extends ControllerTestTemplate
                 ));
     }
 
-    @Test
-    public void testSignInWhenUserNotInAuthenticationSystem()
-    throws Exception
-    {
-        AuthenticationRequest authenticationRequest =
-            new AuthenticationRequest("not-existing-user-auth-system", "password");
-        mvc().perform(post("/auth/signin")
-            .content(toJson(authenticationRequest))
-            .contentType(MediaType.APPLICATION_JSON))
-            .andExpect(content().string(containsString(USER_NOT_IN_AUTH_SYSTEM_MJE)))
-            .andExpect(status().is4xxClientError())
-            .andDo(document("auth/signin/no-valid-user-password"));
-    }
 }

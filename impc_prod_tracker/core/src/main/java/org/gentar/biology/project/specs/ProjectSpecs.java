@@ -38,54 +38,51 @@ public class ProjectSpecs
      */
     public static Specification<Project> withMarkerSymbols(List<String> markerSymbols)
     {
-        Specification<Project> specification = Specification.where(null);
-        if (markerSymbols != null)
+        if (markerSymbols == null)
         {
-            specification = (root, query, criteriaBuilder) -> {
-                Path<String> symbolNamePath = ProjectPaths.getMarkerSymbolPath(root);
-                query.distinct(true);
-                return PredicateBuilder.addInPredicates(
-                    criteriaBuilder, symbolNamePath, markerSymbols);
-            };
+            return null;
         }
-        return specification;
+        return (root, query, criteriaBuilder) -> {
+            Path<String> symbolNamePath = ProjectPaths.getMarkerSymbolPath(root);
+            query.distinct(true);
+            return PredicateBuilder.addInPredicates(
+                criteriaBuilder, symbolNamePath, markerSymbols);
+        };
     }
 
     public static Specification<Project> withMarkerSymbolOrAccId(List<String> genesNameOrIds)
     {
-        Specification<Project> specification = Specification.where(null);
-        if (genesNameOrIds != null)
+        if (genesNameOrIds == null)
         {
-            specification = (root, query, criteriaBuilder) -> {
-                List<String> lowerCaseMarkerSymbolsOrIds =
-                    genesNameOrIds.stream().map(String::toLowerCase).collect(Collectors.toList());
-                Path<String> symbolNamePath = ProjectPaths.getMarkerSymbolPath(root);
-                Path<String> accIdPath = ProjectPaths.getAccIdPath(root);
-
-                query.distinct(true);
-                return criteriaBuilder.or(
-                    criteriaBuilder.lower(symbolNamePath).in(lowerCaseMarkerSymbolsOrIds),
-                    criteriaBuilder.lower(accIdPath).in(lowerCaseMarkerSymbolsOrIds)
-                );
-            };
+            return null;
         }
-        return specification;
+        return (root, query, criteriaBuilder) -> {
+            List<String> lowerCaseMarkerSymbolsOrIds =
+                genesNameOrIds.stream().map(String::toLowerCase).collect(Collectors.toList());
+            Path<String> symbolNamePath = ProjectPaths.getMarkerSymbolPath(root);
+            Path<String> accIdPath = ProjectPaths.getAccIdPath(root);
+
+            query.distinct(true);
+            return criteriaBuilder.or(
+                criteriaBuilder.lower(symbolNamePath).in(lowerCaseMarkerSymbolsOrIds),
+                criteriaBuilder.lower(accIdPath).in(lowerCaseMarkerSymbolsOrIds)
+            );
+        };
     }
 
     public static Specification<Project> withIntentions(List<String> intentionNames)
     {
-        Specification<Project> specification = Specification.where(null);
-        if (intentionNames != null)
+        if (intentionNames == null)
         {
-            specification = (root, query, criteriaBuilder) -> {
-                Path<String> geneticMutationTypeNamePath = ProjectPaths.getMolecularMutationTypeNamePath(root);
-
-                query.distinct(true);
-                return PredicateBuilder.addInPredicates(
-                    criteriaBuilder, geneticMutationTypeNamePath, intentionNames);
-            };
+            return null;
         }
-        return specification;
+        return (root, query, criteriaBuilder) -> {
+            Path<String> geneticMutationTypeNamePath = ProjectPaths.getMolecularMutationTypeNamePath(root);
+
+            query.distinct(true);
+            return PredicateBuilder.addInPredicates(
+                criteriaBuilder, geneticMutationTypeNamePath, intentionNames);
+        };
     }
 
     /**
@@ -96,17 +93,16 @@ public class ProjectSpecs
      */
     public static Specification<Project> withPlansInWorkUnitsNames(List<String> workUnitNames)
     {
-        Specification<Project> specification = Specification.where(null);
-        if (workUnitNames != null)
+        if (workUnitNames == null)
         {
-            specification = (root, query, criteriaBuilder) -> {
-                Path<String> workUnitNamePath = ProjectPaths.getWorkUnitNamePath(root);
-                query.distinct(true);
-                return PredicateBuilder.addInPredicates(
-                    criteriaBuilder, workUnitNamePath, workUnitNames);
-            };
+            return null;
         }
-        return specification;
+        return (root, query, criteriaBuilder) -> {
+            Path<String> workUnitNamePath = ProjectPaths.getWorkUnitNamePath(root);
+            query.distinct(true);
+            return PredicateBuilder.addInPredicates(
+                criteriaBuilder, workUnitNamePath, workUnitNames);
+        };
     }
 
     /**
@@ -117,17 +113,16 @@ public class ProjectSpecs
      */
     public static Specification<Project> withPlansInWorkGroupNames(List<String> workGroupNames)
     {
-        Specification<Project> specification = Specification.where(null);
-        if (workGroupNames != null)
+        if (workGroupNames == null)
         {
-            specification = (root, query, criteriaBuilder) -> {
-                Path<String> workGroupNamePath = ProjectPaths.getWorkGroupNamePath(root);
-                query.distinct(true);
-                return PredicateBuilder.addInPredicates(
-                    criteriaBuilder, workGroupNamePath, workGroupNames);
-            };
+            return null;
         }
-        return specification;
+        return (root, query, criteriaBuilder) -> {
+            Path<String> workGroupNamePath = ProjectPaths.getWorkGroupNamePath(root);
+            query.distinct(true);
+            return PredicateBuilder.addInPredicates(
+                criteriaBuilder, workGroupNamePath, workGroupNames);
+        };
     }
 
     /**
@@ -138,16 +133,15 @@ public class ProjectSpecs
      */
     public static Specification<Project> withAssignments(List<String> statuses)
     {
-        Specification<Project> specification = Specification.where(null);
-        if (statuses != null)
+        if (statuses == null)
         {
-            specification = (root, query, criteriaBuilder) -> {
-                Path<String> statusNamePath = ProjectPaths.getAssignmentNamePath(root);
-                query.distinct(true);
-                return PredicateBuilder.addInPredicates(criteriaBuilder, statusNamePath, statuses);
-            };
+            return null;
         }
-        return specification;
+        return (root, query, criteriaBuilder) -> {
+            Path<String> statusNamePath = ProjectPaths.getAssignmentNamePath(root);
+            query.distinct(true);
+            return PredicateBuilder.addInPredicates(criteriaBuilder, statusNamePath, statuses);
+        };
     }
 
     /**
@@ -158,16 +152,15 @@ public class ProjectSpecs
      */
     public static Specification<Project> withSummaryStatuses(List<String> summaryStatuses)
     {
-        Specification<Project> specification = Specification.where(null);
-        if (summaryStatuses != null)
+        if (summaryStatuses == null)
         {
-            specification = (root, query, criteriaBuilder) -> {
-                Path<String> statusNamePath = ProjectPaths.getSummaryStatusNamePath(root);
-                query.distinct(true);
-                return PredicateBuilder.addInPredicates(criteriaBuilder, statusNamePath, summaryStatuses);
-            };
+            return null;
         }
-        return specification;
+        return (root, query, criteriaBuilder) -> {
+            Path<String> statusNamePath = ProjectPaths.getSummaryStatusNamePath(root);
+            query.distinct(true);
+            return PredicateBuilder.addInPredicates(criteriaBuilder, statusNamePath, summaryStatuses);
+        };
     }
 
     /**
@@ -178,16 +171,15 @@ public class ProjectSpecs
      */
     public static Specification<Project> withPrivacies(List<String> privacies)
     {
-        Specification<Project> specification = Specification.where(null);
-        if (privacies != null)
+        if (privacies == null)
         {
-            specification = (root, query, criteriaBuilder) -> {
-                Path<String> privacyNamePath = ProjectPaths.getPrivacyNamePath(root);
-                query.distinct(true);
-                return PredicateBuilder.addInPredicates(criteriaBuilder, privacyNamePath, privacies);
-            };
+            return null;
         }
-        return specification;
+        return (root, query, criteriaBuilder) -> {
+            Path<String> privacyNamePath = ProjectPaths.getPrivacyNamePath(root);
+            query.distinct(true);
+            return PredicateBuilder.addInPredicates(criteriaBuilder, privacyNamePath, privacies);
+        };
     }
 
     /**
@@ -198,17 +190,16 @@ public class ProjectSpecs
      */
     public static Specification<Project> withConsortia(List<String> consortia)
     {
-        Specification<Project> specification = Specification.where(null);
-        if (consortia != null)
+        if (consortia == null)
         {
-            specification = (root, query, criteriaBuilder) -> {
-                query.distinct(true);
-                Path<String> consortiumNamePath = ProjectPaths.getConsortiaNamePath(root);
-                return PredicateBuilder.addInPredicates(
-                    criteriaBuilder, consortiumNamePath, consortia);
-            };
+            return null;
         }
-        return specification;
+        return (root, query, criteriaBuilder) -> {
+            query.distinct(true);
+            Path<String> consortiumNamePath = ProjectPaths.getConsortiaNamePath(root);
+            return PredicateBuilder.addInPredicates(
+                criteriaBuilder, consortiumNamePath, consortia);
+        };
     }
 
     /**
@@ -219,16 +210,15 @@ public class ProjectSpecs
      */
     public static Specification<Project> withTpns(List<String> tpns)
     {
-        Specification<Project> specification = Specification.where(null);
-        if (tpns != null)
+        if (tpns == null)
         {
-            specification = (root, query, criteriaBuilder) -> {
-                Path<String> tpnPath = ProjectPaths.getTpnPath(root);
-                query.distinct(true);
-                return PredicateBuilder.addLowerLikeOrPredicates(criteriaBuilder, tpnPath, tpns);
-            };
+            return null;
         }
-        return specification;
+        return (root, query, criteriaBuilder) -> {
+            Path<String> tpnPath = ProjectPaths.getTpnPath(root);
+            query.distinct(true);
+            return PredicateBuilder.addLowerLikeOrPredicates(criteriaBuilder, tpnPath, tpns);
+        };
     }
 
     /**
@@ -239,16 +229,15 @@ public class ProjectSpecs
      */
     public static Specification<Project> withImitsMiPlans(List<String> imitsMiPlans)
     {
-        Specification<Project> specification = Specification.where(null);
-        if (imitsMiPlans != null)
+        if (imitsMiPlans == null)
         {
-            specification = (root, query, criteriaBuilder) -> {
-                Path<Long> imitsMiPlanPath = ProjectPaths.getImitsMiPlanPath(root);
-                query.distinct(true);
-                return PredicateBuilder.addLowerLikeOrPredicatesId(criteriaBuilder, imitsMiPlanPath, imitsMiPlans);
-            };
+            return null;
         }
-        return specification;
+        return (root, query, criteriaBuilder) -> {
+            Path<Long> imitsMiPlanPath = ProjectPaths.getImitsMiPlanPath(root);
+            query.distinct(true);
+            return PredicateBuilder.addLowerLikeOrPredicatesId(criteriaBuilder, imitsMiPlanPath, imitsMiPlans);
+        };
     }
 
     /**
@@ -259,44 +248,38 @@ public class ProjectSpecs
      */
     public static Specification<Project> withProductionColonyNames(List<String> productionOutcomeNames)
     {
-        Specification<Project> specification = Specification.where(null);
-        if (productionOutcomeNames != null)
+        if (productionOutcomeNames == null)
         {
-            specification = (root, query, criteriaBuilder) -> {
-                Path<String> outcomePath = ProjectPaths.getColonyNamePath(root);
-                query.distinct(true);
-                return PredicateBuilder.addInPredicates(
-                        criteriaBuilder, outcomePath, productionOutcomeNames);
-            };
+            return null;
         }
-        return specification;
+        return (root, query, criteriaBuilder) -> {
+            Path<String> outcomePath = ProjectPaths.getColonyNamePath(root);
+            query.distinct(true);
+            return PredicateBuilder.addInPredicates(
+                    criteriaBuilder, outcomePath, productionOutcomeNames);
+        };
     }
 
     public static Specification<Project> withPhenotypingExternalRefNames(List<String> phenotypingExternalRefNames)
     {
-        Specification<Project> specification = Specification.where(null);
-        if (phenotypingExternalRefNames != null)
+        if (phenotypingExternalRefNames == null)
         {
-            specification = (root, query, criteriaBuilder) -> {
-                Path<String> phenotypingAttemptPath = ProjectPaths.getPhenotypingExternalRefName(root);
-                query.distinct(true);
-                return PredicateBuilder.addInPredicates(
-                        criteriaBuilder, phenotypingAttemptPath, phenotypingExternalRefNames);
-            };
+            return null;
         }
-        return specification;
+        return (root, query, criteriaBuilder) -> {
+            Path<String> phenotypingAttemptPath = ProjectPaths.getPhenotypingExternalRefName(root);
+            query.distinct(true);
+            return PredicateBuilder.addInPredicates(
+                    criteriaBuilder, phenotypingAttemptPath, phenotypingExternalRefNames);
+        };
     }
 
     public static Specification<Project> withoutNullGenesSymbols() {
-        Specification<Project> specification = Specification.where(null);
-
-            specification = (root, query, criteriaBuilder) -> {
-                Path<String> symbolNamePath = ProjectPaths.getMarkerSymbolPath(root);
-                query.distinct(true);
-                return PredicateBuilder.notInPredicates(
-                    criteriaBuilder, symbolNamePath);
-            };
-
-        return specification;
+        return (root, query, criteriaBuilder) -> {
+            Path<String> symbolNamePath = ProjectPaths.getMarkerSymbolPath(root);
+            query.distinct(true);
+            return PredicateBuilder.notInPredicates(
+                criteriaBuilder, symbolNamePath);
+        };
     }
 }

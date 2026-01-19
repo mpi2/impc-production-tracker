@@ -18,9 +18,7 @@ package org.gentar.error_management;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.databind.annotation.JsonTypeIdResolver;
-import com.fasterxml.jackson.databind.jsontype.impl.TypeIdResolverBase;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.ConstraintViolation;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -43,12 +41,17 @@ import org.springframework.validation.ObjectError;
  */
 @Data
 @JsonInclude(JsonInclude.Include.NON_NULL)
-@JsonTypeInfo(
-    include = JsonTypeInfo.As.WRAPPER_OBJECT, use = JsonTypeInfo.Id.CUSTOM, property = "error", visible = true)
-@JsonTypeIdResolver(LowerCaseClassNameResolver.class)
 public class ApiError
 {
+    @JsonIgnore
     private HttpStatus status;
+
+    @JsonProperty("status")
+    public String getStatusName()
+    {
+        return status != null ? status.name() : null;
+    }
+
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy hh:mm:ss")
     private LocalDateTime timestamp;
     private String message;
@@ -263,26 +266,5 @@ public class ApiError
     private static void logErrorWithExceptionDetail(String message, String exceptionDetail)
     {
         LOGGER.error(String.format(ERROR_MESSAGE_TO_LOG, message, exceptionDetail));
-    }
-}
-
-class LowerCaseClassNameResolver extends TypeIdResolverBase
-{
-    @Override
-    public String idFromValue(Object value)
-    {
-        return value.getClass().getSimpleName().toLowerCase();
-    }
-
-    @Override
-    public String idFromValueAndType(Object value, Class<?> suggestedType)
-    {
-        return idFromValue(value);
-    }
-
-    @Override
-    public JsonTypeInfo.Id getMechanism()
-    {
-        return JsonTypeInfo.Id.CUSTOM;
     }
 }

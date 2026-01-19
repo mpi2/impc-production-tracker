@@ -17,19 +17,22 @@ package org.gentar.spring_configuration;
 
 import org.gentar.error_management.ExceptionHandlerFilter;
 import org.gentar.security.jwt.JwtTokenFilter;
-import org.gentar.spring_configuration.filters.CORSFilter;
 import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
-import org.springframework.hateoas.config.EnableHypermediaSupport;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.access.channel.ChannelProcessingFilter;
+import org.springframework.security.web.access.expression.WebExpressionAuthorizationManager;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.http.HttpMethod;
 
 /**
  * Sets the authentication mechanism for the end points.
@@ -39,7 +42,6 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @Configuration
 @EnableWebSecurity
 @EnableJpaAuditing
-@EnableHypermediaSupport(type = { EnableHypermediaSupport.HypermediaType.HAL })
 public class RootConfiguration
 {
     private final JwtTokenFilter jwtTokenFilter;
@@ -62,35 +64,57 @@ public class RootConfiguration
         return new BCryptPasswordEncoder();
     }
 
+    @Bean
+    public CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration configuration = new CorsConfiguration();
+        configuration.setAllowCredentials(true);
+        configuration.addAllowedOriginPattern("*");
+        configuration.addAllowedMethod("POST");
+        configuration.addAllowedMethod("GET");
+        configuration.addAllowedMethod("PUT");
+        configuration.addAllowedMethod("OPTIONS");
+        configuration.addAllowedMethod("DELETE");
+        configuration.addAllowedHeader("X-Requested-With");
+        configuration.addAllowedHeader("Content-Type");
+        configuration.addAllowedHeader("Authorization");
+        configuration.addAllowedHeader("Origin");
+        configuration.addAllowedHeader("Accept");
+        configuration.addAllowedHeader("Access-Control-Request-Method");
+        configuration.addAllowedHeader("Access-Control-Request-Headers");
+        configuration.setMaxAge(3600L);
+        
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", configuration);
+        return source;
+    }
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
-            .httpBasic().disable()
-            .cors().and()
-            .csrf().disable()
-            .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-            .and()
-            .authorizeRequests()
-            .requestMatchers("/docs/**").permitAll()
-            .requestMatchers("/auth/signin").permitAll()
-            .requestMatchers("/api/conf").permitAll()
-            .requestMatchers("/api/projects/**").permitAll()
-            .requestMatchers("/api/plans/**").permitAll()
-            .requestMatchers("/api/outcomes/**").permitAll()
-            .requestMatchers("/api/mutations/**").permitAll()
-            .requestMatchers("/api/people/requestPasswordReset").permitAll()
-            .requestMatchers("/api/reports/**").permitAll()
-            .requestMatchers("/api/distributionNetwork/**").permitAll()
-            .requestMatchers("/api/glt_production_numbers/**").permitAll()
-            .requestMatchers("/api/format/**").access("hasPermission(null, 'CDA_AND_ADMIN')")
-            .requestMatchers("/reports/**").permitAll()
-            .requestMatchers("/tracking-api/**").access("hasPermission(null, 'CDA_AND_ADMIN')")
-            .anyRequest().authenticated()
-            .and()
+            .httpBasic(AbstractHttpConfigurer::disable)
+            .cors(cors -> cors.configurationSource(corsConfigurationSource()))
+            .csrf(AbstractHttpConfigurer::disable)
+            .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+            .authorizeHttpRequests(auth -> auth
+                .requestMatchers("/docs/**").permitAll()
+                .requestMatchers("/auth/signin").permitAll()
+                .requestMatchers("/api/conf").permitAll()
+                .requestMatchers("/api/projects/**").permitAll()
+                .requestMatchers("/api/plans/**").permitAll()
+                .requestMatchers("/api/outcomes/**").permitAll()
+                .requestMatchers("/api/mutations/**").permitAll()
+                .requestMatchers(HttpMethod.POST, "/api/people/requestPasswordReset").permitAll()
+                .requestMatchers(HttpMethod.POST, "/api/people/requestPasswordReset/").permitAll()
+                .requestMatchers("/api/reports/**").permitAll()
+                .requestMatchers("/api/distributionNetwork/**").permitAll()
+                .requestMatchers("/api/glt_production_numbers/**").permitAll()
+                .requestMatchers("/api/format/**").access(new WebExpressionAuthorizationManager("hasPermission(null, 'CDA_AND_ADMIN')"))
+                .requestMatchers("/reports/**").permitAll()
+                .requestMatchers("/tracking-api/**").access(new WebExpressionAuthorizationManager("hasPermission(null, 'CDA_AND_ADMIN')"))
+                .anyRequest().authenticated()
+            )
             .addFilterBefore(jwtTokenFilter, UsernamePasswordAuthenticationFilter.class)
             .addFilterBefore(exceptionHandlerFilter, JwtTokenFilter.class)
-            .addFilterBefore(new CORSFilter(), ChannelProcessingFilter.class)
         ;
 
         return http.build();

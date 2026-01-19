@@ -135,6 +135,42 @@ public class AAPService {
     }
 
     /**
+     * Returns a JWT for a service account without requiring a Person to exist in the database.
+     * This is used for operations like password reset that require a service account token.
+     *
+     * @param email    Service account user name.
+     * @param password Service account password.
+     * @return String with the JWT.
+     */
+    private String getServiceToken(String email, String password) throws JsonProcessingException {
+        ResponseEntity<String> response;
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+
+        MultiValueMap<String, String> form = new LinkedMultiValueMap<>();
+        form.add("username", email);
+        form.add("password", password);
+        form.add("grant_type", "password");
+        form.add("client_id", "gentar-api");
+
+        HttpEntity<MultiValueMap<String, String>> entity = new HttpEntity<>(form, headers);
+        try {
+            RestTemplate restTemplate = new RestTemplate();
+            response = restTemplate.exchange(
+                    EXTERNAL_SERVICE_URL + "realms/gentar/protocol/openid-connect/token",
+                    HttpMethod.POST,
+                    entity,
+                    String.class);
+        } catch (HttpClientErrorException e) {
+            throw new BadCredentialsException(AUTHENTICATION_ERROR);
+        }
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        JsonNode jsonNode = objectMapper.readTree(response.getBody());
+        return jsonNode.get("access_token").asText();
+    }
+
+    /**
      * Creates an account in the AAP system for a person in the system.
      *
      * @param person Person information which will be used to build the payload to call the
@@ -206,7 +242,7 @@ public class AAPService {
 
         String body = "[\"UPDATE_PASSWORD\"]";
 
-        String token = getToken(RESET_PASSWORD_TOKEN_USER, RESET_PASSWORD_TOKEN_PASSWORD);
+        String token = getServiceToken(RESET_PASSWORD_TOKEN_USER, RESET_PASSWORD_TOKEN_PASSWORD);
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
@@ -217,10 +253,13 @@ public class AAPService {
         String clientId = "gentar-api"; // Replace with the actual client ID
 
         Person person = personRepository.findPersonByEmail(email);
-
+        if (person == null || person.getAuthId() == null) {
+            throw new UserOperationFailedException(
+                    "User with email " + email + " not found or not properly configured.");
+        }
 
         String RESET_PASSWORD = "/execute-actions-email";
-        String url = UriComponentsBuilder.fromHttpUrl(EXTERNAL_SERVICE_URL)
+        String url = UriComponentsBuilder.fromUriString(EXTERNAL_SERVICE_URL)
                 .path("/admin/realms/gentar/users/" + person.getAuthId() + RESET_PASSWORD)
                 .queryParam("redirect_uri", redirectUri)
                 .queryParam("client_id", clientId)

@@ -382,7 +382,7 @@ class PlanControllerTest extends ControllerTestTemplate
 
         String payload = loadFromResource("phenotypingPlanCreationPayload.json");
 
-        String url = "/api/plans/";
+        String url = "/api/plans";
         String expectedJson = getCompleteResourcePath("expectedCreatedPhenotypingPlan.json");
         String obtainedJson =
             restCaller.executePostAndDocument(url, payload, document("plans/postPhenotypingPlan"));
