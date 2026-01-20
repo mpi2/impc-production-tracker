@@ -110,6 +110,8 @@ public class RootConfiguration
                 .requestMatchers("/api/glt_production_numbers/**").permitAll()
                 .requestMatchers("/api/format/**").access(new WebExpressionAuthorizationManager("hasPermission(null, 'CDA_AND_ADMIN')"))
                 .requestMatchers("/reports/**").permitAll()
+                .requestMatchers("/tracking-api/targRepGenes/**").permitAll()
+                .requestMatchers("/tracking-api/mutations/**").permitAll()
                 .requestMatchers("/tracking-api/**").access(new WebExpressionAuthorizationManager("hasPermission(null, 'CDA_AND_ADMIN')"))
                 .anyRequest().authenticated()
             )
