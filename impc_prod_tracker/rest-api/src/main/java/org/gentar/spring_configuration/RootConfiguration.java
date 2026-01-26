@@ -60,22 +60,19 @@ public class RootConfiguration
     public ModelMapper modelMapper() {
         ModelMapper modelMapper = new ModelMapper();
 
-        modelMapper.getConfiguration()
-            .setMatchingStrategy(MatchingStrategies.STRICT)
-            .setSkipNullEnabled(true);
-        
+
         modelMapper.getConfiguration().setPropertyCondition(context -> {
-            if (context.getMapping().getLastDestinationProperty() != null) {
-                String propertyName = context.getMapping().getLastDestinationProperty().getName();
-                Class<?> destinationType = context.getMapping().getLastDestinationProperty().getType();
+            if (context.getParent() != null && 
+                context.getParent().getDestination() != null &&
+                context.getParent().getDestination() instanceof BaseEntity &&
+                context.getMapping().getLastDestinationProperty() != null) {
                 
-                if (BaseEntity.class.isAssignableFrom(destinationType) ||
-                    (context.getParent() != null && context.getParent().getDestination() instanceof BaseEntity)) {
-                    return !propertyName.equals("createdAt") &&
-                           !propertyName.equals("lastModified") &&
-                           !propertyName.equals("createdBy") &&
-                           !propertyName.equals("lastModifiedBy");
-                }
+                String propertyName = context.getMapping().getLastDestinationProperty().getName();
+
+                return !propertyName.equals("createdAt") &&
+                       !propertyName.equals("lastModified") &&
+                       !propertyName.equals("createdBy") &&
+                       !propertyName.equals("lastModifiedBy");
             }
             return true;
         });
