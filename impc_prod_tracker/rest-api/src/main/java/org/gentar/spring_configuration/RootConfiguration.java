@@ -15,9 +15,11 @@
  *******************************************************************************/
 package org.gentar.spring_configuration;
 
+import org.gentar.BaseEntity;
 import org.gentar.error_management.ExceptionHandlerFilter;
 import org.gentar.security.jwt.JwtTokenFilter;
 import org.modelmapper.ModelMapper;
+import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
@@ -56,7 +58,26 @@ public class RootConfiguration
 
     @Bean
     public ModelMapper modelMapper() {
-        return new ModelMapper();
+        ModelMapper modelMapper = new ModelMapper();
+
+
+        modelMapper.getConfiguration().setPropertyCondition(context -> {
+            if (context.getParent() != null && 
+                context.getParent().getDestination() != null &&
+                context.getParent().getDestination() instanceof BaseEntity &&
+                context.getMapping().getLastDestinationProperty() != null) {
+                
+                String propertyName = context.getMapping().getLastDestinationProperty().getName();
+
+                return !propertyName.equals("createdAt") &&
+                       !propertyName.equals("lastModified") &&
+                       !propertyName.equals("createdBy") &&
+                       !propertyName.equals("lastModifiedBy");
+            }
+            return true;
+        });
+        
+        return modelMapper;
     }
 
     @Bean
