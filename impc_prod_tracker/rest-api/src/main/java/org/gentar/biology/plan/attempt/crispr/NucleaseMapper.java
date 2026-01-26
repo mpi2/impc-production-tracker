@@ -53,19 +53,21 @@ public class NucleaseMapper implements Mapper<Nuclease, NucleaseDTO>
 
     public Nuclease toEntity(NucleaseDTO nucleaseDTO)
     {
-        Nuclease nuclease = entityMapper.toTarget(nucleaseDTO, Nuclease.class);
-        if (nucleaseDTO.getId() != null)
+        Nuclease nuclease = new Nuclease();
+        if (nucleaseDTO.getId() != null && nucleaseDTO.getId() > 0)
         {
             nuclease.setId(nucleaseDTO.getId());
         }
+        
+        nuclease.setConcentration(nucleaseDTO.getConcentration());
         String typeName = nucleaseDTO.getTypeName();
         String className = nucleaseDTO.getClassName();
         NucleaseType nucleaseType =
                 crisprAttemptService.getNucleaseTypeByName(typeName);
         NucleaseClass nucleaseClass =
                 crisprAttemptService.getNucleaseClassByName(className);
-       nuclease.setNucleaseType(nucleaseType);
-       nuclease.setNucleaseClass(nucleaseClass);
+        nuclease.setNucleaseType(nucleaseType);
+        nuclease.setNucleaseClass(nucleaseClass);
 
         return nuclease;
     }
