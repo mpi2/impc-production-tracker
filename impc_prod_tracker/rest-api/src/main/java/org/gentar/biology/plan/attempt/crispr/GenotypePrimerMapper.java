@@ -31,11 +31,39 @@ public class GenotypePrimerMapper implements Mapper<GenotypePrimer, GenotypePrim
 
     public GenotypePrimer toEntity(GenotypePrimerDTO genotypePrimerDTO)
     {
-        return entityMapper.toTarget(genotypePrimerDTO, GenotypePrimer.class);
+        if (genotypePrimerDTO == null)
+        {
+            return null;
+        }
+        
+        GenotypePrimer genotypePrimer = new GenotypePrimer();
+        
+        if (genotypePrimerDTO.getId() != null && genotypePrimerDTO.getId() > 0)
+        {
+            genotypePrimer.setId(genotypePrimerDTO.getId());
+        }
+        
+        genotypePrimer.setName(genotypePrimerDTO.getName());
+        genotypePrimer.setSequence(genotypePrimerDTO.getSequence());
+        genotypePrimer.setGenomicStartCoordinate(genotypePrimerDTO.getGenomicStartCoordinate());
+        genotypePrimer.setGenomicEndCoordinate(genotypePrimerDTO.getGenomicEndCoordinate());
+        
+        return genotypePrimer;
     }
 
     public Set<GenotypePrimer> toEntities(Collection<GenotypePrimerDTO> genotypePrimerDTOS)
     {
-        return new HashSet<>(entityMapper.toTargets(genotypePrimerDTOS, GenotypePrimer.class));
+        Set<GenotypePrimer> genotypePrimers = new HashSet<>();
+        if (genotypePrimerDTOS != null)
+        {
+            genotypePrimerDTOS.forEach(dto -> {
+                GenotypePrimer entity = toEntity(dto);
+                if (entity != null)
+                {
+                    genotypePrimers.add(entity);
+                }
+            });
+        }
+        return genotypePrimers;
     }
 }
