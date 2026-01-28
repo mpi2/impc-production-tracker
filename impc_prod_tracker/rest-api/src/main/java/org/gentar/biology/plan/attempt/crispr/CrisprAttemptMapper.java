@@ -85,7 +85,19 @@ public class CrisprAttemptMapper implements Mapper<CrisprAttempt, CrisprAttemptD
     @Override
     public CrisprAttempt toEntity(CrisprAttemptDTO crisprAttemptDTO)
     {
-        CrisprAttempt crisprAttempt = entityMapper.toTarget(crisprAttemptDTO, CrisprAttempt.class);
+        CrisprAttempt crisprAttempt = new CrisprAttempt();
+        
+        crisprAttempt.setImitsMiAttempt(crisprAttemptDTO.getImitsMiAttempt());
+        crisprAttempt.setMiDate(crisprAttemptDTO.getMiDate());
+        crisprAttempt.setMiExternalRef(crisprAttemptDTO.getMiExternalRef());
+        crisprAttempt.setExperimental(crisprAttemptDTO.getExperimental());
+        crisprAttempt.setMutagenesisExternalRef(crisprAttemptDTO.getMutagenesisExternalRef());
+        crisprAttempt.setTotalEmbryosInjected(crisprAttemptDTO.getTotalEmbryosInjected());
+        crisprAttempt.setTotalEmbryosSurvived(crisprAttemptDTO.getTotalEmbryosSurvived());
+        crisprAttempt.setEmbryo2Cell(crisprAttemptDTO.getEmbryo2Cell());
+        crisprAttempt.setEmbryoTransferDay(crisprAttemptDTO.getEmbryoTransferDay());
+        crisprAttempt.setTotalTransferred(crisprAttemptDTO.getTotalTransferred());
+        
         if (Strings.isBlank(crisprAttemptDTO.getComment()))
         {
             crisprAttempt.setComment(null);
@@ -94,6 +106,8 @@ public class CrisprAttemptMapper implements Mapper<CrisprAttempt, CrisprAttemptD
         {
             crisprAttempt.setComment(crisprAttemptDTO.getComment());
         }
+        
+        // Set related entities
         setAssay(crisprAttempt, crisprAttemptDTO);
         setStrain(crisprAttempt, crisprAttemptDTO);
         setGuidesToEntity(crisprAttempt, crisprAttemptDTO);

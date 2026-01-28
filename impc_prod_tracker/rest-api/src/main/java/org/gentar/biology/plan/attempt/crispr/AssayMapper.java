@@ -40,16 +40,37 @@ public class AssayMapper implements Mapper<Assay, AssayDTO>
 
     public Assay toEntity(AssayDTO assayDTO)
     {
-        Assay assay = entityMapper.toTarget(assayDTO, Assay.class);
-        if (assay != null)
+        if (assayDTO == null)
         {
-            String assayTypeName = assayDTO.getTypeName();
-            if (assayTypeName != null)
-            {
-                AssayType assayType = crisprAttemptService.getAssayTypeByName(assayTypeName);
-                assay.setAssayType(assayType);
-            }
+            return null;
         }
+        
+        Assay assay = new Assay();
+        
+        // Only set ID if it exists (for updates), otherwise leave null for new entities
+        if (assayDTO.getId() != null && assayDTO.getId() > 0)
+        {
+            assay.setId(assayDTO.getId());
+        }
+        
+        assay.setNumFounderPups(assayDTO.getNumFounderPups());
+        assay.setNumFounderSelectedForBreeding(assayDTO.getNumFounderSelectedForBreeding());
+        assay.setFounderNumAssays(assayDTO.getFounderNumAssays());
+        assay.setNumDeletionG0Mutants(assayDTO.getNumDeletionG0Mutants());
+        assay.setNumG0WhereMutationDetected(assayDTO.getNumG0WhereMutationDetected());
+        assay.setNumHdrG0Mutants(assayDTO.getNumHdrG0Mutants());
+        assay.setNumHdrG0MutantsAllDonorsInserted(assayDTO.getNumHdrG0MutantsAllDonorsInserted());
+        assay.setNumHdrG0MutantsSubsetDonorsInserted(assayDTO.getNumHdrG0MutantsSubsetDonorsInserted());
+        assay.setNumHrG0Mutants(assayDTO.getNumHrG0Mutants());
+        assay.setNumNhejG0Mutants(assayDTO.getNumNhejG0Mutants());
+        
+        String assayTypeName = assayDTO.getTypeName();
+        if (assayTypeName != null)
+        {
+            AssayType assayType = crisprAttemptService.getAssayTypeByName(assayTypeName);
+            assay.setAssayType(assayType);
+        }
+        
         return assay;
     }
 }

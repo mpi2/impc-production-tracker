@@ -41,8 +41,22 @@ public class MutagenesisDonorMapper implements Mapper<MutagenesisDonor, Mutagene
 
     public MutagenesisDonor toEntity(MutagenesisDonorDTO mutagenesisDonorDTO)
     {
-        MutagenesisDonor mutagenesisDonor =
-            entityMapper.toTarget(mutagenesisDonorDTO, MutagenesisDonor.class);
+        if (mutagenesisDonorDTO == null)
+        {
+            return null;
+        }
+        
+        MutagenesisDonor mutagenesisDonor = new MutagenesisDonor();
+        
+        if (mutagenesisDonorDTO.getId() != null && mutagenesisDonorDTO.getId() > 0)
+        {
+            mutagenesisDonor.setId(mutagenesisDonorDTO.getId());
+        }
+        
+        mutagenesisDonor.setConcentration(mutagenesisDonorDTO.getConcentration());
+        mutagenesisDonor.setOligoSequenceFasta(mutagenesisDonorDTO.getOligoSequenceFasta());
+        mutagenesisDonor.setVectorName(mutagenesisDonorDTO.getVectorName());
+        
         setPreparationTypeToEntity(mutagenesisDonor, mutagenesisDonorDTO);
         return mutagenesisDonor;
     }
