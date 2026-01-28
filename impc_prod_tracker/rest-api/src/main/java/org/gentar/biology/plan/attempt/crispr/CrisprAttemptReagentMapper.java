@@ -39,8 +39,24 @@ public class CrisprAttemptReagentMapper implements Mapper<CrisprAttemptReagent, 
 
     @Override
     public CrisprAttemptReagent toEntity(CrisprAttemptReagentDTO crisprAttemptReagentDTO) {
-        CrisprAttemptReagent crisprAttemptReagent = entityMapper.toTarget(crisprAttemptReagentDTO, CrisprAttemptReagent.class);
+        if (crisprAttemptReagentDTO == null)
+        {
+            return null;
+        }
+        
+        CrisprAttemptReagent crisprAttemptReagent = new CrisprAttemptReagent();
+        
+        if (crisprAttemptReagentDTO.getId() != null && crisprAttemptReagentDTO.getId() > 0)
+        {
+            crisprAttemptReagent.setId(crisprAttemptReagentDTO.getId());
+        }
+
+        if (crisprAttemptReagentDTO.getConcentration() != null)
+        {
+            crisprAttemptReagent.setConcentration(crisprAttemptReagentDTO.getConcentration().intValue());
+        }
         crisprAttemptReagent.setReagent(reagentMapper.toEntity(crisprAttemptReagentDTO.getReagentName()));
+        
         return crisprAttemptReagent;
     }
 

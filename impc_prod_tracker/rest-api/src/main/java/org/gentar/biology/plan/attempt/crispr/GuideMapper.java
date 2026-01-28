@@ -41,21 +41,48 @@ public class GuideMapper implements Mapper<Guide, GuideDTO> {
     }
 
     public Guide toEntity(GuideDTO guideDTO, String nucleaseType) {
-        Guide guide = entityMapper.toTarget(guideDTO, Guide.class);
-        if (guide.getGuideSequence() != null) {
-            guide.setGuideSequence(guide.getGuideSequence().replace(" ", ""));
+        if (guideDTO == null) {
+            return null;
         }
-        if (guide.getPam() != null) {
-            guide.setPam(guide.getPam().replace(" ", ""));
+        
+        Guide guide = new Guide();
+        
+        if (guideDTO.getId() != null && guideDTO.getId() > 0) {
+            guide.setId(guideDTO.getId());
         }
-
-        if (guide.getSequence() == null || guide.getSequence().isEmpty()) {
+        
+        String guideSequence = guideDTO.getGuideSequence();
+        if (guideSequence != null) {
+            guideSequence = guideSequence.replace(" ", "");
+        }
+        guide.setGuideSequence(guideSequence);
+        
+        String pam = guideDTO.getPam();
+        if (pam != null) {
+            pam = pam.replace(" ", "");
+        }
+        guide.setPam(pam);
+        
+        String sequence = guideDTO.getSequence();
+        if (sequence == null || sequence.isEmpty()) {
             if ("Cpf1".equalsIgnoreCase(nucleaseType)) {
-                guide.setSequence(guideDTO.getPam() + guideDTO.getGuideSequence());
+                sequence = (pam != null ? pam : "") + (guideSequence != null ? guideSequence : "");
             } else {
-                guide.setSequence(guideDTO.getGuideSequence() + guideDTO.getPam());
+                sequence = (guideSequence != null ? guideSequence : "") + (pam != null ? pam : "");
             }
         }
+        guide.setSequence(sequence);
+        
+        guide.setChr(guideDTO.getChr());
+        guide.setStart(guideDTO.getStart());
+        guide.setStop(guideDTO.getStop());
+        guide.setStrand(guideDTO.getStrand());
+        guide.setGenomeBuild(guideDTO.getGenomeBuild());
+        guide.setGrnaConcentration(guideDTO.getGrnaConcentration());
+        guide.setTruncatedGuide(guideDTO.getTruncatedGuide());
+        guide.setReversed(guideDTO.getReversed());
+        guide.setSangerService(guideDTO.getSangerService());
+        guide.setGid(guideDTO.getGid());
 
         if (guideDTO.getFormatName() != null) {
             GuideFormat guideFormat =
