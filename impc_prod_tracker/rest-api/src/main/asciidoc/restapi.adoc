@@ -1054,6 +1054,18 @@ include::{snippets}/targrep/esCell/EsCellById/curl-request.adoc[]
 
 include::{snippets}/targrep/esCell/EsCellById/http-response.adoc[]
 
+==== Get specific TargRepEsCell by Name
+This endpoint shows specific TargRep es cell by name the user has permission to see.
+
+===== Example Request
+
+Curl:
+include::{snippets}/targrep/esCell/EsCellByName/curl-request.adoc[]
+
+===== Example Response
+
+include::{snippets}/targrep/esCell/EsCellByName/http-response.adoc[]
+
 
 ==== Get specific TargRepEsCell by Gene
 This endpoint shows specific TargRep es cell by gene symbol the user has permission to see.

@@ -74,14 +74,14 @@
               "href": "http://localhost:8080/api/targ_rep/pipelines/4"
             }
           ],
-          "targeting_vector": [
-            {
-              "href": "http://localhost:8080/api/targ_rep/targeting_vectors/158"
-            }
-          ],
           "allele": [
             {
               "href": "http://localhost:8080/api/targ_rep/alleles/142"
+            }
+          ],
+          "targeting_vector": [
+            {
+              "href": "http://localhost:8080/api/targ_rep/targeting_vectors/158"
             }
           ],
           "self": {
@@ -93,13 +93,7 @@
   },
   "_links": {
     "self": {
-      "href": "http://localhost:8080/api/targ_rep/es_cell"
+      "href": "http://localhost:8080/api/targ_rep/es_cell_by_symbol/Spanxn4"
     }
-  },
-  "page": {
-    "size": 20,
-    "totalElements": 1,
-    "totalPages": 1,
-    "number": 0
   }
 }

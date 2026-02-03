@@ -14,6 +14,7 @@ import org.gentar.security.abac.subject.SystemSubject;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PagedResourcesAssembler;
+import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.Link;
 import org.springframework.hateoas.PagedModel;
@@ -40,7 +41,6 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 @CrossOrigin(origins = "*")
 public class TargRepEsCellController {
     private final TargRepEsCellMapper esCellMapper;
-    private final TargRepEsCellLegacyMapper targRepEsCellLegacyMapper;
     private final TargRepEsCellService esCellService;
     private final TargRepGeneService geneService;
     private final TargRepAlleleService alleleService;
@@ -56,12 +56,13 @@ public class TargRepEsCellController {
      */
     public TargRepEsCellController(
             TargRepEsCellMapper esCellMapper,
-            TargRepEsCellLegacyMapper targRepEsCellLegacyMapper,
             TargRepEsCellService esCellService,
             TargRepGeneService geneService,
-            TargRepAlleleService alleleService, DistributionNetworkService distributionNetworkService, TargRepEsCellDistributionProductService distributionProductService, SubjectRetriever subjectRetriever) {
+            TargRepAlleleService alleleService,
+            DistributionNetworkService distributionNetworkService,
+            TargRepEsCellDistributionProductService distributionProductService,
+            SubjectRetriever subjectRetriever) {
         this.esCellMapper = esCellMapper;
-        this.targRepEsCellLegacyMapper = targRepEsCellLegacyMapper;
         this.esCellService = esCellService;
         this.geneService = geneService;
         this.alleleService = alleleService;
@@ -76,7 +77,7 @@ public class TargRepEsCellController {
      * @return Entity with the es cell names for a gene.
      */
     @GetMapping(value = {"/es_cell_by_symbol/{marker_symbol}"})
-    public List<TargRepEsCellLegacyResponseDTO> findEsCellByGene(
+    public ResponseEntity<CollectionModel<TargRepEsCellResponseDTO>> findEsCellByGene(
             @PathVariable String marker_symbol) {
         TargRepGene gene = geneService.getGeneBySymbolFailIfNull(capitalize(marker_symbol));
         List<TargRepAllele> alleleList = alleleService.getTargRepAllelesByGeneFailIfNull(gene);
@@ -85,9 +86,18 @@ public class TargRepEsCellController {
                 .forEach(allele -> esCellList
                         .addAll(esCellService.getTargRepEscellByAlleleFailsIfNull(allele)));
 
-        return esCellList.stream().map(targRepEsCellLegacyMapper::toDto)
+        List<TargRepEsCellResponseDTO> dtos = esCellList.stream()
+                .map(esCellMapper::toDto)
                 .collect(Collectors.toList());
+        
+        Link link = linkTo(methodOn(TargRepEsCellController.class)
+                .findEsCellByGene(marker_symbol)).withSelfRel();
+        link = link.withHref(decode(link.getHref()));
+        
+        CollectionModel<TargRepEsCellResponseDTO> collectionModel = 
+                CollectionModel.of(dtos, link);
 
+        return new ResponseEntity<>(collectionModel, HttpStatus.OK);
     }
 
     /**
@@ -96,9 +106,9 @@ public class TargRepEsCellController {
      * @return Entity with the es cell names for a gene.
      */
     @GetMapping(value = {"/es_cell_by_name/{name}"})
-    public TargRepEsCellLegacyResponseDTO findEsCellByName(@PathVariable String name) {
+    public TargRepEsCellResponseDTO findEsCellByName(@PathVariable String name) {
         TargRepEsCell esCellList = esCellService.getTargRepEsCellByNameFailsIfNull(name);
-        return targRepEsCellLegacyMapper.toDto(esCellList);
+        return esCellMapper.toDto(esCellList);
     }
 
     /**
