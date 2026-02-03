@@ -4,14 +4,7 @@ import static org.gentar.framework.db.DBSetupFilesPaths.MULTIPLE_TARGREP;
 import static org.gentar.framework.targRep.constant.ParamConstant.ES_CELL_TEST_ID;
 import static org.gentar.framework.targRep.constant.ParamConstant.ES_CELL_TEST_NAME;
 import static org.gentar.framework.targRep.constant.ParamConstant.ES_CELL_TEST_SYMBOL;
-import static org.gentar.framework.targRep.constant.UrlConstant.API_TARG_REP_ES_CELL_BY_NAME;
-import static org.gentar.framework.targRep.constant.UrlConstant.API_TARG_REP_ES_CELL_BY_SYMBOL;
-import static org.gentar.framework.targRep.constant.UrlConstant.API_TARG_REP_ES_CELL_URL;
-import static org.gentar.framework.targRep.constant.UrlConstant.EXPECTED_ALL_TARG_REP_ES_CELLS_JSON;
-import static org.gentar.framework.targRep.constant.UrlConstant.EXPECTED_TARG_REP_ES_CELL_BY_GENE_JSON;
-import static org.gentar.framework.targRep.constant.UrlConstant.EXPECTED_TARG_REP_ES_CELL_BY_ID_JSON;
-import static org.gentar.framework.targRep.constant.UrlConstant.EXPECTED_TARG_REP_ES_CELL_BY_NAME_JSON;
-import static org.gentar.framework.targRep.constant.UrlConstant.TARG_REP;
+import static org.gentar.framework.targRep.constant.UrlConstant.*;
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
 
 import com.github.springtestdbunit.annotation.DatabaseOperation;
@@ -41,7 +34,6 @@ class TargRepEsCellControllerTest extends ControllerTestTemplate {
     private ResultValidator resultValidator;
     private RestCaller restCaller;
 
-
     @BeforeEach
     public void setup() throws Exception {
         setTestUserSecurityContext();
@@ -57,10 +49,10 @@ class TargRepEsCellControllerTest extends ControllerTestTemplate {
     void findEsCellByGene() throws Exception {
         String contentAsString =
             restCaller.executeGetAndDocument(API_TARG_REP_ES_CELL_BY_SYMBOL + "/" +
-                ES_CELL_TEST_SYMBOL, documentTargRepEsCellLegacy( "[].","es_cell_by_symbol"));
+                ES_CELL_TEST_SYMBOL, documentTargRepEsCell( "_embedded.targrep_es_cells[].","es_cell_by_symbol"));
 
         String expectedOutputAsString =
-            loadExpectedResponseFromResource(EXPECTED_TARG_REP_ES_CELL_BY_GENE_JSON);
+            loadExpectedResponseFromResource(EXPECTED_TARG_REP_ES_CELL_BY_GENE_SYMBOL_JSON);
 
         JSONAssert.assertEquals(expectedOutputAsString, contentAsString, JSONCompareMode.STRICT);
     }
@@ -72,10 +64,10 @@ class TargRepEsCellControllerTest extends ControllerTestTemplate {
     void findEsCellByName() throws Exception {
         String contentAsString =
             restCaller.executeGetAndDocument(API_TARG_REP_ES_CELL_BY_NAME + "/" + ES_CELL_TEST_NAME,
-                documentTargRepEsCellLegacy( "","es_cell_by_name"));
+                    documentTargRepEsCell( "","es_cell_by_name"));
 
         String expectedOutputAsString =
-            loadExpectedResponseFromResource(EXPECTED_TARG_REP_ES_CELL_BY_NAME_JSON);
+            loadExpectedResponseFromResource(EXPECTED_TARG_REP_ES_CELL_BY_ID_JSON);
 
         JSONAssert.assertEquals(expectedOutputAsString, contentAsString, JSONCompareMode.STRICT);
     }
@@ -88,7 +80,7 @@ class TargRepEsCellControllerTest extends ControllerTestTemplate {
 
         String contentAsString =
             restCaller.executeGetAndDocument(API_TARG_REP_ES_CELL_URL,
-                documentTargRepEsCell("_embedded.targrep_es_cells[].","allEsCells"));
+                documentTargRepEsCell("_embedded.targrep_es_cells[].","allEsCells", true));
 
         String expectedOutputAsString =
             loadExpectedResponseFromResource(EXPECTED_ALL_TARG_REP_ES_CELLS_JSON);
@@ -114,14 +106,12 @@ class TargRepEsCellControllerTest extends ControllerTestTemplate {
     }
 
     private ResultHandler documentTargRepEsCell(String prefix, String endpoint) {
-        List<FieldDescriptor> esCellFieldsDescriptions =
-            EsCellFieldsDescriptors.getEsCellFieldsDescriptions(prefix);
-        return document("targrep/esCell/" + endpoint, responseFields(esCellFieldsDescriptions));
+        return documentTargRepEsCell(prefix, endpoint, false);
     }
 
-    private ResultHandler documentTargRepEsCellLegacy(String prefix, String endpoint) {
+    private ResultHandler documentTargRepEsCell(String prefix, String endpoint, boolean includePagination) {
         List<FieldDescriptor> esCellFieldsDescriptions =
-            EsCellFieldsDescriptors.getEsCellLegacyFieldsDescriptions(prefix);
+            EsCellFieldsDescriptors.getEsCellFieldsDescriptions(prefix, includePagination);
         return document("targrep/esCell/" + endpoint, responseFields(esCellFieldsDescriptions));
     }
 

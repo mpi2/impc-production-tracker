@@ -61,6 +61,9 @@ public class TargRepEsCellMapper implements Mapper<TargRepEsCell, TargRepEsCellR
             }
             esCellDto.setComment(entity.getComment());
             esCellDto.setReportToPublic(entity.getReportToPublic());
+            if (entity.getStrain() != null) {
+                esCellDto.setStrainName(entity.getStrain().getName());
+            }
             esCellDto.setUserQcComment(entity.getUserQcComment());
             esCellDto
                     .setUserQcFivePrimeCassetteIntegrity(entity.getUserQcFivePrimeCassetteIntegrity());

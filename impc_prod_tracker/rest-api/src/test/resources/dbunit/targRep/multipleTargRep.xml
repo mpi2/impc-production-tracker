@@ -56,6 +56,12 @@
                            PIPELINE_ID="4"
     />
 
+    <TARG_REP_STRAIN
+            ID="1"
+            NAME="C57BL/6N-A"
+
+    />
+
     <TARG_REP_TARGETING_VECTOR ID="158"
                                ALLELE_ID="142"
                                PIPELINE_ID="4"
@@ -75,6 +81,7 @@
                       TARGETING_VECTOR_ID="158"
                       IKMC_PROJECT_ID="41713"
                       PARENTAL_CELL_LINE="JM8.N4"
+                      STRAIN_ID="1"
                       COMMENT=""
                       REPORT_TO_PUBLIC="true"
                       USER_QC_COMMENT="pass"

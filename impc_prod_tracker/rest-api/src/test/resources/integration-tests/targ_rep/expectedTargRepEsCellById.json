@@ -8,6 +8,7 @@
   "mgiAlleleId": null,
   "alleleSymbolSuperscript": null,
   "comment": "",
+  "strainName": "C57BL/6N-A",
   "contact": null,
   "reportToPublic": true,
   "productionQcFivePrimeScreen": "pass",

@@ -32,13 +32,11 @@ public class UrlConstant {
     public static final String EXPECTED_TARG_REP_ES_CELL_BY_ID_JSON =
         "expectedTargRepEsCellById.json";
 
-    public static final String EXPECTED_TARG_REP_ES_CELL_BY_NAME_JSON =
-        "expectedTargRepEsCellByName.json";
 
     public static final String API_TARG_REP_ES_CELL_BY_SYMBOL = "/api/targ_rep/es_cell_by_symbol";
 
-    public static final String EXPECTED_TARG_REP_ES_CELL_BY_GENE_JSON =
-        "expectedTargRepEsCellByGene.json";
+    public static final String EXPECTED_TARG_REP_ES_CELL_BY_GENE_SYMBOL_JSON =
+        "expectedTargRepEsCellByGeneSymbol.json";
 
     public static final String EXPECTED_ALL_TARG_REP_TARGETING_VECTOR_JSON =
         "expectedAllTargRepTargetingVector.json";
