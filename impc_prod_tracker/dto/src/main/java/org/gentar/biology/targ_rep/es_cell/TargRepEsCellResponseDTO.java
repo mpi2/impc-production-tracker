@@ -24,6 +24,7 @@ public class TargRepEsCellResponseDTO extends RepresentationModel<TargRepEsCellR
     private String comment;
     private String contact;
     private Boolean reportToPublic;
+    private String strainName;
     private String productionQcFivePrimeScreen;
     private String productionQcLossOfAllele;
     private String productionQcLoxpScreen;

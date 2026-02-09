@@ -1054,6 +1054,18 @@ include::{snippets}/targrep/esCell/EsCellById/curl-request.adoc[]
 
 include::{snippets}/targrep/esCell/EsCellById/http-response.adoc[]
 
+==== Get specific TargRepEsCell by Name
+This endpoint shows specific TargRep es cell by name the user has permission to see.
+
+===== Example Request
+
+Curl:
+include::{snippets}/targrep/esCell/EsCellByName/curl-request.adoc[]
+
+===== Example Response
+
+include::{snippets}/targrep/esCell/EsCellByName/http-response.adoc[]
+
 
 ==== Get specific TargRepEsCell by Gene
 This endpoint shows specific TargRep es cell by gene symbol the user has permission to see.
@@ -1179,4 +1191,5 @@ include::{snippets}/targrep/targetingVector/targetingVectorById/http-response.ad
 * 2024-01-20: Development of a new attempt type within GenTar, termed "CRISPR Allele Modification."
 * 2024-02-05: Adding GID (Guide ID) to the guide system
 * 2024-02-20: Adition of RRIDs to the API endpoints for the Targ Rep targeting vector and ES cell data.
+* 2026-02-09: The 'strainName' field have been added to Targ Rep EsCell.
 

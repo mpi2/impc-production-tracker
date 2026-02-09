@@ -8,7 +8,7 @@ import org.springframework.restdocs.payload.FieldDescriptor;
 
 public class EsCellFieldsDescriptors {
 
-    public static List<FieldDescriptor> getEsCellFieldsDescriptions(String prefix) {
+    public static List<FieldDescriptor> getEsCellFieldsDescriptions(String prefix, boolean includePagination) {
         List<FieldDescriptor> esCellFieldsDescriptions = new ArrayList<>();
         addField(esCellFieldsDescriptions, prefix + "id",
             "Public identifier for the EsCell. READ ONLY");
@@ -24,12 +24,14 @@ public class EsCellFieldsDescriptors {
             "Public identifier for the IKMC Project. READ ONLY");
         addField(esCellFieldsDescriptions, prefix + "mgiAlleleId",
             "Public identifier for the MGI Allele Id. READ ONLY");
+        addField(esCellFieldsDescriptions, prefix + "strainName",
+                "Es Cell Strain Name");
         addField(esCellFieldsDescriptions, prefix + "alleleSymbolSuperscript",
             "Allele Symbol Super Script");
         addField(esCellFieldsDescriptions, prefix + "comment", "Comment");
         addField(esCellFieldsDescriptions, prefix + "contact", "no information, always empty");
         addField(esCellFieldsDescriptions, prefix + "reportToPublic",
-            "ndicates if EsCell will be reported to public");
+            "Indicates if EsCell will be reported to public");
         addField(esCellFieldsDescriptions, prefix + "productionQcFivePrimeScreen",
             "Production Qc Five Prime Screen");
         addField(esCellFieldsDescriptions, prefix + "productionQcLossOfAllele",
@@ -73,31 +75,29 @@ public class EsCellFieldsDescriptors {
                 "Distribution endDate");
         addField(esCellFieldsDescriptions, prefix + "targRepEsCellDistributionProductList[].distributionIdentifier",
                 "Distribution Identifier");
-        addField(esCellFieldsDescriptions, prefix + "_links.pipeline[].href",
-            "Pipeline Self Link");
-        addField(esCellFieldsDescriptions, prefix + "_links.targeting_vector[].href",
-            "targeting Vector Self Link");
-        addField(esCellFieldsDescriptions, prefix + "_links.allele[].href", "Allele Self Link");
-        addField(esCellFieldsDescriptions, prefix + "_links.self.href", "EsCell Self Link");
+        
+        if (prefix.equals("[].")) {
+            addField(esCellFieldsDescriptions, prefix + "links[]", "HATEOAS links");
+            addField(esCellFieldsDescriptions, prefix + "links[].rel", "Link relation");
+            addField(esCellFieldsDescriptions, prefix + "links[].href", "Link URL");
+        } else {
+            addField(esCellFieldsDescriptions, prefix + "_links.pipeline[].href",
+                "Pipeline Self Link");
+            addField(esCellFieldsDescriptions, prefix + "_links.targeting_vector[].href",
+                "targeting Vector Self Link");
+            addField(esCellFieldsDescriptions, prefix + "_links.allele[].href", "Allele Self Link");
+            addField(esCellFieldsDescriptions, prefix + "_links.self.href", "EsCell Self Link");
+        }
 
         if (prefix.equals("_embedded.targrep_es_cells[].")) {
             addField(esCellFieldsDescriptions, "_links.self.href", "EsCell Link");
-            addField(esCellFieldsDescriptions, "page.size", "Page Size");
-            addField(esCellFieldsDescriptions, "page.totalElements", "Total Element");
-            addField(esCellFieldsDescriptions, "page.totalPages", "ToTal Page");
-            addField(esCellFieldsDescriptions, "page.number", "Page number");
+            if (includePagination) {
+                addField(esCellFieldsDescriptions, "page.size", "Page Size");
+                addField(esCellFieldsDescriptions, "page.totalElements", "Total Element");
+                addField(esCellFieldsDescriptions, "page.totalPages", "ToTal Page");
+                addField(esCellFieldsDescriptions, "page.number", "Page number");
+            }
         }
-
-        return esCellFieldsDescriptions;
-    }
-
-
-    public static List<FieldDescriptor> getEsCellLegacyFieldsDescriptions(String prefix) {
-        List<FieldDescriptor> esCellFieldsDescriptions = new ArrayList<>();
-        addField(esCellFieldsDescriptions, prefix + "name",
-            "Public identifier name for the EsCell.");
-        addField(esCellFieldsDescriptions, prefix + "pipelineName",
-            "Public identifier name for the Pipeline.");
 
         return esCellFieldsDescriptions;
     }
