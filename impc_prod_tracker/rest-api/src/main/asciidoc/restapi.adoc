@@ -1191,4 +1191,5 @@ include::{snippets}/targrep/targetingVector/targetingVectorById/http-response.ad
 * 2024-01-20: Development of a new attempt type within GenTar, termed "CRISPR Allele Modification."
 * 2024-02-05: Adding GID (Guide ID) to the guide system
 * 2024-02-20: Adition of RRIDs to the API endpoints for the Targ Rep targeting vector and ES cell data.
+* 2026-02-09: The 'strainName' field have been added to Targ Rep EsCell.
 
