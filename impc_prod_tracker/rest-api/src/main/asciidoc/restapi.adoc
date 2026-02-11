@@ -1030,8 +1030,8 @@ These are the fields you are going to see in the body of a request in a GET oper
 include::{snippets}/targrep/esCell/EsCellById/response-fields.adoc[]
 
 === GET
-==== Get All TargRepEssCell
-This endpoint shows the All  TargRep Es Cells the user has permission to see.
+==== Get All TargRepEsCell
+This endpoint shows the All  TargRep ES Cells the user has permission to see.
 
 ===== Example Request
 
@@ -1043,7 +1043,7 @@ include::{snippets}/targrep/esCell/allEsCells/curl-request.adoc[]
 include::{snippets}/targrep/esCell/allEsCells/http-response.adoc[]
 
 ==== Get specific TargRepEsCell by Id
-This endpoint shows specific TargRep es cell by id the user has permission to see.
+This endpoint shows specific TargRep ES Cell by id the user has permission to see.
 
 ===== Example Request
 
@@ -1055,7 +1055,7 @@ include::{snippets}/targrep/esCell/EsCellById/curl-request.adoc[]
 include::{snippets}/targrep/esCell/EsCellById/http-response.adoc[]
 
 ==== Get specific TargRepEsCell by Name
-This endpoint shows specific TargRep es cell by name the user has permission to see.
+This endpoint shows specific TargRep ES Cell s cell by name the user has permission to see.
 
 ===== Example Request
 
@@ -1068,7 +1068,7 @@ include::{snippets}/targrep/esCell/EsCellByName/http-response.adoc[]
 
 
 ==== Get specific TargRepEsCell by Gene
-This endpoint shows specific TargRep es cell by gene symbol the user has permission to see.
+This endpoint shows specific TargRep ES Cell by gene symbol the user has permission to see.
 
 ===== Example Request
 
@@ -1081,7 +1081,7 @@ include::{snippets}/targrep/esCell/es_cell_by_symbol/http-response.adoc[]
 
 
 ==== Get specific TargRepEsCell by name
-This endpoint shows specific TargRep es cell by  name the user has permission to see.
+This endpoint shows specific TargRep ES Cell by  name the user has permission to see.
 
 ===== Example Request
 
